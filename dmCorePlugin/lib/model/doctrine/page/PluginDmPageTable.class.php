@@ -30,11 +30,29 @@ class PluginDmPageTable extends myDoctrineTable
     {
       dmDb::create('DmPage', array(
         'name' => dm::getI18n()->__('Page not found'),
-        'title' => dm::getI18n()->__('Page not found').' | '.dmDb::table('DmSite')->getInstance()->getName(),
+        'title' => dm::getI18n()->__('Page not found').' | '.dmContext::getInstance()->getSite()->name,
         'module' => 'main',
         'action' => 'error404',
         'slug' => '-error404'
       ))->getNode()->insertAsLastChildOf($root);
+    }
+  }
+  
+  /*
+   * Check that search page exist
+   * and, if doesn't, will create them
+   */
+  public function checkSearchPage()
+  {
+    if (!$this->createQuery('p')->where('p.module = ? AND p.action = ?', array('main', 'search'))->exists())
+    {
+      dmDb::create('DmPage', array(
+        'name' => dm::getI18n()->__('Search results'),
+        'title' => dm::getI18n()->__('Search results').' | '.dmContext::getInstance()->getSite()->name,
+        'module' => 'main',
+        'action' => 'search',
+        'slug' => '-search'
+      ))->getNode()->insertAsLastChildOf($this->getTree()->fetchRoot());
     }
   }
 

@@ -58,10 +58,15 @@ class dmForm extends sfFormSymfony
     $this->getFormFieldSchema()->render($attributes).
     sprintf('<li class="dm_form_element"><label>%s</label>%s</li>',
       dm::getI18n()->__('Validate'),
-      sprintf('<input type="submit" name="%s" />', dm::getI18n()->__('Save'))
+      $this->renderSubmitTag(dm::getI18n()->__('Validate'))
     ).
     '</ul>'.
     $this->close();
+  }
+  
+  public function renderSubmitTag($name)
+  {
+    return sprintf('<input type="submit" value="%s" />', $name);
   }
 
   /*
@@ -83,8 +88,8 @@ class dmForm extends sfFormSymfony
   	$opt = dmString::toArray($opt);
   	
     $defaults = array(
-      "class" => implode(" ", array("validate_me", $this->name, dmArray::get($opt, 'class'))),
-      "id" => $this->getKey()
+      'class' => implode(' ', array('validate_me', $this->name, dmArray::get($opt, 'class'))),
+      'id' => $this->getKey()
     );
 
     if (isset($opt['class']))
@@ -94,35 +99,28 @@ class dmForm extends sfFormSymfony
 
     $opt = array_merge($defaults, $opt);
 
-    $request = dm::getRequest();
-
-    $action = dmArray::get($opt, "action");
-
-    if ($action = dmArray::get($opt, "action"))
+    if ($action = dmArray::get($opt, 'action'))
     {
-      if ($action{0} == "#")
-      {
-        $action = dm::getRequest()->getUri().$action;
-      }
+    	$action = dmFrontLinkTag::build($action)->getHref();
     }
     else
     {
       $action = dm::getRequest()->getUri();
     }
-
-    if (strpos($action, "#") === false)
+    
+    if (strpos($action, '#') === false)
     {
-      $action .= "#".$this->getKey();
+      $action .= '#'.$this->getKey();
     }
 
-    if (isset($opt["action"])) unset($opt["action"]);
+    if (isset($opt['action'])) unset($opt['action']);
 
     if ($this->isMultipart())
     {
-      $opt["multipart"] = true;
+      $opt['multipart'] = true;
     }
 
-    sfProjectConfiguration::getActive()->loadHelpers(array('Form', "Tag", "Url"));
+    sfProjectConfiguration::getActive()->loadHelpers(array('Form', 'Tag', 'Url'));
 
     return form_tag($action, $opt);
   }

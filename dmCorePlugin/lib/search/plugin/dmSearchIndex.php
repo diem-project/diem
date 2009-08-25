@@ -167,7 +167,7 @@ abstract class dmSearchIndex extends dmSearchIndexCommon
 		return dmDb::table('DmPage')
 		->createQuery('p')
 		->withI18n($this->getCulture())
-		->where('translation.is_approved = ? AND p.is_secure = ? AND ( p.module != ? OR p.action != ?)', array(true, false, 'main', 'error404'));
+		->where('translation.is_approved = ? AND p.is_secure = ? AND ( p.module != ? OR ( p.action != ? AND p.action != ?))', array(true, false, 'main', 'error404', 'search'));
 	}
 
 	protected function getServiceFields()
