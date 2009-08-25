@@ -1,0 +1,25 @@
+.s16, .s16block, .s16right {
+  background: transparent url(../images/16/sprite.png) no-repeat top left;
+  height: 16px;
+}
+.s16 {
+  padding-left: 18px;
+}
+.s16block {
+  width: 16px;
+  display: block;
+  font-size: 0;
+}
+
+.s24, .s24block, .s24right {
+  background: transparent url(../images/24/sprite.png) no-repeat top left;
+  height: 24px;
+}
+.s24 {
+  padding-left: 28px;
+}
+.s24block {
+  width: 24px;
+  display: block;
+  font-size: 0;
+}

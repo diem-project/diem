@@ -1,0 +1,15 @@
+.dm {
+  font: 12px arial,helvetica,verdana,sans-serif;
+}
+
+.dm select, .dm input, .dm button, .dm textarea {
+}
+
+.dm a, a.dm {
+	cursor: pointer;
+}
+
+#dm_page .dm_zone {
+  float: left;
+  width: 100%;
+}

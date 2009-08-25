@@ -1,0 +1,123 @@
+body.mediaBarOpen {
+  margin-right: 310px;
+}
+
+body.mediaBarOpen #sf_admin_bar {
+  display: none;
+}
+
+body.mediaBarOpen #sf_admin_content {
+  margin-right: 0;
+}
+
+#dm_media_bar {
+  position: fixed;
+  top: 0px;
+  right: -300px;
+  height: 100%;
+  width: 300px;
+  background: #FCFCFC;
+  border-left: 3px solid #F4F4F4;
+  overflow: hidden;
+  font-size: 11px;
+  -moz-box-shadow: -3px 0 4px #888;
+}
+
+#dm_media_bar_toggler {
+  position: fixed;
+  right: 0;
+  top: -4000px;
+  width: 30px;
+  height: 100px;
+  background: url(../images/bar_togglers.png) top left no-repeat;
+  background-position: 0 -100px;
+  cursor: pointer;
+  -moz-border-radius: 8px 0 0 8px;
+  -moz-box-shadow: -2px 0 5px #888;
+}
+
+#dm_media_bar.open {
+  right: 0px;
+}
+
+#dm_media_bar_toggler:hover {
+  background-position: -30px -100px;
+}
+
+#dm_media_bar .title {
+  height: 19px;
+  line-height: 19px;
+  text-align: center;
+  background: url(../images/little_bar_bg.png) top left repeat-x;
+  border-bottom: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+  font-weight: bold;
+  color: #666;
+}
+
+#dm_media_bar .breadCrumb {
+	font-size: 12px;
+	padding-bottom: 5px;
+	border-bottom: 1px solid #ccc;
+	margin-bottom: 5px;
+}
+
+#dm_media_bar #dm_media_browser {
+  overflow: auto;
+  padding: 10px 0 10px 10px;
+  color: #444;
+}
+
+#dm_media_browser ul.content > li {
+  float: left;
+  width: 128px;
+  text-align: center;
+  cursor: pointer;
+  border: 1px solid #FCFCFC;
+  margin: 5px 5px 0 0;
+}
+
+#dm_media_browser ul.content > li.file {
+  cursor: move;
+}
+
+#dm_media_browser span.name,
+.dm_media_helper span.name {
+  margin-top: 3px;
+  display: block;
+}
+
+#dm_media_browser span.ws,
+.dm_media_helper span.ws {
+  display: none;
+}
+
+#dm_media_browser span.image_background,
+.dm_media_helper span.image_background {
+  position: relative;
+  width: 126px;
+  height: 126px;
+  border: 1px solid #888;
+  display: block;
+}
+
+#dm_media_browser span.image_background .name,
+.dm_media_helper span.image_background .name {
+  background: url(../images/media/name_bg.png) repeat;
+  bottom: 0px;
+  position: absolute;
+  padding: 10px 5px 2px 5px;
+  margin-bottom: 0;
+  color: #222;
+  width: 116px;
+  overflow: hidden;;
+}
+
+.dm_media_helper {
+  width: 128px;
+  height: 128px;
+  opacity: 0.4;
+  font-size: 11px;
+  text-align: center;
+  z-index: 500;
+}

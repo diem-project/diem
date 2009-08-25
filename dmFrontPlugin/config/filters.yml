@@ -1,0 +1,20 @@
+rendering:    ~
+
+remember_me:
+  class:      sfGuardRememberMeFilter
+
+security:
+  class:      dmFrontSecurityFilter
+
+dm_init:
+  class:      dmFrontInitFilter
+
+cache:        ~
+
+common:
+  enabled:    false
+
+dm_asset:
+  class:      dmFrontAssetFilter
+  
+execution:    ~

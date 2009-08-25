@@ -1,0 +1,4 @@
+all:
+  is_secure: on
+  credentials:
+    - console

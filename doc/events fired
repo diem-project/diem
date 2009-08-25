@@ -1,0 +1,5 @@
+[dm.data.before]
+fired by dmDataService before loading data
+
+[dm.data.after]
+fired by dmDataService after loading data

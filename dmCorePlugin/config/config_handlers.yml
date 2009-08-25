@@ -1,0 +1,10 @@
+config/dm/modules.yml:
+  class:          sfSimpleYamlConfigHandler
+  
+config/dm/project.yml:
+  class:          sfDefineEnvironmentConfigHandler
+  param:
+    prefix:       dm_
+    
+config/dm/assets.yml:
+  class:          dmInlineAssetConfigHandler

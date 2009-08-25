@@ -1,0 +1,26 @@
+js:
+
+  front:
+    config:           dmFrontConfig
+    ctrl:             dmFrontCtrl
+    editCtrl:         dmFrontEditCtrl
+    form:             dmFrontForm
+    toolBar:          dmFrontToolBar
+    pageBar:          dmFrontPageBar
+    mediaBar:         dmFrontMediaBar
+    page:             page/dmPage
+    area:             page/dmArea
+    zone:             page/dmZone
+    widget:           page/dmWidget
+    widgetForms:      page/dmWidgetForms
+
+css:
+
+  front:
+    main:             main
+    toolBar:          toolBar
+    pageBar:          pageBar
+    mediaBar:         mediaBar
+    form:             form
+    zone:             zone
+    widget:           widget

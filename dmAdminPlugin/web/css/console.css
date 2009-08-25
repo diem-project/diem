@@ -1,0 +1,63 @@
+#dm_console
+{
+  background: #000 url(../images/console/bg2.jpg) repeat center center;
+  font-family: monospace;
+  font-size: 12px;
+  height: 500px;
+  margin: 0 35px;
+  border: 3px solid #888;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+.dm_console_wait
+{
+  height: 16px;
+  font-size: 12px;
+  padding-left: 20px;
+  margin-left: 30px;
+  background: url(../images/16/loader.gif) center left no-repeat;
+  display: none;
+  color: #fff; 
+}
+
+#dm_lines
+{
+  padding: 3px 3px 0 3px;
+}
+#dm_lines li
+{
+  line-height: 16px;
+  display: block;
+  color: #fff;
+}
+#dm_lines li.dm_command_intro
+{
+	line-height: 16px;
+	color: #88ff88;
+	display: block;
+}
+
+#dm_command_wrap
+{
+  padding: 0 3px 3px 3px;
+  height: 16px;
+}
+#dm_command_wrap label, #dm_command_wrap input
+{
+  float: left;
+  color: #88ff88;
+}
+#dm_console form
+{
+	margin: 0;
+}
+#dm_command
+{
+  background: none;
+  border: none;
+  font-family: monospace;
+  font-size: 12px;
+  height: 16px;
+  padding: 0;
+  width: 80%;
+}

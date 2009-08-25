@@ -1,0 +1,31 @@
+#breadCrumb {
+  height: 19px;
+  background: url(../../core/images/little_bar_bg.png) top left repeat-x;
+  border: 1px solid #ccc;
+  -moz-border-radius: 4px;
+}
+
+#breadCrumb ol li{
+  display: block;
+  float: left;
+}
+
+#breadCrumb ol li > a,
+#breadCrumb ol li > span {
+  display: block;
+  padding: 0 20px 0 10px;
+  height: 19px;
+  line-height: 19px;
+  background: url(../images/breadCrumb/chevron.png) top right no-repeat;
+  color: #666;
+  text-decoration: none;
+}
+
+#breadCrumb ol li a:hover {
+	color: #046BCA;
+}
+
+#breadCrumb ol li a.home {
+	padding-top: 2px;
+  height: 17px;
+}

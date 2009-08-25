@@ -1,0 +1,85 @@
+Utils:
+  Translation:
+    dmTransUnit:
+      name:         Sentence
+      model:        TransUnit
+  Users:
+    dmSession:
+      name:         Session
+    dmProfile:
+      name:         Profile
+  Accessibility:
+    dmLang:
+      name:         Lang span
+    dmAbbr:
+      name:         Abbreviation
+  Media:
+    dmMediaLibrary:
+      name:         Media
+  
+Seo:
+  Services:
+    dmGoogleAnalytics:
+      name:         Google analytics
+    dmWebmasterTools:
+      name:         Google webmaster tools
+  Sitemap:
+    dmSitemap:
+      name:         Generate sitemap|Generate sitemap
+  Metas:
+    dmAutoSeo:
+      name:         Automatic Page
+    dmSeoValidation:
+      name:         Seo Validation
+
+Integration:
+  Layout:
+    dmLayout:
+      name:         Layout
+
+System:
+  Configuration:
+    dmSite:
+      name:         Site | Site
+  Log:
+    dmSentMail:
+      name:         Sent mail
+    dmError:
+      name:         Error
+  Security:
+    dmGuardUser:
+      name:         User
+      model:        sfGuardUser
+    sfGuardPermission:
+      name:         Permission
+      model:        sfGuardPermission
+    sfGuardGroup:
+      name:         Group
+      model:        sfGuardGroup
+  Dev:
+    dmService:
+      name:         "Launch services | Launch services"
+    dmConsole:
+      name:         "Diem Console | Diem Console"
+    dmCodeEditor:
+      name:         "Code Editor | Code Editor"
+    dmSearchEngine:
+      name:         "Search Engine | Search Engine"
+#  Media:
+#    dmMediaFolder:
+#      name:         Folder
+#    dmMedia:
+#      name:         File
+  Page:
+    dmPage:
+      name:         Page
+    dmPageView:
+      name:         Page View
+    dmLayout:
+      name:         Layout
+    dmArea:
+      name:         Area
+    dmZone:
+      name:         Zone
+    dmWidget:
+      name:         Widget

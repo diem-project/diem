@@ -1,0 +1,28 @@
+.dm_module_space_show .dm_module {
+  margin: 20px;
+}
+
+.dm_module_space_show .dm_modules .link {
+  font-size: 200%;
+}
+
+.dm_module_space_show .dm_module p{
+  color: #666;
+}
+
+
+.dm_module_type_show .title {
+	margin-bottom: 10px;
+}
+
+.dm_module_type_show .dm_modules {
+  margin: 0 0 10px 1em;
+}
+.dm_module_type_show .dm_module {
+  color: #aaa;
+  list-style: square;
+  margin: 5px;
+}
+.dm_module_type_show .dm_module p {
+  color: #666;
+}

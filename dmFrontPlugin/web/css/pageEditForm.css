@@ -1,0 +1,42 @@
+.dm_page_edit.ui-tabs .ui-tabs-panel {
+  padding: 5px 0;
+}
+ 
+.dm_page_edit_wrap .actions {
+  margin-top: 10px;
+}
+ 
+.dm_page_edit_wrap .dm_form.list .dm_form_element > label {
+  width: 12%;
+}
+ 
+.dm_page_edit_wrap .dm_form_element > input,
+.dm_page_edit_wrap .dm_form_element > select {
+  width: 82%;
+}
+ 
+.dm_page_edit_wrap .dm_form_element > input.dm_max_length,
+.dm_page_edit_wrap .dm_form_element > textarea {
+  width: 77%;
+  vertical-align: middle;
+}
+ 
+.dm_page_edit_wrap .dm_form_element > .dm_max_length_helper {
+  width: 4%;
+  margin-left: 1%;
+  color: #888;
+  font-weight: bold;
+}
+ 
+.dm_page_edit_wrap .dm_form_element > .dm_max_length_helper.max_length_alert {
+  color: red;
+}
+
+#dm_page_edit_publication .dm_form_element > label {
+  width: 50%;
+}
+
+#dm_page_edit_seo {
+  height:185px;
+  overflow-y:auto;
+}

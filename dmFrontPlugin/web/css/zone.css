@@ -1,0 +1,49 @@
+#dm_page.edit .dm_zones {
+  min-height: 40px;
+}
+
+#dm_page.edit .dm_zone .dm_widgets {
+  border: 2px groove #fff;
+  margin: 3px;
+  margin-top: 0;
+  padding: 0px;
+  -moz-border-radius: 0 4px 4px 4px;
+}
+
+#dm_page.edit .dm_zone:hover .dm_widgets {
+  border-color: #a6eded;
+}
+
+#dm_page .dm_zone .dm_zone_edit {
+	margin-left: 3px;
+  margin-top: 3px;
+	color: #aaa;
+  background: url(../../core/images/default_bg.png) repeat-x scroll 50% 50%;
+  border: 1px solid #888;
+  border-bottom: 0;
+  -moz-border-radius: 4px 4px 0 0;
+  width: 40px;
+  padding: 2px 5px 2px 5px;
+  text-align: center;
+  display: none;
+}
+
+#dm_page.edit .dm_zone .dm_zone_edit {
+	display: block;
+}
+
+#dm_page.edit .dm_zone:hover .dm_zone_edit {
+  color: #444;
+  border-color: #a6eded;
+  background: url(../../core/images/default_bg_blue.png) repeat-x scroll 50% 50%;
+}
+
+.dm_zone_placeholder {
+  margin: 3px;
+  float: left;
+  opacity: 0.5;
+}
+
+.dm_zone_helper {
+	
+}

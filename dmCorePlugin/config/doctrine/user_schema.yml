@@ -1,0 +1,44 @@
+DmProfile:
+  actAs:                    [Timestampable]
+  columns:
+    user_id:                { type: integer(4), notnull: true, unique: true, unsigned: true }
+  relations:
+    User:
+      class:                sfGuardUser
+      local:                user_id
+      foreign:              id
+      onDelete:             CASCADE
+
+DmSession:
+  actAs:                    [Timestampable]
+  columns:
+    id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
+    sess_id:                { type: string(63), unique: true, notnull: true, nospace: true }
+    dm_profile_id:          { type: integer, notnull: false }
+    dm_page_id:             { type: integer(4), notnull: false, unsigned: true }
+    last_time:              { type: integer(4), notnull: true, unsigned: true }
+    arrival_time:           { type: integer(4), notnull: true, unsigned: true }
+    ip:                     { type: string(31), notnull: false }
+    url:                    { type: string(255), notnull: false, nospace: true }
+    nb_pages:               { type: integer(4), unsigned: true, notnull: true, default: 0 }
+    browser_name:           { type: string(31), notnull: false }
+    browser_version:        { type: string(15), notnull: false }
+    platform:               { type: string(31), notnull: false }
+    is_crawler:             { type: boolean, notnull: true, default: false }
+    is_rss_reader:          { type: boolean, notnull: true, default: false }
+    is_banned:              { type: boolean, notnull: true, default: false }
+    is_mobile_device:       { type: boolean, notnull: true, default: false }
+    user_agent:             { type: string(255), notnull: false }
+    status_code:            { type: string(3) }
+    content_type:           { type: string(31) }
+    content_length:         { type: integer(4), unsigned: true }
+    time:                   { type: integer(4), unsigned: true }
+    history:                { type: string(65532) }
+    is_cached:              { type: boolean, notnull: true, default: false }
+  relations:
+    DmProfile:
+      onDelete:             SET NULL
+    DmPage:
+      onDelete:             SET NULL
+      
+package:                    dmCorePlugin.lib.model.doctrine.user

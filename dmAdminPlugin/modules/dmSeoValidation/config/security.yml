@@ -1,0 +1,3 @@
+all:
+  credentials:
+    - metas_validation

@@ -1,0 +1,100 @@
+DmPage:
+  actAs:
+    NestedSet:
+    I18n:
+      fields:               [slug, name, title, h1, description, keywords, auto_mod, is_approved]
+  columns:
+    id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
+    module:                 { type: string(127), notnull: true, nospace: true }
+    action:                 { type: string(127), notnull: true, nospace: true }
+    record_id:              { type: integer(4), unsigned: true, notnull: true, default: 0 }
+    slug:                   { type: string(255), notnull: true, nospace: true }
+    name:                   { type: string(255), notnull: true }
+    title:                  { type: string(255), notnull: false }
+    h1:                     { type: string(255), notnull: false }
+    description:            { type: string(255), notnull: false }
+    keywords:               { type: string(255), notnull: false }
+    auto_mod:               { type: string(6), notnull: true, default: 'snthdk', nospace: true } # slug, name, title, h1, description, keywords
+    is_approved:            { type: boolean, notnull: true, default: true }
+    is_secure:              { type: boolean, notnull: true, default: false } # requires authentification
+  indexes:
+    recordModuleAction:
+      fields:               [ module, action, record_id ]
+      type:                 unique
+
+DmPageView:
+  columns:
+    id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
+    module:                 { type: string(127), notnull: true, nospace: true }
+    action:                 { type: string(127), notnull: true, nospace: true }
+    dm_layout_id:           { type: integer(4), notnull: true, unsigned: true }
+  indexes:
+    moduleAction:
+      fields:               [ module, action ]
+      type:                 unique
+  relations:
+    Layout:
+      class:                DmLayout
+      onDelete:             CASCADE
+      foreignAlias:         PageViews
+    Area:
+      class:                DmArea
+      local:                id
+      foreign:              dm_page_view_id
+
+DmLayout:
+  columns:
+    id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
+    name:                   { type: string(127), notnull: true, unique: true }
+    css_class:              { type: string(255) }
+
+DmArea:
+  columns:
+    id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
+    dm_layout_id:           { type: integer(4), notnull: false, unsigned: true }
+    dm_page_view_id:        { type: integer(4), notnull: false, unsigned: true }
+    type:                   { type: enum, notnull: true, values: [content, top, bottom, left, right], default: 'content' }
+  indexes:
+    layoutType:
+      fields:               [ dm_layout_id, type ]
+      type:                 unique
+  relations:
+    Layout:
+      class:                DmLayout
+      onDelete:             CASCADE
+      foreignAlias:         Areas
+    PageView:
+      class:                DmPageView
+      local:                dm_page_view_id
+      foreign:              id
+      onDelete:             CASCADE
+
+DmZone:
+  actAs:                    [Sortable]
+  columns:
+    id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
+    dm_area_id:             { type: integer(4), notnull: true, unsigned: true }
+    css_class:              { type: string(255) }
+    width:                  { type: string(15), nospace: true }
+  relations:
+    Area:
+      class:                DmArea
+      onDelete:             CASCADE
+      foreignAlias:         Zones
+  
+DmWidget:
+  actAs:                    [Sortable, Timestampable]
+  columns:
+    id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
+    dm_zone_id:             { type: integer(4), notnull: true, unsigned: true }
+    module:                 { type: string(127), notnull: true, nospace: true }
+    action:                 { type: string(127), notnull: true, nospace: true }
+    value:                  { type: string(65532) }
+    css_class:              { type: string(255) }
+  relations:
+    Zone:
+      class:                DmZone
+      onDelete:             CASCADE
+      foreignAlias:         Widgets
+      
+package:                    dmCorePlugin.lib.model.doctrine.page

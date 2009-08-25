@@ -1,0 +1,27 @@
+rendering:    ~
+
+remember_me:
+  class:      sfGuardRememberMeFilter
+
+security:
+  class:      dmAdminSecurityFilter
+
+dm_init:
+  class:      dmAdminInitFilter
+  
+cache:        ~
+
+dm_seo:
+  class:      dmAdminSeoValidationFilter
+  enabled:    false
+
+common:
+  enabled:    false
+
+dm_asset:
+  class:      dmAdminAssetFilter
+
+dm_html:
+  class:      dmAdminHtmlFilter
+  
+execution:    ~

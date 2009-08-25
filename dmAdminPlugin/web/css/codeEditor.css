@@ -1,0 +1,52 @@
+#content_message_editor
+{
+}
+#content_message_editor .info
+{
+}
+#content_message_editor .info.error
+{
+  color: red;
+}
+
+#dm_code_editor
+{
+	position: relative;
+}
+
+#dm_code_editor_tree
+{
+  position: absolute;
+	width:300px;
+	height: 600px;
+	overflow-y: auto;
+	overflow-x: hidden;
+	width: 21.5%;
+}
+#dm_code_editor_content
+{
+	width: 78%;
+	position: absolute;
+	left: 22%;
+}
+
+#dm_code_editor .ui-tabs .ui-tabs-panel {
+  padding: 0;
+}
+
+#dm_code_editor_content textarea {
+  width: 96.5%;
+  height: 200px;
+  border: 0;
+  margin-top: 0;
+}
+
+#dm_code_editor .ui-tabs-nav li a {
+}
+
+#dm_code_editor .ui-tabs-nav img.close {
+  position: absolute;
+  top: 2px;
+  right: 1px;
+  cursor: pointer;
+}

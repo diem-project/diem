@@ -1,0 +1,72 @@
+html {
+	height: 100%;
+}
+
+body {
+  text-align: center;
+  background: #fff top center no-repeat;
+  margin: 0;
+  height: 100%;
+  overflow: none;
+}
+
+body.bg_1 {
+  background-image: url(../images/auth/auth_bg_1.png);
+}
+body.bg_2 {
+  background-image: url(../images/auth/auth_bg_2.png);
+}
+body.bg_3 {
+  background-image: url(../images/auth/auth_bg_3.png);
+}
+body.bg_4 {
+  background-image: url(../images/auth/auth_bg_4.png);
+}
+
+div.dm_auth {
+	padding-top: 210px;
+	margin: auto;
+	width: 500px;
+}
+
+div.dm_auth .site_name {
+  color: #666;
+  font-size: 25px;
+  letter-spacing: 2px;
+}
+
+div.dm_auth p {
+  color: #444;
+  font-style: italic;
+  font-size: 120%;
+}
+
+div.dm_auth form {
+  width: 260px;
+  margin: 20px auto 0 auto;
+  padding: 10px;
+  background: url(../images/alpha_white_bg_light.png) repeat;
+  -moz-border-radius: 4px;
+  border: 1px outset #fff;
+}
+
+div.dm_auth form.dm_form.list li input {
+	background: none;
+	border: 1px inset #fff;
+	-moz-border-radius: 4px;
+	padding: 3px;
+	width: 52%;
+	font-weight: bold;
+	font-style: italic;
+}
+
+div.dm_auth form.dm_form.list li label {
+  padding-top: 3px;
+  color: #666;
+}
+
+div.dm_auth a.login {
+  margin: 30px auto 0 auto;
+  float: none;
+  width: 100px;
+}

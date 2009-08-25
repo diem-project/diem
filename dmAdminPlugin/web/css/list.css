@@ -1,0 +1,139 @@
+#sf_admin_content {
+	/*margin-right: 175px;*/
+}
+
+.sf_admin_list {
+	position: relative;
+}
+
+.no_results h2 {
+	text-align: center;
+	margin: 20px 0;
+}
+
+#list_header .dm_active_search {
+	margin-bottom: 6px;
+	color: #444;
+}
+
+.dm_pagination {
+	position: absolute;
+  border: 1px solid #D3D3D3;
+  height: 20px;
+  padding: 4px 5px 0 5px;
+}
+
+.dm_pagination_top {
+  background:#EDEDED;
+	top: -21px;
+	right: 0;
+  border-bottom: none;
+  -moz-border-radius: 4px 4px 0 0;
+}
+
+.no_results .dm_pagination_top {
+  border-bottom: 1px solid #D3D3D3;
+  -moz-border-radius: 4px;
+  padding-bottom: 4px;
+}
+
+.dm_pagination_bottom {
+  background:#eeeeee;
+	bottom: -24px;
+	right: 0;
+  border-top: none;
+  -moz-border-radius: 0 0 4px 4px;
+}
+.dm_pagination > div {
+	float: right;
+	margin-right: 5px;
+}
+.dm_pagination > div.sf_admin_action a {
+  display: block;
+  height: 16px;
+}
+
+.dm_pagination .dm_module_search_input.blur {
+  color: #666;
+}
+
+.dm_pagination_top .max_per_page select {
+  margin: -2px 0 0 -2px;
+}
+
+.dm_pagination_bottom .max_per_page select,
+.dm_pagination_bottom .dm_module_search input {
+  margin: -4px 0 0 -2px;
+}
+
+.sf_admin_pagination a,
+.sf_admin_pagination span {
+  float: left;
+  margin: 0 3px;
+}
+
+.sf_admin_pagination > span {
+	font-size:20px;
+  font-weight:bold;
+  margin-top:-5px;
+  color: #666;
+}
+
+.sf_list_actions {
+	float: left;
+}
+
+.sf_admin_list table {
+  width: 100%;
+  color:#444;
+}
+.sf_admin_list thead tr {
+  background:#E6E6E6 url(../../core/images/default_bg.png) repeat-x scroll 50% 50%;
+  border:1px solid #D3D3D3;
+  color:#666;
+}
+.sf_admin_list th {
+	border: none;
+  padding: 3px 5px;
+}
+
+.sf_admin_list th a {
+  color: #555;
+}
+
+.sf_admin_list tr.even {
+	background: #F1F5FE;
+}
+
+.sf_admin_list td {
+  border: none;
+  padding: 5px 5px;
+}
+
+.sf_admin_list tfoot tr {
+  background:#E6E6E6 url(../../core/images/default_bg.png) repeat-x scroll 50% 50%;
+  border:1px solid #D3D3D3;
+  color:#666;
+}
+.sf_admin_list tfoot th .dm_pagination_status {
+  float: right;
+  line-height: 24px;
+}
+.sf_admin_list tfoot th .sf_admin_actions li {
+  float:left;
+}
+
+div.dm_export, div.dm_loremize {
+	float: left;
+  margin: 10px 10px 0 0;
+  padding: 10px;
+  background:#E6E6E6 url(../../core/images/default_bg.png) repeat-x scroll 50% 50%;
+  border:1px solid #D3D3D3;
+  -moz-border-radius: 4px;
+  color:#666;
+  width: 200px;
+}
+
+div.dm_export a {
+  display: block;
+}

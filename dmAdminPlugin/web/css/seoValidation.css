@@ -1,0 +1,31 @@
+.seo_validation h2 {
+  margin-bottom: 10px;
+}
+
+.seo_validation .dm_table_wrap {
+  margin-bottom: 20px;
+}
+
+.seo_validation table tr.even {
+  background: #F1F5FE;
+}
+
+.seo_validation table tr td {
+  width: 50%;
+}
+
+.seo_validation .actions {
+  padding: 5px 0 10px 0;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 10px;
+  margin-left: 20px;
+}
+
+.seo_validation li.open .actions {
+  display: block;
+}
+
+.seo_validation .actions li {
+  color: #666;
+  list-style: disc inside;
+}

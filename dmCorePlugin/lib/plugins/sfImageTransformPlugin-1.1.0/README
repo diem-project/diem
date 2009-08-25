@@ -1,0 +1,204 @@
+sfImageTransformPlugin
+======================
+
+The sfImageTransformPlugin allows the easily manipulation of images.  The plugin requires either either GD or ImageMagick graphics libraries to be installed on the server.
+
+sfImageTransform works by applying one or more "transforms" to the image.  A transform maybe simple like resizing or mirroring or more complex like overlays and pixelizing.  Multiple tranforms can be easily applied by chaining the transform calls as seen below. It is also very easy to extend and create your own transforms. 
+
+Load an image, resize it to 100 pixels wide (preserving the aspect ratio) and rotate it 90 degrees:
+
+    $img = new sfImage('image1.jpg', 'image/jpg');
+
+    $img->resize(100,null)->rotate(90);
+    
+    $img->save();
+
+Installation
+------------
+
+To install the plugin for a symfony project, the usual process is to use the symfony command line:
+
+symfony 1.1 and 1.2
+
+    symfony plugin:install sfImageTransformPlugin
+
+symfony 1.0
+
+    symfony plugin-install http://plugins.symfony-project.com/sfImageTransformPlugin
+
+Alternatively, if you don't have PEAR installed, you can download the latest package attached to this plugin's wiki page and extract it under your project's plugins/ directory.
+
+Clear the cache to enable the autoloading to find the new classes:
+
+    php symfony cc
+
+Usage
+-----
+
+Note: that if you enable MIME detection declaring the mime type is not required, see MIME detection section below.
+
+Example 1 Chaining (recommended)
+
+The simplest way to use sfImageTransform is to use method chaining. In an action:
+
+    $img = new sfImage('image1.jpg', 'image/jpg');
+
+    $response = $this->getResponse();
+
+    $response->setContentType($img->getMIMEType());    
+
+    $response->setContent($img->resize(1000,null)->overlay(sfImage('logo.png'))); 
+
+    return sfView::NONE;
+
+Example 2 Standalone
+
+    $img = new sfImage('image1.jpg', 'image/jpg', 'ImageMagick');
+    
+    $scale = new sfImageScaleImageMagick(0.5);
+
+    $img = $scale->execute($img);
+
+    $img->saveAs('image2.gif', 'image/gif');
+    
+
+Note: The plugin has full phpdoc style API documentation, including all the available transforms. This can be generated using [phpDocumentor](http://www.phpdoc.org/)
+
+Configuration
+-------------
+
+You can override the default settings used by redefining the plugin settings in your project
+
+app.yml
+
+    all:
+      sfImageTransformPlugin:
+        default_adapter: GD # GD or ImageMagick
+        default_image: { mime_type: image/png, filename: Untitled.png }
+        font_dir: /usr/share/fonts/truetype/msttcorefonts
+        mime_type:
+          auto_detect: false
+          library: Fileinfo # Fileinfo (PECL), MIME_Type (PEAR)
+        
+Writing your own transforms
+---------------------------
+
+sfImageTransformPlugin is designed to be easily extended. To make a new transform you simple create a class that extends the abstract class (sfImageTransformAbstract) and implements the transform method.
+
+Transforms are written specifically for the image library you want to use or generically if they don't use image library specific calls (see the thumbnail transform).
+
+The naming convention for a transform is important. For generic transforms the class should be named sfImage#transform name#Generic and for graphic library specific transforms, sfImage#transform name##image library#.class.php and class names should be sfImage#transform name##image library#
+
+Let's create a GD transform called "Example".
+
+sfImageExampleGD.class.php
+
+    class sfImageExampleGD extends sfImageTransformAbstract
+    {
+      // Parameters can be passed in the standard way
+      public funnction __construct($arg1, $arg2)
+      {
+        ...
+      }
+    
+      public function execute(sfImage $image)
+      {
+        
+        // Get the actual image resource  
+        $resource = $image->getAdapter()->getHolder();
+        
+        // Manipulate image using the GD functions
+        ...
+                
+        // To set a new resource for the image object
+        $image->getAdapter()->setHolder($dest_resource);
+      
+      }  
+    
+    }
+
+Outputting the image using an action
+
+    $img = new sfImage('image1.jpg', 'image/jpg');
+    
+    $img->resize(1000,null)->example($arg1, $arg2);
+
+    $response = $this->getResponse();
+
+    // Output the right content type
+    $response->setContentType($img->getMIMEType());    
+
+    $response->setContent($img); 
+
+    return sfView::NONE;
+
+
+Included tranforms
+-----------------
+
+Generic
+
+  * thumbnail
+
+GD
+
+  * arc
+  * brightness
+  * colorize, contrast, crop
+  * edgeDetect, ellipse, emboss
+  * fill, flip
+  * gamma, gaussianBlur, greyscale
+  * line
+  * mirror
+  * negate, noise
+  * opacity, overlay
+  * pixelBlur, pixelize
+  * rectangle, resize, rotate
+  * scale, scatter, selectiveBlur, sketchy, smooth
+  * text, transparency
+
+
+ImageMagick
+
+  * crop
+  * fill, flip
+  * mirror
+  * prettyThumbnail
+  * rectangle, resize, rotate
+  * scale
+  * text, trim
+  * opacity
+  
+
+MIME detection
+-----------------
+
+sfImageTransformPlugin currently supports three MIME type detection methods, GD's getimagesize, PECL's Fileinfo and PEAR's MIME_Type. These can be installed via PECL and PEAR respectively.
+
+To enable support in the plugin set auto_detect to true and select a library from: gd_mime_type (GD) Fileinfo # Fileinfo (PECL), MIME_Type (PEAR)
+
+app.yml
+
+...
+      sfImageTransformPlugin:
+...
+        mime_type:
+          auto_detect: true
+          library: gd_mime_type # Fileinfo (PECL), MIME_Type (PEAR), gd_mime_type (GD)
+          
+          
+With MIME detection enabled there is no need to specific the MIME types in the method calls.
+
+So with MIME detection enable and saving the jpg image to a gif
+    
+    $img = new sfImage('image1.jpg');
+
+    $response = $this->getResponse();
+
+    $response->setContentType($img->getMIMEType());    
+
+    $img->resize(150,null)->overlay(sfImage('logo.png')); 
+    
+    $img->saveAs('image1-with-logo.gif');
+
+    return sfView::NONE;

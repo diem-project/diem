@@ -1,0 +1,51 @@
+.dm input[type=submit],
+.dm a.button {
+  background: url(../../core/images/default_bg.png) repeat-x scroll 50% 50%;
+  border:1px solid #D3D3D3;
+  color:#555;
+  -moz-border-radius: 4px;
+  -webkit-border-radius:  4px;
+  height: 24px;
+  line-height: 24px;
+  cursor: pointer;
+  padding: 0 5px;
+  text-decoration: none;
+  font-size: 12px;
+}
+
+.dm a.button {
+  display: block;
+  float: left;
+  height: 22px;
+}
+
+.dm a.button.fright {
+  float: right;
+}
+
+.dm input.green[type=submit],
+.dm a.button.green {
+  background: url(../../core/images/default_bg_green.png) repeat-x scroll 50% 50%;
+}
+
+.dm input.blue[type=submit],
+a.button.blue {
+  background: url(../../core/images/default_bg_blue.png) repeat-x scroll 50% 50%;
+}
+
+.dm input.red[type=submit],
+.dm a.button.red {
+  background: url(../../core/images/default_bg_red.png) repeat-x scroll 50% 50%;
+}
+
+.dm input.yellow[type=submit],
+.dm a.button.yellow {
+  background: url(../../core/images/default_bg_yellow.png) repeat-x scroll 50% 50%;
+}
+
+.dm input[type=submit]:hover,
+.dm a.button:hover {
+  border-color: #999;
+  color:#212121;
+  text-decoration: none;
+}

@@ -1,0 +1,120 @@
+#dm_tool_bar {
+  top: 0;
+  border-bottom:1px solid #D3D3D3;
+  -moz-box-shadow: 0 4px 4px #888;
+}
+
+#dm_media_bar {
+  position: fixed;
+  top: 30px;
+}
+
+#dm_page_bar {
+  position: fixed;
+  top: 30px;
+}
+
+#dm_tool_bar .dm_menu {
+  margin: 0 3px;
+}
+#dm_tool_bar .level0 {
+  position: relative;
+  padding:0.2em 0.2em 0;
+}
+#dm_tool_bar .level0 > li {
+  float:left;
+  margin: 0;
+  padding: 1px 1px 0 1px;
+  position:relative;
+  height: 26px;
+  cursor: default;
+  background: none;
+  border: none;
+}
+#dm_tool_bar .level0 > li > a {
+  float:left;
+  padding: 5px 10px 0 10px;
+  text-decoration:none;
+  font-size: 1.1em;
+  cursor: pointer;
+  height: 22px;
+}
+#dm_tool_bar .level0 > li:hover {
+  background: url(../../core/images/default_bg_blue.png) center left repeat-x;
+  border: 1px solid #D3D3D3;
+  border-bottom: none;
+  padding: 0;
+}
+#dm_tool_bar .level0 > li.ui-state-active {
+  background: #fff;
+  border: 1px solid #aaa;
+  border-bottom: none;
+  padding: 0;
+}
+
+#dm_tool_bar .level1 {
+  font-size: 12px;
+  position: absolute;
+  top: 26px;
+  width: 200px;
+  border-top: 0;
+  padding: 0 10px 10px 10px;
+  -moz-border-radius: 0 4px 4px 4px;
+  -webkit-border-radius:  0 4px 4px 4px;
+
+  left: -4000px;
+  
+  max-height: 300px;
+  overflow: auto;
+  background: #fff;
+  -moz-box-shadow: 4px 4px 4px #888;
+}
+
+#dm_tool_bar .level0 > li.ui-state-active .level1 {
+  left: -1px;
+}
+
+#dm_tool_bar .level1 > li {
+  display: block;
+  float: none;
+  padding-top: 10px;
+}
+
+#dm_tool_bar .level1 > li > a {
+  text-transform: uppercase;
+  font-weight: bold;
+  color: #0085CF;
+  color: #046BCA;
+  cursor: default;
+}
+#dm_tool_bar .level1 > li > a:hover {
+  text-decoration: none;
+}
+
+#dm_tool_bar .level2 {
+}
+
+#dm_tool_bar .level2 > li {
+  margin-left: 20px;
+  list-style: square;
+  color: #aaa;
+}
+
+#dm_tool_bar .level2 > li a {
+  display: block;
+  padding: 1px 0;
+  color: #666;
+}
+
+#dm_tool_bar .level2 > li a:hover {
+  color: #444;
+  text-decoration: underline;
+}
+
+#dm_tool_bar #sfWebDebug .sfWebDebugTop
+{
+  top: 30px;
+  padding: 10px 1% 0 1%;
+  height: 400px;
+  overflow-y: auto;
+}

@@ -1,0 +1,99 @@
+default:
+
+  i18n:                                 # internationalization
+    cultures:             [  ]          # Available cultures
+    
+  theme:
+    list:
+      dm/front/themeDefault: "Diem default theme"
+      theme:              "Site first theme"
+      themeAdmin:         "Site admin theme"
+  
+  search:                               # Internal search engine
+    fields:                             # Pages fields to search in, with boost level
+      id:                 0             # page doctrine identifier
+      slug:               3             # page description meta
+      name:               3             # page name ( used as link name to this page )
+      title:              2             # page title
+      h1:                 4             # page h1
+      description:        2             # page description meta
+      indexable_content:  1             # page html content
+    slop:                 10            # distance allowed between two words in a searched phrase
+  
+  image:
+    resize:               center        # Default resize method when generating thumbnails (fit, scale, inflate, top, right, left, bottom, center)
+    quality:              92            # Jpeg default quality when generating thumbnails
+      
+  cache:                                # Cache management
+    apc:                  yes           # (RECOMMENDED) Use Apc if available on current server
+    full:                 no            # Cache full pages for max speed ( may cause problems with random content )
+    
+  error:                                # What to do when an error occured
+    mail_superadmin:      yes           # Send mail to superadmin ( uses superadmin's profile's email )
+    store_in_db:          yes           # Store error in database
+    
+  js:
+    compress:             yes           # (RECOMMENDED) Performance : Minifies javascripts and put them into a single file
+    cdn:                                # use cdn to load libraries
+      enabled:            yes           # (RECOMMENDED) Will use cdn to load javascript libraries faster
+      lib.jquery:         'http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js'
+    
+  css:
+    compress:             yes           # (RECOMMENDED) Performance : Minifies stylesheets and put them into a single file
+    
+  tidy:                                 # Parses, checks & cleans HTML output
+    enabled:              yes           # Enable tidy ( if available on server )
+    replace:              yes           # Enable on the fly tidy replacements on html output ( indentation & correction )
+    indent:               yes           # Enable indentation
+    indent-spaces:        2             # Indentation spaces
+    wrap:                 160           # Wrap long lines for code readability
+    params:               { }           # Free tidy params ( passed to $tidy->parseString )
+
+  tracking:                             # Store sessions infos in database
+    enabled:              false         # Disable for substantial speed boost
+    
+  seo:                                  # Search engine optimization configuration
+    use_keywords:         yes           # Keywords are useless for seo, but you can use them if you want
+    unique_validation:                  # Check html page attributes are unique in website
+      slug:               yes           # (RECOMMENDED) Check pages slugs are unique
+      title:              yes           # Check pages titles are unique ( optional / preformance issue )
+      description:        yes           # Check pages descriptions are unique ( optional / preformance issue )
+    truncate:                           # Max length for meta fields. Can not exceed 255 characters
+      slug:               255
+      name:               255
+      title:              80
+      h1:                 255
+      description:        160
+      keywords:           255
+    sitemap:                            # see http://sitemaps.org
+      path:               sitemap.xml   # relative path from web dir where diem will generate the sitemap
+
+  orm:                                  # Doctrine ORM configuration
+                                        # More configuration : please use ProjectConfiguration::configureDoctrine method
+    identifier_fields:    [ name, title, subject, description, id ] # Fields used to represent a record with a string
+    cache_enabled:        true          # (RECOMMENDED) Use doctrine query cache. No side effect, automatic cache invalidation )
+    cache_result_enabled: true          # (RECOMMENDED) Use doctrine result cache where query->dmCache() is called
+    cache_result_enabled_default: false # Use doctrine result cache on every query ( performance gain, possible issues )
+    
+  backup:                               # keep a copy of files modified by Dm code editors
+    enabled:              yes           # (RECOMMENDED) enable backup
+    dir:                  data/backup   # backup root directory from sf_root_dir
+    
+###### dm internal config ######
+
+  version:                5.0.0_pre1
+  
+  core:
+    asset:                dm/core
+  admin:
+    asset:                dm/admin
+  front:
+    asset:                dm/front
+    
+  dateI18n:                             # culture dependant date_format used by sfValidatorDmDate & sfWidgetFormDmDate
+    en:
+      regex:              |(?P<month>\d{2})/(?P<day>\d{2})/(?P<year>\d{4})|
+      format:             '%month%/%day%/%year%'
+    fr:
+      regex:              |(?P<day>\d{2})/(?P<month>\d{2})/(?P<year>\d{4})|
+      format:             '%day%/%month%/%year%'

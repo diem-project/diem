@@ -1,0 +1,6 @@
+all:
+  is_secure:    on
+  credentials:  [ media_library ]
+  
+editImageSave:
+  is_secure:    off

@@ -1,0 +1,50 @@
+Options +FollowSymLinks +ExecCGI
+
+# Add expiration dates to static content
+# sudo a2enmod expires && sudo apache2ctl restart
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/gif "access plus 30 days"
+  ExpiresByType image/png "access plus 30 days"
+  ExpiresByType image/jpg "access plus 30 days"
+  ExpiresByType image/jpeg "access plus 30 days"
+  ExpiresByType image/png "access plus 30 days"
+  ExpiresByType image/x-icon "access plus 30 days"
+  ExpiresByType text/css "access plus 30 days"
+  ExpiresByType text/javascript "access plus 30 days"
+  ExpiresByType application/x-Shockwave-Flash "access plus 30 days"
+</IfModule>
+  
+<IfModule mod_rewrite.c>
+
+  # SEND GZIPPED CONTENT TO COMPATIBLE BROWSERS
+  RemoveType .gz
+  RemoveOutputFilter .css .js
+  AddEncoding x-gzip .gz
+  AddType "text/css;charset=utf-8" .css
+  AddType "text/javascript;charset=utf-8" .js
+  RewriteCond %{HTTP:Accept-Encoding} gzip
+  RewriteCond %{REQUEST_FILENAME}.gz -f
+  RewriteRule ^(.*)$ $1.gz [L,QSA]
+  # END GZIPPED CONTENT
+
+  RewriteEngine On
+  # uncomment the following line, if you are having trouble
+  # getting no_script_name to work
+  #RewriteBase /
+  
+  RewriteRule ^(.+)/$ $1 [R=301,L]
+
+  # we skip all files with .something
+  RewriteCond %{REQUEST_URI} \..+$
+  #RewriteCond %{REQUEST_URI} !\.html$
+  RewriteRule .* - [L]
+
+  # we check if the .html version is here (caching)
+  #RewriteRule ^$ index.html [QSA]
+  #RewriteRule ^([^.]+)$ $1.html [QSA]
+  #RewriteCond %{REQUEST_FILENAME} !-f
+
+  # no, so we redirect to our front web controller
+  RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>

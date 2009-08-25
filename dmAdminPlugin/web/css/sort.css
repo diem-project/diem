@@ -1,0 +1,37 @@
+.dm_sort {
+	color: #444;
+}
+
+.dm_sort li {
+  list-style: none;
+  -moz-border-radius: 4px;
+  height: 24px;
+  line-height: 24px;
+  font-weight: normal;
+  margin: 3px 0;
+  padding: 0 8px;
+  cursor: move;
+}
+
+.dm_sort li.object {
+  background: url(../../core/images/default_bg.png) repeat-x scroll 50% 50%;
+  border:1px solid #D3D3D3;
+  color:#666666;
+}
+
+.dm_sort li.object:hover {
+  background: url(../../core/images/default_bg_blue.png) repeat-x scroll 50% 50%;
+}
+
+.dm_sort li.object.active {
+  background: url(../../core/images/default_bg_yellow.png) repeat-x scroll 50% 50%;
+}
+
+.dm_sort li.ui-state-highlight {
+  -moz-border-radius: 4px;
+  height: 24px;
+}
+
+.dm_sort .info {
+  margin-right: 5px;
+}

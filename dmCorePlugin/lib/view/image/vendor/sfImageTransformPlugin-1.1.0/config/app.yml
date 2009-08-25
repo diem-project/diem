@@ -1,0 +1,9 @@
+# default values
+all:
+  sfImageTransformPlugin:
+    default_adapter: GD # GD or ImageMagick
+    default_image: { mime_type: image/png, filename: Untitled.png }
+    font_dir: /usr/share/fonts/truetype/msttcorefonts
+    mime_type:
+      auto_detect: false
+      library: Fileinfo # Fileinfo (PECL), MIME_Type (PEAR), gd_mime_type (GD)

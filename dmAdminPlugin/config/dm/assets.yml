@@ -1,0 +1,36 @@
+js:
+
+  admin:
+    config:           dmAdminConfig
+    ctrl:             dmAdminCtrl
+    form:             dmAdminForm
+    toolBar:          dmAdminToolBar
+    pageBar:          dmAdminPageBar
+    mediaBar:         dmAdminMediaBar
+    media:            dmAdminMediaCtrl
+    console:          dmAdminConsole
+    codeEditor:       dmAdminCodeEditor
+    seoValidation:    dmAdminSeoValidationCtrl
+    sort:             dmAdminSortCtrl
+    
+  lib:
+    sf_double_list:   symfony/double_list
+
+css:
+
+  admin:
+    main:             main
+    layout:           layout
+    bars:             bars
+    breadCrumb:       breadCrumb
+    flash:            flash
+    list:             list
+    form:             form
+    verticalBar:      verticalBar
+    module:           module
+    generator:        generator
+    media:            media
+    console:          console
+    codeEditor:       codeEditor
+    seoValidation:    seoValidation
+    sort:             sort

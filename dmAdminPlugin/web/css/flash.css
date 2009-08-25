@@ -1,0 +1,26 @@
+#flash {
+  margin-bottom: 5px;
+}
+
+#flash .flash {
+  border: 1px solid;
+  padding: 5px;
+  margin-top: 5px;
+  color: #333;
+}
+
+#flash .info {
+  background: #DFE9B8 url(../images/flash/green.gif) repeat-x top left;
+  border-color: #CAD3A6;
+}
+
+#flash .alert {
+  background: #F8F2B7 url(../images/flash/yellow.gif) repeat-x top left;
+  border-color: #DBD6A1;
+}
+
+#flash .error {
+  background: #F6DCD9 url(../images/flash/red.gif) repeat-x top left;
+  border-color: #D7BBB8;
+  color: #DD0000;
+}

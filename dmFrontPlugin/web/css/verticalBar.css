@@ -1,0 +1,95 @@
+#sf_admin_bar {
+  display: none;
+}
+
+.sf_admin_filter {
+  width: 278px;
+}
+
+.sf_admin_filter_inner {
+}
+
+.sf_admin_filter .sf_admin_form_row {
+  margin-bottom: 3px;
+  padding: 5px 5px;
+}
+.sf_admin_filter .sf_admin_form_row.even {
+  background:#F1F5FE none repeat scroll 0 0;
+}
+
+.sf_admin_filter .sf_admin_form_row .label {
+  width:82px;
+  float: left;
+  text-align: right;
+}
+
+.sf_admin_filter .sf_admin_form_row .label label {
+  line-height: 16px;
+  font-weight: bold;
+}
+
+.sf_admin_filter .sf_admin_form_row .field {
+  margin-left: 90px;
+}
+
+.sf_admin_filter input,
+.sf_admin_filter select {
+  width: 130px;
+  border: 1px solid #D3D3D3;
+  padding: 1px 3px;
+  float: left;
+}
+
+.sf_admin_filter select {
+  width: 138px;
+}
+
+.sf_admin_filter .active input,
+.sf_admin_filter .active select,
+.sf_admin_filter .active .is_empty {
+  background: #E4FEEB;
+  border-color: #43A154;
+  color: #43A154;
+}
+.sf_admin_filter .active label {
+  color: #43A154;
+}
+
+.sf_admin_filter input.datepicker_me {
+  width: 100px;
+}
+
+.sf_admin_filter .is_empty {
+  float: right;
+}
+.sf_admin_filter .is_empty * {
+  cursor: pointer;
+}
+.sf_admin_filter .field .is_empty input {
+  margin-right: 3px;
+  vertical-align: middle;
+}
+
+.sf_admin_filter .date_range {
+  text-align: right;
+  margin-right: 40px;
+}
+
+.sf_admin_filter .date_range input.datepicker_me {
+  width: 100px;
+  float: none;
+  margin: 0 0 1px 0;
+}
+
+.dm_filter_actions {
+  margin-top: 5px;
+}
+
+.dm_filter_actions a{
+  float: left;
+}
+
+.dm_filter_actions input[type=submit] {
+  width: 98px;
+  float: right;
+}

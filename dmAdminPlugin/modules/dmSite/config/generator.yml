@@ -1,0 +1,43 @@
+generator:
+  class: dmAdminDoctrineGenerator
+  param:
+    model_class: DmSite
+    theme: dmAdmin
+    non_verbose_templates: true
+    with_show: false
+    route_prefix: dm_site
+    with_doctrine_route: true
+    config:
+      actions: ~
+      fields:
+        is_working_copy:
+          label: 'Working copy'
+      list:
+        display:
+          - =id
+          - status
+          - is_working_copy
+          - created_at
+          - updated_at
+        sort:
+          - created_at
+          - desc
+        max_per_page: 8
+        table_method: joinAll
+        table_count_method: ~
+      filter:
+        display:
+          - id
+          - is_working_copy
+          - status
+          - created_at
+          - updated_at
+      form:
+        display:
+          NONE: [is_working_copy]
+          Others: [status]
+        class: DmSiteAdminForm
+        fields: {  }
+      edit: ~
+      new: ~
+    sortable: false

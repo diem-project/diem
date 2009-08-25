@@ -1,0 +1,74 @@
+.dm_form {
+}
+
+.dm_form .error_list {
+}
+
+.dm_form .error_list > li {
+  min-height: 16px;
+  background: url(../images/16/error.png) top left no-repeat;
+  padding-left: 18px;
+  color: #be1111;
+}
+
+.dm_form.list {
+}
+
+.dm_form.little {
+}
+
+.dm_form.list .dm_form_element > label {
+  float: left;
+  width: 30%;
+  text-align:right;
+}
+
+.dm_form.list .dm_form_element > label.fnone {
+  float: none;
+}
+
+.dm_form.list .dm_form_element > input,
+.dm_form.list .dm_form_element > .input,
+.dm_form.list .dm_form_element > textarea,
+.dm_form.list .dm_form_element > select {
+  width: 67%;
+}
+
+.dm_form.list .dm_form_element.multi_inputs > input,
+.dm_form.list .dm_form_element.multi_inputs > select {
+  width: auto;
+}
+
+.dm_form.list .dm_form_element > .input {
+	float: left;
+}
+
+.dm_form.list.little .dm_form_element {
+  padding: 3px;
+}
+.dm_form.list.little .dm_form_element {
+  padding: 3px;
+}
+.dm_form.list.little .dm_form_element > label {
+  line-height: 18px;
+}
+
+.dm_form .toggle_group {
+  background: url(../../core/images/default_bg.png) repeat-x scroll 50% 50%;
+  border: 1px solid #D3D3D3;
+  -moz-border-radius: 4px;
+}
+.dm_form .toggle_group .toggler{
+  display: block;
+  padding: 5px;
+}
+
+.dm_media_receiver {
+  height: 18px;
+  color: #000;
+}
+.dm_media_receiver.hover {
+	background: url(../../core/images/default_bg_green.png) repeat-x scroll 50% 50%;
+  border: 1px solid #D3D3D3;
+  -moz-border-radius: 4px;
+}

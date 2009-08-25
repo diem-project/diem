@@ -1,0 +1,76 @@
+body{font:12px arial,helvetica,verdana,sans-serif;*font-size:small;*font:x-small;}select,input,button,textarea{font:99% arial,helvetica,clean,sans-serif;}table{font-size:inherit;font:100%;}pre,code,kbd,samp,tt{font-family:monospace;*font-size:108%;line-height:100%;}
+h1{
+	font-size:138.5%;
+  height: 2em;
+  line-height: 2em;
+  letter-spacing: -1px;
+}
+h2{font-size:123.1%;}
+h3{font-size:108%;}
+h1,h2,h3,h4,h5,h6,strong{color: #555; font-weight:bold;}
+h1 { letter-spacing: 1px; }
+abbr,acronym{border-bottom:1px dotted #000;cursor:help;}
+em{font-style:italic;}
+blockquote,ul,ol,dl{}
+ol,ul,dl{}
+ol li{list-style:decimal outside;}
+ul li{list-style: none;}
+dl dd{margin-left:1em;}
+a {
+  color: #046BCA;
+	text-decoration: none;
+  cursor: pointer;
+}
+a:hover {
+	text-decoration: underline;
+}
+
+#dm_admin_content {
+	margin: 30px 20px 0 20px;
+	padding-top: 1px;
+}
+
+body.full_screen #dm_admin_content {
+  margin: 0;
+}
+
+.dm_box {
+	margin: 20px auto;
+  border: 1px solid #D3D3D3;
+  -moz-border-radius: 4px;
+  background: #FBFBFB;
+}
+
+.dm_box_inner {
+	margin: 10px;
+}
+
+.dm_box.little {
+  width: 500px;
+}
+
+.dm_box.medium {
+  width: 800px;
+}
+
+.dm_box .title {
+  height: 24px;
+  line-height: 24px;
+  -moz-border-radius: 4px 4px 0 0;
+  text-align: center;
+  font-weight: normal;
+  background:#E6E6E6 url(../../core/images/default_bg.png) repeat-x scroll 50% 50%;
+  border-bottom :1px solid #D3D3D3;
+  color:#666666;
+}
+
+dl.dm_little_dl dt {
+  float: left;
+  width: 70px;
+  text-align: right;
+}
+dl.dm_little_dl dd {
+  margin-left: 80px;
+  margin-bottom: 4px;
+  font-weight: bold;
+}

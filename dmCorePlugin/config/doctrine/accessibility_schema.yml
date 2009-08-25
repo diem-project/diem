@@ -1,0 +1,13 @@
+DmLang:
+  columns:
+    id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
+    name:                   { type: string(255), unique: true, notnull: true }
+    lang:                   { type: string(3), notnull: true, default: "en", nospace: true }
+
+DmAbbr:
+  columns:
+    id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
+    name:                   { type: string(255), unique: true, notnull: true }
+    title:                  { type: string(65532), notnull: true }
+
+package:                    dmCorePlugin.lib.model.doctrine.accessibility

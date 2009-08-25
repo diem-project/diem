@@ -1,0 +1,62 @@
+.dm_form {
+	font-size: 11px;
+}
+
+.dm_form .droppable_active {
+  background: url(../../core/images/default_bg_yellow.png) repeat-x scroll 50% 50%;
+}
+
+.dm_form .droppable_hover {
+  background: url(../../core/images/default_bg_green.png) repeat-x scroll 50% 50%;
+}
+
+.dm_form .radio_list,
+.dm_form .checkbox_list {
+	margin-top: 3px;
+}
+
+.dm_form .radio_list li {
+  float: left;
+  margin-right: 5px;
+}
+
+.dm_form .radio_list input,
+.dm_form .checkbox_list input {
+  vertical-align: middle;
+}
+
+.dm_form .radio_list label,
+.dm_form .checkbox_list label {
+  margin: 0;
+}
+
+.dm_form .radio_list li,
+.dm_form .radio_list label,
+.dm_form .radio_list input,
+.dm_form .checkbox_list label,
+.dm_form .checkbox_list input {
+  cursor: pointer;
+}
+
+.dm_form.list .dm_form_element > label {
+  width: 20%;
+  margin-right: 1%;
+}
+
+.dm_form.list .dm_form_element > input,
+.dm_form.list .dm_form_element > .input,
+.dm_form.list .dm_form_element > textarea {
+  width: 75%;
+}
+
+.dm_form.list .dm_form_element > select {
+  width: 77%;
+}
+
+.dm_form .actions {
+  margin-top: 10px;
+}
+
+.dm_form .actions .actions_part {
+  margin: 5px;
+}

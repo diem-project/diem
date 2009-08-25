@@ -1,0 +1,36 @@
+#dm_tool_bar {
+  position: fixed;
+  left: 0;
+  width: 100%;
+  height: 29px;
+  z-index: 1;
+  padding: 0;
+  
+  background: #CCCCCC url(../images/default_bg.png) center left repeat-x;
+  color:#222222;
+  font-size: 11px;
+  
+  z-index: 20;
+}
+
+#dm_tool_bar .widget16 {
+  display: block;
+  float: left;
+  margin: 7px 3px 0 3px;
+  line-height: 16px;
+}
+
+#dm_tool_bar .widget16.mt5 {
+  margin-top: 5px;
+}
+
+#dm_tool_bar .widget24 {
+  display: block;
+  float: left;
+  margin: 2px 5px 0 5px;
+  line-height: 24px;
+}
+
+#dm_tidy_output {
+  display:none;
+}

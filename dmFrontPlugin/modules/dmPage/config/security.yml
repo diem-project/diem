@@ -1,0 +1,4 @@
+all:
+  is_secure: true
+  credentials:
+    - front_edit

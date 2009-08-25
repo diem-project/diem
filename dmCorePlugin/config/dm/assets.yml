@@ -1,0 +1,69 @@
+js:
+
+  core:
+    config:           dmCoreConfig
+    plugins:          dmCorePlugins
+    editPlugins:      dmCoreEditPlugins
+    ctrl:             dmCoreCtrl
+    editCtrl:         dmCoreEditCtrl
+    form:             dmCoreForm
+    toolBar:          dmCoreToolBar
+    pageBar:          dmCorePageBar
+    mediaBar:         dmCoreMediaBar
+    auth:             dmCoreAuth
+    codeArea:         dmCoreCodeArea
+    
+  lib:
+    symfony_debug:    symfony/debug
+    jquery:           jquery/jquery-1.3.2.min
+    ui-admin:         jquery-ui/js/jquery-ui-1.7.2.admin.min
+    ui-front:         jquery-ui/js/jquery-ui-1.7.2.front.min
+    ui-draggable:     jquery-ui/js/ui.draggable.min
+    ui-datepicker:    jquery-ui/js/ui.datepicker.min
+    ui-droppable:     jquery-ui/js/ui.droppable.min
+    ui-sortable:      jquery-ui/js/ui.sortable.min
+    ui-resizable:     jquery-ui/js/ui.resizable.min
+    ui-tabs:          jquery-ui/js/ui.tabs.min
+    ui-dialog:        jquery-ui/js/ui.dialog.min
+    ui-i18n:          jquery-ui/js/i18n/ui.datepicker-%culture%
+    metadata:         metadata/jquery.metadata.min
+    jqtransform:      jqtransform/jquery.jqtransform.min
+    form:             form/jquery.form
+    jsTree:           jsTree/source/tree_component.min
+    jsTreeCss:        jsTree/source/css
+    blockUI:          blockUI/jquery.blockUI.min
+    jgrowl:           jgrowl/jquery.jgrowl_minimized
+    ajaxqueue:        ajaxqueue/jquery.ajaxQueue
+    cookie:           cookie/jquery.cookie.min
+    markitup:         markitup/jquery.markitup.min
+    markitupSet:      dmMarkitup/sets/markdown/set
+    fancybox:         fancybox/jquery.fancybox-1.2.1.pack
+    expose:           expose/jquery.expose-1.0.1.min
+    qtip:             qtip/jquery.qtip-1.0.0-rc3.min
+    hotkeys:          hotkeys/jquery.hotkeys-0.7.9.min
+    base64:           webtoolkit/base64
+
+css:
+
+  core:
+    util:             util
+    editMode:         editMode
+    interface:        interface
+    sprites:          sprites
+    sprite16:         sprite16
+    sprite24:         sprite24
+    toolBar:          toolBar
+    pageBar:          pageBar
+    mediaBar:         mediaBar
+    form:             form
+    auth:             auth
+    
+  lib:
+    symfony_debug:    symfony/debug
+    reset:            reset/reset
+    ui:               jquery-ui/css/jquery-ui-1.7.2.custom
+    jqtransform:      jqtransform/jqtransform
+    jgrowl:           jgrowl/jquery.jgrowl
+    markitup:         dmMarkitup/skins/markitup/style
+    markitupSet:      dmMarkitup/sets/markdown/style
+    fancybox:         fancybox/jquery.fancybox

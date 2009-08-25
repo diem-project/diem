@@ -1,0 +1,28 @@
+DmMediaFolder:
+  actAs:                    [NestedSet]
+  columns:
+    id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
+    rel_path:               { type: string(255), notnull: true, unique: true, nospace: true }
+
+DmMedia:
+  actAs:                    [Timestampable]
+  columns:
+    dm_media_folder_id:     { type: integer(4), notnull: true, unsigned: true }
+    file:                   { type: string(255), notnull: true }
+    legend:                 { type: string(255) }
+    author:                 { type: string(255) }
+    license:                { type: string(255) }
+    mime:                   { type: string(63), notnull: true, nospace: true }
+    size:                   { type: integer(4), unsigned: true }
+    dimensions:             { type: string(15), nospace: true }
+  relations:
+    Folder:
+      class:                DmMediaFolder
+      onDelete:             CASCADE
+      foreignAlias:         Medias
+  indexes:
+    folderFile:
+      fields:               [ dm_media_folder_id, file ]
+      type:                 unique
+      
+package:                    dmCorePlugin.lib.model.doctrine.media

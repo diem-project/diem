@@ -1,0 +1,21 @@
+DmSite:
+  actAs:
+    Timestampable:
+    I18n:
+      fields:               [name, ga_code, wt_code, xiti_code, gdata_code, gmap_code, is_approved, is_indexable, app_urls, search_stop_words]
+  columns:
+    id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
+    name:                   { type: string(127), notnull: true }
+    status:                 { type: enum, values: [ dev, test, prod ], notnull: true, default: dev } # Project statuses : dev, test, prod
+    is_approved:            { type: boolean, notnull: true, default: true }
+    is_indexable:           { type: boolean, notnull: true, default: false }
+    is_working_copy:        { type: boolean, notnull: true, default: true }
+    ga_code:                { type: string(31), nospace: true }
+    wt_code:                { type: string(63) }
+    xiti_code:              { type: string(65532) }
+    gdata_code:             { type: string(127), nospace: true }
+    gmap_code:              { type: string(127), nospace: true }
+    app_urls:               { type: string(65532) }
+    search_stop_words:      { type: string(65532) } # words we do not want to search like "the", "a", "to"...
+      
+package:                    dmCorePlugin.lib.model.doctrine.site

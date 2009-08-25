@@ -1,0 +1,85 @@
+* [DONE] allow record method usage in admin generator list title
+
+* [DONE] generate functional tests for admin & front
+
+* [DONE] finish auto seo ( relative / absolute url construction )
+
+* [DONE] ensure cross-apps links consistency
+
+* allow ajax admin list filters
+
+* admin list filters must accept i18n fields
+
+* fix admin code editor ( file creation is broken )
+
+* [DONE] improve dmOs::join performances
+
+* [DONE] automatically synchronize objects with pages
+
+* [DONE] differentially synchronize seo
+
+* transparently merge i18n forms in admin
+
+* fix admin /systeme/security/groups & admin /systeme/security/permissions
+
+* allow progressive admin & front code generation
+
+* [DONE] fix embedded media forms
+
+* [DONE] fix dm generated forms go in project
+
+* remove context instance creation from tasks
+
+* implement form facilities as for diem 4
+
+* [DONE] replace overrides of form::updateObject with form::doReplaceObject
+
+* [DONE] check css box-shadow performance on firefox3.5/Linux
+
+* improve zone/widget drag&drop design in front edition
+
+* open & select current page in front page tree
+
+* fix fast navigation in admin edit pages
+
+* fix widget drop into zones don't work when page were loaded without edit mode
+
+* allow admin list booleans ajax edition
+
+* fix first delete link in admin record edit page : javascript confirmation fails
+
+* liens d'évitements ( conteneur marge négative ) ( accesskey accessiweb )
+  - aller au contenu
+  - aller au moteur de recherche
+  - aller à la navigation
+  - aller en bas de de page
+  
+* automatically add accesskey to front home links
+
+* [DONE] study http://www.symfony-project.org/plugins/mgI18nPlugin
+
+* use user theme admin for admin user assets (?)
+
+* [DONE] fix dmPageSync
+  model A is many parent of model B
+  B record will link to its first A
+  if the first A has no page, B has no page,
+  but B should search for another A wich have a page !
+  
+* fix admin pagination. when a table has relations, pagination count is false ( 8 elements in place of 10 for example )
+
+* include a default ready to use search engine
+
+* create a check config page like http://iliaz.com/dmsPlugin/index.php
+
+* improve record loremizer. Currently when only one record is loremized, associations with other tables are not created.
+
+* allow to unsynchronize automatic pages
+
+* {INTERNET} consider bypass sfSearchPlugin and use directly Zend_Lucene
+
+* protect dev environment
+
+* disable symfony functional tests creation for admin ( they are irrelevant and deprecateds by dmTest )
+
+* do NOT autoload Zend Lucene

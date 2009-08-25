@@ -1,0 +1,38 @@
+generator:
+  class: dmAdminPropelGenerator
+  param:
+    model_class: DmViewPart
+    theme: dmAdmin
+    non_verbose_templates: true
+    with_show: false
+    route_prefix: dm_view_part
+    with_propel_route: true
+    config:
+      actions: ~
+      fields: {  }
+      list:
+        display:
+          - =id
+          - dm_layout_id
+          - dm_page_view_id
+          - type
+          - dm_zones
+        sort:
+          - id
+          - desc
+        max_per_page: 20
+        peer_method: doSelectJoinAll
+      filter:
+        display:
+          - id
+          - dm_layout_id
+          - dm_page_view_id
+          - type
+      form:
+        display:
+          NONE: [dm_layout_id, dm_page_view_id]
+          Others: [type]
+        class: DmViewPartAdminForm
+        fields: {  }
+      edit: ~
+      new: ~

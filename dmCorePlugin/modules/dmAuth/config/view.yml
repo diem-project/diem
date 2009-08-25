@@ -1,0 +1,5 @@
+signinSuccess:
+  stylesheets:    [ core.auth ]
+  javascripts:
+    - lib.base64
+    - core.auth

@@ -1,0 +1,20 @@
+div.dm_table_wrap {
+  border: 1px solid #ccc;
+  background: #fff;
+  -moz-border-radius: 4px;
+  padding: 10px;
+}
+
+table.dm_table {
+  width: 100%;
+}
+
+table.dm_table th,
+table.dm_table td {
+  padding: 5px;
+}
+
+table.dm_table thead th {
+  border-bottom: 1px solid #ccc;
+  font-weight: bold;
+}

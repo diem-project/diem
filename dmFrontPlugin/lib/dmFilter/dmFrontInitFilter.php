@@ -1,0 +1,114 @@
+<?php
+
+class dmFrontInitFilter extends dmInitFilter
+{
+	protected
+	$dmContext;
+
+  /**
+   * Executes this filter.
+   *
+   * @param sfFilterChain $filterChain A sfFilterChain instance
+   */
+  public function execute($filterChain)
+  {
+  	$this->dmContext = dmContext::getInstance();
+    
+    $this->redirectTrailingSlash();
+
+  	$this->checkSiteIsApproved();
+
+    $this->saveApplicationUrl();
+  	
+  	try
+  	{
+      $this->guessPage();
+  	}
+  	catch(dmPageNotFoundException $e)
+  	{
+  		$this->handlePageNotFound();
+  	}
+
+    $filterChain->execute();
+    
+    if ($this->dmContext->getPage())
+    {
+	    if (sfConfig::get('dm_html_validate', true) && $this->getContext()->getUser()->can('html_validate_front') && $this->dmContext->isHtmlForHuman())
+      {
+        $this->saveHtml();
+      }
+
+	    if (sfConfig::get('dm_tracking_enabled'))
+	    {
+	    	$this->saveSession();
+	    }
+    }
+  }
+
+  protected function checkSiteIsApproved()
+  {
+    if(!$this->dmContext->getSite()->isApproved)
+    {
+      $waitModule = sfConfig::get('dm_wait_module', 'dmFront');
+      $waitAction = sfConfig::get('dm_wait_action', 'wait');
+
+      if (!$this->dmContext->isModuleAction($waitModule, $waitAction))
+      {
+        return $this->getContext()->getController()->forward($waitModule, $waitAction);
+      }
+    }
+  }
+
+  protected function guessPage()
+  {
+    if ($this->dmContext->isModuleAction('dmFront', 'page'))
+    {
+	    $slug = $this->context->getRequest()->getParameter('slug');
+
+      $page = dmDb::query('DmPage p, p.Translation t')
+      ->where('t.slug = ? AND t.lang = ?', array($slug, dm::getUser()->getCulture()))
+      ->fetchOne();
+
+		  if (!$page)
+		  {
+		  	throw new dmPageNotFoundException(sprintf('There is no page with slug %s in %s culture', $slug, dm::getUser()->getCulture()));
+		  }
+    }
+    elseif($this->context->getRequest()->hasParameter('dm_cpi'))
+    {
+    	$page = dmDb::query('DmPage p')
+    	->where('p.id = ?', $this->context->getRequest()->getParameter('dm_cpi'))
+    	->withI18n()
+    	->fetchOne();
+
+      if (!$page)
+      {
+        throw new dmException(sprintf('There is no page with id %s', $this->context->getRequest()->getParameter('dm_cpi')));
+      }
+    }
+    else
+    {
+    	$page = null;
+    }
+
+    $this->dmContext->setPage($page);
+  }
+  
+  protected function handlePageNotFound()
+  {
+  	return $this->forwardTo404Page();
+  }
+
+  protected function forwardTo404Page()
+  {
+  	dmDb::table('DmPage')->checkBasicPages();
+  	
+    $page = dmDb::query('DmPage p')
+    ->where('p.module = ? AND p.action = ?', array('main', 'error404'))
+    ->withI18n()
+    ->fetchOne();
+    
+    $this->dmContext->setPage($page);
+  }
+  
+}

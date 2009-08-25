@@ -1,0 +1,36 @@
+default:
+
+  i18n:
+    class:                  dmAdminI18n
+    param:
+      database:             default
+      source:               dmMySQL
+      debug:                off
+      cache:
+        class:              dmMetaCache
+        
+  routing:
+    class:                  dmAdminPatternRouting
+    param:
+      cache:
+        class:              dmMetaCache
+
+  request:
+    class:                  dmWebRequest
+    
+  controller:
+    class:                  dmFrontWebController
+
+  response:
+    class:                  dmAdminWebResponse
+    
+  logger:
+    param:
+      loggers:
+        sf_web_debug:
+          param:
+            xdebug_logging: false
+            web_debug_class: dmWebDebug
+ 
+  view_cache:
+    class:                  dmMetaCache

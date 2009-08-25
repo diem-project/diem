@@ -1,0 +1,185 @@
+/* DOTS */
+.tree .tree-default,
+.tree .tree-default ul {
+	background-position:6px 1px;
+	background-repeat:repeat-y;
+	background-image:url("../images/tree/dot.gif");
+}
+.tree .tree-default li {
+	background-position:7px 8px;
+	background-repeat:no-repeat;
+	background-image:url("../images/tree/li.gif");
+}
+.tree .tree-default li.last {
+	background-position:5px top;
+	background-repeat:no-repeat;
+	background-image:url("../images/tree/lastli.gif");
+	float:left;
+}
+.rtl .tree-default,
+.rtl .tree-default ul {
+	background-position:right 1px;
+}
+.rtl .tree-default li {
+	background-position:right 8px;
+}
+.rtl .tree-default li.last {
+	background-image:url("../images/tree/lastli_rtl.gif");
+	background-position:right top;
+}
+.rtl .tree-default #dragged li.open {
+	background-position: right 5px;
+}
+/* NO DOTS */
+.no_dots .tree-default ul {
+	background:transparent;
+}
+.no_dots .tree-default li, .no_dots .tree-default li.last {
+	background-color:transparent;
+	background-image:none;
+}
+.no_dots .tree-default li.leaf {
+	background-image:none;
+	background-color:transparent;
+}
+
+/* OPEN or CLOSED */
+.tree .tree-default li.open {
+	background:url("../images/tree/fminus.gif") 4px 6px no-repeat;
+}
+
+.tree .tree-default li.closed {
+	background:url("../images/tree/fplus.gif") 5px 5px no-repeat;
+}
+
+.tree .tree-default #dragged li.open {
+	background:url("../images/tree/fplus.gif") 5px 5px no-repeat;
+}
+
+/* RIGHT TO LEFT SUPPORT */
+.rtl .tree-default li {
+	margin-right:1px;
+}
+.rtl .tree-default li.last {
+	margin-right:0;
+	padding-right:16px;
+}
+.rtl .tree-default li.open {
+	background:url("../images/tree/fminus_rtl.gif") right 6px no-repeat;
+	margin-right:0;
+	padding-right:16px;
+}
+.rtl .tree-default li.closed {
+	background:url("../images/tree/fplus_rtl.gif") right 4px no-repeat;
+	margin-right:0;
+	padding-right:16px;
+}
+.rtl .tree-default #dragged li.open {
+	background-position: right 5px;
+}
+
+/* DEFAULT ICON */
+.tree .tree-default li a,
+.tree .tree-default li span{
+	background-color:transparent;
+	background-repeat:no-repeat;
+	background-position:4px 1px;
+	padding:1px 4px 1px 23px;
+	border-radius:3px;
+	-moz-border-radius:3px;
+	-webkit-border-radius:3px;
+}
+.tree .tree-default li a:hover,
+.tree .tree-default li a.hover {
+	background-color: #e7f4f9;
+	border:1px solid #d8f0fa;
+	padding:0px 3px 0px 22px;
+	background-position:3px 0px; 
+}
+.tree .tree-default li a.clicked,
+.tree .tree-default li a.clicked:hover,
+.tree .tree-default li span.clicked {
+	background-color: #beebff;
+	border:1px solid #99defd;
+	padding:0px 3px 0px 22px;
+	background-position:3px 0px; 
+}
+.tree .tree-default li span.clicked {
+	padding:0px 3px 0px 20px;
+}
+
+.tree .tree-default li a.loading {
+	background-image:url("../images/tree/throbber.gif");
+}
+
+/** RTL SUPPORT */
+.rtl .tree-default li a,
+.rtl .tree-default li span {
+	padding:1px 23px 1px 4px;
+	background-position:right 1px; 
+	margin-right:1px;
+}
+.rtl .tree-default li a:hover, 
+.rtl .tree-default li a.hover {
+	padding:0px 23px 0px 3px;
+	background-position:right 0px; 
+	margin-right:0px;
+}
+.rtl .tree-default li a.clicked,
+.rtl .tree-default li a.clicked:hover,
+.rtl .tree-default li span.clicked {
+	padding:0px 23px 0px 3px;
+	background-position:right 0px; 
+	margin-right:0px;
+}
+.rtl .tree-default li span.clicked {
+	padding:0px 21px 0px 3px;
+}
+
+/* CONTEXT MENU */
+.tree-default-context {
+	width:160px;
+	background:#F0F0F0 url("../images/tree/context.gif") 22px 0 repeat-y;
+	border:1px solid silver;
+	position:absolute;
+}
+
+.tree-default-context a,
+.tree-default-context a.disabled:hover {
+	display:block;
+	text-decoration:none;
+	color:black;
+	text-indent:26px;
+	line-height:20px;
+	background-repeat: no-repeat;
+	background-position: 3px center;
+	padding:1px 0;
+	background-color:transparent;
+	border:0;
+}
+.tree-default-context a:hover {
+	background-color: #e7f4f9;
+	border:1px solid #d8f0fa;
+	background-position: 2px center;
+	padding:0;
+	text-indent:25px;
+}
+.tree-default-context a.disabled,
+.tree-default-context a.disabled:hover {
+	color:silver;
+	opacity:0.5;
+	-ms-filter:'alpha(opacity=50)';
+	filter:alpha(opacity=50);
+	zoom:1;
+}
+
+.tree-default-context .separator {
+	background:#FFFFFF;
+	border-top:1px solid #E0E0E0;
+	font-size:1px;
+	height:1px;
+	line-height:1px;
+	margin:0 2px 0 24px;
+	min-height:1px;
+	display:block;
+}

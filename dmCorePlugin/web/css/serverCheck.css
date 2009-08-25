@@ -1,0 +1,68 @@
+a.go_admin
+{
+  position: absolute;
+  top: 25px;
+  right: 30px;
+}
+
+h1 {
+  color: #76C6D2;
+  margin-left: 1%;
+  height: 32px;
+  line-height: 32px;
+  font-size: 30px;
+}
+
+.half {
+  float: left;
+  margin: 0 1%;
+  width: 48%;
+}
+
+table {
+	-moz-box-shadow: 0 0 5px #76C6D2;
+}
+
+table thead th {
+  width: 32%;
+}
+
+table tbody th {
+	background: #F4F4FF;
+}
+
+table tbody tr td, table tbody tr th {
+	border-bottom: 1px solid #C3D9FF;
+}
+
+table tr.warning {
+  background: #FFD476;
+}
+
+table tr.error {
+  background: #FF8383;
+  color: #000;
+  font-weight: bold;
+}
+
+.isok {
+  height: 32px;
+  padding-left: 40px;
+  line-height: 32px;
+}
+
+.ok {
+  background: url(../images/32/accept.png) top left no-repeat;
+}
+.ko {
+  background: url(../images/32/block.png) top left no-repeat;
+}
+.tol {
+  background: url(../images/32/warning.png) top left no-repeat;
+}
+.info {
+  padding: 5px 5px 5px 34px;
+  font-size: 110%;
+  background: #ddffdd url(../images/24/help.png) top left no-repeat;
+  background-position: +5px +3px;
+}

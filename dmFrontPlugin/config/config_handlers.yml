@@ -1,0 +1,2 @@
+config/dm/widget_types.yml:
+  class:          sfSimpleYamlConfigHandler

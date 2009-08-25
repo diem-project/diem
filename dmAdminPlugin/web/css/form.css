@@ -1,0 +1,258 @@
+#form_header h1 a{
+  font-size: 12px;
+  font-weight: normal;
+  letter-spacing: 0;
+  margin-left: 5px;
+}
+
+.sf_admin_form form {
+  position: relative;
+}
+
+/* embedded form */
+.sf_admin_form form .dm_form_elements {
+  clear: both;
+  background: #F8F8F8;
+  padding: 10px;
+  -moz-border-radius: 4px;
+}
+.sf_admin_form form .dm_form_elements .dm_form_element {
+	margin: 5px;
+}
+
+.sf_admin_form_inner {
+	font-size: inherit;
+}
+
+.sf_admin_form form .dm_help_wrap,
+.sf_admin_form form .help {
+  color: #888;
+}
+
+.sf_admin_form fieldset {
+  margin: 0 0 10px 0;
+}
+
+.sf_admin_form fieldset .fieldset_title {
+  height: 24px;
+}
+
+.sf_admin_form fieldset .fieldset_title a {
+  line-height: 22px;
+}
+
+.sf_admin_form fieldset .ui-accordion-header {
+	position: inherit;
+}
+.sf_admin_form fieldset .ui-accordion-header .ui-icon {
+	position: inherit;
+	float: left;
+	margin-top: 4px;
+}
+
+.sf_admin_form .fieldset_content {
+  overflow: visible;
+  padding: 0;
+  margin: 0;
+  position: inherit;
+  border-top: none;
+}
+
+.sf_admin_form .fieldset_content_inner {
+  background: url(../images/edit/separator_bg.png) 50% 50% no-repeat;
+}
+
+.sf_admin_form .fieldset_none {
+  border-top: 1px solid #aaa;
+}
+
+.sf_admin_form .sf_admin_form_row {
+  float: left;
+  width: 48%;
+  margin: 1%;
+  background: #fff;
+}
+
+.sf_admin_form .sf_admin_form_row.big {
+  width: 98%;
+}
+
+.sf_admin_form .sf_admin_form_row_inner {
+}
+
+.sf_admin_form .sf_admin_form_row_inner label {
+  float: left;
+  width: 20%;
+}
+.sf_admin_form .sf_admin_form_row_inner label.fnone {
+  float: none;
+  width: auto;
+}
+
+.sf_admin_form .sf_admin_form_row_inner input,
+.sf_admin_form .sf_admin_form_row_inner select,
+.sf_admin_form .sf_admin_form_row_inner textarea {
+  width: 76%;
+}
+
+.sf_admin_form .sf_admin_form_row_inner input.datepicker_me {
+  width: auto;
+}
+.sf_admin_form .sf_admin_form_row_inner input.loremizing,
+.sf_admin_form .sf_admin_form_row_inner textarea.loremizing {
+	background: #aaa;
+}
+
+.sf_admin_form .error {
+  border: 1px solid #D7BBB8;
+  padding: 5px;
+  margin-bottom: 5px;
+  background: #F6DCD9 url(../images/flash/red.gif) repeat-x top left;
+  color: #DD0000;
+}
+
+.dm_error_list li {
+  list-style: disc inside;
+}
+
+.dm_form_actions {
+  position: absolute;
+  right: 0;
+  height: 24px;
+}
+.dm_form_actions .sf_admin_actions {
+  float: left;
+}
+.dm_form_actions_top {
+  top: -28px;
+}
+.dm_form_actions_bottom {
+  bottom: -30px;
+}
+
+.dm_form_actions li {
+  float: left;
+  display: block;
+  margin-left: 5px;
+}
+
+.dm_form_actions .dm_save_buttons {
+  position: relative;
+}
+.dm_form_actions .dm_hidden_buttons {
+  position: absolute;
+  left: 0px;
+  display: none;
+}
+.dm_form_actions-top .dm_hidden_buttons {
+  top: 24px;
+}
+.dm_form_actions_bottom .dm_hidden_buttons {
+  bottom: 24px;
+}
+.dm_form_actions .dm_save_buttons:hover .dm_hidden_buttons {
+  display: block;
+}
+.dm_form_actions_top .dm_hidden_buttons input {
+  margin-top: 5px;
+}
+.dm_form_actions_bottom .dm_hidden_buttons input {
+  margin-bottom: 5px;
+}
+
+.dm_form_actions .sf_admin_action_list a {
+  line-height: 25px;
+}
+
+.dm_form_actions .dm_form_pagination {
+  float: left;
+}
+
+.dm_form_pagination a,
+.dm_form_pagination select {
+  float: left;
+}
+.dm_form_pagination a {
+  margin-top: 5px;
+}
+
+.dm_double_list > div {
+  float: left;
+}
+
+.dm_double_list .dm_list_control {
+  margin-top: 5em;
+  width: 4%;
+  text-align: center;
+}
+
+.dm_double_list .dm_list_control a {
+  margin: auto;
+}
+
+.dm_double_list .dm_list_control a span {
+	margin: auto;
+}
+
+.sf_widget_form_dm_select_double_list .sf_admin_form_row_inner label {
+  float: none;
+}
+
+.dm_double_list .dm_list_unassociated,
+.dm_double_list .dm_list_associated {
+  width: 48%;
+}
+.dm_double_list .dm_list_unassociated select,
+.dm_double_list .dm_list_associated select {
+  width: 100%;
+}
+
+.sf_admin_form .checkbox_list {
+	max-height: 300px;
+	overflow-y: auto;
+	border: 1px solid #ddd;
+	moz-border-radius: 4px;
+}
+
+.sf_admin_form .checkbox_list li {
+  display: block;
+  padding: 2px 4px;
+  cursor: pointer;
+  border: 1px solid #fff;
+  border-width: 1px 0;
+  background: #fff;
+}
+
+.sf_admin_form .checkbox_list li.active {
+  background-color: #E1FEE5;
+  border-color: #E1FEE5;
+}
+
+.sf_admin_form .checkbox_list li:hover {
+  background-color: #F1F5FE;
+  border-color: #ddd;
+}
+
+.sf_admin_form .checkbox_list li label {
+  float: none;
+  width: auto;
+  cursor: pointer;
+}
+
+.sf_admin_form .checkbox_list li input {
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+.sf_admin_form .dm_media_file {
+  position: relative;
+}
+.sf_admin_form .dm_media_file .view {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.sf_admin_form .dm_media_file .infos {
+  margin-left: 260px;
+  font-size: 11px;
+}
