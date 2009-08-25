@@ -64,7 +64,7 @@ class dmServerCheck
 		$this->renderFoot();
 	}
 
-	protected function renderContent()
+	public function renderContent()
 	{
 		return
 		sprintf('<h1>Diem %s System Check</h1>', sfConfig::get('dm_version')).

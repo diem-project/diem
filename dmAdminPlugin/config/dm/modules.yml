@@ -59,12 +59,14 @@ System:
   Dev:
     dmService:
       name:         "Launch services | Launch services"
-    dmConsole:
-      name:         "Diem Console | Diem Console"
     dmCodeEditor:
       name:         "Code Editor | Code Editor"
+    dmConsole:
+      name:         "Diem Console | Diem Console"
     dmSearchEngine:
       name:         "Search Engine | Search Engine"
+    dmServer:
+      name:         "Server | Server"
 #  Media:
 #    dmMediaFolder:
 #      name:         Folder
