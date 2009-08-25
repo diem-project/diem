@@ -76,10 +76,14 @@
 
 * allow to unsynchronize automatic pages
 
-* {INTERNET} consider bypass sfSearchPlugin and use directly Zend_Lucene
+* [DONE] bypass sfSearchPlugin and use directly Zend_Lucene
 
 * protect dev environment
 
 * disable symfony functional tests creation for admin ( they are irrelevant and deprecateds by dmTest )
 
-* do NOT autoload Zend Lucene
+* do NOT autoload Zend components
+
+* add the search widget
+
+* use Zend Code Generator to create/update front modules
