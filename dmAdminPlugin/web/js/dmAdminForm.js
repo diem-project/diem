@@ -5,13 +5,22 @@ $.widget('ui.dmAdminForm', $.extend({}, $.dm.coreForm, {
   _init : function()
 	{
     this.$ = $("#dm_admin_content");
-    
+
+		this.focusFirstInput();
 		this.markitup();
     this.selectObject();
     this.checkBoxList();
 		this.linkDroppable();
 		this.hotKeys();
   },
+	
+	focusFirstInput: function()
+	{
+		if($firstInput = $('div.sf_admin_form_row_inner input:first', this.$))
+		{
+			$firstInput.focus();
+		}
+	},
 	
 	hotKeys: function()
 	{
@@ -74,14 +83,18 @@ $.widget('ui.dmAdminForm', $.extend({}, $.dm.coreForm, {
   
   checkBoxList: function()
   {
-    var form = this;
-    
-    $('ul.checkbox_list > li', form.element).click(function() {
+    var $list = $('ul.checkbox_list', this.element);
+		
+    $('> li > label, > li > input', $list).click(function(e) {
+      e.stopPropagation();
+    });
+		
+    $('> li', $list).click(function() {
       var $input = $('> input', $(this));
       $input.attr('checked', !$input.attr('checked')).trigger('change');
     });
     
-    $('ul.checkbox_list > li > input', form.element).change(function() {
+    $('> li > input', $list).change(function() {
       $(this).parent()[($(this).attr('checked') ? 'add' : 'remove')+'Class']('active');
 			return true;
     }).trigger('change');
