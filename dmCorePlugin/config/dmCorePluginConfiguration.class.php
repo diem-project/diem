@@ -76,5 +76,24 @@ class dmCorePluginConfiguration extends sfPluginConfiguration
   	$eventConnector = new dmEventConnector($this->dispatcher, new dmEventListener($this->dispatcher));
   	$eventConnector->connectEvents();
   }
-
+  
+  /**
+   * Filters sfAutoload configuration values.
+   * 
+   * @param sfEvent $event  
+   * @param array   $config 
+   * 
+   * @return array
+   */
+  public function filterAutoloadConfig(sfEvent $event, array $config)
+  {
+  	$config = parent::filterAutoloadConfig($event, $config);
+  	
+  	/*
+  	 * Do not load lib/vendor
+  	 */
+  	$config['autoload'][$this->name.'_lib']['exclude'] = array('vendor');
+  	
+  	return $config;
+  }
 }

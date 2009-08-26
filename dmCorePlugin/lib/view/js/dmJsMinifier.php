@@ -1,5 +1,7 @@
 <?php
 
+require_once(realpath(dirname(__FILE__).'/vendor').'/JsMinEnh.php');
+
 class dmJsMinifier extends JsMinEnh
 {
 	

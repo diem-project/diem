@@ -82,7 +82,7 @@
 
 * disable symfony functional tests creation for admin ( they are irrelevant and deprecateds by dmTest )
 
-* do NOT autoload Zend components
+* [DONE] do NOT autoload Zend components
 
 * add the search widget
 

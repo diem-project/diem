@@ -214,8 +214,7 @@ abstract class dmWebResponse extends sfWebResponse
 	
 	      	if (!strpos($javascript, '.min.') && !strpos($javascript, '.pack.'))
 	      	{
-	      		$minifier = new JsMinEnh($fileContent);
-	      		$fileContent = $minifier->minify();
+	      		$fileContent = dmJsMinifier::transform($fileContent);
 	      	}
 	
 	      	$cacheContent .= ';'.$fileContent;
