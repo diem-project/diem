@@ -29,9 +29,10 @@ class PluginDmMediaFolderTable extends myDoctrineTable
         'name'     => trim(basename($relPath), '/'),
 			  'rel_path' => $relPath
 			));
-
-			$record->getNode()->insertAsLastChildOf($parent);
+			
+			$record->Node->insertAsLastChildOf($parent);
 		}
+		
 		return $record;
 	}
 

@@ -8,12 +8,33 @@ $.widget('ui.dmFrontForm', $.extend({}, $.dm.coreForm, {
 		
 		this.form = $('form:first', this.element);
 		
-		this.linkDroppable();
+    this.markitup();
+    this.linkDroppable();
+    this.hotKeys();
+  },
+	
+	hotKeys: function()
+	{
+		var self = this;
 		
-		this.element.bindKey('Ctrl+s', function() {
-			self.form.submit();
-			return false;
-		});
+    self.element.bindKey('Ctrl+s', function() {
+      self.form.submit();
+      return false;
+    });
+	},
+  
+  markitup: function()
+  {
+    var self = this;
+    
+    $('textarea.dm_markdown', self.form).each(function()
+		{
+      var $editor = $(this);
+			
+      $editor.markItUp(dmMarkitupMarkdown);
+      
+      $editor.resizable({handles: 's'});
+    });
   }
   
 }));

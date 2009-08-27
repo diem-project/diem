@@ -11,7 +11,7 @@ $.widget('ui.dmWidget', {
   
   openEditDialog: function()
   {
-    var widget = this;
+    var widget = this, activeTab = null;
     
     var $dialog = $.dm.ctrl.ajaxDialog({
       url:          $.dm.ctrl.getHref('+/dmWidget/edit'),
@@ -46,10 +46,21 @@ $.widget('ui.dmWidget', {
 	      {
 	        $form[formClass](widget);
 	      }
+				/*
+				 * Restore active tab
+				 */
+        if(activeTab)
+        {
+          $form.find('div.dm_tabbed_form').tabs('select', activeTab);
+        }
 	      $form.find('form').dmAjaxForm({
 	        beforeSubmit: function(data) {
 	          $dialog.block();
 	          widget.element.block();
+						if ($tabbedFormActiveTab = $form.find('ul.ui-tabs-nav > li.ui-tabs-selected:first').orNot())
+						{
+							activeTab = $tabbedFormActiveTab.find('>a').attr('href');
+						}
 	        },
 	        success:  function(data) {
 	          if (data == 'ok') {

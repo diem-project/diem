@@ -1,6 +1,6 @@
 <?php
 
-class dmWidgetContentTextForm extends dmWidgetPluginForm
+class dmWidgetContentTextForm extends dmWidgetContentMediaForm
 {
 
 	public function configure()
@@ -16,8 +16,25 @@ class dmWidgetContentTextForm extends dmWidgetPluginForm
     $this->widgetSchema['text'] = new sfWidgetFormTextarea();
     $this->validatorSchema['text'] = new sfValidatorString(array('required' => false));
     
-    $mediaForm = new dmWidgetContentMediaForm($this->dmWidget);
-    $this->mergeForm($mediaForm);
+    $this->widgetSchema['mediaLink'] = new sfWidgetFormInputText();
+    $this->validatorSchema['mediaLink'] = new sfValidatorString(array('required' => false));
 	}
-
+	
+  protected function renderContent($attributes)
+  {
+    return dmContext::getInstance()->getHelper()->renderPartial('dmWidget', 'forms/dmWidgetContentText', array(
+      'form' => $this,
+      'baseTabId' => 'dm_widget_text_'.$this->dmWidget->id,
+      'hasMedia' => (boolean) $this->getValueOrDefault('mediaId')
+    ));
+  }
+  
+  /*
+   * Disable media source validation
+   * because a text widget may have no media
+   */
+  public function checkMediaSource($validator, $values)
+  {
+    return $values;
+  }
 }

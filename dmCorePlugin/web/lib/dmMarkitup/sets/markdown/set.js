@@ -1,15 +1,3 @@
-// -------------------------------------------------------------------
-// markItUp!
-// -------------------------------------------------------------------
-// Copyright (C) 2008 Jay Salvat
-// http://markitup.jaysalvat.com/
-// -------------------------------------------------------------------
-// MarkDown tags example
-// http://en.wikipedia.org/wiki/Markdown
-// http://daringfireball.net/projects/markdown/
-// -------------------------------------------------------------------
-// Feel free to add more tags
-// -------------------------------------------------------------------
 dmMarkitupMarkdown = {
 	previewParserPath:	'',
 	onShiftEnter:		{keepDefault:false, openWith:'\n\n'},

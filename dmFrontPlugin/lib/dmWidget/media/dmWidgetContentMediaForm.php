@@ -88,13 +88,13 @@ class dmWidgetContentMediaForm extends dmWidgetPluginForm
     }
 
     $this->validatorSchema->setPostValidator(
-      new sfValidatorCallback(array('callback' => array($this, 'checkSource')))
+      new sfValidatorCallback(array('callback' => array($this, 'checkMediaSource')))
     );
 
     parent::configure();
 	}
 
-	public function checkSource($validator, $values)
+	public function checkMediaSource($validator, $values)
 	{
     if (!$values['mediaId'] && !$values['file'])
     {

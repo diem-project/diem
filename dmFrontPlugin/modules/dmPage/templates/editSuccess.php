@@ -5,7 +5,7 @@ echo £('div.dm.dm_page_edit_wrap',
   $form->open('.dm_form.list.little').
   $form['id'].
 
-  £('div.dm.dm_page_edit',
+  £('div.dm.dm_page_edit.dm_tabbed_form',
 
 		£('ul.tabs',
 		  £('li', £link('#dm_page_edit_seo')->name(__('Seo'))).

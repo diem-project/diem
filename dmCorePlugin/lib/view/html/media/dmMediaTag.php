@@ -9,8 +9,15 @@ abstract class dmMediaTag extends dmHtmlTag
   {
     $resource = new dmMediaResource($source);
 
-    $mediaClass = 'dmMedia'.dmString::camelize($resource->getMime()).'Tag';
+    if (!$resource->getSource())
+    {
+      throw new dmException(sprintf(
+        'Can not display media wich has no source'
+      ));
+    }
 
+    $mediaClass = 'dmMedia'.dmString::camelize($resource->getMime()).'Tag';
+    
     if (!class_exists($mediaClass) || $mediaClass === 'dmMediaTag')
     {
     	throw new dmException(sprintf(

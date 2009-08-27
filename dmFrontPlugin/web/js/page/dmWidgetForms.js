@@ -14,7 +14,7 @@ $.fn.extend({
       hoverClass:   'droppable_hover',
       tolerance:    'touch',
       drop:         function(event, ui) {
-        $('input#dm_widget_content_media_form_mediaId', self).val(ui.draggable.attr('id').replace(/dmm/, ''));
+        $('input.dm_media_id', self).val(ui.draggable.attr('id').replace(/dmm/, ''));
         $form.submit();
       }
     });
@@ -27,11 +27,18 @@ $.fn.extend({
       $('li.background', self)[$(this).val() == 'fit' ? 'show' : 'hide']();
     }).trigger('change');
   },
-	
-	dmWidgetContentLinkForm: function(widget)
-	{
+  
+  dmWidgetContentTextForm: function(widget)
+  {
+    var self = this, $form = self.find('form:first'), $tabs = $form.find('div.dm_tabbed_form').dmCoreTabForm({});
 		
-	}
+		self.dmWidgetContentMediaForm(widget);
+  },
+  
+  dmWidgetContentLinkForm: function(widget)
+  {
+    
+  }
   
 });
 

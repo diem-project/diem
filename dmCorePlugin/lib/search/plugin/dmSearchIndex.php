@@ -1,5 +1,7 @@
 <?php
 
+require_once('Zend/Search/Lucene.php');
+
 abstract class dmSearchIndex extends dmSearchIndexCommon
 {
 	protected

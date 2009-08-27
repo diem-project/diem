@@ -1,10 +1,10 @@
 <?php
 
-echo $form->renderGlobalErrors();
+//echo $form->renderGlobalErrors();
 
 echo £o('li.toggle_group');
 
-echo $form['mediaId'];
+echo $form['mediaId']->render(array('class' => 'dm_media_id'));
 
 if ($hasMedia)
 {

@@ -29,7 +29,7 @@
   <div class="sf_admin_form_row_inner">
     <label class="fnone"><?php echo __('Preview'); ?></label>
 	  <div class="markdown_preview markdown">
-	    <?php echo dmMarkdown::get($form->getObject()->$getter())?>
+	    <?php echo dmMarkdown::toHtml($form->getObject()->$getter())?>
 	  </div>
 	</div>
 </div>

@@ -3,7 +3,7 @@
 abstract class dmWidgetBaseForm extends dmForm
 {
 	protected
-	  $widget;
+	  $dmWidget;
 
 	protected
 	  $firstDefaults = array();
@@ -15,7 +15,7 @@ abstract class dmWidgetBaseForm extends dmForm
    * @param array  $options     An array of options
    * @param string $CSRFSecret  A CSRF secret (false to disable CSRF protection, null to use the global CSRF secret)
    */
-  public function __construct($widget = array(), $options = array(), $CSRFSecret = null)
+  public function __construct($widget, $options = array(), $CSRFSecret = null)
   {
   	if (!$widget instanceof DmWidget)
   	{
@@ -68,19 +68,17 @@ abstract class dmWidgetBaseForm extends dmForm
 
   protected function renderActions()
   {
+  	$i18n = dm::getI18n();
+  	
   	return sprintf(
       '<div class="actions">
-        <div class="actions_part clearfix">
-          %s%s
-        </div>
-        <div class="actions_part clearfix">
-          %s%s
-        </div>
+        <div class="actions_part clearfix">%s%s</div>
+        <div class="actions_part clearfix">%s%s</div>
       </div>',
-  	  sprintf('<a class="dm cancel close_dialog button fleft">%s</a>', dm::getI18n()->__('Cancel')),
-  	  sprintf('<input type="submit" class="submit try blue fright" name="try" value="%s" />', dm::getI18n()->__('Try')),
-      sprintf('<a class="dm delete button red fleft" title="%s">%s</a>', dm::getI18n()->__('Delete this widget'), dm::getI18n()->__('Delete')),
-      sprintf('<input type="submit" class="submit and_save green fright" name="and_save" value="%s" />', dm::getI18n()->__('Save and close'))
+  	  sprintf('<a class="dm cancel close_dialog button fleft">%s</a>', $i18n->__('Cancel')),
+  	  sprintf('<input type="submit" class="submit try blue fright" name="try" value="%s" />', $i18n->__('Try')),
+      sprintf('<a class="dm delete button red fleft" title="%s">%s</a>', $i18n->__('Delete this widget'), $i18n->__('Delete')),
+      sprintf('<input type="submit" class="submit and_save green fright" name="and_save" value="%s" />', $i18n->__('Save and close'))
     );
   }
 
@@ -124,8 +122,5 @@ abstract class dmWidgetBaseForm extends dmForm
   {
     return $this->firstDefaults;
   }
-
-  /*
-   * Static methods
-   */
+  
 }

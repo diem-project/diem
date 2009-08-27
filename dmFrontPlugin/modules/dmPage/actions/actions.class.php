@@ -40,9 +40,7 @@ class dmPageActions extends dmFrontBaseActions
     else
     {
       $this->js =
-        file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), sfConfig::get('dm_core_asset'), 'lib/jquery-ui/js/ui.tabs.min.js')).
 	      dmJsMinifier::transform(
-          file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), sfConfig::get('dm_core_asset'), 'js/dmCoreTabForm.js')).
           file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), sfConfig::get('dm_front_asset'), 'js/dmFrontPageEditForm.js'))
 	      )
 	    ;

@@ -1,8 +1,25 @@
 (function($)
 {
+	var isFirstDebug = true;
 
   $.dbg = function()
   {
+		/*
+		 * Fix firefox 3.6 alpha firebug bug
+		 */
+		if (isFirstDebug)
+		{
+			try 
+			{
+				console.debug('dm : start debugging');
+			}
+			catch(e)
+			{
+				
+			}
+			
+			isFirstDebug = false;
+		}
     if (!$.dm.ctrl.options.debug) 
     {
       return;
@@ -11,8 +28,10 @@
     {
       console.debug(arguments);
     } 
-    catch (e) 
+    catch(e) 
     {
+			
+			alert(e);
       for (var i in arguments) 
       {
         if (i < 5) 

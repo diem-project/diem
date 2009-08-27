@@ -7,7 +7,7 @@ class dmMarkdown extends MarkdownExtra_Parser
 
 	protected static $instance;
 
-	public static function get($text)
+	public static function toHtml($text)
 	{
 		if(is_null(self::$instance))
 		{
@@ -19,24 +19,18 @@ class dmMarkdown extends MarkdownExtra_Parser
 	
 	public static function toText($text)
 	{
-		return strip_tags(self::get($text));
+		return strip_tags(self::toHtml($text));
 	}
 
 	public function transform($text)
 	{
-		$text = $this->preTransform($text);
-
-		$text = parent::transform($text);
-
-		$text = $this->postTransform($text);
-
-		return $text;
+		return self::postTransform(parent::transform(self::preTransform($text)));
 	}
 
-	protected function preTransform($text)
+	protected static function preTransform($text)
 	{
 		// clean text
-		$text = $this->cleanText($text);
+		$text = self::cleanText($text);
 
     // replace lines with only a dot by a <br />
     $text = preg_replace("|^\.$|ium", "<br />", $text);
@@ -47,18 +41,16 @@ class dmMarkdown extends MarkdownExtra_Parser
 		return $text;
 	}
 
-  protected function postTransform($text)
+  protected static function postTransform($text)
   {
 
     return $text;
   }
 
-  protected function cleanText($text)
+  protected static function cleanText($text)
   {
     return strtr($text, array(
-        "\r"      => ""      // réparation des sauts de ligne mac/windows
-      , "\t"      => "  "    // tabs -> double espace
-      , "&#8217;" => "'"     // apostrophe
+        "&#8217;" => "'"     // apostrophe
       , '“'       => '&lquot;'
       , '”'       => '&rquot;'
       , '®'       => '&reg;'

@@ -25,6 +25,11 @@ abstract class dmWidgetBaseView
   {
   	return array_unique($this->requiredVars);
   }
+  
+  public function isRequiredVar($var)
+  {
+  	return in_array($var, $this->getRequiredVars());
+  }
 
   public function addRequiredVar($var)
   {
@@ -36,6 +41,21 @@ abstract class dmWidgetBaseView
   	{
   		$this->requiredVars[] = $var;
   	}
+  }
+  
+  public function removeRequiredVar($var)
+  {
+    if (is_array($var))
+    {
+    	foreach($var as $v)
+    	{
+    		$this->removeRequiredVar($v);
+    	}
+    }
+    elseif (false !== ($varIndex = array_search($var, $this->requiredVars)))
+    {
+    	unset($this->requiredVars[$varIndex]);
+    }
   }
 
   abstract public function render();
@@ -69,7 +89,7 @@ abstract class dmWidgetBaseView
     return true;
   }
 
-	public function getViewVars($vars = array())
+	public function getViewVars(array $vars = array())
 	{
 		return array_merge(
 		  array('cssClass' => $this->widget['css_class']),

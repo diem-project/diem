@@ -8,7 +8,7 @@ class dmWidgetAdvancedSearchFormView extends dmWidgetPluginView
     return array();
 	}
 
-	public function getViewVars($vars = array())
+	public function getViewVars(array $vars = array())
   {
     $vars = parent::getViewVars($vars);
     

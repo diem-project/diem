@@ -38,13 +38,13 @@
 
 * improve zone/widget drag&drop design in front edition
 
-* open & select current page in front page tree
+* open & select current page in front page tree, and open home in admin page tree
 
 * fix fast navigation in admin edit pages
 
 * fix widget drop into zones don't work when page were loaded without edit mode
 
-* allow admin list booleans ajax edition
+* allow admin list booleans ajax edition ( and maybe other kind of data like simple text ? )
 
 * fix first delete link in admin record edit page : javascript confirmation fails
 
@@ -68,9 +68,9 @@
   
 * fix admin pagination. when a table has relations, pagination count is false ( 8 elements in place of 10 for example )
 
-* include a default ready to use search engine
+* [DONE] include a default ready to use search engine
 
-* create a check config page like http://iliaz.com/dmsPlugin/index.php
+* [DONE] create a check config page like http://iliaz.com/dmsPlugin/index.php
 
 * improve record loremizer. Currently when only one record is loremized, associations with other tables are not created.
 
@@ -87,3 +87,11 @@
 * add the search widget
 
 * use Zend Code Generator to create/update front modules
+
+* add the text widget
+
+* {INTERNET} front edit : dynamically load widget forms js & css ( tabs, markdown... ) for performance reasons
+
+* front edit dmWidgetMedia is broken : can not add a file by upload
+
+* sfWidgetFormDmDate should extend sfWidgetFormI18nDate instead of currently sfWidgetFormDate

@@ -8,7 +8,7 @@ class dmWidgetNavigationBreadCrumbView extends dmWidgetPluginView
     return array('separator', 'includeCurrent');
 	}
 
-	public function getViewVars($vars = array())
+	public function getViewVars(array $vars = array())
   {
     $vars = parent::getViewVars($vars);
 

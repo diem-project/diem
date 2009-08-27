@@ -60,3 +60,15 @@
 .dm_form .actions .actions_part {
   margin: 5px;
 }
+
+.dm_tabbed_form.ui-tabs {
+  border: 0;
+}
+
+.dm_tabbed_form .ui-tabs-panel {
+  padding: 5px 0 0 0;
+}
+
+.dm_form textarea.markItUpEditor {
+  width: 97%;
+}

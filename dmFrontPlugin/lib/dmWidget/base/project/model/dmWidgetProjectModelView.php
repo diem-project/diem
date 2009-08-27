@@ -14,7 +14,7 @@ abstract class dmWidgetProjectModelView extends dmWidgetProjectView
 	 * Will transform string view in dmView
 	 * @return array viewVars
 	 */
-  public function getViewVars($vars = array())
+  public function getViewVars(array $vars = array())
   {
     $viewVars = parent::getViewVars($vars);
 

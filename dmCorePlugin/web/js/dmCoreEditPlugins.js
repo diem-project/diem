@@ -125,7 +125,6 @@
 	/*
 	 * Make ui dialogs fixed
 	 */
-	
 	if ($.ui.dialog) 
 	{
 		$.ui.dialog.prototype._position = function(pos)
