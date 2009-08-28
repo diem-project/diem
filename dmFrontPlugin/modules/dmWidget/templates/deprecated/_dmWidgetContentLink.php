@@ -2,7 +2,7 @@
 
 $link = £link($href);
 
-$text && $link->name($text);
+$text && $link->text($text);
 
 $title && $link->title($title);
 

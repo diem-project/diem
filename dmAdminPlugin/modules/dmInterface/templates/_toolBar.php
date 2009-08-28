@@ -2,13 +2,13 @@
 
 echo £o('div#dm_tool_bar.clearfix');
 
-  echo £link('dmAuth/signout')->nameTitle(__('Logout'))->set('.widget16.s16block.s16_signout');
+  echo £link('dmAuth/signout')->textTitle(__('Logout'))->set('.widget16.s16block.s16_signout');
 
-  echo £link()->nameTitle(dm::getI18n()->__('Home'))->set('.widget16.s16block.s16_home');
+  echo £link()->textTitle(dm::getI18n()->__('Home'))->set('.widget16.s16block.s16_home');
 
-  echo £link('dmService/launch?name=dmRefresh')->nameTitle(__('Clear Cache'))->set('.widget16.s16block.s16_clear');
+  echo £link('dmService/launch?name=dmRefresh')->textTitle(__('Clear Cache'))->set('.widget16.s16block.s16_clear');
 
-//  echo £link('dmCodeEditor/index')->nameTitle(__('Code Editor'))->set('.widget16.s16block.s16_code_editor');
+//  echo £link('dmCodeEditor/index')->textTitle(__('Code Editor'))->set('.widget16.s16block.s16_code_editor');
 
   echo £("div.dm_menu.widget16",
     $menu->render(array(
@@ -35,7 +35,7 @@ echo £o('div#dm_tool_bar.clearfix');
   	echo '__DM_TIDY_OUTPUT__';
   }
 
-  echo £link('app:front')->nameTitle(__('Go to site'))->set('.widget16');
+  echo £link('app:front')->textTitle(__('Go to site'))->set('.widget16');
   
   if (sfConfig::get('sf_web_debug'))
   {

@@ -14,7 +14,7 @@
 	    echo dmAdminLinkTag::build(array(
 	      '<?php echo $this->getModule()->getUnderscore(); ?>_edit',
 	      $previousRecord
-	    ))->nameTitle($previousRecord)->set('.previous.s16block.s16_previous');
+	    ))->textTitle($previousRecord)->set('.previous.s16block.s16_previous');
 	  }
 
     $options = array();
@@ -33,7 +33,7 @@
 	    echo dmAdminLinkTag::build(array(
 	      '<?php echo $this->getModule()->getUnderscore(); ?>_edit',
 	      $nextRecord
-	    ))->nameTitle($nextRecord)->set('.next.s16block.s16_next');
+	    ))->textTitle($nextRecord)->set('.next.s16block.s16_next');
 	  }
   }
   ?]

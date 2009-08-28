@@ -23,11 +23,11 @@ class dmFrontLinkTagPage extends dmFrontLinkTag
 		return dm::getRequest()->getScriptName().($pageSlug ? '/'.$pageSlug : '');
 	}
 
-  protected function renderName()
+  protected function renderText()
   {
-  	if (isset($this['name']))
+  	if (isset($this['text']))
   	{
-  		return $this['name'];
+  		return $this['text'];
   	}
 
   	return $this->page->name;
@@ -50,7 +50,7 @@ class dmFrontLinkTagPage extends dmFrontLinkTag
     $tag = sprintf('<%s%s>%s</%s>',
       $tagName,
       $attributes,
-      $this->renderName(),
+      $this->renderText(),
       $tagName
     );
     

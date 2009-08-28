@@ -49,9 +49,6 @@ default:
     wrap:                 160           # Wrap long lines for code readability
     params:               { }           # Free tidy params ( passed to $tidy->parseString )
 
-  tracking:                             # Store sessions infos in database
-    enabled:              false         # Disable for substantial speed boost
-    
   seo:                                  # Search engine optimization configuration
     use_keywords:         yes           # Keywords are useless for seo, but you can use them if you want
     unique_validation:                  # Check html page attributes are unique in website

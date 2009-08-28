@@ -2,27 +2,18 @@
 
 abstract class dmWidgetPluginView extends dmWidgetBaseView
 {
-
-  public function render($vars = array())
-  {
-    if (!$this->isValid())
-    {
-      return $this->renderDefault();
-    }
-
-    $module = $this->widget['module'];
-    $action = $this->widget['action'];
-    $vars   = $this->getViewVars($vars);
-
+	protected function doRenderPartial(array $vars)
+	{
+    $module = 'dmWidget';
+    $action = $this->widgetType->getFullKey();
+    
     if ($this->widgetType->useComponent())
     {
-      $html = dmContext::getInstance()->getHelper()->renderComponent('dmWidget', $this->widgetType->getFullKey(), $vars);
+      $html = dmContext::getInstance()->getHelper()->renderComponent($module, $action, $vars);
     }
     else
     {
-      $html = dmContext::getInstance()->getHelper()->renderPartial('dmWidget', $this->widgetType->getFullKey(), $vars);
+      $html = dmContext::getInstance()->getHelper()->renderPartial($module, $action, $vars);
     }
-
-    return $html;
-  }
+	}
 }

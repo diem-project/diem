@@ -7,7 +7,7 @@ echo £('h1.title.none', $file->getFile());
 echo £o('div.clearfix');
 
 	echo £('div.view',
-	  £link($file->getWebPath())->name(
+	  £link($file->getWebPath())->text(
 	  ($file->isImage()
 	  ? £media($file)->size(300, 300)
 	  : media_file_image_tag($file)
@@ -34,12 +34,12 @@ echo £o('div.clearfix');
 	  £('div.actions.clearfix',
       £('a.close_dialog.button', __('Close')).
 	    £link('dmMediaLibrary/deleteFile?media_id='.$file->getId())
-	    ->name(__('Delete'))
+	    ->text(__('Delete'))
 	    ->set('.button.red.confirm_me')
 	    ->title(__('Delete this file')).
 	    ($file->isImage()
 	    ? £link('dmMediaLibrary/editImage?media_id='.$file->getId())
-      ->name(__('Edit image'))
+      ->text(__('Edit image'))
       ->set('.button.edit_image')
       : '')
 	  )

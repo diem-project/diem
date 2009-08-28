@@ -153,5 +153,15 @@ abstract class dmUser extends sfGuardSecurityUser implements dmMicroCacheInterfa
     
     return $this->getGuardUser()->Profile;
   }
+  
+  public function getGuardUserId()
+  {
+  	if ($guardUser = $this->getGuardUser())
+  	{
+  		return $guardUser->get('id');
+  	}
+  	
+  	return null;
+  }
 
 }

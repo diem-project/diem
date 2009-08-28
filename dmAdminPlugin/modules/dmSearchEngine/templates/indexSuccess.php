@@ -21,7 +21,7 @@ echo £('div.search_actions.clearfix',
   ).
   £('div.dm_third',
     £('h2.mb10', 'Index maintenance').
-    £link('dmSearchEngine/reload')->name(__('Reload index'))
+    £link('dmSearchEngine/reload')->text(__('Reload index'))
   )
 );
 

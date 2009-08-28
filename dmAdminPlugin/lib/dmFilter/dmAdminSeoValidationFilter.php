@@ -51,7 +51,7 @@ class dmAdminSeoValidationFilter extends dmFilter
       	}
         $this->getContext()->getUser()->$logMethod(
           dm::getI18n()->__($message).
-          dmAdminLinkTag::build('dmSeoValidation/index')->name(dm::getI18n()->__('Click here to see them'))->set('.ml10')
+          dmAdminLinkTag::build('dmSeoValidation/index')->text(dm::getI18n()->__('Click here to see them'))->set('.ml10')
        );
 
         dmCacheManager::getCache('dm/seo/validation')->set('duplicated', $duplicated);

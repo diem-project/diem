@@ -30,8 +30,8 @@ class dmWidgetTypeManager
 
 	        	$widgetTypeConfig = array(
 	        	  'name'       => dmArray::get($action, 'name'),
-	            'form_class' => $fullKey.'Form',
-	            'view_class' => $fullKey.'View',
+	            'form_class' => dmArray::get($action, 'form_class', $fullKey.'Form'),
+	            'view_class' => dmArray::get($action, 'view_class', $fullKey.'View'),
 	        	  'use_component' => $sfController->componentExists('dmWidget', $fullKey)
 		        );
 

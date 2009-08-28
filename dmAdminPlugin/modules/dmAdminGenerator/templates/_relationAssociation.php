@@ -16,7 +16,7 @@ echo £o('div.dm_associations');
       dmAdminLinkTag::build(array(
         'sf_route' => $associationModule->getUnderscore().'_edit',
         'sf_subject' => $associationRecord
-      ))->name($associationRecord)
+      ))->text($associationRecord)
     );
   }
 

@@ -8,7 +8,7 @@ if(!$module)
 }
 
 $relation         = $module->getTable()->getRelation($alias);
-$foreignModule    = dmModuleManager::getModule($relation->getClass());
+$foreignModule    = dmModuleManager::getModuleByModel($relation->getClass());
 $foreignRecords   = $record->get($alias);
 /*
  * One to one relations give only one object instead of a collection
@@ -33,7 +33,7 @@ echo £o('div.dm_foreigns');
 	      dmAdminLinkTag::build(array(
 	        'sf_route' => $foreignModule->getUnderscore().'_edit',
 	        'sf_subject' => $foreignRecord
-	      ))->name($foreignRecord)
+	      ))->text($foreignRecord)
 	    );
 	  }
 
@@ -41,7 +41,7 @@ echo £o('div.dm_foreigns');
   }
   
   $newLink = dmAdminLinkTag::build('@'.$foreignModule->getUnderscore().'_new')
-  ->name(__('New'))
+  ->text(__('New'))
   ->set('.s16.s16_add_little');
   
   if ($relation instanceof Doctrine_Relation_ForeignKey)
@@ -57,7 +57,7 @@ echo £o('div.dm_foreigns');
       'sf_subject'    => $record,
       'action'        => 'sortReferers',
       'foreignModule' => $foreignModule->getKey()
-    ))->name(__('Sort'))->set('.s16.s16_right_little'))
+    ))->text(__('Sort'))->set('.s16.s16_right_little'))
     : '')
   );
 

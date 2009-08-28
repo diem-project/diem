@@ -41,6 +41,10 @@ class BasedmServiceActions extends dmBaseActions
     
     $service->addOptions($options);
     
+    $service->setUser($this->getUser());
+    
+    $this->forwardSecureUnless($this->getUser()->can($service->getCredentials()));
+    
     $timer = dmDebug::timer($serviceClass.'::execute');
 
     for($it = 1; $it <= $this->iterations; $it++)

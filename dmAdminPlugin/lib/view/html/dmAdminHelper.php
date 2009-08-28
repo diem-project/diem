@@ -10,7 +10,7 @@ class dmAdminHelper
 		$action  = sfContext::getInstance()->getActionName();
 
 		$links = array(
-		  dmAdminLinkTag::build()->name(£('span.s16block.s16_home_gray', dm::getI18n()->__('Home')))->set('.home')
+		  dmAdminLinkTag::build()->text(£('span.s16block.s16_home_gray', dm::getI18n()->__('Home')))->set('.home')
 		);
 
     if ($module = $context->getModule())
@@ -54,12 +54,12 @@ class dmAdminHelper
 
 	public static function getLinkToModuleType(dmModuleType $type)
 	{
-		return dmAdminLinkTag::build(array('sf_route' => 'dm_module_type', 'moduleTypeName' => $type->getSlug()))->name(£('span', dm::getI18n()->__($type->getPublicName())));
+		return dmAdminLinkTag::build(array('sf_route' => 'dm_module_type', 'moduleTypeName' => $type->getSlug()))->text(£('span', dm::getI18n()->__($type->getPublicName())));
 	}
 
 	public static function getLinkToModuleSpace(dmModuleSpace $space)
 	{
-		return dmAdminLinkTag::build(array('sf_route' => 'dm_module_space', 'moduleTypeName' => $space->getType()->getSlug(), 'moduleSpaceName' => $space->getSlug()))->name(£('span', dm::getI18n()->__($space->getName())));
+		return dmAdminLinkTag::build(array('sf_route' => 'dm_module_space', 'moduleTypeName' => $space->getType()->getSlug(), 'moduleSpaceName' => $space->getSlug()))->text(£('span', dm::getI18n()->__($space->getName())));
 	}
 
 }

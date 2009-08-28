@@ -20,7 +20,7 @@ echo £o('div.dm_sort.dm_box.dm_box.big');
   echo input_hidden_tag('dm_module', $module->getKey());
   echo input_hidden_tag('dm_referer_module', $refererModule->getKey());
 
-  echo £('div.fleft', £link('@'.$module->getUnderscore())->name('&laquo; '.__('Back to %1% list', array('%1%' => __($module->getPlural())))));
+  echo £('div.fleft', £link('@'.$module->getUnderscore())->text('&laquo; '.__('Back to %1% list', array('%1%' => __($module->getPlural())))));
 
   echo $submit;
 

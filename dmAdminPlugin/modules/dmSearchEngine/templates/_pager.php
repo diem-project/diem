@@ -10,7 +10,7 @@ echo £o("div.search_pager");
 if (!$pager->atFirstPage())
 {
   echo £link('dmSearchEngine/search'.$pager->getPageUrl($pager->getPreviousPage()))
-    ->name("Précédent")
+    ->text("Précédent")
     ->format(false);
 }
 foreach ($pager->getLinks(5) as $link)
@@ -22,7 +22,7 @@ foreach ($pager->getLinks(5) as $link)
   else
   {
     echo £link('dmsSearchAdmin/search'.$pager->getPageUrl($link))
-      ->name($link)
+      ->text($link)
       ->format(false);
   }
 }
@@ -30,7 +30,7 @@ foreach ($pager->getLinks(5) as $link)
 if (!$pager->atLastPage())
 {
   echo £link('dmsSearchAdmin/search'.$pager->getPageUrl($pager->getNextPage()))
-    ->name("Suivant")
+    ->text("Suivant")
     ->format(false);
 }
 

@@ -17,9 +17,9 @@ class dmFrontLinkTagMedia extends dmFrontLinkTag
 
   protected function renderName()
   {
-  	if (isset($this['name']))
+  	if (isset($this['text']))
   	{
-  		return $this['name'];
+  		return $this['text'];
   	}
 
   	return $this->media->file;

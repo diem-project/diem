@@ -11,7 +11,7 @@ echo £o('div.dm_box.little');
   foreach($services as $service)
   {
   	echo £('li',
-      £link('dmService/launch?name='.$service)->name($service)->set('.service')->param('redirect', false)
+      £link('dmService/launch?name='.$service)->text($service)->set('.service')->param('redirect', false)
   	);
   }
 

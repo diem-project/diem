@@ -53,177 +53,177 @@ class dmModuleManager
 			//          ));
 			//        }
 			//    	}
-	}
-
-	if (!self::getModuleOrNull('main'))
-	{
-		throw new dmException('You must create a main module');
-	}
-
-	//$timer->addTime();
-}
-
-public static function getType($typeName)
-{
-	return dmArray::get(self::getTypes(), $typeName);
-}
-
-public static function getTypeBySlug($slug, $default = null)
-{
-	foreach(self::getTypes() as $type)
-	{
-		if ($type->getSlug() === $slug)
-		{
-			return $type;
 		}
-	}
-	return $default;
-}
 
-public static function getModules()
-{
-	if (is_null(self::$modules))
+		if (!self::getModuleOrNull('main'))
+		{
+			throw new dmException('You must create a main module');
+		}
+
+		//$timer->addTime();
+	}
+
+	public static function getType($typeName)
 	{
-		$timer = dmDebug::timer('dmModuleManager::getModules');
-		self::$modules = array();
+		return dmArray::get(self::getTypes(), $typeName);
+	}
+
+	public static function getTypeBySlug($slug, $default = null)
+	{
 		foreach(self::getTypes() as $type)
 		{
-			foreach($type->getSpaces() as $space)
+			if ($type->getSlug() === $slug)
 			{
-				self::$modules = array_merge(self::$modules, $space->getModules());
+				return $type;
 			}
 		}
-		$timer->addTime();
-
-		if (sfConfig::get('sf_debug'))
-		{
-			self::checkModulesConsistency();
-		}
+		return $default;
 	}
 
-	return self::$modules;
-}
-
-public static function getProjectModules()
-{
-	if (is_null(self::$projectModules))
+	public static function getModules()
 	{
-		self::$projectModules = array();
-		foreach(self::getModules() as $moduleKey => $module)
+		if (is_null(self::$modules))
 		{
-			if ($module->isProject())
+			$timer = dmDebug::timer('dmModuleManager::getModules');
+			self::$modules = array();
+			foreach(self::getTypes() as $type)
 			{
-				self::$projectModules[$moduleKey] = $module;
+				foreach($type->getSpaces() as $space)
+				{
+					self::$modules = array_merge(self::$modules, $space->getModules());
+				}
+			}
+			$timer->addTime();
+
+			if (sfConfig::get('sf_debug'))
+			{
+				self::checkModulesConsistency();
 			}
 		}
-	}
-	return self::$projectModules;
-}
 
-public static function getModule($something, $or_null = false)
-{
-	if ($something instanceof dmModule)
-	{
-		return $something;
+		return self::$modules;
 	}
 
-	$moduleKey = dmString::modulize($something);
-
-	$modules = self::getModules();
-
-	if (isset($modules[$moduleKey]))
+	public static function getProjectModules()
 	{
-		return $modules[$moduleKey];
+		if (is_null(self::$projectModules))
+		{
+			self::$projectModules = array();
+			foreach(self::getModules() as $moduleKey => $module)
+			{
+				if ($module->isProject())
+				{
+					self::$projectModules[$moduleKey] = $module;
+				}
+			}
+		}
+		return self::$projectModules;
 	}
 
-	if ($or_null)
+	public static function getModule($something, $or_null = false)
 	{
+		if ($something instanceof dmModule)
+		{
+			return $something;
+		}
+
+		$moduleKey = dmString::modulize($something);
+
+		$modules = self::getModules();
+
+		if (isset($modules[$moduleKey]))
+		{
+			return $modules[$moduleKey];
+		}
+
+		if ($or_null)
+		{
+			return null;
+		}
+
+		//    dmDebug::simpleStack();
+		throw new dmException(sprintf("The %s module does not exist", $something));
+	}
+
+	public static function getModuleOrNull($something)
+	{
+		return self::getModule($something, true);
+	}
+
+	public static function getModulesWithPage()
+	{
+		$modules = self::getProjectModules();
+
+		foreach($modules as $key => $module)
+		{
+			if (!$module->hasPage())
+			{
+				unset($modules[$key]);
+			}
+		}
+		return $modules;
+	}
+
+	public static function getModulesWithModel()
+	{
+		$modules = self::getProjectModules();
+
+		foreach($modules as $key => $module)
+		{
+			if (!$module->hasModel())
+			{
+				unset($modules[$key]);
+			}
+		}
+		return $modules;
+	}
+
+	public static function getModuleByModel($model)
+	{
+		foreach(self::getProjectModules() as $module)
+		{
+			if ($module->getModel() == $model)
+			{
+				return $module;
+			}
+		}
+
+		foreach(self::getModules() as $module)
+		{
+			if ($module->getModel() == $model)
+			{
+				return $module;
+			}
+		}
+
 		return null;
 	}
 
-	//    dmDebug::simpleStack();
-	throw new dmException(sprintf("The %s module does not exist", $something));
-}
-
-public static function getModuleOrNull($something)
-{
-	return self::getModule($something, true);
-}
-
-public static function getModulesWithPage()
-{
-	$modules = self::getProjectModules();
-
-	foreach($modules as $key => $module)
+	/*
+	 * Remove modules wich are child of another modified module
+	 * Keep only rooter modified modules
+	 * @return array of dmModule
+	 */
+	public static function removeModulesChildren(array $modules)
 	{
-		if (!$module->hasPage())
+		$unsettedModules = array();
+		foreach($modules as $moduleKey => $module)
 		{
-			unset($modules[$key]);
-		}
-	}
-	return $modules;
-}
-
-public static function getModulesWithModel()
-{
-	$modules = self::getProjectModules();
-
-	foreach($modules as $key => $module)
-	{
-		if (!$module->hasModel())
-		{
-			unset($modules[$key]);
-		}
-	}
-	return $modules;
-}
-
-public static function getModuleByModel($model)
-{
-	foreach(self::getProjectModules() as $module)
-	{
-		if ($module->getModel() == $model)
-		{
-			return $module;
-		}
-	}
-
-	foreach(self::getModules() as $module)
-	{
-		if ($module->getModel() == $model)
-		{
-			return $module;
-		}
-	}
-
-	return null;
-}
-
-/*
- * Remove modules wich are child of another modified module
- * Keep only rooter modified modules
- * @return array of dmModule
- */
-public static function removeModulesChildren(array $modules)
-{
-	$unsettedModules = array();
-	foreach($modules as $moduleKey => $module)
-	{
-		foreach($modules as $_moduleKey => $_module)
-		{
-			if (!isset($unsettedModules[$_moduleKey]) && $_module->hasAncestor($moduleKey))
+			foreach($modules as $_moduleKey => $_module)
 			{
-				$unsettedModules[$_moduleKey] = $_moduleKey;
+				if (!isset($unsettedModules[$_moduleKey]) && $_module->hasAncestor($moduleKey))
+				{
+					$unsettedModules[$_moduleKey] = $_moduleKey;
+				}
 			}
 		}
-	}
 
-	foreach(array_unique($unsettedModules) as $unsettedModuleKey)
-	{
-		unset($modules[$unsettedModuleKey]);
-	}
+		foreach(array_unique($unsettedModules) as $unsettedModuleKey)
+		{
+			unset($modules[$unsettedModuleKey]);
+		}
 
-	return $modules;
-}
+		return $modules;
+	}
 
 }

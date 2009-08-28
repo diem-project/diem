@@ -2,7 +2,7 @@
 
 if ($profile = $sf_guard_user->Profile)
 {
-  echo £link($profile)->name(__('Edit'));
+  echo £link($profile)->text(__('Edit'));
 }
 else
 {

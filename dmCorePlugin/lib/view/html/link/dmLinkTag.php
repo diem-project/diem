@@ -3,7 +3,7 @@
 abstract class dmLinkTag extends dmHtmlTag
 {
 	protected
-	$attributesToRemove      = array('name', 'source'),
+	$attributesToRemove      = array('text', 'source'),
 	$emptyAttributesToRemove = array('class', 'target', 'title');
 
 	/*
@@ -16,12 +16,12 @@ abstract class dmLinkTag extends dmHtmlTag
 	}
 
 	/*
-	 * Set name
+	 * Set text
 	 * @return dmLinkTag $this
 	 */
-	public function name($v)
+	public function text($v)
 	{
-		return $this->set('name', (string) $v);
+		return $this->set('text', (string) $v);
 	}
 
 	/*
@@ -34,12 +34,12 @@ abstract class dmLinkTag extends dmHtmlTag
 	}
 
 	/*
-	 * Set name and title
+	 * Set text and title
 	 * @return dmLinkTag $this
 	 */
-	public function nameTitle($v)
+	public function textTitle($v)
 	{
-		return $this->name($v)->title($v);
+		return $this->text($v)->title($v);
 	}
 
 	/*
@@ -110,7 +110,7 @@ abstract class dmLinkTag extends dmHtmlTag
 	{
 		return sprintf('<a%s>%s</a>',
 		$this->getHtmlAttributes(),
-		$this->renderName()
+		$this->renderText()
 		);
 	}
 
@@ -155,9 +155,9 @@ abstract class dmLinkTag extends dmHtmlTag
 		return $href;
 	}
 
-	protected function renderName()
+	protected function renderText()
 	{
-		return $this['name'];
+		return $this['text'];
 	}
 
 	protected static function getBaseFromUrl($url)

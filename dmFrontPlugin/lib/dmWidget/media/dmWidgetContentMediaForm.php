@@ -121,10 +121,10 @@ class dmWidgetContentMediaForm extends dmWidgetPluginForm
     {
     	$folder = dmDb::table('DmMediaFolder')->findOneByRelPathOrCreate('widget');
 
-    	$media = dmDb::table('DmMedia')->findOneByFileAndDmMediaFolderId(array(
+    	$media = dmDb::table('DmMedia')->findOneByFileAndDmMediaFolderId(
     	  dmOs::sanitizeFileName($file->getOriginalName()),
     	  $folder->id
-    	));
+    	);
 
     	if (!$media)
     	{

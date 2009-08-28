@@ -13,7 +13,7 @@ foreach($folder->getPath() as $parent)
 {
 	if (!$parent->isRoot())
 	{
-	  $parents[] = £('li', £link(dmMediaTools::getAdminUrlFor($parent))->name($parent->getName()));
+	  $parents[] = £('li', £link(dmMediaTools::getAdminUrlFor($parent))->text($parent->getName()));
 	}
 }
 

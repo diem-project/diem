@@ -59,7 +59,7 @@
 <?php foreach(array(1, 5, 10, 20, 50) as $nbRecords): ?>
   [?php
     echo £link('dmService/launch?name=dmLoremize&module_name=<?php echo $this->getModuleName() ?>&nb=<?php echo $nbRecords ?>')
-    ->name('<?php echo $nbRecords ?>')
+    ->text('<?php echo $nbRecords ?>')
     ->set('.ml10');
   ?]
 <?php endforeach; ?>

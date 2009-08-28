@@ -10,9 +10,9 @@ class dmAdminInitFilter extends dmInitFilter
    */
   public function execute($filterChain)
   {
-  	if ($culture = $this->getContext()->getRequest()->getParameter('culture'))
+  	if ($culture = $this->context->getRequest()->getParameter('culture'))
   	{
-  		$this->getContext()->getUser()->setCulture($culture);
+  		$this->context->getUser()->setCulture($culture);
   	}
 
     $this->checkFilesystemPermissions();
@@ -21,18 +21,15 @@ class dmAdminInitFilter extends dmInitFilter
 
     $filterChain->execute();
     
-    if (dmContext::getInstance()->isHtmlForHuman())
+    if ($this->dmContext->isHtmlForHuman())
     {
-      if (sfConfig::get('dm_html_validate', true) && $this->getContext()->getUser()->can('html_validate_admin'))
+      if (sfConfig::get('dm_html_validate', true) && $this->context->getUser()->can('html_validate_admin'))
       {
         $this->saveHtml();
       }
     }
 
-    if (sfConfig::get('dm_tracking_enabled'))
-    {
-    	$this->saveSession();
-    }
+    $this->logUser();
   }
 
 }

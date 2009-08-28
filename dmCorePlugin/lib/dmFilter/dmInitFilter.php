@@ -2,6 +2,14 @@
 
 abstract class dmInitFilter extends dmFilter
 {
+	
+	protected function logUser()
+	{
+		$t = dmDebug::timer('log user');
+		$log = new dmUserLog;
+		$log->log($this->dmContext);
+		$t->addTime();
+	}
 
   protected function checkFilesystemPermissions()
   {
@@ -10,7 +18,7 @@ abstract class dmInitFilter extends dmFilter
   
   protected function saveApplicationUrl()
   {
-  	if ($site = dmContext::getInstance()->getSite())
+  	if ($site = $this->dmContext->getSite())
   	{
   		$appUrlKey = sfConfig::get('sf_app').'-'.sfConfig::get('sf_environment');
   		$appUrl    = $this->context->getRequest()->getUriPrefix().$this->context->getRequest()->getScriptName();
@@ -30,21 +38,11 @@ abstract class dmInitFilter extends dmFilter
   {
     dmCacheManager::getCache("dm/view/html/validate")->set(
       session_id(),
-      $this->getContext()->getResponse()->getContent(),
+      $this->context->getResponse()->getContent(),
       10
     );
   }
 
-  protected function saveSession()
-  {
-    $length = strlen($this->getContext()->getResponse()->getContent());
-    $time = round((microtime(true) - dm::getStartTime()) * 100);
-
-    dmDb::table('DmSession')->getCurrent($_SERVER)
-    ->update($_SERVER, $time, $length, false /*$this->isPageInCache()*/)
-    ->save();
-  }
-  
   protected function redirectTrailingSlash()
   {
   	$uri = $this->getContext()->getRequest()->getUri();
@@ -54,7 +52,7 @@ abstract class dmInitFilter extends dmFilter
   	{
 	    if ($uri != ($this->getContext()->getRequest()->getAbsoluteUrlRoot().'/'))
 	    {
-	    	$this->getContext()->getController()->redirect(rtrim($uri, '/'), 0, 302);
+	    	$this->context->getController()->redirect(rtrim($uri, '/'), 0, 302);
 	    }
   	}
   }

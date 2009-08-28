@@ -7,10 +7,10 @@ $form->renderGlobalErrors(),
 £o('div.dm_tabbed_form'),
 
 £('ul.tabs',
-	£('li', £link('#'.$baseTabId.'_text')->name(__('Text'))).
-	£('li', £link('#'.$baseTabId.'_media')->name(__('Media'))).
-	£('li', £link('#'.$baseTabId.'_links')->name(__('Links'))).
-  £('li', £link('#'.$baseTabId.'_advanced')->name(__('Advanced')))
+	£('li', £link('#'.$baseTabId.'_text')->text(__('Text'))).
+	£('li', £link('#'.$baseTabId.'_media')->text(__('Media'))).
+	£('li', £link('#'.$baseTabId.'_links')->text(__('Links'))).
+  £('li', £link('#'.$baseTabId.'_advanced')->text(__('Advanced')))
 ),
 
 £('div#'.$baseTabId.'_text',

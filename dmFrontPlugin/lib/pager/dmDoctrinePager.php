@@ -76,12 +76,12 @@ abstract class dmDoctrinePager extends sfDoctrinePager
 		{
 			if($options['first'])
 			{
-				$html .= £("li.page.first", £link($options['uri'])->param('page', $this->getFirstPage())->name($options['first']));
+				$html .= £("li.page.first", £link($options['uri'])->param('page', $this->getFirstPage())->text($options['first']));
 			}
 
 			if($options['prev'])
 			{
-				$html .= £("li.page.prev", £link($options['uri'])->param('page', $this->getPreviousPage())->name($options['prev']));
+				$html .= £("li.page.prev", £link($options['uri'])->param('page', $this->getPreviousPage())->text($options['prev']));
 			}
 		}
 
@@ -96,7 +96,7 @@ abstract class dmDoctrinePager extends sfDoctrinePager
 			}
 			else
 			{
-				$links[] = £("li.page", £link($options['uri'])->param('page', $page)->name($page));
+				$links[] = £("li.page", £link($options['uri'])->param('page', $page)->text($page));
 			}
 		}
 
@@ -107,11 +107,11 @@ abstract class dmDoctrinePager extends sfDoctrinePager
 		{
       if($options['next'])
       {
-        $html .= £("li.page.next", £link($options['uri'])->param('page', $this->getNextPage())->name($options['next']));
+        $html .= £("li.page.next", £link($options['uri'])->param('page', $this->getNextPage())->text($options['next']));
       }
       if($options['last'])
       {
-        $html .= £("li.page.first", £link($options['uri'])->param('page', $this->getLastPage())->name($options['last']));
+        $html .= £("li.page.first", £link($options['uri'])->param('page', $this->getLastPage())->text($options['last']));
       }
 		}
 

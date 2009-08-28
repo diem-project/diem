@@ -4,15 +4,15 @@ echo £o('div#dm_tool_bar.dm.clearfix');
 
   echo £('a.show_tool_bar_toggle.s16block.s16_chevron_'.($sf_user->getShowToolBar() ? 'down' : 'up'), '+');
 
-  echo £link('+/dmAuth/signout')->nameTitle(__('Logout'))->set('.widget16.s16block.s16_signout');
+  echo £link('+/dmAuth/signout')->textTitle(__('Logout'))->set('.widget16.s16block.s16_signout');
   
-  echo £link('app:admin')->nameTitle(__('Administration'))->set('.widget16.s16block.s16_home');
+  echo £link('app:admin')->textTitle(__('Administration'))->set('.widget16.s16block.s16_home');
 
-  echo £link('+/dmService/launch?name=dmRefresh')->nameTitle(__('Clear Cache'))->set('.widget16.s16block.s16_clear');
+  echo £link('+/dmService/launch?name=dmRefresh')->textTitle(__('Clear Cache'))->set('.widget16.s16block.s16_clear');
   
   if($sf_user->can('code_editor'))
   {
-  	echo £link('+/dmCodeEditor/launch')->nameTitle(__('Code Editor'))->set('.code_editor.widget16.s16block.s16_code_editor');
+  	echo £link('+/dmCodeEditor/launch')->textTitle(__('Code Editor'))->set('.code_editor.widget16.s16block.s16_code_editor');
   }
 
   echo £('div.widget16.mt5',
@@ -37,11 +37,11 @@ echo £o('div#dm_tool_bar.dm.clearfix');
   
   echo £link('+/dmPage/edit')
   ->set('a.page_edit_form.widget24.s24block.s24_page_edit')
-  ->nameTitle(__('Edit page'));
+  ->textTitle(__('Edit page'));
   
   echo £link('+/dmPage/new')
   ->set('a.page_add_form.widget24.s24block.s24_page_add')
-  ->nameTitle(__('Add new page'));
+  ->textTitle(__('Add new page'));
 
   if ($sf_user->can('zone_add widget_add'))
   {

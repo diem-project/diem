@@ -4,8 +4,6 @@ Utils:
       name:         Sentence
       model:        TransUnit
   Users:
-    dmSession:
-      name:         Session
     dmProfile:
       name:         Profile
   Accessibility:

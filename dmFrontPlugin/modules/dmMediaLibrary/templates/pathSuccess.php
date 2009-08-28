@@ -28,7 +28,7 @@ echo £o("ul.content.clearfix");
 
 if ($folder->hasParent())
 {
-  echo £("li", (£link(dmMediaTools::getAdminUrlFor($folder->retrieveParent()))->name(£image('dmCore/media/up')->size(64, 64))));
+  echo £("li", (£link(dmMediaTools::getAdminUrlFor($folder->retrieveParent()))->text(£image('dmCore/media/up')->size(64, 64))));
 }
 else
 {
@@ -38,7 +38,7 @@ else
 foreach($folder->getChildren() as $f)
 {
   echo £("li.folder",
-    £link(dmMediaTools::getAdminUrlFor($f))->name(
+    £link(dmMediaTools::getAdminUrlFor($f))->text(
       ($f->isWritable() ? £image("dmCore/media/folder.png")->size(64, 64)
       : £image("dmCore/media/folder-locked.png")).
       £("span.name", media_wrap_text($f->getName())).
@@ -51,7 +51,7 @@ foreach($files as $f)
 {
   echo £("li.file.media_id_".$f->getId(),
     ($f->isImage()
-    ? £link(dmMediaTools::getAdminUrlFor($f))->name(
+    ? £link(dmMediaTools::getAdminUrlFor($f))->text(
         £('span.image_background',
           array('style' => sprintf(
 	          'background: url(%s) top left no-repeat',
@@ -60,7 +60,7 @@ foreach($files as $f)
 	        £("span.name", media_wrap_text(dmString::truncate($f->getFile(), 40)))
 	      )
 	    )
-    : £link(dmMediaTools::getAdminUrlFor($f))->name(
+    : £link(dmMediaTools::getAdminUrlFor($f))->text(
 	      media_file_image_tag($f).
 	      £("span.name", media_wrap_text(dmString::truncate($f->getFile(), 40)))
 	    )

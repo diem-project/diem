@@ -58,13 +58,33 @@ abstract class dmWidgetBaseView
     }
   }
 
-  abstract public function render();
+  
+  public function render(array $vars = array())
+  {
+    if ($this->isValid())
+    {
+      $html = $this->doRender($this->getViewVars($vars));
+    }
+    else
+    {
+    	$html = $this->renderDefault();
+    }
+    
+    return $html;
+  }
+  
+  protected function doRender(array $vars)
+  {
+    return $this->doRenderPartial($vars);
+  }
+  
+  abstract protected function doRenderPartial(array $vars);
 
 	public function renderDefault()
 	{
     if (dm::getUser()->can('widget_edit'))
     {
-      return sprintf(
+      $html = sprintf(
         '<div class="%s">%s %s.%s</div>',
         'dm dm_new_widget',
         dm::getI18n()->__('New widget'),
@@ -72,8 +92,19 @@ abstract class dmWidgetBaseView
         $this->widget['action']
       );
     }
+    else
+    {
+    	$html = '';
+    }
+    
+    return $html;
 	}
 
+  public function toIndexableString(array $vars)
+  {
+    return $this->render($vars);
+  }
+	
   public function isValid()
   {
   	$viewVars = (array) json_decode($this->widget['value']);

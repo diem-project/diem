@@ -8,9 +8,9 @@ echo £('div.dm.dm_page_edit_wrap',
   £('div.dm.dm_page_edit.dm_tabbed_form',
 
 		£('ul.tabs',
-		  £('li', £link('#dm_page_edit_seo')->name(__('Seo'))).
-		  £('li', £link('#dm_page_edit_integration')->name(__('Integration'))).
-      £('li', £link('#dm_page_edit_publication')->name(__('Publication')))
+		  £('li', £link('#dm_page_edit_seo')->text(__('Seo'))).
+		  £('li', £link('#dm_page_edit_integration')->text(__('Integration'))).
+      £('li', £link('#dm_page_edit_publication')->text(__('Publication')))
 		).
 
     £('div#dm_page_edit_seo',

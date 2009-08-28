@@ -20,7 +20,7 @@ echo £o('div.dm_sort.dm_box.big');
 
   echo input_hidden_tag('dm_module', $module->getKey());
 
-  echo £('div.fleft', £link('@'.$module->getUnderscore())->name('&laquo; '.__('Back to list')));
+  echo £('div.fleft', £link('@'.$module->getUnderscore())->text('&laquo; '.__('Back to list')));
 
   echo $submit;
 

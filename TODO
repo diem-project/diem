@@ -22,15 +22,15 @@
 
 * fix admin /systeme/security/groups & admin /systeme/security/permissions
 
-* allow progressive admin & front code generation
+* allow progressive admin & front code generation using Zend CodeGenerator
 
 * [DONE] fix embedded media forms
 
 * [DONE] fix dm generated forms go in project
 
-* remove context instance creation from tasks
+* remove context instance creation from tasks when possible
 
-* implement form facilities as for diem 4
+* implement form facilities as for diem 4 ( get inspiration from http://webmozarts.com/ )
 
 * [DONE] replace overrides of form::updateObject with form::doReplaceObject
 
@@ -70,6 +70,8 @@
 
 * [DONE] include a default ready to use search engine
 
+* automatically update the internal search engine
+
 * [DONE] create a check config page like http://iliaz.com/dmsPlugin/index.php
 
 * improve record loremizer. Currently when only one record is loremized, associations with other tables are not created.
@@ -91,7 +93,10 @@
 * add the text widget
 
 * {INTERNET} front edit : dynamically load widget forms js & css ( tabs, markdown... ) for performance reasons
+$.getScript(href, callback);
 
-* front edit dmWidgetMedia is broken : can not add a file by upload
+* [DONE] front edit dmWidgetMedia is broken : can not add a file by upload
 
 * sfWidgetFormDmDate should extend sfWidgetFormI18nDate instead of currently sfWidgetFormDate
+
+* log visitors

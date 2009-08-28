@@ -7,5 +7,10 @@ class dmWidgetMenuView extends dmWidgetStaticView
 	{
 		return array();
 	}
+  
+  public function toIndexableString(array $vars)
+  {
+    return '';
+  }
 
 }

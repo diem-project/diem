@@ -60,12 +60,12 @@ class dmFilesystem extends sfFilesystem
 
   public function mkdir($path, $mode = 0777)
   {
-  	$oldUmask = umask(0);
     if (!is_dir($path))
     {
+      $oldUmask = umask(0);
       mkdir($path, $mode, true);
+      umask($oldUmask);
     }
-    umask($oldUmask);
 
 //    if (!@chmod($path, $mode))
 //    {

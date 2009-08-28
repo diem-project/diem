@@ -1,25 +1,30 @@
 dmWidgetContent:
 
-  title:
+  title:                []
+    # To customize widgets forms and views
+    # copy this file to your project config/dm path
+    # and set the form_class and view_class values :
+    #form_class:        dmWidgetContentTitleForm
+    #view_class:        dmWidgetContentTitleView
 
-  link:
+  link:                 []
 
-  text:
+  text:                 []
 
-  media:
+  media:                []
     
-  gallery:
+  gallery:              []
     
 dmWidgetNavigation:
 
-  breadCrumb:
+  breadCrumb:           []
     
-  menu:
+  menu:                 []
     
 dmWidgetAdvanced:
 
-  googleMap:
+  googleMap:            []
     
-  searchForm:
+  searchForm:           []
     
-  searchResults:
+  searchResults:        []

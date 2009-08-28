@@ -15,16 +15,10 @@ abstract class dmWidgetProjectView extends dmWidgetBaseView
     $this->dmAction = $this->dmModule->getAction($this->widget['action']);
   }
 
-  public function render($vars = array())
+  protected function doRenderPartial(array $vars)
   {
-    if (!$this->isValid())
-    {
-      return $this->renderDefault();
-    }
-
     $module = $this->widget['module'];
     $action = $this->widget['action'];
-    $vars   = $this->getViewVars($vars);
 
     if ($this->widgetType->useComponent())
     {

@@ -24,7 +24,7 @@ abstract class dmHtmlTag implements ArrayAccess
   		}
   		else
   		{
-  			$string = " ";
+  			$string = ' ';
   		}
   	}
   	return $string;

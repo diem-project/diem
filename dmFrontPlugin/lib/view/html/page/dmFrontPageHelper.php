@@ -226,7 +226,7 @@ class dmFrontPageHelper
       {
         $html = dmFrontLinkTag::build(dm::getRequest()->getUri())
         ->param('dm_debug', 1)
-        ->name('[EXCEPTION] '.$e->getMessage())
+        ->text('[EXCEPTION] '.$e->getMessage())
         ->title('Click me to see the exception details');
       }
       else

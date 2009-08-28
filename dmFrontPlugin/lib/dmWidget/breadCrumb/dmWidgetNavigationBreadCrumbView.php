@@ -27,8 +27,34 @@ class dmWidgetNavigationBreadCrumbView extends dmWidgetPluginView
     {
     	$vars['pages'][] = $currentPage;
     }
+    
+    $vars['nbPages'] = count($vars['pages']);
 
     return $vars;
+  }
+  
+  protected function doRender(array $vars)
+  {
+  	$html = '<ol>';
+
+		foreach($vars['pages'] as $position => $page)
+		{
+		  $html .= dmStaticHelper::£('li', dmFrontLinkTag::build($page)->render());
+		
+		  if ($vars['separator'] && ($position < ($vars['nbPages']-1)))
+		  {
+		    $html .= dmStaticHelper::£('li', $vars['separator']);
+		  }
+		}
+		
+    $html .= '</ol>';
+    
+    return $html;
+  }
+  
+  public function toIndexableString(array $vars)
+  {
+    return '';
   }
 
 }

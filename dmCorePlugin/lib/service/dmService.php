@@ -10,8 +10,10 @@ abstract class dmService
 	  $options = array(),
 	  $dispatcher,
 	  $filesystem,
+	  $user,
 	  $formatter,
-	  $eventName;
+	  $eventName,
+	  $credentials = array('admin');
 
 	public function __construct(sfEventDispatcher $dispatcher, sfFormatter $formatter = null)
 	{
@@ -20,6 +22,11 @@ abstract class dmService
     $this->filesystem = new dmFilesystem($this->dispatcher, $this->formatter);
 	}
 
+	public function setUser(dmUser $user)
+	{
+		$this->user = $user;
+	}
+	
 	public function addOptions(array $options)
 	{
 		$this->options = array_merge($this->options, $options);
@@ -63,4 +70,8 @@ abstract class dmService
     return $service->execute();
   }
 
+  public function getCredentials()
+  {
+  	return $this->credentials;
+  }
 }

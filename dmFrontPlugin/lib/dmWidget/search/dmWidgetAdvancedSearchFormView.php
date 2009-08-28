@@ -16,5 +16,10 @@ class dmWidgetAdvancedSearchFormView extends dmWidgetPluginView
     
     return $vars;
   }
+  
+  public function toIndexableString(array $vars)
+  {
+    return '';
+  }
 
 }

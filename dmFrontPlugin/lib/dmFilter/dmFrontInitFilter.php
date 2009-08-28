@@ -2,9 +2,6 @@
 
 class dmFrontInitFilter extends dmInitFilter
 {
-	protected
-	$dmContext;
-
   /**
    * Executes this filter.
    *
@@ -12,8 +9,6 @@ class dmFrontInitFilter extends dmInitFilter
    */
   public function execute($filterChain)
   {
-  	$this->dmContext = dmContext::getInstance();
-    
     $this->redirectTrailingSlash();
 
   	$this->checkSiteIsApproved();
@@ -37,12 +32,9 @@ class dmFrontInitFilter extends dmInitFilter
       {
         $this->saveHtml();
       }
-
-	    if (sfConfig::get('dm_tracking_enabled'))
-	    {
-	    	$this->saveSession();
-	    }
     }
+    
+    $this->logUser();
   }
 
   protected function checkSiteIsApproved()
@@ -54,7 +46,7 @@ class dmFrontInitFilter extends dmInitFilter
 
       if (!$this->dmContext->isModuleAction($waitModule, $waitAction))
       {
-        return $this->getContext()->getController()->forward($waitModule, $waitAction);
+        return $this->context->getController()->forward($waitModule, $waitAction);
       }
     }
   }

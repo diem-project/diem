@@ -90,32 +90,32 @@ class dmAdminLinkTag extends dmLinkTag
     throw new dmException("Can not find href for $source");
   }
 
-  protected function renderName()
+  protected function renderText()
   {
-    if (empty($this['name']))
+    if (empty($this['text']))
     {
     	if(is_object($this['source']))
     	{
 	      if($this['source'] instanceof DmPage)
 	      {
-	        $name = $this['source']->get('name');
+	        $text = $this['source']->get('name');
 	      }
 	      else
 	      {
-    	    $name = (string) $this['source'];
+    	    $text = (string) $this['source'];
 	      }
     	}
     	else
     	{
-    		$name = $this->getBaseHref();
+    		$text = $this->getBaseHref();
     	}
     }
     else
     {
-    	$name = $this['name'];
+    	$text = $this['text'];
     }
 
-    return $name;
+    return $text;
   }
 
 }
