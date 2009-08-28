@@ -203,7 +203,8 @@ class dmDataService extends dmService
       "metas_validation" => "See meta validation",
       "google_analytics" => "Configure google analytics",
       "google_webmaster_tools" => "Configure google webmaster tools",
-      "search_engine" => "Update and test internal search engine"
+      "search_engine" => "Update and test internal search engine",
+      "user_log" => "See the user log"
     );
 
     $existingPermissions = dmDb::query('sfGuardPermission p INDEXBY p.name')
@@ -252,7 +253,8 @@ class dmDataService extends dmService
           'tool_bar_front',
           'page_bar_front',
           'media_bar_front',
-          'search_engine'
+          'search_engine',
+          'user_log'
         )
       ),
       "seo" => array(
@@ -267,7 +269,8 @@ class dmDataService extends dmService
           'tool_bar_admin',
           'page_bar_admin',
           'tool_bar_front',
-          'page_bar_front'
+          'page_bar_front',
+          'user_log'
         )
       ),
       "integrator" => array(
@@ -307,7 +310,8 @@ class dmDataService extends dmService
           'tool_bar_front',
           'page_bar_front',
           'media_bar_front',
-          'search_engine'
+          'search_engine',
+          'user_log'
         )
       )
     );
