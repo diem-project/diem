@@ -13,7 +13,7 @@ class DmPageFrontEditForm extends DmPageForm
   	
   	$this->mergeI18nForm();
 
-    $this->useFields(array('id', 'module', 'action', 'slug', 'name', 'title', 'h1', 'description', 'keywords', 'is_approved', 'is_secure'), false);
+    $this->useFields(array('id', 'module', 'action', 'slug', 'name', 'title', 'h1', 'description', 'keywords', 'is_active', 'is_secure'), false);
     
     if(!sfConfig::get('dm_seo_use_keywords'))
     {
@@ -56,7 +56,7 @@ class DmPageFrontEditForm extends DmPageForm
     
     $this->widgetSchema['dm_layout_id']->setLabel('Layout');
     $this->widgetSchema['description']->setLabel('Desc');
-    $this->widgetSchema['is_approved']->setLabel('Available');
+    $this->widgetSchema['is_active']->setLabel('Available');
     $this->widgetSchema['is_secure']->setLabel('Requires authentification');
     
     if ($this->page->Node->isRoot())
@@ -78,7 +78,7 @@ class DmPageFrontEditForm extends DmPageForm
       'title'     => $this->page->title,
       'h1'        => $this->page->h1,
       'description' => $this->page->description,
-      'is_approved' => $this->page->is_approved
+      'is_active' => $this->page->is_active
     ));
   }
   

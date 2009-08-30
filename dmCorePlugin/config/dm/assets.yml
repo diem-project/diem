@@ -58,6 +58,7 @@ css:
     mediaBar:         mediaBar
     form:             form
     auth:             auth
+    browsers:         browsers
     
   lib:
     symfony_debug:    symfony/debug

@@ -53,6 +53,13 @@
 
   public function getListBatchActions()
   {
-    return <?php echo $this->asPhp(isset($this->config['list']['batch_actions']) ? $this->config['list']['batch_actions'] : array('_delete' => null)) ?>;
+    <?php
+      $default = array('_delete' => null);
+      if($this->getModule()->getTable()->hasField('is_active'))
+      {
+      	$default['_toggle_is_active'] = null;
+      }
+    ?>
+    return <?php echo $this->asPhp(isset($this->config['list']['batch_actions']) ? $this->config['list']['batch_actions'] : $default) ?>;
 <?php unset($this->config['list']['batch_actions']) ?>
   }

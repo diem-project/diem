@@ -12,6 +12,7 @@ js:
     codeEditor:       dmAdminCodeEditor
     seoValidation:    dmAdminSeoValidationCtrl
     sort:             dmAdminSortCtrl
+    userLog:          dmAdminUserLog
     
   lib:
     sf_double_list:   symfony/double_list
@@ -34,3 +35,4 @@ css:
     codeEditor:       codeEditor
     seoValidation:    seoValidation
     sort:             sort
+    userLog:          userLog

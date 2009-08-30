@@ -123,6 +123,8 @@ abstract class dmCoreFunctionalCoverageTest
 		$nbRedirects = 0;
 
 		$this->startCounter($url);
+		
+		dm::resetStartTime();
 
 		$this->browser->get($url);
 

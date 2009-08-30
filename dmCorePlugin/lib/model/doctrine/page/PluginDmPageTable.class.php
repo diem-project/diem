@@ -64,7 +64,7 @@ class PluginDmPageTable extends myDoctrineTable
   	
     $this->recordPageCache[$module] = $this->createQuery('p INDEXBY p.record_id')
     ->withI18n()
-    ->select('p.id, p.module, p.action, p.record_id, p.is_secure, p.lft, p.rgt, translation.slug, translation.name, translation.is_approved')
+    ->select('p.id, p.module, p.action, p.record_id, p.is_secure, p.lft, p.rgt, translation.slug, translation.name, translation.is_active')
     ->where('module = ? AND p.record_id != 0', $module)
     ->fetchRecords();
     

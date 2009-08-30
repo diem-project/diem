@@ -8,7 +8,7 @@ DmMetaWrap:
     description_suffix:     { type: string(255) }
     keywords_prefix:        { type: string(255) }
     keywords_suffix:        { type: string(255) }
-    is_approved:            { type: boolean, notnull: true, default: true }
+    is_active:              { type: boolean, notnull: true, default: true }
 
 DmAutoSeo:
   actAs:                    [Timestampable]

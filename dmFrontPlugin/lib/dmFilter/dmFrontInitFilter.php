@@ -11,7 +11,7 @@ class dmFrontInitFilter extends dmInitFilter
   {
     $this->redirectTrailingSlash();
 
-  	$this->checkSiteIsApproved();
+  	$this->checkSiteIsActive();
 
     $this->saveApplicationUrl();
   	
@@ -37,9 +37,9 @@ class dmFrontInitFilter extends dmInitFilter
     $this->logUser();
   }
 
-  protected function checkSiteIsApproved()
+  protected function checkSiteIsActive()
   {
-    if(!$this->dmContext->getSite()->isApproved)
+    if(!$this->dmContext->getSite()->get('is_active'))
     {
       $waitModule = sfConfig::get('dm_wait_module', 'dmFront');
       $waitAction = sfConfig::get('dm_wait_action', 'wait');

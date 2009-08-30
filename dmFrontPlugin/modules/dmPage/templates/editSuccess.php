@@ -35,7 +35,7 @@ echo £('div.dm.dm_page_edit_wrap',
 
     £('div#dm_page_edit_publication',
       £('ul.dm_form_elements',
-        $form['is_approved']->renderRow().
+        $form['is_active']->renderRow().
         $form['is_secure']->renderRow()
       )
     )

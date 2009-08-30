@@ -1,0 +1,10 @@
+<?php if ($listActions = $this->configuration->getValue('list.batch_actions')): ?>
+<?php foreach ((array) $listActions as $action => $params):?>
+  <li class="sf_admin_batch_actions_choice">
+  <?php
+    $params = array_merge($params, array('params' => array('query_string' => 'batch_action='.$action)));
+    echo $this->addCredentialCondition($this->getLinkToAction('batch', $params), $params);
+  ?>
+  </li>
+<?php endforeach; ?>
+<?php endif; ?>

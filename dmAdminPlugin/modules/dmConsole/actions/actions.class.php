@@ -70,18 +70,12 @@ class dmConsoleActions extends dmAdminBaseActions
     $this->prompt = self::$prompt;
     $this->commands = implode(' ', $this->getCommands());
 
-    ob_start();
-    passthru("uname -a");
-    $this->uname = ob_get_clean();
-    ob_start();
-    passthru("uname -n");
-    $this->uname_n = ob_get_clean();
-    
+    $this->uname = php_uname();
+
     ob_start();
     passthru("whoami");
-    $this->whoami = ob_get_clean();
-    $this->whoami = trim($this->whoami);
-    $this->getUser()->setAttribute('name_shell', $this->whoami.'@'.$this->uname_n);
+    $this->whoami = trim(ob_get_clean());
+    $this->getUser()->setAttribute('name_shell', $this->whoami.'@'.php_uname('n'));
   }
 
 }

@@ -66,7 +66,7 @@
   if the first A has no page, B has no page,
   but B should search for another A wich have a page !
   
-* fix admin pagination. when a table has relations, pagination count is false ( 8 elements in place of 10 for example )
+* [DONE] fix admin pagination. when a table has relations, pagination count is false ( 8 elements in place of 10 for example )
 
 * [DONE] include a default ready to use search engine
 
@@ -99,4 +99,6 @@ $.getScript(href, callback);
 
 * sfWidgetFormDmDate should extend sfWidgetFormI18nDate instead of currently sfWidgetFormDate
 
-* log visitors
+* [DONE] log visitors
+
+* admin batch actions : show as links and add validate/unvalidate all

@@ -121,3 +121,7 @@ article, aside, dialog, figure, footer, header, hgroup, menu, nav, section { dis
   width: 50%;
   float: left;
 }
+
+.dm_nowrap {
+  white-space: nowrap;
+}

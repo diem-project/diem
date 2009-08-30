@@ -132,9 +132,9 @@ class dmUpdateSeoService extends dmService
     $modifiedPages = array();
     foreach($pages as $page)
     {
-//	    if (isset($record['is_approved']))
+//	    if (isset($record['is_active']))
 //	    {
-//	      $page->is_approved = $record['is_approved'];
+//	      $page->is_active = $record['is_active'];
 //	    }
 
     	$record = $records[$page['record_id']];

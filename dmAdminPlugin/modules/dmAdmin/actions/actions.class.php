@@ -30,6 +30,14 @@ class dmAdminActions extends dmAdminBaseActions
 
   public function executeIndex(sfWebRequest $request)
   {
+  	$this->site = $this->getDmContext()->getSite();
+  	
+  	$this->userLogView = new dmUserLogViewLittle(new dmUserLog, $this->getUser()->getCulture());
+  	
+    $this->userLogOptions = array(
+      'delay' => 1000,
+      'refresh_url' => dmAdminLinkTag::build('dmUserLog/refresh?view=little&max=10')->getHref()
+    );
 //    $this->diemSize = dm::getDiemSize();
 
   }

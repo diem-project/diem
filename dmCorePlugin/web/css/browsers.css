@@ -1,0 +1,13 @@
+.browser {
+  background: transparent url(../images/24/browsers.png) no-repeat top left;
+  height: 24px;
+  padding-left: 28px;
+  background-position: 0 -144px;
+}
+
+.browser.firefox { background-position: 0 -0px; }
+.browser.chrome { background-position: 0 -24px; }
+.browser.netscape { background-position: 0 -48px; }
+.browser.opera { background-position: 0 -72px; }
+.browser.safari { background-position: 0 -96px; }
+.browser.msie { background-position: 0 -120px; }

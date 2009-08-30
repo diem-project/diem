@@ -19,11 +19,16 @@ class dm
 			throw new Exception('Diem has already been registered');
 		}
 		
-    self::$startTime = microtime(true);
+    self::resetStartTime();
 
 		self::$dir = $dir;
 
 		require_once(self::$dir.'/dmCorePlugin/lib/config/dmProjectConfiguration.php');
+	}
+	
+	public static function resetStartTime()
+	{
+		self::$startTime = microtime(true);
 	}
 	
 	public static function getDir()

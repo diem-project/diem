@@ -96,16 +96,16 @@ abstract class dmDoctrineQuery extends Doctrine_Query
 	}
 
 
-	public function whereIsApproved($boolean = true, $model = null)
+	public function whereIsActive($boolean = true, $model = null)
 	{
     if (!is_null($model))
     {
-      if (!dmDb::table($model)->hasField('is_approved'))
+      if (!dmDb::table($model)->hasField('is_active'))
       {
         return $this;
       }
     }
-		return $this->addWhere($this->getRootAlias().'.is_approved = ?', (bool) $boolean);
+		return $this->addWhere($this->getRootAlias().'.is_active = ?', (bool) $boolean);
 	}
 	
   /*

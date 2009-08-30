@@ -35,10 +35,11 @@ body.full_screen #dm_admin_content {
 }
 
 .dm_box {
-	margin: 20px auto;
   border: 1px solid #D3D3D3;
   -moz-border-radius: 4px;
   background: #FBFBFB;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .dm_box_inner {
@@ -53,7 +54,11 @@ body.full_screen #dm_admin_content {
   width: 800px;
 }
 
-.dm_box .title {
+.dm_box.big {
+  margin: 20px auto;
+}
+
+.dm_box .title, .dm_box .title h1, .dm_box .title h2 {
   height: 24px;
   line-height: 24px;
   -moz-border-radius: 4px 4px 0 0;
@@ -61,7 +66,17 @@ body.full_screen #dm_admin_content {
   font-weight: normal;
   background:#E6E6E6 url(../../core/images/default_bg.png) repeat-x scroll 50% 50%;
   border-bottom :1px solid #D3D3D3;
-  color:#666666;
+  color:#444;
+}
+
+.dm_box .title .link {
+  float: right;
+  margin: 4px 5px 0 0;
+  line-height: 16px;
+}
+
+.dm_box .title .link.s16block {
+  margin-top: 5px;
 }
 
 dl.dm_little_dl dt {

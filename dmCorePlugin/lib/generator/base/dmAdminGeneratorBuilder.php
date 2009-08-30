@@ -6,7 +6,6 @@
 class dmAdminGeneratorBuilder
 {
 	protected static
-  $listMaxPerPage             = 8,
   $listExcludedFields    = array('position', 'lang', 'version'),
   $formExcludedFields    = array('position', 'lang', 'version', 'created_at', 'updated_at'),
   $filterExcludedFields  = array('position', 'lang', 'version');
@@ -90,7 +89,6 @@ class dmAdminGeneratorBuilder
     return array(
       'display' => $this->getListDisplay(),
       'sort'    => $this->getListSort(),
-      'max_per_page' => self::$listMaxPerPage,
       'table_method' => 'joinAll',
       'table_count_method' => '~'
     );

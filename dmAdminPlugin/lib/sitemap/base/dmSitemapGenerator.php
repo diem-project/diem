@@ -39,7 +39,7 @@ class dmSitemapGenerator
 		
 		$query
     ->where('p.is_secure = ?', false)
-    ->addWhere('translation.is_approved = ?', true)
+    ->addWhere('translation.is_active = ?', true)
     ->addWhere('p.action != ?', 'error404');
     
     $query

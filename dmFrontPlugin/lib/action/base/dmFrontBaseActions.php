@@ -20,7 +20,7 @@ class dmFrontBaseActions extends dmBaseActions
    */
   public function isSecure()
   {
-  	if (!$this->getDmContext()->getSite()->getIsApproved())
+  	if (!$this->getDmContext()->getSite()->get('is_active'))
   	{
   		return true;
   	}
@@ -37,7 +37,7 @@ class dmFrontBaseActions extends dmBaseActions
   {
   	$credentials = parent::getCredential();
 
-    if (!$this->getDmContext()->getSite()->getIsApproved())
+    if (!$this->getDmContext()->getSite()->get('is_active'))
     {
   	  $credentials[] = 'view_site';
     }

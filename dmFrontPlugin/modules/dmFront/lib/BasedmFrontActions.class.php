@@ -77,7 +77,7 @@ class BasedmFrontActions extends dmFrontBaseActions
 	}
 
 	/*
-	 * When site is not approved,
+	 * When site is not active,
 	 * non-authentified users
 	 * will be forwarded
 	 * to this action

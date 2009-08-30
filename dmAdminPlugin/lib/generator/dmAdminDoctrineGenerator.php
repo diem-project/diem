@@ -23,7 +23,7 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
       $label = dmString::humanize($name);
       if ($localRelation = $this->table->getRelationHolder()->getLocalByColumnName($name))
       {
-        if ($module = dmModuleManager::getModuleOrNull($localRelation->getClass()))
+        if ($module = dmModuleManager::getModuleByModel($localRelation->getClass()))
         {
         	if ($module->isProject())
         	{
@@ -32,7 +32,7 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
         }
       }
       $fields[$name] = array_merge(array(
-        'is_link'      => (Boolean) $column->isPrimaryKey(),
+        'is_link'      => (boolean) $column->isPrimaryKey(),
         'is_real'      => true,
         'is_partial'   => false,
         'is_component' => false,
@@ -46,7 +46,7 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
     {
       $name = dmString::underscore($relation['alias']).'_list';
       $names[] = $name;
-      $module = dmModuleManager::getModuleOrNull($relation->getClass());
+      $module = dmModuleManager::getModuleByModel($relation->getClass());
       $fields[$name] = array_merge(array(
         'is_link'      => false,
         'is_real'      => false,
@@ -59,7 +59,7 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
 
     foreach ($this->table->getRelationHolder()->getForeigns() as $alias => $relation)
     {
-      if (dmModuleManager::getModuleOrNull($relation->getClass()))
+      if (dmModuleManager::getModuleByModel($relation->getClass()))
       {
 	      $name = dmString::underscore($alias).'_list';
 	      $names[] = $name;

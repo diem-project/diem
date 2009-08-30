@@ -57,4 +57,10 @@ class dmUserLog
       chmod($this->file, 0777);
     }
 	}
+	
+	public function clear()
+	{
+		$this->checkFile();
+		file_put_contents($this->file, '');
+	}
 }

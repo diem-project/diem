@@ -1,0 +1,30 @@
+.user_log strong {
+  font-weight: bold;
+  color: #000;
+}
+
+.user_log .light {
+  font-size: 10px;
+  color: #666;
+}
+
+.user_log table {
+  width: 100%;
+}
+
+.user_log table  th,
+.user_log table  td {
+  padding: 5px;
+}
+
+.user_log table th {
+  font-weight: bold;
+}
+
+.user_log table td {
+  border-top: 1px dotted #ccc;
+}
+
+.user_log table tr.even {
+  background: #fff;
+}

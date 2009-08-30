@@ -59,3 +59,8 @@
 .s16_export { background-position: 0 -928px; }
 .s16_chevron_up { background-position: 0 -944px; }
 .s16_chevron_down { background-position: 0 -960px; }
+.s16_rss { background-position: 0 -976px; }
+.s16_status { background-position: 0 -992px; }
+.s16_status-busy { background-position: 0 -1008px; }
+.s16_arrow-up-right { background-position: 0 -1024px; }
+.s16_arrow-curve-down-right { background-position: 0 -1040px; }

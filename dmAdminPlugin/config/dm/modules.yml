@@ -7,7 +7,7 @@ Utils:
     dmProfile:
       name:         Profile
     dmUserLog:
-      name:         User log
+      name:         User log | User log
   Accessibility:
     dmLang:
       name:         Lang span

@@ -72,7 +72,7 @@ class {$this->module->getKey()}Components extends dmFrontModuleComponents
   protected function getPagerQuery()
   {
     return \$this->getDmModule()->getTable()->createQuery('".$moduleKey{0}."')
-      ->whereIsApproved(true, '{$this->module->getModel()}')
+      ->whereIsActive(true, '{$this->module->getModel()}')
     ;
   }
 ";

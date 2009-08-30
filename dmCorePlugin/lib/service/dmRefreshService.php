@@ -47,7 +47,10 @@ class dmRefreshService extends dmService
 		}
 		else
 		{
-			chmod($path, 0777);
+			if (!@chmod($path, 0777))
+			{
+				//$this->alert('Can not chmod '.$path);
+			}
 		}
 	}
 

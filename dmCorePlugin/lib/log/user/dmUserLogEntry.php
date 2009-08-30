@@ -3,7 +3,8 @@
 class dmUserLogEntry extends dmMicroCache
 {
 	protected static
-	$browsersCache = array();
+	$browsersCache = array(),
+	$usersCache    = array();
 	
 	protected
 	$data;
@@ -12,8 +13,26 @@ class dmUserLogEntry extends dmMicroCache
 	{
 		$this->data = $data;
 	}
+  
+  protected function getUser()
+  {
+  	$userId = $this->get('user_id');
+  	
+    if(!isset(self::$usersCache[$userId]))
+    {
+      self::$usersCache[$userId] = $userId ? dmDb::query('sfGuardUser u')->where('u.id = ?', $userId)->fetchRecord() : null;
+    }
+    
+    return self::$usersCache[$userId];
+  }
+  
+  
+  protected function getUsername()
+  {
+  	return ($user = $this->getUser()) ? $user->username : null;
+  }
 	
-	public function getBrowser()
+	protected function getBrowser()
 	{
 		$hash = md5($this->get('user_agent'));
 		
@@ -25,14 +44,28 @@ class dmUserLogEntry extends dmMicroCache
 		return self::$browsersCache[$hash];
 	}
 	
+	protected function getIsOk()
+	{
+		return in_array($this->get('code'), array(200));
+	}
+	
 	public function get($key)
 	{
-		return isset($this->data[$key]) ? $this->data[$key] : null;
+		if(isset($this->data[$key]))
+		{
+			return $this->data[$key];
+		}
+		
+		if(method_exists($this, $method = 'get'.dmString::camelize($key)))
+		{
+			return $this->$method();
+		}
+		return null;
 	}
 	
 	public function toJson()
 	{
-		return json_encode(str_replace('\/', '/', $this->toArray()));
+		return str_replace('\/', '/', json_encode($this->toArray()));
 	}
 	
 	public function toArray()
@@ -48,7 +81,7 @@ class dmUserLogEntry extends dmMicroCache
 	public static function createFromDmContext(dmContext $dmContext)
 	{
     return new self(array(
-      'uri'           => trim($_SERVER['PATH_INFO'], '/'),
+      'uri'           => isset($_SERVER['PATH_INFO']) ? trim($_SERVER['PATH_INFO'], '/') : '/',
       'code'          => $dmContext->getSfContext()->getResponse()->getStatusCode(),
       'app'           => sfConfig::get('sf_app'),
       'time'          => $_SERVER['REQUEST_TIME'],

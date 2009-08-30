@@ -6,8 +6,13 @@ abstract class dmInitFilter extends dmFilter
 	protected function logUser()
 	{
 		$t = dmDebug::timer('log user');
-		$log = new dmUserLog;
-		$log->log($this->dmContext);
+		
+		if ($this->dmContext->isHtmlForHuman())
+		{
+			$log = new dmUserLog;
+			$log->log($this->dmContext);
+		}
+		
 		$t->addTime();
 	}
 
