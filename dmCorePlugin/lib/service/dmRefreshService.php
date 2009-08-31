@@ -43,7 +43,7 @@ class dmRefreshService extends dmService
 	{
 		if (!$this->filesystem->mkdir($path))
 		{
-			$this->error(sprintf('Can not mkdir %s', $path));
+			$this->alert(sprintf('Can not mkdir %s', $path));
 		}
 		else
 		{
