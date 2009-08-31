@@ -1,7 +1,7 @@
 [?php if ($field->isPartial()): ?]
-  <div class="[?php echo $class ?][?php $field->isBig() and print ' big' ?]">[?php include_partial('<?php echo $this->getModuleName() ?>/'.$name, array('form' => $form, 'attributes' => $attributes instanceof sfOutputEscaper ? $attributes->getRawValue() : $attributes)) ?]</div>
+  <div class="[?php echo $class ?][?php $field->isBig() and print ' big' ?]">[?php include_partial('<?php echo $this->getModuleName() ?>/'.$name, array('<?php echo $this->getModuleName() ?>' => $form->getObject(), 'form' => $form, 'attributes' => $attributes instanceof sfOutputEscaper ? $attributes->getRawValue() : $attributes)) ?]</div>
 [?php elseif ($field->isComponent()): ?]
-  <div class="[?php echo $class ?][?php $field->isBig() and print ' big' ?]">[?php include_component('<?php echo $this->getModuleName() ?>', $name, array('form' => $form, 'attributes' => $attributes instanceof sfOutputEscaper ? $attributes->getRawValue() : $attributes)) ?]</div>
+  <div class="[?php echo $class ?][?php $field->isBig() and print ' big' ?]">[?php include_component('<?php echo $this->getModuleName() ?>', $name, array('<?php echo $this->getModuleName() ?>' => $form->getObject(), 'form' => $form, 'attributes' => $attributes instanceof sfOutputEscaper ? $attributes->getRawValue() : $attributes)) ?]</div>
 [?php elseif ($field->isMarkdown()): ?]
   [?php include_partial("dmAdminGenerator/markdown", array("form" => $form, "field" => $field, "class" => $class, "name" => $name, "label" => $label, "attributes" => $attributes, "help" => $help)); ?]
 [?php elseif(isset($form[$name])): ?]

@@ -102,3 +102,5 @@ $.getScript(href, callback);
 * [DONE] log visitors
 
 * admin batch actions : show as links and add validate/unvalidate all
+
+* [DONE] admin forms : load current object variable in partials and components
