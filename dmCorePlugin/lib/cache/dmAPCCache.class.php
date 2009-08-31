@@ -5,8 +5,16 @@ class dmAPCCache extends sfAPCCache
 	protected static
 	  $enabled;
 
-  public function __construct($name)
+  public function __construct($options = array())
   {
+  	$name = trim(
+  	  preg_replace(
+  	    '|^'.preg_quote(sfConfig::get('sf_cache_dir'), '|').'|',
+  	    '',
+  	    dmArray::get($options, 'cache_dir', $options['prefix'])),
+  	  '/'
+  	);
+  	
     $this->initialize(array(
       "prefix" => dmProject::getKey()."/".$name,
     ));
@@ -19,7 +27,7 @@ class dmAPCCache extends sfAPCCache
 
   public function _set($key, $data, $lifetime = null)
   {
-    return parent::set($key, serialize($data), $lifetime);
+    return parent::set($key, $data, $lifetime);
   }
 
   public function get($key, $default = null)

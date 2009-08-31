@@ -12,10 +12,11 @@ class dmProject
    */
   public static function getKey()
   {
-    if (self::$key === null)
+    if (is_null(self::$key))
     {
       self::$key = basename(sfConfig::get("sf_root_dir"));
     }
+    
     return self::$key;
   }
 
