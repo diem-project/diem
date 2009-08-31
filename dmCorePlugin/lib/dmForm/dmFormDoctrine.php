@@ -113,28 +113,26 @@ abstract class dmFormDoctrine extends sfFormDoctrine
     return '</form>';
   }
 
-  /**
-   * Embeds i18n objects into the current form.
-   *
-   * @param array   $cultures   An array of cultures
-   * @param string  $decorator  A HTML decorator for the embedded form
+  
+  /*
+   * Create current i18n form
    */
-  public function embedCurrentI18n($decorator = null)
+  protected function createCurrentI18nForm()
   {
-    if (!$this->isI18n())
+  	if (!$this->isI18n())
     {
       throw new dmException(sprintf('The model "%s" is not internationalized.', $this->getModelName()));
     }
 
-    $class = $this->getI18nFormClass();
+    $i18nFormClass = $this->getI18nFormClass();
 
     $culture = dm::getUser()->getCulture();
 
     $i18nObject = $this->object->Translation[$culture];
-    $i18n = new $class($i18nObject);
-    unset($i18n['id'], $i18n['lang']);
-
-    $this->embedForm('translation', $i18n, $decorator);
+    $i18nForm = new $i18nFormClass($i18nObject);
+    unset($i18nForm['id'], $i18nForm['lang']);
+    
+    return $i18nForm;
   }
 
   /**

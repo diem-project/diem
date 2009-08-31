@@ -1,0 +1,52 @@
+generator:
+  class: dmAdminDoctrineGenerator
+  param:
+    model_class: DmSite
+    theme: dmAdmin
+    non_verbose_templates: true
+    with_show: false
+    route_prefix: dm_site
+    with_doctrine_route: true
+    config:
+      actions: ~
+      fields:
+        is_working_copy:
+          label: 'Working copy'
+      list:
+        display:
+          - '=id'
+          - status
+          - is_working_copy
+          - created_at
+          - updated_at
+          - name
+          - is_active
+          - is_indexable
+          - ga_code
+          - wt_code
+          - xiti_code
+          - gdata_code
+          - gmap_code
+          - app_urls
+          - search_stop_words
+        sort:
+          - created_at
+          - desc
+        table_method: joinAll
+        table_count_method: ~
+      filter:
+        display:
+          - id
+          - is_working_copy
+          - status
+          - created_at
+          - updated_at
+      form:
+        display:
+          NONE: [is_working_copy, is_active, is_indexable]
+          Others: [status, name, ga_code, wt_code, xiti_code, gdata_code, gmap_code, app_urls, search_stop_words]
+        class: DmSiteAdminForm
+        fields: {  }
+      edit: ~
+      new: ~
+    sortable: false

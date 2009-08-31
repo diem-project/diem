@@ -16,10 +16,10 @@ class dmTableRelationHolder
 
 	public function getAll()
 	{
-//		if (!is_null($this->relations))
-//		{
-//			return $this->relations;
-//		}
+		if (!is_null($this->relations))
+		{
+			return $this->relations;
+		}
 
 		return $this->relations = $this->table->getRelations();
 	}

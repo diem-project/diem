@@ -57,7 +57,8 @@
       $default = array('_delete' => null);
       if($this->getModule()->getTable()->hasField('is_active'))
       {
-      	$default['_toggle_is_active'] = null;
+        $default['_activate'] = null;
+        $default['_desactivate'] = null;
       }
     ?>
     return <?php echo $this->asPhp(isset($this->config['list']['batch_actions']) ? $this->config['list']['batch_actions'] : $default) ?>;

@@ -16,6 +16,7 @@ function dm_admin_form_field($name, $form)
 	if (substr($name, -5) === '_view')
 	{
 		$fieldName = substr($name, 0, strlen($name)-5);
+		
 	  if ($relation = dmDb::table($form->getModelName())->getRelationHolder()->getLocalByColumnName($fieldName))
 	  {
 	  	if ($relation['class'] === 'DmMedia')

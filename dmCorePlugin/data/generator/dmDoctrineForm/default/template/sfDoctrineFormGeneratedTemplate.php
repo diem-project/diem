@@ -55,7 +55,7 @@ class Base<?php echo $this->modelName ?>Form extends <?php echo $this->getFormCl
 
     if ($this->isI18n())
     {
-      $this->embedCurrentI18n();
+      $this->mergeForm($this->createCurrentI18nForm());
     }
 
     $this->widgetSchema->setNameFormat('<?php echo $this->underscore($this->modelName) ?>[%s]');

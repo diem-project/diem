@@ -110,7 +110,14 @@ abstract class dmDoctrineTable extends Doctrine_Table
    */
   public function getAllColumns()
   {
-    return $this->getColumns();
+    $columns = $this->getColumns();
+    
+    if($this->hasI18n())
+    {
+    	$columns = array_merge($columns, $this->getI18nTable()->getColumns());
+    }
+    
+    return $columns;
   }
 
   /*
@@ -161,10 +168,10 @@ abstract class dmDoctrineTable extends Doctrine_Table
   {
   	if ($this->hasCache('has_i18n'))
   	{
-  		return $this->getCache('i18n');
+  		return $this->getCache('has_i18n');
   	}
-
-    return $this->setCache('has_i18n', $this->getRelationHolder()->has('Translation'));
+  	
+    return $this->setCache('has_i18n', $this->hasTemplate('Doctrine_Template_I18n'));
   }
 
   public function getI18nTable()
