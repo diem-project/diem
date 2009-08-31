@@ -18,7 +18,7 @@
 
 * [DONE] differentially synchronize seo
 
-* transparently merge i18n forms in admin
+* [DONE] transparently merge i18n forms in admin
 
 * fix admin /systeme/security/groups & admin /systeme/security/permissions
 

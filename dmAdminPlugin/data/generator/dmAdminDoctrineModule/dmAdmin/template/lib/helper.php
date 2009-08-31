@@ -56,27 +56,32 @@ class Base<?php echo ucfirst($this->getModuleName()) ?>GeneratorHelper extends s
 
   public function linkToList($params)
   {
-    return '<li class="sf_admin_action_list">'.link_to(__($params['label']), $this->getUrlForAction('list')).'</li>';
+    return '<li class="sf_admin_action_list">'.link_to1(__($params['label']), array('sf_route' => $this->getUrlForAction('list')), array('class' => 's16 s16_arrow_up_left')).'</li>';
   }
 
   public function linkToSave($object, $params)
   {
-    return '<li class="dm_save_buttons"><div class="sf_admin_action_save"><input class="green" type="submit" value="'.__($params['label']).'" /></div>';
+    return '<li class="sf_admin_action_save"><input class="green" type="submit" value="'.__($params['label']).'" /></li>';
+  }
+
+  public function linkToAdd($params)
+  {
+    return '<li class="sf_admin_action_add">'.$this->linkToNew($params).'</li>';
   }
 
   public function linkToSaveAndAdd($object, $params)
   {
-    return '<div class="dm_hidden_buttons"><div class="sf_admin_action_save_and_add"><input class="green" type="submit" value="'.__($params['label']).'" name="_save_and_add" /></div>';
+    return '<li class="sf_admin_action_save_and_add"><input class="green" type="submit" value="'.__($params['label']).'" name="_save_and_add" /></li>';
   }
 
   public function linkToSaveAndList($object, $params)
-    {
-    return '<div class="sf_admin_action_save_and_list"><input class="green" type="submit" value="'.__($params['label']).'" name="_save_and_list" /></div>';
-    }
+  {
+    return '<li class="sf_admin_action_save_and_list"><input class="green" type="submit" value="'.__($params['label']).'" name="_save_and_list" /></li>';
+  }
 
   public function linkToSaveAndNext($object, $params)
   {
-    return '<div class="sf_admin_action_save_and_next"><input class="green" type="submit" value="'.__($params['label']).'" name="_save_and_next" /></div></div></li>';
+    return '<li class="sf_admin_action_save_and_next"><input class="green" type="submit" value="'.__($params['label']).'" name="_save_and_next" /></li>';
   }
 
   public function getUrlForAction($action)

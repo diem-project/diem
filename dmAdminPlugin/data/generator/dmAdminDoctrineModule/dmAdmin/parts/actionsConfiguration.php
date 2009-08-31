@@ -18,10 +18,11 @@
   {
     return <?php echo $this->asPhp(isset($this->config['form']['actions']) ? $this->config['form']['actions'] : array(
     '_list' => array('label' => 'Back to list'),
-    '_save' => array('label' => 'Save...'),
-    '_save_and_add' => array('label' => '& Add'),
-    '_save_and_list' => array('label' => '& List'),
-    '_save_and_next' => array('label' => '& Next'),
+    '_save' => array('label' => 'Save'),
+//    '_save_and_add' => array('label' => '& Add'),
+//    '_save_and_list' => array('label' => '& List'),
+//    '_save_and_next' => array('label' => '& Next'),
+    '_add' => null,
     '_delete' => array('label' => 'Delete')
     )) ?>;
 <?php unset($this->config['form']['actions']) ?>

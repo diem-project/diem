@@ -14,7 +14,32 @@ class dmAPCCache extends sfAPCCache
 
   public function set($key, $data, $lifetime = null)
   {
+    return $this->set($key, serialize($data), $lifetime);
+  }
+
+  public function _set($key, $data, $lifetime = null)
+  {
     return parent::set($key, serialize($data), $lifetime);
+  }
+
+  public function get($key, $default = null)
+  {
+    $data = $this->_get($key, $default);
+
+    if ($data != $default)
+    {
+      $data = unserialize($data);
+    }
+
+    return $data;
+  }
+
+  /*
+   * will not unserialize result
+   */
+  public function _get($key, $default = null)
+  {
+    return parent::get($key, $default);
   }
 
   public function clear()

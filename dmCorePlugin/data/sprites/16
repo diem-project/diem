@@ -61,6 +61,7 @@ chevron_up
 chevron_down
 rss
 status
-status-busy
-arrow-up-right
-arrow-curve-down-right
+status_busy
+arrow_up_right
+arrow_curve_down_right
+arrow_up_left

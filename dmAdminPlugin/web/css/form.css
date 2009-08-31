@@ -27,6 +27,7 @@
 .sf_admin_form form .dm_help_wrap,
 .sf_admin_form form .help {
   color: #888;
+  margin-left:20%;
 }
 
 .sf_admin_form fieldset {
@@ -136,31 +137,7 @@
   margin-left: 5px;
 }
 
-.dm_form_actions .dm_save_buttons {
-  position: relative;
-}
-.dm_form_actions .dm_hidden_buttons {
-  position: absolute;
-  left: 0px;
-  display: none;
-}
-.dm_form_actions-top .dm_hidden_buttons {
-  top: 24px;
-}
-.dm_form_actions_bottom .dm_hidden_buttons {
-  bottom: 24px;
-}
-.dm_form_actions .dm_save_buttons:hover .dm_hidden_buttons {
-  display: block;
-}
-.dm_form_actions_top .dm_hidden_buttons input {
-  margin-top: 5px;
-}
-.dm_form_actions_bottom .dm_hidden_buttons input {
-  margin-bottom: 5px;
-}
-
-.dm_form_actions .sf_admin_action_list a {
+.dm_form_actions a {
   line-height: 25px;
 }
 

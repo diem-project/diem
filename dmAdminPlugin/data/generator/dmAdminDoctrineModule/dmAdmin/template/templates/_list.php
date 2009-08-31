@@ -24,7 +24,7 @@
                 [?php echo __('(page %%page%%/%%nb_pages%%)', array('%%page%%' => $pager->getPage(), '%%nb_pages%%' => $pager->getLastPage())) ?]
               [?php endif; ?]
             </div>
-            <ul class="sf_admin_actions clearfix s16 s16_arrow-curve-down-right">
+            <ul class="sf_admin_actions clearfix s16 s16_arrow_curve_down_right">
 				      [?php include_partial('<?php echo $this->getModuleName() ?>/list_batch_actions', array('helper' => $helper)) ?]
 				    </ul>
           </th>

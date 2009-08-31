@@ -102,7 +102,7 @@ class dmUserLogView
     return sprintf('<span class="dm_nowrap">%s</span><br />%s<span class="light">%s ms</span>',
       $this->renderLink($entry),
       sprintf('<span class="s16 s16_%s">%s</span>',
-        $entry->get('is_ok') ? 'status' : 'status-busy',
+        $entry->get('is_ok') ? 'status' : 'status_busy',
         $entry->get('is_ok') ? '' : $entry->get('code')
       ),
       $entry->get('timer')
