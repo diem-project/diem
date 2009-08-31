@@ -69,10 +69,11 @@ class dmServerCheck
 		return
 		sprintf('<h1>Diem %s System Check</h1>', sfConfig::get('dm_version')).
 		'<div class="clearfix">'.
-		sprintf('<div class="half">%s%s%s</div>',
+		sprintf('<div class="half">%s%s%s%s</div>',
 		$this->renderTable('server'),
 		$this->renderTable('php config'),
-		$this->renderTable('symfony')
+		$this->renderTable('symfony'),
+		$this->renderSymfonyCheck()
 		).
 		sprintf('<div class="half">%s</div>', $this->renderTable('php extensions')).
     '</div>';
@@ -121,6 +122,22 @@ class dmServerCheck
 	protected function renderFoot()
 	{
 		return '</html>';
+	}
+	
+	protected function renderSymfonyCheck()
+	{
+		ob_start();
+		include(realpath(sfConfig::get('sf_symfony_lib_dir').'/../data/bin').'/check_configuration.php');
+		$html = ob_get_clean();
+		
+		return str_replace('<pre>', '<pre style="line-height: 1; margin-top: 0">', $html);
+//		$command = sprintf('php %s',
+//		  realpath(sfConfig::get('sf_symfony_lib_dir').'/../data/bin').'/check_configuration.php'
+//		);
+//		
+//		exec($command, $output, $returnCode);
+//		
+//		return implode('<br />', $output);
 	}
 }
 
