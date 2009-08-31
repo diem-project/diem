@@ -61,7 +61,7 @@ class dmAPCCache extends sfAPCCache
 
     if (self::$enabled === null)
     {
-      self::$enabled = sfConfig::get("dm_cache_apc", true) && extension_loaded('apc');
+      self::$enabled = sfConfig::get('sf_debug') && sfConfig::get("dm_cache_apc", true) && extension_loaded('apc');
     }
 
     return self::$enabled;
