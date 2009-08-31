@@ -1,6 +1,5 @@
 <?php
-/**
- */
+
 class PluginDmSiteTable extends myDoctrineTable
 {
   public function getInstance()
@@ -8,7 +7,12 @@ class PluginDmSiteTable extends myDoctrineTable
   	if (!$site = $this->createQuery()->withI18n()->dmCache()->fetchOne())
   	{
       $site = dmDb::create('DmSite', array(
-        'name' => dmString::humanize(dmProject::getKey())
+        'code' => 'default',
+        'Translation' => array(
+          myDoctrineRecord::getDefaultCulture() => array(
+            'name' => dmString::humanize(dmProject::getKey())
+          )
+        )
       ))->saveGet();
   	}
   	

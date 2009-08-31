@@ -184,10 +184,14 @@ class dmPageSyncService extends dmService
         dmDb::create('DmPage', array(
           'module'      => $moduleKey,
           'action'      => 'list',
-          'name'        => $module->getPlural(),
-          'title'       => $module->getPlural(),
-          'slug'        => dmString::slugify($module->getPlural()),
-          'description' => $module->getPlural()
+          'Translation' => array(
+            myDoctrineRecord::getDefaultCulture() => array(
+		          'name'        => $module->getPlural(),
+		          'title'       => $module->getPlural(),
+		          'slug'        => dmString::slugify($module->getPlural()),
+		          'description' => $module->getPlural()
+            )
+          )
         ))->getNode()->insertAsLastChildOf($rootPage);
       }
     }

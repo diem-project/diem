@@ -34,7 +34,7 @@ class dmDoctrineRecordI18nFilter extends Doctrine_Record_Filter
 	 */
 	public function filterSet(Doctrine_Record $record, $fieldName, $value)
 	{
-		$i18n = $record['Translation'][sfDoctrineRecord::getDefaultCulture()];
+		$i18n = $record['Translation'][myDoctrineRecord::getDefaultCulture()];
 		
     if(!ctype_lower($fieldName) && !$i18n->contains($fieldName))
     {
@@ -59,15 +59,17 @@ class dmDoctrineRecordI18nFilter extends Doctrine_Record_Filter
 	 */
 	public function filterGet(Doctrine_Record $record, $fieldName)
 	{
-		$culture = sfDoctrineRecord::getDefaultCulture();
+		$culture = myDoctrineRecord::getDefaultCulture();
 		
-		if (isset($record['Translation'][$culture]))
+		$translation = $record->get('Translation');
+		
+		if (isset($translation[$culture]))
 		{
-			$i18n = $record['Translation'][$culture];
+			$i18n = $translation[$culture];
 		}
 		else
 		{
-			$i18n = $record['Translation'][sfConfig::get('sf_default_culture')];
+			$i18n = $translation[sfConfig::get('sf_default_culture')];
 		}
 	
     if(!ctype_lower($fieldName) && !$i18n->contains($fieldName))

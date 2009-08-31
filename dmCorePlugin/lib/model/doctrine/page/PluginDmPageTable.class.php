@@ -16,24 +16,38 @@ class PluginDmPageTable extends myDoctrineTable
     if (!$root = $this->getTree()->fetchRoot())
     {
       $root = $this->create(array(
-        'name' => dm::getI18n()->__('Home'),
-        'title' => dm::getI18n()->__('Home').' | '.dmDb::table('DmSite')->getInstance()->getName(),
         'module' => 'main',
         'action' => 'root',
-        'slug' => ''
+        'Translation' => array(
+          myDoctrineRecord::getDefaultCulture() => array(
+            'name' => dm::getI18n()->__('Home'),
+            'title' => dm::getI18n()->__('Home').' | '.dmDb::table('DmSite')->getInstance()->getName(),
+            'slug' => ''
+          )
+        )
       ));
 
       $this->getTree()->createRoot($root);
+      
+      if ($layout = dmDb::table('DmLayout')->findOneByName('Home'))
+      {
+      	$root->PageView->Layout = $layout;
+      	$root->PageView->save();
+      }
     }
 
     if (!$this->createQuery('p')->where('p.module = ? AND p.action = ?', array('main', 'error404'))->exists())
     {
-      dmDb::create('DmPage', array(
-        'name' => dm::getI18n()->__('Page not found'),
-        'title' => dm::getI18n()->__('Page not found').' | '.dmContext::getInstance()->getSite()->name,
+    	dmDb::create('DmPage', array(
         'module' => 'main',
         'action' => 'error404',
-        'slug' => '-error404'
+    	  'Translation' => array(
+    	    myDoctrineRecord::getDefaultCulture() => array(
+    	      'name' => dm::getI18n()->__('Page not found'),
+            'title' => dm::getI18n()->__('Page not found').' | '.dmContext::getInstance()->getSite()->name,
+            'slug' => '-error404'
+    	    )
+    	  )
       ))->getNode()->insertAsLastChildOf($root);
     }
   }

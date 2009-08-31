@@ -9,8 +9,8 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
 	 *
 	 * @return void
 	 */
-	public function construct()
-	{
+  public function construct()
+  {
 		self::initializeI18n();
 
 		if ($this->getTable()->hasI18n())
@@ -486,7 +486,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
 		//  	return Doctrine_Lib::getRecordAsString($this);
 		return array(
       'state' => $this->state().'='.Doctrine_Lib::getRecordStateAsString($this->state()),
-      'data' => $this->getData()
+      'data' => $this->toArray()
 		);
 	}
 

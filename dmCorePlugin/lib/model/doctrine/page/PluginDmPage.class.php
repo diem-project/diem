@@ -28,17 +28,17 @@ abstract class PluginDmPage extends BaseDmPage
       return $this->getCache('is_automatic');
     }
 
-    return $this->setCache('is_automatic', $this->action === 'show' ? $this->getDmModule()->getOption('auto') : false);
+    return $this->setCache('is_automatic', $this->get('action') === 'show' ? $this->getDmModule()->getOption('auto') : false);
   }
 
   public function hasRecords()
   {
-    return $this->module === 'list';
+    return $this->get('module') === 'list';
   }
 
   public function hasRecord()
   {
-    return 0 != $this->record_id;
+    return 0 != $this->get('record_id');
   }
 
   public function getRecord()
@@ -49,7 +49,7 @@ abstract class PluginDmPage extends BaseDmPage
     }
     
     return $this->setCache('record', $this->hasRecord() ?
-	    $this->getDmModule()->getTable()->find($this->record_id)
+	    $this->getDmModule()->getTable()->find($this->get('record_id'))
 	    : false
     );
   }
@@ -71,7 +71,7 @@ abstract class PluginDmPage extends BaseDmPage
       return $this->getCache('dm_module');
     }
 
-    return $this->setCache('dm_module', dmModuleManager::getModuleOrNull($this->module));
+    return $this->setCache('dm_module', dmModuleManager::getModuleOrNull($this->get('module')));
   }
 
   public function getPageView()
@@ -84,7 +84,7 @@ abstract class PluginDmPage extends BaseDmPage
     $timer = dmDebug::timer('fetch page view');
     
     $pageView = dmDb::query('DmPageView p, p.Layout l')
-    ->where('p.module = ? AND p.action = ?', array($this->module, $this->action))
+    ->where('p.module = ? AND p.action = ?', array($this->get('module'), $this->get('action')))
     ->fetchOne();
     
 //    $pageView = dmDb::query('DmPageView p')
@@ -100,7 +100,7 @@ abstract class PluginDmPage extends BaseDmPage
 
     if(!$pageView)
     {
-    	$pageView = dmDb::table('DmPageView')->createFromModuleAndAction($this->module, $this->action);
+    	$pageView = dmDb::table('DmPageView')->createFromModuleAndAction($this->get('module'), $this->get('action'));
     }
 
     return $this->setCache('page_view', $pageView);
@@ -127,7 +127,7 @@ abstract class PluginDmPage extends BaseDmPage
 
   public function isModuleAction($module, $action)
   {
-  	return $this->module == $module && $this->action === $action;
+  	return $this->module == $module && $this->action == $action;
   }
 
   /*
@@ -143,7 +143,7 @@ abstract class PluginDmPage extends BaseDmPage
 
   	return $this->getTable()->createQuery('p')
     ->select('p.id as id')
-    ->where("p.lft < ? AND p.rgt > ?", array($this->lft, $this->rgt))
+    ->where("p.lft < ? AND p.rgt > ?", array($this->get('lft'), $this->get('rgt')))
     ->orderBy("p.rgt asc")
     ->limit(1)
     ->fetchValue();
@@ -157,7 +157,7 @@ abstract class PluginDmPage extends BaseDmPage
 
       if ($this->getIsAutomatic())
 	    {
-	      if (!$this->getRecord() instanceof myDoctrineRecord)
+	      if (!($this->getRecord() instanceof myDoctrineRecord))
 	      {
 	        throw new dmException(sprintf(
 	          '%s automatic page can not be saved because it has no object for record_id = %s',
@@ -181,9 +181,9 @@ abstract class PluginDmPage extends BaseDmPage
   public function __toString()
   {
     return sprintf('DmPage #%d %s.%s',
-      $this->getId(),
-      $this->getModule(),
-      $this->getAction()
+      $this->id,
+      $this->module,
+      $this->action
     );
   }
 
@@ -198,9 +198,9 @@ abstract class PluginDmPage extends BaseDmPage
   		return $this->getCache('auto_seo');
   	}
 
-  	if (!$autoSeo = dmDb::table('DmAutoSeo')->findOneByModuleAndAction($this->module, $this->action))
+  	if (!$autoSeo = dmDb::table('DmAutoSeo')->findOneByModuleAndAction($this->get('module'), $this->get('action')))
   	{
-  		$autoSeo = dmDb::table('DmAutoSeo')->createFromModuleAndAction($this->module, $this->action)->saveGet();
+  		$autoSeo = dmDb::table('DmAutoSeo')->createFromModuleAndAction($this->get('module'), $this->get('action'))->saveGet();
   	}
 
   	return $this->setCache('auto_seo', $autoSeo);
@@ -232,7 +232,7 @@ abstract class PluginDmPage extends BaseDmPage
    */
   public function isSeoAuto($seoField)
   {
-  	return strpos($this->autoMod, $seoField{0}) !== false;
+  	return strpos($this->get('autoMod'), $seoField{0}) !== false;
   }
   
   /*
@@ -257,11 +257,11 @@ abstract class PluginDmPage extends BaseDmPage
   	  {
   	  	if (empty($modifiedFields[$seoField]) && !$this->isSeoAuto($seoField))
   	  	{
-          $this->autoMod = $this->autoMod.$seoField{0};
+          $this->set('auto_mod', $this->get('auto_mod').$seoField{0});
   	  	}
   	  	if (!empty($modifiedFields[$seoField]) && $this->isSeoAuto($seoField))
   	  	{
-  	  	  $this->autoMod = str_replace($seoField{0}, '', $this->autoMod);
+  	  	  $this->set('auto_mod', str_replace($seoField{0}, '', $this->get('auto_mod')));
   	  	}
   	  }
   	}
@@ -297,7 +297,7 @@ abstract class PluginDmPage extends BaseDmPage
    */
   public function getIndexableContent()
   {
-  	$command = sprintf('dmFront:page-indexable-content %d %s', $this->id, self::getDefaultCulture());
+  	$command = sprintf('dmFront:page-indexable-content %d %s', $this->get('id'), self::getDefaultCulture());
   	
   	$filesystem = dmFilesystem::get();
   	

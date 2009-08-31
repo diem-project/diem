@@ -5,7 +5,8 @@ DmSite:
       fields:               [name, ga_code, wt_code, xiti_code, gdata_code, gmap_code, is_active, is_indexable, app_urls, search_stop_words]
   columns:
     id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
-    name:                   { type: string(127), notnull: true }
+    code:                   { type: string(255), notnull: true, unique: true }
+    name:                   { type: string(255), notnull: true }
     status:                 { type: enum, values: [ dev, test, prod ], notnull: true, default: dev } # Project statuses : dev, test, prod
     is_active:              { type: boolean, notnull: true, default: true }
     is_indexable:           { type: boolean, notnull: true, default: false }
