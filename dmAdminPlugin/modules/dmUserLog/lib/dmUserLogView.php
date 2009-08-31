@@ -89,17 +89,17 @@ class dmUserLogView
   protected function renderBrowser(dmUserLogEntry $entry)
   {
   	$browser = $entry->get('browser');
-    return sprintf('<div class="browser %s"><strong class="mr10">%s %s</strong><span class="light">%s</span></div>',
+    return sprintf('<div class="clearfix"><div class="browser browser_block %s fleft"></div><strong class="mr10">%s %s</strong><span class="light">%s</span>',
       $browser->getName(),
       ucfirst($browser->getName()),
       $browser->getVersion(),
-      $entry->get('user_agent')
+      str_replace('Linux', '<strong>Linux</strong>', $entry->get('user_agent'))
     );
   }
   
   protected function renderLocation(dmUserLogEntry $entry)
   {
-    return sprintf('<span class="dm_nowrap">%s</span><br />%s %s<span class="light">ms</span>',
+    return sprintf('<span class="dm_nowrap">%s</span><br />%s<span class="light">%s ms</span>',
       $this->renderLink($entry),
       sprintf('<span class="s16 s16_%s">%s</span>',
         $entry->get('is_ok') ? 'status' : 'status-busy',

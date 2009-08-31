@@ -6,7 +6,7 @@ echo £o('div.dm_box.big.user_log');
 
 echo £('div.title',
   £link('dmUserLog/clear')->text(__('Clear')).
-  £('h1', __('User log'))
+  £('h1', __('User log').sprintf(' ( %s )', dmOs::humanizeSize($filesize)))
 );
 
 echo £o('div.dm_box_inner');

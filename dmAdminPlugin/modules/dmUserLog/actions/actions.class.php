@@ -35,7 +35,9 @@ class dmUserLogActions extends dmAdminBaseActions
 	
   public function executeIndex(dmWebRequest $request)
   {
-    $this->view = new dmUserLogView(new dmUserLog, $this->getUser()->getCulture());
+  	$log = new dmUserLog;
+    $this->view = new dmUserLogView($log, $this->getUser()->getCulture());
+    $this->filesize = $log->getSize();
   }
   
 }

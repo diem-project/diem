@@ -63,4 +63,10 @@ class dmUserLog
 		$this->checkFile();
 		file_put_contents($this->file, '');
 	}
+	
+	public function getSize()
+	{
+		$this->checkFile();
+		return filesize($this->file);
+	}
 }

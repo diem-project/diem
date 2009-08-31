@@ -28,3 +28,9 @@
 .user_log table tr.even {
   background: #fff;
 }
+
+.user_log .browser_block {
+  display: block;
+  width: 24px;
+  padding: 0 5px 0 0;
+}

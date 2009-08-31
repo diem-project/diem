@@ -11,7 +11,7 @@ class PluginDmSiteTable extends myDoctrineTable
         'name' => dmString::humanize(dmProject::getKey())
       ))->saveGet();
   	}
-
+  	
   	return $site;
   }
 }

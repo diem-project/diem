@@ -257,9 +257,9 @@ abstract class dmDoctrineQuery extends Doctrine_Query
 	/*
 	 * @return myDoctrineCollection|null the fetched collection
 	 */
-	public function fetchRecords($params = array(), $hydrationMode = Doctrine::HYDRATE_RECORD)
+	public function fetchRecords($params = array())
   {
-    return $this->execute($params, $hydrationMode);
+    return $this->execute($params, Doctrine::HYDRATE_RECORD);
   }
 
   /*

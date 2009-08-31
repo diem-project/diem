@@ -46,7 +46,7 @@ $.widget('ui.dmAdminForm', $.extend({}, $.dm.coreForm, {
           $.ajax({
             type:    "POST",
             mode:    "abort",
-            url:     form.options.relative_url_root+"dm_light.php",
+            url:     form.options.relative_url_root+'/dm_light.php',
             data:    { action: 'markdown', text: value },
             success: function(html) {
               $preview.html(html);

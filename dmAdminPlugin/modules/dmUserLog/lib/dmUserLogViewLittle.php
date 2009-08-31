@@ -1,5 +1,7 @@
 <?php
 
+require_once(realpath(dirname(__FILE__).'/dmUserLogView.php'));
+
 class dmUserLogViewLittle extends dmUserLogView
 {
 	protected

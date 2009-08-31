@@ -34,16 +34,7 @@ class Base<?php echo $this->modelName ?>Form extends <?php echo $this->getFormCl
     /*
      * Embed Media form for <?php echo $mediaRelation['local']."\n"; ?>
      */
-    $media = $this->object->getDmMediaByColumnName('<?php echo $mediaRelation['local']; ?>');
-    if(!$media || $media->isNew())
-    {
-      $media = new DmMedia;
-      $media->Folder = $this->object->getDmMediaFolder();
-      $this->object->setDmMediaByColumnName('<?php echo $mediaRelation['local']; ?>', $media);
-    }
-    $mediaForm = new DmMediaForm($media);
-    $mediaForm->getValidator('file')->setOption('required', $this->validatorSchema['<?php echo $mediaRelation['local']; ?>']->getOption('required'));
-    $this->embedForm('<?php echo $mediaRelation['local'].'_form'; ?>', $mediaForm);
+    $this->embedForm('<?php echo $mediaRelation['local'].'_form'; ?>', $this->createMediaFormFor<?php echo dmString::camelize($mediaRelation['local']); ?>());
     unset($this['<?php echo $mediaRelation['local']; ?>']);
 <?php endforeach; ?>
 
@@ -75,6 +66,26 @@ class Base<?php echo $this->modelName ?>Form extends <?php echo $this->getFormCl
 
     parent::setup();
   }
+
+<?php foreach($this->getMediaRelations() as $mediaRelation): ?>
+  /*
+   * Create Media form for <?php echo $mediaRelation['local']."\n"; ?>
+   */
+  protected function createMediaFormFor<?php echo dmString::camelize($mediaRelation['local']); ?>()
+  {
+    $media = $this->object->getDmMediaByColumnName('<?php echo $mediaRelation['local']; ?>');
+    if(!$media || $media->isNew())
+    {
+      $media = new DmMedia;
+      $media->Folder = $this->object->getDmMediaFolder();
+      $this->object->setDmMediaByColumnName('<?php echo $mediaRelation['local']; ?>', $media);
+    }
+    $mediaForm = new DmMediaForm($media);
+    $mediaForm->getValidator('file')->setOption('required', $this->validatorSchema['<?php echo $mediaRelation['local']; ?>']->getOption('required'));
+    
+    return $mediaForm;
+  }
+<?php endforeach; ?>
 
   public function bind(array $taintedValues = null, array $taintedFiles = null)
   {
