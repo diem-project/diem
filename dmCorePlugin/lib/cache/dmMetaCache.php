@@ -20,11 +20,11 @@ class dmMetaCache extends sfCache
   {
     if (dmAPCCache::isEnabled())
     {
-      $class = "dmAPCCache";
+      $class = 'dmAPCCache';
     }
     else
     {
-      $class = "dmFileCache";
+      $class = 'dmFileCache';
     }
 
     return $class;

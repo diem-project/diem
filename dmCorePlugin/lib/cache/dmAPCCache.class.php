@@ -14,7 +14,7 @@ class dmAPCCache extends sfAPCCache
 
   public function set($key, $data, $lifetime = null)
   {
-    return $this->set($key, serialize($data), $lifetime);
+    return $this->_set($key, serialize($data), $lifetime);
   }
 
   public function _set($key, $data, $lifetime = null)
@@ -61,7 +61,7 @@ class dmAPCCache extends sfAPCCache
 
     if (self::$enabled === null)
     {
-      self::$enabled = sfConfig::get("dm_cache_apc_enabled", true) && extension_loaded('apc');
+      self::$enabled = sfConfig::get("dm_cache_apc", true) && extension_loaded('apc');
     }
 
     return self::$enabled;
