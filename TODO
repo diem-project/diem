@@ -97,7 +97,7 @@ $.getScript(href, callback);
 
 * [DONE] front edit dmWidgetMedia is broken : can not add a file by upload
 
-* sfWidgetFormDmDate should extend sfWidgetFormI18nDate instead of currently sfWidgetFormDate
+* [DONE] sfWidgetFormDmDate should extend sfWidgetFormI18nDate instead of currently sfWidgetFormDate
 
 * [DONE] log visitors
 

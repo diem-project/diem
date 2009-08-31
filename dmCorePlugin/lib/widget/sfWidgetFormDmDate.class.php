@@ -8,7 +8,7 @@
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @version    SVN: $Id: sfWidgetFormDate.class.php 16259 2009-03-12 11:42:00Z fabien $
  */
-class sfWidgetFormDmDate extends sfWidgetFormDate
+class sfWidgetFormDmDate extends sfWidgetFormI18nDate
 {
 
   /**
@@ -24,23 +24,18 @@ class sfWidgetFormDmDate extends sfWidgetFormDate
 
 	protected function configure($options = array(), $attributes = array())
   {
+  	$options['culture'] = isset($options['culture']) ? $options['culture'] : dm::getUser()->getCulture();
+  	
   	parent::configure($options, $attributes);
-    /*
-     * Let's use a date format that matches user culture
-     */
-    if( $culture_dateI18n = sfConfig::get('dm_dateI18n_'.dm::getUser()->getCulture()))
-    {
-      $format = $culture_dateI18n['format'];
-    }
-    else
-    {
-      $format = '%month%/%day%/%year%';
-    }
-    $this->addOption('format', $format);
+  	
+    $this->setOption('culture', $options['culture']);
   }
 
   public function render($name, $value = null, $attributes = array(), $errors = array())
   {
+    dm::getResponse()->addJavascript('lib.ui-datepicker');
+    dm::getResponse()->addJavascript('lib.ui-i18n');
+  	
   	if($value && strtotime($value))
   	{
 	    // convert value to an array
@@ -56,7 +51,7 @@ class sfWidgetFormDmDate extends sfWidgetFormDate
         $value = array('year' => date('Y', $value), 'month' => date('n', $value), 'day' => date('j', $value));
       }
 
-	    $formatted_value = strtr(
+	    $formattedValue = strtr(
 	          $this->getOption('format'),
 	          array(
 	            '%year%' => sprintf('%04d', $value['year']),
@@ -67,10 +62,10 @@ class sfWidgetFormDmDate extends sfWidgetFormDate
   	}
   	else
   	{
-      $formatted_value = $value;
+      $formattedValue = $value;
   	}
 
-    //$formatted_value = dm::getI18n()->getDateForCulture(strtotime($value));
+    //$formattedValue = dm::getI18n()->getDateForCulture(strtotime($value));
 
     return $this->renderTag(
 	    'input',
@@ -79,7 +74,7 @@ class sfWidgetFormDmDate extends sfWidgetFormDate
 	      'size' => 10,
 	      'id' => $this->generateId($name),
 	      'class' => 'datepicker_me',
-	      'value' => $formatted_value
+	      'value' => $formattedValue
 	    )
     );
   }

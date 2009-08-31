@@ -8,7 +8,6 @@ abstract class dmAssetFilter extends dmFilter
 	const ENABLED = true;
 
 	protected
-	  $request,
 	  $response,
 	  $assets;
 

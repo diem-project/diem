@@ -86,11 +86,3 @@ default:
     asset:                dm/admin
   front:
     asset:                dm/front
-    
-  dateI18n:                             # culture dependant date_format used by sfValidatorDmDate & sfWidgetFormDmDate
-    en:
-      regex:              |(?P<month>\d{2})/(?P<day>\d{2})/(?P<year>\d{4})|
-      format:             '%month%/%day%/%year%'
-    fr:
-      regex:              |(?P<day>\d{2})/(?P<month>\d{2})/(?P<year>\d{4})|
-      format:             '%day%/%month%/%year%'
