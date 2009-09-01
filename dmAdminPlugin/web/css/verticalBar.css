@@ -62,9 +62,11 @@
 .sf_admin_filter .is_empty {
   float: right;
 }
+/* slow
 .sf_admin_filter .is_empty * {
   cursor: pointer;
 }
+*/
 .sf_admin_filter .field .is_empty input {
   margin-right: 3px;
   vertical-align: middle;

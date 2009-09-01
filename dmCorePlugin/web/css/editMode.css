@@ -60,15 +60,15 @@ div.ui-dialog .ui-dialog-titlebar {
   padding: 3px 3px 1px 12px;
 }
 
-.ui-tabs .ui-tabs-nav li.dm_error {
+ul.ui-tabs-nav > li.dm_error {
   background-image: url(../images/default_bg_red.png);
   border-color: #BE1111;
 }
 
-.ui-tabs .ui-tabs-nav li.dm_error a {
+ul.ui-tabs-nav > li.dm_error a {
   color: #BE1111;
 }
 
-.ui-tabs .ui-tabs-nav li.dm_error.ui-tabs-selected {
+ul.ui-tabs-nav > li.dm_error.ui-tabs-selected {
    background: #fff;
 }
