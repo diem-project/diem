@@ -59,6 +59,9 @@ defaults('GRAPH_SIZE',200);         // Image size
 
 ////////// END OF DEFAULT CONFIG AREA /////////////////////////////////////////////////////////////
 
+// DIEM HACK START
+global $MY_SELF, $MY_SELF_WO_SORT, $MYREQUEST, $AUTHENTICATED, $time, $col_black;
+// DIEM HACK STOP
 
 // "define if not defined"
 function defaults($d,$v) {
@@ -470,7 +473,6 @@ function sortheader($key,$name,$extra='') {
 // create menu entry 
 function menu_entry($ob,$title) {
   global $MYREQUEST,$MY_SELF;
-  print_r(array($MYREQUEST, $MY_SELF));
   if ($MYREQUEST['OB']!=$ob) {
     return "<li><a href=\"$MY_SELF&OB=$ob\">$title</a></li>";
   } else if (empty($MYREQUEST['SH'])) {
