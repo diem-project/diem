@@ -100,7 +100,7 @@ abstract class PluginDmMediaForm extends BaseDmMediaForm
 
 			if(!is_writable($folder->fullPath))
 			{
-				$error = new sfValidatorError($validator, $folder->fullPath." is not writable");
+				$error = new sfValidatorError($validator, dmProject::unRootify($folder->fullPath)." is not writable");
 
 				// throw an error bound to the password field
 				throw new sfValidatorErrorSchema($validator, array('file' => $error));
