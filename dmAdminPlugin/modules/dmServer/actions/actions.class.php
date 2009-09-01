@@ -3,10 +3,21 @@
 class dmServerActions extends dmAdminBaseActions
 {
 
-	public function executeIndex(dmWebRequest $request)
+	public function executeIndex()
 	{
 	}
 
+  public function executeApc()
+  {
+  }
+
+	public function executeIncludeApc()
+	{
+    define('USE_AUTHENTICATION', 0);
+		require(dmOs::join(sfConfig::get('dm_core_dir'), 'lib/vendor/apc/monitor.php'));
+		die;
+	}
+	
 	public function executePhpinfo()
 	{
 		phpinfo();

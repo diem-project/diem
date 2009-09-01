@@ -104,3 +104,15 @@ $.getScript(href, callback);
 * admin batch actions : show as links and add validate/unvalidate all
 
 * [DONE] admin forms : load current object variable in partials and components
+
+* [DONE] secure apc interface
+
+* fix strange behavior in apc monitor ( the file uses global variables wich just do not work... >:-/ )
+
+* allow admin menu customization ( kiss ! )
+
+* clean this huge jquery-ui stylesheet
+
+* fix dmAdmin/moduleTypeSuccess && spaceTypeSuccess
+
+* remove deprecated class dmAdminHelper

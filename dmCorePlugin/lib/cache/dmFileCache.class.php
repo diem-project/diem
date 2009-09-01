@@ -5,7 +5,7 @@ class dmFileCache extends sfFileCache
 
 	public function initialize($options = array())
 	{
-		if (!isset($options['cache_dir']))
+		if (!isset($options['cache_dir']) && isset($options['prefix']))
 		{
 			$options['cache_dir'] = dmOs::join(sfConfig::get("sf_cache_dir"), $options['prefix']);
 		}
@@ -15,7 +15,7 @@ class dmFileCache extends sfFileCache
 
   public function set($key, $data, $lifetime = null)
   {
-    return $this->_set($key, serialize($data), $lifetime);
+    return parent::set($key, serialize($data), $lifetime);
   }
 
   /*
@@ -28,7 +28,7 @@ class dmFileCache extends sfFileCache
 
   public function get($key, $default = null)
   {
-    $data = $this->_get($key, $default);
+    $data = parent::get($key, $default);
 
     if ($data != $default)
     {

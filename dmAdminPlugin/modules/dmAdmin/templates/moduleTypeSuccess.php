@@ -1,6 +1,6 @@
 <?php
 
-echo £o('div.dm_module_type.dm_module_type_show.dm_box.little');
+echo £o('div.dm_module_type.dm_module_type_show.dm_box.little.mt20');
 
   echo £('h1.title', __($type->getPublicName()));
 

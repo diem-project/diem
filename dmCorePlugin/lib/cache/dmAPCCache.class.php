@@ -7,22 +7,23 @@ class dmAPCCache extends sfAPCCache
 
   public function __construct($options = array())
   {
-  	$name = trim(
-  	  preg_replace(
-  	    '|^'.preg_quote(sfConfig::get('sf_cache_dir'), '|').'|',
-  	    '',
-  	    dmArray::get($options, 'cache_dir', $options['prefix'])),
-  	  '/'
-  	);
+  	if (isset($options['cache_dir']))
+  	{
+  		$name = substr($options['cache_dir'], strlen(sfConfig::get('sf_cache_dir'))+1);
+  	}
+  	elseif(isset($options['prefix']))
+  	{
+  		$name = dmProject::unRootify($options['prefix']);
+  	}
   	
     $this->initialize(array(
-      "prefix" => dmProject::getKey()."/".$name,
+      'prefix' => dmProject::getKey().'/'.$name,
     ));
   }
 
   public function set($key, $data, $lifetime = null)
   {
-    return $this->_set($key, serialize($data), $lifetime);
+    return parent::set($key, serialize($data), $lifetime);
   }
 
   public function _set($key, $data, $lifetime = null)
@@ -32,7 +33,7 @@ class dmAPCCache extends sfAPCCache
 
   public function get($key, $default = null)
   {
-    $data = $this->_get($key, $default);
+    $data = parent::get($key, $default);
 
     if ($data != $default)
     {
@@ -52,11 +53,11 @@ class dmAPCCache extends sfAPCCache
 
   public function clear()
   {
-    $this->removePattern("**");
+    $this->removePattern('**');
     //aze::debug();
     // cache systeme puis user
     //apc_clear_cache('user');
-    //aze::debug(apc_cache_info("user"));
+    //aze::debug(apc_cache_info('user'));
   }
 
   public static function isEnabled($val = null)
@@ -69,10 +70,28 @@ class dmAPCCache extends sfAPCCache
 
     if (self::$enabled === null)
     {
-      self::$enabled = sfConfig::get("dm_cache_apc", true) && extension_loaded('apc');
+      self::$enabled = sfConfig::get('dm_cache_apc', true) && extension_loaded('apc');
     }
 
     return self::$enabled;
   }
 
+  public static function getLoad()
+  {
+    if (!dmAPCCache::isEnabled())
+    {
+      throw new dmException('APC is disabled');
+    }
+    
+    $infos = apc_sma_info(true);
+    $total = $infos['seg_size'];
+    $free = $infos['avail_mem'];
+    
+    return array(
+      'usage'   => round(($total - $free) / (1024*1024)).'Mo',
+      'limit'   => round($total / (1024*1024)).'Mo',
+      'percent' => min(100, (($total - $free) / $total) * 100)
+    );
+  }
+  
 }

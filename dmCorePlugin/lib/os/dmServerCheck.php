@@ -93,7 +93,7 @@ class dmServerCheck
 	{
 		return
 		'<table>'.
-		sprintf('<thead><tr><th>%s</th><th>%s</th><th>%s</th><th>%s</th></tr></thead>', $name, 'Diem requirement', 'Server state', 'Diagnostic').
+		sprintf('<thead><tr><th>%s</th><th>%s</th><th>%s</th><th>%s</th></tr></thead>', ucfirst($name), 'Diem requirement', 'Server state', 'Diagnostic').
 		sprintf('<tbody>%s</tbody>', $this->renderRows($this->checks[$name])).
 	  '</table>';
 	}

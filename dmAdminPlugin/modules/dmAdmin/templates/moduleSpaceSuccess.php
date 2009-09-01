@@ -1,6 +1,6 @@
 <?php
 
-echo £o('div.dm_module_space.dm_module_space_show.dm_box.dm_box.little');
+echo £o('div.dm_module_space.dm_module_space_show.dm_box.dm_box.little.mt20');
 
   echo £('h1.title', dmAdminHelper::getLinkToModuleType($type).' : '.__($space->getName()));
 
@@ -22,5 +22,3 @@ echo £o('div.dm_module_space.dm_module_space_show.dm_box.dm_box.little');
   echo £c('ul');
 
 echo £c('div');
-
-phpinfo();

@@ -38,13 +38,15 @@ class dmCacheManager
     $this->caches = array();
 	}
 
-  public function clearAll($throw_exceptions = false)
+  public function clearAll()
   {
     $success = true;
 
     // Always clear file cache
-    $success &= self::clearFile($throw_exceptions);
-
+    ob_start();
+    self::clearFile();
+    $success = !ob_get_clean();
+    
     if (dmAPCCache::isEnabled())
     {
       $success &= self::clearApc();
@@ -55,16 +57,13 @@ class dmCacheManager
 
   protected static function clearApc()
   {
-    dmDebug::log("CLEAR ALL APC");
-    apc_clear_cache();
+    apc_clear_cache('opcode');
     return apc_clear_cache('user');
   }
 
-  protected static function clearFile($throw_exceptions = false)
+  protected static function clearFile()
   {
-    $success = dmFilesystem::get()->deleteDirContent(sfConfig::get('sf_cache_dir'), $throw_exceptions);
-
-    return $success;
+    sfToolkit::clearDirectory(sfConfig::get("sf_cache_dir"));
   }
 
 	public function __construct(sfEventDispatcher $dispatcher)
@@ -81,7 +80,11 @@ class dmCacheManager
 		return self::getInstance()->get($cacheName);
 	}
 
-  public static function getInstance()
+  
+	/*
+	 * @return dmCacheManager instance
+	 */
+	public static function getInstance()
   {
     if (is_null(self::$instance))
     {

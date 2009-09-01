@@ -1,4 +1,12 @@
 <?php
+
+/*
+ * Diem
+ * This file has been hacked in order to work in a secure yet integrated way.
+ * All hacks start with // DIEM HACK START
+ * and end with         // DIEM HACK END
+ */
+
 /*
   +----------------------------------------------------------------------+
   | APC                                                                  |
@@ -462,6 +470,7 @@ function sortheader($key,$name,$extra='') {
 // create menu entry 
 function menu_entry($ob,$title) {
   global $MYREQUEST,$MY_SELF;
+  print_r(array($MYREQUEST, $MY_SELF));
   if ($MYREQUEST['OB']!=$ob) {
     return "<li><a href=\"$MY_SELF&OB=$ob\">$title</a></li>";
   } else if (empty($MYREQUEST['SH'])) {

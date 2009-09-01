@@ -24,6 +24,15 @@ echo £o('div#dm_tool_bar.clearfix');
       options_for_select($cultures, $sf_user->getCulture())
     )
   );
+  
+	if (dmAPCCache::isEnabled() && $sf_user->can('systeme'))
+	{
+		$apcLoad = dmAPCCache::getLoad();
+		echo £link('dmServer/apc')
+		->set('.dm_load_monitor.fleft')
+		->title(sprintf('APC load : %s / %s', $apcLoad['usage'], $apcLoad['limit']))
+		->text(sprintf('<span style="height: %dpx;"></span>', round($apcLoad['percent'] * 0.21))); 
+	}
 
   if (sfConfig::get('dm_html_validate', true) && $sf_user->can('html_validate_admin'))
   {

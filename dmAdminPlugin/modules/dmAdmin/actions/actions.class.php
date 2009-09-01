@@ -6,12 +6,12 @@ class dmAdminActions extends dmAdminBaseActions
   public function executeModuleSpace(sfWebRequest $request)
   {
     $this->forward404Unless(
-      $this->type = dmAdminContext::getInstance()->getModuleType(),
+      $this->type = $this->getDmContext()->getModuleType(),
       sprintf('%s is not a module type', $request->getParameter('moduleTypeName'))
     );
 
     $this->forward404Unless(
-      $this->space = dmAdminContext::getInstance()->getModuleSpace(),
+      $this->space = $this->getDmContext()->getModuleSpace(),
       sprintf('%s is not a module space in %s type', $request->getParameter('moduleTypeName'), $request->getParameter('moduleTypeName'))
     );
 
@@ -21,7 +21,7 @@ class dmAdminActions extends dmAdminBaseActions
   public function executeModuleType(sfWebRequest $request)
   {
     $this->forward404Unless(
-      $this->type = dmAdminContext::getInstance()->getModuleType(),
+      $this->type = $this->getDmContext()->getModuleType(),
       sprintf('%s is not a module type', $request->getParameter('moduleTypeName'))
     );
 

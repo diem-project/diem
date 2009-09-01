@@ -5,12 +5,13 @@ class dmAdminMenu
 
 	protected
 	$menu,
-	$config,
-	$i18n;
+	$config;
+	
+	protected static $i18n;
 
 	public function __construct()
 	{
-		$this->i18n = dm::getI18n();
+		self::$i18n = dm::getI18n();
 		$this->menu = $this->buildMenu();
 	}
 
@@ -46,7 +47,7 @@ class dmAdminMenu
     }
     
     return array(
-      'name' => $this->__($type->getPublicName()),
+      'name' => self::__($type->getPublicName()),
       //'link' => array('sf_route' => 'dm_module_type', 'moduleTypeName' => $type->getSlug()),
       'menu' => $spaceMenu
     );
@@ -63,7 +64,7 @@ class dmAdminMenu
     	}
     	
 	    $moduleMenu[$moduleKey] = array(
-	      'name' => $this->__($module->getPlural()),
+	      'name' => self::__($module->getPlural()),
 	      'link' => array('sf_route' => $module->getUnderscore())
 	    );
     }
@@ -74,15 +75,15 @@ class dmAdminMenu
     }
     
     return array(
-      'name' => $this->__($space->getName()),
+      'name' => self::__($space->getName()),
       'link' => array('sf_route' => 'dm_module_space', 'moduleTypeName' => $space->getType()->getSlug(), 'moduleSpaceName' => $space->getSlug()),
       'menu' => $moduleMenu
     );
   }
 
-  protected function __($text, $arguments = array(), $catalogue = null)
+  protected static function __($text, $arguments = array(), $catalogue = null)
   {
-    return $this->i18n->__($text, $arguments, $catalogue);
+    return self::$i18n->__($text, $arguments, $catalogue);
   }
 
 }
