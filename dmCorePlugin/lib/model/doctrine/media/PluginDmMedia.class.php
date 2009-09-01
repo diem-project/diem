@@ -204,9 +204,7 @@ abstract class PluginDmMedia extends BaseDmMedia
 	 */
 	public function create(sfValidatedFile $file)
 	{
-		$cleanName = dmOs::sanitizeFileName($file->getOriginalName());
-
-		$this->file = $cleanName;
+		$this->file = dmOs::sanitizeFileName($file->getOriginalName());
 
 		$file->save($this->fullPath);
 
@@ -222,13 +220,11 @@ abstract class PluginDmMedia extends BaseDmMedia
 	{
 		$this->destroy();
 
-		$cleanName = dmOs::sanitizeFileName($file->getOriginalName());
-
-		$this->setFile($cleanName);
-
-		$this->refreshFromFile();
+    $this->file = dmOs::sanitizeFileName($file->getOriginalName());
 
     $file->save($this->fullPath);
+
+		$this->refreshFromFile();
 
 		return true;
 	}
@@ -286,7 +282,7 @@ abstract class PluginDmMedia extends BaseDmMedia
 
 		if ($this->checkFileExists())
 		{
-			dmFilesystem::get()->unlink($this->getFullPath());
+			dmFilesystem::get()->unlink($this->fullPath);
 		}
 
 		return !$this->checkFileExists();
@@ -311,7 +307,7 @@ abstract class PluginDmMedia extends BaseDmMedia
 
 	public function save(Doctrine_Connection $conn = null)
 	{
-		if (!$this->getFile())
+		if (!$this->file)
 		{
 			throw new dmException('Trying to save DmMedia with empty file field');
 		}

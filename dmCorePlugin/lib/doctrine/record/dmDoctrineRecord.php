@@ -180,11 +180,11 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
 	 */
 	public function getDmMediaFolder()
 	{
-		return dmDb::table('DmMediaFolder')->findOneByRelPathOrCreate($this->getDmModule()->getUnderscore());
+		return $this->getTable()->getDmMediaFolder();
 	}
 
 	/*
-	 * @return DmMedia the associated media for this columnName
+	 * @return DmMedia the associated media for this columnName or null
 	 */
 	public function getDmMediaByColumnName($columnName)
 	{
@@ -195,13 +195,12 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
 			throw new dmException(sprintf('%s is not a DmMedia LocalKey columnName : %s', $columnName, get_class($relation)));
 		}
 
-		if($media = dmDb::table('DmMedia')->findOneByIdWithFolder($this->$columnName))
+		if(!$media = $this->get($relation['alias'])->orNull())
 		{
-			$this->set($relation['alias'], $media);
-		}
-		else
-		{
-			$media = $this->get($relation['alias']);
+			if($media = dmDb::table('DmMedia')->findOneByIdWithFolder($this->get($columnName)))
+			{
+			  $this->set($relation['alias'], $media);
+			}
 		}
 
 		return $media;
@@ -212,7 +211,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
 	 * sets a DmMedia record associated to this columnName
 	 * @return DmMedia the newly associated media for this columnName
 	 */
-	public function setDmMediaByColumnName($columnName, DmMedia $media =null)
+	public function setDmMediaByColumnName($columnName, DmMedia $media)
 	{
 		$relation = $this->getTable()->getRelationHolder()->getLocalByColumnName($columnName);
 
@@ -228,7 +227,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
 
 		return $this
 		->set($relation['alias'], $media)
-		->set($columnName, $media ? $media->id : null);
+		->set($columnName, $media ? $media->get('id') : null);
 	}
 
 	/*

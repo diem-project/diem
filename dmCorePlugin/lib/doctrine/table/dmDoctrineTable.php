@@ -1,7 +1,19 @@
 <?php
 
 abstract class dmDoctrineTable extends Doctrine_Table
-{
+{ 
+  /*
+   * @return DmMediaFolder the DmMediaFolder used to store this table's record's medias
+   */
+	public function getDmMediaFolder()
+	{
+		if ($this->hasCache('dm_media_folder'))
+		{
+			return $this->getCache('dm_media_folder');
+		}
+		
+    return $this->setCache('dm_media_folder', dmDb::table('DmMediaFolder')->findOneByRelPathOrCreate($this->getDmModule()->getUnderscore()));
+	}
 	/*
 	 * @return bool if this table's records interact with page tree
 	 * so if a record is saved or deleted, page tree must be updated

@@ -26,7 +26,7 @@ class dmMetaCache extends sfCache
     {
       $class = 'dmFileCache';
     }
-
+    
     return $class;
   }
 

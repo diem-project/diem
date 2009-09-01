@@ -9,19 +9,12 @@
  */
 abstract class PluginDmMediaForm extends BaseDmMediaForm
 {
+	
 	public function setup()
 	{
 		parent::setup();
 
 		$this->useFields(array('dm_media_folder_id', 'file', 'legend', 'author', 'license'));
-
-		//    unset(
-		//      $this['size'],
-		//      $this['dimensions'],
-		//      $this['mime'],
-		//      $this['created_at'],
-		//      $this['updated_at']
-		//    );
 
 		$this->widgetSchema['file'] = new sfWidgetFormDmInputFile();
 		$this->validatorSchema['file'] = new sfValidatorFile(array(
@@ -94,7 +87,7 @@ abstract class PluginDmMediaForm extends BaseDmMediaForm
 			{
 				$error = new sfValidatorError($validator, 'Already exists in this folder');
 
-				// throw an error bound to the password field
+				// throw an error bound to the file field
 				throw new sfValidatorErrorSchema($validator, array('file' => $error));
 			}
 
@@ -102,7 +95,7 @@ abstract class PluginDmMediaForm extends BaseDmMediaForm
 			{
 				$error = new sfValidatorError($validator, dmProject::unRootify($folder->fullPath)." is not writable");
 
-				// throw an error bound to the password field
+				// throw an error bound to the file field
 				throw new sfValidatorErrorSchema($validator, array('file' => $error));
 			}
 		}

@@ -225,9 +225,7 @@
   position: relative;
 }
 .sf_admin_form .dm_media_file .view {
-  position: absolute;
-  top: 0;
-  left: 0;
+  float: left;
 }
 .sf_admin_form .dm_media_file .infos {
   margin-left: 260px;

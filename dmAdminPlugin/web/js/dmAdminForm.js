@@ -24,7 +24,7 @@ $.widget('ui.dmAdminForm', $.extend({}, $.dm.coreForm, {
 	
 	hotKeys: function()
 	{
-		if ($save = $('div.sf_admin_action_save:first input', this.$).orNot())
+		if ($save = $('li.sf_admin_action_save:first input', this.$).orNot())
 		{
 			this.$.bindKey('Ctrl+s', function() { $save.trigger('click'); return false;});
 		}

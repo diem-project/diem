@@ -120,3 +120,7 @@ $.getScript(href, callback);
 * allow to remove a media attached to a record in admin
 
 * admin doctrine selects must use defaut table sort
+
+* fix /admin.php/ strange non php redirection
+
+* fix file [Already exists in this folder] where adding an existing media to a record

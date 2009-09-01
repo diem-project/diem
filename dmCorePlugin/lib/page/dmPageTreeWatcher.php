@@ -23,9 +23,10 @@ class dmPageTreeWatcher
 	
 	public function addModifiedTable(myDoctrineTable $table)
 	{
-		if (!isset($this->modifiedTables[$table->getComponentName()]))
+		$model = $table->getComponentName();
+		if (!isset($this->modifiedTables[$model]))
 		{
-      $this->modifiedTables[$table->getComponentName()] = $table;
+      $this->modifiedTables[$model] = $table;
 		}
 	}
 
@@ -40,7 +41,7 @@ class dmPageTreeWatcher
 		
 		if(!empty($modifiedModules))
 		{
-//			dm::getUser()->logAlert('dmPageTreeWatcher '.implode(', ', $modifiedModules));
+			dm::getUser()->logAlert('dmPageTreeWatcher '.implode(', ', $modifiedModules));
 
 			$dispatcher = sfContext::getInstance()->getEventDispatcher();
 			

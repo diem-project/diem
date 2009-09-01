@@ -34,7 +34,7 @@ class Base<?php echo $this->modelName ?>Form extends <?php echo $this->getFormCl
     /*
      * Embed Media form for <?php echo $mediaRelation['local']."\n"; ?>
      */
-    $this->embedForm('<?php echo $mediaRelation['local'].'_form'; ?>', $this->createMediaFormFor<?php echo dmString::camelize($mediaRelation['local']); ?>());
+    $this->embedForm('<?php echo $mediaRelation['local'].'_form' ?>', $this->createMediaFormFor<?php echo dmString::camelize($mediaRelation['local']); ?>());
     unset($this['<?php echo $mediaRelation['local']; ?>']);
 <?php endforeach; ?>
 
@@ -73,69 +73,33 @@ class Base<?php echo $this->modelName ?>Form extends <?php echo $this->getFormCl
    */
   protected function createMediaFormFor<?php echo dmString::camelize($mediaRelation['local']); ?>()
   {
-    $media = $this->object->getDmMediaByColumnName('<?php echo $mediaRelation['local']; ?>');
-    if(!$media || $media->isNew())
-    {
-      $media = new DmMedia;
-      $media->Folder = $this->object->getDmMediaFolder();
-      $this->object->setDmMediaByColumnName('<?php echo $mediaRelation['local']; ?>', $media);
-    }
-    $mediaForm = new DmMediaForm($media);
-    $mediaForm->getValidator('file')->setOption('required', $this->validatorSchema['<?php echo $mediaRelation['local']; ?>']->getOption('required'));
-    
-    return $mediaForm;
+    return DmMediaForRecordForm::factory($this->object, '<?php echo $mediaRelation['local'] ?>', '<?php echo $mediaRelation['alias'] ?>', $this->validatorSchema['<?php echo $mediaRelation['local']; ?>']->getOption('required'));
   }
 <?php endforeach; ?>
 
-  public function bind(array $taintedValues = null, array $taintedFiles = null)
+  protected function doBind(array $values)
   {
-<?php foreach($this->getMediaRelations() as $mediaRelation): $formName = $mediaRelation['local'].'_form'; $mediaField = $mediaRelation['local']; $alias = $mediaRelation['alias']; ?>
-    /*
-     * Process media <?php echo $alias ?> form
-     */
-    $current<?php echo $alias ?> = $this->embeddedForms['<?php echo $formName; ?>']->getObject();
-    if ($current<?php echo $alias ?>->isNew() && !$taintedFiles['<?php echo $formName; ?>']['file']['size'] && !$this->embeddedForms['<?php echo $formName; ?>']->getValidator('file')->getOption('required'))
-    {
-      // remove the embedded media form if the file field was not provided
-      unset($this->embeddedForms['<?php echo $formName; ?>'], $taintedValues['<?php echo $formName; ?>'], $taintedFiles['<?php echo $formName; ?>']);
-      // remove the created media
-      $this->object-><?php echo $alias ?> = null;
-      // pass the media form validations
-      $this->validatorSchema['<?php echo $formName; ?>'] = new sfValidatorPass();
-    }
-
-    /*
-     * We have a new file for an existing media.
-     * Let's create a new media with the file,
-     * and assign it legend, author and license
-     * form the old media
-     */
-    elseif (!$current<?php echo $alias ?>->isNew() && $taintedFiles['<?php echo $formName; ?>']['file']['size'])
-    {
-      $taintedValues['<?php echo $formName; ?>']['id'] = null;
-      $new<?php echo $alias ?> = dmDb::create('DmMedia', array(
-        'legend'     => $current<?php echo $alias ?>->legend,
-        'author'     => $current<?php echo $alias ?>->author,
-        'license'    => $current<?php echo $alias ?>->license
-      ));
-      $new<?php echo $alias ?>->Folder = $this->object->getDmMediaFolder();
-
-      $this->embeddedForms['<?php echo $formName; ?>']->setObject($new<?php echo $alias ?>);
-
-      $this->object-><?php echo $alias ?> = $new<?php echo $alias ?>;
-    }
-
-    /*
-     * We have no new file for an existing media.
-     * Remove file validator
-     */
-    elseif (!$current<?php echo $alias ?>->isNew() && !$taintedFiles['<?php echo $formName; ?>']['file']['size'])
-    {
-      $this->validatorSchema['<?php echo $formName; ?>'] = new sfValidatorPass();
-    }
+<?php foreach($this->getMediaRelations() as $mediaRelation): ?>
+    $values = $this->filterValuesByEmbeddedMediaForm($values, '<?php echo $mediaRelation['local'] ?>');
 <?php endforeach; ?>
-    // call parent bind method
-    parent::bind($taintedValues, $taintedFiles);
+    parent::doBind($values);
+  }
+  
+  public function processValues($values = null)
+  {
+    $values = parent::processValues($values);
+<?php foreach($this->getMediaRelations() as $mediaRelation): ?>
+    $values = $this->processValuesForEmbeddedMediaForm($values, '<?php echo $mediaRelation['local'] ?>');
+<?php endforeach; ?>
+    return $values;
+  }
+  
+  protected function doUpdateObject($values)
+  {
+    parent::doUpdateObject($values);
+<?php foreach($this->getMediaRelations() as $mediaRelation): ?>
+		$this->doUpdateObjectForEmbeddedMediaForm($values, '<?php echo $mediaRelation['local'] ?>', '<?php echo $mediaRelation['alias'] ?>');
+<?php endforeach; ?>
   }
 
   public function getModelName()

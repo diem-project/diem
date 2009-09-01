@@ -15,7 +15,7 @@ echo £o('div.clearfix');
 
   echo £('div.view',
     $object->isImage()
-    ? £media($object)->size(250, 130)
+    ? £media($object)->size(250, 140)
     : £media('dmCore/media/unknown.png')->size(64, 64)
   );
 

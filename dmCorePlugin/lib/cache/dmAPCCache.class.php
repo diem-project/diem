@@ -62,18 +62,23 @@ class dmAPCCache extends sfAPCCache
 
   public static function isEnabled($val = null)
   {
-    if ($val !== null)
+    if (!is_null($val))
     {
-      self::$enabled = extension_loaded('apc') && $val;
+      self::$enabled = (boolean) $val && self::isAvailable();
       dmCacheManager::getInstance()->reset();
     }
 
     if (self::$enabled === null)
     {
-      self::$enabled = sfConfig::get('dm_cache_apc', true) && extension_loaded('apc');
+      self::$enabled = sfConfig::get('dm_cache_apc', true) && self::isAvailable();
     }
 
     return self::$enabled;
+  }
+  
+  public static function isAvailable()
+  {
+  	return function_exists('apc_store') && ini_get('apc.enabled');
   }
 
   public static function getLoad()
