@@ -82,7 +82,7 @@
 
 * protect dev environment
 
-* disable symfony functional tests creation for admin ( they are irrelevant and deprecateds by dmTest )
+* [DONE] disable symfony functional tests creation for admin ( they are irrelevant and deprecateds by dmTest )
 
 * [DONE] do NOT autoload Zend components
 
