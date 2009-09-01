@@ -185,8 +185,8 @@
 .ui-icon-plusthick { background-position: -32px -128px; }
 .ui-icon-minus { background-position: -48px -128px; }
 .ui-icon-minusthick { background-position: -64px -128px; }
-*/
 .ui-icon-close { background-position: -80px -128px; }
+*/
 .ui-icon-closethick { background-position: -96px -128px; }
 /*
 .ui-icon-key { background-position: -112px -128px; }
@@ -228,10 +228,15 @@
 .ui-icon-circle-plus { background-position: 0 -192px; }
 .ui-icon-circle-minus { background-position: -16px -192px; }
 .ui-icon-circle-close { background-position: -32px -192px; }
+*/
 .ui-icon-circle-triangle-e { background-position: -48px -192px; }
+/*
 .ui-icon-circle-triangle-s { background-position: -64px -192px; }
+*/
 .ui-icon-circle-triangle-w { background-position: -80px -192px; }
+/*
 .ui-icon-circle-triangle-n { background-position: -96px -192px; }
+/*
 .ui-icon-circle-arrow-e { background-position: -112px -192px; }
 .ui-icon-circle-arrow-s { background-position: -128px -192px; }
 .ui-icon-circle-arrow-w { background-position: -144px -192px; }
