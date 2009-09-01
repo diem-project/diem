@@ -95,7 +95,7 @@ abstract class dmCoreLayoutHelper
 
   public function renderStylesheets()
   {
-    if (sfConfig::get('dm_css_compress', true))
+    if (sfConfig::get('dm_css_compress', true) && !sfConfig::get('dm_debug'))
     {
       $this->response->cacheStylesheets();
     }

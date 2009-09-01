@@ -35,6 +35,7 @@ class sfWidgetFormDmDate extends sfWidgetFormI18nDate
   {
     dm::getResponse()->addJavascript('lib.ui-datepicker');
     dm::getResponse()->addJavascript('lib.ui-i18n');
+    dm::getResponse()->addStylesheet('lib.ui-datepicker');
   	
   	if($value && strtotime($value))
   	{

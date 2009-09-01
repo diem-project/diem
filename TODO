@@ -107,11 +107,11 @@ $.getScript(href, callback);
 
 * [DONE] secure apc interface
 
-* fix strange behavior in apc monitor ( the file uses global variables wich just do not work... >:-/ )
+* [DONE] fix strange behavior in apc monitor ( the file uses global variables wich just do not work... >:-/ )
 
-* allow admin menu customization ( kiss ! )
+* [DONE] allow admin menu customization ( kiss ! )
 
-* clean this huge jquery-ui stylesheet
+* [DONE] clean this huge jquery-ui stylesheet
 
 * fix dmAdmin/moduleTypeSuccess && spaceTypeSuccess
 

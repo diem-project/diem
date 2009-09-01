@@ -64,6 +64,10 @@ css:
     symfony_debug:    symfony/debug
     reset:            reset/reset
     ui:               jquery-ui/css/jquery-ui-1.7.2.custom
+    ui-datepicker:    jquery-ui/css/jquery-ui-datepicker.1.7.2
+    ui-dialog:        jquery-ui/css/jquery-ui-dialog.1.7.2
+    ui-resizable:     jquery-ui/css/jquery-ui-resizable.1.7.2
+    ui-tabs:          jquery-ui/css/jquery-ui-tabs.1.7.2
     jqtransform:      jqtransform/jqtransform
     jgrowl:           jgrowl/jquery.jgrowl
     markitup:         dmMarkitup/skins/markitup/style

@@ -60,6 +60,9 @@ class dmFrontAssetFilter extends dmAssetFilter
 		{
       $cssArray = array(
         'lib.ui',
+        'lib.ui-dialog',
+        'lib.ui-resizable',
+        'lib.ui-tabs',
         'lib.markitup',
         'lib.markitupSet',
         'core.util',
