@@ -75,6 +75,7 @@ class dmFrontAssetFilter extends dmAssetFilter
         'core.pageBar',
         'core.mediaBar',
         'core.form',
+        'front.dm_reset',
         'front.main',
         'front.toolBar',
         'front.zone',

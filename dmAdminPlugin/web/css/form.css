@@ -89,7 +89,7 @@
   float: left;
   width: 20%;
 }
-.sf_admin_form .sf_admin_form_row.required > div.sf_admin_form_row_inner > label {
+.sf_admin_form .sf_admin_form_row.required > div.sf_admin_form_row_inner > div.label_wrap > label {
   font-weight: bold;
 }
 .sf_admin_form div.sf_admin_form_row_inner label.fnone {
