@@ -5,15 +5,11 @@ abstract class dmInitFilter extends dmFilter
 	
 	protected function logUser()
 	{
-		$t = dmDebug::timer('log user');
-		
 		if ($this->dmContext->isHtmlForHuman())
 		{
 			$log = new dmUserLog;
 			$log->log($this->dmContext);
 		}
-		
-		$t->addTime();
 	}
 
   protected function checkFilesystemPermissions()

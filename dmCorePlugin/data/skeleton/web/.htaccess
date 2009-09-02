@@ -31,9 +31,10 @@ Options +FollowSymLinks +ExecCGI
   RewriteEngine On
   # uncomment the following line, if you are having trouble
   # getting no_script_name to work
+  
   #RewriteBase /
   
-  RewriteRule ^(.+)/$ $1 [R=301,L]
+  #RewriteRule ^(.+)/$ $1 [R=301,L]
 
   # we skip all files with .something
   RewriteCond %{REQUEST_URI} \..+$

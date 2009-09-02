@@ -12,7 +12,8 @@
 /* embedded form */
 .sf_admin_form form .dm_form_elements {
   clear: both;
-  background: #F8F8F8;
+  background: url(../../core/images/default_bg.png) center left repeat-x;
+  border: 1px solid #D3D3D3;
   padding: 10px;
   -moz-border-radius: 4px;
 }
@@ -38,8 +39,9 @@
   height: 24px;
 }
 
-.sf_admin_form fieldset .fieldset_title a {
+.sf_admin_form fieldset .fieldset_title > span.fieldset_name {
   line-height: 22px;
+  cursor: default;
 }
 
 .sf_admin_form fieldset .ui-accordion-header {
@@ -57,6 +59,7 @@
   margin: 0;
   position: inherit;
   border-top: none;
+  border-color: #D3D3D3;
 }
 
 .sf_admin_form .fieldset_content_inner {
@@ -85,6 +88,9 @@
   float: left;
   width: 20%;
 }
+.sf_admin_form .sf_admin_form_row.required > .sf_admin_form_row_inner > label {
+  font-weight: bold;
+}
 .sf_admin_form .sf_admin_form_row_inner label.fnone {
   float: none;
   width: auto;
@@ -98,10 +104,6 @@
 
 .sf_admin_form .sf_admin_form_row_inner input.datepicker_me {
   width: auto;
-}
-.sf_admin_form .sf_admin_form_row_inner input.loremizing,
-.sf_admin_form .sf_admin_form_row_inner textarea.loremizing {
-	background: #aaa;
 }
 
 .sf_admin_form .error {
@@ -153,45 +155,14 @@
   margin-top: 5px;
 }
 
-.dm_double_list > div {
-  float: left;
-}
-
-.dm_double_list .dm_list_control {
-  margin-top: 5em;
-  width: 4%;
-  text-align: center;
-}
-
-.dm_double_list .dm_list_control a {
-  margin: auto;
-}
-
-.dm_double_list .dm_list_control a span {
-	margin: auto;
-}
-
-.sf_widget_form_dm_select_double_list .sf_admin_form_row_inner label {
-  float: none;
-}
-
-.dm_double_list .dm_list_unassociated,
-.dm_double_list .dm_list_associated {
-  width: 48%;
-}
-.dm_double_list .dm_list_unassociated select,
-.dm_double_list .dm_list_associated select {
-  width: 100%;
-}
-
-.sf_admin_form .checkbox_list {
+.sf_admin_form ul.checkbox_list {
 	max-height: 300px;
 	overflow-y: auto;
 	border: 1px solid #ddd;
 	moz-border-radius: 4px;
 }
 
-.sf_admin_form .checkbox_list li {
+.sf_admin_form ul.checkbox_list > li {
   display: block;
   padding: 2px 4px;
   cursor: pointer;
@@ -200,23 +171,23 @@
   background: #fff;
 }
 
-.sf_admin_form .checkbox_list li.active {
+.sf_admin_form ul.checkbox_list > li.active {
   background-color: #E1FEE5;
   border-color: #E1FEE5;
 }
 
-.sf_admin_form .checkbox_list li:hover {
+.sf_admin_form ul.checkbox_list > li:hover {
   background-color: #F1F5FE;
   border-color: #ddd;
 }
 
-.sf_admin_form .checkbox_list li label {
+.sf_admin_form ul.checkbox_list > li label {
   float: none;
   width: auto;
   cursor: pointer;
 }
 
-.sf_admin_form .checkbox_list li input {
+.sf_admin_form ul.checkbox_list > li input {
   vertical-align: middle;
   cursor: pointer;
 }

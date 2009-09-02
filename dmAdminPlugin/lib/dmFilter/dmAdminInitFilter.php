@@ -14,7 +14,7 @@ class dmAdminInitFilter extends dmInitFilter
   	{
   		$this->context->getUser()->setCulture($culture);
   	}
-
+  	
     $this->checkFilesystemPermissions();
     
     $this->saveApplicationUrl();

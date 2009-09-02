@@ -7,7 +7,6 @@
     $attributes instanceof sfOutputEscaper ? $attributes->getRawValue() : $attributes,
     array('class' => 'markdown_editor')
   );
-  $getter = 'get'.dmString::camelize($name);
 ?>
 
 <div class="<?php echo $class ?><?php $form[$name]->hasError() and print ' errors' ?>">
@@ -29,7 +28,7 @@
   <div class="sf_admin_form_row_inner">
     <label class="fnone"><?php echo __('Preview'); ?></label>
 	  <div class="markdown_preview markdown">
-	    <?php echo dmMarkdown::toHtml($form->getObject()->$getter())?>
+	    <?php echo dmMarkdown::toHtml($form->getObject()->get($name))?>
 	  </div>
 	</div>
 </div>

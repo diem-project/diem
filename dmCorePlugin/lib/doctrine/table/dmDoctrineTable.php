@@ -199,19 +199,21 @@ abstract class dmDoctrineTable extends Doctrine_Table
     );
   }
 
-  public function getDefaultQuery(Doctrine_Query $q = null)
+  public function getDefaultQuery()
   {
-  	if (is_null($q))
-  	{
-      $q = $this->getQueryObject();
-  	}
+    if ($this->hasCache('dm_default_query'))
+    {
+      return clone $this->getCache('dm_default_query');
+    }
+    
+    $q = $this->createQuery('dm_query');
 
   	if ($sortColumnName = $this->getSortColumnName())
   	{
-  		$q->addOrderBy($q->getRootAlias().'.'.$sortColumnName);
+  		$q->addOrderBy('dm_query.'.$sortColumnName);
   	}
-
-  	return $q;
+  	
+  	return $this->setCache('dm_default_query', $q);
   }
 
   public function getSortColumnName()
@@ -224,11 +226,10 @@ abstract class dmDoctrineTable extends Doctrine_Table
    */
 	protected final function getDefaultSortColumnName()
 	{
-    if ($this->hasCache('dm_default_sort_columns'))
+    if ($this->hasCache('dm_default_sort_column_name'))
     {
-      return $this->getCache('dm_default_sort_columns');
+      return $this->getCache('dm_default_sort_column_name');
     }
-
     if ($this->isSortable())
     {
     	#FIXME try to return SortableTemplate columnName instead of default position
@@ -236,10 +237,9 @@ abstract class dmDoctrineTable extends Doctrine_Table
     }
     else
     {
-      $columnName = $this->getIdentifierColumnNames();
+      $columnName = $this->getIdentifierColumnName();
     }
-
-    return $this->setCache('dm_default_sort_columns', $columnName);
+    return $this->setCache('dm_default_sort_column_name', $columnName);
 	}
 
   public function getIdentifierColumnName()
@@ -249,7 +249,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
       return $this->getCache('dm_identifier_column_name');
     }
 
-    if (!$columnName = dmArray::first(array_intersect(sfConfig::get('dm_orm_identifier_fields'),$this->getColumnNames())))
+    if (!$columnName = dmArray::first(array_intersect(sfConfig::get('dm_orm_identifier_fields'), $this->getColumnNames())))
     {
       if (!$columnName = dmArray::first($this->getIdentifierColumnNames()))
       {

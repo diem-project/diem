@@ -69,11 +69,11 @@ class dmString extends sfInflector
 		return $word[strlen($word)-1] == 's' ? $word : $word.'s';
 	}
 
-	public static function pluralizeNb($word, $nb, $plural_spec = false)
+	public static function pluralizeNb($word, $nb, $specialPlural = false)
   {
-    if($plural_spec)
+    if($specialPlural)
     {
-      return $nb > 1 ? $plural_spec : $word;
+      return $nb > 1 ? $specialPlural : $word;
     }
     else
     {

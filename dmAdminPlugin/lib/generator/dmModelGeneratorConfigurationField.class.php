@@ -19,4 +19,5 @@ class dmModelGeneratorConfigurationField extends sfModelGeneratorConfigurationFi
   {
     return $this->getConfig('markdown');
   }
+  
 }

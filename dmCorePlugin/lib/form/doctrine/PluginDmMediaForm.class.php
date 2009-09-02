@@ -9,7 +9,7 @@
  */
 abstract class PluginDmMediaForm extends BaseDmMediaForm
 {
-	
+
 	public function setup()
 	{
 		parent::setup();
@@ -29,13 +29,13 @@ abstract class PluginDmMediaForm extends BaseDmMediaForm
 
 	protected function doUpdateObject($values)
 	{
-    if (!$values['file'] instanceof sfValidatedFile)
-    {
-      unset($values['file']);
-    }
-    
-    parent::doUpdateObject($values);
-    
+		if (!$values['file'] instanceof sfValidatedFile)
+		{
+			unset($values['file']);
+		}
+
+		parent::doUpdateObject($values);
+
 		if (isset($values['file']))
 		{
 			if ($this->object->isNew())
@@ -85,10 +85,7 @@ abstract class PluginDmMediaForm extends BaseDmMediaForm
 
 			if($folder->hasFile($filename))
 			{
-				$error = new sfValidatorError($validator, 'Already exists in this folder');
-
-				// throw an error bound to the file field
-				throw new sfValidatorErrorSchema($validator, array('file' => $error));
+				$this->throwFileAlreadyExists($validator, $folder, $filename);
 			}
 
 			if(!is_writable($folder->fullPath))
@@ -101,5 +98,13 @@ abstract class PluginDmMediaForm extends BaseDmMediaForm
 		}
 
 		return $values;
+	}
+
+	protected function throwFileAlreadyExists($validator, $folder, $filename)
+	{
+		$error = new sfValidatorError($validator, 'Already exists in this folder');
+
+		// throw an error bound to the file field
+		throw new sfValidatorErrorSchema($validator, array('file' => $error));
 	}
 }

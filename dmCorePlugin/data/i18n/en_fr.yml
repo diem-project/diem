@@ -62,6 +62,8 @@
 "You must select an action to execute on the selected items.": "Aucune action sélectionnée"
 "No result": "Aucun résultat"
 "The selected items have been deleted successfully.": "Les éléments sélectionnés ont été supprimés avec succès"
+"The selected items have been modified successfully": "Les éléments sélectionnés ont été modifiés avec succès"
+"A problem occurs when modifying the selected items": "Un problème est survenu pendant la modification"
 "Root": "Racine"
 "Home": "Accueil"
 "Page not found": "Page introuvable"

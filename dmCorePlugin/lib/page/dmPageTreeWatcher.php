@@ -41,7 +41,10 @@ class dmPageTreeWatcher
 		
 		if(!empty($modifiedModules))
 		{
-			dm::getUser()->logAlert('dmPageTreeWatcher '.implode(', ', $modifiedModules));
+			if (sfConfig::get('sf_debug'))
+			{
+			  dm::getUser()->logAlert('dmPageTreeWatcher::update '.implode(', ', $modifiedModules));
+			}
 
 			$dispatcher = sfContext::getInstance()->getEventDispatcher();
 			

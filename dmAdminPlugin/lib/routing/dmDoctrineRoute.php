@@ -36,6 +36,7 @@ class dmDoctrineRoute extends sfDoctrineRoute
   	/*
   	 * Remove .html from urls
   	 */
+    unset($defaults['sf_format']);
   	$pattern = preg_replace('|^(.+)\.:sf_format$|', '$1', $pattern);
   	
     parent::__construct($pattern, $defaults, $requirements, $options);

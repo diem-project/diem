@@ -63,12 +63,8 @@ abstract class dmFormDoctrine extends sfFormDoctrine
 	{
 		$formName = $local.'_form';
 		 
-		$form = $this->embeddedForms[$formName];
-		 
-		$media = $form->getObject();
-
 		//no existing media, no file, and it is not required : skip all
-		if ($media->isNew() && !$values[$formName]['file']['size'] && !$form->getValidator('file')->getOption('required'))
+		if ($this->embeddedForms[$formName]->getObject()->isNew() && !$values[$formName]['file']['size'] && !$this->embeddedForms[$formName]->getValidator('file')->getOption('required'))
 		{
 			// remove the embedded media form if the file field was not provided
 			unset($this->embeddedForms[$formName], $values[$formName]);
@@ -88,18 +84,33 @@ abstract class dmFormDoctrine extends sfFormDoctrine
       return $values;
     }
 
-		/*
-		 * We have a new file for an existing media.
-		 * Let's create a new media
-		 */
-		if($values[$formName]['file'] && $values[$formName]['id'])
+    // uploading a file
+		if($values[$formName]['file'])
 		{
-			$values[$formName]['id'] = null;
-			
-			$media = new DmMedia;
-			$media->Folder = $this->object->getDmMediaFolder();
-
-      $this->embeddedForms[$formName]->setObject($media);
+      /*
+       * We have a media with same folder / filename
+       * let's use it
+       */
+			if ($existingMedia = $this->embeddedForms[$formName]->fileAlreadyExists())
+			{
+			  $values[$formName]['id'] = $existingMedia->id;
+			  unset($values[$formName['file']]);
+			  
+        $this->embeddedForms[$formName]->setObject($existingMedia);
+			}
+	    /*
+	     * We have a new file for an existing media.
+	     * Let's create a new media
+	     */
+			elseif($values[$formName]['id'])
+			{
+				$values[$formName]['id'] = null;
+				
+				$media = new DmMedia;
+				$media->Folder = $this->object->getDmMediaFolder();
+	
+	      $this->embeddedForms[$formName]->setObject($media);
+			}
 		}
 		
 		return $values;

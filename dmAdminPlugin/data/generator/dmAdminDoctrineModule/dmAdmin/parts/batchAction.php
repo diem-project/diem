@@ -52,6 +52,11 @@
       ->from('<?php echo $this->getModelClass() ?>')
       ->whereIn('<?php echo $this->getPrimaryKeys(true) ?>', $ids)
       ->execute();
+      
+    if ($count)
+    {
+      $this->getDmContext()->getPageTreeWatcher()->addModifiedTable(dmDb::table('<?php echo $this->getModelClass() ?>'));
+    }
 
     if ($count >= count($ids))
     {
@@ -62,5 +67,19 @@
       $this->getUser()->setFlash('error', 'A problem occurs when deleting the selected items.');
     }
 
+    $this->redirect('@<?php echo $this->getUrlForAction('list') ?>');
+  }
+
+  protected function executeBatchActivate(sfWebRequest $request)
+  {
+    $this->batchToggleBoolean($request->getParameter('ids'), 'is_active', true);
+      
+    $this->redirect('@<?php echo $this->getUrlForAction('list') ?>');
+  }
+
+  protected function executeBatchDesactivate(sfWebRequest $request)
+  {
+    $this->batchToggleBoolean($request->getParameter('ids'), 'is_active', false);
+      
     $this->redirect('@<?php echo $this->getUrlForAction('list') ?>');
   }
