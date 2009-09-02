@@ -72,15 +72,6 @@ $.widget('ui.dmAdminForm', $.extend({}, $.dm.coreForm, {
     });
   },
   
-//  doubleList: function()
-//  {
-//    // Double lists
-//    if ($doubleList = $("div.dm_double_list", this.element).orNot()) {
-//      $selects = $('select', $doubleList);
-//      sfDoubleList.init($selects[0], $selects[1].className);
-//    }
-//  },
-  
   checkBoxList: function()
   {
     var $list = $('ul.checkbox_list', this.element);
@@ -98,6 +89,14 @@ $.widget('ui.dmAdminForm', $.extend({}, $.dm.coreForm, {
       $(this).parent()[($(this).attr('checked') ? 'add' : 'remove')+'Class']('active');
 			return true;
     }).trigger('change');
+		
+    $('div.control span.select_all, div.control span.unselect_all', $list.parent()).each(function() {
+      $(this).click(function(){
+        $(this).closest('div.sf_admin_form_row_inner').find('input:checkbox')
+        .attr('checked', $(this).hasClass('select_all'))
+				.trigger('change');
+      });
+    });
   }
   
 }));

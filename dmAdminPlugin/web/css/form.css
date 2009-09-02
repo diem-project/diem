@@ -10,14 +10,14 @@
 }
 
 /* embedded form */
-.sf_admin_form form .dm_form_elements {
+.sf_admin_form form ul.dm_form_elements {
   clear: both;
   background: url(../../core/images/default_bg.png) center left repeat-x;
   border: 1px solid #D3D3D3;
   padding: 10px;
   -moz-border-radius: 4px;
 }
-.sf_admin_form form .dm_form_elements .dm_form_element {
+.sf_admin_form form ul.dm_form_elements li.dm_form_element {
 	margin: 5px;
 }
 
@@ -81,28 +81,37 @@
   width: 98%;
 }
 
-.sf_admin_form .sf_admin_form_row_inner {
+.sf_admin_form div.sf_admin_form_row_inner {
 }
 
-.sf_admin_form .sf_admin_form_row_inner label {
+.sf_admin_form div.sf_admin_form_row_inner div.label_wrap,
+.sf_admin_form ul.dm_form_elements li.dm_form_element label {
   float: left;
   width: 20%;
 }
-.sf_admin_form .sf_admin_form_row.required > .sf_admin_form_row_inner > label {
+.sf_admin_form .sf_admin_form_row.required > div.sf_admin_form_row_inner > label {
   font-weight: bold;
 }
-.sf_admin_form .sf_admin_form_row_inner label.fnone {
+.sf_admin_form div.sf_admin_form_row_inner label.fnone {
   float: none;
   width: auto;
 }
 
-.sf_admin_form .sf_admin_form_row_inner input,
-.sf_admin_form .sf_admin_form_row_inner select,
-.sf_admin_form .sf_admin_form_row_inner textarea {
+div.control span.select_all,
+div.control span.unselect_all {
+	margin-top: 1em;
+	cursor: pointer;
+	display: block;
+	color: #046BCA;
+}
+
+.sf_admin_form div.sf_admin_form_row_inner input,
+.sf_admin_form div.sf_admin_form_row_inner select,
+.sf_admin_form div.sf_admin_form_row_inner textarea {
   width: 76%;
 }
 
-.sf_admin_form .sf_admin_form_row_inner input.datepicker_me {
+.sf_admin_form div.sf_admin_form_row_inner input.datepicker_me {
   width: auto;
 }
 

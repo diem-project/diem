@@ -16,13 +16,26 @@
 		  </div>
 		[?php endif; ?]
     <div class="sf_admin_form_row_inner clearfix">
-      [?php echo $form[$name]->renderLabel($label) ?]
+      [?php
+      
+      echo '<div class="label_wrap">';
+      
+      echo $form[$name]->renderLabel($label);
+      
+      if($form[$name]->getWidget() instanceof sfWidgetFormDmDoctrineChoiceMany)
+      {
+        echo sprintf('<div class="control selection"><span class="select_all">%s</span><span class="unselect_all">%s</span></div>', __('Select all'), __('Unselect all'));
+      }
+      
+      echo '</div>';
 
-      [?php echo $form[$name]->render($attributes instanceof sfOutputEscaper ? $attributes->getRawValue() : $attributes) ?]
+      echo $form[$name]->render($attributes instanceof sfOutputEscaper ? $attributes->getRawValue() : $attributes);
 
-      [?php if ($help || $help = $form[$name]->renderHelp()): ?]
-        <div class="help">[?php echo __($help) ?]</div>
-      [?php endif; ?]
+      if ($help || $help = $form[$name]->renderHelp())
+      {
+        echo '<div class="help">'.__($help).'</div>';
+      }
+      ?]
     </div>
   </div>
 [?php else: ?]
