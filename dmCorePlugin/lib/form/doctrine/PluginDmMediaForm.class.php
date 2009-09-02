@@ -29,27 +29,33 @@ abstract class PluginDmMediaForm extends BaseDmMediaForm
 
 	protected function doUpdateObject($values)
 	{
-		if (!$values['file'] instanceof sfValidatedFile)
+		if (isset($values['file']) && $values['file'] instanceof sfValidatedFile)
 		{
-			unset($values['file']);
+			$validatedFile = $values['file'];
 		}
-
+		else
+		{
+			$validatedFile = null;
+		}
+    
+		unset($values['file']);
+		
 		parent::doUpdateObject($values);
 
-		if (isset($values['file']))
+		if ($validatedFile)
 		{
 			if ($this->object->isNew())
 			{
-				if (!$this->object->create($values['file']))
+				if (!$this->object->create($validatedFile))
 				{
-					throw new dmException('Can not create file for media', $object);
+					throw new dmException(sprintf('Can not create file for media %s', $this->object));
 				}
 			}
 			else
 			{
-				if (!$this->object->replaceFile($values['file']))
+				if (!$this->object->replaceFile($validatedFile))
 				{
-					throw new dmException('Can not replace file for media', $object);
+					throw new dmException(sprintf('Can not replace file for media %s', $object));
 				}
 			}
 		}

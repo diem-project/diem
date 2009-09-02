@@ -127,4 +127,4 @@ $.getScript(href, callback);
 
 * [DONE] fix admin drag&drop sort interface
 
-* admin choice many : add all / none
+* [DONE] admin choice many : add all / none

@@ -94,7 +94,7 @@ abstract class dmFormDoctrine extends sfFormDoctrine
 			if ($existingMedia = $this->embeddedForms[$formName]->fileAlreadyExists())
 			{
 			  $values[$formName]['id'] = $existingMedia->id;
-			  unset($values[$formName['file']]);
+			  unset($values[$formName]['file']);
 			  
         $this->embeddedForms[$formName]->setObject($existingMedia);
 			}

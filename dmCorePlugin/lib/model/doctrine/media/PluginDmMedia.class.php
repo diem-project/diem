@@ -206,6 +206,8 @@ abstract class PluginDmMedia extends BaseDmMedia
 	{
 		$this->file = dmOs::sanitizeFileName($file->getOriginalName());
 
+    $this->clearCache();
+
 		$file->save($this->fullPath);
 
     $this->refreshFromFile();
@@ -219,14 +221,8 @@ abstract class PluginDmMedia extends BaseDmMedia
 	public function replaceFile(sfValidatedFile $file)
 	{
 		$this->destroy();
-
-    $this->file = dmOs::sanitizeFileName($file->getOriginalName());
-
-    $file->save($this->fullPath);
-
-		$this->refreshFromFile();
-
-		return true;
+		
+    return $this->create($file);
 	}
 
 	/*
@@ -236,12 +232,12 @@ abstract class PluginDmMedia extends BaseDmMedia
 	{
 		$toMedia->file = $this->file;
 
-		if (!@copy($this->getFullPath(), $toMedia->getFullPath()))
+		if (!@copy($this->fullPath, $toMedia->fullPath))
 		{
 			throw new dmException(sprintf(
         'Can not copy from %s to %s',
-				$this->getFullPath(),
-				$toMedia->getFullPath()
+				$this->fullPath,
+				$toMedia->fullPath
 			));
 		}
 
@@ -282,6 +278,7 @@ abstract class PluginDmMedia extends BaseDmMedia
 
 		if ($this->checkFileExists())
 		{
+//			dmDebug::kill('unlink '.$this->fullPath, $this);
 			dmFilesystem::get()->unlink($this->fullPath);
 		}
 
