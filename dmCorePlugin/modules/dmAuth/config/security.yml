@@ -6,3 +6,6 @@ signin:
 
 signout:
   is_secure: off
+
+badBrowser:
+  is_secure: off

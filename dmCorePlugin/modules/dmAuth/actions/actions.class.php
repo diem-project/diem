@@ -11,6 +11,11 @@ class dmAuthActions extends BasesfGuardAuthActions
   	{
   		return $this->ajaxLogin($request);
   	}
+  	
+  	if (!$this->getUser()->getBrowser()->isModern())
+  	{
+  		return $this->forward('dmAuth', 'badBrowser');
+  	}
 
     $this->setLayout(dmOs::join(sfConfig::get('dm_core_dir'), 'modules/dmAuth/templates/layout'));
 
@@ -18,12 +23,16 @@ class dmAuthActions extends BasesfGuardAuthActions
 
     return parent::executeSignin($request);
   }
-
+  
+  public function executeBadBrowser()
+  {
+  	
+  }
 
   protected function ajaxLogin(sfWebRequest $request)
   {
     $class = sfConfig::get('app_sf_guard_plugin_signin_form', 'sfGuardFormSignin');
-    $this->form = new $class();
+    $this->form = new $class;
 
     $this->form->bind(array(
       'username' => $request->getParameter('username'),

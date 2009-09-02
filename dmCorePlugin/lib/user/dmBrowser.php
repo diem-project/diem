@@ -64,4 +64,26 @@ class dmBrowser
 	{
 		return $this->version;
 	}
+	
+	/*
+	 * Subjective modern browsers wich can access to Diem admin
+	 */
+	public function isModern()
+	{
+		switch($this->name)
+		{
+			case 'firefox':
+				$isModern = version_compare(3, $this->version); break;
+			case 'opera':
+				$isModern = version_compare(9, $this->version); break;
+			case 'safari':
+				$isModern = version_compare(4, $this->version); break;
+			case 'chrome':
+				$isModern = true; break;
+			default:
+				 $isModern = false;
+		}
+		
+		return $isModern;
+	}
 }
