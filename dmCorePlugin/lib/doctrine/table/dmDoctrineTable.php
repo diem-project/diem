@@ -69,11 +69,11 @@ abstract class dmDoctrineTable extends Doctrine_Table
    */
   public function joinDmMedias(myDoctrineQuery $q)
   {
-    foreach($this->getRelationHolder()->getLocalMedias() as $relation)
+  	foreach($this->getRelationHolder()->getLocalMedias() as $relation)
     {
-      $q->leftJoin($q->getRootAlias().'.'.$relation['alias'].' '.$relation['alias']);
+      $q->withDmMedia($relation->getAlias());
     }
-
+    
     return $q;
   }
 
@@ -83,9 +83,11 @@ abstract class dmDoctrineTable extends Doctrine_Table
    */
   public function joinLocals(myDoctrineQuery $q)
   {
+    $rootAlias = $q->getRootAlias();
+    
     foreach($this->getRelationHolder()->getLocals() as $relation)
     {
-      $q->leftJoin($q->getRootAlias().'.'.$relation['alias'].' '.$relation['alias']);
+      $q->leftJoin($rootAlias.'.'.$relation['alias'].' '.$relation['alias']);
     }
 
     return $q;
@@ -97,6 +99,8 @@ abstract class dmDoctrineTable extends Doctrine_Table
    */
   public function joinAll(myDoctrineQuery $q)
   {
+    $rootAlias = $q->getRootAlias();
+    
     foreach($this->getRelationHolder()->getAll() as $relation)
     {
       if ($relation['alias'] == 'Translation')
@@ -105,16 +109,25 @@ abstract class dmDoctrineTable extends Doctrine_Table
       }
       elseif ($relation['class'] == 'DmMedia')
       {
-        $q->leftJoin($q->getRootAlias().'.'.$relation['alias'].' '.$relation['local'])
-          ->leftJoin($relation['local'].'.Folder '.$relation['local'].'_folder');
+        $q->leftJoin($rootAlias.'.'.$relation['alias'].' '.$relation['local'])
+          ->leftJoin($relation['local'].'.Folder '.$relation['local'].'Folder');
       }
       else
       {
-        $q->leftJoin($q->getRootAlias().'.'.$relation['alias'].' '.$relation['alias']);
+        $q->leftJoin($rootAlias.'.'.$relation['alias'].' '.$relation['alias']);
       }
     }
 
     return $q;
+  }
+  
+  /*
+   * @return myDoctrine query
+   * the default admin list query
+   */
+  public function getAdminListQuery(myDoctrineQuery $q)
+  {
+  	return $this->joinAll($q);
   }
 
   /*

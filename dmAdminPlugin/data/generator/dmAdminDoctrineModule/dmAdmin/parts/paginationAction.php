@@ -31,12 +31,12 @@
 
     $query = $this->filters->buildQuery($this->getFilters());
 <?php else: ?>
-    $query = Doctrine::getTable('<?php echo $this->getModelClass() ?>')
+    $query = dmDb::table('<?php echo $this->getModelClass() ?>')
       ->createQuery('a');
 
     if ($tableMethod)
     {
-      $query = Doctrine::getTable('<?php echo $this->getModelClass() ?>')->$tableMethod($query);
+      $query = dmDb::table('<?php echo $this->getModelClass() ?>')->$tableMethod($query);
     }
 <?php endif; ?>
 

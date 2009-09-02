@@ -95,7 +95,15 @@ abstract class dmDoctrineQuery extends Doctrine_Query
     ->leftJoin($me.'.Translation translation ON '.$me.'.id = translation.id AND translation.lang = ?', $culture);
 	}
 
-
+	/*
+   * Join media for this columnName or alias
+   * return @myDoctrineQuery $this
+   */
+  public function withDmMedia($alias = null)
+  {
+    return $this->leftJoin(sprintf('%s.%s %s, %s.%s %s', $this->getRootAlias(), $alias, $alias, $alias, 'Folder', $alias.'Folder'));
+  }
+	
 	public function whereIsActive($boolean = true, $model = null)
 	{
     if (!is_null($model))

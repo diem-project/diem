@@ -2,13 +2,23 @@
 
 require_once(realpath(dirname(__FILE__).'/vendor').'/JsMinEnh.php');
 
-class dmJsMinifier extends JsMinEnh
+class dmJsMinifier
 {
 	
 	public static function transform($script)
 	{
-		$minifier = new self($script);
-		return $minifier->minify();
+		return self::minify1($script);
 	}
-	
+  
+  protected static function minify1($script)
+  {
+    $minifier = new JsMinEnh($script);
+    return $minifier->minify();
+  }
+//  
+//  protected static function minify2($script)
+//  {
+//    return JSMinPlus::minify($script);
+//  }
+  
 }
