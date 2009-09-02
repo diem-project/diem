@@ -1,8 +1,4 @@
-.ui-widget {
-  font-size: 11px;
-}
-
-.ui-widget-header {
+.dm .ui-widget-header {
   background: url(../images/default_bg.png) center center repeat-x;
   border-color: #bbb;
 }	
@@ -44,20 +40,6 @@ div.jGrowl div.jGrowl-notification, div.jGrowl div.jGrowl-closer {
 .ui-dialog .loader48 {
   background: #fff url(../images/48/loader.gif) center center no-repeat;
   min-height: 100px;
-}
-
-
-div.ui-dialog {
-	-moz-box-shadow: 0 0 10px #000;
-}
-
-div.ui-dialog.dm .ui-dialog-content {
-  overflow: hidden;
-  padding: 5px;
-}
-
-div.ui-dialog .ui-dialog-titlebar {
-  padding: 3px 3px 1px 12px;
 }
 
 ul.ui-tabs-nav > li.dm_error {

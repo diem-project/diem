@@ -18,7 +18,6 @@ css:
 
   front:
     dm_reset:         dm_reset
-    main:             main
     toolBar:          toolBar
     pageBar:          pageBar
     mediaBar:         mediaBar

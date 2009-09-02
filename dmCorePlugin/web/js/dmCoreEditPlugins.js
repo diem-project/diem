@@ -156,8 +156,7 @@
 				pTop += (wnd.height() - this.uiDialog.outerHeight()) / 2;
 			}
 			
-			// prevent the dialog from being too high (make sure the titlebar
-			// is accessible)
+			// prevent the dialog from being too high (make sure the titlebar is accessible)
 			pTop = Math.max(pTop, minTop);
 			this.uiDialog.css({
 				position: 'fixed',

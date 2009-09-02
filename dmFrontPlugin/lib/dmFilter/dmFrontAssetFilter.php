@@ -65,6 +65,7 @@ class dmFrontAssetFilter extends dmAssetFilter
         'lib.ui-tabs',
         'lib.markitup',
         'lib.markitupSet',
+        'front.dm_reset',
         'core.util',
         'core.editMode',
         'core.interface',
@@ -75,8 +76,6 @@ class dmFrontAssetFilter extends dmAssetFilter
         'core.pageBar',
         'core.mediaBar',
         'core.form',
-        'front.dm_reset',
-        'front.main',
         'front.toolBar',
         'front.zone',
         'front.widget',
@@ -87,8 +86,7 @@ class dmFrontAssetFilter extends dmAssetFilter
 		else
 		{
       $cssArray = array(
-        'core.util',
-        'front.main'
+        'core.util'
       );
 		}
 		

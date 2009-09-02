@@ -1,7 +1,18 @@
+.dm {
+  font-family: arial,helvetica,verdana,sans-serif;
+  font-size: 12px;
+}
+
+.dm a, a.dm {
+  cursor: pointer;
+}
+
+.dm,
 .dm form,
 .dm ul,
 .dm ol,
 .dm li,
+.dm span,
 .dm a,
 .dm a:link,
 .dm a:hover,
@@ -9,10 +20,12 @@
   margin: 0;
   border: 0;
   padding: 0;
-  background-color: none;
+  background-color: transparent;
   text-decoration: none;
   font-weight: normal;
-  color: inherit;  
+  color: inherit;
+  line-height: normal;
+  text-align: left;
 }
 
 .dm input,
