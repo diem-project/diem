@@ -9,20 +9,20 @@ class dmStaticHelper
 	 * a, array(), contenu
 	 * a#truc.tagada, contenu
 	 */
-	public static function £o($name, array $opt = array())
+	public static function £o($tagName, array $opt = array())
 	{
-		return self::£($name, $opt, false, false);
+		return self::£($tagName, $opt, false, false);
 	}
 
-	public static function £c($name)
+	public static function £c($tagName)
 	{
-		if (($pos = strpos($name, '.')) !== false)
+		if (($pos = strpos($tagName, '.')) !== false)
 		{
-			$classes = substr($name, $pos+1);
-			$name = substr($name, 0, $pos);
+			$classes = substr($tagName, $pos+1);
+			$tagName = substr($tagName, 0, $pos);
 			if (strpos($classes, 'beafh') !== false || strpos($classes, 'beafv') !== false)
 			{
-				if (in_array($name, array('span', 'a', 'p')))
+				if (in_array($tagName, array('span', 'a', 'p')))
 				{
 					$beafTag = 'span';
 				}
@@ -30,42 +30,41 @@ class dmStaticHelper
 				{
 					$beafTag = 'div';
 				}
-				return '</'.$beafTag.'><'.$beafTag.' class="beafter"></'.$beafTag.'></'.$name.'>';
+				return '</'.$beafTag.'><'.$beafTag.' class="beafter"></'.$beafTag.'></'.$tagName.'>';
 			}
 		}
-		return '</'.$name.'>';
+		return '</'.$tagName.'>';
 	}
 
-	public static function £($name, $opt = array(), $content = false, $openAndClose = true)
+	public static function £($tagName, $opt = array(), $content = false, $openAndClose = true)
 	{
-		if (!($name = trim($name)))
+		if (!($tagName = trim($tagName)))
 		{
 			return '';
 		}
 
 		$tagOpt = array();
 
-		// séparation du nom du tag et des attributs dans $name
-		if ($first_space_pos = strpos($name, ' '))
+		// séparation du nom du tag et des attributs dans $tagName
+		if ($firstSpacePos = strpos($tagName, ' '))
 		{
-			$name_opt = substr($name, $first_space_pos + 1);
-			$name = substr($name, 0, $first_space_pos);
+			$tagNameOpt = substr($tagName, $firstSpacePos + 1);
+			$tagName = substr($tagName, 0, $firstSpacePos);
 
 			// DMS STYLE - string opt in name
-			dmString::retrieveOptFromString($name_opt, $tagOpt);
+			dmString::retrieveOptFromString($tagNameOpt, $tagOpt);
 		}
 
 		// JQUERY STYLE - css expression
-		dmString::retrieveCssFromString($name, $tagOpt);
+		dmString::retrieveCssFromString($tagName, $tagOpt);
 
 		// ARRAY STYLE - array opt
-
 		if (is_array($opt) && !empty($opt))
 		{
-			if (isset($opt["json"]))
+			if (isset($opt['json']))
 			{
-				$tagOpt['class'][] = json_encode($opt["json"]);
-				unset($opt["json"]);
+				$tagOpt['class'][] = json_encode($opt['json']);
+				unset($opt['json']);
 			}
 			if (isset($opt['class']))
 			{
@@ -79,7 +78,6 @@ class dmStaticHelper
 		}
 
 		// SYMFONY STYLE - string opt
-
 		elseif (is_string($opt) && $content)
 		{
 			$opt = sfToolkit::stringToArray($opt);
@@ -102,9 +100,9 @@ class dmStaticHelper
 			}
 			else // Pas de opt
 			{
-				if ($name === "span")
+				if ($tagName === 'span')
 				{
-					$content = "&nbsp;";
+					$content = '&nbsp;';
 				}
 				else
 				{
@@ -115,11 +113,11 @@ class dmStaticHelper
 
 		$class = isset($tagOpt['class']) ? $tagOpt['class'] : array();
 
-		if (in_array("beafh", $class) || in_array("beafv", $class))
+		if (in_array('beafh', $class) || in_array('beafv', $class))
 		{
 			$isBeaf = true;
-			$tagOpt['class'][] = "clearfix";
-			$beafTag = in_array($name, array("span", "a", "p")) ? 'span' : 'div';
+			$tagOpt['class'][] = 'clearfix';
+			$beafTag = in_array($tagName, array('span', 'a', 'p')) ? 'span' : 'div';
 		}
 		else
 		{
@@ -149,22 +147,22 @@ class dmStaticHelper
 		{
 			if ($isBeaf)
 			{
-				$tag = '<'.$name.$optHtml.'><'.$beafTag.' class="beafore"></'.$beafTag.'><'.$beafTag.' class="beafin">'.$content.'</'.$beafTag.'><'.$beafTag.' class="beafter"></'.$beafTag.'></'.$name.'>';
+				$tag = '<'.$tagName.$optHtml.'><'.$beafTag.' class="beafore"></'.$beafTag.'><'.$beafTag.' class="beafin">'.$content.'</'.$beafTag.'><'.$beafTag.' class="beafter"></'.$beafTag.'></'.$tagName.'>';
 			}
 			else
 			{
-				$tag = '<'.$name.$optHtml.'>'.$content.'</'.$name.'>';
+				$tag = '<'.$tagName.$optHtml.'>'.$content.'</'.$tagName.'>';
 			}
 		}
 		else
 		{
 			if ($isBeaf)
 			{
-				$tag = '<'.$name.$optHtml.'><'.$beafTag.' class="beafore"></'.$beafTag.'><'.$beafTag.' class="beafin">';
+				$tag = '<'.$tagName.$optHtml.'><'.$beafTag.' class="beafore"></'.$beafTag.'><'.$beafTag.' class="beafin">';
 			}
 			else
 			{
-				$tag = '<'.$name.$optHtml.'>';
+				$tag = '<'.$tagName.$optHtml.'>';
 			}
 		}
 

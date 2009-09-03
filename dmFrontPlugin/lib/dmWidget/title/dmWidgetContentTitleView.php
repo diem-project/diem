@@ -21,7 +21,7 @@ class dmWidgetContentTitleView extends dmWidgetPluginView
 
 	protected function doRender(array $vars)
 	{
-	  return dmStaticHelper::£($vars['tag'], $vars['text']);
+	  return sprintf('<%s>%s</%s>', $vars['tag'], $vars['text'], $vars['tag']);
 	}
 	
 	public function toIndexableString(array $vars)

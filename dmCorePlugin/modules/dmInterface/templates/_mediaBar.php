@@ -18,4 +18,4 @@ echo £o('div#dm_media_bar.dm');
 
 echo £c('div');
 
-echo '<div id="dm_media_bar_toggler"></div>';
+echo '<div id="dm_media_bar_toggler" class="dm"></div>';

@@ -3,131 +3,132 @@
 class dmFrontModuleComponents extends myFrontBaseComponents
 {
 
-	protected
-	$dmModule;
+  protected
+  $dmModule;
 
   /*
    * @return myDoctrineRecord $record
    */
-	protected function getShowRecord(myDoctrineQuery $query = null)
-	{
+  protected function getShowRecord(myDoctrineQuery $query = null)
+  {
     if (is_null($query))
     {
       $query = $this->getTable()->createQuery('r');
     }
-    
-		if ($this->recordId)
-		{
-			$record = $query->addWhere($query->getRootAlias().'.id = ?', $this->recordId)->fetchRecord();
 
-	    if (!$record)
-	    {
-	      throw new dmException(sprintf('No record found for %s %d', $this->getDmModule(), $this->recordId));
-	    }
-		}
-		else
-		{
-			$record = $query
-	    ->whereDescendantId($this->getPage()->getDmModule()->getModel(), $this->getPage()->recordId, $this->getDmModule()->getModel())
-	    ->fetchRecord();
-    
-//    $this->getDmContext()->getPage()->record->getAncestorRecord($this->getDmModule()->getModel());
+    if ($this->recordId)
+    {
+      $record = $query->addWhere($query->getRootAlias().'.id = ?', $this->recordId)->fetchRecord();
 
-			if (!$record)
-			{
-			  throw new dmException(sprintf('Can not determine auto %s for page %s', $this->getDmModule(), $page));
-			}
-		}
+      if (!$record)
+      {
+        throw new dmException(sprintf('No record found for %s %d', $this->getDmModule(), $this->recordId));
+      }
+    }
 
-		return $record;
-	}
+    else
+    {
+      $record = $query
+      ->whereDescendantId($this->getPage()->getDmModule()->getModel(), $this->getPage()->recordId, $this->getDmModule()->getModel())
+      ->fetchRecord();
 
-	/*
-	 * @return myDoctrinePager $pager
-	 */
-	protected function getListPager(myDoctrineQuery $query = null)
-	{
-		$pager = new myDoctrinePager($this->getDmModule()->getModel(), $this->maxPerPage);
+      //    $this->getDmContext()->getPage()->record->getAncestorRecord($this->getDmModule()->getModel());
 
-		$pager->setQuery($this->_getListQuery($query));
+      if (!$record)
+      {
+        throw new dmException(sprintf('Can not determine auto %s for page %s', $this->getDmModule(), $page));
+      }
+    }
 
-		$pager->setPage($this->getRequest()->getParameter('page', 1));
+    return $record;
+  }
 
-		$pager->configureNavigation(array(
-		  'top'     => $this->navTop,
-		  'bottom'  => $this->navBottom
-		));
+  /*
+   * @return myDoctrinePager $pager
+   */
+  protected function getListPager(myDoctrineQuery $query = null)
+  {
+    $pager = new myDoctrinePager($this->getDmModule()->getModel(), $this->maxPerPage);
 
-		$pager->init();
+    $pager->setQuery($this->_getListQuery($query));
 
-		return $pager;
-	}
+    $pager->setPage($this->getRequest()->getParameter('page', 1));
 
-	protected function _getListQuery(myDoctrineQuery $query = null)
-	{
-		if (is_null($query))
-		{
-		  $query = $this->getTable()->createQuery('r');
-		}
-		
-		/*
-		 * Apply order
-		 */
-		if ($this->orderType == 'rand')
-		{
-			$query->addOrderBy('RAND()');
-		}
-		else
-		{
-			$query->addOrderBy($this->orderField.' '.$this->orderType);
-		}
-    
-		/*
-		 * Apply filters
-		 */
-		foreach($this->filters as $filterKey => $filterValue)
-		{
+    $pager->configureNavigation(array(
+      'top'     => $this->navTop,
+      'bottom'  => $this->navBottom
+    ));
+
+    $pager->init();
+
+    return $pager;
+  }
+
+  protected function _getListQuery(myDoctrineQuery $query = null)
+  {
+    if (is_null($query))
+    {
+      $query = $this->getTable()->createQuery('r');
+    }
+
+    /*
+     * Apply order
+     */
+    if ($this->orderType == 'rand')
+    {
+      $query->addOrderBy('RAND()');
+    }
+    else
+    {
+      $query->addOrderBy($this->orderField.' '.$this->orderType);
+    }
+
+    /*
+     * Apply filters
+     */
+    foreach($this->filters as $filterKey => $filterValue)
+    {
       if (($filterModule = $this->dmModule->getAncestor($filterKey)) || ($filterModule = $this->dmModule->getAssociation($filterKey)))
       {
         if ($filterValue)
-		    {
-		      $filterRecordId = $filterValue;
+        {
+          $filterRecordId = $filterValue;
 
-		      if (!$filterRecordId)
-		      {
-		        throw new dmException(sprintf('No filter record found for %s %d', $filterModule, $filterValue));
-		      }
-		    }
-		    else
-		    {
-		      $filterRecordId = $this->getDmContext()->getPage()->record->getAncestorRecordId($filterModule->getModel());
+          if (!$filterRecordId)
+          {
+            throw new dmException(sprintf('No filter record found for %s %d', $filterModule, $filterValue));
+          }
+        }
+        else
+        {
+          $filterRecordId = $this->getDmContext()->getPage()->record->getAncestorRecordId($filterModule->getModel());
 
-		      if (!$filterRecordId)
-		      {
-		        throw new dmException(sprintf('Can not determine auto filter %s for page %s', $filterModule, $page));
-		      }
-		    }
+          if (!$filterRecordId)
+          {
+            throw new dmException(sprintf('Can not determine auto filter %s for page %s', $filterModule, $page));
+          }
+        }
 
-		    $query->whereAncestorId($filterModule->getModel(), $filterRecordId, $this->getDmModule()->getModel());
+        $query->whereAncestorId($filterModule->getModel(), $filterRecordId, $this->getDmModule()->getModel());
       }
-		}
+    }
 
-		return $query;
-	}
+    return $query;
+  }
 
-	protected function getDmModule()
-	{
-		if (is_null($this->dmModule))
-		{
-			$this->dmModule = dmModuleManager::getModule(preg_replace('|^(.+)Components$|', '$1', get_class($this)));
-		}
+  protected function getDmModule()
+  {
+    if (is_null($this->dmModule))
+    {
+      $this->dmModule = dmModuleManager::getModule(preg_replace('|^(.+)Components$|', '$1', get_class($this)));
+    }
 
-		return $this->dmModule;
-	}
-	
-	protected function getTable()
-	{
-		return $this->getDmModule()->getTable();
-	}
+    return $this->dmModule;
+  }
+
+  protected function getTable()
+  {
+    return $this->getDmModule()->getTable();
+  }
 
 }

@@ -43,16 +43,12 @@ class dmFrontPageEditHelper extends dmFrontPageHelper
 
   public function renderWidget(array $widget)
   {
-    $cssClasses = array('dm_widget', $widget['css_class'], $widget['action']);
+    list($widgetWrapClass, $widgetInnerClass) = $this->getWidgetContainerClasses($widget);
 
     /*
-     * Open widget wrap with user's classes
+     * Open widget wrap with wrapped user's classes
      */
-    $html = sprintf(
-      '<div class="%s" id="dm_widget_%d">',
-      dmArray::toHtmlCssClasses($cssClasses),
-      $widget['id']
-    );
+    $html = sprintf('<div class="%s" id="dm_widget_%d">', $widgetWrapClass, $widget['id']);
 
     /*
      * Add edit button if required
@@ -67,9 +63,9 @@ class dmFrontPageEditHelper extends dmFrontPageHelper
     }
 
     /*
-     * Open widget inner
+     * Open widget inner with user's classes
      */
-    $html .= '<div class="dm_widget_inner">';
+    $html .= sprintf('<div class="%s">', $widgetInnerClass);
 
     /*
      * get widget inner content

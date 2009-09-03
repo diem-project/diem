@@ -26,12 +26,19 @@ abstract class dmWidgetBaseForm extends dmForm
 
   	parent::__construct($widget->values, $options, $CSRFSecret);
   }
+  
+  public function setup()
+  {
+  	parent::setup();
+  	
+    $this->setName($this->name.'_'.$this->dmWidget->id);
+  }
 
   public function configure()
   {
     parent::configure();
 
-    $this->widgetSchema['cssClass']     = new sfWidgetFormInputText();
+    $this->widgetSchema['cssClass']     = new sfWidgetFormInputText;
     $this->validatorSchema['cssClass']  = new sfValidatorString(array('required' => false));
 
     $this->setDefault('cssClass', $this->dmWidget->cssClass);

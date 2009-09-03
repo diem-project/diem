@@ -190,7 +190,7 @@ class dmString extends sfInflector
     return strtr($text, self::$accentsReplacements);
   }
 
-	public static function toArray($string, $implode_classes = false)
+	public static function toArray($string, $implodeClasses = false)
 	{
     if(is_array($string))
     {
@@ -202,8 +202,6 @@ class dmString extends sfInflector
       return array();
     }
 
-    $timer = dmDebug::timer('dmString::toArray');
-
     $array = array();
 
     // JQUERY STYLE - css expression
@@ -212,12 +210,10 @@ class dmString extends sfInflector
     // DMS STYLE - string opt in name
     self::retrieveOptFromString($string, $array);
 
-    if ($implode_classes && isset($array['class']))
+    if ($implodeClasses && isset($array['class']))
     {
     	$array['class'] = implode(' ', $array['class']);
     }
-
-    $timer->addTime();
 
     return $array;
 	}

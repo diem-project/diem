@@ -12,7 +12,7 @@ class dmAuthActions extends BasesfGuardAuthActions
   		return $this->ajaxLogin($request);
   	}
   	
-  	if (!$this->getUser()->getBrowser()->isModern())
+  	if (sfConfig::get('sf_environment') != 'test' && !$this->getUser()->getBrowser()->isModern())
   	{
   		return $this->forward('dmAuth', 'badBrowser');
   	}

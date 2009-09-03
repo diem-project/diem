@@ -6,6 +6,8 @@ class DmZoneFrontForm extends DmZoneForm
   public function configure()
   {
   	parent::configure();
+    
+    $this->setName($this->name.'_'.$this->object->id);
 
     unset($this['dm_area_id'], $this['position'], $this['updated_at']);
 

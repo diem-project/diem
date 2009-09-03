@@ -128,3 +128,11 @@ $.getScript(href, callback);
 * [DONE] fix admin drag&drop sort interface
 
 * [DONE] admin choice many : add all / none
+
+* add a menu widget
+
+* front edit : make impossible to open many times a zone or widget edit dialog
+
+* front edit : try on zone edit dialog does not work
+
+* report Zend CodeGenerator bug : Method bad indentation in body generation

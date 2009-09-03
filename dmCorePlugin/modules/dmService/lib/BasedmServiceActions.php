@@ -12,7 +12,8 @@ class BasedmServiceActions extends dmBaseActions
     'dmPageSync',
     'dmRefresh',
     'dmLoremize',
-    'dmUpdateSeo'
+    'dmUpdateSeo',
+    'dmFrontGenerate'
   );
 
   public function executeIndex(sfWebRequest $request)

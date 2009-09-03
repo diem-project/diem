@@ -171,17 +171,17 @@ class dmFrontPageHelper
 
   public function renderWidget(array $widget)
   {
-    $cssClasses = array('dm_widget', $widget['css_class'], $widget['action']);
+  	list($widgetWrapClass, $widgetInnerClass) = $this->getWidgetContainerClasses($widget);
 
     /*
-     * Open widget wrap with user's classes
+     * Open widget wrap with wrapped user's classes
      */
-    $html = sprintf('<div class="%s">', dmArray::toHtmlCssClasses($cssClasses));
+    $html = sprintf('<div class="%s">', $widgetWrapClass);
 
     /*
-     * Open widget inner
+     * Open widget inner with user's classes
      */
-    $html .= '<div class="dm_widget_inner">';
+    $html .= sprintf('<div class="%s">', $widgetInnerClass);
 
     /*
      * get widget inner content
@@ -238,4 +238,35 @@ class dmFrontPageHelper
     return $html;
   }
 
+  protected function getWidgetContainerClasses(array $widget)
+  {
+    if(!empty($widget['css_class']))
+    {
+    	$widgetWrappedClasses = explode(' ', $widget['css_class']);
+	    foreach($widgetWrappedClasses as $index => $class)
+	    {
+	      $widgetWrappedClasses[$index] = $class.'_wrap';
+	    }
+	    
+      $widgetWrapClass  = dmArray::toHtmlCssClasses(array('dm_widget', $widget['action'], implode(' ', $widgetWrappedClasses)));
+      $widgetInnerClass = dmArray::toHtmlCssClasses(array('dm_widget_inner', $widget['css_class']));
+    }
+    else
+    {
+      $widgetWrapClass  = 'dm_widget '.$widget['action'];
+      $widgetInnerClass = 'dm_widget_inner';
+    }
+    
+    return array($widgetWrapClass, $widgetInnerClass);
+  }
+  
+  protected function appendWrapSuffixToClasses(array $classes)
+  {
+  	foreach($classes as $index => $class)
+  	{
+  		$classes[$index] = $class.'_wrap';
+  	}
+  	
+  	return $classes;
+  }
 }
