@@ -11,12 +11,10 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
 	 */
   public function construct()
   {
-		self::initializeI18n();
-
-		if ($this->getTable()->hasI18n())
-		{
-			$this->unshiftFilter(new dmDoctrineRecordI18nFilter);
-		}
+    if (!self::$_initialized)
+    {
+		  self::initializeI18n();
+    }
 	}
 
   /*
@@ -544,7 +542,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
 	 */
 	public function _set($fieldName, $value, $load = true)
 	{
-		if(!ctype_lower($fieldName) && !$this->contains($fieldName))
+		if(!ctype_lower($fieldName) && !ctype_upper($fieldName{0}) && !$this->contains($fieldName))
 		{
 			$underscoredFieldName = dmString::underscore($fieldName);
 			if (strpos($underscoredFieldName, '_') !== false && $this->contains($underscoredFieldName))

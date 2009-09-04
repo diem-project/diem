@@ -140,3 +140,5 @@ $.getScript(href, callback);
 * consider integrating jquery tools & flow player
 
 * front edit deleting a zone does not close its edition dialog
+
+* admin record edition : try changing save button like pages link on top of netvibes

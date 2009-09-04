@@ -19,7 +19,8 @@ class dmFrontLinkTagPage extends dmFrontLinkTag
 
 	protected function getBaseHref()
 	{
-		$pageSlug = $this->page->slug;
+		$pageSlug = $this->page->get('slug');
+		
 		return dm::getRequest()->getScriptName().($pageSlug ? '/'.$pageSlug : '');
 	}
 
@@ -59,7 +60,9 @@ class dmFrontLinkTagPage extends dmFrontLinkTag
   
   protected function prepareAttributesForHtml(array $attributes)
   {
+    $t = dmDebug::timer('dmLinkPageTag::parent::prepareAttributesForHtml');
   	$attributes = parent::prepareAttributesForHtml($attributes);
+    $t->addTime();
 
     if($currentPage = dmContext::getInstance()->getPage())
     {

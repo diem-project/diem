@@ -32,10 +32,6 @@
   white-space: nowrap;
 }
 
-#sfWebDebugBar[id]
-{
-}
-
 #sfWebDebugBar img
 {
   vertical-align: middle;
@@ -191,7 +187,8 @@
   color: darkgreen;
 }
 
-.sfWebDebugLogInfo
+.sfWebDebugLogInfo,
+.dm .sfWebDebugLogInfo
 {
   color: blue;
 }

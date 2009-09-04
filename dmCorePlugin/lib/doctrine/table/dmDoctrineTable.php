@@ -1,67 +1,84 @@
 <?php
 
 abstract class dmDoctrineTable extends Doctrine_Table
-{ 
+{
+
+  /**
+   * Construct template method.
+   *
+   * This method provides concrete Table classes with the possibility
+   * to hook into the constructor procedure. It is called after the
+   * Doctrine_Table construction process is finished.
+   *
+   * @return void
+   */
+  public function construct()
+  {
+    if ($this->hasI18n())
+    {
+      $this->unshiftFilter(new dmDoctrineRecordI18nFilter);
+    }
+  }
   /*
    * @return DmMediaFolder the DmMediaFolder used to store this table's record's medias
    */
-	public function getDmMediaFolder()
-	{
-		if ($this->hasCache('dm_media_folder'))
-		{
-			return $this->getCache('dm_media_folder');
-		}
-		
+  public function getDmMediaFolder()
+  {
+    if ($this->hasCache('dm_media_folder'))
+    {
+      return $this->getCache('dm_media_folder');
+    }
+
     return $this->setCache('dm_media_folder', dmDb::table('DmMediaFolder')->findOneByRelPathOrCreate($this->getDmModule()->getUnderscore()));
-	}
-	/*
-	 * @return bool if this table's records interact with page tree
-	 * so if a record is saved or deleted, page tree must be updated
-	 */
+  }
+  /*
+   * @return bool if this table's records interact with page tree
+   * so if a record is saved or deleted, page tree must be updated
+   */
   public function interactsWithPageTree()
   {
-  	if($this->hasCache('interacts_with_page_tree'))
-  	{
-  		return $this->getCache('interacts_with_page_tree');
-  	}
-  	/*
-  	 * If table belongs to a project module,
-  	 * it may interact with tree
-  	 */
-  	if ($module = $this->getDmModule())
-  	{
-      $interacts = $module->interactsWithPageTree();
-  	}
-  	/*
-  	 * If table owns project records,
+    if($this->hasCache('interacts_with_page_tree'))
+    {
+      return $this->getCache('interacts_with_page_tree');
+    }
+    /*
+     * If table belongs to a project module,
      * it may interact with tree
-  	 */
-  	else
-  	{
-  		$interacts = false;
-	  	foreach($this->getRelationHolder()->getLocals() as $localRelation)
-	  	{
-	  		if ($localModule = dmModuleManager::getModuleByModel($localRelation['class']))
-	  		{
-	  			if ($localModule->interactsWithPageTree())
-	  			{
-	  				$interacts = true;
-	  				break;
-	  			}
-	  		}
-	  	}
-  	}
-  	
-  	return $this->setCache('interacts_with_page_tree', $interacts);
+     */
+    if ($module = $this->getDmModule())
+    {
+      $interacts = $module->interactsWithPageTree();
+    }
+    /*
+     * If table owns project records,
+     * it may interact with tree
+     */
+    else
+    {
+      $interacts = false;
+      foreach($this->getRelationHolder()->getLocals() as $localRelation)
+      {
+        if ($localModule = dmModuleManager::getModuleByModel($localRelation['class']))
+        {
+          if ($localModule->interactsWithPageTree())
+          {
+            $interacts = true;
+            break;
+          }
+        }
+      }
+    }
+     
+    return $this->setCache('interacts_with_page_tree', $interacts);
   }
-  
+
   /*
    * @return myDoctrineRecord the first record in the table
    */
-	public function findOne()
-	{
-		return $this->createQuery()->fetchRecord();
-	}
+  public function findOne()
+  {
+    return $this->createQuery()->fetchRecord();
+  }
 
   /*
    * Will join all record available medias
@@ -69,11 +86,11 @@ abstract class dmDoctrineTable extends Doctrine_Table
    */
   public function joinDmMedias(myDoctrineQuery $q)
   {
-  	foreach($this->getRelationHolder()->getLocalMedias() as $relation)
+    foreach($this->getRelationHolder()->getLocalMedias() as $relation)
     {
       $q->withDmMedia($relation->getAlias());
     }
-    
+
     return $q;
   }
 
@@ -84,7 +101,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
   public function joinLocals(myDoctrineQuery $q)
   {
     $rootAlias = $q->getRootAlias();
-    
+
     foreach($this->getRelationHolder()->getLocals() as $relation)
     {
       $q->leftJoin($rootAlias.'.'.$relation['alias'].' '.$relation['alias']);
@@ -100,7 +117,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
   public function joinAll(myDoctrineQuery $q)
   {
     $rootAlias = $q->getRootAlias();
-    
+
     foreach($this->getRelationHolder()->getAll() as $relation)
     {
       if ($relation['alias'] == 'Translation')
@@ -110,7 +127,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
       elseif ($relation['class'] == 'DmMedia')
       {
         $q->leftJoin($rootAlias.'.'.$relation['alias'].' '.$relation['local'])
-          ->leftJoin($relation['local'].'.Folder '.$relation['local'].'Folder');
+        ->leftJoin($relation['local'].'.Folder '.$relation['local'].'Folder');
       }
       else
       {
@@ -120,14 +137,14 @@ abstract class dmDoctrineTable extends Doctrine_Table
 
     return $q;
   }
-  
+
   /*
    * @return myDoctrine query
    * the default admin list query
    */
   public function getAdminListQuery(myDoctrineQuery $q)
   {
-  	return $this->joinAll($q);
+    return $this->joinAll($q);
   }
 
   /*
@@ -136,19 +153,19 @@ abstract class dmDoctrineTable extends Doctrine_Table
   public function getAllColumns()
   {
     $columns = $this->getColumns();
-    
+
     if($this->hasI18n())
     {
-    	$columns = array_merge($columns, $this->getI18nTable()->getColumns());
+      $columns = array_merge($columns, $this->getI18nTable()->getColumns());
     }
-    
+
     return $columns;
   }
-  
+
   public function hasField($fieldName)
   {
     $result = false;
-    
+
     if (isset($this->_columnNames[$fieldName]))
     {
       $result = true;
@@ -161,7 +178,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
 
     return $result;
   }
-  
+
 
   /*
    * Return columns that a human can fill
@@ -199,7 +216,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
 
   public function getColumn($columnName)
   {
-  	return dmArray::get($this->getAllColumns(), $columnName);
+    return dmArray::get($this->getAllColumns(), $columnName);
   }
 
   public function isSortable()
@@ -209,11 +226,11 @@ abstract class dmDoctrineTable extends Doctrine_Table
 
   public function hasI18n()
   {
-  	if ($this->hasCache('has_i18n'))
-  	{
-  		return $this->getCache('has_i18n');
-  	}
-  	
+    if ($this->hasCache('has_i18n'))
+    {
+      return $this->getCache('has_i18n');
+    }
+     
     return $this->setCache('has_i18n', $this->hasTemplate('Doctrine_Template_I18n'));
   }
 
@@ -236,42 +253,42 @@ abstract class dmDoctrineTable extends Doctrine_Table
     {
       return clone $this->getCache('dm_default_query');
     }
-    
+
     $q = $this->createQuery('dm_query');
 
-  	if ($sortColumnName = $this->getSortColumnName())
-  	{
-  		$q->addOrderBy('dm_query.'.$sortColumnName);
-  	}
-  	
-  	return $this->setCache('dm_default_query', $q);
+    if ($sortColumnName = $this->getSortColumnName())
+    {
+      $q->addOrderBy('dm_query.'.$sortColumnName);
+    }
+     
+    return $this->setCache('dm_default_query', $q);
   }
 
   public function getSortColumnName()
   {
-  	return $this->getDefaultSortColumnName();
+    return $this->getDefaultSortColumnName();
   }
 
   /*
    * Please override getSortColumnName instead
    */
-	protected final function getDefaultSortColumnName()
-	{
+  protected final function getDefaultSortColumnName()
+  {
     if ($this->hasCache('dm_default_sort_column_name'))
     {
       return $this->getCache('dm_default_sort_column_name');
     }
     if ($this->isSortable())
     {
-    	#FIXME try to return SortableTemplate columnName instead of default position
-    	$columnName = 'position';
+      #FIXME try to return SortableTemplate columnName instead of default position
+      $columnName = 'position';
     }
     else
     {
       $columnName = $this->getIdentifierColumnName();
     }
     return $this->setCache('dm_default_sort_column_name', $columnName);
-	}
+  }
 
   public function getIdentifierColumnName()
   {
@@ -318,7 +335,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
   {
     if (count($this->getPrimaryKeys()) === 1)
     {
-    	return dmArray::first($this->getPrimaryKeys());
+      return dmArray::first($this->getPrimaryKeys());
     }
 
     return null;
@@ -328,15 +345,15 @@ abstract class dmDoctrineTable extends Doctrine_Table
   /*
    * @return dmTableRelationHolder the table relation holder
    */
-	public function getRelationHolder()
-	{
-		if ($this->hasCache('dm_relation_holder'))
-		{
-			return $this->getCache('dm_relation_holder');
-		}
+  public function getRelationHolder()
+  {
+    if ($this->hasCache('dm_relation_holder'))
+    {
+      return $this->getCache('dm_relation_holder');
+    }
 
-		return $this->setCache('dm_relation_holder', new dmTableRelationHolder($this));
-	}
+    return $this->setCache('dm_relation_holder', new dmTableRelationHolder($this));
+  }
 
   /**
    * Reorders a set of sortable objects based on a list of id/position
@@ -351,10 +368,10 @@ abstract class dmDoctrineTable extends Doctrine_Table
    **/
   public function doSort($order)
   {
-  	if (!$this->hasField('position'))
-  	{
-  		throw new dmException(sprintf('%s table has no position field', $this->getComponentName()));
-  	}
+    if (!$this->hasField('position'))
+    {
+      throw new dmException(sprintf('%s table has no position field', $this->getComponentName()));
+    }
 
     $records = $this->createQuery('q INDEXBY q.id')->whereIn('q.id', array_keys($order))->fetchRecords();
 
@@ -369,15 +386,15 @@ abstract class dmDoctrineTable extends Doctrine_Table
   /*
    * return dmModule this record module
    */
-	public function getDmModule()
-	{
-		if($this->hasCache('dm_module'))
-		{
-			return $this->getCache('dm_module');
-		}
+  public function getDmModule()
+  {
+    if($this->hasCache('dm_module'))
+    {
+      return $this->getCache('dm_module');
+    }
 
-		return $this->setCache('dm_module', dmModuleManager::getModuleByModel($this->getComponentName()));
-	}
+    return $this->setCache('dm_module', dmModuleManager::getModuleByModel($this->getComponentName()));
+  }
   /*
    * Usefull for generators ( admin, form, filter )
    */

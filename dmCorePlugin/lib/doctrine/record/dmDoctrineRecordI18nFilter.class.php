@@ -19,6 +19,8 @@
  */
 class dmDoctrineRecordI18nFilter extends Doctrine_Record_Filter
 {
+  public static $fields = array();
+  
 	public function init()
 	{
 	}
@@ -61,6 +63,17 @@ class dmDoctrineRecordI18nFilter extends Doctrine_Record_Filter
 	 */
 	public function filterGet(Doctrine_Record $record, $fieldName)
 	{
+//	  dmDebug::simpleStack();die;
+	  if(!isset(self::$fields[$fieldName]))
+	  {
+	    self::$fields[$fieldName] = 1;
+	  }
+	  else
+	  {
+	    ++self::$fields[$fieldName];
+	  }
+//	  
+	  
 		$culture = myDoctrineRecord::getDefaultCulture();
 		
 		$translation = $record->get('Translation');
