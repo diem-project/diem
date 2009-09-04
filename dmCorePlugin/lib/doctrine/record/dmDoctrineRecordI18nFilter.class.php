@@ -41,11 +41,13 @@ class dmDoctrineRecordI18nFilter extends Doctrine_Record_Filter
       $underscoredFieldName = dmString::underscore($fieldName);
       if (strpos($underscoredFieldName, '_') !== false && $i18n->contains($underscoredFieldName))
       {
-        return $i18n->set($underscoredFieldName, $value);
+        $i18n->set($underscoredFieldName, $value);
+        return $value;
       }
     }
-		
-		return $i18n->set($fieldName, $value);
+    
+		$i18n->set($fieldName, $value);
+		return $value;
 	}
 
 	/**

@@ -144,6 +144,24 @@ abstract class dmDoctrineTable extends Doctrine_Table
     
     return $columns;
   }
+  
+  public function hasField($fieldName)
+  {
+    $result = false;
+    
+    if (isset($this->_columnNames[$fieldName]))
+    {
+      $result = true;
+    }
+
+    if ($this->hasI18n() && $this->getI18nTable()->hasField($fieldName))
+    {
+      $result = true;
+    }
+
+    return $result;
+  }
+  
 
   /*
    * Return columns that a human can fill

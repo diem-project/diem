@@ -16,11 +16,11 @@
 			
 			self.element.dmFrontForm();
       
-      self.$name = $('input#dm_page_name', self.element);
+      self.$name = $('input#dm_page_front_new_form_name', self.element);
       
-      self.$parent = $('select#dm_page_parent_id', self.element);
+      self.$parent = $('select#dm_page_front_new_form_parent_id', self.element);
       
-      self.$slug = $('input#dm_page_slug', self.element).attr('disabled', self.autoSlug);
+      self.$slug = $('input#dm_page_front_new_form_slug', self.element).attr('disabled', self.autoSlug);
       
       self.parentSlugs = window["eval"]("(" + $('div.parent_slugs', self.element).text() + ")");
       
@@ -70,7 +70,7 @@
       }
       
       var self = this, parentSlug = self.parentSlugs[self.$parent.val()], name = self.$name.val();
-      
+
       self.$slug.val(self.slugify(parentSlug ? parentSlug + '/' + name : name));
       
       if (self.$slug.attr('disabled') && name) 
@@ -81,18 +81,20 @@
     
     slugify: function(str)
     {
+			if(!str) return '';
+			$.dbg(str);
 //      str = str.replace(/^\s+|\s+$/g, ''); // trim
       str = str.toLowerCase();
-			
+
       // remove accents, swap ñ for n, etc
-      var from = "àáäâèéëêìíïîòóöôùúüûñç·_,:;";
-      var to = "aaaaeeeeiiiioooouuuunc-----";
+      var from = "àáäâèéëêìíïîòóöôùúüûñç·_,:;", to = "aaaaeeeeiiiioooouuuunc-----";
       for (var i = 0, l = from.length; i < l; i++) 
       {
         str = str.replace(new RegExp(from[i], "g"), to[i]);
       }
       
       str = str.replace(/\s+|-{2,}/g, '-').replace(/[^a-zA-Z0-9-/]/g, '');
+      $.dbg(str);
       return str;
     }
     

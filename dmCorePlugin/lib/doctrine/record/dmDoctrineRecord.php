@@ -552,7 +552,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
 				return parent::_set($underscoredFieldName, $value, $load);
 			}
 		}
-
+		
 		return parent::_set($fieldName, $value, $load);
 	}
 

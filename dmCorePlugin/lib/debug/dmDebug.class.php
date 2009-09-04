@@ -79,13 +79,21 @@ class dmDebug
 		);
 	}
 
-	/*
-	 * Shows all parameter in the page with a <pre>
-	 */
-	public static function show()
-	{
-		return self::debugger(func_get_args(), 2, array("tag" => "div"));
-	}
+  /*
+   * Shows all parameter in the page with a <div>
+   */
+  public static function show()
+  {
+    return self::debugger(func_get_args(), 2, array("tag" => "div"));
+  }
+  
+  /*
+   * Shows all parameter in the page with a <pre>
+   */
+  public static function showPre()
+  {
+    return self::debugger(func_get_args(), 2, array("tag" => "pre"));
+  }
 
 	/*
 	 * Shows all parameter in the page with a <div>

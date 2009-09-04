@@ -85,10 +85,12 @@ class DmPageFrontNewForm extends DmPageForm
     $page->action = $action;
     
     $page->title = $page->name;
-        
-    $page->PageView->dmLayoutId = $values['dm_layout_id'];
 
     $page->Node->insertAsLastChildOf($parent);
+    
+    $pageView = $page->PageView;
+        
+    $pageView->dmLayoutId = $values['dm_layout_id'];
   }
   
   public function checkSlug($validator, $values)
