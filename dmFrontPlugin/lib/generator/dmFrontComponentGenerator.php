@@ -2,6 +2,9 @@
 
 class dmFrontComponentGenerator extends dmFrontModuleGenerator
 {
+  protected
+  $class,
+  $indentation = '  ';
 
 	public function execute()
 	{
@@ -12,175 +15,128 @@ class dmFrontComponentGenerator extends dmFrontModuleGenerator
     $file = dmOs::join(sfConfig::get('sf_apps_dir'), 'front/modules', $this->module->getKey(), 'actions/components.class.php');
 
     $this->filesystem->mkdir(dirname($file));
-
+    
+    $className = $this->module->getKey().'Components';
+    
     if (file_exists($file))
     {
     	include_once($file);
-      $class = dmZendCodeGeneratorPhpClass::fromReflection(new Zend_Reflection_Class($this->getClassName()));
+      $this->class = dmZendCodeGeneratorPhpClass::fromReflection(new Zend_Reflection_Class($className));
     }
     else
     {
-    	$class = new Zend_CodeGenerator_Php_Class;
-      return;
+    	$this->class = $this->buildClass($className);
     }
     
-    $class->setIndentation('  ');
-
-    $code = $this->build();
+    $this->class->setIndentation($this->indentation);
     
-    $class->setMethod(new dmZendCodeGeneratorPhpMethod(array(
-    'name'       => 'setBaz',
-    'parameters' => array(
-        array('name' => 'baz'),
-    ),
-    'body'       => '$this->_baz = $baz;' . "\n" . 'return $this;',
-    'docblock'   => new Zend_CodeGenerator_Php_Docblock(array(
-        'shortDescription' => 'Set the baz property',
-        'tags'             => array(
-            new Zend_CodeGenerator_Php_Docblock_Tag_Param(array(
-                'paramName' => 'baz',
-                'datatype'  => 'string'
-            )),
-            new Zend_CodeGenerator_Php_Docblock_Tag_Return(array(
-                'datatype'  => 'string',
-            )),
-        ),
-    )),
-)));
-
-    foreach($class->getMethods() as $method)
+	  foreach($this->module->getActions() as $action)
     {
-      $method->setIndentation('  ');
+      $methodName = 'execute'.dmString::camelize($action->getKey());
+      
+      if (!$this->class->getMethod($methodName))
+      {
+        $this->class->setMethod($this->buildActionMethod($methodName, $action));
+      }
+    }
+    
+    if ($this->module->hasModel())
+    {
+      $methodName = 'getPagerQuery';
+      if (!$this->class->getMethod($methodName))
+      {
+        $this->class->setMethod($this->buildPagerQueryMethod($methodName));
+      }
     }
 
-    $code = $this->build();
-    
-    dmDebug::kill($file, $code, $class->generate());
+    if ($code = $this->class->generate())
+    {
+      $return = file_put_contents($file, "<?php\n".$code);
+      chmod($file, 0777);
+    }
+    else
+    {
+      $return = true;
+    }
 
-    return file_put_contents($file, $code);
+    return $return;
 	}
 	
-	protected function getClassName()
+	protected function buildClass($className)
 	{
-//	  return 'dmFrontModuleComponents';
-		return $this->module->getKey().'Components';
+	  return new Zend_CodeGenerator_Php_Class(array(
+      'name' => $className,
+      'extendedClass' => 'dmFrontModuleComponents',
+	    'docBlock' => array(
+	      'shortDescription' => $this->module->getName().' components',
+	      'longDescription' => 'Components are micro-controllers that prepare data for a template.
+You should not use redirection or database manipulation ( insert, update, delete ) here.
+To make redirections or manipulate database, use the actions class.'
+	    )
+    ));
 	}
-
-	protected function build()
-	{
+	
+  protected function buildActionMethod($methodName, dmAction $action)
+  {
+    switch($action->getType())
+    {
+      case 'list': 
+        $body = "\$query = \$this->getPagerQuery();
+\$this->{$this->module->getKey()}Pager = \$this->getListPager(\$query);";
+        break;
+      case 'show':
+        $body = "\$this->{$this->module->getKey()} = \$this->getShowRecord();";
+        break;
+      default:
+        $body = "// Your code here";
+    }
     
-		return
-		$this->getHead().
-		$this->getMethods().
-		$this->getFoot();
-	}
-
-  protected function getHead()
-  {
-    return "<?php
-
-/*
- * {$this->module->getName()} : components
- */
-class {$this->module->getKey()}Components extends dmFrontModuleComponents
-{
-";
-  }
-
-  protected function getMethods()
-  {
-  	$code = '';
-  	foreach($this->module->getActions() as $action)
-  	{
-  		switch($action->getType())
-  		{
-  			case 'list': $code .= $this->getListMethod($action); break;
-  			case 'show': $code .= $this->getShowMethod($action); break;
-  			default:
-  		    $code .= $this->getUserMethod($action);
-  		}
-  	}
-  	
-  	if ($this->module->hasModel())
-  	{
-  	  $code .= $this->getListQueryMethod();
-  	}
-  	
-  	return $code;
-  }
-
-  protected function getListQueryMethod()
-  {
-  	$moduleKey = $this->module->getKey();
-
-    return "
-  /*
-   * This query is used by {$this->module->getName()} list components
-   */
-  protected function getPagerQuery()
-  {
-    return \$this->getDmModule()->getTable()->createQuery('".$moduleKey{0}."')
-      ->whereIsActive(true, '{$this->module->getModel()}')
-    ;
-  }
-";
+    return new dmZendCodeGeneratorPhpMethod(array(
+      'indentation' => $this->indentation,
+      'name'        => $methodName,
+      'visibility'  => 'public',
+      'body'        => $body,
+      'parameters'  => array(
+        array(
+          'type' => 'dmWebRequest',
+          'name' => 'request'
+        )
+      ),
+      'docblock'    => new Zend_CodeGenerator_Php_Docblock(array(
+        'shortDescription' => $action->getName(),
+        'tags'             => array(
+          new Zend_CodeGenerator_Php_Docblock_Tag_Param(array(
+            'paramName' => 'request',
+            'datatype'  => 'dmWebRequest'
+          )),
+        ),
+      ))
+    ));
   }
   
-  protected function getListMethod(dmAction $action)
+  protected function buildPagerQueryMethod($methodName)
   {
-    return "
-  /*
-   * {$action->getName()}
-   */
-  public function execute".dmString::camelize($action->getKey())."()
-  {
-    \$query = \$this->getPagerQuery();
-    
-    \$this->{$this->module->getKey()}Pager = \$this->getListPager(\$query);
+    return new dmZendCodeGeneratorPhpMethod(array(
+      'indentation' => $this->indentation,
+      'name'        => $methodName,
+      'visibility'  => 'protected',
+      'body'        => "return \$this->getDmModule()->getTable()->createQuery('q')->whereIsActive(true, '{$this->module->getModel()}');",
+      'parameters'  => array(
+        array(
+          'type' => 'dmWebRequest',
+          'name' => 'request'
+        )
+      ),
+      'docblock'    => new Zend_CodeGenerator_Php_Docblock(array(
+        'shortDescription' => 'Create the default pager query for this module list widgets',
+        'longDescription'  => "If you want to add custom joins or other stuff to the list queries,\nthis is the right place.",
+        'tags'             => array(
+          new Zend_CodeGenerator_Php_Docblock_Tag_Return(array(
+            'paramName' => 'query',
+            'datatype'  => 'myDoctrineQuery'
+          )),
+        ),
+      ))
+    ));
   }
-";
-  }
-
-  protected function getShowMethod(dmAction $action)
-  {
-    return "
-  /*
-   * {$action->getName()}
-   */
-  public function executeShow()
-  {
-    \$this->{$this->module->getKey()} = \$this->getShowRecord();
-  }
-";
-  }
-
-  protected function getFormMethod(dmAction $action)
-  {
-    return "
-  /*
-   * {$action->getName()}
-   */
-  public function executeForm()
-  {
-  }
-";
-  }
-
-  protected function getUserMethod(dmAction $action)
-  {
-    return "
-  /*
-   * {$action->getName()}
-   */
-//  public function execute".dmString::camelize($action->getKey())."()
-//  {
-//  }
-";
-  }
-
-  protected function getFoot()
-  {
-    return "}";
-  }
-
 }

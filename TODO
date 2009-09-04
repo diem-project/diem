@@ -136,3 +136,5 @@ $.getScript(href, callback);
 * front edit : try on zone edit dialog does not work
 
 * report Zend CodeGenerator bug : Method bad indentation in body generation
+
+* consider integrating jquery tools & flow player
