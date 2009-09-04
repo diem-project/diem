@@ -138,3 +138,5 @@ $.getScript(href, callback);
 * report Zend CodeGenerator bug : Method bad indentation in body generation
 
 * consider integrating jquery tools & flow player
+
+* front edit deleting a zone does not close its edition dialog

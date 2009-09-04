@@ -4,7 +4,8 @@
 class PluginDmPageTable extends myDoctrineTable
 {
 	protected
-	$recordPageCache = array();
+	$recordPageCache = array(),
+	$findByStringCache = array();
 	
 	/*
 	 * Check that basic pages exist
@@ -106,6 +107,41 @@ class PluginDmPageTable extends myDoctrineTable
   /*
    * Performance finder shortcuts
    */
+  
+  public function findOneBySource($source)
+  {
+    if ($source instanceof DmPage)
+    {
+      return $source;
+    }
+    elseif($source instanceof myDoctrineRecord)
+    {
+      return $source->getDmPage();
+    }
+    if (!isset($this->findByStringCache[$source]))
+    {
+      if(is_null($source))
+      {
+        $this->findByStringCache[$source] = $this->getTree()->fetchRoot();
+      }
+      elseif (strncmp($source, 'page:', 5) === 0)
+      {
+        $this->findByStringCache[$source] = $this->findOneByIdWithI18n(substr($source, 5));
+      }
+      elseif(substr_count($source, '/') === 1)
+      {
+        $parts = explode("/", $source);
+        
+        $this->findByStringCache[$source] = $this->findOneByModuleAndAction($parts[0], $parts[1]);
+      }
+      else
+      {
+        $this->findByStringCache[$source] = null;
+      }
+    }
+    
+    return $this->findByStringCache[$source];
+  }
 
 	public function findOneBySlug($slug)
 	{

@@ -10,7 +10,7 @@ abstract class dmFrontLinkTag extends dmLinkTag
     if (is_null($source))
     {
     	$type = 'page';
-      $source = dmDb::table('DmPage')->getTree()->fetchRoot();
+      $source = dmDb::table('DmPage')->findOneBySource($source);
     }
     elseif (is_string($source))
     {
@@ -32,7 +32,7 @@ abstract class dmFrontLinkTag extends dmLinkTag
     	
       if (strncmp($source, 'page:', 5) === 0)
       {
-        if ($page = dmDb::table('DmPage')->findOneByIdWithI18n(substr($source, 5)))
+        if ($page = dmDb::table('DmPage')->findOneBySource($source))
         {
           $type = 'page';
           $source = $page;
@@ -89,9 +89,7 @@ abstract class dmFrontLinkTag extends dmLinkTag
       }
       elseif(substr_count($source, '/') === 1)
       {
-      	$parts = explode("/", $source);
-      	
-      	if ($page = dmDb::table('DmPage')->findOneByModuleAndAction($parts[0], $parts[1]))
+      	if ($page = dmDb::table('DmPage')->findOneBySource($source))
       	{
       		$type = 'page';
       		$source = $page;
@@ -118,7 +116,7 @@ abstract class dmFrontLinkTag extends dmLinkTag
       }
       elseif($source instanceof myDoctrineRecord)
       {
-      	if ($module = $source->dmModule)
+      	if ($module = $source->getDmModule())
 	      {
 	      	if($module->hasPage())
 	      	{

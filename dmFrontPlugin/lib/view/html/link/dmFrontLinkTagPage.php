@@ -63,7 +63,7 @@ class dmFrontLinkTagPage extends dmFrontLinkTag
 
     if($currentPage = dmContext::getInstance()->getPage())
     {
-	    if ($currentPage->id === $this->page->id)
+	    if ($currentPage->get('id') === $this->page->get('id'))
 	    {
 	      $attributes['class'][] = 'dm_current';
 	      
@@ -72,7 +72,7 @@ class dmFrontLinkTagPage extends dmFrontLinkTag
 	      	$attributes['tag'] = 'span';
 	      }
 	    }
-	    elseif($currentPage->Node->isDescendantOf($this->page))
+	    elseif($currentPage->getNode()->isDescendantOf($this->page))
 	    {
 	      $attributes['class'][] = 'dm_parent';
 	    }
