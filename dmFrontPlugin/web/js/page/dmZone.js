@@ -26,30 +26,43 @@ $.widget('ui.dmZone', {
       if (zone.element.hasClass('dm_dragging')) {
         return false;
       }
+      zone.openEditDialog();
+    });
+  },
+	
+	openEditDialog: function()
+	{
+    var zone = this, dialog_class = zone.element.attr('id')+'_edit_dialog';
+		
+    if ($('div.'+dialog_class).length)
+    {
+      return;
+    }
+		
       var $dialog = $.dm.ctrl.ajaxDialog({
         url:      $.dm.ctrl.getHref('+/dmZone/edit'),
         data:     { zone_id: zone.getId() },
         title:    $(this).attr('title'),
+				class:    dialog_class,
         beforeclose:  function() {
           if (zone.deleted) return;
-					setTimeout(function() {
-	          $.ajax({
-	            url:      $.dm.ctrl.getHref('+/dmZone/getAttributes'),
-	            data:     { zone_id: zone.getId() },
-	            success:  function(data) {
-	              datas = data.split('\_\_DM\_SPLIT\_\_');
-	              zone.element.css('width', datas[0]);
-	              zone.element.attr('class', 'dm_zone '+ datas[1]);
-	            }
-	          });
-				  }, 100);
+          setTimeout(function() {
+            $.ajax({
+              url:      $.dm.ctrl.getHref('+/dmZone/getAttributes'),
+              data:     { zone_id: zone.getId() },
+              success:  function(data) {
+                datas = data.split('\_\_DM\_SPLIT\_\_');
+                zone.element.attr('class', 'dm_zone '+ datas[1]).css('width', datas[0]);
+              }
+            });
+          }, 100);
         }
       }).bind('dmAjaxResponse', function() {
         $dialog.prepare();
-	      /*
-	       * Apply generic front form abilities
-	       */
-	      $dialog.dmFrontForm();
+        /*
+         * Apply generic front form abilities
+         */
+        $dialog.dmFrontForm();
         var $form = $('form', $dialog).dmAjaxForm({
           beforeSubmit: function() {
             $dialog.block();
@@ -61,8 +74,7 @@ $.widget('ui.dmZone', {
             }
             $dialog.html(data).trigger('dmAjaxResponse');
             if(!$('ul.error_list', $form).length) {
-              zone.element.css('width', $('#dm_zone_width', $form).val());
-              zone.element.attr('class', 'dm_zone '+ $('#dm_zone_css_class', $form).val());
+              zone.element.attr('class', 'dm_zone '+ $('input.dm_zone_css_class', $form).val()).css('width', $('input.dm_zone_width', $form).val());
             }
             zone.element.unblock();
           }
@@ -74,8 +86,7 @@ $.widget('ui.dmZone', {
           }
         });
       });
-    });
-  },
+	},
   
   initWidgets: function()
   {
@@ -133,7 +144,7 @@ $.widget('ui.dmZone', {
   
   addWidget: function($widget)
   {
-    zone = this;
+    var zone = this;
     $.ajax({
       url:      $.dm.ctrl.getHref('+/dmWidget/add')+"?to_dm_zone="+zone.getId(),
       data: {
@@ -142,7 +153,13 @@ $.widget('ui.dmZone', {
 			},
       success:  function(widgetHtml) {
         $('div.dm_widgets', zone.element).find('span.widget_add').replaceWith(widgetHtml);
-        $newWidget = $('div.dm_widget:not(.loaded)', zone.element);
+        var $newWidget = null;
+				$('div.dm_widget', zone.element).each(function() {
+					if (!$(this).data('loaded'))
+					{
+						$newWidget = $(this);
+					}
+				});
         zone.initialize();
         zone.sortWidgets();
         $newWidget.dmWidget('openEditDialog');

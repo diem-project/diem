@@ -28,12 +28,6 @@ class dmFrontGenerateService extends dmService
       {
         $this->alert('Can NOT create action templates for module '.$module);
       }
-
-      $viewTemplateGenerator = new dmFrontViewTemplateGenerator($module, $this->dispatcher);
-      if (!$viewTemplateGenerator->execute())
-      {
-        $this->alert('Can NOT create view templates for module '.$module);
-      }
     }
 	}
 	

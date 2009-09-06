@@ -10,6 +10,10 @@ class DmZoneFrontForm extends DmZoneForm
     $this->setName($this->name.'_'.$this->object->id);
 
     unset($this['dm_area_id'], $this['position'], $this['updated_at']);
+    
+    $this->widgetSchema['css_class']->setAttribute('class', 'dm_zone_css_class');
+    
+    $this->widgetSchema['width']->setAttribute('class', 'dm_zone_width');
 
     $this->validatorSchema['width'] = new dmValidatorCssSize(array(
       'required' => false

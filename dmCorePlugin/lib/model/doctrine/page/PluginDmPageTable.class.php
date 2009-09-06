@@ -19,13 +19,9 @@ class PluginDmPageTable extends myDoctrineTable
       $root = $this->create(array(
         'module' => 'main',
         'action' => 'root',
-        'Translation' => array(
-          myDoctrineRecord::getDefaultCulture() => array(
-            'name' => dm::getI18n()->__('Home'),
-            'title' => dm::getI18n()->__('Home').' | '.dmDb::table('DmSite')->getInstance()->getName(),
-            'slug' => ''
-          )
-        )
+        'name' => dm::getI18n()->__('Home'),
+        'title' => dm::getI18n()->__('Home').' | '.dmDb::table('DmSite')->getInstance()->getName(),
+        'slug' => ''
       ));
 
       $this->getTree()->createRoot($root);
@@ -42,13 +38,9 @@ class PluginDmPageTable extends myDoctrineTable
     	dmDb::create('DmPage', array(
         'module' => 'main',
         'action' => 'error404',
-    	  'Translation' => array(
-    	    myDoctrineRecord::getDefaultCulture() => array(
-    	      'name' => dm::getI18n()->__('Page not found'),
-            'title' => dm::getI18n()->__('Page not found').' | '.dmContext::getInstance()->getSite()->name,
-            'slug' => '-error404'
-    	    )
-    	  )
+    	  'name' => dm::getI18n()->__('Page not found'),
+        'title' => dm::getI18n()->__('Page not found').' | '.dmContext::getInstance()->getSite()->name,
+        'slug' => '-error404'
       ))->getNode()->insertAsLastChildOf($root);
     }
   }
@@ -132,7 +124,7 @@ class PluginDmPageTable extends myDoctrineTable
       {
         $parts = explode("/", $source);
         
-        $this->findByStringCache[$source] = $this->findOneByModuleAndAction($parts[0], $parts[1]);
+        $this->findByStringCache[$source] = $this->findOneByModuleAndActionWithI18n($parts[0], $parts[1]);
       }
       else
       {
@@ -195,11 +187,10 @@ class PluginDmPageTable extends myDoctrineTable
   	}
   	
     return $this->createQuery('p')
-    ->where('p.module = ? AND p.action = ? AND record_id = ?', array(
-      $module, 'show', $record->id
-    ))
+    ->where('p.module = ? AND p.action = ? AND record_id = ?', array($module, 'show', $record->get('id')))
+    ->withI18n()
     ->dmCache()
-    ->fetchRecord();
+    ->fetchOne();
   }
 
   public function findByModuleAndAction($module, $action)
@@ -210,12 +201,13 @@ class PluginDmPageTable extends myDoctrineTable
     ->fetchRecords();
   }
 
-  public function findOneByModuleAndAction($module, $action)
+  public function findOneByModuleAndActionWithI18n($module, $action, $culture = null)
   {
     return $this->createQuery('p')
     ->where('p.module = ? AND p.action = ?', array($module, $action))
+    ->withI18n($culture)
     ->dmCache()
-    ->fetchRecord();
+    ->fetchOne();
   }
 
 }

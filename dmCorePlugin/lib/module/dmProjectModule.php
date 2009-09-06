@@ -4,8 +4,7 @@ class dmProjectModule extends dmModule
 {
 
   protected
-    $actions = array(),
-    $views = array();
+    $actions = array();
 
   public function __construct($key, $config, dmModuleSpace $space)
   {
@@ -26,26 +25,14 @@ class dmProjectModule extends dmModule
       $this->params['actions'][$actionKey] = $action;
     }
 
-    $this->params['views'] = array();
-    foreach(dmArray::get($config, "views", array()) as $viewKey => $viewConfig)
-    {
-      if (is_numeric($viewKey))
-      {
-      	$viewKey = $viewConfig;
-      	$viewConfig = array();
-      }
-
-      $view = new dmView($viewKey, $viewConfig, $this);
-
-      $this->params['views'][$viewKey] = $view;
-    }
-
     $this->params['parentKey'] = dmArray::get($config, 'parent');
+    
+    $this->params['hasPage'] = dmArray::get($config, 'page', false);
   }
 
   public function hasPage()
   {
-  	return $this->hasAction('show');
+  	return $this->params['hasPage'];
   }
 
   // ACCESSEURS
@@ -70,25 +57,6 @@ class dmProjectModule extends dmModule
     return array_key_exists($actionKey, $this->getActions());
   }
 
-  public function getViews()
-  {
-    return $this->getParam("views");
-  }
-
-  public function getViewNames()
-  {
-    $viewNames = array();
-    foreach($this->getViews() as $key => $view)
-    {
-      $viewNames[$key] = $view->getName();
-    }
-    return $viewNames;
-  }
-
-  public function getView($viewKey)
-  {
-    return dmArray::get($this->getViews(), $viewKey);
-  }
 
   public function getParent()
   {

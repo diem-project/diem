@@ -19,11 +19,11 @@ function definition_list($array, $opt = array())
   return $html;
 }
 
-function plural($word, $nb, $show_nb = true, $plural_spec = false)
+function plural($word, $nb, $showNb = true, $pluralSpec = false)
 {
-  return $show_nb
-  ? $nb." ".dmString::pluralizeNb($word, $nb, $plural_spec)
-  : dmString::pluralizeNb($word, $nb, $plural_spec);
+  $pluralizedWord = dmString::pluralizeNb($word, $nb, $pluralSpec);
+  
+  return $showNb ? $nb.' '.$pluralizedWord : $pluralizedWord;
 }
 
 

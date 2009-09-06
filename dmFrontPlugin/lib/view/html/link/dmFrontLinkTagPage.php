@@ -19,7 +19,7 @@ class dmFrontLinkTagPage extends dmFrontLinkTag
 
 	protected function getBaseHref()
 	{
-		$pageSlug = $this->page->get('slug');
+		$pageSlug = $this->page->_getI18n('slug');
 		
 		return dm::getRequest()->getScriptName().($pageSlug ? '/'.$pageSlug : '');
 	}
@@ -31,7 +31,7 @@ class dmFrontLinkTagPage extends dmFrontLinkTag
   		return $this['text'];
   	}
 
-  	return $this->page->name;
+  	return $this->page->_getI18n('name');
   }
   
   public function render()
@@ -60,9 +60,7 @@ class dmFrontLinkTagPage extends dmFrontLinkTag
   
   protected function prepareAttributesForHtml(array $attributes)
   {
-    $t = dmDebug::timer('dmLinkPageTag::parent::prepareAttributesForHtml');
   	$attributes = parent::prepareAttributesForHtml($attributes);
-    $t->addTime();
 
     if($currentPage = dmContext::getInstance()->getPage())
     {

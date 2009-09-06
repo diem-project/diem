@@ -33,6 +33,7 @@ class dmStaticHelper
 				return '</'.$beafTag.'><'.$beafTag.' class="beafter"></'.$beafTag.'></'.$tagName.'>';
 			}
 		}
+		
 		return '</'.$tagName.'>';
 	}
 

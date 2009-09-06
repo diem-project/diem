@@ -12,17 +12,17 @@ class dmFrontLinkTagMedia extends dmFrontLinkTag
 	
   protected function getBaseHref()
 	{
-		return dm::getRequest()->getAbsoluteUrlRoot().'/'.$this->media->webPath;
+		return dm::getRequest()->getAbsoluteUrlRoot().'/'.$this->media->getWebPath();
 	}
 
-  protected function renderName()
+  protected function renderText()
   {
   	if (isset($this['text']))
   	{
   		return $this['text'];
   	}
 
-  	return $this->media->file;
+  	return $this->media->get('file');
   }
 
 }

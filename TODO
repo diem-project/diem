@@ -131,14 +131,18 @@ $.getScript(href, callback);
 
 * add a menu widget
 
-* front edit : make impossible to open many times a zone or widget edit dialog
+* [DONE] front edit : make impossible to open many times a zone or widget edit dialog
 
-* front edit : try on zone edit dialog does not work
+* [DONE] front edit : try on zone edit dialog does not work
 
 * report Zend CodeGenerator bug : Method bad indentation in body generation
 
 * consider integrating jquery tools & flow player
 
-* front edit deleting a zone does not close its edition dialog
+* (?) front edit deleting a zone does not close its edition dialog
 
 * admin record edition : try changing save button like pages link on top of netvibes
+
+* [DONE] consider removing views as each view require a different sql query...
+
+* draw the logo

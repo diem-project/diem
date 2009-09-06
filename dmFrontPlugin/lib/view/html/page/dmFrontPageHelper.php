@@ -214,10 +214,13 @@ class dmFrontPageHelper
 	
 	    $widgetView = new $widgetViewClass($widget);
 	    
+	    ob_start();
       $html = $widgetView->render();
+      ob_clean();
     }
     catch(Exception $e)
     {
+      ob_clean();
       if (sfConfig::get('dm_debug'))
       {
         throw $e;
@@ -226,8 +229,9 @@ class dmFrontPageHelper
       {
         $html = dmFrontLinkTag::build(dm::getRequest()->getUri())
         ->param('dm_debug', 1)
-        ->text('[EXCEPTION] '.$e->getMessage())
-        ->title('Click me to see the exception details');
+        ->text(sprintf('[%s/%s] : %s', $widget['module'], $widget['action'], $e->getMessage()))
+        ->title('Click to see the exception details')
+        ->set('.dm_exception.s16.s16_error');
       }
       else
       {
@@ -238,7 +242,7 @@ class dmFrontPageHelper
     return $html;
   }
 
-  protected function getWidgetContainerClasses(array $widget)
+  public function getWidgetContainerClasses(array $widget)
   {
     if(!empty($widget['css_class']))
     {

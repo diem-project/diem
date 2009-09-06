@@ -3,7 +3,6 @@
 echo $form->renderGlobalErrors();
 
 echo
-$form['view']->renderRow().
 £('li.dm_form_element.multi_inputs.sort.clearfix',
   $form['orderField']->renderLabel(__('Order by')).
   $form['orderField']->render().

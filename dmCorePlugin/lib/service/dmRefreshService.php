@@ -6,15 +6,30 @@ class dmRefreshService extends dmService
 	public function execute()
 	{
 		$this->executeService('dmClearCache');
+		
+    if ($this->user && $this->user->can('system'))
+    {
+      $this->generateCode();
+      
+      $this->executeService('dmClearCache');
+    }
 
 		$this->executeService('dmPageSync');
 
 		$this->executeService('dmUpdateSeo');
 
-		if ($this->user && $this->user->can('system'))
-		{
-			$this->updateIncrementalSkeleton();
-		}
+    if ($this->user && $this->user->can('system'))
+    {
+      $this->updateIncrementalSkeleton();
+    }
+	}
+	
+	protected function generateCode()
+	{
+	  if (sfConfig::get('sf_app') == 'front')
+	  {
+	    $this->executeService('dmFrontGenerate');
+	  }
 	}
 
 	protected function updateIncrementalSkeleton()

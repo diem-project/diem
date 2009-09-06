@@ -20,24 +20,24 @@
 class dmDoctrineRecordI18nFilter extends Doctrine_Record_Filter
 {
   public static $fields = array();
-  
-	public function init()
-	{
-	}
 
-	/**
-	 * Implementation of filterSet() to call set on Translation relationship to allow
-	 * access to I18n properties from the main object.
-	 *
-	 * @param Doctrine_Record $record
-	 * @param string $name Name of the property
-	 * @param string $value Value of the property
-	 * @return void
-	 */
-	public function filterSet(Doctrine_Record $record, $fieldName, $value)
-	{
-		$i18n = $record['Translation'][myDoctrineRecord::getDefaultCulture()];
-		
+  public function init()
+  {
+  }
+
+  /**
+   * Implementation of filterSet() to call set on Translation relationship to allow
+   * access to I18n properties from the main object.
+   *
+   * @param Doctrine_Record $record
+   * @param string $name Name of the property
+   * @param string $value Value of the property
+   * @return void
+   */
+  public function filterSet(Doctrine_Record $record, $fieldName, $value)
+  {
+    $i18n = $record['Translation'][myDoctrineRecord::getDefaultCulture()];
+
     if(!ctype_lower($fieldName) && !$i18n->contains($fieldName))
     {
       $underscoredFieldName = dmString::underscore($fieldName);
@@ -47,55 +47,66 @@ class dmDoctrineRecordI18nFilter extends Doctrine_Record_Filter
         return $value;
       }
     }
-    
-		$i18n->set($fieldName, $value);
-		return $value;
-	}
 
-	/**
-	 * Implementation of filterGet() to call get on Translation relationship to allow
-	 * access to I18n properties from the main object.
-	 *
-	 * @param Doctrine_Record $record
-	 * @param string $name Name of the property
-	 * @param string $value Value of the property
-	 * @return void
-	 */
-	public function filterGet(Doctrine_Record $record, $fieldName)
-	{
-//	  dmDebug::simpleStack();die;
-	  if(!isset(self::$fields[$fieldName]))
-	  {
-	    self::$fields[$fieldName] = 1;
-	  }
-	  else
-	  {
-	    ++self::$fields[$fieldName];
-	  }
-//	  
-	  
-		$culture = myDoctrineRecord::getDefaultCulture();
-		
-		$translation = $record->get('Translation');
-		
-		if (isset($translation[$culture]))
-		{
-			$i18n = $translation[$culture];
-		}
-		else
-		{
-			$i18n = $translation[sfConfig::get('sf_default_culture')];
-		}
-	
-    if(!ctype_lower($fieldName) && !$i18n->contains($fieldName))
-    {
-      $underscoredFieldName = dmString::underscore($fieldName);
-      if (strpos($underscoredFieldName, '_') !== false && $i18n->contains($underscoredFieldName))
-      {
-        return $i18n->get($underscoredFieldName);
-      }
-    }
+    $i18n->set($fieldName, $value);
+    return $value;
+  }
 
-		return $i18n->get($fieldName);
-	}
+  /**
+   * filterGet
+   * defines an implementation for filtering the get() method of Doctrine_Record
+   *
+   * @param mixed $name                       name of the property or related component
+   */
+  public function filterGet(Doctrine_Record $record, $name)
+  {
+    throw new Doctrine_Record_UnknownPropertyException(sprintf('Unknown record property / related component "%s" on "%s"', $name, get_class($record)));
+  }
+  
+  /**
+   * Implementation of filterGet() to call get on Translation relationship to allow
+   * access to I18n properties from the main object.
+   *
+   * @param Doctrine_Record $record
+   * @param string $name Name of the property
+   * @param string $value Value of the property
+   * @return void
+   */
+  //	public function filterGet(Doctrine_Record $record, $fieldName)
+  //	{
+  ////	  dmDebug::simpleStack();die;
+  //	  if(!isset(self::$fields[$fieldName]))
+  //	  {
+  //	    self::$fields[$fieldName] = 1;
+  //	  }
+  //	  else
+  //	  {
+  //	    ++self::$fields[$fieldName];
+  //	  }
+  ////
+  //
+  //		$culture = myDoctrineRecord::getDefaultCulture();
+  //
+  //		$translation = $record->get('Translation');
+  //
+  //		if (isset($translation[$culture]))
+  //		{
+  //			$i18n = $translation[$culture];
+  //		}
+  //		else
+  //		{
+  //			$i18n = $translation[sfConfig::get('sf_default_culture')];
+  //		}
+  //
+  //    if(!ctype_lower($fieldName) && !$i18n->contains($fieldName))
+  //    {
+  //      $underscoredFieldName = dmString::underscore($fieldName);
+  //      if (strpos($underscoredFieldName, '_') !== false && $i18n->contains($underscoredFieldName))
+  //      {
+  //        return $i18n->get($underscoredFieldName);
+  //      }
+  //    }
+  //
+  //		return $i18n->get($fieldName);
+  //	}
 }

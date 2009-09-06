@@ -125,3 +125,14 @@ article, aside, dialog, figure, footer, header, hgroup, menu, nav, section { dis
 .dm_nowrap {
   white-space: nowrap;
 }
+
+.dm_exception {
+  font-size: 11px !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  color: red !important;
+  background-color: #fff !important;
+  border: 1px solid red !important;
+  margin: 0 !important;
+  padding: 1px 5px 1px 16px !important;
+}

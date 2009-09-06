@@ -37,33 +37,6 @@ class dmDoctrineBuildFormsTask extends sfDoctrineBuildFormsTask
       'form_dir_name'  => $options['form-dir-name'],
     ));
 
-    /*
-     * Create BaseForm
-     */
-    $baseFormPath = dmOs::join(sfConfig::get('sf_lib_dir'), 'form', 'BaseForm.class.php');
-    if (!file_exists($baseFormPath))
-    {
-    	/*
-    	 * WARNING
-    	 * I write
-    	 * class"." "."BaseForm
-    	 * and not
-    	 * class BaseForm
-    	 * not to perturb class autoloading
-    	 */
-    	file_put_contents($baseFormPath, "<?php
-/**
- * Base project form.
- *
- * @package    ##PROJECT_NAME##
- * @subpackage form
- * @author     ##AUTHOR_NAME##
- */
-class"." "."BaseForm extends dmForm
-{
-}");
-    }
-
     $properties = parse_ini_file(sfConfig::get('sf_config_dir').DIRECTORY_SEPARATOR.'properties.ini', true);
 
     $constants = array(

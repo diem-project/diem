@@ -4,18 +4,19 @@
 
 #dm_page.edit .dm_widget .dm_widget_inner {
   border: 2px groove #D3D3D3;
+  /*
   margin: 1px;
   margin-top: 0;
   padding: 0px;
+  */
   -moz-border-radius: 0 4px 4px 4px;
 }
 
-#dm_page.edit .dm_widget:hover .dm_widget_inner {
+#dm_page.edit .dm_widget:hover > .dm_widget_inner {
   border-color: #a6edcd;
 }
 
-#dm_page .dm_widget .dm_widget_edit {
-  margin-left: 1px;
+#dm_page .dm_widget > .dm_widget_edit {
   margin-top: 3px;
   color: #aaa;
   background: url(../../core/images/default_bg.png) repeat-x scroll 50% 50%;
@@ -28,11 +29,11 @@
   display: none;
 }
 
-#dm_page.edit .dm_widget .dm_widget_edit {
+#dm_page.edit .dm_widget > .dm_widget_edit {
   display: block;
 }
 
-#dm_page.edit .dm_widget:hover .dm_widget_edit {
+#dm_page.edit .dm_widget:hover > .dm_widget_edit {
   color: #444;
   border-color: #a6edcd;
   background: url(../../core/images/default_bg_green.png) repeat-x scroll 50% 50%;

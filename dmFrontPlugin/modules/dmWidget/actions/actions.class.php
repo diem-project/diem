@@ -45,13 +45,15 @@ class dmWidgetActions extends dmFrontBaseActions
         $helper = $this->getDmContext()->getPageHelper();
 
         $form = new $formClass($widget);
+        
+        $widgetArray = $widget->toArray();
 
         return $this->renderText(
           $this->renderEdit($widget, $form, $widgetType).
           '__DM_SPLIT__'.
-          $helper->renderWidgetInner($widget->toArray()).
+          $helper->renderWidgetInner($widgetArray).
 		      '__DM_SPLIT__'.
-		      implode(' ', array('dm_widget', $widget['css_class'], $widget['action']))
+          implode('__DM_SPLIT__', $helper->getWidgetContainerClasses($widgetArray))
         );
       }
     }
@@ -80,11 +82,13 @@ class dmWidgetActions extends dmFrontBaseActions
 
     $helper = $this->getDmContext()->getPageHelper();
 
+    $widgetArray = $widget->toArray();
+    
     return
     $this->renderText(
-      $helper->renderWidgetInner($widget->toArray()).
+      $helper->renderWidgetInner($widgetArray).
       '__DM_SPLIT__'.
-      implode(' ', array('dm_widget', $widget['css_class'], $widget['action']))
+      implode('__DM_SPLIT__', $helper->getWidgetContainerClasses($widgetArray))
     );
   }
 

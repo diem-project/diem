@@ -6,18 +6,24 @@ $.widget('ui.dmWidget', {
   {
     this.initialize();
     
-    this.element.addClass('loaded');
+    this.element.data('loaded', true);
   },
   
   openEditDialog: function()
   {
-    var widget = this, activeTab = null;
+    var widget = this, activeTab = null, dialog_class = widget.element.attr('id')+'_edit_dialog';
+		
+	  if ($('div.'+dialog_class).length)
+		{
+			return;
+		}
     
     var $dialog = $.dm.ctrl.ajaxDialog({
       url:          $.dm.ctrl.getHref('+/dmWidget/edit'),
       data:         { widget_id: widget.getId() },
       title:        $('a.dm_widget_edit', widget.element).attr('title'),
       width:        370,
+			class:        dialog_class,
       beforeclose:  function() {
         if (widget.deleted) return;
         $.ajax({
@@ -25,8 +31,10 @@ $.widget('ui.dmWidget', {
           data:     { widget_id: widget.getId() },
           success:  function(data) {
             var dataParts = data.split('\_\_DM\_SPLIT\_\_');
-            widget.element.attr('class', 'dm_widget loaded '+ dataParts[1]);
-            $('div.dm_widget_inner', widget.element).html(dataParts[0]);
+            widget.element.attr('class', dataParts[1])
+						.find('div.dm_widget_inner')
+						.attr('class', dataParts[2])
+						.html(dataParts[0]);
           }
         });
       }
@@ -70,8 +78,11 @@ $.widget('ui.dmWidget', {
 	          }
 	          if (data.indexOf('\_\_DM\_SPLIT\_\_') != -1) {
 	            dataParts = data.split('\_\_DM\_SPLIT\_\_');
-	            widget.element.attr('class', 'dm_widget loaded '+ dataParts[2]);
-	            $('div.dm_widget_inner', widget.element).html(dataParts[1]);
+              widget.element
+							.attr('class', dataParts[2])
+              .find('div.dm_widget_inner')
+							.attr('class', dataParts[3])
+	            .html(dataParts[1]);
 	            formHtml = dataParts[0];
 	          }
 	          else {

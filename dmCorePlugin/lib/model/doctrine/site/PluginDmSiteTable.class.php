@@ -8,11 +8,7 @@ class PluginDmSiteTable extends myDoctrineTable
   	{
       $site = dmDb::create('DmSite', array(
         'code' => 'default',
-        'Translation' => array(
-          myDoctrineRecord::getDefaultCulture() => array(
-            'name' => dmString::humanize(dmProject::getKey())
-          )
-        )
+        'name' => dmString::humanize(dmProject::getKey())
       ))->saveGet();
   	}
   	

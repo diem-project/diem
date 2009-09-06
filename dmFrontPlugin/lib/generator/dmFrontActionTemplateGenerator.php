@@ -45,27 +45,31 @@ class dmFrontActionTemplateGenerator extends dmFrontModuleGenerator
 	{
     $object = '$'.$this->module->getKey();
     $pager = $object.'Pager';
-		$vars = $this->getVarsComment(array($pager, 'view'));
+		$vars = $this->getVarsComment(array($pager));
     return "<?php
 /*
  * Action for {$this->module->getName()} : {$action->getName()}
  * Vars : {$vars}
  */
 
-echo £o('div.{$this->module->getUnderscore()}.{$action->getUnderscore()}.'.\$view);
+echo £o('div.{$this->module->getUnderscore()}.{$action->getUnderscore()}');
 
- echo {$pager}->getNavigationTop();
+ echo {$pager}->renderNavigationTop();
 
   echo £o('ul.elements');
 
   foreach ({$pager}->getResults() as \${$this->module->getKey()})
   {
-    echo £('li.element', \$view->render(\${$this->module->getKey()}));
+    echo £o('li.element');
+    
+      echo £link(\${$this->module->getKey()});
+      
+    echo £c('li');
   }
 
   echo £c('ul');
 
- echo {$pager}->getNavigationBottom();
+ echo {$pager}->renderNavigationBottom();
 
 echo £c('div');";
 	}
@@ -73,19 +77,18 @@ echo £c('div');";
   protected function getShowActionTemplate(dmAction $action)
   {
     $object = '$'.$this->module->getKey();
-    $vars = $this->getVarsComment(array($object, 'view'));
+    $vars = $this->getVarsComment(array($object));
     return "<?php
 /*
  * Action for {$this->module->getName()} : {$action->getName()}
  * Vars : {$vars}
  */
 
+echo £o('div.{$this->module->getUnderscore()}.{$action->getUnderscore()}');
 
-echo £('div.{$this->module->getUnderscore()}.{$action->getUnderscore()}.'.\$view,
-
-  \$view->render(\${$this->module->getKey()})
+  echo \${$this->module->getKey()};
   
-);
+echo £c('div');
 ";
   }
 

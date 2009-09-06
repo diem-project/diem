@@ -2,6 +2,8 @@
 
 abstract class dmDoctrineTable extends Doctrine_Table
 {
+  protected
+  $hasI18n;
 
   /**
    * Construct template method.
@@ -14,8 +16,11 @@ abstract class dmDoctrineTable extends Doctrine_Table
    */
   public function construct()
   {
-    if ($this->hasI18n())
+    $this->hasI18n = $this->hasTemplate('Doctrine_Template_I18n');
+    
+    if ($this->hasI18n)
     {
+      myDoctrineRecord::initializeI18n();
       $this->unshiftFilter(new dmDoctrineRecordI18nFilter);
     }
   }
@@ -154,7 +159,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
   {
     $columns = $this->getColumns();
 
-    if($this->hasI18n())
+    if($this->hasI18n)
     {
       $columns = array_merge($columns, $this->getI18nTable()->getColumns());
     }
@@ -164,19 +169,15 @@ abstract class dmDoctrineTable extends Doctrine_Table
 
   public function hasField($fieldName)
   {
-    $result = false;
-
     if (isset($this->_columnNames[$fieldName]))
     {
-      $result = true;
+      return true;
     }
-
-    if ($this->hasI18n() && $this->getI18nTable()->hasField($fieldName))
+    
+    if ($this->hasI18n && $this->getI18nTable()->hasField($fieldName))
     {
-      $result = true;
+      return true;
     }
-
-    return $result;
   }
 
 
@@ -226,12 +227,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
 
   public function hasI18n()
   {
-    if ($this->hasCache('has_i18n'))
-    {
-      return $this->getCache('has_i18n');
-    }
-     
-    return $this->setCache('has_i18n', $this->hasTemplate('Doctrine_Template_I18n'));
+    return $this->hasI18n;
   }
 
   public function getI18nTable()
@@ -241,7 +237,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
       return $this->getCache('i18n_table');
     }
 
-    return $this->setCache('i18n_table', $this->hasI18n()
+    return $this->setCache('i18n_table', $this->hasI18n
     ? $this->getRelationHolder()->get('Translation')->getTable()
     : false
     );

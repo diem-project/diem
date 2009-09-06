@@ -5,72 +5,58 @@ class dmFrontModuleComponents extends myFrontBaseComponents
 
   protected
   $dmModule;
-
+  
   /*
-   * @return myDoctrineRecord $record
+   * Add required stuff to the record query
+   * @param string $rootAlias        The root alias for this query
+   * @return myDoctrineQuery
    */
-  protected function getShowRecord(myDoctrineQuery $query = null)
+  protected function getShowQuery($rootAlias = 'root')
   {
-    if (is_null($query))
-    {
-      $query = $this->getTable()->createQuery('r');
-    }
+    $query = $this->getTable()->createQuery($rootAlias);
 
     if ($this->recordId)
     {
-      $record = $query->addWhere($query->getRootAlias().'.id = ?', $this->recordId)->fetchRecord();
-
-      if (!$record)
-      {
-        throw new dmException(sprintf('No record found for %s %d', $this->getDmModule(), $this->recordId));
-      }
+      $query->addWhere($query->getRootAlias().'.id = ?', $this->recordId)->fetchRecord();
     }
-
     else
     {
-      $record = $query
-      ->whereDescendantId($this->getPage()->getDmModule()->getModel(), $this->getPage()->recordId, $this->getDmModule()->getModel())
-      ->fetchRecord();
+      $query->whereDescendantId($this->getPage()->getDmModule()->getModel(), $this->getPage()->get('record_id'), $this->getDmModule()->getModel());
+    }
 
-      //    $this->getDmContext()->getPage()->record->getAncestorRecord($this->getDmModule()->getModel());
+    return $query;
+  }
 
-      if (!$record)
-      {
-        throw new dmException(sprintf('Can not determine auto %s for page %s', $this->getDmModule(), $page));
-      }
+  /*
+   * @param myDoctrineQuery $query        The query used to fetch the record
+   * @return myDoctrineRecord $record
+   */
+  protected function getRecord($query)
+  {
+    $record = $query->fetchOne();
+
+    if (!$record instanceof myDoctrineRecord)
+    {
+      throw new dmException(sprintf('No record found for %s %d', $this->getDmModule(), $this->recordId));
     }
 
     return $record;
   }
 
   /*
-   * @return myDoctrinePager $pager
+   * Add required stuff to the list query
+   * @param string $rootAlias        The root alias for this query
+   * @return myDoctrineQuery
    */
-  protected function getListPager(myDoctrineQuery $query = null)
+  protected function getListQuery($rootAlias = 'root')
   {
-    $pager = new myDoctrinePager($this->getDmModule()->getModel(), $this->maxPerPage);
+    $query = $this->getTable()->createQuery($rootAlias);
 
-    $pager->setQuery($this->_getListQuery($query));
-
-    $pager->setPage($this->getRequest()->getParameter('page', 1));
-
-    $pager->configureNavigation(array(
-      'top'     => $this->navTop,
-      'bottom'  => $this->navBottom
-    ));
-
-    $pager->init();
-
-    return $pager;
-  }
-
-  protected function _getListQuery(myDoctrineQuery $query = null)
-  {
-    if (is_null($query))
-    {
-      $query = $this->getTable()->createQuery('r');
-    }
-
+    /*
+     * Restrict to active records
+     */
+    $query->whereIsActive(true, $this->getDmModule()->getModel());
+    
     /*
      * Apply order
      */
@@ -88,7 +74,7 @@ class dmFrontModuleComponents extends myFrontBaseComponents
      */
     foreach($this->filters as $filterKey => $filterValue)
     {
-      if (($filterModule = $this->dmModule->getAncestor($filterKey)) || ($filterModule = $this->dmModule->getAssociation($filterKey)))
+      if (($filterModule = $this->getDmModule()->getAncestor($filterKey)) || ($filterModule = $this->getDmModule()->getAssociation($filterKey)))
       {
         if ($filterValue)
         {
@@ -101,7 +87,7 @@ class dmFrontModuleComponents extends myFrontBaseComponents
         }
         else
         {
-          $filterRecordId = $this->getDmContext()->getPage()->record->getAncestorRecordId($filterModule->getModel());
+          $filterRecordId = $this->getDmContext()->getPage()->getRecord()->getAncestorRecordId($filterModule->getModel());
 
           if (!$filterRecordId)
           {
@@ -116,6 +102,31 @@ class dmFrontModuleComponents extends myFrontBaseComponents
     return $query;
   }
 
+  /*
+   * @param myDoctrineQuery $query        The query passed to pager
+   * @return myDoctrinePager $pager
+   */
+  protected function getPager(myDoctrineQuery $query)
+  {
+    $pager = new myDoctrinePager($this->getDmModule()->getModel(), $this->maxPerPage);
+
+    $pager->setQuery($query);
+
+    $pager->setPage($this->getRequest()->getParameter('page', 1));
+
+    $pager->configureNavigation(array(
+      'top'     => $this->navTop,
+      'bottom'  => $this->navBottom
+    ));
+
+    $pager->init();
+
+    return $pager;
+  }
+
+  /*
+   * @return dmModule the current module for this component
+   */
   protected function getDmModule()
   {
     if (is_null($this->dmModule))
@@ -126,6 +137,9 @@ class dmFrontModuleComponents extends myFrontBaseComponents
     return $this->dmModule;
   }
 
+  /*
+   * @return myDoctrineTable the table of the current module for this component
+   */
   protected function getTable()
   {
     return $this->getDmModule()->getTable();

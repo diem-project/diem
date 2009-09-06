@@ -14,19 +14,36 @@ abstract class dmDoctrinePager extends sfDoctrinePager
 		$this->navigationConfiguration = $navigationConfiguration;
 	}
 
-	public function getNavigationTop($options = array())
+	
+	/*
+	 * @deprecated use renderNavigationTop instead
+	 */
+  public function getNavigationTop($options = array())
+  {
+    return $this->renderNavigationTop($options);
+  }
+	
+	public function renderNavigationTop($options = array())
 	{
 		if ($this->navigationConfiguration['top'])
 		{
 			return $this->getNavigation($options);
 		}
 	}
+	
+  /*
+   * @deprecated use renderNavigationBottom instead
+   */
+  public function getNavigationBottom($options = array())
+  {
+    return $this->renderNavigationBottom($options);
+  }
 
-	public function getNavigationBottom($options = array())
+	public function renderNavigationBottom($options = array())
 	{
 		if ($this->navigationConfiguration['bottom'])
 		{
-			return $this->getNavigation($options);
+			return $this->renderNavigation($options);
 		}
 	}
 
@@ -45,7 +62,7 @@ abstract class dmDoctrinePager extends sfDoctrinePager
 		);
 	}
 
-	public function getNavigation($options = array())
+	public function renderNavigation($options = array())
 	{
 		if (!$this->haveToPaginate())
 		{

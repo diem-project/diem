@@ -22,6 +22,11 @@ class dmFrontComponentGenerator extends dmFrontModuleGenerator
     {
     	include_once($file);
       $this->class = dmZendCodeGeneratorPhpClass::fromReflection(new Zend_Reflection_Class($className));
+      
+      foreach($this->class->getMethods() as $method)
+      {
+        $method->setIndentation($this->indentation);
+      }
     }
     else
     {
@@ -39,20 +44,11 @@ class dmFrontComponentGenerator extends dmFrontModuleGenerator
         $this->class->setMethod($this->buildActionMethod($methodName, $action));
       }
     }
-    
-    if ($this->module->hasModel())
-    {
-      $methodName = 'getPagerQuery';
-      if (!$this->class->getMethod($methodName))
-      {
-        $this->class->setMethod($this->buildPagerQueryMethod($methodName));
-      }
-    }
 
     if ($code = $this->class->generate())
     {
       $return = file_put_contents($file, "<?php\n".$code);
-      chmod($file, 0777);
+      @chmod($file, 0777);
     }
     else
     {
@@ -81,11 +77,12 @@ To make redirections or manipulate database, use the actions class.'
     switch($action->getType())
     {
       case 'list': 
-        $body = "\$query = \$this->getPagerQuery();
-\$this->{$this->module->getKey()}Pager = \$this->getListPager(\$query);";
+        $body = "\$query = \$this->getListQuery();
+\$this->{$this->module->getKey()}Pager = \$this->getPager(\$query);";
         break;
       case 'show':
-        $body = "\$this->{$this->module->getKey()} = \$this->getShowRecord();";
+        $body = "\$query = \$this->getShowQuery();
+\$this->{$this->module->getKey()} = \$this->getRecord(\$query);";
         break;
       default:
         $body = "// Your code here";
@@ -95,48 +92,31 @@ To make redirections or manipulate database, use the actions class.'
       'indentation' => $this->indentation,
       'name'        => $methodName,
       'visibility'  => 'public',
-      'body'        => $body,
-      'parameters'  => array(
-        array(
-          'type' => 'dmWebRequest',
-          'name' => 'request'
-        )
-      ),
-      'docblock'    => new Zend_CodeGenerator_Php_Docblock(array(
-        'shortDescription' => $action->getName(),
-        'tags'             => array(
-          new Zend_CodeGenerator_Php_Docblock_Tag_Param(array(
-            'paramName' => 'request',
-            'datatype'  => 'dmWebRequest'
-          )),
-        ),
-      ))
+      'body'        => $body
+//      'docblock'    => new Zend_CodeGenerator_Php_Docblock(array(
+//        'shortDescription' => $action->getName()
+//      ))
     ));
   }
   
-  protected function buildPagerQueryMethod($methodName)
-  {
-    return new dmZendCodeGeneratorPhpMethod(array(
-      'indentation' => $this->indentation,
-      'name'        => $methodName,
-      'visibility'  => 'protected',
-      'body'        => "return \$this->getDmModule()->getTable()->createQuery('q')->whereIsActive(true, '{$this->module->getModel()}');",
-      'parameters'  => array(
-        array(
-          'type' => 'dmWebRequest',
-          'name' => 'request'
-        )
-      ),
-      'docblock'    => new Zend_CodeGenerator_Php_Docblock(array(
-        'shortDescription' => 'Create the default pager query for this module list widgets',
-        'longDescription'  => "If you want to add custom joins or other stuff to the list queries,\nthis is the right place.",
-        'tags'             => array(
-          new Zend_CodeGenerator_Php_Docblock_Tag_Return(array(
-            'paramName' => 'query',
-            'datatype'  => 'myDoctrineQuery'
-          )),
-        ),
-      ))
-    ));
-  }
+//  protected function buildPagerQueryMethod($methodName)
+//  {
+//    return new dmZendCodeGeneratorPhpMethod(array(
+//      'indentation' => $this->indentation,
+//      'name'        => $methodName,
+//      'visibility'  => 'protected',
+//      'body'        => "return \$this->getDmModule()->getTable()->createQuery('{$this->module->getKey()}')->whereIsActive(true, '{$this->module->getModel()}');",
+//      'parameters'  => array(),
+//      'docblock'    => new Zend_CodeGenerator_Php_Docblock(array(
+//        'shortDescription' => 'Create the default pager query for this module list widgets',
+//        'longDescription'  => "If you want to add custom joins or other stuff to the list queries,\nthis is the right place.",
+//        'tags'             => array(
+//          new Zend_CodeGenerator_Php_Docblock_Tag_Return(array(
+//            'paramName' => 'query',
+//            'datatype'  => 'myDoctrineQuery'
+//          )),
+//        ),
+//      ))
+//    ));
+//  }
 }

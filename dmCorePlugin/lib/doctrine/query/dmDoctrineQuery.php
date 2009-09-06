@@ -88,10 +88,10 @@ abstract class dmDoctrineQuery extends Doctrine_Query
     }
 
 		$me       = $this->getRootAlias();
-		$culture  = is_null($culture) ? dm::getUser()->getCulture() : $culture;
-
-    return $this
-    ->addSelect($me.'.*, translation.*')
+		$culture  = is_null($culture) ? myDoctrineRecord::getDefaultCulture() : $culture;
+		
+		return $this
+//    ->addSelect($me.'.*, translation.*')
     ->leftJoin($me.'.Translation translation ON '.$me.'.id = translation.id AND translation.lang = ?', $culture);
 	}
 
@@ -113,6 +113,7 @@ abstract class dmDoctrineQuery extends Doctrine_Query
         return $this;
       }
     }
+    
 		return $this->addWhere($this->getRootAlias().'.is_active = ?', (bool) $boolean);
 	}
 	
@@ -300,7 +301,7 @@ abstract class dmDoctrineQuery extends Doctrine_Query
   }
 
   /*
-   * fetch brutal flat PDO array with numeric keys
+   * fetch brutal flat array with numeric keys
    * @return array PDO result
    */
   public function fetchFlat($params = array())
