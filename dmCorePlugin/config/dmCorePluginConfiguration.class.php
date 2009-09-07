@@ -52,6 +52,8 @@ class dmCorePluginConfiguration extends sfPluginConfiguration
     {
     	sfConfig::set('lazy_cache_key', true);
     }
+    
+    myConfig::initialize($this->dispatcher);
   }
 
   protected function enableModules()

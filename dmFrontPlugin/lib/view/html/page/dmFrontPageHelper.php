@@ -4,7 +4,6 @@ class dmFrontPageHelper
 {
 	protected
 	  $dmContext,
-	  $site,
 	  $page,
 	  $areas;
 
@@ -17,8 +16,6 @@ class dmFrontPageHelper
   
   protected function initialize()
   {
-  	$this->site = $this->dmContext->getSite();
-  	
   	$this->page = $this->dmContext->getPage();
   }
   

@@ -20,7 +20,7 @@ class PluginDmPageTable extends myDoctrineTable
         'module' => 'main',
         'action' => 'root',
         'name' => dm::getI18n()->__('Home'),
-        'title' => dm::getI18n()->__('Home').' | '.dmDb::table('DmSite')->getInstance()->getName(),
+        'title' => dm::getI18n()->__('Home').' | '.dmConfig::get('site_name'),
         'slug' => ''
       ));
 
@@ -39,7 +39,7 @@ class PluginDmPageTable extends myDoctrineTable
         'module' => 'main',
         'action' => 'error404',
     	  'name' => dm::getI18n()->__('Page not found'),
-        'title' => dm::getI18n()->__('Page not found').' | '.dmContext::getInstance()->getSite()->name,
+        'title' => dm::getI18n()->__('Page not found').' | '.dmConfig::get('site_name'),
         'slug' => '-error404'
       ))->getNode()->insertAsLastChildOf($root);
     }

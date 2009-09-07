@@ -3,7 +3,7 @@ use_stylesheet('core.browsers');
 use_stylesheet('admin.userLog');
 use_javascript('admin.userLog');
 
-echo £('h1', $site->name);
+echo £('h1', dmConfig::get('site_name'));
 
 echo £('div.admin_home.clearfix',
 

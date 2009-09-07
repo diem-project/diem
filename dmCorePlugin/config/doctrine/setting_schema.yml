@@ -1,0 +1,16 @@
+DmSetting:
+  actAs:
+    I18n:
+      fields:               [description, value, default_value]
+  columns:
+    id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
+    name:                   { type: string(127), notnull: true, unique: true }
+    description:            { type: string(255) }
+    type:                   { type: enum, notnull: true, values: [text, boolean, checkbox, select, textarea], default: 'text' }
+    value:                  { type: string(65532) }
+    options:                { type: string(65532) }
+    group_name:             { type: string(255), notnull: true, default: '' }
+    default_value:          { type: string(65532), default: '' }
+    credentials:            { type: string(255) }
+      
+package:                    dmCorePlugin.lib.model.doctrine.site

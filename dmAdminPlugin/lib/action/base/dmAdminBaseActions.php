@@ -60,7 +60,7 @@ class dmAdminBaseActions extends dmBaseActions
     
     $this->download($data, array(
       'filename' => sprintf('%s-%s_%s.%s',
-	      dm::getI18n()->__($this->getDmContext()->getSite()->name),
+	      dmConfig::get('site_name'),
 	      dm::getI18n()->__($options['module']->getName()),
 	      date('Y-m-d'),
 	      $options['extension']

@@ -19,19 +19,16 @@ abstract class dmInitFilter extends dmFilter
   
   protected function saveApplicationUrl()
   {
-  	if ($site = $this->dmContext->getSite())
+    $knownBaseUrls = json_decode(dmConfig::get('base_urls', '[]'), true);
+    
+  	$appUrlKey = implode('-', array(sfConfig::get('sf_app'), sfConfig::get('sf_environment')));
+  	
+  	$appUrl    = $this->context->getRequest()->getUriPrefix().$this->context->getRequest()->getScriptName();
+  		
+  	if (!isset($knownBaseUrls[$appUrlKey]) || $knownBaseUrls[$appUrlKey] !== $appUrl)
   	{
-  		$appUrlKey = sfConfig::get('sf_app').'-'.sfConfig::get('sf_environment');
-  		$appUrl    = $this->context->getRequest()->getUriPrefix().$this->context->getRequest()->getScriptName();
-  		
-  		$knownAppUrls = json_decode($site->appUrls, true);
-  		
-  		if (!isset($knownAppUrls[$appUrlKey]) || $knownAppUrls[$appUrlKey] !== $appUrl)
-  		{
-  			$knownAppUrls[$appUrlKey] = $appUrl;
-  			$site->appUrls = json_encode($knownAppUrls);
-  			$site->save();
-  		}
+  		$knownBaseUrls[$appUrlKey] = $appUrl;
+  		dmConfig::set('base_urls', json_encode($knownBaseUrls));
   	}
   }
 

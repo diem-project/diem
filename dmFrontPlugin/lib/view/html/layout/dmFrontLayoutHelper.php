@@ -58,14 +58,14 @@ class dmFrontLayoutHelper extends dmCoreLayoutHelper
     	$metas['keywords'] = $this->page->get('keywords');
     }
     
-    if (!$this->site->getSetting('indexable'))
+    if (!dmConfig::get('site_indexable'))
     {
     	$metas['robots'] = 'noindex, nofollow';
     }
     
-    if ($this->page->getNode()->isRoot() && ($gwtKey = $this->site->getSetting('gwt_key')))
+    if (dmConfig::get('gwt_key') && $this->page->getNode()->isRoot())
     {
-    	$metas['verify-v1'] = $gwtKey;
+    	$metas['verify-v1'] = dmConfig::get('gwt_key');
     }
     
     return $metas;
@@ -122,7 +122,7 @@ class dmFrontLayoutHelper extends dmCoreLayoutHelper
   
   public function renderGoogleAnalytics()
   {
-  	if (($gaKey = $this->site->getSetting('ga_key')) && !$this->user->can('admin') && !dmOs::isLocalhost())
+  	if (dmConfig::get('ga_key') && !$this->user->can('admin') && !dmOs::isLocalhost())
   	{
   		return str_replace("\n", ' ', sprintf('<script type="text/javascript">
 var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
@@ -132,7 +132,7 @@ document.write(unescape("%3Cscript src=\'" + gaJsHost + "google-analytics.com/ga
 try {
 var pageTracker = _gat._getTracker("%s");
 pageTracker._trackPageview();
-} catch(err) {}</script>', $gaKey));
+} catch(err) {}</script>', dmConfig::get('ga_key')));
   	}
   	
   	return '';

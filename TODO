@@ -147,8 +147,12 @@ $.getScript(href, callback);
 
 * draw the logo
 
-* use csSettingsPlugin
-
 * admin list : when sorting by foreign table, try to keep alphabetical/numeric order
 
 * compare doctrine inflector to dmString
+
+* [DONE] remove useless dm_site table
+
+* [DONE] allow database, culture aware, user friendly configuration
+
+* fix bad css compression on front when not logged

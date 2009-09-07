@@ -66,9 +66,6 @@ class dmAdminPluginConfiguration extends sfPluginConfiguration
 
   public function loadContext()
   {
-    $t = dmDebug::timer('retrieve site');
-    $site = sfContext::getInstance()->getConfiguration()->getCurrentSite();
-    $t->addTime();
-    dmAdminContext::createInstance(sfContext::getInstance())->setSite($site);
+    dmAdminContext::createInstance(sfContext::getInstance());
   }
 }

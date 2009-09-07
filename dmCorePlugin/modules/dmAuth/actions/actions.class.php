@@ -19,8 +19,6 @@ class dmAuthActions extends BasesfGuardAuthActions
 
     $this->setLayout(dmOs::join(sfConfig::get('dm_core_dir'), 'modules/dmAuth/templates/layout'));
 
-    $this->site = dmContext::getInstance()->getSite();
-
     return parent::executeSignin($request);
   }
   

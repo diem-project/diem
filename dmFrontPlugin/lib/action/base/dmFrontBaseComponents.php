@@ -8,8 +8,4 @@ class dmFrontBaseComponents extends dmBaseComponents
     return $this->getDmContext()->getPage();
   }
   
-  public function getSite()
-  {
-    return $this->getDmContext()->getSite();
-  }
 }

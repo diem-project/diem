@@ -223,7 +223,7 @@ abstract class dmSearchIndex extends dmSearchIndexCommon
 	 */
 	public function getStopWords()
 	{
-		$stopWords = dmContext::getInstance()->getSite()->Translation[$this->culture]->search_stop_words;
+		$stopWords = dmConfig::get('search_stop_words');
 		$stopWords = str_word_count(strtolower($stopWords), 1);
 		return $stopWords;
 	}

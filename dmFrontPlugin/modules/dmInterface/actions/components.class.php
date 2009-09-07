@@ -56,7 +56,7 @@ class dmInterfaceComponents extends dmFrontBaseComponents
   		}
   		
   		$spaceName = $space == 'main'
-  		? dm::getI18n()->__(dmContext::getInstance()->getSite()->getName())
+  		? dmConfig::get('site_name')
   		: dm::getI18n()->__(dmString::humanize(str_replace('dmWidget', '', $space)));
 
   		$menu[$space] = array(

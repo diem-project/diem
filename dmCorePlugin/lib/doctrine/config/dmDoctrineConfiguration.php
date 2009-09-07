@@ -65,11 +65,6 @@ class dmDoctrineConfiguration
     return $this;
 	}
 
-	public function listenConfigLoaded()
-	{
-    self::getInstance()->configureCache();
-	}
-
   protected function configureInheritance()
   {
     $this->manager->setAttribute(Doctrine::ATTR_QUERY_CLASS, 'myDoctrineQuery');

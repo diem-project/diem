@@ -48,9 +48,9 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
 
   public function notifyPageTreeWatcher()
   {
-    if ($this->getTable()->interactsWithPageTree())
+    if ($this->_table instanceof dmDoctrineTable && $this->_table->interactsWithPageTree())
     {
-      dmContext::getInstance()->getPageTreeWatcher()->addModifiedTable($this->getTable());
+      dmContext::getInstance()->getPageTreeWatcher()->addModifiedTable($this->_table);
     }
   }
 
@@ -83,7 +83,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     /*
      * Will not work if table has composite primary key
      */
-    if (!$pk = $this->getTable()->getPrimaryKey())
+    if (!$pk = $this->_table->getPrimaryKey())
     {
       return null;
     }
@@ -174,7 +174,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
    */
   public function getDmMediaFolder()
   {
-    return $this->getTable()->getDmMediaFolder();
+    return $this->_table->getDmMediaFolder();
   }
 
   /*
@@ -182,7 +182,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
    */
   public function getDmMediaByColumnName($columnName)
   {
-    $relation = $this->getTable()->getRelationHolder()->getLocalByColumnName($columnName);
+    $relation = $this->_table->getRelationHolder()->getLocalByColumnName($columnName);
 
     if (!$relation instanceof Doctrine_Relation_LocalKey)
     {
@@ -207,7 +207,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
    */
   public function setDmMediaByColumnName($columnName, DmMedia $media)
   {
-    $relation = $this->getTable()->getRelationHolder()->getLocalByColumnName($columnName);
+    $relation = $this->_table->getRelationHolder()->getLocalByColumnName($columnName);
 
     if (!$relation instanceof Doctrine_Relation_LocalKey)
     {
@@ -229,7 +229,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
    */
   public function getDmModule()
   {
-    return $this->getTable()->getDmModule();
+    return $this->_table->getDmModule();
   }
 
   /*
@@ -350,7 +350,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
    */
   public function getRelatedRecord($class, $hydrationMode = Doctrine::HYDRATE_RECORD)
   {
-    if (!$relation = $this->getTable()->getRelationHolder()->getByClass($class))
+    if (!$relation = $this->_table->getRelationHolder()->getByClass($class))
     {
       throw new dmRecordException(sprintf('%s has no relation for class %s', get_class($this), $class));
       return null;
@@ -392,7 +392,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
    */
   public function getRelatedRecordId($class)
   {
-    if (!$relation = $this->getTable()->getRelationHolder()->getByClass($class))
+    if (!$relation = $this->_table->getRelationHolder()->getByClass($class))
     {
       throw new dmRecordException(sprintf('%s has no relation for class %s', get_class($this), $class));
       return null;
@@ -457,7 +457,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
       }
     }
 
-    return sprintf('No description for object of class "%s"', $this->getTable()->getComponentName());
+    return sprintf('No description for object of class "%s"', $this->_table->getComponentName());
   }
 
   /*
@@ -501,8 +501,13 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     {
       return true;
     }
+    
+    if (!$this->_table instanceof dmDoctrineTable)
+    {
+      return false;
+    }
 
-    foreach($this->getTable()->getPrimaryKeys() as $pk)
+    foreach($this->_table->getPrimaryKeys() as $pk)
     {
       if (!$this->get($pk))
       {

@@ -39,8 +39,6 @@ Integration:
 
 System:
   Configuration:
-    dmSite:
-      name:         Site | Site
     dmSetting:
       name:         Setting
   Log:

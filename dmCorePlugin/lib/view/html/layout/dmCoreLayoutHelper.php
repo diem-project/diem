@@ -5,7 +5,6 @@ abstract class dmCoreLayoutHelper
 	protected
 	  $dmContext,
 	  $response,
-	  $site,
 	  $user,
 	  $theme,
 	  $baseWebPath,
@@ -22,7 +21,6 @@ abstract class dmCoreLayoutHelper
   {
     $this->request  = $this->dmContext->getSfContext()->getRequest();
     $this->response = $this->dmContext->getSfContext()->getResponse();
-    $this->site     = $this->dmContext->getSite();
     $this->user     = $this->dmContext->getSfContext()->getUser();
     $this->theme    = $this->user->getTheme();
     $this->isHtml5  = sfConfig::get('dm_html_doctype_version', 5) == 5;

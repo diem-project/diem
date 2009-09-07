@@ -69,9 +69,6 @@ class dmFrontPluginConfiguration extends sfPluginConfiguration
 
   public function loadContext()
   {
-    $t = dmDebug::timer('retrieve site');
-    $site = sfContext::getInstance()->getConfiguration()->getCurrentSite();
-    $t->addTime();
-    dmFrontContext::createInstance(sfContext::getInstance())->setSite($site);
+    dmFrontContext::createInstance(sfContext::getInstance());
   }
 }

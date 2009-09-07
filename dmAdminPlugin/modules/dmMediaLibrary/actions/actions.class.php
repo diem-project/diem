@@ -23,7 +23,7 @@ class dmMediaLibraryActions extends dmAdminBaseActions
     $this->options = array(
       'loc'       => $this->getUser()->getCulture(),
       'save_to'   => $this->file->Folder->getRelPath(),
-      'referrer'  => $this->getDmContext()->getSite()->getName(),
+      'referrer'  => dmConfig::get('site_name'),
       'skip_default' => true,
       'exit'      => $this->generateUrl('dm_media_library_path', array(
         'path'    => $this->file->Folder->getRelPath()

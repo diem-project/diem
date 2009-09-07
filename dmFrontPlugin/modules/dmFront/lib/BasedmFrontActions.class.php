@@ -12,8 +12,6 @@ class BasedmFrontActions extends dmFrontBaseActions
 
 	public function executePage(dmWebRequest $request)
 	{
-    $this->forward404Unless($this->site = $this->getSite(), 'No current site');
-
 		$this->forward404Unless($this->page = $this->getPage(), 'No current page');
 		
 		if ($this->page->isModuleAction('main', 'error404'))

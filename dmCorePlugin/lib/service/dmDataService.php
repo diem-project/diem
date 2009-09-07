@@ -9,7 +9,6 @@ class dmDataService extends dmService
 	    "permissions",
 	    "groups",
 	    "users",
-      "site",
       "settings",
 	    "layouts",
 	    "pages",
@@ -40,62 +39,64 @@ class dmDataService extends dmService
   	dmProject::checkFilesystemPermissions();
   }
   
-  protected function loadSite()
-  {
-    dmDb::table('DmSite')->getInstance();
-  }
 
   protected function loadSettings()
   {
     $array = array(
-      'name' => array(
-        'setting_default' => dmString::humanize(dmProject::getKey()),
+      'site_name' => array(
+        'default_value' => dmString::humanize(dmProject::getKey()),
         'description' => 'The site name',
-        'setting_group' =>'site'
+        'group_name' =>'site'
       ),
-      'active' => array(
-        'type' => 'yesno',
-        'setting_default' => 1,
+      'site_active' => array(
+        'type' => 'boolean',
+        'default_value' => 1,
         'description' => 'Is the site ready for visitors ?',
-        'setting_group' =>'site'
+        'group_name' =>'site'
       ),
-      'indexable' => array(
-        'type' => 'yesno',
-        'setting_default' => 0,
+      'site_indexable' => array(
+        'type' => 'boolean',
+        'default_value' => 0,
         'description' => 'Is the site ready for search engine crawlers ?',
-        'setting_group' =>'site'
+        'group_name' =>'site'
       ),
-      'working_copy' => array(
-        'type' => 'yesno',
-        'setting_default' => 1,
+      'site_working_copy' => array(
+        'type' => 'boolean',
+        'default_value' => 1,
         'description' => 'Is this site the current working copy ?',
-        'setting_group' =>'site'
+        'group_name' =>'site'
       ),
       'ga_key' => array(
         'description' => 'The google analytics key without javascript stuff ( Ex: UA-9876614-1 )',
-        'setting_group' =>'tracking'
+        'group_name' =>'tracking'
       ),
       'gwt_key' => array(
         'description' => 'The google webmaster tools filename without google and .html ( Ex: a913b555ba9b4f13 )',
-        'setting_group' =>'tracking'
+        'group_name' =>'tracking'
       ),
       'gwt_key' => array(
         'description' => 'The google webmaster tools filename without google and .html ( Ex: a913b555ba9b4f13 )',
-        'setting_group' =>'external services'
+        'group_name' =>'external services'
       ),
       'xiti_code' => array(
-        'type' => 'textbox',
+        'type' => 'textarea',
         'description' => 'The xiti html code',
-        'setting_group' =>'tracking'
+        'group_name' =>'tracking'
       ),
       'gmap_key' => array(
         'description' => 'The google map key ( Ex: ABQIAAAARcvUUsf4RP8fmjHaFYFYQxRhf7uCiJccoEylUqtC2qy_Rw3WKhSEa96 )',
-        'setting_group' =>'external services'
+        'group_name' =>'external services'
       ),
       'search_stop_words' => array(
-        'type' => 'textbox',
+        'type' => 'textarea',
         'description' => 'The words we do not want to search (Ex:  the, a, to )',
-        'setting_group' =>'search engine'
+        'group_name' =>'search engine'
+      ),
+      'base_urls' => array(
+        'type' => 'textarea',
+        'description' => 'Diem base urls for different applications/environments/cultures',
+        'group_name' => 'internal',
+        'credentials' => 'system'
       )
     );
 
@@ -103,15 +104,12 @@ class dmDataService extends dmService
     ->select('s.name')
     ->fetchArray();
     
-    $siteId = dmDb::table('DmSite')->getInstance()->id;
-
     foreach($array as $name => $config)
     {
       if (!isset($existingSettings[$name]))
       {
         $setting = new DmSetting;
         $setting->name = $name;
-        $setting->dmSiteId = $siteId;
         $setting->fromArray($config);
 
         $setting->save();

@@ -10,7 +10,6 @@ abstract class dmContext extends dmMicroCache
     $dmConfiguration,
     $helper,
     $sfContext,
-    $site,
     $pageTreeWatcher;
 
   abstract public function getModule();
@@ -56,22 +55,6 @@ abstract class dmContext extends dmMicroCache
   	return $this->sfContext;
   }
 
-  /*
-   * @return dmSite
-   */
-  public function getSite()
-  {
-    return $this->site;
-  }
-
-  /*
-   * @return dmSite
-   */
-  public function setSite(DmSite $site)
-  {
-    return $this->site = $site;
-  }
-
   public function isHtmlForHuman()
   {
     if ($this->hasCache('is_html_for_human'))
@@ -112,10 +95,15 @@ abstract class dmContext extends dmMicroCache
   	return $this->sfContext->getModuleName() === $module && $this->sfContext->getActionName() === $action;
   }
   
-  public function getAppUrl($app)
+  public function getAppUrl($app = null, $env = null, $culture = null)
   {
-    $knownAppUrls = json_decode($this->site->appUrls, true);
-    $appUrlKey = $app.'-'.sfConfig::get('sf_environment');
+    $app = is_null($app) ? sfConfig::get('sf_app') : $app;
+    $env = is_null($env) ? sfConfig::get('sf_environment') : $env;
+    $culture = is_null($culture) ? $this->sfContext->getUser()->getCulture() : $culture;
+    
+    $knownAppUrls = json_decode(dmConfig::get('base_urls', '[]'), true);
+    
+    $appUrlKey = implode('-', array($app, $env, $culture));
 
     if (!($appUrl = dmArray::get($knownAppUrls, $appUrlKey)))
     {

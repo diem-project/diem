@@ -8,10 +8,6 @@ class dmFrontBaseActions extends dmBaseActions
 		return $this->getDmContext()->getPage();
 	}
 	
-	public function getSite()
-	{
-		return $this->getDmContext()->getSite();
-	}
 
   /**
    * Indicates that this action requires security.
@@ -20,7 +16,7 @@ class dmFrontBaseActions extends dmBaseActions
    */
   public function isSecure()
   {
-  	if (!$this->getDmContext()->getSite()->getSetting('active'))
+  	if (!dmConfig::get('site_active'))
   	{
   		return true;
   	}
@@ -37,7 +33,7 @@ class dmFrontBaseActions extends dmBaseActions
   {
   	$credentials = parent::getCredential();
 
-    if (!$this->getDmContext()->getSite()->get('is_active'))
+    if (!dmConfig::get('site_active'))
     {
   	  $credentials[] = 'view_site';
     }

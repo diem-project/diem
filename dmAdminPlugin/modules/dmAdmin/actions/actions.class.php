@@ -30,8 +30,6 @@ class dmAdminActions extends dmAdminBaseActions
 
   public function executeIndex(sfWebRequest $request)
   {
-  	$this->site = $this->getDmContext()->getSite();
-
     require_once(dmOs::join(sfConfig::get('dm_admin_dir'), 'modules/dmUserLog/lib/dmUserLogViewLittle.php'));
   	
   	$this->userLogView = new dmUserLogViewLittle(new dmUserLog, $this->getUser()->getCulture());

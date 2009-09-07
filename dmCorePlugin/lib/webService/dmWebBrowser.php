@@ -7,7 +7,7 @@ class dmWebBrowser extends sfWebBrowser
     parent::__construct(array(), null, array());
 
     $this->setUserAgent(
-      dmContext::getInstance()->getSite()->getName().
+      dmConfig::get('site_name').
       " (".dm::getRequest()->getAbsoluteUrlRoot().")".
       " powered by Diem/".dm::version().
       " (http://diem.iliaz.com)".

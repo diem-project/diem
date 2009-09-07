@@ -2,7 +2,7 @@
 
 echo £o('div.dm.dm_auth');
 
-echo £('h1.site_name', __($site->getName()));
+echo £('h1.site_name', dmConfig::get('site_name'));
 
 echo £('div.message',
   £('p', __("You don't have the required permission to access this page.")).
