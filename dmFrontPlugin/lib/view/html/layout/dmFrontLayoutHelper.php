@@ -48,24 +48,24 @@ class dmFrontLayoutHelper extends dmCoreLayoutHelper
   protected function getMetas()
   {
   	$metas = array(
-      'description'  => $this->page->description,
+      'description'  => $this->page->get('description'),
       'language'     => $this->user->getCulture(),
   	  'generator'    => 'Diem '.dm::version()
     );
     
     if (sfConfig::get('dm_seo_use_keywords'))
     {
-    	$metas['keywords'] = $this->page->keywords;
+    	$metas['keywords'] = $this->page->get('keywords');
     }
     
-    if (!$this->site->isIndexable)
+    if (!$this->site->getSetting('indexable'))
     {
     	$metas['robots'] = 'noindex, nofollow';
     }
     
-    if ($this->site->wtCode && $this->page->Node->isRoot())
+    if ($this->page->getNode()->isRoot() && ($gwtKey = $this->site->getSetting('gwt_key')))
     {
-    	$metas['verify-v1'] = $this->site->wtCode;
+    	$metas['verify-v1'] = $gwtKey;
     }
     
     return $metas;
@@ -122,7 +122,7 @@ class dmFrontLayoutHelper extends dmCoreLayoutHelper
   
   public function renderGoogleAnalytics()
   {
-  	if ($this->site->gaCode && !$this->user->can('admin') && !dmOs::isLocalhost())
+  	if (($gaKey = $this->site->getSetting('ga_key')) && !$this->user->can('admin') && !dmOs::isLocalhost())
   	{
   		return str_replace("\n", ' ', sprintf('<script type="text/javascript">
 var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
@@ -132,7 +132,7 @@ document.write(unescape("%3Cscript src=\'" + gaJsHost + "google-analytics.com/ga
 try {
 var pageTracker = _gat._getTracker("%s");
 pageTracker._trackPageview();
-} catch(err) {}</script>', $this->site->gaCode));
+} catch(err) {}</script>', $gaKey));
   	}
   	
   	return '';

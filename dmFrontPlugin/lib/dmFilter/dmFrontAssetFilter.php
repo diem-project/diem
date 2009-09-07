@@ -59,13 +59,13 @@ class dmFrontAssetFilter extends dmAssetFilter
 		if ($this->userCanEdit())
 		{
       $cssArray = array(
+        'front.dm_reset',
         'lib.ui',
         'lib.ui-dialog',
         'lib.ui-resizable',
         'lib.ui-tabs',
         'lib.markitup',
         'lib.markitupSet',
-        'front.dm_reset',
         'core.util',
         'core.editMode',
         'core.interface',

@@ -21,26 +21,19 @@ abstract class dmBaseActions extends sfActions
     return dmContext::getInstance();
   }
 
-	protected function redirectBack()
-	{
-		$refererUrl = $this->request->getReferer();
+  
+  protected function redirectBack()
+  {
+    $refererUrl = $this->request->getReferer();
 
     if (!$refererUrl || $refererUrl === $this->request->getUri())
     {
-	    if ($page = $this->getDmContext()->getPage())
-	    {
-	      $refererUrl = dmFrontLinkTag::build($page)->getAbsoluteHref();
-	    }
-	    else
-	    {
-    	  $refererUrl = dmFrontLinkTag::build()->getAbsoluteHref();
-	    }
-	  }
-	  
-		return $this->redirect($refererUrl);
-	}
-
-
+      $refererUrl = '@homepage';
+    }
+    
+    return $this->redirect($refererUrl);
+  }
+  
 	/*
 	 * To download a file using its absolute path or raw data
 	 */

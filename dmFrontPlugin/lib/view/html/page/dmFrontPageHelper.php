@@ -193,7 +193,7 @@ class dmFrontPageHelper
 
   public function renderWidgetInner(array $widget, dmWidgetType $widgetType = null)
   {
-    ob_start();
+//    ob_start();
     
     try
     {
@@ -208,11 +208,11 @@ class dmFrontPageHelper
 	    
       $html = $widgetView->render();
       
-      ob_clean();
+//      ob_clean();
     }
     catch(Exception $e)
     {
-      ob_clean();
+//      ob_clean();
       if (sfConfig::get('dm_debug'))
       {
         throw $e;

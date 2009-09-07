@@ -7,7 +7,7 @@ class dmInterfaceActions extends baseDmInterfaceActions
 
   public function executeLoadPageTree(sfWebRequest $request)
   {
-    $tree = new dmFrontRecursivePageList();
+    $tree = new dmFrontRecursivePageList;
 
     $jsTree =
       file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), sfConfig::get('dm_core_asset'), 'lib/jsTree/source/tree_component.min.js')).

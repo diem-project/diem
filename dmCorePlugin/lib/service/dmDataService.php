@@ -10,6 +10,7 @@ class dmDataService extends dmService
 	    "groups",
 	    "users",
       "site",
+      "settings",
 	    "layouts",
 	    "pages",
 	    "i18n",
@@ -44,6 +45,80 @@ class dmDataService extends dmService
     dmDb::table('DmSite')->getInstance();
   }
 
+  protected function loadSettings()
+  {
+    $array = array(
+      'name' => array(
+        'setting_default' => dmString::humanize(dmProject::getKey()),
+        'description' => 'The site name',
+        'setting_group' =>'site'
+      ),
+      'active' => array(
+        'type' => 'yesno',
+        'setting_default' => 1,
+        'description' => 'Is the site ready for visitors ?',
+        'setting_group' =>'site'
+      ),
+      'indexable' => array(
+        'type' => 'yesno',
+        'setting_default' => 0,
+        'description' => 'Is the site ready for search engine crawlers ?',
+        'setting_group' =>'site'
+      ),
+      'working_copy' => array(
+        'type' => 'yesno',
+        'setting_default' => 1,
+        'description' => 'Is this site the current working copy ?',
+        'setting_group' =>'site'
+      ),
+      'ga_key' => array(
+        'description' => 'The google analytics key without javascript stuff ( Ex: UA-9876614-1 )',
+        'setting_group' =>'tracking'
+      ),
+      'gwt_key' => array(
+        'description' => 'The google webmaster tools filename without google and .html ( Ex: a913b555ba9b4f13 )',
+        'setting_group' =>'tracking'
+      ),
+      'gwt_key' => array(
+        'description' => 'The google webmaster tools filename without google and .html ( Ex: a913b555ba9b4f13 )',
+        'setting_group' =>'external services'
+      ),
+      'xiti_code' => array(
+        'type' => 'textbox',
+        'description' => 'The xiti html code',
+        'setting_group' =>'tracking'
+      ),
+      'gmap_key' => array(
+        'description' => 'The google map key ( Ex: ABQIAAAARcvUUsf4RP8fmjHaFYFYQxRhf7uCiJccoEylUqtC2qy_Rw3WKhSEa96 )',
+        'setting_group' =>'external services'
+      ),
+      'search_stop_words' => array(
+        'type' => 'textbox',
+        'description' => 'The words we do not want to search (Ex:  the, a, to )',
+        'setting_group' =>'search engine'
+      )
+    );
+
+    $existingSettings = dmDb::query('DmSetting s INDEXBY s.name')
+    ->select('s.name')
+    ->fetchArray();
+    
+    $siteId = dmDb::table('DmSite')->getInstance()->id;
+
+    foreach($array as $name => $config)
+    {
+      if (!isset($existingSettings[$name]))
+      {
+        $setting = new DmSetting;
+        $setting->name = $name;
+        $setting->dmSiteId = $siteId;
+        $setting->fromArray($config);
+
+        $setting->save();
+      }
+    }
+  }
+
   protected function loadMedia()
   {
   	dmDb::table('DmMediaFolder')->checkRoot();
@@ -53,19 +128,19 @@ class dmDataService extends dmService
   {
     if (!$superAdmin = dmDb::query('sfGuardUser u')->where('u.is_super_admin = ?', true)->fetchRecord())
     {
-    	$superAdmin = dmDb::create('sfGuardUser', array(
-    	  'is_super_admin' => true,
-    	  'username' => 'admin',
-    	  'password' => 'admin',
+      $superAdmin = dmDb::create('sfGuardUser', array(
+        'is_super_admin' => true,
+        'username' => 'admin',
+        'password' => 'admin',
         'email' => 'admin@'.dmProject::getKey().'.com'
-    	))->saveGet();
+      ))->saveGet();
     }
 
     if(!$superAdminProfile = $superAdmin->Profile->orNull())
     {
-    	dmDb::create('DmProfile', array(
-    	  'user_id' => $superAdmin->id
-    	))->save();
+      dmDb::create('DmProfile', array(
+        'user_id' => $superAdmin->id
+      ))->save();
     }
   }
 

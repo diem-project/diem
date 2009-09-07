@@ -11,7 +11,7 @@ class dmFrontInitFilter extends dmInitFilter
   {
     $this->redirectTrailingSlash();
 
-  	$this->checkSiteIsActive();
+//  	$this->checkSiteIsActive();
 
     $this->saveApplicationUrl();
   	
@@ -37,19 +37,19 @@ class dmFrontInitFilter extends dmInitFilter
     $this->logUser();
   }
 
-  protected function checkSiteIsActive()
-  {
-    if(!$this->dmContext->getSite()->get('is_active'))
-    {
-      $waitModule = sfConfig::get('dm_wait_module', 'dmFront');
-      $waitAction = sfConfig::get('dm_wait_action', 'wait');
-
-      if (!$this->dmContext->isModuleAction($waitModule, $waitAction))
-      {
-        return $this->context->getController()->forward($waitModule, $waitAction);
-      }
-    }
-  }
+//  protected function checkSiteIsActive()
+//  {
+//    if(!$this->dmContext->getSite()->get('is_active'))
+//    {
+//      $waitModule = sfConfig::get('dm_wait_module', 'dmFront');
+//      $waitAction = sfConfig::get('dm_wait_action', 'wait');
+//
+//      if (!$this->dmContext->isModuleAction($waitModule, $waitAction))
+//      {
+//        return $this->context->getController()->forward($waitModule, $waitAction);
+//      }
+//    }
+//  }
 
   protected function guessPage()
   {

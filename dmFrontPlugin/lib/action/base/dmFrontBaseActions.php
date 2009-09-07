@@ -20,7 +20,7 @@ class dmFrontBaseActions extends dmBaseActions
    */
   public function isSecure()
   {
-  	if (!$this->getDmContext()->getSite()->get('is_active'))
+  	if (!$this->getDmContext()->getSite()->getSetting('active'))
   	{
   		return true;
   	}
@@ -44,5 +44,23 @@ class dmFrontBaseActions extends dmBaseActions
 
     return $credentials;
   }
+  
+  protected function redirectBack()
+  {
+    $refererUrl = $this->request->getReferer();
 
+    if (!$refererUrl || $refererUrl === $this->request->getUri())
+    {
+      if ($page = $this->getDmContext()->getPage())
+      {
+        $refererUrl = dmFrontLinkTag::build($page)->getAbsoluteHref();
+      }
+      else
+      {
+        $refererUrl = dmFrontLinkTag::build()->getAbsoluteHref();
+      }
+    }
+    
+    return $this->redirect($refererUrl);
+  }
 }

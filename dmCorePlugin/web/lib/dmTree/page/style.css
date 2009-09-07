@@ -1,16 +1,16 @@
 /* DOTS */
-.tree .tree-page,
-.tree .tree-page ul {
+.dm .dm_tree .tree-page,
+.dm .dm_tree .tree-page ul {
 	background-position:6px 1px;
 	background-repeat:repeat-y;
 	background-image:url("dot.gif");
 }
-.tree .tree-page li {
+.dm .dm_tree .tree-page li {
 	background-position:7px 8px;
 	background-repeat:no-repeat;
 	background-image:url("li.gif");
 }
-.tree .tree-page li.last {
+.dm .dm_tree .tree-page li.last {
 	background-position:5px top;
 	background-repeat:no-repeat;
 	background-image:url("lastli.gif");
@@ -44,15 +44,15 @@
 }
 
 /* OPEN or CLOSED */
-.tree .tree-page li.open {
+.dm .dm_tree .tree-page li.open {
 	background:url("fminus.gif") 4px 6px no-repeat;
 }
 
-.tree .tree-page li.closed {
+.dm .dm_tree .tree-page li.closed {
 	background:url("fplus.gif") 5px 5px no-repeat;
 }
 
-.tree .tree-page #dragged li.open {
+.dm .dm_tree .tree-page #dragged li.open {
 	background:url("fplus.gif") 5px 5px no-repeat;
 }
 
@@ -79,28 +79,28 @@
 }
 
 /* DEFAULT ICON */
-.tree .tree-page li a,
-.tree .tree-page li span{
+.dm .dm_tree .tree-page li a,
+.dm .dm_tree .tree-page li span{
   border:1px solid #FCFCFC;
   padding:0px 3px 0px 18px;
   color: #444;
 }
-.tree .tree-page li a:hover,
-.tree .tree-page li a.hover {
+.dm .dm_tree .tree-page li a:hover,
+.dm .dm_tree .tree-page li a.hover {
 	background-color: #e7f4f9;
 	border-color: #d8f0fa;
 }
-.tree .tree-page li a.clicked,
-.tree .tree-page li a.clicked:hover,
-.tree .tree-page li span.clicked {
+.dm .dm_tree .tree-page li a.clicked,
+.dm .dm_tree .tree-page li a.clicked:hover,
+.dm .dm_tree .tree-page li span.clicked {
 	background-color: #beebff;
 	border-color:#99defd;
 }
-.tree .tree-page li span.clicked {
+.dm .dm_tree .tree-page li span.clicked {
 	padding:0px 3px 0px 20px;
 }
 
-.tree .tree-page li a.loading {
+.dm .dm_tree .tree-page li a.loading {
 	background-image:url("throbber.gif");
 }
 

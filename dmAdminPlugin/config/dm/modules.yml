@@ -41,6 +41,8 @@ System:
   Configuration:
     dmSite:
       name:         Site | Site
+    dmSetting:
+      name:         Setting
   Log:
     dmSentMail:
       name:         Sent mail

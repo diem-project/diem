@@ -1,10 +1,10 @@
 /* TREE LAYOUT */
-.tree ul {
+.dm .dm_tree ul {
 	margin:0 0 0 5px;
 	padding:0 0 0 0;
 	list-style-type:none;
 }
-.tree li {
+.dm .dm_tree li {
 	display:block;
 	min-height:18px;
 	line-height:18px;
@@ -16,11 +16,11 @@
 	_height:18px;
 	#height:auto;
 }
-.tree li ul {
+.dm .dm_tree li ul {
 	display:none;
 }
-.tree li a,
-.tree li span {
+.dm .dm_tree li a,
+.dm .dm_tree li span {
 	/*
 	vertical-align:bottom;
 	display:-moz-inline-stack;
@@ -34,21 +34,21 @@
 	padding:1px 4px 1px 1px;
 	margin:0;
 }
-.tree li a:hover, 
-.tree li a.hover {
+.dm .dm_tree li a:hover, 
+.dm .dm_tree li a.hover {
 
 }
-.tree li a.clicked,
-.tree li a.clicked:hover,
-.tree li span.clicked {
+.dm .dm_tree li a.clicked,
+.dm .dm_tree li a.clicked:hover,
+.dm .dm_tree li span.clicked {
 
 }
-.tree li a:focus {
+.dm .dm_tree li a:focus {
 	outline: none;
 }
 
-.tree li a input,
-.tree li span input {
+.dm .dm_tree li a input,
+.dm .dm_tree li span input {
 	margin:0;
 	padding:0 0;
 	display:inline-block;
@@ -58,8 +58,8 @@
 	font-size:10px;
 	font-family:Verdana;
 }
-.tree li a input:not([class="xxx"]),
-.tree li span input:not([class="xxx"]) {
+.dm .dm_tree li a input:not([class="xxx"]),
+.dm .dm_tree li span input:not([class="xxx"]) {
 	padding:1px 0;
 }
 
@@ -68,20 +68,20 @@
 }
 
 /* FOR DOTS */
-.tree li.last {
+.dm .dm_tree li.last {
 	float:left;
 }
 
 /* OPEN OR CLOSE */
-.tree li.open ul {
+.dm .dm_tree li.open ul {
 	display:block;
 }
-.tree li.closed ul {
+.dm .dm_tree li.closed ul {
 	display:none !important;
 }
 
 /* FOR DRAGGING */
-.tree #dragged {
+.dm .dm_tree #dragged {
 	padding:0 3px;
 	margin:0;
 	background:white;
@@ -92,11 +92,11 @@
 	top:-10px;
 	left:-10px;
 }
-.tree #dragged.last,
-.tree #dragged:last-child {
+.dm .dm_tree #dragged.last,
+.dm .dm_tree #dragged:last-child {
 	background:white;
 }
-.tree #dragged ul ul {
+.dm .dm_tree #dragged ul ul {
 	display:none;
 }
 
@@ -136,18 +136,18 @@
 }
 
 /** FIREFOX2 fix **/
-.tree li a, x:-moz-any-link { display:inline; float:left; }
+.dm .dm_tree li a, x:-moz-any-link { display:inline; float:left; }
 .rtl li a, x:-moz-any-link { display:inline; float:right; }
-.tree li, .tree li ul, .tree li.open ul, x:-moz-any-link { clear:both; }
+.dm .dm_tree li, .dm .dm_tree li ul, .dm .dm_tree li.open ul, x:-moz-any-link { clear:both; }
 /** FIREFOX3 restore **/
-.tree li a, .rtl li a, x:-moz-any-link, x:default { display:inline-block; float:none; }
-.tree li ul, .tree li.open ul, x:-moz-any-link, x:default { clear:none; }
+.dm .dm_tree li a, .rtl li a, x:-moz-any-link, x:default { display:inline-block; float:none; }
+.dm .dm_tree li ul, .dm .dm_tree li.open ul, x:-moz-any-link, x:default { clear:none; }
 /** IE7 Restore **/
-.tree li a, .rtl li a { #display:inline-block; #float:none; }
-.tree li ul, .tree li.open ul { #clear:none; }
+.dm .dm_tree li a, .rtl li a { #display:inline-block; #float:none; }
+.dm .dm_tree li ul, .dm .dm_tree li.open ul { #clear:none; }
 
-.tree li { _width:1px; }
-.tree > ul { float:left; margin-bottom:9px; }
-.tree > ul > li.last { margin-bottom:-9px !important; height:9px; }
-.tree li li { overflow:hidden; #overflow:visible; _overflow:visible; }
+.dm .dm_tree li { _width:1px; }
+.dm .dm_tree > ul { float:left; margin-bottom:9px; }
+.dm .dm_tree > ul > li.last { margin-bottom:-9px !important; height:9px; }
+.dm .dm_tree li li { overflow:hidden; #overflow:visible; _overflow:visible; }
 /* @-moz-document url-prefix() {} */
