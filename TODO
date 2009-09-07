@@ -146,3 +146,9 @@ $.getScript(href, callback);
 * [DONE] consider removing views as each view require a different sql query...
 
 * draw the logo
+
+* use csSettingsPlugin
+
+* admin list : when sorting by foreign table, try to keep alphabetical/numeric order
+
+* compare doctrine inflector to dmString

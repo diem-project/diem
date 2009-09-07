@@ -18,6 +18,7 @@ class dmFrontPageHelper
   protected function initialize()
   {
   	$this->site = $this->dmContext->getSite();
+  	
   	$this->page = $this->dmContext->getPage();
   }
   
@@ -27,7 +28,7 @@ class dmFrontPageHelper
     {
       $this->areas = dmDb::query('DmArea a INDEXBY a.type, a.Zones z, z.Widgets w')
       ->select('a.type, z.width, z.css_class, w.module, w.action, w.value, w.css_class')
-      ->where('a.dm_layout_id = ? OR a.dm_page_view_id = ?', array($this->page->PageView->Layout->id, $this->page->PageView->id))
+      ->where('a.dm_layout_id = ? OR a.dm_page_view_id = ?', array($this->page->getPageView()->get('Layout')->get('id'), $this->page->getPageView()->get('id')))
       ->orderBy('z.position asc, w.position asc')
       ->fetchArray();
     }
@@ -37,9 +38,9 @@ class dmFrontPageHelper
   
   public function getArea($type)
   {
-  	$areas = $this->getAreas();
+  	$this->getAreas();
 
-  	if (!isset($this->areas, $type))
+  	if (!isset($this->areas[$type]))
   	{
   		throw new dmException(sprintf('Page %s with layout %s has no area for type %s', $this->page, $this->page->Layout, $type));
   	  return null;
@@ -50,7 +51,7 @@ class dmFrontPageHelper
 
   public function renderAccessLinks()
   {
-	  if (!sfConfig::get('dm_accessibility_access_links'))
+	  if (!sfConfig::get('dm_accessibility_access_links', true))
 	  {
 	  	return '';
 	  }
@@ -69,17 +70,6 @@ class dmFrontPageHelper
 
   public function renderArea($type)
   {
-  	$cssClasses = array('dm_area');
-
-    if ($type === 'content')
-    {
-      $cssClasses[] = 'dm_content';
-    }
-    else
-    {
-      $cssClasses[] = 'dm_layout_'.$type;
-    }
-    
     $tagName = $this->getAreaTypeTagName($type);
 
     $area = $this->getArea($type);
@@ -95,9 +85,9 @@ class dmFrontPageHelper
     }
 
     $html .= sprintf(
-      '<%s class="%s" id="dm_area_%d">',
+      '<%s class="dm_area %s" id="dm_area_%d">',
       $tagName,
-      implode(' ', $cssClasses),
+      $type === 'content' ? 'dm_content' : 'dm_layout_'.$type,
       $area['id']
     );
 
@@ -203,6 +193,8 @@ class dmFrontPageHelper
 
   public function renderWidgetInner(array $widget, dmWidgetType $widgetType = null)
   {
+    ob_start();
+    
     try
     {
 	    if (is_null($widgetType))
@@ -214,8 +206,8 @@ class dmFrontPageHelper
 	
 	    $widgetView = new $widgetViewClass($widget);
 	    
-	    ob_start();
       $html = $widgetView->render();
+      
       ob_clean();
     }
     catch(Exception $e)
@@ -262,15 +254,5 @@ class dmFrontPageHelper
     }
     
     return array($widgetWrapClass, $widgetInnerClass);
-  }
-  
-  protected function appendWrapSuffixToClasses(array $classes)
-  {
-  	foreach($classes as $index => $class)
-  	{
-  		$classes[$index] = $class.'_wrap';
-  	}
-  	
-  	return $classes;
   }
 }

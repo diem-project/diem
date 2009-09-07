@@ -89,7 +89,7 @@ class dmAdminGeneratorBuilder
     return array(
       'display' => $this->getListDisplay(),
       'sort'    => $this->getListSort(),
-      'table_method' => 'filterAdminListQuery',
+      'table_method' => 'getAdminListQuery',
       'table_count_method' => '~'
     );
   }
