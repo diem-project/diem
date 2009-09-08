@@ -95,6 +95,10 @@ abstract class dmUser extends sfGuardSecurityUser implements dmMicroCacheInterfa
     {
       $can = false;
     }
+    elseif (empty($credentials))
+    {
+      $can = true;
+    }
     elseif($this->isSuperAdmin)
     {
       $can = true;
@@ -103,9 +107,13 @@ abstract class dmUser extends sfGuardSecurityUser implements dmMicroCacheInterfa
     {
       $can = in_array($credentials, $this->credentials);
     }
-    else
+    elseif(is_array($credentials))
     {
       $can = count(array_intersect($credentials, $this->credentials));
+    }
+    else
+    {
+      throw new dmException('Bad credentials : '.$credentials);
     }
 
     return $can;

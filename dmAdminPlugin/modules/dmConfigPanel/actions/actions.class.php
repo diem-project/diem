@@ -8,12 +8,12 @@ class dmConfigPanelActions extends dmAdminBaseActions
     $this->form = new dmConfigForm;
 
     $this->settings = dmDb::table('DmSetting')->fetchGrouped();
-
-    $this->groups = array_keys($this->settings);
+    
+    $this->groups = array();
 
     foreach($this->settings as $group => $settings)
     {
-      foreach($settings as $setting)
+      foreach($settings as $index => $setting)
       {
         if($this->getUser()->can($setting->get('credentials')))
         {
@@ -24,6 +24,14 @@ class dmConfigPanelActions extends dmAdminBaseActions
             $this->groups[] = $setting->get('group_name');
           }
         }
+        else
+        {
+          unset($this->settings[$group][$index]);
+        }
+      }
+      if(empty($this->settings[$group]))
+      {
+        unset($this->settings[$group]);
       }
     }
   }

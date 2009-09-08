@@ -68,20 +68,19 @@ class dmDataService extends dmService
       ),
       'ga_key' => array(
         'description' => 'The google analytics key without javascript stuff ( Ex: UA-9876614-1 )',
-        'group_name' =>'tracking'
+        'group_name' =>'tracking',
+        'credentials' => 'google_analytics'
       ),
       'gwt_key' => array(
         'description' => 'The google webmaster tools filename without google and .html ( Ex: a913b555ba9b4f13 )',
-        'group_name' =>'tracking'
-      ),
-      'gwt_key' => array(
-        'description' => 'The google webmaster tools filename without google and .html ( Ex: a913b555ba9b4f13 )',
-        'group_name' =>'external services'
+        'group_name' =>'tracking',
+        'credentials' => 'google_webmaster_tools'
       ),
       'xiti_code' => array(
         'type' => 'textarea',
         'description' => 'The xiti html code',
-        'group_name' =>'tracking'
+        'group_name' => 'tracking',
+        'credentials' => 'xiti'
       ),
       'gmap_key' => array(
         'description' => 'The google map key ( Ex: ABQIAAAARcvUUsf4RP8fmjHaFYFYQxRhf7uCiJccoEylUqtC2qy_Rw3WKhSEa96 )',
@@ -90,7 +89,8 @@ class dmDataService extends dmService
       'search_stop_words' => array(
         'type' => 'textarea',
         'description' => 'The words we do not want to search (Ex:  the, a, to )',
-        'group_name' =>'search engine'
+        'group_name' =>'search engine',
+        'credentials' => 'search_engine'
       ),
       'base_urls' => array(
         'type' => 'textarea',
@@ -276,6 +276,7 @@ class dmDataService extends dmService
       "metas_validation" => "See meta validation",
       "google_analytics" => "Configure google analytics",
       "google_webmaster_tools" => "Configure google webmaster tools",
+      "xiti" => "Configure Xiti",
       "search_engine" => "Manage internal search engine",
       "user_log" => "See the user log",
       "config_panel" => "Use the configuration panel",

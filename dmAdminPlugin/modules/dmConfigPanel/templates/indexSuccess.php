@@ -26,8 +26,15 @@ foreach($settings as $group => $groupSettings)
   echo £('h2', __(dmString::humanize($group)));
   
   echo £o('ul.dm_setting_group.clearfix');
+  $it = 0;
   foreach($groupSettings as $setting)
   {
+    if (!($it%2))
+    {
+      echo £c('ul').£o('ul.dm_setting_group.clearfix');
+    }
+    ++$it;
+    
     echo $form[$setting->get('name')]->renderRow();
   }
   echo £c('ul');
