@@ -1,0 +1,3 @@
+all:
+  credentials:
+    - user_log
