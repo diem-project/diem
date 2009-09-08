@@ -1,0 +1,19 @@
+.dm_config_panel li.dm_form_element {
+  float: left;
+  width: 46%;
+  margin: 2%;
+}
+
+.dm_config_panel li.dm_form_element > ul.radio_list > li {
+  display: inline;
+}
+
+.dm_config_panel .dm_form.list li.dm_form_element > label {
+  width: 19%;
+  margin-right: 1%;
+}
+
+.dm_config_panel li.dm_form_element > div.dm_help_wrap {
+  margin-left: 20%;
+  color: #666;
+}

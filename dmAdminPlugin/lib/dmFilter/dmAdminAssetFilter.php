@@ -13,7 +13,6 @@ class dmAdminAssetFilter extends dmAssetFilter
 //        $this->jQueryUiI8n(),
 		    'lib.blockUI',
 //        'lib.jgrowl',
-//        'lib.sf_double_list',
 //		    'lib.form',
         'lib.hotkeys',
         'core.config',

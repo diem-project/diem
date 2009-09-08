@@ -64,7 +64,7 @@ class dmForm extends sfFormSymfony
     $this->close();
   }
   
-  public function renderSubmitTag($name)
+  public function renderSubmitTag($name = 'submit')
   {
     return sprintf('<input type="submit" value="%s" />', $name);
   }
@@ -115,14 +115,11 @@ class dmForm extends sfFormSymfony
 
     if (isset($opt['action'])) unset($opt['action']);
 
-    if ($this->isMultipart())
-    {
-      $opt['multipart'] = true;
-    }
+    return $this->renderFormTag($action, $opt);
 
-    sfProjectConfiguration::getActive()->loadHelpers(array('Form', 'Tag', 'Url'));
-
-    return form_tag($action, $opt);
+//    sfProjectConfiguration::getActive()->loadHelpers(array('Form', 'Tag', 'Url'));
+//
+//    return form_tag($action, $opt);
   }
 
   public function close()

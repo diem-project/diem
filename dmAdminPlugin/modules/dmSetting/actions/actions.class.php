@@ -13,4 +13,5 @@ require_once dirname(__FILE__).'/../lib/dmSettingGeneratorHelper.class.php';
  */
 class dmSettingActions extends autoDmSettingActions
 {
+  
 }

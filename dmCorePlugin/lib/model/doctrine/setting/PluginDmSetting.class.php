@@ -12,7 +12,7 @@
  */
 abstract class PluginDmSetting extends BaseDmSetting
 {
-
+  
   public function preInsert($event)
   {
     parent::preInsert($event);
@@ -22,5 +22,23 @@ abstract class PluginDmSetting extends BaseDmSetting
       $this->value = $this->default_value;
     }
   }
+
+  // Get a value from the options array
+  public function getOption($name, $required = false)
+  {
+    $config = $this->optionsArray;
+    
+    if ($required && !isset($config[$name])) 
+    {
+      throw new sfException(sprintf('Missing required option "%s" in setting %s', $name, $this->name));
+    }
+    
+    return isset($config[$name]) ? $config[$name] : false;
+  }
   
+  // convert the options text area to an array
+  public function getOptionsArray()
+  {
+    return sfToolkit::stringToArray($this->options);
+  }
 }

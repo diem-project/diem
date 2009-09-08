@@ -1,4 +1,7 @@
 Utils:
+  Configuration:
+    dmConfigPanel:
+      name:         Configuration panel | Configuration panel
   Translation:
     dmTransUnit:
       name:         Sentence

@@ -13,9 +13,7 @@ js:
     seoValidation:    dmAdminSeoValidationCtrl
     sort:             dmAdminSortCtrl
     userLog:          dmAdminUserLog
-    
-  lib:
-    sf_double_list:   symfony/double_list
+    configPanel:      dmAdminConfigPanel
 
 css:
 
@@ -36,3 +34,4 @@ css:
     seoValidation:    seoValidation
     sort:             sort
     userLog:          userLog
+    configPanel:      configPanel
