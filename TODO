@@ -155,4 +155,10 @@ $.getScript(href, callback);
 
 * [DONE] allow database, culture aware, user friendly configuration
 
-* fix bad css compression on front when not logged
+* [DONE] fix bad css compression on front when not logged
+
+* [DONE] improve admin security
+
+* [DONE] assign credentials to admin module to unshow them in the menu
+
+* DmMail : allow to activate/desactivate a mail

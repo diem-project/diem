@@ -1,2 +1,2 @@
 all:
-  credentials:    [ search_engine ]
+  credentials: search_engine

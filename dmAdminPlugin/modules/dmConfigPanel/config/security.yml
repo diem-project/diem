@@ -1,3 +1,2 @@
 all:
-  credentials:
-    - config_panel
+  credentials: config_panel

@@ -5,13 +5,15 @@ class dmAdminMenu
 
 	protected
 	$menu,
-	$config;
+	$config,
+	$user;
 	
 	protected static $i18n;
 
-	public function __construct()
+	public function __construct(dmUser $user)
 	{
 		self::$i18n = dm::getI18n();
+		$this->user = $user;
 		$this->menu = $this->buildMenu();
 	}
 
@@ -26,7 +28,7 @@ class dmAdminMenu
 
 		foreach(dmModuleManager::getTypes() as $type_name => $type)
 		{
-			if ($type->hasSpaces() && $tm = $this->getTypeMenu($type))
+			if ($type->hasSpaces() && ($tm = $this->getTypeMenu($type)))
 			{
 			  $menu[$type_name] = $tm;
 			}
@@ -46,6 +48,11 @@ class dmAdminMenu
     	}
     }
     
+    if(empty($spaceMenu))
+    {
+      return null;
+    }
+    
     return array(
       'name' => self::__($type->getPublicName()),
       //'link' => array('sf_route' => 'dm_module_type', 'moduleTypeName' => $type->getSlug()),
@@ -63,13 +70,18 @@ class dmAdminMenu
     		continue;
     	}
     	
+    	if ($module->getParam('credentials') && !$this->user->can($module->getParam('credentials')))
+    	{
+    	  continue;
+    	}
+    	
 	    $moduleMenu[$moduleKey] = array(
 	      'name' => self::__($module->getPlural()),
 	      'link' => array('sf_route' => $module->getUnderscore())
 	    );
     }
     
-    if(!count($moduleMenu))
+    if(empty($moduleMenu))
     {
     	return null;
     }

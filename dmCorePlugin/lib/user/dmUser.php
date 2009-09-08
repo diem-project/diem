@@ -3,7 +3,9 @@
 abstract class dmUser extends sfGuardSecurityUser implements dmMicroCacheInterface
 {
 
-	protected $cache = array();
+	protected
+	$isSuperAdmin = null,
+	$cache = array();
 	
 	/*
 	 * Guess user's browser
@@ -56,45 +58,54 @@ abstract class dmUser extends sfGuardSecurityUser implements dmMicroCacheInterfa
   }
 
 
+  public function setReferer($referer)
+  {
+    if (!$this->hasAttribute('referer'))
+    {
+      $this->setAttribute('referer', $referer);
+    }
+  }
+  
   /*
    * Security methods
    */
-  public function can($credentials)
-	{
-    if (!$this->isAuthenticated())
+  public function hasCredential($credential, $useAnd = true)
+  {
+    if (empty($credential))
+    {
+      return true;
+    }
+
+    if (!$this->getGuardUser())
     {
       return false;
     }
 
-    if ($this->getGuardUser()->isSuperAdmin)
+    if ($this->isSuperAdmin())
     {
-    	return true;
+      return true;
     }
 
-    if (is_string($credentials))
+    return sfBasicSecurityUser::hasCredential($credential, $useAnd);
+  }
+  
+  public function can($credentials)
+	{
+    if (!$this->getGuardUser())
     {
-      if($this->hasCache('can '.$credentials))
-      {
-        return $this->getCache('can '.$credentials);
-      }
+      $can = false;
     }
-
-    $can = false;
-
-    if (is_string($credentials))
+    elseif($this->isSuperAdmin)
     {
-      $credentialsArray = explode(' ', $credentials);
+      $can = true;
+    }
+    elseif(is_string($credentials))
+    {
+      $can = in_array($credentials, $this->credentials);
     }
     else
     {
-    	$credentialsArray = $credentials;
-    }
-
-    $can = count(array_intersect($credentialsArray, $this->getGuardUser()->getPermissionNames()));
-
-    if (is_string($credentials))
-    {
-      $this->setCache('can '.$credentials, $can);
+      $can = count(array_intersect($credentials, $this->credentials));
     }
 
     return $can;
@@ -111,7 +122,37 @@ abstract class dmUser extends sfGuardSecurityUser implements dmMicroCacheInterfa
 		)), $persist);
 	}
 
+  public function signOut()
+  {
+    parent::signout();
+    $this->isSuperAdmin = false;
+  }
 
+  public function getGuardUser()
+  {
+    if (!$this->user && $id = $this->getAttribute('user_id', null, 'sfGuardSecurityUser'))
+    {
+      $this->user = dmDb::query('sfGuardUser s')->where('s.id = ?', $id)->fetchRecord();
+      
+      if (!$this->user)
+      {
+        // the user does not exist anymore in the database
+        $this->signOut();
+
+        throw new sfException('The user does not exist anymore in the database.');
+      }
+      
+      $this->isSuperAdmin = $this->user->get('is_super_admin');
+    }
+
+    return $this->user;
+  }
+
+  public function isSuperAdmin()
+  {
+    return $this->isSuperAdmin;
+  }
+	
 	/*
 	 * Log methods
 	 */

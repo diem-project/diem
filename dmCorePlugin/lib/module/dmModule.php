@@ -28,19 +28,14 @@ class dmModule extends dmMicroCache
       }
     }
     
-    $name   = trim(dmArray::get($config, "name", dmString::humanize($key)));
-    $plural = trim(dmArray::get($config, "plural", dmString::pluralize($name)));
+    $name   = empty($config['name']) ? dmString::humanize($key) : trim($config['name']);
     
-    $model  = trim(dmArray::get($config, "model", dmString::camelize($key)));
-
     $this->params = array(
       'name' =>       $name,
-      'plural' =>     $plural,
-      'model' =>      $model,
-      'options' =>    array_merge(
-	      $this->getDefaultOptions(),
-	      sfToolkit::stringToArray(dmArray::get($config, "options", ''))
-      )
+      'plural' =>     empty($config['plural']) ? dmString::pluralize($name) : $config['plural'],
+      'model' =>      empty($config['model']) ? dmString::camelize($key) : $config['model'],
+      'credentials' => isset($config['credentials']) ? $config['credentials'] : null,
+      'options' =>    empty($config['options']) ? $this->getDefaultOptions() : array_merge($this->getDefaultOptions(), sfToolkit::stringToArray($config['options']))
     );
   }
 
@@ -81,10 +76,7 @@ class dmModule extends dmMicroCache
 
   public function toDebug()
   {
-  	return array(
-  	  'key' => $this->getKey(),
-  	  'model' => $this->getModel()
-  	);
+  	return $this->toArray();
   }
 
   public function getKey()
@@ -110,6 +102,11 @@ class dmModule extends dmMicroCache
   public function getPlural()
   {
     return $this->getParam("plural");
+  }
+  
+  public function getCredentials()
+  {
+    return $this->getCredentials();
   }
 
   public function getModel()
@@ -333,16 +330,18 @@ class dmModule extends dmMicroCache
   public function getDefaultOptions()
   {
   	return array(
-      "admin" => true
+      'admin' => true,
+  	  'page'  => false
     );
   }
 
   public function toArray()
   {
-  	return array(
-  	  'key' => $this->getKey(),
-  	  'model' => $this->getModel()
-  	);
+    return array(
+      'key' => $this->getKey(),
+      'model' => $this->getModel(),
+      'params' => $this->params
+    );
   }
 
   public function is($something)

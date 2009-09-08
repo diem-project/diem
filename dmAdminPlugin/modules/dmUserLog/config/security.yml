@@ -1,3 +1,2 @@
 all:
-  credentials:
-    - user_log
+  credentials: user_log

@@ -5,7 +5,7 @@ class dmInterfaceComponents extends dmAdminBaseComponents
 
   public function executeToolBar()
   {
-    $adminMenuStructure = new myAdminMenu();
+    $adminMenuStructure = new myAdminMenu($this->getUser());
 
     $this->menu = new dmHtmlMenu($adminMenuStructure->getMenu());
 

@@ -17,7 +17,7 @@
  */
 class sfGuardSecurityUser extends sfBasicSecurityUser
 {
-  private $user = null;
+  protected $user = null;
 
   public function initialize(sfEventDispatcher $dispatcher, sfStorage $storage, $options = array())
   {

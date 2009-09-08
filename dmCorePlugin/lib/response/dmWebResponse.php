@@ -64,11 +64,17 @@ abstract class dmWebResponse extends sfWebResponse
     $key = '';
     $webDir = sfConfig::get('sf_web_dir');
 
-    foreach($stylesheets as $webPath)
+    $exclude = array();
+    foreach($stylesheets as $index => $webPath)
     {
     	if ($this->isStylesheetCachable($webPath))
     	{
-        $key .= $webPath . filemtime($webDir.$webPath);
+    	  if (!$filemtime = @filemtime($webDir.$webPath))
+    	  {
+    	    unset($stylesheets[$index]);
+    	    dmDebug::log('Can not find stylesheet '.$webDir.$webPath);
+    	  }
+        $key .= $webPath . $filemtime;
     	}
     	else
     	{

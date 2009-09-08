@@ -1,3 +1,2 @@
 all:
-  credentials:
-    - automatic_metas
+  credentials: automatic_metas

@@ -2,74 +2,98 @@ Utils:
   Configuration:
     dmConfigPanel:
       name:         Configuration panel | Configuration panel
+      credentials:  config_panel
   Translation:
     dmTransUnit:
       name:         Sentence
       model:        TransUnit
+      credentials:  translation
   Users:
     dmProfile:
       name:         Profile
+      credentials:  user_profile
     dmUserLog:
       name:         User log | User log
+      credentials:  user_log
   Accessibility:
     dmLang:
       name:         Lang span
+      credentials:  accessibility
     dmAbbr:
       name:         Abbreviation
+      credentials:  accessibility
   Media:
     dmMediaLibrary:
       name:         Media
+      credentials:  media_library
   
 Seo:
   Services:
     dmGoogleAnalytics:
       name:         Google analytics
+      credentials:  google_analytics
     dmWebmasterTools:
       name:         Google webmaster tools
+      credentials:  google_webmaster_tools
   Sitemap:
     dmSitemap:
       name:         Generate sitemap|Generate sitemap
+      credentials:  sitemap
   Metas:
     dmAutoSeo:
       name:         Automatic Page
+      credentials:  automatic_metas
     dmSeoValidation:
       name:         Seo Validation
+      credentials:  metas_validation
 
 Integration:
   Layout:
     dmLayout:
       name:         Layout
+      credentials:  layout
 
 System:
   Configuration:
     dmSetting:
       name:         Setting
+      credentials:  system
   Log:
     dmSentMail:
       name:         Sent mail
+      credentials:  sent_mail
     dmError:
       name:         Error
+      credentials:  error_log
   Security:
     dmGuardUser:
       name:         User
       model:        sfGuardUser
+      credentials:  security_user
     sfGuardPermission:
       name:         Permission
       model:        sfGuardPermission
+      credentials:  security_permission
     sfGuardGroup:
       name:         Group
       model:        sfGuardGroup
+      credentials:  security_group
   Dev:
     dmService:
       name:         "Launch services | Launch services"
+      credentials:  system
     dmCodeEditor:
       name:         "Code Editor | Code Editor"
+      credentials:  system
     dmConsole:
       name:         "Diem Console | Diem Console"
+      credentials:  system
     dmSearchEngine:
       name:         "Search Engine | Search Engine"
+      credentials:  search_engine
     dmServer:
       name:         "Server | Server"
+      credentials:  system
 #  Media:
 #    dmMediaFolder:
 #      name:         Folder
@@ -78,13 +102,19 @@ System:
   Page:
     dmPage:
       name:         Page
+      credentials:  system
     dmPageView:
       name:         Page View
+      credentials:  system
     dmLayout:
       name:         Layout
+      credentials:  system
     dmArea:
       name:         Area
+      credentials:  system
     dmZone:
       name:         Zone
+      credentials:  system
     dmWidget:
       name:         Widget
+      credentials:  system

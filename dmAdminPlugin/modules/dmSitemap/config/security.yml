@@ -1,3 +1,2 @@
 all:
-  credentials:
-    - sitemap
+  credentials: sitemap

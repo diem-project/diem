@@ -248,13 +248,13 @@ class dmDataService extends dmService
     $array = array(
       "admin" => "Log into administration",
       "log" => "Manage logs",
-      "security" => "Manage security",
+      "security_user" => "Manage security users",
+      "security_permission" => "Manage security permissions",
+      "security_group" => "Manage security groups",
       "content" => "CRUD dynamic content in admin",
       "tidy_output" => "View tidy output",
       "html_validate_admin" => "View Html validation in admin",
       "html_validate_front" => "View Html validation in front",
-      "code_editor" => "Use code editor",
-      "console" => "Use linux console",
       "zone_add" => "Add zones",
       "zone_edit" => "Edit zones",
       "zone_delete" => "Delete zones",
@@ -276,9 +276,15 @@ class dmDataService extends dmService
       "metas_validation" => "See meta validation",
       "google_analytics" => "Configure google analytics",
       "google_webmaster_tools" => "Configure google webmaster tools",
-      "search_engine" => "Update and test internal search engine",
+      "search_engine" => "Manage internal search engine",
       "user_log" => "See the user log",
-      "config_panel" => "Access the configuration panel"
+      "config_panel" => "Use the configuration panel",
+      "translation" => "Use the translation interface",
+      "user_profile" => "Use the profile interface",
+      "accessibility" => "Use the span & abbr interface",
+      "layout" => "Use the layout interface",
+      'sent_mail' => 'See mails sent by server',
+      'error_log' => 'See error log'
     );
 
     $existingPermissions = dmDb::query('sfGuardPermission p INDEXBY p.name')
@@ -329,7 +335,14 @@ class dmDataService extends dmService
           'media_bar_front',
           'search_engine',
           'user_log',
-          'config_panel'
+          'config_panel',
+          'translation',
+          'user_profile',
+          'accessibility',
+          'layout',
+          'security_user',
+          'security_group',
+          'security_permission'
         )
       ),
       "seo" => array(
@@ -372,7 +385,10 @@ class dmDataService extends dmService
           'widget_add',
           'widget_edit',
           'widget_delete',
-          'config_panel'
+          'config_panel',
+          'translation',
+          'accessibility',
+          'layout'
         )
       ),
       "webmaster 1" => array(
@@ -389,7 +405,10 @@ class dmDataService extends dmService
           'media_bar_front',
           'search_engine',
           'user_log',
-          'config_panel'
+          'config_panel',
+          'translation',
+          'user_profile',
+          'accessibility'
         )
       )
     );
