@@ -30,15 +30,6 @@ class dmAdminActions extends dmAdminBaseActions
 
   public function executeIndex(sfWebRequest $request)
   {
-    dmDb::create('DmSetting', array(
-  'name' => 'test',
-  'description' => 'This is just a test setting',
-  'value' => 'fr value',
-  'default_value' => 'fr default',
-  'type' => 'text',
-  'group_name' => 'test group'
-));
-
     require_once(dmOs::join(sfConfig::get('dm_admin_dir'), 'modules/dmUserLog/lib/dmUserLogViewLittle.php'));
   	
   	$this->userLogView = new dmUserLogViewLittle(new dmUserLog, $this->getUser()->getCulture());
