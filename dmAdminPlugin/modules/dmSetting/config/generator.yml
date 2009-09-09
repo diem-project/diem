@@ -35,7 +35,8 @@ generator:
           - group_name
       form:
         display:
-          NONE: [name, description, group_name, type]
+          NONE: [name, description, group_name]
+          Type: [ type, options ]
           Values: [ value, default_value ]
         class: DmSettingAdminForm
         fields: {  }

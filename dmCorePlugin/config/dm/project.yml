@@ -2,7 +2,7 @@ default:
 
   i18n:                                 # internationalization
     cultures:             [  ]          # Available cultures
-    
+
   theme:
     list:
       dm/front/themeDefault: "Diem default theme"
@@ -20,10 +20,6 @@ default:
       indexable_content:  1             # page html content
     slop:                 10            # distance allowed between two words in a searched phrase
   
-  image:
-    resize:               center        # Default resize method when generating thumbnails (fit, scale, inflate, top, right, left, bottom, center)
-    quality:              92            # Jpeg default quality when generating thumbnails
-      
   cache:                                # Cache management
     apc:                  yes           # (RECOMMENDED) Use Apc if available on current server
     full:                 no            # Cache full pages for max speed ( may cause problems with random content )

@@ -9,7 +9,7 @@ $.dm.ctrl.add($.dm.user_log = {
 
   init: function()
   {
-    setTimeout(this.refresh, 100);
+    setTimeout(this.refresh, 200);
   },
 	
 	refresh: function()

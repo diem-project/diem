@@ -4,7 +4,7 @@ echo £o('div#dm_tool_bar.dm.clearfix');
 
   echo £('a.show_tool_bar_toggle.s16block.s16_chevron_'.($sf_user->getShowToolBar() ? 'down' : 'up'), '+');
 
-  echo £link('+/dmAuth/signout')->textTitle(__('Logout'))->set('.widget16.s16block.s16_signout');
+  echo £link('+/dmAuth/signout')->textTitle($sf_user->getUsername().' : '.__('Logout'))->set('.widget16.s16block.s16_signout');
   
   echo £link('app:admin')->textTitle(__('Administration'))->set('.widget16.s16block.s16_home');
 

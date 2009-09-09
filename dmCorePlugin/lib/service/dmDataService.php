@@ -42,6 +42,7 @@ class dmDataService extends dmService
 
   protected function loadSettings()
   {
+    dmDb::query('DmSetting s')->delete()->execute();
     $array = array(
       'site_name' => array(
         'default_value' => dmString::humanize(dmProject::getKey()),
@@ -97,8 +98,37 @@ class dmDataService extends dmService
         'description' => 'Diem base urls for different applications/environments/cultures',
         'group_name' => 'internal',
         'credentials' => 'system'
+      ),
+      'image_resize_method' => array(
+        'type' => 'select',
+        'default_value' => 'center',
+        'description' => 'Default method when an image needs to be resized',
+        'options' => 'fit=Fit scale=Scale inflate=Inflate top=Top right=Right left=Left bottom=Bottom center=Center',
+        'group_name' => 'IHM',
+        'credentials' => 'ihm_settings'
+      ),
+      'image_quality' => array(
+        'type' => 'number',
+        'default_value' => 95,
+        'description' => 'Jpeg default quality when generating thumbnails',
+        'group_name' => 'IHM',
+        'credentials' => 'ihm_settings'
+      ),
+      'link_external_blank' => array(
+        'type' => 'boolean',
+        'default_value' => 0,
+        'description' => 'Links to other domain get automatically a _blank target',
+        'group_name' => 'IHM',
+        'credentials' => 'ihm_settings'
+      ),
+      'link_current_span' => array(
+        'type' => 'boolean',
+        'default_value' => 1,
+        'description' => 'Links to current page are changed from <a> to <span>',
+        'group_name' => 'IHM',
+        'credentials' => 'ihm_settings'
       )
-    );
+    );    
 
     $existingSettings = dmDb::query('DmSetting s INDEXBY s.name')
     ->select('s.name')
@@ -115,6 +145,8 @@ class dmDataService extends dmService
         $setting->save();
       }
     }
+    
+    dmConfig::load(false);
   }
 
   protected function loadMedia()
@@ -246,8 +278,10 @@ class dmDataService extends dmService
   protected function loadPermissions()
   {
     $array = array(
+      "system" => "System administrator",
       "admin" => "Log into administration",
       "log" => "Manage logs",
+      'code_editor' => 'Use the code editor',
       "security_user" => "Manage security users",
       "security_permission" => "Manage security permissions",
       "security_group" => "Manage security groups",
@@ -285,7 +319,8 @@ class dmDataService extends dmService
       "accessibility" => "Use the span & abbr interface",
       "layout" => "Use the layout interface",
       'sent_mail' => 'See mails sent by server',
-      'error_log' => 'See error log'
+      'error_log' => 'See error log',
+      'ihm_settings' => 'Manage IHM settings like default image resize method'
     );
 
     $existingPermissions = dmDb::query('sfGuardPermission p INDEXBY p.name')
@@ -312,38 +347,7 @@ class dmDataService extends dmService
       "developper" => array(
         'description' => "Able to read and update source code",
         'permissions' => array(
-          'admin',
-          'log',
-          'content',
-          'tidy_output',
-          'html_validate_admin',
-          'html_validate_front',
-          'code_editor',
-          'console',
-          'media_library',
-          'loremize',
-          'export_table',
-          'sitemap',
-          'automatic_metas',
-          'metas_validation',
-          'google_analytics',
-          'google_webmaster_tools',
-          'tool_bar_admin',
-          'page_bar_admin',
-          'media_bar_admin',
-          'tool_bar_front',
-          'page_bar_front',
-          'media_bar_front',
-          'search_engine',
-          'user_log',
-          'config_panel',
-          'translation',
-          'user_profile',
-          'accessibility',
-          'layout',
-          'security_user',
-          'security_group',
-          'security_permission'
+          'system'
         )
       ),
       "seo" => array(
@@ -389,7 +393,8 @@ class dmDataService extends dmService
           'config_panel',
           'translation',
           'accessibility',
-          'layout'
+          'layout',
+          'ihm_settings'
         )
       ),
       "webmaster 1" => array(

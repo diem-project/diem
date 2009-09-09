@@ -64,9 +64,9 @@ class dmForm extends sfFormSymfony
     $this->close();
   }
   
-  public function renderSubmitTag($name = 'submit')
+  public function renderSubmitTag($name = 'submit', $class = null)
   {
-    return sprintf('<input type="submit" value="%s" />', $name);
+    return sprintf('<input type="submit" value="%s" %s/>', $name, $class ? 'class="'.$class.'" ' : '');
   }
 
   /*

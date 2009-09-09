@@ -162,3 +162,9 @@ $.getScript(href, callback);
 * [DONE] assign credentials to admin module to unshow them in the menu
 
 * DmMail : allow to activate/desactivate a mail
+
+* consider using Symfony Components Dependency Injection Container
+
+* consider feed dmDataService with fixtures
+
+* implement link_external blank on dmLinkTag

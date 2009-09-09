@@ -84,7 +84,7 @@ System:
       credentials:  system
     dmCodeEditor:
       name:         "Code Editor | Code Editor"
-      credentials:  system
+      credentials:  code_editor
     dmConsole:
       name:         "Diem Console | Diem Console"
       credentials:  system

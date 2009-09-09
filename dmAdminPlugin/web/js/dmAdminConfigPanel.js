@@ -1,23 +1,13 @@
 (function($)
 {
 
-  $.widget('ui.dmAdminConfigPanel', {
-  
-    _init: function()
+  $.dm.ctrl.add({
+		
+    init: function()
     {
-      var self = this;
-			
-			self.element.tabs({
-				
-			});
-      
+      $('div.dm_config_panel').dmCoreTabForm({});
     }
     
   });
-	
-	if ($configPanel = $('div.dm_config_panel').orNot())
-	{
-		$configPanel.dmAdminConfigPanel();
-	}
   
 })(jQuery);

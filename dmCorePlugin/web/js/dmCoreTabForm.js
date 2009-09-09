@@ -11,16 +11,16 @@
     
     launchTabs: function()
     {
-      this.element.tabs(self.options.tabs);
+      this.element.tabs(this.options.tabs);
     },
     
     markErrorTabs: function()
     {
       var self = this;
-      
+			
       self.element.find('>ul.ui-tabs-nav a').each(function()
       {
-        if (self.element.find('>div.ui-tabs-panel' + $(this).attr('href') + ' ul.error_list').length) 
+        if (self.element.find('div.ui-tabs-panel' + $(this).attr('href') + ' ul.error_list').length) 
         {
           $(this).parent().addClass('dm_error');
         }

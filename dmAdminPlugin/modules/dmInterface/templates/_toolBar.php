@@ -2,7 +2,7 @@
 
 echo £o('div#dm_tool_bar.clearfix');
 
-  echo £link('dmAuth/signout')->textTitle(__('Logout'))->set('.widget16.s16block.s16_signout');
+  echo £link('dmAuth/signout')->textTitle($sf_user->getUsername().' : '.__('Logout'))->set('.widget16.s16block.s16_signout');
 
   echo £link()->textTitle(dm::getI18n()->__('Home'))->set('.widget16.s16block.s16_home');
 

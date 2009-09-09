@@ -9,9 +9,6 @@ default:
       version:            '5'           # Doctype xhtml version ( '1.0', '1.1' ) or html version ( '4', '5' )
       compliance:         'transitional' # Doctype (x)html compliance ( 'strict', 'transitional' )
       validate:           yes           # Validates Html in front ( credential: html_validate_front )
-    link:                               # Configure links ( <a> )
-      current_is_span:    yes           # Links to current page are changed from <a> to <span>
-      external_is_blank:  no            # Links to other domain have a _blank target
 
   i18n:
     catalogue:            front

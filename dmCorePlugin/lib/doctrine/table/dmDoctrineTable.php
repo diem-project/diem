@@ -20,7 +20,6 @@ abstract class dmDoctrineTable extends Doctrine_Table
     
     if ($this->hasI18n)
     {
-      myDoctrineRecord::initializeI18n();
       $this->unshiftFilter(new dmDoctrineRecordI18nFilter);
     }
   }

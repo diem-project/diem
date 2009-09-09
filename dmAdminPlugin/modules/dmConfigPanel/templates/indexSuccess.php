@@ -2,6 +2,7 @@
 use_stylesheet('lib.ui-tabs');
 use_stylesheet('admin.configPanel');
 use_javascript('lib.ui-tabs');
+use_javascript('core.tabForm');
 use_javascript('admin.configPanel');
 
 echo £o('div.dm_box.big.sitemap');
@@ -13,7 +14,7 @@ echo £o('div.dm_box_inner.dm_config_panel');
 echo £o('ul');
 foreach($groups as $group)
 {
-  echo £('li', sprintf('<a href="#%s">%s</a>', dmString::slugify($group), __(dmString::humanize($group))));
+  echo £('li', sprintf('<a href="#%s">%s</a>', 'dm_setting_group_'.dmString::slugify($group), __(dmString::humanize($group))));
 }
 echo £c('ul');
 
@@ -21,7 +22,7 @@ echo $form->open('.dm_form.list');
 
 foreach($settings as $group => $groupSettings)
 {
-  echo £o('div#'.dmString::slugify($group));
+  echo £o('div#dm_setting_group_'.dmString::slugify($group));
   
   echo £('h2', __(dmString::humanize($group)));
   
@@ -42,7 +43,7 @@ foreach($settings as $group => $groupSettings)
   echo £c('div');
 }
 
-echo $form->renderSubmitTag();
+echo $form->renderSubmitTag(__('Save modifications'));
 
 echo '</form>';
 

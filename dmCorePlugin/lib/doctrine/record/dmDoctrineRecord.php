@@ -11,6 +11,10 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
    */
   public function construct()
   {
+    if ($this->_table->hasI18n())
+    {
+      self::initializeI18n();
+    }
   }
 
   /*

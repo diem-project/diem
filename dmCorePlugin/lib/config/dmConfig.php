@@ -8,7 +8,7 @@ class dmConfig
   protected static
   $culture,
   $config,
-  $initialized = true;
+  $initialized = false;
 
   /**
    * Retrieves a config parameter.
@@ -60,7 +60,7 @@ SET t.value=?
 WHERE s.name=?');
     
     $stmt->execute(array(self::$culture, $value, $name));
-      
+    
     return self::$config[$name] = $value;
   }
 
@@ -87,10 +87,11 @@ WHERE s.name=?');
       self::$culture = dmI18n::getFirstCulture();
     }
     
-    $dispatcher->connect('context.load_factories', array('myConfig', 'load'));
-    
-    $dispatcher->connect('user.change_culture', array('myConfig', 'listenToChangeCultureEvent'));
-    
+    if (!self::$initialized)
+    {
+      $dispatcher->connect('user.change_culture', array('myConfig', 'listenToChangeCultureEvent'));
+    }
+
     self::$initialized = true;
   }
   
@@ -102,15 +103,23 @@ WHERE s.name=?');
   public static function listenToChangeCultureEvent(sfEvent $event)
   {
     self::$culture = $event['culture'];
+    self::load();
   }
   
-  public static function load(sfEvent $event)
+  public static function load($useCache = true)
   {
-    $_settings = dmDb::query('DmSetting s')
+    $timer = dmDebug::timer('load config');
+    
+    $query = dmDb::query('DmSetting s')
     ->leftJoin('s.Translation t ON s.id = t.id AND t.lang = ?', self::$culture)
-    ->select('s.name, t.value')
-    ->dmCache()
-    ->fetchPDO();
+    ->select('s.name, t.value');
+    
+    if ($useCache)
+    {
+      $query->dmCache();
+    }
+    
+    $_settings = $query->fetchPDO();
     
     $settings = array();
     foreach($_settings as $_setting)
@@ -119,6 +128,8 @@ WHERE s.name=?');
     }
     
     self::$config = $settings;
+    
+    $timer->addTime();
   }
 
 	public static function isCli()

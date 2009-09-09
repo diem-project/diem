@@ -14,9 +14,9 @@ class dmMediaImageTag extends dmMediaTag
   {
     parent::__construct($resource);
 
-    $this->method(sfConfig::get('dm_image_resize', 'center'));
-    $this['quality'] = sfConfig::get('dm_image_quality', 92);
-    $this['background'] = null;
+    $this->method(dmConfig::get('image_resize_method', 'center'));
+    $this->set('quality', dmConfig::get('image_quality', 92));
+    $this->set('background', null);
   }
 
   public function method($method)
@@ -121,7 +121,7 @@ class dmMediaImageTag extends dmMediaTag
 
       if (!in_array($attributes['method'], self::getMethods()))
       {
-      	$attributes['method'] = sfConfig::get('dm_image_resize', 'center');
+      	$attributes['method'] = dmConfig::get('image_resize_method', 'center');
       	// throw new dmException($attributes['method'].' is not a valid resizer method. These are '.implode(', ', self::getMethods()));
       }
 

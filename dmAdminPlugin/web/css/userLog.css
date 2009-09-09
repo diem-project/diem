@@ -23,6 +23,8 @@
 
 .user_log table td {
   border-top: 1px dotted #ccc;
+  max-width: 600px;
+  overflow: hidden;
 }
 
 .user_log table tr.even {

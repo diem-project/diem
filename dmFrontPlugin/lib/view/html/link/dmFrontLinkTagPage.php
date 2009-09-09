@@ -68,7 +68,7 @@ class dmFrontLinkTagPage extends dmFrontLinkTag
 	    {
 	      $attributes['class'][] = 'dm_current';
 	      
-	      if(sfConfig::get('dm_html_link_current_is_span', true))
+	      if(dmConfig::get('link_current_span', true))
 	      {
 	      	$attributes['tag'] = 'span';
 	      }

@@ -23,24 +23,25 @@ class dmConfigForm extends dmForm
     
     $this->widgetSchema[$settingName]->setDefault($setting->get('value'));
     
-    $this->widgetSchema->setHelp($settingName, $setting->get('description'));
+    $this->widgetSchema->setHelp($settingName, htmlentities($setting->get('description')));
     
     $this->validatorSchema[$settingName] = $this->getSettingValidator($setting);
+    $this->validatorSchema[$settingName]->setOption('required', false);
   }
   
   public function removeSetting($settingName)
   {
     unset($this[$settingName]);
   }
-
-  protected function getSettingWidget(DmSetting $setting)
+  
+  public function getSettingWidget(DmSetting $setting)
   {
     $method = 'get'.dmString::camelize($setting->type).'SettingWidget';
     
     return $this->$method($setting);
   }
 
-  protected function getSettingValidator(DmSetting $setting)
+  public function getSettingValidator(DmSetting $setting)
   {
     $method = 'get'.dmString::camelize($setting->type).'SettingValidator';
     
@@ -67,24 +68,24 @@ class dmConfigForm extends dmForm
     return new sfValidatorString();
   }
 
-  // Type Checkbox
-  protected function getCheckboxSettingWidget(DmSetting $setting)
+  // Type Number
+  protected function getNumberSettingWidget(DmSetting $setting)
   {
-    return new sfWidgetFormInputCheckbox(array(), $setting->getOptionsArray());
+    return new sfWidgetFormInputText(array(), $setting->getOptionsArray());
   }
-  protected function getCheckboxSettingValidator(DmSetting $setting)
+  protected function getNumberSettingValidator(DmSetting $setting)
   {
-    return new sfValidatorChoice(array('choices' => array_keys($setting->getOptionsArray())));
+    return new sfValidatorNumber();
   }
 
   // Type Boolean
   protected function getBooleanSettingWidget(DmSetting $setting)
   {
-    return new sfWidgetFormSelectRadio(array('choices' => array(1 => 'Yes', 0 => 'No')), $setting->getOptionsArray());
+    return new sfWidgetFormInputCheckbox(array(), $setting->getOptionsArray());
   }
   protected function getBooleanSettingValidator(DmSetting $setting)
   {
-    return new sfValidatorChoice(array('choices' => array(1, 0)));
+    return new sfValidatorBoolean();
   }
 
   //Type Select List
@@ -97,13 +98,4 @@ class dmConfigForm extends dmForm
     return new sfValidatorChoice(array('choices' => array_keys($setting->getOptionsArray())));
   }
 
-  //Type Model
-  protected function getModelSettingWidget(DmSetting $setting)
-  {
-    return new sfWidgetFormInputText(array(), $setting->getOptionsArray());
-  }
-  protected function getModelSettingValidator(DmSetting $setting)
-  {
-    return new sfValidatorString();
-  }
 }

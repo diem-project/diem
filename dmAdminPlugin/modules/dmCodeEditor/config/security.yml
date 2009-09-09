@@ -1,2 +1,2 @@
 all:
-  credentials: system
+  credentials: code_editor

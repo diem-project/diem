@@ -168,7 +168,7 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
     }
     else
     {
-      $html = 'dmString::truncate('.$html.', '.$field->getConfig('truncate', sfConfig::get('dm_admin_list_truncate', 120)).')';
+      $html = 'htmlentities(dmString::truncate('.$html.', '.$field->getConfig('truncate', sfConfig::get('dm_admin_list_truncate', 120)).'))';
     }
 
     if ($field->isLink())

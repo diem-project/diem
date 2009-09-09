@@ -30,6 +30,11 @@ class dmAdminMenu
 		{
 			if ($type->hasSpaces() && ($tm = $this->getTypeMenu($type)))
 			{
+			  if ($type->isProject() && !$this->user->can('content'))
+			  {
+			    continue;
+			  }
+			  
 			  $menu[$type_name] = $tm;
 			}
 		}

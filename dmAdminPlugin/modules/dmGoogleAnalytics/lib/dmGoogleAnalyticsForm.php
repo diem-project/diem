@@ -1,7 +1,7 @@
 <?php
 
 
-class dmGoogleAnalyticsForm extends DmSiteForm
+class dmGoogleAnalyticsForm extends dmForm
 {
 	
 }
