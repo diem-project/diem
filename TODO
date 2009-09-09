@@ -168,3 +168,13 @@ $.getScript(href, callback);
 * consider feed dmDataService with fixtures
 
 * implement link_external blank on dmLinkTag
+
+* HOT : implement doctrine i18n fallback
+
+* write more unit tests for doctrine i18n as it seems to be a *HOT* topic
+
+* provide an online demo
+
+* write doc ;-)
+
+* convert this TODO to trac tickets

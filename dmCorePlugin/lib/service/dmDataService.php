@@ -222,9 +222,9 @@ class dmDataService extends dmService
       /*
        * Default culture to $culture
        */
-      if ($culture != dmI18n::getFirstCulture())
+      if ($culture != sfConfig::get('sf_default_culture'))
       {
-	      if (!Catalogue::retrieveBySourceTargetSpace(dmI18n::getFirstCulture(), $culture, 'messages'))
+	      if (!Catalogue::retrieveBySourceTargetSpace(sfConfig::get('sf_default_culture'), $culture, 'messages'))
 	      {
 	        dmDb::create('Catalogue', array(
 	          'source_lang' => 'en',

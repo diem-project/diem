@@ -3,11 +3,17 @@
 class dmUserLog
 {
 	protected
+	$filesystem,
+	$dir,
 	$file;
 	
-	public function __construct()
+	public function __construct($dir = null)
 	{
-		$this->file = dmOs::join(sfConfig::get('sf_data_dir'), 'dm_user.log');
+	  $this->dir = is_null($dir) ? dmOs::join(sfConfig::get('dm_data_dir'), 'log') : $dir;
+	  
+		$this->file = dmOs::join($this->dir, 'user.log');
+		
+		$this->filesystem = new dmFilesystem;
 	}
 	
 	public function getEntries($max = 0)
@@ -48,12 +54,18 @@ class dmUserLog
 	
 	protected function checkFile()
 	{
+	  if (!$this->filesystem->mkdir($this->dir))
+	  {
+      throw new dmException(sprintf('User log dir %s can not be created', $this->dir));
+	  }
+	  
 	  if (!file_exists($this->file))
     {
       if (!touch($this->file))
       {
-        throw new dmException('Log file %s can not be created', $this->file);
+        throw new dmException(sprintf('User log file %s can not be created', $this->file));
       }
+      
       chmod($this->file, 0777);
     }
 	}

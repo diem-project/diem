@@ -6,16 +6,13 @@ class dmBackup
 	$dir,
 	$filesystem;
 	
-  protected static
-  $defaultDir = 'data/backup';
-	
-	public function __construct($dir = null)
+	public function __construct($dir)
 	{
 		$this->dir = is_null($dir)
-		? dmOs::join(dmProject::getRootDir(), sfConfig::get('dm_backup_dir', self::$defaultDir))
+		? dmOs::join(sfConfig::get('dm_data_dir'), 'backup/fs')
 		: $dir;
     
-    $this->filesystem = new dmFilesystem();
+    $this->filesystem = new dmFilesystem;
     
     $this->checkDirIsWritable();
 	}

@@ -36,15 +36,37 @@ class dmDoctrineRecordI18nFilter extends Doctrine_Record_Filter
    */
   public function filterSet(Doctrine_Record $record, $fieldName, $value)
   {
-    $i18n = $record['Translation'][myDoctrineRecord::getDefaultCulture()];
+    $translation = $record->get('Translation');
+    $culture = myDoctrineRecord::getDefaultCulture();
+    
+    if($translation->contains($culture))
+    {
+      $i18n = $record->get('Translation')->get($culture);
+    }
+    else
+    {
+      $i18n = $record->get('Translation')->get($culture);
+      /*
+       * If translation is new
+       * populate it with i18n fallback
+       */
+      if ($i18n->state() == Doctrine_Record::STATE_TDIRTY)
+      {
+        if($fallback = $record->getI18nFallBack())
+        {
+          $fallBackData = $fallback->toArray();
+          unset($fallBackData['id'], $fallBackData['lang']);
+          $i18n->fromArray($fallBackData);
+        }
+      }
+    }
 
     if(!ctype_lower($fieldName) && !$i18n->contains($fieldName))
     {
       $underscoredFieldName = dmString::underscore($fieldName);
       if (strpos($underscoredFieldName, '_') !== false && $i18n->contains($underscoredFieldName))
       {
-        $i18n->set($underscoredFieldName, $value);
-        return $value;
+        $fieldName = $underscoredFieldName;
       }
     }
 

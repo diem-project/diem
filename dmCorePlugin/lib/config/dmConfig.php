@@ -8,7 +8,7 @@ class dmConfig
   protected static
   $culture,
   $config,
-  $initialized = false;
+  $loaded = false;
 
   /**
    * Retrieves a config parameter.
@@ -36,6 +36,10 @@ class dmConfig
    */
   public static function has($name)
   {
+    if(!self::$loaded)
+    {
+      self::load();
+    }
     return array_key_exists($name, self::$config);
   }
 
@@ -54,12 +58,38 @@ class dmConfig
       throw new dmException(sprintf('There is no setting called "%s". Available settings are : %s', $name, implode(', ', array_keys(self::$config))));
     }
     
-    $stmt = Doctrine_Manager::connection()->prepare('UPDATE dm_setting s
-LEFT JOIN dm_setting_translation t ON t.id=s.id AND t.lang=?
-SET t.value=?
-WHERE s.name=?');
+    $setting = dmDb::query('DmSetting s')->where('s.name = ?', $name)->withI18n(self::$culture)->fetchOne();
     
-    $stmt->execute(array(self::$culture, $value, $name));
+    $setting->value = $value;
+    
+    $setting->save();
+//    
+//    $stmt = Doctrine_Manager::connection()->prepare('SELECT COUNT(t.id)
+//FROM dm_setting s
+//LEFT JOIN dm_setting_translation t ON t.id=s.id AND t.lang=?
+//WHERE s.name=?');
+//    
+//    $stmt->execute(array(self::$culture, $name));
+//    
+//    $exists = $stmt->fetchColumn();
+//    
+//    
+//    if($exists)
+//    {
+//      $stmt = Doctrine_Manager::connection()->prepare('UPDATE dm_setting s
+//  LEFT JOIN dm_setting_translation t ON t.id=s.id AND t.lang=?
+//  SET t.value=?
+//  WHERE s.name=?');
+//      $stmt->execute(array(self::$culture, $value, $name));
+//    }
+//    else
+//    {
+//      $stmt = Doctrine_Manager::connection()->prepare('INSERT dm_setting s
+//  LEFT JOIN dm_setting_translation t ON t.id=s.id AND t.lang=?
+//  SET t.value=?
+//  WHERE s.name=?');
+//      $stmt->execute(array(self::$culture, $value, $name));
+//    }
     
     return self::$config[$name] = $value;
   }
@@ -71,6 +101,10 @@ WHERE s.name=?');
    */
   public static function getAll()
   {
+    if(!self::$loaded)
+    {
+      self::load();
+    }
     return self::$config;
   }
   
@@ -78,23 +112,9 @@ WHERE s.name=?');
   {
     self::$config = array();
     
-    if (class_exists('sfContext', false) && sfContext::hasInstance() && $user = sfContext::getInstance()->getUser())
-    {
-      self::$culture = $user->getCulture();
-    }
-    else
-    {
-      self::$culture = dmI18n::getFirstCulture();
-    }
-    
-    if (!self::$initialized)
-    {
-      $dispatcher->connect('user.change_culture', array('myConfig', 'listenToChangeCultureEvent'));
-    }
-
-    self::$initialized = true;
+    $dispatcher->connect('user.change_culture', array('myConfig', 'listenToChangeCultureEvent'));
   }
-  
+
   /**
    * Listens to the user.change_culture event.
    *
@@ -102,16 +122,31 @@ WHERE s.name=?');
    */
   public static function listenToChangeCultureEvent(sfEvent $event)
   {
-    self::$culture = $event['culture'];
-    self::load();
+    if (self::$culture != $event['culture'])
+    {
+      self::$culture = $event['culture'];
+      self::load();
+    }
   }
   
   public static function load($useCache = true)
   {
     $timer = dmDebug::timer('load config');
     
+    if (!self::$culture)
+    {
+      if (class_exists('sfContext', false) && sfContext::hasInstance() && $user = sfContext::getInstance()->getUser())
+      {
+        self::$culture = $user->getCulture();
+      }
+      else
+      {
+        self::$culture = sfConfig::get('sf_default_culture');
+      }
+    }
+    
     $query = dmDb::query('DmSetting s')
-    ->leftJoin('s.Translation t ON s.id = t.id AND t.lang = ?', self::$culture)
+    ->leftJoin('s.Translation t ON s.id = t.id AND t.lang IN (?, ?)', array(self::$culture, sfConfig::get('sf_default_culture')))
     ->select('s.name, t.value');
     
     if ($useCache)
@@ -129,7 +164,14 @@ WHERE s.name=?');
     
     self::$config = $settings;
     
+    self::$loaded = true;
+    
     $timer->addTime();
+  }
+  
+  public static function getCulture()
+  {
+    return self::$culture;
   }
 
 	public static function isCli()

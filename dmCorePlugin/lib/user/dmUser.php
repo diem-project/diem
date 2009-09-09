@@ -7,6 +7,16 @@ abstract class dmUser extends sfGuardSecurityUser implements dmMicroCacheInterfa
 	$isSuperAdmin = null,
 	$cache = array();
 	
+	public function setCulture($culture)
+	{
+	  if (!in_array($culture, sfConfig::get('dm_i18n_cultures')))
+	  {
+	    throw new dmException(sprintf('%s is not a valid culture defined in dm_i18n_cultures', $culture));
+	  }
+	  
+	  return parent::setCulture($culture);
+	}
+	
 	/*
 	 * Guess user's browser
 	 * @return dmBrowser browser object

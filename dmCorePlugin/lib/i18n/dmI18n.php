@@ -58,7 +58,7 @@ class dmI18n extends sfI18N
   {
     if (!isset($options['culture']))
     {
-      $this->culture = self::getFirstCulture();
+      $this->culture = sfConfig::get('sf_default_culture');
     }
 
   	parent::initialize($configuration, $cache, $options);
@@ -79,10 +79,5 @@ class dmI18n extends sfI18N
 		return in_array($c, $this->getCultures());
 	}
 
-	public static function getFirstCulture()
-	{
-    $cultures = sfConfig::get('dm_i18n_cultures');
-    return $cultures[0];
-	}
 
 }

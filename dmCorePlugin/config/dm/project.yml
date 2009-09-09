@@ -70,7 +70,6 @@ default:
     
   backup:                               # keep a copy of files modified by Dm code editors
     enabled:              yes           # (RECOMMENDED) enable backup
-    dir:                  data/backup   # backup root directory from sf_root_dir
     
 ###### dm internal config ######
 

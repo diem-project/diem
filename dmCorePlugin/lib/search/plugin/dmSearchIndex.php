@@ -30,7 +30,7 @@ abstract class dmSearchIndex extends dmSearchIndexCommon
 
 		$this->setLogger(new dmLoggerBlackhole);
 
-		$this->location = dmOs::join(sfConfig::get('sf_data_dir'), 'dmSearchIndex', $this->getName());
+		$this->location = dmOs::join(sfConfig::get('dm_data_dir'), 'index', $this->getName());
 
 		$this->initialize();
 	}

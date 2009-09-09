@@ -4,22 +4,28 @@ class dmEventConnector
 {
 
 	protected
-	$dispatcher,
-	$listener;
+	$dispatcher;
 
-	public function __construct(sfEventDispatcher $dispatcher, dmEventListener $listener)
+	public function __construct(sfEventDispatcher $dispatcher)
 	{
 		$this->dispatcher = $dispatcher;
-		$this->listener = $listener;
 	}
 
 	public function connectEvents()
 	{
 		// sent when sfContext is initialized
-    $this->dispatcher->connect('context.load_factories', array($this->listener, 'contextLoaded'));
+    $this->dispatcher->connect('context.load_factories', array($this, 'contextLoaded'));
     
 		$this->connectLoggingEvents();
 	}
+	
+  /*
+   * sfContext is now available
+   */
+  public function contextLoaded(sfEvent $event)
+  {
+    sfConfig::set('dm_debug', dm::getRequest()->getParameter('dm_debug', false));
+  }
 
 	protected function connectLoggingEvents()
 	{

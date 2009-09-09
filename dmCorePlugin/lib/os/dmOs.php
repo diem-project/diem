@@ -5,8 +5,7 @@ class dmOs
   const INTERNET_CHECK_HOST = '216.239.59.104';
 
 	protected static
-	$isInternetAvailable,
-	$separator = '/';
+	$isInternetAvailable;
 
 	/*
 	 * Builds a path with many path parts
@@ -21,9 +20,14 @@ class dmOs
 		/*
 		 * Join path parts with $separator
 		 */
-		$dirtyPath = implode(self::$separator, $parts);
+		$dirtyPath = implode('/', $parts);
+		
+		if(strpos($dirtyPath, '//') !== false)
+		{
+		  $dirtyPath = preg_replace('|(/{2,})|', '/', $dirtyPath);
+		}
 
-		$cleanPath = self::$separator.trim(preg_replace('|(/{2,})|', self::$separator, $dirtyPath), self::$separator);
+		$cleanPath = '/'.trim($dirtyPath, '/');
 		
 		return $cleanPath;
 	}

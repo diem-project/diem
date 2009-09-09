@@ -2,6 +2,8 @@
 
 abstract class dmDoctrineRecord extends sfDoctrineRecord
 {
+  protected
+  $i18nFallback = null;
 
   /**
    * Custom myDoctrineRecord constructor.
@@ -506,7 +508,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
       return true;
     }
     
-    if (!$this->_table instanceof dmDoctrineTable)
+    if (!$this->_table instanceof myDoctrineTable)
     {
       return false;
     }
@@ -550,6 +552,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     /*
      * Add i18n capabilities
      */
+    
     if ($fieldName != 'Translation' && $this->_table->hasI18n())
     {
       $i18nTable = $this->_table->getI18nTable();
@@ -616,20 +619,57 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
 
   public function _getI18n($fieldName, $load = true)
   {
-    $culture = myDoctrineRecord::getDefaultCulture();
-
+    $culture = self::getDefaultCulture();
+    
     $translation = $this->get('Translation');
-
-    if (isset($translation[$culture]))
+  
+    // we have a translation
+    if($translation->contains($culture))
     {
-      $i18n = $translation[$culture];
+      $i18n = $translation->get($culture);
     }
+    // record is new so we use ( or create ) the fallback culture
+    elseif($this->isNew())
+    {
+      $i18n = $translation->get(sfConfig::get('sf_default_culture'));
+    }
+    // record exists, try to fetch its missing translation
     else
     {
-      $i18n = $translation[sfConfig::get('sf_default_culture')];
+      $i18n = $this->_table->getI18nTable()->createQuery('t')
+      ->where('t.id = ? AND t.lang = ?', array($this->get('id'), $culture))
+      ->fetchRecord();
+      
+      // existing translation fetched
+      if($i18n)
+      {
+        $translation->set($culture, $i18n);
+      }
+      // no translation for this culture, use fallback
+      elseif($i18nFallback = $this->getI18nFallback())
+      {
+        $i18n = $i18nFallback;
+      }
+      // no fallback available
+      else
+      {
+        return null;
+      }
     }
 
     return $i18n->get($fieldName, $load);
+  }
+  
+  public function getI18nFallback()
+  {
+    if ($this->i18nFallback)
+    {
+      return $this->i18nFallback;
+    }
+    
+    return $this->i18nFallback = $this->_table->getI18nTable()->createQuery('t')
+    ->where('t.id = ? AND t.lang = ?', array($this->get('id'), sfConfig::get('sf_default_culture')))
+    ->fetchRecord();
   }
 
   /*

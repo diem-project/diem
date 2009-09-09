@@ -42,10 +42,10 @@ class dmCorePluginConfiguration extends sfPluginConfiguration
     sfConfig::add(array(
       'sf_i18n' => true,
       'sf_charset' => 'utf-8',
-      'sf_default_culture' => dmI18n::getFirstCulture(),
       'sf_upload_dir_name' => str_replace(sfConfig::get('sf_web_dir').'/', '', sfConfig::get('sf_upload_dir')),
       'app_sf_guard_plugin_remember_key_expiration_age' => 2592000, // 30 days
-      'app_sf_guard_plugin_remember_cookie_name' => 'diem_remember_'.dmProject::getKey()
+      'app_sf_guard_plugin_remember_cookie_name' => 'diem_remember_'.dmProject::getKey(),
+      'dm_data_dir' => dmOs::join(sfConfig::get('sf_data_dir'), 'dm')
     ));
     
     if(is_null(sfConfig::get('lazy_cache_key')))
@@ -75,7 +75,7 @@ class dmCorePluginConfiguration extends sfPluginConfiguration
 
   protected function connectEvents()
   {
-  	$eventConnector = new dmEventConnector($this->dispatcher, new dmEventListener($this->dispatcher));
+  	$eventConnector = new dmEventConnector($this->dispatcher);
   	$eventConnector->connectEvents();
   }
   
