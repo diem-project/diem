@@ -2,5 +2,4 @@
 
 class myDoctrineCollection extends dmDoctrineCollection
 {
-
 }

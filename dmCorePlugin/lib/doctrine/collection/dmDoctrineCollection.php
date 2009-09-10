@@ -2,6 +2,37 @@
 
 abstract class dmDoctrineCollection extends Doctrine_Collection
 {
+  
+  /**
+   * Processes the difference of the last snapshot and the current data
+   *
+   * an example:
+   * Snapshot with the objects 1, 2 and 4
+   * Current data with objects 2, 3 and 5
+   *
+   * The process would remove object 4
+   * 
+   * Diem alteration :
+   * I never want translation records to be deleted.
+   * It allows not to load all language translation
+   * and to save a record without deleting all other translations
+   *
+   * @return Doctrine_Collection
+   */
+  public function processDiff()
+  {
+    if ($translationPos = strpos($this->getTable()->getComponentName(), 'Translation'))
+    {
+      $baseRecordClass = substr($this->getTable()->getComponentName(), 0, $translationPos);
+      
+      if ($baseTable = dmDb::table($baseRecordClass))
+      {
+        return $this;
+      }
+    }
+    
+    return parent::processDiff();
+  }
 
   /*
    * Return array representation of this collection

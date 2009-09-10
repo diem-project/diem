@@ -5,25 +5,27 @@ require_once(sfConfig::get('dm_core_dir').DIRECTORY_SEPARATOR.'lib'.DIRECTORY_SE
 class dmFrontContext extends dmContext
 {
 	protected
-	  $page,
-	  $pageHelper;
+	  $page;
 
+  /**
+   * Loads the diem services
+   */
+  public function loadServiceContainer()
+  {
+    $configFiles = dmOs::join(sfConfig::get('dm_front_dir'), 'config/dm/services.yml');
+    
+    parent::doLoadServiceContainer($configFiles);
+  }
+  
   public function getPage()
   {
-    return $this->page;
+    return $this->serviceContainer->getParameter('page');
   }
 
   public function getPageHelper()
   {
-  	if (is_null($this->pageHelper))
-  	{
-  		$pageHelperClass = dm::getUser()->can('zone_edit') ? 'dmFrontPageEditHelper' : 'dmFrontPageHelper';
-  		$this->pageHelper = new $pageHelperClass($this);
-  	}
-
-  	return $this->pageHelper;
+  	return $this->serviceContainer->getService('page_helper');
   }
-
   
   /*
    * @return dmModule a project module
@@ -39,7 +41,11 @@ class dmFrontContext extends dmContext
 
   public function setPage(DmPage $page = null)
   {
-    $this->page = $page;
+    $this->serviceContainer->addParameters(array(
+      'page' => $page
+    ));
+    
+    $this->getPageHelper()->setPage($page);
   }
 
   public static function createInstance(sfContext $sfContext)

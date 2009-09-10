@@ -6,5 +6,5 @@ if ($profile = $sf_guard_user->Profile)
 }
 else
 {
-	echo £link('@dm_profile_new')->param('defaults[sf_guard_user_id]', $sf_guard_user->id)->name(__('New'));
+	echo £link('@dm_profile_new')->param('defaults[sf_guard_user_id]', $sf_guard_user->id)->text(__('New'));
 }

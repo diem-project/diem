@@ -28,8 +28,7 @@ class dmAdminGeneratorBuilder
 
 		$yaml['generator']['param']['sortable'] = $this->table->isSortable();
 
-		$dumper = new dmYamlDumper();
-		$transformed = $dumper->dump($yaml, 6, 0);
+		$transformed = sfYaml::dump($yaml, 6, 0);
 
 		$transformed = preg_replace("|('~')|um", "~", $transformed);
 

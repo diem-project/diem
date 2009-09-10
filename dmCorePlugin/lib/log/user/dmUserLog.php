@@ -3,17 +3,23 @@
 class dmUserLog
 {
 	protected
+	$dispatcher,
 	$filesystem,
 	$dir,
 	$file;
 	
-	public function __construct($dir = null)
+	public function __construct(sfEventDispatcher $dispatcher, dmFileSystem $filesystem)
 	{
-	  $this->dir = is_null($dir) ? dmOs::join(sfConfig::get('dm_data_dir'), 'log') : $dir;
-	  
-		$this->file = dmOs::join($this->dir, 'user.log');
-		
-		$this->filesystem = new dmFilesystem;
+    $this->dispatcher = $dispatcher;
+    $this->filesystem = $filesystem;
+    
+    $this->initialize();
+	}
+	
+	public function initialize()
+	{
+    $this->dir  = dmOs::join(sfConfig::get('dm_data_dir'), 'log');
+    $this->file = dmOs::join($this->dir, 'user.log');
 	}
 	
 	public function getEntries($max = 0)

@@ -3,20 +3,19 @@
 class dmFrontPageHelper
 {
 	protected
-	  $dmContext,
+    $dispatcher,
 	  $page,
 	  $areas;
 
-  public function __construct(dmFrontContext $dmContext)
+  public function __construct(sfEventDispatcher $dispatcher, DmPage $page)
   {
-    $this->dmContext = $dmContext;
-    
-    $this->initialize();
+    $this->dispatcher = $dispatcher;
+    $this->page       = $page;
   }
   
-  protected function initialize()
+  public function setPage(DmPage $page)
   {
-  	$this->page = $this->dmContext->getPage();
+    $this->page = $page;
   }
   
   public function getAreas()

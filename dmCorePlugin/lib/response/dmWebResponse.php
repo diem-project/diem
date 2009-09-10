@@ -88,7 +88,7 @@ abstract class dmWebResponse extends sfWebResponse
 		$cacheWebPath = '/cache/'.$name;
 		$cacheDirPath = $webDir.$cacheWebPath;
     $cacheFilePath = $cacheDirPath.'/'.$key.'.css';
-		$fs = new dmFilesystem();
+		$fs = dmContext::getInstance()->getFilesystem();
     $fs->mkdir(sfConfig::get('sf_cache_dir').'/web');
     $fs->mkdir(sfConfig::get('sf_cache_dir').'/web/css');
 
@@ -205,7 +205,7 @@ abstract class dmWebResponse extends sfWebResponse
     $cacheWebPath = '/cache/'.$name;
     $cacheDirPath = $webDir.$cacheWebPath;
     $cacheFilePath = $cacheDirPath.'/'.$key.'.js';
-    $fs = new dmFilesystem();
+    $fs = dmContext::getInstance()->getFilesystem();
     $fs->mkdir(sfConfig::get('sf_cache_dir').'/web');
     $fs->mkdir(sfConfig::get('sf_cache_dir').'/web/js');
 

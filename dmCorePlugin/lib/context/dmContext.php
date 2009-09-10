@@ -7,6 +7,7 @@ abstract class dmContext extends dmMicroCache
     $instance = null;
 
   protected
+    $serviceContainer,
     $dmConfiguration,
     $helper,
     $sfContext,
@@ -23,9 +24,72 @@ abstract class dmContext extends dmMicroCache
   {
     $this->sfContext = $sfContext;
     
-    $this->pageTreeWatcher = new dmPageTreeWatcher($this);
+    $this->initialize();
   }
-
+  
+  public function initialize()
+  {
+    $this->loadServiceContainer();
+  }
+  
+  abstract public function loadServiceContainer();
+  
+  protected function doLoadServiceContainer($configFiles)
+  {
+    $name = 'dm'.dmString::camelize(sfConfig::get('sf_app')).'ServiceContainer';
+    
+    $file = dmOs::join(sfConfig::get('dm_cache_dir'), 'services', $name.'.php');
+    
+    if (!is_dir(dirname($file)))
+    {
+      mkdir(dirname($file), 0777);
+    }
+     
+    if (!sfConfig::get('sf_debug') && file_exists($file))
+    {
+      require_once $file;
+      $this->serviceContainer = new $name;
+    }
+    else
+    {
+      $sc = new sfServiceContainerBuilder;
+      
+      $loader = new sfServiceContainerLoaderFileYaml($sc);
+      $loader->load($configFiles);
+     
+      if (true || !sfConfig::get('sf_debug'))
+      {
+        $dumper = new sfServiceContainerDumperPhp($sc);
+        file_put_contents($file, $dumper->dump(array('class' => $name)));
+      }
+      
+      $this->serviceContainer = $sc;
+    }
+    
+    $sfContext = $this->getSfContext();
+    
+    $this->serviceContainer->addParameters(array(
+      'dispatcher'  => $sfContext->getEventDispatcher(),
+      'user'        => $sfContext->getUser()
+    ));
+  }
+  
+  /*
+   * @return dmFilesystem
+   */
+  public function getFilesystem()
+  {
+    return $this->serviceContainer->getService('filesystem');
+  }
+  
+  /*
+   * @return dmUserLog
+   */
+  public function getUserLog()
+  {
+    return $this->serviceContainer->getService('user_log');
+  }
+  
   /*
    * @return dmPageTreeWatcher
    */
@@ -39,6 +103,7 @@ abstract class dmContext extends dmMicroCache
    */
   public function getHelper()
   {
+    return $this->serviceContainer->getService('filesystem');
     if (is_null($this->helper))
     {
       $this->helper = new dmOoHelper($this);

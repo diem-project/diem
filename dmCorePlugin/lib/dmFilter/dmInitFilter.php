@@ -7,8 +7,7 @@ abstract class dmInitFilter extends dmFilter
 	{
 		if ($this->dmContext->isHtmlForHuman())
 		{
-			$log = new dmUserLog;
-			$log->log($this->dmContext);
+			$this->dmContext->getUserLog()->log($this->dmContext);
 		}
 	}
 
@@ -19,6 +18,11 @@ abstract class dmInitFilter extends dmFilter
   
   protected function saveApplicationUrl()
   {
+    if(sfConfig::get('sf_environment') == 'test')
+    {
+      return;
+    }
+    
     $knownBaseUrls = json_decode(dmConfig::get('base_urls', '[]'), true);
     
   	$appUrlKey = implode('-', array(sfConfig::get('sf_app'), sfConfig::get('sf_environment')));

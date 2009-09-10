@@ -43,14 +43,15 @@ class dmProject
   {
     $requiredWritableDirs = array(
       sfConfig::get('sf_cache_dir'),
+      sfConfig::get('dm_cache_dir'),
       sfConfig::get('sf_log_dir'),
       sfConfig::get('dm_data_dir'),
       dmOs::join(sfConfig::get('dm_data_dir'), 'backup'),
       dmOs::join(sfConfig::get('dm_data_dir'), 'index'),
       dmOs::join(sfConfig::get('dm_data_dir'), 'log'),
       sfConfig::get('sf_upload_dir'),
-      dmOs::join(sfConfig::get('sf_cache_dir'), 'dm'),
-      dmOs::join(sfConfig::get('sf_lib_dir'), 'migration/doctrine')
+      dmOs::join(sfConfig::get('sf_lib_dir'), 'migration/doctrine'),
+      dmOs::join(sfConfig::get('dm_cache_dir'), 'services')
     );
     
     $fs = dmFilesystem::get();

@@ -2,24 +2,26 @@
 
 class dmFilesystem extends sfFilesystem
 {
-
-	protected static
-	  $instance;
-
 	protected
+	  $dispatcher,
 	  $lastExec; // array(command, output, return)
 
 	/*
 	 * Singleton pattern
 	 * @return dmFilesystem $instance
 	 */
-	public static function get()
+//	public static function get()
+//	{
+//		if (self::$instance === null)
+//		{
+//	    self::$instance = new self;
+//		}
+//		return self::$instance;
+//	}
+
+	public function __construct(sfEventDispatcher $dispatcher)
 	{
-		if (self::$instance === null)
-		{
-	    self::$instance = new self;
-		}
-		return self::$instance;
+	  $this->dispatcher = $dispatcher;
 	}
 
 	public function whois($ip = null)

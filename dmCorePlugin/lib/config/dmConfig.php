@@ -63,33 +63,6 @@ class dmConfig
     $setting->value = $value;
     
     $setting->save();
-//    
-//    $stmt = Doctrine_Manager::connection()->prepare('SELECT COUNT(t.id)
-//FROM dm_setting s
-//LEFT JOIN dm_setting_translation t ON t.id=s.id AND t.lang=?
-//WHERE s.name=?');
-//    
-//    $stmt->execute(array(self::$culture, $name));
-//    
-//    $exists = $stmt->fetchColumn();
-//    
-//    
-//    if($exists)
-//    {
-//      $stmt = Doctrine_Manager::connection()->prepare('UPDATE dm_setting s
-//  LEFT JOIN dm_setting_translation t ON t.id=s.id AND t.lang=?
-//  SET t.value=?
-//  WHERE s.name=?');
-//      $stmt->execute(array(self::$culture, $value, $name));
-//    }
-//    else
-//    {
-//      $stmt = Doctrine_Manager::connection()->prepare('INSERT dm_setting s
-//  LEFT JOIN dm_setting_translation t ON t.id=s.id AND t.lang=?
-//  SET t.value=?
-//  WHERE s.name=?');
-//      $stmt->execute(array(self::$culture, $value, $name));
-//    }
     
     return self::$config[$name] = $value;
   }
@@ -105,13 +78,12 @@ class dmConfig
     {
       self::load();
     }
+    
     return self::$config;
   }
   
   public static function initialize(sfEventDispatcher $dispatcher)
   {
-    self::$config = array();
-    
     $dispatcher->connect('user.change_culture', array('myConfig', 'listenToChangeCultureEvent'));
   }
 
@@ -145,25 +117,56 @@ class dmConfig
       }
     }
     
-    $query = dmDb::query('DmSetting s')
-    ->leftJoin('s.Translation t ON s.id = t.id AND t.lang IN (?, ?)', array(self::$culture, sfConfig::get('sf_default_culture')))
-    ->select('s.name, t.value');
-    
-    if ($useCache)
+    if (true)
     {
-      $query->dmCache();
+      if(self::$culture == sfConfig::get('sf_default_culture'))
+      {
+        $stmt = Doctrine_Manager::connection()->prepare('SELECT s.name, t.value
+FROM dm_setting s
+LEFT JOIN dm_setting_translation t ON t.id=s.id AND t.lang = ?');
+    
+        $stmt->execute(array(self::$culture));
+      }
+      else
+      {
+        $stmt = Doctrine_Manager::connection()->prepare('SELECT s.name, t.value
+FROM dm_setting s
+LEFT JOIN dm_setting_translation t ON t.id=s.id AND t.lang IN (?, ?)');
+    
+        $stmt->execute(array(self::$culture, sfConfig::get('sf_default_culture')));
+      }
+      
+      $results = $stmt->fetchAll(Doctrine::FETCH_NUM);
+      
+      $settings = array();
+      foreach($results as $result)
+      {
+        $settings[$result[0]] = $result[1];
+      }
+      unset($results);
     }
-    
-    $_settings = $query->fetchPDO();
-    
-    $settings = array();
-    foreach($_settings as $_setting)
+    else
     {
-      $settings[$_setting[0]] = $_setting[1];
+      $query = dmDb::query('DmSetting s')
+      ->leftJoin('s.Translation t ON s.id = t.id AND t.lang IN (?, ?)', array(self::$culture, sfConfig::get('sf_default_culture')))
+      ->select('s.name, t.value');
+      
+      if ($useCache)
+      {
+        $query->dmCache();
+      }
+      
+      $_settings = $query->fetchPDO();
+      
+      $settings = array();
+      foreach($_settings as $_setting)
+      {
+        $settings[$_setting[0]] = $_setting[1];
+      }
     }
     
     self::$config = $settings;
-    
+
     self::$loaded = true;
     
     $timer->addTime();

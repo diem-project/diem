@@ -1,0 +1,27 @@
+parameters:
+  filesystem.class:       dmFilesystem
+  user_log.class:         dmUserLog
+  page_helper.class:      dmFrontPageHelper
+ 
+services:
+
+  filesystem:
+    class:                %filesystem.class%
+    shared:               true
+    arguments:
+      dispatcher:         %dispatcher%
+      
+  user_log:
+    class:                %user_log.class%
+    shared:               true
+    arguments:
+      dispatcher:         %dispatcher%
+      filesystem:         @filesystem
+
+  page_helper:
+    class:                %page_helper.class%
+    shared:               true
+    arguments:
+      dispatcher:         %dispatcher%
+      page:               %page%
+      filesystem:         @filesystem
