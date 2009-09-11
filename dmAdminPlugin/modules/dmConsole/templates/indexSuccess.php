@@ -1,0 +1,23 @@
+<?php use_helper('Form');
+
+echo £("h1", "Console");
+echo £o('div#dm_console');
+  echo £o('ul#dm_lines');
+    echo £('li','&nbsp;');
+    echo £("li.dm_command_intro", sprintf("Logged in as %s on %s", $whoami, $uname));
+    echo £("li.dm_command_intro", str_repeat("-", 20));
+    echo £("li.dm_command_intro", "Commands Available :");
+    echo £("li.dm_command_intro", "<b>".$commands."</b>");
+    echo £("li.dm_command_intro", "Symfony commands can be run by prefixing sf<br />Exemple : sf cc ( clear cache )");
+    echo £("li.dm_command_intro", str_repeat("-", 20));
+  echo £c('ul');
+  echo £o('ul#dm_lines.dm_content_command');
+    echo £('li','&nbsp;');
+  echo £c('ul');
+  echo £o("div#dm_command_wrap.clearfix");
+    echo form_tag("dmConsole/command");
+      echo £("label.dm_prompt_command for=dm_command", $sf_user->getAttribute('name_shell').$prompt);
+      echo input_tag("dm_command");
+    echo £c('form');
+  echo £c('div');
+echo £c('div');

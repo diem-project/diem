@@ -1,0 +1,45 @@
+generator:
+  class: dmAdminDoctrineGenerator
+  param:
+    model_class: DmSetting
+    theme: dmAdmin
+    non_verbose_templates: true
+    with_show: false
+    route_prefix: dm_setting
+    with_doctrine_route: true
+    config:
+      actions: ~
+      fields:
+        default_value:
+          label: "Default"
+        group_name:
+          label: "Group"
+      list:
+        display:
+          - '=name'
+          - description
+          - value
+          - default_value
+          - group_name
+          - type
+        sort:
+          - name
+          - asc
+        table_method: getAdminListQuery
+        table_count_method: ~
+      filter:
+        display:
+          - name
+          - description
+          - type
+          - group_name
+      form:
+        display:
+          NONE: [name, description, group_name]
+          Type: [ type, options ]
+          Values: [ value, default_value ]
+        class: DmSettingAdminForm
+        fields: {  }
+      edit: ~
+      new: ~
+    sortable: false
