@@ -1,8 +1,0 @@
-indexSuccess:
-
-  stylesheets:
-    - admin.table
-    - admin.seoValidation
-    
-  javascripts:
-    - admin.seoValidation

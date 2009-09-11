@@ -1,4 +1,0 @@
-pathSuccess:
-
-  stylesheets: [ lib.ui-dialog, admin.breadCrumb, admin.media ]
-  javascripts: [ lib.ui-draggable, lib.ui-dialog, lib.form, admin.media ]
