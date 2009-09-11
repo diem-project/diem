@@ -15,7 +15,7 @@ class dmLorem
   {
     $lorem = self::getLoremText();
 
-    if (is_null($nbParagraphs))
+    if (null === $nbParagraphs)
     {
       $nbParagraphs = 1;
     }
@@ -45,7 +45,7 @@ class dmLorem
 
   protected static function getLoremText()
   {
-  	if (is_null(self::$loremText))
+  	if (null === self::$loremText)
   	{
   		self::$loremText = file(dmOs::join(sfConfig::get("dm_core_dir"), "data/lorem/big"));
   	}
@@ -55,7 +55,7 @@ class dmLorem
 
   protected static function getMarkdownLoremText()
   {
-    if (is_null(self::$markdownLoremText))
+    if (null === self::$markdownLoremText)
     {
       self::$markdownLoremText = implode('', file(dmOs::join(sfConfig::get("dm_core_dir"), "data/lorem/markdown")));
     }

@@ -52,7 +52,7 @@ class dmBrowser
 	
 	public function isUnknown()
 	{
-		return is_null($this->name);
+		return null === $this->name;
 	}
 	
 	public function getName()

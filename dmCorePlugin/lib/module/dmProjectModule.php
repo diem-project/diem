@@ -70,7 +70,7 @@ class dmProjectModule extends dmModule
 
   public function hasParent()
   {
-  	return !is_null($this->getParent());
+  	return null !== $this->getParent();
   }
 
   public function getAncestor($ancestorKey)

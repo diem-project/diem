@@ -27,7 +27,7 @@ class dmFrontPageHelper
   
   public function getAreas()
   {
-    if (is_null($this->areas))
+    if (null === $this->areas)
     {
       $this->areas = dmDb::query('DmArea a INDEXBY a.type, a.Zones z, z.Widgets w')
       ->select('a.type, z.width, z.css_class, w.module, w.action, w.value, w.css_class')
@@ -200,7 +200,7 @@ class dmFrontPageHelper
     
     try
     {
-	    if (is_null($widgetType))
+	    if (null === $widgetType)
 	    {
 	      $widgetType = $dmContext->getWidgetTypeManager()->getWidgetType($widget['module'], $widget['action']);
 	    }

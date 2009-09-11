@@ -16,7 +16,7 @@ abstract class dmDoctrineTableExport
 	public function __construct(myDoctrineTable $table, myDoctrineQuery $query = null)
 	{
 		$this->table = $table;
-		$this->query = is_null($query) ? $table->createQuery() : $query;
+		$this->query = null === $query ? $table->createQuery() : $query;
 		
 		$this->configure();
 	}

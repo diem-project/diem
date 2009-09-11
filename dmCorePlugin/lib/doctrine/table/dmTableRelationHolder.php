@@ -16,7 +16,7 @@ class dmTableRelationHolder
 
 	public function getAll()
 	{
-		if (!is_null($this->relations))
+		if (null !== $this->relations)
 		{
 			return $this->relations;
 		}
@@ -49,7 +49,7 @@ class dmTableRelationHolder
 
   public function getForeigns()
   {
-    if (!is_null($this->foreignRelations))
+    if (null !== $this->foreignRelations)
     {
       return $this->foreignRelations;
     }
@@ -74,7 +74,7 @@ class dmTableRelationHolder
 
   public function getLocals()
   {
-    if (!is_null($this->localRelations))
+    if (null !== $this->localRelations)
     {
       return $this->localRelations;
     }
@@ -139,7 +139,7 @@ class dmTableRelationHolder
 
   public function getAssociations()
   {
-    if (!is_null($this->associationRelations))
+    if (null !== $this->associationRelations)
     {
       return $this->associationRelations;
     }

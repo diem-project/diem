@@ -5,7 +5,7 @@ class dmAdminLinkTag extends dmLinkTag
 
   public static function build($source = null)
   {
-    if (is_null($source))
+    if (null === $source)
     {
       $source = dm::getRequest()->getScriptName();
     }

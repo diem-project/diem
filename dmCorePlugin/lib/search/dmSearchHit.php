@@ -20,7 +20,7 @@ class dmSearchHit
 	
 	public function getPage()
 	{
-		if(is_null($this->page))
+		if(null === $this->page)
 		{
 			$this->page = dmDb::table('DmPage')->find($this->pageId);
 		}

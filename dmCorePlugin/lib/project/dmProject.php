@@ -12,7 +12,7 @@ class dmProject
    */
   public static function getKey()
   {
-    if (is_null(self::$key))
+    if (null === self::$key)
     {
       self::$key = basename(sfConfig::get("sf_root_dir"));
     }
@@ -22,7 +22,7 @@ class dmProject
 
   public static function getModels()
   {
-    if (is_null(self::$models))
+    if (null === self::$models)
     {
       $baseModels = sfFinder::type('file')
       ->maxdepth(0)

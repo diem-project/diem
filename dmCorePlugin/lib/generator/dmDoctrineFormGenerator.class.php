@@ -78,7 +78,7 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
         mkdir($baseDir.'/base', 0777, true);
       }
 
-      file_put_contents($baseDir.'/base/Base'.$model.'Form.class.php', $this->evalTemplate(is_null($this->getParentModel()) ? 'sfDoctrineFormGeneratedTemplate.php' : 'sfDoctrineFormGeneratedInheritanceTemplate.php'));
+      file_put_contents($baseDir.'/base/Base'.$model.'Form.class.php', $this->evalTemplate(null === $this->getParentModel() ? 'sfDoctrineFormGeneratedTemplate.php' : 'sfDoctrineFormGeneratedInheritanceTemplate.php'));
 
       if ($isPluginModel)
       {
@@ -125,7 +125,7 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
   	switch ($column->getDoctrineType())
     {
       case 'string':
-        $widgetSubclass = is_null($column->getLength()) || $column->getLength() > 255 ? 'Textarea' : 'InputText';
+        $widgetSubclass = null === $column->getLength() || $column->getLength() > 255 ? 'Textarea' : 'InputText';
         break;
       case 'boolean':
         $widgetSubclass = 'InputCheckbox';

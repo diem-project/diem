@@ -55,7 +55,7 @@ abstract class dmUser extends sfGuardSecurityUser implements dmMicroCacheInterfa
 
   public function clearCache($cacheKey = null)
   {
-    if (is_null($cacheKey))
+    if (null === $cacheKey)
     {
       $this->cache = array();
     }

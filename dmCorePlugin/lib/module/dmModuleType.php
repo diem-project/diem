@@ -39,7 +39,7 @@ class dmModuleType
 
   public function getSlug()
   {
-  	if(is_null($this->slug))
+  	if(null === $this->slug)
   	{
   		$this->slug = dmString::slugify(dm::getI18n()->__($this->getPublicName()));
   	}

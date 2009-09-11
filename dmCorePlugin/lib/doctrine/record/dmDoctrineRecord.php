@@ -719,7 +719,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
 
   protected function clearCache($cacheKey = null)
   {
-    if (is_null($cacheKey))
+    if (null === $cacheKey)
     {
       $this->cache = array();
     }

@@ -186,7 +186,7 @@ abstract class PluginsfGuardUser extends BasesfGuardUser
 
   public function setPasswordHash($v)
   {
-    if (!is_null($v) && !is_string($v))
+    if (null !== $v && !is_string($v))
     {
       $v = (string) $v;
     }

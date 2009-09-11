@@ -154,7 +154,7 @@ class dmOs
 
 	public static function isInternetAvailable()
 	{
-		if (is_null(self::$isInternetAvailable))
+		if (null === self::$isInternetAvailable)
 		{
 			if($fp = @fsockopen(self::INTERNET_CHECK_HOST, 80, $errno, $errstring))
 			{

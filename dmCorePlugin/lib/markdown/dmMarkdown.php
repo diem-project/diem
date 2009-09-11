@@ -9,7 +9,7 @@ class dmMarkdown extends MarkdownExtra_Parser
 
 	public static function toHtml($text)
 	{
-		if(is_null(self::$instance))
+		if(null === self::$instance)
 		{
 			self::$instance = new self;
 		}

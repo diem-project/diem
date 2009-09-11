@@ -10,7 +10,7 @@ abstract class dmRecursivePageList
 
 	public function __construct($culture = null)
 	{
-		$this->culture  = is_null($this->culture) ? dm::getUser()->getCulture() : $culture;
+		$this->culture  = null === $this->culture ? dm::getUser()->getCulture() : $culture;
 		$this->tree     = $this->getTree();
 	}
 

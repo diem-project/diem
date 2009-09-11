@@ -62,7 +62,7 @@ class dmAPCCache extends sfAPCCache
 
   public static function isEnabled($val = null)
   {
-    if (!is_null($val))
+    if (null !== $val)
     {
       throw new dmException('No supported yet : need to reset all cache');
       self::$enabled = (boolean) $val && self::isAvailable();

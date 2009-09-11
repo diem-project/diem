@@ -202,9 +202,9 @@ abstract class dmContext extends dmMicroCache
   
   public function getAppUrl($app = null, $env = null, $culture = null)
   {
-    $app = is_null($app) ? sfConfig::get('sf_app') : $app;
-    $env = is_null($env) ? sfConfig::get('sf_environment') : $env;
-    $culture = is_null($culture) ? $this->sfContext->getUser()->getCulture() : $culture;
+    $app = null === $app ? sfConfig::get('sf_app') : $app;
+    $env = null === $env ? sfConfig::get('sf_environment') : $env;
+    $culture = null === $culture ? $this->sfContext->getUser()->getCulture() : $culture;
     
     $knownAppUrls = json_decode(dmConfig::get('base_urls', '[]'), true);
     

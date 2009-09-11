@@ -182,3 +182,7 @@ $.getScript(href, callback);
 * convert this TODO to trac tickets
 
 * consider using http://www.quasipartikel.at/multiselect/ for admin multiselect
+
+* allow to delete a page in front edition
+
+* widget views : use user classes and their wraps like Diem 4. ( class directly on element for link, title and media, and in wrapper for other widgets )

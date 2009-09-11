@@ -111,7 +111,7 @@ class dmModule extends dmMicroCache
 
   public function getModel()
   {
-  	if (is_null($this->checkedModel))
+  	if (null === $this->checkedModel)
   	{
   	  $this->checkedModel = false;
 	    if ($model = $this->getParam("model"))
@@ -138,7 +138,7 @@ class dmModule extends dmMicroCache
 
   public function getUnderscore()
   {
-    if (is_null($this->underscoredKey))
+    if (null === $this->underscoredKey)
     {
   	  $this->underscoredKey = dmString::underscore($this->getKey());
     }
@@ -200,7 +200,7 @@ class dmModule extends dmMicroCache
 
   public function getTable()
   {
-  	if (is_null($this->table))
+  	if (null === $this->table)
   	{
   		$model = $this->getModel();
   		$this->table = $model ? dmDb::table($this->getModel()) : false;

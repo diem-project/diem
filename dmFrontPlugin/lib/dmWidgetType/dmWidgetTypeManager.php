@@ -30,7 +30,7 @@ class dmWidgetTypeManager
   {
   	$timer = dmDebug::timer('dmWidgetTypeManager::getWidgetTypes');
   	
-    if (is_null($this->widgetTypes))
+    if (null === $this->widgetTypes)
     {
     	if (!$this->widgetTypes = $this->cacheManager->getCache('dm/widget')->get('types'))
     	{

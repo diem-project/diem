@@ -24,7 +24,7 @@ class Doctrine_Cache_Dm extends Doctrine_Cache_Driver
 
   public function getCache()
   {
-    if (is_null($this->cache))
+    if (null === $this->cache)
     {
       $this->cache = $this->_options['cache_manager']->getCache('dm/doctrine');
     }

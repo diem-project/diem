@@ -22,7 +22,7 @@ class dmWebDebugPanelTimer extends sfWebDebugPanelTimer
   {
     $return = sprintf('%.0f', (microtime(true) - dm::getStartTime()) * 1000);
 
-    if(!is_null(self::$startTime))
+    if(null !== self::$startTime)
   	{
   		$return .= ' -'.($return - sprintf('%.0f', (microtime(true) - self::$startTime) * 1000));
   	}

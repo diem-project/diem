@@ -117,7 +117,7 @@ class dmSearchIndex extends dmSearchIndexCommon
 
 	protected function open()
 	{
-		if (is_null($this->index))
+		if (null === $this->index)
 		{
 			if (file_exists(dmOs::join($this->location, 'segments.gen')))
 			{

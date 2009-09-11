@@ -39,7 +39,7 @@ abstract class dmHtmlTag implements ArrayAccess
 				$this->set($n, $v);
 			}
 		}
-		elseif (!is_null($value))
+		elseif (null !== $value)
 		{
 			$this->options[$name] = $value;
 		}
@@ -140,7 +140,7 @@ abstract class dmHtmlTag implements ArrayAccess
   	$htmlAttributesString = '';
     foreach ($attributes as $key => $value)
     {
-      if (!is_null($value))
+      if (null !== $value)
       {
 //      	if(is_array($value))
 //      	{

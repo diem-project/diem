@@ -327,7 +327,7 @@ class dmAdminGeneratorBuilder
 
   protected function filterFields($fields = null, $types)
   {
-  	$fields = is_null($fields) ? $this->table->getColumnNames() : $fields;
+  	$fields = null === $fields ? $this->table->getColumnNames() : $fields;
 
     foreach($fields as $key => $field)
     {

@@ -94,7 +94,7 @@ EOF
    */
   public function render($name, $value = null, $attributes = array(), $errors = array())
   {
-    if (is_null($value))
+    if (null === $value)
     {
       $value = array();
     }

@@ -14,7 +14,7 @@ class dm
 
 	public static function register($dir)
 	{
-		if (!is_null(self::$dir))
+		if (null !== self::$dir)
 		{
 			throw new Exception('Diem has already been registered');
 		}

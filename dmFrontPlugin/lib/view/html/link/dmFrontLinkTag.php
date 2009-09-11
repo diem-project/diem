@@ -7,7 +7,7 @@ abstract class dmFrontLinkTag extends dmLinkTag
   {
     $params = false;
     
-    if (is_null($source))
+    if (null === $source)
     {
     	$type = 'page';
       $source = dmDb::table('DmPage')->findOneBySource($source);

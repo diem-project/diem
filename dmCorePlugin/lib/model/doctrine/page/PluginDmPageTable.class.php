@@ -112,7 +112,7 @@ class PluginDmPageTable extends myDoctrineTable
     }
     if (!isset($this->findByStringCache[$source]))
     {
-      if(is_null($source))
+      if(null === $source)
       {
         $this->findByStringCache[$source] = $this->getTree()->fetchRoot();
       }

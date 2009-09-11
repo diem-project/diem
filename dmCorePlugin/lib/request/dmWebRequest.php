@@ -13,7 +13,7 @@ class dmWebRequest extends sfWebRequest
 
   public function getAbsoluteUrlRoot()
   {
-  	if(is_null($this->absoluteUrlRoot))
+  	if(null === $this->absoluteUrlRoot)
   	{
       $this->absoluteUrlRoot = $this->getUriPrefix().$this->getRelativeUrlRoot();
   	}

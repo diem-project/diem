@@ -11,7 +11,7 @@ class dmModuleManager
 
 	public static function getTypes()
 	{
-		if(is_null(self::$types))
+		if(null === self::$types)
 		{
 			self::$types = array();
 
@@ -82,7 +82,7 @@ class dmModuleManager
 
 	public static function getModules()
 	{
-		if (is_null(self::$modules))
+		if (null === self::$modules)
 		{
 			$timer = dmDebug::timer('dmModuleManager::getModules');
 			self::$modules = array();
@@ -106,7 +106,7 @@ class dmModuleManager
 
 	public static function getProjectModules()
 	{
-		if (is_null(self::$projectModules))
+		if (null === self::$projectModules)
 		{
 			self::$projectModules = array();
 			foreach(self::getModules() as $moduleKey => $module)

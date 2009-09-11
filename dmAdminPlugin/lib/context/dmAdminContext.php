@@ -26,7 +26,7 @@ class dmAdminContext extends dmContext
 
   public function getModuleType()
   {
-  	if (is_null($this->moduleType))
+  	if (null === $this->moduleType)
   	{
       $this->moduleType = dmModuleManager::getTypeBySlug($this->sfContext->getRequest()->getParameter('moduleTypeName'), false);
   	}
@@ -35,7 +35,7 @@ class dmAdminContext extends dmContext
 
   public function getModuleSpace()
   {
-  	if (is_null($this->moduleSpace))
+  	if (null === $this->moduleSpace)
   	{
 	  	if($moduleType = $this->getModuleType())
 	  	{

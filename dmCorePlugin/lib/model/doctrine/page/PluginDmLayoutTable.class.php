@@ -9,7 +9,7 @@ class PluginDmLayoutTable extends myDoctrineTable
 
   public function findFirstOrCreate()
   {
-    if (is_null($this->firstLayout))
+    if (null === $this->firstLayout)
     {
       if (!$this->firstLayout = $this->createQuery()->dmCache()->fetchRecord())
       {

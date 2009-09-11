@@ -373,7 +373,7 @@ class dmUpdateSeoService extends dmService
 
   public static function getFieldMaxLength($field)
   {
-    if (is_null(self::$truncateCache))
+    if (null === self::$truncateCache)
     {
       $truncateConfig = sfConfig::get('dm_seo_truncate');
       self::$truncateCache = array();

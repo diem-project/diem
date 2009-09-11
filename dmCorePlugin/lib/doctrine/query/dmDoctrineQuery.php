@@ -79,7 +79,7 @@ abstract class dmDoctrineQuery extends Doctrine_Query
 	 */
 	public function withI18n($culture = null, $model = null)
 	{
-    if (!is_null($model))
+    if (null !== $model)
     {
       if (!dmDb::table($model)->hasI18n())
       {
@@ -88,7 +88,7 @@ abstract class dmDoctrineQuery extends Doctrine_Query
     }
 
 		$me       = $this->getRootAlias();
-		$culture  = is_null($culture) ? myDoctrineRecord::getDefaultCulture() : $culture;
+		$culture  = null === $culture ? myDoctrineRecord::getDefaultCulture() : $culture;
 		
 		return $this
 //    ->addSelect($me.'.*, translation.*')
@@ -106,7 +106,7 @@ abstract class dmDoctrineQuery extends Doctrine_Query
 	
 	public function whereIsActive($boolean = true, $model = null)
 	{
-    if (!is_null($model))
+    if (null !== $model)
     {
       if (!dmDb::table($model)->hasField('is_active'))
       {
@@ -249,7 +249,7 @@ abstract class dmDoctrineQuery extends Doctrine_Query
 	 */
   public function orderByPosition($model = null)
   {
-    if (!is_null($model))
+    if (null !== $model)
     {
     	if (!dmDb::table($model)->hasField('position'))
     	{

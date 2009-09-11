@@ -26,7 +26,7 @@ abstract class dmMicroCache
 
   protected function clearCache($key = null)
   {
-    if (is_null($key))
+    if (null === $key)
     {
       $this->cache = array();
     }

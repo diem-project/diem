@@ -166,7 +166,7 @@ abstract class dmModelGeneratorConfiguration extends sfModelGeneratorConfigurati
       throw new InvalidArgumentException(sprintf('The context "%s" does not exist.', $context));
     }
 
-    if (is_null($fields))
+    if (null === $fields)
     {
       return $this->configuration[$context];
     }
