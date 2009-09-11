@@ -4,17 +4,32 @@
  */
 class Doctrine_Cache_Dm extends Doctrine_Cache_Driver
 {
-	protected
-	$cache;
+  protected
+  $cache;
+
+  /**
+   * Configure cache driver with an array of options
+   *
+   * @param array $_options      an array of options
+   */
+  public function __construct($options = array())
+  {
+    $this->_options = $options;
+    
+    if (!isset($options['cache_manager']))
+    {
+      throw new dmException('Not supported yet');
+    }
+  }
 
   public function getCache()
   {
-  	if (is_null($this->cache))
-  	{
-      $this->cache = dmCacheManager::getCache('dm/doctrine');
-  	}
+    if (is_null($this->cache))
+    {
+      $this->cache = $this->_options['cache_manager']->getCache('dm/doctrine');
+    }
 
-  	return $this->cache;
+    return $this->cache;
   }
 
   /**
@@ -28,7 +43,7 @@ class Doctrine_Cache_Dm extends Doctrine_Cache_Driver
   {
     if ($results = $this->getCache()->_get($id))
     {
-    	return $results;
+      return $results;
     }
     else
     {

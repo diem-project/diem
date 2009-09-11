@@ -55,6 +55,6 @@ class dmDb
 
   public static function cache($val)
   {
-    dmDoctrineConfiguration::getInstance()->activateCache((bool) $val);
+    dmContext::getInstance()->getDoctrineConfig()->activateCache((bool) $val);
   }
 }

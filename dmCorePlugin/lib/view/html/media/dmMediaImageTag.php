@@ -128,7 +128,7 @@ class dmMediaImageTag extends dmMediaTag
       // throw new dmException($attributes['method'].' is not a valid resizer method. These are '.implode(', ', self::getMethods()));
     }
 
-    if(!dmFilesystem::get()->mkdir($thumbDir = dmOs::join($media->Folder->fullPath, '.thumbs')))
+    if(!dmContext::getInstance()->getFilesystem()->mkdir($thumbDir = dmOs::join($media->Folder->fullPath, '.thumbs')))
     {
       dm::getUser()->logAlert(dm::getI18n()->__('Thumbnails can not be created in %1%', array('%1%' => $media->Folder->relPath)), false);
       return $media->fullPath;

@@ -56,8 +56,7 @@ class dmCodeEditorActions extends dmFrontBaseActions
 		
 		try
 		{
-			$backup = new dmBackup();
-			$backup->save($file);
+			$this->getDmContext()->getFileBackup()->save($file);
 		}
 		catch(dmException $e)
 		{

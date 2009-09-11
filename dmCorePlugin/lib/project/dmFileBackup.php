@@ -1,18 +1,23 @@
 <?php
 
-class dmBackup
+class dmFileBackup
 {
 	protected
-	$dir,
-	$filesystem;
+	$dispatcher,
+  $filesystem,
+	$dir;
 	
-	public function __construct($dir)
+	public function __construct(sfEventDispatcher $dispatcher, dmFilesystem $filesystem, array $options = array())
 	{
-		$this->dir = is_null($dir)
-		? dmOs::join(sfConfig::get('dm_data_dir'), 'backup/fs')
-		: $dir;
+    $this->dispatcher = $dispatcher;
+    $this->filesystem = $filesystem;
     
-    $this->filesystem = new dmFilesystem;
+    $this->initialize($options);
+	}
+	
+	public function initialize(array $options = array())
+	{
+    $this->dir = dmProject::rootify(dmArra::get($options, 'dir', 'data/dm/backup/filesystem'));
     
     $this->checkDirIsWritable();
 	}
@@ -74,7 +79,7 @@ class dmBackup
 	{
 		if (!$this->filesystem->mkdir($this->getDir()))
 		{
-			throw new dmException('dmBackup dir is not writable : '.$this->getDir());
+			throw new dmException('dmFileBackup dir is not writable : '.$this->getDir());
 		}
 	}
 	

@@ -1,0 +1,78 @@
+parameters:
+
+  search_engine.class:        dmSearchIndexGroup
+
+  cache_manager.class:        dmCacheManager
+
+  doctrine_config.class:      dmDoctrineConfiguration
+
+  filesystem.class:           dmFilesystem
+  
+  user_log.class:             dmUserLog
+  user_log.options:
+    file:                     'data/dm/log/user.log'
+    
+  page_tree_watcher.class:    dmPageTreeWatcher
+  
+  file_backup.class:          dmFileBackup
+  file_backup.options:
+    dir:                      'data/dm/backup/filesystem'
+    
+  helper.class:               dmOoHelper
+ 
+services:
+
+  search_engine:
+    class:                    %search_engine.class%
+    shared:                   true
+    arguments:
+      dispatcher:             %dispatcher%
+      filesystem:             @filesystem
+
+  doctrine_config:
+    class:                    %doctrine_config.class%
+    shared:                   true
+    arguments:
+      doctrine_manager:       %doctrine_manager%
+      dispatcher:             %dispatcher%
+      cache_manager:          @cache_manager
+
+  filesystem:
+    class:                    %filesystem.class%
+    shared:                   true
+    arguments:
+      dispatcher:             %dispatcher%
+      
+  user_log:
+    class:                    %user_log.class%
+    shared:                   true
+    arguments:
+      dispatcher:             %dispatcher%
+      filesystem:             @filesystem
+      options:                %user_log.options%
+      
+  page_tree_watcher:
+    class:                    %page_tree_watcher.class%
+    shared:                   true
+    arguments:
+      dispatcher:             %dispatcher%
+      
+  file_backup:
+    class:                    %file_backup.class%
+    shared:                   true
+    arguments:
+      dispatcher:             %dispatcher%
+      filesystem:             @filesystem
+      options:                %file_backup.options%
+  
+  helper:
+    class:                    %helper%
+    shared:                   true
+    arguments:
+      context:                %context%
+      
+  cache_manager:
+    class:                    %cache_manager.class%
+    shared:                   true
+    arguments:
+      dispatcher:             %dispatcher%

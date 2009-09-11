@@ -170,7 +170,7 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
    */
   public function create()
   {
-    return dmFilesystem::get()->mkdir($this->getFullPath());
+    return dmContext::getInstance()->getFilesystem()->mkdir($this->getFullPath());
   }
 
   /**
@@ -192,7 +192,7 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
       }
       $oldName = $this->name;
 
-      $fs = dmFilesystem::get();
+      $fs = dmContext::getInstance()->getFilesystem();
 
       if(!$fs->exec(sprintf('cd %s && mv %s %s',
         dmOs::join($this->getNode()->geParent()->getFullPath()), $oldName, $name
@@ -402,7 +402,7 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
     // Remove dir itself
     if(!$this->getNode()->isRoot() && $this->dirExists())
     {
-      dmFilesystem::get()->deleteDir($this->fullPath);
+      dmContext::getInstance()->getFilesystem()->deleteDir($this->fullPath);
     }
 
     return parent::delete($conn);

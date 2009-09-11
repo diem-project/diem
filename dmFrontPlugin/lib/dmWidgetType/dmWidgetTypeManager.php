@@ -3,26 +3,46 @@
 class dmWidgetTypeManager
 {
 
-  protected static
-  $configFile = 'config/dm/widget_types.yml',
+  protected
+  $dispatcher,
+  $cacheManager,
+  $context,
+  $configFile,
   $widgetTypes;
 
-  public static function getWidgetTypes()
+  public function construct(sfEventDispatcher $dispatcher, dmCacheManager $cacheManager, sfContext $context, array $options = array())
+  {
+    $this->dispatcher   = $dispatcher;
+    $this->cacheManager = $cacheManager;
+    $this->context      = $context;
+    
+    $this->initialize($options);
+  }
+  
+  public function initialize(array $options = array())
+  {
+    $this->configFile = dmArray::get($options, 'config_files', 'config/dm/widget_types.yml');
+    
+    $this->widgetTypes = null;
+  }
+  
+  public function getWidgetTypes()
   {
   	$timer = dmDebug::timer('dmWidgetTypeManager::getWidgetTypes');
-    if (is_null(self::$widgetTypes))
+  	
+    if (is_null($this->widgetTypes))
     {
-    	if (!self::$widgetTypes = dmCacheManager::getCache('dm/widget')->get('types'))
+    	if (!$this->widgetTypes = $this->cacheManager->getCache('dm/widget')->get('types'))
     	{
-	    	$internalConfig = include(sfContext::getInstance()->getConfigCache()->checkConfig(self::$configFile));
+	    	$internalConfig = include($this->context->getConfigCache()->checkConfig($this->configFile));
 
-	    	$sfController = sfContext::getInstance()->getController();
+	    	$sfController = $this->context->getController();
 
-	    	self::$widgetTypes = array();
+	    	$this->widgetTypes = array();
 
 	      foreach($internalConfig as $moduleKey => $actions)
 	      {
-	        self::$widgetTypes[$moduleKey] = array();
+	        $this->widgetTypes[$moduleKey] = array();
 
 	        foreach($actions as $actionKey => $action)
 	        {
@@ -35,7 +55,7 @@ class dmWidgetTypeManager
 	        	  'use_component' => $sfController->componentExists('dmWidget', $fullKey)
 		        );
 
-	        	self::$widgetTypes[$moduleKey][$actionKey] = new dmWidgetType($moduleKey, $actionKey, $widgetTypeConfig);
+	        	$this->widgetTypes[$moduleKey][$actionKey] = new dmWidgetType($moduleKey, $actionKey, $widgetTypeConfig);
 	        }
 	      }
 
@@ -43,7 +63,7 @@ class dmWidgetTypeManager
 	      {
 	      	$moduleName = $module->getName();
 
-	        self::$widgetTypes[$moduleKey] = array();
+	        $this->widgetTypes[$moduleKey] = array();
 
 	        foreach($module->getActions() as $actionKey => $action)
 	        {
@@ -56,18 +76,18 @@ class dmWidgetTypeManager
 	            'use_component' => $sfController->componentExists($moduleKey, $actionKey)
 	        	);
 
-	          self::$widgetTypes[$moduleKey][$actionKey] = new dmWidgetType($moduleKey, $actionKey, $widgetTypeConfig);
+	          $this->widgetTypes[$moduleKey][$actionKey] = new dmWidgetType($moduleKey, $actionKey, $widgetTypeConfig);
 	        }
 	      }
     	}
-    	dmCacheManager::getCache('dm/widget')->set('types', self::$widgetTypes);
+    	$dmContext->getCacheManager()->getCache('dm/widget')->set('types', $this->widgetTypes);
     }
 
     $timer->addTime();
-    return self::$widgetTypes;
+    return $this->widgetTypes;
   }
 
-  public static function getWidgetType($moduleOrWidget, $action = null, $orNull = false)
+  public function getWidgetType($moduleOrWidget, $action = null, $orNull = false)
   {
   	if ($moduleOrWidget instanceof DmWidget)
   	{
@@ -78,7 +98,7 @@ class dmWidgetTypeManager
   		$module = $moduleOrWidget;
   	}
 
-    $widgetType = dmArray::get(dmArray::get(self::getWidgetTypes(), dmString::modulize($module), array()), dmString::modulize($action));
+    $widgetType = dmArray::get(dmArray::get($this->getWidgetTypes(), dmString::modulize($module), array()), dmString::modulize($action));
 
     if (!$widgetType)
     {
@@ -87,16 +107,16 @@ class dmWidgetTypeManager
         return null;
       }
 //      dmDebug::stack();
-//      dmDebug::kill(self::getWidgetTypes());
+//      dmDebug::kill($this->getWidgetTypes());
       throw new dmException(sprintf("The %s.%s module does not exist", $module, $action));
     }
 
     return $widgetType;
   }
 
-  public static function getWidgetTypeOrNull($moduleOrWidget, $action = null)
+  public function getWidgetTypeOrNull($moduleOrWidget, $action = null)
   {
-  	return self::getWidgetType($moduleOrWidget, $action, true);
+  	return $this->getWidgetType($moduleOrWidget, $action, true);
   }
 
 }

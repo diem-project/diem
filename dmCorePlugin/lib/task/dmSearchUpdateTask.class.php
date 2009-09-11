@@ -33,7 +33,7 @@ class dmSearchUpdateTask extends dmBaseTask
     
     $this->log('Search engine index update');
     
-    $index = new mySearchIndexGroup;
+    $index = dmContext::getInstance()->getSearchEngine();
     $index->setLogger(new dmLoggerTask($this->dispatcher, $this->formatter));
     
     $index->populate();

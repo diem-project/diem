@@ -11,15 +11,6 @@
 abstract class dmApplicationConfiguration extends sfApplicationConfiguration
 {
 	/*
-	 * Override this method in your application configuration class
-	 * to change site for this request
-	 */
-	public function getCurrentSite()
-	{
-		return dmDb::table('DmSite')->getInstance();
-	}
-	
-	/*
 	 * Wich dmPlugins are usefull for this application ?
 	 * @returns array plugin names
 	 */

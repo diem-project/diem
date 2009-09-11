@@ -2,109 +2,26 @@
 
 class dmDoctrineConfiguration
 {
-	protected static
-	$instance;
-
 	protected
 	$manager,
-	$dispatcher;
+	$dispatcher,
+	$cacheManager;
 
-	public static function getInstance()
+	public function __construct(Doctrine_Manager $manager, sfEventDispatcher $dispatcher, dmCacheManager $cacheManager)
 	{
-		if(is_null(self::$instance))
-		{
-			throw new dmException('dmDoctrineConfiguration has no instance');
-		}
-
-    return self::$instance;
-	}
-
-	public static function createInstance(Doctrine_Manager $manager, sfEventDispatcher $dispatcher)
-	{
-    return self::$instance = new self($manager, $dispatcher);
-	}
-
-	public function __construct(Doctrine_Manager $manager, sfEventDispatcher $dispatcher)
-	{
-		$this->manager = $manager;
-		$this->dispatcher = $dispatcher;
+    $this->manager = $manager;
+    $this->dispatcher = $dispatcher;
+    $this->cacheManager = $cacheManager;
+    
+    $this->initialize();
 	}
 
 	public function initialize()
 	{
-		Doctrine::debug(sfConfig::get("sf_debug"));
-
-		/*
-		 * I want Doctrine to autoload table classes
-		 */
-		$this->manager->setAttribute(Doctrine::ATTR_AUTOLOAD_TABLE_CLASSES, true);
-
-    /*
-     * make $record->setSomething($value) override $record->_set('something', $value);
-     */
-    $this->manager->setAttribute(Doctrine::ATTR_AUTO_ACCESSOR_OVERRIDE, true);
-
-    /*
-     * Enable doctrine validators
-     */
-    $this->manager->setAttribute(Doctrine::ATTR_VALIDATE, Doctrine::VALIDATE_ALL);
-
-    /*
-     * Set up doctrine extensions dir
-     */
-    Doctrine::setExtensionsPath(sfConfig::get('sf_root_dir').'/plugins/dmCorePlugin/lib/doctrine/extension');
-
-		$this
-    ->configureInheritance()
-    ->configureCharset()
-    ->configureBuilder()
-    ->configureHydrator();
-    
-    $this->dispatcher->connect('context.load_factories', array($this, 'configureCache'));
-  
-    return $this;
+		$this->configureCache();
 	}
 
-  protected function configureInheritance()
-  {
-    $this->manager->setAttribute(Doctrine::ATTR_QUERY_CLASS, 'myDoctrineQuery');
-    $this->manager->setAttribute(Doctrine::ATTR_COLLECTION_CLASS, 'MyDoctrineCollection');
-
-    return $this;
-  }
-
-  protected function configureCharset()
-  {
-    $this->manager->setCharset('utf8');
-    $this->manager->setCollate('utf8_unicode_ci');
-
-    return $this;
-  }
-
-  protected function configureBuilder()
-  {
-    sfConfig::set('doctrine_model_builder_options', array(
-      'generateTableClasses'  => true,
-      'baseClassName'         => 'myDoctrineRecord',
-      'baseTableClassName'    => 'myDoctrineTable',
-      'suffix'                => '.class.php'
-    ));
-
-    return $this;
-  }
-
-  protected function configureHydrator()
-  {
-    $this->manager->registerHydrator('dmFlat', 'Doctrine_Hydrator_dmFlat');
-    $this->manager->registerHydrator('dmAssoc', 'Doctrine_Hydrator_dmAssoc');
-
-    return $this;
-  }
-
-  /*
-   * Needs diem project config to be loaded
-   */
-  public function configureCache()
+  protected function configureCache()
   {
   	if (!sfConfig::get('dm_orm_cache_enabled', true))
   	{
@@ -135,11 +52,13 @@ class dmDoctrineConfiguration
 
   public function desactivateCache()
   {
-    self::activateCache(false);
+    $this->activateCache(false);
   }
 
   protected function getCacheDriver()
   {
-  	return new Doctrine_Cache_Dm();
+  	return new Doctrine_Cache_Dm(array(
+  	  'cache_manager' => $this->cacheManager
+  	));
   }
 }

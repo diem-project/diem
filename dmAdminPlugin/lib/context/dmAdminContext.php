@@ -6,36 +6,10 @@ class dmAdminContext extends dmContext
 	$moduleType,
 	$moduleSpace;
 
-  /**
-   * Loads the diem services
-   */
-  public function loadServiceContainer()
-  {
-    $name = 'dm'.md5(dmProject::getRootDir().sfConfig::get('sf_app')).'ServiceContainer';
-    
-    $file = dmOs::join(sys_get_temp_dir(), $name.'.php');
-     
-    if (!sfConfig::get('sf_debug') && file_exists($file))
-    {
-      require_once $file;
-      $sc = new $name;
-    }
-    else
-    {
-      // build the service container dynamically
-      $sc = new sfServiceContainerBuilder();
-      $loader = new sfServiceContainerLoaderFileYaml($sc);
-      $loader->load(dmOs::join(sfConfig::get('dm_core_plugin'), 'config/dm/services.yml'));
-     
-      if (!$isDebug)
-      {
-        $dumper = new sfServiceContainerDumperPhp($sc);
-        file_put_contents($file, $dumper->dump(array('class' => $name)));
-      }
-    }
-    
-    $this->serviceContainer = $sc;
-  }
+	public function getSitemap()
+	{
+	  return $this->serviceContainer->getService('sitemap');
+	}
 	
 	public function isModuleAction($module, $action)
 	{

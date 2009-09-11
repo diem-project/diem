@@ -3,29 +3,35 @@
 class dmSitemapActions extends dmAdminBaseActions
 {
   
+  public function preExecute()
+  {
+    $this->sitemap = $this->getDmContext()->getSitemap();
+    
+    $this->sitemap->setBaseUrl($this->getRequest()->getAbsoluteUrlRoot());
+  }
+  
   public function executeIndex(dmWebRequest $request)
   {
-    if (file_exists($this->getFile()))
+    if ($this->sitemap->fileExists())
     {
-    	$this->sitemap = file_get_contents($this->getFile());
-      $this->updatedAt = filemtime($this->getFile());
-      $this->nbLinks = substr_count($this->sitemap, '<url>');
-      $this->size = dmOs::humanizeSize($this->getFile());
-      $this->sitemapWebPath = $this->getRequest()->getAbsoluteUrlRoot().'/'.$this->getFileName();
+      $this->exists =     true;
+    	$this->xml =        $this->sitemap->getFileContent();
+      $this->updatedAt =  $this->sitemap->getUpdatedAt();
+      $this->nbLinks =    $this->sitemap->countUrls();
+      $this->size =       dmOs::humanizeSize($this->sitemap->getFileSize());
+      $this->webPath =    $this->sitemap->getWebPath();
     }
     else
     {
-    	$this->sitemap = false;
+      $this->exists =     false;
     }
   }
   
   public function executeGenerate(dmWebRequest $request)
   {
-    $sitemapGenerator = new mySitemapGenerator($this->getFileName());
-    
     try
     {
-    	$sitemapGenerator->generate();
+    	$this->sitemap->generate($this->getUser()->getCulture());
     	$this->getUser()->logInfo('The sitemap has been successfully generated');
     }
     catch(Exception $e)
@@ -41,13 +47,4 @@ class dmSitemapActions extends dmAdminBaseActions
     return $this->redirect('@dm_sitemap');
   }
     
-  protected function getFile()
-  {
-  	return dmOs::join(sfConfig::get('sf_web_dir'), $this->getFileName());
-  }
-  
-  protected function getFileName()
-  {
-  	return trim(dmArray::get(sfConfig::get('dm_seo_sitemap'), 'path', 'sitemap.xml'), '/');
-  }
 }

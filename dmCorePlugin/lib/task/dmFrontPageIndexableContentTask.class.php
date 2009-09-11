@@ -69,7 +69,7 @@ class dmPageIndexableContentTask extends dmBaseTask
 	      {
 	      	if (!in_array($widget['module'].'.'.$widget['action'], self::$skipWidgets))
 	      	{
-	      		$widgetViewClass = dmWidgetTypeManager::getWidgetType($widget['module'], $widget['action'])->getViewClass();
+	      		$widgetViewClass = $dmContext->getWidgetTypeManager()->getWidgetType($widget['module'], $widget['action'])->getViewClass();
 	
 	      		$widgetView = new $widgetViewClass($widget);
 	

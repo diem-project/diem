@@ -20,8 +20,6 @@ class dmCorePluginConfiguration extends sfPluginConfiguration
 
     $this->enableHelpers();
 
-    $this->initCacheManager();
-
     $this->connectEvents();
     
     $this->fixIncludePath();
@@ -32,10 +30,6 @@ class dmCorePluginConfiguration extends sfPluginConfiguration
     set_include_path(get_include_path().PATH_SEPARATOR.realpath(sfConfig::get('dm_core_dir').'/lib/vendor'));
   }
 
-  protected function initCacheManager()
-  {
-  	dmCacheManager::createInstance($this->dispatcher);
-  }
 
   protected function loadConfiguration()
   {

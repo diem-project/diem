@@ -1,27 +1,24 @@
 parameters:
-  filesystem.class:       dmFilesystem
-  user_log.class:         dmUserLog
-  page_helper.class:      dmFrontPageHelper
+  page_helper.class:          dmFrontPageHelper
+  widget_type_manager.class:  dmWidgetTypeManager
+  widget_type_manager.options:
+    config_files:             'config/dm/widget_types.yml'        
  
 services:
 
-  filesystem:
-    class:                %filesystem.class%
-    shared:               true
-    arguments:
-      dispatcher:         %dispatcher%
-      
-  user_log:
-    class:                %user_log.class%
-    shared:               true
-    arguments:
-      dispatcher:         %dispatcher%
-      filesystem:         @filesystem
-
   page_helper:
-    class:                %page_helper.class%
-    shared:               true
+    class:                    %page_helper.class%
+    shared:                   true
     arguments:
-      dispatcher:         %dispatcher%
-      page:               %page%
-      filesystem:         @filesystem
+      dispatcher:             %dispatcher%
+      dm_context:             %dm_context%
+      filesystem:             @filesystem
+
+  widget_type_manager:
+    class:                    %widget_type_manager.class%
+    shared:                   true
+    arguments:
+      dispatcher:             %dispatcher%
+      cache_manager:          @cache_manager
+      context:                %context%
+      options:                %widget_type_manager.options%

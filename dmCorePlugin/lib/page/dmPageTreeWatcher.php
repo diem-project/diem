@@ -3,23 +3,22 @@
 class dmPageTreeWatcher
 {
 	protected
-	$dmContext,
+	$dispatcher,
 	$modifiedTables;
 
-	public function __construct(dmContext $dmContext)
+	public function __construct(sfEventDispatcher $dispatcher)
 	{
-		$this->dmContext = $dmContext;
-
-		$this->dmContext->getSfContext()->getEventDispatcher()->connect('dm.controller.redirect', array($this, 'listenRedirection'));
-
-		$this->initialize();
+	  $this->dispatcher = $dispatcher;
+		
+	  $this->initialize();
 	}
 
 	public function initialize()
 	{
 		$this->modifiedTables = array();
+		
+    $this->dispatcher->connect('dm.controller.redirect', array($this, 'listenRedirection'));
 	}
-
 	
 	public function addModifiedTable(myDoctrineTable $table)
 	{

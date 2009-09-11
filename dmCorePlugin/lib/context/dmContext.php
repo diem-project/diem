@@ -10,8 +10,7 @@ abstract class dmContext extends dmMicroCache
     $serviceContainer,
     $dmConfiguration,
     $helper,
-    $sfContext,
-    $pageTreeWatcher;
+    $sfContext;
 
   abstract public function getModule();
 
@@ -30,22 +29,31 @@ abstract class dmContext extends dmMicroCache
   public function initialize()
   {
     $this->loadServiceContainer();
+    
+    $this->getDoctrineConfig();
+    
+    $this->getPageTreeWatcher();
   }
   
-  abstract public function loadServiceContainer();
-  
-  protected function doLoadServiceContainer($configFiles)
+  /**
+   * Loads the diem services
+   */
+  protected function loadServiceContainer()
   {
     $name = 'dm'.dmString::camelize(sfConfig::get('sf_app')).'ServiceContainer';
     
     $file = dmOs::join(sfConfig::get('dm_cache_dir'), 'services', $name.'.php');
-    
+  
+    if (!is_dir(sfConfig::get('dm_cache_dir')))
+    {
+      mkdir(sfConfig::get('dm_cache_dir'), 0777);
+    }
     if (!is_dir(dirname($file)))
     {
       mkdir(dirname($file), 0777);
     }
      
-    if (!sfConfig::get('sf_debug') && file_exists($file))
+    if (/*!sfConfig::get('sf_debug') && */file_exists($file))
     {
       require_once $file;
       $this->serviceContainer = new $name;
@@ -53,14 +61,17 @@ abstract class dmContext extends dmMicroCache
     else
     {
       $sc = new sfServiceContainerBuilder;
+    
+      $configFiles = $this->getSfContext()->getConfiguration()->getConfigPaths('config/dm/services.yml');
       
       $loader = new sfServiceContainerLoaderFileYaml($sc);
       $loader->load($configFiles);
      
-      if (true || !sfConfig::get('sf_debug'))
+      if (true/* || !sfConfig::get('sf_debug')*/)
       {
         $dumper = new sfServiceContainerDumperPhp($sc);
         file_put_contents($file, $dumper->dump(array('class' => $name)));
+        chmod($file, 0777);
       }
       
       $this->serviceContainer = $sc;
@@ -69,9 +80,36 @@ abstract class dmContext extends dmMicroCache
     $sfContext = $this->getSfContext();
     
     $this->serviceContainer->addParameters(array(
-      'dispatcher'  => $sfContext->getEventDispatcher(),
-      'user'        => $sfContext->getUser()
+      'dispatcher'        => $sfContext->getEventDispatcher(),
+      'user'              => $sfContext->getUser(),
+      'context'           => $sfContext,
+      'dm_context'        => $this,
+      'doctrine_manager'  => Doctrine_Manager::getInstance()
     ));
+  }
+  
+  /*
+   * @return dmSearchIndexGroup
+   */
+  public function getSearchEngine()
+  {
+    return $this->serviceContainer->getService('search_engine');
+  }
+  
+  /*
+   * @return dmDoctrineConfiguration
+   */
+  public function getDoctrineConfig()
+  {
+    return $this->serviceContainer->getService('doctrine_config');
+  }
+  
+  /*
+   * @return dmCacheManager
+   */
+  public function getCacheManager()
+  {
+    return $this->serviceContainer->getService('cache_manager');
   }
   
   /*
@@ -80,6 +118,14 @@ abstract class dmContext extends dmMicroCache
   public function getFilesystem()
   {
     return $this->serviceContainer->getService('filesystem');
+  }
+  
+  /*
+   * @return dmFileBackup
+   */
+  public function getFileBackup()
+  {
+    return $this->serviceContainer->getService('file_backup');
   }
   
   /*
@@ -95,7 +141,7 @@ abstract class dmContext extends dmMicroCache
    */
   public function getPageTreeWatcher()
   {
-    return $this->pageTreeWatcher;
+    return $this->serviceContainer->getService('page_tree_watcher');
   }
   
   /*
@@ -103,13 +149,7 @@ abstract class dmContext extends dmMicroCache
    */
   public function getHelper()
   {
-    return $this->serviceContainer->getService('filesystem');
-    if (is_null($this->helper))
-    {
-      $this->helper = new dmOoHelper($this);
-    }
-
-    return $this->helper;
+    return $this->serviceContainer->getService('helper');
   }
 
   /*

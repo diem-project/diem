@@ -4,7 +4,7 @@ require_once(dmOs::join(sfConfig::get("dm_core_dir"), 'test/bootstrap/unit.php')
 
 $t = new lime_test(7, new lime_output_color());
 
-$cache = dmCacheManager::getInstance("dm/test");
+$cache = dmContext::getInstance()->getCacheManager()->getCache("dm/test");
 
 $t->ok(
   $cache instanceof dmMetaCache,

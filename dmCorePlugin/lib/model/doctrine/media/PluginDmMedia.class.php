@@ -279,7 +279,7 @@ abstract class PluginDmMedia extends BaseDmMedia
 		if ($this->checkFileExists())
 		{
 //			dmDebug::kill('unlink '.$this->fullPath, $this);
-			dmFilesystem::get()->unlink($this->fullPath);
+			dmContext::getInstance()->getFilesystem()->unlink($this->fullPath);
 		}
 
 		return !$this->checkFileExists();
@@ -298,7 +298,7 @@ abstract class PluginDmMedia extends BaseDmMedia
 		->maxdepth(0)
 		->in(dmOs::join($this->Folder->getFullPath(), '.thumbs'));
 
-		return dmFilesystem::get()->unlink($thumbs);
+		return dmContext::getInstance()->getFilesystem()->unlink($thumbs);
 	}
 
 

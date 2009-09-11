@@ -12,7 +12,7 @@ abstract class dmFrontModuleGenerator
   {
     $this->module = $module;
     $this->dispatcher = $dispatcher;
-    $this->filesystem = new dmFilesystem;
+    $this->filesystem = dmContext::getInstance()->getFilesystem();
   }
 
   abstract public function execute();

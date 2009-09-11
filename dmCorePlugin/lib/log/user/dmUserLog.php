@@ -5,21 +5,19 @@ class dmUserLog
 	protected
 	$dispatcher,
 	$filesystem,
-	$dir,
 	$file;
 	
-	public function __construct(sfEventDispatcher $dispatcher, dmFileSystem $filesystem)
+	public function __construct(sfEventDispatcher $dispatcher, dmFileSystem $filesystem, array $options = array())
 	{
     $this->dispatcher = $dispatcher;
     $this->filesystem = $filesystem;
     
-    $this->initialize();
+    $this->initialize($options);
 	}
 	
-	public function initialize()
+	public function initialize(array $options = array())
 	{
-    $this->dir  = dmOs::join(sfConfig::get('dm_data_dir'), 'log');
-    $this->file = dmOs::join($this->dir, 'user.log');
+    $this->file = dmProject::rootify(dmArray::get($options, 'file', 'data/dm/log/user.log'));
 	}
 	
 	public function getEntries($max = 0)
@@ -60,9 +58,9 @@ class dmUserLog
 	
 	protected function checkFile()
 	{
-	  if (!$this->filesystem->mkdir($this->dir))
+	  if (!$this->filesystem->mkdir(dirname($this->file)))
 	  {
-      throw new dmException(sprintf('User log dir %s can not be created', $this->dir));
+      throw new dmException(sprintf('User log dir %s can not be created', dirname($this->file)));
 	  }
 	  
 	  if (!file_exists($this->file))

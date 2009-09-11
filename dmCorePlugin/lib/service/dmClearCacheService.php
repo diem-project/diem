@@ -7,7 +7,7 @@ class dmClearCacheService extends dmService
 	{
 		$this->log("clear cache");
     
-    dmCacheManager::getInstance()->clearAll();
+    dmContext::getInstance()->getCacheManager()->clearAll();
 
 		if(count($survivors = $this->filesystem->find()->maxdepth(0)->in(sfConfig::get("sf_cache_dir"))))
 		{

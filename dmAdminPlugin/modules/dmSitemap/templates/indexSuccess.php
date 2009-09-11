@@ -12,11 +12,11 @@ echo £('h1.title', __('Generate sitemap'));
 
 echo £o('div.dm_box_inner');
 
-if ($sitemap)
+if ($exists)
 {
 	echo £('div.clearfix.mb10',
 		definition_list(array(
-		  'Position' => £link($sitemapWebPath),
+		  'Position' => £link($webPath),
 		  'Urls' => $nbLinks,
 		  'Size' => $size,
 		  'Updated at' => format_date($updatedAt)
@@ -24,7 +24,7 @@ if ($sitemap)
 		$form
 	);
 	
-	echo £('pre', array('style' => 'background: #fff; padding: 10px; border: 1px solid #ddd;'), htmlentities($sitemap));
+	echo £('pre', array('style' => 'background: #fff; padding: 10px; border: 1px solid #ddd;'), htmlentities($xml));
 }
 else
 {

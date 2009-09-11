@@ -4,18 +4,25 @@ class dmFrontPageHelper
 {
 	protected
     $dispatcher,
-	  $page,
+	  $dmContext,
 	  $areas;
 
-  public function __construct(sfEventDispatcher $dispatcher, DmPage $page)
+  public function __construct(sfEventDispatcher $dispatcher, dmContext $dmContext)
   {
     $this->dispatcher = $dispatcher;
-    $this->page       = $page;
+    $this->dmContext  = $dmContext;
+    
+    $this->initialize();
   }
   
-  public function setPage(DmPage $page)
+  public function initialize()
   {
-    $this->page = $page;
+    $this->areas = null;
+  }
+  
+  public function getPage()
+  {
+    return $this->dmContext->getPage();
   }
   
   public function getAreas()
@@ -24,7 +31,7 @@ class dmFrontPageHelper
     {
       $this->areas = dmDb::query('DmArea a INDEXBY a.type, a.Zones z, z.Widgets w')
       ->select('a.type, z.width, z.css_class, w.module, w.action, w.value, w.css_class')
-      ->where('a.dm_layout_id = ? OR a.dm_page_view_id = ?', array($this->page->getPageView()->get('Layout')->get('id'), $this->page->getPageView()->get('id')))
+      ->where('a.dm_layout_id = ? OR a.dm_page_view_id = ?', array($this->getPage()->getPageView()->get('Layout')->get('id'), $this->getPage()->getPageView()->get('id')))
       ->orderBy('z.position asc, w.position asc')
       ->fetchArray();
     }
@@ -38,7 +45,7 @@ class dmFrontPageHelper
 
   	if (!isset($this->areas[$type]))
   	{
-  		throw new dmException(sprintf('Page %s with layout %s has no area for type %s', $this->page, $this->page->Layout, $type));
+  		throw new dmException(sprintf('Page %s with layout %s has no area for type %s', $this->getPage(), $this->getPage()->Layout, $type));
   	  return null;
   	}
 
@@ -195,12 +202,12 @@ class dmFrontPageHelper
     {
 	    if (is_null($widgetType))
 	    {
-	      $widgetType = dmWidgetTypeManager::getWidgetType($widget['module'], $widget['action']);
+	      $widgetType = $dmContext->getWidgetTypeManager()->getWidgetType($widget['module'], $widget['action']);
 	    }
 	
 	    $widgetViewClass = $widgetType->getViewClass();
 	
-	    $widgetView = new $widgetViewClass($widget);
+	    $widgetView = new $widgetViewClass($widget, $this->dmContext);
 	    
       $html = $widgetView->render();
       

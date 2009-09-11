@@ -44,23 +44,28 @@ class dmProject
     $requiredWritableDirs = array(
       sfConfig::get('sf_cache_dir'),
       sfConfig::get('dm_cache_dir'),
+      dmOs::join(sfConfig::get('dm_cache_dir'), 'services'),
       sfConfig::get('sf_log_dir'),
-      sfConfig::get('dm_data_dir'),
-      dmOs::join(sfConfig::get('dm_data_dir'), 'backup'),
-      dmOs::join(sfConfig::get('dm_data_dir'), 'index'),
-      dmOs::join(sfConfig::get('dm_data_dir'), 'log'),
+//      sfConfig::get('dm_data_dir'),
+//      dmOs::join(sfConfig::get('dm_data_dir'), 'backup'),
+//      dmOs::join(sfConfig::get('dm_data_dir'), 'index'),
+//      dmOs::join(sfConfig::get('dm_data_dir'), 'log'),
       sfConfig::get('sf_upload_dir'),
-      dmOs::join(sfConfig::get('sf_lib_dir'), 'migration/doctrine'),
-      dmOs::join(sfConfig::get('dm_cache_dir'), 'services')
+      dmOs::join(sfConfig::get('sf_lib_dir'), 'migration/doctrine')
     );
-    
-    $fs = dmFilesystem::get();
 
     $messages = array();
 
     foreach($requiredWritableDirs as $requiredWritableDir)
     {
-      if(!$fs->mkdir($requiredWritableDir))
+      if (!is_dir($requiredWritableDir))
+      {
+        $oldUmask = umask(0);
+        mkdir($requiredWritableDir, 0777, true);
+        umask($oldUmask);
+      }
+    
+      if(!is_writable($requiredWritableDir))
       {
         $messages[] = sprintf(
           'Folder %s should be writable',

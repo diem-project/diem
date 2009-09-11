@@ -54,7 +54,7 @@ class dmAdminGenerateService extends dmService
 
 		      $moduleDir = sfConfig::get('sf_app_module_dir').'/'.$moduleKey;
 
-          dmFilesystem::get()->unlink(dmOs::join($moduleDir, 'generator.yml'));
+          dmContext::getInstance()->getFilesystem()->unlink(dmOs::join($moduleDir, 'generator.yml'));
         }
       }
 

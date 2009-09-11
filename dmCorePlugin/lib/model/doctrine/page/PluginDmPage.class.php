@@ -299,7 +299,7 @@ abstract class PluginDmPage extends BaseDmPage
   {
   	$command = sprintf('dmFront:page-indexable-content %d %s', $this->get('id'), self::getDefaultCulture());
   	
-  	$filesystem = dmFilesystem::get();
+  	$filesystem = dmContext::getInstance()->getFilesystem();
   	
   	$filesystem->sf($command);
   	

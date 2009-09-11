@@ -9,7 +9,7 @@ class dmSpriteGenerator
 
 	public function __construct(sfEventDispatcher $dispatcher)
 	{
-		$this->filesystem = dmFilesystem::get();
+		$this->filesystem = dmContext::getInstance()->getFilesystem();
 	}
 
 	public function execute($size, $css_file, $classes)

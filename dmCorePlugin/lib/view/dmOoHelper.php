@@ -2,13 +2,12 @@
 
 class dmOoHelper
 {
-
 	protected
-	$dmContext;
+	$context;
 
-	public function __construct(dmContext $dmContext)
+	public function __construct(sfContext $context)
 	{
-		$this->dmContext = $dmContext;
+		$this->context = $context;
 	}
 
   public function renderPartial($moduleName, $actionName, $vars = array())
@@ -23,7 +22,7 @@ class dmOoHelper
     }
 
     $class = sfConfig::get('mod_'.strtolower($moduleName).'_partial_view_class', 'sf').'PartialView';
-    $view = new $class($this->dmContext->getSfContext(), $moduleName, $actionName, '');
+    $view = new $class($this->context, $moduleName, $actionName, '');
     $view->setPartialVars($vars);
 
     return $view->render();
@@ -31,7 +30,7 @@ class dmOoHelper
 
   public function renderComponent($moduleName, $componentName, $vars = array())
   {
-    sfContext::getInstance()->getConfiguration()->loadHelpers('Partial');
+    $this->context->getConfiguration()->loadHelpers('Partial');
     return get_component($moduleName, $componentName, $vars);
   }
 }

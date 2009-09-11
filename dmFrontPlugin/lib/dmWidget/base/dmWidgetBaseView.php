@@ -4,14 +4,16 @@ abstract class dmWidgetBaseView
 {
 
 	protected
+	$dmContext,
 	$widget,
 	$widgetType,
 	$requiredVars = array();
 
-	public function __construct(array $widget)
+	public function __construct(array $widget, dmContext $dmContext)
 	{
+	  $this->dmContext = $dmContext;
     $this->widget = $widget;
-    $this->widgetType = dmWidgetTypeManager::getWidgetType($widget['module'], $widget['action']);
+    $this->widgetType = $dmContext->getWidgetTypeManager()->getWidgetType($widget['module'], $widget['action']);
 
     $this->configure();
 	}

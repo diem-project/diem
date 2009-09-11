@@ -1,0 +1,14 @@
+parameters:
+  sitemap.class:              dmSitemap
+  sitemap.options:
+    file:                     sitemap.xml
+ 
+services:
+
+  sitemap:
+    class:                    %sitemap.class%
+    shared:                   false
+    arguments:
+      dispatcher:             %dispatcher%
+      filesystem:             @filesystem
+      options:                %sitemap.options%

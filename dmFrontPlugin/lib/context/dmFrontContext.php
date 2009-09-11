@@ -6,25 +6,20 @@ class dmFrontContext extends dmContext
 {
 	protected
 	  $page;
-
-  /**
-   * Loads the diem services
-   */
-  public function loadServiceContainer()
-  {
-    $configFiles = dmOs::join(sfConfig::get('dm_front_dir'), 'config/dm/services.yml');
-    
-    parent::doLoadServiceContainer($configFiles);
-  }
   
   public function getPage()
   {
-    return $this->serviceContainer->getParameter('page');
+    return $this->page;
   }
 
   public function getPageHelper()
   {
-  	return $this->serviceContainer->getService('page_helper');
+    return $this->serviceContainer->getService('page_helper');
+  }
+
+  public function getWidgetTypeManager()
+  {
+    return $this->serviceContainer->getService('widget_type_manager');
   }
   
   /*
@@ -41,11 +36,9 @@ class dmFrontContext extends dmContext
 
   public function setPage(DmPage $page = null)
   {
-    $this->serviceContainer->addParameters(array(
-      'page' => $page
-    ));
+    $this->page = $page;
     
-    $this->getPageHelper()->setPage($page);
+    $this->getPageHelper()->initialize();
   }
 
   public static function createInstance(sfContext $sfContext)

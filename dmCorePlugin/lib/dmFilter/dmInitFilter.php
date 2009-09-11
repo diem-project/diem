@@ -38,7 +38,7 @@ abstract class dmInitFilter extends dmFilter
 
   protected function saveHtml()
   {
-    dmCacheManager::getCache("dm/view/html/validate")->set(
+    $this->dmContext->getCacheManager()->getCache("dm/view/html/validate")->set(
       session_id(),
       $this->context->getResponse()->getContent(),
       10

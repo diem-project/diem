@@ -5,7 +5,7 @@ class dmSearchEngineActions extends dmAdminBaseActions
 
 	public function executeIndex(dmWebRequest $request)
 	{
-		$this->index = new mySearchIndexGroup;
+		$this->index = $this->getDmContext()->getSearchEngine();
 
 		$this->form = $this->getSearchForm();
 
@@ -22,9 +22,7 @@ class dmSearchEngineActions extends dmAdminBaseActions
 
 	public function executeReload()
 	{
-		$filesystem = dmFilesystem::get();
-		
-		$filesystem->sf('dm:search-update');
+		$this->getDmContext()->getFilesystem()->sf('dm:search-update');
 
 		return $this->redirect('dmSearchEngine/index');
 	}

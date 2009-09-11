@@ -32,7 +32,7 @@ class dmAdminActions extends dmAdminBaseActions
   {
     require_once(dmOs::join(sfConfig::get('dm_admin_dir'), 'modules/dmUserLog/lib/dmUserLogViewLittle.php'));
   	
-  	$this->userLogView = new dmUserLogViewLittle(new dmUserLog, $this->getUser()->getCulture());
+  	$this->userLogView = new dmUserLogViewLittle($this->getDmContext()->getUserLog(), $this->getUser()->getCulture());
   	
     $this->userLogOptions = array(
       'delay' => 1000,

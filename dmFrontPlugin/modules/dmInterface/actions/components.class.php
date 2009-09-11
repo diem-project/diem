@@ -36,8 +36,8 @@ class dmInterfaceComponents extends dmFrontBaseComponents
         )
 	  	);
   	}
-
-  	foreach(dmWidgetTypeManager::getWidgetTypes() as $space => $widgetTypes)
+  	
+  	foreach($this->getDmContext()->getWidgetTypeManager()->getWidgetTypes() as $space => $widgetTypes)
   	{
   		if (empty($widgetTypes))
   		{

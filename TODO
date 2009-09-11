@@ -163,7 +163,9 @@ $.getScript(href, callback);
 
 * DmMail : allow to activate/desactivate a mail
 
-* consider using Symfony Components Dependency Injection Container
+* [DONE] consider using Symfony Components Dependency Injection Container
+
+* [DONE] Implement Symfony Components Dependency Injection Container everywhere it makes sense
 
 * consider feed dmDataService with fixtures
 
@@ -178,3 +180,5 @@ $.getScript(href, callback);
 * write doc ;-)
 
 * convert this TODO to trac tickets
+
+* consider using http://www.quasipartikel.at/multiselect/ for admin multiselect
