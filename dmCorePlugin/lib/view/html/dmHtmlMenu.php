@@ -37,10 +37,7 @@ class dmHtmlMenu
 		{
 			$html = '<li class="'.$this->getLevelOption($level, 'li_class').'">';
 
-	    $class = trim(sprintf('%s %s',
-	      isset($elem['class']) ? $elem['class'] : '',
-	      $class
-	    ));
+	    $class = trim((isset($elem['class']) ? $elem['class'] : '').' '.$class);
 
 			if (isset($elem["link"]))
 			{
@@ -86,36 +83,24 @@ class dmHtmlMenu
 			}
 		}
 
-		if(isset($elem["sprite"]))
-		{
-			$name = '<span class="s16block s16_'.$elem["sprite"].'">&nbsp;</span>'.$elem['name'];
-		}
-		else
-		{
-			$name = $elem['name'];
-		}
-
-		$class = trim(sprintf('%s %s',
-		  isset($elem['class']) ? $elem['class'] : '',
-		  $class
-		));
+		$class = trim((isset($elem['class']) ? $elem['class'].' ' : '').$class);
 	
-    if (isset($elem["link"]))
+    if (isset($elem['link']))
     {
     	$html = sprintf('<a%s%s href="%s">%s</a>',
         $class ? ' class="'.$class.'"' : '',
         isset($elem['id']) ? ' id="'.$elem['id'].'"' : '',
     	  $this->controller->genUrl($elem['link']),
-    	  $name
+    	  $elem['name']
     	);
     }
-    elseif (isset($elem["anchor"]))
+    elseif (isset($elem['anchor']))
     {
       $html = sprintf('<a%s%s href="#%s">%s</a>',
         $class ? ' class="'.$class.'"' : '',
         isset($elem['id']) ? ' id="'.$elem['id'].'"' : '',
         $elem['anchor'],
-        $name
+        $elem['name']
       );
     }
 		else
@@ -123,7 +108,7 @@ class dmHtmlMenu
       $html = sprintf('<span%s%s>%s</span>',
         $class ? ' class="'.$class.'"' : '', 
         isset($elem['id']) ? ' id="'.$elem['id'].'"' : '',
-        $name
+        $elem['name']
       );
 		}
 
@@ -144,7 +129,7 @@ class dmHtmlMenu
 				unset($classes[$key]);
 			}
 		}
-		return trim(implode(" ", $classes));
+		return trim(implode(' ', $classes));
 	}
 
 }

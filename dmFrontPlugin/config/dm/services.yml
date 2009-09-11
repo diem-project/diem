@@ -2,7 +2,7 @@ parameters:
   page_helper.class:          dmFrontPageHelper
   widget_type_manager.class:  dmWidgetTypeManager
   widget_type_manager.options:
-    config_files:             'config/dm/widget_types.yml'        
+    config_file:              'config/dm/widget_types.yml'        
  
 services:
 
@@ -12,7 +12,6 @@ services:
     arguments:
       dispatcher:             %dispatcher%
       dm_context:             %dm_context%
-      filesystem:             @filesystem
 
   widget_type_manager:
     class:                    %widget_type_manager.class%

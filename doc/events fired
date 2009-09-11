@@ -3,3 +3,7 @@ fired by dmDataService before loading data
 
 [dm.data.after]
 fired by dmDataService after loading data
+
+[dm.context.service_container_loaded]
+fired by dmContext when its serviceContainer is ready
+params: array('service_container')

@@ -79,8 +79,8 @@ System:
       model:        sfGuardGroup
       credentials:  security_group
   Dev:
-    dmService:
-      name:         "Launch services | Launch services"
+    dmDiagram:
+      name:         "See diagrams | See diagrams"
       credentials:  system
     dmCodeEditor:
       name:         "Code Editor | Code Editor"

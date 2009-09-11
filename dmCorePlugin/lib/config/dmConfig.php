@@ -57,13 +57,13 @@ class dmConfig
     {
       throw new dmException(sprintf('There is no setting called "%s". Available settings are : %s', $name, implode(', ', array_keys(self::$config))));
     }
-    
+
     $setting = dmDb::query('DmSetting s')->where('s.name = ?', $name)->withI18n(self::$culture)->fetchOne();
-    
+
     $setting->value = $value;
-    
+
     $setting->save();
-    
+
     return self::$config[$name] = $value;
   }
 
@@ -78,10 +78,10 @@ class dmConfig
     {
       self::load();
     }
-    
+
     return self::$config;
   }
-  
+
   public static function initialize(sfEventDispatcher $dispatcher)
   {
     $dispatcher->connect('user.change_culture', array('myConfig', 'listenToChangeCultureEvent'));
@@ -100,11 +100,9 @@ class dmConfig
       self::load();
     }
   }
-  
+
   public static function load($useCache = true)
   {
-    $timer = dmDebug::timer('load config');
-    
     if (!self::$culture)
     {
       if (class_exists('sfContext', false) && sfContext::hasInstance() && $user = sfContext::getInstance()->getUser())
@@ -116,70 +114,44 @@ class dmConfig
         self::$culture = sfConfig::get('sf_default_culture');
       }
     }
-    
-    if (true)
+
+    if(self::$culture == sfConfig::get('sf_default_culture'))
     {
-      if(self::$culture == sfConfig::get('sf_default_culture'))
-      {
-        $stmt = Doctrine_Manager::connection()->prepare('SELECT s.name, t.value
+      $stmt = Doctrine_Manager::connection()->prepare('SELECT s.name, t.value
 FROM dm_setting s
 LEFT JOIN dm_setting_translation t ON t.id=s.id AND t.lang = ?');
-    
-        $stmt->execute(array(self::$culture));
-      }
-      else
-      {
-        $stmt = Doctrine_Manager::connection()->prepare('SELECT s.name, t.value
-FROM dm_setting s
-LEFT JOIN dm_setting_translation t ON t.id=s.id AND t.lang IN (?, ?)');
-    
-        $stmt->execute(array(self::$culture, sfConfig::get('sf_default_culture')));
-      }
-      
-      $results = $stmt->fetchAll(Doctrine::FETCH_NUM);
-      
-      $settings = array();
-      foreach($results as $result)
-      {
-        $settings[$result[0]] = $result[1];
-      }
-      unset($results);
+
+      $stmt->execute(array(self::$culture));
     }
     else
     {
-      $query = dmDb::query('DmSetting s')
-      ->leftJoin('s.Translation t ON s.id = t.id AND t.lang IN (?, ?)', array(self::$culture, sfConfig::get('sf_default_culture')))
-      ->select('s.name, t.value');
-      
-      if ($useCache)
-      {
-        $query->dmCache();
-      }
-      
-      $_settings = $query->fetchPDO();
-      
-      $settings = array();
-      foreach($_settings as $_setting)
-      {
-        $settings[$_setting[0]] = $_setting[1];
-      }
+      $stmt = Doctrine_Manager::connection()->prepare('SELECT s.name, t.value
+FROM dm_setting s
+LEFT JOIN dm_setting_translation t ON t.id=s.id AND t.lang IN (?, ?)');
+
+      $stmt->execute(array(self::$culture, sfConfig::get('sf_default_culture')));
     }
-    
-    self::$config = $settings;
+
+    $results = $stmt->fetchAll(Doctrine::FETCH_NUM);
+
+    self::$config = array();
+    foreach($results as $result)
+    {
+      self::$config[$result[0]] = $result[1];
+    }
+    unset($results);
 
     self::$loaded = true;
-    
-    $timer->addTime();
   }
-  
+
   public static function getCulture()
   {
     return self::$culture;
   }
 
-	public static function isCli()
-	{
+  public static function isCli()
+  {
     return !isset($_SERVER['HTTP_HOST']);
-	}
+  }
 
 }

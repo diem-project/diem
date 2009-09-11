@@ -6,15 +6,16 @@ class dmCacheManager
 	  $dispatcher,
 	  $caches;
 
-	public function __construct(sfEventDispatcher $dispatcher)
+	public function __construct(sfEventDispatcher $dispatcher, array $options = array())
 	{
 	  $this->dispatcher = $dispatcher;
 	  
-	  $this->initialize();
+	  $this->initialize($options);
 	}
 	  
-	public function initialize()
+	public function initialize(array $options = array())
 	{
+	  $this->metaCacheClass = dmArray::get($options, 'meta_cache_class', 'dmMetaCache');
 		$this->reset();
 	}
 
@@ -24,7 +25,7 @@ class dmCacheManager
 
 		if (!isset($this->caches[$cacheName]))
 		{
-			$this->caches[$cacheName] = new dmMetaCache(array(
+			$this->caches[$cacheName] = new $this->metaCacheClass(array(
 			  'prefix' => $cacheName
 			));
 		}

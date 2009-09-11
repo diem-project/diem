@@ -7,7 +7,6 @@ class BasedmServiceActions extends dmBaseActions
     'dmSetup',
     'dmSprite',
     'dmData',
-    'dmConfig',
     'dmClearCache',
     'dmPageSync',
     'dmRefresh',

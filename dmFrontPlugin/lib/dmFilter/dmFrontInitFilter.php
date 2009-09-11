@@ -37,20 +37,6 @@ class dmFrontInitFilter extends dmInitFilter
     $this->logUser();
   }
 
-//  protected function checkSiteIsActive()
-//  {
-//    if(!$this->dmContext->getSite()->get('is_active'))
-//    {
-//      $waitModule = sfConfig::get('dm_wait_module', 'dmFront');
-//      $waitAction = sfConfig::get('dm_wait_action', 'wait');
-//
-//      if (!$this->dmContext->isModuleAction($waitModule, $waitAction))
-//      {
-//        return $this->context->getController()->forward($waitModule, $waitAction);
-//      }
-//    }
-//  }
-
   protected function guessPage()
   {
     if ($this->dmContext->isModuleAction('dmFront', 'page'))
@@ -58,7 +44,7 @@ class dmFrontInitFilter extends dmInitFilter
 	    $slug = $this->context->getRequest()->getParameter('slug');
 
       $page = dmDb::query('DmPage p, p.Translation t')
-      ->where('t.slug = ? AND t.lang = ?', array($slug, dm::getUser()->getCulture()))
+      ->where('t.slug = ? AND t.lang = ?', array($slug, $this->context->getUser()->getCulture()))
       ->fetchOne();
 
 		  if (!$page)

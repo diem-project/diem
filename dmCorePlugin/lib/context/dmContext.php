@@ -86,6 +86,16 @@ abstract class dmContext extends dmMicroCache
       'dm_context'        => $this,
       'doctrine_manager'  => Doctrine_Manager::getInstance()
     ));
+    
+    $sfContext->getEventDispatcher()->notify(new sfEvent($this, 'dm.context.service_container_loaded', array('service_container' => $this->serviceContainer)));
+  }
+  
+  /*
+   * @return sfServiceContainer
+   */
+  public function getServiceContainer()
+  {
+    return $this->serviceContainer;
   }
   
   /*

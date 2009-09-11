@@ -10,18 +10,18 @@ class dmWidgetTypeManager
   $configFile,
   $widgetTypes;
 
-  public function construct(sfEventDispatcher $dispatcher, dmCacheManager $cacheManager, sfContext $context, array $options = array())
+  public function __construct(sfEventDispatcher $dispatcher, dmCacheManager $cacheManager, sfContext $context, array $options = array())
   {
     $this->dispatcher   = $dispatcher;
     $this->cacheManager = $cacheManager;
     $this->context      = $context;
-    
+
     $this->initialize($options);
   }
   
   public function initialize(array $options = array())
   {
-    $this->configFile = dmArray::get($options, 'config_files', 'config/dm/widget_types.yml');
+    $this->configFile = dmArray::get($options, 'config_file', 'config/dm/widget_types.yml');
     
     $this->widgetTypes = null;
   }
@@ -80,7 +80,7 @@ class dmWidgetTypeManager
 	        }
 	      }
     	}
-    	$dmContext->getCacheManager()->getCache('dm/widget')->set('types', $this->widgetTypes);
+    	$this->cacheManager->getCache('dm/widget')->set('types', $this->widgetTypes);
     }
 
     $timer->addTime();

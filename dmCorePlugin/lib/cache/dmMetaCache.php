@@ -7,7 +7,8 @@ class dmMetaCache extends sfCache
 
   public function initialize($options = array())
   {
-    $cacheClass = self::getCacheClass();
+    $cacheClass = $this->getCacheClass();
+    
     $this->cache = new $cacheClass($options);
   }
 

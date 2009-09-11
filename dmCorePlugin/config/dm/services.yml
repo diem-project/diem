@@ -3,6 +3,8 @@ parameters:
   search_engine.class:        dmSearchIndexGroup
 
   cache_manager.class:        dmCacheManager
+  cache_manager.options:
+    meta_cache_class:         dmMetaCache
 
   doctrine_config.class:      dmDoctrineConfiguration
 
@@ -66,7 +68,7 @@ services:
       options:                %file_backup.options%
   
   helper:
-    class:                    %helper%
+    class:                    %helper.class%
     shared:                   true
     arguments:
       context:                %context%
