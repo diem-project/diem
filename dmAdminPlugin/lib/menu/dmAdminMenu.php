@@ -102,7 +102,7 @@ class dmAdminMenu
     
     return array(
       'name' => $this->i18n->__($space->getName()),
-      'link' => $this->routing->generate('dm_module_space', array('moduleTypeName' => $space->getType()->getSlug(), 'moduleSpaceName' => $space->getSlug())),
+//      'link' => $this->routing->generate('dm_module_space', array('moduleTypeName' => $space->getType()->getSlug(), 'moduleSpaceName' => $space->getSlug())),
       'menu' => $moduleMenu
     );
   }

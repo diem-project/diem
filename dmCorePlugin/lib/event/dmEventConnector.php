@@ -24,7 +24,7 @@ class dmEventConnector
    */
   public function contextLoaded(sfEvent $event)
   {
-    sfConfig::set('dm_debug', dm::getRequest()->getParameter('dm_debug', false));
+    sfConfig::set('dm_debug', $event->getSubject()->getRequest()->getParameter('dm_debug', false));
   }
 
 	protected function connectLoggingEvents()

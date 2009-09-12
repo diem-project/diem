@@ -64,8 +64,8 @@ class dmAdminPluginConfiguration extends sfPluginConfiguration
     $this->dispatcher->connect('context.load_factories', array($this, 'loadContext'));
   }
 
-  public function loadContext()
+  public function loadContext(sfEvent $event)
   {
-    dmAdminContext::createInstance(sfContext::getInstance());
+    dmAdminContext::createInstance($event->getSubject());
   }
 }

@@ -63,12 +63,11 @@ class dmFrontPluginConfiguration extends sfPluginConfiguration
 
   protected function connectEvents()
   {
-    $this->dispatcher->connect('routing.load_configuration', array('dmFrontRouting', 'listenToRoutingLoadConfigurationEvent'));
     $this->dispatcher->connect('context.load_factories', array($this, 'loadContext'));
   }
 
-  public function loadContext()
+  public function loadContext(sfEvent $event)
   {
-    dmFrontContext::createInstance(sfContext::getInstance());
+    dmFrontContext::createInstance($event->getSubject());
   }
 }

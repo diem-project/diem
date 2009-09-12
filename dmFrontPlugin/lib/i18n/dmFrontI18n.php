@@ -12,7 +12,7 @@ class dmFrontI18n extends dmI18n
 
     $result = parent::__($string, $args, $catalogue);
 
-    if ($result === $string)
+    if ($result === $string && $catalogue !== 'dm')
     {
       $result = parent::__($string, $args, 'dm');
     }

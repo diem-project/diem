@@ -15,6 +15,20 @@ class dmI18n extends sfI18N
 
   	return $array;
   }
+  
+  /**
+   * Gets the translation for the given string
+   *
+   * @param  string $string     The string to translate
+   * @param  array  $args       An array of arguments for the translation
+   * @param  string $catalogue  The catalogue name
+   *
+   * @return string The translated string
+   */
+  public function __($string, $args = array(), $catalogue = 'messages')
+  {
+    return $this->getMessageFormat()->formatFast($string, $args, $catalogue);
+  }
 
   /**
    * Gets the message format.
@@ -23,9 +37,9 @@ class dmI18n extends sfI18N
    */
   public function getMessageFormat()
   {
-    if (!isset($this->messageFormat))
+    if (null === $this->messageFormat)
     {
-      $this->messageFormat = new sfMessageFormat($this->getMessageSource(), sfConfig::get('sf_charset'));
+      $this->messageFormat = new dmMessageFormat($this->getMessageSource(), 'UTF-8');
 
       if ($this->options['debug'])
       {

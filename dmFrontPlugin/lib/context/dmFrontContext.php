@@ -27,11 +27,12 @@ class dmFrontContext extends dmContext
    */
   public function getModule()
   {
-  	if (!$this->getPage())
+  	if (!$this->page)
   	{
   		return null;
   	}
-    return $this->getPage()->getDmModule();
+  	
+    return $this->page->getDmModule();
   }
 
   public function setPage(DmPage $page = null)
