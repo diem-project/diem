@@ -57,6 +57,14 @@ class dmConfig
     {
       throw new dmException(sprintf('There is no setting called "%s". Available settings are : %s', $name, implode(', ', array_keys(self::$config))));
     }
+    
+    /*
+     * Convert booleans to 0, 1 not to fail doctrine validation
+     */
+    if (is_bool($value))
+    {
+      $value = (string) (int) $value;
+    }
 
     $setting = dmDb::query('DmSetting s')->where('s.name = ?', $name)->withI18n(self::$culture)->fetchOne();
 

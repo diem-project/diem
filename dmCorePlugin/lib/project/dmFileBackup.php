@@ -17,7 +17,7 @@ class dmFileBackup
 	
 	public function initialize(array $options = array())
 	{
-    $this->dir = dmProject::rootify(dmArra::get($options, 'dir', 'data/dm/backup/filesystem'));
+    $this->dir = dmProject::rootify(dmArray::get($options, 'dir', 'data/dm/backup/filesystem'));
     
     $this->checkDirIsWritable();
 	}

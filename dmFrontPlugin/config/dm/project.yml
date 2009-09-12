@@ -1,20 +1,20 @@
 default:
 
   accessibility:
-    access_links:         yes
+    access_links:         true
     
   html:
     doctype:
       name:               'html'        # Doctype ( 'html', 'xhtml' )
       version:            '5'           # Doctype xhtml version ( '1.0', '1.1' ) or html version ( '4', '5' )
       compliance:         'transitional' # Doctype (x)html compliance ( 'strict', 'transitional' )
-      validate:           yes           # Validates Html in front ( credential: html_validate_front )
+      validate:           true           # Validates Html in front ( credential: html_validate_front )
 
   i18n:
     catalogue:            front
     
   pageBar:
-    enabled:              yes
+    enabled:              true
     
   mediaBar:
-    enabled:              yes
+    enabled:              true

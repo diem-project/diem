@@ -43,7 +43,7 @@ class dmRecordLoremizer
 			 * Non override on existing records
 			 * pass if columns value is different than its default value
 			 */
-			if (!$override && !$this->record->isNew() && $this->record->get($columnName) !== $this->record->getTable()->getDefaultValueOf($columnName))
+			if (!$override && (!$this->record->isNew() || $this->record->get($columnName) !== $this->record->getTable()->getDefaultValueOf($columnName)))
 			{
 				continue;
 			}

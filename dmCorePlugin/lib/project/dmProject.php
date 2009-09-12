@@ -76,7 +76,7 @@ class dmProject
 
     if(count($messages))
     {
-      dm::getUser()->logAlert(implode("\n", $messages));
+      dm::getUser()->logAlert(implode("\n", $messages), false);
     }
   }
   

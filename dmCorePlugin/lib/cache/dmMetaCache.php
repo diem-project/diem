@@ -7,28 +7,19 @@ class dmMetaCache extends sfCache
 
   public function initialize($options = array())
   {
-    $cacheClass = $this->getCacheClass();
+    $cacheClass = $this->getCurrentCacheClass();
     
     $this->cache = new $cacheClass($options);
+  }
+  
+  public function getCurrentCacheClass()
+  {
+    return dmAPCCache::isEnabled() ? 'dmAPCCache' : 'dmFileCache';
   }
 
   public function getCache()
   {
   	return $this->cache;
-  }
-
-  public function getCacheClass()
-  {
-    if (dmAPCCache::isEnabled())
-    {
-      $class = 'dmAPCCache';
-    }
-    else
-    {
-      $class = 'dmFileCache';
-    }
-    
-    return $class;
   }
 
   public function get($key, $default = null)

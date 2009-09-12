@@ -5,7 +5,7 @@ default:
     param:
       database:             default
       source:               dmMySQL
-      debug:                off
+      debug:                false
       cache:
         class:              dmMetaCache
         
@@ -14,6 +14,11 @@ default:
     param:
       cache:
         class:              dmMetaCache
+        param:
+          automatic_cleaning_factor: 0
+          cache_dir:                 %SF_CONFIG_CACHE_DIR%/routing
+          lifetime:                  31556926
+          prefix:                    %SF_APP_DIR%/routing
 
   request:
     class:                  dmWebRequest

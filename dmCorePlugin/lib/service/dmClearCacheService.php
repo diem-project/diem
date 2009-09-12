@@ -7,7 +7,7 @@ class dmClearCacheService extends dmService
 	{
 		$this->log("clear cache");
     
-    dmContext::getInstance()->getCacheManager()->clearAll();
+    dmFileCache::clearAll();
 
 		if(count($survivors = $this->filesystem->find()->maxdepth(0)->in(sfConfig::get("sf_cache_dir"))))
 		{
@@ -17,6 +17,14 @@ class dmClearCacheService extends dmService
 		{
 			$this->log("File cache successfully cleared.");
 		}
+    
+    if (dmAPCCache::isEnabled())
+    {
+      if(!dmAPCCache::clearAll())
+      {
+        $this->alert("Can not clear APC cache");
+      }
+    }
 
 		$this->dispatcher->notify(new sfEvent($this, 'dm.cache.clear'));
 	}

@@ -31,9 +31,13 @@
 
       echo $form[$name]->render($attributes instanceof sfOutputEscaper ? $attributes->getRawValue() : $attributes);
 
-      if ($help || $help = $form[$name]->renderHelp())
+      if ($help)
       {
         echo '<div class="help">'.__($help).'</div>';
+      }
+      elseif($help = $form[$name]->renderHelp())
+      {
+        echo '<div class="help">'.$help.'</div>';
       }
       ?]
     </div>

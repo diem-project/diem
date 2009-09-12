@@ -46,11 +46,15 @@ abstract class dmContext extends dmMicroCache
   
     if (!is_dir(sfConfig::get('dm_cache_dir')))
     {
+      $oldUmask = umask(0);
       mkdir(sfConfig::get('dm_cache_dir'), 0777);
+      umask($oldUmask);
     }
     if (!is_dir(dirname($file)))
     {
+      $oldUmask = umask(0);
       mkdir(dirname($file), 0777);
+      umask($oldUmask);
     }
      
     if (/*!sfConfig::get('sf_debug') && */file_exists($file))

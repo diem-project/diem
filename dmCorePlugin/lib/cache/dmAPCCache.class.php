@@ -3,7 +3,7 @@
 class dmAPCCache extends sfAPCCache
 {
 	protected static
-	  $enabled;
+	  $isApcEnabled;
 
   public function __construct($options = array())
   {
@@ -14,6 +14,10 @@ class dmAPCCache extends sfAPCCache
   	elseif(isset($options['prefix']))
   	{
   		$name = dmProject::unRootify($options['prefix']);
+  	}
+  	else
+  	{
+  	  throw new dmException('You must provide a cache_dir or a prefix');
   	}
   	
     $this->initialize(array(
@@ -60,32 +64,52 @@ class dmAPCCache extends sfAPCCache
     //aze::debug(apc_cache_info('user'));
   }
 
+  
   public static function isEnabled($val = null)
   {
-    if (null !== $val)
+    if (null === self::$isApcEnabled)
     {
-      throw new dmException('No supported yet : need to reset all cache');
-      self::$enabled = (boolean) $val && self::isAvailable();
+      self::$isApcEnabled = sfConfig::get('dm_cache_apc', true) && self::isAvailable();
     }
 
-    if (self::$enabled === null)
+    return self::$isApcEnabled;
+  }
+  
+  public static function enable($val)
+  {
+    $val = (boolean) $val;
+    
+    if ($val && !self::isAvailable())
     {
-      self::$enabled = sfConfig::get('dm_cache_apc', true) && self::isAvailable();
+      throw new dmException('Can not enable APC because it is not available on this environment');
     }
-
-    return self::$enabled;
+    else
+    {
+      if ($val != self::isEnabled())
+      {
+        self::clearAll();
+      }
+      
+      self::$isApcEnabled = $val;
+    }
   }
   
   public static function isAvailable()
   {
-  	return function_exists('apc_store') && ini_get('apc.enabled');
+    return function_exists('apc_store') && ini_get('apc.enabled');
+  }
+
+  public static function clearAll()
+  {
+    apc_clear_cache('opcode');
+    return apc_clear_cache('user');
   }
 
   public static function getLoad()
   {
-    if (!dmAPCCache::isEnabled())
+    if (!self::isAvailable())
     {
-      throw new dmException('APC is disabled');
+      throw new dmException('APC is not available on this environment');
     }
     
     $infos = apc_sma_info(true);
@@ -98,5 +122,4 @@ class dmAPCCache extends sfAPCCache
       'percent' => min(100, (($total - $free) / $total) * 100)
     );
   }
-  
 }

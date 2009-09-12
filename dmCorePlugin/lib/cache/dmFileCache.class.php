@@ -53,4 +53,9 @@ class dmFileCache extends sfFileCache
 //      $this->removePattern("**");
 //    }
 //  }
+
+  public static function clearAll()
+  {
+    sfToolkit::clearDirectory(sfConfig::get("sf_cache_dir"));
+  }
 }

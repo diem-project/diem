@@ -11,7 +11,7 @@ class dmSearchEngineActions extends dmAdminBaseActions
 
 		if ($this->query = trim($request->getParameter('query')))
 		{
-			$this->form->bind($request->getParameters());
+			$this->form->bind($request->getParameterHolder()->getAll());
 			$this->pager = $this->getSearchPager($this->query);
 		}
 		else

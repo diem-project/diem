@@ -60,7 +60,7 @@
   border: 0;
 }
 
-#sfWebDebugDatabaseLogs li
+#sfWebDebugDatabaseDetails li
 {
   margin: 0;
   margin-left: 30px;
@@ -94,7 +94,7 @@
 {
   font-size: 16px;
   font-weight: bold;
-  margin-bottom: 20px;
+  margin: 20px 0;
   padding: 0;
   border: 0px;
   background-color: #eee;
@@ -103,6 +103,16 @@
 #sfWebDebug h2
 {
   font-size: 14px;
+  font-weight: bold;
+  margin: 10px 0;
+  padding: 0;
+  border: 0px;
+  background: none;
+}
+
+#sfWebDebug h3
+{
+  font-size: 12px;
   font-weight: bold;
   margin: 10px 0;
   padding: 0;
@@ -128,6 +138,11 @@
   margin: 0;
   padding: 3px;
   font-size: 11px;
+}
+
+#sfWebDebugLogMenu
+{
+  margin-bottom: 5px;
 }
 
 #sfWebDebugLogMenu li
@@ -272,4 +287,76 @@
   padding: 1px 4px;
   background-color: #666;
   color: #fff;
+}
+#sfWebDebugviewDetails ul
+{
+  padding-left: 2em;
+  margin: .5em 0;
+  list-style: none;
+}
+
+#sfWebDebugviewDetails li
+{
+  margin-bottom: .5em;
+}
+
+#sfWebDebug .sfWebDebugDataType,
+#sfWebDebug .sfWebDebugDataType a
+{
+  color: #666;
+  font-style: italic;
+}
+
+#sfWebDebug .sfWebDebugDataType a:hover
+{
+  text-decoration: underline;
+}
+
+#sfWebDebugDatabaseLogs
+{
+  margin-bottom: 10px;
+}
+
+#sfWebDebugDatabaseLogs ol
+{
+  margin: 0;
+  padding: 0;
+  margin-left: 20px;
+  list-style: number;
+}
+
+#sfWebDebugDatabaseLogs li
+{
+  padding: 6px;
+}
+
+#sfWebDebugDatabaseLogs li:nth-child(odd)
+{
+  background-color: #CCC;
+}
+
+.sfWebDebugDatabaseQuery
+{
+  margin-bottom: .5em;
+  margin-top: 0;
+}
+
+.sfWebDebugDatabaseLogInfo
+{
+  color: #666;
+  font-size: 11px;
+}
+
+.sfWebDebugDatabaseQuery .sfWebDebugLogInfo
+{
+  color: #909;
+  font-weight: bold;
+}
+
+.sfWebDebugHighlight
+{
+  background: #FFC;
+}
+EOF;
+  }
 }

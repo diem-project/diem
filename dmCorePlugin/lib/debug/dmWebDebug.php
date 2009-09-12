@@ -11,16 +11,20 @@ class dmWebDebug extends sfWebDebug
     {
       $this->setPanel('cache', new sfWebDebugPanelCache($this));
     }
+    
     if (sfConfig::get('sf_logging_enabled'))
     {
       $this->setPanel('config', new sfWebDebugPanelConfig($this));
     }
+    
     $this->setPanel('logs', new sfWebDebugPanelLogs($this));
 
     if (true || sfConfig::get('sf_debug'))
     {
       $this->setPanel('time', new dmWebDebugPanelTimer($this));
     }
+
+    $this->setPanel('mailer', new sfWebDebugPanelMailer($this));
   }
 
   /**
@@ -58,6 +62,8 @@ class dmWebDebug extends sfWebDebug
    */
   public function asHtml()
   {
+    $current = isset($this->options['request_parameters']['sfWebDebugPanel']) ? $this->options['request_parameters']['sfWebDebugPanel'] : null;
+
     $titles = array();
     $panels = array();
     foreach ($this->panels as $name => $panel)
@@ -67,14 +73,16 @@ class dmWebDebug extends sfWebDebug
         if (($content = $panel->getPanelContent()) || $panel->getTitleUrl())
         {
           $id = sprintf('sfWebDebug%sDetails', $name);
-          $titles[]  = sprintf('<li><a title="%s" href="%s"%s>%s</a></li>',
+          $titles[] = sprintf('<li class="%s"><a title="%s" href="%s"%s>%s</a></li>',
+            $panel->getStatus() ? 'sfWebDebug'.ucfirst($this->getPriority($panel->getStatus())) : '',
             $panel->getPanelTitle(),
             $panel->getTitleUrl() ? $panel->getTitleUrl() : '#',
             $panel->getTitleUrl() ? '' : ' onclick="sfWebDebugShowDetailsFor(\''.$id.'\'); return false;"',
             $title
           );
-          $panels[] = sprintf('<div id="%s" class="sfWebDebugTop" style="display: none"><h1>%s</h1>%s</div>',
+          $panels[] = sprintf('<div id="%s" class="sfWebDebugTop" style="display:%s"><h1>%s</h1>%s</div>',
             $id,
+            $name == $current ? 'block' : 'none',
             $panel->getPanelTitle(),
             $content
           );
@@ -88,7 +96,7 @@ class dmWebDebug extends sfWebDebug
 
     return '
       <div id="sfWebDebug">
-        <div id="sfWebDebugBar" class="sfWebDebug'.ucfirst($this->getPriority($this->logger->getHighestPriority())).'">
+        <div id="sfWebDebugBar">
           <ul id="sfWebDebugDetails" class="sfWebDebugMenu">
             '.implode("\n", $titles).'
           </ul>

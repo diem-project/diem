@@ -278,6 +278,11 @@ abstract class dmModelGeneratorConfiguration extends sfModelGeneratorConfigurati
 
       foreach ($fieldsets as $fieldset => $names)
       {
+        if (!$names)
+        {
+          continue;
+        }
+        
         $fields[$fieldset] = array();
 
         foreach ($names as $name)

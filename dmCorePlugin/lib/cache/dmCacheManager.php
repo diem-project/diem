@@ -4,6 +4,8 @@ class dmCacheManager
 {
 	protected
 	  $dispatcher,
+	  $options,
+    $isApcEnabled,
 	  $caches;
 
 	public function __construct(sfEventDispatcher $dispatcher, array $options = array())
@@ -15,7 +17,10 @@ class dmCacheManager
 	  
 	public function initialize(array $options = array())
 	{
-	  $this->metaCacheClass = dmArray::get($options, 'meta_cache_class', 'dmMetaCache');
+	  $this->options = array_merge(array(
+	    'meta_cache_class' => 'dmMetaCache'
+	  ));
+	  
 		$this->reset();
 	}
 
@@ -25,14 +30,14 @@ class dmCacheManager
 
 		if (!isset($this->caches[$cacheName]))
 		{
-			$this->caches[$cacheName] = new $this->metaCacheClass(array(
-			  'prefix' => $cacheName
+			$this->caches[$cacheName] = new $this->options['meta_cache_class'](array(
+			  'prefix'       => $cacheName
 			));
 		}
 
 		return $this->caches[$cacheName];
 	}
-
+	
 	/*
 	 * remove all cache instances created
 	 * does NOT clear caches content
@@ -48,27 +53,15 @@ class dmCacheManager
 
     // Always clear file cache
     ob_start();
-    self::clearFile();
+    dmFileCache::clearAll();
     $success = !ob_get_clean();
     
     if (dmAPCCache::isEnabled())
     {
-      $success &= self::clearApc();
+      $success &= dmAPCCache::clearAll();
     }
 
     return $success;
   }
-
-  protected function clearApc()
-  {
-    apc_clear_cache('opcode');
-    return apc_clear_cache('user');
-  }
-
-  protected function clearFile()
-  {
-    sfToolkit::clearDirectory(sfConfig::get("sf_cache_dir"));
-  }
-
 
 }

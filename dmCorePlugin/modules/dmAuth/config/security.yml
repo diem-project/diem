@@ -1,11 +1,11 @@
 secure:
-  is_secure: off
+  is_secure: false
 
 signin:
-  is_secure: off
+  is_secure: false
 
 signout:
-  is_secure: off
+  is_secure: false
 
 badBrowser:
-  is_secure: off
+  is_secure: false

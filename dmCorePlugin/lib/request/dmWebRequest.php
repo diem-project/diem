@@ -6,11 +6,6 @@ class dmWebRequest extends sfWebRequest
 	protected
 	$absoluteUrlRoot;
 
-	public function getParameters()
-	{
-		return $this->getParameterHolder()->getAll();
-	}
-
   public function getAbsoluteUrlRoot()
   {
   	if(null === $this->absoluteUrlRoot)
