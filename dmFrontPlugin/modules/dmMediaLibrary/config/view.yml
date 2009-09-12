@@ -1,9 +1,0 @@
-all:
-  
-  stylesheets: [ -core.mediaBar ]
-  javascripts: [ -core.mediaBar, -admin.mediaBar ]
-  
-pathSuccess:
-
-  stylesheets: [ admin.media ]
-  javascripts: [ admin.media ]
