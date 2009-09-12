@@ -9,6 +9,7 @@ class dmAdminPluginConfiguration extends sfPluginConfiguration
   public function configure()
   {
     sfConfig::set('dm_admin_dir', realpath(dirname(__FILE__)."/.."));
+    require_once(sfConfig::get('dm_admin_dir').'/lib/config/dmAdminRoutingConfigHandler.php');
   }
 
   public function initialize()
@@ -60,7 +61,6 @@ class dmAdminPluginConfiguration extends sfPluginConfiguration
 
   protected function connectEvents()
   {
-  	$this->dispatcher->connect('routing.load_configuration', array('dmAdminRouting', 'listenToRoutingLoadConfigurationEvent'));
     $this->dispatcher->connect('context.load_factories', array($this, 'loadContext'));
   }
 

@@ -49,19 +49,8 @@ class dmMail
   public function send()
   {
     $this->bind();
-
-    //Load Swift 4
-    if(!self::$swiftLoaded)
-    {
-      require_once 'Swift/lib/swift_required.php';
-      self::$swiftLoaded = true;
-    }
-
-    //Create the transport
-    $transport = Swift_MailTransport::newInstance();
-
-    //Create the Mailer using your created Transport
-    $mailer = Swift_Mailer::newInstance($transport);
+    
+    throw new dmException('TODO');
 
     //Create a message
     $message = Swift_Message::newInstance($this->get('title'))

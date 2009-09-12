@@ -1,9 +1,15 @@
 [dm.data.before]
 fired by dmDataService before loading data
+params: none
 
 [dm.data.after]
 fired by dmDataService after loading data
+params: none
 
 [dm.context.service_container_loaded]
 fired by dmContext when its serviceContainer is ready
-params: array('service_container')
+params: sfServiceContainer the service container
+
+[dm.admin_menu.loaded]
+fired by dmAdminMenu when it has been loaded
+params: array the loaded menu

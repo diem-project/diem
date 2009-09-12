@@ -6,10 +6,15 @@ class dmAdminContext extends dmContext
 	$moduleType,
 	$moduleSpace;
 
-	public function getSitemap()
-	{
-	  return $this->serviceContainer->getService('sitemap');
-	}
+  public function getAdminMenu()
+  {
+    return $this->serviceContainer->getService('admin_menu');
+  }
+
+  public function getSitemap()
+  {
+    return $this->serviceContainer->getService('sitemap');
+  }
 	
 	public function isModuleAction($module, $action)
 	{

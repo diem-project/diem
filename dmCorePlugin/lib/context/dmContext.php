@@ -40,6 +40,9 @@ abstract class dmContext extends dmMicroCache
    */
   protected function loadServiceContainer()
   {
+    include_once(dmOs::join(sfConfig::get('dm_core_dir'), 'lib/vendor/sfService/sfServiceContainerAutoloader.php'));
+    sfServiceContainerAutoloader::register();
+    
     $name = 'dm'.dmString::camelize(sfConfig::get('sf_app')).'ServiceContainer';
     
     $file = dmOs::join(sfConfig::get('dm_cache_dir'), 'services', $name.'.php');
@@ -59,7 +62,7 @@ abstract class dmContext extends dmMicroCache
      
     if (/*!sfConfig::get('sf_debug') && */file_exists($file))
     {
-      require_once $file;
+      require_once($file);
       $this->serviceContainer = new $name;
     }
     else
@@ -86,12 +89,14 @@ abstract class dmContext extends dmMicroCache
     $this->serviceContainer->addParameters(array(
       'dispatcher'        => $sfContext->getEventDispatcher(),
       'user'              => $sfContext->getUser(),
+      'i18n'              => $sfContext->getI18n(),
+      'routing'           => $sfContext->getRouting(),
       'context'           => $sfContext,
       'dm_context'        => $this,
       'doctrine_manager'  => Doctrine_Manager::getInstance()
     ));
     
-    $sfContext->getEventDispatcher()->notify(new sfEvent($this, 'dm.context.service_container_loaded', array('service_container' => $this->serviceContainer)));
+    $sfContext->getEventDispatcher()->notify(new sfEvent($this, 'dm.context.service_container_loaded', $this->serviceContainer));
   }
   
   /*

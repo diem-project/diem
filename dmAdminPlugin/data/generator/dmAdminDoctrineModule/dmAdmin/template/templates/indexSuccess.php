@@ -22,7 +22,7 @@
             dmArray::get($filters->getDefault($appliedFilter), 'text', __('yes'));
         }
         echo implode(', ', $appliedFiltersHtml);
-        echo link_to(__('Back to list'), '<?php echo $this->getUrlForAction('collection') ?>', array('action' => 'filter'), array('query_string' => '_reset', 'method' => 'post', 'class' => 'ml10 reset'));
+        echo link_to(__('Back to list'), '<?php echo $this->getUrlForAction('list') ?>', array('action' => 'filter'), array('query_string' => '_reset', 'method' => 'post', 'class' => 'ml10 reset'));
         echo £c('div');
       }
     ?]
@@ -34,7 +34,7 @@
 
   <div id="sf_admin_content" [?php if (!$pager->getNbResults()) echo 'class="no_results"'; ?]>
 <?php if ($this->configuration->getValue('list.batch_actions')): ?>
-    <form action="[?php echo url_for('<?php echo $this->getUrlForAction('collection') ?>', array('action' => 'batch')) ?]" method="post">
+    <form action="[?php echo url_for('<?php echo $this->getUrlForAction('do') ?>', array('action' => 'batch')) ?]" method="post">
 <?php endif; ?>
     [?php include_partial('<?php echo $this->getModuleName() ?>/list', array('pager' => $pager, 'sort' => $sort, 'helper' => $helper)) ?]
 <?php if ($this->configuration->getValue('list.batch_actions')): ?>

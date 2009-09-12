@@ -65,7 +65,7 @@ class dmI18n extends sfI18N
 
     if (!$this->cultureExists($this->culture))
     {
-    	$this->culture = $this->getFirstCulture();
+    	$this->culture = sfConfig::get('sf_default_culture');
     }
   }
 
@@ -79,5 +79,8 @@ class dmI18n extends sfI18N
 		return in_array($c, $this->getCultures());
 	}
 
-
+  public function hasManyCultures()
+  {
+    return count($this->getCultures()) > 1;
+  }
 }

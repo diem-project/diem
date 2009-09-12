@@ -18,12 +18,15 @@ echo £o('div#dm_tool_bar.clearfix');
     ))
   );
 
-  echo £('div.widget16.mt5',
-    select_tag(
-      'dm_select_culture',
-      options_for_select($cultures, $sf_user->getCulture())
-    )
-  );
+  if (isset($cultures))
+  {
+    echo £('div.widget16.mt5',
+      select_tag(
+        'dm_select_culture',
+        options_for_select($cultures, $sf_user->getCulture())
+      )
+    );
+  }
   
 	if (dmAPCCache::isEnabled() && $sf_user->can('systeme'))
 	{

@@ -194,7 +194,7 @@ class dmModule extends dmMicroCache
   			break;
   		}
   	}
-
+  	
   	return $this->setCache('dir', $dir);
   }
 

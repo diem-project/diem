@@ -186,3 +186,7 @@ $.getScript(href, callback);
 * allow to delete a page in front edition
 
 * widget views : use user classes and their wraps like Diem 4. ( class directly on element for link, title and media, and in wrapper for other widgets )
+
+* [DONE] tweak admin routing configuration
+
+* tweak front routing configuration

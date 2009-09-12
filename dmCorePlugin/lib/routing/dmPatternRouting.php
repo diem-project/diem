@@ -1,6 +1,6 @@
 <?php
 
-abstract class dmPatternRouting extends sfPatternRouting
+class dmPatternRouting extends sfPatternRouting
 {
   public function initialize(sfEventDispatcher $dispatcher, sfCache $cache = null, $options = array())
   {

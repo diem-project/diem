@@ -5,15 +5,18 @@ class dmInterfaceComponents extends dmAdminBaseComponents
 
   public function executeToolBar()
   {
-    $adminMenuStructure = new myAdminMenu($this->getUser());
+    $this->menu = new dmHtmlMenu($this->getDmContext()->getAdminMenu()->load());
 
-    $this->menu = new dmHtmlMenu($adminMenuStructure->getMenu());
-
-    $this->cultures = array();
-    $languages = sfCultureInfo::getInstance(dm::getUser()->getCulture())->getLanguages();
-    foreach(dm::getI18n()->getCultures() as $key)
+    if ($this->context->getI18n()->hasManyCultures())
     {
-      $this->cultures[$key] = dmArray::get($languages, $key, $key);
+      $this->cultures = array();
+      
+      $languages = sfCultureInfo::getInstance($this->getUser()->getCulture())->getLanguages();
+      
+      foreach($this->context->getI18n()->getCultures() as $key)
+      {
+        $this->cultures[$key] = dmArray::get($languages, $key, $key);
+      }
     }
   }
 }

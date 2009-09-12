@@ -20,7 +20,7 @@ class dmDoctrineRouteCollection extends sfDoctrineRouteCollection
 {
   protected
     $routeClass = 'dmDoctrineRoute';
-
+    
   protected function getDefaultActions()
   {
     $actions = parent::getDefaultActions();

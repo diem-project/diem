@@ -8,3 +8,6 @@ config/dm/project.yml:
     
 config/dm/assets.yml:
   class:          dmInlineAssetConfigHandler
+  
+config/routing.yml:
+  class:    dmAdminRoutingConfigHandler

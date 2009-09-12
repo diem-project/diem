@@ -4,42 +4,52 @@ class dmAdminMenu
 {
 
 	protected
-	$menu,
-	$config,
-	$user;
+	$dispatcher,
+	$user,
+	$i18n,
+	$routing;
+
+	public function __construct(sfEventDispatcher $dispatcher, dmUser $user, dmI18n $i18n, sfPatternRouting $routing)
+	{
+	  $this->dispatcher = $dispatcher;
+    $this->user = $user;
+		$this->i18n = $i18n;
+		$this->routing = $routing;
+		
+		$this->initialize();
+	}
 	
-	protected static $i18n;
-
-	public function __construct(dmUser $user)
+	public function initialize()
 	{
-		self::$i18n = dm::getI18n();
-		$this->user = $user;
-		$this->menu = $this->buildMenu();
 	}
 
-	public function getMenu()
+	public function load()
 	{
-		return $this->menu;
-	}
-
-	protected function buildMenu()
-	{
-		$menu = array();
-
-		foreach(dmModuleManager::getTypes() as $type_name => $type)
-		{
-			if ($type->hasSpaces() && ($tm = $this->getTypeMenu($type)))
-			{
-			  if ($type->isProject() && !$this->user->can('content'))
-			  {
-			    continue;
-			  }
-			  
-			  $menu[$type_name] = $tm;
-			}
-		}
+		$menu = $this->getModuleStructureMenu();
+		
+		$this->dispatcher->notify(new sfEvent($this, 'dm.admin_menu.loaded', $menu));
 
 		return $menu;
+	}
+	
+	protected function getModuleStructureMenu()
+	{
+	  $menu = array();
+
+    foreach(dmModuleManager::getTypes() as $type_name => $type)
+    {
+      if ($type->hasSpaces() && ($typeMenu = $this->getTypeMenu($type)))
+      {
+        if ($type->isProject() && !$this->user->can('content'))
+        {
+          continue;
+        }
+        
+        $menu[$type_name] = $typeMenu;
+      }
+    }
+    
+    return $menu;
 	}
 
   protected function getTypeMenu(dmModuleType $type)
@@ -59,8 +69,7 @@ class dmAdminMenu
     }
     
     return array(
-      'name' => self::__($type->getPublicName()),
-      //'link' => array('sf_route' => 'dm_module_type', 'moduleTypeName' => $type->getSlug()),
+      'name' => $this->i18n->__($type->getPublicName()),
       'menu' => $spaceMenu
     );
   }
@@ -70,8 +79,8 @@ class dmAdminMenu
     $moduleMenu = array();
     foreach($space->getModules() as $moduleKey => $module)
     {
-    	if ($module->isProject() && !$module->getDir())
-    	{
+      if(!$this->routing->hasRouteName($module->getUnderscore()))
+      {
     		continue;
     	}
     	
@@ -81,8 +90,8 @@ class dmAdminMenu
     	}
     	
 	    $moduleMenu[$moduleKey] = array(
-	      'name' => self::__($module->getPlural()),
-	      'link' => array('sf_route' => $module->getUnderscore())
+	      'name' => $this->i18n->__($module->getPlural()),
+	      'link' => $this->routing->generate($module->getUnderscore())
 	    );
     }
     
@@ -92,15 +101,10 @@ class dmAdminMenu
     }
     
     return array(
-      'name' => self::__($space->getName()),
-      'link' => array('sf_route' => 'dm_module_space', 'moduleTypeName' => $space->getType()->getSlug(), 'moduleSpaceName' => $space->getSlug()),
+      'name' => $this->i18n->__($space->getName()),
+      'link' => $this->routing->generate('dm_module_space', array('moduleTypeName' => $space->getType()->getSlug(), 'moduleSpaceName' => $space->getSlug())),
       'menu' => $moduleMenu
     );
-  }
-
-  protected static function __($text, $arguments = array(), $catalogue = null)
-  {
-    return self::$i18n->__($text, $arguments, $catalogue);
   }
 
 }

@@ -10,7 +10,7 @@ default:
         class:              dmMetaCache
         
   routing:
-    class:                  dmAdminPatternRouting
+    class:                  dmPatternRouting
     param:
       cache:
         class:              dmMetaCache

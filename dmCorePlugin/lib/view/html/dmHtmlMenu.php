@@ -8,10 +8,9 @@ class dmHtmlMenu
 
 	protected
 	$menu,
-	$options,
-	$controller;
+	$options;
 
-	public function __construct($menu)
+	public function __construct(array $menu)
 	{
 		$this->menu = $menu;
 	}
@@ -19,9 +18,8 @@ class dmHtmlMenu
 	public function render($options = array())
 	{
 		$this->options = array_merge(self::$defaultOptions, dmString::toArray($options));
-		$this->controller = sfContext::getInstance()->getController();
 
-		$html = '<ul class="'.$this->joinClasses(array('level0', $this->getLevelOption(0, 'ul_class'))).'">';
+		$html = '<ul class="'.dmArray::toHtmlCssClasses(array('level0', $this->getLevelOption(0, 'ul_class'))).'">';
 		foreach($this->menu as $elem)
 		{
 			$html .= $this->node($elem, null, 0);
@@ -33,32 +31,46 @@ class dmHtmlMenu
 
 	protected function node($elem, $class = null, $level)
 	{
-		if (isset($elem["menu"]))
+		if (isset($elem['menu']))
 		{
-			$html = '<li class="'.$this->getLevelOption($level, 'li_class').'">';
+		  if($liClass = $this->getLevelOption($level, 'li_class'))
+		  {
+		    $html = '<li class="'.$liClass.'">';
+		  }
+		  else
+		  {
+		    $html = '<li>';
+		  }
 
-	    $class = trim((isset($elem['class']) ? $elem['class'] : '').' '.$class);
-
-			if (isset($elem["link"]))
+			if (null !== $class || !empty($elem['class']))
 			{
-				$html .= '<a class="'.$class.'" href="'.$this->controller->genUrl($elem['link']).'">'.$elem["name"].'</a>';
+	      $classDeclaration = 'class="'.((isset($elem['class']) ? $elem['class'].' ' : '').$class).'" ';
 			}
 			else
 			{
-				$html .= '<a class="'.$class.'">'.$elem["name"].'</a>';
+			  $classDeclaration = '';
 			}
 
-			$html .= '<ul class="'.$this->joinClasses(array('level'.($level+1), $this->getLevelOption($level+1, 'ul_class'))).'">';
+			if (isset($elem["link"]))
+			{
+				$html .= '<a '.$classDeclaration.'href="'.$elem['link'].'">'.$elem['name'].'</a>';
+			}
+			else
+			{
+				$html .= '<a '.$classDeclaration.'>'.$elem['name'].'</a>';
+			}
+
+			$html .= '<ul class="'.dmArray::toHtmlCssClasses(array('level'.($level+1), $this->getLevelOption($level+1, 'ul_class'))).'">';
 
 			$node_number = 1;
 			$node_total = count($elem["menu"]);
-			foreach($elem["menu"] as $child)
+			foreach($elem['menu'] as $child)
 			{
 //				if      ($node_total === 1)             $class = "first last";
 //				elseif  ($node_number === 1)            $class = "first";
 //				elseif  ($node_number === $node_total)  $class = "last";
-//				else                                    $class = "";
-        $class = '';
+//				else                                    $class = null;
+        $class = null;
 
 				$html .= $this->node($child, $class, $level+1);
 				$node_number++;
@@ -70,10 +82,11 @@ class dmHtmlMenu
 		{
 			$html = $this->leaf($elem, $class);
 		}
+		
 		return $html;
 	}
 
-	protected function leaf($elem, $class)
+	protected function leaf($elem, $class = null)
 	{
 		if (isset($elem['type']))
 		{
@@ -83,33 +96,35 @@ class dmHtmlMenu
 			}
 		}
 
-		$class = trim((isset($elem['class']) ? $elem['class'].' ' : '').$class);
+		if (null !== $class || !empty($elem['class']))
+		{
+		  $classDeclaration = 'class="'.((isset($elem['class']) ? $elem['class'].' ' : '').$class).'" ';
+		}
+		else
+		{
+		  $classDeclaration = '';
+		}
+		
+		if(!empty($elem['id']))
+		{
+		  $idDeclaration = 'id="'.$elem['id'].'" ';
+		}
+		else
+		{
+		  $idDeclaration = '';
+		}
 	
     if (isset($elem['link']))
     {
-    	$html = sprintf('<a%s%s href="%s">%s</a>',
-        $class ? ' class="'.$class.'"' : '',
-        isset($elem['id']) ? ' id="'.$elem['id'].'"' : '',
-    	  $this->controller->genUrl($elem['link']),
-    	  $elem['name']
-    	);
+    	$html = '<a '.$classDeclaration.$idDeclaration.'href="'.$elem['link'].'">'.$elem['name'].'</a>';
     }
     elseif (isset($elem['anchor']))
     {
-      $html = sprintf('<a%s%s href="#%s">%s</a>',
-        $class ? ' class="'.$class.'"' : '',
-        isset($elem['id']) ? ' id="'.$elem['id'].'"' : '',
-        $elem['anchor'],
-        $elem['name']
-      );
+      $html = '<a '.$classDeclaration.$idDeclaration.'href="#'.$elem['anchor'].'">'.$elem['name'].'</a>';
     }
 		else
 		{
-      $html = sprintf('<span%s%s>%s</span>',
-        $class ? ' class="'.$class.'"' : '', 
-        isset($elem['id']) ? ' id="'.$elem['id'].'"' : '',
-        $elem['name']
-      );
+      $html = '<span '.$classDeclaration.$idDeclaration.'>'.$elem['name'].'</<pan>>';
 		}
 
 		return '<li>'.$html.'</li>';
@@ -118,18 +133,6 @@ class dmHtmlMenu
 	protected function getLevelOption($level, $name)
 	{
 		return isset($this->options['level'.$level.'_'.$name]) ? $this->options['level'.$level.'_'.$name] : null;
-	}
-
-	protected function joinClasses($classes)
-	{
-		foreach($classes as $key => $class)
-		{
-			if(empty($class))
-			{
-				unset($classes[$key]);
-			}
-		}
-		return trim(implode(' ', $classes));
 	}
 
 }

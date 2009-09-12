@@ -41,5 +41,10 @@ class dmAdminActions extends dmAdminBaseActions
 //    $this->diemSize = dm::getDiemSize();
 
   }
+  
+  public function executeNothing()
+  {
+    
+  }
 
 }

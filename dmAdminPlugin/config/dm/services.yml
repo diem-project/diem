@@ -1,9 +1,21 @@
 parameters:
+
+  admin_menu.class:           dmAdminMenu
+    
   sitemap.class:              dmSitemap
   sitemap.options:
     file:                     sitemap.xml
  
 services:
+
+  admin_menu:
+    class:                    %admin_menu.class%
+    shared:                   true
+    arguments:
+      dispatcher:             %dispatcher%
+      user:                   %user%
+      i18n:                   %i18n%
+      routing:                %routing%
 
   sitemap:
     class:                    %sitemap.class%
