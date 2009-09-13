@@ -115,7 +115,7 @@ abstract class dmHtmlTag implements ArrayAccess
   	 */
     if (isset($attributes['class']))
     {
-      $attributes['class'] = trim(implode(' ', array_unique($attributes['class'])));
+      $attributes['class'] = dmArray::toHtmlCssClasses($attributes['class']);
     }
     
     /*

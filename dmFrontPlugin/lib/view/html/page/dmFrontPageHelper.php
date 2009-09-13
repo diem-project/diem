@@ -4,14 +4,16 @@ class dmFrontPageHelper
 {
 	protected
     $dispatcher,
-	  $dmContext,
+	  $widgetTypeManager,
+	  $serviceContainer,
 	  $page,
 	  $areas;
 
-  public function __construct(sfEventDispatcher $dispatcher, dmContext $dmContext)
+  public function __construct(sfEventDispatcher $dispatcher, dmWidgetTypeManager $widgetTypeManager, sfServiceContainer $serviceContainer)
   {
-    $this->dispatcher = $dispatcher;
-    $this->dmContext  = $dmContext;
+    $this->dispatcher        = $dispatcher;
+    $this->widgetTypeManager = $widgetTypeManager;
+    $this->serviceContainer  = $serviceContainer;
     
     $this->initialize();
   }
@@ -204,14 +206,16 @@ class dmFrontPageHelper
     {
 	    if (null === $widgetType)
 	    {
-	      $widgetType = $dmContext->getWidgetTypeManager()->getWidgetType($widget['module'], $widget['action']);
+	      $widgetType = $this->widgetTypeManager->getWidgetType($widget['module'], $widget['action']);
 	    }
 	
-	    $widgetViewClass = $widgetType->getViewClass();
-	
-	    $widgetView = new $widgetViewClass($widget, $this->dmContext);
+	    $this->serviceContainer->addParameters(array(
+        'widget_view.class' => $widgetType->getViewClass(),
+        'widget_view.type'  => $widgetType,
+	      'widget_view.data'  => $widget
+	    ));
 	    
-      $html = $widgetView->render();
+      $html = $this->serviceContainer->getService('widget_view')->render();
       
 //      ob_clean();
     }

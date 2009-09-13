@@ -5,12 +5,14 @@ class dmUserLog
 	protected
 	$dispatcher,
 	$filesystem,
+	$serviceContainer,
 	$file;
 	
-	public function __construct(sfEventDispatcher $dispatcher, dmFileSystem $filesystem, array $options = array())
+	public function __construct(sfEventDispatcher $dispatcher, dmFileSystem $filesystem, sfServiceContainer $serviceContainer, array $options = array())
 	{
     $this->dispatcher = $dispatcher;
     $this->filesystem = $filesystem;
+    $this->serviceContainer = $serviceContainer;
     
     $this->initialize($options);
 	}
@@ -30,10 +32,16 @@ class dmUserLog
     {
     	$jsonLines = array_slice($jsonLines, 0, $max);
     }
-		
 		foreach($jsonLines as $jsonLine)
 		{
-			$entries[] = dmUserLogEntry::createFromJson($jsonLine);
+		  $entry = $this->serviceContainer->getService('user_log_entry');
+		  $data = json_decode($jsonLine, true);
+		  
+		  if (!empty($data))
+		  {
+		    $entry->setData($data);
+			  $entries[] = $entry;
+		  }
 		}
 		
 		return $entries;
@@ -43,7 +51,10 @@ class dmUserLog
 	{
     $this->checkFile();
     
-    $data = dmUserLogEntry::createFromDmContext($dmContext)->toJson();
+    $entry = $this->serviceContainer->getService('user_log_entry');
+    $entry->configureFromDmContext($dmContext);
+    
+    $data = $entry->toJson();
     
     if($fp = fopen($this->file, 'a'))
     {

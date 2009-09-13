@@ -1,8 +1,6 @@
 <?php
 
-require_once(dmOs::join(sfConfig::get('dm_core_dir'), 'modules/dmAuth/lib/view/myAuthLayoutHelper.php'));
-
-$helper = new myAuthLayoutHelper(dmContext::getInstance());
+$helper = dmContext::getInstance()->getService('auth_layout_helper');
 
 echo 
 $helper->renderDoctype(),

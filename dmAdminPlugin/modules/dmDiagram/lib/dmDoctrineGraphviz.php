@@ -235,9 +235,12 @@ class dmDoctrineGraphviz
   {
     $tables = $this->searchTables($options['type']);
 
-    $digraph="digraph G {edge  [ len=2 labeldistance=2 ];overlap=false;splines=true;\nratio=\"fill\" size=\"".$options['size']."\" bgcolor=\"#fbfbfb\"\n";
+    $digraph="digraph G {edge  [ len=2 labeldistance=2 ];overlap=false;splines=true;
+bgcolor=\"transparent\";
+node [fontsize=\"9\" fontname=\"Arial\"];
+edge [fontsize=\"9\" fontname=\"Arial\"];";
     foreach($tables as $tableName) {
-      $table = Doctrine::getTable($tableName);
+      $table = dmDb::table($tableName);
       $digraph.="node".$table->name." [label=\"{<table>".$table->tableName."|<cols>";
       foreach ($table->getColumns() as $name=>$column) {
         $digraph.="$name ($column[type])".(@$column['primary']?' [PK]':'')."\l";
@@ -249,7 +252,7 @@ class dmDoctrineGraphviz
 
     $rel=Array();
     foreach($tables as $tableName) {
-      $table = Doctrine::getTable($tableName);
+      $table = dmDb::table($tableName);
       foreach ($table->getRelations() as $name => $relation)
       {
         if ($relation instanceof Doctrine_Relation_LocalKey)

@@ -1,5 +1,7 @@
 parameters:
 
+  auth_layout_helper.class:   dmAuthLayoutHelper
+
   search_engine.class:        dmSearchIndexGroup
 
   cache_manager.class:        dmCacheManager
@@ -14,6 +16,10 @@ parameters:
   user_log.options:
     file:                     'data/dm/log/user.log'
     
+  browser.class:              dmBrowser
+  
+  user_log_entry.class:       dmUserLogEntry
+    
   page_tree_watcher.class:    dmPageTreeWatcher
   
   file_backup.class:          dmFileBackup
@@ -23,6 +29,17 @@ parameters:
   helper.class:               dmOoHelper
  
 services:
+
+  auth_layout_helper:
+    class:                    %auth_layout_helper.class%
+    shared:                   true
+    arguments:
+      dispatcher:             @dispatcher
+      user:                   @user
+      request:                @request
+      response:               @response
+      action_stack:           @action_stack
+      helper:                 @helper
 
   search_engine:
     class:                    %search_engine.class%
@@ -51,7 +68,20 @@ services:
     arguments:
       dispatcher:             @dispatcher
       filesystem:             @filesystem
+      service_container:      @service_container
       options:                %user_log.options%
+      
+  user_log_entry:
+    class:                    %user_log_entry.class%
+    shared:                   false
+    arguments:
+      service_container:      @service_container
+      
+  browser:
+    class:                    %browser.class%
+    shared:                   false
+    arguments:
+      dispatcher:             @dispatcher
       
   page_tree_watcher:
     class:                    %page_tree_watcher.class%

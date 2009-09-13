@@ -2,8 +2,24 @@
 
 class dmBaseComponents extends sfComponents
 {
-  protected function getDmContext()
+  protected
+  $dmContext;
+  
+  /**
+   * Initializes this component.
+   *
+   * @param sfContext $context    The current application context.
+   * @param string    $moduleName The module name.
+   * @param string    $actionName The action name.
+   *
+   * @return boolean true, if initialization completes successfully, otherwise false
+   */
+  public function initialize($context, $moduleName, $actionName)
   {
-    return dmContext::getInstance();
+    parent::initialize($context, $moduleName, $actionName);
+    
+    $this->dmContext = dmContext::getInstance();
+    
+    $this->page = $this->dmContext->getPage();
   }
 }

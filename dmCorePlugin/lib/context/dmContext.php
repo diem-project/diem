@@ -108,22 +108,11 @@ abstract class dmContext extends dmMicroCache
     $this->serviceContainer->setService('i18n', $sfContext->getI18n());
     $this->serviceContainer->setService('routing', $sfContext->getRouting());
     $this->serviceContainer->setService('action_stack', $sfContext->getActionStack());
+    $this->serviceContainer->setService('config_cache', $sfContext->getConfigCache());
+    $this->serviceContainer->setService('controller', $sfContext->getController());
     $this->serviceContainer->setService('context', $sfContext);
-    $this->serviceContainer->setService('dm_context', $this);
+    $this->serviceContainer->setService('service_container', $this->serviceContainer);
     $this->serviceContainer->setService('doctrine_manager', Doctrine_Manager::getInstance());
-    
-//    $this->serviceContainer->addParameters(array(
-////      'dispatcher'        => $sfContext->getEventDispatcher(),
-//      'request'           => $sfContext->getRequest(),
-//      'response'          => $sfContext->getResponse(),
-////      'user'              => $sfContext->getUser(),
-//      'i18n'              => $sfContext->getI18n(),
-//      'routing'           => $sfContext->getRouting(),
-//      'action_stack'      => $sfContext->getActionStack(),
-//      'context'           => $sfContext,
-//      'dm_context'        => $this,
-//      'doctrine_manager'  => Doctrine_Manager::getInstance()
-//    ));
   }
   
   /*

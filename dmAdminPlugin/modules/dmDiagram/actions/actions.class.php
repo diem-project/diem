@@ -14,18 +14,15 @@ class dmDiagramActions extends dmAdminBaseActions
 	  $doctrineGraphviz = new dmDoctrineGraphviz($this->dmContext->getFilesystem(), $this->context->getConfiguration());
 	  
     $this->mldUserImage = $doctrineGraphviz->getMldImage(array(
-      'type' => 'user',
-      'size' => '12,4'
+      'type' => 'user'
     ));
     
     $this->mldCoreImage = $doctrineGraphviz->getMldImage(array(
-      'type' => 'core',
-      'size' => '12,4'
+      'type' => 'core'
     ));
     
     $this->mldProjectImage = $doctrineGraphviz->getMldImage(array(
-      'type' => 'project',
-      'size' => '12,4'
+      'type' => 'project'
     ));
 	}
   
@@ -42,18 +39,31 @@ class dmDiagramActions extends dmAdminBaseActions
       throw new dmException(sprintf('Can not mkdir %s', $dependencyDiagramImageFullPath));
     }
     
-    $configFiles = $this->context->getConfiguration()->getConfigPaths('config/dm/services.yml');
-    $configFiles[] = dmOs::join(dm::getDir(), sprintf('dm%sPlugin/config/dm/services.yml', dmString::camelize($appName)));
+    $configFiles = array(
+      dmOs::join(sfConfig::get('dm_core_dir'), 'config/dm/services.yml'),
+      dmOs::join(dm::getDir(), sprintf('dm%sPlugin/config/dm/services.yml', dmString::camelize($appName)))
+    );
+    
+    $projectFile = dmOs::join(sfConfig::get('sf_config_dir'), 'dm/servicex.yml');
+    if (file_exists($projectFile)) $configFiles[] = $projectFile;
+    
+    $appFile = dmOs::join(sfConfig::get('sf_apps_dir'), $appName, 'config/dm/servicex.yml');
+    if (file_exists($appFile)) $configFiles[] = $appFile;
     
     $sc = new sfServiceContainerBuilder;
 
     $loader = new sfServiceContainerLoaderFileYaml($sc);
     $loader->load($configFiles);
     
+    if ($sc->hasParameter('page_helper.view_class'))
+    {
+      $sc->setParameter('page_helper.class', $sc->getParameter('page_helper.view_class'));
+    }
+    
     $dumper = new sfServiceContainerDumperGraphviz($sc);
 
     file_put_contents($dotFile, $dumper->dump(array(
-      'graph' => array('concentrate' => 'false', 'bgcolor' => '#fbfbfb', 'ratio' => 'fill', 'size' => '12,4'),
+      'graph' => array('concentrate' => 'false', 'bgcolor' => 'transparent', 'ratio' => 'fill', 'size' => '20,7'),
       'node'  => array('fontsize' => 20, 'fontname' => 'Arial', 'shape' => 'Mrecord'),
       'edge'  => array('fontsize' => 9, 'fontname' => 'Arial', 'color' => 'grey', 'arrowhead' => 'open', 'arrowsize' => 0.8),
       'node.instance' => array('fillcolor' => '#9999ff', 'style' => 'filled'),

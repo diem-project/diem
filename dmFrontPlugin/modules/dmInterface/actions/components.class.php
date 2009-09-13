@@ -6,8 +6,8 @@ class dmInterfaceComponents extends dmFrontBaseComponents
   public function executeToolBar()
   {
     $this->cultures = array();
-    $languages = sfCultureInfo::getInstance(dm::getUser()->getCulture())->getLanguages();
-    foreach(dm::getI18n()->getCultures() as $key)
+    $languages = sfCultureInfo::getInstance($this->context->getUser()->getCulture())->getLanguages();
+    foreach($this->context->getI18n()->getCultures() as $key)
     {
       $this->cultures[$key] = dmArray::get($languages, $key, $key);
     }
@@ -24,7 +24,7 @@ class dmInterfaceComponents extends dmFrontBaseComponents
   {
   	$menu = array();
   	
-  	if(dm::getUser()->can('zone_add'))
+  	if($this->getUser()->can('zone_add'))
   	{
 	  	$menu[] =array(
   	    'name' => 'Zone',
@@ -37,7 +37,7 @@ class dmInterfaceComponents extends dmFrontBaseComponents
 	  	);
   	}
   	
-  	foreach($this->getDmContext()->getWidgetTypeManager()->getWidgetTypes() as $space => $widgetTypes)
+  	foreach($this->dmContext->getWidgetTypeManager()->getWidgetTypes() as $space => $widgetTypes)
   	{
   		if (empty($widgetTypes))
   		{
@@ -49,15 +49,15 @@ class dmInterfaceComponents extends dmFrontBaseComponents
   		foreach($widgetTypes as $key => $widgetType)
   		{
   			$spaceMenu[$key] = array(
-  			  'name' => dm::getI18n()->__($widgetType->getName()),
+  			  'name' => $this->context->getI18n()->__($widgetType->getName()),
   			  'class' => 'widget_add move',
   			  'id' => sprintf('dmwa_%s_%s', $widgetType->getModule(), $widgetType->getAction())
   			);
   		}
   		
   		$spaceName = $space == 'main'
-  		? dmConfig::get('site_name')
-  		: dm::getI18n()->__(dmString::humanize(str_replace('dmWidget', '', $space)));
+  		? myConfig::get('site_name')
+  		: $this->context->getI18n()->__(dmString::humanize(str_replace('dmWidget', '', $space)));
 
   		$menu[$space] = array(
   		  'name' => $spaceName,
@@ -67,7 +67,7 @@ class dmInterfaceComponents extends dmFrontBaseComponents
 
   	return array(
   	  array(
-	      'name' => dm::getI18n()->__('Add'),
+	      'name' => $this->context->getI18n()->__('Add'),
   	    'class' => 'strong',
 	      'menu' => $menu
   	  )

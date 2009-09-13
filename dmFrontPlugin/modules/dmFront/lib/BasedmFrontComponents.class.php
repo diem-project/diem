@@ -6,8 +6,8 @@ class BasedmFrontComponents extends dmFrontBaseComponents
   public function executeToolBar()
   {
   	$this->cultures = array();
-    $languages = sfCultureInfo::getInstance(dm::getUser()->getCulture())->getLanguages();
-  	foreach(dm::getI18n()->getCultures() as $key)
+    $languages = sfCultureInfo::getInstance($this->getUser()->getCulture())->getLanguages();
+  	foreach($this->context->getI18n()->getCultures() as $key)
   	{
   		$this->cultures[$key] = dmArray::get($languages, $key, $key);
   	}

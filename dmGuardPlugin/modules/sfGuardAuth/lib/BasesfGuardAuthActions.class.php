@@ -15,7 +15,7 @@
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @version    SVN: $Id: BasesfGuardAuthActions.class.php 7745 2008-03-05 11:05:33Z fabien $
  */
-class BasesfGuardAuthActions extends sfActions
+class BasesfGuardAuthActions extends dmBaseActions
 {
   public function executeSignin($request)
   {

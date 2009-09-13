@@ -1,7 +1,7 @@
 <?php
 
 /*
- *
+ * generate action classes for front module
  */
 class dmFrontActionGenerator extends dmFrontModuleGenerator
 {

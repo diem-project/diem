@@ -4,16 +4,20 @@ abstract class dmWidgetBaseView
 {
 
 	protected
-	$dmContext,
-	$widget,
+	$dispatcher,
+	$helper,
+	$serviceContainer,
 	$widgetType,
+  $widget,
 	$requiredVars = array();
 
-	public function __construct(array $widget, dmContext $dmContext)
+	public function __construct(sfEventDispatcher $dispatcher, dmOoHelper $helper, sfServiceContainer $serviceContainer, dmWidgetType $type, array $data)
 	{
-	  $this->dmContext = $dmContext;
-    $this->widget = $widget;
-    $this->widgetType = $dmContext->getWidgetTypeManager()->getWidgetType($widget['module'], $widget['action']);
+	  $this->dispatcher        = $dispatcher;
+	  $this->helper            = $helper;
+	  $this->serviceContainer  = $serviceContainer;
+	  $this->widgetType        = $type;
+    $this->widget           = $data;
 
     $this->configure();
 	}
@@ -25,7 +29,7 @@ abstract class dmWidgetBaseView
 
   public function getRequiredVars()
   {
-  	return array_unique($this->requiredVars);
+  	return $this->requiredVars;
   }
   
   public function isRequiredVar($var)
@@ -43,6 +47,8 @@ abstract class dmWidgetBaseView
   	{
   		$this->requiredVars[] = $var;
   	}
+  	
+  	$this->requiredVars = array_unique($this->requiredVars);
   }
   
   public function removeRequiredVar($var)

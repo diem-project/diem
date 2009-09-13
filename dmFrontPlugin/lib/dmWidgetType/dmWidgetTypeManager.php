@@ -6,22 +6,26 @@ class dmWidgetTypeManager
   protected
   $dispatcher,
   $cacheManager,
-  $context,
-  $configFile,
+  $configCache,
+  $controller,
+  $options,
   $widgetTypes;
 
-  public function __construct(sfEventDispatcher $dispatcher, dmCacheManager $cacheManager, sfContext $context, array $options = array())
+  public function __construct(sfEventDispatcher $dispatcher, dmCacheManager $cacheManager, sfConfigCache $configCache, sfWebController $controller, array $options = array())
   {
     $this->dispatcher   = $dispatcher;
     $this->cacheManager = $cacheManager;
-    $this->context      = $context;
+    $this->configCache  = $configCache;
+    $this->controller   = $controller;
 
     $this->initialize($options);
   }
   
   public function initialize(array $options = array())
   {
-    $this->configFile = dmArray::get($options, 'config_file', 'config/dm/widget_types.yml');
+    $this->options = array_merge(array(
+      'config_file' => 'config/dm/widget_types.yml'
+    ), $options);
     
     $this->widgetTypes = null;
   }
@@ -34,9 +38,7 @@ class dmWidgetTypeManager
     {
     	if (!$this->widgetTypes = $this->cacheManager->getCache('dm/widget')->get('types'))
     	{
-	    	$internalConfig = include($this->context->getConfigCache()->checkConfig($this->configFile));
-
-	    	$sfController = $this->context->getController();
+	    	$internalConfig = include($this->configCache->checkConfig($this->options['config_file']));
 
 	    	$this->widgetTypes = array();
 
@@ -52,7 +54,7 @@ class dmWidgetTypeManager
 	        	  'name'       => dmArray::get($action, 'name'),
 	            'form_class' => dmArray::get($action, 'form_class', $fullKey.'Form'),
 	            'view_class' => dmArray::get($action, 'view_class', $fullKey.'View'),
-	        	  'use_component' => $sfController->componentExists('dmWidget', $fullKey)
+	        	  'use_component' => $this->controller->componentExists('dmWidget', $fullKey)
 		        );
 
 	        	$this->widgetTypes[$moduleKey][$actionKey] = new dmWidgetType($moduleKey, $actionKey, $widgetTypeConfig);
@@ -73,7 +75,7 @@ class dmWidgetTypeManager
 	        	  'name'   => $action->getName(),
 	        	  'form_class' => $baseClass.'Form',
 	            'view_class' => $baseClass.'View',
-	            'use_component' => $sfController->componentExists($moduleKey, $actionKey)
+	            'use_component' => $this->controller->componentExists($moduleKey, $actionKey)
 	        	);
 
 	          $this->widgetTypes[$moduleKey][$actionKey] = new dmWidgetType($moduleKey, $actionKey, $widgetTypeConfig);

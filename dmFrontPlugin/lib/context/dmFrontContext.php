@@ -7,6 +7,20 @@ class dmFrontContext extends dmContext
 	protected
 	  $page;
   
+	protected function configureServiceContainer()
+	{
+	  parent::configureServiceContainer();
+	  
+    if ($this->getSfContext()->getUser()->can('front_edit'))
+    {
+      $this->serviceContainer->setParameter('page_helper.class', $this->serviceContainer->getParameter('page_helper.edit_class'));
+    }
+    else
+    {
+      $this->serviceContainer->setParameter('page_helper.class', $this->serviceContainer->getParameter('page_helper.view_class'));
+    }
+	}
+	  
   /*
    * @return DmPage the current page object
    */
@@ -30,7 +44,7 @@ class dmFrontContext extends dmContext
   {
     return $this->serviceContainer->getService('page_helper');
   }
-
+  
   /*
    * @return dmWidgetTypeManager
    */

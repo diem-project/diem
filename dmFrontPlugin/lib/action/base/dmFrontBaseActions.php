@@ -2,12 +2,14 @@
 
 class dmFrontBaseActions extends dmBaseActions
 {
-	
-	public function getPage()
-	{
-		return $this->getDmContext()->getPage();
-	}
-	
+  
+  /*
+   * @return DmPage the current page
+   */
+  public function getPage()
+  {
+    return $this->dmContext->getPage();
+  }
 
   /**
    * Indicates that this action requires security.
@@ -47,7 +49,7 @@ class dmFrontBaseActions extends dmBaseActions
 
     if (!$refererUrl || $refererUrl === $this->request->getUri())
     {
-      if ($page = $this->getDmContext()->getPage())
+      if ($page = $this->dmContext->getPage())
       {
         $refererUrl = dmFrontLinkTag::build($page)->getAbsoluteHref();
       }

@@ -5,7 +5,6 @@ abstract class dmBaseActions extends sfActions
   protected
   $dmContext;
   
-  
   public function initialize($context, $moduleName, $actionName)
   {
     parent::initialize($context, $moduleName, $actionName);

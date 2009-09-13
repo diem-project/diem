@@ -28,7 +28,10 @@ abstract class dmUser extends sfGuardSecurityUser implements dmMicroCacheInterfa
 			return $this->getCache('browser');
 		}
 		
-		return $this->setCache('browser', dmBrowser::buildFromUserAgent($_SERVER['HTTP_USER_AGENT']));
+		$browser = dmContext::getInstance()->getServiceContainer()->getService('browser');
+		$browser->configure($_SERVER['HTTP_USER_AGENT']);
+		
+		return $this->setCache('browser', $browser);
 	}
 	
 	/*

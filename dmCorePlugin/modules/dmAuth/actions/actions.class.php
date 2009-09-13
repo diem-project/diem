@@ -16,6 +16,8 @@ class dmAuthActions extends BasesfGuardAuthActions
   	{
   		return $this->forward('dmAuth', 'badBrowser');
   	}
+  	
+  	$this->helper = $this->dmContext->getService('auth_layout_helper');
 
     $this->setLayout(dmOs::join(sfConfig::get('dm_core_dir'), 'modules/dmAuth/templates/layout'));
 

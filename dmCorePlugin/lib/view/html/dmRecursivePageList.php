@@ -6,7 +6,9 @@ abstract class dmRecursivePageList
 	$tree,
 	$options,
 	$culture,
-	$html;
+	$html,
+	$level,
+	$lastLevel;
 
 	public function __construct($culture = null)
 	{
@@ -64,7 +66,7 @@ abstract class dmRecursivePageList
 		}
 		else
 		{
-			if ($this->level == $this->lastLevel)
+			if ($this->level === $this->lastLevel)
 			{
 				$html = '</li>';
 			}

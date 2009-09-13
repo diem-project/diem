@@ -5,23 +5,21 @@ class BasedmFrontActions extends dmFrontBaseActions
 	
 	public function executeToAdmin(dmWebRequest $request)
 	{
-		return $this->redirect(
-		  dmFrontLinkTag::build('app:admin')->getHref()
-		);
+		return $this->redirect(dmFrontLinkTag::build('app:admin')->getHref());
 	}
 
 	public function executePage(dmWebRequest $request)
 	{
-		$this->forward404Unless($this->page = $this->getPage(), 'No current page');
+		$this->forward404Unless($this->page = $this->dmContext->getPage(), 'No current page');
 		
 		if ($this->page->isModuleAction('main', 'error404'))
 		{
-      $this->context->getResponse()->setStatusCode(404);
+      $this->response->setStatusCode(404);
 		}
 		
     $this->setLayout(dmOs::join(sfConfig::get("dm_front_dir"), "modules/dmFront/templates/layout"));
 
-    $this->helper = $this->getDmContext()->getPageHelper();
+    $this->helper = $this->dmContext->getPageHelper();
     
     $this->launchDirectActions($request);
 	}

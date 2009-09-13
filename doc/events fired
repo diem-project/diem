@@ -13,3 +13,7 @@ params: sfServiceContainer the service container
 [dm.admin_menu.loaded]
 fired by dmAdminMenu when it has been loaded
 params: array the loaded menu
+
+[dm.browser.unknown]
+fired by dmBrowser when it is unable to configure from user agent because it is unknown
+params: the user agent string

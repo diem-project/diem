@@ -7,11 +7,32 @@ class dmUserLogEntry extends dmMicroCache
 	$usersCache    = array();
 	
 	protected
+	$serviceContainer,
 	$data;
 	
-	public function __construct(array $data)
+	public function __construct(sfServiceContainer $serviceContainer)
 	{
-		$this->data = $data;
+		$this->serviceContainer = $serviceContainer;
+	}
+	
+	public function configureFromDmContext(dmContext $dmContext)
+	{
+	  $this->data = array(
+      'uri'           => isset($_SERVER['PATH_INFO']) ? trim($_SERVER['PATH_INFO'], '/') : '/',
+      'code'          => $dmContext->getSfContext()->getResponse()->getStatusCode(),
+      'app'           => sfConfig::get('sf_app'),
+      'time'          => $_SERVER['REQUEST_TIME'],
+      'ip'            => $_SERVER['REMOTE_ADDR'],
+      'session_id'    => session_id(),
+      'user_id'       => $dmContext->getSfContext()->getUser()->getGuardUserId(),
+      'user_agent'    => $_SERVER['HTTP_USER_AGENT'],
+      'timer'         => sprintf('%.0f', (microtime(true) - dm::getStartTime()) * 1000)
+    );
+	}
+	
+	public function setData(array $data)
+	{
+	  $this->data = $data;
 	}
   
   protected function getUser()
@@ -38,7 +59,9 @@ class dmUserLogEntry extends dmMicroCache
 		
 		if(!isset(self::$browsersCache[$hash]))
 		{
-			self::$browsersCache[$hash] = dmBrowser::buildFromUserAgent($this->get('user_agent'));
+		  $browser = $this->serviceContainer->getService('browser');
+		  $browser->configureFromUserAgent($this->get('user_agent'));
+			self::$browsersCache[$hash] = $browser;
 		}
 		
 		return self::$browsersCache[$hash];
@@ -73,23 +96,5 @@ class dmUserLogEntry extends dmMicroCache
 		return $this->data;
 	}
 	
-	public static function createFromJson($json)
-	{
-		return new self(json_decode($json, true));
-	}
 	
-	public static function createFromDmContext(dmContext $dmContext)
-	{
-    return new self(array(
-      'uri'           => isset($_SERVER['PATH_INFO']) ? trim($_SERVER['PATH_INFO'], '/') : '/',
-      'code'          => $dmContext->getSfContext()->getResponse()->getStatusCode(),
-      'app'           => sfConfig::get('sf_app'),
-      'time'          => $_SERVER['REQUEST_TIME'],
-      'ip'            => $_SERVER['REMOTE_ADDR'],
-      'session_id'    => session_id(),
-      'user_id'       => $dmContext->getSfContext()->getUser()->getGuardUserId(),
-      'user_agent'    => $_SERVER['HTTP_USER_AGENT'],
-      'timer'         => sprintf('%.0f', (microtime(true) - dm::getStartTime()) * 1000)
-    ));
-	}
 }

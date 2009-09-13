@@ -191,6 +191,8 @@ $.getScript(href, callback);
 
 * [DONE] tweak front routing configuration
 
-* fire event when user's browser is unknown
+* [DONE] fire event when user's browser is unknown
 
-* replace symfony factories sfServiceContainer arguments by sfServices if possible
+* [DONE] replace symfony factories sfServiceContainer arguments by sfServices if possible
+
+* [DONE] add dependency injection and database diagrams in admin app

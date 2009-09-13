@@ -1,14 +1,28 @@
 parameters:
 
+  widget_view.class:          dmWidgetBaseView
+
   layout_helper.class:        dmFrontLayoutHelper
 
   page_helper.class:          dmFrontPageHelper
+  page_helper.view_class:     dmFrontPageHelper
+  page_helper.edit_class:     dmFrontPageEditHelper
   
   widget_type_manager.class:  dmWidgetTypeManager
   widget_type_manager.options:
     config_file:              'config/dm/widget_types.yml'        
  
 services:
+
+  widget_view:
+    class:                    %widget_view.class%
+    shared:                   false
+    arguments:
+      dispatcher:             @dispatcher
+      helper:                 @helper
+      service_container:      @service_container
+      type:                   %widget_view.type%
+      data:                   %widget_view.data%
 
   layout_helper:
     class:                    %layout_helper.class%
@@ -26,7 +40,8 @@ services:
     shared:                   true
     arguments:
       dispatcher:             @dispatcher
-      dm_context:             @dm_context
+      widget_type_manager:    @widget_type_manager
+      service_container:      @service_container
 
   widget_type_manager:
     class:                    %widget_type_manager.class%
@@ -34,5 +49,6 @@ services:
     arguments:
       dispatcher:             @dispatcher
       cache_manager:          @cache_manager
-      context:                @context
+      config_cache:           @config_cache
+      controller:             @controller
       options:                %widget_type_manager.options%

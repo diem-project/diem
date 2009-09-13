@@ -140,6 +140,6 @@ class dmArray
   
   public static function toHtmlCssClasses(array $classes)
   {
-  	return implode(' ', array_filter(array_map('trim', $classes)));
+  	return implode(' ', array_unique(array_filter(array_map('trim', $classes))));
   }
 }
