@@ -2,7 +2,7 @@
 
 $timer = dmDebug::timer('dmAdmin/templates/layout');
 
-$helper = new myAdminLayoutHelper(dmContext::getInstance());
+$helper = dmContext::getInstance()->getLayoutHelper();
 
 echo 
 $helper->renderDoctype(),

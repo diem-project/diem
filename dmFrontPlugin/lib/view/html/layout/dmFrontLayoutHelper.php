@@ -5,11 +5,9 @@ class dmFrontLayoutHelper extends dmCoreLayoutHelper
 	protected
 	  $page;
 
-  protected function initialize()
+  public function setPage(DmPage $page)
   {
-    parent::initialize();
-    
-    $this->page     = $this->dmContext->getPage();
+    $this->page = $page;
   }
   
   public function renderBrowserStylesheets()
@@ -91,23 +89,21 @@ class dmFrontLayoutHelper extends dmCoreLayoutHelper
   		return '';
   	}
   	
-  	$this->dmContext->getSfContext()->getConfiguration()->loadHelpers('Partial');
-  
   	$html = '';
   	
 		if (sfConfig::get('dm_pageBar_enabled', true) && $this->user->can('page_bar_front'))
 		{
-		  $html .= get_partial('dmInterface/pageBar');
+		  $html .= $this->helper->renderPartial('dmInterface', 'pageBar');
 		}
 		
 		if (sfConfig::get('dm_mediaBar_enabled', true) && $this->user->can('media_bar_front'))
 		{
-		  $html .= get_partial('dmInterface/mediaBar');
+		  $html .= $this->helper->renderPartial('dmInterface', 'mediaBar');
 		}
 		
 		if ($this->user->can('tool_bar_front'))
 		{
-		  $html .= get_component('dmInterface', 'toolBar');
+		  $html .= $this->helper->renderComponent('dmInterface', 'toolBar');
     }
     
     return $html;

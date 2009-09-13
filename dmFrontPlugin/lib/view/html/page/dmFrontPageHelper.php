@@ -5,6 +5,7 @@ class dmFrontPageHelper
 	protected
     $dispatcher,
 	  $dmContext,
+	  $page,
 	  $areas;
 
   public function __construct(sfEventDispatcher $dispatcher, dmContext $dmContext)
@@ -17,12 +18,13 @@ class dmFrontPageHelper
   
   public function initialize()
   {
-    $this->areas = null;
   }
   
-  public function getPage()
+  public function setPage(DmPage $page)
   {
-    return $this->dmContext->getPage();
+    $this->page = $page;
+    
+    $this->areas = null;
   }
   
   public function getAreas()
@@ -31,7 +33,7 @@ class dmFrontPageHelper
     {
       $this->areas = dmDb::query('DmArea a INDEXBY a.type, a.Zones z, z.Widgets w')
       ->select('a.type, z.width, z.css_class, w.module, w.action, w.value, w.css_class')
-      ->where('a.dm_layout_id = ? OR a.dm_page_view_id = ?', array($this->getPage()->getPageView()->get('Layout')->get('id'), $this->getPage()->getPageView()->get('id')))
+      ->where('a.dm_layout_id = ? OR a.dm_page_view_id = ?', array($this->page->getPageView()->get('Layout')->get('id'), $this->page->getPageView()->get('id')))
       ->orderBy('z.position asc, w.position asc')
       ->fetchArray();
     }
@@ -45,7 +47,7 @@ class dmFrontPageHelper
 
   	if (!isset($this->areas[$type]))
   	{
-  		throw new dmException(sprintf('Page %s with layout %s has no area for type %s', $this->getPage(), $this->getPage()->Layout, $type));
+  		throw new dmException(sprintf('Page %s with layout %s has no area for type %s', $this->page, $this->page->Layout, $type));
   	  return null;
   	}
 

@@ -3,28 +3,33 @@
 abstract class dmCoreLayoutHelper
 {
 	protected
-	  $dmContext,
-	  $response,
+	  $dispatcher,
 	  $user,
+    $request,
+    $response,
+    $actionStack,
+    $helper,
 	  $theme,
 	  $baseWebPath,
 	  $isHtml5;
 
-  public function __construct(dmContext $dmContext)
+  public function __construct(sfEventDispatcher $dispatcher, dmUser $user, dmWebRequest $request, dmWebResponse $response, sfActionStack $actionStack, dmOoHelper $helper)
   {
-    $this->dmContext = $dmContext;
+    $this->dispatcher = $dispatcher;
+    $this->user       = $user;
+    $this->request    = $request;
+    $this->response   = $response;
+    $this->actionStack = $actionStack;
+    $this->helper     = $helper;
     
     $this->initialize();
   }
   
   protected function initialize()
   {
-    $this->request  = $this->dmContext->getSfContext()->getRequest();
-    $this->response = $this->dmContext->getSfContext()->getResponse();
-    $this->user     = $this->dmContext->getSfContext()->getUser();
     $this->theme    = $this->user->getTheme();
     $this->isHtml5  = sfConfig::get('dm_html_doctype_version', 5) == 5;
-    $this->relativeUrlRoot = dm::getRequest()->getRelativeUrlRoot();
+    $this->relativeUrlRoot = $this->request->getRelativeUrlRoot();
   }
 
   protected function isHtml5()
@@ -128,12 +133,12 @@ abstract class dmCoreLayoutHelper
   protected function getJavascriptConfig()
   {
   	return array_merge($this->response->getJavascriptConfig(), array(
-  	  'relative_url_root'  => $this->request->getRelativeUrlRoot(),
-      'dm_core_asset_root' => $this->request->getRelativeUrlRoot().'/'.sfConfig::get('dm_core_asset').'/',
+  	  'relative_url_root'  => $this->relativeUrlRoot,
+      'dm_core_asset_root' => $this->relativeUrlRoot.'/'.sfConfig::get('dm_core_asset').'/',
       'script_name'        => $this->request->getScriptName().'/',
-  	  'debug'              => (sfConfig::get('sf_debug') || sfConfig::get('dm_debug')) ? 'true' : 'false',
+  	  'debug'              => sfConfig::get('sf_debug') ? 'true' : 'false',
       'culture'            => $this->user->getCulture(),
-  	  'module'             => $this->dmContext->getModuleKey()
+  	  'module'             => $this->actionStack->getLastEntry()->getModuleName()
   	));
   }
   

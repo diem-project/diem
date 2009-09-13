@@ -58,7 +58,7 @@ echo £o('div.{$this->module->getUnderscore()}.{$action->getUnderscore()}');
 
   echo £o('ul.elements');
 
-  foreach ({$pager}->getResults() as \${$this->module->getKey()})
+  foreach ({$pager} as \${$this->module->getKey()})
   {
     echo £o('li.element');
     

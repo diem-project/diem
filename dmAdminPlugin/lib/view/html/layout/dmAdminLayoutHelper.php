@@ -10,9 +10,11 @@ class dmAdminLayoutHelper extends dmCoreLayoutHelper
 	
 	public function renderBodyTag($class = null)
 	{
+	  $actionName = $this->actionStack->getLastEntry()->getActionName();
+	  
 		return sprintf('<body class="dm%s%s%s%s">',
-      $this->dmContext->isListPage() ? ' list' : '',
-      $this->dmContext->isFormPage() ? ' form' : '',
+      $actionName == 'index' ? ' list' : '',
+      in_array($actionName, array('edit', 'new', 'update', 'create')) ? ' form' : '',
       sfConfig::get('dm_admin_full_screen') ? ' full_screen' : '',
       $class ? ' '.$class : ''
     );
@@ -25,23 +27,21 @@ class dmAdminLayoutHelper extends dmCoreLayoutHelper
   		return '';
   	}
   	
-    $this->dmContext->getSfContext()->getConfiguration()->loadHelpers('Partial');
-  
     $html = '';
     
     if (sfConfig::get('dm_pageBar_enabled', true) && $this->user->can('page_bar_admin'))
     {
-      $html .= get_partial('dmInterface/pageBar');
+      $html .= $this->helper->renderPartial('dmInterface', 'pageBar');
     }
     
     if (sfConfig::get('dm_mediaBar_enabled', true) && $this->user->can('media_bar_admin'))
     {
-      $html .= get_partial('dmInterface/mediaBar');
+      $html .= $this->helper->renderPartial('dmInterface', 'mediaBar');
     }
     
     if ($this->user->can('tool_bar_admin'))
     {
-      $html .= get_component('dmInterface', 'toolBar');
+      $html .= $this->helper->renderComponent('dmInterface', 'toolBar');
     }
     
     return $html;

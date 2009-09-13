@@ -9,7 +9,6 @@ abstract class dmContext extends dmMicroCache
   protected
     $serviceContainer,
     $dmConfiguration,
-    $helper,
     $sfContext;
 
   abstract public function getModule();
@@ -35,7 +34,16 @@ abstract class dmContext extends dmMicroCache
     $this->getPageTreeWatcher();
   }
   
-  /**
+  
+  /*
+   * @return mixed the requested service
+   */
+  public function getService($serviceName)
+  {
+    return $this->serviceContainer->getService($serviceName);
+  }
+  
+  /*
    * Loads the diem services
    */
   protected function loadServiceContainer()
@@ -74,7 +82,7 @@ abstract class dmContext extends dmMicroCache
       $loader = new sfServiceContainerLoaderFileYaml($sc);
       $loader->load($configFiles);
      
-      if (true/* || !sfConfig::get('sf_debug')*/)
+      if (!file_exists($file)/* || !sfConfig::get('sf_debug')*/)
       {
         $dumper = new sfServiceContainerDumperPhp($sc);
         file_put_contents($file, $dumper->dump(array('class' => $name)));
@@ -84,19 +92,38 @@ abstract class dmContext extends dmMicroCache
       $this->serviceContainer = $sc;
     }
     
+    $this->configureServiceContainer();
+    
+    $this->getSfContext()->getEventDispatcher()->notify(new sfEvent($this, 'dm.context.service_container_loaded', $this->serviceContainer));
+  }
+  
+  protected function configureServiceContainer()
+  {
     $sfContext = $this->getSfContext();
     
-    $this->serviceContainer->addParameters(array(
-      'dispatcher'        => $sfContext->getEventDispatcher(),
-      'user'              => $sfContext->getUser(),
-      'i18n'              => $sfContext->getI18n(),
-      'routing'           => $sfContext->getRouting(),
-      'context'           => $sfContext,
-      'dm_context'        => $this,
-      'doctrine_manager'  => Doctrine_Manager::getInstance()
-    ));
+    $this->serviceContainer->setService('dispatcher', $sfContext->getEventDispatcher());
+    $this->serviceContainer->setService('user', $sfContext->getUser());
+    $this->serviceContainer->setService('request', $sfContext->getRequest());
+    $this->serviceContainer->setService('response', $sfContext->getResponse());
+    $this->serviceContainer->setService('i18n', $sfContext->getI18n());
+    $this->serviceContainer->setService('routing', $sfContext->getRouting());
+    $this->serviceContainer->setService('action_stack', $sfContext->getActionStack());
+    $this->serviceContainer->setService('context', $sfContext);
+    $this->serviceContainer->setService('dm_context', $this);
+    $this->serviceContainer->setService('doctrine_manager', Doctrine_Manager::getInstance());
     
-    $sfContext->getEventDispatcher()->notify(new sfEvent($this, 'dm.context.service_container_loaded', $this->serviceContainer));
+//    $this->serviceContainer->addParameters(array(
+////      'dispatcher'        => $sfContext->getEventDispatcher(),
+//      'request'           => $sfContext->getRequest(),
+//      'response'          => $sfContext->getResponse(),
+////      'user'              => $sfContext->getUser(),
+//      'i18n'              => $sfContext->getI18n(),
+//      'routing'           => $sfContext->getRouting(),
+//      'action_stack'      => $sfContext->getActionStack(),
+//      'context'           => $sfContext,
+//      'dm_context'        => $this,
+//      'doctrine_manager'  => Doctrine_Manager::getInstance()
+//    ));
   }
   
   /*

@@ -124,7 +124,7 @@ class dmHtmlMenu
     }
 		else
 		{
-      $html = '<span '.$classDeclaration.$idDeclaration.'>'.$elem['name'].'</<pan>>';
+      $html = '<span '.$classDeclaration.$idDeclaration.'>'.$elem['name'].'</span>';
 		}
 
 		return '<li>'.$html.'</li>';

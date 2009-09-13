@@ -31,6 +31,7 @@ class dmOoHelper
   public function renderComponent($moduleName, $componentName, $vars = array())
   {
     $this->context->getConfiguration()->loadHelpers('Partial');
+    
     return get_component($moduleName, $componentName, $vars);
   }
 }

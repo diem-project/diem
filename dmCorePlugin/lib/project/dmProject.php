@@ -5,7 +5,9 @@ class dmProject
 
   protected static
     $key,
-    $models;
+    $models,
+    $allModels,
+    $dmModels;
 
   /*
    * Returns project key based on his dir_name
@@ -27,7 +29,7 @@ class dmProject
       $baseModels = sfFinder::type('file')
       ->maxdepth(0)
       ->name("Base*.class.php")
-      ->in(dmOs::join(sfConfig::get("sf_lib_dir"), "model/doctrine/base"), dmOs::join(sfConfig::get("sf_lib_dir"), "model/doctrine/generated"));
+      ->in(dmOs::join(sfConfig::get("sf_lib_dir"), "model/doctrine/base"));
 
       self::$models = array();
       foreach($baseModels as $baseModel)
@@ -37,6 +39,43 @@ class dmProject
     }
 
     return self::$models;
+  }
+  
+  public static function getAllModels()
+  {
+    if (null === self::$allModels)
+    {
+      $baseModels = sfFinder::type('file')
+      ->name("Base*.class.php")
+      ->in(dmOs::join(sfConfig::get("sf_lib_dir"), "model/doctrine"));
+
+      self::$allModels = array();
+      foreach($baseModels as $baseModel)
+      {
+        self::$allModels[] = preg_replace('|^Base(\w+).class.php$|', '$1', basename($baseModel));
+      }
+    }
+
+    return self::$allModels;
+  }
+  
+  public static function getDmModels()
+  {
+    if (null === self::$dmModels)
+    {
+      $baseModels = sfFinder::type('file')
+      ->name("Base*.class.php")
+      ->maxDepth(0)
+      ->in(dmOs::join(sfConfig::get("sf_lib_dir"), "model/doctrine/dmCorePlugin/base"));
+
+      self::$dmModels = array();
+      foreach($baseModels as $baseModel)
+      {
+        self::$dmModels[] = preg_replace('|^Base(\w+).class.php$|', '$1', basename($baseModel));
+      }
+    }
+    
+    return self::$dmModels;
   }
 
   public static function checkFilesystemPermissions()

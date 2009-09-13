@@ -28,28 +28,28 @@ services:
     class:                    %search_engine.class%
     shared:                   true
     arguments:
-      dispatcher:             %dispatcher%
+      dispatcher:             @dispatcher
       filesystem:             @filesystem
 
   doctrine_config:
     class:                    %doctrine_config.class%
     shared:                   true
     arguments:
-      doctrine_manager:       %doctrine_manager%
-      dispatcher:             %dispatcher%
+      doctrine_manager:       @doctrine_manager
+      dispatcher:             @dispatcher
       cache_manager:          @cache_manager
 
   filesystem:
     class:                    %filesystem.class%
     shared:                   true
     arguments:
-      dispatcher:             %dispatcher%
+      dispatcher:             @dispatcher
       
   user_log:
     class:                    %user_log.class%
     shared:                   true
     arguments:
-      dispatcher:             %dispatcher%
+      dispatcher:             @dispatcher
       filesystem:             @filesystem
       options:                %user_log.options%
       
@@ -57,13 +57,13 @@ services:
     class:                    %page_tree_watcher.class%
     shared:                   true
     arguments:
-      dispatcher:             %dispatcher%
+      dispatcher:             @dispatcher
       
   file_backup:
     class:                    %file_backup.class%
     shared:                   true
     arguments:
-      dispatcher:             %dispatcher%
+      dispatcher:             @dispatcher
       filesystem:             @filesystem
       options:                %file_backup.options%
   
@@ -71,10 +71,10 @@ services:
     class:                    %helper.class%
     shared:                   true
     arguments:
-      context:                %context%
+      context:                @context
       
   cache_manager:
     class:                    %cache_manager.class%
     shared:                   true
     arguments:
-      dispatcher:             %dispatcher%
+      dispatcher:             @dispatcher

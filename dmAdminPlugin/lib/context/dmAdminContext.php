@@ -6,16 +6,33 @@ class dmAdminContext extends dmContext
 	$moduleType,
 	$moduleSpace;
 
+  /*
+   * @return dmCoreLayoutHelper
+   */
+  public function getLayoutHelper()
+  {
+    return $this->serviceContainer->getService('layout_helper');
+  }
+	
+  /*
+   * @return dmAdminMenu
+   */
   public function getAdminMenu()
   {
     return $this->serviceContainer->getService('admin_menu');
   }
-
+  
+  /*
+   * @return dmSitemap
+   */
   public function getSitemap()
   {
     return $this->serviceContainer->getService('sitemap');
   }
 	
+  /*
+   * return boolean if current module and action match $module && $action
+   */
 	public function isModuleAction($module, $action)
 	{
 		return $this->sfContext->getModuleName() === $module && $this->sfContext->getActionName() === $action;
@@ -54,15 +71,6 @@ class dmAdminContext extends dmContext
   	return $this->moduleSpace;
   }
 
-  public function isListPage()
-  {
-    return in_array($this->sfContext->getActionName(), array('index'));
-  }
-
-  public function isFormPage()
-  {
-    return in_array($this->sfContext->getActionName(), array('edit', 'new', 'update', 'create'));
-  }
 
   public static function createInstance(sfContext $sfContext)
   {

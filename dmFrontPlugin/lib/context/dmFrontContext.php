@@ -7,16 +7,33 @@ class dmFrontContext extends dmContext
 	protected
 	  $page;
   
+  /*
+   * @return DmPage the current page object
+   */
   public function getPage()
   {
     return $this->page;
   }
+  
+  /*
+   * @return dmFrontLayoutHelper
+   */
+  public function getLayoutHelper()
+  {
+    return $this->serviceContainer->getService('layout_helper');
+  }
 
+  /*
+   * @return dmFrontPageHelper
+   */
   public function getPageHelper()
   {
     return $this->serviceContainer->getService('page_helper');
   }
 
+  /*
+   * @return dmWidgetTypeManager
+   */
   public function getWidgetTypeManager()
   {
     return $this->serviceContainer->getService('widget_type_manager');
@@ -39,7 +56,11 @@ class dmFrontContext extends dmContext
   {
     $this->page = $page;
     
-    $this->getPageHelper()->initialize();
+    if (null !== $page)
+    {
+      $this->getPageHelper()->setPage($page);
+      $this->getLayoutHelper()->setPage($page);
+    }
   }
 
   public static function createInstance(sfContext $sfContext)

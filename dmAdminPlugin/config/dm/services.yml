@@ -1,5 +1,7 @@
 parameters:
 
+  layout_helper.class:        dmAdminLayoutHelper
+
   admin_menu.class:           dmAdminMenu
     
   sitemap.class:              dmSitemap
@@ -8,19 +10,30 @@ parameters:
  
 services:
 
+  layout_helper:
+    class:                    %layout_helper.class%
+    shared:                   true
+    arguments:
+      dispatcher:             @dispatcher
+      user:                   @user
+      request:                @request
+      response:               @response
+      action_stack:           @action_stack
+      helper:                 @helper
+      
   admin_menu:
     class:                    %admin_menu.class%
     shared:                   true
     arguments:
-      dispatcher:             %dispatcher%
-      user:                   %user%
-      i18n:                   %i18n%
-      routing:                %routing%
+      dispatcher:             @dispatcher
+      user:                   @user
+      i18n:                   @i18n
+      routing:                @routing
 
   sitemap:
     class:                    %sitemap.class%
     shared:                   false
     arguments:
-      dispatcher:             %dispatcher%
+      dispatcher:             @dispatcher
       filesystem:             @filesystem
       options:                %sitemap.options%
