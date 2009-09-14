@@ -66,7 +66,7 @@ class dmDoctrineGraphviz
 
     if (!$return)
     {
-      $this->getUser()->logError(sprintf('Diem can not generate the mcd diagram : %s', $this->filesystem->getLastExec('output')));
+      dm::getUser()->logError(sprintf('Diem can not generate the mcd diagram : %s', $this->filesystem->getLastExec('output')));
     }
 
     return '/cache/'.$diagramImage;
@@ -238,12 +238,12 @@ class dmDoctrineGraphviz
     $digraph="digraph G {edge  [ len=2 labeldistance=2 ];overlap=false;splines=true;
 bgcolor=\"transparent\";
 node [fontsize=\"9\" fontname=\"Arial\"];
-edge [fontsize=\"9\" fontname=\"Arial\"];";
+edge [fontsize=\"9\" fontname=\"Arial\" arrowhead=\"odiamond\"];";
     foreach($tables as $tableName) {
       $table = dmDb::table($tableName);
-      $digraph.="node".$table->name." [label=\"{<table>".$table->tableName."|<cols>";
+      $digraph.=$table->getTableName()." [label=\"{<table>".$table->getTableName()."|<cols>";
       foreach ($table->getColumns() as $name=>$column) {
-        $digraph.="$name ($column[type])".(@$column['primary']?' [PK]':'')."\l";
+        $digraph.=$name.' ('.$column['type'].')'.(!empty($column['primary'])?' [PK]':'')."\l";
       }
       $digraph.="}\", shape=record];\n";
     }
@@ -257,7 +257,7 @@ edge [fontsize=\"9\" fontname=\"Arial\"];";
       {
         if ($relation instanceof Doctrine_Relation_LocalKey)
         {
-          $rel[]="node".$table->name.":cols -> node".$relation->getTable()->name.":table [label=\"".$relation->getLocal()."=".$relation->getForeign()." \"];";
+          $rel[]=$table->getTableName().":cols -> ".$relation->getTable()->getTableName().":table [label=\"".$relation->getLocal()."=".$relation->getForeign()." \"];";
         }
       }
     }

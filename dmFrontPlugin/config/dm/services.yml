@@ -1,5 +1,7 @@
 parameters:
 
+  theme_manager.class:        dmThemeManager
+
   widget_view.class:          dmWidgetBaseView
 
   layout_helper.class:        dmFrontLayoutHelper
@@ -13,6 +15,14 @@ parameters:
     config_file:              'config/dm/widget_types.yml'        
  
 services:
+
+  theme_manager:
+    class:                    %theme_manager.class%
+    shared:                   true
+    arguments:
+      dispatcher:             @dispatcher
+      service_container:      @service_container
+      options:                %theme_manager.options%
 
   widget_view:
     class:                    %widget_view.class%

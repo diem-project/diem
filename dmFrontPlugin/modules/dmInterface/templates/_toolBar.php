@@ -21,7 +21,7 @@ echo £o('div#dm_tool_bar.dm.clearfix');
   );
 
   echo £('div.widget16.mt5',
-    select_tag('dm_select_theme', options_for_select($themes, $sf_user->getThemeKey())
+    select_tag('dm_select_theme', options_for_select($themes, $sf_user->getTheme()->getKey())
     )
   );
 

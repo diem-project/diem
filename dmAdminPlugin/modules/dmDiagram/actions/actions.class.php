@@ -74,7 +74,7 @@ class dmDiagramActions extends dmAdminBaseActions
     file_put_contents($dotFile, $dumper->dump(array(
       'graph' => array('concentrate' => 'false', 'bgcolor' => 'transparent', 'ratio' => 'fill', 'size' => '20,7'),
       'node'  => array('fontsize' => 20, 'fontname' => 'Arial', 'shape' => 'Mrecord'),
-      'edge'  => array('fontsize' => 9, 'fontname' => 'Arial', 'color' => 'grey', 'arrowhead' => 'open', 'arrowsize' => 0.8),
+      'edge'  => array('fontsize' => 9, 'fontname' => 'Arial', 'color' => 'grey', 'arrowhead' => 'open', 'arrowsize' => 1),
       'node.instance' => array('fillcolor' => '#9999ff', 'style' => 'filled'),
       'node.definition' => array('fillcolor' => '#eeeeee'),
       'node.missing' => array('fillcolor' => '#ffffff', 'style' => 'filled', 'shape' => 'component'),

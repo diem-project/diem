@@ -197,4 +197,6 @@ $.getScript(href, callback);
 
 * [DONE] add dependency injection and database diagrams in admin app
 
-* add dmThemeManager and dmTheme to sfServiceContainer
+* [DONE] add dmThemeManager and dmTheme to sfServiceContainer
+
+* make dmAssetCompressors support asset options

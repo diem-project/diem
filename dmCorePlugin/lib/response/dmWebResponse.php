@@ -7,25 +7,63 @@ abstract class dmWebResponse extends sfWebResponse
 	$assetConfig,
 	$cdnConfig,
 	$javascriptConfig,
-	$user;
+	$culture,
+	$theme;
 	
   public function initialize(sfEventDispatcher $dispatcher, $options = array())
   {
     parent::initialize($dispatcher, $options);
     
-    $this->assetConfig = dmAsset::getConfig();
-    
-    $this->cdnConfig = array(
-      'css' => sfConfig::get('dm_css_cdn', array('enabled' => false)),
-      'js'  => sfConfig::get('dm_js_cdn', array('enabled' => false))
-    );
-    
     $this->javascriptConfig = array();
+    
+    $this->dispatcher->connect('user.change_culture', array($this, 'listenToChangeCultureEvent'));
+    
+    $this->dispatcher->connect('user.change_theme', array($this, 'listenToChangeThemeEvent'));
+  }
+
+  /**
+   * Listens to the user.change_culture event.
+   *
+   * @param sfEvent An sfEvent instance
+   */
+  public function listenToChangeCultureEvent(sfEvent $event)
+  {
+    $this->culture = $event['culture'];
+  }
+
+  /**
+   * Listens to the user.change_theme event.
+   *
+   * @param sfEvent An sfEvent instance
+   */
+  public function listenToChangeThemeEvent(sfEvent $event)
+  {
+    $this->setTheme($event['theme']);
   }
   
-  public function setUser(dmUser $user)
+  public function setTheme(dmTheme $theme)
   {
-    $this->user = $user;
+    $this->theme = $theme;
+  }
+  
+  /**
+   * Sets the assets configuration
+   *
+   * @param array the asset configuration
+   */
+  public function setAssetConfig(array $assetConfig)
+  {
+    $this->assetConfig = $assetConfig;
+  }
+  
+  /**
+   * Sets the cdn configuration
+   *
+   * @param array the cdn configuration
+   */
+  public function setCdnConfig(array $cdnConfig)
+  {
+    $this->cdnConfig = $cdnConfig;
   }
   
   public function getJavascriptConfig()
@@ -45,7 +83,7 @@ abstract class dmWebResponse extends sfWebResponse
 
   protected function calculateAssetPath($type, $asset)
   {
-    if (strpos($asset, 'http://') === 0 || $asset{0} === "/" )
+    if ($asset{0} === '/' || strpos($asset, 'http://') === 0)
     {
       $path = $asset;
     }
@@ -55,18 +93,22 @@ abstract class dmWebResponse extends sfWebResponse
     	{
     		$path = $this->cdnConfig[$type][$asset];
     	}
-    	elseif (isset($this->assetConfig[$type.'.'.$asset]))
+    	elseif(isset($this->assetConfig[$type.'.'.$asset]))
     	{
     		$path = $this->assetConfig[$type.'.'.$asset].'.'.$type;
     	}
+      elseif($type === 'css')
+      {
+        $path = $this->theme->getWebPath('css/'.$asset.'.css');
+      }
       else
       {
-        $path = dmAsset::getPathFromWebDir($type, $asset).'.'.$type;
+        $path = '/'.$type.'/'.$asset.'.'.$type;
       }
       
-      if (strpos($path, '%culture%') && $this->user)
+      if (strpos($path, '%culture%') !== false)
       {
-      	$path = str_replace('%culture%', $this->user->getCulture(), $path);
+      	$path = str_replace('%culture%', $this->culture, $path);
       }
     }
     

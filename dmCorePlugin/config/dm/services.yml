@@ -1,4 +1,6 @@
 parameters:
+  
+  theme.class:                dmTheme
 
   stylesheet_compressor.class: dmStylesheetCompressor
   stylesheet_compressor.options:
@@ -40,21 +42,30 @@ parameters:
  
 services:
 
+  theme:
+    class:                    %theme.class%
+    shared:                   false
+    arguments:
+      dispatcher:             @dispatcher
+      filesystem:             @filesystem
+      relative_url_root:      %request.relative_url_root%
+      options:                %theme.options%
+
   stylesheet_compressor:
     class:                    %stylesheet_compressor.class%
     shared:                   true
     arguments:
       dispatcher:             @dispatcher
-      request:                @request
       filesystem:             @filesystem
+      relative_url_root:      %request.relative_url_root%
 
   javascript_compressor:
     class:                    %javascript_compressor.class%
     shared:                   true
     arguments:
       dispatcher:             @dispatcher
-      request:                @request
       filesystem:             @filesystem
+      relative_url_root:      %request.relative_url_root%
 
   auth_layout_helper:
     class:                    %auth_layout_helper.class%

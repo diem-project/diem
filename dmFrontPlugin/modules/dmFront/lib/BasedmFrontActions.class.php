@@ -95,4 +95,17 @@ class BasedmFrontActions extends dmFrontBaseActions
     return $this->renderText('ok');
 	}
 
+  public function executeSelectTheme(sfWebRequest $request)
+  {
+    $this->forward404Unless(
+      $theme = $this->dmContext->getServiceContainer()->getService('theme_manager')->getTheme($request->getParameter('theme')),
+      sprintf('%s is not a valid theme.',
+        $request->getParameter('theme')
+      )
+    );
+    
+    $this->getUser()->setTheme($theme);
+
+    return $this->redirectBack();
+  }
 }

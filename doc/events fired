@@ -18,4 +18,16 @@ params: array the loaded menu
 fired by dmBrowser when it is unable to configure from user agent because it is unknown
 params: the user agent string
 
-// add assets events
+[dm.response.filter_stylesheets]
+fired by dmCoreLayoutHelper before rendering stylesheets. With this event you can modify stylesheets just before rendering.
+params: none
+value: array of stylesheets => options
+
+[dm.response.filter_javascripts]
+fired by dmCoreLayoutHelper before rendering javascripts. With this event you can modify javascripts just before rendering.
+params: none
+value: array of javascripts => options
+
+[dm.theme.created]
+fired by dmTheme when it has finished creating its filesystem structure
+params: the dmTheme

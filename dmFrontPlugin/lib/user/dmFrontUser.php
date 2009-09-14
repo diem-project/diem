@@ -2,9 +2,21 @@
 
 class dmFrontUser extends dmUser
 {
+  protected
+    $themeManager;
+    
+  /**
+   * The namespace under which theme keys will be stored.
+   */
+  const THEME_NAMESPACE = 'symfony/user/sfUser/theme';
+  
+  public function setThemeManager(dmThemeManager $themeManager)
+  {
+    $this->themeManager = $themeManager;
+  }
 
   /*
-   * Theme methods
+   * @return dmTheme the current user theme
    */
   public function getTheme()
   {
@@ -12,32 +24,37 @@ class dmFrontUser extends dmUser
     {
       return $this->getCache('theme');
     }
-
-    if (!$theme = dmTheme::getTheme($this->getThemeKey()))
+    
+    $themeKey = $this->storage->read(self::THEME_NAMESPACE);
+    
+    if (!$this->themeManager->themeKeyExists($themeKey))
     {
-    	$defaultThemeKey = 'dm/front/themeDefault';
-    	$theme = dmTheme::getTheme($defaultThemeKey);
-      $this->setAttribute('dm.theme.current', $defaultThemeKey);
+      $themeKey = $this->themeManager->getDefaultThemeKey();
     }
 
+    return $this->setTheme($themeKey);
+  }
+
+  public function setTheme($theme)
+  {
+    if (is_string($theme))
+    {
+      $theme = $this->themeManager->getTheme($theme);
+    }
+    
+    if (!$theme instanceof dmTheme)
+    {
+      throw new dmException(sprintf('%s is not a valid dmTheme', $theme));
+    }
+    
+    if ($theme->getKey() != $this->storage->read(self::THEME_NAMESPACE))
+    {
+      $this->storage->write(self::THEME_NAMESPACE, $theme->getKey());
+    }
+    
+    $this->dispatcher->notify(new sfEvent($this, 'user.change_theme', array('theme' => $theme)));
+    
     return $this->setCache('theme', $theme);
-  }
-
-  public function getThemeKey()
-  {
-    if (!$currentThemeKey = $this->getAttribute('dm.theme.current'))
-    {
-      $currentThemeKey = $this->setThemeKey(sfConfig::get('dm_theme_default', 'dm/themeDefault'));
-    }
-
-    return $currentThemeKey;
-  }
-
-  public function setThemeKey($themeKey)
-  {
-    $this->setAttribute('dm.theme.current', $themeKey);
-    $this->clearCache('theme');
-    return $themeKey;
   }
 
   public function getIsEditMode()

@@ -3,6 +3,23 @@
 class dmAdminUser extends dmUser
 {
 
+  /*
+   * @return dmTheme the current user theme
+   */
+  public function getTheme()
+  {
+    if($this->hasCache('theme'))
+    {
+      return $this->getCache('theme');
+    }
+    
+    $this->serviceContainer->addParameters(array(
+      'theme.options' => array('key' => 'diem_admin', 'path' => 'themeAdmin', 'name' => 'Admin Theme', 'enabled' => true)
+    ));
+    
+    return $this->setCache('theme', $this->serviceContainer->getService('theme'));
+  }
+
   public function getAppliedSearchOnModule($module)
   {
     return $this->getAttribute($module.'.search', '', 'admin_module');
@@ -30,16 +47,6 @@ class dmAdminUser extends dmUser
     }
 
     return $appliedFilters;
-  }
-
-  public function getTheme()
-  {
-  	if($this->hasCache('theme'))
-  	{
-  		return $this->getCache('theme');
-  	}
-
-  	return $this->setCache('theme', dmTheme::getTheme('themeAdmin'));
   }
 
 }

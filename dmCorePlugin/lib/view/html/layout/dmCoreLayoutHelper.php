@@ -106,7 +106,7 @@ abstract class dmCoreLayoutHelper
       new sfEvent($this, 'dm.response.filter_stylesheets'),
       $this->response->getStylesheets()
     )->getReturnValue();
-  
+
     $html = '';
     foreach ($stylesheets as $file => $options)
     {

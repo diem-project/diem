@@ -2,12 +2,6 @@ default:
 
   i18n:                                 # internationalization
     cultures:             [  ]          # Available cultures
-
-  theme:
-    list:
-      dm/front/themeDefault: "Diem default theme"
-      theme:              "Site first theme"
-      themeAdmin:         "Site admin theme"
   
   search:                               # Internal search engine
     fields:                             # Pages fields to search in, with boost level

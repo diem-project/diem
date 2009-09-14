@@ -29,15 +29,9 @@ abstract class dmContext extends dmMicroCache
   {
     $this->loadServiceContainer();
 
-    /*
-     * User require serviceContainer to create its browser
-     */
-    $this->sfContext->getUser()->setServiceContainer($this->serviceContainer);
-
-    /*
-     * Response require user to replace %culture% in assets
-     */
-    $this->sfContext->getResponse()->setUser($this->sfContext->getUser());
+    $this->configureUser();
+    
+    $this->configureResponse();
 
     /*
      * Doctrine cache configuration require a dmContext
@@ -48,7 +42,31 @@ abstract class dmContext extends dmMicroCache
      * Connect the tree watcher to make it aware of database modifications
      */
     $this->getPageTreeWatcher()->connect();
+  }
+  
+  protected function configureUser()
+  {
+    /*
+     * User require serviceContainer to create its browser
+     */
+    $this->sfContext->getUser()->setServiceContainer($this->serviceContainer);
+  }
+  
+  protected function configureResponse()
+  {
+    /*
+     * Response require asset configuration
+     */
+    $this->sfContext->getResponse()->setAssetConfig(include($this->sfContext->getConfigCache()->checkConfig('config/dm/assets.yml')));
     
+    /*
+     * Response require cdn configuration
+     */
+    $this->sfContext->getResponse()->setCdnConfig(array(
+      'css' => sfConfig::get('dm_css_cdn', array('enabled' => false)),
+      'js'  => sfConfig::get('dm_js_cdn', array('enabled' => false))
+    ));
+  
     /*
      * Enable stylesheet compression
      */
@@ -144,6 +162,10 @@ abstract class dmContext extends dmMicroCache
     $this->serviceContainer->setService('context', $this->sfContext);
     $this->serviceContainer->setService('service_container', $this->serviceContainer);
     $this->serviceContainer->setService('doctrine_manager', Doctrine_Manager::getInstance());
+    
+    $this->serviceContainer->addParameters(array(
+      'request.relative_url_root' => $this->sfContext->getRequest()->getRelativeUrlRoot()
+    ));
   }
 
   public function loadServiceContainerLoader()

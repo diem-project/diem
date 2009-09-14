@@ -20,6 +20,26 @@ class dmFrontContext extends dmContext
       $this->serviceContainer->setParameter('page_helper.class', $this->serviceContainer->getParameter('page_helper.view_class'));
     }
 	}
+  
+  protected function configureUser()
+  {
+    parent::configureUser();
+    /*
+     * User require themeManager
+     */
+    $this->serviceContainer->addParameters(array(
+      'theme_manager.options' => array(
+        'list' => sfConfig::get('dm_theme_list'),
+        'default' => sfConfig::get('dm_theme_default')
+      )
+    ));
+    $this->sfContext->getUser()->setThemeManager($this->serviceContainer->getService('theme_manager'));
+    
+    /*
+     * Set theme to user to ensure event firing
+     */
+    $this->sfContext->getUser()->getTheme();
+  }
 	  
   /*
    * @return DmPage the current page object

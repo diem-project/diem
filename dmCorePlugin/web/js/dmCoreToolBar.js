@@ -35,7 +35,7 @@ $.dm.coreToolBar = {
     });
     
     $('#dm_select_theme').bind('change', function() {
-      location.href = $.dm.ctrl.getHref('+/dmCore/selectTheme')+'?theme='+$(this).val()
+      location.href = $.dm.ctrl.getHref('+/dmFront/selectTheme')+'?theme='+$(this).val()
     });
   },
   

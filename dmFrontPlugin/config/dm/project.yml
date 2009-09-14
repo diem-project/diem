@@ -1,14 +1,26 @@
 default:
 
+  theme:                                          # front css themes
+    list:                                         # list of themes
+      default_theme:
+        name:             'Diem default theme'    # theme name
+        path:             'dm/front/defaultTheme' # theme path from web dir
+        enabled:          true                    # theme disponibility from dmThemeManager 
+      my_theme:
+        name:             'My theme'              # theme name
+        path:             'theme'                 # theme path from web dir
+        enabled:          true                    # theme disponibility from dmThemeManager 
+    default:              default_theme           # default theme when user arrive on site
+
   accessibility:
     access_links:         true
     
   html:
     doctype:
-      name:               'html'        # Doctype ( 'html', 'xhtml' )
-      version:            '5'           # Doctype xhtml version ( '1.0', '1.1' ) or html version ( '4', '5' )
-      compliance:         'transitional' # Doctype (x)html compliance ( 'strict', 'transitional' )
-      validate:           true           # Validates Html in front ( credential: html_validate_front )
+      name:               'html'                  # Doctype ( 'html', 'xhtml' )
+      version:            '5'                     # Doctype xhtml version ( '1.0', '1.1' ) or html version ( '4', '5' )
+      compliance:         'transitional'          # Doctype (x)html compliance ( 'strict', 'transitional' )
+      validate:           true                    # Validates Html in front ( credential: html_validate_front )
 
   i18n:
     catalogue:            front

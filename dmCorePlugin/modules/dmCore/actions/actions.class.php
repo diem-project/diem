@@ -19,21 +19,6 @@ class dmCoreActions extends dmBaseActions
 
     $this->validator = new dmHtmlValidator($this->dmContext->getCacheManager()->getCache("dm/view/html/validate")->get(session_id()));
   }
-
-
-  public function executeSelectTheme(sfWebRequest $request)
-  {
-    $this->forward404Unless(
-      $theme = dmTheme::getTheme($request->getParameter('theme')),
-      sprintf('%s is not a valid theme.',
-        $request->getParameter('theme')
-      )
-    );
-    
-    $this->getUser()->setThemeKey($theme->getKey());
-
-    return $this->redirectBack();
-  }
   
   public function executeSelectCulture(sfWebRequest $request)
   {

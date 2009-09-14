@@ -6,6 +6,16 @@ class dmAdminContext extends dmContext
 	$moduleType,
 	$moduleSpace;
 
+  
+  protected function configureResponse()
+  {
+    parent::configureResponse();
+    
+    /*
+     * Set admin theme to response
+     */
+    $this->sfContext->getResponse()->setTheme($this->sfContext->getUser()->getTheme());
+  }
   /*
    * @return dmCoreLayoutHelper
    */

@@ -12,7 +12,7 @@ class dmInterfaceComponents extends dmFrontBaseComponents
       $this->cultures[$key] = dmArray::get($languages, $key, $key);
     }
 
-    $this->themes = dmTheme::getList();
+    $this->themes = $this->dmContext->getServiceContainer()->getService('theme_manager')->getThemes();
 
     if ($this->getUser()->can('widget_add'))
     {

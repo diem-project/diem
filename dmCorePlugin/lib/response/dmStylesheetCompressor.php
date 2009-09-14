@@ -2,9 +2,6 @@
 
 class dmStylesheetCompressor extends dmAssetCompressor
 {
-  protected
-  $relativeUrlRoot;
-  
   public function connect()
   {
     $this->dispatcher->connect('dm.response.filter_stylesheets', array($this, 'listenFilterAssets'));
@@ -15,10 +12,6 @@ class dmStylesheetCompressor extends dmAssetCompressor
     return 'css';
   }
   
-  protected function preProcess()
-  {
-    $this->relativeUrlRoot = $this->request->getRelativeUrlRoot();
-  }
   
   protected function isCachable($stylesheet, array $options = array())
   {
