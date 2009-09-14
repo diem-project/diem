@@ -116,7 +116,6 @@ class dmTheme extends dmMicroCache
     return dmOs::join($this->getBasePath(), $this->getPath($path));
   }
 
-  
   /*
    * public path
    * example : /theme/css/style.css or /public_html/theme/css/style.css if no virtual host

@@ -98,33 +98,43 @@ abstract class dmCoreLayoutHelper
 
   public function renderStylesheets()
   {
-    if (sfConfig::get('dm_css_compress', true) && !sfConfig::get('dm_debug'))
-    {
-      $this->response->cacheStylesheets();
-    }
+    /*
+     * Allow listeners of dm.response.filter_stylesheets event
+     * to filter and modify the stylesheets list
+     */
+    $stylesheets = $this->dispatcher->filter(
+      new sfEvent($this, 'dm.response.filter_stylesheets'),
+      $this->response->getStylesheets()
+    )->getReturnValue();
   
     $html = '';
-    foreach ($this->response->getStylesheets() as $file => $options)
+    foreach ($stylesheets as $file => $options)
     {
-      $html .= "\n".sprintf('<link rel="stylesheet" type="text/css" media="screen" href="%s" />',
-        $this->relativeUrlRoot.$file
-      );
+      $html .= "\n".'<link rel="stylesheet" type="text/css" media="screen" href="'.$this->relativeUrlRoot.$file.'" />';
     }
+    
+    sfConfig::set('symfony.asset.stylesheets_included', true);
   
     return $html;
   }
   
   public function renderJavascripts()
   {
-    if (sfConfig::get('dm_js_compress', true) && !sfConfig::get('dm_debug'))
-    {
-      $this->response->cacheJavascripts();
-    }
-  
+    /*
+     * Allow listeners of dm.response.filter_javascripts event
+     * to filter and modify the javascripts list
+     */
+    $javascripts = $this->dispatcher->filter(
+      new sfEvent($this, 'dm.response.filter_javascripts'),
+      $this->response->getJavascripts()
+    )->getReturnValue();
+    
+    sfConfig::set('symfony.asset.javascripts_included', true);
+    
     $html = '';
-    foreach ($this->response->getJavascripts() as $file => $options)
+    foreach ($javascripts as $file => $options)
     {
-      $html .= sprintf('<script type="text/javascript" src="%s"></script>', $file{0} === '/' ? $this->relativeUrlRoot.$file : $file);
+      $html .= '<script type="text/javascript" src="'.($file{0} === '/' ? $this->relativeUrlRoot.$file : $file).'"></script>';
     }
   
     return $html;
@@ -144,35 +154,27 @@ abstract class dmCoreLayoutHelper
   
   public function renderJavascriptConfig()
   {
-    return sprintf('
-<script type="text/javascript">
-var dm_configuration = %s;
-</script>', json_encode($this->getJavascriptConfig())
-    );
+    return '<script type="text/javascript">var dm_configuration = '.json_encode($this->getJavascriptConfig()).';</script>';
   }
 
   public function renderFavicon()
   {
-    if (is_readable(sfConfig::get("sf_web_dir")."/favicon.ico"))
+    if (is_readable(sfConfig::get('sf_web_dir').'/favicon.ico'))
     {
-      $favicon = "favicon.ico";
+      $favicon = 'favicon.ico';
     }
-    elseif (is_readable(sfConfig::get("sf_web_dir")."/images/favicon.png"))
+    elseif (is_readable(sfConfig::get('sf_web_dir').'/images/favicon.png'))
     {
-      $favicon = "images/favicon.png";
+      $favicon = 'images/favicon.png';
     }
-    elseif (is_readable(sfConfig::get("sf_web_dir")."/images/favicon.gif"))
+    elseif (is_readable(sfConfig::get('sf_web_dir').'/images/favicon.gif'))
     {
-      $favicon = "images/favicon.gif";
+      $favicon = 'images/favicon.gif';
     }
 
     if (isset($favicon))
     {
-      return sprintf(
-        '<link rel="shortcut icon" href="%s/%s" />',
-        $this->relativeUrlRoot,
-        $favicon
-      );
+      return '<link rel="shortcut icon" href="'.$this->relativeUrlRoot.'/'.$favicon.'" />';
     }
 
     return '';

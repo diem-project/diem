@@ -4,8 +4,14 @@ abstract class dmUser extends sfGuardSecurityUser implements dmMicroCacheInterfa
 {
 
 	protected
+	$serviceContainer,
 	$isSuperAdmin = null,
 	$cache = array();
+	
+	public function setServiceContainer(sfServiceContainer $serviceContainer)
+	{
+	  $this->serviceContainer = $serviceContainer;
+	}
 	
 	public function setCulture($culture)
 	{
@@ -28,8 +34,8 @@ abstract class dmUser extends sfGuardSecurityUser implements dmMicroCacheInterfa
 			return $this->getCache('browser');
 		}
 		
-		$browser = dmContext::getInstance()->getServiceContainer()->getService('browser');
-		$browser->configure($_SERVER['HTTP_USER_AGENT']);
+		$browser = $this->serviceContainer->getService('browser');
+		$browser->configureFromUserAgent($_SERVER['HTTP_USER_AGENT']);
 		
 		return $this->setCache('browser', $browser);
 	}

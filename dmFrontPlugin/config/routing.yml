@@ -1,0 +1,29 @@
+# Front routing should not be changed, as Diem takes care of pages urls.
+# To change a page url, edit the page in the front office
+# Or use seo module in admin
+
+default:
+  url:          /+/:module/:action/*
+
+toAdmin:
+  url:          /admin
+  params:       { module: dmFront, action: toAdmin }
+
+dmPaginatedPage:
+  url:          /:slug/page/:page
+  params:       { module: dmFront, action: page }
+  requirements: { slug: '.+', page: '\d+' }
+
+dmPaginatedHome:
+  url:          /page/:page
+  params:       { module: dmFront, action: page, slug: '' }
+  requirements: { page: '\d+' }
+  
+dmPage:
+  url:          /:slug
+  params:       { module: dmFront, action: page }
+  requirements: { slug: '.+' }
+
+homepage:
+  url:          /
+  params:       { module: dmFront, action: page, slug: '' }

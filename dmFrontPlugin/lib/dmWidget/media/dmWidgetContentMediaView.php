@@ -52,7 +52,19 @@ class dmWidgetContentMediaView extends dmWidgetPluginView
   	}
   	else
   	{
-  	  $html = $vars['mediaTag']->alt($vars['legend']);
+  	  $media = $vars['mediaTag'];
+  	  
+  	  if ($vars['legend'])
+  	  {
+  	    $vars['mediaTag']->alt($vars['legend']);
+  	  }
+  	  
+  	  if ($vars['cssClass'])
+  	  {
+  	    $media->addCssClass($vars['cssClass']);
+  	  }
+  	  
+  	  $html = $media->render();
   	}
   	
   	return $html;

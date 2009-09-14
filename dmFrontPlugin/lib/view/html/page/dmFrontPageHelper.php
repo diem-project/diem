@@ -6,14 +6,19 @@ class dmFrontPageHelper
     $dispatcher,
 	  $widgetTypeManager,
 	  $serviceContainer,
+	  $i18n,
 	  $page,
 	  $areas;
 
-  public function __construct(sfEventDispatcher $dispatcher, dmWidgetTypeManager $widgetTypeManager, sfServiceContainer $serviceContainer)
+	protected static
+	$innerCssClassWidgets = array('dmWidgetContent.title', 'dmWidgetContent.media', 'dmWidgetContent.link');
+	  
+  public function __construct(sfEventDispatcher $dispatcher, dmWidgetTypeManager $widgetTypeManager, sfServiceContainer $serviceContainer, sfI18n $i18n)
   {
     $this->dispatcher        = $dispatcher;
     $this->widgetTypeManager = $widgetTypeManager;
     $this->serviceContainer  = $serviceContainer;
+    $this->i18n              = $i18n;
     
     $this->initialize();
   }
@@ -33,6 +38,11 @@ class dmFrontPageHelper
   {
     if (null === $this->areas)
     {
+      if (null === $this->page)
+      {
+        throw new dmException('Can not fetch page area because no page have benn set');
+      }
+      
       $this->areas = dmDb::query('DmArea a INDEXBY a.type, a.Zones z, z.Widgets w')
       ->select('a.type, z.width, z.css_class, w.module, w.action, w.value, w.css_class')
       ->where('a.dm_layout_id = ? OR a.dm_page_view_id = ?', array($this->page->getPageView()->get('Layout')->get('id'), $this->page->getPageView()->get('id')))
@@ -50,7 +60,6 @@ class dmFrontPageHelper
   	if (!isset($this->areas[$type]))
   	{
   		throw new dmException(sprintf('Page %s with layout %s has no area for type %s', $this->page, $this->page->Layout, $type));
-  	  return null;
   	}
 
   	return $this->areas[$type];
@@ -65,10 +74,7 @@ class dmFrontPageHelper
 
 	  $html = '<div class="dm_access_links">';
 
-	  $html .= sprintf(
-	    '<a href="#content">%s</a>',
-	    dm::getI18n()->__('Go to content')
-	  );
+	  $html .= '<a href="#content">'.$this->i18n->__('Go to content').'</a>';
 
 	  $html .= '</div>';
 
@@ -124,13 +130,15 @@ class dmFrontPageHelper
   {
     if (sfConfig::get('dm_html_doctype_version', 5) == 5)
     {
-      $tagName = dmArray::get(array(
-        'top'     => 'header',
-        'left'    => 'aside',
-        'content' => 'section',
-        'right'   => 'aside',
-        'bottom'  => 'footer'
-      ), $areaType, 'div');
+      switch($areaType)
+      {
+        case 'top':     $tagName = 'header'; break;
+        case 'left':    $tagName = 'aside'; break;
+        case 'content': $tagName = 'section'; break;
+        case 'right':   $tagName = 'aside'; break;
+        case 'bottom':  $tagName = 'footer'; break;
+        default:        $tagName = 'div';
+      }
     }
     else
     {
@@ -142,15 +150,9 @@ class dmFrontPageHelper
 
   public function renderZone(array $zone)
   {
-    $cssClasses = array('dm_zone', $zone['css_class']);
-
-    $style = (!$zone['width'] || $zone['width'] === '100%') ? '' : " style='width: ".$zone['width'].";'";
+    $style = (!$zone['width'] || $zone['width'] === '100%') ? '' : ' style="width: '.$zone['width'].';"';
     
-    $html = sprintf(
-      "<div class='%s'%s>",
-      dmArray::toHtmlCssClasses($cssClasses),
-      $style
-    );
+    $html = '<div class="'.dmArray::toHtmlCssClasses(array('dm_zone', $zone['css_class'])).'"'.$style.'>';
 
     $html .= '<div class="dm_widgets">';
 
@@ -173,12 +175,12 @@ class dmFrontPageHelper
     /*
      * Open widget wrap with wrapped user's classes
      */
-    $html = sprintf('<div class="%s">', $widgetWrapClass);
+    $html = '<div class="'.$widgetWrapClass.'">';
 
     /*
      * Open widget inner with user's classes
      */
-    $html .= sprintf('<div class="%s">', $widgetInnerClass);
+    $html .= '<div class="'.$widgetInnerClass.'">';
 
     /*
      * get widget inner content
@@ -254,7 +256,7 @@ class dmFrontPageHelper
 	    }
 	    
       $widgetWrapClass  = dmArray::toHtmlCssClasses(array('dm_widget', $widget['action'], implode(' ', $widgetWrappedClasses)));
-      $widgetInnerClass = dmArray::toHtmlCssClasses(array('dm_widget_inner', $widget['css_class']));
+      $widgetInnerClass = dmArray::toHtmlCssClasses(array('dm_widget_inner', in_array($widget['module'].'.'.$widget['action'], self::$innerCssClassWidgets) ? '' : $widget['css_class']));
     }
     else
     {

@@ -42,6 +42,7 @@ services:
       dispatcher:             @dispatcher
       widget_type_manager:    @widget_type_manager
       service_container:      @service_container
+      i18n:                   @i18n
 
   widget_type_manager:
     class:                    %widget_type_manager.class%

@@ -3,13 +3,13 @@
 abstract class dmContext extends dmMicroCache
 {
   protected static
-    $_null = null,
-    $instance = null;
+  $_null = null,
+  $instance = null;
 
   protected
-    $serviceContainer,
-    $dmConfiguration,
-    $sfContext;
+  $serviceContainer,
+  $dmConfiguration,
+  $sfContext;
 
   abstract public function getModule();
 
@@ -17,24 +17,55 @@ abstract class dmContext extends dmMicroCache
   {
     return ($module = $this->getModule()) ? $module->getKey() : null;
   }
-  
+
   public function __construct(sfContext $sfContext)
   {
     $this->sfContext = $sfContext;
-    
+
     $this->initialize();
   }
-  
+
   public function initialize()
   {
     $this->loadServiceContainer();
+
+    /*
+     * User require serviceContainer to create its browser
+     */
+    $this->sfContext->getUser()->setServiceContainer($this->serviceContainer);
+
+    /*
+     * Response require user to replace %culture% in assets
+     */
+    $this->sfContext->getResponse()->setUser($this->sfContext->getUser());
+
+    /*
+     * Doctrine cache configuration require a dmContext
+     */
+    $this->getDoctrineConfig()->configureCache();
+
+    /*
+     * Connect the tree watcher to make it aware of database modifications
+     */
+    $this->getPageTreeWatcher()->connect();
     
-    $this->getDoctrineConfig();
+    /*
+     * Enable stylesheet compression
+     */
+    if (sfConfig::get('dm_css_compress', true) && !sfConfig::get('dm_debug'))
+    {
+      $this->serviceContainer->getService('stylesheet_compressor')->connect();
+    }
     
-    $this->getPageTreeWatcher();
+    /*
+     * Enable javascript compression
+     */
+    if (sfConfig::get('dm_js_compress', true) && !sfConfig::get('dm_debug'))
+    {
+      $this->serviceContainer->getService('javascript_compressor')->connect();
+    }
   }
-  
-  
+
   /*
    * @return mixed the requested service
    */
@@ -42,19 +73,19 @@ abstract class dmContext extends dmMicroCache
   {
     return $this->serviceContainer->getService($serviceName);
   }
-  
+
   /*
    * Loads the diem services
    */
   protected function loadServiceContainer()
   {
-    include_once(dmOs::join(sfConfig::get('dm_core_dir'), 'lib/vendor/sfService/sfServiceContainerAutoloader.php'));
-    sfServiceContainerAutoloader::register();
-    
+    require_once(sfConfig::get('dm_core_dir').'/lib/vendor/sfService/sfServiceContainerInterface.php');
+    require_once(sfConfig::get('dm_core_dir').'/lib/vendor/sfService/sfServiceContainer.php');
+
     $name = 'dm'.dmString::camelize(sfConfig::get('sf_app')).'ServiceContainer';
-    
+
     $file = dmOs::join(sfConfig::get('dm_cache_dir'), 'services', $name.'.php');
-  
+
     if (!is_dir(sfConfig::get('dm_cache_dir')))
     {
       $oldUmask = umask(0);
@@ -75,46 +106,59 @@ abstract class dmContext extends dmMicroCache
     }
     else
     {
+      $this->loadServiceContainerLoader();
+       
       $sc = new sfServiceContainerBuilder;
-    
-      $configFiles = $this->getSfContext()->getConfiguration()->getConfigPaths('config/dm/services.yml');
-      
+
+      $configFiles = $this->sfContext->getConfiguration()->getConfigPaths('config/dm/services.yml');
+
       $loader = new sfServiceContainerLoaderFileYaml($sc);
       $loader->load($configFiles);
-     
+       
       if (!file_exists($file)/* || !sfConfig::get('sf_debug')*/)
       {
         $dumper = new sfServiceContainerDumperPhp($sc);
         file_put_contents($file, $dumper->dump(array('class' => $name)));
         chmod($file, 0777);
       }
-      
+
       $this->serviceContainer = $sc;
     }
-    
+
     $this->configureServiceContainer();
-    
-    $this->getSfContext()->getEventDispatcher()->notify(new sfEvent($this, 'dm.context.service_container_loaded', $this->serviceContainer));
+
+    $this->sfContext->getEventDispatcher()->notify(new sfEvent($this, 'dm.context.service_container_loaded', $this->serviceContainer));
   }
-  
+
   protected function configureServiceContainer()
   {
-    $sfContext = $this->getSfContext();
-    
-    $this->serviceContainer->setService('dispatcher', $sfContext->getEventDispatcher());
-    $this->serviceContainer->setService('user', $sfContext->getUser());
-    $this->serviceContainer->setService('request', $sfContext->getRequest());
-    $this->serviceContainer->setService('response', $sfContext->getResponse());
-    $this->serviceContainer->setService('i18n', $sfContext->getI18n());
-    $this->serviceContainer->setService('routing', $sfContext->getRouting());
-    $this->serviceContainer->setService('action_stack', $sfContext->getActionStack());
-    $this->serviceContainer->setService('config_cache', $sfContext->getConfigCache());
-    $this->serviceContainer->setService('controller', $sfContext->getController());
-    $this->serviceContainer->setService('context', $sfContext);
+    $this->serviceContainer->setService('dispatcher', $this->sfContext->getEventDispatcher());
+    $this->serviceContainer->setService('user', $this->sfContext->getUser());
+    $this->serviceContainer->setService('request', $this->sfContext->getRequest());
+    $this->serviceContainer->setService('response', $this->sfContext->getResponse());
+    $this->serviceContainer->setService('i18n', $this->sfContext->getI18n());
+    $this->serviceContainer->setService('routing', $this->sfContext->getRouting());
+    $this->serviceContainer->setService('action_stack', $this->sfContext->getActionStack());
+    $this->serviceContainer->setService('config_cache', $this->sfContext->getConfigCache());
+    $this->serviceContainer->setService('controller', $this->sfContext->getController());
+    $this->serviceContainer->setService('context', $this->sfContext);
     $this->serviceContainer->setService('service_container', $this->serviceContainer);
     $this->serviceContainer->setService('doctrine_manager', Doctrine_Manager::getInstance());
   }
-  
+
+  public function loadServiceContainerLoader()
+  {
+    $loaderFilePrefix = dmOs::join(sfConfig::get('dm_core_dir'), 'lib/vendor/sfService/sfService');
+    
+    if (!class_exists('sfServiceContainerBuilder', false))
+    {
+      foreach(array('Definition', 'Reference', 'ContainerBuilder', 'ContainerLoaderInterface', 'ContainerLoader', 'ContainerLoaderFile', 'ContainerLoaderFileYaml', 'ContainerDumperInterface', 'ContainerDumper', 'ContainerDumperPhp') as $requiredClassSuffix)
+      {
+        require_once($loaderFilePrefix.$requiredClassSuffix.'.php');
+      }
+    }
+  }
+
   /*
    * @return sfServiceContainer
    */
@@ -122,7 +166,7 @@ abstract class dmContext extends dmMicroCache
   {
     return $this->serviceContainer;
   }
-  
+
   /*
    * @return dmSearchIndexGroup
    */
@@ -130,7 +174,7 @@ abstract class dmContext extends dmMicroCache
   {
     return $this->serviceContainer->getService('search_engine');
   }
-  
+
   /*
    * @return dmDoctrineConfiguration
    */
@@ -138,7 +182,7 @@ abstract class dmContext extends dmMicroCache
   {
     return $this->serviceContainer->getService('doctrine_config');
   }
-  
+
   /*
    * @return dmCacheManager
    */
@@ -146,7 +190,7 @@ abstract class dmContext extends dmMicroCache
   {
     return $this->serviceContainer->getService('cache_manager');
   }
-  
+
   /*
    * @return dmFilesystem
    */
@@ -154,7 +198,7 @@ abstract class dmContext extends dmMicroCache
   {
     return $this->serviceContainer->getService('filesystem');
   }
-  
+
   /*
    * @return dmFileBackup
    */
@@ -162,7 +206,7 @@ abstract class dmContext extends dmMicroCache
   {
     return $this->serviceContainer->getService('file_backup');
   }
-  
+
   /*
    * @return dmUserLog
    */
@@ -170,7 +214,7 @@ abstract class dmContext extends dmMicroCache
   {
     return $this->serviceContainer->getService('user_log');
   }
-  
+
   /*
    * @return dmPageTreeWatcher
    */
@@ -178,7 +222,7 @@ abstract class dmContext extends dmMicroCache
   {
     return $this->serviceContainer->getService('page_tree_watcher');
   }
-  
+
   /*
    * @return dmOoHelper
    */
@@ -192,18 +236,18 @@ abstract class dmContext extends dmMicroCache
    */
   public function getSfContext()
   {
-  	return $this->sfContext;
+    return $this->sfContext;
   }
 
   public function isHtmlForHuman()
   {
     if ($this->hasCache('is_html_for_human'))
     {
-    	return $this->getCache('is_html_for_human');
+      return $this->getCache('is_html_for_human');
     }
 
     return $this->setCache('is_html_for_human',
-       !$this->sfContext->getRequest()->isXmlHttpRequest()
+    !$this->sfContext->getRequest()->isXmlHttpRequest()
     && !$this->sfContext->getRequest()->isFlashRequest()
     && strpos($this->sfContext->getResponse()->getContentType(), 'text/html') === 0
     );
@@ -214,7 +258,7 @@ abstract class dmContext extends dmMicroCache
    */
   public function getPage()
   {
-  	return null;
+    return null;
   }
 
   /*
@@ -232,17 +276,17 @@ abstract class dmContext extends dmMicroCache
 
   public function isModuleAction($module, $action)
   {
-  	return $this->sfContext->getModuleName() === $module && $this->sfContext->getActionName() === $action;
+    return $this->sfContext->getModuleName() === $module && $this->sfContext->getActionName() === $action;
   }
-  
+
   public function getAppUrl($app = null, $env = null, $culture = null)
   {
     $app = null === $app ? sfConfig::get('sf_app') : $app;
     $env = null === $env ? sfConfig::get('sf_environment') : $env;
     $culture = null === $culture ? $this->sfContext->getUser()->getCulture() : $culture;
-    
+
     $knownAppUrls = json_decode(dmConfig::get('base_urls', '[]'), true);
-    
+
     $appUrlKey = implode('-', array($app, $env, $culture));
 
     if (!($appUrl = dmArray::get($knownAppUrls, $appUrlKey)))
@@ -263,10 +307,10 @@ abstract class dmContext extends dmMicroCache
       {
         throw new dmException(sprintf('Diem can not guess %s app url', $app));
       }
-      
+
       $appUrl = dm::getRequest()->getAbsoluteUrlRoot().'/'.$script;
     }
-    
+
     return $appUrl;
   }
 }

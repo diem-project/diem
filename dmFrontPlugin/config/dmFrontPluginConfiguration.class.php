@@ -3,9 +3,8 @@
 class dmFrontPluginConfiguration extends sfPluginConfiguration
 {
   protected static
-    $dependencies = array(),
-    $helpers = array('DmFront'),
-    $external_modules = array('dmWidget');
+  $dependencies = array(),
+  $helpers = array('DmFront');
 
   public function configure()
   {
@@ -30,19 +29,11 @@ class dmFrontPluginConfiguration extends sfPluginConfiguration
 
   protected function getAvailableModules()
   {
-      $modules = array();
-      $dirs = sfFinder::type('dir')
-      ->maxdepth(0)
-      ->in(
-        sfConfig::get('dm_front_dir').DIRECTORY_SEPARATOR.'modules',
-        sfConfig::get('dm_widget_dir').DIRECTORY_SEPARATOR.'modules'
-      );
-      foreach($dirs as $dir)
-      {
-        $modules[] = basename($dir);
-      }
-      $modules = array_merge(self::$external_modules, $modules);
-
+    $modules = array();
+    foreach(glob(dmOs::join(sfConfig::get('dm_front_dir'), 'modules/*'), GLOB_ONLYDIR) as $dir)
+    {
+      $modules[] = basename($dir);
+    }
     return $modules;
   }
 
@@ -58,7 +49,7 @@ class dmFrontPluginConfiguration extends sfPluginConfiguration
       'sf_login_action' => 'signin',
       'sf_secure_module' => 'dmAuth',
       'sf_secure_action' => 'secure'
-    ));
+      ));
   }
 
   protected function connectEvents()

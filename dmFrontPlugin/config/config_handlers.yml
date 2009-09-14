@@ -11,6 +11,3 @@ config/dm/assets.yml:
   
 config/dm/widget_types.yml:
   class:          sfSimpleYamlConfigHandler
-  
-config/routing.yml:
-  class:          dmFrontRoutingConfigHandler

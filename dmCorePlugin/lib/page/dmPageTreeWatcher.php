@@ -16,7 +16,10 @@ class dmPageTreeWatcher
 	public function initialize()
 	{
 		$this->modifiedTables = array();
-		
+	}
+	
+	public function connect()
+	{
     $this->dispatcher->connect('dm.controller.redirect', array($this, 'listenRedirection'));
 	}
 	

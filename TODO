@@ -22,7 +22,7 @@
 
 * fix admin /systeme/security/groups & admin /systeme/security/permissions
 
-* allow progressive admin & front code generation using Zend CodeGenerator
+* [DONE] allow progressive admin & front code generation using Zend CodeGenerator
 
 * [DONE] fix embedded media forms
 
@@ -185,7 +185,7 @@ $.getScript(href, callback);
 
 * allow to delete a page in front edition
 
-* widget views : use user classes and their wraps like Diem 4. ( class directly on element for link, title and media, and in wrapper for other widgets )
+* [DONE] widget views : use user classes and their wraps like Diem 4. ( class directly on element for link, title and media, and in wrapper for other widgets )
 
 * [DONE] tweak admin routing configuration
 
@@ -196,3 +196,5 @@ $.getScript(href, callback);
 * [DONE] replace symfony factories sfServiceContainer arguments by sfServices if possible
 
 * [DONE] add dependency injection and database diagrams in admin app
+
+* add dmThemeManager and dmTheme to sfServiceContainer

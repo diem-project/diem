@@ -4,11 +4,12 @@ class dmAdminPluginConfiguration extends sfPluginConfiguration
   protected static
     $dependencies = array(),
     $helpers = array('DmAdmin'),
-    $external_modules = array('dmWidget', 'sfGuardUser', 'sfGuardPermission', 'sfGuardGroup', 'sfPixlr');
+    $externalModules = array('sfGuardUser', 'sfGuardPermission', 'sfGuardGroup', 'sfPixlr');
 
   public function configure()
   {
     sfConfig::set('dm_admin_dir', realpath(dirname(__FILE__)."/.."));
+    
     require_once(sfConfig::get('dm_admin_dir').'/lib/config/dmAdminRoutingConfigHandler.php');
   }
 
@@ -31,14 +32,11 @@ class dmAdminPluginConfiguration extends sfPluginConfiguration
   protected function getAvailableModules()
   {
     $modules = array();
-    $dirs = sfFinder::type('dir')
-    ->maxdepth(0)
-    ->in(sfConfig::get('dm_admin_dir').DIRECTORY_SEPARATOR.'modules');
-    foreach($dirs as $dir)
+    foreach(glob(dmOs::join(sfConfig::get('dm_admin_dir'), 'modules/*'), GLOB_ONLYDIR) as $dir)
     {
-    	$modules[] = basename($dir);
+      $modules[] = basename($dir);
     }
-    $modules = array_merge(self::$external_modules, $modules);
+    $modules = array_merge(self::$externalModules, $modules);
 
   	return $modules;
   }

@@ -1,5 +1,15 @@
 parameters:
 
+  stylesheet_compressor.class: dmStylesheetCompressor
+  stylesheet_compressor.options:
+    minify:                   true
+    gz_compression:           true
+
+  javascript_compressor.class: dmJavascriptCompressor
+  stylesheet_compressor.options:
+    minify:                   true
+    gz_compression:           true
+
   auth_layout_helper.class:   dmAuthLayoutHelper
 
   search_engine.class:        dmSearchIndexGroup
@@ -29,6 +39,22 @@ parameters:
   helper.class:               dmOoHelper
  
 services:
+
+  stylesheet_compressor:
+    class:                    %stylesheet_compressor.class%
+    shared:                   true
+    arguments:
+      dispatcher:             @dispatcher
+      request:                @request
+      filesystem:             @filesystem
+
+  javascript_compressor:
+    class:                    %javascript_compressor.class%
+    shared:                   true
+    arguments:
+      dispatcher:             @dispatcher
+      request:                @request
+      filesystem:             @filesystem
 
   auth_layout_helper:
     class:                    %auth_layout_helper.class%

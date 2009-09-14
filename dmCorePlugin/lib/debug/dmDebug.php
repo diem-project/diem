@@ -7,7 +7,7 @@ class dmDebug
 
 	public function __construct()
 	{
-		self::debug(func_get_args());
+		self::kill(func_get_args());
 	}
 
 	/**
@@ -21,7 +21,17 @@ class dmDebug
 	 */
 	public static function timer($name)
 	{
-		return sfTimerManager::getTimer("[Diem] $name");
+		return sfTimerManager::getTimer('[Diem] '.$name);
+	}
+	
+	public static function timerOrNull($name)
+	{
+	  if (sfConfig::get('sf_debug') && sfConfig::get('sf_logging_enabled'))
+    {
+      return self::timer($name);
+    }
+    
+    return null;
 	}
 
 	/*

@@ -12,16 +12,9 @@ class dmDoctrineConfiguration
     $this->manager = $manager;
     $this->dispatcher = $dispatcher;
     $this->cacheManager = $cacheManager;
-    
-    $this->initialize();
 	}
 
-	public function initialize()
-	{
-		$this->configureCache();
-	}
-
-  protected function configureCache()
+  public function configureCache()
   {
   	if (!sfConfig::get('dm_orm_cache_enabled', true))
   	{

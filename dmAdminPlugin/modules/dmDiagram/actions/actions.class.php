@@ -4,6 +4,8 @@ class dmDiagramActions extends dmAdminBaseActions
 {
 	public function executeIndex(dmWebRequest $request)
 	{
+	  $this->loadServiceContainerDumper();
+	  
 	  $this->dicImages = array();
 	  
 	  foreach(array('admin', 'front') as $appName)
@@ -24,6 +26,13 @@ class dmDiagramActions extends dmAdminBaseActions
     $this->mldProjectImage = $doctrineGraphviz->getMldImage(array(
       'type' => 'project'
     ));
+	}
+	
+	protected function loadServiceContainerDumper()
+	{
+	  $this->dmContext->loadServiceContainerLoader();
+	  
+    require_once(dmOs::join(sfConfig::get('dm_core_dir'), 'lib/vendor/sfService/sfServiceContainerDumperGraphviz.php'));
 	}
   
 	protected function getDiagramImage($appName)

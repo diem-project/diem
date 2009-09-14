@@ -17,7 +17,7 @@ class BasedmFrontActions extends dmFrontBaseActions
       $this->response->setStatusCode(404);
 		}
 		
-    $this->setLayout(dmOs::join(sfConfig::get("dm_front_dir"), "modules/dmFront/templates/layout"));
+    $this->setLayout(dmOs::join(sfConfig::get('dm_front_dir'), 'modules/dmFront/templates/layout'));
 
     $this->helper = $this->dmContext->getPageHelper();
     
@@ -55,7 +55,7 @@ class BasedmFrontActions extends dmFrontBaseActions
     }
     
     // Add module action for page
-    $moduleActions[] = $this->page->module.'/'.$this->page->action.'Page';
+    $moduleActions[] = $this->page->get('module').'/'.$this->page->get('action').'Page';
     
     $controller = $this->context->getController();
     foreach($moduleActions as $moduleAction)

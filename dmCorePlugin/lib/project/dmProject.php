@@ -26,13 +26,8 @@ class dmProject
   {
     if (null === self::$models)
     {
-      $baseModels = sfFinder::type('file')
-      ->maxdepth(0)
-      ->name("Base*.class.php")
-      ->in(dmOs::join(sfConfig::get("sf_lib_dir"), "model/doctrine/base"));
-
       self::$models = array();
-      foreach($baseModels as $baseModel)
+      foreach(glob(dmOs::join(sfConfig::get('sf_lib_dir'), 'model/doctrine/base/Base*.class.php')) as $baseModel)
       {
         self::$models[] = preg_replace('|^Base(\w+).class.php$|', '$1', basename($baseModel));
       }
@@ -110,6 +105,15 @@ class dmProject
           'Folder %s should be writable',
           str_replace(sfConfig::get('sf_root_dir'), '', $requiredWritableDir)
         );
+      }
+    }
+    
+    foreach(array('dm/core', 'dm/admin', 'dm/front', 'cache') as $webSymLink)
+    {
+      $linkFullPath = dmOs::join(sfConfig::get('sf_web_dir'), $webSymLink);
+      if(!is_link($linkFullPath))
+      {
+        $messages[] = sprintf('%s must be a symlink. Please launch the dm:setup task to fix the problem', dmProject::unRootify($linkFullPath));
       }
     }
 

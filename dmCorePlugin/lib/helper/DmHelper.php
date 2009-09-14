@@ -41,17 +41,17 @@ function £media($src)
  */
 function £o($name, array $opt = array())
 {
-  return dmStaticHelper::£o($name, $opt);
+  return dmOoHelper::£o($name, $opt);
 }
 
 function £c($name)
 {
-  return dmStaticHelper::£c($name);
+  return dmOoHelper::£c($name);
 }
 
 function £($name, $opt = array(), $content = false, $openAndClose = true)
 {
-  return dmStaticHelper::£($name, $opt, $content, $openAndClose);
+  return dmOoHelper::£($name, $opt, $content, $openAndClose);
 }
 
 function toggle($text = "odd")

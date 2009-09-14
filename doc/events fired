@@ -17,3 +17,5 @@ params: array the loaded menu
 [dm.browser.unknown]
 fired by dmBrowser when it is unable to configure from user agent because it is unknown
 params: the user agent string
+
+// add assets events
