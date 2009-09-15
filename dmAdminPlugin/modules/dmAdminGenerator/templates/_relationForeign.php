@@ -53,8 +53,8 @@ echo £o('div.dm_foreigns');
     £('li', $newLink).
     (($foreignModule->getTable()->isSortable() && count($foreignRecords))
     ? £('li', dmAdminLinkTag::build(array(
-      'sf_route'      => $module->getUnderscore().'_object',
-      'sf_subject'    => $record,
+      'sf_route'      => $module->getUnderscore().'_do',
+      'id'            => $record->get('id'),
       'action'        => 'sortReferers',
       'foreignModule' => $foreignModule->getKey()
     ))->text(__('Sort'))->set('.s16.s16_right_little'))

@@ -101,7 +101,7 @@ class dmForm extends sfFormSymfony
 
     if ($action = dmArray::get($opt, 'action'))
     {
-    	$action = dmFrontLinkTag::build($action)->getHref();
+    	$action = dmAdminLinkTag::build($action)->getHref();
     }
     else
     {

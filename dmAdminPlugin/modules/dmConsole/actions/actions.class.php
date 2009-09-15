@@ -9,9 +9,9 @@
  */
 class dmConsoleActions extends dmAdminBaseActions
 {
+  
   protected static
-    $defaultCommands = 'sf man ll ls pwd cat mkdir rm cp mv touch chmod free df find clear',
-    $prompt = "&raquo;&nbsp;";
+    $defaultCommands = 'sf man ll ls pwd cat mkdir rm cp mv touch chmod free df find clear';
 
   protected function getCommands()
   {
@@ -41,41 +41,72 @@ class dmConsoleActions extends dmAdminBaseActions
       $command = dmArray::get($this->getAliases(), $command, $command);
       if (!in_array($parts[0], $this->getCommands()))
         return $this->renderText(sprintf(
-          "<li><b>%s%s</b><li><li>This command is not available. You can do : <b>%s</b></li>",
-          self::$prompt, $command, implode(' ', $this->getCommands())
+          "%s<li>This command is not available. You can do : <strong>%s</strong></li>",
+          $this->renderCommand($command), implode(' ', $this->getCommands())
         ));
       $exec = sprintf('%s', $command);
     }
 
     ob_start();
-
     passthru($exec.' 2>&1', $return);
     $raw = ob_get_clean();
+    
     if ($return > 0)
     {
-      return $this->renderText(sprintf(
-        "<li><b>%s%s</b><li><li>%s",
-        self::$prompt, $command, $raw
-      ));
+      return $this->renderText($this->renderCommand($command)."<li class='dm_result_command'>'.$raw.'</li>");
     }
     $arr = explode("\n", $raw);
-    $res = sprintf("<li class='dm_command_intro'><b>%s%s</b><li>", self::$prompt, $command);
+    $res = $this->renderCommand($command);
     foreach($arr as $a)
       $res .= "<li class='dm_result_command'>".$a."</li>";
     return $this->renderText($res);
   }
+  
+  protected function renderCommand($command)
+  {
+    return '<li class="dm_command_user">'.$this->getUser()->getAttribute('dm_console_prompt').$command.'</li>';
+  }
 
   public function executeIndex(sfWebRequest $request)
   {
-    $this->prompt = self::$prompt;
     $this->commands = implode(' ', $this->getCommands());
 
     $this->uname = php_uname();
 
-    ob_start();
-    passthru("whoami");
-    $this->whoami = trim(ob_get_clean());
-    $this->getUser()->setAttribute('name_shell', $this->whoami.'@'.php_uname('n'));
+    $filesystem = $this->dmContext->getFilesystem();
+    
+    if ($filesystem->exec('whoami'))
+    {
+      $this->whoami = $filesystem->getLastExec('output');
+    }
+    else
+    {
+      $this->whoami = 'unknown_user';
+    }
+    
+    $filesystem->exec('pwd');
+    $this->pwd = $filesystem->getLastExec('output');
+
+    $this->prompt = $this->whoami.'@'.php_uname('n').':'.'~/'.dmProject::unRootify($this->pwd).'$&nbsp;';
+
+    $this->getUser()->setAttribute('dm_console_prompt', $this->prompt);
+    
+    $this->form = $this->getCommandForm();
   }
 
+  protected function getCommandForm()
+  {
+    $form = new BaseForm;
+    
+    $form->setWidgetSchema(new sfWidgetFormSchema(array(
+      'dm_command' => new sfWidgetFormInputText
+    )));
+    
+    $form->setValidatorSchema(new sfValidatorSchema(array(
+      'dm_command' => new sfValidatorString
+    )));
+    
+    return $form;
+  }
+  
 }

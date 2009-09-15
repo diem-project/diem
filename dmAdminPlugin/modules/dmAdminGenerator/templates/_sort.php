@@ -1,4 +1,4 @@
-<?php use_helper('Form');
+<?php
 
 use_stylesheet('admin.sort');
 use_javascript('lib.ui-sortable');
@@ -7,8 +7,10 @@ use_javascript('admin.sort');
 $submit =
 £('div.text_align_right',
   £('span.info', __('Drag & drop elements, then')).
-  submit_tag(__('Save'))
+  $form->renderSubmitTag(__('Save modifications'))
 );
+
+echo $form->renderGlobalErrors();
 
 echo £o('div.dm_sort.dm_box.big');
 
@@ -16,9 +18,7 @@ echo £o('div.dm_sort.dm_box.big');
 
   echo £o('div.dm_box_inner');
 
-  echo form_tag('dmAdminGenerator/saveSort');
-
-  echo input_hidden_tag('dm_module', $module->getKey());
+  echo $form->open();
 
   echo £('div.fleft', £link('@'.$module->getUnderscore())->text('&laquo; '.__('Back to list')));
 
@@ -26,11 +26,13 @@ echo £o('div.dm_sort.dm_box.big');
 
   echo £o('ol.objects');
 
-  foreach($objects as $object)
+  foreach($form->getRecords() as $record)
   {
+    $fieldName = $record->get('id');
+    
     echo £('li.object',
-      $object.
-      input_hidden_tag('dm_sort_element['.$object->id.']', true)
+      $form[$fieldName]->renderLabel().
+      $form[$fieldName]->render()
     );
   }
 

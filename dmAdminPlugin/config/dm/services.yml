@@ -1,5 +1,7 @@
 parameters:
 
+  admin_sort_form.class:      dmAdminSortForm
+
   layout_helper.class:        dmAdminLayoutHelper
 
   admin_menu.class:           dmAdminMenu
@@ -9,6 +11,13 @@ parameters:
     file:                     sitemap.xml
  
 services:
+
+  admin_sort_form:
+    class:                    %admin_sort_form.class%
+    shared:                   false
+    arguments:
+      defaults:               %admin_sort_form.defaults%
+      options:                %admin_sort_form.options%
 
   layout_helper:
     class:                    %layout_helper.class%

@@ -1,4 +1,4 @@
-<?php use_helper('Form');
+<?php
 
 echo £o('div#dm_tool_bar.dm.clearfix');
 
@@ -15,19 +15,16 @@ echo £o('div#dm_tool_bar.dm.clearfix');
   	echo £link('+/dmCodeEditor/launch')->textTitle(__('Code Editor'))->set('.code_editor.widget16.s16block.s16_code_editor');
   }
 
-  echo £('div.widget16.mt5',
-    select_tag('dm_select_culture', options_for_select($cultures, $sf_user->getCulture())
-    )
-  );
-
-  echo £('div.widget16.mt5',
-    select_tag('dm_select_theme', options_for_select($themes, $sf_user->getTheme()->getKey())
-    )
-  );
+  if (isset($cultureSelect))
+  {
+    echo £('div.widget16.mt5', $cultureSelect->render('dm_select_culture', $sf_user->getCulture()));
+  }
+  
+  echo £('div.widget16.mt5', $themeSelect->render('dm_select_theme', $sf_user->getTheme()->getKey()));
 
   if (sfConfig::get('dm_html_validate', true) && $sf_user->can('html_validate_front'))
   {
-    printf('<div id="dm_html_validate" class="widget16">%s ...</div>', __('Validation'));
+    echo '<div id="dm_html_validate" class="widget16">'.__('Validation').' ...</div>';
   }
 
   if ($sf_request->useTidy() && $sf_user->can('tidy_output'))
@@ -52,12 +49,14 @@ echo £o('div#dm_tool_bar.dm.clearfix');
 
   if(isset($addMenu))
   {
-    echo £('div.dm_menu.widget16.dm_add_menu', $addMenu->render(array(
+    echo £o('div.dm_menu.widget16.dm_add_menu'),
+    $addMenu->render(array(
       'level0_ul_class' => 'ui-helper-reset',
       'level0_li_class' => 'ui-corner-bottom ui-state-default',
       'level1_ul_class' => 'ui-widget ui-widget-content',
       'level2_ul_class' => 'clearfix'
-    )));
+    )),
+    £c('div');
   }
   
   if (sfConfig::get('sf_web_debug'))

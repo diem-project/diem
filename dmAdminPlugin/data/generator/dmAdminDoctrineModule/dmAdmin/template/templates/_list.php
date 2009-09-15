@@ -1,7 +1,7 @@
 [?php $dm_list_pagination = get_partial('<?php echo $this->getModuleName() ?>/dm_list_pagination', array('pager' => $pager, 'helper' => $helper, 'class' => 'dm_pagination_top')); ?]
 <div class="sf_admin_list">
   <div class="dm_pagination dm_pagination_top">
-    [?php echo str_replace('__RAND_ME__', dmString::random(8), $dm_list_pagination); ?]
+    [?php echo str_replace('__DM_RANDOM_ID__', dmString::random(8), $dm_list_pagination); ?]
   </div>
   [?php if (!$pager->getNbResults()): ?]
     <h2>[?php echo __('No result') ?]</h2>
@@ -44,7 +44,7 @@
       </tbody>
     </table>
 	  <div class="dm_pagination dm_pagination_bottom">
-      [?php echo str_replace('__RAND_ME__', dmString::random(8), $dm_list_pagination); ?]
+      [?php echo str_replace('__DM_RANDOM_ID__', dmString::random(8), $dm_list_pagination); ?]
 	  </div>
   [?php endif; ?]
 </div>

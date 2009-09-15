@@ -5,14 +5,20 @@ class dmInterfaceComponents extends dmFrontBaseComponents
 
   public function executeToolBar()
   {
-    $this->cultures = array();
-    $languages = sfCultureInfo::getInstance($this->context->getUser()->getCulture())->getLanguages();
-    foreach($this->context->getI18n()->getCultures() as $key)
+    if ($this->context->getI18n()->hasManyCultures())
     {
-      $this->cultures[$key] = dmArray::get($languages, $key, $key);
+      $cultures = array();
+      $languages = sfCultureInfo::getInstance($this->getUser()->getCulture())->getLanguages();
+      
+      foreach($this->context->getI18n()->getCultures() as $key)
+      {
+        $cultures[$key] = dmArray::get($languages, $key, $key);
+      }
+      
+      $this->cultureSelect = new sfWidgetFormSelect(array('choices' => $cultures));
     }
-
-    $this->themes = $this->dmContext->getServiceContainer()->getService('theme_manager')->getThemes();
+    
+    $this->themeSelect = new sfWidgetFormSelect(array('choices' => $this->dmContext->getServiceContainer()->getService('theme_manager')->getThemes()));
 
     if ($this->getUser()->can('widget_add'))
     {

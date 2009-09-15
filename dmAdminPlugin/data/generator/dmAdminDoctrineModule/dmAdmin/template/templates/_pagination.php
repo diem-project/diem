@@ -1,5 +1,3 @@
-[?php use_helper('Form'); ?]
-
 <div class="sf_admin_pagination clearfix">
 
   <div class="max_per_page fleft">
@@ -17,7 +15,10 @@
 	      'admin_module'
 	    );
 
-      echo select_tag('max_per_page', options_for_select($maxPerPages, $currentMaxPerPage), array('id' => '__RAND_ME__')); ?]
+      $maxPerPageSelect = new sfWidgetFormSelect(array('choices' => $maxPerPages), array('id' => '__DM_RANDOM_ID__'));
+      echo $maxPerPageSelect->render('dm_max_per_page', $currentMaxPerPage);
+      unset($maxPerPageSelect);
+    ?]
   </div>
 
   [?php if ($pager->haveToPaginate()): ?]

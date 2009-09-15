@@ -29,10 +29,10 @@ class dmAdminGeneratorActions extends dmAdminBaseActions
       {
         throw $e;
       }
-      $this->getUser()->logError(dm::getI18n()->__('A problem occured when sorting the items'), true);
+      $this->getUser()->logError($this->context->getI18n()->__('A problem occured when sorting the items'), true);
     }
 
-    $this->getUser()->logInfo(dm::getI18n()->__('The items have been sorted successfully'), true);
+    $this->getUser()->logInfo($this->context->getI18n()->__('The items have been sorted successfully'), true);
 
     return $this->redirectBack();
   }

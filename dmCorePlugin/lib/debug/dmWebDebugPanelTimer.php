@@ -20,12 +20,18 @@ class dmWebDebugPanelTimer extends sfWebDebugPanelTimer
 {
   protected function getTotalTime()
   {
-    $return = sprintf('%.0f', (microtime(true) - dm::getStartTime()) * 1000);
-
-    if(null !== self::$startTime)
-  	{
-  		$return .= ' -'.($return - sprintf('%.0f', (microtime(true) - self::$startTime) * 1000));
-  	}
+    $dmTime = (microtime(true) - dm::getStartTime()) * 1000;
+    
+    if (null !== self::$startTime)
+    {
+      $sfTime = (microtime(true) - self::$startTime) * 1000;
+      
+      $return = sprintf('%.0f+%.0f', $sfTime, $dmTime-$sfTime);
+    }
+    else
+    {
+      $return = sprintf('%.0f', $dmTime);
+    }
 
     return $return;
   }

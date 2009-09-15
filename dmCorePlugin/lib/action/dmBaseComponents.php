@@ -19,7 +19,5 @@ class dmBaseComponents extends sfComponents
     parent::initialize($context, $moduleName, $actionName);
     
     $this->dmContext = dmContext::getInstance();
-    
-    $this->page = $this->dmContext->getPage();
   }
 }

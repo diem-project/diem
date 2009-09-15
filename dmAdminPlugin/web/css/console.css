@@ -1,13 +1,21 @@
+div.console div.dm_box_inner
+{
+	margin: 0;
+}
+
 #dm_console
 {
   background: #000 url(../images/console/bg2.jpg) repeat center center;
   font-family: monospace;
   font-size: 12px;
   height: 500px;
-  margin: 0 35px;
-  border: 3px solid #888;
   overflow-x: hidden;
   overflow-y: scroll;
+  padding: 5px;
+}
+#dm_console strong
+{
+	color: #DDD;
 }
 .dm_console_wait
 {
@@ -32,9 +40,10 @@
 }
 #dm_lines li.dm_command_intro
 {
-	line-height: 16px;
-	color: #88ff88;
-	display: block;
+}
+#dm_lines li.dm_command_user
+{
+	color:#88FF88;
 }
 
 #dm_command_wrap
@@ -59,5 +68,5 @@
   font-size: 12px;
   height: 16px;
   padding: 0;
-  width: 80%;
+  width: 500px;
 }

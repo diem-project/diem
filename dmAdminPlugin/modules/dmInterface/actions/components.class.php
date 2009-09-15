@@ -9,14 +9,15 @@ class dmInterfaceComponents extends dmAdminBaseComponents
 
     if ($this->context->getI18n()->hasManyCultures())
     {
-      $this->cultures = array();
-      
+      $cultures = array();
       $languages = sfCultureInfo::getInstance($this->getUser()->getCulture())->getLanguages();
       
       foreach($this->context->getI18n()->getCultures() as $key)
       {
-        $this->cultures[$key] = dmArray::get($languages, $key, $key);
+        $cultures[$key] = dmArray::get($languages, $key, $key);
       }
+    
+      $this->cultureSelect = new sfWidgetFormSelect(array('choices' => $cultures));
     }
   }
 }

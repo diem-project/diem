@@ -3,7 +3,7 @@
 
 <div class="sf_admin_form">
 
-  [?php $form_actions =
+  [?php $form_actions = 
     get_partial('<?php echo $this->getModuleName() ?>/form_pagination', array('<?php echo $this->getSingularName() ?>' => $<?php echo $this->getSingularName() ?>, 'form' => $form, 'configuration' => $configuration, 'helper' => $helper, 'nearRecords' => $nearRecords))
     .
     get_partial('<?php echo $this->getModuleName() ?>/form_actions', array('<?php echo $this->getSingularName() ?>' => $<?php echo $this->getSingularName() ?>, 'form' => $form, 'configuration' => $configuration, 'helper' => $helper))
@@ -14,7 +14,7 @@
   [?php echo form_tag_for($form, '@<?php echo $this->params['route_prefix'] ?>') ?]
 
   <div class="dm_form_actions dm_form_actions_top clearfix">
-    [?php echo $form_actions; ?]
+    [?php echo str_replace('__DM_RANDOM_ID__', dmString::random(4), $form_actions); ?]
   </div>
 
     <div class="sf_admin_form_inner ui-widget ui-accordion">
@@ -32,7 +32,7 @@
     </div>
 
   <div class="dm_form_actions dm_form_actions_bottom">
-    [?php echo $form_actions; ?]
+    [?php echo str_replace('__DM_RANDOM_ID__', dmString::random(4), $form_actions); ?]
   </div>
 
   </form>

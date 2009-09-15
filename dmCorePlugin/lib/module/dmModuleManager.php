@@ -120,7 +120,7 @@ class dmModuleManager
 		return self::$projectModules;
 	}
 
-	public static function getModule($something, $or_null = false)
+	public static function getModule($something, $orNull = false)
 	{
 		if ($something instanceof dmModule)
 		{
@@ -136,12 +136,11 @@ class dmModuleManager
 			return $modules[$moduleKey];
 		}
 
-		if ($or_null)
+		if ($orNull)
 		{
 			return null;
 		}
 
-		//    dmDebug::simpleStack();
 		throw new dmException(sprintf("The %s module does not exist", $something));
 	}
 

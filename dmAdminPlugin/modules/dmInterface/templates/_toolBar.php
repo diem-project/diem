@@ -1,4 +1,4 @@
-<?php use_helper('Form');
+<?php
 
 echo £o('div#dm_tool_bar.clearfix');
 
@@ -18,14 +18,9 @@ echo £o('div#dm_tool_bar.clearfix');
     ))
   );
 
-  if (isset($cultures))
+  if (isset($cultureSelect))
   {
-    echo £('div.widget16.mt5',
-      select_tag(
-        'dm_select_culture',
-        options_for_select($cultures, $sf_user->getCulture())
-      )
-    );
+    echo £('div.widget16.mt5', $cultureSelect->render('dm_select_culture', $sf_user->getCulture()));
   }
   
 	if (dmAPCCache::isEnabled() && $sf_user->can('systeme'))

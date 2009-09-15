@@ -8,7 +8,6 @@
   [?php
   if ($nearRecords)
   {
-	  use_helper('Form');
 	  if ($previousRecord = $<?php echo $this->getSingularName(); ?>->getPreviousRecord($nearRecords))
 	  {
 	    echo dmAdminLinkTag::build(array(
@@ -22,11 +21,10 @@
     {
       $options[$record->getPrimaryKey()] = dmString::truncate($record->__toString(), 30);
     }
-    echo str_replace(' id="dm_select_object"', '', select_tag(
-      'dm[select_object]',
-      options_for_select($options, $<?php echo $this->getSingularName(); ?>->getPrimaryKey()),
-      array('class' => '{ href: "'.preg_replace('|\d+(/edit)?$|', '_ID_/edit', $sf_request->getUri()).'"}')
-    ));
+    
+    $recordSelect = new sfWidgetFormSelect(array('choices' => $options));
+    echo $recordSelect->render('dm_select_record', $<?php echo $this->getSingularName(); ?>->getPrimaryKey(), array('id' => 'dm_select_record___DM_RANDOM_ID__', 'class' => '{ href: "'.preg_replace('|/\d+(/edit)?$|', '/_ID_/edit', $sf_request->getUri()).'"}'));
+    unset($recordSelect);
 
 	  if ($nextRecord = $<?php echo $this->getSingularName(); ?>->getNextRecord($nearRecords))
 	  {
