@@ -1,5 +1,5 @@
 <div class="sf_admin_action sf_admin_action_sort">
-  <?php if ($this->getModule()->getTable()->isSortable()) echo $this->getLinkToAction('sort', array('action' => 'sort', 'params' => array('class' => 'dm_sort s16 s16_sort')), false); ?>
+  <?php if ($this->getModule()->getTable()->isSortable()) echo $this->getLinkToAction('sort', array('action' => 'sortTable', 'params' => array('class' => 'dm_sort s16 s16_sort')), false); ?>
 </div>
 
 <?php if ($actions = $this->configuration->getValue('list.actions')): ?>

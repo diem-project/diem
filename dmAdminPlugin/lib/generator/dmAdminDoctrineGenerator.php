@@ -138,11 +138,11 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
     {
 	    if ($relation->getClass() === 'DmMedia')
 	    {
-	      $html = '$'.$this->getSingularName().'->'.$relation->getLocalColumnName().' ? get_partial("dmMedia/viewLittle", array("object" => $'.$this->getSingularName().'->'.$relation->getAlias().')) : "-"';
+	      $html = '$'.$this->getSingularName().'->get("'.$relation->getLocalColumnName().'") ? get_partial("dmMedia/viewLittle", array("object" => $'.$this->getSingularName().'->get("'.$relation->getAlias().'"))) : "-"';
 	    }
 	    else
 	    {
-	      $html = '$'.$this->getSingularName().'->'.$relation->getLocalColumnName().' ? $'.$this->getSingularName().'->'.$relation->getAlias().' : "-"';
+	      $html = '$'.$this->getSingularName().'->get("'.$relation->getLocalColumnName().'") ? $'.$this->getSingularName().'->get("'.$relation->getAlias().'") : "-"';
 	    }
     }
     /*

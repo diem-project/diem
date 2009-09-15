@@ -1,11 +1,11 @@
 <?php
 
-class dmAdminSortForm extends BaseForm
+abstract class dmAdminSortForm extends BaseForm
 {
   protected
   $records;
   
-  public function configure()
+  protected function configureRecordFields()
   {
     foreach($this->getRecords() as $record)
     {
@@ -15,6 +15,11 @@ class dmAdminSortForm extends BaseForm
       $this->validatorSchema[$fieldName] = new sfValidatorPass;
       $this->setDefault($fieldName, 1);
     }
+  }
+  
+  public function getModule()
+  {
+    return $this->options['module'];
   }
   
   public function getRecords()

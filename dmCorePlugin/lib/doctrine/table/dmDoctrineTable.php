@@ -108,7 +108,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
 
     foreach($this->getRelationHolder()->getLocals() as $relation)
     {
-      $q->leftJoin($rootAlias.'.'.$relation['alias'].' '.$relation['alias']);
+      $q->leftJoin(sprintf('%s.%s %s', $rootAlias, $relation->getAlias(), $relation->getAlias()));
     }
 
     return $q;
@@ -130,12 +130,13 @@ abstract class dmDoctrineTable extends Doctrine_Table
       }
       elseif ($relation['class'] == 'DmMedia')
       {
-        $q->leftJoin($rootAlias.'.'.$relation['alias'].' '.$relation['local'])
-        ->leftJoin($relation['local'].'.Folder '.$relation['local'].'Folder');
+        $q->leftJoin(sprintf('%s.%s %s', $rootAlias, $relation->getAlias(), $relation->getLocal()))
+        ->leftJoin(sprintf('%s.%s %s', $relation->getLocal(), 'Folder', $relation->getLocal().'Folder'));
       }
       else
       {
-        $q->leftJoin($rootAlias.'.'.$relation['alias'].' '.$relation['alias']);
+        $q->leftJoin(sprintf('%s.%s %s', $rootAlias, $relation->getAlias(), $relation->getAlias()));
+        $q->addOrderBy(sprintf('%s.%s %s', $relation->getAlias(), $relation->getTable()->getSortColumnName(), 'asc'));
       }
     }
 
@@ -273,6 +274,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
     {
       return $this->getCache('dm_default_sort_column_name');
     }
+    
     if ($this->isSortable())
     {
       #FIXME try to return SortableTemplate columnName instead of default position

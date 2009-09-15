@@ -1,44 +1,43 @@
-<?php use_helper('Form');
+<?php
 
 use_stylesheet('admin.sort');
+use_javascript('lib.ui-sortable');
 use_javascript('admin.sort');
 
 $submit =
 £('div.text_align_right',
   £('span.info', __('Drag & drop elements, then')).
-  submit_tag(__('Save'), array('class' => 'green'))
+  $form->renderSubmitTag(__('Save modifications'))
 );
 
-echo £o('div.dm_sort.dm_box.dm_box.big');
+//echo $form->renderGlobalErrors();
 
-  echo £('h1.title', __('Sort %1% for %2%', array('%1%' => $refererModule->getPlural(), '%2%' => $object)));
+echo £o('div.dm_sort.dm_box.big');
+
+  echo £('h1.title', __('Sort %1% for %2%', array('%1%' => $form->getModule()->getPlural(), '%2%' => $form->getParentRecord())));
 
   echo £o('div.dm_box_inner');
 
-  echo form_tag('dmGenerator/saveSortReferers');
-
-  echo input_hidden_tag('dm_module', $module->getKey());
-  echo input_hidden_tag('dm_referer_module', $refererModule->getKey());
-
-  echo £('div.fleft', £link('@'.$module->getUnderscore())->text('&laquo; '.__('Back to %1% list', array('%1%' => __($module->getPlural())))));
-
-  echo $submit;
-
-  echo £o('ol.objects');
-
-  foreach($refererObjects as $object)
-  {
-    echo £('li.object',
-      $object.
-      input_hidden_tag('dm_sort_element['.$object->getId().']', true)
-    );
-  }
-
-  echo £c('ol');
-
-  echo $submit;
-
-  echo '</form>';
+    echo $form->open();
+  
+    echo £('div.fleft', £link('@'.$form->getParentRecord()->getDmModule()->getUnderscore())->text('&laquo; '.__('Back to list')));
+  
+    echo $submit;
+  
+    echo £o('ol.objects');
+  
+    foreach($form->getRecords() as $record)
+    {
+      $fieldName = $record->get('id');
+      
+      echo £('li.object', $form[$fieldName]->renderLabel().$form[$fieldName]->render());
+    }
+  
+    echo £c('ol');
+  
+    echo $submit;
+  
+    echo '</form>';
 
   echo £c('div');
 

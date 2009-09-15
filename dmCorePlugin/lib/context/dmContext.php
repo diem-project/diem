@@ -32,6 +32,11 @@ abstract class dmContext extends dmMicroCache
     $this->configureUser();
     
     $this->configureResponse();
+    
+    /*
+     * dmForm require dmOoHelper to process links
+     */
+    dmForm::setHelper($this->getService('helper'));
 
     /*
      * Doctrine cache configuration require a dmContext

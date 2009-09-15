@@ -5,6 +5,18 @@ class dmOoHelper
 	protected
 	$context;
 
+	public function link($source = null)
+	{
+	  switch(sfConfig::get('dm_context_type'))
+	  {
+      case 'admin': $link = dmAdminLinkTag::build($source); break;
+      case 'front': $link = dmFrontLinkTag::build($source); break;
+      default:      throw new dmException('Can not create link outside front or admin context');
+	  }
+	  
+	  return $link;
+	}
+	
 	public function __construct(sfContext $context)
 	{
 		$this->context = $context;

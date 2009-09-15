@@ -24,7 +24,7 @@ class dmAdminLinkTag extends dmLinkTag
 
     if(is_string($source))
     {
-    	if (strncmp($source, 'app:', 4) === 0)
+      if (strncmp($source, 'app:', 4) === 0)
       {
         $type = 'uri';
         $app = substr($source, 4);

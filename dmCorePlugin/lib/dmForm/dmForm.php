@@ -13,6 +13,7 @@ class dmForm extends sfFormSymfony
 {
 
 	protected static
+	  $helper,
 	  $counter = 1;
 
 	protected
@@ -101,7 +102,14 @@ class dmForm extends sfFormSymfony
 
     if ($action = dmArray::get($opt, 'action'))
     {
-    	$action = dmAdminLinkTag::build($action)->getHref();
+      if (self::$helper)
+      {
+    	  $action = self::$helper->link($action)->getHref();
+      }
+      else
+      {
+        throw new dmException('No helper setted');
+      }
     }
     else
     {
@@ -125,6 +133,16 @@ class dmForm extends sfFormSymfony
   public function close()
   {
     return '</form>';
+  }
+  
+  /**
+   * Sets the helper to be used by all forms.
+   *
+   * @param sfEventDispatcher $dispatcher
+   */
+  static public function setHelper(dmOoHelper $helper)
+  {
+    self::$helper = $helper;
   }
 
   public function getValueOrDefault($name)

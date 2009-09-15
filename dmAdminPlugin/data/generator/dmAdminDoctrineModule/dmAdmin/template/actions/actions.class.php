@@ -36,8 +36,6 @@ class <?php echo $this->getGeneratedModuleName() ?>Actions extends myAdminBaseAc
 
 <?php include dirname(__FILE__).'/../../parts/exportAction.php' ?>
 
-<?php include dirname(__FILE__).'/../../parts/sortLocalsAction.php' ?>
-
 <?php include dirname(__FILE__).'/../../parts/indexAction.php' ?>
 
 <?php if ($this->configuration->hasFilterForm()): ?>

@@ -201,4 +201,8 @@ $.getScript(href, callback);
 
 * make dmAssetCompressors support asset options
 
-* remove all references to deprecated Symfony stuff in order to make things work with Symfony 1.4
+* [DONE] remove all references to deprecated Symfony stuff in order to make things work with Symfony 1.4
+
+* [DONE] fix referers sorting in admin
+
+* add referer records default sort in admin autojoins

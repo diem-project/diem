@@ -9,6 +9,7 @@ class dmFrontPluginConfiguration extends sfPluginConfiguration
   public function configure()
   {
     sfConfig::set('dm_front_dir', realpath(dirname(__FILE__)."/.."));
+    sfConfig::set('dm_context_type', 'front');
   }
 
   public function initialize()

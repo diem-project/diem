@@ -1,43 +1,52 @@
-  public function executeSort(sfWebRequest $request)
+  public function executeSortTable(sfWebRequest $request)
   {
+    $this->forward404Unless($this->getDmModule()->getTable()->isSortable());
+    
     $this->dmContext->getServiceContainer()->addParameters(array(
       'admin_sort_form.defaults'  => array(),
       'admin_sort_form.options'   => array(
         'module' => $this->getDmModule(),
-        'query'  => $this->getSortQuery()
+        'query'  => $this->getSortTableQuery()
       )
     ));
     
-    $this->form = $this->dmContext->getServiceContainer()->getService('admin_sort_form');
+    $this->form = $this->dmContext->getServiceContainer()->getService('admin_sort_table_form');
     
-    if ($this->getRequest()->isMethod('post'))
-    {
-      $this->form->bind();
-      
-      if($this->form->isValid())
-      {
-        try
-        {
-          $this->form->save();
-        }
-        catch(Exception $e)
-        {
-          if ($this->getUser()->can('system'))
-          {
-            throw $e;
-          }
-          $this->getUser()->logError($this->context->getI18n()->__('A problem occured when sorting the items'), true);
-        }
-
-        $this->getUser()->logInfo($this->context->getI18n()->__('The items have been sorted successfully'), true);
-        return $this->redirect('<?php echo $this->getModule()->getKey() ?>/sort');
-      }
-    }
+    $this->processSortForm($this->form);
   }
   
-  protected function getSortQuery()
+  protected function getSortTableQuery()
   {
     return $this->getDmModule()->getTable()->createQuery('r')
-    <?php $this->getModule()->getTable()->hasField('is_active') && print'->whereIsActive(true)' ?>
+    <?php $this->getModule()->getTable()->hasField('is_active') && print '->whereIsActive(true)' ?>
+    ->orderBy('r.position asc');
+  }
+  
+  public function executeSortReferers(sfWebRequest $request)
+  {
+    $this->forward404Unless($record = $this->getDmModule()->getTable()->find($request->getParameter('id')));
+    
+    $this->forward404Unless($refererModule = dmModuleManager::getModuleOrNull($request->getParameter('refererModule')));
+    
+    $this->forward404Unless($refererModule->getTable()->isSortable());
+    
+    $this->dmContext->getServiceContainer()->addParameters(array(
+      'admin_sort_form.defaults'  => array(),
+      'admin_sort_form.options'   => array(
+        'module'        => $refererModule,
+        'parentRecord'  => $record,
+        'query'         => $this->getSortReferersQuery($refererModule)
+      )
+    ));
+    
+    $this->form = $this->dmContext->getServiceContainer()->getService('admin_sort_referers_form');
+    
+    $this->processSortForm($this->form);
+  }
+  
+  protected function getSortReferersQuery(dmModule $refererModule)
+  {
+    return $refererModule->getTable()->createQuery('r')
+    ->whereIsActive(true, $refererModule->getModel())
     ->orderBy('r.position asc');
   }

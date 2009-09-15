@@ -9,6 +9,7 @@ class dmAdminPluginConfiguration extends sfPluginConfiguration
   public function configure()
   {
     sfConfig::set('dm_admin_dir', realpath(dirname(__FILE__)."/.."));
+    sfConfig::set('dm_context_type', 'admin');
     
     require_once(sfConfig::get('dm_admin_dir').'/lib/config/dmAdminRoutingConfigHandler.php');
   }

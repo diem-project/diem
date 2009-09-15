@@ -2,6 +2,35 @@
 
 class dmAdminBaseActions extends dmBaseActions
 {
+  
+  protected function processSortForm($form)
+  {
+    if ($this->getRequest()->isMethod('post'))
+    {
+      $form->bind();
+      
+      if($form->isValid())
+      {
+        try
+        {
+          $form->save();
+        }
+        catch(Exception $e)
+        {
+          if (sfConfig::get('sf_debug'))
+          {
+            throw $e;
+          }
+          
+          $this->getUser()->logError($this->context->getI18n()->__('A problem occured when sorting the items'), true);
+        }
+
+        $this->getUser()->logInfo($this->context->getI18n()->__('The items have been sorted successfully'), true);
+        
+        return $this->redirect($this->getRequest()->getUri());
+      }
+    }
+  }
 	
   protected function batchToggleBoolean(array $ids, $field, $value)
   {

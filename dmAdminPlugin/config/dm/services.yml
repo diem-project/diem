@@ -1,6 +1,8 @@
 parameters:
 
-  admin_sort_form.class:      dmAdminSortForm
+  admin_sort_table_form.class:    dmAdminSortTableForm
+
+  admin_sort_referers_form.class: dmAdminSortReferersForm
 
   layout_helper.class:        dmAdminLayoutHelper
 
@@ -12,8 +14,15 @@ parameters:
  
 services:
 
-  admin_sort_form:
-    class:                    %admin_sort_form.class%
+  admin_sort_table_form:
+    class:                    %admin_sort_table_form.class%
+    shared:                   false
+    arguments:
+      defaults:               %admin_sort_form.defaults%
+      options:                %admin_sort_form.options%
+
+  admin_sort_referers_form:
+    class:                    %admin_sort_referers_form.class%
     shared:                   false
     arguments:
       defaults:               %admin_sort_form.defaults%
