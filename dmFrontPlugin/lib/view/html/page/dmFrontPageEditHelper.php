@@ -3,33 +3,27 @@
 class dmFrontPageEditHelper extends dmFrontPageHelper
 {
 	protected
-	  $context;
+	  $user;
+	  
+	public function setUser(dmUser $user)
+	{
+	  $this->user = $user;
+	}
 
   public function renderZone(array $zone)
   {
-    $cssClasses = array('dm_zone', $zone['css_class']);
+    $style = (!$zone['width'] || $zone['width'] === '100%') ? '' : ' style="width: '.$zone['width'].';"';
+    
+    $html = '<div class="'.dmArray::toHtmlCssClasses(array('dm_zone', $zone['css_class'])).'"'.$style.'>';
 
-    $style = (!$zone['width'] || $zone['width'] === '100%') ? '' : " style='width: ".$zone['width'].";'";
-
-    $html = sprintf(
-      '<div class="%s" id="dm_zone_%d"%s>',
-      dmArray::toHtmlCssClasses($cssClasses),
-      $zone['id'],
-      $style
-    );
-
-    if (dm::getUser()->can('zone_edit'))
+    if ($this->user && $this->user->can('zone_edit'))
     {
-      $html .= sprintf(
-        '<a class="dm dm_zone_edit" title="%s">%s</a>',
-        dm::getI18n()->__('Edit this zone'),
-        dm::getI18n()->__('Zone')
-      );
+      $html .= '<a class="dm dm_zone_edit" title="'.$this->i18n->__('Edit this zone').'"></a>';
     }
 
     $html .= '<div class="dm_widgets">';
 
-    foreach(dmArray::get($zone, 'Widgets', array()) as $widget)
+    foreach($zone['Widgets'] as $widget)
     {
       $html .= $this->renderWidget($widget);
     }
@@ -48,25 +42,23 @@ class dmFrontPageEditHelper extends dmFrontPageHelper
     /*
      * Open widget wrap with wrapped user's classes
      */
-    $html = sprintf('<div class="%s" id="dm_widget_%d">', $widgetWrapClass, $widget['id']);
-
+    $html = '<div class="'.$widgetWrapClass.'" id="dm_widget_'.$widget['id'].'">';
+    
     /*
      * Add edit button if required
      */
-    if (dm::getUser()->can('widget_edit'))
+    if ($this->user && $this->user->can('widget_edit'))
     {
-      $html .= sprintf(
-        '<a class="dm dm_widget_edit" title="%s">%s</a>',
-        dm::getI18n()->__('Edit this widget').' '.dm::getI18n()->__($widget['module']).'.'.dm::getI18n()->__($widget['action']),
-        dm::getI18n()->__('Widget')
-      );
+      $title = $this->i18n->__('Edit this widget').' '.$this->i18n->__($widget['module']).'.'.$this->i18n->__($widget['action']);
+      
+      $html .= '<a class="dm dm_widget_edit" title="'.$title.'"></a>';
     }
 
     /*
      * Open widget inner with user's classes
      */
-    $html .= sprintf('<div class="%s">', $widgetInnerClass);
-
+    $html .= '<div class="'.$widgetInnerClass.'">';
+    
     /*
      * get widget inner content
      */

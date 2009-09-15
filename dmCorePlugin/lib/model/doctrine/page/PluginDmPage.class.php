@@ -81,7 +81,7 @@ abstract class PluginDmPage extends BaseDmPage
       return $this->getCache('page_view');
     }
 
-    $timer = dmDebug::timer('fetch page view');
+    $timer = dmDebug::timerOrNull('fetch page view');
     
     $pageView = dmDb::query('DmPageView p, p.Layout l')
     ->where('p.module = ? AND p.action = ?', array($this->get('module'), $this->get('action')))
@@ -96,7 +96,7 @@ abstract class PluginDmPage extends BaseDmPage
 //    ->orderBy('paz.position asc, paw.position asc, lasz.position asc, lasw.position asc')
 //    ->fetchRecords();
 
-    $timer->addTime();
+    $timer && $timer->addTime();
 
     if(!$pageView)
     {

@@ -23,7 +23,7 @@ class dmHtml
 
   public static function repair($html, $params = array())
   {
-    $timer = dmDebug::timer("dmHtml::repair()");
+    $timer = dmDebug::timerOrNull("dmHtml::repair()");
 
     // suppression des ul vides
     $html = preg_replace(
@@ -55,7 +55,7 @@ class dmHtml
 
     $html = (string) $tidy;
 
-    $timer->addTime();
+    $timer && $timer->addTime();
 
     return $html;
   }
@@ -79,7 +79,7 @@ class dmHtml
 
   public static function improve($html)
   {
-    $timer = dmDebug::timer("dmHtml::improve()");
+    $timer = dmDebug::timerOrNull("dmHtml::improve()");
 
     $site_start = "<!-- DM_SITE_START -->";
     $site_end =   "<!-- DM_SITE_END -->";
@@ -103,7 +103,7 @@ class dmHtml
       substr($html, strpos($html, $site_end) + strlen($site_end)
     );
 
-    $timer->addTime();
+    $timer && $timer->addTime();
     return $html;
   }
 

@@ -18,14 +18,14 @@ class dmUpdateSeoService extends dmService
 
     $this->log("dmUpdateSeo::execute");
 
-    $timer = dmDebug::timer('dmUpdateSeo::execute');
+    $timer = dmDebug::timerOrNull('dmUpdateSeo::execute');
 
     foreach($onlyModules as $module)
     {
       $this->updateRecursive($module, $culture);
     }
 
-    $timer->addTime();
+    $timer && $timer->addTime();
 	}
 
 	public function updateRecursive($module, $culture)
@@ -78,7 +78,7 @@ class dmUpdateSeoService extends dmService
     /*
      * get pages
      */
-    $timerGetPages = dmDebug::timer('update seo get pages');
+    $timerGetPages = dmDebug::timerOrNull('update seo get pages');
     $pdoPages = $pageTable->createQuery('p')
     ->leftJoin('p.Translation t on t.id = p.id AND t.lang = ?', $culture)
     ->where('p.module = ? AND p.action = ?', array($module->getKey(), 'show'))
@@ -106,7 +106,7 @@ class dmUpdateSeoService extends dmService
 
     unset($pdoPages);
 
-    $timerGetPages->addTime();
+    $timerGetPages && $timerGetPages->addTime();
 
     /*
      * get records

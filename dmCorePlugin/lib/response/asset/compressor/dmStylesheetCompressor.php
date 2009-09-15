@@ -12,9 +12,13 @@ class dmStylesheetCompressor extends dmAssetCompressor
     return 'css';
   }
   
-  
   protected function isCachable($stylesheet, array $options = array())
   {
+    if($this->options['protect_user_assets'] && strncmp($stylesheet, '/dm/', 4) !== 0)
+    {
+      return false;
+    }
+    
     return true;
   }
   

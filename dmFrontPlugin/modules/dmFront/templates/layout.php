@@ -1,6 +1,6 @@
 <?php
 
-$timer = dmDebug::timer('dmFront/templates/layout');
+$timer = dmDebug::timerOrNull('dmFront/templates/layout');
 
 $helper = dmContext::getInstance()->getLayoutHelper();
 
@@ -33,4 +33,4 @@ $helper->renderHtmlTag(),
 
 "\n</html>";
 
-$timer->addTime();
+$timer && $timer->addTime();

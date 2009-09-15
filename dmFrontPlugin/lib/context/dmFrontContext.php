@@ -14,6 +14,7 @@ class dmFrontContext extends dmContext
     if ($this->getSfContext()->getUser()->can('front_edit'))
     {
       $this->serviceContainer->setParameter('page_helper.class', $this->serviceContainer->getParameter('page_helper.edit_class'));
+      $this->getPageHelper()->setUser($this->sfContext->getUser());
     }
     else
     {
@@ -24,6 +25,7 @@ class dmFrontContext extends dmContext
   protected function configureUser()
   {
     parent::configureUser();
+    
     /*
      * User require themeManager
      */
@@ -33,6 +35,7 @@ class dmFrontContext extends dmContext
         'default' => sfConfig::get('dm_theme_default')
       )
     ));
+    
     $this->sfContext->getUser()->setThemeManager($this->serviceContainer->getService('theme_manager'));
     
     /*

@@ -9,11 +9,11 @@ class dmFrontLinkTagRecord extends dmFrontLinkTagPage
 	{
 		$this->record = $this->get('source');
 		
-		$timer = dmDebug::timer('DmFrontLinkTagRecord : fetch Record Page');
+		$timer = dmDebug::timerOrNull('DmFrontLinkTagRecord : fetch Record Page');
 		
 		$this->set('source', DmDb::table('DmPage')->findOneByRecordWithI18n($this->record));
     
-    $timer->addTime();
+    $timer && $timer->addTime();
 
     if (!$this->get('source') instanceof DmPage)
     {

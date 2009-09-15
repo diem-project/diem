@@ -65,7 +65,7 @@ class PluginDmPageTable extends myDoctrineTable
 
   public function prepareRecordPageCache($module)
   {
-  	$timer = dmDebug::timer('DmPageTable::prepareRecordPageCache');
+  	$timer = dmDebug::timerOrNull('DmPageTable::prepareRecordPageCache');
   	
   	$module = dmString::modulize($module);
   	
@@ -75,7 +75,7 @@ class PluginDmPageTable extends myDoctrineTable
     ->where('module = ? AND p.record_id != 0', $module)
     ->fetchRecords();
     
-    $timer->addTime();
+    $timer && $timer->addTime();
   }
   
 	/*

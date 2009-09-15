@@ -8,7 +8,7 @@ class dmFrontI18n extends dmI18n
    */
   public function __($string, $args = array(), $catalogue = 'messages')
   {
-//    $timer = dmDebug::timer('dmI18n::__');
+//    $timer = dmDebug::timerOrNull('dmI18n::__');
 
     $result = parent::__($string, $args, $catalogue);
 
@@ -17,7 +17,7 @@ class dmFrontI18n extends dmI18n
       $result = parent::__($string, $args, 'dm');
     }
 
-//    $timer->addTime();
+//    $timer && $timer->addTime();
 
     return $result;
   }

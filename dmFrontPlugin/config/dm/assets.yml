@@ -24,3 +24,4 @@ css:
     form:             form
     zone:             zone
     widget:           widget
+    codeEditor:       codeEditor

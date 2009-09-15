@@ -4,7 +4,7 @@ abstract class dmWebResponse extends sfWebResponse
 {
 	
 	protected
-	$assetConfig,
+	$assetAliases,
 	$cdnConfig,
 	$javascriptConfig,
 	$culture,
@@ -47,13 +47,31 @@ abstract class dmWebResponse extends sfWebResponse
   }
   
   /**
-   * Sets the assets configuration
+   * Sets the assets aliases
    *
-   * @param array the asset configuration
+   * @param array the asset aliases
    */
-  public function setAssetConfig(array $assetConfig)
+  public function setAssetAliases(array $assetAliases)
   {
-    $this->assetConfig = $assetConfig;
+    $this->assetAliases = $assetAliases;
+  } 
+  
+  /**
+   * Sets the asset configuration
+   *
+   * @param dmAssetConfig the asset configuration
+   */
+  public function setAssetConfig(dmAssetConfig $assetConfig)
+  {
+    foreach($assetConfig->getStylesheets() as $stylesheet)
+    {
+      $this->addStylesheet($stylesheet, 'first');
+    }
+    
+    foreach($assetConfig->getJavascripts() as $javascript)
+    {
+      $this->addJavascript($javascript, 'first');
+    }
   }
   
   /**
@@ -93,9 +111,9 @@ abstract class dmWebResponse extends sfWebResponse
     	{
     		$path = $this->cdnConfig[$type][$asset];
     	}
-    	elseif(isset($this->assetConfig[$type.'.'.$asset]))
+    	elseif(isset($this->assetAliases[$type.'.'.$asset]))
     	{
-    		$path = $this->assetConfig[$type.'.'.$asset].'.'.$type;
+    		$path = $this->assetAliases[$type.'.'.$asset].'.'.$type;
     	}
       elseif($type === 'css')
       {

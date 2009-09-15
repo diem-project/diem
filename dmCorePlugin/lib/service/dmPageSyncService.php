@@ -12,7 +12,7 @@ class dmPageSyncService extends dmService
   	
   	$onlyModules = dmModuleManager::removeModulesChildren($onlyModules);
   	
-    $timer = dmDebug::timer('dmPageSyncService::execute');
+    $timer = dmDebug::timerOrNull('dmPageSyncService::execute');
 
     dmDB::cache(false);
     sfConfig::set('dm_page_synchronizing', true);
@@ -21,21 +21,21 @@ class dmPageSyncService extends dmService
 
     $this->removeShowPages($onlyModules);
 
-    $timer2 = dmDebug::timer('dmPageSync::updateShowPagesRecursive()');
+    $timer2 = dmDebug::timerOrNull('dmPageSync::updateShowPagesRecursive()');
     $this->updateShowPages($onlyModules);
-    $timer2->addTime();
+    $timer2 && $timer2->addTime();
 
     //    $this->removeShowPages();
 
     dmDB::cache(true);
     sfConfig::set('dm_page_synchronizing', false);
 
-    $timer->addTime();
+    $timer && $timer->addTime();
   }
 
   protected function removeShowPages(array $onlyModules)
   {
-    $timer = dmDebug::timer('dmPageSync : removeShowPages');
+    $timer = dmDebug::timerOrNull('dmPageSync : removeShowPages');
 
     $modulesToCheck = dmDb::query('DmPage p')
     ->select('p.module as mod')
@@ -48,7 +48,7 @@ class dmPageSyncService extends dmService
       $this->removeModuleShowPagesRecursive($module, $modulesToCheck);
     }
 
-    $timer->addTime();
+    $timer && $timer->addTime();
   }
 
   protected function removeModuleShowPagesRecursive(dmModule $module, array $modulesToCheck)
@@ -75,7 +75,7 @@ class dmPageSyncService extends dmService
       $showPageRecordIds[] = $showPage['record_id'];
     }
 
-    $timerDeleteShowPreparation = dmDebug::timer('delete show preparation');
+    $timerDeleteShowPreparation = dmDebug::timerOrNull('delete show preparation');
     if ($module->hasListPage())
     {
       $records = array_flip($module->getTable()->createQuery('r INDEXBY r.id')
@@ -99,7 +99,7 @@ class dmPageSyncService extends dmService
       $parentModule = $module->getNearestAncestorWithPage();
       $parentRecordIds = $this->getParentRecordIds($module, $parentModule, $records);
     }
-    $timerDeleteShowPreparation->addTime();
+    $timerDeleteShowPreparation && $timerDeleteShowPreparation->addTime();
 
     foreach($showPages as $showPage)
     {
@@ -122,9 +122,9 @@ class dmPageSyncService extends dmService
         }
         else
         {
-          $timerAncestor = dmDebug::timer('find ancestor');
+          $timerAncestor = dmDebug::timerOrNull('find ancestor');
           $parentRecordId = dmDb::create($module->getModel(), $record)->getAncestorRecordId($parentModule->getModel());
-          $timerAncestor->addTime();
+          $timerAncestor && $timerAncestor->addTime();
         }
         if (!$parentRecordId)
         {
@@ -146,7 +146,7 @@ class dmPageSyncService extends dmService
 
   protected function updateListPages()
   {
-    $timer = dmDebug::timer('dmPageSync : updateListPages');
+    $timer = dmDebug::timerOrNull('dmPageSync : updateListPages');
 
     $projectModules = dmModuleManager::getProjectModules();
     foreach($projectModules as $key => $module)
@@ -196,7 +196,7 @@ class dmPageSyncService extends dmService
       }
     }
 
-    $timer->addTime();
+    $timer && $timer->addTime();
   }
 
   protected function updateShowPages(array $onlyModules)
@@ -221,12 +221,12 @@ class dmPageSyncService extends dmService
       return;
     }
     
-    $timerPreparations = dmDebug::timer('dmPageSync : preparations');
+    $timerPreparations = dmDebug::timerOrNull('dmPageSync : preparations');
 
     /*
      * prepares pages to update
      */
-    $timerPreparationsPages = dmDebug::timer('dmPageSync : preparations - pages');
+    $timerPreparationsPages = dmDebug::timerOrNull('dmPageSync : preparations - pages');
     $showPages = dmDb::query('DmPage p INDEXBY p.record_id')
     ->where('p.module = ? AND p.action = ?', array($moduleKey, 'show'))
     ->fetchRecords();
@@ -241,10 +241,10 @@ class dmPageSyncService extends dmService
       /*
        * prepare records
        */
-      $timerPreparationsRecords = dmDebug::timer('dmPageSync : preparations - records');
+      $timerPreparationsRecords = dmDebug::timerOrNull('dmPageSync : preparations - records');
       $records = $module->getTable()->createQuery('r')->select('r.id')->fetchPDO();
       array_walk($records, create_function('&$a', '$a = array("id" => $a[0]);'));
-      $timerPreparationsRecords->addTime();
+      $timerPreparationsRecords && $timerPreparationsRecords->addTime();
 
       /*
        * prepare parent pages
@@ -272,14 +272,14 @@ class dmPageSyncService extends dmService
       /*
        * prepare records
        */
-      $timerPreparationsRecords = dmDebug::timer('dmPageSync : preparations - records');
+      $timerPreparationsRecords = dmDebug::timerOrNull('dmPageSync : preparations - records');
       $select = 'r.id';
       if ($module->hasLocal($module->getParent()))
       {
         $select .= ', r.'.$module->getTable()->getRelationHolder()->getLocalByClass($module->getParent()->getModel())->getLocal();
       }
       $records = $module->getTable()->createQuery('r')->select($select)->fetchArray();
-      $timerPreparationsRecords->addTime();
+      $timerPreparationsRecords && $timerPreparationsRecords->addTime();
 
       /*
        * prepare parent pages
@@ -297,7 +297,7 @@ class dmPageSyncService extends dmService
 
     $updatedPages = new myDoctrineCollection('DmPage');
 
-    $timerPreparations->addTime();
+    $timerPreparations && $timerPreparations->addTime();
 
     foreach($records as $record)
     {
@@ -341,7 +341,7 @@ class dmPageSyncService extends dmService
 
   public function updatePageFromRecord(DmPage $page, array $record, dmProjectModule $module, dmProjectModule $parentModule, $parentPageIds, $parentRecordIds)
   {
-    $timer = dmDebug::timer('dmPageSync : updatePageFromRecord');
+    $timer = dmDebug::timerOrNull('dmPageSync : updatePageFromRecord');
 
     $moduleKey    = $module->getKey();
     $recordTable  = $module->getTable();
@@ -403,7 +403,7 @@ class dmPageSyncService extends dmService
       }
     }
 
-    $timer->addTime();
+    $timer && $timer->addTime();
   }
 
   protected function getPageViewForModuleAndAction($module, $action)

@@ -27,11 +27,15 @@ abstract class dmContext extends dmMicroCache
 
   public function initialize()
   {
+    $timer = dmDebug::timerOrNull('dmContext::initialize');
+    
     $this->loadServiceContainer();
 
     $this->configureUser();
     
     $this->configureResponse();
+    
+    $this->configureAssetCompressor();
     
     /*
      * dmForm require dmOoHelper to process links
@@ -47,6 +51,8 @@ abstract class dmContext extends dmMicroCache
      * Connect the tree watcher to make it aware of database modifications
      */
     $this->getPageTreeWatcher()->connect();
+    
+    $timer && $timer->addTime();
   }
   
   protected function configureUser()
@@ -59,33 +65,50 @@ abstract class dmContext extends dmMicroCache
   
   protected function configureResponse()
   {
-    /*
-     * Response require asset configuration
-     */
-    $this->sfContext->getResponse()->setAssetConfig(include($this->sfContext->getConfigCache()->checkConfig('config/dm/assets.yml')));
-    
-    /*
-     * Response require cdn configuration
-     */
-    $this->sfContext->getResponse()->setCdnConfig(array(
-      'css' => sfConfig::get('dm_css_cdn', array('enabled' => false)),
-      'js'  => sfConfig::get('dm_js_cdn', array('enabled' => false))
-    ));
+    if ($this->isHtmlForHuman())
+    {
+      $response = $this->sfContext->getResponse();
+      
+      /*
+       * Response require asset aliases
+       */
+      $response->setAssetAliases(include($this->sfContext->getConfigCache()->checkConfig('config/dm/assets.yml')));
+      
+      /*
+       * Response require cdn configuration
+       */
+      $response->setCdnConfig(array(
+        'css' => sfConfig::get('dm_css_cdn', array('enabled' => false)),
+        'js'  => sfConfig::get('dm_js_cdn', array('enabled' => false))
+      ));
+      
+      /*
+       * Response require asset configuration
+       */
+      $response->setAssetConfig($this->getService('asset_config'));
+    }
+  }
   
+  protected function configureAssetCompressor()
+  {
     /*
      * Enable stylesheet compression
      */
     if (sfConfig::get('dm_css_compress', true) && !sfConfig::get('dm_debug'))
     {
-      $this->serviceContainer->getService('stylesheet_compressor')->connect();
+      $stylesheetCompressor = $this->serviceContainer->getService('stylesheet_compressor');
+      $stylesheetCompressor->setOption('protect_user_assets', $this->sfContext->getUser()->can('code_editor'));
+      $stylesheetCompressor->connect();
     }
-    
+
     /*
      * Enable javascript compression
      */
     if (sfConfig::get('dm_js_compress', true) && !sfConfig::get('dm_debug'))
     {
-      $this->serviceContainer->getService('javascript_compressor')->connect();
+      $javascriptCompressor = $this->serviceContainer->getService('javascript_compressor');
+      $javascriptCompressor->setOption('protect_user_assets', $this->sfContext->getUser()->can('code_editor'));
+      $javascriptCompressor->connect();
     }
   }
 
@@ -276,16 +299,8 @@ abstract class dmContext extends dmMicroCache
     return $this->setCache('is_html_for_human',
     !$this->sfContext->getRequest()->isXmlHttpRequest()
     && !$this->sfContext->getRequest()->isFlashRequest()
-    && strpos($this->sfContext->getResponse()->getContentType(), 'text/html') === 0
+    && $this->sfContext->getResponse()->isHtml()
     );
-  }
-
-  /*
-   * @return DmPage or null
-   */
-  public function getPage()
-  {
-    return null;
   }
 
   /*

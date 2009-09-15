@@ -24,11 +24,17 @@ abstract class dmAssetCompressor
   public function initialize(array $options = array())
   {
     $this->options = array_merge(array(
-      'gz_compression'  => true,
-      'minify'          => true
+      'gz_compression'      => true,
+      'minify'              => true,
+      'protect_user_assets' => false
     ), $options);
     
     $this->type = $this->getType();
+  }
+  
+  public function setOption($name, $value)
+  {
+    $this->options[$name] = $value;
   }
   
   public function listenFilterAssets(sfEvent $event, array $assets)
@@ -73,6 +79,9 @@ abstract class dmAssetCompressor
     $timer = dmDebug::timerOrNull('dmAssetCompressor::process('.$this->type.')');
     
     $this->assets           = $assets;
+    $this->cachedAssets     = array();
+    $this->cdnAssets  = array();
+    $this->preservedAssets  = array();
     $this->processedAssets  = array();
     $this->cacheKey         = '';
     $this->webDir           = sfConfig::get('sf_web_dir');
@@ -81,27 +90,29 @@ abstract class dmAssetCompressor
 
     foreach($this->assets as $webPath => $options)
     {
-      if ($this->isCachable($webPath, $options))
+      if ($this->isOnFilesystem($webPath))
       {
-        $this->cacheKey .= $webPath;
-        
         if (!file_exists($this->webDir.$webPath))
         {
-          $this->log('Asset does not exist : '.$this->webDir.$webPath);
-          unset($this->assets[$webPath]);
+          $this->log('Missing '.$this->type.' : '.$this->webDir.$webPath);
+          $this->cacheKey .= $webPath;
+        }
+        elseif ($this->isCachable($webPath, $options))
+        {
+          $this->cachedAssets[$webPath] = $options;
+          $this->cacheKey .= $webPath.filemtime($this->webDir.$webPath);
         }
         else
         {
-          $this->cacheKey .= filemtime($this->webDir.$webPath);
+          $this->preservedAssets[$webPath] = $options;
         }
       }
       else
       {
-        $this->processedAssets[$webPath] = $options;
-        unset($this->assets[$webPath]);
+        $this->cdnAssets[$webPath] = $options;
       }
     }
-    
+
     $this->cacheKey = md5($this->processCacheKey($this->cacheKey));
 
     $cacheWebPath = '/cache/'.$this->type;
@@ -115,7 +126,7 @@ abstract class dmAssetCompressor
     {
       $cacheContent = '';
       
-      foreach($this->assets as $webPath => $options)
+      foreach($this->cachedAssets as $webPath => $options)
       {
         $cacheContent .= $this->processAssetContent(file_get_contents($this->webDir.$webPath), $webPath);
       }
@@ -132,13 +143,22 @@ abstract class dmAssetCompressor
       }
     }
     
-    $this->processedAssets = array_merge($this->processedAssets, array($cacheWebPath.'/'.$this->cacheKey.'.'.$this->type => array()));
+    $this->processedAssets = array_merge(
+      $this->cdnAssets,
+      array($cacheWebPath.'/'.$this->cacheKey.'.'.$this->type => array()),
+      $this->preservedAssets
+    );
     
     $this->postProcess();
     
-    if ($timer) $timer->addTime();
+    $timer && $timer->addTime();
     
     return $this->processedAssets;
+  }
+  
+  protected function isOnFilesystem($asset)
+  {
+    return $asset{0} === '/';
   }
   
   protected function log($message)

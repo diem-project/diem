@@ -24,6 +24,11 @@ class dmJavascriptCompressor extends dmAssetCompressor
   
   protected function isCachable($javascript, array $options = array())
   {
-    return $javascript{0} === '/';
+    if($this->options['protect_user_assets'] && strncmp($javascript, '/dm/', 4) !== 0)
+    {
+      return false;
+    }
+    
+    return true;
   }
 }

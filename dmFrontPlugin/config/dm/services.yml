@@ -1,5 +1,7 @@
 parameters:
 
+  asset_config.class:         dmFrontAssetConfig
+
   theme_manager.class:        dmThemeManager
 
   widget_view.class:          dmWidgetBaseView

@@ -205,4 +205,6 @@ $.getScript(href, callback);
 
 * [DONE] fix referers sorting in admin
 
-* add referer records default sort in admin autojoins
+* [DONE] add referer records default sort in admin autojoins
+
+* [DONE] move asset configuration to classes managed by sfServiceContainer

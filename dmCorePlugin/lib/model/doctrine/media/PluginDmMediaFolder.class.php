@@ -212,7 +212,7 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
 
   public function sync()
   {
-    $timer = dmDebug::timer('DmMediaFolder::sync');
+    $timer = dmDebug::timerOrNull('DmMediaFolder::sync');
 
     /*
      * Clear php filesystem cache
@@ -335,7 +335,7 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
     $this->refresh();
     $this->refreshRelated('Medias');
 
-    $timer->addTime();
+    $timer && $timer->addTime();
   }
 
   /*

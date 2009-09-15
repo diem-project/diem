@@ -10,7 +10,7 @@ class dmSeoValidationService extends dmService
 
   public function execute(array $attributes = array('slug'))
   {
-  	$timer = dmDebug::timer('dmSeoValidationService::execute');
+  	$timer = dmDebug::timerOrNull('dmSeoValidationService::execute');
 
   	$this->attributes = $attributes;
 
@@ -18,7 +18,7 @@ class dmSeoValidationService extends dmService
 
   	$duplicated = $this->validateAttributes();
 
-  	$timer->addTime();
+  	$timer && $timer->addTime();
 
   	return $duplicated;
   }

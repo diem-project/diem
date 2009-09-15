@@ -28,7 +28,7 @@ class dmModuleManager
 
 	public static function checkModulesConsistency()
 	{
-		//$timer = dmDebug::timer('dmModuleManager::checkModulesConsistency');
+		//$timer = dmDebug::timerOrNull('dmModuleManager::checkModulesConsistency');
 
 		foreach(self::getModules() as $module)
 		{
@@ -60,7 +60,7 @@ class dmModuleManager
 			throw new dmException('You must create a main module');
 		}
 
-		//$timer->addTime();
+		//$timer && $timer->addTime();
 	}
 
 	public static function getType($typeName)
@@ -84,7 +84,7 @@ class dmModuleManager
 	{
 		if (null === self::$modules)
 		{
-			$timer = dmDebug::timer('dmModuleManager::getModules');
+			$timer = dmDebug::timerOrNull('dmModuleManager::getModules');
 			self::$modules = array();
 			foreach(self::getTypes() as $type)
 			{
@@ -93,7 +93,7 @@ class dmModuleManager
 					self::$modules = array_merge(self::$modules, $space->getModules());
 				}
 			}
-			$timer->addTime();
+			$timer && $timer->addTime();
 
 			if (sfConfig::get('sf_debug'))
 			{

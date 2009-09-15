@@ -133,7 +133,7 @@ class dm
    */
   public static function getDiemSize()
   {
-  	$timer = dmDebug::timer('dm::getDiemSize()');
+  	$timer = dmDebug::timerOrNull('dm::getDiemSize()');
 
   	$pluginsDir = sfConfig::get('sf_plugins_dir').'/';
 
@@ -169,7 +169,7 @@ class dm
       'characters' => $characters
     );
 
-    $timer->addTime();
+    $timer && $timer->addTime();
 
     return $response;
   }

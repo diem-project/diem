@@ -1,5 +1,7 @@
 parameters:
 
+  asset_config.class:         dmAdminAssetConfig
+
   admin_sort_table_form.class:    dmAdminSortTableForm
 
   admin_sort_referers_form.class: dmAdminSortReferersForm

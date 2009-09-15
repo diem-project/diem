@@ -18,14 +18,9 @@
 
 #dm_page .dm_widget > .dm_widget_edit {
   margin-top: 3px;
-  color: #aaa;
-  background: url(../../core/images/default_bg.png) repeat-x scroll 50% 50%;
-  border: 1px solid #888;
-  border-bottom: 0;
-  -moz-border-radius: 4px 4px 0 0;
-  width: 60px;
-  padding: 2px 5px 2px 5px;
-  text-align: center;
+  background: url(../images/zone_widget_sprite.png) no-repeat;
+  width: 64px;
+  height: 19px;
   display: none;
 }
 
@@ -34,9 +29,7 @@
 }
 
 #dm_page.edit .dm_widget:hover > .dm_widget_edit {
-  color: #444;
-  border-color: #a6edcd;
-  background: url(../../core/images/default_bg_green.png) repeat-x scroll 50% 50%;
+  background-position: 0 -19px;
 }
 
 .dm_widget_placeholder {

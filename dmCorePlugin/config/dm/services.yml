@@ -42,6 +42,13 @@ parameters:
  
 services:
 
+  asset_config:
+    class:                    %asset_config.class%
+    shared:                   true
+    arguments:
+      dispatcher:             @dispatcher
+      user:                   @user
+
   theme:
     class:                    %theme.class%
     shared:                   false

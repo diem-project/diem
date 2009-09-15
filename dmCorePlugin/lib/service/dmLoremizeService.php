@@ -8,7 +8,7 @@ class dmLoremizeService extends dmService
 	{
     $this->log("dmLoremize::execute");
 
-    $timer = dmDebug::timer('dmLoremize::execute');
+    $timer = dmDebug::timerOrNull('dmLoremize::execute');
 
     if ($moduleName = $this->getOption('module_name'))
     {
@@ -21,7 +21,7 @@ class dmLoremizeService extends dmService
       $loremizer->loremize($this->getOption('nb', self::DEFAULT_NB));
     }
 
-    $timer->addTime();
+    $timer && $timer->addTime();
   }
 
 }

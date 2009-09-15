@@ -14,7 +14,4 @@ cache:        ~
 common:
   enabled:    false
 
-dm_asset:
-  class:      dmFrontAssetFilter
-  
 execution:    ~

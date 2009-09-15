@@ -32,7 +32,7 @@ class BasedmFrontActions extends dmFrontBaseActions
 	 */
 	protected function launchDirectActions($request)
 	{
-		$timerLaunchAction = dmDebug::timer("dmFrontActions::launchDirectActions");
+		$timerLaunchAction = dmDebug::timerOrNull("dmFrontActions::launchDirectActions");
 		
     /*
      * Find module/action for page widget ( including layout )
@@ -69,7 +69,7 @@ class BasedmFrontActions extends dmFrontBaseActions
       }
     }
     
-    $timerLaunchAction->addTime();
+    $timerLaunchAction && $timerLaunchAction->addTime();
 	}
 
 	/*
