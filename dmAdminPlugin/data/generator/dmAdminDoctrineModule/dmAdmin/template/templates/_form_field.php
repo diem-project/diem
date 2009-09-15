@@ -29,7 +29,7 @@
       
       echo '</div>';
 
-      echo $form[$name]->render($attributes instanceof sfOutputEscaper ? $attributes->getRawValue() : $attributes);
+      echo '<div class="content">'.$form[$name]->render($attributes instanceof sfOutputEscaper ? $attributes->getRawValue() : $attributes).'</div>';
 
       if ($help)
       {
