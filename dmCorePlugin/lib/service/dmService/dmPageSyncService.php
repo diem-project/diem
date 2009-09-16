@@ -230,7 +230,7 @@ class dmPageSyncService extends dmService
     $showPages = dmDb::query('DmPage p INDEXBY p.record_id')
     ->where('p.module = ? AND p.action = ?', array($moduleKey, 'show'))
     ->fetchRecords();
-    $timerPreparationsPages->addTime();
+    $timerPreparationsPages && $timerPreparationsPages->addTime();
 
     $pageView = $this->getPageViewForModuleAndAction($moduleKey, 'show');
 

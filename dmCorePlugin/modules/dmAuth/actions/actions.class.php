@@ -29,24 +29,5 @@ class dmAuthActions extends BasesfGuardAuthActions
   	
   }
 
-  protected function ajaxLogin(sfWebRequest $request)
-  {
-    $class = sfConfig::get('app_sf_guard_plugin_signin_form', 'sfGuardFormSignin');
-    $this->form = new $class;
-
-    $this->form->bind(array(
-      'username' => $request->getParameter('username'),
-      'password' => base64_decode($request->getParameter('password'))
-    ));
-
-    if ($this->form->isValid())
-    {
-      return $this->renderText('ok');
-    }
-    else
-    {
-    	return $this->renderText('ko');
-    }
-  }
 
 }

@@ -113,7 +113,7 @@ abstract class dmWebResponse extends sfWebResponse
     	}
     	elseif(isset($this->assetAliases[$type.'.'.$asset]))
     	{
-    		$path = $this->assetAliases[$type.'.'.$asset].'.'.$type;
+    		$path = $this->assetAliases[$type.'.'.$asset];
     	}
       elseif($type === 'css')
       {

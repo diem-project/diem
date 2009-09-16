@@ -4,8 +4,8 @@
     {
       return;
     }
-
-    $query->addOrderBy($sort[0] . ' ' . $sort[1]);
+    
+    $this->tryToSortWithForeignColumn($query, $sort);
   }
 
   protected function getSort()

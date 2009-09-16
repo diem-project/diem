@@ -57,7 +57,7 @@ default:
 
   orm:                                  # Doctrine ORM configuration
                                         # More configuration : please use ProjectConfiguration::configureDoctrine method
-    identifier_fields:    [ name, title, subject, description, id ] # Fields used to represent a record with a string
+    identifier_fields:    [ name, title, slug, subject, id ] # Fields used to represent a record with a string
     cache_enabled:        true          # (RECOMMENDED) Use doctrine query cache. No side effect, automatic cache invalidation )
     cache_result_enabled: true          # (RECOMMENDED) Use doctrine result cache where query->dmCache() is called
     cache_result_enabled_default: false # Use doctrine result cache on every query ( performance gain, possible issues )

@@ -38,43 +38,42 @@ class dmInlineAssetConfigHandler extends dmInlineConfigHandler
       $name = $asset;
     }
 
-    if ($type === "js")
+    switch($type)
     {
-      switch($package)
-      {
-        case 'core':
-          $path = '/'.sfConfig::get('dm_core_asset').'/js/'.$name; break;
-        case 'lib':
-          $path = '/'.sfConfig::get('dm_core_asset').'/lib/'.$name; break;
-        case 'front':
-          $path = '/'.sfConfig::get('dm_front_asset').'/js/'.$name; break;
-        case 'admin':
-          $path = '/'.sfConfig::get('dm_admin_asset').'/js/'.$name; break;
-        default:
-          throw new dmException('Error parsing assets : '.$package.' is not a valid package');
-      }
+      case 'js':
+        switch($package)
+        {
+          case 'core':
+            $path = '/'.sfConfig::get('dm_core_asset').'/js/'.$name.'.js'; break;
+          case 'lib':
+            $path = '/'.sfConfig::get('dm_core_asset').'/lib/'.$name.'.js'; break;
+          case 'front':
+            $path = '/'.sfConfig::get('dm_front_asset').'/js/'.$name.'.js'; break;
+          case 'admin':
+            $path = '/'.sfConfig::get('dm_admin_asset').'/js/'.$name.'.js'; break;
+          default:
+            throw new dmException('Error parsing assets : '.$package.' is not a valid package');
+        }
+        break;
+      case 'css':
+        switch($package)
+        {
+          case 'core':
+            $path = '/'.sfConfig::get('dm_core_asset').'/css/'.$name.'.css'; break;
+          case 'lib':
+            $path = '/'.sfConfig::get('dm_core_asset').'/lib/'.$name.'.css'; break;
+          case 'front':
+            $path = '/'.sfConfig::get('dm_front_asset').'/css/'.$name.'.css'; break;
+          case 'admin':
+            $path = '/'.sfConfig::get('dm_admin_asset').'/css/'.$name.'.css'; break;
+          default:
+            throw new dmException('Error parsing assets : '.$package.' is not a valid package');
+        }
+        break;
+      default:
+        throw new dmException("$type is not a valid asset type");
     }
-    elseif ($type === "css")
-    {
-      switch($package)
-      {
-        case 'core':
-          $path = '/'.sfConfig::get('dm_core_asset').'/css/'.$name; break;
-        case 'lib':
-          $path = '/'.sfConfig::get('dm_core_asset').'/lib/'.$name; break;
-        case 'front':
-          $path = '/'.sfConfig::get('dm_front_asset').'/css/'.$name; break;
-        case 'admin':
-          $path = '/'.sfConfig::get('dm_admin_asset').'/css/'.$name; break;
-        default:
-          throw new dmException('Error parsing assets : '.$package.' is not a valid package');
-      }
-    }
-    else
-    {
-      throw new dmException("$type is not a valid asset type");
-    }
-
+    
     if(!isset($path))
     {
       throw new dmException("Can not find path for asset $type.$package.$asset");

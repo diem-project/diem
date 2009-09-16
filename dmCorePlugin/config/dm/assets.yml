@@ -42,7 +42,6 @@ js:
     expose:           expose/jquery.expose-1.0.1.min
     qtip:             qtip/jquery.qtip-1.0.0-rc3.min
     hotkeys:          hotkeys/jquery.hotkeys-0.7.9.min
-    base64:           webtoolkit/base64
 
 css:
 

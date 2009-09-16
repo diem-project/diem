@@ -124,11 +124,11 @@ abstract class dmDoctrineTable extends Doctrine_Table
 
     foreach($this->getRelationHolder()->getAll() as $relation)
     {
-      if ($relation['alias'] == 'Translation')
+      if ($relation->getAlias() === 'Translation')
       {
         $q->withI18n();
       }
-      elseif ($relation['class'] == 'DmMedia')
+      elseif ($relation->getClass() === 'DmMedia')
       {
         $q->leftJoin(sprintf('%s.%s %s', $rootAlias, $relation->getAlias(), $relation->getLocal()))
         ->leftJoin(sprintf('%s.%s %s', $relation->getLocal(), 'Folder', $relation->getLocal().'Folder'));
@@ -136,7 +136,38 @@ abstract class dmDoctrineTable extends Doctrine_Table
       else
       {
         $q->leftJoin(sprintf('%s.%s %s', $rootAlias, $relation->getAlias(), $relation->getAlias()));
-        $q->addOrderBy(sprintf('%s.%s %s', $relation->getAlias(), $relation->getTable()->getSortColumnName(), 'asc'));
+      }
+    }
+
+    return $q;
+  }
+  
+  /*
+   * Will join named relations
+   */
+  public function joinRelations(array $aliases)
+  {
+    $rootAlias = $q->getRootAlias();
+
+    foreach($aliases as $alias)
+    {
+      if (!$relation = $this->getRelationHolder()->get($alias))
+      {
+        throw new dmException(sprintf('%s is not a valid alias for the table %s', $alias, $this->getComponentName()));
+      }
+      
+      if ($relation->getAlias() === 'Translation')
+      {
+        $q->withI18n();
+      }
+      elseif ($relation->getClass() === 'DmMedia')
+      {
+        $q->leftJoin(sprintf('%s.%s %s', $rootAlias, $relation->getAlias(), $relation->getLocal()))
+        ->leftJoin(sprintf('%s.%s %s', $relation->getLocal(), 'Folder', $relation->getLocal().'Folder'));
+      }
+      else
+      {
+        $q->leftJoin(sprintf('%s.%s %s', $rootAlias, $relation->getAlias(), $relation->getAlias()));
       }
     }
 
@@ -256,7 +287,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
     {
       $q->addOrderBy('dm_query.'.$sortColumnName);
     }
-     
+    
     return $this->setCache('dm_default_query', $q);
   }
 
@@ -287,6 +318,9 @@ abstract class dmDoctrineTable extends Doctrine_Table
     return $this->setCache('dm_default_sort_column_name', $columnName);
   }
 
+  /*
+   * Tries to find a column name that could be used to represent a record of this table
+   */
   public function getIdentifierColumnName()
   {
     if ($this->hasCache('dm_identifier_column_name'))

@@ -91,7 +91,6 @@ abstract class dmDoctrineQuery extends Doctrine_Query
 		$culture  = null === $culture ? myDoctrineRecord::getDefaultCulture() : $culture;
 		
 		return $this
-//    ->addSelect($me.'.*, translation.*')
     ->leftJoin($me.'.Translation translation ON '.$me.'.id = translation.id AND translation.lang = ?', $culture);
 	}
 
