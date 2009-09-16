@@ -32,13 +32,15 @@ echo £o('div#dm_tool_bar.dm.clearfix');
   	echo '__DM_TIDY_OUTPUT__';
   }
   
-  echo £link('+/dmPage/edit')
-  ->set('a.page_edit_form.widget24.s24block.s24_page_edit')
-  ->textTitle(__('Edit page'));
+  if ($sf_user->can('page_edit'))
+  {
+    echo £link('+/dmPage/edit')->set('a.page_edit_form.widget24.s24block.s24_page_edit')->textTitle(__('Edit page'));
+  }
   
-  echo £link('+/dmPage/new')
-  ->set('a.page_add_form.widget24.s24block.s24_page_add')
-  ->textTitle(__('Add new page'));
+  if ($sf_user->can('page_add'))
+  {
+    echo £link('+/dmPage/new')->set('a.page_add_form.widget24.s24block.s24_page_add')->textTitle(__('Add new page'));
+  }
 
   if ($sf_user->can('zone_add widget_add'))
   {

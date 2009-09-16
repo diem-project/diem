@@ -12,7 +12,7 @@ parameters:
     gz_compression:           true
 
   javascript_compressor.class: dmJavascriptCompressor
-  stylesheet_compressor.options:
+  javascript_compressor.options:
     minify:                   true
     gz_compression:           true
 
@@ -84,6 +84,7 @@ services:
       dispatcher:             @dispatcher
       filesystem:             @filesystem
       relative_url_root:      %request.relative_url_root%
+      options:                %stylesheet_compressor.options%
 
   javascript_compressor:
     class:                    %javascript_compressor.class%
@@ -92,6 +93,7 @@ services:
       dispatcher:             @dispatcher
       filesystem:             @filesystem
       relative_url_root:      %request.relative_url_root%
+      options:                %javascript_compressor.options%
 
   auth_layout_helper:
     class:                    %auth_layout_helper.class%

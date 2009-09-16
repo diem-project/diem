@@ -30,80 +30,80 @@ article, aside, dialog, figure, footer, header, hgroup, menu, nav, section { dis
 .block { display: block; }
 .inline { display: inline; }
 
-.pt5 { padding-top: 5px; }
-.pr5 { padding-right: 5px; }
-.pb5 { padding-bottom: 5px; }
-.pl5 { padding-left: 5px; }
+.pt5 { padding-top: 5px !important; }
+.pr5 { padding-right: 5px !important; }
+.pb5 { padding-bottom: 5px !important; }
+.pl5 { padding-left: 5px !important; }
 
-.pt10 { padding-top: 10px; }
-.pr10 { padding-right: 10px; }
-.pb10 { padding-bottom: 10px; }
-.pl10 { padding-left: 10px; }
+.pt10 { padding-top: 10px !important; }
+.pr10 { padding-right: 10px !important; }
+.pb10 { padding-bottom: 10px !important; }
+.pl10 { padding-left: 10px !important; }
 
-.pt15 { padding-top: 15px; }
-.pr15 { padding-right: 15px; }
-.pb15 { padding-bottom: 15px; }
-.pl15 { padding-left: 15px; }
+.pt15 { padding-top: 15px !important; }
+.pr15 { padding-right: 15px !important; }
+.pb15 { padding-bottom: 15px !important; }
+.pl15 { padding-left: 15px !important; }
 
-.pt20 { padding-top: 20px; }
-.pr20 { padding-right: 20px; }
-.pb20 { padding-bottom: 20px; }
-.pl20 { padding-left: 20px; }
+.pt20 { padding-top: 20px !important; }
+.pr20 { padding-right: 20px !important; }
+.pb20 { padding-bottom: 20px !important; }
+.pl20 { padding-left: 20px !important; }
 
-.pt25 { padding-top: 25px; }
-.pr25 { padding-right: 25px; }
-.pb25 { padding-bottom: 25px; }
-.pl25 { padding-left: 25px; }
+.pt25 { padding-top: 25px !important; }
+.pr25 { padding-right: 25px !important; }
+.pb25 { padding-bottom: 25px !important; }
+.pl25 { padding-left: 25px !important; }
 
-.pt30 { padding-top: 30px; }
-.pr30 { padding-right: 30px; }
-.pb30 { padding-bottom: 30px; }
-.pl30 { padding-left: 30px; }
+.pt30 { padding-top: 30px !important; }
+.pr30 { padding-right: 30px !important; }
+.pb30 { padding-bottom: 30px !important; }
+.pl30 { padding-left: 30px !important; }
 
-.pt40 { padding-top: 40px; }
-.pr40 { padding-right: 40px; }
-.pb40 { padding-bottom: 40px; }
-.pl40 { padding-left: 40px; }
+.pt40 { padding-top: 40px !important; }
+.pr40 { padding-right: 40px !important; }
+.pb40 { padding-bottom: 40px !important; }
+.pl40 { padding-left: 40px !important; }
 
-.mt5 { margin-top: 5px; }
-.mr5 { margin-right: 5px; }
-.mb5 { margin-bottom: 5px; }
-.ml5 { margin-left: 5px; }
+.mt5 { margin-top: 5px !important; }
+.mr5 { margin-right: 5px !important; }
+.mb5 { margin-bottom: 5px !important; }
+.ml5 { margin-left: 5px !important; }
 
-.mt10 { margin-top: 10px; }
-.mr10 { margin-right: 10px; }
-.mb10 { margin-bottom: 10px; }
-.ml10 { margin-left: 10px; }
+.mt10 { margin-top: 10px !important; }
+.mr10 { margin-right: 10px !important; }
+.mb10 { margin-bottom: 10px !important; }
+.ml10 { margin-left: 10px !important; }
 
-.mt15 { margin-top: 15px; }
-.mr15 { margin-right: 15px; }
-.mb15 { margin-bottom: 15px; }
-.ml15 { margin-left: 15px; }
+.mt15 { margin-top: 15px !important; }
+.mr15 { margin-right: 15px !important; }
+.mb15 { margin-bottom: 15px !important; }
+.ml15 { margin-left: 15px !important; }
 
-.mt20 { margin-top: 20px; }
-.mr20 { margin-right: 20px; }
-.mb20 { margin-bottom: 20px; }
-.ml20 { margin-left: 20px; }
+.mt20 { margin-top: 20px !important; }
+.mr20 { margin-right: 20px !important; }
+.mb20 { margin-bottom: 20px !important; }
+.ml20 { margin-left: 20px !important; }
 
-.mt25 { margin-top: 25px; }
-.mr25 { margin-right: 25px; }
-.mb25 { margin-bottom: 25px; }
-.ml25 { margin-left: 25px; }
+.mt25 { margin-top: 25px !important; }
+.mr25 { margin-right: 25px !important; }
+.mb25 { margin-bottom: 25px !important; }
+.ml25 { margin-left: 25px !important; }
 
-.mt30 { margin-top: 30px; }
-.mr30 { margin-right: 30px; }
-.mb30 { margin-bottom: 30px; }
-.ml30 { margin-left: 30px; }
+.mt30 { margin-top: 30px !important; }
+.mr30 { margin-right: 30px !important; }
+.mb30 { margin-bottom: 30px !important; }
+.ml30 { margin-left: 30px !important; }
 
-.mt40 { margin-top: 40px; }
-.mr40 { margin-right: 40px; }
-.mb40 { margin-bottom: 40px; }
-.ml40 { margin-left: 40px; }
+.mt40 { margin-top: 40px !important; }
+.mr40 { margin-right: 40px !important; }
+.mb40 { margin-bottom: 40px !important; }
+.ml40 { margin-left: 40px !important; }
 
-.ml2p { margin-left: 2%; }
-.mr2p { margin-right: 2%;}
-.ml4p { margin-left: 4%; }
-.mr4p { margin-right: 4%;}
+.ml2p { margin-left: 2% !important; }
+.mr2p { margin-right: 2% !important;}
+.ml4p { margin-left: 4% !important; }
+.mr4p { margin-right: 4% !important;}
 
 /* FIN DES CLASSES GENERIQUES */
 

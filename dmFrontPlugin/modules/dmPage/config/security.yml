@@ -1,4 +1,12 @@
 all:
-  is_secure: true
-  credentials:
-    - front_edit
+  is_secure:    true
+  credentials:  front_edit
+
+new:
+  credentials:  page_add
+  
+edit:
+  credentials:  page_edit
+  
+delete:
+  credentials:  page_delete

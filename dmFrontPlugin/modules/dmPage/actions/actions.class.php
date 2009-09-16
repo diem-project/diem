@@ -3,10 +3,34 @@
 class dmPageActions extends dmFrontBaseActions
 {
   
+  public function executeDelete(dmWebRequest $request)
+  {
+    $this->forward404Unless(
+      $page = dmDb::table('DmPage')->find($request->getParameter('id')),
+      'no current DmPage'
+    );
+    
+    $this->forward404If(
+      $page->Node->isRoot(),
+      'Can not delete root page'
+    );
+    
+    $this->forward404If(
+      $page->hasRecord(),
+      'Can not delete record page. Delete record instead.'
+    );
+    
+    $redirectUrl = dmFrontLinkTag::build($page->Node->getParent())->getHref();
+    
+    $page->delete();
+    
+    return $this->redirect($redirectUrl);
+  }
+  
   public function executeEdit(dmWebRequest $request)
   {
     $this->forward404Unless(
-      $this->page = dmContext::getInstance()->getPage(),
+      $this->page = $this->dmContext->getPage(),
       'no current DmPage'
     );
     
@@ -54,7 +78,7 @@ class dmPageActions extends dmFrontBaseActions
   public function executeNew(dmWebRequest $request)
   {
     $this->forward404Unless(
-      $this->page = dmContext::getInstance()->getPage(),
+      $this->page = $this->dmContext->getPage(),
       'no current DmPage'
     );
     

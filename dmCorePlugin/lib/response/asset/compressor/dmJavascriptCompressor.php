@@ -16,10 +16,10 @@ class dmJavascriptCompressor extends dmAssetCompressor
   {
     if ($this->options['minify'] && !strpos($path, '.min.') && !strpos($path, '.pack.'))
     {
-      $content = dmJsMinifier::transform($content).';';
+      $content = dmJsMinifier::transform($content);
     }
     
-    return $content;
+    return $content.";";
   }
   
   protected function isCachable($javascript, array $options = array())

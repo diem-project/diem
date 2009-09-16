@@ -65,7 +65,7 @@
   border: 0;
 }
 
-.dm_tabbed_form .ui-tabs-panel {
+.dm .dm_tabbed_form .ui-tabs-panel {
   padding: 5px 0 0 0;
 }
 
