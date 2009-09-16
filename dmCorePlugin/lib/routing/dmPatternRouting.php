@@ -4,9 +4,10 @@ class dmPatternRouting extends sfPatternRouting
 {
   public function initialize(sfEventDispatcher $dispatcher, sfCache $cache = null, $options = array())
   {
-    $options = array_merge(array(
-      'lookup_cache_dedicated_keys'      => dmAPCCache::isEnabled()
-    ), $options);
+    /*
+     * This option is great only if APC is active
+     */
+    $options['lookup_cache_dedicated_keys'] = dmAPCCache::isEnabled();
 
     /*
      * Performance cost on debug on is too high

@@ -24,6 +24,9 @@ class dmDebug
 		return sfTimerManager::getTimer('[Diem] '.$name);
 	}
 	
+	/*
+	 * @return sfTimer if logging is enabled or null if logging is disabled
+	 */
 	public static function timerOrNull($name)
 	{
 	  if (sfConfig::get('sf_debug') && sfConfig::get('sf_logging_enabled'))

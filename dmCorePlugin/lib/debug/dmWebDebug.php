@@ -14,7 +14,7 @@ class dmWebDebug extends sfWebDebug
     
     if (sfConfig::get('sf_logging_enabled'))
     {
-      $this->setPanel('config', new sfWebDebugPanelConfig($this));
+      $this->setPanel('config', new dmWebDebugPanelConfig($this));
     }
     
     $this->setPanel('logs', new sfWebDebugPanelLogs($this));
@@ -36,6 +36,12 @@ class dmWebDebug extends sfWebDebug
    */
   public function injectToolbar($content)
   {
+    // we don't want to show web debug panel on non-html response
+    if (sfConfig::get('dm_web_debug_only_html_response', true) && !strpos($content, '</html>'))
+    {
+      return $content;
+    }
+    
     $debug = $this->asHtml();
     
     if (strpos($content, '__SF_WEB_DEBUG__'))
