@@ -29,11 +29,8 @@ $.widget('ui.dmFrontForm', $.extend({}, $.dm.coreForm, {
     
     $('textarea.dm_markdown', self.form).each(function()
 		{
-      var $editor = $(this);
-			
-      $editor.markItUp(dmMarkitupMarkdown);
-      
-      $editor.resizable({handles: 's'});
+      $(this).markItUp(dmMarkitupMarkdown);
+      $(this).resizable({handles: 's'});
     });
   }
   

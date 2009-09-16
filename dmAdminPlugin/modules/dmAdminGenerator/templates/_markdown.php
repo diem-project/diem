@@ -1,6 +1,7 @@
 <?php
   use_stylesheet('lib.markitup');
   use_stylesheet('lib.markitupSet');
+  use_stylesheet('lib.ui-resizable');
   use_javascript('lib.markitup');
   use_javascript('lib.markitupSet');
   $attributes = array_merge(
@@ -16,11 +17,18 @@
     </div>
   <?php endif; ?>
   <div class="sf_admin_form_row_inner clearfix">
-    <?php echo $form[$name]->renderLabel($label, array('class' => 'fnone')) ?>
-     <?php echo $form[$name]->render($attributes) ?>
-     <?php if ($help || $help = $form[$name]->renderHelp()): ?>
-      <div class="help"><?php echo __($help) ?></div>
-    <?php endif; ?>
+    <?php
+      echo $form[$name]->renderLabel($label, array('class' => 'fnone'));
+      echo $form[$name]->render($attributes);
+      if ($help)
+      {
+        echo '<div class="help">'.__($help).'</div>';
+      }
+      elseif($help = $form[$name]->renderHelp())
+      {
+        echo '<div class="help">'.$help.'</div>';
+      }
+    ?>
   </div>
 </div>
 

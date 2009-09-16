@@ -110,6 +110,9 @@ div.control span.unselect_all {
 .sf_admin_form div.sf_admin_form_row_inner textarea {
   width: 76%;
 }
+.sf_admin_form div.sf_admin_form_row_inner textarea.markdown_editor {
+	width: 98.5%;
+}
 
 .sf_admin_form div.sf_admin_form_row_inner input.datepicker_me {
   width: auto;

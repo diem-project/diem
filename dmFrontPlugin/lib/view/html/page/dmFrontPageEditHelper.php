@@ -14,7 +14,7 @@ class dmFrontPageEditHelper extends dmFrontPageHelper
   {
     $style = (!$zone['width'] || $zone['width'] === '100%') ? '' : ' style="width: '.$zone['width'].';"';
     
-    $html = '<div class="'.dmArray::toHtmlCssClasses(array('dm_zone', $zone['css_class'])).'"'.$style.'>';
+    $html = '<div id="dm_zone_'.$zone['id'].'" class="'.dmArray::toHtmlCssClasses(array('dm_zone', $zone['css_class'])).'"'.$style.'>';
 
     if ($this->user && $this->user->can('zone_edit'))
     {

@@ -88,7 +88,7 @@
 
 * add the search widget
 
-* use Zend Code Generator to create/update front modules
+* [DONE] use Zend Code Generator to create/update front modules
 
 * add the text widget
 
@@ -208,3 +208,7 @@ $.getScript(href, callback);
 * [DONE] move asset configuration to classes managed by sfServiceContainer
 
 * [DONE] remove or beautify search framework dependencies
+
+* [DONE] improve web debug panel performance
+
+* add all media helper classes to dmServiceContainer

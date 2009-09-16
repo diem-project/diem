@@ -16,7 +16,7 @@ echo £o('div.clearfix');
   echo £('div.view',
    £link($object->fullWebPath)->text(
     $object->isImage()
-    ? £media($object)->size(250, 140)
+    ? £media($object)->size(250, 150)
     : £media('dmCore/media/unknown.png')->size(64, 64)
     )
   );
