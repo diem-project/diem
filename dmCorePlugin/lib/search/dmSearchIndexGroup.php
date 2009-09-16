@@ -37,7 +37,7 @@ class dmSearchIndexGroup extends dmSearchIndexCommon
 
     if (!isset($this->indices[$name]))
     {
-      throw new xfException('Index "' . $name . '" could not be found.');
+      throw new dmException('Index "' . $name . '" could not be found.');
     }
 
     return $this->indices[$name];
@@ -56,7 +56,7 @@ class dmSearchIndexGroup extends dmSearchIndexCommon
   {
     $this->setup();
 
-    foreach ($this->indices as $index)
+    foreach ($this->getIndices() as $index)
     {
       $index->insert($page);
     }
@@ -66,7 +66,7 @@ class dmSearchIndexGroup extends dmSearchIndexCommon
   {
     $this->setup();
 
-    foreach ($this->indices as $index)
+    foreach ($this->getIndices() as $index)
     {
       $index->remove($page);
     }
@@ -77,17 +77,6 @@ class dmSearchIndexGroup extends dmSearchIndexCommon
     $this->remove($page);
     $this->insert($page);
   }
-  
-  public function search($query)
-  {
-  	return $this->getCurrentIndex()->search($query);
-  }
-  
-  public function getCurrentIndex()
-  {
-  	return $this->getIndex('dm_'.dm::getUser()->getCulture());
-  }
-  
 
   public function populate()
   {
@@ -97,19 +86,12 @@ class dmSearchIndexGroup extends dmSearchIndexCommon
 
     $this->getLogger()->log('Populating group...', $this->getName());
     
-    $user = dm::getUser();
-    $culture = $user->getCulture();
-
     foreach ($this->getIndices() as $name => $index)
     {
       $this->getLogger()->log('Populating index "' . $name . '"...', $this->getName());
 
-      $user->setCulture($index->getCulture());
-      
       $index->populate();
     }
-    
-    $user->setCulture($culture);
 
     $this->getLogger()->log('Group populated in "' . round(microtime(true) - $start, 2) . '" seconds.', $this->getName());
   }
@@ -141,23 +123,10 @@ class dmSearchIndexGroup extends dmSearchIndexCommon
 
     foreach ($this->getIndices() as $name => $index)
     {
-      $response[$index->getCulture()] = $index->describe();
+      $response[$name] = $index->describe();
     }
 
     return $response;
   }
   
-  /**
-   * @see xfIndexCommon
-   */
-  protected function postSetup()
-  {
-    // configure all indices
-    foreach ($this->indices as $index)
-    {
-      $index->setLogger($this->getLogger());
-    }
-
-    parent::postSetup();
-  }
 }

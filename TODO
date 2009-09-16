@@ -208,3 +208,5 @@ $.getScript(href, callback);
 * [DONE] add referer records default sort in admin autojoins
 
 * [DONE] move asset configuration to classes managed by sfServiceContainer
+
+* [DONE] remove or beautify search framework dependencies

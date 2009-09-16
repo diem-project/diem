@@ -64,6 +64,9 @@ default:
     
   backup:                               # keep a copy of files modified by Dm code editors
     enabled:              true          # (RECOMMENDED) enable backup
+
+  service:                              # Dependency Injection Container configuration
+    container_class:      dmServiceContainer # The service container class
     
 ###### dm internal config ######
 

@@ -42,7 +42,6 @@ class dmDataService extends dmService
 
   protected function loadSettings()
   {
-    dmDb::query('DmSetting s')->delete()->execute();
     $array = array(
       'site_name' => array(
         'default_value' => dmString::humanize(dmProject::getKey()),
@@ -103,7 +102,7 @@ class dmDataService extends dmService
         'type' => 'select',
         'default_value' => 'center',
         'description' => 'Default method when an image needs to be resized',
-        'options' => 'fit=Fit scale=Scale inflate=Inflate top=Top right=Right left=Left bottom=Bottom center=Center',
+        'params' => 'fit=Fit scale=Scale inflate=Inflate top=Top right=Right left=Left bottom=Bottom center=Center',
         'group_name' => 'IHM',
         'credentials' => 'ihm_settings'
       ),

@@ -1,5 +1,9 @@
 parameters:
+
+  search_engine.class:        dmSearchEngine
   
+  search_index.class:         dmSearchIndex
+
   theme.class:                dmTheme
 
   stylesheet_compressor.class: dmStylesheetCompressor
@@ -13,8 +17,6 @@ parameters:
     gz_compression:           true
 
   auth_layout_helper.class:   dmAuthLayoutHelper
-
-  search_engine.class:        dmSearchIndexGroup
 
   cache_manager.class:        dmCacheManager
   cache_manager.options:
@@ -41,6 +43,23 @@ parameters:
   helper.class:               dmOoHelper
  
 services:
+
+  search_engine:
+    class:                    %search_engine.class%
+    shared:                   true
+    arguments:
+      dispatcher:             @dispatcher
+      user:                   @user
+      logger:                 @logger
+      serviceContainer:       @service_container
+
+  search_index:
+    class:                    %search_index.class%
+    shared:                   false
+    arguments:
+      dispatcher:             @dispatcher
+      filesystem:             @filesystem
+      logger:                 @logger
 
   asset_config:
     class:                    %asset_config.class%
@@ -84,13 +103,6 @@ services:
       response:               @response
       action_stack:           @action_stack
       helper:                 @helper
-
-  search_engine:
-    class:                    %search_engine.class%
-    shared:                   true
-    arguments:
-      dispatcher:             @dispatcher
-      filesystem:             @filesystem
 
   doctrine_config:
     class:                    %doctrine_config.class%

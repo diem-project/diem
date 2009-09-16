@@ -24,9 +24,9 @@ abstract class PluginDmSetting extends BaseDmSetting
   }
 
   // Get a value from the options array
-  public function getOption($name, $required = false)
+  public function getParam($name, $required = false)
   {
-    $config = $this->optionsArray;
+    $config = $this->getParamsArray();
     
     if ($required && !isset($config[$name])) 
     {
@@ -37,8 +37,8 @@ abstract class PluginDmSetting extends BaseDmSetting
   }
   
   // convert the options text area to an array
-  public function getOptionsArray()
+  public function getParamsArray()
   {
-    return sfToolkit::stringToArray($this->options);
+    return $this->get('params') ? sfToolkit::stringToArray($this->get('params')) : array();
   }
 }

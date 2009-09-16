@@ -7,18 +7,18 @@ class dmFrontContext extends dmContext
 	protected
 	  $page;
   
-	protected function configureServiceContainer()
+	public function configureServiceContainer(sfServiceContainer $sc)
 	{
-	  parent::configureServiceContainer();
+	  parent::configureServiceContainer($sc);
 	  
-    if ($this->getSfContext()->getUser()->can('front_edit'))
+    if ($this->sfContext->getUser()->can('front_edit'))
     {
-      $this->serviceContainer->setParameter('page_helper.class', $this->serviceContainer->getParameter('page_helper.edit_class'));
+      $sc->setParameter('page_helper.class', $sc->getParameter('page_helper.edit_class'));
       $this->getPageHelper()->setUser($this->sfContext->getUser());
     }
     else
     {
-      $this->serviceContainer->setParameter('page_helper.class', $this->serviceContainer->getParameter('page_helper.view_class'));
+      $sc->setParameter('page_helper.class', $sc->getParameter('page_helper.view_class'));
     }
 	}
   

@@ -42,21 +42,19 @@ abstract class dmApplicationConfiguration extends sfApplicationConfiguration
   public function setup()
   {
   	parent::setup();
-  	
-    $this->enablePlugins($this->getDependancePlugins());
-    
+
     $dmPlugins = $this->getDmPlugins();
     
     if (isset($dmPlugins['dmFrontPlugin']) && isset($dmPlugins['dmAdminPlugin']))
     {
     	throw new Exception('Can not include both dmFrontPlugin and dmAdminPlugin');
     }
-    
+
     foreach($dmPlugins as $dmPlugin)
     {
       $this->setPluginPath($dmPlugin, dm::getDir().'/'.$dmPlugin);
     }
-    
+
     $this->enablePlugins($dmPlugins);
   }
 }

@@ -5,11 +5,11 @@ require_once('Zend/Search/Lucene.php');
 class dmSearchIndex extends dmSearchIndexCommon
 {
 	protected
+	$filesystem,
 	$location,
 	$index,
 	$culture,
-	$shortWordLength = 2
-	;
+	$shortWordLength = 2;
 
 	protected static
 	$defaultFieldBoosts = array(
@@ -22,23 +22,28 @@ class dmSearchIndex extends dmSearchIndexCommon
 	  'content'        => 1
 	);
 
-	public function __construct($culture)
+	public function __construct(sfEventDispatcher $dispatcher, dmFilesystem $filesystem, sfLogger $logger)
 	{
-		$this->culture = $culture;
-
-		$this->setName('dm_'.$culture);
-
-		$this->setLogger(new dmLoggerBlackhole);
-
-		$this->location = dmOs::join(sfConfig::get('dm_data_dir'), 'index', $this->getName());
-
-		$this->initialize();
+    $this->dispatcher = $dispatcher;
+    $this->filesystem = $filesystem;
+    $this->logger     = $logger;
 	}
 
-	public function getCulture()
-	{
-		return $this->culture;
-	}
+  public function setCulture($culture)
+  {
+    $this->culture = $culture;
+    
+    $this->name = 'dm_'.$culture;
+
+    $this->location = dmOs::join(sfConfig::get('dm_data_dir'), 'index', $this->name);
+
+    $this->initialize();
+  }
+	
+  public function getCulture()
+  {
+    return $this->culture;
+  }
 
 	public function search($query)
 	{
@@ -80,39 +85,43 @@ class dmSearchIndex extends dmSearchIndexCommon
 	public function populate()
 	{
 		$start = microtime(true);
-		$this->getLogger()->log('Populating index...', $this->getName());
+		$this->logger->log($this->getName().' : Populating index...');
 
 		$this->erase();
-		$this->getLogger()->log('Index erased.', $this->getName());
-
-		$user = dm::getUser();
-		$oldCulture = $user->getCulture();
-		$culture = $this->getCulture();
-		$user->setCulture($this->getCulture());
+		$this->logger->log($this->getName().' : Index erased.');
 
 		$pages = $this->getPagesQuery()->fetchRecords();
+		
+		if (!count($pages))
+		{
+		  $this->logger->log($this->getName().' : No pages to populate the index');
+		  return;
+		}
 
 		foreach ($pages as $page)
 		{
-			$this->getLogger()->log($page->get('slug'), 'Indexing page');
+			$this->logger->log($this->getName().' : '.$page->get('slug'));
 			$this->index->addDocument(new dmSearchPageDocument($page));
 		}
 
-		$user->setCulture($oldCulture);
-
 		$time = microtime(true) - $start;
 
-		$this->getLogger()->log('Index populated in "' . round($time, 2) . '" seconds.', $this->getName());
+		$this->logger->log($this->getName().' : Index populated in "' . round($time, 2) . '" seconds.');
 
-		$this->getLogger()->log('Time per document "' . round($time / count($pages), 3) . '" seconds.', $this->getName());
+		$this->logger->log($this->getName().' : Time per document "' . round($time / count($pages), 3) . '" seconds.');
 
 		unset($pages);
 	}
 
 	public function optimize()
 	{
+    $start = microtime(true);
+    $this->logger->log($this->getName().' : Optimizing index...');
+    
 		$this->open();
 		$this->index->optimize();
+
+    $this->logger->log($this->getName().' : Index optimized in "' . round($time, 2) . '" seconds.');
 	}
 
 	protected function open()
@@ -151,17 +160,10 @@ class dmSearchIndex extends dmSearchIndexCommon
 
 	protected function configure()
 	{
-	}
-
-	protected function createService()
-	{
-		$service = new xfService($this->getServiceIdentifier());
-
-		$service->addBuilder(new dmSearchDoctrineBuilder($this->getServiceFields()));
-
-		$service->addRetort(new dmSearchRetortPage);
-
-		return $service;
+	  if (!$this->culture)
+	  {
+	    throw new dmException('culture is required');
+	  }
 	}
 
 	protected function getPagesQuery()
@@ -172,60 +174,12 @@ class dmSearchIndex extends dmSearchIndexCommon
 		->where('translation.is_active = ? AND p.is_secure = ? AND ( p.module != ? OR ( p.action != ? AND p.action != ?))', array(true, false, 'main', 'error404', 'search'));
 	}
 
-	protected function getServiceFields()
-	{
-		$fieldBoosts = sfConfig::get('dm_search_fields', self::$defaultFieldBoosts);
-
-		$fields = array();
-		foreach($fieldBoosts as $fieldName => $boost)
-		{
-			switch($fieldName)
-			{
-				case 'id':       $type = xfField::UNINDEXED; break;
-				default:         $type = xfField::UNSTORED;
-			}
-			$field = new xfField($fieldName, $type);
-			$field->setBoost($boost);
-			$field->registerCallback(array($this, 'cleanText'));
-			if ($fieldName === 'slug')
-			{
-				$field->registerCallback(array('dmString', 'unSlugify'));
-			}
-			$fields[] = $field;
-		}
-
-		return $fields;
-	}
-
-	protected function createEngine()
-	{
-		$indexStorageLocation = dmOs::join(sfConfig::get('sf_data_dir'), 'index', $this->getName());
-
-		$engine = new xfLuceneEngine($indexStorageLocation);
-
-		$engine->setAnalyzer($this->createAnalyzer());
-
-		return $engine;
-	}
-
-	protected function createAnalyzer()
-	{
-		$analyzer = new xfLuceneAnalyzer(xfLuceneAnalyzer::TEXT);
-		$analyzer->addStopWords($this->getStopWords());
-		$analyzer->setShortWordLength($this->shortWordLength);
-		$analyzer->setCaseInsensitive();
-
-		return $analyzer;
-	}
-
 	/*
 	 * @return array of words we do not want to index ( like "the", "a", to"... )
 	 */
 	public function getStopWords()
 	{
-		$stopWords = dmConfig::get('search_stop_words');
-		$stopWords = str_word_count(strtolower($stopWords), 1);
-		return $stopWords;
+		return str_word_count(strtolower(dmConfig::get('search_stop_words')), 1);
 	}
 
 

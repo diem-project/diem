@@ -2,12 +2,9 @@
 
 abstract class dmSearchIndexCommon
 {
-	/**
-   * The logger
-   *
-   * @var xfLogger
-   */
-  protected $logger;
+  protected
+  $dispatcher,
+  $logger;
 
   /**
    * The name of this index.
@@ -24,18 +21,6 @@ abstract class dmSearchIndexCommon
   protected $setup = false;
 
   /**
-   * @see xfIndex
-   */
-  public function __construct()
-  {
-    $this->name = get_class($this);
-    
-    $this->setLogger(new dmLoggerBlackhole);
-
-    $this->initialize();
-  }
-
-  /**
    * Sets the index name.
    *
    * @param string $name
@@ -43,6 +28,11 @@ abstract class dmSearchIndexCommon
   public function setName($name)
   {
     $this->name = $name;
+  }
+  
+  public function getLogger()
+  {
+    return $this->logger;
   }
 
   /**
@@ -55,21 +45,6 @@ abstract class dmSearchIndexCommon
     return $this->name;
   }
 
-  /**
-   * @see xfIndex
-   */
-  public function setLogger(dmLogger $logger)
-  {
-    $this->logger = $logger;
-  }
-
-  /**
-   * @see xfIndex
-   */
-  public function getLogger()
-  {
-    return $this->logger;
-  }
 
   /**
    * Runs the setup routine to make sure the index is in a workable state.

@@ -30,7 +30,7 @@ abstract class dmContext extends dmMicroCache
     $timer = dmDebug::timerOrNull('dmContext::initialize');
     
     $this->loadServiceContainer();
-
+    
     $this->configureUser();
     
     $this->configureResponse();
@@ -131,77 +131,75 @@ abstract class dmContext extends dmMicroCache
     $name = 'dm'.dmString::camelize(sfConfig::get('sf_app')).'ServiceContainer';
 
     $file = dmOs::join(sfConfig::get('dm_cache_dir'), 'services', $name.'.php');
-
-    if (!is_dir(sfConfig::get('dm_cache_dir')))
-    {
-      $oldUmask = umask(0);
-      mkdir(sfConfig::get('dm_cache_dir'), 0777);
-      umask($oldUmask);
-    }
-    if (!is_dir(dirname($file)))
-    {
-      $oldUmask = umask(0);
-      mkdir(dirname($file), 0777);
-      umask($oldUmask);
-    }
      
-    if (/*!sfConfig::get('sf_debug') && */file_exists($file))
+    if (!file_exists($file))
     {
-      require_once($file);
-      $this->serviceContainer = new $name;
+      $this->dumpServiceContainer($name, $file);
     }
-    else
-    {
-      $this->loadServiceContainerLoader();
-       
-      $sc = new sfServiceContainerBuilder;
+    
+    require_once($file);
+    $this->serviceContainer = new $name;
 
-      $configFiles = $this->sfContext->getConfiguration()->getConfigPaths('config/dm/services.yml');
-
-      $loader = new sfServiceContainerLoaderFileYaml($sc);
-      $loader->load($configFiles);
-       
-      if (!file_exists($file)/* || !sfConfig::get('sf_debug')*/)
-      {
-        $dumper = new sfServiceContainerDumperPhp($sc);
-        file_put_contents($file, $dumper->dump(array('class' => $name)));
-        chmod($file, 0777);
-      }
-
-      $this->serviceContainer = $sc;
-    }
-
-    $this->configureServiceContainer();
+    $this->configureServiceContainer($this->serviceContainer);
 
     $this->sfContext->getEventDispatcher()->notify(new sfEvent($this, 'dm.context.service_container_loaded', $this->serviceContainer));
   }
 
-  protected function configureServiceContainer()
+  public function configureServiceContainer(sfServiceContainer $sc)
   {
-    $this->serviceContainer->setService('dispatcher', $this->sfContext->getEventDispatcher());
-    $this->serviceContainer->setService('user', $this->sfContext->getUser());
-    $this->serviceContainer->setService('request', $this->sfContext->getRequest());
-    $this->serviceContainer->setService('response', $this->sfContext->getResponse());
-    $this->serviceContainer->setService('i18n', $this->sfContext->getI18n());
-    $this->serviceContainer->setService('routing', $this->sfContext->getRouting());
-    $this->serviceContainer->setService('action_stack', $this->sfContext->getActionStack());
-    $this->serviceContainer->setService('config_cache', $this->sfContext->getConfigCache());
-    $this->serviceContainer->setService('controller', $this->sfContext->getController());
-    $this->serviceContainer->setService('context', $this->sfContext);
-    $this->serviceContainer->setService('service_container', $this->serviceContainer);
-    $this->serviceContainer->setService('doctrine_manager', Doctrine_Manager::getInstance());
+    $context  = $this->sfContext;
     
-    $this->serviceContainer->addParameters(array(
-      'request.relative_url_root' => $this->sfContext->getRequest()->getRelativeUrlRoot()
-    ));
+    $sc->setService('dispatcher', $context->getEventDispatcher());
+    $sc->setService('user', $context->getUser());
+    $sc->setService('request', $context->getRequest());
+    $sc->setService('response', $context->getResponse());
+    $sc->setService('i18n', $context->getI18n());
+    $sc->setService('routing', $context->getRouting());
+    $sc->setService('action_stack', $context->getActionStack());
+    $sc->setService('config_cache', $context->getConfigCache());
+    $sc->setService('controller', $context->getController());
+    $sc->setService('logger', $context->getLogger());
+    $sc->setService('context', $context);
+    $sc->setService('service_container', $sc);
+    $sc->setService('doctrine_manager', Doctrine_Manager::getInstance());
+    
+    $sc->setParameter('request.relative_url_root', $context->getRequest()->getRelativeUrlRoot());
+  }
+  
+  protected function dumpServiceContainer($name, $file)
+  {
+    foreach(array(sfConfig::get('dm_cache_dir'), dirname($file)) as $dir)
+    {
+      if (!is_dir($dir))
+      {
+        $oldUmask = umask(0);
+        mkdir($dir, 0777);
+        umask($oldUmask);
+      }
+    }
+
+    $this->loadServiceContainerLoader();
+
+    $sc = new sfServiceContainerBuilder;
+
+    $configFiles = $this->sfContext->getConfiguration()->getConfigPaths('config/dm/services.yml');
+
+    $loader = new sfServiceContainerLoaderFileYaml($sc);
+    $loader->load($configFiles);
+
+    $dumper = new sfServiceContainerDumperPhp($sc);
+    file_put_contents($file, $dumper->dump(array('class' => $name, 'base_class' => sfConfig::get('dm_service_container_class', 'dmServiceContainer'))));
+    chmod($file, 0777);
+    
+    unset($dumper, $loader, $sc);
   }
 
   public function loadServiceContainerLoader()
   {
-    $loaderFilePrefix = dmOs::join(sfConfig::get('dm_core_dir'), 'lib/vendor/sfService/sfService');
-    
     if (!class_exists('sfServiceContainerBuilder', false))
     {
+      $loaderFilePrefix = dmOs::join(sfConfig::get('dm_core_dir'), 'lib/vendor/sfService/sfService');
+      
       foreach(array('Definition', 'Reference', 'ContainerBuilder', 'ContainerLoaderInterface', 'ContainerLoader', 'ContainerLoaderFile', 'ContainerLoaderFileYaml', 'ContainerDumperInterface', 'ContainerDumper', 'ContainerDumperPhp') as $requiredClassSuffix)
       {
         require_once($loaderFilePrefix.$requiredClassSuffix.'.php');

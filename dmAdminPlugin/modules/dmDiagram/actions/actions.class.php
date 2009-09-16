@@ -64,10 +64,7 @@ class dmDiagramActions extends dmAdminBaseActions
     $loader = new sfServiceContainerLoaderFileYaml($sc);
     $loader->load($configFiles);
     
-    if ($sc->hasParameter('page_helper.view_class'))
-    {
-      $sc->setParameter('page_helper.class', $sc->getParameter('page_helper.view_class'));
-    }
+    $this->dmContext->configureServiceContainer($sc);
     
     $dumper = new sfServiceContainerDumperGraphviz($sc);
 
@@ -75,9 +72,9 @@ class dmDiagramActions extends dmAdminBaseActions
       'graph' => array('concentrate' => 'false', 'bgcolor' => 'transparent', 'ratio' => 'fill', 'size' => '20,7'),
       'node'  => array('fontsize' => 20, 'fontname' => 'Arial', 'shape' => 'Mrecord'),
       'edge'  => array('fontsize' => 9, 'fontname' => 'Arial', 'color' => 'grey', 'arrowhead' => 'open', 'arrowsize' => 1),
-      'node.instance' => array('fillcolor' => '#9999ff', 'style' => 'filled'),
+      'node.instance' => array('fillcolor' => '#ffffff', 'style' => 'filled', 'shape' => 'component'),
       'node.definition' => array('fillcolor' => '#eeeeee'),
-      'node.missing' => array('fillcolor' => '#ffffff', 'style' => 'filled', 'shape' => 'component'),
+      'node.missing' => array('fillcolor' => '#ffaaaa', 'style' => 'filled', 'shape' => 'record'),
     )));
     
     $return = $this->dmContext->getFileSystem()->exec(sprintf('dot -Tpng %s > %s', $dotFile, $dependencyDiagramImageFullPath));

@@ -4,7 +4,7 @@ remember_me:
   class:      sfGuardRememberMeFilter
 
 security:
-  class:      ~
+  class:      dmSecurityFilter
 
 dm_init:
   class:      dmFrontInitFilter

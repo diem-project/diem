@@ -6,11 +6,11 @@ class dmProjectConfiguration extends sfProjectConfiguration
   public function setup()
   {
     parent::setup();
-    
+
     $this->enablePlugins($this->getDependancePlugins());
-    
+
     $this->setPluginPath('dmCorePlugin', dm::getDir().'/dmCorePlugin');
-    
+
     $this->enablePlugins('dmCorePlugin');
   }
   

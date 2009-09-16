@@ -51,7 +51,7 @@ class dmConfigForm extends dmForm
   //Type Textarea
   protected function getTextSettingWidget(DmSetting $setting)
   {
-    return new sfWidgetFormInputText(array(), $setting->getOptionsArray());
+    return new sfWidgetFormInputText(array(), $setting->getParamsArray());
   }
   protected function getTextSettingValidator(DmSetting $setting)
   {
@@ -61,7 +61,7 @@ class dmConfigForm extends dmForm
   //Type Textarea
   protected function getTextareaSettingWidget(DmSetting $setting)
   {
-    return new sfWidgetFormTextarea(array(), $setting->getOptionsArray());
+    return new sfWidgetFormTextarea(array(), $setting->getParamsArray());
   }
   protected function getTextareaSettingValidator(DmSetting $setting)
   {
@@ -71,7 +71,7 @@ class dmConfigForm extends dmForm
   // Type Number
   protected function getNumberSettingWidget(DmSetting $setting)
   {
-    return new sfWidgetFormInputText(array(), $setting->getOptionsArray());
+    return new sfWidgetFormInputText(array(), $setting->getParamsArray());
   }
   protected function getNumberSettingValidator(DmSetting $setting)
   {
@@ -81,7 +81,7 @@ class dmConfigForm extends dmForm
   // Type Boolean
   protected function getBooleanSettingWidget(DmSetting $setting)
   {
-    return new sfWidgetFormInputCheckbox(array(), $setting->getOptionsArray());
+    return new sfWidgetFormInputCheckbox(array(), $setting->getParamsArray());
   }
   protected function getBooleanSettingValidator(DmSetting $setting)
   {
@@ -91,11 +91,11 @@ class dmConfigForm extends dmForm
   //Type Select List
   protected function getSelectSettingWidget(DmSetting $setting)
   {
-    return new sfWidgetFormSelect(array('choices' => $setting->getOptionsArray()));
+    return new sfWidgetFormSelect(array('choices' => $setting->getParamsArray()));
   }
   protected function getSelectSettingValidator(DmSetting $setting)
   {
-    return new sfValidatorChoice(array('choices' => array_keys($setting->getOptionsArray())));
+    return new sfValidatorChoice(array('choices' => array_keys($setting->getParamsArray())));
   }
 
 }

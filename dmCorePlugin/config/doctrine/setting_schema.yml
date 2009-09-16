@@ -8,7 +8,7 @@ DmSetting:
     description:            { type: string(255) }
     type:                   { type: enum, notnull: true, values: [text, boolean, select, textarea, number], default: 'text' }
     value:                  { type: string(65532) }
-    options:                { type: string(65532) }
+    params:                 { type: string(65532) }
     group_name:             { type: string(255), notnull: true, default: '' }
     default_value:          { type: string(65532), default: '' }
     credentials:            { type: string(255) }
