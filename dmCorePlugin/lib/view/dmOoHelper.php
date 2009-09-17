@@ -3,25 +3,84 @@
 class dmOoHelper
 {
 	protected
-	$context;
-
-	public function link($source = null)
+	$dispatcher,
+	$context,
+	$relativeUrlRoot,
+  $culture,
+  $theme;
+	
+	public function __construct(sfEventDispatcher $dispatcher, sfContext $context, $relativeUrlRoot)
 	{
-	  switch(sfConfig::get('dm_context_type'))
-	  {
+	  $this->dispatcher      = $dispatcher;
+		$this->context         = $context;
+		$this->relativeUrlRoot = $relativeUrlRoot;
+		
+		$this->initialize();
+	}
+
+	public function initialize()
+	{
+	  // inform dmMediaResource about request relative url root
+    dmMediaResource::setRelativeUrlRoot($this->relativeUrlRoot);
+	}
+	
+	public function connect()
+	{
+    $this->dispatcher->connect('user.change_culture', array($this, 'listenToChangeCultureEvent'));
+    $this->dispatcher->connect('user.change_theme', array($this, 'listenToChangeThemeEvent'));
+	}
+
+  /**
+   * Listens to the user.change_theme event.
+   *
+   * @param sfEvent An sfEvent instance
+   */
+  public function listenToChangeThemeEvent(sfEvent $event)
+  {
+    $this->setTheme($event['theme']);
+  }
+  
+  public function setTheme(dmTheme $theme)
+  {
+    $this->theme = $theme;
+    
+    // inform dmMediaResource about current theme
+    dmMediaResource::setTheme($theme);
+  }
+
+  /**
+   * Listens to the user.change_theme event.
+   *
+   * @param sfEvent An sfEvent instance
+   */
+  public function listenToChangeCultureEvent(sfEvent $event)
+  {
+    $this->setCulture($event['culture']);
+  }
+  
+  public function setCulture($culture)
+  {
+    $this->culture = $culture;
+    
+    // inform dmMediaResource about current theme
+    dmMediaResource::setCulture($culture);
+  }
+	
+	/*
+	 * @return dmLinkTag a link for front or admin depending on context type
+	 */
+  public function link($source = null)
+  {
+    switch(sfConfig::get('dm_context_type'))
+    {
       case 'admin': $link = dmAdminLinkTag::build($source); break;
       case 'front': $link = dmFrontLinkTag::build($source); break;
       default:      throw new dmException('Can not create link outside front or admin context');
-	  }
-	  
-	  return $link;
-	}
+    }
+    
+    return $link;
+  }
 	
-	public function __construct(sfContext $context)
-	{
-		$this->context = $context;
-	}
-
   public function renderPartial($moduleName, $actionName, $vars = array())
   {
   	/*

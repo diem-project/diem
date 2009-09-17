@@ -126,7 +126,7 @@ abstract class dmLinkTag extends dmHtmlTag
 			{
 				$href = $this->buildUrl(
 				self::getBaseFromUrl($href),
-				array_merge(self::getDataFromUrl($href), $this['params'])
+				array_merge(self::getDataFromUrl($href), $this->options['params'])
 				);
 			}
 			unset($attributes['params']);
@@ -157,7 +157,7 @@ abstract class dmLinkTag extends dmHtmlTag
 
 	protected function renderText()
 	{
-		return $this['text'];
+		return $this->options['text'];
 	}
 
 	protected static function getBaseFromUrl($url)

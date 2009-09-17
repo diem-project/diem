@@ -19,7 +19,7 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
 	
 	public function getName()
 	{
-		$relPath = $this->relPath;
+		$relPath = $this->get('rel_path');
 		
 		if(strpos($relPath, '/'))
 		{
@@ -39,7 +39,7 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
 
   public function getFullPath()
   {
-    return dmOs::join(sfConfig::get('sf_upload_dir'), $this->relPath);
+    return dmOs::join(sfConfig::get('sf_upload_dir'), $this->get('rel_path'));
   }
 
   public function getNbElements()
@@ -50,7 +50,7 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
     }
 
     $nbMedias = dmDb::query('DmMedia m')
-    ->where('m.dm_media_folder_id = ?', $this->id)
+    ->where('m.dm_media_folder_id = ?', $this->get('id'))
     ->count();
 
     return $this->setCache('nbElements', $nbMedias + $this->getNode()->getNumberDescendants());
@@ -64,7 +64,7 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
     {
       foreach ($children as $folder)
       {
-        $foldersName[$folder->name] = $folder;
+        $foldersName[$folder->get('name')] = $folder;
       }
     }
 
@@ -74,7 +74,7 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
   public function getDmMediasByFileName()
   {
     $filesName = array();
-    foreach ($this->Medias as $file)
+    foreach ($this->getMedias() as $file)
     {
       $filesName[$file->get('file')] = $file;
     }
@@ -114,7 +114,7 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
    */
   public function dirExists()
   {
-    return is_dir($this->fullPath);
+    return is_dir($this->getFullPath());
   }
 
   public function isWritable()
@@ -131,14 +131,14 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
   public function hasSubFolder($name)
   {
     return dmDb::query('DmMediaFolder f')
-    ->where('f.name = ? AND f.lft > ? AND f.rgt < ?', array($name, $this->lft, $this->rgt))
+    ->where('f.name = ? AND f.lft > ? AND f.rgt < ?', array($name, $this->get('lft'), $this->get('rgt')))
     ->exists();
   }
 
   public function hasFile($name)
   {
     return dmDb::query('DmMedia m')
-    ->where('m.dm_media_folder_id = ? AND m.file = ?', array($this->id, $name))
+    ->where('m.dm_media_folder_id = ? AND m.file = ?', array($this->get('id'), $name))
     ->exists();
   }
 
@@ -222,7 +222,7 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
 
     $this->refresh(true);
 
-    $files = sfFinder::type('file')->maxdepth(0)->ignore_version_control()->in($this->fullPath);
+    $files = sfFinder::type('file')->maxdepth(0)->ignore_version_control()->in($this->getFullPath());
     $medias = $this->getDmMediasByFileName();
 
     foreach($files as $file)
@@ -247,7 +247,7 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
       	{
 	        // File exists, asset does not exist: create asset
 	        dmDb::create('DmMedia', array(
-	          'dm_media_folder_id' => $this->id,
+	          'dm_media_folder_id' => $this->get('id'),
 	          'file' => basename($file)
 	        ))->save();
       	}
@@ -269,7 +269,7 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
       $media->delete();
     }
 
-    $dirs = sfFinder::type('dir')->maxdepth(0)->discard(".*")->ignore_version_control()->in($this->fullPath);
+    $dirs = sfFinder::type('dir')->maxdepth(0)->discard(".*")->ignore_version_control()->in($this->getFullPath());
     $folders = $this->getSubfoldersByName();
 
     foreach($dirs as $dir)
@@ -295,7 +295,7 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
        */
       if (!array_key_exists($dirName, $folders))
       {
-        $subfolderRelPath = trim(dmOs::join($this->rel_path, $dirName), '/');
+        $subfolderRelPath = trim(dmOs::join($this->get('rel_path'), $dirName), '/');
 
         if ($folder = $this->getTable()->findOneByRelPath($subfolderRelPath))
         {
@@ -351,8 +351,8 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
 
     return $this->getTable()->createQuery('f')
     ->select('f.id as id')
-    ->where("f.lft < ? AND f.rgt > ?", array($this->lft, $this->rgt))
-    ->orderBy("f.rgt asc")
+    ->where('f.lft < ? AND f.rgt > ?', array($this->get('lft'), $this->get('rgt')))
+    ->orderBy('f.rgt asc')
     ->limit(1)
     ->fetchValue();
   }
@@ -363,7 +363,7 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
 
   public function __toString()
   {
-    return $this->relPath.' ('.$this->id.')';
+    return $this->get('rel_path').' ('.$this->get('id').')';
   }
 
 

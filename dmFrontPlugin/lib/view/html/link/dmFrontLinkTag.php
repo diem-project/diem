@@ -192,9 +192,9 @@ abstract class dmFrontLinkTag extends dmLinkTag
   
   protected function renderText()
   {
-    if (isset($this['text']))
+    if (isset($this->options['text']))
     {
-      return $this['text'];
+      return $this->options['text'];
     }
 
     return $this->getBaseHref();

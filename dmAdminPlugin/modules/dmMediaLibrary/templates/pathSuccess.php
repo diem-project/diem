@@ -28,11 +28,11 @@ echo £o("ul.content.clearfix");
 
 if ($folder->isRoot())
 {
-  echo £("li", £("a.root", £media("dmAdmin/media/up2.png")->size(64, 64)));
+  echo £("li", £("a.root", £media("dmAdmin/images/media/up2.png")->size(64, 64)));
 }
 else
 {
-  echo £("li", (£link(dmMediaTools::getAdminUrlFor($folder->getNode()->getParent()))->text(£media('dmAdmin/media/up.png')->size(64, 64))));
+  echo £("li", (£link(dmMediaTools::getAdminUrlFor($folder->getNode()->getParent()))->text(£media('dmAdmin/images/media/up.png')->size(64, 64))));
 }
 
 if ($children = $folder->getNode()->getChildren())
@@ -41,8 +41,8 @@ if ($children = $folder->getNode()->getChildren())
 	{
 	  echo £("li.folder",
 	    £link(dmMediaTools::getAdminUrlFor($f))->text(
-	      ($f->isWritable() ? £media("dmAdmin/media/folder.png")->size(64, 64)
-	      : £media("dmAdmin/media/folder-locked.png")).
+	      ($f->isWritable() ? £media("dmAdmin/images/media/folder.png")->size(64, 64)
+	      : £media("dmAdmin/images/media/folder-locked.png")).
 	      £("span.name", media_wrap_text($f->getName())).
 	      £("span.more", format_number_choice('[0]no element|[1]1 element|(1,+Inf]%1% elements', array('%1%' => $f->getNbElements()), $f->getNbElements()))
 	    )

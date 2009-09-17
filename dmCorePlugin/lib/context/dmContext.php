@@ -31,6 +31,8 @@ abstract class dmContext extends dmMicroCache
     
     $this->loadServiceContainer();
     
+    $this->configureHelper();
+    
     $this->configureUser();
     
     $this->configureResponse();
@@ -53,6 +55,11 @@ abstract class dmContext extends dmMicroCache
     $this->getPageTreeWatcher()->connect();
     
     $timer && $timer->addTime();
+  }
+  
+  protected function configureHelper()
+  {
+    $this->getService('helper')->connect();
   }
   
   protected function configureUser()

@@ -7,14 +7,12 @@ class dmAdminContext extends dmContext
 	$moduleSpace;
 
   
-  protected function configureResponse()
+  protected function configureUser()
   {
-    parent::configureResponse();
+    parent::configureUser();
     
-    /*
-     * Set admin theme to response
-     */
-    $this->sfContext->getResponse()->setTheme($this->sfContext->getUser()->getTheme());
+    // as theme management is disabled in admin, send the change_theme event when configuring user
+    $this->sfContext->getEventDispatcher()->notify(new sfEvent($this->sfContext->getUser(), 'user.change_theme', array('theme' => $this->sfContext->getUser()->getTheme())));
   }
   /*
    * @return dmCoreLayoutHelper

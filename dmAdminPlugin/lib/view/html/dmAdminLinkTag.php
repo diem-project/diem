@@ -92,17 +92,17 @@ class dmAdminLinkTag extends dmLinkTag
 
   protected function renderText()
   {
-    if (empty($this['text']))
+    if (empty($this->options['text']))
     {
-    	if(is_object($this['source']))
+    	if(is_object($this->options['source']))
     	{
-	      if($this['source'] instanceof DmPage)
+	      if($this->options['source'] instanceof DmPage)
 	      {
-	        $text = $this['source']->get('name');
+	        $text = $this->options['source']->get('name');
 	      }
 	      else
 	      {
-    	    $text = (string) $this['source'];
+    	    $text = (string) $this->options['source'];
 	      }
     	}
     	else
@@ -112,7 +112,7 @@ class dmAdminLinkTag extends dmLinkTag
     }
     else
     {
-    	$text = $this['text'];
+    	$text = $this->options['text'];
     }
 
     return $text;

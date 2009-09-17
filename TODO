@@ -212,3 +212,5 @@ $.getScript(href, callback);
 * [DONE] improve web debug panel performance
 
 * add all media helper classes to dmServiceContainer
+
+* remove dmHtml ArrayAccess implementation for performance reasons

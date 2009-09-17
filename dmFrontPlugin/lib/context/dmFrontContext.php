@@ -31,7 +31,7 @@ class dmFrontContext extends dmContext
      */
     $this->serviceContainer->addParameters(array(
       'theme_manager.options' => array(
-        'list' => sfConfig::get('dm_theme_list'),
+        'list'    => sfConfig::get('dm_theme_list'),
         'default' => sfConfig::get('dm_theme_default')
       )
     ));

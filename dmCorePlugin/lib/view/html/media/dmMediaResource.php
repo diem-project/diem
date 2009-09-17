@@ -2,7 +2,11 @@
 
 class dmMediaResource
 {
-
+  protected static
+  $relativeUrlRoot,
+  $culture,
+  $theme;
+  
 	protected
 	  $source,
 	  $type,
@@ -23,7 +27,7 @@ class dmMediaResource
 	{
 		$this->initialize($source);
 	}
-
+	
 	public function __toString()
 	{
 		return (string) $this->source;
@@ -89,28 +93,55 @@ class dmMediaResource
       else
       {
 	      $this->type = self::FILE;
+	      
+	      // allow culture variable in source
+	      if (strpos($source, '%culture%') !== false)
+	      {
+	        $source = str_replace('%culture%', self::$culture, $source);
+	      }
 	
 	      /*
 	       * Server full path
 	       */
 	      if(strpos($source, sfConfig::get('sf_web_dir')) === 0)
 	      {
-	      	$source = dm::getRequest()->getRelativeUrlRoot().'/'.str_replace(sfConfig::get('sf_web_dir'), '', $source);
+	      	$this->pathFromWebDir = self::$relativeUrlRoot.str_replace(sfConfig::get('sf_web_dir'), '', $source);
 	      }
-	
-	      if(strncmp($source, "/", 1) === 0)
+	      // Web path ( ex: /swf/file.swf )
+	      elseif(strncmp($source, '/', 1) === 0)
 				{
-					$this->pathFromWebDir = dm::getRequest()->getRelativeUrlRoot().$source;
+					$this->pathFromWebDir = self::$relativeUrlRoot.$source;
 				}
-				elseif(strncmp($source, "dm", 2) === 0)
+				// dm asset ( ex: dmFront/images/file.png )
+				elseif(strncmp($source, 'dm', 2) === 0)
 	      {
-	      	$dmPlugin = dmString::modulize(preg_replace('|^dm([\w\d]+)/.+$|', '$1', $source));
-	      	$realSource = str_replace('dm'.ucfirst($dmPlugin).'/', '', $source);
-	        $this->pathFromWebDir = dm::getRequest()->getRelativeUrlRoot().'/'.sfConfig::get('dm_'.$dmPlugin.'_asset').'/images/'.$realSource;
+	      	$type = preg_replace('|^dm(\w+)/.+$|', '$1', $source);
+	      	$realSource = str_replace('dm'.ucfirst($type).'/', '', $source);
+	        $this->pathFromWebDir = self::$relativeUrlRoot.'/'.sfConfig::get('dm_'.$type.'_asset').'/'.$realSource;
 	      }
+	      // theme asset ( ex: images/file.png and file.png will both result to /myTheme/images/file.png )
 	      else
 	      {
-	        $this->pathFromWebDir = dm::getUser()->getTheme()->getWebPath('images/'.$source);
+	        // and now some magic to allow to use "images/file.png" writing only "file.png"
+	        if (strncmp($source, 'images/', 7) !== 0)
+	        {
+	          if (file_exists(self::$theme->getFullPath($source)))
+	          {
+	            $this->pathFromWebDir = self::$theme->getWebPath($source);
+	          }
+	          elseif (file_exists(self::$theme->getFullPath('images/'.$source)))
+	          {
+	            $this->pathFromWebDir = self::$theme->getWebPath('images/'.$source);
+	          }
+	          else
+	          {
+	            $this->pathFromWebDir = self::$theme->getWebPath($source);
+	          }
+	        }
+	        else
+	        {
+	          $this->pathFromWebDir = self::$theme->getWebPath($source);
+	        }
 	      }
 	
 	      $this->mime = $this->getSimpleMime(dmOs::getFileMime($source));
@@ -128,14 +159,45 @@ class dmMediaResource
 	
 	protected function fromMedia(DmMedia $media)
 	{
-		$this->source = $media;
-    $this->type = self::MEDIA;
-    $this->pathFromWebDir = $media->webPath;
-    $this->mime = $this->getSimpleMime($media->mime);
+		$this->source         = $media;
+    $this->type           = self::MEDIA;
+    $this->pathFromWebDir = $media->getwebPath();
+    $this->mime           = $this->getSimpleMime($media->get('mime'));
 	}
 
 	protected function getSimpleMime($mime)
 	{
     return substr($mime, 0, strpos($mime, '/'));
 	}
+  
+  public static function setRelativeUrlRoot($relativeUrlRoot)
+  {
+    self::$relativeUrlRoot = $relativeUrlRoot;
+  }
+  
+  public static function getRelativeUrlRoot()
+  {
+    return self::$relativeUrlRoot;
+  }
+  
+  public static function setTheme(dmTheme $theme)
+  {
+    self::$theme = $theme;
+  }
+  
+  public static function getTheme()
+  {
+    return self::$theme;
+  }
+  
+  public static function setCulture($culture)
+  {
+    self::$culture = $culture;
+  }
+  
+  public static function getCulture()
+  {
+    return self::$culture;
+  }
+	
 }

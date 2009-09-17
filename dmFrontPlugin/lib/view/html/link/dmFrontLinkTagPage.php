@@ -26,9 +26,9 @@ class dmFrontLinkTagPage extends dmFrontLinkTag
 
   protected function renderText()
   {
-  	if (isset($this['text']))
+  	if (isset($this->options['text']))
   	{
-  		return $this['text'];
+  		return $this->options['text'];
   	}
 
   	return $this->page->_getI18n('name');

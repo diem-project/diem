@@ -159,7 +159,9 @@ services:
     class:                    %helper.class%
     shared:                   true
     arguments:
+      dispatcher:             @dispatcher
       context:                @context
+      relative_url_root:      %request.relative_url_root%
       
   cache_manager:
     class:                    %cache_manager.class%

@@ -29,7 +29,7 @@ function plural($word, $nb, $showNb = true, $pluralSpec = false)
 
 function £media($src)
 {
-	return dmMediaTag::build($src);
+  return dmMediaTag::build($src);
 }
 
 /*
@@ -54,10 +54,10 @@ function £($name, $opt = array(), $content = false, $openAndClose = true)
   return dmOoHelper::£($name, $opt, $content, $openAndClose);
 }
 
-function toggle($text = "odd")
+function toggle($text = 'odd')
 {
-	sfConfig::set('dm_helper_toggle', sfConfig::get('dm_helper_toggle')+1);
-  return  sfConfig::get('dm_helper_toggle')%2 ? $text : "";
+	sfConfig::set('dm_helper_toggle', sfConfig::get('dm_helper_toggle', 0)+1);
+  return sfConfig::get('dm_helper_toggle')%2 ? $text : '';
 }
 
 function toggle_init($val = 0)

@@ -51,7 +51,7 @@ class dmFrontUser extends dmUser
     {
       $this->storage->write(self::THEME_NAMESPACE, $theme->getKey());
     }
-    
+
     $this->dispatcher->notify(new sfEvent($this, 'user.change_theme', array('theme' => $theme)));
     
     return $this->setCache('theme', $theme);

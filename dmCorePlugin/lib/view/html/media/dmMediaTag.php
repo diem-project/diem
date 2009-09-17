@@ -79,7 +79,7 @@ abstract class dmMediaTag extends dmHtmlTag
 
   protected function hasSize()
   {
-    return !(empty($this['width']) && empty($this['height']));
+    return !(empty($this->options['width']) && empty($this->options['height']));
   }
 
 }

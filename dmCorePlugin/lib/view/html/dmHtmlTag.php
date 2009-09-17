@@ -1,6 +1,6 @@
 <?php
 
-abstract class dmHtmlTag implements ArrayAccess
+abstract class dmHtmlTag
 {
 
 	protected
@@ -169,61 +169,5 @@ abstract class dmHtmlTag implements ArrayAccess
     );
   }
 
-  /**
-   * Returns true if the bound field exists (implements the ArrayAccess interface).
-   *
-   * @param  string $name The name of the bound field
-   *
-   * @return Boolean true if the option exists, false otherwise
-   */
-  public function offsetExists($name)
-  {
-    return isset($this->options[$name]);
-  }
-
-  /**
-   * Returns the option associated with the name (implements the ArrayAccess interface).
-   *
-   * @param  string $name  The offset of the value to get
-   *
-   * @return sfFormField   An option
-   */
-  public function offsetGet($name)
-  {
-    if (!isset($this->options[$name]))
-    {
-      throw new InvalidArgumentException(sprintf('dmHtmlTag : Option "%s" does not exist.', $name));
-    }
-
-    return $this->options[$name];
-  }
-
-  /**
-   * Sets an option (implements the ArrayAccess interface).
-   *
-   * @param string $offset
-   * @param string $value
-   *
-   */
-  public function offsetSet($offset, $value)
-  {
-    $this->options[$offset] = $value;
-  }
-
-  /**
-   * Removes a field from the form.
-   *
-   * It removes the widget and the validator for the given field.
-   *
-   * @param string $offset The field name
-   */
-  public function offsetUnset($offset)
-  {
-    if (!isset($this->options[$offset]))
-    {
-      throw new InvalidArgumentException(sprintf('Option "%s" does not exist.', $name));
-    }
-    unset($this->options[$offset]);
-  }
 
 }

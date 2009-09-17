@@ -46,7 +46,7 @@ abstract class PluginDmMedia extends BaseDmMedia
 	public function getBackupFolder()
 	{
 		return dmDb::table('DmMediaFolder')->findOneByRelPathOrCreate(
-		dmOs::join($this->Folder->rel_path, 'backup')
+		dmOs::join($this->get('Folder')->get('rel_path'), 'backup')
 		);
 	}
 
@@ -93,7 +93,7 @@ abstract class PluginDmMedia extends BaseDmMedia
 
 	public function getWidth()
 	{
-		if ($dimensions = $this->getDimensions())
+    if ($dimensions = $this->get('dimensions'))
 		{
 			return substr($dimensions, 0, strpos($dimensions, 'x'));
 		}
@@ -101,7 +101,7 @@ abstract class PluginDmMedia extends BaseDmMedia
 
 	public function getHeight()
 	{
-		if ($dimensions = $this->getDimensions())
+		if ($dimensions = $this->get('dimensions'))
 		{
 			return substr($dimensions, strpos($dimensions, 'x')+1);
 		}
@@ -114,12 +114,12 @@ abstract class PluginDmMedia extends BaseDmMedia
 
 	public function checkFileExists($orDelete = false)
 	{
-		if (!$this->file)
+		if (!$this->get('file'))
 		{
 			return false;
 		}
 
-		$exists = file_exists($this->fullPath);
+		$exists = file_exists($this->getFullPath());
 
 		if (!$exists && $orDelete)
 		{
@@ -131,12 +131,12 @@ abstract class PluginDmMedia extends BaseDmMedia
 
 	public function __toString()
 	{
-		return $this->rel_path;
+		return $this->getRelPath();
 	}
 
 	public function getFullPath()
 	{
-		return dmOs::join(sfConfig::get('sf_upload_dir'), $this->relPath);
+		return dmOs::join(sfConfig::get('sf_upload_dir'), $this->getRelPath());
 	}
 
 	public function getRelPath()
@@ -146,39 +146,17 @@ abstract class PluginDmMedia extends BaseDmMedia
 			return $this->getCache('rel_path');
 		}
 
-//		$fullPath = dmOs::join($this->Folder->fullPath, $this->file);
-//
-//    /*
-//     * Let's check if file has changed
-//     */
-//    if (!file_exists($fullPath))
-//    {
-//      dmDebug::log(sprintf('Media sync error : media %s exists in db but not in fs', $fullPath));
-//    }
-//    elseif (strtotime($this->updated_at) < filemtime($fullPath))
-//    {
-//      /*
-//       * File has been updated
-//       * Let's update the record
-//       */
-//      $this->refreshFromFile()->save();
-//
-//      dmDebug::log(sprintf("%s refreshed %s %s : %s / %s",
-//        $this, strtotime($this->updated_at), filemtime($fullPath), $media->size, $media->dimensions
-//      ));
-//    }
-
-		return $this->setCache('rel_path', trim($this->Folder->relPath.'/'.$this->file, '/'));
+		return $this->setCache('rel_path', trim($this->get('Folder')->get('rel_path').'/'.$this->get('file'), '/'));
 	}
 
 	public function getWebPath()
 	{
-		return sfConfig::get('sf_upload_dir_name').'/'.$this->relPath;
+		return sfConfig::get('sf_upload_dir_name').'/'.$this->getRelPath();
 	}
 
 	public function getFullWebPath()
 	{
-		return dm::getRequest()->getAbsoluteUrlRoot().'/'.$this->webPath;
+		return dm::getRequest()->getAbsoluteUrlRoot().'/'.$this->getRelPath();
 	}
 
 	public function isImage()
@@ -193,7 +171,7 @@ abstract class PluginDmMedia extends BaseDmMedia
 			throw new dmException($this.' is not an image');
 		}
 
-		return new dmImage($this->fullPath, $this->mime);
+		return new dmImage($this->getFullPath(), $this->get('mime'));
 	}
 
 	/**
@@ -254,8 +232,8 @@ abstract class PluginDmMedia extends BaseDmMedia
 	public function refreshFromFile()
 	{
     $this->fromArray(array(
-      'size' => filesize($this->fullPath),
-      'mime' => dmOs::getFileMime($this->fullPath)
+      'size' => filesize($this->getFullPath()),
+      'mime' => dmOs::getFileMime($this->getFullPath())
     ));
     /*
      * Important to set dimensions without reload data
@@ -279,7 +257,7 @@ abstract class PluginDmMedia extends BaseDmMedia
 		if ($this->checkFileExists())
 		{
 //			dmDebug::kill('unlink '.$this->fullPath, $this);
-			dmContext::getInstance()->getFilesystem()->unlink($this->fullPath);
+			dmContext::getInstance()->getFilesystem()->unlink($this->getFullPath());
 		}
 
 		return !$this->checkFileExists();
