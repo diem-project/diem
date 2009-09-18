@@ -2,8 +2,8 @@
 
 class dmDb
 {
-	protected static
-	$tables;
+  protected static
+  $tables;
 
   /*
    * Shortcut for myDoctrineQuery::create
@@ -12,18 +12,18 @@ class dmDb
    */
   public static function query($from = null, $conn = null)
   {
-  	if ($from instanceof Doctrine_Connection)
-  	{
-  		$conn = $from;
-  		$from = null;
-  	}
+    if ($from instanceof Doctrine_Connection)
+    {
+      $conn = $from;
+      $from = null;
+    }
 
-  	$query = new myDoctrineQuery($conn);
+    $query = new myDoctrineQuery($conn);
 
-  	if ($from)
-  	{
-  		$query->from($from);
-  	}
+    if ($from)
+    {
+      $query->from($from);
+    }
 
     return $query;
   }
@@ -34,14 +34,14 @@ class dmDb
    */
   public static function table($class)
   {
-  	$class = dmString::camelize($class);
+    $class = dmString::camelize($class);
 
-  	if (isset(self::$tables[$class]))
-  	{
-  		return self::$tables[$class];
-  	}
+    if (isset(self::$tables[$class]))
+    {
+      return self::$tables[$class];
+    }
 
-  	return self::$tables[$class] = Doctrine::getTable($class);
+    return self::$tables[$class] = Doctrine::getTable($class);
   }
 
   /*
@@ -55,6 +55,6 @@ class dmDb
 
   public static function cache($val)
   {
-    dmContext::getInstance()->getDoctrineConfig()->activateCache((bool) $val);
+    dmContext::getInstance()->getService('doctrine_config')->activateCache((bool) $val);
   }
 }

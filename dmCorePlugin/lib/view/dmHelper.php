@@ -1,74 +1,67 @@
 <?php
 
-class dmOoHelper
+class dmHelper
 {
-	protected
-	$dispatcher,
-	$context,
-	$relativeUrlRoot,
-  $culture,
-  $theme;
-	
-	public function __construct(sfEventDispatcher $dispatcher, sfContext $context, $relativeUrlRoot)
-	{
-	  $this->dispatcher      = $dispatcher;
-		$this->context         = $context;
-		$this->relativeUrlRoot = $relativeUrlRoot;
-		
-		$this->initialize();
-	}
-
-	public function initialize()
-	{
-	  // inform dmMediaResource about request relative url root
-    dmMediaResource::setRelativeUrlRoot($this->relativeUrlRoot);
-	}
-	
-	public function connect()
-	{
-    $this->dispatcher->connect('user.change_culture', array($this, 'listenToChangeCultureEvent'));
-    $this->dispatcher->connect('user.change_theme', array($this, 'listenToChangeThemeEvent'));
-	}
-
-  /**
-   * Listens to the user.change_theme event.
-   *
-   * @param sfEvent An sfEvent instance
-   */
-  public function listenToChangeThemeEvent(sfEvent $event)
+  protected
+  $dispatcher,
+  $user,
+  $context,
+  $requestContext;
+  
+  public function __construct(sfEventDispatcher $dispatcher, dmUser $user, sfContext $context, array $requestContext)
   {
-    $this->setTheme($event['theme']);
+    $this->dispatcher      = $dispatcher;
+    $this->context         = $context;
+    $this->user            = $user;
+    $this->requestContext  = $requestContext;
+    
+    $this->initialize();
+  }
+
+  public function initialize()
+  {
   }
   
-  public function setTheme(dmTheme $theme)
-  {
-    $this->theme = $theme;
-    
-    // inform dmMediaResource about current theme
-    dmMediaResource::setTheme($theme);
-  }
-
-  /**
-   * Listens to the user.change_theme event.
-   *
-   * @param sfEvent An sfEvent instance
+  /*
+   * @return dmUser
    */
-  public function listenToChangeCultureEvent(sfEvent $event)
+  public function getUser()
   {
-    $this->setCulture($event['culture']);
+    return $this->user;
   }
   
-  public function setCulture($culture)
+  /*
+   * @return dmTheme
+   */
+  public function getTheme()
   {
-    $this->culture = $culture;
-    
-    // inform dmMediaResource about current theme
-    dmMediaResource::setCulture($culture);
+    return $this->user->getTheme();
   }
-	
-	/*
-	 * @return dmLinkTag a link for front or admin depending on context type
-	 */
+  
+  /*
+   * @return string
+   */
+  public function getCulture()
+  {
+    return $this->user->getCulture();
+  }
+  
+  /*
+   * @return string
+   */
+  public function getRequestContext($key = null)
+  {
+    if (null === $key)
+    {
+      return $this->requestContext;
+    }
+    
+    return $this->requestContext[$key];
+  }
+  
+  /*
+   * @return dmLinkTag a link for front or admin depending on context type
+   */
   public function link($source = null)
   {
     switch(sfConfig::get('dm_context_type'))
@@ -80,13 +73,13 @@ class dmOoHelper
     
     return $link;
   }
-	
+  
   public function renderPartial($moduleName, $actionName, $vars = array())
   {
-  	/*
-  	 * partial -> _partial
-  	 * dir/partial -> dir/partial
-  	 */
+    /*
+     * partial -> _partial
+     * dir/partial -> dir/partial
+     */
     if (!strpos($actionName, '/'))
     {
       $actionName = '_'.$actionName;

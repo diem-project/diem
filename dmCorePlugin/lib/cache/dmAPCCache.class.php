@@ -2,24 +2,24 @@
 
 class dmAPCCache extends sfAPCCache
 {
-	protected static
-	  $isApcEnabled;
+  protected static
+    $isApcEnabled;
 
   public function __construct($options = array())
   {
-  	if (isset($options['cache_dir']))
-  	{
-  		$name = substr($options['cache_dir'], strlen(sfConfig::get('sf_cache_dir'))+1);
-  	}
-  	elseif(isset($options['prefix']))
-  	{
-  		$name = dmProject::unRootify($options['prefix']);
-  	}
-  	else
-  	{
-  	  throw new dmException('You must provide a cache_dir or a prefix');
-  	}
-  	
+    if (isset($options['cache_dir']))
+    {
+      $name = substr($options['cache_dir'], strlen(sfConfig::get('sf_cache_dir'))+1);
+    }
+    elseif(isset($options['prefix']))
+    {
+      $name = dmProject::unRootify($options['prefix']);
+    }
+    else
+    {
+      throw new dmException('You must provide a cache_dir or a prefix');
+    }
+    
     $this->initialize(array(
       'prefix' => dmProject::getKey().'/'.$name,
     ));

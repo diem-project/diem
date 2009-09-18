@@ -11,13 +11,13 @@
 class DmLayoutAdminForm extends BaseDmLayoutForm
 {
 
-	public function configure()
-	{
-//		foreach(array('top', 'bottom', 'left', 'right') as $partType)
-//		{
+  public function configure()
+  {
+//    foreach(array('top', 'bottom', 'left', 'right') as $partType)
+//    {
 //      $this->widgetSchema[$partType]    = new sfWidgetFormInputCheckbox();
 //      $this->validatorSchema[$partType] = new sfValidatorBoolean();
-//		}
-	}
+//    }
+  }
 
 }

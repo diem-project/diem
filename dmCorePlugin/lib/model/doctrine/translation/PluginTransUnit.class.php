@@ -14,6 +14,6 @@ abstract class PluginTransUnit extends BaseTransUnit
 {
   public function __toString()
   {
-  	return $this->getSource();
+    return $this->getSource();
   }
 }

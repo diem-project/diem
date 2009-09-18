@@ -2,33 +2,33 @@
 
 class dmFilesystem extends sfFilesystem
 {
-	protected
-	  $dispatcher,
-	  $lastExec; // array(command, output, return)
+  protected
+    $dispatcher,
+    $lastExec; // array(command, output, return)
 
-	/*
-	 * Singleton pattern
-	 * @return dmFilesystem $instance
-	 */
-//	public static function get()
-//	{
-//		if (self::$instance === null)
-//		{
-//	    self::$instance = new self;
-//		}
-//		return self::$instance;
-//	}
+  /*
+   * Singleton pattern
+   * @return dmFilesystem $instance
+   */
+//  public static function get()
+//  {
+//    if (self::$instance === null)
+//    {
+//      self::$instance = new self;
+//    }
+//    return self::$instance;
+//  }
 
-	public function __construct(sfEventDispatcher $dispatcher)
-	{
-	  $this->dispatcher = $dispatcher;
-	}
+  public function __construct(sfEventDispatcher $dispatcher)
+  {
+    $this->dispatcher = $dispatcher;
+  }
 
-	public function whois($ip = null)
-	{
-		$ip = $ip ? $ip : $_SERVER['REMOTE_ADDR'];
+  public function whois($ip = null)
+  {
+    $ip = $ip ? $ip : $_SERVER['REMOTE_ADDR'];
 
-		if ($this->exec("whois $ip"))
+    if ($this->exec("whois $ip"))
     {
       $array = explode("<br />", $this->getLastExec("output"));
       $infos = array();
@@ -55,10 +55,10 @@ class dmFilesystem extends sfFilesystem
     }
     else
     {
-    	$infos = array();
+      $infos = array();
     }
     return $infos;
-	}
+  }
 
   public function mkdir($path, $mode = 0777)
   {
@@ -71,7 +71,7 @@ class dmFilesystem extends sfFilesystem
 
 //    if (!@chmod($path, $mode))
 //    {
-//    	//dmDebug::log(sprintf('dmFilesystem can not chmod %s %s', $mode, $path));
+//      //dmDebug::log(sprintf('dmFilesystem can not chmod %s %s', $mode, $path));
 //    }
 
     return is_writable($path);
@@ -96,38 +96,38 @@ class dmFilesystem extends sfFilesystem
     return false;
   }
 
-	public function find($type = "any")
-	{
-		return sfFinder::type($type);
-	}
+  public function find($type = "any")
+  {
+    return sfFinder::type($type);
+  }
 
-	public function getFileInfos($file)
-	{
-	  if (!file_exists($file))
-	  {
-		  return '[x]';
-	  }
-	  $username = function_exists('posix_getpwuid')
+  public function getFileInfos($file)
+  {
+    if (!file_exists($file))
+    {
+      return '[x]';
+    }
+    $username = function_exists('posix_getpwuid')
     ? dmArray::get(@posix_getpwuid(dmArray::get(stat($file), "uid")), "name")
     : '';
     $permissions = substr(decoct(fileperms($file)), 2);
 
     return $username.":".$permissions;
-	}
+  }
 
-	public function exec($command)
-	{
-		exec($command, $output, $returnCode);
-		$this->lastExec = array(
-		  "command" => $command,
-		  "output" => implode("\n", $output),
-		  "return" => $returnCode
-		);
-		return $returnCode == 0;
-	}
+  public function exec($command)
+  {
+    exec($command, $output, $returnCode);
+    $this->lastExec = array(
+      "command" => $command,
+      "output" => implode("\n", $output),
+      "return" => $returnCode
+    );
+    return $returnCode == 0;
+  }
 
-	public function sf($command)
-	{
+  public function sf($command)
+  {
     $sfCommand = sprintf(
       '%s "%s" %s',
       sfToolkit::getPhpCli(),
@@ -136,25 +136,25 @@ class dmFilesystem extends sfFilesystem
     );
     
     return $this->exec($sfCommand);
-	}
+  }
 
-	public function getLastExec($key = null)
-	{
-		if ($key === null)
-		{
-			return $this->lastExec;
-		}
-		return dmArray::get($this->lastExec, $key);
-	}
+  public function getLastExec($key = null)
+  {
+    if ($key === null)
+    {
+      return $this->lastExec;
+    }
+    return dmArray::get($this->lastExec, $key);
+  }
 
 
   // truncate folder
   public function deleteDirContent($dir, $throwExceptions = false)
   {
-  	if (!dmProject::isInProject($dir))
-  	{
-  		throw new dmException(sprintf('Try to delete %s wich is outside symfony project', $dir));
-  	}
+    if (!dmProject::isInProject($dir))
+    {
+      throw new dmException(sprintf('Try to delete %s wich is outside symfony project', $dir));
+    }
 
     $success = true;
 
@@ -258,10 +258,10 @@ class dmFilesystem extends sfFilesystem
    */ 
   public function getRelativeDir($from, $to)
   {
-  	/*
-  	 * $from must end with /
-  	 */
-  	$from = '/'.trim($from, '/').'/';
-  	return $this->calculateRelativeDir($from, $to);
+    /*
+     * $from must end with /
+     */
+    $from = '/'.trim($from, '/').'/';
+    return $this->calculateRelativeDir($from, $to);
   }
 }

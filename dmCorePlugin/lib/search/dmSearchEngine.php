@@ -14,15 +14,15 @@ class dmSearchEngine extends dmSearchIndexGroup
     $this->serviceContainer = $serviceContainer;
     $this->name             = get_class($this);
   }
-	
+  
   protected function configure()
   {
-  	foreach(sfConfig::get('dm_i18n_cultures') as $culture)
-  	{
-  	  $index = $this->serviceContainer->getService('search_index');
-  		$index->setCulture($culture);
+    foreach(sfConfig::get('dm_i18n_cultures') as $culture)
+    {
+      $index = $this->serviceContainer->getService('search_index');
+      $index->setCulture($culture);
       $this->addIndex($index->getName(), $index);
-  	}
+    }
   }
   
   public function insert(DmPage $page)
@@ -53,12 +53,12 @@ class dmSearchEngine extends dmSearchIndexGroup
   
   public function search($query)
   {
-  	return $this->getCurrentIndex()->search($query);
+    return $this->getCurrentIndex()->search($query);
   }
   
   public function getCurrentIndex()
   {
-  	return $this->getIndex('dm_'.$this->user->getCulture());
+    return $this->getIndex('dm_'.$this->user->getCulture());
   }
   
   public function populate()

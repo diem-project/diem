@@ -2,13 +2,13 @@
 
 class dmFrontLinkTagAction extends dmFrontLinkTag
 {
-	protected
-	$action;
-	
-	protected function configure()
-	{
-		$this->action = $this->get('source');
-	}
+  protected
+  $action;
+  
+  protected function configure()
+  {
+    $this->action = $this->get('source');
+  }
 
   protected function getBaseHref()
   {

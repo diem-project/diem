@@ -4,41 +4,44 @@ class dmMediaImageTag extends dmMediaTag
 {
 
   /*
-   * available methods for thumbnail creation
+   * available methods and filters for thumbnail creation
    */
   protected static
-  $methods = array('fit', 'scale', 'inflate', 'left', 'right', 'top', 'bottom', 'center'),
-  $filters = array('greyscale');
+  $availableMethods = array('fit', 'scale', 'inflate', 'left', 'right', 'top', 'bottom', 'center'),
+  $availableFilters = array('greyscale');
 
-  public function __construct($resource)
+  public function initialize()
   {
-    parent::__construct($resource);
+    parent::initialize();
 
     $this->method(dmConfig::get('image_resize_method', 'center'));
     $this->set('quality', dmConfig::get('image_quality', 92));
     $this->set('background', null);
+    
+    $this->addAttributeToRemove(array('method', 'quality', 'background', 'filter'));
   }
 
   public function method($method)
   {
-    if (!in_array($method, self::getMethods()))
+    if (!in_array($method, self::getAvailableMethods()))
     {
       throw new dmException(sprintf('%s is not a valid method. These are : %s',
-  		  $method,
-  		  implode(', ', self::$methods)
-  		  ));
+        $method,
+        implode(', ', self::$methods)
+      ));
     }
-    return $this->set('method', (string)$method);
+    
+    return $this->set('method', $method);
   }
 
   public function quality($v)
   {
-    return $this->set('quality', (int)$v);
+    return $this->set('quality', $v);
   }
 
   public function background($v)
   {
-    return $this->set('background', (string)$v);
+    return $this->set('background', $v);
   }
 
   public function alt($v)
@@ -48,7 +51,7 @@ class dmMediaImageTag extends dmMediaTag
 
   public function filter($filterName, $filterOptions = array())
   {
-    if (!in_array($filterName, self::$filters))
+    if (!in_array($filterName, self::getAvailableFilters()))
     {
       throw new dmMediaImageException(sprintf('%s is not a valid filter. These are : %s',
       filterName,
@@ -65,19 +68,11 @@ class dmMediaImageTag extends dmMediaTag
     return $tag;
   }
 
-  protected function getNonHtmlAttributes()
-  {
-    return array_merge(
-    parent::getNonHtmlAttributes(),
-    array('method', 'quality', 'background')
-    );
-  }
-
   protected function prepareAttributesForHtml(array $attributes)
   {
     $attributes = parent::prepareAttributesForHtml($attributes);
 
-    if(!isset($attributes['alt']))
+    if(!isset($attributes['alt']) && sfConfig::get('dm_accessibility_image_empty_alts', true))
     {
       $attributes['alt'] = '';
     }
@@ -96,7 +91,7 @@ class dmMediaImageTag extends dmMediaTag
     {
       $mediaFullPath = $this->getResizedMediaFullPath($attributes);
 
-      $attributes['src'] = dm::getRequest()->getRelativeUrlRoot().str_replace(sfConfig::get('sf_web_dir'), '', $mediaFullPath);
+      $attributes['src'] = $this->relativeUrlRoot.str_replace(sfConfig::get('sf_web_dir'), '', $mediaFullPath);
       /*
        * When thumb method is scale,
        * html width and height
@@ -122,16 +117,16 @@ class dmMediaImageTag extends dmMediaTag
       $attributes['background'] = trim($attributes['background'], '#');
     }
 
-    if (!in_array($attributes['method'], self::getMethods()))
+    if (!in_array($attributes['method'], self::getAvailableMethods()))
     {
+      self::$dmContext->getLogger()->alert(sprintf('%s is not a valid resize method. These are : %s', $attributes['method'], implode(', ', self::getAvailableMethods())));
       $attributes['method'] = dmConfig::get('image_resize_method', 'center');
-      // throw new dmException($attributes['method'].' is not a valid resizer method. These are '.implode(', ', self::getMethods()));
     }
 
-    if(!dmContext::getInstance()->getFilesystem()->mkdir($thumbDir = dmOs::join($media->Folder->fullPath, '.thumbs')))
+    if(!self::$dmContext->getFilesystem()->mkdir($thumbDir = dmOs::join($media->get('Folder')->getFullPath(), '.thumbs')))
     {
-      dm::getUser()->logAlert(dm::getI18n()->__('Thumbnails can not be created in %1%', array('%1%' => $media->Folder->relPath)), false);
-      return $media->fullPath;
+      self::$dmContext->getLogger()->err('Thumbnails can not be created in '.$media->get('Folder')->getFullPath());
+      return $media->getFullPath();
     }
 
     $filter = dmArray::get($attributes, 'filter');
@@ -150,7 +145,7 @@ class dmMediaImageTag extends dmMediaTag
 
     if (!file_exists($thumbPath))
     {
-      dmDebug::log('Recreate thumb for media '.$media);
+      self::$dmContext->getLogger()->notice('Recreate thumb for media '.$media);
 
       $image = $media->getImage();
 
@@ -166,14 +161,16 @@ class dmMediaImageTag extends dmMediaTag
         }
         catch(sfImageTransformException $e)
         {
-        		if (sfConfig::get('sf_debug'))
-        		{
-        		  throw $e;
-        		}
+          self::$dmContext->getLogger()->err($e->getMessage());
+          
+          if (sfConfig::get('sf_debug'))
+          {
+            throw $e;
+          }
         }
       }
 
-      $image->saveAs($thumbPath, $media->mime);
+      $image->saveAs($thumbPath, $media->get('mime'));
 
       if (!file_exists($thumbPath))
       {
@@ -183,10 +180,15 @@ class dmMediaImageTag extends dmMediaTag
 
     return $thumbPath;
   }
-
-  public static function getMethods()
+  
+  public static function getAvailableFilters()
   {
-    return self::$methods;
+    return self::$availableFilters;
+  }
+
+  public static function getAvailableMethods()
+  {
+    return self::$availableMethods;
   }
 
 }

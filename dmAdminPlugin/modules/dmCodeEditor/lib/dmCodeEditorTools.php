@@ -45,8 +45,8 @@ class dmCodeEditorTools
   
   public static function getArrayDecodeEncode($root_dir = false)
   {
-  	$array = self::$arrayDecodeEncode;
-  	
+    $array = self::$arrayDecodeEncode;
+    
     if($root_dir)
     {
       $array[''] = sfConfig::get('sf_root_dir');

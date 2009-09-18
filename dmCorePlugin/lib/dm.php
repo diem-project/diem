@@ -5,78 +5,78 @@
  */
 class dm
 {
-	
-	protected static
-	$startTime,
-	$sfContext,
-	$version,
-	$dir;
+  
+  protected static
+  $startTime,
+  $sfContext,
+  $version,
+  $dir;
 
-	public static function register($dir)
-	{
-		if (null !== self::$dir)
-		{
-			throw new Exception('Diem has already been registered');
-		}
-		
+  public static function register($dir)
+  {
+    if (null !== self::$dir)
+    {
+      throw new Exception('Diem has already been registered');
+    }
+    
     self::resetStartTime();
 
-		self::$dir = $dir;
+    self::$dir = $dir;
 
-		require_once(self::$dir.'/dmCorePlugin/lib/config/dmProjectConfiguration.php');
-	}
-	
-	public static function resetStartTime()
-	{
-		self::$startTime = microtime(true);
-	}
-	
-	public static function getDir()
-	{
-		return self::$dir;
-	}
-	
-	public static function getStartTime()
-	{
-		return self::$startTime;
-	}
-	
-	public static function lightAction()
-	{
-		switch(isset($_REQUEST['action']) ? $_REQUEST['action'] : null)
-		{
-		  case 'markdown':
-		    require_once(implode(DIRECTORY_SEPARATOR, array(dm::getDir(), 'dmCorePlugin', 'lib', 'markdown', 'dmMarkdown.php')));
-		    print isset($_REQUEST['text']) ? dmMarkdown::toHtml($_REQUEST['text']) : '';
-		    break;
-		  default:
-		    header('HTTP/1.0 404 Page Not Found');
-		}
-	}
-	
-	public static function checkServer()
-	{
-		sfContext::createInstance(ProjectConfiguration::getApplicationConfiguration('admin', 'test', true));
-		
-		$serverCheck = new dmServerCheck;
-		
-		print $serverCheck->render();
-		
-		exit;
-	}
-	
-	/*
-	 * Symfony common objects accessors
-	 */
+    require_once(self::$dir.'/dmCorePlugin/lib/config/dmProjectConfiguration.php');
+  }
+  
+  public static function resetStartTime()
+  {
+    self::$startTime = microtime(true);
+  }
+  
+  public static function getDir()
+  {
+    return self::$dir;
+  }
+  
+  public static function getStartTime()
+  {
+    return self::$startTime;
+  }
+  
+  public static function lightAction()
+  {
+    switch(isset($_REQUEST['action']) ? $_REQUEST['action'] : null)
+    {
+      case 'markdown':
+        require_once(implode(DIRECTORY_SEPARATOR, array(dm::getDir(), 'dmCorePlugin', 'lib', 'markdown', 'dmMarkdown.php')));
+        print isset($_REQUEST['text']) ? dmMarkdown::toHtml($_REQUEST['text']) : '';
+        break;
+      default:
+        header('HTTP/1.0 404 Page Not Found');
+    }
+  }
+  
+  public static function checkServer()
+  {
+    sfContext::createInstance(ProjectConfiguration::getApplicationConfiguration('admin', 'test', true));
+    
+    $serverCheck = new dmServerCheck;
+    
+    print $serverCheck->render();
+    
+    exit;
+  }
+  
+  /*
+   * Symfony common objects accessors
+   */
 
-	public static function getRouting()
-	{
+  public static function getRouting()
+  {
     return sfContext::getInstance()->getRouting();
-	}
+  }
 
-	/*
-	 * @return dmWebRequest
-	 */
+  /*
+   * @return dmWebRequest
+   */
   public static function getRequest()
   {
     return sfContext::getInstance()->getRequest();
@@ -101,17 +101,17 @@ class dm
 
   public static function getUser()
   {
-  	return sfContext::getInstance()->getUser();
+    return sfContext::getInstance()->getUser();
   }
 
   public static function getI18n()
   {
-  	return sfContext::getInstance()->getI18n();
+    return sfContext::getInstance()->getI18n();
   }
   
   public static function loadHelpers($helpers)
   {
-  	return sfContext::getInstance()->getConfiguration()->loadHelpers($helpers);
+    return sfContext::getInstance()->getConfiguration()->loadHelpers($helpers);
   }
 
   /*
@@ -133,9 +133,9 @@ class dm
    */
   public static function getDiemSize()
   {
-  	$timer = dmDebug::timerOrNull('dm::getDiemSize()');
+    $timer = dmDebug::timerOrNull('dm::getDiemSize()');
 
-  	$pluginsDir = sfConfig::get('sf_plugins_dir').'/';
+    $pluginsDir = sfConfig::get('sf_plugins_dir').'/';
 
     $files = sfFinder::type('file')
       ->prune('om')
@@ -147,10 +147,10 @@ class dm
 
     foreach($files as $key => $file)
     {
-    	if(strpos($file, '/web/lib/'))
-    	{
-    		unset($files[$key]);
-    	}
+      if(strpos($file, '/web/lib/'))
+      {
+        unset($files[$key]);
+      }
     }
 
     $lines = 0;
@@ -158,9 +158,9 @@ class dm
 
     foreach($files as $file)
     {
-    	$content = file($file);
-    	$lines += count($content);
-    	$characters += strlen(implode(' ', $content));
+      $content = file($file);
+      $lines += count($content);
+      $characters += strlen(implode(' ', $content));
     }
 
     $response = array(

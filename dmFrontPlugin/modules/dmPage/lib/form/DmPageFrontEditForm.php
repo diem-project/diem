@@ -2,22 +2,22 @@
 
 class DmPageFrontEditForm extends DmPageForm
 {
-	protected
-	$page;
+  protected
+  $page;
 
   public function configure()
   {
-  	parent::configure();
-  	
-  	$this->page = $this->getObject();
-  	
-  	$this->mergeI18nForm();
+    parent::configure();
+    
+    $this->page = $this->getObject();
+    
+    $this->mergeI18nForm();
 
     $this->useFields(array('id', 'module', 'action', 'slug', 'name', 'title', 'h1', 'description', 'keywords', 'is_active', 'is_secure'), false);
     
     if(!sfConfig::get('dm_seo_use_keywords'))
     {
-    	unset($this['keywords']);
+      unset($this['keywords']);
     }
     else
     {
@@ -41,17 +41,17 @@ class DmPageFrontEditForm extends DmPageForm
     
     if (!$this->page->Node->isRoot() && !$this->page->isAutomatic)
     {
-	    $parentChoices = $this->getParentChoices();
-	    
-	    $this->widgetSchema['parent_id'] = new sfWidgetFormChoice(array(
-	      'choices' => $parentChoices
-	    ));
-	    $this->validatorSchema['parent_id'] = new sfValidatorChoice(array(
-	      'choices' => array_keys($parentChoices),
-	      'required' => !$this->page->Node->isRoot()
-	    ));
-	    
-	    $this->setDefault('parent_id', $this->page->getNodeParentId());
+      $parentChoices = $this->getParentChoices();
+      
+      $this->widgetSchema['parent_id'] = new sfWidgetFormChoice(array(
+        'choices' => $parentChoices
+      ));
+      $this->validatorSchema['parent_id'] = new sfValidatorChoice(array(
+        'choices' => array_keys($parentChoices),
+        'required' => !$this->page->Node->isRoot()
+      ));
+      
+      $this->setDefault('parent_id', $this->page->getNodeParentId());
     }
     
     $this->widgetSchema['dm_layout_id']->setLabel('Layout');
@@ -61,10 +61,10 @@ class DmPageFrontEditForm extends DmPageForm
     
     if ($this->page->Node->isRoot())
     {
-    	foreach(array('slug', 'module', 'action') as $fieldName)
-    	{
-    		$this->widgetSchema[$fieldName]->setAttribute('readonly', true);
-    	}
+      foreach(array('slug', 'module', 'action') as $fieldName)
+      {
+        $this->widgetSchema[$fieldName]->setAttribute('readonly', true);
+      }
     }
 
     $this->mergePostValidator(new sfValidatorCallback(array('callback' => array($this, 'checkSlug'))));
@@ -96,7 +96,7 @@ class DmPageFrontEditForm extends DmPageForm
   
   public function embedCurrentI18n($decorator = null)
   {
-  	return;
+    return;
   }
   
   protected function getParentChoices()
@@ -111,7 +111,7 @@ class DmPageFrontEditForm extends DmPageForm
     $parentChoices = array();
     foreach($_parentChoices as $values)
     {
-    	$parentChoices[$values[0]] = str_repeat('&nbsp;&nbsp;', $values[1]).'-&nbsp;'.$values[2];
+      $parentChoices[$values[0]] = str_repeat('&nbsp;&nbsp;', $values[1]).'-&nbsp;'.$values[2];
     }
     
     return $parentChoices;
@@ -121,15 +121,15 @@ class DmPageFrontEditForm extends DmPageForm
   {
     if (isset($values['parent_id']))
     {
-	    if (!dmDb::query('DmPage p')->where('p.id = ?', $values['parent_id'])->exists())
-	    {
-	    	throw new dmException('Move page to unknown parent '.$values['parent_id']);
-	    }
-	    
-	    if ($values['parent_id'] != $this->page->nodeParentId)
-	    {
-	      $this->page->Node->moveAsLastChildOf(dmDb::table('DmPage')->find($values['parent_id']));
-	    }
+      if (!dmDb::query('DmPage p')->where('p.id = ?', $values['parent_id'])->exists())
+      {
+        throw new dmException('Move page to unknown parent '.$values['parent_id']);
+      }
+      
+      if ($values['parent_id'] != $this->page->nodeParentId)
+      {
+        $this->page->Node->moveAsLastChildOf(dmDb::table('DmPage')->find($values['parent_id']));
+      }
     }
     
     $this->page->PageView->dmLayoutId = $values['dm_layout_id'];

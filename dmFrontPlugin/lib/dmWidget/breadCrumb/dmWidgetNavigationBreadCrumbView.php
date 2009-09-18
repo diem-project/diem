@@ -3,12 +3,12 @@
 class dmWidgetNavigationBreadCrumbView extends dmWidgetPluginView
 {
 
-	public function getRequiredVars()
-	{
+  public function getRequiredVars()
+  {
     return array('separator', 'includeCurrent');
-	}
+  }
 
-	public function getViewVars(array $vars = array())
+  public function getViewVars(array $vars = array())
   {
     $vars = parent::getViewVars($vars);
 
@@ -25,7 +25,7 @@ class dmWidgetNavigationBreadCrumbView extends dmWidgetPluginView
 
     if ($vars['includeCurrent'])
     {
-    	$vars['pages'][] = $currentPage;
+      $vars['pages'][] = $currentPage;
     }
     
     $vars['nbPages'] = count($vars['pages']);
@@ -35,18 +35,18 @@ class dmWidgetNavigationBreadCrumbView extends dmWidgetPluginView
   
   protected function doRender(array $vars)
   {
-  	$html = '<ol>';
+    $html = '<ol>';
 
-		foreach($vars['pages'] as $position => $page)
-		{
-		  $html .= dmOoHelper::£('li', dmFrontLinkTag::build($page)->render());
-		
-		  if ($vars['separator'] && ($position < ($vars['nbPages']-1)))
-		  {
-		    $html .= dmOoHelper::£('li', $vars['separator']);
-		  }
-		}
-		
+    foreach($vars['pages'] as $position => $page)
+    {
+      $html .= dmHelper::£('li', dmFrontLinkTag::build($page)->render());
+    
+      if ($vars['separator'] && ($position < ($vars['nbPages']-1)))
+      {
+        $html .= dmHelper::£('li', $vars['separator']);
+      }
+    }
+    
     $html .= '</ol>';
     
     return $html;

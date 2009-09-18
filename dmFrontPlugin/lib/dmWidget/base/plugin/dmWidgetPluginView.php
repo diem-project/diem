@@ -2,8 +2,8 @@
 
 abstract class dmWidgetPluginView extends dmWidgetBaseView
 {
-	protected function doRenderPartial(array $vars)
-	{
+  protected function doRenderPartial(array $vars)
+  {
     $module = 'dmWidget';
     $action = $this->widgetType->getFullKey();
     
@@ -15,5 +15,5 @@ abstract class dmWidgetPluginView extends dmWidgetBaseView
     {
       $html = $this->helper->renderPartial($module, $action, $vars);
     }
-	}
+  }
 }

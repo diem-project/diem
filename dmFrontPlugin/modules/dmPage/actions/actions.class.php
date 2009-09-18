@@ -42,10 +42,10 @@ class dmPageActions extends dmFrontBaseActions
 
       if ($this->form->isValid())
       {
-      	$this->form->updateObject();
-      	$this->page = $this->form->getObject();
-      	
-      	$this->page->updateAutoModFromModified();
+        $this->form->updateObject();
+        $this->page = $this->form->getObject();
+        
+        $this->page->updateAutoModFromModified();
         $this->page->save();
         
         /*
@@ -64,10 +64,10 @@ class dmPageActions extends dmFrontBaseActions
     else
     {
       $this->js =
-	      dmJsMinifier::transform(
+        dmJsMinifier::transform(
           file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), sfConfig::get('dm_front_asset'), 'js/dmFrontPageEditForm.js'))
-	      )
-	    ;
+        )
+      ;
     }
     
     $this->css = dmCssMinifier::transform(
@@ -131,5 +131,5 @@ class dmPageActions extends dmFrontBaseActions
     
     $this->parentSlugsJson = json_encode($parentSlugs);
   }
-	
+  
 }

@@ -211,6 +211,22 @@ $.getScript(href, callback);
 
 * [DONE] improve web debug panel performance
 
-* add all media helper classes to dmServiceContainer
+* [DONE] add all media helper classes to dmServiceContainer
 
-* remove dmHtml ArrayAccess implementation for performance reasons
+* add all link helper classes to dmServiceContainer
+
+* [DONE] remove dmHtml ArrayAccess implementation for performance reasons
+
+* desactivate automatic thumbnail creation on search index population context for performance reasons
+
+* [DONE] split dmServiceContainer into dmFrontServiceContainer and dmAdminServiceContainer
+
+* [DONE] move service container configuration into dmServiceContainer classes
+
+* transform all event notifications so their param is contained in an array
+
+* add dmHtmlTag->json unit tests ( with quotes... )
+
+* [DONE] replace request.relative_url_root service container parameter with request context array
+
+* [DONE] remove unused dependencies from admin & front service containers

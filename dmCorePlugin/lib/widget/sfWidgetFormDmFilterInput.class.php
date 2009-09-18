@@ -35,7 +35,7 @@ class sfWidgetFormDmFilterInput extends sfWidgetFormFilterInput
    */
   protected function configure($options = array(), $attributes = array())
   {
-  	parent::configure($options, $attributes);
+    parent::configure($options, $attributes);
     $this->addOption('template', '%input%<div class="is_empty">%empty_checkbox%%empty_label%</div>');
   }
 

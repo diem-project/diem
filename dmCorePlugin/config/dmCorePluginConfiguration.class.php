@@ -45,7 +45,7 @@ class dmCorePluginConfiguration extends sfPluginConfiguration
     
     if(null === sfConfig::get('lazy_cache_key'))
     {
-    	sfConfig::set('lazy_cache_key', true);
+      sfConfig::set('lazy_cache_key', true);
     }
     
     myConfig::initialize($this->dispatcher);
@@ -53,13 +53,13 @@ class dmCorePluginConfiguration extends sfPluginConfiguration
 
   protected function enableModules()
   {
-  	$modules = array_unique(array_merge(self::$modules, sfConfig::get('sf_enabled_modules', array())));
-  	
-  	if($defaultKey = array_search('default', $modules))
-  	{
-  		unset($modules[$defaultKey]);
-  	}
-  	
+    $modules = array_unique(array_merge(self::$modules, sfConfig::get('sf_enabled_modules', array())));
+    
+    if($defaultKey = array_search('default', $modules))
+    {
+      unset($modules[$defaultKey]);
+    }
+    
     sfConfig::set('sf_enabled_modules', $modules);
   }
 
@@ -70,8 +70,8 @@ class dmCorePluginConfiguration extends sfPluginConfiguration
 
   protected function connectEvents()
   {
-  	$eventConnector = new dmEventConnector($this->dispatcher);
-  	$eventConnector->connectEvents();
+    $eventConnector = new dmEventConnector($this->dispatcher);
+    $eventConnector->connectEvents();
   }
   
   /**
@@ -84,13 +84,13 @@ class dmCorePluginConfiguration extends sfPluginConfiguration
    */
   public function filterAutoloadConfig(sfEvent $event, array $config)
   {
-  	$config = parent::filterAutoloadConfig($event, $config);
-  	
-  	/*
-  	 * Do not load lib/vendor
-  	 */
-  	$config['autoload'][$this->name.'_lib']['exclude'] = array('vendor');
-  	
-  	return $config;
+    $config = parent::filterAutoloadConfig($event, $config);
+    
+    /*
+     * Do not load lib/vendor
+     */
+    $config['autoload'][$this->name.'_lib']['exclude'] = array('vendor');
+    
+    return $config;
   }
 }

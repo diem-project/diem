@@ -3,9 +3,9 @@
 class dmWidgetNavigationMenuForm extends dmWidgetPluginForm
 {
 
-	public function configure()
-	{
+  public function configure()
+  {
     parent::configure();
-	}
+  }
 
 }

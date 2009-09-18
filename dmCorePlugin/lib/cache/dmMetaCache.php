@@ -19,7 +19,7 @@ class dmMetaCache extends sfCache
 
   public function getCache()
   {
-  	return $this->cache;
+    return $this->cache;
   }
 
   public function get($key, $default = null)

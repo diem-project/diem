@@ -38,10 +38,10 @@ class dmInlineConfigHandler extends sfYamlConfigHandler
     $values = array();
     foreach ($config as $prefix => $categories)
     {
-	    foreach ($categories as $category => $keys)
-	    {
+      foreach ($categories as $category => $keys)
+      {
         $values = array_merge($values, $this->getValues($prefix, $category, $keys));
-	    }
+      }
     }
 
     $data = '';

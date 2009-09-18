@@ -10,11 +10,11 @@ class dmAdminInitFilter extends dmInitFilter
    */
   public function execute($filterChain)
   {
-  	if ($culture = $this->context->getRequest()->getParameter('culture'))
-  	{
-  		$this->context->getUser()->setCulture($culture);
-  	}
-  	
+    if ($culture = $this->context->getRequest()->getParameter('culture'))
+    {
+      $this->context->getUser()->setCulture($culture);
+    }
+    
     $this->checkFilesystemPermissions();
     
     $this->saveApplicationUrl();

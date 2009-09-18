@@ -3,26 +3,26 @@
 class dmMediaTools
 {
 
-	public static function getAdminUrlFor($object)
-	{
-	  if($object instanceof DmMediaFolder)
-	  {
-		  if (!$baseUrl = sfConfig::get('dm_mediaLibrary_folderBaseUrl'))
-		  {
-		    $baseUrl = sfContext::getInstance()->getController()->genUrl('@dm_media_library_path?path=__PATH__');
-		    sfConfig::set('dm_mediaLibrary_folderBaseUrl', $baseUrl);
-		  }
-	    return str_replace('__PATH__', $object->getRelPath(), $baseUrl);
-	  }
+  public static function getAdminUrlFor($object)
+  {
+    if($object instanceof DmMediaFolder)
+    {
+      if (!$baseUrl = sfConfig::get('dm_mediaLibrary_folderBaseUrl'))
+      {
+        $baseUrl = sfContext::getInstance()->getController()->genUrl('@dm_media_library_path?path=__PATH__');
+        sfConfig::set('dm_mediaLibrary_folderBaseUrl', $baseUrl);
+      }
+      return str_replace('__PATH__', $object->getRelPath(), $baseUrl);
+    }
     elseif($object instanceof DmMedia)
     {
       return 'dmMediaLibrary/file?media_id='.$object->getId();
     }
-	  else
-	  {
-	  	throw new dmException('Can not generate url for '.$object);
-	  }
-	}
+    else
+    {
+      throw new dmException('Can not generate url for '.$object);
+    }
+  }
 
 
   /**
@@ -137,7 +137,7 @@ class dmMediaTools
 
     if (!$dirName)
     {
-    	return true;
+      return true;
       throw new sfException('Trying to make a folder with no name');
     }
     $parentDirName = ($parentDirName)? rtrim($parentDirName, '/') . '/' : '';

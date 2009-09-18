@@ -37,17 +37,17 @@ else
 
 if ($children = $folder->getNode()->getChildren())
 {
-	foreach($children as $f)
-	{
-	  echo £("li.folder",
-	    £link(dmMediaTools::getAdminUrlFor($f))->text(
-	      ($f->isWritable() ? £media("dmAdmin/images/media/folder.png")->size(64, 64)
-	      : £media("dmAdmin/images/media/folder-locked.png")).
-	      £("span.name", media_wrap_text($f->getName())).
-	      £("span.more", format_number_choice('[0]no element|[1]1 element|(1,+Inf]%1% elements', array('%1%' => $f->getNbElements()), $f->getNbElements()))
-	    )
-	  );
-	}
+  foreach($children as $f)
+  {
+    echo £("li.folder",
+      £link(dmMediaTools::getAdminUrlFor($f))->text(
+        ($f->isWritable() ? £media("dmAdmin/images/media/folder.png")->size(64, 64)
+        : £media("dmAdmin/images/media/folder-locked.png")).
+        £("span.name", media_wrap_text($f->getName())).
+        £("span.more", format_number_choice('[0]no element|[1]1 element|(1,+Inf]%1% elements', array('%1%' => $f->getNbElements()), $f->getNbElements()))
+      )
+    );
+  }
 }
 
 foreach($files as $f)
@@ -57,17 +57,17 @@ foreach($files as $f)
     ? £link(dmMediaTools::getAdminUrlFor($f))->text(
         £('span.image_background',
           array('style' => sprintf(
-	          'background: url(%s) top left no-repeat',
-	          £media($f)->size(128, 128)->src()
-	        )),
-	        £("span.name", media_wrap_text(dmString::truncate($f->getFile(), 40)))
-	      )
-	    )
+            'background: url(%s) top left no-repeat',
+            £media($f)->size(128, 128)->getSrc()
+          )),
+          £("span.name", media_wrap_text(dmString::truncate($f->getFile(), 40)))
+        )
+      )
     : £link(dmMediaTools::getAdminUrlFor($f))->text(
-	      media_file_image_tag($f).
-	      £("span.name", media_wrap_text(dmString::truncate($f->getFile(), 40)))
-	    )
-	  )
+        media_file_image_tag($f).
+        £("span.name", media_wrap_text(dmString::truncate($f->getFile(), 40)))
+      )
+    )
   );
 }
 

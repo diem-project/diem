@@ -23,9 +23,9 @@
 
     [?php echo $form->renderHiddenFields() ?]
     <div class="dm_filter_actions">
-	    [?php echo link_to(__('Reset'), '<?php echo $this->getUrlForAction('collection') ?>', array('action' => 'filter', 'class' => 'reset'), array('query_string' => '_reset', 'method' => 'post')) ?]
-	    <input type="submit" value="[?php echo __('Filter') ?]" />
-	  </div>
+      [?php echo link_to(__('Reset'), '<?php echo $this->getUrlForAction('collection') ?>', array('action' => 'filter', 'class' => 'reset'), array('query_string' => '_reset', 'method' => 'post')) ?]
+      <input type="submit" value="[?php echo __('Filter') ?]" />
+    </div>
   </form>
 
   </div>

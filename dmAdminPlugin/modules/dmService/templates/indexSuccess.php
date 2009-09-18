@@ -10,9 +10,9 @@ echo £o('div.dm_box.little.mt20');
 
   foreach($services as $service)
   {
-  	echo £('li',
+    echo £('li',
       £link('dmService/launch?name='.$service)->text($service)->set('.service')->param('redirect', 0)
-  	);
+    );
   }
 
   echo £c('ul');

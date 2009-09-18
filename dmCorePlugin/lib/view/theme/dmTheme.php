@@ -2,20 +2,20 @@
 
 class dmTheme
 {
-	protected
-  	$dispatcher,
-  	$filesystem,
-	  $key,
-	  $path,
-	  $name,
-	  $enabled,
-	  $relativeUrlRoot;
+  protected
+    $dispatcher,
+    $filesystem,
+    $key,
+    $path,
+    $name,
+    $enabled,
+    $requestContext;
 
-  public function __construct(sfEventDispatcher $dispatcher, dmFilesystem $filesystem, $relativeUrlRoot, array $options)
+  public function __construct(sfEventDispatcher $dispatcher, dmFilesystem $filesystem, array $requestContext, array $options)
   {
     $this->dispatcher       = $dispatcher;
     $this->filesystem       = $filesystem;
-    $this->relativeUrlRoot  = $relativeUrlRoot;
+    $this->requestContext   = $requestContext;
     
     $this->initialize($options);
   }
@@ -51,7 +51,7 @@ class dmTheme
         }
       }
     }
-	}
+  }
 
   public function exists()
   {
@@ -72,10 +72,10 @@ class dmTheme
     {
       if (!$this->filesystem->mkdir($fullPath))
       {
-      	throw new dmException(sprintf(
+        throw new dmException(sprintf(
           '%s can not be created',
-      	  $fullPath
-      	));
+          $fullPath
+        ));
       }
     }
 
@@ -84,20 +84,20 @@ class dmTheme
     $this->dispatcher->notify(new sfEvent($this, 'dm.theme.created', $this));
   }
 
-	public function getKey()
-	{
-		return $this->key;
-	}
+  public function getKey()
+  {
+    return $this->key;
+  }
 
-	public function getName()
-	{
-		return $this->name;
-	}
+  public function getName()
+  {
+    return $this->name;
+  }
 
-	public function getBasePath()
-	{
-		return sfConfig::get('sf_web_dir');
-	}
+  public function getBasePath()
+  {
+    return sfConfig::get('sf_web_dir');
+  }
 
   public function getFullPath($path = null)
   {
@@ -110,7 +110,16 @@ class dmTheme
    */
   public function getWebPath($path = null)
   {
-  	return $this->relativeUrlRoot.$this->getPath($path);
+    return $this->requestContext['relative_url_root'].$this->getPath($path);
+  }
+  
+  /*
+   * full public path
+   * example : http://mysite.com/theme/css/style.css or http://localhost/mysite/public_html/theme/css/style.css if no virtual host
+   */
+  public function getFullWebPath($path = null)
+  {
+    return $this->requestContext['absolute_url_root'].$this->getPath($path);
   }
   
   /*
@@ -124,18 +133,18 @@ class dmTheme
 
   public function getFullPaths()
   {
-  	$fullPaths = array();
-  	foreach(array(null, 'css', 'images') as $path)
-  	{
-  		$fullPaths[] = $this->getFullPath($path);
-  	}
+    $fullPaths = array();
+    foreach(array(null, 'css', 'images') as $path)
+    {
+      $fullPaths[] = $this->getFullPath($path);
+    }
 
-  	return $fullPaths;
+    return $fullPaths;
   }
 
   public function __toString()
   {
-  	return $this->name;
+    return $this->name;
   }
 
 }

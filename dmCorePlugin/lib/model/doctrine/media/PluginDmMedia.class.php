@@ -12,225 +12,225 @@
  */
 abstract class PluginDmMedia extends BaseDmMedia
 {
-	protected
-	$isRefreshed = false;
+  protected
+  $isRefreshed = false;
 
-	/*
-	 * Returns last 4 numbers of filemtime
-	 */
-	public function getLittleMTime()
-	{
-		if ($this->hasCache('little_m_time'))
-		{
-			return $this->getCache('little_m_time');
-		}
+  /*
+   * Returns last 4 numbers of filemtime
+   */
+  public function getLittleMTime()
+  {
+    if ($this->hasCache('little_m_time'))
+    {
+      return $this->getCache('little_m_time');
+    }
 
-		return $this->setCache('little_m_time', $this->checkFileExists() ? substr(filemtime($this->getFullPath()), -4) : null);
-	}
+    return $this->setCache('little_m_time', $this->checkFileExists() ? substr(filemtime($this->getFullPath()), -4) : null);
+  }
 
-	/*
-	 * Store a copy of the file in backup folder
-	 */
-	public function backup()
-	{
-		if(!$backupFolder = $this->getBackupFolder())
-		{
-			throw new dmException(sprintf('Can not create backup folder for %s', $this));
-		}
+  /*
+   * Store a copy of the file in backup folder
+   */
+  public function backup()
+  {
+    if(!$backupFolder = $this->getBackupFolder())
+    {
+      throw new dmException(sprintf('Can not create backup folder for %s', $this));
+    }
 
-		$backupMedia = dmDb::create('DmMedia')->setDmMediaFolder($backupFolder);
+    $backupMedia = dmDb::create('DmMedia')->setDmMediaFolder($backupFolder);
 
-		$this->copyTo($backupMedia)->saveGet();
-	}
+    $this->copyTo($backupMedia)->saveGet();
+  }
 
-	public function getBackupFolder()
-	{
-		return dmDb::table('DmMediaFolder')->findOneByRelPathOrCreate(
-		dmOs::join($this->get('Folder')->get('rel_path'), 'backup')
-		);
-	}
+  public function getBackupFolder()
+  {
+    return dmDb::table('DmMediaFolder')->findOneByRelPathOrCreate(
+    dmOs::join($this->get('Folder')->get('rel_path'), 'backup')
+    );
+  }
 
-	public function getForeigns()
-	{
-		if ($this->hasCache('foreigns'))
-		{
-			return $this->getCache('foreigns');
-		}
+  public function getForeigns()
+  {
+    if ($this->hasCache('foreigns'))
+    {
+      return $this->getCache('foreigns');
+    }
 
-		$foreigns = array();
+    $foreigns = array();
 
-		foreach($this->getTable()->getRelationHolder()->getForeigns() as $foreignRelation)
-		{
-			if ($foreign = $relation->fetchRelatedFor($this))
-			{
-				$foreigns[] = $foreign;
-			}
-		}
+    foreach($this->getTable()->getRelationHolder()->getForeigns() as $foreignRelation)
+    {
+      if ($foreign = $relation->fetchRelatedFor($this))
+      {
+        $foreigns[] = $foreign;
+      }
+    }
 
-		return $this->setCache('foreign', $foreigns);
-	}
+    return $this->setCache('foreign', $foreigns);
+  }
 
-	public function getNbForeigns()
-	{
-		return count($this->getNbForeigns());
-	}
+  public function getNbForeigns()
+  {
+    return count($this->getNbForeigns());
+  }
 
-	public function getDimensions()
-	{
-		if (!$this->isImage() || !$this->checkFileExists())
-		{
-			return false;
-		}
+  public function getDimensions()
+  {
+    if (!$this->isImage() || !$this->checkFileExists())
+    {
+      return false;
+    }
 
-		if (!$dimensions = $this->_get('dimensions'))
-		{
-			$infos = getimagesize($this->getFullPath());
-			$this->_set('dimensions', $dimensions = $infos[0]."x".$infos[1], false)->save();
-		}
+    if (!$dimensions = $this->_get('dimensions'))
+    {
+      $infos = getimagesize($this->getFullPath());
+      $this->_set('dimensions', $dimensions = $infos[0]."x".$infos[1], false)->save();
+    }
 
-		return $dimensions;
-	}
+    return $dimensions;
+  }
 
-	public function getWidth()
-	{
+  public function getWidth()
+  {
     if ($dimensions = $this->get('dimensions'))
-		{
-			return substr($dimensions, 0, strpos($dimensions, 'x'));
-		}
-	}
+    {
+      return substr($dimensions, 0, strpos($dimensions, 'x'));
+    }
+  }
 
-	public function getHeight()
-	{
-		if ($dimensions = $this->get('dimensions'))
-		{
-			return substr($dimensions, strpos($dimensions, 'x')+1);
-		}
-	}
+  public function getHeight()
+  {
+    if ($dimensions = $this->get('dimensions'))
+    {
+      return substr($dimensions, strpos($dimensions, 'x')+1);
+    }
+  }
 
-	public function isWritable()
-	{
-		return is_writable($this->getFullPath());
-	}
+  public function isWritable()
+  {
+    return is_writable($this->getFullPath());
+  }
 
-	public function checkFileExists($orDelete = false)
-	{
-		if (!$this->get('file'))
-		{
-			return false;
-		}
+  public function checkFileExists($orDelete = false)
+  {
+    if (!$this->get('file'))
+    {
+      return false;
+    }
 
-		$exists = file_exists($this->getFullPath());
+    $exists = file_exists($this->getFullPath());
 
-		if (!$exists && $orDelete)
-		{
-			$this->delete();
-		}
+    if (!$exists && $orDelete)
+    {
+      $this->delete();
+    }
 
-		return $exists;
-	}
+    return $exists;
+  }
 
-	public function __toString()
-	{
-		return $this->getRelPath();
-	}
+  public function __toString()
+  {
+    return $this->getRelPath();
+  }
 
-	public function getFullPath()
-	{
-		return dmOs::join(sfConfig::get('sf_upload_dir'), $this->getRelPath());
-	}
+  public function getFullPath()
+  {
+    return dmOs::join(sfConfig::get('sf_upload_dir'), $this->getRelPath());
+  }
 
-	public function getRelPath()
-	{
-		if ($this->hasCache('rel_path'))
-		{
-			return $this->getCache('rel_path');
-		}
+  public function getRelPath()
+  {
+    if ($this->hasCache('rel_path'))
+    {
+      return $this->getCache('rel_path');
+    }
 
-		return $this->setCache('rel_path', trim($this->get('Folder')->get('rel_path').'/'.$this->get('file'), '/'));
-	}
+    return $this->setCache('rel_path', trim($this->get('Folder')->get('rel_path').'/'.$this->get('file'), '/'));
+  }
 
-	public function getWebPath()
-	{
-		return sfConfig::get('sf_upload_dir_name').'/'.$this->getRelPath();
-	}
+  public function getWebPath()
+  {
+    return sfConfig::get('sf_upload_dir_name').'/'.$this->getRelPath();
+  }
 
-	public function getFullWebPath()
-	{
-		return dm::getRequest()->getAbsoluteUrlRoot().'/'.$this->getRelPath();
-	}
+  public function getFullWebPath()
+  {
+    return dm::getRequest()->getAbsoluteUrlRoot().'/'.$this->getRelPath();
+  }
 
-	public function isImage()
-	{
-		return strncmp($this->mime, 'image/', 6) === 0;
-	}
+  public function isImage()
+  {
+    return strncmp($this->mime, 'image/', 6) === 0;
+  }
 
-	public function getImage()
-	{
-		if(!$this->isImage())
-		{
-			throw new dmException($this.' is not an image');
-		}
+  public function getImage()
+  {
+    if(!$this->isImage())
+    {
+      throw new dmException($this.' is not an image');
+    }
 
-		return new dmImage($this->getFullPath(), $this->get('mime'));
-	}
+    return new dmImage($this->getFullPath(), $this->get('mime'));
+  }
 
-	/**
-	 * Physically creates asset
-	 *
-	 * @param string $asset_path path to the asset original file
-	 * @param bool $move do move or just copy ?
-	 */
-	public function create(sfValidatedFile $file)
-	{
-		$this->file = dmOs::sanitizeFileName($file->getOriginalName());
+  /**
+   * Physically creates asset
+   *
+   * @param string $asset_path path to the asset original file
+   * @param bool $move do move or just copy ?
+   */
+  public function create(sfValidatedFile $file)
+  {
+    $this->file = dmOs::sanitizeFileName($file->getOriginalName());
 
     $this->clearCache();
 
-		$file->save($this->fullPath);
+    $file->save($this->fullPath);
 
     $this->refreshFromFile();
 
-		return $this;
-	}
+    return $this;
+  }
 
-	/**
-	 * Physically replaces asset
-	 */
-	public function replaceFile(sfValidatedFile $file)
-	{
-		$this->destroy();
-		
+  /**
+   * Physically replaces asset
+   */
+  public function replaceFile(sfValidatedFile $file)
+  {
+    $this->destroy();
+    
     return $this->create($file);
-	}
+  }
 
-	/*
-	 * @return DmMedia the new media with $toMedia values
-	 */
-	public function copyTo(DmMedia $toMedia)
-	{
-		$toMedia->file = $this->file;
+  /*
+   * @return DmMedia the new media with $toMedia values
+   */
+  public function copyTo(DmMedia $toMedia)
+  {
+    $toMedia->file = $this->file;
 
-		if (!@copy($this->fullPath, $toMedia->fullPath))
-		{
-			throw new dmException(sprintf(
+    if (!@copy($this->fullPath, $toMedia->fullPath))
+    {
+      throw new dmException(sprintf(
         'Can not copy from %s to %s',
-				$this->fullPath,
-				$toMedia->fullPath
-			));
-		}
+        $this->fullPath,
+        $toMedia->fullPath
+      ));
+    }
 
-		return $toMedia
-		->setLegend($this->getLegend())
-		->setAuthor($this->getAuthor())
-		->setCopyright($this->getCopyright())
-		->setMime($this->getMime())
-		->setSize($this->getSize())
-		->setDimensions($this->getDimensions());
-	}
+    return $toMedia
+    ->setLegend($this->getLegend())
+    ->setAuthor($this->getAuthor())
+    ->setCopyright($this->getCopyright())
+    ->setMime($this->getMime())
+    ->setSize($this->getSize())
+    ->setDimensions($this->getDimensions());
+  }
 
 
-	public function refreshFromFile()
-	{
+  public function refreshFromFile()
+  {
     $this->fromArray(array(
       'size' => filesize($this->getFullPath()),
       'mime' => dmOs::getFileMime($this->getFullPath())
@@ -242,90 +242,90 @@ abstract class PluginDmMedia extends BaseDmMedia
     $this->clearCache();
 
     return $this;
-	}
+  }
 
-	/**
-	 * Physically remove assets
-	 */
-	protected function destroy()
-	{
-		if ($this->isImage())
-		{
-			$this->destroyThumbnails();
-		}
+  /**
+   * Physically remove assets
+   */
+  protected function destroy()
+  {
+    if ($this->isImage())
+    {
+      $this->destroyThumbnails();
+    }
 
-		if ($this->checkFileExists())
-		{
-//			dmDebug::kill('unlink '.$this->fullPath, $this);
-			dmContext::getInstance()->getFilesystem()->unlink($this->getFullPath());
-		}
+    if ($this->checkFileExists())
+    {
+//      dmDebug::kill('unlink '.$this->fullPath, $this);
+      dmContext::getInstance()->getFilesystem()->unlink($this->getFullPath());
+    }
 
-		return !$this->checkFileExists();
-	}
+    return !$this->checkFileExists();
+  }
 
-	public function destroyThumbnails()
-	{
-		if (!$this->isImage())
-		{
-			return true;
-		}
+  public function destroyThumbnails()
+  {
+    if (!$this->isImage())
+    {
+      return true;
+    }
 
-		$thumbs = sfFinder::type('file')
-		// width x height - method _ quality _ littleMTime _ filename
-		->name('/^[0-9]*x[0-9]*-[a-z]+_[0-9]*_[0-9]{4}_'.preg_quote($this->getFile(), '|').'$/')
-		->maxdepth(0)
-		->in(dmOs::join($this->Folder->getFullPath(), '.thumbs'));
+    $thumbs = sfFinder::type('file')
+    // width x height - method _ quality _ littleMTime _ filename
+    ->name('/^[0-9]*x[0-9]*-[a-z]+_[0-9]*_[0-9]{4}_'.preg_quote($this->getFile(), '|').'$/')
+    ->maxdepth(0)
+    ->in(dmOs::join($this->Folder->getFullPath(), '.thumbs'));
 
-		return dmContext::getInstance()->getFilesystem()->unlink($thumbs);
-	}
+    return dmContext::getInstance()->getFilesystem()->unlink($thumbs);
+  }
 
 
-	public function save(Doctrine_Connection $conn = null)
-	{
-		if (!$this->file)
-		{
-			throw new dmException('Trying to save DmMedia with empty file field');
-		}
+  public function save(Doctrine_Connection $conn = null)
+  {
+    if (!$this->file)
+    {
+      throw new dmException('Trying to save DmMedia with empty file field');
+    }
 
-		if (!$this->checkFileExists())
-		{
-			throw new dmException(sprintf('Trying to save DmMedia with no existing file : %s', $this->file));
-		}
+    if (!$this->checkFileExists())
+    {
+      throw new dmException(sprintf('Trying to save DmMedia with no existing file : %s', $this->file));
+    }
 
-		/*
-		 * If this media is new, and shares its name with another media in the same folder,
-		 * this media is not saved and the other one is updated with this media's value
-		 */
-		if($this->isNew())
-		{
-			if($sameMedia = $this->getTable()->findOneByFileAndDmMediaFolderId($this->file, $this->dm_media_folder_id))
-			{
-				return $sameMedia
-				->setLegend($this->getLegend())
-				->setAuthor($this->getAuthor())
-				->setLicense($this->getLicense())
-				->setMime($this->getMime())
-				->setSize($this->getSize())
-				->set('dimensions', $this->getDimensions(), false)
-				->save($conn);
-			}
-			else
-			{
-				$this->refreshFromFile();
-			}
-		}
+    /*
+     * If this media is new, and shares its name with another media in the same folder,
+     * this media is not saved and the other one is updated with this media's value
+     */
+    if($this->isNew())
+    {
+      if($sameMedia = $this->getTable()->findOneByFileAndDmMediaFolderId($this->file, $this->dm_media_folder_id))
+      {
+        return $sameMedia
+        ->setLegend($this->getLegend())
+        ->setAuthor($this->getAuthor())
+        ->setLicense($this->getLicense())
+        ->setMime($this->getMime())
+        ->setSize($this->getSize())
+        ->set('dimensions', $this->getDimensions(), false)
+        ->save($conn);
+      }
+      else
+      {
+        $this->refreshFromFile();
+      }
+    }
 
-		return parent::save($conn);
-	}
+    return parent::save($conn);
+  }
 
-	public function delete(Doctrine_Connection $conn = null)
-	{
-		if (!$this->destroy())
-		{
-			throw new dmException('Can not delete '.$this->getFullPath());
-		}
+  public function delete(Doctrine_Connection $conn = null)
+  {
+    if (!$this->destroy())
+    {
+      throw new dmException('Can not delete '.$this->getFullPath());
+    }
 
-		return parent::delete($conn);
-	}
+    return parent::delete($conn);
+  }
 
 }

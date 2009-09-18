@@ -2,17 +2,17 @@
 
 class dmFrontPageHelper
 {
-	protected
+  protected
     $dispatcher,
-	  $widgetTypeManager,
-	  $serviceContainer,
-	  $i18n,
-	  $page,
-	  $areas;
+    $widgetTypeManager,
+    $serviceContainer,
+    $i18n,
+    $page,
+    $areas;
 
-	protected static
-	$innerCssClassWidgets = array('dmWidgetContent.title', 'dmWidgetContent.media', 'dmWidgetContent.link');
-	  
+  protected static
+  $innerCssClassWidgets = array('dmWidgetContent.title', 'dmWidgetContent.media', 'dmWidgetContent.link');
+    
   public function __construct(sfEventDispatcher $dispatcher, dmWidgetTypeManager $widgetTypeManager, sfServiceContainer $serviceContainer, sfI18n $i18n)
   {
     $this->dispatcher        = $dispatcher;
@@ -25,6 +25,21 @@ class dmFrontPageHelper
   
   public function initialize()
   {
+  }
+  
+  public function connect()
+  {
+    $this->dispatcher->connect('dm.context.change_page', array($this, 'listenToChangePageEvent'));
+  }
+  
+  /**
+   * Listens to the user.change_culture event.
+   *
+   * @param sfEvent An sfEvent instance
+   */
+  public function listenToChangePageEvent(sfEvent $event)
+  {
+    $this->setPage($event['page']);
   }
   
   public function setPage(DmPage $page)
@@ -55,30 +70,30 @@ class dmFrontPageHelper
   
   public function getArea($type)
   {
-  	$this->getAreas();
+    $this->getAreas();
 
-  	if (!isset($this->areas[$type]))
-  	{
-  		throw new dmException(sprintf('Page %s with layout %s has no area for type %s', $this->page, $this->page->Layout, $type));
-  	}
+    if (!isset($this->areas[$type]))
+    {
+      throw new dmException(sprintf('Page %s with layout %s has no area for type %s', $this->page, $this->page->Layout, $type));
+    }
 
-  	return $this->areas[$type];
+    return $this->areas[$type];
   }
 
   public function renderAccessLinks()
   {
-	  if (!sfConfig::get('dm_accessibility_access_links', true))
-	  {
-	  	return '';
-	  }
+    if (!sfConfig::get('dm_accessibility_access_links', true))
+    {
+      return '';
+    }
 
-	  $html = '<div class="dm_access_links">';
+    $html = '<div class="dm_access_links">';
 
-	  $html .= '<a href="#content">'.$this->i18n->__('Go to content').'</a>';
+    $html .= '<a href="#content">'.$this->i18n->__('Go to content').'</a>';
 
-	  $html .= '</div>';
+    $html .= '</div>';
 
-	  return $html;
+    return $html;
   }
 
   public function renderArea($type)
@@ -94,7 +109,7 @@ class dmFrontPageHelper
      */
     if ($type === 'content')
     {
-    	$html .= '<div id="dm_content">';
+      $html .= '<div id="dm_content">';
     }
 
     $html .= sprintf(
@@ -108,7 +123,7 @@ class dmFrontPageHelper
 
     foreach($area['Zones'] as $zone)
     {
-    	$html .= $this->renderZone($zone);
+      $html .= $this->renderZone($zone);
     }
 
     $html .= '</div>';
@@ -170,7 +185,7 @@ class dmFrontPageHelper
 
   public function renderWidget(array $widget)
   {
-  	list($widgetWrapClass, $widgetInnerClass) = $this->getWidgetContainerClasses($widget);
+    list($widgetWrapClass, $widgetInnerClass) = $this->getWidgetContainerClasses($widget);
 
     /*
      * Open widget wrap with wrapped user's classes
@@ -206,17 +221,17 @@ class dmFrontPageHelper
     
     try
     {
-	    if (null === $widgetType)
-	    {
-	      $widgetType = $this->widgetTypeManager->getWidgetType($widget['module'], $widget['action']);
-	    }
-	
-	    $this->serviceContainer->addParameters(array(
+      if (null === $widgetType)
+      {
+        $widgetType = $this->widgetTypeManager->getWidgetType($widget['module'], $widget['action']);
+      }
+  
+      $this->serviceContainer->addParameters(array(
         'widget_view.class' => $widgetType->getViewClass(),
         'widget_view.type'  => $widgetType,
-	      'widget_view.data'  => $widget
-	    ));
-	    
+        'widget_view.data'  => $widget
+      ));
+      
       $html = $this->serviceContainer->getService('widget_view')->render();
       
 //      ob_clean();
@@ -238,7 +253,7 @@ class dmFrontPageHelper
       }
       else
       {
-      	$html = '';
+        $html = '';
       }
     }
 
@@ -249,12 +264,12 @@ class dmFrontPageHelper
   {
     if(!empty($widget['css_class']))
     {
-    	$widgetWrappedClasses = explode(' ', $widget['css_class']);
-	    foreach($widgetWrappedClasses as $index => $class)
-	    {
-	      $widgetWrappedClasses[$index] = $class.'_wrap';
-	    }
-	    
+      $widgetWrappedClasses = explode(' ', $widget['css_class']);
+      foreach($widgetWrappedClasses as $index => $class)
+      {
+        $widgetWrappedClasses[$index] = $class.'_wrap';
+      }
+      
       $widgetWrapClass  = dmArray::toHtmlCssClasses(array('dm_widget', $widget['action'], implode(' ', $widgetWrappedClasses)));
       $widgetInnerClass = dmArray::toHtmlCssClasses(array('dm_widget_inner', in_array($widget['module'].'.'.$widget['action'], self::$innerCssClassWidgets) ? '' : $widget['css_class']));
     }

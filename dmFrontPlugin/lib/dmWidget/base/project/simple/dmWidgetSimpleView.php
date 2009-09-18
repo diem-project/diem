@@ -3,9 +3,9 @@
 class dmWidgetSimpleView extends dmWidgetProjectView
 {
 
-	public function getRequiredVars()
-	{
-		return array();
-	}
+  public function getRequiredVars()
+  {
+    return array();
+  }
 
 }

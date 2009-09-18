@@ -28,55 +28,55 @@ class dmInterfaceComponents extends dmFrontBaseComponents
 
   protected function addMenu()
   {
-  	$menu = array();
-  	
-  	if($this->getUser()->can('zone_add'))
-  	{
-	  	$menu[] =array(
-  	    'name' => 'Zone',
-  	    'menu' => array(
-  	      array(
-  	        'name' => 'Zone',
+    $menu = array();
+    
+    if($this->getUser()->can('zone_add'))
+    {
+      $menu[] =array(
+        'name' => 'Zone',
+        'menu' => array(
+          array(
+            'name' => 'Zone',
             'class' => 'zone_add move'
           )
         )
-	  	);
-  	}
-  	
-  	foreach($this->dmContext->getWidgetTypeManager()->getWidgetTypes() as $space => $widgetTypes)
-  	{
-  		if (empty($widgetTypes))
-  		{
-  			continue;
-  		}
-  		
-  		$spaceMenu = array();
+      );
+    }
+    
+    foreach($this->dmContext->getService('widget_type_manager')->getWidgetTypes() as $space => $widgetTypes)
+    {
+      if (empty($widgetTypes))
+      {
+        continue;
+      }
+      
+      $spaceMenu = array();
 
-  		foreach($widgetTypes as $key => $widgetType)
-  		{
-  			$spaceMenu[$key] = array(
-  			  'name' => $this->context->getI18n()->__($widgetType->getName()),
-  			  'class' => 'widget_add move',
-  			  'id' => sprintf('dmwa_%s_%s', $widgetType->getModule(), $widgetType->getAction())
-  			);
-  		}
-  		
-  		$spaceName = $space == 'main'
-  		? myConfig::get('site_name')
-  		: $this->context->getI18n()->__(dmString::humanize(str_replace('dmWidget', '', $space)));
+      foreach($widgetTypes as $key => $widgetType)
+      {
+        $spaceMenu[$key] = array(
+          'name' => $this->context->getI18n()->__($widgetType->getName()),
+          'class' => 'widget_add move',
+          'id' => sprintf('dmwa_%s_%s', $widgetType->getModule(), $widgetType->getAction())
+        );
+      }
+      
+      $spaceName = $space == 'main'
+      ? myConfig::get('site_name')
+      : $this->context->getI18n()->__(dmString::humanize(str_replace('dmWidget', '', $space)));
 
-  		$menu[$space] = array(
-  		  'name' => $spaceName,
-  		  'menu' => $spaceMenu
-  		);
-  	}
+      $menu[$space] = array(
+        'name' => $spaceName,
+        'menu' => $spaceMenu
+      );
+    }
 
-  	return array(
-  	  array(
-	      'name' => $this->context->getI18n()->__('Add'),
-  	    'class' => 'strong',
-	      'menu' => $menu
-  	  )
+    return array(
+      array(
+        'name' => $this->context->getI18n()->__('Add'),
+        'class' => 'strong',
+        'menu' => $menu
+      )
     );
   }
 

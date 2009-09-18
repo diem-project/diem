@@ -14,9 +14,9 @@ require_once dirname(__FILE__).'/../lib/dmPageGeneratorHelper.class.php';
 class dmPageActions extends autoDmPageActions
 {
 
-	public function executeViewTree(sfWebRequest $request)
-	{
+  public function executeViewTree(sfWebRequest $request)
+  {
     $this->tree = dmDb::table('DmPage')->getTree()->fetchTree();
-	}
+  }
 
 }

@@ -10,10 +10,10 @@ echo £('div.message',
     $form->renderGlobalErrors().
     £('ul',
       £('li.dm_form_element.clearfix',
-		    $form['username']->renderError().
-		    $form['username']->renderLabel(__('Username')).
-		    $form['username']->render(array('class' => 'hint'))
-		  ).
+        $form['username']->renderError().
+        $form['username']->renderLabel(__('Username')).
+        $form['username']->render(array('class' => 'hint'))
+      ).
       £('li.dm_form_element.clearfix',
         $form['password']->renderError().
         $form['password']->renderLabel(__('Password')).

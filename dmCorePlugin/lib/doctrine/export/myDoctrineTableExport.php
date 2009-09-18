@@ -2,5 +2,5 @@
 
 class myDoctrineTableExport extends dmDoctrineTableExport
 {
-	
+  
 }

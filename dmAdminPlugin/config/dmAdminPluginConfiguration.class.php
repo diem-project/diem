@@ -27,7 +27,7 @@ class dmAdminPluginConfiguration extends sfPluginConfiguration
 
   protected function enableModules()
   {
-  	sfConfig::set('sf_enabled_modules', array_unique(array_merge($this->getAvailableModules(), sfConfig::get('sf_enabled_modules', array()))));
+    sfConfig::set('sf_enabled_modules', array_unique(array_merge($this->getAvailableModules(), sfConfig::get('sf_enabled_modules', array()))));
   }
 
   protected function getAvailableModules()
@@ -39,12 +39,12 @@ class dmAdminPluginConfiguration extends sfPluginConfiguration
     }
     $modules = array_merge(self::$externalModules, $modules);
 
-  	return $modules;
+    return $modules;
   }
 
   protected function enableHelpers()
   {
-  	sfConfig::set('sf_standard_helpers', array_unique(array_merge(self::$helpers, sfConfig::get('sf_standard_helpers', array()))));
+    sfConfig::set('sf_standard_helpers', array_unique(array_merge(self::$helpers, sfConfig::get('sf_standard_helpers', array()))));
   }
 
   protected function loadConfiguration()
@@ -52,9 +52,9 @@ class dmAdminPluginConfiguration extends sfPluginConfiguration
     sfConfig::add(array(
       'sf_csrf_secret' => false,   // csrf is useless because all admin app is secured
       'sf_login_module' => 'dmAuth',
-	    'sf_login_action' => 'signin',
-	    'sf_secure_module' => 'dmAuth',
-	    'sf_secure_action' => 'secure'
+      'sf_login_action' => 'signin',
+      'sf_secure_module' => 'dmAuth',
+      'sf_secure_action' => 'secure'
     ));
   }
 

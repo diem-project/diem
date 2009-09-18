@@ -5,18 +5,18 @@ abstract class dmAssetCompressor
   protected
   $dispatcher,
   $filesystem,
-  $relativeUrlRoot,
+  $requestContext,
   $type,
   $assets,
   $processedAssets,
   $cacheKey,
   $webDir;
   
-  public function __construct(sfEventDispatcher $dispatcher, dmFilesystem $filesystem, $relativeUrlRoot, array $options = array())
+  public function __construct(sfEventDispatcher $dispatcher, dmFilesystem $filesystem, array $requestContext, array $options = array())
   {
     $this->dispatcher       = $dispatcher;
     $this->filesystem       = $filesystem;
-    $this->relativeUrlRoot  = $relativeUrlRoot;
+    $this->requestContext   = $requestContext;
     
     $this->initialize($options);
   }

@@ -3,19 +3,19 @@
 class dmAction
 {
 
-	protected
-	  $key,
-	  $params;
+  protected
+    $key,
+    $params;
 
-	public function __construct($key, $config)
-	{
+  public function __construct($key, $config)
+  {
     $this->key = $key;
 
     $this->params = $config;
 
     if (!isset($this->params['name']))
     {
-    	$this->params['name'] = dmString::humanize($key);
+      $this->params['name'] = dmString::humanize($key);
     }
 
     if (!isset($this->params['type']))
@@ -30,10 +30,10 @@ class dmAction
       }
       else
       {
-      	$this->params['type'] = 'simple';
+        $this->params['type'] = 'simple';
       }
     }
-	}
+  }
 
   public function getParam($key, $default = null)
   {
@@ -62,11 +62,11 @@ class dmAction
 
   public function getUnderscore()
   {
-  	return dmString::underscore($this->getKey());
+    return dmString::underscore($this->getKey());
   }
 
   public function __toString()
   {
-  	return $this->getKey();
+    return $this->getKey();
   }
 }

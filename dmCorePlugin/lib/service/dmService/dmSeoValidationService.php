@@ -2,25 +2,25 @@
 
 class dmSeoValidationService extends dmService
 {
-	protected
-	$attributes;
+  protected
+  $attributes;
 
-	protected static
-	$uniqueAttributes = array('slug', 'title', 'description');
+  protected static
+  $uniqueAttributes = array('slug', 'title', 'description');
 
   public function execute(array $attributes = array('slug'))
   {
-  	$timer = dmDebug::timerOrNull('dmSeoValidationService::execute');
+    $timer = dmDebug::timerOrNull('dmSeoValidationService::execute');
 
-  	$this->attributes = $attributes;
+    $this->attributes = $attributes;
 
-  	$this->checkAttributesExist();
+    $this->checkAttributesExist();
 
-  	$duplicated = $this->validateAttributes();
+    $duplicated = $this->validateAttributes();
 
-  	$timer && $timer->addTime();
+    $timer && $timer->addTime();
 
-  	return $duplicated;
+    return $duplicated;
   }
 
   protected function validateAttributes()
@@ -34,19 +34,19 @@ class dmSeoValidationService extends dmService
 
     foreach($allPages as $page)
     {
-    	foreach($this->attributes as $attribute)
-    	{
-    		$value = $page->get($attribute);
+      foreach($this->attributes as $attribute)
+      {
+        $value = $page->get($attribute);
 
-    		if (!isset($allValues[$attribute][$value]))
-    		{
-    			$allValues[$attribute][$value] = array($page->getId());
-    		}
-    		else
-    		{
-    		  $allValues[$attribute][$value][] = $page->getId();
-    		}
-    	}
+        if (!isset($allValues[$attribute][$value]))
+        {
+          $allValues[$attribute][$value] = array($page->getId());
+        }
+        else
+        {
+          $allValues[$attribute][$value][] = $page->getId();
+        }
+      }
     }
 
     /*
@@ -54,25 +54,25 @@ class dmSeoValidationService extends dmService
      */
     foreach($allValues as $attribute => $values)
     {
-    	foreach($values as $value => $pages)
-    	{
-    		if (count($pages) > 1)
-    		{
-    			$duplicated[$attribute][$value] = array();
-    			foreach($pages as $pageId)
-    			{
-    				$duplicated[$attribute][$value][] = $allPages[$pageId];
-    			}
-    		}
-    	}
+      foreach($values as $value => $pages)
+      {
+        if (count($pages) > 1)
+        {
+          $duplicated[$attribute][$value] = array();
+          foreach($pages as $pageId)
+          {
+            $duplicated[$attribute][$value][] = $allPages[$pageId];
+          }
+        }
+      }
     }
 
     foreach($duplicated as $attribute => $values)
     {
-    	if(!count($values))
-    	{
-    		unset($duplicated[$attribute]);
-    	}
+      if(!count($values))
+      {
+        unset($duplicated[$attribute]);
+      }
     }
 
     return $duplicated;
@@ -94,7 +94,7 @@ class dmSeoValidationService extends dmService
     $array = array();
     foreach($this->attributes as $attribute)
     {
-    	$array[$attribute] = array();
+      $array[$attribute] = array();
     }
     return $array;
   }

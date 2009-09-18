@@ -8,7 +8,7 @@ params: none
 
 [dm.context.service_container_loaded]
 fired by dmContext when its serviceContainer is ready
-params: sfServiceContainer the service container
+params: array('service_container' => sfServiceContainer instance )
 
 [dm.admin_menu.loaded]
 fired by dmAdminMenu when it has been loaded
@@ -31,3 +31,11 @@ value: array of javascripts => options
 [dm.theme.created]
 fired by dmTheme when it has finished creating its filesystem structure
 params: the dmTheme
+
+[dm.context.change_page]
+fired by dmFrontContext when current page has changed
+params: array('page' => DmPage instance)
+
+[dm.record.modification]
+fired by dmDoctrineRecord when it will be saved or deleted
+params: array()

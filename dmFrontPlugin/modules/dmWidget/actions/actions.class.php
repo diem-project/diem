@@ -13,14 +13,14 @@ class dmWidgetActions extends dmFrontBaseActions
       $widget = dmDb::table('DmWidget')->find($request->getParameter('widget_id'))
     );
 
-    if (!$widgetType = $this->getDmContext()->getWidgetTypeManager()->getWidgetTypeOrNull($widget))
+    if (!$widgetType = $this->dmContext->getService('widget_type_manager')->getWidgetTypeOrNull($widget))
     {
-    	return $this->renderText(sprintf('<p class="s16 s16_error">%s</p><div class="clearfix mt30"><a class="dm cancel close_dialog button mr10">%s</a><a class="dm delete button red" title="%s">%s</a></div>',
-    	  dm::getI18n()->__('The widget can not be rendered because its module does not exist anymore.'),
+      return $this->renderText(sprintf('<p class="s16 s16_error">%s</p><div class="clearfix mt30"><a class="dm cancel close_dialog button mr10">%s</a><a class="dm delete button red" title="%s">%s</a></div>',
+        dm::getI18n()->__('The widget can not be rendered because its module does not exist anymore.'),
         dm::getI18n()->__('Cancel'),
-    	  dm::getI18n()->__('Delete this widget'),
-    	  dm::getI18n()->__('Delete')
-    	));
+        dm::getI18n()->__('Delete this widget'),
+        dm::getI18n()->__('Delete')
+      ));
     }
 
     $formClass = $widgetType->getFormClass();
@@ -38,11 +38,11 @@ class dmWidgetActions extends dmFrontBaseActions
         
         if ($request->hasParameter('and_save'))
         {
-        	$widget->save();
-        	return $this->renderText('ok');
+          $widget->save();
+          return $this->renderText('ok');
         }
 
-        $helper = $this->getDmContext()->getPageHelper();
+        $helper = $this->dmContext->getService('page_helper');
 
         $form = new $formClass($widget);
         
@@ -52,7 +52,7 @@ class dmWidgetActions extends dmFrontBaseActions
           $this->renderEdit($widget, $form, $widgetType).
           '__DM_SPLIT__'.
           $helper->renderWidgetInner($widgetArray).
-		      '__DM_SPLIT__'.
+          '__DM_SPLIT__'.
           implode('__DM_SPLIT__', $helper->getWidgetContainerClasses($widgetArray))
         );
       }
@@ -80,7 +80,7 @@ class dmWidgetActions extends dmFrontBaseActions
       $widget = dmDb::table('DmWidget')->find($request->getParameter('widget_id'))
     );
 
-    $helper = $this->getDmContext()->getPageHelper();
+    $helper = $this->dmContext->getService('page_helper');
 
     $widgetArray = $widget->toArray();
     
@@ -141,7 +141,7 @@ class dmWidgetActions extends dmFrontBaseActions
       'Can not find widget action'
     );
 
-    $widgetType = $this->getDmContext()->getWidgetTypeManager()->getWidgetType($widgetModule, $widgetAction);
+    $widgetType = $this->dmContext->getService('widget_type_manager')->getWidgetType($widgetModule, $widgetAction);
 
     $formClass = $widgetType->getFormClass();
     $form = new $formClass($widgetType->getNewWidget());
@@ -153,7 +153,7 @@ class dmWidgetActions extends dmFrontBaseActions
       'values' => $form->getDefaults()
     ))->saveGet();
 
-    $helper = $this->getDmContext()->getPageHelper();
+    $helper = $this->dmContext->getService('page_helper');
 
     return $this->renderText($helper->renderWidget($widget->toArray(), true));
   }

@@ -15,7 +15,7 @@ class dmConsoleActions extends dmAdminBaseActions
 
   protected function getCommands()
   {
-  	return explode(' ', sfConfig::get('dm_console_commands', self::$defaultCommands));
+    return explode(' ', sfConfig::get('dm_console_commands', self::$defaultCommands));
   }
 
   protected function getAliases()

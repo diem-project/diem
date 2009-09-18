@@ -107,28 +107,28 @@ class dmHtml
     return $html;
   }
 
-	public static function addSpanLang($html, $langs = null)
-	{
+  public static function addSpanLang($html, $langs = null)
+  {
     $timer = aze::timer("dmsHtml::addSpanLang");
-		$langs = is_array($langs) ? $langs : DmsLangPeer::getLangs();
-		if (!empty($langs))
-		{
-			foreach($langs as $word => $lang)
-	    {
-		    if (stripos($html, $word) !== false)
-		    {
-		      self::$current_lang = $lang;
+    $langs = is_array($langs) ? $langs : DmsLangPeer::getLangs();
+    if (!empty($langs))
+    {
+      foreach($langs as $word => $lang)
+      {
+        if (stripos($html, $word) !== false)
+        {
+          self::$current_lang = $lang;
           $html = self::wrapWith(
             $word,
             '\'<span lang="\'.dmsHtml::$current_lang.\'">\'.$matches[2].\'</span>\'',
             $html
           );
-				}
-	    }
-		}
+        }
+      }
+    }
     $timer->addTime();
-		return $html;
-	}
+    return $html;
+  }
 
   public static function addAbbr($html, $abbrs = null)
   {

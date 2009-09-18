@@ -2,22 +2,22 @@
 
 class dmAdminUser extends dmUser
 {
+  protected
+  $theme;
 
   /*
    * @return dmTheme the current user theme
    */
   public function getTheme()
   {
-    if($this->hasCache('theme'))
-    {
-      return $this->getCache('theme');
-    }
+    return $this->theme;
+  }
+  
+  public function setTheme(dmTheme $theme)
+  {
+    $this->theme = $theme;
     
-    $this->serviceContainer->addParameters(array(
-      'theme.options' => array('key' => 'diem_admin', 'path' => 'themeAdmin', 'name' => 'Admin Theme', 'enabled' => true)
-    ));
-    
-    return $this->setCache('theme', $this->serviceContainer->getService('theme'));
+    $this->dispatcher->notify(new sfEvent($this, 'user.change_theme', array('theme' => $theme)));
   }
 
   public function getAppliedSearchOnModule($module)

@@ -3,22 +3,22 @@
 class dmEventConnector
 {
 
-	protected
-	$dispatcher;
+  protected
+  $dispatcher;
 
-	public function __construct(sfEventDispatcher $dispatcher)
-	{
-		$this->dispatcher = $dispatcher;
-	}
+  public function __construct(sfEventDispatcher $dispatcher)
+  {
+    $this->dispatcher = $dispatcher;
+  }
 
-	public function connectEvents()
-	{
-		// sent when sfContext is initialized
+  public function connectEvents()
+  {
+    // sent when sfContext is initialized
     $this->dispatcher->connect('context.load_factories', array($this, 'contextLoaded'));
     
-		$this->connectLoggingEvents();
-	}
-	
+    $this->connectLoggingEvents();
+  }
+  
   /*
    * sfContext is now available
    */
@@ -27,8 +27,8 @@ class dmEventConnector
     sfConfig::set('dm_debug', $event->getSubject()->getRequest()->getParameter('dm_debug', false));
   }
 
-	protected function connectLoggingEvents()
-	{
+  protected function connectLoggingEvents()
+  {
     if(!dmConfig::isCli())
     {
       /*
@@ -44,7 +44,7 @@ class dmEventConnector
        */
       $this->dispatcher->connect('dm.service.alert', array($this, 'dispatchEventToFlashAlert'));
     }
-	}
+  }
 
   public function dispatchEventToFlashInfo(sfEvent $event)
   {

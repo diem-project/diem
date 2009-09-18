@@ -12,48 +12,48 @@
  */
 abstract class PluginDmLayout extends BaseDmLayout
 {
-	protected static
-	$areaTypes = array('top', 'bottom', 'left', 'right');
+  protected static
+  $areaTypes = array('top', 'bottom', 'left', 'right');
 
-	public static function getAreaTypes()
-	{
-		return self::$areaTypes;
-	}
+  public static function getAreaTypes()
+  {
+    return self::$areaTypes;
+  }
 
-	public function getArea($type)
-	{
-		if (!in_array($type, self::getAreaTypes()))
-		{
-			throw new dmException(sprintf('%s is not a valid area type. These are : %s', $type, implode(', ', self::getAreaTypes())));
-		}
+  public function getArea($type)
+  {
+    if (!in_array($type, self::getAreaTypes()))
+    {
+      throw new dmException(sprintf('%s is not a valid area type. These are : %s', $type, implode(', ', self::getAreaTypes())));
+    }
 
-		foreach($this->Areas as $area)
-		{
-			if($area->get('type') == $type)
-			{
-				return $area;
-			}
-		}
+    foreach($this->Areas as $area)
+    {
+      if($area->get('type') == $type)
+      {
+        return $area;
+      }
+    }
 
     return null;
-	}
+  }
 
-	public function save(Doctrine_Connection $conn = null)
-	{
-		$return = parent::save($conn);
+  public function save(Doctrine_Connection $conn = null)
+  {
+    $return = parent::save($conn);
 
     foreach(self::getAreaTypes() as $type)
     {
       if (!$this->getArea($type))
       {
-      	$this->Areas[] = dmDb::create('DmArea', array(
-      	  'dm_layout_id' => $this->id,
-      	  'type' => $type
-      	))->saveGet();
+        $this->Areas[] = dmDb::create('DmArea', array(
+          'dm_layout_id' => $this->id,
+          'type' => $type
+        ))->saveGet();
       }
     }
 
     return $return;
-	}
+  }
 
 }

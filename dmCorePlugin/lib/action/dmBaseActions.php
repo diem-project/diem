@@ -11,24 +11,24 @@ abstract class dmBaseActions extends sfActions
     
     $this->dmContext = dmContext::getInstance();
   }
-	
+  
   protected function getDmContext()
   {
     return $this->dmContext;
   }
   
-	protected function forwardSecureUnless($condition, $message = null)
-	{
+  protected function forwardSecureUnless($condition, $message = null)
+  {
     if (!$condition)
     {
-    	return $this->forwardSecure($message);
+      return $this->forwardSecure($message);
     }
-	}
+  }
 
-	protected function forwardSecure()
-	{
-		return $this->forward(sfConfig::get('sf_secure_module'), sfConfig::get('sf_secure_action'));
-	}
+  protected function forwardSecure()
+  {
+    return $this->forward(sfConfig::get('sf_secure_module'), sfConfig::get('sf_secure_action'));
+  }
 
   
   protected function redirectBack()
@@ -43,29 +43,29 @@ abstract class dmBaseActions extends sfActions
     return $this->redirect($refererUrl);
   }
   
-	/*
-	 * To download a file using its absolute path or raw data
-	 */
-	protected function download($pathOrData, array $options = array())
-	{
-		if (is_readable($pathOrData))
-		{
+  /*
+   * To download a file using its absolute path or raw data
+   */
+  protected function download($pathOrData, array $options = array())
+  {
+    if (is_readable($pathOrData))
+    {
       $data = file_get_contents($pathOrData);
 
-	    if(empty($options['fileName']))
-	    {
-	      $options['fileName'] = dmProject::getKey().'-'.basename($path);
-	    }
-		}
-		else
-		{
-			$data = $pathOrData;
+      if(empty($options['fileName']))
+      {
+        $options['fileName'] = dmProject::getKey().'-'.basename($path);
+      }
+    }
+    else
+    {
+      $data = $pathOrData;
 
       if(empty($options['fileName']))
       {
         $options['fileName'] = dmProject::getKey().'-'.dmString::random(8);
       }
-		}
+    }
 
     //Gather relevent info about file
     $fileLenght = strlen($data);
@@ -87,6 +87,6 @@ abstract class dmBaseActions extends sfActions
     header("Content-Length: ".$fileLenght);
     print $data;
     exit;
-	}
+  }
 
 }

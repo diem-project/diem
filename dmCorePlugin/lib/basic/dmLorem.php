@@ -45,12 +45,12 @@ class dmLorem
 
   protected static function getLoremText()
   {
-  	if (null === self::$loremText)
-  	{
-  		self::$loremText = file(dmOs::join(sfConfig::get("dm_core_dir"), "data/lorem/big"));
-  	}
+    if (null === self::$loremText)
+    {
+      self::$loremText = file(dmOs::join(sfConfig::get("dm_core_dir"), "data/lorem/big"));
+    }
 
-  	return self::$loremText;
+    return self::$loremText;
   }
 
   protected static function getMarkdownLoremText()

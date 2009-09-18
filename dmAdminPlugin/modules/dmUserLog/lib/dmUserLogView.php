@@ -2,22 +2,22 @@
 
 class dmUserLogView
 {
-	protected
-	$log,
-	$rows = array(
-	  'time'     => 'renderTime',
-	  'user'     => 'renderUser',
-	  'browser'  => 'renderBrowser',
-	  'location' => 'renderLocation',
-	  'app'      => 'renderApp'
-	),
-	$dateFormat;
-	
-	public function __construct(dmUserLog $log, $culture)
-	{
-		$this->log = $log;
-		$this->dateFormat = new sfDateFormat($culture);
-	}
+  protected
+  $log,
+  $rows = array(
+    'time'     => 'renderTime',
+    'user'     => 'renderUser',
+    'browser'  => 'renderBrowser',
+    'location' => 'renderLocation',
+    'app'      => 'renderApp'
+  ),
+  $dateFormat;
+  
+  public function __construct(dmUserLog $log, $culture)
+  {
+    $this->log = $log;
+    $this->dateFormat = new sfDateFormat($culture);
+  }
   
   public function render($max = 20)
   {
@@ -34,48 +34,48 @@ class dmUserLogView
     '<tbody></tbody>'.
     $this->renderFoot();
   }
-	
-	public function renderHead()
-	{
-		$html = '<table><thead><tr>';
-		
-		foreach($this->rows as $name => $method)
-		{
-			$html .= sprintf('<th>%s</th>', $name);
-		}
-		
-		$html .= '</tr></thead>';
-		
-		return $html;
-	}
-	
-	public function renderBody($max = 20)
-	{
-		$html = '';
-		
-		foreach($this->log->getEntries($max) as $index => $entry)
-		{
-			$html .= sprintf('<tr class="%s">', $index%2 ? 'odd' : 'even');
-			
-			foreach($this->rows as $name => $method)
-			{
-				$html .= sprintf('<td>%s</td>', $this->$method($entry));
-			}
-			
-			$html .= '</tr>';
-		}
-		
-		return $html;
-	}
-	
-	public function renderFoot()
-	{
-		return '</table>';
-	}
-	
-	/*
-	 * Row renderers
-	 */
+  
+  public function renderHead()
+  {
+    $html = '<table><thead><tr>';
+    
+    foreach($this->rows as $name => $method)
+    {
+      $html .= sprintf('<th>%s</th>', $name);
+    }
+    
+    $html .= '</tr></thead>';
+    
+    return $html;
+  }
+  
+  public function renderBody($max = 20)
+  {
+    $html = '';
+    
+    foreach($this->log->getEntries($max) as $index => $entry)
+    {
+      $html .= sprintf('<tr class="%s">', $index%2 ? 'odd' : 'even');
+      
+      foreach($this->rows as $name => $method)
+      {
+        $html .= sprintf('<td>%s</td>', $this->$method($entry));
+      }
+      
+      $html .= '</tr>';
+    }
+    
+    return $html;
+  }
+  
+  public function renderFoot()
+  {
+    return '</table>';
+  }
+  
+  /*
+   * Row renderers
+   */
   
   protected function renderUser(dmUserLogEntry $entry)
   {
@@ -88,7 +88,7 @@ class dmUserLogView
   
   protected function renderBrowser(dmUserLogEntry $entry)
   {
-  	$browser = $entry->get('browser');
+    $browser = $entry->get('browser');
     return sprintf('<div class="clearfix"><div class="browser browser_block %s fleft"></div><strong class="mr10">%s %s</strong><span class="light">%s</span>',
       $browser->getName(),
       ucfirst($browser->getName()),
@@ -111,20 +111,20 @@ class dmUserLogView
   
   protected function renderLink(dmUserLogEntry $entry)
   {
-  	$uri = ltrim($entry->get('uri'), '/');
-  	$text = $uri ? $uri : $entry->get('app').' home';
-  	
-  	return dmAdminLinkTag::build('app:'.$entry->get('app').'/'.$uri)->text($text);
+    $uri = ltrim($entry->get('uri'), '/');
+    $text = $uri ? $uri : $entry->get('app').' home';
+    
+    return dmAdminLinkTag::build('app:'.$entry->get('app').'/'.$uri)->text($text);
   }
   
   protected function renderTime(dmUserLogEntry $entry)
   {
-  	return str_replace(' CEST', '', $this->dateFormat->format($entry->get('time')));
-//  	return date('Y/m/d H:m:s', $entry->get('time'));
+    return str_replace(' CEST', '', $this->dateFormat->format($entry->get('time')));
+//    return date('Y/m/d H:m:s', $entry->get('time'));
   }
   
   protected function renderApp(dmUserLogEntry $entry)
   {
-  	return $entry->get('app');
+    return $entry->get('app');
   }
 }

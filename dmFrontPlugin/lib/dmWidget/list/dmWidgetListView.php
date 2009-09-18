@@ -11,13 +11,13 @@ class dmWidgetListView extends dmWidgetProjectModelView
 
     foreach($this->dmAction->getParam('filters', array()) as $filter)
     {
-    	if ($filterModule = $this->dmModule->getAncestor($filter))
-    	{
-		    if (!$this->allowFilterAutoRecordId($filterModule))
-		    {
-		      $this->addRequiredVar($filter);
-		    }
-    	}
+      if ($filterModule = $this->dmModule->getAncestor($filter))
+      {
+        if (!$this->allowFilterAutoRecordId($filterModule))
+        {
+          $this->addRequiredVar($filter);
+        }
+      }
     }
   }
 
@@ -32,11 +32,11 @@ class dmWidgetListView extends dmWidgetProjectModelView
     $filters = array();
     foreach($viewVars as $key => $val)
     {
-    	if (strncmp($key, 'filter', 6) === 0)
-    	{
-    		$filters[dmString::modulize(preg_replace('|^filter(.+)$|', '$1', $key))] = $val;
-    		unset($viewVars[$key]);
-    	}
+      if (strncmp($key, 'filter', 6) === 0)
+      {
+        $filters[dmString::modulize(preg_replace('|^filter(.+)$|', '$1', $key))] = $val;
+        unset($viewVars[$key]);
+      }
     }
 
     $viewVars['filters'] = $filters;

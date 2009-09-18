@@ -4,8 +4,8 @@
 class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
 {
 
-	protected
-	$module = false;
+  protected
+  $module = false;
 
   /**
    * Initializes the current sfGenerator instance.
@@ -106,12 +106,12 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
 
   public function getModule()
   {
-  	return dmModuleManager::getModuleByModel($this->table->getOption('name'));
+    return dmModuleManager::getModuleByModel($this->table->getOption('name'));
   }
 
   public function getMediaRelations()
   {
-  	return $this->getModule()->getTable()->getRelationHolder()->getLocalMedias();
+    return $this->getModule()->getTable()->getRelationHolder()->getLocalMedias();
   }
 
   /**
@@ -122,7 +122,7 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
    */
   public function getWidgetClassForColumn($column)
   {
-  	switch ($column->getDoctrineType())
+    switch ($column->getDoctrineType())
     {
       case 'string':
         $widgetSubclass = null === $column->getLength() || $column->getLength() > 255 ? 'Textarea' : 'InputText';

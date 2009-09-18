@@ -20,12 +20,12 @@
  */
 class sfImageReflectionGD extends sfImageTransformAbstract
 {
-	 /**
+   /**
    * The reflection height for the image
    */
   protected $reflection_height = 20;
 
-	 /**
+   /**
    * The starting transparency
    */
   protected $start_transparency = 30;

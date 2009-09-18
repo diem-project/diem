@@ -19,23 +19,23 @@ abstract class PluginDmArea extends BaseDmArea
     return dm::getUser()->can('zone_add');
   }
 
-	public function __toString()
-	{
-		return sprintf('#%d %s', $this->get('id'), $this->get('type'));
-	}
-	
-	public function save(Doctrine_Connection $conn = null)
-	{
-		$wasNew = $this->isNew();
-		
-		$return = parent::save($conn);
-		
-		if ($wasNew)
-		{
-			dmDb::create('DmZone', array(
-			  'dm_area_id' => $this->id
-			))->save();
-		}
-	}
+  public function __toString()
+  {
+    return sprintf('#%d %s', $this->get('id'), $this->get('type'));
+  }
+  
+  public function save(Doctrine_Connection $conn = null)
+  {
+    $wasNew = $this->isNew();
+    
+    $return = parent::save($conn);
+    
+    if ($wasNew)
+    {
+      dmDb::create('DmZone', array(
+        'dm_area_id' => $this->id
+      ))->save();
+    }
+  }
 
 }

@@ -2,27 +2,27 @@
 
 class dmTableRelationHolder
 {
-	protected
-	  $table,
-	  $relations,
-	  $associationRelations,
+  protected
+    $table,
+    $relations,
+    $associationRelations,
     $foreignRelations,
     $localRelations;
 
-	public function __construct(myDoctrineTable $table)
-	{
-		$this->table = $table;
-	}
+  public function __construct(myDoctrineTable $table)
+  {
+    $this->table = $table;
+  }
 
-	public function getAll()
-	{
-		if (null !== $this->relations)
-		{
-			return $this->relations;
-		}
+  public function getAll()
+  {
+    if (null !== $this->relations)
+    {
+      return $this->relations;
+    }
 
-		return $this->relations = $this->table->getRelations();
-	}
+    return $this->relations = $this->table->getRelations();
+  }
 
   public function get($alias)
   {
@@ -58,10 +58,10 @@ class dmTableRelationHolder
 
     foreach($this->getAll() as $alias => $relation)
     {
-    	if ($alias === 'Translation')
-    	{
-    		continue;
-    	}
+      if ($alias === 'Translation')
+      {
+        continue;
+      }
 
       if ($relation instanceof Doctrine_Relation_ForeignKey)
       {
@@ -124,7 +124,7 @@ class dmTableRelationHolder
    */
   public function getLocalMedias()
   {
-  	$relations = array();
+    $relations = array();
 
     foreach($this->getLocals() as $alias => $relation)
     {

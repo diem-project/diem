@@ -9,7 +9,7 @@ class dmDoctrineBuildModelTask extends sfDoctrineBuildModelTask
    */
   protected function configure()
   {
-  	parent::configure();
+    parent::configure();
 
     $this->aliases = array();
     $this->namespace = 'dm';
@@ -39,11 +39,11 @@ class dmDoctrineBuildModelTask extends sfDoctrineBuildModelTask
       
       if (strpos($path, dm::getDir()) === 0)
       {
-      	$diemPlugins[$plugin] = $path;
+        $diemPlugins[$plugin] = $path;
       }
       else
       {
-      	$projectPlugins[$plugin] = $path;
+        $projectPlugins[$plugin] = $path;
       }
     }
     
@@ -63,7 +63,7 @@ class dmDoctrineBuildModelTask extends sfDoctrineBuildModelTask
       Doctrine_Lib::makeDirectories($tmpPath);
     }
     
-  	foreach ($plugins as $plugin => $path)
+    foreach ($plugins as $plugin => $path)
     {
       $this->logSection('doctrine', sprintf('%s in %s', $plugin, $packagesPath));
       $schemas = sfFinder::type('file')->name('*.yml')->in($path.'/config/doctrine');

@@ -7,10 +7,10 @@ echo £('div.form',
   $form->open('.dm_form.list.little').
 
   £('ul.dm_form_elements',
-	  $form['parent_id']->renderRow().
-	  $form['name']->renderRow().
-	  $form['slug']->renderRow().
-	  $form['dm_layout_id']->renderRow()
+    $form['parent_id']->renderRow().
+    $form['name']->renderRow().
+    $form['slug']->renderRow().
+    $form['dm_layout_id']->renderRow()
   ).
   sprintf(
       '<div class="actions">

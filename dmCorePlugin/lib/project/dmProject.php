@@ -125,7 +125,7 @@ class dmProject
   
   public static function getRootDir()
   {
-  	return sfConfig::get('sf_root_dir');
+    return sfConfig::get('sf_root_dir');
   }
   
   /*
@@ -152,7 +152,7 @@ class dmProject
     }
     else
     {
-    	$path = dmOs::join($path);
+      $path = dmOs::join($path);
     }
     
     return $path;
@@ -165,6 +165,6 @@ class dmProject
   
   public static function appExists($application)
   {
-  	return file_exists(self::rootify('apps/'.$application.'/config/'.$application.'Configuration.class.php'));
+    return file_exists(self::rootify('apps/'.$application.'/config/'.$application.'Configuration.class.php'));
   }
 }

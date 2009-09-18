@@ -7,7 +7,7 @@ class dmExportProjectTask extends dmServiceTask
    */
   protected function configure()
   {
-  	parent::configure();
+    parent::configure();
 
     $this->addOptions(array(
       new sfCommandOption('with-uploads', null, sfCommandOption::PARAMETER_NONE, 'Include uploads dir')
@@ -25,7 +25,7 @@ class dmExportProjectTask extends dmServiceTask
    */
   protected function execute($arguments = array(), $options = array())
   {
-  	return $this->executeService("dmExportProject", $options);
+    return $this->executeService("dmExportProject", $options);
   }
 
 }

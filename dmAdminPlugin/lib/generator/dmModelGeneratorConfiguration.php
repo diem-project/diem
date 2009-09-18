@@ -174,27 +174,27 @@ abstract class dmModelGeneratorConfiguration extends sfModelGeneratorConfigurati
     $f = array();
     foreach ($fields as $field)
     {
-    	if (isset($this->configuration[$context]['fields'][$field]))
-    	{
+      if (isset($this->configuration[$context]['fields'][$field]))
+      {
         $f[$field] = $this->configuration[$context]['fields'][$field];
-    	}
-    	/*
-    	 * Diem
-    	 * If field is not found,
-    	 * assume that it matches a model's method
-    	 */
-    	else
-    	{
-    		$f[$field] = new dmModelGeneratorConfigurationField($field, array(
-    		  'is_link'      => false,
+      }
+      /*
+       * Diem
+       * If field is not found,
+       * assume that it matches a model's method
+       */
+      else
+      {
+        $f[$field] = new dmModelGeneratorConfigurationField($field, array(
+          'is_link'      => false,
           'is_real'      => false,
           'is_partial'   => false,
           'is_component' => false,
           'type'         => 'Text',
           'markdown'     => false,
           'label'        => $field)
-    		);
-    	}
+        );
+      }
     }
 
     return $f;

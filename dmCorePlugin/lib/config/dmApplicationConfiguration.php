@@ -10,12 +10,12 @@
  */
 abstract class dmApplicationConfiguration extends sfApplicationConfiguration
 {
-	/*
-	 * Wich dmPlugins are usefull for this application ?
-	 * @returns array plugin names
-	 */
-	abstract protected function getDmPlugins();
-	
+  /*
+   * Wich dmPlugins are usefull for this application ?
+   * @returns array plugin names
+   */
+  abstract protected function getDmPlugins();
+  
   /**
    * @see sfProjectConfiguration
    */
@@ -35,19 +35,19 @@ abstract class dmApplicationConfiguration extends sfApplicationConfiguration
      */
     if ($this->isDebug())
     {
-    	sfAutoloadAgain::getInstance()->unregister();
+      sfAutoloadAgain::getInstance()->unregister();
     }
   }
 
   public function setup()
   {
-  	parent::setup();
+    parent::setup();
 
     $dmPlugins = $this->getDmPlugins();
     
     if (isset($dmPlugins['dmFrontPlugin']) && isset($dmPlugins['dmAdminPlugin']))
     {
-    	throw new Exception('Can not include both dmFrontPlugin and dmAdminPlugin');
+      throw new Exception('Can not include both dmFrontPlugin and dmAdminPlugin');
     }
 
     foreach($dmPlugins as $dmPlugin)

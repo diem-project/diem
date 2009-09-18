@@ -24,32 +24,32 @@ $browser->get('/?dm_debug=1');
 
 foreach(dmDb::table('DmPage')->findAll() as $page)
 {
-	$microtime = microtime(true);
-	$memoryUsed = memory_get_usage();
+  $microtime = microtime(true);
+  $memoryUsed = memory_get_usage();
 
-	$browser->
-	  get('/'.$page->slug.'?dm_debug=1')->
-	  with('response')->begin()->
-	    isStatusCode(200)->
-	  end()
-	;
-	 
-	$time = sprintf('%01.3f', 1000 * (microtime(true) - $microtime));
-	$mem = sprintf('%01.3f', (memory_get_usage()-$memoryUsed)/1024);
-	 
-	$browser->info(round($time).' ms | '.round($mem).' Ko');
+  $browser->
+    get('/'.$page->slug.'?dm_debug=1')->
+    with('response')->begin()->
+      isStatusCode(200)->
+    end()
+  ;
+   
+  $time = sprintf('%01.3f', 1000 * (microtime(true) - $microtime));
+  $mem = sprintf('%01.3f', (memory_get_usage()-$memoryUsed)/1024);
+   
+  $browser->info(round($time).' ms | '.round($mem).' Ko');
 
-	if ($time > $maxTime[1])
-	{
-		$maxTime = array($page->slug, $time);
-	}
-	if ($mem > $maxMem[1])
-	{
-		$maxMem = array($page->slug, $mem);
-	}
-	
-	$totalTime += $time;
-	$totalMem += $mem;
+  if ($time > $maxTime[1])
+  {
+    $maxTime = array($page->slug, $time);
+  }
+  if ($mem > $maxMem[1])
+  {
+    $maxMem = array($page->slug, $mem);
+  }
+  
+  $totalTime += $time;
+  $totalMem += $mem;
 }
 
 $averageTime = $totalTime / $nbPages;

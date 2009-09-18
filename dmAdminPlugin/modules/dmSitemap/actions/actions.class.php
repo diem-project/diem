@@ -5,7 +5,7 @@ class dmSitemapActions extends dmAdminBaseActions
   
   public function preExecute()
   {
-    $this->sitemap = $this->getDmContext()->getSitemap();
+    $this->sitemap = $this->getDmContext()->getService('sitemap');
     
     $this->sitemap->setBaseUrl($this->getRequest()->getAbsoluteUrlRoot());
   }
@@ -15,7 +15,7 @@ class dmSitemapActions extends dmAdminBaseActions
     if ($this->sitemap->fileExists())
     {
       $this->exists =     true;
-    	$this->xml =        $this->sitemap->getFileContent();
+      $this->xml =        $this->sitemap->getFileContent();
       $this->updatedAt =  $this->sitemap->getUpdatedAt();
       $this->nbLinks =    $this->sitemap->countUrls();
       $this->size =       dmOs::humanizeSize($this->sitemap->getFileSize());
@@ -31,17 +31,17 @@ class dmSitemapActions extends dmAdminBaseActions
   {
     try
     {
-    	$this->sitemap->generate($this->getUser()->getCulture());
-    	$this->getUser()->logInfo('The sitemap has been successfully generated');
+      $this->sitemap->generate($this->getUser()->getCulture());
+      $this->getUser()->logInfo('The sitemap has been successfully generated');
     }
     catch(Exception $e)
     {
-    	$this->getUser()->logAlert('The sitemap can not be generated');
-    	
-    	if(sfConfig::get('sf_debug'))
-    	{
-    		throw $e;
-    	}
+      $this->getUser()->logAlert('The sitemap can not be generated');
+      
+      if(sfConfig::get('sf_debug'))
+      {
+        throw $e;
+      }
     }
     
     return $this->redirect('@dm_sitemap');

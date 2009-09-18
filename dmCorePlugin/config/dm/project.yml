@@ -64,9 +64,6 @@ default:
     
   backup:                               # keep a copy of files modified by Dm code editors
     enabled:              true          # (RECOMMENDED) enable backup
-
-  service:                              # Dependency Injection Container configuration
-    container_class:      dmServiceContainer # The service container class
   
   web_debug:                            # web debug panel configuration
     only_html_response:   true          # will skip web debug panel display on non html response

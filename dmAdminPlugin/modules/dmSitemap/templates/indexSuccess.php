@@ -14,23 +14,23 @@ echo £o('div.dm_box_inner');
 
 if ($exists)
 {
-	echo £('div.clearfix.mb10',
-		definition_list(array(
-		  'Position' => £link($webPath),
-		  'Urls' => $nbLinks,
-		  'Size' => $size,
-		  'Updated at' => format_date($updatedAt)
-		), '.clearfix.dm_little_dl.fleft.mr20').
-		$form
-	);
-	
-	echo £('pre', array('style' => 'background: #fff; padding: 10px; border: 1px solid #ddd;'), htmlentities($xml));
+  echo £('div.clearfix.mb10',
+    definition_list(array(
+      'Position' => £link($webPath),
+      'Urls' => $nbLinks,
+      'Size' => $size,
+      'Updated at' => format_date($updatedAt)
+    ), '.clearfix.dm_little_dl.fleft.mr20').
+    $form
+  );
+  
+  echo £('pre', array('style' => 'background: #fff; padding: 10px; border: 1px solid #ddd;'), htmlentities($xml));
 }
 else
 {
-	echo £('p', __('There is currently no sitemap'));
-	
-	echo $form;
+  echo £('p', __('There is currently no sitemap'));
+  
+  echo $form;
 }
 
 echo £c('div');

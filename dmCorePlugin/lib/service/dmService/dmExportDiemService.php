@@ -5,14 +5,14 @@ class dmExportDiemService extends dmService
 
   public function execute()
   {
-  	$tarName = sprintf('diem_%s_%s.tgz',
-  	  sfConfig::get("dm_version"),
-  	  date("y-m-d_H-i-s")
-  	);
-  	$exportFile = dmOs::join('cache/'.$tarName);
-  	$exclude = array(
+    $tarName = sprintf('diem_%s_%s.tgz',
+      sfConfig::get("dm_version"),
+      date("y-m-d_H-i-s")
+    );
+    $exportFile = dmOs::join('cache/'.$tarName);
+    $exclude = array(
       '.svn',
-  	  '.settings'
+      '.settings'
     );
     
     $this->filesystem->exec('pwd');
@@ -32,7 +32,7 @@ class dmExportDiemService extends dmService
 
     if (!$this->filesystem->exec($command))
     {
-    	$this->alert($this->filesystem->getLastExec('output'));
+      $this->alert($this->filesystem->getLastExec('output'));
     }
 
 //    $this->log('Diem succesfully saved in '.$exportFile);
@@ -46,10 +46,10 @@ class dmExportDiemService extends dmService
 
       $this->log($command);
 
-	    if (!$this->filesystem->exec($command))
-	    {
-	      $this->alert($this->filesystem->getLastExec('output'));
-	    }
+      if (!$this->filesystem->exec($command))
+      {
+        $this->alert($this->filesystem->getLastExec('output'));
+      }
     }
   }
 

@@ -16,7 +16,7 @@ class dmDoctrineFormFilterGenerator extends sfDoctrineFormFilterGenerator
       case 'date':
       case 'datetime':
       case 'timestamp':
-      	$widget = 'new sfWidgetFormInputText(array(), array("class" => "datepicker_me"))';
+        $widget = 'new sfWidgetFormInputText(array(), array("class" => "datepicker_me"))';
         $options[] = "'from_date' => $widget, 'to_date' => $widget";
         $options[] = $withEmpty;
         break;

@@ -2,10 +2,10 @@
 
 class dmLoremizeService extends dmService
 {
-	const DEFAULT_NB = 10;
+  const DEFAULT_NB = 10;
 
-	public function execute()
-	{
+  public function execute()
+  {
     $this->log("dmLoremize::execute");
 
     $timer = dmDebug::timerOrNull('dmLoremize::execute');

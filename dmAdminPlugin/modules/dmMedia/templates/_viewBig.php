@@ -2,7 +2,7 @@
 
 if (!$object || !$object->id)
 {
-	return;
+  return;
 }
 
 use_helper('Date', 'DmMedia');

@@ -2,14 +2,14 @@
 
 abstract class dmWebResponse extends sfWebResponse
 {
-	
-	protected
-	$assetAliases,
-	$cdnConfig,
-	$javascriptConfig,
-	$culture,
-	$theme;
-	
+  
+  protected
+  $assetAliases,
+  $cdnConfig,
+  $javascriptConfig,
+  $culture,
+  $theme;
+  
   public function initialize(sfEventDispatcher $dispatcher, $options = array())
   {
     parent::initialize($dispatcher, $options);
@@ -86,18 +86,18 @@ abstract class dmWebResponse extends sfWebResponse
   
   public function getJavascriptConfig()
   {
-  	return $this->javascriptConfig;
+    return $this->javascriptConfig;
   }
   
   public function addJavascriptConfig($key, $value)
   {
-  	return $this->javascriptConfig[$key] = $value;
+    return $this->javascriptConfig[$key] = $value;
   }
   
-	public function isHtml()
-	{
-	  return strpos($this->getContentType(), 'text/html') === 0;
-	}
+  public function isHtml()
+  {
+    return strpos($this->getContentType(), 'text/html') === 0;
+  }
 
   protected function calculateAssetPath($type, $asset)
   {
@@ -107,14 +107,14 @@ abstract class dmWebResponse extends sfWebResponse
     }
     else
     {
-    	if($this->cdnConfig[$type]['enabled'] && isset($this->cdnConfig[$type][$asset]))
-    	{
-    		$path = $this->cdnConfig[$type][$asset];
-    	}
-    	elseif(isset($this->assetAliases[$type.'.'.$asset]))
-    	{
-    		$path = $this->assetAliases[$type.'.'.$asset];
-    	}
+      if($this->cdnConfig[$type]['enabled'] && isset($this->cdnConfig[$type][$asset]))
+      {
+        $path = $this->cdnConfig[$type][$asset];
+      }
+      elseif(isset($this->assetAliases[$type.'.'.$asset]))
+      {
+        $path = $this->assetAliases[$type.'.'.$asset];
+      }
       elseif($type === 'css')
       {
         $path = $this->theme->getWebPath('css/'.$asset.'.css');
@@ -126,7 +126,7 @@ abstract class dmWebResponse extends sfWebResponse
       
       if (strpos($path, '%culture%') !== false)
       {
-      	$path = str_replace('%culture%', $this->culture, $path);
+        $path = str_replace('%culture%', $this->culture, $path);
       }
     }
     

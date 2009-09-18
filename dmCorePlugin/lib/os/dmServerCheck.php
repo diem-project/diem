@@ -2,19 +2,19 @@
 
 class dmServerCheck
 {
-	protected $checks;
+  protected $checks;
 
-	const WARNING = 1;
-	const ERROR = 2;
+  const WARNING = 1;
+  const ERROR = 2;
 
-	public function __construct()
-	{
-		$this->checks = $this->createChecks();
-	}
-	
-	protected function createChecks()
-	{
-		return array(
+  public function __construct()
+  {
+    $this->checks = $this->createChecks();
+  }
+  
+  protected function createChecks()
+  {
+    return array(
       'server' => array(
     new dmServerCheckUnit('unix', DIRECTORY_SEPARATOR == '/', true, self::ERROR)
     ),
@@ -60,209 +60,209 @@ class dmServerCheck
     new dmServerCheckUnit('tidy', extension_loaded('tidy'), true)
     )
     );
-	}
+  }
 
-	public function getChecks()
-	{
-		return $this->checks;
-	}
+  public function getChecks()
+  {
+    return $this->checks;
+  }
 
-	public function render()
-	{
-		return $this->renderHead().
-		$this->renderContent().
-		$this->renderFoot();
-	}
+  public function render()
+  {
+    return $this->renderHead().
+    $this->renderContent().
+    $this->renderFoot();
+  }
 
-	public function renderContent()
-	{
-		return
-		sprintf('<h1>Diem %s System Check</h1>', sfConfig::get('dm_version')).
-		'<div class="clearfix">'.
-		sprintf('<div class="half">%s%s%s%s</div>',
-		$this->renderTable('server'),
-		$this->renderTable('php config'),
-		$this->renderTable('symfony'),
-		$this->renderSymfonyCheck()
-		).
-		sprintf('<div class="half">%s</div>', $this->renderTable('php extensions')).
+  public function renderContent()
+  {
+    return
+    sprintf('<h1>Diem %s System Check</h1>', sfConfig::get('dm_version')).
+    '<div class="clearfix">'.
+    sprintf('<div class="half">%s%s%s%s</div>',
+    $this->renderTable('server'),
+    $this->renderTable('php config'),
+    $this->renderTable('symfony'),
+    $this->renderSymfonyCheck()
+    ).
+    sprintf('<div class="half">%s</div>', $this->renderTable('php extensions')).
     '</div>';
-	}
+  }
 
-	protected function renderTable($name)
-	{
-		return
-		'<table>'.
-		sprintf('<thead><tr><th>%s</th><th>%s</th><th>%s</th><th>%s</th></tr></thead>', ucfirst($name), 'Diem requirement', 'Server state', 'Diagnostic').
-		sprintf('<tbody>%s</tbody>', $this->renderRows($this->checks[$name])).
-	  '</table>';
-	}
+  protected function renderTable($name)
+  {
+    return
+    '<table>'.
+    sprintf('<thead><tr><th>%s</th><th>%s</th><th>%s</th><th>%s</th></tr></thead>', ucfirst($name), 'Diem requirement', 'Server state', 'Diagnostic').
+    sprintf('<tbody>%s</tbody>', $this->renderRows($this->checks[$name])).
+    '</table>';
+  }
 
-	protected function renderRows(array $checks)
-	{
-		$html = '';
-		foreach($checks as $check)
-		{
-			$html .= sprintf('<tr class="%s"><th>%s</th><td>%s</td><td>%s</td><td>%s</td></tr>',
-			$check->getDiagnostic(),
-			$check->renderName(),
-			$check->renderRequirement(),
-			$check->renderState(),
-			$check->renderDiagnostic()
-			);
-		}
-		return $html;
-	}
+  protected function renderRows(array $checks)
+  {
+    $html = '';
+    foreach($checks as $check)
+    {
+      $html .= sprintf('<tr class="%s"><th>%s</th><td>%s</td><td>%s</td><td>%s</td></tr>',
+      $check->getDiagnostic(),
+      $check->renderName(),
+      $check->renderRequirement(),
+      $check->renderState(),
+      $check->renderDiagnostic()
+      );
+    }
+    return $html;
+  }
 
-	protected function renderHead()
-	{
-		return sprintf('<html>
+  protected function renderHead()
+  {
+    return sprintf('<html>
 <head>
 <title>Diem %s System Check</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="language" content="en" />
 <style type="text/css">%s</style>
 </head>',
-		sfConfig::get('dm_version'),
-		file_get_contents(dmOs::join(dm::getDir(), 'dmCorePlugin/web/lib/blueprint/screen.css')).
-		file_get_contents(dmOs::join(dm::getDir(), 'dmCorePlugin/web/css/serverCheck.css'))
-		);
-	}
+    sfConfig::get('dm_version'),
+    file_get_contents(dmOs::join(dm::getDir(), 'dmCorePlugin/web/lib/blueprint/screen.css')).
+    file_get_contents(dmOs::join(dm::getDir(), 'dmCorePlugin/web/css/serverCheck.css'))
+    );
+  }
 
-	protected function renderFoot()
-	{
-		return '</html>';
-	}
-	
-	protected function renderSymfonyCheck()
-	{
-		ob_start();
-		include(realpath(sfConfig::get('sf_symfony_lib_dir').'/../data/bin').'/check_configuration.php');
-		$html = ob_get_clean();
-		
-		return str_replace('<pre>', '<pre style="line-height: 1; margin-top: 0">', $html);
-//		$command = sprintf('php %s',
-//		  realpath(sfConfig::get('sf_symfony_lib_dir').'/../data/bin').'/check_configuration.php'
-//		);
-//		
-//		exec($command, $output, $returnCode);
-//		
-//		return implode('<br />', $output);
-	}
+  protected function renderFoot()
+  {
+    return '</html>';
+  }
+  
+  protected function renderSymfonyCheck()
+  {
+    ob_start();
+    include(realpath(sfConfig::get('sf_symfony_lib_dir').'/../data/bin').'/check_configuration.php');
+    $html = ob_get_clean();
+    
+    return str_replace('<pre>', '<pre style="line-height: 1; margin-top: 0">', $html);
+//    $command = sprintf('php %s',
+//      realpath(sfConfig::get('sf_symfony_lib_dir').'/../data/bin').'/check_configuration.php'
+//    );
+//    
+//    exec($command, $output, $returnCode);
+//    
+//    return implode('<br />', $output);
+  }
 }
 
 class dmServerCheckUnit
 {
-	const TYPE_BOOL = 1;
-	const TYPE_BYTE = 2;
-	const TYPE_VERSION = 3;
+  const TYPE_BOOL = 1;
+  const TYPE_BYTE = 2;
+  const TYPE_VERSION = 3;
 
-	protected
-	$name,
-	$requirement,
-	$state,
-	$level;
+  protected
+  $name,
+  $requirement,
+  $state,
+  $level;
 
-	public function __construct($name, $state, $requirement, $level = dmServerCheck::WARNING)
-	{
-		$this->name = $name;
-		$this->state = $state;
-		$this->requirement = $requirement;
-		$this->level = $level;
-	}
+  public function __construct($name, $state, $requirement, $level = dmServerCheck::WARNING)
+  {
+    $this->name = $name;
+    $this->state = $state;
+    $this->requirement = $requirement;
+    $this->level = $level;
+  }
 
-	public function renderName()
-	{
-		return $this->name;
-	}
+  public function renderName()
+  {
+    return $this->name;
+  }
 
-	public function renderRequirement()
-	{
-		return $this->renderValue($this->requirement);
-	}
+  public function renderRequirement()
+  {
+    return $this->renderValue($this->requirement);
+  }
 
-	public function renderState()
-	{
-		return $this->renderValue($this->state);
-	}
+  public function renderState()
+  {
+    return $this->renderValue($this->state);
+  }
 
-	protected function renderValue($value)
-	{
-		switch($this->getType())
-		{
-			case self::TYPE_BOOL: $response = $value ? 'ON' : 'OFF'; break;
-			case self::TYPE_BYTE: $response = dmOs::humanizeSize($this->realSize($value)); break;
-			default:              $response = $value ? $value : '-';
-		}
+  protected function renderValue($value)
+  {
+    switch($this->getType())
+    {
+      case self::TYPE_BOOL: $response = $value ? 'ON' : 'OFF'; break;
+      case self::TYPE_BYTE: $response = dmOs::humanizeSize($this->realSize($value)); break;
+      default:              $response = $value ? $value : '-';
+    }
 
-		return $response;
-	}
+    return $response;
+  }
 
-	public function renderDiagnostic()
-	{
-		$diagnostic = $this->getDiagnostic();
-		return sprintf('<img src="dm/core/images/24/%s.png" alt="%s" />', $diagnostic, strtoupper($diagnostic));
-	}
+  public function renderDiagnostic()
+  {
+    $diagnostic = $this->getDiagnostic();
+    return sprintf('<img src="dm/core/images/24/%s.png" alt="%s" />', $diagnostic, strtoupper($diagnostic));
+  }
 
-	public function getDiagnostic()
-	{
-		if ($this->pass())
-		{
-			$diagnostic = 'valid';
-		}
-		else
-		{
-			$diagnostic = $this->level == dmServerCheck::WARNING ? 'warning' : 'error';
-		}
+  public function getDiagnostic()
+  {
+    if ($this->pass())
+    {
+      $diagnostic = 'valid';
+    }
+    else
+    {
+      $diagnostic = $this->level == dmServerCheck::WARNING ? 'warning' : 'error';
+    }
 
-		return $diagnostic;
-	}
+    return $diagnostic;
+  }
 
-	public function pass()
-	{
-		if($this->isType(self::TYPE_BOOL))
-		{
-			return $this->state == $this->requirement;
-		}
+  public function pass()
+  {
+    if($this->isType(self::TYPE_BOOL))
+    {
+      return $this->state == $this->requirement;
+    }
 
-		return version_compare($this->state, $this->requirement) >= 0;
-	}
+    return version_compare($this->state, $this->requirement) >= 0;
+  }
 
-	public function isType($type)
-	{
-		return $this->getType() == $type;
-	}
+  public function isType($type)
+  {
+    return $this->getType() == $type;
+  }
 
-	public function getType()
-	{
-		if(is_bool($this->requirement))
-		{
-			return self::TYPE_BOOL;
-		}
-		if(is_integer($this->requirement))
-		{
-			return self::TYPE_BYTE;
-		}
+  public function getType()
+  {
+    if(is_bool($this->requirement))
+    {
+      return self::TYPE_BOOL;
+    }
+    if(is_integer($this->requirement))
+    {
+      return self::TYPE_BYTE;
+    }
 
-		return self::TYPE_VERSION;
-	}
+    return self::TYPE_VERSION;
+  }
 
-	protected function realsize($val)
-	{
-		if (!is_numeric($val{strlen( $val ) - 1}))
-		{
-			return $val*1024*1024;
-		}
-		switch ( $val{strlen( $val ) - 1} )
-		{
-			case 'G':
-				$val *= 1024;
-			case 'M':
-				$val *= 1024;
-			case 'K':
-				$val *= 1024;
-		}
+  protected function realsize($val)
+  {
+    if (!is_numeric($val{strlen( $val ) - 1}))
+    {
+      return $val*1024*1024;
+    }
+    switch ( $val{strlen( $val ) - 1} )
+    {
+      case 'G':
+        $val *= 1024;
+      case 'M':
+        $val *= 1024;
+      case 'K':
+        $val *= 1024;
+    }
 
-		return round($val / (1024 * 1024));
-	}
+    return round($val / (1024 * 1024));
+  }
 }

@@ -42,14 +42,14 @@ class dmSearchIndexGroup extends dmSearchIndexCommon
 
     return $this->indices[$name];
   }
-	
+  
   protected function configure()
   {
-  	foreach(sfConfig::get('dm_i18n_cultures') as $culture)
-  	{
-  		$index = new dmSearchIndex($culture);
+    foreach(sfConfig::get('dm_i18n_cultures') as $culture)
+    {
+      $index = new dmSearchIndex($culture);
       $this->addIndex($index->getName(), $index);
-  	}
+    }
   }
   
   public function insert(DmPage $page)

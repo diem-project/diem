@@ -11,8 +11,8 @@ $save = ($isWritable && !$isImage) ? £("a.fright.fleft.ml20.sprite_16.sprite_16
 echo £("div.file_tab.inner",
   £("div.inner_border",
     $isImage
-	  ? £("div.image", £media($file)->size(400, 400)->method('scale'))
-	  : £('textarea.dm_code'.($isWritable ? '' : '.dm_readonly'), $textareaOptions, $code)
+    ? £("div.image", £media($file)->size(400, 400)->method('scale'))
+    : £('textarea.dm_code'.($isWritable ? '' : '.dm_readonly'), $textareaOptions, $code)
   ).
   sprintf('<input class="path" type="hidden" value="%s" />', $path).
   £("div.action.clearfix",

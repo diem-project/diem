@@ -4,7 +4,7 @@ class dmGuardFormSignin extends sfGuardFormSignin
 {
   public function configure()
   {
-  	parent::configure();
+    parent::configure();
 
     $this->validatorSchema->setPostValidator(new dmGuardValidatorUser());
 

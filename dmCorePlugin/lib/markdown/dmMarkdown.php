@@ -5,41 +5,41 @@ require_once(dirname(__FILE__).'/vendor/markdown.php');
 class dmMarkdown extends MarkdownExtra_Parser
 {
 
-	protected static $instance;
+  protected static $instance;
 
-	public static function toHtml($text)
-	{
-		if(null === self::$instance)
-		{
-			self::$instance = new self;
-		}
+  public static function toHtml($text)
+  {
+    if(null === self::$instance)
+    {
+      self::$instance = new self;
+    }
 
-		return trim(self::$instance->transform($text), "\n");
-	}
-	
-	public static function toText($text)
-	{
-		return strip_tags(self::toHtml($text));
-	}
+    return trim(self::$instance->transform($text), "\n");
+  }
+  
+  public static function toText($text)
+  {
+    return strip_tags(self::toHtml($text));
+  }
 
-	public function transform($text)
-	{
-		return self::postTransform(parent::transform(self::preTransform($text)));
-	}
+  public function transform($text)
+  {
+    return self::postTransform(parent::transform(self::preTransform($text)));
+  }
 
-	protected static function preTransform($text)
-	{
-		// clean text
-		$text = self::cleanText($text);
+  protected static function preTransform($text)
+  {
+    // clean text
+    $text = self::cleanText($text);
 
     // replace lines with only a dot by a <br />
     $text = preg_replace("|^\.$|ium", "<br />", $text);
 
-		// add two spaces before every line end to allow new lines
-		$text = str_replace("\n", "  \n", $text);
+    // add two spaces before every line end to allow new lines
+    $text = str_replace("\n", "  \n", $text);
 
-		return $text;
-	}
+    return $text;
+  }
 
   protected static function postTransform($text)
   {

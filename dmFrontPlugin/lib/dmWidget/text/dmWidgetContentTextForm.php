@@ -3,8 +3,8 @@
 class dmWidgetContentTextForm extends dmWidgetContentMediaForm
 {
 
-	public function configure()
-	{
+  public function configure()
+  {
     parent::configure();
     
     $this->widgetSchema['title'] = new sfWidgetFormInputText();
@@ -18,8 +18,8 @@ class dmWidgetContentTextForm extends dmWidgetContentMediaForm
     
     $this->widgetSchema['mediaLink'] = new sfWidgetFormInputText();
     $this->validatorSchema['mediaLink'] = new sfValidatorString(array('required' => false));
-	}
-	
+  }
+  
   protected function renderContent($attributes)
   {
     return dmContext::getInstance()->getHelper()->renderPartial('dmWidget', 'forms/dmWidgetContentText', array(

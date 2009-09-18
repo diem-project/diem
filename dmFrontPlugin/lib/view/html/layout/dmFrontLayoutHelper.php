@@ -2,9 +2,24 @@
 
 class dmFrontLayoutHelper extends dmCoreLayoutHelper
 {
-	protected
-	  $page;
+  protected
+    $page;
 
+  public function connect()
+  {
+    $this->dispatcher->connect('dm.context.change_page', array($this, 'listenToChangePageEvent'));
+  }
+  
+  /**
+   * Listens to the user.change_culture event.
+   *
+   * @param sfEvent An sfEvent instance
+   */
+  public function listenToChangePageEvent(sfEvent $event)
+  {
+    $this->setPage($event['page']);
+  }
+  
   public function setPage(DmPage $page)
   {
     $this->page = $page;
@@ -12,58 +27,58 @@ class dmFrontLayoutHelper extends dmCoreLayoutHelper
   
   public function renderBrowserStylesheets()
   {
-		$html = '';
+    $html = '';
 
-		// search in theme_dir/css/browser/ieX.css
-		foreach(array(6, 7, 8) as $ieVersion)
-		{
-		  if (file_exists($this->theme->getFullPath('css/browser/msie'.$ieVersion.'.css')))
-		  {
-		  	$html .= "\n".sprintf('<!--[if IE %d]><link href="%s" rel="stylesheet" type="text/css" /><![endif]-->',
-		  	  $ieVersion,
-		  	  $this->theme->getWebPath('css/browser/msie'.$ieVersion.'.css')
-		  	);
-		  }
-		}
+    // search in theme_dir/css/browser/ieX.css
+    foreach(array(6, 7, 8) as $ieVersion)
+    {
+      if (file_exists($this->theme->getFullPath('css/browser/msie'.$ieVersion.'.css')))
+      {
+        $html .= "\n".sprintf('<!--[if IE %d]><link href="%s" rel="stylesheet" type="text/css" /><![endif]-->',
+          $ieVersion,
+          $this->theme->getWebPath('css/browser/msie'.$ieVersion.'.css')
+        );
+      }
+    }
 
-		return $html;
+    return $html;
   }
 
 
   public function renderIeHtml5Fix()
   {
-  	return '<!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->';
+    return '<!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->';
   }
   
   public function renderBodyTag()
   {
-		printf('<body class="%s_%s">',
-		  $this->page->module,
-		  $this->page->action
-		);
+    printf('<body class="%s_%s">',
+      $this->page->get('module'),
+      $this->page->get('action')
+    );
   }
 
   protected function getMetas()
   {
-  	$metas = array(
+    $metas = array(
       'description'  => $this->page->get('description'),
       'language'     => $this->user->getCulture(),
-  	  'generator'    => 'Diem '.dm::version()
+      'generator'    => 'Diem '.dm::version()
     );
     
     if (sfConfig::get('dm_seo_use_keywords'))
     {
-    	$metas['keywords'] = $this->page->get('keywords');
+      $metas['keywords'] = $this->page->get('keywords');
     }
     
     if (!dmConfig::get('site_indexable'))
     {
-    	$metas['robots'] = 'noindex, nofollow';
+      $metas['robots'] = 'noindex, nofollow';
     }
     
     if (dmConfig::get('gwt_key') && $this->page->getNode()->isRoot())
     {
-    	$metas['verify-v1'] = dmConfig::get('gwt_key');
+      $metas['verify-v1'] = dmConfig::get('gwt_key');
     }
     
     return $metas;
@@ -71,7 +86,7 @@ class dmFrontLayoutHelper extends dmCoreLayoutHelper
   
   public function renderMetas()
   {
-    $metaHtml = array(sprintf('<title>%s</title>', $this->page->title));
+    $metaHtml = array(sprintf('<title>%s</title>', $this->page->get('title')));
     
     foreach($this->getMetas() as $key => $value)
     {
@@ -84,26 +99,26 @@ class dmFrontLayoutHelper extends dmCoreLayoutHelper
   
   public function renderEditBars()
   {
-  	if (!$this->user->can('admin'))
-  	{
-  		return '';
-  	}
-  	
-  	$html = '';
-  	
-		if (sfConfig::get('dm_pageBar_enabled', true) && $this->user->can('page_bar_front'))
-		{
-		  $html .= $this->helper->renderPartial('dmInterface', 'pageBar');
-		}
-		
-		if (sfConfig::get('dm_mediaBar_enabled', true) && $this->user->can('media_bar_front'))
-		{
-		  $html .= $this->helper->renderPartial('dmInterface', 'mediaBar');
-		}
-		
-		if ($this->user->can('tool_bar_front'))
-		{
-		  $html .= $this->helper->renderComponent('dmInterface', 'toolBar');
+    if (!$this->user->can('admin'))
+    {
+      return '';
+    }
+    
+    $html = '';
+    
+    if (sfConfig::get('dm_pageBar_enabled', true) && $this->user->can('page_bar_front'))
+    {
+      $html .= $this->helper->renderPartial('dmInterface', 'pageBar');
+    }
+    
+    if (sfConfig::get('dm_mediaBar_enabled', true) && $this->user->can('media_bar_front'))
+    {
+      $html .= $this->helper->renderPartial('dmInterface', 'mediaBar');
+    }
+    
+    if ($this->user->can('tool_bar_front'))
+    {
+      $html .= $this->helper->renderComponent('dmInterface', 'toolBar');
     }
     
     return $html;
@@ -111,16 +126,16 @@ class dmFrontLayoutHelper extends dmCoreLayoutHelper
 
   public function getJavascriptConfig()
   {
-  	return array_merge(parent::getJavascriptConfig(), array(
-  	  'page_id' => $this->page->id
-  	));
+    return array_merge(parent::getJavascriptConfig(), array(
+      'page_id' => $this->page->get('id')
+    ));
   }
   
   public function renderGoogleAnalytics()
   {
-  	if (dmConfig::get('ga_key') && !$this->user->can('admin') && !dmOs::isLocalhost())
-  	{
-  		return str_replace("\n", ' ', sprintf('<script type="text/javascript">
+    if (dmConfig::get('ga_key') && !$this->user->can('admin') && !dmOs::isLocalhost())
+    {
+      return str_replace("\n", ' ', sprintf('<script type="text/javascript">
 var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
 document.write(unescape("%3Cscript src=\'" + gaJsHost + "google-analytics.com/ga.js\' type=\'text/javascript\'%3E%3C/script%3E"));
 </script>
@@ -129,8 +144,8 @@ try {
 var pageTracker = _gat._getTracker("%s");
 pageTracker._trackPageview();
 } catch(err) {}</script>', dmConfig::get('ga_key')));
-  	}
-  	
-  	return '';
+    }
+    
+    return '';
   }
 }

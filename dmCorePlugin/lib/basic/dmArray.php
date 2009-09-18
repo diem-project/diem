@@ -3,51 +3,51 @@
 class dmArray
 {
 
-	/*
-	 * Sets each array key to its corresponding value
-	 */
-	public static function valueToKey($array)
-	{
-		$tmp = array();
-		foreach($array as $value)
-		{
-			$tmp[$value] = $value;
-		}
-		unset($array);
-		return $tmp;
-	}
+  /*
+   * Sets each array key to its corresponding value
+   */
+  public static function valueToKey($array)
+  {
+    $tmp = array();
+    foreach($array as $value)
+    {
+      $tmp[$value] = $value;
+    }
+    unset($array);
+    return $tmp;
+  }
 
-	/*
-	 * Returns the value of an array, if the key exists
-	 */
-	public static function get($array, $key, $default = null, $defaultIfNull = false)
-	{
-		if (!is_array($array))
-		{
-			return $default;
-		}
+  /*
+   * Returns the value of an array, if the key exists
+   */
+  public static function get($array, $key, $default = null, $defaultIfNull = false)
+  {
+    if (!is_array($array))
+    {
+      return $default;
+    }
 
-		if (false === $defaultIfNull)
-		{
-			if(isset($array[$key]))
-			{
-				return $array[$key];
-			}
-			else
-			{
-				return $default;
-			}
-		}
+    if (false === $defaultIfNull)
+    {
+      if(isset($array[$key]))
+      {
+        return $array[$key];
+      }
+      else
+      {
+        return $default;
+      }
+    }
 
-		if(!empty($array[$key]))
-		{
-			return $array[$key];
-		}
-		else
-		{
-			return $default;
-		}
-	}
+    if(!empty($array[$key]))
+    {
+      return $array[$key];
+    }
+    else
+    {
+      return $default;
+    }
+  }
 
 
   // retourne la première valeur d'un tableau
@@ -140,6 +140,6 @@ class dmArray
   
   public static function toHtmlCssClasses(array $classes)
   {
-  	return implode(' ', array_unique(array_filter(array_map('trim', $classes))));
+    return implode(' ', array_unique(array_filter(array_map('trim', $classes))));
   }
 }

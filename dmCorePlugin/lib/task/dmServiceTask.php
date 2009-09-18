@@ -19,7 +19,7 @@ abstract class dmServiceTask extends dmBaseTask
 
   public function dispatchLogToCommandLog(sfEvent $event)
   {
-  	$this->log(dmArray::get($event->getParameters(), 'message'));
+    $this->log(dmArray::get($event->getParameters(), 'message'));
     return true;
   }
 
@@ -35,10 +35,10 @@ abstract class dmServiceTask extends dmBaseTask
 
     if (!class_exists($serviceClass))
     {
-    	throw new dmException($serviceClass." does not exists");
+      throw new dmException($serviceClass." does not exists");
     }
 
-  	$service = new $serviceClass($this->dispatcher, $this->formatter);
+    $service = new $serviceClass($this->dispatcher, $this->formatter);
     $service->addOptions($options);
     return $service->execute();
   }

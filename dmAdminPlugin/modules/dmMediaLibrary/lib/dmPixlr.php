@@ -58,7 +58,7 @@ class dmPixlr
 
   private function getUniqueFilename($name, $full_path)
   {
-  	return $name;
+    return $name;
 
 //    if(!file_exists("{$full_path}/{$name}"))
 //    {
@@ -70,7 +70,7 @@ class dmPixlr
 
   private function copyFromUrl($url, $full_path)
   {
-  	dmDebug::log("aaaaaaaaaaaaaa {$url}->{$full_path}");
+    dmDebug::log("aaaaaaaaaaaaaa {$url}->{$full_path}");
 
     $file = file_get_contents($url);
     if($file===FALSE)

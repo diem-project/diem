@@ -24,7 +24,7 @@ class dmStylesheetCompressor extends dmAssetCompressor
   
   protected function processCacheKey($cacheKey)
   {
-    return $cacheKey.$this->relativeUrlRoot;
+    return $cacheKey.$this->requestContext['relative_url_root'];
   }
   
   protected function processAssetContent($content, $path)
@@ -58,7 +58,7 @@ class dmStylesheetCompressor extends dmAssetCompressor
         {
           $relativeCount = substr_count( $match, '../' );
           $cssPathSlice = $relativeCount === 0 ? $cssPathArray : array_slice( $cssPathArray  , 0, $cssPathCount - $relativeCount  );
-          $newMatchPath = $this->relativeUrlRoot.implode('/', $cssPathSlice) . '/' . str_replace('../', '', $match);
+          $newMatchPath = $this->requestContext['relative_url_root'].implode('/', $cssPathSlice) . '/' . str_replace('../', '', $match);
           $content = str_replace( $match, $newMatchPath, $content );
         }
       }

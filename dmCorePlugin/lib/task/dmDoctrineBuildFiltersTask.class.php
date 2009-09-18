@@ -14,7 +14,7 @@ class dmDoctrineBuildFiltersTask extends sfDoctrineBuildFiltersTask
    */
   protected function configure()
   {
-  	parent::configure();
+    parent::configure();
     $this->namespace = 'dm';
     $this->aliases = array();
   }

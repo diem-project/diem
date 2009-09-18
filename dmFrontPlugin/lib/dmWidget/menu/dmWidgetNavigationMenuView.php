@@ -3,12 +3,12 @@
 class dmWidgetNavigationMenuView extends dmWidgetPluginView
 {
 
-	public function configure()
-	{
+  public function configure()
+  {
     parent::configure();
-		
+    
     $this->addRequiredVar('elements');
-	}
+  }
   
   public function toIndexableString(array $vars)
   {
@@ -21,7 +21,7 @@ class dmWidgetNavigationMenuView extends dmWidgetPluginView
     
     foreach($vars['elements'] as $element)
     {
-    	$link = dmFrontLinkTag::build($element['source']);
+      $link = dmFrontLinkTag::build($element['source']);
       
       if (!empty($element['text']))
       {
@@ -32,8 +32,8 @@ class dmWidgetNavigationMenuView extends dmWidgetPluginView
       {
         $link->set($element['attr']);
       }
-    	
-    	$html .= sprintf('<li class="dm_menu_element">%s</li>', $link->render());
+      
+      $html .= sprintf('<li class="dm_menu_element">%s</li>', $link->render());
     }
     
     $html .= '</ul>';

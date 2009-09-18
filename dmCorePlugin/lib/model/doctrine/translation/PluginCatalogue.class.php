@@ -14,9 +14,9 @@ class PluginCatalogue extends BaseCatalogue
 {
   public static function retrieveBySourceTargetSpace($source, $target, $space)
   {
-  	return dmDb::query('Catalogue c')
-  	->where('c.source_lang = ? AND c.target_lang = ? AND c.name = ?', array($source, $target, $space.'.'.$target))
-  	->fetchRecord();
+    return dmDb::query('Catalogue c')
+    ->where('c.source_lang = ? AND c.target_lang = ? AND c.name = ?', array($source, $target, $space.'.'.$target))
+    ->fetchRecord();
   }
 
   public function __toString()
@@ -26,9 +26,9 @@ class PluginCatalogue extends BaseCatalogue
 
   public function hasTranslationFor($source)
   {
-  	return dmDb::query('TransUnit')
-  	->where('cat_id = ? AND source = ?', array($this->cat_id, $source))
-  	->exists();
+    return dmDb::query('TransUnit')
+    ->where('cat_id = ? AND source = ?', array($this->cat_id, $source))
+    ->exists();
   }
 
   public function save(Doctrine_Connection $conn = null)

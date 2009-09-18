@@ -5,7 +5,7 @@ class DmZoneFrontForm extends DmZoneForm
 
   public function configure()
   {
-  	parent::configure();
+    parent::configure();
     
     $this->setName($this->name.'_'.$this->object->id);
 

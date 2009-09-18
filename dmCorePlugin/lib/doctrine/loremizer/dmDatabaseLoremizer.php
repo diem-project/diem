@@ -2,38 +2,38 @@
 
 class dmDatabaseLoremizer
 {
-	protected
-	$dispatcher,
-	$nbRecordsByTable;
+  protected
+  $dispatcher,
+  $nbRecordsByTable;
 
-	public function __construct(sfEventDispatcher $dispatcher)
-	{
-		$this->dispatcher = $dispatcher;
-	}
+  public function __construct(sfEventDispatcher $dispatcher)
+  {
+    $this->dispatcher = $dispatcher;
+  }
 
-	public function loremize($nbRecordsByTable = 30)
-	{
+  public function loremize($nbRecordsByTable = 30)
+  {
     $this->nbRecordsByTable = $nbRecordsByTable;
 
     $this->loremizeDmMedia();
 
     foreach(dmModuleManager::getProjectModules() as $module)
     {
-    	/*
-    	 * Start with root modules
-    	 */
-    	if ($module->hasParent())
-    	{
-    		continue;
-    	}
+      /*
+       * Start with root modules
+       */
+      if ($module->hasParent())
+      {
+        continue;
+      }
 
       /*
        * Media have already been loremized
        */
-	    if ($module->getKey() === 'dmMedia')
-	    {
-	      continue;
-	    }
+      if ($module->getKey() === 'dmMedia')
+      {
+        continue;
+      }
 
       if (!$module->hasModel())
       {
@@ -44,11 +44,11 @@ class dmDatabaseLoremizer
     }
 
     $this->loremizeAssociations();
-	}
+  }
 
-	protected function loremizeAssociations()
-	{
-		$nbAssociations = round($this->nbRecordsByTable * 1.5);
+  protected function loremizeAssociations()
+  {
+    $nbAssociations = round($this->nbRecordsByTable * 1.5);
 
     $refClasses = array();
     foreach(dmModuleManager::getProjectModules() as $module)
@@ -69,72 +69,72 @@ class dmDatabaseLoremizer
       $nbExisting = dmDb::table($refClass)->count();
       if ($nbExisting >= $nbAssociations)
       {
-      	continue;
+        continue;
       }
       $refTable = dmDb::table($refClass);
       $localRelations = $refTable->getRelationHolder()->getLocals();
       for($it = $nbExisting; $it < $nbAssociations; $it++)
       {
-      	$refObject = new $refClass;
-		    foreach($localRelations as $relation)
-		    {
-		      $id = dmDb::query($relation->getClass().' t')
-			    ->select('t.id')
-			    ->orderBy('RANDOM()')
-			    ->limit(1)
-			    ->fetchValue();
+        $refObject = new $refClass;
+        foreach($localRelations as $relation)
+        {
+          $id = dmDb::query($relation->getClass().' t')
+          ->select('t.id')
+          ->orderBy('RANDOM()')
+          ->limit(1)
+          ->fetchValue();
 
-			    $refObject->set($relation->getLocalColumnName(), $id);
-		    }
+          $refObject->set($relation->getLocalColumnName(), $id);
+        }
 
-		    try
-		    {
-		    	$refObject->save();
-		    }
-		    catch(Doctrine_Connection_Mysql_Exception $e)
-		    {
-		    	// refObject already exists...
-		    }
-		    catch(Doctrine_Validator_Exception $e)
-		    {
-		    	dmDebug::kill($e->getMessage(), $refObject);
-		    }
+        try
+        {
+          $refObject->save();
+        }
+        catch(Doctrine_Connection_Mysql_Exception $e)
+        {
+          // refObject already exists...
+        }
+        catch(Doctrine_Validator_Exception $e)
+        {
+          dmDebug::kill($e->getMessage(), $refObject);
+        }
       }
     }
-	}
+  }
 
-	/*
-	 * Will generate random associations
-	 */
-	public function loremizeAssociation(myDoctrineTable $table)
-	{
-	  $associationRelations = $table->getRelationHolder()->getAssociations();
+  /*
+   * Will generate random associations
+   */
+  public function loremizeAssociation(myDoctrineTable $table)
+  {
+    $associationRelations = $table->getRelationHolder()->getAssociations();
 
-	  if (!count($associationRelations))
-	  {
-	  	return;
-	  }
+    if (!count($associationRelations))
+    {
+      return;
+    }
 
-	  $collection = $table->findAll();
-	  foreach($collection as $record)
-	  {
-	    foreach($associationRelations as $alias => $relation)
-	    {
+    $collection = $table->findAll();
+    foreach($collection as $record)
+    {
+      foreach($associationRelations as $alias => $relation)
+      {
         $ids = dmDb::query($relation->getClass().' t')
-		    ->select('t.id')
-		    ->distinct()
-		    ->orderBy('RANDOM()')
-		    ->limit(rand(0, $this->nbAssociationsByRecord))
-		    ->fetchValues();
+        ->select('t.id')
+        ->distinct()
+        ->orderBy('RANDOM()')
+        ->limit(rand(0, $this->nbAssociationsByRecord))
+        ->fetchValues();
 
-		    array_walk($ids, create_function('&$a', '$a = $a["t_id"];'));
+        array_walk($ids, create_function('&$a', '$a = $a["t_id"];'));
 
-		    foreach($ids as $id)
-		    {
-		    	$record->link($alias, $ids);
-		    }
-	    }
-	  }
+        foreach($ids as $id)
+        {
+          $record->link($alias, $ids);
+        }
+      }
+    }
 
     try
     {
@@ -144,11 +144,11 @@ class dmDatabaseLoremizer
     {
       throw new dmException('Error while loremizing '.$table->getComponentName.' associations : '.$e->getMessage());
     }
-	}
+  }
 
-	public function loremizeModule(dmModule $module)
-	{
-		$table = $module->getTable();
+  public function loremizeModule(dmModule $module)
+  {
+    $table = $module->getTable();
 
     $nbRecords = $table->count();
 
@@ -165,8 +165,8 @@ class dmDatabaseLoremizer
     }
     catch(Exception $e)
     {
-//    	dmDebug::kill($collection);
-    	throw new dmException('Error while loremizing '.$module.' : '.$e->getMessage());
+//      dmDebug::kill($collection);
+      throw new dmException('Error while loremizing '.$module.' : '.$e->getMessage());
     }
 
     foreach($module->getChildren() as $child)
@@ -175,32 +175,32 @@ class dmDatabaseLoremizer
     }
 
     return true;
-	}
+  }
 
-	protected function loremizeDmMedia()
-	{
-		dmDb::table('DmMediaFolder')->checkRoot()->sync();
-		
-		$table = dmDb::table('DmMedia');
-		
-		if (!$table->count())
-		{
-			$filePath = dmOs::join(sfConfig::get('dm_core_dir'), 'data/image', 'defaultMedia.jpg');
+  protected function loremizeDmMedia()
+  {
+    dmDb::table('DmMediaFolder')->checkRoot()->sync();
+    
+    $table = dmDb::table('DmMedia');
+    
+    if (!$table->count())
+    {
+      $filePath = dmOs::join(sfConfig::get('dm_core_dir'), 'data/image', 'defaultMedia.jpg');
 
-			require_once(dmOs::join(sfConfig::get('sf_symfony_lib_dir'), 'validator/sfValidatorFile.class.php'));
+      require_once(dmOs::join(sfConfig::get('sf_symfony_lib_dir'), 'validator/sfValidatorFile.class.php'));
 
-			$file = new sfValidatedFile(
-			  'defaultMedia.jpg',
-			  'image/jpeg',
-			  $filePath,
-			  filesize($filePath)
-			);
+      $file = new sfValidatedFile(
+        'defaultMedia.jpg',
+        'image/jpeg',
+        $filePath,
+        filesize($filePath)
+      );
 
-		  $media = new DmMedia();
-		  $media->dm_media_folder_id = dmDb::table('DmMediaFolder')->getTree()->fetchRoot()->id;
-		  $media->create($file);
+      $media = new DmMedia();
+      $media->dm_media_folder_id = dmDb::table('DmMediaFolder')->getTree()->fetchRoot()->id;
+      $media->create($file);
 
-		  $media->save();
-		}
-	}
+      $media->save();
+    }
+  }
 }

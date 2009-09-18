@@ -56,15 +56,15 @@ class sfWidgetFormDmDbSelectDoubleList extends sfWidgetFormDmSelectDoubleList
 
     if ($order = $this->getOption('order_by'))
     {
-    	$finder->orderBy(
-    	  call_user_func(array($peerClass, 'translateFieldName'), $order[0], BasePeer::TYPE_PHPNAME, BasePeer::TYPE_COLNAME),
+      $finder->orderBy(
+        call_user_func(array($peerClass, 'translateFieldName'), $order[0], BasePeer::TYPE_PHPNAME, BasePeer::TYPE_COLNAME),
         strtolower($order[1])
-    	);
+      );
     }
 
     if($connection = $this->getOption('connection'))
     {
-    	$finder->setConnection($connection);
+      $finder->setConnection($connection);
     }
 
     $findMethod = $this->getOption('find_method');

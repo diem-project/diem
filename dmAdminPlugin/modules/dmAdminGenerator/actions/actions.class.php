@@ -78,8 +78,8 @@ class dmAdminGeneratorActions extends dmAdminBaseActions
   }
 
   // changing max_per_page
-	public function executeChangeMaxPerPage(sfWebRequest $request)
-	{
+  public function executeChangeMaxPerPage(sfWebRequest $request)
+  {
     $this->forward404Unless(
       $module = dmModuleManager::getModuleOrNull(
         $request->getParameter('dm_module')
@@ -88,12 +88,12 @@ class dmAdminGeneratorActions extends dmAdminBaseActions
 
     if ($maxPerPage = $request->getParameter('max_per_page'))
     {
-    	$maxPerPages = sfConfig::get('dm_admin_max_per_page', array(10));
-    	$maxPerPage = in_array($maxPerPage, $maxPerPages) ? $maxPerPage : dmArray::first($maxPerPages);
+      $maxPerPages = sfConfig::get('dm_admin_max_per_page', array(10));
+      $maxPerPage = in_array($maxPerPage, $maxPerPages) ? $maxPerPage : dmArray::first($maxPerPages);
       $this->getUser()->setAttribute($module.'.max_per_page', $maxPerPage, 'admin_module');
     }
 
     return $this->redirect('@'.$module->getUnderscore());
-	}
+  }
 
 }

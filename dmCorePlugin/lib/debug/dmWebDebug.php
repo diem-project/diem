@@ -46,16 +46,16 @@ class dmWebDebug extends sfWebDebug
     
     if (strpos($content, '__SF_WEB_DEBUG__'))
     {
-    	$content = str_replace('__SF_WEB_DEBUG__', $debug, $content);
+      $content = str_replace('__SF_WEB_DEBUG__', $debug, $content);
     }
     else
     {
-	    $count = 0;
-	    $content = str_ireplace('</body>', $debug.'</body>', $content, $count);
-	    if (!$count)
-	    {
-	      $content .= $debug;
-	    }
+      $count = 0;
+      $content = str_ireplace('</body>', $debug.'</body>', $content, $count);
+      if (!$count)
+      {
+        $content .= $debug;
+      }
     }
 
     return $content;

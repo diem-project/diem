@@ -2,11 +2,11 @@
 
 abstract class dmWidgetBaseForm extends dmForm
 {
-	protected
-	  $dmWidget;
+  protected
+    $dmWidget;
 
-	protected
-	  $firstDefaults = array();
+  protected
+    $firstDefaults = array();
 
   /**
    * Constructor.
@@ -17,20 +17,20 @@ abstract class dmWidgetBaseForm extends dmForm
    */
   public function __construct($widget, $options = array(), $CSRFSecret = null)
   {
-  	if (!$widget instanceof DmWidget)
-  	{
-  		throw new dmException(sprintf('%s must be initialized with a DmWidget, not a %s', get_class($this), gettype($widget)));
-  	}
+    if (!$widget instanceof DmWidget)
+    {
+      throw new dmException(sprintf('%s must be initialized with a DmWidget, not a %s', get_class($this), gettype($widget)));
+    }
 
-  	$this->dmWidget = $widget;
+    $this->dmWidget = $widget;
 
-  	parent::__construct($widget->values, $options, $CSRFSecret);
+    parent::__construct($widget->values, $options, $CSRFSecret);
   }
   
   public function setup()
   {
-  	parent::setup();
-  	
+    parent::setup();
+    
     $this->setName($this->name.'_'.$this->dmWidget->id);
   }
 
@@ -44,10 +44,10 @@ abstract class dmWidgetBaseForm extends dmForm
     $this->setDefault('cssClass', $this->dmWidget->cssClass);
   }
 
-	/*
-	 * Overload this method to alter form values
-	 * when form has been validated
-	 */
+  /*
+   * Overload this method to alter form values
+   * when form has been validated
+   */
   public function getWidgetValues()
   {
     $values = $this->getValues();
@@ -70,20 +70,20 @@ abstract class dmWidgetBaseForm extends dmForm
 
   protected function renderContent($attributes)
   {
-  	return $this->getFormFieldSchema()->render($attributes);
+    return $this->getFormFieldSchema()->render($attributes);
   }
 
   protected function renderActions()
   {
-  	$i18n = dm::getI18n();
-  	
-  	return sprintf(
+    $i18n = dm::getI18n();
+    
+    return sprintf(
       '<div class="actions">
         <div class="actions_part clearfix">%s%s</div>
         <div class="actions_part clearfix">%s%s</div>
       </div>',
-  	  sprintf('<a class="dm cancel close_dialog button fleft">%s</a>', $i18n->__('Cancel')),
-  	  sprintf('<input type="submit" class="submit try blue fright" name="try" value="%s" />', $i18n->__('Try')),
+      sprintf('<a class="dm cancel close_dialog button fleft">%s</a>', $i18n->__('Cancel')),
+      sprintf('<input type="submit" class="submit try blue fright" name="try" value="%s" />', $i18n->__('Try')),
       sprintf('<a class="dm delete button red fleft" title="%s">%s</a>', $i18n->__('Delete this widget'), $i18n->__('Delete')),
       sprintf('<input type="submit" class="submit and_save green fright" name="and_save" value="%s" />', $i18n->__('Save and close'))
     );
@@ -96,7 +96,7 @@ abstract class dmWidgetBaseForm extends dmForm
    */
   protected function getDefaultsFromLastUpdated(array $fields = array())
   {
-  	if ($this->dmWidget->value)
+    if ($this->dmWidget->value)
     {
       return array_merge($this->dmWidget->values, array('cssClass' => $this->dmWidget->cssClass));
     }
@@ -119,7 +119,7 @@ abstract class dmWidgetBaseForm extends dmForm
 
     foreach($fields as $field)
     {
-    	$defaults[$field] = dmArray::get($values, $field, dmArray::get($defaults, $field));
+      $defaults[$field] = dmArray::get($values, $field, dmArray::get($defaults, $field));
     }
     
     return $defaults;

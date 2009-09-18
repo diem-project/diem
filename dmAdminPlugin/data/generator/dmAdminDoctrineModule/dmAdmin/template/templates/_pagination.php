@@ -10,10 +10,10 @@
       }
 
       $currentMaxPerPage = $sf_user->getAttribute(
-	      '<?php echo $this->getModuleName() ?>.max_per_page',
-	      <?php echo isset($this->config['list']['max_per_page']) ? (integer) $this->config['list']['max_per_page'] : 10 ?>,
-	      'admin_module'
-	    );
+        '<?php echo $this->getModuleName() ?>.max_per_page',
+        <?php echo isset($this->config['list']['max_per_page']) ? (integer) $this->config['list']['max_per_page'] : 10 ?>,
+        'admin_module'
+      );
 
       $maxPerPageSelect = new sfWidgetFormSelect(array('choices' => $maxPerPages), array('id' => '__DM_RANDOM_ID__'));
       echo $maxPerPageSelect->render('dm_max_per_page', $currentMaxPerPage);

@@ -3,47 +3,46 @@
 abstract class dmUser extends sfGuardSecurityUser implements dmMicroCacheInterface
 {
 
-	protected
-	$serviceContainer,
-	$isSuperAdmin = null,
-	$cache = array();
-	
-	public function setServiceContainer(sfServiceContainer $serviceContainer)
-	{
-	  $this->serviceContainer = $serviceContainer;
-	}
-	
-	public function setCulture($culture)
-	{
-	  if (!in_array($culture, sfConfig::get('dm_i18n_cultures')))
-	  {
-	    throw new dmException(sprintf('%s is not a valid culture defined in dm_i18n_cultures', $culture));
-	  }
-	  
-	  return parent::setCulture($culture);
-	}
-	
-	/*
-	 * Guess user's browser
-	 * @return dmBrowser browser object
-	 */
-	public function getBrowser()
-	{
-		if ($this->hasCache('browser'))
-		{
-			return $this->getCache('browser');
-		}
-		
-		$browser = $this->serviceContainer->getService('browser');
-		$browser->configureFromUserAgent($_SERVER['HTTP_USER_AGENT']);
-		
-		return $this->setCache('browser', $browser);
-	}
-	
-	/*
-	 * Cache methods
-	 */
-	public function getCache($cacheKey)
+  protected
+  $browser,
+  $isBrowserConfigured,
+  $isSuperAdmin = null,
+  $cache = array();
+  
+  public function setCulture($culture)
+  {
+    if (!in_array($culture, sfConfig::get('dm_i18n_cultures')))
+    {
+      throw new dmException(sprintf('%s is not a valid culture defined in dm_i18n_cultures', $culture));
+    }
+    
+    return parent::setCulture($culture);
+  }
+  
+  /*
+   * Guess user's browser
+   * @return dmBrowser browser object
+   */
+  public function getBrowser()
+  {
+    if (!$this->isBrowserConfigured)
+    {
+      $this->browser->configureFromUserAgent($_SERVER['HTTP_USER_AGENT']);
+      $this->isBrowserConfigured = true;
+    }
+    
+    return $this->browser;
+  }
+  
+  public function setBrowser(dmBrowser $browser)
+  {
+    $this->browser = $browser;
+  }
+  
+  /*
+   * Cache methods
+   */
+  public function getCache($cacheKey)
   {
     if(isset($this->cache[$cacheKey]))
     {
@@ -109,7 +108,7 @@ abstract class dmUser extends sfGuardSecurityUser implements dmMicroCacheInterfa
   }
   
   public function can($credentials)
-	{
+  {
     if (!$this->getGuardUser())
     {
       $can = false;
@@ -136,18 +135,18 @@ abstract class dmUser extends sfGuardSecurityUser implements dmMicroCacheInterfa
     }
 
     return $can;
-	}
+  }
 
-	/*
-	 * Adds a value to a flash array
-	 */
-	public function addFlash($name, $value, $persist = true)
-	{
-		return $this->setFlash($name, array_unique(array_merge(
-		  $this->getFlash($name, array()),
-		  is_array($value) ? $value : array($value)
-		)), $persist);
-	}
+  /*
+   * Adds a value to a flash array
+   */
+  public function addFlash($name, $value, $persist = true)
+  {
+    return $this->setFlash($name, array_unique(array_merge(
+      $this->getFlash($name, array()),
+      is_array($value) ? $value : array($value)
+    )), $persist);
+  }
 
   public function signOut()
   {
@@ -179,11 +178,11 @@ abstract class dmUser extends sfGuardSecurityUser implements dmMicroCacheInterfa
   {
     return $this->isSuperAdmin;
   }
-	
-	/*
-	 * Log methods
-	 */
-	public function logInfo($message, $persist = true)
+  
+  /*
+   * Log methods
+   */
+  public function logInfo($message, $persist = true)
   {
     return $this->addFlash('dm_log_info', $message, $persist);
   }
@@ -224,12 +223,12 @@ abstract class dmUser extends sfGuardSecurityUser implements dmMicroCacheInterfa
   
   public function getGuardUserId()
   {
-  	if ($guardUser = $this->getGuardUser())
-  	{
-  		return $guardUser->get('id');
-  	}
-  	
-  	return null;
+    if ($guardUser = $this->getGuardUser())
+    {
+      return $guardUser->get('id');
+    }
+    
+    return null;
   }
 
 }

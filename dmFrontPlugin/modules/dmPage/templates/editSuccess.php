@@ -7,31 +7,31 @@ echo £('div.dm.dm_page_edit_wrap',
 
   £('div.dm.dm_page_edit.dm_tabbed_form',
 
-		£('ul.tabs',
-		  £('li', £link('#dm_page_edit_seo')->text(__('Seo'))).
-		  £('li', £link('#dm_page_edit_integration')->text(__('Integration'))).
+    £('ul.tabs',
+      £('li', £link('#dm_page_edit_seo')->text(__('Seo'))).
+      £('li', £link('#dm_page_edit_integration')->text(__('Integration'))).
       £('li', £link('#dm_page_edit_publication')->text(__('Publication')))
-		).
+    ).
 
     £('div#dm_page_edit_seo',
-		  £('ul.dm_form_elements',
-		    $form['slug']->renderRow().
-		    $form['name']->renderRow().
-		    $form['title']->renderRow().
-		    $form['h1']->renderRow().
-		    $form['description']->renderRow().
-		    (isset($form['keywords']) ? $form['keywords']->renderRow() : '')
-		  )
-		).
+      £('ul.dm_form_elements',
+        $form['slug']->renderRow().
+        $form['name']->renderRow().
+        $form['title']->renderRow().
+        $form['h1']->renderRow().
+        $form['description']->renderRow().
+        (isset($form['keywords']) ? $form['keywords']->renderRow() : '')
+      )
+    ).
 
-		£('div#dm_page_edit_integration',
-		  £('ul.dm_form_elements',
-		    (isset($form['parent_id']) ? $form['parent_id']->renderRow() : '').
-		    $form['dm_layout_id']->renderRow().
-		    $form['module']->renderRow().
-		    $form['action']->renderRow()
-		  )
-		).
+    £('div#dm_page_edit_integration',
+      £('ul.dm_form_elements',
+        (isset($form['parent_id']) ? $form['parent_id']->renderRow() : '').
+        $form['dm_layout_id']->renderRow().
+        $form['module']->renderRow().
+        $form['action']->renderRow()
+      )
+    ).
 
     £('div#dm_page_edit_publication',
       £('ul.dm_form_elements',

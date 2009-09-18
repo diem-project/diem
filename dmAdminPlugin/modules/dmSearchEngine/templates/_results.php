@@ -2,8 +2,8 @@
 
 if (!$pager)
 {
-	echo £('h2', __('No results'));
-	return;
+  echo £('h2', __('No results'));
+  return;
 }
 
 //include_partial('pager', array('pager' => $pager));
@@ -17,9 +17,9 @@ echo £o("ol.search_results.clearfix start=".$pager->getFirstIndice());
 foreach($pager->getResults() as $result)
 {
   echo £("li.search_result.ml20.mb5",
-		£("span.score.mr10", round(100*$result->getScore())."%").
-		£link('app:front/'.$result->getPage()->slug)
-		->text(£('strong', $result->getPage()->name).£('span.ml10', $result->getPage()->description))
+    £("span.score.mr10", round(100*$result->getScore())."%").
+    £link('app:front/'.$result->getPage()->slug)
+    ->text(£('strong', $result->getPage()->name).£('span.ml10', $result->getPage()->description))
   );
 }
 

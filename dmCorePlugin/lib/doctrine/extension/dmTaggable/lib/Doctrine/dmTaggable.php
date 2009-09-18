@@ -34,51 +34,51 @@
 class Doctrine_dmTaggable extends Doctrine_Taggable
 {
 
-	public function __construct(array $options = array())
-	{
-		$this->_options = $options;
+  public function __construct(array $options = array())
+  {
+    $this->_options = $options;
 
-		$this->_options['generateFiles']  = true;
-		$this->_options['generatePath']   = sfConfig::get('sf_lib_dir').'/model/doctrine';
-		$this->_options['builderOptions'] = sfConfig::get('doctrine_model_builder_options');
-	}
+    $this->_options['generateFiles']  = true;
+    $this->_options['generatePath']   = sfConfig::get('sf_lib_dir').'/model/doctrine';
+    $this->_options['builderOptions'] = sfConfig::get('doctrine_model_builder_options');
+  }
 
-	public function setUp()
-	{
-		$tag = new Doctrine_dmTaggable_Tag();
-		$tag->setOption('parent', $this);
-		$tag->setOption('tagField', $this->_options['tagField']);
-		$this->addChild($tag);
-	}
+  public function setUp()
+  {
+    $tag = new Doctrine_dmTaggable_Tag();
+    $tag->setOption('parent', $this);
+    $tag->setOption('tagField', $this->_options['tagField']);
+    $this->addChild($tag);
+  }
 
 
-	public function buildTable()
-	{
-		// Bind model
-		$conn = $this->_options['table']->getConnection();
-		$conn->getManager()->bindComponent($this->_options['className'], $conn->getName());
+  public function buildTable()
+  {
+    // Bind model
+    $conn = $this->_options['table']->getConnection();
+    $conn->getManager()->bindComponent($this->_options['className'], $conn->getName());
 
-		// Create table
-		$this->_table = new myDoctrineTable($this->_options['className'], $conn);
+    // Create table
+    $this->_table = new myDoctrineTable($this->_options['className'], $conn);
 
-		// If custom table name set then lets use it
-		if (isset($this->_options['tableName']) && $this->_options['tableName']) {
-			$this->_table->setTableName($this->_options['tableName']);
-		}
+    // If custom table name set then lets use it
+    if (isset($this->_options['tableName']) && $this->_options['tableName']) {
+      $this->_table->setTableName($this->_options['tableName']);
+    }
 
-		// Maintain some options from the parent table
-		$options = $this->_options['table']->getOptions();
+    // Maintain some options from the parent table
+    $options = $this->_options['table']->getOptions();
 
-		$newOptions = array();
-		$maintain = array('type', 'collate', 'charset'); // This list may need updating
-		foreach ($maintain as $key) {
-			if (isset($options[$key])) {
-				$newOptions[$key] = $options[$key];
-			}
-		}
+    $newOptions = array();
+    $maintain = array('type', 'collate', 'charset'); // This list may need updating
+    foreach ($maintain as $key) {
+      if (isset($options[$key])) {
+        $newOptions[$key] = $options[$key];
+      }
+    }
 
-		$this->_table->setOptions($newOptions);
+    $this->_table->setOptions($newOptions);
 
-		$conn->addTable($this->_table);
-	}
+    $conn->addTable($this->_table);
+  }
 }

@@ -3,38 +3,38 @@
 class dmAdminMenu
 {
 
-	protected
-	$dispatcher,
-	$user,
-	$i18n,
-	$routing;
+  protected
+  $dispatcher,
+  $user,
+  $i18n,
+  $routing;
 
-	public function __construct(sfEventDispatcher $dispatcher, dmUser $user, dmI18n $i18n, sfPatternRouting $routing)
-	{
-	  $this->dispatcher = $dispatcher;
+  public function __construct(sfEventDispatcher $dispatcher, dmUser $user, dmI18n $i18n, sfPatternRouting $routing)
+  {
+    $this->dispatcher = $dispatcher;
     $this->user = $user;
-		$this->i18n = $i18n;
-		$this->routing = $routing;
-		
-		$this->initialize();
-	}
-	
-	public function initialize()
-	{
-	}
+    $this->i18n = $i18n;
+    $this->routing = $routing;
+    
+    $this->initialize();
+  }
+  
+  public function initialize()
+  {
+  }
 
-	public function load()
-	{
-		$menu = $this->getModuleStructureMenu();
-		
-		$this->dispatcher->notify(new sfEvent($this, 'dm.admin_menu.loaded', $menu));
+  public function load()
+  {
+    $menu = $this->getModuleStructureMenu();
+    
+    $this->dispatcher->notify(new sfEvent($this, 'dm.admin_menu.loaded', $menu));
 
-		return $menu;
-	}
-	
-	protected function getModuleStructureMenu()
-	{
-	  $menu = array();
+    return $menu;
+  }
+  
+  protected function getModuleStructureMenu()
+  {
+    $menu = array();
 
     foreach(dmModuleManager::getTypes() as $type_name => $type)
     {
@@ -50,17 +50,17 @@ class dmAdminMenu
     }
     
     return $menu;
-	}
+  }
 
   protected function getTypeMenu(dmModuleType $type)
   {
     $spaceMenu = array();
     foreach($type->getSpaces() as $spaceName => $space)
     {
-    	if ($space->hasModules() && $sm = $this->getSpaceMenu($space))
-    	{
+      if ($space->hasModules() && $sm = $this->getSpaceMenu($space))
+      {
         $spaceMenu[$spaceName] = $sm;
-    	}
+      }
     }
     
     if(empty($spaceMenu))
@@ -81,23 +81,23 @@ class dmAdminMenu
     {
       if(!$this->routing->hasRouteName($module->getUnderscore()))
       {
-    		continue;
-    	}
-    	
-    	if ($module->getParam('credentials') && !$this->user->can($module->getParam('credentials')))
-    	{
-    	  continue;
-    	}
-    	
-	    $moduleMenu[$moduleKey] = array(
-	      'name' => $this->i18n->__($module->getPlural()),
-	      'link' => $this->routing->generate($module->getUnderscore())
-	    );
+        continue;
+      }
+      
+      if ($module->getParam('credentials') && !$this->user->can($module->getParam('credentials')))
+      {
+        continue;
+      }
+      
+      $moduleMenu[$moduleKey] = array(
+        'name' => $this->i18n->__($module->getPlural()),
+        'link' => $this->routing->generate($module->getUnderscore())
+      );
     }
     
     if(empty($moduleMenu))
     {
-    	return null;
+      return null;
     }
     
     return array(

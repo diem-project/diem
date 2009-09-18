@@ -2,13 +2,13 @@
 
 class dmFrontPageEditHelper extends dmFrontPageHelper
 {
-	protected
-	  $user;
-	  
-	public function setUser(dmUser $user)
-	{
-	  $this->user = $user;
-	}
+  protected
+    $user;
+    
+  public function setUser(dmUser $user)
+  {
+    $this->user = $user;
+  }
 
   public function renderZone(array $zone)
   {

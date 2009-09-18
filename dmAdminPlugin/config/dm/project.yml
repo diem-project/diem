@@ -4,10 +4,10 @@ default:
     catalogue:            dm
     
   html:
-    validate:             true           # Validates Html in admin ( credential: html_validate_admin )
+    validate:             true                      # Validates Html in admin ( credential: html_validate_admin )
     doctype:
-      name:               'html'       # Doctype ( 'html', 'xhtml' )
-      version:            '5'         # Doctype xhtml version ( '1.0', '1.1' ) or html version ( '4', '5' )
+      name:               'html'                    # Doctype ( 'html', 'xhtml' )
+      version:            '5'                       # Doctype xhtml version ( '1.0', '1.1' ) or html version ( '4', '5' )
     
   pageBar:
     enabled:              true
@@ -19,8 +19,11 @@ default:
     max_per_page:         [ 3, 5, 10, 15, 20, 30, 50, 100, ∞ ]  # admin lists paginators
     list_truncate:        200                                   # truncate big descriptions in admin lists
     
-  console:                # emulate a linux shell
-                          # commands available
+  console:                                          # emulate a linux shell
+                                                    # commands available
     commands:             'sf man ll ls pwd cat mkdir rm cp mv touch chmod free df find clear'
-    alias:                # aliases available
+    alias:                                          # aliases available
       'll':               'ls -l'
+
+  service:                                          # Dependency Injection Container configuration
+    container_base_class: dmAdminBaseServiceContainer # The service container base class

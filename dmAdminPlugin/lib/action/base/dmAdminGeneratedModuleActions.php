@@ -88,7 +88,7 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
       
     if ($count)
     {
-      $this->getDmContext()->getPageTreeWatcher()->addModifiedTable($table);
+      $this->dmContext->getService('page_tree_watcher')->addModifiedTable($table);
     }
 
     $this->getUser()->logInfo('The selected items have been modified successfully');

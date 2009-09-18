@@ -2,76 +2,88 @@
 
 abstract class dmHtmlTag
 {
+  protected static
+  $dmContext;
 
-	protected
-	  $options = array('class' => array()),
+  protected
+    $options = array('class' => array()),
     $attributesToRemove = array(),
     $emptyAttributesToRemove = array('class');
 
-	abstract public function render();
+  abstract public function render();
 
+  public function initialize()
+  {
+    
+  }
+  
   public function __toString()
   {
-  	try
-  	{
+    try
+    {
       $string = $this->render();
-  	}
-  	catch(Exception $e)
-  	{
-  		if (sfConfig::get('sf_debug'))
-  		{
-  		  $string = $e->getMessage();
-  		}
-  		else
-  		{
-  			$string = ' ';
-  		}
-  	}
-  	return $string;
+    }
+    catch(Exception $e)
+    {
+      if (sfConfig::get('dm_debug'))
+      {
+        throw $e;
+      }
+      elseif (sfConfig::get('sf_debug'))
+      {
+        $string = $e->getMessage();
+      }
+      else
+      {
+        $string = ' ';
+      }
+    }
+    
+    return $string;
   }
 
-	public function set($name, $value = null)
-	{
-		if(is_array($name))
-		{
-			foreach($name as $n => $v)
-			{
-				$this->set($n, $v);
-			}
-		}
-		elseif (null !== $value)
-		{
-			$this->options[$name] = $value;
-		}
-		/*
-		 * As value is null,
-		 * name probably contains inlined data
-		 */
-		else
-		{
-	    if ($first_space_pos = strpos($name, " "))
-	    {
-	      $opt_string = substr($name, $first_space_pos + 1);
-	      $name = substr($name, 0, $first_space_pos);
-	      // DMS STYLE - string opt in name
-	      dmString::retrieveOptFromString($opt_string, $this->options);
-	    }
+  public function set($name, $value = null)
+  {
+    if(is_array($name))
+    {
+      foreach($name as $n => $v)
+      {
+        $this->set($n, $v);
+      }
+    }
+    elseif (null !== $value)
+    {
+      $this->options[$name] = $value;
+    }
+    /*
+     * As value is null,
+     * name probably contains inlined data
+     */
+    else
+    {
+      if ($firstSpacePos = strpos($name, " "))
+      {
+        $stringOpt = substr($name, $firstSpacePos + 1);
+        $name = substr($name, 0, $firstSpacePos);
+        // DMS STYLE - string opt in name
+        dmString::retrieveOptFromString($stringOpt, $this->options);
+      }
 
-	    // JQUERY STYLE - css expression
-	    dmString::retrieveCssFromString($name, $this->options);
-		}
-		
+      // JQUERY STYLE - css expression
+      dmString::retrieveCssFromString($name, $this->options);
+    }
+    
     return $this;
-	}
-	
-	/*
-	 * get an option by key
-	 * @return mixed option value or default
-	 */
-	public function get($key, $default = null)
-	{
-		return isset($this->options[$key]) ? $this->options[$key] : $default;
-	}
+  }
+  
+  /*
+   * get an option by key
+   * @return mixed option value or default
+   */
+  public function get($key, $default = null)
+  {
+    return isset($this->options[$key]) ? $this->options[$key] : $default;
+  }
 
   public function addClass($class)
   {
@@ -83,7 +95,7 @@ abstract class dmHtmlTag
   {
     if($this->hasClass($class))
     {
-    	unset($this['class'][$class]);
+      unset($this['class'][$class]);
     }
     return $this;
   }
@@ -100,7 +112,7 @@ abstract class dmHtmlTag
 
   protected function getHtmlAttributes()
   {
-  	return $this->convertAttributesToHtml($this->prepareAttributesForHtml($this->options));
+    return $this->convertAttributesToHtml($this->prepareAttributesForHtml($this->options));
   }
 
   protected function prepareAttributesForHtml(array $attributes)
@@ -110,9 +122,9 @@ abstract class dmHtmlTag
 
   protected function convertAttributesToHtml(array $attributes)
   {
-  	/*
-  	 * Implode classes
-  	 */
+    /*
+     * Implode classes
+     */
     if (isset($attributes['class']))
     {
       $attributes['class'] = dmArray::toHtmlCssClasses($attributes['class']);
@@ -123,10 +135,10 @@ abstract class dmHtmlTag
      */
     foreach($this->attributesToRemove as $key)
     {
-    	if (isset($attributes[$key]))
-    	{
-    		unset($attributes[$key]);
-    	}
+      if (isset($attributes[$key]))
+      {
+        unset($attributes[$key]);
+      }
     }
     
     /*
@@ -137,15 +149,15 @@ abstract class dmHtmlTag
     /*
      * Convert attributes array into html string params
      */
-  	$htmlAttributesString = '';
+    $htmlAttributesString = '';
     foreach ($attributes as $key => $value)
     {
       if (null !== $value)
       {
-//      	if(is_array($value))
-//      	{
-//      		dmDebug::kill($attributes, $key, $value);
-//      	}
+//        if(is_array($value))
+//        {
+//          dmDebug::kill($attributes, $key, $value);
+//        }
         $htmlAttributesString .= ' '.$key.'="'.htmlspecialchars($value, ENT_COMPAT, 'UTF-8').'"';
       }
     }
@@ -170,4 +182,8 @@ abstract class dmHtmlTag
   }
 
 
+  public static function setDmContext(dmContext $dmContext)
+  {
+    self::$dmContext = $dmContext;
+  }
 }

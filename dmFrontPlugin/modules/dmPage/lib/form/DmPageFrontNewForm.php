@@ -5,7 +5,7 @@ class DmPageFrontNewForm extends DmPageForm
 
   public function configure()
   {
-  	parent::configure();
+    parent::configure();
 
     $this->useFields(array());
     
@@ -49,7 +49,7 @@ class DmPageFrontNewForm extends DmPageForm
     $parentChoices = array();
     foreach($_parentChoices as $values)
     {
-    	$parentChoices[$values[0]] = str_repeat('&nbsp;&nbsp;', $values[1]).'-&nbsp;'.$values[2];
+      $parentChoices[$values[0]] = str_repeat('&nbsp;&nbsp;', $values[1]).'-&nbsp;'.$values[2];
     }
     
     return $parentChoices;
@@ -74,12 +74,12 @@ class DmPageFrontNewForm extends DmPageForm
     
     if (dmDb::query('DmPage p')->where('p.module = ? AND p.action = ?', array($page->module, $action))->exists())
     {
-    	$iterator = 2;
-    	while(dmDb::query('DmPage p')->where('p.module = ? AND p.action = ?', array($page->module, $action.$iterator))->exists())
-    	{
-    		$iterator++;
-    	}
-    	$action .= $iterator;
+      $iterator = 2;
+      while(dmDb::query('DmPage p')->where('p.module = ? AND p.action = ?', array($page->module, $action.$iterator))->exists())
+      {
+        $iterator++;
+      }
+      $action .= $iterator;
     }
     
     $page->action = $action;
@@ -99,11 +99,11 @@ class DmPageFrontNewForm extends DmPageForm
     {
       $values['slug'] = dmString::slugify($values['slug'], true);
       
-    	$existingPageName = dmDb::query('DmPageTranslation t')
-    	->where('t.lang = ? AND t.slug = ?', array(dm::getUser()->getCulture(), $values['slug']))
+      $existingPageName = dmDb::query('DmPageTranslation t')
+      ->where('t.lang = ? AND t.slug = ?', array(dm::getUser()->getCulture(), $values['slug']))
       ->select('t.name')
       ->fetchValue();
-    	
+      
       if($existingPageName)
       {
         $error = new sfValidatorError($validator, dm::getI18n()->__('The page "%1%" uses this slug', array('%1%' => $existingPageName)));

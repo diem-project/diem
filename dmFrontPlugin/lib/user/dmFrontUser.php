@@ -69,7 +69,7 @@ class dmFrontUser extends dmUser
   
   public function getShowToolBar()
   {
-  	return $this->can('tool_bar_front ') && $this->getAttribute('dm_front_show_tool_bar', true);
+    return $this->can('tool_bar_front ') && $this->getAttribute('dm_front_show_tool_bar', true);
   }
   
   public function setShowToolBar($value)

@@ -12,7 +12,7 @@ echo £o('div#dm_tool_bar.dm.clearfix');
   
   if($sf_user->can('code_editor'))
   {
-  	echo £link('+/dmCodeEditor/launch')->textTitle(__('Code Editor'))->set('.code_editor.widget16.s16block.s16_code_editor');
+    echo £link('+/dmCodeEditor/launch')->textTitle(__('Code Editor'))->set('.code_editor.widget16.s16block.s16_code_editor');
   }
 
   if (isset($cultureSelect))
@@ -29,7 +29,7 @@ echo £o('div#dm_tool_bar.dm.clearfix');
 
   if ($sf_request->useTidy() && $sf_user->can('tidy_output'))
   {
-  	echo '__DM_TIDY_OUTPUT__';
+    echo '__DM_TIDY_OUTPUT__';
   }
   
   if ($sf_user->can('page_edit'))
@@ -63,7 +63,7 @@ echo £o('div#dm_tool_bar.dm.clearfix');
   
   if (sfConfig::get('sf_web_debug'))
   {
-  	echo '__SF_WEB_DEBUG__';
+    echo '__SF_WEB_DEBUG__';
   }
 
 echo £c('div');

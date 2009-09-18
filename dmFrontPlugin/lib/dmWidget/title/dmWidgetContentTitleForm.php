@@ -3,16 +3,16 @@
 class dmWidgetContentTitleForm extends dmWidgetPluginForm
 {
 
-	protected static
-	$tags = array('h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'div');
+  protected static
+  $tags = array('h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'div');
 
-	public function getTags()
-	{
-		return dmArray::valueToKey(self::$tags);
-	}
+  public function getTags()
+  {
+    return dmArray::valueToKey(self::$tags);
+  }
 
-	public function configure()
-	{
+  public function configure()
+  {
     $this->widgetSchema['text'] = new sfWidgetFormTextarea(array(), array(
       'rows' => 2
     ));
@@ -22,6 +22,6 @@ class dmWidgetContentTitleForm extends dmWidgetPluginForm
     $this->validatorSchema['tag']  = new sfValidatorChoice(array('choices' => self::getTags(), 'required' => true));
 
     parent::configure();
-	}
+  }
 
 }

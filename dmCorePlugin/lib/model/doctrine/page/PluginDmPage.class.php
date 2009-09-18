@@ -13,8 +13,8 @@
 abstract class PluginDmPage extends BaseDmPage
 {
 
-	protected static
-	$autoSeoFields = array('slug', 'name', 'title', 'h1', 'description', 'keywords');
+  protected static
+  $autoSeoFields = array('slug', 'name', 'title', 'h1', 'description', 'keywords');
 
   /*
    * An automatic page represents an myDoctrineRecord object ( article, product... )
@@ -49,17 +49,17 @@ abstract class PluginDmPage extends BaseDmPage
     }
     
     return $this->setCache('record', $this->hasRecord() ?
-	    $this->getDmModule()->getTable()->find($this->get('record_id'))
-	    : false
+      $this->getDmModule()->getTable()->find($this->get('record_id'))
+      : false
     );
   }
 
   public function setRecord(myDoctrineRecord $record)
   {
-  	if ($record->getDmModule()->getKey() != $this->get('module'))
-  	{
-  		throw new dmException('Assigning record with wrong module');
-  	}
+    if ($record->getDmModule()->getKey() != $this->get('module'))
+    {
+      throw new dmException('Assigning record with wrong module');
+    }
 
     return $this->setCache('record', $record);
   }
@@ -100,7 +100,7 @@ abstract class PluginDmPage extends BaseDmPage
 
     if(!$pageView)
     {
-    	$pageView = dmDb::table('DmPageView')->createFromModuleAndAction($this->get('module'), $this->get('action'));
+      $pageView = dmDb::table('DmPageView')->createFromModuleAndAction($this->get('module'), $this->get('action'));
     }
 
     return $this->setCache('page_view', $pageView);
@@ -117,17 +117,17 @@ abstract class PluginDmPage extends BaseDmPage
       throw new dmException('Assigning page view with wrong action');
     }
 
-  	return $this->setCache('page_view', $pageView);
+    return $this->setCache('page_view', $pageView);
   }
 
   public function getModuleAction()
   {
-  	return $this->get('module').'.'.$this->get('action');
+    return $this->get('module').'.'.$this->get('action');
   }
 
   public function isModuleAction($module, $action)
   {
-  	return $this->module == $module && $this->action == $action;
+    return $this->module == $module && $this->action == $action;
   }
 
   /*
@@ -136,12 +136,12 @@ abstract class PluginDmPage extends BaseDmPage
    */
   public function getNodeParentId()
   {
-  	if ($this->getNode()->isRoot())
-  	{
-  		return null;
-  	}
+    if ($this->getNode()->isRoot())
+    {
+      return null;
+    }
 
-  	return $this->getTable()->createQuery('p')
+    return $this->getTable()->createQuery('p')
     ->select('p.id as id')
     ->where("p.lft < ? AND p.rgt > ?", array($this->get('lft'), $this->get('rgt')))
     ->orderBy("p.rgt asc")
@@ -151,21 +151,21 @@ abstract class PluginDmPage extends BaseDmPage
 
   public function save(Doctrine_Connection $conn = null)
   {
-  	if ($this->isModified())
-  	{
+    if ($this->isModified())
+    {
       $this->getPageView();
 
       if ($this->getIsAutomatic())
-	    {
-	      if (!($this->getRecord() instanceof myDoctrineRecord))
-	      {
-	        throw new dmException(sprintf(
-	          '%s automatic page can not be saved because it has no object for record_id = %s',
-	          $this, $this->record_id
-	        ));
-	      }
-	    }
-  	}
+      {
+        if (!($this->getRecord() instanceof myDoctrineRecord))
+        {
+          throw new dmException(sprintf(
+            '%s automatic page can not be saved because it has no object for record_id = %s',
+            $this, $this->record_id
+          ));
+        }
+      }
+    }
 
 //    if ($this->getNode()->isRoot() && $this->slug !== '')
 //    {
@@ -187,29 +187,29 @@ abstract class PluginDmPage extends BaseDmPage
     );
   }
 
-	/*
+  /*
    * SEO methods
    */
 
   public function getDmAutoSeo()
   {
-  	if ($this->hasCache('auto_seo'))
-  	{
-  		return $this->getCache('auto_seo');
-  	}
+    if ($this->hasCache('auto_seo'))
+    {
+      return $this->getCache('auto_seo');
+    }
 
-  	if (!$autoSeo = dmDb::table('DmAutoSeo')->findOneByModuleAndAction($this->get('module'), $this->get('action')))
-  	{
-  		$autoSeo = dmDb::table('DmAutoSeo')->createFromModuleAndAction($this->get('module'), $this->get('action'))->saveGet();
-  	}
+    if (!$autoSeo = dmDb::table('DmAutoSeo')->findOneByModuleAndAction($this->get('module'), $this->get('action')))
+    {
+      $autoSeo = dmDb::table('DmAutoSeo')->createFromModuleAndAction($this->get('module'), $this->get('action'))->saveGet();
+    }
 
-  	return $this->setCache('auto_seo', $autoSeo);
+    return $this->setCache('auto_seo', $autoSeo);
   }
 
   public function getMyAutoSeoFields()
   {
-  	$fields = array();
-  	
+    $fields = array();
+    
     foreach(self::getAutoSeoFields() as $field)
     {
       if ($this->isSeoAuto($field))
@@ -232,7 +232,7 @@ abstract class PluginDmPage extends BaseDmPage
    */
   public function isSeoAuto($seoField)
   {
-  	return strpos($this->get('autoMod'), $seoField{0}) !== false;
+    return strpos($this->get('autoMod'), $seoField{0}) !== false;
   }
   
   /*
@@ -245,28 +245,28 @@ abstract class PluginDmPage extends BaseDmPage
    */
   public function updateAutoModFromModified()
   {
-  	if (!$this->getIsAutomatic())
-  	{
-  		return;
-  	}
-  	
-  	$modifiedFields = $this->Translation[$this->lang]->getModified();
-  	foreach(self::getAutoSeoFields() as $seoField)
-  	{
-  	  if(isset($modifiedFields[$seoField]))
-  	  {
-  	  	if (empty($modifiedFields[$seoField]) && !$this->isSeoAuto($seoField))
-  	  	{
+    if (!$this->getIsAutomatic())
+    {
+      return;
+    }
+    
+    $modifiedFields = $this->Translation[$this->lang]->getModified();
+    foreach(self::getAutoSeoFields() as $seoField)
+    {
+      if(isset($modifiedFields[$seoField]))
+      {
+        if (empty($modifiedFields[$seoField]) && !$this->isSeoAuto($seoField))
+        {
           $this->set('auto_mod', $this->get('auto_mod').$seoField{0});
-  	  	}
-  	  	if (!empty($modifiedFields[$seoField]) && $this->isSeoAuto($seoField))
-  	  	{
-  	  	  $this->set('auto_mod', str_replace($seoField{0}, '', $this->get('auto_mod')));
-  	  	}
-  	  }
-  	}
-  	
-  	return $this;
+        }
+        if (!empty($modifiedFields[$seoField]) && $this->isSeoAuto($seoField))
+        {
+          $this->set('auto_mod', str_replace($seoField{0}, '', $this->get('auto_mod')));
+        }
+      }
+    }
+    
+    return $this;
   }
   
   /*
@@ -276,19 +276,19 @@ abstract class PluginDmPage extends BaseDmPage
    */
   public function initializeManualPage()
   {
-  	$zone = dmDb::create('DmZone');
-  	$widget = dmDb::create('DmWidget', array(
-  	  'module' => 'dmWidgetContent',
-  	  'action' => 'title',
-  	  'values' => array(
-  	    'tag' => 'h1',
-  	    'text' => $this->name 
-  	  )
-  	));
-  	
-  	$zone->Widgets[] = $widget;
-  	$this->PageView->Area->Zones[] = $zone;
-  	$this->PageView->Area->save();
+    $zone = dmDb::create('DmZone');
+    $widget = dmDb::create('DmWidget', array(
+      'module' => 'dmWidgetContent',
+      'action' => 'title',
+      'values' => array(
+        'tag' => 'h1',
+        'text' => $this->name 
+      )
+    ));
+    
+    $zone->Widgets[] = $widget;
+    $this->PageView->Area->Zones[] = $zone;
+    $this->PageView->Area->save();
   }
   
   /*
@@ -297,12 +297,12 @@ abstract class PluginDmPage extends BaseDmPage
    */
   public function getIndexableContent()
   {
-  	$command = sprintf('dmFront:page-indexable-content %d %s', $this->get('id'), self::getDefaultCulture());
-  	
-  	$filesystem = dmContext::getInstance()->getFilesystem();
-  	
-  	$filesystem->sf($command);
-  	
-  	return $filesystem->getLastExec('output');
+    $command = sprintf('dmFront:page-indexable-content %d %s', $this->get('id'), self::getDefaultCulture());
+    
+    $filesystem = dmContext::getInstance()->getFilesystem();
+    
+    $filesystem->sf($command);
+    
+    return $filesystem->getLastExec('output');
   }
 }

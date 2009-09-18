@@ -12,8 +12,8 @@ class dmCodeEditorActions extends dmAdminBaseActions
 
   public function executeIndex(sfWebRequest $request)
   {
-  	$treeJson = array(
-  	  array(
+    $treeJson = array(
+      array(
         'attributes' => array(
           'id' => dmCodeEditorTools::encodeUrlTree('/')
         ),
@@ -26,9 +26,9 @@ class dmCodeEditorActions extends dmAdminBaseActions
         ),
         'children' => $this->getTreeJson(sfCOnfig::get('sf_root_dir'))
       )
-  	);
-  	
-  	$this->getResponse()->addJavascriptConfig('dm_tree_json', $treeJson);
+    );
+    
+    $this->getResponse()->addJavascriptConfig('dm_tree_json', $treeJson);
   }
   
   public function executeConstructTree(sfWebRequest $request)
@@ -141,7 +141,7 @@ class dmCodeEditorActions extends dmAdminBaseActions
     
     try
     {
-      $this->getDmContext()->getFileBackup()->save($file);
+      $this->dmContext->getService('file_backup')->save($file);
     }
     catch(dmException $e)
     {
@@ -200,13 +200,13 @@ class dmCodeEditorActions extends dmAdminBaseActions
         
         if($copyDir = $this->getUser()->getAttribute('code_editor_file_copy_cut'))
         {
-          if(!$this->getDmContext()->getFilesystem()->copyRecursive(dmCodeEditorTools::decodeUrlTreeForCopy($copyDir),dmCodeEditorTools::decodeUrlTreeForCopy($pasteDir)))
+          if(!$this->dmContext->getFilesystem()->copyRecursive(dmCodeEditorTools::decodeUrlTreeForCopy($copyDir),dmCodeEditorTools::decodeUrlTreeForCopy($pasteDir)))
           {
             return $this->renderText('[KO] | An error occurred ');
           }
           if($this->getUser()->getAttribute('code_editor_is_cut') == 'cut')
           {
-            if(!$this->getDmContext()->getFilesystem()->unlink($copyDir))
+            if(!$this->dmContext->getFilesystem()->unlink($copyDir))
             {
               return $this->renderText('[KO] | An error occurred while deleting the file or dir : '.$copyDir);
             }
@@ -243,7 +243,7 @@ class dmCodeEditorActions extends dmAdminBaseActions
     {
       if(file_exists($deleteDir) && is_writable($deleteDir))
       {
-        if($this->getDmContext()->getFilesystem()->unlink($deleteDir))
+        if($this->dmContext->getFilesystem()->unlink($deleteDir))
         {
           return $this->renderText('[OK] | Successfully deleted');
         }
@@ -294,7 +294,7 @@ class dmCodeEditorActions extends dmAdminBaseActions
       {
         if($request->getParameter('create') == 'file')
         {
-          if($this->getDmContext()->getFilesystem()->touch($newName))
+          if($this->dmContext->getFilesystem()->touch($newName))
           {
             return $this->renderText('[OK] | Succefully created new file : '.basename($newName));
           }

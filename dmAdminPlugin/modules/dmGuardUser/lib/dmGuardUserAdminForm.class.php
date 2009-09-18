@@ -4,8 +4,8 @@ class dmGuardUserAdminForm extends sfGuardUserAdminForm
 {
   public function configure()
   {
-  	parent::configure();
-//  	dmDebug::kill($this->getObject()->Profile);
+    parent::configure();
+//    dmDebug::kill($this->getObject()->Profile);
     $this->embedForm('Profile', $this->getProfileForm($this->getObject()->Profile));
   }
   

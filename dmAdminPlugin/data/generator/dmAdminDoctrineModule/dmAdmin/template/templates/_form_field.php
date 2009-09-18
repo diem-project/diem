@@ -11,10 +11,10 @@
 [?php elseif(isset($form[$name])): ?]
   <div class="[?php echo $divClass ?][?php $form[$name]->hasError() and print ' errors' ?]">
     [?php if ($form[$name]->hasError()): ?]
-		  <div class="error">
-	      <div class="s16 s16_error">[?php echo __((string) $form[$name]->getError()) ?]</div>
-		  </div>
-		[?php endif; ?]
+      <div class="error">
+        <div class="s16 s16_error">[?php echo __((string) $form[$name]->getError()) ?]</div>
+      </div>
+    [?php endif; ?]
     <div class="sf_admin_form_row_inner clearfix">
       [?php
       

@@ -3,40 +3,40 @@
 class dmDataService extends dmService
 {
 
-	protected
-	  $datas = array(
-	    "filesystem",
-	    "permissions",
-	    "groups",
-	    "users",
+  protected
+    $datas = array(
+      "filesystem",
+      "permissions",
+      "groups",
+      "users",
       "settings",
-	    "layouts",
-	    "pages",
-	    "i18n",
-	    "media"
-	  );
+      "layouts",
+      "pages",
+      "i18n",
+      "media"
+    );
 
   public function execute()
   {
     $this->dispatcher->notify(new sfEvent($this, 'dm.data.before'));
     
-  	foreach($this->datas as $data)
-  	{
-  		$this->log("load data $data");
-  		$method = "load".dmString::camelize($data);
-  		$this->$method();
-  	}
-  	
-  	$this->dispatcher->notify(new sfEvent($this, 'dm.data.after'));
+    foreach($this->datas as $data)
+    {
+      $this->log("load data $data");
+      $method = "load".dmString::camelize($data);
+      $this->$method();
+    }
+    
+    $this->dispatcher->notify(new sfEvent($this, 'dm.data.after'));
 
-  	$cc = new dmClearCacheService($this->dispatcher, $this->formatter);
-  	$cc->execute();
+    $cc = new dmClearCacheService($this->dispatcher, $this->formatter);
+    $cc->execute();
   }
 
   
   protected function loadFilesystem()
   {
-  	dmProject::checkFilesystemPermissions();
+    dmProject::checkFilesystemPermissions();
   }
   
 
@@ -150,7 +150,7 @@ class dmDataService extends dmService
 
   protected function loadMedia()
   {
-  	dmDb::table('DmMediaFolder')->checkRoot();
+    dmDb::table('DmMediaFolder')->checkRoot();
   }
 
   protected function loadUsers()
@@ -175,11 +175,11 @@ class dmDataService extends dmService
 
   protected function loadLayouts()
   {
-  	if (!dmDb::table('DmLayout')->count())
-  	{
-	    dmDb::create('DmLayout', array('name' => 'Global'))->save();
-	    dmDb::create('DmLayout', array('name' => 'Home'))->save();
-  	}
+    if (!dmDb::table('DmLayout')->count())
+    {
+      dmDb::create('DmLayout', array('name' => 'Global'))->save();
+      dmDb::create('DmLayout', array('name' => 'Home'))->save();
+    }
   }
 
   protected function loadPages()
@@ -189,8 +189,8 @@ class dmDataService extends dmService
 
   protected function loadI18n()
   {
-  	$this->loadI18nCatalogue();
-  	$this->loadI18nTransUnit();
+    $this->loadI18nCatalogue();
+    $this->loadI18nTransUnit();
   }
 
   protected function loadI18nCatalogue()
@@ -202,11 +202,11 @@ class dmDataService extends dmService
        */
       if (!Catalogue::retrieveBySourceTargetSpace('en', $culture, 'messages'))
       {
-      	dmDb::create('Catalogue', array(
+        dmDb::create('Catalogue', array(
           'source_lang' => 'en',
-      	  'target_lang' => $culture,
-      	  'name' => 'messages.'.$culture
-      	))->save();
+          'target_lang' => $culture,
+          'name' => 'messages.'.$culture
+        ))->save();
       }
 
       if ($culture != 'en' && !Catalogue::retrieveBySourceTargetSpace('en', $culture, 'dm'))
@@ -223,14 +223,14 @@ class dmDataService extends dmService
        */
       if ($culture != sfConfig::get('sf_default_culture'))
       {
-	      if (!Catalogue::retrieveBySourceTargetSpace(sfConfig::get('sf_default_culture'), $culture, 'messages'))
-	      {
-	        dmDb::create('Catalogue', array(
-	          'source_lang' => 'en',
-	          'target_lang' => $culture,
-	          'name' => 'messages.'.$culture
-	        ))->save();
-	      }
+        if (!Catalogue::retrieveBySourceTargetSpace(sfConfig::get('sf_default_culture'), $culture, 'messages'))
+        {
+          dmDb::create('Catalogue', array(
+            'source_lang' => 'en',
+            'target_lang' => $culture,
+            'name' => 'messages.'.$culture
+          ))->save();
+        }
       }
     }
   }
@@ -262,11 +262,11 @@ class dmDataService extends dmService
         {
           if (!isset($existingTranslations[$source]))
           {
-          	$addedTranslations->add(dmDb::create('TransUnit', array(
+            $addedTranslations->add(dmDb::create('TransUnit', array(
               'cat_id' => $catalogue->cat_id,
-          	  'source' => $source,
-          	  'target' => $target
-          	)));
+              'source' => $source,
+              'target' => $target
+            )));
           }
         }
         $addedTranslations->save();
@@ -431,10 +431,10 @@ class dmDataService extends dmService
     {
       if (!$group = dmDb::query('sfGuardGroup g')->where('g.name = ?', $name)->fetchRecord())
       {
-      	$group = dmDb::create('sfGuardGroup', array(
+        $group = dmDb::create('sfGuardGroup', array(
           'name' => $name,
-      	  'description' => $params['description']
-      	))->saveGet();
+          'description' => $params['description']
+        ))->saveGet();
       }
       $groups->add($group);
 

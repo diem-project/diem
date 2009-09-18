@@ -5,38 +5,38 @@
  */
 class dmAdminGeneratorBuilder
 {
-	protected static
+  protected static
   $listExcludedFields    = array('position', 'lang', 'version'),
   $formExcludedFields    = array('position', 'lang', 'version', 'created_at', 'updated_at'),
   $filterExcludedFields  = array('position', 'lang', 'version');
 
-	protected
-	$module,
-	$table;
+  protected
+  $module,
+  $table;
 
-	public function __construct(dmModule $module)
-	{
+  public function __construct(dmModule $module)
+  {
     $this->module = $module;
     $this->table = $module->getTable();
-	}
+  }
 
-	public function getTransformed($generator)
-	{
-		$yaml = sfYaml::load($generator);
+  public function getTransformed($generator)
+  {
+    $yaml = sfYaml::load($generator);
 
-		$yaml['generator']['param']['config'] = $this->getConfig();
+    $yaml['generator']['param']['config'] = $this->getConfig();
 
-		$yaml['generator']['param']['sortable'] = $this->table->isSortable();
+    $yaml['generator']['param']['sortable'] = $this->table->isSortable();
 
-		$transformed = sfYaml::dump($yaml, 6, 0);
+    $transformed = sfYaml::dump($yaml, 6, 0);
 
-		$transformed = preg_replace("|('~')|um", "~", $transformed);
+    $transformed = preg_replace("|('~')|um", "~", $transformed);
 
-		return $transformed;
-	}
+    return $transformed;
+  }
 
-	protected function getConfig()
-	{
+  protected function getConfig()
+  {
     return array(
       'actions' => $this->getActions(),
       'fields'  => $this->getFields(),
@@ -46,7 +46,7 @@ class dmAdminGeneratorBuilder
       'edit'    => $this->getEdit(),
       'new'     => $this->getNew()
     );
-	}
+  }
 
   protected function getActions()
   {
@@ -72,12 +72,12 @@ class dmAdminGeneratorBuilder
      */
     foreach($this->getBooleanFields() as $booleanField)
     {
-    	if (strpos($booleanField, 'is_') === 0)
-    	{
-	      $fields[dmString::underscore($booleanField)] = array(
-	        'label' => dmString::humanize(preg_replace('|^is_(.+)$|', '$1', $booleanField))
-	      );
-    	}
+      if (strpos($booleanField, 'is_') === 0)
+      {
+        $fields[dmString::underscore($booleanField)] = array(
+          'label' => dmString::humanize(preg_replace('|^is_(.+)$|', '$1', $booleanField))
+        );
+      }
     }
 
     return $fields;
@@ -122,10 +122,10 @@ class dmAdminGeneratorBuilder
 
     foreach($this->table->getRelationHolder()->getForeigns() as $alias => $relation)
     {
-    	if (dmModuleManager::getModuleOrNull($relation->getClass()))
-    	{
+      if (dmModuleManager::getModuleOrNull($relation->getClass()))
+      {
         $display[] = dmString::underscore($alias).'_list';
-    	}
+      }
     }
 
     foreach($this->table->getRelationHolder()->getAssociations() as $alias => $relation)
@@ -149,11 +149,11 @@ class dmAdminGeneratorBuilder
   {
     if ($this->table->hasColumn('position'))
     {
-    	$sort = array('position', 'asc');
+      $sort = array('position', 'asc');
     }
     elseif($this->table->hasColumn('created_at'))
     {
-    	$sort = array('created_at', 'desc');
+      $sort = array('created_at', 'desc');
     }
     else
     {
@@ -237,8 +237,8 @@ class dmAdminGeneratorBuilder
 
     if (in_array($this->table->getIdentifierColumnName(), $fields))
     {
-    	$sets['NONE'][] = $this->table->getIdentifierColumnName();
-    	unset($fields[$this->table->getIdentifierColumnName()]);
+      $sets['NONE'][] = $this->table->getIdentifierColumnName();
+      unset($fields[$this->table->getIdentifierColumnName()]);
     }
 
     foreach($this->getBooleanFields($fields) as $field)
@@ -259,7 +259,7 @@ class dmAdminGeneratorBuilder
 
     foreach($this->table->getRelationHolder()->getLocalMedias() as $alias => $relation)
     {
-    	$sets[dmString::humanize($relation['local'])] = array(
+      $sets[dmString::humanize($relation['local'])] = array(
         $relation['local'].'_form',
         $relation['local'].'_view'
       );
@@ -276,7 +276,7 @@ class dmAdminGeneratorBuilder
 
     foreach($this->table->getRelationHolder()->getAssociations() as $alias => $relation)
     {
-    	$associationModule = dmModuleManager::getModuleByModel($relation->getClass());
+      $associationModule = dmModuleManager::getModuleByModel($relation->getClass());
       $sets[$associationModule->getPlural()][] = dmString::underscore($alias).'_list';
     }
 
@@ -284,8 +284,8 @@ class dmAdminGeneratorBuilder
 
     foreach($fields as $field)
     {
-    	$sets['Others'][] = $field;
-    	unset($fields[$field]);
+      $sets['Others'][] = $field;
+      unset($fields[$field]);
     }
     
     return $this->removeEmptyValues($sets);
@@ -327,7 +327,7 @@ class dmAdminGeneratorBuilder
 
   protected function filterFields($fields = null, $types)
   {
-  	$fields = null === $fields ? $this->table->getColumnNames() : $fields;
+    $fields = null === $fields ? $this->table->getColumnNames() : $fields;
 
     foreach($fields as $key => $field)
     {
@@ -342,14 +342,14 @@ class dmAdminGeneratorBuilder
 
   protected function removeEmptyValues($values)
   {
-  	foreach($values as $key => $value)
-  	{
+    foreach($values as $key => $value)
+    {
       if (empty($value))
       {
-      	unset($values[$key]);
+        unset($values[$key]);
       }
-  	}
-  	return $values;
+    }
+    return $values;
   }
 
 }

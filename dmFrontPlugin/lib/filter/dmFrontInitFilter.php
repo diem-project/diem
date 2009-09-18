@@ -12,21 +12,21 @@ class dmFrontInitFilter extends dmInitFilter
     $this->redirectTrailingSlash();
 
     $this->saveApplicationUrl();
-  	
-  	try
-  	{
+    
+    try
+    {
       $this->guessPage();
-  	}
-  	catch(dmPageNotFoundException $e)
-  	{
-  		$this->handlePageNotFound();
-  	}
+    }
+    catch(dmPageNotFoundException $e)
+    {
+      $this->handlePageNotFound();
+    }
 
     $filterChain->execute();
     
     if ($this->dmContext->getPage())
     {
-	    if (sfConfig::get('dm_html_validate', true) && $this->getContext()->getUser()->can('html_validate_front') && $this->dmContext->isHtmlForHuman())
+      if (sfConfig::get('dm_html_validate', true) && $this->getContext()->getUser()->can('html_validate_front') && $this->dmContext->isHtmlForHuman())
       {
         $this->saveHtml();
       }
@@ -39,23 +39,23 @@ class dmFrontInitFilter extends dmInitFilter
   {
     if ($this->dmContext->isModuleAction('dmFront', 'page'))
     {
-	    $slug = $this->context->getRequest()->getParameter('slug');
+      $slug = $this->context->getRequest()->getParameter('slug');
 
       $page = dmDb::query('DmPage p, p.Translation t')
       ->where('t.slug = ? AND t.lang = ?', array($slug, $this->context->getUser()->getCulture()))
       ->fetchOne();
 
-		  if (!$page)
-		  {
-		  	throw new dmPageNotFoundException(sprintf('There is no page with slug %s in %s culture', $slug, $this->context->getUser()->getCulture()));
-		  }
+      if (!$page)
+      {
+        throw new dmPageNotFoundException(sprintf('There is no page with slug %s in %s culture', $slug, $this->context->getUser()->getCulture()));
+      }
     }
     elseif($this->context->getRequest()->hasParameter('dm_cpi'))
     {
-    	$page = dmDb::query('DmPage p')
-    	->where('p.id = ?', $this->context->getRequest()->getParameter('dm_cpi'))
-    	->withI18n()
-    	->fetchOne();
+      $page = dmDb::query('DmPage p')
+      ->where('p.id = ?', $this->context->getRequest()->getParameter('dm_cpi'))
+      ->withI18n()
+      ->fetchOne();
 
       if (!$page)
       {
@@ -64,7 +64,7 @@ class dmFrontInitFilter extends dmInitFilter
     }
     else
     {
-    	$page = null;
+      $page = null;
     }
 
     $this->dmContext->setPage($page);
@@ -72,13 +72,13 @@ class dmFrontInitFilter extends dmInitFilter
   
   protected function handlePageNotFound()
   {
-  	return $this->forwardTo404Page();
+    return $this->forwardTo404Page();
   }
 
   protected function forwardTo404Page()
   {
-  	dmDb::table('DmPage')->checkBasicPages();
-  	
+    dmDb::table('DmPage')->checkBasicPages();
+    
     $page = dmDb::query('DmPage p')
     ->where('p.module = ? AND p.action = ?', array('main', 'error404'))
     ->withI18n()

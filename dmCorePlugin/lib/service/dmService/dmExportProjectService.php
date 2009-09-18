@@ -5,8 +5,8 @@ class dmExportProjectService extends dmService
 
   public function execute()
   {
-  	$proj = dmConfig::getProjectKey();
-  	$tar_name = $proj."_".date("y-m-d_H-i-s");
+    $proj = dmConfig::getProjectKey();
+    $tar_name = $proj."_".date("y-m-d_H-i-s");
     $exclude = array(
       '$PROJ/.svn',
       '$PROJ/.*',
@@ -27,7 +27,7 @@ class dmExportProjectService extends dmService
 
     if (!$this->filesystem->exec($command))
     {
-    	$this->alert($this->filesystem->getLastExec('output'));
+      $this->alert($this->filesystem->getLastExec('output'));
     }
   }
 

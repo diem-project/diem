@@ -21,18 +21,18 @@ class dmAdminDoctrineGenerateAdminTask extends sfDoctrineGenerateAdminTask
    */
   protected function execute($arguments = array(), $options = array())
   {
-  	$module = dmModuleManager::getModule(dmString::modulize($arguments['route_or_model']));
-  	$arguments['module'] = $module;
-  	$arguments['route_name'] = $module->getUnderscore();
+    $module = dmModuleManager::getModule(dmString::modulize($arguments['route_or_model']));
+    $arguments['module'] = $module;
+    $arguments['route_name'] = $module->getUnderscore();
 
-  	return $this->generateForRoute($arguments, $options);
+    return $this->generateForRoute($arguments, $options);
   }
 
   protected function generateForRoute($arguments, $options)
   {
     // execute the doctrine:generate-module task
 
-  	$module = $arguments['module'];
+    $module = $arguments['module'];
 
     $task = new dmAdminDoctrineGenerateModuleTask($this->dispatcher, $this->formatter);
     $task->setCommandApplication($this->commandApplication);
@@ -42,7 +42,7 @@ class dmAdminDoctrineGenerateAdminTask extends sfDoctrineGenerateAdminTask
 
     return $task->run(array($arguments['application'], $module->getKey(), $module->getModel()), array(
       'theme'                 => $options['theme'],
-      'env'				      => $options['env'],
+      'env'              => $options['env'],
       'route-prefix'          => $module->getUnderscore(),
       'with-doctrine-route'   => true,
       'generate-in-cache'     => true,

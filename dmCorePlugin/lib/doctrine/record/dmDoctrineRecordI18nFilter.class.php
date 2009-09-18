@@ -94,31 +94,31 @@ class dmDoctrineRecordI18nFilter extends Doctrine_Record_Filter
    * @param string $value Value of the property
    * @return void
    */
-  //	public function filterGet(Doctrine_Record $record, $fieldName)
-  //	{
-  ////	  dmDebug::simpleStack();die;
-  //	  if(!isset(self::$fields[$fieldName]))
-  //	  {
-  //	    self::$fields[$fieldName] = 1;
-  //	  }
-  //	  else
-  //	  {
-  //	    ++self::$fields[$fieldName];
-  //	  }
+  //  public function filterGet(Doctrine_Record $record, $fieldName)
+  //  {
+  ////    dmDebug::simpleStack();die;
+  //    if(!isset(self::$fields[$fieldName]))
+  //    {
+  //      self::$fields[$fieldName] = 1;
+  //    }
+  //    else
+  //    {
+  //      ++self::$fields[$fieldName];
+  //    }
   ////
   //
-  //		$culture = myDoctrineRecord::getDefaultCulture();
+  //    $culture = myDoctrineRecord::getDefaultCulture();
   //
-  //		$translation = $record->get('Translation');
+  //    $translation = $record->get('Translation');
   //
-  //		if (isset($translation[$culture]))
-  //		{
-  //			$i18n = $translation[$culture];
-  //		}
-  //		else
-  //		{
-  //			$i18n = $translation[sfConfig::get('sf_default_culture')];
-  //		}
+  //    if (isset($translation[$culture]))
+  //    {
+  //      $i18n = $translation[$culture];
+  //    }
+  //    else
+  //    {
+  //      $i18n = $translation[sfConfig::get('sf_default_culture')];
+  //    }
   //
   //    if(!ctype_lower($fieldName) && !$i18n->contains($fieldName))
   //    {
@@ -129,6 +129,6 @@ class dmDoctrineRecordI18nFilter extends Doctrine_Record_Filter
   //      }
   //    }
   //
-  //		return $i18n->get($fieldName);
-  //	}
+  //    return $i18n->get($fieldName);
+  //  }
 }

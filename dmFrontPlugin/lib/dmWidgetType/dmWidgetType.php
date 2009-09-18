@@ -36,20 +36,20 @@ class dmWidgetType
 
   public function getFullKey()
   {
-  	return $this->getParam('full_key');
+    return $this->getParam('full_key');
   }
 
   public function getNewWidget()
   {
-  	return dmDb::create('DmWidget', array(
-  	  'module' => $this->getModule(),
-  	  'action' => $this->getAction()
-  	));
+    return dmDb::create('DmWidget', array(
+      'module' => $this->getModule(),
+      'action' => $this->getAction()
+    ));
   }
 
   public function useComponent()
   {
-  	return $this->getParam('use_component');
+    return $this->getParam('use_component');
   }
 
   public function getName()
@@ -69,7 +69,7 @@ class dmWidgetType
 
   public function getUnderscore()
   {
-  	return dmString::underscore($this->getModule());
+    return dmString::underscore($this->getModule());
   }
 
   public function getParam($key)

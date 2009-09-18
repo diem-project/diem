@@ -25,8 +25,8 @@
               [?php endif; ?]
             </div>
             <ul class="sf_admin_actions clearfix s16 s16_arrow_curve_down_right">
-				      [?php include_partial('<?php echo $this->getModuleName() ?>/list_batch_actions', array('helper' => $helper)) ?]
-				    </ul>
+              [?php include_partial('<?php echo $this->getModuleName() ?>/list_batch_actions', array('helper' => $helper)) ?]
+            </ul>
           </th>
         </tr>
       </tfoot>
@@ -34,18 +34,18 @@
         [?php foreach ($pager->getResults() as $i => $<?php echo $this->getSingularName() ?>): $odd = fmod(++$i, 2) ? 'odd' : 'even' ?]
           <tr class="sf_admin_row [?php echo $odd ?]">
 <?php if ($this->configuration->getValue('list.batch_actions')): ?>
-						<td>
-						  <input type="checkbox" name="ids[]" value="[?php echo $<?php echo $this->getSingularName() ?>->getPrimaryKey() ?]" class="sf_admin_batch_checkbox" />
-						</td>
+            <td>
+              <input type="checkbox" name="ids[]" value="[?php echo $<?php echo $this->getSingularName() ?>->getPrimaryKey() ?]" class="sf_admin_batch_checkbox" />
+            </td>
 <?php endif; ?>
             [?php include_partial('<?php echo $this->getModuleName() ?>/list_td_<?php echo $this->configuration->getValue('list.layout') ?>', array('<?php echo $this->getSingularName() ?>' => $<?php echo $this->getSingularName() ?>)) ?]
           </tr>
         [?php endforeach; ?]
       </tbody>
     </table>
-	  <div class="dm_pagination dm_pagination_bottom">
+    <div class="dm_pagination dm_pagination_bottom">
       [?php echo str_replace('__DM_RANDOM_ID__', dmString::random(8), $dm_list_pagination); ?]
-	  </div>
+    </div>
   [?php endif; ?]
 </div>
 

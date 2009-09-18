@@ -8,21 +8,21 @@ class dmFrontWebResponse extends dmWebResponse
   
   protected function getCachedStylesheets()
   {
-  	if($this->preserveThemeStylesheets = dm::getUser()->can('code_editor'))
-  	{
+    if($this->preserveThemeStylesheets = dm::getUser()->can('code_editor'))
+    {
       $this->themeCssWebPath = dm::getUser()->getTheme()->getPath('css');
-  	}
-  	
-  	return parent::getCachedStylesheets();
+    }
+    
+    return parent::getCachedStylesheets();
   }
   
   protected function isStylesheetCachable($stylesheet)
   {
-  	if (!$this->preserveThemeStylesheets)
-  	{
-  		return true;
-  	}
-  	
+    if (!$this->preserveThemeStylesheets)
+    {
+      return true;
+    }
+    
     return strpos($stylesheet, $this->themeCssWebPath) !== 0;
   }
 }

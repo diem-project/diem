@@ -2,19 +2,19 @@
 
 class dmDiagramActions extends dmAdminBaseActions
 {
-	public function executeIndex(dmWebRequest $request)
-	{
-	  $this->loadServiceContainerDumper();
-	  
-	  $this->dicImages = array();
-	  
-	  foreach(array('admin', 'front') as $appName)
-	  {
-	    $this->dicImages[$appName] = $this->getDiagramImage($appName);
-	  }
-	  
-	  $doctrineGraphviz = new dmDoctrineGraphviz($this->dmContext->getFilesystem(), $this->context->getConfiguration());
-	  
+  public function executeIndex(dmWebRequest $request)
+  {
+    $this->loadServiceContainerDumper();
+    
+    $this->dicImages = array();
+    
+    foreach(array('admin', 'front') as $appName)
+    {
+      $this->dicImages[$appName] = $this->getDiagramImage($appName);
+    }
+    
+    $doctrineGraphviz = new dmDoctrineGraphviz($this->dmContext->getFilesystem(), $this->context->getConfiguration());
+    
     $this->mldUserImage = $doctrineGraphviz->getMldImage(array(
       'type' => 'user'
     ));
@@ -26,18 +26,18 @@ class dmDiagramActions extends dmAdminBaseActions
     $this->mldProjectImage = $doctrineGraphviz->getMldImage(array(
       'type' => 'project'
     ));
-	}
-	
-	protected function loadServiceContainerDumper()
-	{
-	  $this->dmContext->loadServiceContainerLoader();
-	  
-    require_once(dmOs::join(sfConfig::get('dm_core_dir'), 'lib/vendor/sfService/sfServiceContainerDumperGraphviz.php'));
-	}
+  }
   
-	protected function getDiagramImage($appName)
-	{
-	  $dependencyDiagramImage = sprintf('dependency_diagram_%s.png', $appName);
+  protected function loadServiceContainerDumper()
+  {
+    $this->dmContext->loadServiceContainerLoader();
+    
+    require_once(dmOs::join(sfConfig::get('dm_core_dir'), 'lib/vendor/sfService/sfServiceContainerDumperGraphviz.php'));
+  }
+  
+  protected function getDiagramImage($appName)
+  {
+    $dependencyDiagramImage = sprintf('dependency_diagram_%s_%s.png', $appName, time());
     
     $dependencyDiagramImageFullPath = dmOs::join(sfConfig::get('sf_cache_dir'), 'web', $dependencyDiagramImage);
     
@@ -64,12 +64,22 @@ class dmDiagramActions extends dmAdminBaseActions
     $loader = new sfServiceContainerLoaderFileYaml($sc);
     $loader->load($configFiles);
     
-    $this->dmContext->configureServiceContainer($sc);
+    $sc->setService('dispatcher',       $this->context->getEventDispatcher());
+    $sc->setService('user',             $this->context->getUser());
+    $sc->setService('response',         $this->context->getResponse());
+    $sc->setService('i18n',             $this->context->getI18n());
+    $sc->setService('routing',          $this->context->getRouting());
+    $sc->setService('action_stack',     $this->context->getActionStack());
+    $sc->setService('config_cache',     $this->context->getConfigCache());
+    $sc->setService('controller',       $this->context->getController());
+    $sc->setService('logger',           $this->context->getLogger());
+    $sc->setService('context',          $this->context);
+    $sc->setService('doctrine_manager', Doctrine_Manager::getInstance());
     
     $dumper = new sfServiceContainerDumperGraphviz($sc);
 
     file_put_contents($dotFile, $dumper->dump(array(
-      'graph' => array('concentrate' => 'false', 'bgcolor' => 'transparent', 'ratio' => 'fill', 'size' => '20,7'),
+      'graph' => array('concentrate' => 'false', 'bgcolor' => 'transparent', 'ratio' => 'fill', 'size' => '30,7'),
       'node'  => array('fontsize' => 20, 'fontname' => 'Arial', 'shape' => 'Mrecord'),
       'edge'  => array('fontsize' => 9, 'fontname' => 'Arial', 'color' => 'grey', 'arrowhead' => 'open', 'arrowsize' => 1),
       'node.instance' => array('fillcolor' => '#ffffff', 'style' => 'filled', 'shape' => 'component'),
@@ -85,6 +95,6 @@ class dmDiagramActions extends dmAdminBaseActions
     }
     
     return '/cache/'.$dependencyDiagramImage;
-	}
-	
+  }
+  
 }

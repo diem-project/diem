@@ -3,17 +3,17 @@
 class dmWebRequest extends sfWebRequest
 {
 
-	protected
-	$absoluteUrlRoot;
+  protected
+  $absoluteUrlRoot;
 
   public function getAbsoluteUrlRoot()
   {
-  	if(null === $this->absoluteUrlRoot)
-  	{
+    if(null === $this->absoluteUrlRoot)
+    {
       $this->absoluteUrlRoot = $this->getUriPrefix().$this->getRelativeUrlRoot();
-  	}
-  	
-  	return $this->absoluteUrlRoot;
+    }
+    
+    return $this->absoluteUrlRoot;
   }
 
   /**
@@ -36,7 +36,23 @@ class dmWebRequest extends sfWebRequest
 
   public function useTidy()
   {
-  	return dmHtml::isEnabled() && !$this->getParameter('dm_tidy_disable');
+    return dmHtml::isEnabled() && !$this->getParameter('dm_tidy_disable');
+  }
+  
+  /**
+   * Returns the request context used.
+   *
+   * @return array An array of values representing the current request
+   */
+  public function getRequestContext()
+  {
+    $context = parent::getRequestContext();
+    
+    $context['relative_url_root'] = $this->getRelativeUrlRoot();
+    $context['absolute_url_root'] = $this->getAbsoluteUrlRoot();
+    $context['script_name']       = $this->getScriptName();
+    
+    return $context;
   }
 
 }

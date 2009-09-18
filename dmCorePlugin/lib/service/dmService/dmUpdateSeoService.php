@@ -5,8 +5,8 @@ class dmUpdateSeoService extends dmService
   protected static
   $truncateCache;
 
-	public function execute(array $onlyModules = array())
-	{
+  public function execute(array $onlyModules = array())
+  {
     if(empty($onlyModules))
     {
       $onlyModules = dmModuleManager::getProjectModules();
@@ -26,16 +26,16 @@ class dmUpdateSeoService extends dmService
     }
 
     $timer && $timer->addTime();
-	}
+  }
 
-	public function updateRecursive($module, $culture)
-	{
+  public function updateRecursive($module, $culture)
+  {
     if (!$module->hasPage())
     {
-	    foreach($module->getChildren() as $child)
-	    {
-	      $this->updateRecursive($child, $culture);
-	    }
+      foreach($module->getChildren() as $child)
+      {
+        $this->updateRecursive($child, $culture);
+      }
       return;
     }
 
@@ -58,21 +58,21 @@ class dmUpdateSeoService extends dmService
     }
     else
     {
-    	$patterns = $patternArray[0];
+      $patterns = $patternArray[0];
     }
 
     $pageAutoSeoFields = DmPage::getAutoSeoFields();
     foreach($patterns as $field => $pattern)
     {
-    	if (!in_array($field, $pageAutoSeoFields))
-    	{
-    		unset($patterns[$field]);
-    	}
+      if (!in_array($field, $pageAutoSeoFields))
+      {
+        unset($patterns[$field]);
+      }
     }
     
     if (isset($patterns['keywords']) && !sfConfig::get('dm_seo_use_keywords'))
     {
-    	unset($patterns['keywords']);
+      unset($patterns['keywords']);
     }
 
     /*
@@ -88,20 +88,20 @@ class dmUpdateSeoService extends dmService
     $pages = array();
     foreach($pdoPages as $p)
     {
-    	$pages[$p[0]] = array(
-    	  'id' => $p[0],
-    	  'lft' => $p[1],
+      $pages[$p[0]] = array(
+        'id' => $p[0],
+        'lft' => $p[1],
         'rgt' => $p[2],
         'record_id' => $p[3],
-    	  'auto_mod' => $p[4],
-    	  'slug' => $p[5],
-    	  'name' => $p[6],
-    	  'title' => $p[7],
-    	  'h1' => $p[8],
+        'auto_mod' => $p[4],
+        'slug' => $p[5],
+        'name' => $p[6],
+        'title' => $p[7],
+        'h1' => $p[8],
         'description' => $p[9],
         'keywords' => $p[10],
-    	  'exists' => (bool) $p[11]
-    	);
+        'exists' => (bool) $p[11]
+      );
     }
 
     unset($pdoPages);
@@ -122,36 +122,36 @@ class dmUpdateSeoService extends dmService
      */
     if ($patterns['slug']{0} === '/')
     {
-    	$parentSlugs = array();
+      $parentSlugs = array();
     }
     else
     {
-    	$parentSlugs = $this->getParentSlugs($module, $culture);
+      $parentSlugs = $this->getParentSlugs($module, $culture);
     }
 
     $modifiedPages = array();
     foreach($pages as $page)
     {
-//	    if (isset($record['is_active']))
-//	    {
-//	      $page->is_active = $record['is_active'];
-//	    }
+//      if (isset($record['is_active']))
+//      {
+//        $page->is_active = $record['is_active'];
+//      }
 
-    	$record = $records[$page['record_id']];
-    	$parentId = $pageTable->createQuery('p')
-	    ->select('p.id as id')
-	    ->where("p.lft < ? AND p.rgt > ?", array($page['lft'], $page['rgt']))
-	    ->orderBy("p.rgt asc")
-	    ->limit(1)
-	    ->fetchValue();
-    	$parentSlug = isset($parentSlugs[$parentId]) ? $parentSlugs[$parentId] : '';
+      $record = $records[$page['record_id']];
+      $parentId = $pageTable->createQuery('p')
+      ->select('p.id as id')
+      ->where("p.lft < ? AND p.rgt > ?", array($page['lft'], $page['rgt']))
+      ->orderBy("p.rgt asc")
+      ->limit(1)
+      ->fetchValue();
+      $parentSlug = isset($parentSlugs[$parentId]) ? $parentSlugs[$parentId] : '';
 
-     	$modifiedFields = $this->updatePage($page, $record, $patterns, $parentSlug, $culture);
+       $modifiedFields = $this->updatePage($page, $record, $patterns, $parentSlug, $culture);
 
-     	if (!empty($modifiedFields))
-     	{
-     		$modifiedPages[$page['id']] = $modifiedFields;
-     	}
+       if (!empty($modifiedFields))
+       {
+         $modifiedPages[$page['id']] = $modifiedFields;
+       }
     }
 
     /*
@@ -164,25 +164,25 @@ class dmUpdateSeoService extends dmService
       {
         $conn->beginTransaction();
 
-	      foreach($modifiedPages as $id => $modifiedFields)
-	      {
-	      	if (!$pages[$id]['exists'])
-	      	{
-	      		$modifiedFields['id'] = $id;
-	      		$modifiedFields['lang'] = $culture;
-	      		$translation = new DmPageTranslation();
-	      		$translation->fromArray($modifiedFields);
+        foreach($modifiedPages as $id => $modifiedFields)
+        {
+          if (!$pages[$id]['exists'])
+          {
+            $modifiedFields['id'] = $id;
+            $modifiedFields['lang'] = $culture;
+            $translation = new DmPageTranslation();
+            $translation->fromArray($modifiedFields);
             $conn->unitOfWork->processSingleInsert($translation);
-	      	}
-	      	else
-	      	{
-		      	#TODO try to extract query creation from foreach
-	          Doctrine_Query::create()->update('DmPageTranslation')
-				    ->set($modifiedFields)
-				    ->where('id = ?', $id)
-				    ->execute();
-	      	}
-	      }
+          }
+          else
+          {
+            #TODO try to extract query creation from foreach
+            Doctrine_Query::create()->update('DmPageTranslation')
+            ->set($modifiedFields)
+            ->where('id = ?', $id)
+            ->execute();
+          }
+        }
 
         $conn->commit();
       }
@@ -201,7 +201,7 @@ class dmUpdateSeoService extends dmService
 
   public function updatePage(array $page, myDoctrineRecord $record, $patterns, $parentSlug, $culture)
   {
-  	$pageAutoMod = dmArray::get($page, 'auto_mod', 'snthdk');
+    $pageAutoMod = dmArray::get($page, 'auto_mod', 'snthdk');
 
     foreach($patterns as $field => $pattern)
     {
@@ -313,10 +313,10 @@ class dmUpdateSeoService extends dmService
     $modifiedFields = array();
     foreach($values as $field => $value)
     {
-    	if ($value != $page[$field])
-    	{
-    		$modifiedFields[$field] = $value;
-    	}
+      if ($value != $page[$field])
+      {
+        $modifiedFields[$field] = $value;
+      }
     }
 
     return $modifiedFields;
@@ -341,9 +341,9 @@ class dmUpdateSeoService extends dmService
     }
     else
     {
-    	throw new dmException(sprintf(
+      throw new dmException(sprintf(
         'can not identify parent module for %s module', $module
-    	));
+      ));
     }
 
     $parentSlugResults = dmDb::table('DmPage')->createQuery('p')

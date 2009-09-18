@@ -6,31 +6,31 @@
 abstract class dmService
 {
 
-	protected
-	  $options = array(),
-	  $dispatcher,
-	  $filesystem,
-	  $user,
-	  $formatter,
-	  $eventName,
-	  $credentials = array('admin');
+  protected
+    $options = array(),
+    $dispatcher,
+    $filesystem,
+    $user,
+    $formatter,
+    $eventName,
+    $credentials = array('admin');
 
-	public function __construct(sfEventDispatcher $dispatcher, sfFormatter $formatter = null)
-	{
-		$this->dispatcher = $dispatcher;
+  public function __construct(sfEventDispatcher $dispatcher, sfFormatter $formatter = null)
+  {
+    $this->dispatcher = $dispatcher;
     $this->formatter  = $formatter ? $formatter : new sfFormatter(200);
     $this->filesystem = new dmFilesystem($this->dispatcher, $this->formatter);
-	}
+  }
 
-	public function setUser(dmUser $user)
-	{
-		$this->user = $user;
-	}
-	
-	public function addOptions(array $options)
-	{
-		$this->options = array_merge($this->options, $options);
-	}
+  public function setUser(dmUser $user)
+  {
+    $this->user = $user;
+  }
+  
+  public function addOptions(array $options)
+  {
+    $this->options = array_merge($this->options, $options);
+  }
 
   public function getOption($key, $default = null)
   {
@@ -72,6 +72,6 @@ abstract class dmService
 
   public function getCredentials()
   {
-  	return $this->credentials;
+    return $this->credentials;
   }
 }

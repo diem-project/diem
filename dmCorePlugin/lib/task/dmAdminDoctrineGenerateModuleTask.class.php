@@ -70,7 +70,7 @@ class dmAdminDoctrineGenerateModuleTask extends sfDoctrineGenerateModuleTask
     }
     else
     {
-    	$moduleDir = dmOs::join(sfConfig::get('dm_admin_dir'), 'modules', $arguments['module']);
+      $moduleDir = dmOs::join(sfConfig::get('dm_admin_dir'), 'modules', $arguments['module']);
     }
 
     // create basic application structure

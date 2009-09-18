@@ -13,15 +13,15 @@ class dmProjectModule extends dmModule
     $this->params['actions'] = array();
     foreach(dmArray::get($config, "actions", array()) as $actionKey => $actionConfig)
     {
-    	if (is_integer($actionKey))
-    	{
+      if (is_integer($actionKey))
+      {
         $actionKey = $actionConfig;
-    		$action = new dmAction($actionKey, array());
-    	}
-    	else
-    	{
-    		$action = new dmAction($actionKey, $actionConfig);
-    	}
+        $action = new dmAction($actionKey, array());
+      }
+      else
+      {
+        $action = new dmAction($actionKey, $actionConfig);
+      }
       $this->params['actions'][$actionKey] = $action;
     }
 
@@ -32,7 +32,7 @@ class dmProjectModule extends dmModule
 
   public function hasPage()
   {
-  	return $this->params['hasPage'];
+    return $this->params['hasPage'];
   }
 
   // ACCESSEURS
@@ -62,7 +62,7 @@ class dmProjectModule extends dmModule
   {
     if ($this->hasCache('parent'))
     {
-    	return $this->getCache('parent');
+      return $this->getCache('parent');
     }
 
     return $this->setCache('parent', dmModuleManager::getModuleOrNull($this->getParam('parentKey')));
@@ -70,7 +70,7 @@ class dmProjectModule extends dmModule
 
   public function hasParent()
   {
-  	return null !== $this->getParent();
+    return null !== $this->getParent();
   }
 
   public function getAncestor($ancestorKey)
@@ -80,22 +80,22 @@ class dmProjectModule extends dmModule
       $ancestorKey = $ancestorKey->getKey();
     }
     
-  	return dmArray::get($this->getPath(), dmString::modulize($ancestorKey));
+    return dmArray::get($this->getPath(), dmString::modulize($ancestorKey));
   }
 
   public function hasAncestor($ancestorKey)
   {
-  	if ($ancestorKey instanceof dmModule)
-  	{
-  		$ancestorKey = $ancestorKey->getKey();
-  	}
-  	
+    if ($ancestorKey instanceof dmModule)
+    {
+      $ancestorKey = $ancestorKey->getKey();
+    }
+    
     return array_key_exists(dmString::modulize($ancestorKey), $this->getPath());
   }
 
   public function knows($module)
   {
-  	return $this->is($module) || $this->hasAncestor($module);
+    return $this->is($module) || $this->hasAncestor($module);
   }
 
   public function getFarthestAncestor()
@@ -121,10 +121,10 @@ class dmProjectModule extends dmModule
   {
     foreach(array_reverse($this->getPath()) as $module)
     {
-    	if ($module->hasPage())
-    	{
-    		return $module;
-    	}
+      if ($module->hasPage())
+      {
+        return $module;
+      }
     }
 
     return null;
@@ -135,7 +135,7 @@ class dmProjectModule extends dmModule
   {
     if($this->hasDescendant($descendantKey))
     {
-    	return dmModuleManager::getModule($descendantKey);
+      return dmModuleManager::getModule($descendantKey);
     }
     
     return null;
@@ -152,12 +152,12 @@ class dmProjectModule extends dmModule
    */
   public function getPath($includeMe = false)
   {
-  	if ($this->hasCache('path'))
-  	{
+    if ($this->hasCache('path'))
+    {
       $path = $this->getCache('path');
-  	}
-  	else
-  	{
+    }
+    else
+    {
       $path = array();
 
       $ancestorModule = $this;
@@ -169,7 +169,7 @@ class dmProjectModule extends dmModule
       $path = array_reverse($path, true);
 
       $this->setCache('path', $path);
-  	}
+    }
 
     if ($includeMe)
     {
@@ -191,19 +191,19 @@ class dmProjectModule extends dmModule
     
     if (!array_key_exists($fromModule->getKey(), $path))
     {
-    	throw new dmException(sprintf('Can not get %s module path from %s because it is not a valid ancestor', $this, $fromModule));
+      throw new dmException(sprintf('Can not get %s module path from %s because it is not a valid ancestor', $this, $fromModule));
     }
     
     foreach($path as $ancestorKey => $ancestor)
     {
-    	if ($ancestor->is($fromModule))
-    	{
-    		break;
-    	}
-    	else
-    	{
+      if ($ancestor->is($fromModule))
+      {
+        break;
+      }
+      else
+      {
         unset($path[$ancestorKey]);
-    	}
+      }
     }
     
     return $path;
@@ -211,7 +211,7 @@ class dmProjectModule extends dmModule
 
   public function hasListPage()
   {
-  	return !$this->hasParent() && $this->hasModel();
+    return !$this->hasParent() && $this->hasModel();
   }
 
   public function getChildren()
@@ -225,7 +225,7 @@ class dmProjectModule extends dmModule
     {
       if ($otherModule->getParam('parentKey') === $this->key)
       {
-      	$children[$otherModule->getKey()] = $otherModule;
+        $children[$otherModule->getKey()] = $otherModule;
       }
     }
     return $this->setCache('children', $children);

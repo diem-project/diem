@@ -1456,11 +1456,11 @@ class Zend_Search_Lucene implements Zend_Search_Lucene_Interface
      */
     public function resetTermsStream()
     {
-    	if ($this->_termsStream === null) {
+      if ($this->_termsStream === null) {
             $this->_termsStream = new Zend_Search_Lucene_TermStreamsPriorityQueue($this->_segmentInfos);
-    	} else {
-    		$this->_termsStream->resetTermsStream();
-    	}
+      } else {
+        $this->_termsStream->resetTermsStream();
+      }
     }
 
     /**

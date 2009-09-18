@@ -12,11 +12,11 @@
  */
 abstract class PluginDmProfile extends BaseDmProfile
 {
-	
-	public function __toString()
-	{
-		return $this->User->__toString();
-	}
+  
+  public function __toString()
+  {
+    return $this->User->__toString();
+  }
   
   public function getUsername()
   {
@@ -30,6 +30,6 @@ abstract class PluginDmProfile extends BaseDmProfile
   
   public function getLastLogin()
   {
-  	return $this->User->lastLogin;
+    return $this->User->lastLogin;
   }
 }

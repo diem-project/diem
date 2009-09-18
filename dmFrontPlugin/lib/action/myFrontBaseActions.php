@@ -2,5 +2,5 @@
 
 class myFrontBaseActions extends dmFrontBaseActions
 {
-	
+  
 }

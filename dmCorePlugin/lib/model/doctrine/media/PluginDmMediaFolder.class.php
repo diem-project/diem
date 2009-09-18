@@ -13,29 +13,29 @@
 abstract class PluginDmMediaFolder extends BaseDmMediaFolder
 {
 
-	/*
-	 * Getter methods
-	 */
-	
-	public function getName()
-	{
-		$relPath = $this->get('rel_path');
-		
-		if(strpos($relPath, '/'))
-		{
-			$name = basename($relPath);
-		}
-		elseif($relPath)
-		{
-			$name = $relPath;
-		}
-		else
-		{
-			$name = 'root';
-		}
-		
-		return $name; 
-	}
+  /*
+   * Getter methods
+   */
+  
+  public function getName()
+  {
+    $relPath = $this->get('rel_path');
+    
+    if(strpos($relPath, '/'))
+    {
+      $name = basename($relPath);
+    }
+    elseif($relPath)
+    {
+      $name = $relPath;
+    }
+    else
+    {
+      $name = 'root';
+    }
+    
+    return $name; 
+  }
 
   public function getFullPath()
   {
@@ -84,28 +84,28 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
 
   public function getMedias()
   {
-  	if ($this->hasCache('medias'))
-  	{
-  		return $this->getCache('medias');
-  	}
+    if ($this->hasCache('medias'))
+    {
+      return $this->getCache('medias');
+    }
 
-  	$timer = dmDebug::timer('Folder::getMedias');
+    $timer = dmDebug::timer('Folder::getMedias');
 
-  	$medias = $this->_get('Medias');
+    $medias = $this->_get('Medias');
 
-  	foreach($medias as $media)
-  	{
-  		$media->set('Folder', $this, false);
-  	}
+    foreach($medias as $media)
+    {
+      $media->set('Folder', $this, false);
+    }
 
-  	$timer->addTime();
+    $timer->addTime();
 
-  	return $this->setCache('medias', $medias);
+    return $this->setCache('medias', $medias);
   }
 
-	/*
-	 * Check methods
-	 */
+  /*
+   * Check methods
+   */
 
   /**
    * Folder physically exists
@@ -147,7 +147,7 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
    */
   public function isRoot()
   {
-  	return $this->getNode()->isRoot();
+    return $this->getNode()->isRoot();
   }
 
   /*
@@ -243,18 +243,18 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
 
       if (!array_key_exists(basename($file), $medias))
       {
-      	try
-      	{
-	        // File exists, asset does not exist: create asset
-	        dmDb::create('DmMedia', array(
-	          'dm_media_folder_id' => $this->get('id'),
-	          'file' => basename($file)
-	        ))->save();
-      	}
-      	catch(Exception $e)
-      	{
-      		dmDebug::kill($this, $medias, $file);
-      	}
+        try
+        {
+          // File exists, asset does not exist: create asset
+          dmDb::create('DmMedia', array(
+            'dm_media_folder_id' => $this->get('id'),
+            'file' => basename($file)
+          ))->save();
+        }
+        catch(Exception $e)
+        {
+          dmDebug::kill($this, $medias, $file);
+        }
       }
       else
       {

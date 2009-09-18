@@ -16,13 +16,13 @@ echo £("div.control",
 
     (!$folder->isRoot()
     ? £("li", £link("dmMediaLibrary/renameFolder?folder_id=".$folder->getId())->text(__("Rename this folder"))->set('.rename_folder.dialog_me.s16.s16_folder_edit'))
-	  : "").
+    : "").
     (!$folder->isRoot()
     ? £("li", £link("dmMediaLibrary/moveFolder?folder_id=".$folder->getId())->text(__("Move this folder"))->set('.move_folder.dialog_me.s16.s16_folder_move'))
-	  : "").
+    : "").
     (!$folder->isRoot()
     ? £("li", £link("dmMediaLibrary/deleteFolder?folder_id=".$folder->getId())->textTitle(__("Delete this folder"))->set('.delete_folder.confirm_me.s16.s16_folder_delete'))
-	  : "")
+    : "")
 
   )
 

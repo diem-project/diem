@@ -2,5 +2,5 @@
 
 class myAdminBaseGeneratedModuleActions extends dmAdminBaseGeneratedModuleActions
 {
-	
+  
 }

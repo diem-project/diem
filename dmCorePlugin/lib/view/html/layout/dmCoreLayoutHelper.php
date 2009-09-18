@@ -2,25 +2,25 @@
 
 abstract class dmCoreLayoutHelper
 {
-	protected
-	  $dispatcher,
-	  $user,
-    $request,
+  protected
+    $dispatcher,
+    $user,
     $response,
     $actionStack,
     $helper,
-	  $theme,
-	  $baseWebPath,
-	  $isHtml5;
+    $requestContext,
+    $theme,
+    $baseWebPath,
+    $isHtml5;
 
-  public function __construct(sfEventDispatcher $dispatcher, dmUser $user, dmWebRequest $request, dmWebResponse $response, sfActionStack $actionStack, dmOoHelper $helper)
+  public function __construct(sfEventDispatcher $dispatcher, dmUser $user, dmWebResponse $response, sfActionStack $actionStack, dmHelper $helper, array $requestContext)
   {
     $this->dispatcher = $dispatcher;
     $this->user       = $user;
-    $this->request    = $request;
     $this->response   = $response;
     $this->actionStack = $actionStack;
     $this->helper     = $helper;
+    $this->requestContext = $requestContext;
     
     $this->initialize();
   }
@@ -29,12 +29,11 @@ abstract class dmCoreLayoutHelper
   {
     $this->theme    = $this->user->getTheme();
     $this->isHtml5  = sfConfig::get('dm_html_doctype_version', 5) == 5;
-    $this->relativeUrlRoot = $this->request->getRelativeUrlRoot();
   }
 
   protected function isHtml5()
   {
-  	return $this->isHtml5;
+    return $this->isHtml5;
   }
 
   public function renderDoctype()
@@ -58,11 +57,11 @@ abstract class dmCoreLayoutHelper
   
   public function renderHtmlTag()
   {
-  	if ($this->isHtml5())
-  	{
-  		return '<html>';
-  	}
-  	
+    if ($this->isHtml5())
+    {
+      return '<html>';
+    }
+    
     $culture = $this->user->getCulture();
 
     return sprintf(
@@ -110,7 +109,7 @@ abstract class dmCoreLayoutHelper
     $html = '';
     foreach ($stylesheets as $file => $options)
     {
-      $html .= "\n".'<link rel="stylesheet" type="text/css" media="screen" href="'.$this->relativeUrlRoot.$file.'" />';
+      $html .= "\n".'<link rel="stylesheet" type="text/css" media="screen" href="'.$this->requestContext['relative_url_root'].$file.'" />';
     }
     
     sfConfig::set('symfony.asset.stylesheets_included', true);
@@ -134,7 +133,7 @@ abstract class dmCoreLayoutHelper
     $html = '';
     foreach ($javascripts as $file => $options)
     {
-      $html .= '<script type="text/javascript" src="'.($file{0} === '/' ? $this->relativeUrlRoot.$file : $file).'"></script>';
+      $html .= '<script type="text/javascript" src="'.($file{0} === '/' ? $this->requestContext['relative_url_root'].$file : $file).'"></script>';
     }
   
     return $html;
@@ -142,14 +141,14 @@ abstract class dmCoreLayoutHelper
   
   protected function getJavascriptConfig()
   {
-  	return array_merge($this->response->getJavascriptConfig(), array(
-  	  'relative_url_root'  => $this->relativeUrlRoot,
-      'dm_core_asset_root' => $this->relativeUrlRoot.'/'.sfConfig::get('dm_core_asset').'/',
-      'script_name'        => $this->request->getScriptName().'/',
-  	  'debug'              => sfConfig::get('sf_debug') ? 'true' : 'false',
+    return array_merge($this->response->getJavascriptConfig(), array(
+      'relative_url_root'  => $this->requestContext['relative_url_root'],
+      'dm_core_asset_root' => $this->requestContext['relative_url_root'].'/'.sfConfig::get('dm_core_asset').'/',
+      'script_name'        => $this->requestContext['script_name'].'/',
+      'debug'              => sfConfig::get('sf_debug') ? 'true' : 'false',
       'culture'            => $this->user->getCulture(),
-  	  'module'             => $this->actionStack->getLastEntry()->getModuleName()
-  	));
+      'module'             => $this->actionStack->getLastEntry()->getModuleName()
+    ));
   }
   
   public function renderJavascriptConfig()
@@ -174,7 +173,7 @@ abstract class dmCoreLayoutHelper
 
     if (isset($favicon))
     {
-      return '<link rel="shortcut icon" href="'.$this->relativeUrlRoot.'/'.$favicon.'" />';
+      return '<link rel="shortcut icon" href="'.$this->requestContext['relative_url_root'].'/'.$favicon.'" />';
     }
 
     return '';

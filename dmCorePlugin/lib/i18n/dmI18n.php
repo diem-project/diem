@@ -3,17 +3,17 @@
 class dmI18n extends sfI18N
 {
 
-	protected static
+  protected static
   $default_culture;
 
   public function translateArray(array $array, $args = array(), $catalogue = 'messages')
   {
-  	foreach($array as $key => $value)
-  	{
+    foreach($array as $key => $value)
+    {
       $array[$key] = $this->__($value, $args, $catalogue);
-  	}
+    }
 
-  	return $array;
+    return $array;
   }
   
   /**
@@ -75,11 +75,11 @@ class dmI18n extends sfI18N
       $this->culture = sfConfig::get('sf_default_culture');
     }
 
-  	parent::initialize($configuration, $cache, $options);
+    parent::initialize($configuration, $cache, $options);
 
     if (!$this->cultureExists($this->culture))
     {
-    	$this->culture = sfConfig::get('sf_default_culture');
+      $this->culture = sfConfig::get('sf_default_culture');
     }
   }
 
@@ -88,10 +88,10 @@ class dmI18n extends sfI18N
     return sfConfig::get('dm_i18n_cultures');
   }
 
-	public function cultureExists($c)
-	{
-		return in_array($c, $this->getCultures());
-	}
+  public function cultureExists($c)
+  {
+    return in_array($c, $this->getCultures());
+  }
 
   public function hasManyCultures()
   {

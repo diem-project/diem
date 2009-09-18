@@ -2,6 +2,9 @@
 
 abstract class dmDoctrineRecord extends sfDoctrineRecord
 {
+  protected static
+  $eventDispatcher;
+  
   protected
   $i18nFallback = null;
 
@@ -28,7 +31,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
 
     if ($this->isModified())
     {
-      $this->notifyPageTreeWatcher();
+      $this->notifyModification();
     }
   }
 
@@ -39,7 +42,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
   {
     parent::postDelete($event);
 
-    $this->notifyPageTreeWatcher();
+    $this->notifyModification();
   }
 
   /*
@@ -47,16 +50,16 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
    */
   public function unlinkInDb($alias, $ids = array())
   {
-    $this->notifyPageTreeWatcher();
+    $this->notifyModification();
 
-    return parent::unlinkInDb($alias, $ids);
+    $return = parent::unlinkInDb($alias, $ids);
   }
-
-  public function notifyPageTreeWatcher()
+  
+  public function notifyModification()
   {
-    if ($this->_table instanceof dmDoctrineTable && $this->_table->interactsWithPageTree())
+    if (self::$eventDispatcher)
     {
-      dmContext::getInstance()->getPageTreeWatcher()->addModifiedTable($this->_table);
+      self::$eventDispatcher->notify(new sfEvent($this, 'dm.record.modification', array()));
     }
   }
 
@@ -482,7 +485,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
    */
   public function toDebug()
   {
-    //  	return Doctrine_Lib::getRecordAsString($this);
+    //    return Doctrine_Lib::getRecordAsString($this);
     return array(
       'state' => $this->state().'='.Doctrine_Lib::getRecordStateAsString($this->state()),
       'data' => $this->toArray()
@@ -690,6 +693,12 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     return parent::_set($fieldName, $value, $load);
   }
 
+  
+  public static function setEventDispatcher(sfEventDispatcher $eventDispatcher)
+  {
+    self::$eventDispatcher = $eventDispatcher;
+  }
+  
   /*
    * dmMicroCache
    */

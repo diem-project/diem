@@ -10,107 +10,107 @@
 abstract class PluginDmMediaForm extends BaseDmMediaForm
 {
 
-	public function setup()
-	{
-		parent::setup();
+  public function setup()
+  {
+    parent::setup();
 
-		$this->useFields(array('dm_media_folder_id', 'file', 'legend', 'author', 'license'));
+    $this->useFields(array('dm_media_folder_id', 'file', 'legend', 'author', 'license'));
 
-		$this->widgetSchema['file'] = new sfWidgetFormDmInputFile();
-		$this->validatorSchema['file'] = new sfValidatorFile(array(
+    $this->widgetSchema['file'] = new sfWidgetFormDmInputFile();
+    $this->validatorSchema['file'] = new sfValidatorFile(array(
       'required' => $this->getObject()->isNew()
-		));
+    ));
 
-		$this->widgetSchema['dm_media_folder_id'] = new sfWidgetFormInputHidden();
+    $this->widgetSchema['dm_media_folder_id'] = new sfWidgetFormInputHidden();
 
-		$this->mergePostValidator(new sfValidatorCallback(array('callback' => array($this, 'clearName'))));
-		$this->mergePostValidator(new sfValidatorCallback(array('callback' => array($this, 'checkExistingNameInParent'))));
-	}
+    $this->mergePostValidator(new sfValidatorCallback(array('callback' => array($this, 'clearName'))));
+    $this->mergePostValidator(new sfValidatorCallback(array('callback' => array($this, 'checkExistingNameInParent'))));
+  }
 
-	protected function doUpdateObject($values)
-	{
-		if (isset($values['file']) && $values['file'] instanceof sfValidatedFile)
-		{
-			$validatedFile = $values['file'];
-		}
-		else
-		{
-			$validatedFile = null;
-		}
+  protected function doUpdateObject($values)
+  {
+    if (isset($values['file']) && $values['file'] instanceof sfValidatedFile)
+    {
+      $validatedFile = $values['file'];
+    }
+    else
+    {
+      $validatedFile = null;
+    }
     
-		unset($values['file']);
-		
-		parent::doUpdateObject($values);
+    unset($values['file']);
+    
+    parent::doUpdateObject($values);
 
-		if ($validatedFile)
-		{
-			if ($this->object->isNew())
-			{
-				if (!$this->object->create($validatedFile))
-				{
-					throw new dmException(sprintf('Can not create file for media %s', $this->object));
-				}
-			}
-			else
-			{
-				if (!$this->object->replaceFile($validatedFile))
-				{
-					throw new dmException(sprintf('Can not replace file for media %s', $object));
-				}
-			}
-		}
-	}
+    if ($validatedFile)
+    {
+      if ($this->object->isNew())
+      {
+        if (!$this->object->create($validatedFile))
+        {
+          throw new dmException(sprintf('Can not create file for media %s', $this->object));
+        }
+      }
+      else
+      {
+        if (!$this->object->replaceFile($validatedFile))
+        {
+          throw new dmException(sprintf('Can not replace file for media %s', $object));
+        }
+      }
+    }
+  }
 
-	public function clearName($validator, $values)
-	{
-		if (!empty($values['file']))
-		{
-			$filename = dmOs::sanitizeFileName($values['file']->getOriginalName());
-			if(empty($filename))
-			{
-				$error = new sfValidatorError($validator, 'This is a bad name');
+  public function clearName($validator, $values)
+  {
+    if (!empty($values['file']))
+    {
+      $filename = dmOs::sanitizeFileName($values['file']->getOriginalName());
+      if(empty($filename))
+      {
+        $error = new sfValidatorError($validator, 'This is a bad name');
 
-				// throw an error bound to the password field
-				throw new sfValidatorErrorSchema($validator, array('file' => $error));
-			}
-		}
+        // throw an error bound to the password field
+        throw new sfValidatorErrorSchema($validator, array('file' => $error));
+      }
+    }
 
-		return $values;
-	}
+    return $values;
+  }
 
-	public function checkExistingNameInParent($validator, $values)
-	{
-		if (!empty($values['file']))
-		{
-			if(!$folder = dmDb::table('DmMediaFolder')->find($values['dm_media_folder_id']))
-			{
-				throw new dmException('media has no folder');
-			}
+  public function checkExistingNameInParent($validator, $values)
+  {
+    if (!empty($values['file']))
+    {
+      if(!$folder = dmDb::table('DmMediaFolder')->find($values['dm_media_folder_id']))
+      {
+        throw new dmException('media has no folder');
+      }
 
-			$filename = dmOs::sanitizeFileName($values['file']->getOriginalName());
+      $filename = dmOs::sanitizeFileName($values['file']->getOriginalName());
 
-			if($folder->hasFile($filename))
-			{
-				$this->throwFileAlreadyExists($validator, $folder, $filename);
-			}
+      if($folder->hasFile($filename))
+      {
+        $this->throwFileAlreadyExists($validator, $folder, $filename);
+      }
 
-			if(!is_writable($folder->fullPath))
-			{
-				$error = new sfValidatorError($validator, dmProject::unRootify($folder->fullPath)." is not writable");
+      if(!is_writable($folder->fullPath))
+      {
+        $error = new sfValidatorError($validator, dmProject::unRootify($folder->fullPath)." is not writable");
 
-				// throw an error bound to the file field
-				throw new sfValidatorErrorSchema($validator, array('file' => $error));
-			}
-		}
+        // throw an error bound to the file field
+        throw new sfValidatorErrorSchema($validator, array('file' => $error));
+      }
+    }
 
-		return $values;
-	}
+    return $values;
+  }
 
-	protected function throwFileAlreadyExists($validator, $folder, $filename)
-	{
-		$error = new sfValidatorError($validator, 'Already exists in this folder');
+  protected function throwFileAlreadyExists($validator, $folder, $filename)
+  {
+    $error = new sfValidatorError($validator, 'Already exists in this folder');
 
-		// throw an error bound to the file field
-		throw new sfValidatorErrorSchema($validator, array('file' => $error));
-	}
+    // throw an error bound to the file field
+    throw new sfValidatorErrorSchema($validator, array('file' => $error));
+  }
 }

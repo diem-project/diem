@@ -18,12 +18,12 @@ class dmFrontBaseActions extends dmBaseActions
    */
   public function isSecure()
   {
-  	if (!dmConfig::get('site_active'))
-  	{
-  		return true;
-  	}
+    if (!dmConfig::get('site_active'))
+    {
+      return true;
+    }
 
-  	return parent::isSecure();
+    return parent::isSecure();
   }
 
   /**
@@ -33,11 +33,11 @@ class dmFrontBaseActions extends dmBaseActions
    */
   public function getCredential()
   {
-  	$credentials = parent::getCredential();
+    $credentials = parent::getCredential();
 
     if (!dmConfig::get('site_active'))
     {
-  	  $credentials[] = 'view_site';
+      $credentials[] = 'view_site';
     }
 
     return $credentials;

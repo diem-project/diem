@@ -5,26 +5,26 @@ class dmAdminGenerateService extends dmService
 
   public function execute()
   {
-  	$this->log('Generate admin for modules');
+    $this->log('Generate admin for modules');
 
-  	$modules = dmModuleManager::getModules();
+    $modules = dmModuleManager::getModules();
 
-  	$existing_modules = sfFinder::type('dir')
-  	->maxdepth(0)
-  	->in(array(
-  	  dmOs::join(sfConfig::get('sf_apps_dir'), 'admin/modules'),
+    $existing_modules = sfFinder::type('dir')
+    ->maxdepth(0)
+    ->in(array(
+      dmOs::join(sfConfig::get('sf_apps_dir'), 'admin/modules'),
       dmOs::join(sfConfig::get('dm_admin_dir'), 'modules')
-  	));
+    ));
 
-  	array_walk($existing_modules, create_function('&$a', '$a = basename($a);'));
+    array_walk($existing_modules, create_function('&$a', '$a = basename($a);'));
 
-  	foreach($modules as $moduleKey => $module)
-  	{
-  		if ($this->getOption('only') && $module != $this->getOption('only'))
-  		{
-  			$this->log("Skipping $module");
-  			continue;
-  		}
+    foreach($modules as $moduleKey => $module)
+    {
+      if ($this->getOption('only') && $module != $this->getOption('only'))
+      {
+        $this->log("Skipping $module");
+        continue;
+      }
       if ($module->isProject() && !$module->hasAdmin())
       {
         $this->log(sprintf("Skip module %s wich has no admin", $moduleKey));
@@ -52,7 +52,7 @@ class dmAdminGenerateService extends dmService
         {
           $this->log(sprintf("Remove existing module %s", $moduleKey));
 
-		      $moduleDir = sfConfig::get('sf_app_module_dir').'/'.$moduleKey;
+          $moduleDir = sfConfig::get('sf_app_module_dir').'/'.$moduleKey;
 
           dmContext::getInstance()->getFilesystem()->unlink(dmOs::join($moduleDir, 'generator.yml'));
         }
@@ -64,18 +64,18 @@ class dmAdminGenerateService extends dmService
         'application' => 'admin',
         'route_or_model' => $module->getKey()
       );
-	    $options = array(
-	      '--module='.$moduleKey,
-	      '--theme='.'dmAdmin',
+      $options = array(
+        '--module='.$moduleKey,
+        '--theme='.'dmAdmin',
         '--singular='.$moduleKey,
         '--plural='.$moduleKey.'s',
-	      '--env='.'dev'
-	    );
-	    
+        '--env='.'dev'
+      );
+      
       $task = new dmAdminDoctrineGenerateAdminTask($this->dispatcher, $this->formatter);
       $task->run($arguments, $options);
-  	}
+    }
 
-  	$this->executeService('dmClearCache');
+    $this->executeService('dmClearCache');
   }
 }

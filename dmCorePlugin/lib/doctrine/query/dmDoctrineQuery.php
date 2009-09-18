@@ -3,8 +3,8 @@
 abstract class dmDoctrineQuery extends Doctrine_Query
 {
 
-	protected static
-	$cacheDrivers;
+  protected static
+  $cacheDrivers;
 
   /**
    * Constructor.
@@ -29,39 +29,39 @@ abstract class dmDoctrineQuery extends Doctrine_Query
    * @param integer $timeToLive                        how long the cache entry is valid
    * @return Doctrine_Hydrate                          this object
    */
-	public function dmCache($driver = true, $timeToLive = null, $force = false)
-	{
-		if ($driver !== true)
-		{
-			if (!$driver)
-			{
-				$driver = null;
-			}
-			elseif(is_string($driver))
-			{
-	      $driver = self::getCacheDriver($driver);
-			}
-		}
+  public function dmCache($driver = true, $timeToLive = null, $force = false)
+  {
+    if ($driver !== true)
+    {
+      if (!$driver)
+      {
+        $driver = null;
+      }
+      elseif(is_string($driver))
+      {
+        $driver = self::getCacheDriver($driver);
+      }
+    }
 
     if ($force || (sfConfig::get('dm_orm_cache_result_enabled') && sfConfig::get('dm_orm_cache_result_activated')))
     {
-    	$this->useResultCache($driver, $timeToLive);
+      $this->useResultCache($driver, $timeToLive);
     }
 
     return $this;
-	}
+  }
 
-	/*
-	 * use cache even if disabled
-	 * @see dmCache
-	 */
-	public function dmCacheForce($driver = true, $timeToLive = null)
-	{
+  /*
+   * use cache even if disabled
+   * @see dmCache
+   */
+  public function dmCacheForce($driver = true, $timeToLive = null)
+  {
     return $this->dmCache($driver, $timeToLive, true);
-	}
+  }
 
-	public static function getCacheDriver($name)
-	{
+  public static function getCacheDriver($name)
+  {
     $driverClass = 'Doctrine_Cache_'.ucfirst($name);
 
     if (!isset(self::$cacheDrivers[$driverClass]))
@@ -70,15 +70,15 @@ abstract class dmDoctrineQuery extends Doctrine_Query
     }
 
     return self::$cacheDrivers[$driverClass];
-	}
+  }
 
-	/*
-	 * Join translation results if they exist
-	 * if $model is specified, will verify that it has I18n
-	 * return @myDoctrineQuery $this
-	 */
-	public function withI18n($culture = null, $model = null)
-	{
+  /*
+   * Join translation results if they exist
+   * if $model is specified, will verify that it has I18n
+   * return @myDoctrineQuery $this
+   */
+  public function withI18n($culture = null, $model = null)
+  {
     if (null !== $model)
     {
       if (!dmDb::table($model)->hasI18n())
@@ -87,14 +87,14 @@ abstract class dmDoctrineQuery extends Doctrine_Query
       }
     }
 
-		$me       = $this->getRootAlias();
-		$culture  = null === $culture ? myDoctrineRecord::getDefaultCulture() : $culture;
-		
-		return $this
+    $me       = $this->getRootAlias();
+    $culture  = null === $culture ? myDoctrineRecord::getDefaultCulture() : $culture;
+    
+    return $this
     ->leftJoin($me.'.Translation translation ON '.$me.'.id = translation.id AND translation.lang = ?', $culture);
-	}
+  }
 
-	/*
+  /*
    * Join media for this columnName or alias
    * return @myDoctrineQuery $this
    */
@@ -102,9 +102,9 @@ abstract class dmDoctrineQuery extends Doctrine_Query
   {
     return $this->leftJoin(sprintf('%s.%s %s, %s.%s %s', $this->getRootAlias(), $alias, $alias, $alias, 'Folder', $alias.'Folder'));
   }
-	
-	public function whereIsActive($boolean = true, $model = null)
-	{
+  
+  public function whereIsActive($boolean = true, $model = null)
+  {
     if (null !== $model)
     {
       if (!dmDb::table($model)->hasField('is_active'))
@@ -113,9 +113,9 @@ abstract class dmDoctrineQuery extends Doctrine_Query
       }
     }
     
-		return $this->addWhere($this->getRootAlias().'.is_active = ?', (bool) $boolean);
-	}
-	
+    return $this->addWhere($this->getRootAlias().'.is_active = ?', (bool) $boolean);
+  }
+  
   /*
    * Will restrict results to $model records
    * associated with $ancestor record
@@ -147,27 +147,27 @@ abstract class dmDoctrineQuery extends Doctrine_Query
     }
     elseif($ancestorModule = $module->getAncestor($ancestorRecordModel))
     {
-	    $current      = $module;
-	    $currentAlias = $this->getRootAlias();
-	    
-	    foreach(array_reverse($module->getPath(), true) as $ancestorKey => $ancestor)
-	    {
-	      if (!$relation = $current->getTable()->getRelationHolder()->getByClass($ancestor->getModel()))
-	      {
-	        throw new dmRecordException(sprintf('%s has no relation for class %s', $current, $ancestor->getModel()));
-	        return null;
-	      }
-	
-	      $this->leftJoin($currentAlias.'.'.$relation['alias'].' '.$ancestorKey);
-	
-	      if ($ancestor->is($ancestorModule))
-	      {
-	        break;
-	      }
-	
-	      $current       = $ancestor;
-	      $currentAlias  = $ancestor->getKey();
-	    }
+      $current      = $module;
+      $currentAlias = $this->getRootAlias();
+      
+      foreach(array_reverse($module->getPath(), true) as $ancestorKey => $ancestor)
+      {
+        if (!$relation = $current->getTable()->getRelationHolder()->getByClass($ancestor->getModel()))
+        {
+          throw new dmRecordException(sprintf('%s has no relation for class %s', $current, $ancestor->getModel()));
+          return null;
+        }
+  
+        $this->leftJoin($currentAlias.'.'.$relation['alias'].' '.$ancestorKey);
+  
+        if ($ancestor->is($ancestorModule))
+        {
+          break;
+        }
+  
+        $current       = $ancestor;
+        $currentAlias  = $ancestor->getKey();
+      }
     }
     else
     {
@@ -202,7 +202,7 @@ abstract class dmDoctrineQuery extends Doctrine_Query
     
     if($descendantRecordModel == $model)
     {
-    	return $this->addWhere($this->getRootAlias().'.id = ?', $descendantRecordId);
+      return $this->addWhere($this->getRootAlias().'.id = ?', $descendantRecordId);
     }
 
     if(!$descendantModule = $module->getDescendant($descendantRecordModel))
@@ -241,19 +241,19 @@ abstract class dmDoctrineQuery extends Doctrine_Query
     return $this;
   }
 
-	/*
-	 * Add asc order by position field
+  /*
+   * Add asc order by position field
    * if $model is specified, will verify that it has I18n
    * @return myDoctrineQuery $this
-	 */
+   */
   public function orderByPosition($model = null)
   {
     if (null !== $model)
     {
-    	if (!dmDb::table($model)->hasField('position'))
-    	{
+      if (!dmDb::table($model)->hasField('position'))
+      {
         return $this;
-    	}
+      }
     }
 
     $me = $this->getRootAlias();
@@ -262,10 +262,10 @@ abstract class dmDoctrineQuery extends Doctrine_Query
     ->addOrderBy("$me.position asc");
   }
 
-	/*
-	 * @return myDoctrineCollection|null the fetched collection
-	 */
-	public function fetchRecords($params = array())
+  /*
+   * @return myDoctrineCollection|null the fetched collection
+   */
+  public function fetchRecords($params = array())
   {
     return $this->execute($params, Doctrine::HYDRATE_RECORD);
   }
@@ -277,7 +277,7 @@ abstract class dmDoctrineQuery extends Doctrine_Query
    */
   public function fetchRecord($params = array(), $hydrationMode = Doctrine::HYDRATE_RECORD)
   {
-  	return $this->limit(1)->fetchOne($params, $hydrationMode);
+    return $this->limit(1)->fetchOne($params, $hydrationMode);
   }
 
   public function fetchValue($params = array())
@@ -308,14 +308,14 @@ abstract class dmDoctrineQuery extends Doctrine_Query
     return $this->execute($params, 'dmFlat');
   }
 
-	public function exists()
-	{
-		return $this->count() > 0;
-	}
+  public function exists()
+  {
+    return $this->count() > 0;
+  }
 
-	public function toDebug()
-	{
-		return $this->getSqlQuery();
-	}
-	
+  public function toDebug()
+  {
+    return $this->getSqlQuery();
+  }
+  
 }

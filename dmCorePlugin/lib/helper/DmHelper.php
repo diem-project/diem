@@ -2,7 +2,7 @@
 
 function dm_datetime($datetime)
 {
-	return trim($datetime, ' CEST');
+  return trim($datetime, ' CEST');
 }
 
 function definition_list($array, $opt = array())
@@ -41,22 +41,22 @@ function £media($src)
  */
 function £o($name, array $opt = array())
 {
-  return dmOoHelper::£o($name, $opt);
+  return dmHelper::£o($name, $opt);
 }
 
 function £c($name)
 {
-  return dmOoHelper::£c($name);
+  return dmHelper::£c($name);
 }
 
 function £($name, $opt = array(), $content = false, $openAndClose = true)
 {
-  return dmOoHelper::£($name, $opt, $content, $openAndClose);
+  return dmHelper::£($name, $opt, $content, $openAndClose);
 }
 
 function toggle($text = 'odd')
 {
-	sfConfig::set('dm_helper_toggle', sfConfig::get('dm_helper_toggle', 0)+1);
+  sfConfig::set('dm_helper_toggle', sfConfig::get('dm_helper_toggle', 0)+1);
   return sfConfig::get('dm_helper_toggle')%2 ? $text : '';
 }
 

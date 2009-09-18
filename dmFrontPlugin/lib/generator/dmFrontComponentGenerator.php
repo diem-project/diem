@@ -6,8 +6,8 @@ class dmFrontComponentGenerator extends dmFrontModuleGenerator
   $class,
   $indentation = '  ';
 
-	public function execute()
-	{
+  public function execute()
+  {
     require_once(dmOs::join(sfConfig::get('dm_core_dir'), 'lib/vendor/Zend/Reflection/File.php'));
     require_once(dmOs::join(sfConfig::get('dm_core_dir'), 'lib/vendor/Zend/CodeGenerator/Php/File.php'));
     require_once(dmOs::join(sfConfig::get('dm_core_dir'), 'lib/vendor/dmZend/CodeGenerator/Php/Class.php'));
@@ -20,7 +20,7 @@ class dmFrontComponentGenerator extends dmFrontModuleGenerator
     
     if (file_exists($file))
     {
-    	include_once($file);
+      include_once($file);
       $this->class = dmZendCodeGeneratorPhpClass::fromReflection(new Zend_Reflection_Class($className));
       
       foreach($this->class->getMethods() as $method)
@@ -30,12 +30,12 @@ class dmFrontComponentGenerator extends dmFrontModuleGenerator
     }
     else
     {
-    	$this->class = $this->buildClass($className);
+      $this->class = $this->buildClass($className);
     }
     
     $this->class->setIndentation($this->indentation);
     
-	  foreach($this->module->getActions() as $action)
+    foreach($this->module->getActions() as $action)
     {
       $methodName = 'execute'.dmString::camelize($action->getKey());
       
@@ -56,22 +56,22 @@ class dmFrontComponentGenerator extends dmFrontModuleGenerator
     }
 
     return $return;
-	}
-	
-	protected function buildClass($className)
-	{
-	  return new Zend_CodeGenerator_Php_Class(array(
+  }
+  
+  protected function buildClass($className)
+  {
+    return new Zend_CodeGenerator_Php_Class(array(
       'name' => $className,
       'extendedClass' => 'dmFrontModuleComponents',
-	    'docBlock' => array(
-	      'shortDescription' => $this->module->getName().' components',
-	      'longDescription' => 'Components are micro-controllers that prepare data for a template.
+      'docBlock' => array(
+        'shortDescription' => $this->module->getName().' components',
+        'longDescription' => 'Components are micro-controllers that prepare data for a template.
 You should not use redirection or database manipulation ( insert, update, delete ) here.
 To make redirections or manipulate database, use the actions class.'
-	    )
+      )
     ));
-	}
-	
+  }
+  
   protected function buildActionMethod($methodName, dmAction $action)
   {
     switch($action->getType())

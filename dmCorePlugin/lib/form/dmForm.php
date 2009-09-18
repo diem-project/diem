@@ -12,17 +12,17 @@
 class dmForm extends sfFormSymfony
 {
 
-	protected static
-	  $helper,
-	  $counter = 1;
+  protected static
+    $helper,
+    $counter = 1;
 
-	protected
-	  $key,
-	  $name;
+  protected
+    $key,
+    $name;
 
   public function setup()
   {
-  	$this->widgetSchema->setFormFormatterName('dmList');
+    $this->widgetSchema->setFormFormatterName('dmList');
 
     $this->key = "dm_form_".self::$counter++;
     
@@ -37,7 +37,7 @@ class dmForm extends sfFormSymfony
   
   public function getName()
   {
-  	return $this->name;
+    return $this->name;
   }
 
   public function getKey() { return $this->key; }
@@ -51,9 +51,9 @@ class dmForm extends sfFormSymfony
    */
   public function render($attributes = array())
   {
-  	$attributes = dmString::toArray($attributes, true);
+    $attributes = dmString::toArray($attributes, true);
 
-  	return
+    return
     $this->open($attributes).
     '<ul class="dm_form_elements">'.
     $this->getFormFieldSchema()->render($attributes).
@@ -86,8 +86,8 @@ class dmForm extends sfFormSymfony
 
   public function open($opt = array())
   {
-  	$opt = dmString::toArray($opt, true);
-  	
+    $opt = dmString::toArray($opt, true);
+    
     $defaults = array(
       'class' => dmArray::toHtmlCssClasses(array('validate_me', dmArray::get($opt, 'class'))),
       'id' => $this->getKey()
@@ -95,7 +95,7 @@ class dmForm extends sfFormSymfony
 
     if (isset($opt['class']))
     {
-    	unset($opt['class']);
+      unset($opt['class']);
     }
 
     $opt = array_merge($defaults, $opt);
@@ -104,7 +104,7 @@ class dmForm extends sfFormSymfony
     {
       if (self::$helper)
       {
-    	  $action = self::$helper->link($action)->getHref();
+        $action = self::$helper->link($action)->getHref();
       }
       else
       {
@@ -140,19 +140,19 @@ class dmForm extends sfFormSymfony
    *
    * @param sfEventDispatcher $dispatcher
    */
-  static public function setHelper(dmOoHelper $helper)
+  static public function setHelper(dmHelper $helper)
   {
     self::$helper = $helper;
   }
 
   public function getValueOrDefault($name)
   {
-  	if (!$return = $this->getValue($name))
-  	{
-  		$return = $this->getDefault($name);
-  	}
+    if (!$return = $this->getValue($name))
+    {
+      $return = $this->getDefault($name);
+    }
 
-  	return $return;
+    return $return;
   }
   
   /**

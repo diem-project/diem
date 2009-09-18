@@ -8,12 +8,12 @@
  */
 class sfGuardFormSignin extends BasesfGuardFormSignin
 {
-	public function configure()
-	{
-		parent::configure();
+  public function configure()
+  {
+    parent::configure();
 
-		$this->widgetSchema['remember'] = new sfWidgetFormInputHidden();
+    $this->widgetSchema['remember'] = new sfWidgetFormInputHidden();
 
-		$this->setDefault('remember', true);
-	}
+    $this->setDefault('remember', true);
+  }
 }

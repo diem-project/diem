@@ -1,5 +1,10 @@
 parameters:
 
+  theme.options:
+    key:                      diem_admin
+    path:                     themeAdmin
+    name:                     "Admin Theme"
+
   asset_config.class:         dmAdminAssetConfig
 
   admin_sort_table_form.class:    dmAdminSortTableForm
@@ -29,17 +34,6 @@ services:
     arguments:
       defaults:               %admin_sort_form.defaults%
       options:                %admin_sort_form.options%
-
-  layout_helper:
-    class:                    %layout_helper.class%
-    shared:                   true
-    arguments:
-      dispatcher:             @dispatcher
-      user:                   @user
-      request:                @request
-      response:               @response
-      action_stack:           @action_stack
-      helper:                 @helper
       
   admin_menu:
     class:                    %admin_menu.class%

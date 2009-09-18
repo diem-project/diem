@@ -46,12 +46,12 @@ class dmModule extends dmMicroCache
 
   public function isInternal()
   {
-  	return !$this->isProject() && strncmp($this->getKey(), 'dm', 2) === 0;
+    return !$this->isProject() && strncmp($this->getKey(), 'dm', 2) === 0;
   }
 
   public function isProject()
   {
-  	return $this->getSpace()->getType()->isProject();
+    return $this->getSpace()->getType()->isProject();
   }
 
   public function getOptions()
@@ -76,7 +76,7 @@ class dmModule extends dmMicroCache
 
   public function toDebug()
   {
-  	return $this->toArray();
+    return $this->toArray();
   }
 
   public function getKey()
@@ -111,64 +111,64 @@ class dmModule extends dmMicroCache
 
   public function getModel()
   {
-  	if (null === $this->checkedModel)
-  	{
-  	  $this->checkedModel = false;
-	    if ($model = $this->getParam("model"))
-	    {
-		    if(Doctrine::isValidModelClass($model))
-		    {
-			    $this->checkedModel = $model;
-		    }
-	    }
-  	}
+    if (null === $this->checkedModel)
+    {
+      $this->checkedModel = false;
+      if ($model = $this->getParam("model"))
+      {
+        if(Doctrine::isValidModelClass($model))
+        {
+          $this->checkedModel = $model;
+        }
+      }
+    }
 
-  	return $this->checkedModel;
+    return $this->checkedModel;
   }
 
   public function hasModel()
   {
-  	return $this->getModel() !== false;
+    return $this->getModel() !== false;
   }
 
   public function hasPage()
   {
-  	return false;
+    return false;
   }
 
   public function getUnderscore()
   {
     if (null === $this->underscoredKey)
     {
-  	  $this->underscoredKey = dmString::underscore($this->getKey());
+      $this->underscoredKey = dmString::underscore($this->getKey());
     }
     return $this->underscoredKey;
   }
 
   public function getSlug()
   {
-  	if ($this->hasCache('slug'))
-  	{
-  		return $this->getCache('slug');
-  	}
+    if ($this->hasCache('slug'))
+    {
+      return $this->getCache('slug');
+    }
 
-  	return $this->setCache('slug', $this->slug = dmString::slugify(dm::getI18n()->__($this->getPlural())));
+    return $this->setCache('slug', $this->slug = dmString::slugify(dm::getI18n()->__($this->getPlural())));
   }
 
   public function getCompleteSlug()
   {
-  	if($this->hasCache('complete_slug'))
-  	{
-  		return $this->getCache('complete_slug');
-  	}
+    if($this->hasCache('complete_slug'))
+    {
+      return $this->getCache('complete_slug');
+    }
 
-  	return $this->setCache('complete_slug',
-  	  implode('/', array(
-	      $this->getSpace()->getType()->getSlug(),
-	      $this->getSpace()->getSlug(),
-	      $this->getSlug()
-	    ))
-	  );
+    return $this->setCache('complete_slug',
+      implode('/', array(
+        $this->getSpace()->getType()->getSlug(),
+        $this->getSpace()->getSlug(),
+        $this->getSlug()
+      ))
+    );
   }
 
 
@@ -178,33 +178,33 @@ class dmModule extends dmMicroCache
    */
   public function getDir()
   {
-  	if($this->hasCache('dir'))
-  	{
-  		return $this->getCache('dir');
-  	}
+    if($this->hasCache('dir'))
+    {
+      return $this->getCache('dir');
+    }
 
-  	$dirs = sfContext::getInstance()->getConfiguration()->getControllerDirs($this->getKey());
+    $dirs = sfContext::getInstance()->getConfiguration()->getControllerDirs($this->getKey());
 
-  	$dir = null;
-  	foreach($dirs as $actionPath => $isProject)
-  	{
-  		if(file_exists($actionPath))
-  		{
+    $dir = null;
+    foreach($dirs as $actionPath => $isProject)
+    {
+      if(file_exists($actionPath))
+      {
         $dir = preg_replace('|^(.+)/actions$|', '$1', $actionPath);
-  			break;
-  		}
-  	}
-  	
-  	return $this->setCache('dir', $dir);
+        break;
+      }
+    }
+    
+    return $this->setCache('dir', $dir);
   }
 
   public function getTable()
   {
-  	if (null === $this->table)
-  	{
-  		$model = $this->getModel();
-  		$this->table = $model ? dmDb::table($this->getModel()) : false;
-  	}
+    if (null === $this->table)
+    {
+      $model = $this->getModel();
+      $this->table = $model ? dmDb::table($this->getModel()) : false;
+    }
 
     return $this->table;
   }
@@ -291,12 +291,12 @@ class dmModule extends dmMicroCache
 
   public function getAssociations()
   {
-  	if ($this->hasCache('associations'))
-  	{
-  		return $this->getCache('associations');
-  	}
+    if ($this->hasCache('associations'))
+    {
+      return $this->getCache('associations');
+    }
 
-  	$associations = array();
+    $associations = array();
     foreach($this->getTable()->getRelationHolder()->getAssociations() as $key => $relation)
     {
       $associationModule = dmModuleManager::getModule($relation->getClass());
@@ -329,9 +329,9 @@ class dmModule extends dmMicroCache
 
   public function getDefaultOptions()
   {
-  	return array(
+    return array(
       'admin' => true,
-  	  'page'  => false
+      'page'  => false
     );
   }
 
@@ -346,16 +346,16 @@ class dmModule extends dmMicroCache
 
   public function is($something)
   {
-  	if (is_string($something))
-  	{
-  		return $this->getKey() == $something;
-  	}
+    if (is_string($something))
+    {
+      return $this->getKey() == $something;
+    }
 
-  	return $this == $something;
+    return $this == $something;
   }
   
   public function interactsWithPageTree()
   {
-  	return $this->isProject();
+    return $this->isProject();
   }
 }

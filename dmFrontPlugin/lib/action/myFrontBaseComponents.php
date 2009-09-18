@@ -2,5 +2,5 @@
 
 class myFrontBaseComponents extends dmFrontBaseComponents
 {
-	
+  
 }

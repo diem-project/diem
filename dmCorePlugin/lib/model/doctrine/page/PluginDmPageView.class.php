@@ -13,16 +13,16 @@
 abstract class PluginDmPageView extends BaseDmPageView
 {
 
-	public function save(Doctrine_Connection $conn = null)
-	{
-	  $return = parent::save($conn);
+  public function save(Doctrine_Connection $conn = null)
+  {
+    $return = parent::save($conn);
 
-	  if ($this->Area->isNew())
-	  {
-	  	$this->Area->fromArray(array(
+    if ($this->Area->isNew())
+    {
+      $this->Area->fromArray(array(
         'type' => 'content'
-	  	))->save();
-	  }
-	}
+      ))->save();
+    }
+  }
 
 }

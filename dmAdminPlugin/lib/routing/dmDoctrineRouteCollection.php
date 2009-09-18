@@ -33,7 +33,7 @@ class dmDoctrineRouteCollection extends sfDoctrineRouteCollection
   protected function getRouteForDo()
   {
     return new sfRoute(
-      $this->options['prefix_path'].'/+/:action/*',
+      $this->options['prefix_path'].'/:action/*',
       array('module' => $this->options['module'])
     );
   }

@@ -5,13 +5,13 @@ class dmPageSyncService extends dmService
 
   public function execute(array $onlyModules = array())
   {
-  	if(empty($onlyModules))
-  	{
-  		$onlyModules = dmModuleManager::getProjectModules();
-  	}
-  	
-  	$onlyModules = dmModuleManager::removeModulesChildren($onlyModules);
-  	
+    if(empty($onlyModules))
+    {
+      $onlyModules = dmModuleManager::getProjectModules();
+    }
+    
+    $onlyModules = dmModuleManager::removeModulesChildren($onlyModules);
+    
     $timer = dmDebug::timerOrNull('dmPageSyncService::execute');
 
     dmDB::cache(false);
@@ -111,7 +111,7 @@ class dmPageSyncService extends dmService
       }
       elseif(!$module->hasListPage()) // parent page is a show page
       {
-      	$record = $records[$showPage['record_id']];
+        $record = $records[$showPage['record_id']];
         /*
          * If the parent is a show page, verify that it exists,
          * unless the child page is useless
@@ -186,10 +186,10 @@ class dmPageSyncService extends dmService
           'action'      => 'list',
           'Translation' => array(
             myDoctrineRecord::getDefaultCulture() => array(
-		          'name'        => $module->getPlural(),
-		          'title'       => $module->getPlural(),
-		          'slug'        => dmString::slugify($module->getPlural()),
-		          'description' => $module->getPlural()
+              'name'        => $module->getPlural(),
+              'title'       => $module->getPlural(),
+              'slug'        => dmString::slugify($module->getPlural()),
+              'description' => $module->getPlural()
             )
           )
         ))->getNode()->insertAsLastChildOf($rootPage);
@@ -443,7 +443,7 @@ class dmPageSyncService extends dmService
       $parentRecordIds = array();
       foreach($_parentRecordIds as $_parentRecordId)
       {
-      	$parentRecordIds[$_parentRecordId[0]] = $_parentRecordId[1];
+        $parentRecordIds[$_parentRecordId[0]] = $_parentRecordId[1];
       }
     }
     /*

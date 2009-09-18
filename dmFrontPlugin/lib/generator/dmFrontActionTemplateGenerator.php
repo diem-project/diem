@@ -3,8 +3,8 @@
 class dmFrontActionTemplateGenerator extends dmFrontModuleGenerator
 {
 
-	public function execute()
-	{
+  public function execute()
+  {
     $dir = dmOs::join(sfConfig::get('sf_apps_dir'), 'front', 'modules', $this->module->getKey(), 'templates');
 
     $this->filesystem->mkdir($dir);
@@ -13,25 +13,25 @@ class dmFrontActionTemplateGenerator extends dmFrontModuleGenerator
 
     foreach($this->module->getActions() as $action)
     {
-    	$file = dmOs::join($dir, '_'.$action->getKey().'.php');
+      $file = dmOs::join($dir, '_'.$action->getKey().'.php');
 
-    	if(file_exists($file))
-    	{
-    		continue;
-    	}
+      if(file_exists($file))
+      {
+        continue;
+      }
 
-    	touch($file);
+      touch($file);
 
-    	$code = $this->getActionTemplate($action);
+      $code = $this->getActionTemplate($action);
 
       $success &= (bool) file_put_contents($file, $code);
     }
 
     return $success;
-	}
+  }
 
-	protected function getActionTemplate(dmAction $action)
-	{
+  protected function getActionTemplate(dmAction $action)
+  {
     switch($action->getType())
     {
       case 'list': return $this->getListActionTemplate($action); break;
@@ -39,13 +39,13 @@ class dmFrontActionTemplateGenerator extends dmFrontModuleGenerator
       case 'form': return $this->getFormActionTemplate($action); break;
       default:     return $this->getUserActionTemplate($action); break;
     }
-	}
+  }
 
-	protected function getListActionTemplate(dmAction $action)
-	{
+  protected function getListActionTemplate(dmAction $action)
+  {
     $object = '$'.$this->module->getKey();
     $pager = $object.'Pager';
-		$vars = $this->getVarsComment(array($pager));
+    $vars = $this->getVarsComment(array($pager));
     return "<?php
 /*
  * Action for {$this->module->getName()} : {$action->getName()}
@@ -72,7 +72,7 @@ echo £o('div.{$this->module->getUnderscore()}.{$action->getUnderscore()}');
  echo {$pager}->renderNavigationBottom();
 
 echo £c('div');";
-	}
+  }
 
   protected function getShowActionTemplate(dmAction $action)
   {
@@ -111,17 +111,17 @@ echo \$form;
 ";
   }
 
-	protected function getVarsComment($vars)
-	{
-		foreach($vars as $key => $name)
-		{
-			if ($name{0} !== '$')
-			{
-			  $vars[$key] = '$'.$name;
-			}
-	  }
+  protected function getVarsComment($vars)
+  {
+    foreach($vars as $key => $name)
+    {
+      if ($name{0} !== '$')
+      {
+        $vars[$key] = '$'.$name;
+      }
+    }
 
-		return implode(', ', $vars);
-	}
+    return implode(', ', $vars);
+  }
 
 }

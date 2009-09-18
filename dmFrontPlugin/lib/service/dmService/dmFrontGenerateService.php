@@ -3,10 +3,10 @@
 class dmFrontGenerateService extends dmService
 {
 
-	public function execute()
-	{
+  public function execute()
+  {
     $this->log('Generate front for modules');
-		
+    
     foreach(dmModuleManager::getProjectModules() as $moduleKey => $module)
     {
       $this->log(sprintf("Generate front for module %s", $moduleKey));
@@ -29,29 +29,29 @@ class dmFrontGenerateService extends dmService
         $this->alert('Can NOT create action templates for module '.$module);
       }
     }
-	}
-	
+  }
+  
   public function executeOld()
   {
-  	$this->log('Generate front for modules');
+    $this->log('Generate front for modules');
 
-  	$modules = dmModuleManager::getProjectModules();
+    $modules = dmModuleManager::getProjectModules();
 
-  	$existingModules = sfFinder::type('dir')
-  	->maxdepth(0)
-  	->in(array(
-  	  dmOs::join(sfConfig::get('sf_apps_dir'), 'front/modules')
-  	));
+    $existingModules = sfFinder::type('dir')
+    ->maxdepth(0)
+    ->in(array(
+      dmOs::join(sfConfig::get('sf_apps_dir'), 'front/modules')
+    ));
 
-  	array_walk($existingModules, create_function('&$a', '$a = basename($a);'));
+    array_walk($existingModules, create_function('&$a', '$a = basename($a);'));
 
-  	foreach($modules as $moduleKey => $module)
-  	{
-  		if ($this->getOption('only') && $module != $this->getOption('only'))
-  		{
-  			$this->log("Skipping $module for testing purpose");
-  			continue;
-  		}
+    foreach($modules as $moduleKey => $module)
+    {
+      if ($this->getOption('only') && $module != $this->getOption('only'))
+      {
+        $this->log("Skipping $module for testing purpose");
+        continue;
+      }
 
       if (in_array($moduleKey, $existingModules))
       {
@@ -72,7 +72,7 @@ class dmFrontGenerateService extends dmService
       $actionGenerator = new dmFrontActionGenerator($module, $this->dispatcher);
       if (!$actionGenerator->execute())
       {
-      	$this->log('Can NOT create actions for module '.$module);
+        $this->log('Can NOT create actions for module '.$module);
       }
 
       $componentGenerator = new dmFrontComponentGenerator($module, $this->dispatcher);
@@ -89,14 +89,14 @@ class dmFrontGenerateService extends dmService
 
       if ($module->hasModel())
       {
-	      $viewTemplateGenerator = new dmFrontViewTemplateGenerator($module, $this->dispatcher);
-	      if (!$viewTemplateGenerator->execute())
-	      {
-	        $this->log('Can NOT create view templates for module '.$module);
-	      }
+        $viewTemplateGenerator = new dmFrontViewTemplateGenerator($module, $this->dispatcher);
+        if (!$viewTemplateGenerator->execute())
+        {
+          $this->log('Can NOT create view templates for module '.$module);
+        }
       }
-  	}
+    }
 
-  	$this->executeService('dmClearCache');
+    $this->executeService('dmClearCache');
   }
 }

@@ -1,5 +1,13 @@
 parameters:
 
+  media_tag.class:            dmMediaTag
+  media_image_tag.class:      dmMediaImageTag
+  media_flash_tag.class:      dmMediaFlashTag
+  media_video_tag.class:      dmMediaVideoTag
+  media_audio_tag.class:      dmMediaAudioTag
+
+  media_resource.class:       dmMediaResource
+
   search_engine.class:        dmSearchEngine
   
   search_index.class:         dmSearchIndex
@@ -40,9 +48,26 @@ parameters:
   file_backup.options:
     dir:                      'data/dm/backup/filesystem'
     
-  helper.class:               dmOoHelper
+  helper.class:               dmHelper
  
 services:
+
+  media_tag:
+    class:                    %media_tag.class%
+    shared:                   false
+    arguments:
+      source:                 %media_tag.source%
+      theme:                  %user.theme%
+      culture:                %user.culture%
+      request_context:        %request.context%
+
+  media_resource:
+    class:                    %media_resource.class%
+    shared:                   false
+    arguments:
+      theme:                  %user.theme%
+      culture:                %user.culture%
+      request_context:        %request.context%
 
   search_engine:
     class:                    %search_engine.class%
@@ -74,7 +99,7 @@ services:
     arguments:
       dispatcher:             @dispatcher
       filesystem:             @filesystem
-      relative_url_root:      %request.relative_url_root%
+      request_context:        %request.context%
       options:                %theme.options%
 
   stylesheet_compressor:
@@ -83,7 +108,7 @@ services:
     arguments:
       dispatcher:             @dispatcher
       filesystem:             @filesystem
-      relative_url_root:      %request.relative_url_root%
+      request_context:        %request.context%
       options:                %stylesheet_compressor.options%
 
   javascript_compressor:
@@ -92,8 +117,19 @@ services:
     arguments:
       dispatcher:             @dispatcher
       filesystem:             @filesystem
-      relative_url_root:      %request.relative_url_root%
+      request_context:        %request.context%
       options:                %javascript_compressor.options%
+
+  layout_helper:
+    class:                    %layout_helper.class%
+    shared:                   true
+    arguments:
+      dispatcher:             @dispatcher
+      user:                   @user
+      response:               @response
+      action_stack:           @action_stack
+      helper:                 @helper
+      request_context:        %request.context%
 
   auth_layout_helper:
     class:                    %auth_layout_helper.class%
@@ -101,10 +137,10 @@ services:
     arguments:
       dispatcher:             @dispatcher
       user:                   @user
-      request:                @request
       response:               @response
       action_stack:           @action_stack
       helper:                 @helper
+      request_context:        %request.context%
 
   doctrine_config:
     class:                    %doctrine_config.class%
@@ -160,8 +196,9 @@ services:
     shared:                   true
     arguments:
       dispatcher:             @dispatcher
+      user:                   @user
       context:                @context
-      relative_url_root:      %request.relative_url_root%
+      request_context:        %request.context%
       
   cache_manager:
     class:                    %cache_manager.class%

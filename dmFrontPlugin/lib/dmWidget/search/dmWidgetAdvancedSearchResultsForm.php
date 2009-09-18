@@ -2,13 +2,13 @@
 
 class dmWidgetAdvancedSearchResultsForm extends dmWidgetPluginForm
 {
-	protected
-	$firstDefaults = array(
+  protected
+  $firstDefaults = array(
     'maxPerPage' =>10
-	);
+  );
 
-	public function configure()
-	{
+  public function configure()
+  {
     parent::configure();
 
     /*
@@ -21,6 +21,6 @@ class dmWidgetAdvancedSearchResultsForm extends dmWidgetPluginForm
       'min' => 0,
       'max' => 9999
     ));
-	}
+  }
 
 }

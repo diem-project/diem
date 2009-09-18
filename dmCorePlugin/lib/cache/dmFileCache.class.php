@@ -3,15 +3,15 @@
 class dmFileCache extends sfFileCache
 {
 
-	public function initialize($options = array())
-	{
-		if (!isset($options['cache_dir']) && isset($options['prefix']))
-		{
-			$options['cache_dir'] = dmOs::join(sfConfig::get("sf_cache_dir"), $options['prefix']);
-		}
+  public function initialize($options = array())
+  {
+    if (!isset($options['cache_dir']) && isset($options['prefix']))
+    {
+      $options['cache_dir'] = dmOs::join(sfConfig::get("sf_cache_dir"), $options['prefix']);
+    }
 
-		return parent::initialize($options);
-	}
+    return parent::initialize($options);
+  }
 
   public function set($key, $data, $lifetime = null)
   {
@@ -32,7 +32,7 @@ class dmFileCache extends sfFileCache
 
     if ($data != $default)
     {
-    	$data = unserialize($data);
+      $data = unserialize($data);
     }
 
     return $data;

@@ -9,27 +9,27 @@ abstract class dmFrontLinkTag extends dmLinkTag
     
     if (null === $source)
     {
-    	$type = 'page';
+      $type = 'page';
       $source = dmDb::table('DmPage')->findOneBySource($source);
     }
     elseif (is_string($source))
     {
-    	/*
-    	 * If a blank space is found in the source,
-    	 * remove characters after it
-    	 * because they are just a comment
-    	 * ex : page:1?var=val Home
-    	 */
-    	if ($blakSpacePos = strpos($source, ' '))
-    	{
-    		$source = substr($source, 0, $blakSpacePos);
-    	}
-    	/*
-    	 * Extract url parameters from source string
-    	 */
-    	$params = self::getDataFromUrl($source);
-    	$source = self::getBaseFromUrl($source);
-    	
+      /*
+       * If a blank space is found in the source,
+       * remove characters after it
+       * because they are just a comment
+       * ex : page:1?var=val Home
+       */
+      if ($blakSpacePos = strpos($source, ' '))
+      {
+        $source = substr($source, 0, $blakSpacePos);
+      }
+      /*
+       * Extract url parameters from source string
+       */
+      $params = self::getDataFromUrl($source);
+      $source = self::getBaseFromUrl($source);
+      
       if (strncmp($source, 'page:', 5) === 0)
       {
         if ($page = dmDb::table('DmPage')->findOneBySource($source))
@@ -57,20 +57,21 @@ abstract class dmFrontLinkTag extends dmLinkTag
       elseif (strncmp($source, 'app:', 4) === 0)
       {
         $type = 'uri';
-      	$app = substr($source, 4);
-      	/*
-      	 * A slug may be added to the app name, extract it
-      	 */
-      	if ($slashPos = strpos($app, '/'))
-      	{
-      		$slug = substr($app, $slashPos);
-      		$app  = substr($app, 0, $slashPos);
-      	}
-      	else
-      	{
-      		$slug = '';
-      	}
-      	$source = dmContext::getInstance()->getAppUrl($app).$slug;
+        $app = substr($source, 4);
+        /*
+         * A slug may be added to the app name, extract it
+         */
+        if ($slashPos = strpos($app, '/'))
+        {
+          $slug = substr($app, $slashPos);
+          $app  = substr($app, 0, $slashPos);
+        }
+        else
+        {
+          $slug = '';
+        }
+        
+        $source = dmContext::getInstance()->getAppUrl($app).$slug;
       }
       elseif(
           strncmp($source, "http://", 7)  === 0
@@ -89,15 +90,15 @@ abstract class dmFrontLinkTag extends dmLinkTag
       }
       elseif(substr_count($source, '/') === 1)
       {
-      	if ($page = dmDb::table('DmPage')->findOneBySource($source))
-      	{
-      		$type = 'page';
-      		$source = $page;
-      	}
-      	else
-      	{
-      		throw new dmException(sprintf('%s is not a valid link resource', $source));
-      	}
+        if ($page = dmDb::table('DmPage')->findOneBySource($source))
+        {
+          $type = 'page';
+          $source = $page;
+        }
+        else
+        {
+          throw new dmException(sprintf('%s is not a valid link resource', $source));
+        }
       }
       else
       {
@@ -116,21 +117,21 @@ abstract class dmFrontLinkTag extends dmLinkTag
       }
       elseif($source instanceof myDoctrineRecord)
       {
-      	if ($module = $source->getDmModule())
-	      {
-	      	if($module->hasPage())
-	      	{
-	      		$type = 'record';
-	      	}
-	        else
-	        {
-	          throw new dmException(sprintf('%s module has no page', $module));
-	        }
-	      }
-	      else
-	      {
-	      	throw new dmException(sprintf('%s object can not be associated to a page', get_class($source)));
-	      }
+        if ($module = $source->getDmModule())
+        {
+          if($module->hasPage())
+          {
+            $type = 'record';
+          }
+          else
+          {
+            throw new dmException(sprintf('%s module has no page', $module));
+          }
+        }
+        else
+        {
+          throw new dmException(sprintf('%s object can not be associated to a page', get_class($source)));
+        }
       }
     }
     elseif(is_array($source))
@@ -154,7 +155,7 @@ abstract class dmFrontLinkTag extends dmLinkTag
 
     if(empty($type))
     {
-    	throw new dmException(sprintf('dmFrontLinkTag can not determine type of %s', $source));
+      throw new dmException(sprintf('dmFrontLinkTag can not determine type of %s', $source));
     }
 
     $linkClass = 'dmFrontLinkTag'.dmString::camelize($type);
@@ -170,14 +171,14 @@ abstract class dmFrontLinkTag extends dmLinkTag
     }
     catch(Exception $e)
     {
-    	if (sfConfig::get('dm_debug'))
-    	{
-    		throw $e;
-    	}
-    	else
-    	{
-    		$linkTagObject = new dmFrontLinkTagError($e);
-    	}
+      if (sfConfig::get('dm_debug'))
+      {
+        throw $e;
+      }
+      else
+      {
+        $linkTagObject = new dmFrontLinkTagError($e);
+      }
     }
 
     return $linkTagObject;

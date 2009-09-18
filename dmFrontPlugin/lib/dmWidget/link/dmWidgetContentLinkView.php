@@ -3,12 +3,12 @@
 class dmWidgetContentLinkView extends dmWidgetPluginView
 {
 
-	public function configure()
-	{
+  public function configure()
+  {
     parent::configure();
 
     $this->addRequiredVar(array('href'));
-	}
+  }
   
   public function getViewVars(array $vars = array())
   {
@@ -19,27 +19,27 @@ class dmWidgetContentLinkView extends dmWidgetPluginView
     return $vars;
   }
 
-	protected function doRender(array $vars)
-	{
-		$link = dmFrontLinkTag::build($vars['href']);
+  protected function doRender(array $vars)
+  {
+    $link = dmFrontLinkTag::build($vars['href']);
 
-		if($vars['text'])
-		{
-			$link->text($vars['text']);
-		}
-		
-		if($vars['title'])
-		{
-		  $link->title($vars['title']);
-		}
+    if($vars['text'])
+    {
+      $link->text($vars['text']);
+    }
+    
+    if($vars['title'])
+    {
+      $link->title($vars['title']);
+    }
     
     if($vars['cssClass'])
     {
       $link->addCssClass($vars['cssClass']);
     }
-		
-		return $link->render();
-	}
+    
+    return $link->render();
+  }
   
   public function toIndexableString(array $vars)
   {

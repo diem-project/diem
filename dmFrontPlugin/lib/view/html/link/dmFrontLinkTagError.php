@@ -2,12 +2,12 @@
 
 class dmFrontLinkTagError extends dmFrontLinkTag
 {
-	protected
-	$exception;
+  protected
+  $exception;
  
-	protected function configure()
+  protected function configure()
   {
-  	$this->exception = $this->get('source');
+    $this->exception = $this->get('source');
   }
 
   protected function getBaseHref()
@@ -17,19 +17,19 @@ class dmFrontLinkTagError extends dmFrontLinkTag
 
   public function render()
   {
-  	if (sfConfig::get('sf_debug'))
-  	{
-	    $this
+    if (sfConfig::get('sf_debug'))
+    {
+      $this
       ->text('[EXCEPTION] '.$this->exception->getMessage())
-	    ->param('dm_debug', 1)
-	    ->title('Click me to see the exception details');
-  	}
-  	else
-  	{
-  		
-  	}
+      ->param('dm_debug', 1)
+      ->title('Click me to see the exception details');
+    }
+    else
+    {
+      
+    }
     
-  	return parent::render();
+    return parent::render();
   }
 
 }

@@ -4,9 +4,9 @@
 class PluginDmAutoSeoTable extends myDoctrineTable
 {
 
-	/*
-	 * @return DmAutoSeo found or created record
-	 */
+  /*
+   * @return DmAutoSeo found or created record
+   */
   public function findOneByModuleAndAction($module, $action)
   {
     return $this->createQuery('a')

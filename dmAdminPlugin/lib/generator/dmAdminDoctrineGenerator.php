@@ -3,9 +3,9 @@
 class dmAdminDoctrineGenerator extends sfDoctrineGenerator
 {
 
-	protected
-	$module;
-	
+  protected
+  $module;
+  
   /**
    * Returns the default configuration for fields.
    *
@@ -25,10 +25,10 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
       {
         if ($module = dmModuleManager::getModuleByModel($localRelation->getClass()))
         {
-        	if ($module->isProject())
-        	{
-        		$label = $module->getName();
-        	}
+          if ($module->isProject())
+          {
+            $label = $module->getName();
+          }
         }
       }
       $fields[$name] = array_merge(array(
@@ -61,16 +61,16 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
     {
       if (dmModuleManager::getModuleByModel($relation->getClass()))
       {
-	      $name = dmString::underscore($alias).'_list';
-	      $names[] = $name;
-	      $fields[$name] = array_merge(array(
-	        'is_link'      => false,
-	        'is_real'      => false,
-	        'is_partial'   => false,
-	        'is_component' => false,
-	        'type'         => 'Text',
-	        'label'        => dmModuleManager::getModule($relation->getClass())->getPlural()
-	      ), isset($this->config['fields'][$name]) ? $this->config['fields'][$name] : array());
+        $name = dmString::underscore($alias).'_list';
+        $names[] = $name;
+        $fields[$name] = array_merge(array(
+          'is_link'      => false,
+          'is_real'      => false,
+          'is_partial'   => false,
+          'is_component' => false,
+          'type'         => 'Text',
+          'label'        => dmModuleManager::getModule($relation->getClass())->getPlural()
+        ), isset($this->config['fields'][$name]) ? $this->config['fields'][$name] : array());
       }
     }
 
@@ -107,7 +107,7 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
    */
   public function renderField($field)
   {
-  	$fieldName = $field->getName();
+    $fieldName = $field->getName();
 
     $html = $this->getColumnGetter($fieldName, true);
 
@@ -136,14 +136,14 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
      */
     elseif($relation = $this->table->getRelationHolder()->getLocalByColumnName($fieldName))
     {
-	    if ($relation->getClass() === 'DmMedia')
-	    {
-	      $html = '$'.$this->getSingularName().'->get("'.$relation->getLocalColumnName().'") ? get_partial("dmMedia/viewLittle", array("object" => $'.$this->getSingularName().'->get("'.$relation->getAlias().'"))) : "-"';
-	    }
-	    else
-	    {
-	      $html = '$'.$this->getSingularName().'->get("'.$relation->getLocalColumnName().'") ? $'.$this->getSingularName().'->get("'.$relation->getAlias().'") : "-"';
-	    }
+      if ($relation->getClass() === 'DmMedia')
+      {
+        $html = '$'.$this->getSingularName().'->get("'.$relation->getLocalColumnName().'") ? get_partial("dmMedia/viewLittle", array("object" => $'.$this->getSingularName().'->get("'.$relation->getAlias().'"))) : "-"';
+      }
+      else
+      {
+        $html = '$'.$this->getSingularName().'->get("'.$relation->getLocalColumnName().'") ? $'.$this->getSingularName().'->get("'.$relation->getAlias().'") : "-"';
+      }
     }
     /*
      * Foreign or Association Relation
@@ -152,18 +152,18 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
     {
       if (!$relation = $this->table->getRelationHolder()->get($alias = dmString::camelize(substr($fieldName, 0, strlen($fieldName)-5))))
       {
-      	$relation = $this->table->getRelationHolder()->get($alias = substr($fieldName, 0, strlen($fieldName)-5));
+        $relation = $this->table->getRelationHolder()->get($alias = substr($fieldName, 0, strlen($fieldName)-5));
       }
       if ($relation)
       {
-	      if($relation instanceof Doctrine_Relation_ForeignKey)
-	      {
-	        $html = 'get_partial("dmAdminGenerator/relationForeign", array("record" => $'.$this->getSingularName().', "alias" => "'.$alias.'"));';
-	      }
-		    elseif ($relation instanceof Doctrine_Relation_Association)
-		    {
-		      $html = 'get_partial("dmAdminGenerator/relationAssociation", array("record" => $'.$this->getSingularName().', "alias" => "'.$alias.'"));';
-		    }
+        if($relation instanceof Doctrine_Relation_ForeignKey)
+        {
+          $html = 'get_partial("dmAdminGenerator/relationForeign", array("record" => $'.$this->getSingularName().', "alias" => "'.$alias.'"));';
+        }
+        elseif ($relation instanceof Doctrine_Relation_Association)
+        {
+          $html = 'get_partial("dmAdminGenerator/relationAssociation", array("record" => $'.$this->getSingularName().', "alias" => "'.$alias.'"));';
+        }
       }
     }
     else
@@ -179,12 +179,12 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
     return $html;
   }
 
-	public function getColumns()
+  public function getColumns()
   {
     return $this->table->getSfDoctrineColumns();
   }
 
-	/**
+  /**
    * Returns HTML code for an action link.
    *
    * @param string  $actionName The action name
@@ -216,10 +216,10 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
 
   public function getModule()
   {
-  	if ($this->module === null)
-  	{
-  		$this->module = dmModuleManager::getModuleOrNull($this->getModuleName());
-  	}
+    if ($this->module === null)
+    {
+      $this->module = dmModuleManager::getModuleOrNull($this->getModuleName());
+    }
 
     return $this->module;
   }

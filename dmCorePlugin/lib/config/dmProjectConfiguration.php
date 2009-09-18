@@ -19,14 +19,14 @@ class dmProjectConfiguration extends sfProjectConfiguration
     return array('sfDoctrinePlugin');
   }
 
-	public function setWebDirName($webDirName)
-	{
-		return $this->setWebDir(sfConfig::get('sf_root_dir').'/'.$webDirName);
-	}
+  public function setWebDirName($webDirName)
+  {
+    return $this->setWebDir(sfConfig::get('sf_root_dir').'/'.$webDirName);
+  }
 
   public function configureDoctrine(Doctrine_Manager $manager)
   {
-  	Doctrine::debug(sfConfig::get("sf_debug"));
+    Doctrine::debug(sfConfig::get("sf_debug"));
 
     /*
      * Set up doctrine extensions dir

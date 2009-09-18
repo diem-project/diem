@@ -4,7 +4,7 @@ $module           = dmModuleManager::getModuleByModel($record->getTable()->getCo
 
 if(!$module)
 {
-	throw new dmException(sprintf('no module found for model %s', $record->getTable()->getComponentName()));
+  throw new dmException(sprintf('no module found for model %s', $record->getTable()->getComponentName()));
 }
 
 $relation         = $module->getTable()->getRelation($alias);
@@ -16,7 +16,7 @@ $foreignRecords   = $record->get($alias);
  */
 if ($foreignRecords instanceof myDoctrineRecord)
 {
-	$foreignRecords = array($foreignRecords);
+  $foreignRecords = array($foreignRecords);
 }
 
 $nbforeignRecords = count($foreignRecords);
@@ -25,19 +25,19 @@ echo £o('div.dm_foreigns');
 
   if ($nbforeignRecords)
   {
-	  echo £o('ul.list');
+    echo £o('ul.list');
 
-	  foreach($foreignRecords as $foreignRecord)
-	  {
-	    echo £('li',
-	      dmAdminLinkTag::build(array(
-	        'sf_route' => $foreignModule->getUnderscore().'_edit',
-	        'sf_subject' => $foreignRecord
-	      ))->text($foreignRecord)
-	    );
-	  }
+    foreach($foreignRecords as $foreignRecord)
+    {
+      echo £('li',
+        dmAdminLinkTag::build(array(
+          'sf_route' => $foreignModule->getUnderscore().'_edit',
+          'sf_subject' => $foreignRecord
+        ))->text($foreignRecord)
+      );
+    }
 
-	  echo £c('ul');
+    echo £c('ul');
   }
   
   $newLink = dmAdminLinkTag::build('@'.$foreignModule->getUnderscore().'_new')
@@ -46,7 +46,7 @@ echo £o('div.dm_foreigns');
   
   if ($relation instanceof Doctrine_Relation_ForeignKey)
   {
-  	$newLink->param('defaults['.$relation->getForeign().']', $record->id);
+    $newLink->param('defaults['.$relation->getForeign().']', $record->id);
   }
 
   echo £('ul.actions',

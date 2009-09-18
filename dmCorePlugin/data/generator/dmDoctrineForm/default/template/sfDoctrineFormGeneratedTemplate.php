@@ -98,7 +98,7 @@ class Base<?php echo $this->modelName ?>Form extends <?php echo $this->getFormCl
   {
     parent::doUpdateObject($values);
 <?php foreach($this->getMediaRelations() as $mediaRelation): ?>
-		$this->doUpdateObjectForEmbeddedMediaForm($values, '<?php echo $mediaRelation['local'] ?>', '<?php echo $mediaRelation['alias'] ?>');
+    $this->doUpdateObjectForEmbeddedMediaForm($values, '<?php echo $mediaRelation['local'] ?>', '<?php echo $mediaRelation['alias'] ?>');
 <?php endforeach; ?>
   }
 

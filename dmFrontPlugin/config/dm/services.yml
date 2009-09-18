@@ -36,17 +36,6 @@ services:
       type:                   %widget_view.type%
       data:                   %widget_view.data%
 
-  layout_helper:
-    class:                    %layout_helper.class%
-    shared:                   true
-    arguments:
-      dispatcher:             @dispatcher
-      user:                   @user
-      request:                @request
-      response:               @response
-      action_stack:           @action_stack
-      helper:                 @helper
-
   page_helper:
     class:                    %page_helper.class%
     shared:                   true

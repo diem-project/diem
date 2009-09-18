@@ -11,7 +11,7 @@ echo £o('ul');
 
 if ($page->getIsAutomatic())
 {
-	$record = $page->getRecord();
+  $record = $page->getRecord();
   echo £('li', £link($record)->text(sprintf('%s "%s" (%s)',
     __('Modify record'),
     $record,

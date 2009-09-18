@@ -2,14 +2,14 @@
 
 class dmWidgetNavigationBreadCrumbForm extends dmWidgetPluginForm
 {
-	protected
-	$firstDefaults = array(
-	  'separator'      => '>',
-	  'includeCurrent' => true
-	);
+  protected
+  $firstDefaults = array(
+    'separator'      => '>',
+    'includeCurrent' => true
+  );
 
-	public function configure()
-	{
+  public function configure()
+  {
     $this->widgetSchema['separator'] = new sfWidgetFormInputText();
     $this->widgetSchema['includeCurrent'] = new sfWidgetFormInputCheckBox();
 
@@ -19,6 +19,6 @@ class dmWidgetNavigationBreadCrumbForm extends dmWidgetPluginForm
     $this->setDefaults($this->getDefaultsFromLastUpdated(array('separator', 'includeCurrent')));
 
     parent::configure();
-	}
+  }
 
 }

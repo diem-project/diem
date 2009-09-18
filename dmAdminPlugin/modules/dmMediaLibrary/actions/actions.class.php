@@ -3,9 +3,9 @@
 class dmMediaLibraryActions extends dmAdminBaseActions
 {
 
-	public function executeEditImage(sfWebRequest $request)
-	{
-	  $this->forward404Unless(
+  public function executeEditImage(sfWebRequest $request)
+  {
+    $this->forward404Unless(
       $this->file = dmDb::table('DmMedia')->find($request->getParameter('media_id')),
       'media not found'
     );
@@ -31,7 +31,7 @@ class dmMediaLibraryActions extends dmAdminBaseActions
     );
 
     sfConfig::set('dm_admin_full_screen', true);
-	}
+  }
 
   public function executeEditImageSave(sfWebRequest $request)
   {
@@ -50,8 +50,8 @@ class dmMediaLibraryActions extends dmAdminBaseActions
     )));
   }
 
-	public function executeFile(sfWebRequest $request)
-	{
+  public function executeFile(sfWebRequest $request)
+  {
     $this->forward404Unless(
       $this->file = dmDb::table('DmMedia')->find($request->getParameter('media_id')),
       'media not found'
@@ -63,16 +63,16 @@ class dmMediaLibraryActions extends dmAdminBaseActions
     }
 
     $this->form = new DmMediaForm($this->file);
-	}
+  }
 
   public function executeIndex(sfWebRequest $request)
   {
-  	$this->redirect('@dm_media_library_path');
+    $this->redirect('@dm_media_library_path');
   }
 
   public function executePath(sfWebRequest $request)
   {
-		$path = $request->getParameter('path', '');
+    $path = $request->getParameter('path', '');
 
     if(!$this->folder = dmDb::table('DmMediaFolder')->findOneByRelPath($path))
     {
@@ -85,7 +85,7 @@ class dmMediaLibraryActions extends dmAdminBaseActions
 
     if (!$this->folder->isWritable())
     {
-    	$this->getUser()->logAlert(dm::getI18n()->__('This folder is not writable'), false);
+      $this->getUser()->logAlert(dm::getI18n()->__('This folder is not writable'), false);
     }
 
     $this->folder->sync();
@@ -95,9 +95,9 @@ class dmMediaLibraryActions extends dmAdminBaseActions
     $this->metadata = array();
     if($this->getUser()->hasFlash('dm_media_open'))
     {
-    	$this->metadata['open_media'] = $this->getUser()->getFlash('dm_media_open');
+      $this->metadata['open_media'] = $this->getUser()->getFlash('dm_media_open');
     }
-	}
+  }
 
   public function executeNewFile(sfWebRequest $request)
   {
@@ -169,7 +169,7 @@ class dmMediaLibraryActions extends dmAdminBaseActions
 
   public function executeRenameFolder(sfWebRequest $request)
   {
-  	$this->forward404Unless(
+    $this->forward404Unless(
       $this->folder = dmDb::table('DmMediaFolder')->find($request->getParameter('folder_id')),
       'can not find folder'
     );
@@ -201,11 +201,11 @@ class dmMediaLibraryActions extends dmAdminBaseActions
 
     if  (!$parent->isWritable())
     {
-    	$this->getUser()->logAlert(
-    	  dm::getI18n()->__('Folder %1% is not writable', array('%1%' => $parent->getFullPath()))
-    	);
+      $this->getUser()->logAlert(
+        dm::getI18n()->__('Folder %1% is not writable', array('%1%' => $parent->getFullPath()))
+      );
 
-    	return $this->renderPartial('dmAdmin/flash');
+      return $this->renderPartial('dmAdmin/flash');
     }
 
     $this->form = new DmMediaFolderForm();
@@ -225,26 +225,26 @@ class dmMediaLibraryActions extends dmAdminBaseActions
 
     if ($this->form->isValid())
     {
-    	$oldName = $this->form->getObject()->getName();
+      $oldName = $this->form->getObject()->getName();
 
-    	$object = $this->form->updateObject();
+      $object = $this->form->updateObject();
 
-    	$this->forward404Unless(
-    	  $parent = dmDb::table('DmMediaFolder')->find($this->form->getValue('parent_id')),
-    	  sprintf('There is no parent %d', $this->form->getValue('parent_id'))
-    	);
+      $this->forward404Unless(
+        $parent = dmDb::table('DmMediaFolder')->find($this->form->getValue('parent_id')),
+        sprintf('There is no parent %d', $this->form->getValue('parent_id'))
+      );
 
-    	if ($object->isNew())
-    	{
-    	  $object->getNode()->insertAsLastChildOf($parent);
-    	}
-    	else
-    	{
-    		$object->setName($oldName);
-    		$object->rename($this->form->getValue('name'));
-    	}
+      if ($object->isNew())
+      {
+        $object->getNode()->insertAsLastChildOf($parent);
+      }
+      else
+      {
+        $object->setName($oldName);
+        $object->rename($this->form->getValue('name'));
+      }
 
-    	$object->save();
+      $object->save();
 
       return $this->renderText('[OK]|'.dmMediaTools::getAdminUrlFor($object));
     }

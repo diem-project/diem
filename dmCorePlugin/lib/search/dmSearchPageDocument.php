@@ -10,11 +10,11 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
     'dmWidgetContent.gallery'
   );
   
-	public function __construct(DmPage $page)
-	{
-		$i18n = $page['Translation'][sfDoctrineRecord::getDefaultCulture()];
-		
-		$this->store('page_id', $page->get('id'));
+  public function __construct(DmPage $page)
+  {
+    $i18n = $page['Translation'][sfDoctrineRecord::getDefaultCulture()];
+    
+    $this->store('page_id', $page->get('id'));
 
     $this->index('body', $this->getPageBodyText($page));
 
@@ -29,32 +29,32 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
     $this->index('description', $i18n->get('description'), 2);
 
     $this->index('keywords', $i18n->get('keywords'), 3);
-	}
+  }
   
   protected function store($name, $value, $boost = 1)
   {
-  	$field = Zend_Search_Lucene_Field::UnIndexed($name, $value);
-  	$field->boost = $boost;
+    $field = Zend_Search_Lucene_Field::UnIndexed($name, $value);
+    $field->boost = $boost;
     $this->addField($field);
   }
   
   protected function index($name, $value, $boost = 1)
   {
-  	$field = Zend_Search_Lucene_Field::UnStored($name, $value);
-  	$field->boost = $boost;
+    $field = Zend_Search_Lucene_Field::UnStored($name, $value);
+    $field->boost = $boost;
     $this->addField($field);
   }
 
-	/*
-	 * @todo retrieve html nodes text ( better than Zend_Search_Lucene_Document_Html )
-	 */
+  /*
+   * @todo retrieve html nodes text ( better than Zend_Search_Lucene_Document_Html )
+   */
   protected function getPageBodyText(DmPage $page)
   {
-  	if (sfConfig::get('sf_app') != 'front')
-  	{
-  		throw new dmException('Can only be used in front app ( current : '.sfConfig::get('sf_app').' )');
-  	}
-  	
+    if (sfConfig::get('sf_app') != 'front')
+    {
+      throw new dmException('Can only be used in front app ( current : '.sfConfig::get('sf_app').' )');
+    }
+    
     dmContext::getInstance()->setPage($page);
     
     $area = dmDb::query('DmArea a, a.Zones z, z.Widgets w')
@@ -62,7 +62,7 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
       ->where('a.type = ? AND a.dm_page_view_id = ?', array('content', $page->get('PageView')->get('id')))
       ->fetchArray();
     
-    $helper = dmContext::getInstance()->getPageHelper();
+    $helper = dmContext::getInstance()->getService('page_helper');
     
     $html = '';
     

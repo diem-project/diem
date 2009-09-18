@@ -3,66 +3,66 @@
 abstract class dmWidgetBaseView
 {
 
-	protected
-	$dispatcher,
-	$helper,
-	$serviceContainer,
-	$widgetType,
+  protected
+  $dispatcher,
+  $helper,
+  $serviceContainer,
+  $widgetType,
   $widget,
-	$requiredVars = array();
+  $requiredVars = array();
 
-	public function __construct(sfEventDispatcher $dispatcher, dmOoHelper $helper, sfServiceContainer $serviceContainer, dmWidgetType $type, array $data)
-	{
-	  $this->dispatcher        = $dispatcher;
-	  $this->helper            = $helper;
-	  $this->serviceContainer  = $serviceContainer;
-	  $this->widgetType        = $type;
+  public function __construct(sfEventDispatcher $dispatcher, dmHelper $helper, sfServiceContainer $serviceContainer, dmWidgetType $type, array $data)
+  {
+    $this->dispatcher        = $dispatcher;
+    $this->helper            = $helper;
+    $this->serviceContainer  = $serviceContainer;
+    $this->widgetType        = $type;
     $this->widget           = $data;
 
     $this->configure();
-	}
+  }
 
-	protected function configure()
-	{
+  protected function configure()
+  {
 
-	}
+  }
 
   public function getRequiredVars()
   {
-  	return $this->requiredVars;
+    return $this->requiredVars;
   }
   
   public function isRequiredVar($var)
   {
-  	return in_array($var, $this->getRequiredVars());
+    return in_array($var, $this->getRequiredVars());
   }
 
   public function addRequiredVar($var)
   {
-  	if (is_array($var))
-  	{
-  		$this->requiredVars = array_merge($this->requiredVars, $var);
-  	}
-  	else
-  	{
-  		$this->requiredVars[] = $var;
-  	}
-  	
-  	$this->requiredVars = array_unique($this->requiredVars);
+    if (is_array($var))
+    {
+      $this->requiredVars = array_merge($this->requiredVars, $var);
+    }
+    else
+    {
+      $this->requiredVars[] = $var;
+    }
+    
+    $this->requiredVars = array_unique($this->requiredVars);
   }
   
   public function removeRequiredVar($var)
   {
     if (is_array($var))
     {
-    	foreach($var as $v)
-    	{
-    		$this->removeRequiredVar($v);
-    	}
+      foreach($var as $v)
+      {
+        $this->removeRequiredVar($v);
+      }
     }
     elseif (false !== ($varIndex = array_search($var, $this->requiredVars)))
     {
-    	unset($this->requiredVars[$varIndex]);
+      unset($this->requiredVars[$varIndex]);
     }
   }
 
@@ -75,7 +75,7 @@ abstract class dmWidgetBaseView
     }
     else
     {
-    	$html = $this->renderDefault();
+      $html = $this->renderDefault();
     }
     
     return $html;
@@ -88,8 +88,8 @@ abstract class dmWidgetBaseView
   
   abstract protected function doRenderPartial(array $vars);
 
-	public function renderDefault()
-	{
+  public function renderDefault()
+  {
     if (dm::getUser()->can('widget_edit'))
     {
       $html = sprintf(
@@ -102,39 +102,39 @@ abstract class dmWidgetBaseView
     }
     else
     {
-    	$html = '';
+      $html = '';
     }
     
     return $html;
-	}
+  }
 
   public function toIndexableString(array $vars)
   {
     return $this->render($vars);
   }
-	
+  
   public function isValid()
   {
-  	$viewVars = (array) json_decode($this->widget['value']);
+    $viewVars = (array) json_decode($this->widget['value']);
 
     foreach($this->getRequiredVars() as $requiredVar)
     {
       if (!isset($viewVars[$requiredVar]))
       {
-      	return false;
+        return false;
       }
     }
 
     return true;
   }
 
-	public function getViewVars(array $vars = array())
-	{
-		return array_merge(
-		  array('cssClass' => $this->widget['css_class']),
-		  (array) json_decode($this->widget['value']),
-		  dmString::toArray($vars)
-		);
-	}
+  public function getViewVars(array $vars = array())
+  {
+    return array_merge(
+      array('cssClass' => $this->widget['css_class']),
+      (array) json_decode($this->widget['value']),
+      dmString::toArray($vars)
+    );
+  }
 
 }

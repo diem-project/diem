@@ -2,24 +2,24 @@
 
 class dmDoctrineConfiguration
 {
-	protected
-	$manager,
-	$dispatcher,
-	$cacheManager;
+  protected
+  $manager,
+  $dispatcher,
+  $cacheManager;
 
-	public function __construct(Doctrine_Manager $manager, sfEventDispatcher $dispatcher, dmCacheManager $cacheManager)
-	{
+  public function __construct(Doctrine_Manager $manager, sfEventDispatcher $dispatcher, dmCacheManager $cacheManager)
+  {
     $this->manager = $manager;
     $this->dispatcher = $dispatcher;
     $this->cacheManager = $cacheManager;
-	}
+  }
 
   public function configureCache()
   {
-  	if (!sfConfig::get('dm_orm_cache_enabled', true))
-  	{
-  		return;
-  	}
+    if (!sfConfig::get('dm_orm_cache_enabled', true))
+    {
+      return;
+    }
 
     $driver = $this->getCacheDriver();
 
@@ -27,9 +27,9 @@ class dmDoctrineConfiguration
 
 //    if (sfConfig::get('dm_orm_cache_result_enabled', false))
 //    {
-	    $this->manager->setAttribute(Doctrine::ATTR_RESULT_CACHE, $driver);
-	    $this->manager->setAttribute(Doctrine::ATTR_RESULT_CACHE_LIFESPAN, 60 * 60);
-	    $this->activateCache();
+      $this->manager->setAttribute(Doctrine::ATTR_RESULT_CACHE, $driver);
+      $this->manager->setAttribute(Doctrine::ATTR_RESULT_CACHE_LIFESPAN, 60 * 60);
+      $this->activateCache();
 //    }
 //    else
 //    {
@@ -50,8 +50,8 @@ class dmDoctrineConfiguration
 
   protected function getCacheDriver()
   {
-  	return new Doctrine_Cache_Dm(array(
-  	  'cache_manager' => $this->cacheManager
-  	));
+    return new Doctrine_Cache_Dm(array(
+      'cache_manager' => $this->cacheManager
+    ));
   }
 }

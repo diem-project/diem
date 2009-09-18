@@ -2,5 +2,5 @@
 
 if ($view = $object->getPageView())
 {
-	echo £link($view);
+  echo £link($view);
 }

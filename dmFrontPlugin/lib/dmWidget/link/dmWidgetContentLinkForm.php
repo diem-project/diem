@@ -3,8 +3,8 @@
 class dmWidgetContentLinkForm extends dmWidgetPluginForm
 {
 
-	public function configure()
-	{
+  public function configure()
+  {
     $this->widgetSchema['href']     = new sfWidgetFormInputText(array(), array('class' => 'dm_link_droppable'));
     $this->validatorSchema['href']  = new sfValidatorString(array('required' => true));
     
@@ -15,6 +15,6 @@ class dmWidgetContentLinkForm extends dmWidgetPluginForm
     $this->validatorSchema['title'] = new sfValidatorString(array('required' => false));
 
     parent::configure();
-	}
+  }
 
 }

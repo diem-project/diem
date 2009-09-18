@@ -22,12 +22,12 @@ class sfWidgetFormDmDate extends sfWidgetFormI18nDate
    * @see sfWidgetForm
    */
 
-	protected function configure($options = array(), $attributes = array())
+  protected function configure($options = array(), $attributes = array())
   {
-  	$options['culture'] = isset($options['culture']) ? $options['culture'] : dm::getUser()->getCulture();
-  	
-  	parent::configure($options, $attributes);
-  	
+    $options['culture'] = isset($options['culture']) ? $options['culture'] : dm::getUser()->getCulture();
+    
+    parent::configure($options, $attributes);
+    
     $this->setOption('culture', $options['culture']);
   }
 
@@ -36,11 +36,11 @@ class sfWidgetFormDmDate extends sfWidgetFormI18nDate
     dm::getResponse()->addJavascript('lib.ui-datepicker');
     dm::getResponse()->addJavascript('lib.ui-i18n');
     dm::getResponse()->addStylesheet('lib.ui-datepicker');
-  	
-  	if($value && strtotime($value))
-  	{
-	    // convert value to an array
-	    $default = array('year' => null, 'month' => null, 'day' => null);
+    
+    if($value && strtotime($value))
+    {
+      // convert value to an array
+      $default = array('year' => null, 'month' => null, 'day' => null);
 
       $value = (string) $value == (string) (integer) $value ? (integer) $value : strtotime($value);
       if (false === $value)
@@ -52,31 +52,31 @@ class sfWidgetFormDmDate extends sfWidgetFormI18nDate
         $value = array('year' => date('Y', $value), 'month' => date('n', $value), 'day' => date('j', $value));
       }
 
-	    $formattedValue = strtr(
-	          $this->getOption('format'),
-	          array(
-	            '%year%' => sprintf('%04d', $value['year']),
-	            '%month%' => sprintf('%02d', $value['month']),
-	            '%day%' => sprintf('%02d', $value['day']),
-	          )
-	        );
-  	}
-  	else
-  	{
+      $formattedValue = strtr(
+            $this->getOption('format'),
+            array(
+              '%year%' => sprintf('%04d', $value['year']),
+              '%month%' => sprintf('%02d', $value['month']),
+              '%day%' => sprintf('%02d', $value['day']),
+            )
+          );
+    }
+    else
+    {
       $formattedValue = $value;
-  	}
+    }
 
     //$formattedValue = dm::getI18n()->getDateForCulture(strtotime($value));
 
     return $this->renderTag(
-	    'input',
-	    array(
-	      'name' => $name,
-	      'size' => 10,
-	      'id' => $this->generateId($name),
-	      'class' => 'datepicker_me',
-	      'value' => $formattedValue
-	    )
+      'input',
+      array(
+        'name' => $name,
+        'size' => 10,
+        'id' => $this->generateId($name),
+        'class' => 'datepicker_me',
+        'value' => $formattedValue
+      )
     );
   }
 }

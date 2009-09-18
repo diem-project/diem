@@ -2,19 +2,19 @@
 
 class dmModuleLoremizer
 {
-	protected
-	$dispatcher;
+  protected
+  $dispatcher;
 
-	public function __construct(sfEventDispatcher $dispatcher)
-	{
-		$this->dispatcher = $dispatcher;
-	}
+  public function __construct(sfEventDispatcher $dispatcher)
+  {
+    $this->dispatcher = $dispatcher;
+  }
 
-	public function loremize(dmModule $module,  $nbMax)
-	{
+  public function loremize(dmModule $module,  $nbMax)
+  {
     dmDb::table('DmMediaFolder')->checkRoot()->sync();
     
-		$table = $module->getTable();
+    $table = $module->getTable();
 
     $nbRecords = $table->count();
 
@@ -31,12 +31,12 @@ class dmModuleLoremizer
     }
     catch(Exception $e)
     {
-//    	dmDebug::kill($collection);
-    	throw new dmException('Error while loremizing '.$module.' : '.$e->getMessage());
+//      dmDebug::kill($collection);
+      throw new dmException('Error while loremizing '.$module.' : '.$e->getMessage());
     }
 
     return true;
-	}
+  }
 
-	
+  
 }

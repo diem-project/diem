@@ -21,11 +21,11 @@
     return '<?php
       if($this->escapeString(isset($this->config['edit']['title'])))
       {
-      	echo $this->config['edit']['title'];
+        echo $this->config['edit']['title'];
       }
       else
       {
-      	echo '%%to_string%%';
+        echo '%%to_string%%';
       }
       unset($this->config['edit']['title']);
     ?>';
@@ -36,7 +36,7 @@
     return <?php
       if(isset($this->config['new']['title']))
       {
-      	echo "'".$this->escapeString($this->config['new']['title'])."'";
+        echo "'".$this->escapeString($this->config['new']['title'])."'";
       }
       else
       {

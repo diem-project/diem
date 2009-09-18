@@ -2,13 +2,13 @@
 
 class dmWidgetAdvancedSearchFormForm extends dmWidgetPluginForm
 {
-	protected
-	$firstDefaults = array(
-	);
+  protected
+  $firstDefaults = array(
+  );
 
-	public function configure()
-	{
+  public function configure()
+  {
     parent::configure();
-	}
+  }
 
 }

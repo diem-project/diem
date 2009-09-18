@@ -4,10 +4,10 @@ $parents = array();
 
 if (!$folder->getNode()->isRoot())
 {
-	foreach($folder->getNode()->getAncestors() as $ancestor)
-	{
-		$parents[] = £("a#dmf".$ancestor->id, $ancestor->name);
-	}
+  foreach($folder->getNode()->getAncestors() as $ancestor)
+  {
+    $parents[] = £("a#dmf".$ancestor->id, $ancestor->name);
+  }
 }
 $parents[] = £("a#dmf".$folder->id, $folder->name);
 
@@ -28,14 +28,14 @@ else
 
 if ($folders = $folder->getNode()->getChildren())
 {
-	foreach($folders as $f)
-	{
-	  echo £("li.folder#dmf".$f->id,
-	    ($f->isWritable() ? £media("dmCore/media/folder.png")->size(64, 64)
-	    : £media("dmCore/media/folder-locked.png")->size(64, 64)).
-	    £("span.name", media_wrap_text($f->name))
-	  );
-	}
+  foreach($folders as $f)
+  {
+    echo £("li.folder#dmf".$f->id,
+      ($f->isWritable() ? £media("dmCore/media/folder.png")->size(64, 64)
+      : £media("dmCore/media/folder-locked.png")->size(64, 64)).
+      £("span.name", media_wrap_text($f->name))
+    );
+  }
 }
 
 foreach($folder->Medias as $f)
@@ -45,7 +45,7 @@ foreach($folder->Medias as $f)
     ? £('span.image_background',
         array('style' => sprintf(
           'background: url(%s) top left no-repeat',
-          £media($f)->size(128, 128)->src()
+          £media($f)->size(128, 128)->getSrc()
         )),
         £("span.name", media_wrap_text(dmString::truncate($f->file, 40)))
       )

@@ -24,7 +24,7 @@ class dmModuleType
    */
   public function isProject()
   {
-  	return $this->name == 'Project';
+    return $this->name == 'Project';
   }
 
   public function getName()
@@ -34,16 +34,16 @@ class dmModuleType
 
   public function getPublicName()
   {
-  	return $this->isProject() ? 'Content' : $this->name;
+    return $this->isProject() ? 'Content' : $this->name;
   }
 
   public function getSlug()
   {
-  	if(null === $this->slug)
-  	{
-  		$this->slug = dmString::slugify(dm::getI18n()->__($this->getPublicName()));
-  	}
-  	return $this->slug;
+    if(null === $this->slug)
+    {
+      $this->slug = dmString::slugify(dm::getI18n()->__($this->getPublicName()));
+    }
+    return $this->slug;
   }
 
   public function getSpaces()
@@ -66,22 +66,22 @@ class dmModuleType
   {
     foreach($this->getSpaces() as $space)
     {
-    	if($space->getSlug() === $slug)
-    	{
-    		return $space;
-    	}
+      if($space->getSlug() === $slug)
+      {
+        return $space;
+      }
     }
     return false;
   }
 
   public function getModules()
   {
-  	$modules = array();
-  	foreach($this->getSpaces() as $space)
-  	{
-  		$modules = array_merge($modules, $space->getModules());
-  	}
-  	return $modules;
+    $modules = array();
+    foreach($this->getSpaces() as $space)
+    {
+      $modules = array_merge($modules, $space->getModules());
+    }
+    return $modules;
   }
 
 }

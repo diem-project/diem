@@ -11,18 +11,18 @@
 class DmProfileAdminForm extends BaseDmProfileForm
 {
 
-	public function configure()
-	{
+  public function configure()
+  {
     $this->embedForm('User', $this->getUserForm($this->getObject()->User));
-	}
-	
-	protected function getUserForm(sfGuardUser $user)
-	{
-		$userForm = new BasesfGuardUserAdminForm($user);
-		
-		$userForm->useFields(array('username', 'email', 'password', 'password_again', 'is_active'));
-		
-		return $userForm;
-	}
+  }
+  
+  protected function getUserForm(sfGuardUser $user)
+  {
+    $userForm = new BasesfGuardUserAdminForm($user);
+    
+    $userForm->useFields(array('username', 'email', 'password', 'password_again', 'is_active'));
+    
+    return $userForm;
+  }
 
 }

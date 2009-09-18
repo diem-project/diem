@@ -20,10 +20,10 @@ class sfMessageSource_dmMySQL extends sfMessageSource_MySQL
       $conn = Doctrine_Manager::connection();
 
       $source = sprintf('mysql://%s:%s@%s',
-  		  $conn->getOption('username'),
-  		  $conn->getOption('password'),
-  		  preg_replace('|^mysql\:host=([^;]+);dbname=(.+)$|', '$1/$2', $conn->getOption('dsn'))
-  		  );
+        $conn->getOption('username'),
+        $conn->getOption('password'),
+        preg_replace('|^mysql\:host=([^;]+);dbname=(.+)$|', '$1/$2', $conn->getOption('dsn'))
+        );
     }
 
     parent::__construct($source);

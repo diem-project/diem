@@ -35,8 +35,8 @@
 <div class="markdown_preview_wrap sf_admin_form_row">
   <div class="sf_admin_form_row_inner">
     <label class="fnone"><?php echo __('Preview'); ?></label>
-	  <div class="markdown_preview markdown">
-	    <?php echo dmMarkdown::toHtml($form->getObject()->get($name))?>
-	  </div>
-	</div>
+    <div class="markdown_preview markdown">
+      <?php echo dmMarkdown::toHtml($form->getObject()->get($name))?>
+    </div>
+  </div>
 </div>

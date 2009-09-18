@@ -2,19 +2,19 @@
 
 class dmWidgetListForm extends dmWidgetProjectModelForm
 {
-	protected
-	$firstDefaults = array(
-	  'orderType'  => 'asc',
-	  'maxPerPage' => 5
-	);
+  protected
+  $firstDefaults = array(
+    'orderType'  => 'asc',
+    'maxPerPage' => 5
+  );
 
-	public function configure()
-	{
-		parent::configure();
+  public function configure()
+  {
+    parent::configure();
 
-		/*
-		 * Max per page
-		 */
+    /*
+     * Max per page
+     */
     $this->widgetSchema['maxPerPage']     = new sfWidgetFormInputText(array(), array(
       'size' => 3
     ));
@@ -61,26 +61,26 @@ class dmWidgetListForm extends dmWidgetProjectModelForm
     {
       if (($filterModule = $this->dmModule->getAncestor($filter)) || ($filterModule = $this->dmModule->getAssociation($filter)))
       {
-      	$filterName = 'filter'.$filterModule->getModel();
+        $filterName = 'filter'.$filterModule->getModel();
 
-		    $this->widgetSchema[$filterName]    = new sfWidgetFormDoctrineSelect(array(
-		      'model'     => $filterModule->getModel(),
-		      'add_empty' => $this->allowFilterAutoRecordId($filterModule)
-		      ? sprintf('(%s) %s', dm::getI18n()->__('automatic'), $this->getFilterAutoRecord($filterModule)->__toString())
-		      : false
-		    ));
+        $this->widgetSchema[$filterName]    = new sfWidgetFormDoctrineSelect(array(
+          'model'     => $filterModule->getModel(),
+          'add_empty' => $this->allowFilterAutoRecordId($filterModule)
+          ? sprintf('(%s) %s', dm::getI18n()->__('automatic'), $this->getFilterAutoRecord($filterModule)->__toString())
+          : false
+        ));
 
-		    $this->validatorSchema[$filterName] = new sfValidatorDoctrineChoice(array(
-		      'model'     => $filterModule->getModel(),
-		      'required'  => !$this->allowFilterAutoRecordId($filterModule)
-		    ));
+        $this->validatorSchema[$filterName] = new sfValidatorDoctrineChoice(array(
+          'model'     => $filterModule->getModel(),
+          'required'  => !$this->allowFilterAutoRecordId($filterModule)
+        ));
 
-		    $this->widgetSchema[$filterName]->setLabel(dm::getI18n()->__($filterModule->getName()));
+        $this->widgetSchema[$filterName]->setLabel(dm::getI18n()->__($filterModule->getName()));
       }
     }
 
-		$this->setDefaults($this->getDefaultsFromLastUpdated(array('maxPerPage', 'navTop', 'navBottom', 'view', 'orderField', 'orderType')));
-	}
+    $this->setDefaults($this->getDefaultsFromLastUpdated(array('maxPerPage', 'navTop', 'navBottom', 'view', 'orderField', 'orderType')));
+  }
 
   protected function allowFilterAutoRecordId(dmModule $filterModule)
   {
@@ -111,28 +111,28 @@ class dmWidgetListForm extends dmWidgetProjectModelForm
 
   protected function getAvailableOrderFields()
   {
-  	$fields = array();
+    $fields = array();
 
-  	$allowedTypes = array('time', 'timestamp', 'date', 'enum', 'integer', 'string');
+    $allowedTypes = array('time', 'timestamp', 'date', 'enum', 'integer', 'string');
 
-  	foreach($this->dmModule->getTable()->getColumns() as $columnName => $column)
-  	{
+    foreach($this->dmModule->getTable()->getColumns() as $columnName => $column)
+    {
       if (in_array($column['type'], $allowedTypes))
       {
         $fields[$columnName] = dm::getI18n()->__(dmString::humanize($columnName));
       }
-  	}
+    }
 
-  	return $fields;
+    return $fields;
   }
 
   protected function getOrderTypes()
   {
-  	return array(
-  	  'asc'  => dm::getI18n()->__('Ascendant'),
-  	  'desc' => dm::getI18n()->__('Descendant'),
-  	  'rand' => dm::getI18n()->__('Random')
-  	);
+    return array(
+      'asc'  => dm::getI18n()->__('Ascendant'),
+      'desc' => dm::getI18n()->__('Descendant'),
+      'rand' => dm::getI18n()->__('Random')
+    );
   }
 
 }

@@ -3,19 +3,19 @@
 class dmCoreActions extends dmBaseActions
 {
 
-	/*
-	 * Gateway to handle amf requests @see sfAmfPlugin
-	 */
-	public function executeAmfGateway()
-	{
+  /*
+   * Gateway to handle amf requests @see sfAmfPlugin
+   */
+  public function executeAmfGateway()
+  {
     $this->setLayout(false);
     sfAmfGateway::getInstance()->handleRequest();
     return sfView::NONE;
-	}
+  }
 
   public function executeW3cValidateHtml()
   {
-  	$this->doctype = sfConfig::get('dm_w3c_doctype', 'XHTML');
+    $this->doctype = sfConfig::get('dm_w3c_doctype', 'XHTML');
 
     $this->validator = new dmHtmlValidator($this->dmContext->getCacheManager()->getCache("dm/view/html/validate")->get(session_id()));
   }

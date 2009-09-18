@@ -32,37 +32,37 @@
  */
 abstract class dmDoctrineRecordGenerator extends Doctrine_Record_Generator
 {
-	/*
-	 * HACK
-	 * replaced Doctrine_Table by myDoctrineTable
-	 */
-	public function buildTable()
-	{
-		// Bind model
-		$conn = $this->_options['table']->getConnection();
-		$conn->getManager()->bindComponent($this->_options['className'], $conn->getName());
+  /*
+   * HACK
+   * replaced Doctrine_Table by myDoctrineTable
+   */
+  public function buildTable()
+  {
+    // Bind model
+    $conn = $this->_options['table']->getConnection();
+    $conn->getManager()->bindComponent($this->_options['className'], $conn->getName());
 
-		// Create table
-		$this->_table = new myDoctrineTable($this->_options['className'], $conn);
+    // Create table
+    $this->_table = new myDoctrineTable($this->_options['className'], $conn);
 
-		// If custom table name set then lets use it
-		if (isset($this->_options['tableName']) && $this->_options['tableName']) {
-			$this->_table->setTableName($this->_options['tableName']);
-		}
+    // If custom table name set then lets use it
+    if (isset($this->_options['tableName']) && $this->_options['tableName']) {
+      $this->_table->setTableName($this->_options['tableName']);
+    }
 
-		// Maintain some options from the parent table
-		$options = $this->_options['table']->getOptions();
+    // Maintain some options from the parent table
+    $options = $this->_options['table']->getOptions();
 
-		$newOptions = array();
-		$maintain = array('type', 'collate', 'charset'); // This list may need updating
-		foreach ($maintain as $key) {
-			if (isset($options[$key])) {
-				$newOptions[$key] = $options[$key];
-			}
-		}
+    $newOptions = array();
+    $maintain = array('type', 'collate', 'charset'); // This list may need updating
+    foreach ($maintain as $key) {
+      if (isset($options[$key])) {
+        $newOptions[$key] = $options[$key];
+      }
+    }
 
-		$this->_table->setOptions($newOptions);
+    $this->_table->setOptions($newOptions);
 
-		$conn->addTable($this->_table);
-	}
+    $conn->addTable($this->_table);
+  }
 }

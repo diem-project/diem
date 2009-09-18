@@ -5,28 +5,28 @@ class dmAdminLayoutHelper extends dmCoreLayoutHelper
 
   public function renderMetas()
   {
-  	return sprintf('<title>%s</title>', $this->response->getTitle());
+    return sprintf('<title>%s</title>', $this->response->getTitle());
   }
-	
-	public function renderBodyTag($class = null)
-	{
-	  $actionName = $this->actionStack->getLastEntry()->getActionName();
-	  
-		return sprintf('<body class="dm%s%s%s%s">',
+  
+  public function renderBodyTag($class = null)
+  {
+    $actionName = $this->actionStack->getLastEntry()->getActionName();
+    
+    return sprintf('<body class="dm%s%s%s%s">',
       $actionName == 'index' ? ' list' : '',
       in_array($actionName, array('edit', 'new', 'update', 'create')) ? ' form' : '',
       sfConfig::get('dm_admin_full_screen') ? ' full_screen' : '',
       $class ? ' '.$class : ''
     );
-	}
-	
+  }
+  
   public function renderEditBars()
   {
-  	if (!$this->user->can('admin'))
-  	{
-  		return '';
-  	}
-  	
+    if (!$this->user->can('admin'))
+    {
+      return '';
+    }
+    
     $html = '';
     
     if (sfConfig::get('dm_pageBar_enabled', true) && $this->user->can('page_bar_admin'))

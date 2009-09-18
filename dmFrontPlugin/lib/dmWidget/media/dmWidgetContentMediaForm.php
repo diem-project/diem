@@ -3,25 +3,25 @@
 class dmWidgetContentMediaForm extends dmWidgetPluginForm
 {
 
-	protected static $methods = array(
-	  'fit' => 'Fit',
-	  'center' => 'Center',
-	  'scale' => 'Scale',
+  protected static $methods = array(
+    'fit' => 'Fit',
+    'center' => 'Center',
+    'scale' => 'Scale',
     'inflate' => 'Inflate'
-	);
+  );
 
-	protected static
-	$dmMediaFolder;
+  protected static
+  $dmMediaFolder;
 
-	public function configure()
-	{
+  public function configure()
+  {
     if($this->getValueOrDefault('mediaId'))
     {
       $media = dmDb::table('DmMedia')->find($this->getDefault('mediaId'));
     }
     else
     {
-    	$media = null;
+      $media = null;
     }
 
     $this->widgetSchema['mediaName'] = new sfWidgetFormInputText(array(), array(
@@ -79,12 +79,12 @@ class dmWidgetContentMediaForm extends dmWidgetPluginForm
 
     if ($media)
     {
-	    $this->setDefault('mediaName', $media->getRelPath());
-//	    $this->setDefault('legend', $media->getLegend());
+      $this->setDefault('mediaName', $media->getRelPath());
+//      $this->setDefault('legend', $media->getLegend());
     }
     else
     {
-    	$this->setDefault('mediaName', dm::getI18n()->__('Drag & Drop a media here'));
+      $this->setDefault('mediaName', dm::getI18n()->__('Drag & Drop a media here'));
     }
 
     $this->validatorSchema->setPostValidator(
@@ -92,17 +92,17 @@ class dmWidgetContentMediaForm extends dmWidgetPluginForm
     );
 
     parent::configure();
-	}
+  }
 
-	public function checkMediaSource($validator, $values)
-	{
+  public function checkMediaSource($validator, $values)
+  {
     if (!$values['mediaId'] && !$values['file'])
     {
       throw new sfValidatorError($validator, 'You must use a media or upload a file');
     }
 
     return $values;
-	}
+  }
 
 
   protected function renderContent($attributes)
@@ -115,59 +115,59 @@ class dmWidgetContentMediaForm extends dmWidgetPluginForm
 
   public function getWidgetValues()
   {
-  	$values = $this->getValues();
+    $values = $this->getValues();
 
     if ($file = $values['file'])
     {
-    	$folder = dmDb::table('DmMediaFolder')->findOneByRelPathOrCreate('widget');
+      $folder = dmDb::table('DmMediaFolder')->findOneByRelPathOrCreate('widget');
 
-    	$media = dmDb::table('DmMedia')->findOneByFileAndDmMediaFolderId(
-    	  dmOs::sanitizeFileName($file->getOriginalName()),
-    	  $folder->id
-    	);
+      $media = dmDb::table('DmMedia')->findOneByFileAndDmMediaFolderId(
+        dmOs::sanitizeFileName($file->getOriginalName()),
+        $folder->id
+      );
 
-    	if (!$media)
-    	{
-    		$media = dmDb::create('DmMedia', array(
-    		  'dm_media_folder_id' => $folder->id
-    		))
-    		->create($file)
+      if (!$media)
+      {
+        $media = dmDb::create('DmMedia', array(
+          'dm_media_folder_id' => $folder->id
+        ))
+        ->create($file)
         ->saveGet();
-    	}
+      }
 
       $values['mediaId'] = $media->getId();
     }
 
-//  	if (!empty($values['legend']))
-//  	{
+//    if (!empty($values['legend']))
+//    {
 //      if ($media = dmDb::table('DmMedia')->find($values['mediaId']))
 //      {
 //        $media->setLegend($values['legend'])->save();
 //      }
-//  	}
+//    }
 
       if($media = dmDb::table('DmMedia')->find($values['mediaId']))
       {
-      	if ($media->isImage())
-      	{
-      		$widgetWidth = dm::getRequest()->getParameter('dm_widget_width');
+        if ($media->isImage())
+        {
+          $widgetWidth = dm::getRequest()->getParameter('dm_widget_width');
           if (empty($values['width']))
           {
-          	if ($widgetWidth)
-          	{
+            if ($widgetWidth)
+            {
               $values['width'] = $widgetWidth;
               $values['height'] = (int) ($media->height * ($widgetWidth / $media->width));
-          	}
-          	else
-          	{
+            }
+            else
+            {
               $values['width'] = $media->width;
-          	}
+            }
           }
           elseif (empty($values['height']))
           {
             $values['height'] = (int) ($media->height * ($widgetWidth / $media->width));
           }
-      	}
+        }
       }
 
     unset($values['mediaName']);

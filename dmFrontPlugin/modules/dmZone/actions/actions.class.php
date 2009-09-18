@@ -64,8 +64,8 @@ class dmZoneActions extends dmFrontBaseActions
     return $this->renderText('ok');
   }
 
-	public function executeSort(sfWebRequest $request)
-	{
+  public function executeSort(sfWebRequest $request)
+  {
     $this->forward404Unless(
       $area = dmDb::table('DmArea')->find($request->getParameter('dm_area')),
       'Can not find area'
@@ -79,7 +79,7 @@ class dmZoneActions extends dmFrontBaseActions
     $this->sortZones($zoneList);
 
     return $this->renderText('ok');
-	}
+  }
 
   public function executeAdd(sfWebRequest $request)
   {
@@ -90,7 +90,7 @@ class dmZoneActions extends dmFrontBaseActions
 
     $zone = dmDb::create('DmZone')->fromArray(array('dm_area_id' => $toArea->id))->saveGet();
 
-    $helper = $this->getDmContext()->getPageHelper();
+    $helper = $this->dmContext->getService('page_helper');
 
     return $this->renderText($helper->renderZone($zone->toArray(), true));
   }
@@ -119,8 +119,8 @@ class dmZoneActions extends dmFrontBaseActions
     return $this->renderText('ok');
   }
 
-	protected function sortZones(array $zoneList)
-	{
+  protected function sortZones(array $zoneList)
+  {
     $zones = array();
 
     foreach($zoneList as $position => $zoneId)
@@ -142,6 +142,6 @@ class dmZoneActions extends dmFrontBaseActions
       $this->getUser()->logError(dm::getI18n()->__('A problem occured when sorting the items'));
     }
 
-	}
+  }
 
 }

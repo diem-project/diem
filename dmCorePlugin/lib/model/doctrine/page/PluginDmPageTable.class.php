@@ -3,15 +3,15 @@
  */
 class PluginDmPageTable extends myDoctrineTable
 {
-	protected
-	$recordPageCache = array(),
-	$findByStringCache = array();
-	
-	/*
-	 * Check that basic pages exist
-	 * ( root page, 404 page )
-	 * and, if they don't, will create them
-	 */
+  protected
+  $recordPageCache = array(),
+  $findByStringCache = array();
+  
+  /*
+   * Check that basic pages exist
+   * ( root page, 404 page )
+   * and, if they don't, will create them
+   */
   public function checkBasicPages()
   {
     if (!$root = $this->getTree()->fetchRoot())
@@ -28,17 +28,17 @@ class PluginDmPageTable extends myDoctrineTable
       
       if ($layout = dmDb::table('DmLayout')->findOneByName('Home'))
       {
-      	$root->PageView->Layout = $layout;
-      	$root->PageView->save();
+        $root->PageView->Layout = $layout;
+        $root->PageView->save();
       }
     }
 
     if (!$this->createQuery('p')->where('p.module = ? AND p.action = ?', array('main', 'error404'))->exists())
     {
-    	dmDb::create('DmPage', array(
+      dmDb::create('DmPage', array(
         'module' => 'main',
         'action' => 'error404',
-    	  'name' => dm::getI18n()->__('Page not found'),
+        'name' => dm::getI18n()->__('Page not found'),
         'title' => dm::getI18n()->__('Page not found').' | '.dmConfig::get('site_name'),
         'slug' => '-error404'
       ))->getNode()->insertAsLastChildOf($root);
@@ -65,10 +65,10 @@ class PluginDmPageTable extends myDoctrineTable
 
   public function prepareRecordPageCache($module)
   {
-  	$timer = dmDebug::timerOrNull('DmPageTable::prepareRecordPageCache');
-  	
-  	$module = dmString::modulize($module);
-  	
+    $timer = dmDebug::timerOrNull('DmPageTable::prepareRecordPageCache');
+    
+    $module = dmString::modulize($module);
+    
     $this->recordPageCache[$module] = $this->createQuery('p INDEXBY p.record_id')
     ->withI18n()
     ->select('p.id, p.module, p.action, p.record_id, p.is_secure, p.lft, p.rgt, translation.slug, translation.name, translation.is_active')
@@ -78,22 +78,22 @@ class PluginDmPageTable extends myDoctrineTable
     $timer && $timer->addTime();
   }
   
-	/*
-	 * Queries
-	 */
+  /*
+   * Queries
+   */
 
-	public function queryByModuleAndAction($module, $action)
-	{
-		return $this->createQuery('p')
+  public function queryByModuleAndAction($module, $action)
+  {
+    return $this->createQuery('p')
     ->where('p.module = ? AND p.action = ?', array($module, $action));
-	}
+  }
 
   
   public function findAllForCulture($culture, $hydrationMode = Doctrine::HYDRATE_ARRAY)
   {
-  	return $this->createQuery()
-  	->withI18n($culture)
-  	->execute(array(), $hydrationMode);
+    return $this->createQuery()
+    ->withI18n($culture)
+    ->execute(array(), $hydrationMode);
   }
   
   /*
@@ -135,13 +135,13 @@ class PluginDmPageTable extends myDoctrineTable
     return $this->findByStringCache[$source];
   }
 
-	public function findOneBySlug($slug)
-	{
-		return $this->createQuery('p')
-		->withI18n()
-		->where('translation.slug = ?', $slug)
-		->fetchRecord();
-	}
+  public function findOneBySlug($slug)
+  {
+    return $this->createQuery('p')
+    ->withI18n()
+    ->where('translation.slug = ?', $slug)
+    ->fetchRecord();
+  }
 
   public function findByAction($action)
   {
@@ -166,26 +166,26 @@ class PluginDmPageTable extends myDoctrineTable
   
   public function findOneByIdWithI18n($id, $culture = null)
   {
-  	return $this->createQuery('p')
-  	->withI18n($culture)
-  	->where('p.id = ?', $id)
-  	->fetchOne();
+    return $this->createQuery('p')
+    ->withI18n($culture)
+    ->where('p.id = ?', $id)
+    ->fetchOne();
   }
   
   public function findOneByRecordWithI18n(myDoctrineRecord $record)
   {
-  	$module = $record->dmModule->getKey();
-  	
-  	if (!isset($this->recordPageCache[$module]))
-  	{
-  		$this->prepareRecordPageCache($module);
-  	}
+    $module = $record->dmModule->getKey();
+    
+    if (!isset($this->recordPageCache[$module]))
+    {
+      $this->prepareRecordPageCache($module);
+    }
     
     if (isset($this->recordPageCache[$module][$record->id]))
-  	{
-  		return $this->recordPageCache[$module][$record->id];
-  	}
-  	
+    {
+      return $this->recordPageCache[$module][$record->id];
+    }
+    
     return $this->createQuery('p')
     ->where('p.module = ? AND p.action = ? AND record_id = ?', array($module, 'show', $record->get('id')))
     ->withI18n()

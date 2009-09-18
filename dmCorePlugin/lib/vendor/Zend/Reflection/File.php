@@ -210,7 +210,7 @@ class Zend_Reflection_File implements Reflector
         return $classes;
     }
     
-	/**
+  /**
      * Return the reflection functions of the functions found inside this file
      *
      * @param  string $reflectionClass Name of reflection class to use for instances

@@ -4,8 +4,8 @@
 class PluginDmMediaFolderTable extends myDoctrineTable
 {
 
-	public function checkRoot()
-	{
+  public function checkRoot()
+  {
     if (!$root = $this->getTree()->fetchRoot())
     {
       $root = $this->create(array(
@@ -17,32 +17,32 @@ class PluginDmMediaFolderTable extends myDoctrineTable
     }
     
     return $root;
-	}
+  }
 
-	public function findOneByRelPathOrCreate($relPath)
-	{
-		if (!$record = $this->findOneByRelPath($relPath))
-		{
-			$parent = $this->findOneByRelPathOrCreate(trim(dirname($relPath), '/.'));
+  public function findOneByRelPathOrCreate($relPath)
+  {
+    if (!$record = $this->findOneByRelPath($relPath))
+    {
+      $parent = $this->findOneByRelPathOrCreate(trim(dirname($relPath), '/.'));
 
-			$record = $this->create(array(
+      $record = $this->create(array(
         'name'     => trim(basename($relPath), '/'),
-			  'rel_path' => $relPath
-			));
-			
-			$record->Node->insertAsLastChildOf($parent);
-		}
-		
-		return $record;
-	}
+        'rel_path' => $relPath
+      ));
+      
+      $record->Node->insertAsLastChildOf($parent);
+    }
+    
+    return $record;
+  }
 
-	/*
-	 * Performance shortcuts
-	 */
+  /*
+   * Performance shortcuts
+   */
 
   public function findOneByRelPath($relPath)
   {
-  	return $this->createQuery('f')->where('f.rel_path = ?', $relPath)->fetchRecord();
+    return $this->createQuery('f')->where('f.rel_path = ?', $relPath)->fetchRecord();
   }
 
 }
