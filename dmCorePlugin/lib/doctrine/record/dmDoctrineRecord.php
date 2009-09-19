@@ -203,7 +203,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
       throw new dmException(sprintf('%s is not a DmMedia relation', $relation->getAlias()));
     }
 
-    if(!$media = $this->get($relation['alias'])->orNull())
+    if(!$media = $this->get($relation['alias']))
     {
       if($media = dmDb::table('DmMedia')->findOneByIdWithFolder($this->get($columnName)))
       {

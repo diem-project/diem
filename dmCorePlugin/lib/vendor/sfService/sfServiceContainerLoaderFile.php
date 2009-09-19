@@ -66,7 +66,7 @@ abstract class sfServiceContainerLoaderFile extends sfServiceContainerLoader
     {
       return $file;
     }
-    else if (!is_null($currentPath) && file_exists($currentPath.DIRECTORY_SEPARATOR.$file))
+    else if (null !== $currentPath && file_exists($currentPath.DIRECTORY_SEPARATOR.$file))
     {
       return $currentPath.DIRECTORY_SEPARATOR.$file;
     }

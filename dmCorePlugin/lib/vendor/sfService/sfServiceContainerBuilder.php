@@ -230,7 +230,7 @@ class sfServiceContainerBuilder extends sfServiceContainer
    */
   protected function createService(sfServiceDefinition $definition)
   {
-    if (!is_null($definition->getFile()))
+    if (null !== $definition->getFile())
     {
       require_once $this->resolveValue($definition->getFile());
     }
@@ -239,13 +239,13 @@ class sfServiceContainerBuilder extends sfServiceContainer
 
     $arguments = $this->resolveServices($this->resolveValue($definition->getArguments()));
 
-    if (!is_null($definition->getConstructor()))
+    if (null !== $definition->getConstructor())
     {
-      $service = call_user_func_array(array($definition->getClass(), $definition->getConstructor()), $arguments);
+      $service = call_user_func_array(array($this->resolveValue($definition->getClass()), $definition->getConstructor()), $arguments);
     }
     else
     {
-      $service = is_null($r->getConstructor()) ? $r->newInstance() : $r->newInstanceArgs($arguments);
+      $service = null === $r->getConstructor() ? $r->newInstance() : $r->newInstanceArgs($arguments);
     }
 
     foreach ($definition->getMethodCalls() as $call)

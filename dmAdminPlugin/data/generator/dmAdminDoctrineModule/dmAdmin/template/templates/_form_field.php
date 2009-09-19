@@ -45,9 +45,9 @@
 [?php else: //check if is a media view ?]
   <div class="[?php echo $divClass ?]">
     [?php
-    if (substr($name, -5) === '_view' && ($media = $form->getObject()->getDmMediaByColumnName(substr($name, 0, strlen($name)-5))))
+    if (substr($name, -5) === '_view')
     {
-      include_partial('dmMedia/viewBig', array('object' => $media));
+      include_partial('dmMedia/viewBig', array('object' => $media = $form->getObject()->getDmMediaByColumnName(substr($name, 0, strlen($name)-5))));
     }
     else
     {

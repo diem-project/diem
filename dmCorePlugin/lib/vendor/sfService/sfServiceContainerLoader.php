@@ -62,6 +62,8 @@ abstract class sfServiceContainerLoader implements sfServiceContainerLoaderInter
    * parameter, the value will still be 'bar' as defined in the builder
    * constructor.
    *
+   * You can also pass multiple resource paths to the constructor.
+   *
    * @param mixed $resource The resource path
    */
   public function load($resource)
@@ -71,26 +73,30 @@ abstract class sfServiceContainerLoader implements sfServiceContainerLoaderInter
       throw new LogicException('You must attach the loader to a service container.');
     }
 
-    list($definitions, $parameters) = $this->doLoad($resource);
-
-    foreach ($definitions as $id => $definition)
+    $resources = func_get_args();
+    foreach ($resources as $resource)
     {
-      if (is_string($definition))
-      {
-        $this->container->setAlias($id, $definition);
-      }
-      else
-      {
-        $this->container->setServiceDefinition($id, $definition);
-      }
-    }
+      list($definitions, $parameters) = $this->doLoad($resource);
 
-    $currentParameters = $this->container->getParameters();
-    foreach ($parameters as $key => $value)
-    {
-      $this->container->setParameter($key, $this->container->resolveValue($value));
+      foreach ($definitions as $id => $definition)
+      {
+        if (is_string($definition))
+        {
+          $this->container->setAlias($id, $definition);
+        }
+        else
+        {
+          $this->container->setServiceDefinition($id, $definition);
+        }
+      }
+
+      $currentParameters = $this->container->getParameters();
+      foreach ($parameters as $key => $value)
+      {
+        $this->container->setParameter($key, $this->container->resolveValue($value));
+      }
+      $this->container->addParameters($currentParameters);
     }
-    $this->container->addParameters($currentParameters);
   }
 
   /**

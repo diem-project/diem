@@ -49,7 +49,7 @@ class sfServiceContainerDumperPhp extends sfServiceContainerDumper
 
   protected function addServiceInclude($id, $definition)
   {
-    if (!is_null($definition->getFile()))
+    if (null !== $definition->getFile())
     {
       return sprintf("    require_once %s;\n\n", $this->dumpValue($definition->getFile()));
     }
@@ -99,9 +99,9 @@ EOF;
       $arguments[] = $this->dumpValue($value);
     }
 
-    if (!is_null($definition->getConstructor()))
+    if (null !== $definition->getConstructor())
     {
-      return sprintf("    \$instance = call_user_func(array(%s, '%s'), %s);\n", $class, $definition->getConstructor(), implode(', ', $arguments));
+      return sprintf("    \$instance = call_user_func(array(%s, '%s')%s);\n", $class, $definition->getConstructor(), $arguments ? ', '.implode(', ', $arguments) : '');
     }
     else
     {

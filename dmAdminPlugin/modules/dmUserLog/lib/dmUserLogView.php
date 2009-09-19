@@ -103,7 +103,7 @@ class dmUserLogView
       $this->renderLink($entry),
       sprintf('<span class="s16 s16_%s">%s</span>',
         $entry->get('is_ok') ? 'status' : 'status_busy',
-        $entry->get('is_ok') ? '' : $entry->get('code')
+        $entry->get('is_ok') ? '' : $entry->get('code').' '
       ),
       $entry->get('timer')
     );

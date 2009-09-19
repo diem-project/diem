@@ -179,7 +179,7 @@ class sfServiceContainerLoaderFileYaml extends sfServiceContainerLoaderFile
 
   protected function validate($content, $file)
   {
-    if (is_null($content))
+    if (null === $content)
     {
       return $content;
     }
