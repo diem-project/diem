@@ -21,6 +21,8 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
     $this->setService('action_stack',     $dependencies['context']->getActionStack());
     $this->setService('logger',           $dependencies['context']->getLogger());
     $this->setService('config_cache',     $dependencies['context']->getConfigCache());
+    $this->setService('controller',       $dependencies['context']->getController());
+    $this->setService('request',          $dependencies['context']->getRequest());
     $this->setService('context',          $dependencies['context']);
     $this->setService('doctrine_manager', $dependencies['doctrine_manager']);
   }
@@ -147,10 +149,21 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
       $resource = $this->getMediaResource($resource);
     }
 
-    $this->setParameter('media_tag.class', $this->getParameter('media_'.$resource->getMime().'_tag.class'));
+    $this->setParameter('media_tag.class', $this->getParameter('media_tag_'.$resource->getMime().'.class'));
     $this->setParameter('media_tag.source', $resource);
     
     return $this->getService('media_tag');
+  }
+  
+  /*
+   * @return dmLinkResource
+   */
+  public function getLinkResource($source)
+  {
+    $resource = $this->getService('link_resource');
+    $resource->initialize($source);
+    
+    return $resource;
   }
   
 }

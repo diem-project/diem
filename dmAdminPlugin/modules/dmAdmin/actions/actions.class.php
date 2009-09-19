@@ -16,6 +16,14 @@ class dmAdminActions extends dmAdminBaseActions
     );
 
     $this->modules = $this->space->getModules();
+    
+    foreach($this->modules as $index => $module)
+    {
+      if (!$this->context->getRouting()->hasRouteName($module->getUnderscore()))
+      {
+        unset($this->modules[$index]);
+      }
+    }
   }
 
   public function executeModuleType(sfWebRequest $request)

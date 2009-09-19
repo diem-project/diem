@@ -11,9 +11,8 @@
  */
 class dmForm extends sfFormSymfony
 {
-
   protected static
-    $helper,
+    $serviceContainer,
     $counter = 1;
 
   protected
@@ -58,8 +57,8 @@ class dmForm extends sfFormSymfony
     '<ul class="dm_form_elements">'.
     $this->getFormFieldSchema()->render($attributes).
     sprintf('<li class="dm_form_element"><label>%s</label>%s</li>',
-      dm::getI18n()->__('Validate'),
-      $this->renderSubmitTag(dm::getI18n()->__('Validate'))
+      self::$serviceContainer->getService('i18n')->__('Validate'),
+      $this->renderSubmitTag(self::$serviceContainer->getService('i18n')->__('Validate'))
     ).
     '</ul>'.
     $this->close();
@@ -76,8 +75,8 @@ class dmForm extends sfFormSymfony
    */
   public function bind(array $taintedValues = null, array $taintedFiles = null)
   {
-    $taintedValues = !empty($taintedValues) ? $taintedValues : dm::getRequest()->getParameter($this->name);
-    $taintedFiles = !empty($taintedFiles) ? $taintedFiles : dm::getRequest()->getFiles($this->name);
+    $taintedValues = !empty($taintedValues) ? $taintedValues : self::$serviceContainer->getService('request')->getParameter($this->name);
+    $taintedFiles = !empty($taintedFiles) ? $taintedFiles : self::$serviceContainer->getService('request')->getFiles($this->name);
 
     $return = parent::bind($taintedValues, $taintedFiles);
 
@@ -102,18 +101,11 @@ class dmForm extends sfFormSymfony
 
     if ($action = dmArray::get($opt, 'action'))
     {
-      if (self::$helper)
-      {
-        $action = self::$helper->link($action)->getHref();
-      }
-      else
-      {
-        throw new dmException('No helper setted');
-      }
+      $action = self::$serviceContainer->getLinkTag($action)->getHref();
     }
     else
     {
-      $action = dm::getRequest()->getUri();
+      $action = self::$serviceContainer->get('request')->getUri();
     }
     
     if (strpos($action, '#') === false)
@@ -136,13 +128,13 @@ class dmForm extends sfFormSymfony
   }
   
   /**
-   * Sets the helper to be used by all forms.
+   * Sets the service container to be used by all forms.
    *
-   * @param sfEventDispatcher $dispatcher
+   * @param dmBaseServiceContainer $serviceContainer
    */
-  static public function setHelper(dmHelper $helper)
+  public static function setServiceContainer(dmBaseServiceContainer $serviceContainer)
   {
-    self::$helper = $helper;
+    self::$serviceContainer = $serviceContainer;
   }
 
   public function getValueOrDefault($name)

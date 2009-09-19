@@ -1,5 +1,7 @@
 parameters:
 
+  link_tag.class:             dmAdminLinkTag
+
   theme.options:
     key:                      diem_admin
     path:                     themeAdmin
@@ -20,6 +22,14 @@ parameters:
     file:                     sitemap.xml
  
 services:
+
+  link_tag:
+    class:                    %link_tag.class%
+    shared:                   false
+    arguments:
+      source:                 %link_tag.source%
+      request_context:        %request.context%
+      controller:             @controller
 
   admin_sort_table_form:
     class:                    %admin_sort_table_form.class%

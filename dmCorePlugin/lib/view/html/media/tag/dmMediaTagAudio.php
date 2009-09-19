@@ -1,6 +1,6 @@
 <?php
 
-class dmMediaAudioTag extends dmMediaTag
+class dmMediaTagAudio extends dmMediaTag
 {
 
   public function render()

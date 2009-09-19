@@ -140,11 +140,11 @@ abstract class dmWebResponse extends sfWebResponse
    * @param string $position  Position
    * @param string $options   Javascript options
    */
-  public function addJavascript($file, $position = '', $options = array())
+  public function addJavascript($asset, $position = '', $options = array())
   {
     $this->validatePosition($position);
 
-    $file = $this->calculateAssetPath('js', $file);
+    $file = $this->calculateAssetPath('js', $asset);
 
     $this->javascripts[$position][$file] = $options;
   }
@@ -156,13 +156,22 @@ abstract class dmWebResponse extends sfWebResponse
    * @param string $position  Position
    * @param string $options   Stylesheet options
    */
-  public function addStylesheet($file, $position = '', $options = array())
+  public function addStylesheet($asset, $position = '', $options = array())
   {
     $this->validatePosition($position);
     
-    $file = $this->calculateAssetPath('css', $file);
+    $file = $this->calculateAssetPath('css', $asset);
 
     $this->stylesheets[$position][$file] = $options;
   }
 
+  public function clearStylesheets()
+  {
+    $this->stylesheets = array_combine($this->positions, array_fill(0, count($this->positions), array()));
+  }
+
+  public function clearJavascripts()
+  {
+    $this->javascripts = array_combine($this->positions, array_fill(0, count($this->positions), array()));
+  }
 }

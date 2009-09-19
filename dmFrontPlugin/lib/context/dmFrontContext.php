@@ -20,7 +20,7 @@ class dmFrontContext extends dmContext
    */
   public function getModule()
   {
-    if (!$this->page)
+    if (null === $this->page)
     {
       return null;
     }
@@ -28,7 +28,7 @@ class dmFrontContext extends dmContext
     return $this->page->getDmModule();
   }
 
-  public function setPage(DmPage $page = null)
+  public function setPage(DmPage $page)
   {
     $this->page = $page;
     

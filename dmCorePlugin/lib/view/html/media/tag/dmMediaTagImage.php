@@ -1,6 +1,6 @@
 <?php
 
-class dmMediaImageTag extends dmMediaTag
+class dmMediaTagImage extends dmMediaTag
 {
 
   /*
@@ -91,7 +91,7 @@ class dmMediaImageTag extends dmMediaTag
     {
       $mediaFullPath = $this->getResizedMediaFullPath($attributes);
 
-      $attributes['src'] = $this->relativeUrlRoot.str_replace(sfConfig::get('sf_web_dir'), '', $mediaFullPath);
+      $attributes['src'] = $this->requestContext['relative_url_root'].str_replace(sfConfig::get('sf_web_dir'), '', $mediaFullPath);
       /*
        * When thumb method is scale,
        * html width and height

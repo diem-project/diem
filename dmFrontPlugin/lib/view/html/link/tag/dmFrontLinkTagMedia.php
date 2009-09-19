@@ -5,14 +5,16 @@ class dmFrontLinkTagMedia extends dmFrontLinkTag
   protected
   $media;
 
-  protected function configure()
+  protected function initialize()
   {
-    $this->media = $this->get('source');
+    parent::initialize();
+    
+    $this->media = $this->resource->getSubject();
   }
   
   protected function getBaseHref()
   {
-    return dm::getRequest()->getAbsoluteUrlRoot().'/'.$this->media->getWebPath();
+    return $this->requestContext['absolute_url_root'].'/'.$this->media->getWebPath();
   }
 
   protected function renderText()

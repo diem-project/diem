@@ -122,6 +122,12 @@ class dmAdminRoutingConfigHandler extends sfRoutingConfigHandler
     }
     
     // static routes
+    
+    $config['default'] = array(
+      'class' => 'sfRoute',
+      'url'   => '/+/:module/:action/*'
+    );
+    
 //    $config['dm_module_type'] = array(
 //      'class' => 'sfRoute',
 //      'url'   => '/:moduleTypeName',
@@ -138,20 +144,6 @@ class dmAdminRoutingConfigHandler extends sfRoutingConfigHandler
         'action' => 'moduleSpace'
       )
     );
-    
-    // default routes
-    $config['default'] = array(
-      'class' => 'sfRoute',
-      'url'   => '/+/:module/:action/*'
-    );
-//    
-//    $config['default_index'] = array(
-//      'class' => 'sfRoute',
-//      'url'   => '/+/:module/*',
-//      'params' => array(
-//        'action' => 'index'
-//      )
-//    );
     
     return $config;
   }

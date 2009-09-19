@@ -230,3 +230,5 @@ $.getScript(href, callback);
 * [DONE] replace request.relative_url_root service container parameter with request context array
 
 * [DONE] remove unused dependencies from admin & front service containers
+
+* [DONE] remove deprecated DmAdminHelper

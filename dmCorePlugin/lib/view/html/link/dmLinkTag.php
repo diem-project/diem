@@ -3,17 +3,28 @@
 abstract class dmLinkTag extends dmHtmlTag
 {
   protected
-  $attributesToRemove      = array('text', 'source'),
-  $emptyAttributesToRemove = array('class', 'target', 'title');
+  $resource,
+  $requestContext;
 
+  public static function build($source = null)
+  {
+    return self::$serviceContainer->getLinkTag($source);
+  }
+  
+  protected function initialize()
+  {
+    parent::initialize();
+    
+    $this->addAttributeToRemove('text');
+    $this->addEmptyAttributeToRemove('target', 'title');
+    
+    $this->addClass('link');
+  }
+  
   /*
    * @return string baseHref the href without query string
    */
   abstract protected function getBaseHref();
-
-  protected function configure()
-  {
-  }
 
   /*
    * Set text
@@ -49,15 +60,6 @@ abstract class dmLinkTag extends dmHtmlTag
   public function rss($v)
   {
     return $this->set('rss', (bool) $v);
-  }
-
-  /*
-   * Shortcut to ->target('blank')
-   * @return dmLinkTag $this
-   */
-  public function blank($v)
-  {
-    return $this->target($v ? '_blank' : null);
   }
 
   /*
@@ -115,21 +117,19 @@ abstract class dmLinkTag extends dmHtmlTag
   {
     $attributes = parent::prepareAttributesForHtml($attributes);
 
-    $href = $this->getBaseHref();
+    $attributes['href'] = $this->getBaseHref();
 
     if (isset($attributes['params']))
     {
       if (!empty($attributes['params']))
       {
-        $href = $this->buildUrl(
-        self::getBaseFromUrl($href),
-        array_merge(self::getDataFromUrl($href), $this->options['params'])
+        $attributes['href'] = $this->buildUrl(
+        dmString::getBaseFromUrl($attributes['href']),
+        array_merge(dmString::getDataFromUrl($attributes['href']), $attributes['params'])
         );
       }
       unset($attributes['params']);
     }
-
-    $attributes['href'] = $href;
 
     return $attributes;
   }
@@ -137,6 +137,11 @@ abstract class dmLinkTag extends dmHtmlTag
   public function getHref()
   {
     return dmArray::get($this->prepareAttributesForHtml($this->options), 'href');
+  }
+  
+  public function getText()
+  {
+    return $this->renderText();
   }
 
   public function getAbsoluteHref()
@@ -156,27 +161,6 @@ abstract class dmLinkTag extends dmHtmlTag
   protected function renderText()
   {
     return $this->options['text'];
-  }
-
-  protected static function getBaseFromUrl($url)
-  {
-    if ($pos = strpos($url, '?'))
-    {
-      return substr($url, 0, $pos);
-    }
-
-    return $url;
-  }
-
-  protected static function getDataFromUrl($url)
-  {
-    if ($pos = strpos($url, '?'))
-    {
-      parse_str(substr($url, $pos + 1), $params);
-      return $params;
-    }
-
-    return array();
   }
 
   protected function buildUrl($base, array $data = array())

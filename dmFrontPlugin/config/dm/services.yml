@@ -1,5 +1,14 @@
 parameters:
 
+  link_tag.class:             dmFrontLinkTag
+  link_tag_action.class:      dmFrontLinkTagAction
+  link_tag_error.class:       dmFrontLinkTagError
+  link_tag_media.class:       dmFrontLinkTagMedia
+  link_tag_page.class:        dmFrontLinkTagPage
+  link_tag_uri.class:         dmFrontLinkTagUri
+
+  link_resource.class:        dmFrontLinkResource
+
   asset_config.class:         dmFrontAssetConfig
 
   theme_manager.class:        dmThemeManager
@@ -17,6 +26,17 @@ parameters:
     config_file:              'config/dm/widget_types.yml'        
  
 services:
+
+  link_tag:
+    class:                    %link_tag.class%
+    shared:                   false
+    arguments:
+      source:                 %link_tag.source%
+      request_context:        %request.context%
+
+  link_resource:
+    class:                    %link_resource.class%
+    shared:                   false
 
   theme_manager:
     class:                    %theme_manager.class%

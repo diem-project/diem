@@ -5,9 +5,11 @@ class dmFrontLinkTagPage extends dmFrontLinkTag
   protected
   $page;
 
-  protected function configure()
+  protected function initialize()
   {
-    $this->page = $this->get('source');
+    parent::initialize();
+    
+    $this->page = $this->resource->getSubject();
     
     if (!$this->page instanceof DmPage)
     {
@@ -21,7 +23,7 @@ class dmFrontLinkTagPage extends dmFrontLinkTag
   {
     $pageSlug = $this->page->_getI18n('slug');
     
-    return dm::getRequest()->getScriptName().($pageSlug ? '/'.$pageSlug : '');
+    return $this->requestContext['script_name'].($pageSlug ? '/'.$pageSlug : '');
   }
 
   protected function renderText()

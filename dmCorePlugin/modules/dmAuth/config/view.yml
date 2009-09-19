@@ -1,2 +1,2 @@
 signinSuccess:
-  stylesheets:    [ core.auth ]
+  stylesheets:  [ core.auth ]

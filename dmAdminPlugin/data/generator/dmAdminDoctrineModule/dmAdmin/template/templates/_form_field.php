@@ -42,8 +42,24 @@
       ?]
     </div>
   </div>
-[?php else: ?]
+[?php else: //check if is a media view ?]
   <div class="[?php echo $divClass ?]">
-    [?php echo dm_admin_form_field($name, $form); ?]
+    [?php
+    if (substr($name, -5) === '_view' && ($media = $form->getObject()->getDmMediaByColumnName(substr($name, 0, strlen($name)-5))))
+    {
+      include_partial('dmMedia/viewBig', array('object' => $media));
+    }
+    else
+    {
+      if (sfConfig::get('sf_debug'))
+      {
+        throw new dmException($name.' is not a valid form field');
+      }
+      else
+      {
+        echo '?';
+      }
+    }
+    ?]
   </div>
 [?php endif; ?]

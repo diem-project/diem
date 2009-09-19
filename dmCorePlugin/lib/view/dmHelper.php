@@ -59,20 +59,6 @@ class dmHelper
     return $this->requestContext[$key];
   }
   
-  /*
-   * @return dmLinkTag a link for front or admin depending on context type
-   */
-  public function link($source = null)
-  {
-    switch(sfConfig::get('dm_context_type'))
-    {
-      case 'admin': $link = dmAdminLinkTag::build($source); break;
-      case 'front': $link = dmFrontLinkTag::build($source); break;
-      default:      throw new dmException('Can not create link outside front or admin context');
-    }
-    
-    return $link;
-  }
   
   public function renderPartial($moduleName, $actionName, $vars = array())
   {

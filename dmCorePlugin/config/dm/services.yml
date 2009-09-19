@@ -1,15 +1,15 @@
 parameters:
 
   media_tag.class:            dmMediaTag
-  media_image_tag.class:      dmMediaImageTag
-  media_flash_tag.class:      dmMediaFlashTag
-  media_video_tag.class:      dmMediaVideoTag
-  media_audio_tag.class:      dmMediaAudioTag
+  media_tag_image.class:      dmMediaTagImage
+  media_tag_flash.class:      dmMediaTagFlash
+  media_tag_video.class:      dmMediaTagVideo
+  media_tag_audio.class:      dmMediaTagAudio
 
   media_resource.class:       dmMediaResource
 
   search_engine.class:        dmSearchEngine
-  
+
   search_index.class:         dmSearchIndex
 
   theme.class:                dmTheme

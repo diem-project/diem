@@ -5,9 +5,11 @@ class dmFrontLinkTagUri extends dmFrontLinkTag
   protected
   $uri;
 
-  protected function configure()
+  protected function initialize()
   {
-    $this->uri = $this->get('source');
+    parent::initialize();
+    
+    $this->uri = $this->resource->getSubject();
   }
 
   protected function getBaseHref()
@@ -17,7 +19,7 @@ class dmFrontLinkTagUri extends dmFrontLinkTag
       return $this->uri;
     }
     
-    return sfContext::getInstance()->getController()->genUrl($this->uri);
+    return self::$dmContext->getService('controller')->genUrl($this->uri);
   }
 
 }

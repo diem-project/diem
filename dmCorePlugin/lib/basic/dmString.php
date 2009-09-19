@@ -343,4 +343,25 @@ class dmString extends sfInflector
     return $value;
   }
   
+  public static function getBaseFromUrl($url)
+  {
+    if ($pos = strpos($url, '?'))
+    {
+      return substr($url, 0, $pos);
+    }
+
+    return $url;
+  }
+
+  public static function getDataFromUrl($url)
+  {
+    if ($pos = strpos($url, '?'))
+    {
+      parse_str(substr($url, $pos + 1), $params);
+      return $params;
+    }
+
+    return array();
+  }
+  
 }

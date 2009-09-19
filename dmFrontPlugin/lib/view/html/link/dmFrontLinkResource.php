@@ -1,16 +1,52 @@
 <?php
 
-abstract class dmFrontLinkTag extends dmLinkTag
+class dmFrontLinkResource
 {
-
-  public static function build($source = null)
+  protected
+    $source,
+    $subject,
+    $type,
+    $params;
+    
+  public function __construct()
   {
-    $params = false;
+    
+  }
+    
+  public function getType()
+  {
+    return $this->type;
+  }
+  
+  public function getSubject()
+  {
+    return $this->subject;
+  }
+  
+  public function setSubject($subject)
+  {
+    $this->subject = $subject;
+  }
+  
+  public function getParams()
+  {
+    return $this->params;
+  }
+  
+  public function hasParams()
+  {
+    return !empty($this->params);
+  }
+  
+  public function initialize($source)
+  {
+    $this->source = $source;
+    $this->params = false;
     
     if (null === $source)
     {
-      $type = 'page';
-      $source = dmDb::table('DmPage')->findOneBySource($source);
+      $this->type = 'page';
+      $this->subject = dmDb::table('DmPage')->findOneBySource($source);
     }
     elseif (is_string($source))
     {
@@ -24,18 +60,19 @@ abstract class dmFrontLinkTag extends dmLinkTag
       {
         $source = substr($source, 0, $blakSpacePos);
       }
+      
       /*
        * Extract url parameters from source string
        */
-      $params = self::getDataFromUrl($source);
-      $source = self::getBaseFromUrl($source);
+      $this->params = dmString::getDataFromUrl($source);
+      $source = dmString::getBaseFromUrl($source);
       
       if (strncmp($source, 'page:', 5) === 0)
       {
         if ($page = dmDb::table('DmPage')->findOneBySource($source))
         {
-          $type = 'page';
-          $source = $page;
+          $this->type = 'page';
+          $this->subject = $page;
         }
         else
         {
@@ -46,8 +83,8 @@ abstract class dmFrontLinkTag extends dmLinkTag
       {
         if ($media = dmDb::table('DmMedia')->findOneByIdWithFolder(substr($source, 6)))
         {
-          $type = 'media';
-          $source = $media;
+          $this->type = 'media';
+          $this->subject = $media;
         }
         else
         {
@@ -56,7 +93,6 @@ abstract class dmFrontLinkTag extends dmLinkTag
       }
       elseif (strncmp($source, 'app:', 4) === 0)
       {
-        $type = 'uri';
         $app = substr($source, 4);
         /*
          * A slug may be added to the app name, extract it
@@ -71,7 +107,8 @@ abstract class dmFrontLinkTag extends dmLinkTag
           $slug = '';
         }
         
-        $source = dmContext::getInstance()->getAppUrl($app).$slug;
+        $this->type = 'uri';
+        $this->subject = dmContext::getInstance()->getAppUrl($app).$slug;
       }
       elseif(
           strncmp($source, "http://", 7)  === 0
@@ -81,19 +118,20 @@ abstract class dmFrontLinkTag extends dmLinkTag
       ||  strncmp($source, "#", 1)        === 0
       )
       {
-        $type = 'uri';
+        $this->type = 'uri';
+        $this->subject = $source;
       }
-      elseif(strncmp($source, "+/", 2) === 0)
+      elseif(strncmp($source, '+/', 2) === 0)
       {
-        $type = 'action';
-        $source = substr($source, 2);
+        $this->type = 'action';
+        $this->subject = '/'.$source;
       }
       elseif(substr_count($source, '/') === 1)
       {
         if ($page = dmDb::table('DmPage')->findOneBySource($source))
         {
-          $type = 'page';
-          $source = $page;
+          $this->type = 'page';
+          $this->subject = $page;
         }
         else
         {
@@ -109,19 +147,22 @@ abstract class dmFrontLinkTag extends dmLinkTag
     {
       if ($source instanceof DmPage)
       {
-        $type = 'page';
+        $this->type = 'page';
+        $this->subject = $source;
       }
       elseif ($source instanceof DmMedia)
       {
-        $type = 'media';
+        $this->type = 'media';
+        $this->subject = $source;
       }
-      elseif($source instanceof myDoctrineRecord)
+      elseif($source instanceof dmDoctrineRecord)
       {
         if ($module = $source->getDmModule())
         {
           if($module->hasPage())
           {
-            $type = 'record';
+            $this->type = 'record';
+            $this->subject = $source;
           }
           else
           {
@@ -140,64 +181,23 @@ abstract class dmFrontLinkTag extends dmLinkTag
       {
         if(is_object($source[1]))
         {
-          $source = array(
+          $this->type = 'action';
+          $this->subject = array(
             'sf_route' => $source[0],
             'sf_subject' => $source[1]
           );
-          $type = 'action';
         }
       }
       else
       {
-        return sfContext::getInstance()->getController()->genUrl($source);
+        $this->type = 'action';
+        $this->subject = $source;
       }
     }
 
-    if(empty($type))
+    if(empty($this->type) || empty($this->subject))
     {
-      throw new dmException(sprintf('dmFrontLinkTag can not determine type of %s', $source));
+      throw new dmException(sprintf('dmFrontLinkResource can not determine type of %s', $source));
     }
-
-    $linkClass = 'dmFrontLinkTag'.dmString::camelize($type);
-
-    try
-    {
-      $linkTagObject = new $linkClass($source);
-      
-      if($params)
-      {
-        $linkTagObject->params($params);
-      }
-    }
-    catch(Exception $e)
-    {
-      if (sfConfig::get('dm_debug'))
-      {
-        throw $e;
-      }
-      else
-      {
-        $linkTagObject = new dmFrontLinkTagError($e);
-      }
-    }
-
-    return $linkTagObject;
-  }
-
-  public function __construct($source)
-  {
-    $this->set('source', $source)->addClass('link');
-
-    $this->configure();
-  }
-  
-  protected function renderText()
-  {
-    if (isset($this->options['text']))
-    {
-      return $this->options['text'];
-    }
-
-    return $this->getBaseHref();
   }
 }

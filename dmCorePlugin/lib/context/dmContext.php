@@ -47,9 +47,9 @@ abstract class dmContext extends dmMicroCache
     dmHtmlTag::setDmContext($this);
     
     /*
-     * dmForm requires helper to process links
+     * dmForm requires service container...
      */
-    dmForm::setHelper($this->getService('helper'));
+    dmForm::setServiceContainer($this->serviceContainer);
     
     /*
      * dmDoctrineRecord needs the event dispatcher to communicate !

@@ -192,10 +192,15 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
   public function getDmMediaByColumnName($columnName)
   {
     $relation = $this->_table->getRelationHolder()->getLocalByColumnName($columnName);
-
+  
     if (!$relation instanceof Doctrine_Relation_LocalKey)
     {
       throw new dmException(sprintf('%s is not a DmMedia LocalKey columnName : %s', $columnName, get_class($relation)));
+    }
+  
+    if ($relation->getClass() != 'DmMedia')
+    {
+      throw new dmException(sprintf('%s is not a DmMedia relation', $relation->getAlias()));
     }
 
     if(!$media = $this->get($relation['alias'])->orNull())

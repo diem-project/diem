@@ -6,7 +6,7 @@ echo £('h1.site_name', dmConfig::get('site_name'));
 
 echo £('div.message',
   £('p', __("You don't have the required permission to access this page.")).
-  $form->open('.dm_form.list.little.clearfix action=dmAuth/signin').
+  $form->open('.dm_form.list.little.clearfix action=+/dmAuth/signin').
     $form->renderGlobalErrors().
     £('ul',
       £('li.dm_form_element.clearfix',
@@ -26,3 +26,6 @@ echo £('div.message',
 );
 
 echo £c('div');
+
+?>
+<script type="text/javascript">document.getElementById('signin_username').focus();</script>

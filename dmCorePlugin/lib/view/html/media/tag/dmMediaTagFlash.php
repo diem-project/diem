@@ -1,6 +1,6 @@
 <?php
 
-class dmMediaVideoTag extends dmMediaTag
+class dmMediaTagFlash extends dmMediaTag
 {
 
   public function render()

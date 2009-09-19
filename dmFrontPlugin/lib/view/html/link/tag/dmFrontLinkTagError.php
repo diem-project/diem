@@ -5,14 +5,16 @@ class dmFrontLinkTagError extends dmFrontLinkTag
   protected
   $exception;
  
-  protected function configure()
+  protected function initialize()
   {
-    $this->exception = $this->get('source');
+    parent::initialize();
+    
+    $this->exception = $this->resource->getSubject();
   }
 
   protected function getBaseHref()
   {
-    return dm::getRequest()->getUri();
+    return $this->requestContext['uri'];
   }
 
   public function render()

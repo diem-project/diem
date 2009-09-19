@@ -1,5 +1,13 @@
 <?php
 
+/*
+ * @return dmLinkTag a link to $source
+ */
+function £link($source = null)
+{
+  return dmLinkTag::build($source);
+}
+
 function dm_datetime($datetime)
 {
   return trim($datetime, ' CEST');

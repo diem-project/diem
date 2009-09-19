@@ -3,6 +3,7 @@
 abstract class dmHtmlTag
 {
   protected static
+  $serviceContainer,
   $dmContext;
 
   protected
@@ -12,7 +13,7 @@ abstract class dmHtmlTag
 
   abstract public function render();
 
-  public function initialize()
+  protected function initialize()
   {
     
   }
@@ -184,6 +185,7 @@ abstract class dmHtmlTag
 
   public static function setDmContext(dmContext $dmContext)
   {
+    self::$serviceContainer = $dmContext->getServiceContainer();
     self::$dmContext = $dmContext;
   }
 }

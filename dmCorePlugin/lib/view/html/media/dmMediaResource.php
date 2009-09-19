@@ -26,15 +26,15 @@ class dmMediaResource
     $this->culture         = $culture;
     $this->requestContext  = $requestContext;
   }
-  
-  public function __toString()
-  {
-    return (string) $this->source;
-  }
 
   public function getSource()
   {
     return $this->source;
+  }
+  
+  public function __toString()
+  {
+    return (string) $this->source;
   }
 
   public function getType()

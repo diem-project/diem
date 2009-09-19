@@ -4,7 +4,7 @@ class dmFrontPluginConfiguration extends sfPluginConfiguration
 {
   protected static
   $dependencies = array(),
-  $helpers = array('DmFront');
+  $helpers = array('Dm', 'DmFront');
 
   public function configure()
   {

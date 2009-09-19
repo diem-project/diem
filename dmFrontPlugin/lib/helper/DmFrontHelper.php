@@ -1,14 +1,6 @@
 <?php
 
 /*
- * @return dmFrontLinkTag a link to $source
- */
-function £link($source = null)
-{
-  return dmFrontLinkTag::build($source);
-}
-
-/*
  * @return $return if $source is the current page
  */
 function dm_current($source = null, $return = '.dm_current')

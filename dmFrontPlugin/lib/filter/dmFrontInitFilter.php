@@ -67,7 +67,10 @@ class dmFrontInitFilter extends dmInitFilter
       $page = null;
     }
 
-    $this->dmContext->setPage($page);
+    if ($page)
+    {
+      $this->dmContext->setPage($page);
+    }
   }
   
   protected function handlePageNotFound()

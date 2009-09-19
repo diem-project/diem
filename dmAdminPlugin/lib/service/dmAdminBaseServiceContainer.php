@@ -17,4 +17,13 @@ abstract class dmAdminBaseServiceContainer extends dmBaseServiceContainer
     $this->getService('user')->setTheme($this->getService('theme'));
   }
   
+  /*
+   * @return dmAdminLinkTag
+   */
+  public function getLinkTag($source)
+  {
+    $this->setParameter('link_tag.source', $source);
+    
+    return $this->getService('link_tag');
+  }
 }

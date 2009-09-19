@@ -10,7 +10,7 @@ abstract class dmMediaTag extends dmHtmlTag
 
   public static function build($source)
   {
-    return self::$dmContext->getServiceContainer()->getMediaTag($source);
+    return self::$serviceContainer->getMediaTag($source);
   }
 
   public function __construct(dmMediaResource $resource, dmTheme $theme, $culture, array $requestContext)
@@ -23,11 +23,6 @@ abstract class dmMediaTag extends dmHtmlTag
     $this->initialize();
   }
   
-  public function initialize()
-  {
-    $this->addAttributeToRemove('resource');
-  }
-
   public function width($v)
   {
     return $this->set('width', max(0, (int)$v));
