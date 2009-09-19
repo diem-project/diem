@@ -44,6 +44,6 @@ class dmActionLogView extends dmLogView
       default:       $class = '';
     }
     
-    return '<span class="block '.$class.'">'.$action.'</span>';
+    return '<span class="block '.$class.'">'.$this->i18n->__($action).'</span>';
   }
 }

@@ -39,15 +39,21 @@ class dmAdminActions extends dmAdminBaseActions
   public function executeIndex(sfWebRequest $request)
   {
     require_once(dmOs::join(sfConfig::get('dm_admin_dir'), 'modules/dmUserLog/lib/dmUserLogViewLittle.php'));
+    require_once(dmOs::join(sfConfig::get('dm_admin_dir'), 'modules/dmActionLog/lib/dmActionLogViewLittle.php'));
     
-    $this->userLogView = new dmUserLogViewLittle($this->dmContext->getService('user_log'), $this->getUser()->getCulture());
+    $this->userLogView = new dmUserLogViewLittle($this->dmContext->getService('user_log'), $this->context->getI18n(), $this->getUser()->getCulture());
     
     $this->userLogOptions = array(
       'delay' => 1000,
       'refresh_url' => dmAdminLinkTag::build('dmUserLog/refresh?view=little&max=10')->getHref()
     );
-//    $this->diemSize = dm::getDiemSize();
-
+    
+    $this->actionLogView = new dmActionLogViewLittle($this->dmContext->getService('action_log'), $this->context->getI18n(), $this->getUser()->getCulture());
+    
+    $this->actionLogOptions = array(
+      'delay' => 1000,
+      'refresh_url' => dmAdminLinkTag::build('dmActionLog/refresh?view=little&max=10')->getHref()
+    );
   }
   
   public function executeNothing()

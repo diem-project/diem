@@ -47,7 +47,7 @@ class dmActionLog extends dmFileLog
       'server'  => $_SERVER,
       'user_id' => $this->serviceContainer->getService('user')->getGuardUserId(),
       'action'  => $event['type'],
-      'subject' => sprintf('(%s) %s', get_class($record), $subject)
+      'subject' => sprintf('%s: %s', get_class($record), $subject)
     ));
   }
 }

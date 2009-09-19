@@ -26,7 +26,7 @@ class dmActionLogActions extends dmAdminBaseActions
     
     $viewClass = 'dmActionLogView'.dmString::camelize($request->getParameter('view'));
     
-    $view = new $viewClass($this->log, $this->getUser()->getCulture());
+    $view = new $viewClass($this->log, $this->context->getI18n(), $this->getUser()->getCulture());
     
     return $this->renderText(
       $view->renderBody($request->getParameter('max', 20)).
@@ -37,7 +37,7 @@ class dmActionLogActions extends dmAdminBaseActions
   
   public function executeIndex(dmWebRequest $request)
   {
-    $this->view = new dmActionLogView($this->log, $this->getUser()->getCulture());
+    $this->view = new dmActionLogView($this->log, $this->context->getI18n(), $this->getUser()->getCulture());
     $this->filesize = $this->log->getSize();
   }
   

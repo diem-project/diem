@@ -36,7 +36,7 @@ default:
         sf_web_debug:
           param:
             xdebug_logging: false
-            web_debug_class: dmWebDebug
+            web_debug_class: dmAdminWebDebug
  
   view_cache:
     class:                  dmMetaCache

@@ -4,11 +4,15 @@ abstract class dmLogView
 {
   protected
   $log,
+  $i18n,
+  $culture,
   $dateFormat;
   
-  public function __construct(dmLog $log, $culture)
+  public function __construct(dmLog $log, dmI18n $i18n, $culture)
   {
     $this->log = $log;
+    $this->i18n = $i18n;
+    $this->culture = $culture;
     $this->dateFormat = new sfDateFormat($culture);
   }
   
@@ -34,7 +38,7 @@ abstract class dmLogView
     
     foreach($this->rows as $name => $method)
     {
-      $html .= '<th>'.$name.'</th>';
+      $html .= '<th>'.$this->i18n->__($name).'</th>';
     }
     
     $html .= '</tr></thead>';
