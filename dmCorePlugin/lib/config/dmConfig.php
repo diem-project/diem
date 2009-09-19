@@ -92,7 +92,7 @@ class dmConfig
 
   public static function initialize(sfEventDispatcher $dispatcher)
   {
-    $dispatcher->connect('user.change_culture', array('myConfig', 'listenToChangeCultureEvent'));
+    $dispatcher->connect('user.change_culture', array('dmConfig', 'listenToChangeCultureEvent'));
   }
 
   /**

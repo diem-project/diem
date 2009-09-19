@@ -244,3 +244,7 @@ $.getScript(href, callback);
 * fix duplicated cli logs on tasks like dm:setup
 
 * provide http://colorpowered.com/colorbox/ by default
+
+* [DONE] remove deprecated dmEventConnector
+
+* in admin diagrams, turn gray the non shared services

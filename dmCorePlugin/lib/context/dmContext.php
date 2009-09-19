@@ -29,6 +29,8 @@ abstract class dmContext extends dmMicroCache
   {
     $timer = dmDebug::timerOrNull('dmContext::initialize');
     
+    sfConfig::set('dm_debug', $this->sfContext->getRequest()->getParameter('dm_debug', false));
+    
     // load the service container instance
     $this->loadServiceContainer();
 
