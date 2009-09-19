@@ -1,0 +1,61 @@
+generator:
+  class: dmAdminDoctrineGenerator
+  param:
+    model_class: sfGuardUser
+    theme: dmAdmin
+    non_verbose_templates: true
+    with_show: false
+    route_prefix: dm_guard_user
+    with_doctrine_route: true
+    config:
+      actions: ~
+      fields:
+        groups_list:
+          label: Groups
+        permissions_list:
+          label: Permissions
+        is_active:
+          label: Active
+        is_super_admin:
+          label: 'Super admin'
+      list:
+        display:
+          - =username
+          - _profile
+          - email
+          - groups_list
+          - permissions_list
+          - is_active
+          - is_super_admin
+          - last_login
+          - created_at
+          - updated_at
+        sort:
+          - created_at
+          - desc
+        max_per_page: 8
+        table_method: joinAll
+        table_count_method: ~
+      filter:
+        display:
+          - id
+          - is_active
+          - is_super_admin
+          - username
+          - email
+          - algorithm
+          - salt
+          - password
+          - last_login
+          - created_at
+          - updated_at
+      form:
+        display:
+          NONE: [username, email, password, password_again, is_active, is_super_admin]
+          Profile: [Profile]
+          "Groups & Permissions": [groups_list, permissions_list]
+        class: dmGuardUserAdminForm
+        fields: {  }
+      edit: ~
+      new: ~
+    sortable: false
