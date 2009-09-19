@@ -12,9 +12,13 @@ Utils:
     dmProfile:
       name:         Profile
       credentials:  user_profile
+  Logs:
     dmUserLog:
       name:         User log | User log
       credentials:  user_log
+    dmActionLog:
+      name:         Action log | Action log
+      credentials:  action_log
   Accessibility:
     dmLang:
       name:         Lang span

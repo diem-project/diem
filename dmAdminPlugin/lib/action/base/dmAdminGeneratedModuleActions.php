@@ -75,18 +75,18 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
       throw new dmException(sprintf('Table %s has no field named %s', $table->getComponentName(), $field));
     }
     
-    $count = myDoctrineQuery::create()
+    foreach($table->createQuery()->whereIn($pk, $ids)->andWhere($field.' = ?', 1-$value)->fetchRecords() as $record)
+    {
+      $record->notify();
+    }
+    
+    $count = $table->createQuery()
       ->update($table->getComponentName())
       ->whereIn($pk, $ids)
       ->andWhere($field.' = ?', 1-$value)
       ->set($field, $value)
       ->execute();
       
-    if ($count)
-    {
-      $this->dmContext->getService('page_tree_watcher')->addModifiedTable($table);
-    }
-
     $this->getUser()->logInfo('The selected items have been modified successfully');
   }
   

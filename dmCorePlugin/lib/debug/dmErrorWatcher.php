@@ -1,43 +1,65 @@
 <?php
 
-class dmErrorNotifier
+class dmErrorWatcher
 {
-
-  public static function notify(sfEvent $event)
+  protected
+  $dispatcher,
+  $context,
+  $options;
+  
+  public function __construct(sfEventDispatcher $dispatcher, sfContext $context, array $options = array())
+  {
+    $this->dispatcher = $dispatcher;
+    $this->context    = $context;
+    
+    $this->initialize($options);
+  }
+  
+  public function initialize(array $options = array())
+  {
+    $this->options = array_merge(array(
+      'error_description_class' => 'dmErrorDescription'
+    ), $options);
+  }
+  
+  public function connect()
+  {
+    $this->dispatcher->connect('application.throw_exception', array($this, 'listenToThrowException'));
+  }
+  
+  public function listenToThrowException(sfEvent $event)
   {
     try
     {
-      if (sfContext::hasInstance())
+      if (sfConfig::get('dm_error_mail_superadmin') || sfConfig::get('dm_error_store_in_db'))
       {
-        if (sfConfig::get('dm_error_mail_superadmin') || sfConfig::get('dm_error_store_in_db'))
+        $error = new $this->options['error_description_class']($event->getSubject(), $this->context);
+
+        if(sfConfig::get('dm_error_mail_superadmin'))
         {
-          $error = new dmErrorDescription($event->getSubject(), sfContext::getInstance());
+          $this->mailSuperadmin($error);
+        }
 
-          if(sfConfig::get('dm_error_mail_superadmin'))
-          {
-            self::mailSuperadmin($error);
-          }
-
-          if(sfConfig::get('dm_error_store_in_db'))
-          {
-            self::storeInDb($error);
-          }
+        if(sfConfig::get('dm_error_store_in_db'))
+        {
+          $this->storeInDb($error);
         }
       }
     }
     catch(Exception $e)
     {
-      die("Exception $e thrown while notifying exception ".$event->getSubject());
+      die(sprintf('Exception %s thrown while notifying exception %s', $e, $event->getSubject()));
     }
   }
 
-  protected static function mailSuperadmin(dmErrorDescription $error)
+  protected function mailSuperadmin(dmErrorDescription $error)
   {
     if (!$superAdmin = dmDb::query('sfGuardUser u')->where('u.is_super_admin = ?', true)->fetchRecord())
     {
       return;
     }
-    if (!$superAdminEmail = $superAdmin->email)
+    
+    if (!$superAdminEmail = $superAdmin->get('email'))
     {
       return;
     }
@@ -54,7 +76,7 @@ class dmErrorNotifier
     //mail($superAdminEmail, $subject, $body);
   }
 
-  protected static function storeInDb(dmErrorDescription $error)
+  protected function storeInDb(dmErrorDescription $error)
   {
     dmDb::create('DmError', array(
       'description' => $error->name."\n".$error->exception->getTraceAsString(),

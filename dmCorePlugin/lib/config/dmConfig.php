@@ -159,7 +159,8 @@ LEFT JOIN dm_setting_translation t ON t.id=s.id AND t.lang IN (?, ?)');
 
   public static function isCli()
   {
-    return !isset($_SERVER['HTTP_HOST']);
+    return defined('STDIN');
+//    return !isset($_SERVER['HTTP_HOST']);
   }
 
 }

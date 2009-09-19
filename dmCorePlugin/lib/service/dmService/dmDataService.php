@@ -315,6 +315,7 @@ class dmDataService extends dmService
       "xiti" => "Configure Xiti",
       "search_engine" => "Manage internal search engine",
       "user_log" => "See the user log",
+      "action_log" => "See the action log",
       "config_panel" => "Use the configuration panel",
       "translation" => "Use the translation interface",
       "user_profile" => "Use the profile interface",
@@ -366,6 +367,7 @@ class dmDataService extends dmService
           'tool_bar_front',
           'page_bar_front',
           'user_log',
+          'action_log',
           'config_panel'
         )
       ),
@@ -416,6 +418,7 @@ class dmDataService extends dmService
           'media_bar_front',
           'search_engine',
           'user_log',
+          'action_log',
           'config_panel',
           'translation',
           'user_profile',

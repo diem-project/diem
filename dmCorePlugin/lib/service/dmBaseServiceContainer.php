@@ -106,15 +106,23 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
   
   protected function connectServices()
   {
-    /*
-     * Connect the tree watcher to make it aware of database modifications
-     */
-    $this->getService('page_tree_watcher')->connect();
-    
-    /*
-     * Connect the action log to make it aware of database modifications
-     */
-    $this->getService('action_log')->connect();
+    if (!dmConfig::isCli())
+    {
+      /*
+       * Connect the error watcher to make it aware of thrown exceptions
+       */
+      $this->getService('error_watcher')->connect();
+      
+      /*
+       * Connect the tree watcher to make it aware of database modifications
+       */
+      $this->getService('page_tree_watcher')->connect();
+      
+      /*
+       * Connect the action log to make it aware of database modifications
+       */
+      $this->getService('action_log')->connect();
+    }
   }
 
   /**

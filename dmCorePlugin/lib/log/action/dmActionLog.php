@@ -12,28 +12,42 @@ class dmActionLog extends dmFileLog
   {
     $this->serviceContainer->getService('dispatcher')->connect('dm.record.modification', array($this, 'listenToRecordModificationEvent'));
     
-    $this->serviceContainer->getService('dispatcher')->connect('dm.table.modification', array($this, 'listenToTableModificationEvent'));
+    $this->serviceContainer->getService('dispatcher')->connect('application.throw_exception', array($this, 'listenToThrowException'));
+  }
+  
+  public function listenToThrowException(sfEvent $event)
+  {
+    $this->log(array(
+      'server'  => $_SERVER,
+      'user_id' => $this->serviceContainer->getService('user')->getGuardUserId(),
+      'action'  => 'error',
+      'subject' => $event->getSubject()->getMessage()
+    ));
   }
   
   public function listenToRecordModificationEvent(sfEvent $event)
   {
     $record = $event->getSubject();
     
-    $this->log(array(
-      'server'  => $_SERVER,
-      'user_id' => $this->serviceContainer->getService('user')->getGuardUserId(),
-      'message' => sprintf('modify record (%s) %s', get_class($record), $record->__toString())
-    ));
-  }
-  
-  public function listenToTableModificationEvent(sfEvent $event)
-  {
-    $table = $event->getSubject();
+    if (get_class($record) == 'DmError')
+    {
+      return;
+    }
+    
+    try
+    {
+      $subject = $record->__toString();
+    }
+    catch(Exception $e)
+    {
+      $subject = '?';
+    }
     
     $this->log(array(
       'server'  => $_SERVER,
       'user_id' => $this->serviceContainer->getService('user')->getGuardUserId(),
-      'message' => sprintf('modify table %s', $table->getComponentName())
+      'action'  => $event['type'],
+      'subject' => sprintf('(%s) %s', get_class($record), $subject)
     ));
   }
 }

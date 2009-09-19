@@ -1,6 +1,6 @@
 <?php
 
-abstract class dmFileLog
+abstract class dmFileLog extends dmLog
 {
   protected
   $dispatcher,

@@ -45,19 +45,20 @@
 
   protected function executeBatchDelete(sfWebRequest $request)
   {
+    $table = dmDb::table('<?php echo $this->getModelClass() ?>');
     $ids = $request->getParameter('ids');
+    
+    foreach($table->createQuery()->whereIn('<?php echo $this->getPrimaryKeys(true) ?>', $ids)->fetchRecords() as $record)
+    {
+      $record->notify('delete');
+    }
 
-    $count = Doctrine_Query::create()
+    $count = $table->createQuery()
       ->delete()
       ->from('<?php echo $this->getModelClass() ?>')
       ->whereIn('<?php echo $this->getPrimaryKeys(true) ?>', $ids)
       ->execute();
       
-    if ($count)
-    {
-      dmDb::table('<?php echo $this->getModelClass() ?>')->notifyModification();
-    }
-
     if ($count >= count($ids))
     {
       $this->getUser()->setFlash('notice', 'The selected items have been deleted successfully.');

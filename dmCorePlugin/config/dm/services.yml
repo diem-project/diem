@@ -1,5 +1,9 @@
 parameters:
 
+  error_watcher.class:        dmErrorWatcher
+  error_watcher.options:
+    error_description_class:  dmErrorDescription
+
   media_tag.class:            dmMediaTag
   media_tag_image.class:      dmMediaTagImage
   media_tag_flash.class:      dmMediaTagFlash
@@ -59,6 +63,14 @@ parameters:
   helper.class:               dmHelper
  
 services:
+
+  error_watcher:
+    class:                    %error_watcher.class%
+    shared:                   true
+    arguments:
+      dispatcher:             @dispatcher
+      context:                @context
+      options:                %error_watcher.options%
 
   media_tag:
     class:                    %media_tag.class%

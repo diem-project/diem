@@ -237,4 +237,10 @@ $.getScript(href, callback);
 
 * [DONE] fix admin generator list foreign table sorting when join alias is not relation alias, or doesn't exist
 
-* add an action log
+* [DONE] add an action log
+
+* [DONE] desactivate action log on cli env
+
+* fix duplicated cli logs on tasks like dm:setup
+
+* provide http://colorpowered.com/colorbox/ by default

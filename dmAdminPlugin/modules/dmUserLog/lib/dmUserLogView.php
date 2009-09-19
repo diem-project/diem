@@ -1,77 +1,15 @@
 <?php
 
-class dmUserLogView
+class dmUserLogView extends dmLogView
 {
   protected
-  $log,
   $rows = array(
     'time'     => 'renderTime',
     'user'     => 'renderUser',
     'browser'  => 'renderBrowser',
     'location' => 'renderLocation',
     'app'      => 'renderApp'
-  ),
-  $dateFormat;
-  
-  public function __construct(dmUserLog $log, $culture)
-  {
-    $this->log = $log;
-    $this->dateFormat = new sfDateFormat($culture);
-  }
-  
-  public function render($max = 20)
-  {
-    return
-    $this->renderHead().
-    '<tbody>'.$this->renderBody($max).'</tbody>'.
-    $this->renderFoot();
-  }
-  
-  public function renderEmpty()
-  {
-    return
-    $this->renderHead().
-    '<tbody></tbody>'.
-    $this->renderFoot();
-  }
-  
-  public function renderHead()
-  {
-    $html = '<table><thead><tr>';
-    
-    foreach($this->rows as $name => $method)
-    {
-      $html .= sprintf('<th>%s</th>', $name);
-    }
-    
-    $html .= '</tr></thead>';
-    
-    return $html;
-  }
-  
-  public function renderBody($max = 20)
-  {
-    $html = '';
-    
-    foreach($this->log->getEntries($max) as $index => $entry)
-    {
-      $html .= sprintf('<tr class="%s">', $index%2 ? 'odd' : 'even');
-      
-      foreach($this->rows as $name => $method)
-      {
-        $html .= sprintf('<td>%s</td>', $this->$method($entry));
-      }
-      
-      $html .= '</tr>';
-    }
-    
-    return $html;
-  }
-  
-  public function renderFoot()
-  {
-    return '</table>';
-  }
+  );
   
   /*
    * Row renderers

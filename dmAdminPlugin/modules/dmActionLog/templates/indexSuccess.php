@@ -2,11 +2,11 @@
 use_stylesheet('core.browsers');
 use_stylesheet('admin.log');
 
-echo £o('div.dm_box.big.log.user_log');
+echo £o('div.dm_box.big.log.action_log');
 
 echo £('div.title',
-  £link('dmUserLog/clear')->text(__('Clear')).
-  £('h1', __('User log').sprintf(' ( %s )', dmOs::humanizeSize($filesize)))
+  £link('dmActionLog/clear')->text(__('Clear')).
+  £('h1', __('Action log').sprintf(' ( %s )', dmOs::humanizeSize($filesize)))
 );
 
 echo £o('div.dm_box_inner');

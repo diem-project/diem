@@ -1,37 +1,37 @@
-.user_log strong {
+div.log strong {
   font-weight: bold;
   color: #000;
 }
 
-.user_log .light {
+div.log .light {
   font-size: 10px;
   color: #666;
 }
 
-.user_log table {
+div.log table {
   width: 100%;
 }
 
-.user_log table  th,
-.user_log table  td {
+div.log table th,
+div.log table td {
   padding: 5px;
 }
 
-.user_log table th {
+div.log table th {
   font-weight: bold;
 }
 
-.user_log table td {
+div.log table td {
   border-top: 1px dotted #ccc;
   max-width: 600px;
   overflow: hidden;
 }
 
-.user_log table tr.even {
+div.log table tr.even {
   background: #fff;
 }
 
-.user_log .browser_block {
+div.log .browser_block {
   display: block;
   width: 24px;
   padding: 0 5px 0 0;

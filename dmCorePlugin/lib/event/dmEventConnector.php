@@ -32,10 +32,6 @@ class dmEventConnector
     if(!dmConfig::isCli())
     {
       /*
-       * Notifies errors
-       */
-      $this->dispatcher->connect('application.throw_exception', array('dmErrorNotifier', 'notify'));
-      /*
        * Redirects the service logs to the user flash
        */
 //      $this->dispatcher->connect('dm.service.log', array($this, 'dispatchEventToFlashInfo'));

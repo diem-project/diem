@@ -32,7 +32,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
 
     if ($this->isModified())
     {
-      $this->notifyModification();
+      $this->notify($this->isNew() ? 'create' : 'update');
     }
   }
 
@@ -43,7 +43,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
   {
     parent::postDelete($event);
 
-    $this->notifyModification();
+    $this->notify('delete');
   }
 
   /*
@@ -51,16 +51,16 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
    */
   public function unlinkInDb($alias, $ids = array())
   {
-    $this->notifyModification();
+    $this->notify('delete');
 
     $return = parent::unlinkInDb($alias, $ids);
   }
   
-  public function notifyModification()
+  public function notify($type = 'update')
   {
     if (self::$eventDispatcher)
     {
-      self::$eventDispatcher->notify(new sfEvent($this, 'dm.record.modification', array()));
+      self::$eventDispatcher->notify(new sfEvent($this, 'dm.record.modification', array('type' => $type)));
     }
   }
 

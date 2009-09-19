@@ -12,7 +12,7 @@ js:
     codeEditor:       dmAdminCodeEditor
     seoValidation:    dmAdminSeoValidationCtrl
     sort:             dmAdminSortCtrl
-    userLog:          dmAdminUserLog
+    log:              dmAdminLog
     configPanel:      dmAdminConfigPanel
 
 css:
@@ -33,5 +33,5 @@ css:
     codeEditor:       codeEditor
     seoValidation:    seoValidation
     sort:             sort
-    userLog:          userLog
+    log:              log
     configPanel:      configPanel

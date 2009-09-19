@@ -2,8 +2,6 @@
 
 abstract class dmDoctrineTable extends Doctrine_Table
 {
-  protected static
-  $eventDispatcher;
   
   protected
   $hasI18n;
@@ -215,14 +213,6 @@ abstract class dmDoctrineTable extends Doctrine_Table
   }
 
 
-  public function notifyModification()
-  {
-    if (self::$eventDispatcher)
-    {
-      self::$eventDispatcher->notify(new sfEvent($this, 'dm.table.modification', array()));
-    }
-  }
-  
   /*
    * Return columns that a human can fill
    * Will exclude primary key, timestampable fields

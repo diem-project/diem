@@ -38,7 +38,7 @@ params: array('page' => DmPage instance)
 
 [dm.record.modification]
 fired by dmDoctrineRecord when it will be saved or deleted
-params: array()
+params: array('type' => create|update|delete)
 
 [dm.table.modification]
 fired by dmDoctrineTable when it's data will be modified
