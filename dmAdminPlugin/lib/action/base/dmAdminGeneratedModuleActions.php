@@ -15,19 +15,15 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
       {
         if (($foreignColumn = $foreignTable->getIdentifierColumnName()) != 'id')
         {
-          try
+          if (!$joinAlias = $query->getJoinAliasForRelationAlias($relation->getAlias()))
           {
-            $query->addOrderBy(sprintf('%s.%s %s', $relation->getAlias(), $foreignColumn, $sort[1]));
-            
-            // Success !
-            return;
+            $query->leftJoin(sprintf(sprintf('%s.%s %s', $query->getRootAlias(), $relation->getAlias(), $relation->getAlias())));
+            $joinAlias = $relation->getAlias();
           }
-          catch(Exception $e)
-          {
-            $this->context->getLogger()->log(sprintf('Can not sort with %s.%s because its alias in query is not %s',
-              $relation->getClass(), $foreignColumn, $relation->getAlias
-            ));
-          }
+          
+          $query->addOrderBy(sprintf('%s.%s %s', $joinAlias, $foreignColumn, $sort[1]));
+          // Success, skip default sorting by local column
+          return;
         }
       }
     }

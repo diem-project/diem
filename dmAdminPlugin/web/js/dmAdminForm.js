@@ -105,7 +105,7 @@
         return true;
       }).trigger('change');
       
-      $('div.control span.select_all, div.control span.unselect_all', $list.parent()).each(function()
+      $('div.control span.select_all, div.control span.unselect_all', $list.parent().parent()).each(function()
       {
         $(this).click(function()
         {

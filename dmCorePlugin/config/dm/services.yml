@@ -34,13 +34,21 @@ parameters:
 
   filesystem.class:           dmFilesystem
   
+  action_log.class:           dmActionLog
+  action_log.options:
+    file:                     'data/dm/log/action.log'
+    entry_service_name:       action_log_entry
+  
+  action_log_entry.class:     dmActionLogEntry
+  
   user_log.class:             dmUserLog
   user_log.options:
     file:                     'data/dm/log/user.log'
-    
-  browser.class:              dmBrowser
+    entry_service_name:       user_log_entry
   
   user_log_entry.class:       dmUserLogEntry
+    
+  browser.class:              dmBrowser
     
   page_tree_watcher.class:    dmPageTreeWatcher
   
@@ -155,6 +163,21 @@ services:
     shared:                   true
     arguments:
       dispatcher:             @dispatcher
+      
+  action_log:
+    class:                    %action_log.class%
+    shared:                   true
+    arguments:
+      dispatcher:             @dispatcher
+      filesystem:             @filesystem
+      service_container:      @service_container
+      options:                %action_log.options%
+      
+  action_log_entry:
+    class:                    %action_log_entry.class%
+    shared:                   false
+    arguments:
+      service_container:      @service_container
       
   user_log:
     class:                    %user_log.class%

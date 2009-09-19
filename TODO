@@ -30,7 +30,7 @@
 
 * remove context instance creation from tasks when possible
 
-* implement form facilities as for diem 4 ( get inspiration from http://webmozarts.com/ )
+* implement form facilities as for diem 4 ( and get inspiration from http://webmozarts.com/ )
 
 * [DONE] replace overrides of form::updateObject with form::doReplaceObject
 
@@ -54,11 +54,11 @@
   - aller à la navigation
   - aller en bas de de page
   
-* automatically add accesskey to front home links
+* automatically add accesskeys to front home links
 
 * [DONE] study http://www.symfony-project.org/plugins/mgI18nPlugin
 
-* use user theme admin for admin user assets (?)
+* [DONE] use user theme admin for admin user assets (?)
 
 * [DONE] fix dmPageSync
   model A is many parent of model B
@@ -101,7 +101,7 @@ $.getScript(href, callback);
 
 * [DONE] log visitors
 
-* admin batch actions : show as links and add validate/unvalidate all
+* [DONE] admin batch actions : show as links and add validate/unvalidate all
 
 * [DONE] admin forms : load current object variable in partials and components
 
@@ -213,7 +213,7 @@ $.getScript(href, callback);
 
 * [DONE] add all media helper classes to dmServiceContainer
 
-* add all link helper classes to dmServiceContainer
+* [DONE] add all link helper classes to dmServiceContainer
 
 * [DONE] remove dmHtml ArrayAccess implementation for performance reasons
 
@@ -232,3 +232,9 @@ $.getScript(href, callback);
 * [DONE] remove unused dependencies from admin & front service containers
 
 * [DONE] remove deprecated DmAdminHelper
+
+* front interface performance : try to load more javascripts on the fly ( like markitup )
+
+* [DONE] fix admin generator list foreign table sorting when join alias is not relation alias, or doesn't exist
+
+* add an action log

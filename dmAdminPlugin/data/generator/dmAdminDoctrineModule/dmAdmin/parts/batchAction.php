@@ -55,7 +55,7 @@
       
     if ($count)
     {
-      $this->getDmContext()->getPageTreeWatcher()->addModifiedTable(dmDb::table('<?php echo $this->getModelClass() ?>'));
+      dmDb::table('<?php echo $this->getModelClass() ?>')->notifyModification();
     }
 
     if ($count >= count($ids))

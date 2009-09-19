@@ -80,13 +80,14 @@ class dmMediaResource
     {
       if (strncmp($source, 'media:', 6) === 0)
       {
-        if ($media = dmDb::table('DmMedia')->findOneByIdWithFolder(preg_replace('|^media:(\d+).*|', '$1', $source)))
+        $mediaId = preg_replace('|^media:(\d+).*|', '$1', $source);
+        if ($media = dmDb::table('DmMedia')->findOneByIdWithFolder($mediaId))
         {
           $this->fromMedia($media);
         }
         else
         {
-          throw new dmException(sprintf('%s is not a valid media resource', $source));
+          throw new dmException(sprintf('%s is not a valid media resource. The media with id %s does not exist', $source, $mediaId));
         }
       }
       else
@@ -115,8 +116,7 @@ class dmMediaResource
         elseif(strncmp($source, 'dm', 2) === 0)
         {
           $type = preg_replace('|^dm(\w+)/.+$|', '$1', $source);
-          $realSource = str_replace('dm'.ucfirst($type).'/', '', $source);
-          $this->pathFromWebDir = $this->requestContext['relative_url_root'].'/'.sfConfig::get('dm_'.$type.'_asset').'/'.$realSource;
+          $this->pathFromWebDir = $this->requestContext['relative_url_root'].'/'.sfConfig::get('dm_'.dmString::modulize($type).'_asset').'/'.str_replace('dm'.$type.'/', '', $source);
         }
         // theme asset ( ex: images/file.png and file.png will both result to /myTheme/images/file.png )
         else

@@ -119,12 +119,12 @@ class dmRecordLoremizer
 
   protected function getStringValForColumn($column)
   {
-    $val = dmLorem::getLittleLorem(rand(min(4, $column['length']), min(40, $column['length'])));
-
     if (dmArray::get($column, 'email'))
     {
-      return dmString::random(rand(4, 20)).'@gmail.com';
+      return dmString::random(rand(4, 30)).'@localhost.com';
     }
+    
+    $val = trim(dmLorem::getLittleLorem(rand(min(4, $column['length']), min(40, $column['length']))));
 
     if (dmArray::get($column, 'unique'))
     {

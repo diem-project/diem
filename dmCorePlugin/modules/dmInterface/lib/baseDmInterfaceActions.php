@@ -16,11 +16,11 @@ abstract class baseDmInterfaceActions extends dmBaseActions
     {
       $this->forward404Unless(
         $this->folder = dmDb::table('DmMediaFolder')->getTree()->fetchRoot(),
-        sprintf('%s is not a valid folder_id', $request->getParameter('folder_id'))
+        sprintf('folder table has no root !')
       );
     }
 
-    $this->getUser()->setAttribute('dm_media_browser_folder_id', $this->folder->getId());
+    $this->getUser()->setAttribute('dm_media_browser_folder_id', $this->folder->id);
 
     return $this->renderPartial('mediaBarInner');
   }

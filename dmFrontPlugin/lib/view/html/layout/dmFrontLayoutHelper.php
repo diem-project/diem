@@ -52,10 +52,7 @@ class dmFrontLayoutHelper extends dmCoreLayoutHelper
   
   public function renderBodyTag()
   {
-    printf('<body class="%s_%s">',
-      $this->page->get('module'),
-      $this->page->get('action')
-    );
+    return '<body class="'.$this->page->get('module').'_'.$this->page->get('action').'">';
   }
 
   protected function getMetas()
@@ -66,9 +63,9 @@ class dmFrontLayoutHelper extends dmCoreLayoutHelper
       'generator'    => 'Diem '.dm::version()
     );
     
-    if (sfConfig::get('dm_seo_use_keywords'))
+    if (sfConfig::get('dm_seo_use_keywords') && $keywords = $this->page->get('keywords'))
     {
-      $metas['keywords'] = $this->page->get('keywords');
+      $metas['keywords'] = $keywords;
     }
     
     if (!dmConfig::get('site_indexable'))
@@ -86,14 +83,14 @@ class dmFrontLayoutHelper extends dmCoreLayoutHelper
   
   public function renderMetas()
   {
-    $metaHtml = array(sprintf('<title>%s</title>', $this->page->get('title')));
+    $metaHtml = "\n".'<title>'.$this->page->get('title').'</title>';
     
     foreach($this->getMetas() as $key => $value)
     {
-      $metaHtml[] = sprintf('<meta name="%s" content="%s" />', $key, $value);
+      $metaHtml .= "\n".'<meta name="'.$key.'" content="'.$value.'" />';
     }
 
-    return implode(' ', $metaHtml);
+    return $metaHtml;
   }
   
   

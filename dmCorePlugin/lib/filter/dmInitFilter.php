@@ -7,7 +7,10 @@ abstract class dmInitFilter extends dmFilter
   {
     if ($this->dmContext->isHtmlForHuman())
     {
-      $this->dmContext->getService('user_log')->log($this->dmContext);
+      $this->dmContext->getService('user_log')->log(array(
+        'context' => $this->context,
+        'server'  => $_SERVER
+      ));
     }
   }
 

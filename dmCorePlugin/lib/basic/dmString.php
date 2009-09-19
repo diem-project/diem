@@ -364,4 +364,17 @@ class dmString extends sfInflector
     return array();
   }
   
+  /*
+   * Returns a valid hex color uppercased without first #,
+   * or null if not possible
+   */
+  public static function hexColor($color)
+  {
+    if (preg_match('|^#?[\dA-F]{6}$|i', $color))
+    {
+      return strtoupper(trim($color, '#'));
+    }
+    
+    return null;
+  }
 }

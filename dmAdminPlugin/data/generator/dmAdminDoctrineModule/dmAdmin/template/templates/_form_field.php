@@ -47,7 +47,7 @@
     [?php
     if (substr($name, -5) === '_view')
     {
-      include_partial('dmMedia/viewBig', array('object' => $media = $form->getObject()->getDmMediaByColumnName(substr($name, 0, strlen($name)-5))));
+      include_partial('dmMedia/viewBig', array('object' => $form->getObject()->getDmMediaByColumnName(substr($name, 0, strlen($name)-5))));
     }
     else
     {

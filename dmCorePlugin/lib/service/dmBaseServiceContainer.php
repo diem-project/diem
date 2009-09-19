@@ -101,10 +101,20 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
     
     $this->getService('dispatcher')->connect('user.change_theme', array($this, 'listenToChangeThemeEvent'));
     
+    $this->connectServices();
+  }
+  
+  protected function connectServices()
+  {
     /*
      * Connect the tree watcher to make it aware of database modifications
      */
     $this->getService('page_tree_watcher')->connect();
+    
+    /*
+     * Connect the action log to make it aware of database modifications
+     */
+    $this->getService('action_log')->connect();
   }
 
   /**

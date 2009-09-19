@@ -262,6 +262,35 @@ abstract class dmDoctrineQuery extends Doctrine_Query
     ->addOrderBy("$me.position asc");
   }
 
+  
+  /*
+   * returns join alias for a given relation alias, if joined
+   * ex: "Elem e, e.Categ my_categ"
+   * alias for joined relation Categ = my_categ
+   */
+  public function getJoinAliasForRelationAlias($relationAlias)
+  {
+    $this->buildSqlQuery();
+    foreach ($this->getQueryComponents() as $joinAlias => $queryComponent)
+    {
+      if (isset($queryComponent['relation']) && $queryComponent['relation']['alias'] == $relationAlias)
+      {
+        return $joinAlias;
+      }
+//      else
+//      {
+//        if (isset($queryComponent['relation']))
+//        {
+//          dmDebug::show($joinAlias, $queryComponent['relation']['alias']);
+//        }
+//      }
+    }
+    
+//    dmDebug::kill($relationAlias, array_keys($this->getQueryComponents()), $this->getSqlQuery());
+    
+    return null;
+  }
+  
   /*
    * @return myDoctrineCollection|null the fetched collection
    */

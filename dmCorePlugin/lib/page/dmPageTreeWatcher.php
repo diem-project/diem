@@ -23,11 +23,23 @@ class dmPageTreeWatcher
     $this->dispatcher->connect('dm.controller.redirect', array($this, 'listenToControllerRedirectionEvent'));
     
     $this->dispatcher->connect('dm.record.modification', array($this, 'listenToRecordModificationEvent'));
+    
+    $this->dispatcher->connect('dm.table.modification', array($this, 'listenToTableModificationEvent'));
   }
   
   public function listenToRecordModificationEvent(sfEvent $event)
   {
     $table = $event->getSubject()->getTable();
+    
+    if ($table instanceof dmDoctrineTable && $table->interactsWithPageTree())
+    {
+      $this->addModifiedTable($table);
+    }
+  }
+  
+  public function listenToTableModificationEvent(sfEvent $event)
+  {
+    $table = $event->getSubject();
     
     if ($table instanceof dmDoctrineTable && $table->interactsWithPageTree())
     {

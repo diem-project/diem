@@ -52,7 +52,6 @@ services:
     arguments:
       dispatcher:             @dispatcher
       helper:                 @helper
-      service_container:      @service_container
       type:                   %widget_view.type%
       data:                   %widget_view.data%
 

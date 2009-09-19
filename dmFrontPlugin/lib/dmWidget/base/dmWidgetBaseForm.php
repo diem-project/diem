@@ -3,9 +3,7 @@
 abstract class dmWidgetBaseForm extends dmForm
 {
   protected
-    $dmWidget;
-
-  protected
+    $dmWidget,
     $firstDefaults = array();
 
   /**

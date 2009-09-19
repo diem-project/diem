@@ -6,18 +6,16 @@ abstract class dmWidgetBaseView
   protected
   $dispatcher,
   $helper,
-  $serviceContainer,
   $widgetType,
   $widget,
   $requiredVars = array();
 
-  public function __construct(sfEventDispatcher $dispatcher, dmHelper $helper, sfServiceContainer $serviceContainer, dmWidgetType $type, array $data)
+  public function __construct(sfEventDispatcher $dispatcher, dmHelper $helper, dmWidgetType $type, array $data)
   {
     $this->dispatcher        = $dispatcher;
     $this->helper            = $helper;
-    $this->serviceContainer  = $serviceContainer;
     $this->widgetType        = $type;
-    $this->widget           = $data;
+    $this->widget            = $data;
 
     $this->configure();
   }

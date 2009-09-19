@@ -70,7 +70,7 @@ class dmWidgetContentMediaForm extends dmWidgetPluginForm
     }
 
     $this->widgetSchema['background'] = new sfWidgetFormInputText(array(), array('size' =>7));
-    $this->validatorSchema['background'] = new dmValidatorCssColor(array(
+    $this->validatorSchema['background'] = new dmValidatorHexColor(array(
       'required' => false
     ));
 
@@ -107,7 +107,7 @@ class dmWidgetContentMediaForm extends dmWidgetPluginForm
 
   protected function renderContent($attributes)
   {
-    return dmContext::getInstance()->getHelper()->renderPartial('dmWidget', 'forms/dmWidgetContentMedia', array(
+    return self::$serviceContainer->getService('helper')->renderPartial('dmWidget', 'forms/dmWidgetContentMedia', array(
       'form' => $this,
       'hasMedia' => (boolean) $this->getValueOrDefault('mediaId')
     ));

@@ -3,7 +3,8 @@
 abstract class dmDoctrineRecord extends sfDoctrineRecord
 {
   protected static
-  $eventDispatcher;
+  $eventDispatcher,
+  $serviceContainer;
   
   protected
   $i18nFallback = null;
@@ -702,6 +703,11 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
   public static function setEventDispatcher(sfEventDispatcher $eventDispatcher)
   {
     self::$eventDispatcher = $eventDispatcher;
+  }
+  
+  public static function setServiceContainer(dmBaseServiceContainer $serviceContainer)
+  {
+    self::$serviceContainer = $serviceContainer;
   }
   
   /*

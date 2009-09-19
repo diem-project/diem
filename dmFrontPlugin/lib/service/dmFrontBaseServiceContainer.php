@@ -28,9 +28,9 @@ abstract class dmFrontBaseServiceContainer extends dmBaseServiceContainer
     $this->configurePageHelper();
   }
   
-  public function connect()
+  protected function connectServices()
   {
-    parent::connect();
+    parent::connectServices();
     
     $this->getService('page_helper')->connect();
     

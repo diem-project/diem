@@ -27,7 +27,7 @@ class dmMediaTagImage extends dmMediaTag
     {
       throw new dmException(sprintf('%s is not a valid method. These are : %s',
         $method,
-        implode(', ', self::$methods)
+        implode(', ', self::getAvailableMethods())
       ));
     }
     
@@ -36,12 +36,16 @@ class dmMediaTagImage extends dmMediaTag
 
   public function quality($v)
   {
-    return $this->set('quality', $v);
+    return $this->set('quality', (float) $v);
   }
 
   public function background($v)
   {
-    return $this->set('background', $v);
+    if (!$hexColor = dmString::hexColor($v))
+    {
+      throw new dmException(sprintf('%s is not a valid hexadecimal color', $v));
+    }
+    return $this->set('background', $hexColor);
   }
 
   public function alt($v)

@@ -52,9 +52,16 @@ abstract class dmContext extends dmMicroCache
     dmForm::setServiceContainer($this->serviceContainer);
     
     /*
-     * dmDoctrineRecord needs the event dispatcher to communicate !
+     * dmDoctrineRecord needs the event dispatcher to communicate
+     * and the service container...
      */
     dmDoctrineRecord::setEventDispatcher($this->sfContext->getEventDispatcher());
+    dmDoctrineRecord::setServiceContainer($this->serviceContainer);
+    
+    /*
+     * dmDoctrineTable needs the event dispatcher to communicate
+     */
+    dmDoctrineTable::setEventDispatcher($this->sfContext->getEventDispatcher());
 
     /*
      * Doctrine cache configuration require a loaded dmContext to run

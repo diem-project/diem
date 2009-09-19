@@ -9,11 +9,11 @@ abstract class dmAdminBaseServiceContainer extends dmBaseServiceContainer
     $this->setService('routing',          $dependencies['context']->getRouting());
   }
   
-  public function connect()
+  protected function connectServices()
   {
-    parent::connect();
+    parent::connectServices();
     
-    // must be called after connections to event dispatcher
+    // must be called after all connections to event dispatcher
     $this->getService('user')->setTheme($this->getService('theme'));
   }
   

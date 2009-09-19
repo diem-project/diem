@@ -105,7 +105,7 @@ class dmForm extends sfFormSymfony
     }
     else
     {
-      $action = self::$serviceContainer->get('request')->getUri();
+      $action = self::$serviceContainer->getService('request')->getUri();
     }
     
     if (strpos($action, '#') === false)

@@ -77,19 +77,9 @@ abstract class dmCoreLayoutHelper
     
     $html = '';
     
-//    if ($this->isHtml5())
-//    {
-//      $html .= sprintf('<meta charset="%s">', strtoupper($this->response->getCharset()));
-//      
-//      if(isset($httpMetas['Content-Type']))
-//      {
-//        unset($httpMetas['Content-Type']);
-//      }
-//    }
-    
     foreach($httpMetas as $httpequiv => $value)
     {
-      $html .= sprintf('<meta http-equiv="%s" content="%s" />', $httpequiv, $value);
+      $html .= '<meta http-equiv="'.$httpequiv.'" content="'.$value.'" />';
     }
 
     return $html;
@@ -173,7 +163,7 @@ abstract class dmCoreLayoutHelper
 
     if (isset($favicon))
     {
-      return '<link rel="shortcut icon" href="'.$this->requestContext['relative_url_root'].'/'.$favicon.'" />';
+      return "\n".'<link rel="shortcut icon" href="'.$this->requestContext['relative_url_root'].'/'.$favicon.'" />';
     }
 
     return '';

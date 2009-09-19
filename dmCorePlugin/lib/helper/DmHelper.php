@@ -8,6 +8,14 @@ function £link($source = null)
   return dmLinkTag::build($source);
 }
 
+/*
+ * @return dmMediaTag
+ */
+function £media($source)
+{
+  return dmMediaTag::build($source);
+}
+
 function dm_datetime($datetime)
 {
   return trim($datetime, ' CEST');
@@ -34,11 +42,6 @@ function plural($word, $nb, $showNb = true, $pluralSpec = false)
   return $showNb ? $nb.' '.$pluralizedWord : $pluralizedWord;
 }
 
-
-function £media($src)
-{
-  return dmMediaTag::build($src);
-}
 
 /*
  * a, class='tagada ergrg' id=zegf, contenu
