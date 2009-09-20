@@ -20,9 +20,9 @@ abstract class dmRecursivePageList
   {
     $pageTable = dmDb::table('DmPage');
 
-    $q = $pageTable->createQuery('p')
+    $q = $pageTable->createQuery('page')
     ->withI18n($this->culture)
-    ->select('p.id, p.action, translation.name, translation.slug');
+    ->select('page.id, page.action, pageTranslation.name, pageTranslation.slug');
 
     $treeObject = $pageTable->getTree();
     $treeObject->setBaseQuery($q);
