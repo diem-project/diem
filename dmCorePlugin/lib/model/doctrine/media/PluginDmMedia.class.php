@@ -257,7 +257,7 @@ abstract class PluginDmMedia extends BaseDmMedia
     if ($this->checkFileExists())
     {
 //      dmDebug::kill('unlink '.$this->fullPath, $this);
-      dmContext::getInstance()->getFilesystem()->unlink($this->getFullPath());
+      self::$serviceContainer->getService('filesystem')->unlink($this->getFullPath());
     }
 
     return !$this->checkFileExists();
@@ -276,7 +276,7 @@ abstract class PluginDmMedia extends BaseDmMedia
     ->maxdepth(0)
     ->in(dmOs::join($this->Folder->getFullPath(), '.thumbs'));
 
-    return dmContext::getInstance()->getFilesystem()->unlink($thumbs);
+    return self::$serviceContainer->getService('filesystem')->unlink($thumbs);
   }
 
 

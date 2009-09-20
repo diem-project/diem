@@ -24,9 +24,9 @@ class dmFrontInitFilter extends dmInitFilter
 
     $filterChain->execute();
     
-    if ($this->dmContext->getPage())
+    if ($this->context->getPage())
     {
-      if (sfConfig::get('dm_html_validate', true) && $this->getContext()->getUser()->can('html_validate_front') && $this->dmContext->isHtmlForHuman())
+      if (sfConfig::get('dm_html_validate', true) && $this->getContext()->getUser()->can('html_validate_front') && $this->context->isHtmlForHuman())
       {
         $this->saveHtml();
       }
@@ -35,7 +35,7 @@ class dmFrontInitFilter extends dmInitFilter
 
   protected function guessPage()
   {
-    if ($this->dmContext->isModuleAction('dmFront', 'page'))
+    if ($this->context->isModuleAction('dmFront', 'page'))
     {
       $slug = $this->context->getRequest()->getParameter('slug');
 
@@ -67,7 +67,7 @@ class dmFrontInitFilter extends dmInitFilter
 
     if ($page)
     {
-      $this->dmContext->setPage($page);
+      $this->context->setPage($page);
     }
   }
   
@@ -85,7 +85,7 @@ class dmFrontInitFilter extends dmInitFilter
     ->withI18n()
     ->fetchOne();
     
-    $this->dmContext->setPage($page);
+    $this->context->setPage($page);
   }
   
 }

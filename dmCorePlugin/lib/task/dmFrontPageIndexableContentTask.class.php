@@ -61,7 +61,7 @@ class dmPageIndexableContentTask extends dmBaseTask
       ->orderBy('z.position asc, w.position asc')
       ->fetchArray();
        
-      $widgetTypeManager = $dmContext->getService('widget_type_manager');
+      $widgetTypeManager = $dmContext->get('widget_type_manager');
       
       $html = '';
        

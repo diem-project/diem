@@ -7,6 +7,6 @@ class dmFrontBaseComponents extends dmBaseComponents
    */
   public function getPage()
   {
-    return $this->dmContext->getPage();
+    return $this->contect->getPage();
   }
 }

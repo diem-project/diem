@@ -54,7 +54,7 @@ abstract class dmCoreFunctionalCoverageTest
   {
     $configuration = ProjectConfiguration::getApplicationConfiguration($this->options['app'], $this->options['env'], $this->options['debug']);
 
-    sfContext::createInstance($configuration);
+    dmContext::createInstance($configuration);
 
     // remove all cache
     sfToolkit::clearDirectory(sfConfig::get('sf_app_cache_dir'));
@@ -62,7 +62,7 @@ abstract class dmCoreFunctionalCoverageTest
 
   protected function initBrowser()
   {
-    $this->browser = new sfTestFunctional(new sfBrowser());
+    $this->browser = new sfTestFunctional(new dmTestBrowser());
     
     if($this->options['debug'])
     {

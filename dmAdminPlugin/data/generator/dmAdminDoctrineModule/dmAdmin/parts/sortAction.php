@@ -2,7 +2,7 @@
   {
     $this->forward404Unless($this->getDmModule()->getTable()->isSortable());
     
-    $this->dmContext->getServiceContainer()->addParameters(array(
+    $this->context->getServiceContainer()->addParameters(array(
       'admin_sort_form.defaults'  => array(),
       'admin_sort_form.options'   => array(
         'module' => $this->getDmModule(),
@@ -10,7 +10,7 @@
       )
     ));
     
-    $this->form = $this->dmContext->getServiceContainer()->getService('admin_sort_table_form');
+    $this->form = $this->context->get('admin_sort_table_form');
     
     $this->processSortForm($this->form);
   }
@@ -30,7 +30,7 @@
     
     $this->forward404Unless($refererModule->getTable()->isSortable());
     
-    $this->dmContext->getServiceContainer()->addParameters(array(
+    $this->context->getServiceContainer()->addParameters(array(
       'admin_sort_form.defaults'  => array(),
       'admin_sort_form.options'   => array(
         'module'        => $refererModule,
@@ -39,7 +39,7 @@
       )
     ));
     
-    $this->form = $this->dmContext->getServiceContainer()->getService('admin_sort_referers_form');
+    $this->form = $this->context->get('admin_sort_referers_form');
     
     $this->processSortForm($this->form);
   }

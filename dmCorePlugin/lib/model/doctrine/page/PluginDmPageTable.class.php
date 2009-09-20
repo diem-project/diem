@@ -55,7 +55,7 @@ class PluginDmPageTable extends myDoctrineTable
     {
       dmDb::create('DmPage', array(
         'name' => dm::getI18n()->__('Search results'),
-        'title' => dm::getI18n()->__('Search results').' | '.dmContext::getInstance()->getSite()->name,
+        'title' => dm::getI18n()->__('Search results').' | '.dmConfig::get('site_name'),
         'module' => 'main',
         'action' => 'search',
         'slug' => '-search'
@@ -139,7 +139,7 @@ class PluginDmPageTable extends myDoctrineTable
   {
     return $this->createQuery('p')
     ->withI18n()
-    ->where('translation.slug = ?', $slug)
+    ->where('pTranslation.slug = ?', $slug)
     ->fetchRecord();
   }
 

@@ -113,7 +113,7 @@ class dmConfig
   {
     if (!self::$culture)
     {
-      if (class_exists('sfContext', false) && sfContext::hasInstance() && $user = sfContext::getInstance()->getUser())
+      if (class_exists('dmContext', false) && dmContext::hasInstance() && $user = dmContext::getInstance()->getUser())
       {
         self::$culture = $user->getCulture();
       }

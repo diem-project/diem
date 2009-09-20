@@ -108,7 +108,7 @@ class dmFrontLinkResource
         }
         
         $this->type = 'uri';
-        $this->subject = dmContext::getInstance()->getServiceContainer()->getService('script_name_resolver')->get($app).$slug;
+        $this->subject = dmContext::getInstance()->get('script_name_resolver')->get($app).$slug;
       }
       elseif(
           strncmp($source, "http://", 7)  === 0

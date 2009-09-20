@@ -8,7 +8,7 @@ class dmHelper
   $context,
   $requestContext;
   
-  public function __construct(sfEventDispatcher $dispatcher, dmUser $user, sfContext $context, array $requestContext)
+  public function __construct(sfEventDispatcher $dispatcher, dmUser $user, dmContext $context, array $requestContext)
   {
     $this->dispatcher      = $dispatcher;
     $this->context         = $context;

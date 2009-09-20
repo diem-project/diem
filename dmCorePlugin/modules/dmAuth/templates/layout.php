@@ -1,6 +1,6 @@
 <?php
 
-$helper = dmContext::getInstance()->getService('auth_layout_helper');
+$helper = $sf_context->get('auth_layout_helper');
 
 echo 
 $helper->renderDoctype(),

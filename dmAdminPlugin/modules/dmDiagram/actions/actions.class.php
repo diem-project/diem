@@ -13,7 +13,7 @@ class dmDiagramActions extends dmAdminBaseActions
       $this->dicImages[$appName] = $this->getDiagramImage($appName);
     }
     
-    $doctrineGraphviz = new dmDoctrineGraphviz($this->dmContext->getFilesystem(), $this->context->getConfiguration());
+    $doctrineGraphviz = new dmDoctrineGraphviz($this->context->getFilesystem(), $this->context->getConfiguration());
     
     $this->mldUserImage = $doctrineGraphviz->getMldImage(array(
       'type' => 'user'
@@ -30,7 +30,7 @@ class dmDiagramActions extends dmAdminBaseActions
   
   protected function loadServiceContainerDumper()
   {
-    $this->dmContext->loadServiceContainerLoader();
+    $this->context->loadServiceContainerLoader();
     
     require_once(dmOs::join(sfConfig::get('dm_core_dir'), 'lib/vendor/sfService/sfServiceContainerDumperGraphviz.php'));
   }
@@ -43,7 +43,7 @@ class dmDiagramActions extends dmAdminBaseActions
     
     $dotFile = dmOs::join(sys_get_temp_dir(), dmString::random(12).'.dot');
     
-    if (!$this->dmContext->getFilesystem()->mkdir(dirname($dependencyDiagramImageFullPath)))
+    if (!$this->context->getFilesystem()->mkdir(dirname($dependencyDiagramImageFullPath)))
     {
       throw new dmException(sprintf('Can not mkdir %s', $dependencyDiagramImageFullPath));
     }
@@ -87,7 +87,7 @@ class dmDiagramActions extends dmAdminBaseActions
       'node.missing' => array('fillcolor' => '#ffaaaa', 'style' => 'filled', 'shape' => 'record'),
     )));
     
-    $return = $this->dmContext->getFileSystem()->exec(sprintf('dot -Tpng %s > %s', $dotFile, $dependencyDiagramImageFullPath));
+    $return = $this->context->getFileSystem()->exec(sprintf('dot -Tpng %s > %s', $dotFile, $dependencyDiagramImageFullPath));
     
     if (!$return)
     {

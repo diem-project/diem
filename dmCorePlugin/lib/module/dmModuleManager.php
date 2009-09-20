@@ -15,7 +15,7 @@ class dmModuleManager
     {
       self::$types = array();
 
-      $config = include(sfContext::getInstance()->getConfigCache()->checkConfig(self::$configFile));
+      $config = include(dmContext::getInstance()->getConfigCache()->checkConfig(self::$configFile));
 
       foreach($config as $typeName => $spaces)
       {

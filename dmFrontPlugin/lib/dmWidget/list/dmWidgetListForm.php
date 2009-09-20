@@ -84,12 +84,12 @@ class dmWidgetListForm extends dmWidgetProjectModelForm
 
   protected function allowFilterAutoRecordId(dmModule $filterModule)
   {
-    return dmContext::getInstance()->getPage()->dmModule->knows($filterModule);
+    return dmContext::getInstance()->getPage()->getDmModule()->knows($filterModule);
   }
 
   protected function getFilterAutoRecord(dmModule $filterModule)
   {
-    return dmContext::getInstance()->getPage()->record->getAncestorRecord($filterModule->getModel());
+    return dmContext::getInstance()->getPage()->getRecord()->getAncestorRecord($filterModule->getModel());
   }
 
   protected function getFirstDefaults()
@@ -106,7 +106,7 @@ class dmWidgetListForm extends dmWidgetProjectModelForm
 
   protected function renderContent($attributes)
   {
-    return dmContext::getInstance()->getHelper()->renderPartial('dmWidget', 'forms/dmWidgetList', array('form' => $this));
+    return self::$serviceContainer->getService('page_helper')->renderPartial('dmWidget', 'forms/dmWidgetList', array('form' => $this));
   }
 
   protected function getAvailableOrderFields()
@@ -119,7 +119,7 @@ class dmWidgetListForm extends dmWidgetProjectModelForm
     {
       if (in_array($column['type'], $allowedTypes))
       {
-        $fields[$columnName] = dm::getI18n()->__(dmString::humanize($columnName));
+        $fields[$columnName] = self::$serviceContainer->getService('i18n')->__(dmString::humanize($columnName));
       }
     }
 

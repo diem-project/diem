@@ -14,7 +14,7 @@ class dmAdminSeoValidationFilter extends dmFilter
   public function execute($filterChain)
   {
 
-    if (dmContext::getInstance()->isHtmlForHuman() && $this->getContext()->getUser()->can('seo'))
+    if ($this->context->isHtmlForHuman() && $this->context->getUser()->can('seo'))
     {
       $validator = new dmSeoValidationService($this->getContext()->getEventDispatcher());
 
@@ -37,7 +37,7 @@ class dmAdminSeoValidationFilter extends dmFilter
 
       $duplicated = $validator->execute($attributes);
 
-      if (count($duplicated) && sfContext::getInstance()->getModuleName() != "dmSeoValidation")
+      if (count($duplicated) && dmContext::getInstance()->getModuleName() != "dmSeoValidation")
       {
         if (dmArray::get($duplicated, 'slug'))
         {
@@ -54,7 +54,7 @@ class dmAdminSeoValidationFilter extends dmFilter
           dmAdminLinkTag::build('dmSeoValidation/index')->text(dm::getI18n()->__('Click here to see them'))->set('.ml10')
        );
 
-        $this->dmContext->getCacheManager()->getCache('dm/seo/validation')->set('duplicated', $duplicated);
+        $this->context->getCacheManager()->getCache('dm/seo/validation')->set('duplicated', $duplicated);
       }
     }
 

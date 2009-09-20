@@ -43,7 +43,7 @@ class DmPageFrontNewForm extends DmPageForm
     ->where('p.record_id = 0')
     ->orderBy('p.lft')
     ->withI18n()
-    ->select('p.id, p.level, translation.name')
+    ->select('p.id, p.level, pTranslation.name')
     ->fetchPDO();
     
     $parentChoices = array();

@@ -86,10 +86,7 @@ class dmDebug
    */
   public static function log()
   {
-    sfContext::getInstance()->getLogger()->log(
-    self::formatAsString(func_get_args()),
-    sfLogger::ERR
-    );
+    dmContext::getInstance()->getLogger()->log(self::formatAsString(func_get_args()), sfLogger::ERR);
   }
 
   /*
@@ -170,12 +167,12 @@ class dmDebug
    */
   public static function stack($msg = "")
   {
-    if (!sfContext::hasInstance())
+    if (!dmContext::hasInstance())
     {
       return self::simpleStack($msg);
     }
 
-    sfContext::getInstance()->getConfiguration()->loadHelpers(array('Javascript', 'Tag'));
+    dmContext::getInstance()->getConfiguration()->loadHelpers(array('Javascript', 'Tag'));
 
     $result = "";
     $trace = debug_backtrace();
@@ -283,7 +280,7 @@ class dmDebug
         $var = dmArray::first($var);
       }
 
-      if (sfContext::hasInstance() && $request = dm::getRequest())
+      if (dmContext::hasInstance() && $request = dm::getRequest())
       {
         if ($request->isXmlHttpRequest())
         {

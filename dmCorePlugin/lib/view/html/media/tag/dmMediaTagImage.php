@@ -132,13 +132,13 @@ class dmMediaTagImage extends dmMediaTag
 
     if (!in_array($attributes['method'], self::getAvailableMethods()))
     {
-      self::$dmContext->getLogger()->alert(sprintf('%s is not a valid resize method. These are : %s', $attributes['method'], implode(', ', self::getAvailableMethods())));
+      self::$context->getLogger()->alert(sprintf('%s is not a valid resize method. These are : %s', $attributes['method'], implode(', ', self::getAvailableMethods())));
       $attributes['method'] = dmConfig::get('image_resize_method', 'center');
     }
 
-    if(!self::$dmContext->getFilesystem()->mkdir($thumbDir = dmOs::join($media->get('Folder')->getFullPath(), '.thumbs')))
+    if(!self::$context->getFilesystem()->mkdir($thumbDir = dmOs::join($media->get('Folder')->getFullPath(), '.thumbs')))
     {
-      self::$dmContext->getLogger()->err('Thumbnails can not be created in '.$media->get('Folder')->getFullPath());
+      self::$context->getLogger()->err('Thumbnails can not be created in '.$media->get('Folder')->getFullPath());
       return $media->getFullPath();
     }
 
@@ -158,7 +158,7 @@ class dmMediaTagImage extends dmMediaTag
 
     if (!file_exists($thumbPath))
     {
-      self::$dmContext->getLogger()->notice('Recreate thumb for media '.$media);
+      self::$context->getLogger()->notice('Recreate thumb for media '.$media);
 
       $image = $media->getImage();
 
@@ -174,7 +174,7 @@ class dmMediaTagImage extends dmMediaTag
         }
         catch(sfImageTransformException $e)
         {
-          self::$dmContext->getLogger()->err($e->getMessage());
+          self::$context->getLogger()->err($e->getMessage());
 
           if (sfConfig::get('sf_debug'))
           {

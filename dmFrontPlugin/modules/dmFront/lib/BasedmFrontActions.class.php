@@ -10,7 +10,7 @@ class BasedmFrontActions extends dmFrontBaseActions
 
   public function executePage(dmWebRequest $request)
   {
-    $this->forward404Unless($this->page = $this->dmContext->getPage(), 'No current page');
+    $this->forward404Unless($this->page = $this->context->getPage(), 'No current page');
     
     if ($this->page->isModuleAction('main', 'error404'))
     {
@@ -19,7 +19,7 @@ class BasedmFrontActions extends dmFrontBaseActions
     
     $this->setLayout(dmOs::join(sfConfig::get('dm_front_dir'), 'modules/dmFront/templates/layout'));
 
-    $this->helper = $this->dmContext->getService('page_helper');
+    $this->helper = $this->context->get('page_helper');
     
     $this->launchDirectActions($request);
   }
@@ -98,7 +98,7 @@ class BasedmFrontActions extends dmFrontBaseActions
   public function executeSelectTheme(sfWebRequest $request)
   {
     $this->forward404Unless(
-      $theme = $this->dmContext->getServiceContainer()->getService('theme_manager')->getTheme($request->getParameter('theme')),
+      $theme = $this->context->get('theme_manager')->getTheme($request->getParameter('theme')),
       sprintf('%s is not a valid theme.',
         $request->getParameter('theme')
       )

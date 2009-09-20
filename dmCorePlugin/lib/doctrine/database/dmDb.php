@@ -55,6 +55,6 @@ class dmDb
 
   public static function cache($val)
   {
-    dmContext::getInstance()->getService('doctrine_config')->activateCache((bool) $val);
+    dmContext::getInstance()->get('doctrine_config')->activateCache((bool) $val);
   }
 }

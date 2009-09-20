@@ -17,7 +17,7 @@ class dmCoreActions extends dmBaseActions
   {
     $this->doctype = sfConfig::get('dm_w3c_doctype', 'XHTML');
 
-    $this->validator = new dmHtmlValidator($this->dmContext->getCacheManager()->getCache("dm/view/html/validate")->get(session_id()));
+    $this->validator = new dmHtmlValidator($this->context->getCacheManager()->getCache("dm/view/html/validate")->get(session_id()));
   }
   
   public function executeSelectCulture(sfWebRequest $request)

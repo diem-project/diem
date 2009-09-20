@@ -2,7 +2,7 @@
 
 $timer = dmDebug::timerOrNull('dmFront/templates/layout');
 
-$helper = dmContext::getInstance()->getService('layout_helper');
+$helper = $sf_context->get('layout_helper');
 
 echo 
 $helper->renderDoctype(),

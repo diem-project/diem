@@ -5,7 +5,7 @@ class dmSitemapActions extends dmAdminBaseActions
   
   public function preExecute()
   {
-    $this->sitemap = $this->getDmContext()->getService('sitemap');
+    $this->sitemap = $this->context->get('sitemap');
     
     $this->sitemap->setBaseUrl($this->getRequest()->getAbsoluteUrlRoot());
   }

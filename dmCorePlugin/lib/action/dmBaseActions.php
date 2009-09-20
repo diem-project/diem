@@ -2,21 +2,6 @@
 
 abstract class dmBaseActions extends sfActions
 {
-  protected
-  $dmContext;
-  
-  public function initialize($context, $moduleName, $actionName)
-  {
-    parent::initialize($context, $moduleName, $actionName);
-    
-    $this->dmContext = dmContext::getInstance();
-  }
-  
-  protected function getDmContext()
-  {
-    return $this->dmContext;
-  }
-  
   protected function forwardSecureUnless($condition, $message = null)
   {
     if (!$condition)

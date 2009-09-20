@@ -8,7 +8,7 @@ class dmFrontBaseActions extends dmBaseActions
    */
   public function getPage()
   {
-    return $this->dmContext->getPage();
+    return $this->context->getPage();
   }
 
   /**
@@ -49,7 +49,7 @@ class dmFrontBaseActions extends dmBaseActions
 
     if (!$refererUrl || $refererUrl === $this->request->getUri())
     {
-      if ($page = $this->dmContext->getPage())
+      if ($page = $this->context->getPage())
       {
         $refererUrl = dmFrontLinkTag::build($page)->getAbsoluteHref();
       }

@@ -16,16 +16,4 @@ class dmFrontWebController extends sfFrontWebController
     
     parent::redirect($url, $delay, $statusCode);
   }
-  
-  /**
-   * Dispatches a request.
-   *
-   * This will determine which module and action to use by request parameters specified by the user.
-   */
-  public function dispatch()
-  {
-    parent::dispatch();
-    
-    $this->dispatcher->notify(new sfEvent($this, 'dm.controller.end'));
-  }
 }

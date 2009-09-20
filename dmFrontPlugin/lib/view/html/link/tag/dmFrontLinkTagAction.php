@@ -14,7 +14,7 @@ class dmFrontLinkTagAction extends dmFrontLinkTag
 
   protected function getBaseHref()
   {
-    return self::$dmContext->getService('controller')->genUrl($this->action);
+    return self::$context->getController()->genUrl($this->action);
   }
 
 }

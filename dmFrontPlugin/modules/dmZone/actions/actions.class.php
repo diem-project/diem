@@ -90,7 +90,7 @@ class dmZoneActions extends dmFrontBaseActions
 
     $zone = dmDb::create('DmZone')->fromArray(array('dm_area_id' => $toArea->id))->saveGet();
 
-    $helper = $this->dmContext->getService('page_helper');
+    $helper = $this->context->get('page_helper');
 
     return $this->renderText($helper->renderZone($zone->toArray(), true));
   }

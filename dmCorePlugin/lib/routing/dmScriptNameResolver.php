@@ -5,7 +5,7 @@ class dmScriptNameResolver
   protected
   $context;
   
-  public function __construct(sfContext $context)
+  public function __construct(dmContext $context)
   {
     $this->context = $context;
   }

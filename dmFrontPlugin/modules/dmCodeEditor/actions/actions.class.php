@@ -56,7 +56,7 @@ class dmCodeEditorActions extends dmFrontBaseActions
     
     try
     {
-      $this->dmContext->getService('file_backup')->save($file);
+      $this->context->get('file_backup')->save($file);
     }
     catch(dmException $e)
     {
@@ -95,7 +95,7 @@ class dmCodeEditorActions extends dmFrontBaseActions
      */
     $module = preg_replace('|^/([^/]+)/.+|', '$1', str_replace(sfConfig::get('sf_app_module_dir'), '', $file));
 
-    $helper = $this->dmContext->getService('page_helper');
+    $helper = $this->context->get('page_helper');
     $widgets = array();
     foreach($helper->getAreas() as $areaArray)
     {

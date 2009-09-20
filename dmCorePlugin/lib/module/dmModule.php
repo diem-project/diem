@@ -183,7 +183,7 @@ class dmModule extends dmMicroCache
       return $this->getCache('dir');
     }
 
-    $dirs = sfContext::getInstance()->getConfiguration()->getControllerDirs($this->getKey());
+    $dirs = dmContext::getInstance()->getConfiguration()->getControllerDirs($this->getKey());
 
     $dir = null;
     foreach($dirs as $actionPath => $isProject)

@@ -6,9 +6,9 @@ params: none
 fired by dmDataService after loading data
 params: none
 
-[dm.context.service_container_loaded]
-fired by dmContext when its serviceContainer is ready
-params: array('service_container' => sfServiceContainer instance )
+[dm.context.loaded]
+fired by dmContext when it's ready
+params: none
 
 [dm.admin_menu.loaded]
 fired by dmAdminMenu when it has been loaded
@@ -44,5 +44,5 @@ params: array('type' => create|update|delete)
 fired by dmDoctrineTable when it's data will be modified
 params: array()
 
-[dm.controller.end]
-fired by dmFrontWebController when application has been succesfully executed
+[dm.context.end]
+fired by dmContext when application has been succesfully executed

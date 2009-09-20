@@ -36,11 +36,11 @@ class dmWidgetShowForm extends dmWidgetProjectModelForm
 
   protected function allowAutoRecordId()
   {
-    return dmContext::getInstance()->getPage()->dmModule->knows($this->dmModule);
+    return dmContext::getInstance()->getPage()->getDmModule()->knows($this->dmModule);
   }
 
   protected function getAutoRecord()
   {
-    return dmContext::getInstance()->getPage()->record->getAncestorRecord($this->dmModule->getModel());
+    return dmContext::getInstance()->getPage()->getRecord()->getAncestorRecord($this->dmModule->getModel());
   }
 }

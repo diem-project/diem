@@ -18,7 +18,7 @@ class dmInterfaceComponents extends dmFrontBaseComponents
       $this->cultureSelect = new sfWidgetFormSelect(array('choices' => $cultures));
     }
     
-    $this->themeSelect = new sfWidgetFormSelect(array('choices' => $this->dmContext->getServiceContainer()->getService('theme_manager')->getThemes()));
+    $this->themeSelect = new sfWidgetFormSelect(array('choices' => $this->context->getServiceContainer()->getService('theme_manager')->getThemes()));
 
     if ($this->getUser()->can('widget_add'))
     {
@@ -43,7 +43,7 @@ class dmInterfaceComponents extends dmFrontBaseComponents
       );
     }
     
-    foreach($this->dmContext->getService('widget_type_manager')->getWidgetTypes() as $space => $widgetTypes)
+    foreach($this->context->get('widget_type_manager')->getWidgetTypes() as $space => $widgetTypes)
     {
       if (empty($widgetTypes))
       {

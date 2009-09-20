@@ -105,7 +105,7 @@ class DmPageFrontEditForm extends DmPageForm
     ->where('p.record_id = 0 AND ( lft < ? OR rgt > ? )', array($this->page->lft, $this->page->rgt))
     ->orderBy('p.lft')
     ->withI18n()
-    ->select('p.id, p.level, translation.name')
+    ->select('p.id, p.level, pTranslation.name')
     ->fetchPDO();
     
     $parentChoices = array();

@@ -64,7 +64,7 @@ class dmFrontLinkTagPage extends dmFrontLinkTag
   {
     $attributes = parent::prepareAttributesForHtml($attributes);
 
-    if($currentPage = dmContext::getInstance()->getPage())
+    if($currentPage = self::$context->getPage())
     {
       if ($currentPage->get('id') === $this->page->get('id'))
       {

@@ -7,7 +7,7 @@ class dmAdminHtmlFilter extends dmHtmlFilter
   {
     $filterChain->execute();
 
-    if ($this->dmContext->isHtmlForHuman())
+    if ($this->context->isHtmlForHuman())
     {
       $request = $this->context->getRequest();
       $response = $this->context->getResponse();

@@ -19,8 +19,6 @@ class dmFrontPluginConfiguration extends sfPluginConfiguration
     $this->enableModules();
 
     $this->enableHelpers();
-    
-    $this->dispatcher->connect('context.load_factories', array($this, 'listenToLoadFactories'));
   }
 
   protected function enableModules()
@@ -54,8 +52,4 @@ class dmFrontPluginConfiguration extends sfPluginConfiguration
   }
 
 
-  public function listenToLoadFactories(sfEvent $event)
-  {
-    dmFrontContext::createInstance($event->getSubject());
-  }
 }

@@ -21,7 +21,7 @@ $form->renderGlobalErrors(),
 ),
 
 £('div#'.$baseTabId.'_media',
-  dmContext::getInstance()->getHelper()->renderPartial('dmWidget', 'forms/dmWidgetContentMedia', array(
+  $sf_context->get('helper')->renderPartial('dmWidget', 'forms/dmWidgetContentMedia', array(
     'form' => $form,
     'hasMedia' => $hasMedia
   ))

@@ -262,3 +262,9 @@ $.getScript(href, callback);
 * fix admin toolbar template cache do not care about user credentials
 
 * [DONE] user log must store url params in uri
+
+* remove mailer from factories by default. It must be created when needed as it is not always used.
+
+* [DONE] merge dmContext and sfContext.
+
+* fix mvc break in dmDoctrinePager

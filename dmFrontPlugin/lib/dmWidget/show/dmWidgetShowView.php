@@ -15,6 +15,6 @@ class dmWidgetShowView extends dmWidgetProjectModelView
 
   protected function allowAutoRecordId()
   {
-    return dmContext::getInstance()->getPage()->dmModule->knows($this->dmModule);
+    return dmContext::getInstance()->getPage()->getDmModule()->knows($this->dmModule);
   }
 }

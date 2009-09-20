@@ -6,12 +6,12 @@ class dmAdminActions extends dmAdminBaseActions
   public function executeModuleSpace(sfWebRequest $request)
   {
     $this->forward404Unless(
-      $this->type = $this->dmContext->getModuleType(),
+      $this->type = dmModuleManager::getTypeBySlug($request->getParameter('moduleTypeName'), false),
       sprintf('%s is not a module type', $request->getParameter('moduleTypeName'))
     );
 
     $this->forward404Unless(
-      $this->space = $this->dmContext->getModuleSpace(),
+      $this->space = $this->type->getSpaceBySlug($request->getParameter('moduleSpaceName'), false),
       sprintf('%s is not a module space in %s type', $request->getParameter('moduleTypeName'), $request->getParameter('moduleTypeName'))
     );
 
@@ -29,7 +29,7 @@ class dmAdminActions extends dmAdminBaseActions
   public function executeModuleType(sfWebRequest $request)
   {
     $this->forward404Unless(
-      $this->type = $this->dmContext->getModuleType(),
+      $this->type = $this->context->getModuleType(),
       sprintf('%s is not a module type', $request->getParameter('moduleTypeName'))
     );
 
@@ -41,16 +41,16 @@ class dmAdminActions extends dmAdminBaseActions
     require_once(dmOs::join(sfConfig::get('dm_admin_dir'), 'modules/dmUserLog/lib/dmUserLogViewLittle.php'));
     require_once(dmOs::join(sfConfig::get('dm_admin_dir'), 'modules/dmActionLog/lib/dmActionLogViewLittle.php'));
     
-    $this->userLogView = new dmUserLogViewLittle($this->dmContext->getService('user_log'), $this->context->getI18n(), $this->getUser()->getCulture());
+    $this->userLogView = new dmUserLogViewLittle($this->context->get('user_log'), $this->context->getI18n(), $this->getUser()->getCulture());
     
-    $this->actionLogView = new dmActionLogViewLittle($this->dmContext->getService('action_log'), $this->context->getI18n(), $this->getUser()->getCulture());
+    $this->actionLogView = new dmActionLogViewLittle($this->context->get('action_log'), $this->context->getI18n(), $this->getUser()->getCulture());
   }
   
   public function executeRefreshLogs(dmWebRequest $request)
   {
     $parts = array();
     
-    $userLog = $this->dmContext->getService('user_log');
+    $userLog = $this->context->get('user_log');
     $userHash = $userLog->getStateHash();
     
     if ($userHash == $request->getParameter('user_hash'))
@@ -65,7 +65,7 @@ class dmAdminActions extends dmAdminBaseActions
     }
     $parts[1] = $userHash;
     
-    $actionLog = $this->dmContext->getService('action_log');
+    $actionLog = $this->context->get('action_log');
     $actionHash = $actionLog->getStateHash();
     
     if ($actionHash == $request->getParameter('action_hash'))

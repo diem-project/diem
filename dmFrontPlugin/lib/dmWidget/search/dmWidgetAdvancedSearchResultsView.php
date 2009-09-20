@@ -25,7 +25,7 @@ class dmWidgetAdvancedSearchResultsView extends dmWidgetPluginView
   
   protected function getResultsPager(array $vars)
   {
-    $this->index = $this->dmContext->getService('search_engine');
+    $this->index = $this->context->get('search_engine');
     
     if(count($results = $this->index->search($vars['query'])))
     {

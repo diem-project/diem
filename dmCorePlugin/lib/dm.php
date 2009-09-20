@@ -8,7 +8,6 @@ class dm
   
   protected static
   $startTime,
-  $sfContext,
   $version,
   $dir;
 
@@ -56,7 +55,8 @@ class dm
   
   public static function checkServer()
   {
-    sfContext::createInstance(ProjectConfiguration::getApplicationConfiguration('admin', 'test', true));
+    $configuration = ProjectConfiguration::getApplicationConfiguration('admin', 'test', true);
+    dmContext::createInstance($configuration);
     
     $serverCheck = new dmServerCheck;
     
@@ -71,7 +71,7 @@ class dm
 
   public static function getRouting()
   {
-    return sfContext::getInstance()->getRouting();
+    return dmContext::getInstance()->getRouting();
   }
 
   /*
@@ -79,39 +79,39 @@ class dm
    */
   public static function getRequest()
   {
-    return sfContext::getInstance()->getRequest();
+    return dmContext::getInstance()->getRequest();
   }
 
   public static function getResponse()
   {
-    return sfContext::getInstance()->getResponse();
+    return dmContext::getInstance()->getResponse();
   }
 
   public static function getController()
   {
-    return sfContext::getInstance()->getController();
+    return dmContext::getInstance()->getController();
   }
 
   public static function getEventDispatcher()
   {
-    return sfContext::hasInstance()
-    ? sfContext::getInstance()->getEventDispatcher()
+    return dmContext::hasInstance()
+    ? dmContext::getInstance()->getEventDispatcher()
     : ProjectConfiguration::getActive()->getEventDispatcher();
   }
 
   public static function getUser()
   {
-    return sfContext::getInstance()->getUser();
+    return dmContext::getInstance()->getUser();
   }
 
   public static function getI18n()
   {
-    return sfContext::getInstance()->getI18n();
+    return dmContext::getInstance()->getI18n();
   }
   
   public static function loadHelpers($helpers)
   {
-    return sfContext::getInstance()->getConfiguration()->loadHelpers($helpers);
+    return dmContext::getInstance()->getConfiguration()->loadHelpers($helpers);
   }
 
   /*

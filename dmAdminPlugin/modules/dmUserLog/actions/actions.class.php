@@ -5,7 +5,7 @@ class dmUserLogActions extends dmAdminBaseActions
   
   public function preExecute()
   {
-    $this->log = $this->dmContext->getService('user_log');
+    $this->log = $this->context->get('user_log');
   }
   
   public function executeClear(dmWebRequest $request)

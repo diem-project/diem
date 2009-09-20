@@ -57,7 +57,7 @@ class dmSitemap
   {
     $query = dmDb::query('DmPage p')->withI18n($culture)
     ->where('p.is_secure = ?', false)
-    ->addWhere('translation.is_active = ?', true)
+    ->addWhere('pTranslation.is_active = ?', true)
     ->addWhere('p.action != ?', 'error404')
     ->orderBy('p.lft asc');
     

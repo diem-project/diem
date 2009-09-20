@@ -19,7 +19,7 @@ class dmFrontLinkTagUri extends dmFrontLinkTag
       return $this->uri;
     }
     
-    return self::$dmContext->getService('controller')->genUrl($this->uri);
+    return self::$context->get('controller')->genUrl($this->uri);
   }
 
 }

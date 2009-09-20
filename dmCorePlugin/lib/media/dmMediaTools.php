@@ -9,7 +9,7 @@ class dmMediaTools
     {
       if (!$baseUrl = sfConfig::get('dm_mediaLibrary_folderBaseUrl'))
       {
-        $baseUrl = sfContext::getInstance()->getController()->genUrl('@dm_media_library_path?path=__PATH__');
+        $baseUrl = dmContext::getInstance()->getController()->genUrl('@dm_media_library_path?path=__PATH__');
         sfConfig::set('dm_mediaLibrary_folderBaseUrl', $baseUrl);
       }
       return str_replace('__PATH__', $object->getRelPath(), $baseUrl);

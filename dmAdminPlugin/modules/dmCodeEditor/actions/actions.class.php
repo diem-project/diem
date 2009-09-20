@@ -141,7 +141,7 @@ class dmCodeEditorActions extends dmAdminBaseActions
     
     try
     {
-      $this->dmContext->getService('file_backup')->save($file);
+      $this->context->get('file_backup')->save($file);
     }
     catch(dmException $e)
     {
@@ -187,7 +187,7 @@ class dmCodeEditorActions extends dmAdminBaseActions
   
   public function executePaste(sfWebRequest $request)
   {
-    $filesystem = $this->dmContext->getFilesystem();
+    $filesystem = $this->context->getFilesystem();
     
     $id = $request->getParameter("id");
     $this->rootDir = sfConfig::get('sf_root_dir');
@@ -200,13 +200,13 @@ class dmCodeEditorActions extends dmAdminBaseActions
         
         if($copyDir = $this->getUser()->getAttribute('code_editor_file_copy_cut'))
         {
-          if(!$this->dmContext->getFilesystem()->copyRecursive(dmCodeEditorTools::decodeUrlTreeForCopy($copyDir),dmCodeEditorTools::decodeUrlTreeForCopy($pasteDir)))
+          if(!$this->context->getFilesystem()->copyRecursive(dmCodeEditorTools::decodeUrlTreeForCopy($copyDir),dmCodeEditorTools::decodeUrlTreeForCopy($pasteDir)))
           {
             return $this->renderText('[KO] | An error occurred ');
           }
           if($this->getUser()->getAttribute('code_editor_is_cut') == 'cut')
           {
-            if(!$this->dmContext->getFilesystem()->unlink($copyDir))
+            if(!$this->context->getFilesystem()->unlink($copyDir))
             {
               return $this->renderText('[KO] | An error occurred while deleting the file or dir : '.$copyDir);
             }
@@ -243,7 +243,7 @@ class dmCodeEditorActions extends dmAdminBaseActions
     {
       if(file_exists($deleteDir) && is_writable($deleteDir))
       {
-        if($this->dmContext->getFilesystem()->unlink($deleteDir))
+        if($this->context->getFilesystem()->unlink($deleteDir))
         {
           return $this->renderText('[OK] | Successfully deleted');
         }
@@ -294,7 +294,7 @@ class dmCodeEditorActions extends dmAdminBaseActions
       {
         if($request->getParameter('create') == 'file')
         {
-          if($this->dmContext->getFilesystem()->touch($newName))
+          if($this->context->getFilesystem()->touch($newName))
           {
             return $this->renderText('[OK] | Succefully created new file : '.basename($newName));
           }

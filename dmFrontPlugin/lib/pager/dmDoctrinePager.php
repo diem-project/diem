@@ -82,7 +82,7 @@ abstract class dmDoctrinePager extends sfDoctrinePager
 
     $options['uri'] = preg_replace("|/page/([0-9]+)|", "?page=$1", $options['uri']);
 
-    sfContext::getInstance()->getConfiguration()->loadHelpers('Dm');
+    dmContext::getInstance()->getConfiguration()->loadHelpers('Dm');
 
     $html = £o('div.pager'.(!empty($options['class']) ? '.'.implode('.', $options['class']) : ''));
 

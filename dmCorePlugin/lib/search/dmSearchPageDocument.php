@@ -62,7 +62,7 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
       ->where('a.type = ? AND a.dm_page_view_id = ?', array('content', $page->get('PageView')->get('id')))
       ->fetchArray();
     
-    $helper = dmContext::getInstance()->getService('page_helper');
+    $helper = dmContext::getInstance()->get('page_helper');
     
     $html = '';
     

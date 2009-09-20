@@ -21,8 +21,6 @@ class dmAdminPluginConfiguration extends sfPluginConfiguration
     $this->enableModules();
 
     $this->enableHelpers();
-    
-    $this->dispatcher->connect('context.load_factories', array($this, 'listenToLoadFactories'));
   }
 
   protected function enableModules()
@@ -59,8 +57,4 @@ class dmAdminPluginConfiguration extends sfPluginConfiguration
   }
 
 
-  public function listenToLoadFactories(sfEvent $event)
-  {
-    dmAdminContext::createInstance($event->getSubject());
-  }
 }

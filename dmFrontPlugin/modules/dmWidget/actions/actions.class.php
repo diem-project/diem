@@ -13,7 +13,7 @@ class dmWidgetActions extends dmFrontBaseActions
       $widget = dmDb::table('DmWidget')->find($request->getParameter('widget_id'))
     );
 
-    if (!$widgetType = $this->dmContext->getService('widget_type_manager')->getWidgetTypeOrNull($widget))
+    if (!$widgetType = $this->context->get('widget_type_manager')->getWidgetTypeOrNull($widget))
     {
       return $this->renderText(sprintf('<p class="s16 s16_error">%s</p><div class="clearfix mt30"><a class="dm cancel close_dialog button mr10">%s</a><a class="dm delete button red" title="%s">%s</a></div>',
         dm::getI18n()->__('The widget can not be rendered because its module does not exist anymore.'),
@@ -42,7 +42,7 @@ class dmWidgetActions extends dmFrontBaseActions
           return $this->renderText('ok');
         }
 
-        $helper = $this->dmContext->getService('page_helper');
+        $helper = $this->context->get('page_helper');
 
         $form = new $formClass($widget);
         
@@ -80,7 +80,7 @@ class dmWidgetActions extends dmFrontBaseActions
       $widget = dmDb::table('DmWidget')->find($request->getParameter('widget_id'))
     );
 
-    $helper = $this->dmContext->getService('page_helper');
+    $helper = $this->context->get('page_helper');
 
     $widgetArray = $widget->toArray();
     
@@ -141,7 +141,7 @@ class dmWidgetActions extends dmFrontBaseActions
       'Can not find widget action'
     );
 
-    $widgetType = $this->dmContext->getService('widget_type_manager')->getWidgetType($widgetModule, $widgetAction);
+    $widgetType = $this->context->get('widget_type_manager')->getWidgetType($widgetModule, $widgetAction);
 
     $formClass = $widgetType->getFormClass();
     $form = new $formClass($widgetType->getNewWidget());
@@ -153,7 +153,7 @@ class dmWidgetActions extends dmFrontBaseActions
       'values' => $form->getDefaults()
     ))->saveGet();
 
-    $helper = $this->dmContext->getService('page_helper');
+    $helper = $this->context->get('page_helper');
 
     return $this->renderText($helper->renderWidget($widget->toArray(), true));
   }

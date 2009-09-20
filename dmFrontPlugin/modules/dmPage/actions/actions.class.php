@@ -30,7 +30,7 @@ class dmPageActions extends dmFrontBaseActions
   public function executeEdit(dmWebRequest $request)
   {
     $this->forward404Unless(
-      $this->page = $this->dmContext->getPage(),
+      $this->page = $this->context->getPage(),
       'no current DmPage'
     );
     
@@ -78,7 +78,7 @@ class dmPageActions extends dmFrontBaseActions
   public function executeNew(dmWebRequest $request)
   {
     $this->forward404Unless(
-      $this->page = $this->dmContext->getPage(),
+      $this->page = $this->context->getPage(),
       'no current DmPage'
     );
     
@@ -120,7 +120,7 @@ class dmPageActions extends dmFrontBaseActions
     $_parentSlugs = dmDb::query('DmPage p')
     ->where('p.record_id = 0')
     ->withI18n()
-    ->select('p.id, translation.slug')
+    ->select('p.id, pTranslation.slug')
     ->fetchPDO();
     
     $parentSlugs = array();

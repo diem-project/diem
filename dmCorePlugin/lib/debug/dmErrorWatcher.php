@@ -7,7 +7,7 @@ class dmErrorWatcher
   $context,
   $options;
   
-  public function __construct(sfEventDispatcher $dispatcher, sfContext $context, array $options = array())
+  public function __construct(sfEventDispatcher $dispatcher, dmContext $context, array $options = array())
   {
     $this->dispatcher = $dispatcher;
     $this->context    = $context;
@@ -103,7 +103,7 @@ class dmErrorDescription
   $env,
   $date;
 
-  public function __construct(Exception $e, sfContext $context)
+  public function __construct(Exception $e, dmContext $context)
   {
     $this->exception = $e;
     $this->class = get_class($e);

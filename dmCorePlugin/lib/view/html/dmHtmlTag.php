@@ -4,7 +4,7 @@ abstract class dmHtmlTag
 {
   protected static
   $serviceContainer,
-  $dmContext;
+  $context;
 
   protected
     $options = array('class' => array()),
@@ -183,9 +183,9 @@ abstract class dmHtmlTag
   }
 
 
-  public static function setDmContext(dmContext $dmContext)
+  public static function setContext(dmContext $context)
   {
-    self::$serviceContainer = $dmContext->getServiceContainer();
-    self::$dmContext = $dmContext;
+    self::$serviceContainer = $context->getServiceContainer();
+    self::$context = $context;
   }
 }

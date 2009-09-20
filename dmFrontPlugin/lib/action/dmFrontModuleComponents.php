@@ -87,7 +87,7 @@ class dmFrontModuleComponents extends myFrontBaseComponents
         }
         else
         {
-          $filterRecordId = $this->getDmContext()->getPage()->getRecord()->getAncestorRecordId($filterModule->getModel());
+          $filterRecordId = $this->context->getPage()->getRecord()->getAncestorRecordId($filterModule->getModel());
 
           if (!$filterRecordId)
           {

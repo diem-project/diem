@@ -73,7 +73,7 @@ class dmConsoleActions extends dmAdminBaseActions
 
     $this->uname = php_uname();
 
-    $filesystem = $this->dmContext->getFilesystem();
+    $filesystem = $this->context->getFilesystem();
     
     if ($filesystem->exec('whoami'))
     {
