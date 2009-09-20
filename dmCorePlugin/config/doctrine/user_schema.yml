@@ -1,5 +1,4 @@
-DmProfile:
-  actAs:                    [Timestampable]
+DmProfile:  # do not require timestampable behavior because it is provided by its sfGuardUser
   columns:
     user_id:                { type: integer(4), notnull: true, unique: true, unsigned: true }
   relations:

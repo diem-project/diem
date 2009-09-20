@@ -109,7 +109,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
 
     foreach($this->getRelationHolder()->getLocals() as $relation)
     {
-      $q->leftJoin(sprintf('%s.%s %s', $rootAlias, $relation->getAlias(), $relation->getAlias()));
+      $q->leftJoin(sprintf('%s.%s %s', $rootAlias, $relation->getAlias(), dmString::lcfirst($relation->getAlias())));
     }
 
     return $q;
@@ -131,12 +131,13 @@ abstract class dmDoctrineTable extends Doctrine_Table
       }
       elseif ($relation->getClass() === 'DmMedia')
       {
-        $q->leftJoin(sprintf('%s.%s %s', $rootAlias, $relation->getAlias(), $relation->getLocal()))
-        ->leftJoin(sprintf('%s.%s %s', $relation->getLocal(), 'Folder', $relation->getLocal().'Folder'));
+        $q->withDmMedia($relation->getAlias());
+//        $q->leftJoin(sprintf('%s.%s %s', $rootAlias, $relation->getAlias(), dmString::lcfirst($relation->getAlias())))
+//        ->leftJoin(sprintf('%s.%s %s', $relation->getLocal(), 'Folder', dmString::lcfirst($relation->getAlias()).'Folder'));
       }
       else
       {
-        $q->leftJoin(sprintf('%s.%s %s', $rootAlias, $relation->getAlias(), $relation->getAlias()));
+        $q->leftJoin(sprintf('%s.%s %s', $rootAlias, $relation->getAlias(), dmString::lcfirst($relation->getAlias())));
       }
     }
 
@@ -163,12 +164,14 @@ abstract class dmDoctrineTable extends Doctrine_Table
       }
       elseif ($relation->getClass() === 'DmMedia')
       {
-        $q->leftJoin(sprintf('%s.%s %s', $rootAlias, $relation->getAlias(), $relation->getLocal()))
-        ->leftJoin(sprintf('%s.%s %s', $relation->getLocal(), 'Folder', $relation->getLocal().'Folder'));
+        $mediaJoinAlias = dmString::lcfirst($relation->getAlias());
+        $q->leftJoin(sprintf('%s.%s %s', $rootAlias, $relation->getAlias(), $mediaJoinAlias))
+        ->leftJoin(sprintf('%s.%s %s', $mediaJoinAlias, 'Folder', $mediaJoinAlias.'Folder'));
       }
       else
       {
-        $q->leftJoin(sprintf('%s.%s %s', $rootAlias, $relation->getAlias(), $relation->getAlias()));
+        $joinAlias = dmString::lcfirst($relation->getAlias());
+        $q->leftJoin(sprintf('%s.%s %s', $rootAlias, $relation->getAlias(), $joinAlias));
       }
     }
 

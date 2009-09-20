@@ -180,10 +180,10 @@ abstract class PluginDmPage extends BaseDmPage
 
   public function __toString()
   {
-    return sprintf('DmPage #%d %s.%s',
-      $this->id,
-      $this->module,
-      $this->action
+    return sprintf('#%d %s.%s',
+      $this->get('id'),
+      $this->get('module'),
+      $this->get('action')
     );
   }
 
@@ -250,7 +250,8 @@ abstract class PluginDmPage extends BaseDmPage
       return;
     }
     
-    $modifiedFields = $this->Translation[$this->lang]->getModified();
+    $modifiedFields = $this->get('Translation')->get($this->get('lang'))->getModified();
+    
     foreach(self::getAutoSeoFields() as $seoField)
     {
       if(isset($modifiedFields[$seoField]))
@@ -299,7 +300,7 @@ abstract class PluginDmPage extends BaseDmPage
   {
     $command = sprintf('dmFront:page-indexable-content %d %s', $this->get('id'), self::getDefaultCulture());
     
-    $filesystem = dmContext::getInstance()->getFilesystem();
+    $filesystem = self::$serviceContainer->getService('filesystem');
     
     $filesystem->sf($command);
     

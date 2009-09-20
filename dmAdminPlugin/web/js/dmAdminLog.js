@@ -14,7 +14,7 @@ $.widget('ui.dmAdminLog', {
 		
     setTimeout(function() { self.element.dmAdminLog('refresh');}, 200);
   },
-
+	
 	refresh: function()
 	{
 		var self = this;

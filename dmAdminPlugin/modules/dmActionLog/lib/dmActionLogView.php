@@ -7,6 +7,7 @@ class dmActionLogView extends dmLogView
     'time'     => 'renderTime',
     'user'     => 'renderUser',
     'action'   => 'renderAction',
+    'type'     => 'renderType',
     'subject'  => 'renderSubject'
   );
   
@@ -35,15 +36,25 @@ class dmActionLogView extends dmLogView
   
   protected function renderAction(dmActionLogEntry $entry)
   {
-    switch($action = $entry->get('action'))
+    return '<span class="block '.$this->getActionClass($entry->get('action')).'">'.$this->i18n->__($entry->get('action')).'</span>';
+  }
+  
+  protected function renderType(dmActionLogEntry $entry)
+  {
+    return '<strong>'.$this->i18n->__($entry->get('type')).'</strong>';
+  }
+  
+  protected function getActionClass($action)
+  {
+    switch($action)
     {
-      case 'create': $class = 's16 s16_add'; break;
-      case 'update': $class = 's16 s16_edit'; break;
-      case 'delete': $class = 's16 s16_delete'; break;
-      case 'error':  $class = 's16 s16_error'; break;
+      case 'create': $class = 's24 s24_add'; break;
+      case 'update': $class = 's24 s24_edit'; break;
+      case 'delete': $class = 's24 s24_delete'; break;
+      case 'error':  $class = 's24 s24_error'; break;
       default:       $class = '';
     }
     
-    return '<span class="block '.$class.'">'.$this->i18n->__($action).'</span>';
+    return $class;
   }
 }

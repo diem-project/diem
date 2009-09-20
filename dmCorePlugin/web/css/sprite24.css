@@ -5,3 +5,6 @@
 .s24_view_on { background-position: 0 -96px; }
 .s24_view_off { background-position: 0 -120px; }
 .s24_page_add { background-position: 0 -144px; }
+.s24_delete { background-position: 0 -168px; }
+.s24_edit { background-position: 0 -192px; }
+.s24_error { background-position: 0 -216px; }

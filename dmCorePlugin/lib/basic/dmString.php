@@ -377,4 +377,10 @@ class dmString extends sfInflector
     
     return null;
   }
+  
+  public static function lcfirst($string)
+  {
+    $string{0} = strtolower($string{0});
+    return $string;
+  }
 }

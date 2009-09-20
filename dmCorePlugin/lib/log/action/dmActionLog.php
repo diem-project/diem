@@ -21,6 +21,7 @@ class dmActionLog extends dmFileLog
       'server'  => $_SERVER,
       'user_id' => $this->serviceContainer->getService('user')->getGuardUserId(),
       'action'  => 'error',
+      'type'    => 'exception',
       'subject' => $event->getSubject()->getMessage()
     ));
   }
@@ -29,7 +30,7 @@ class dmActionLog extends dmFileLog
   {
     $record = $event->getSubject();
     
-    if (get_class($record) == 'DmError')
+    if ($record instanceof DmError)
     {
       return;
     }
@@ -40,14 +41,28 @@ class dmActionLog extends dmFileLog
     }
     catch(Exception $e)
     {
-      $subject = '?';
+      $subject = '-';
+    }
+  
+    if ($record instanceof DmPage)
+    {
+      $type = dmModuleManager::getModule('dmPage')->getKey();
+    }
+    elseif ($record instanceof dmDoctrineRecord && $module = $record->getDmModule())
+    {
+      $type = $module->getName();
+    }
+    else
+    {
+      $type = get_class($record);
     }
     
     $this->log(array(
       'server'  => $_SERVER,
       'user_id' => $this->serviceContainer->getService('user')->getGuardUserId(),
       'action'  => $event['type'],
-      'subject' => sprintf('%s: %s', get_class($record), $subject)
+      'type'    => $type,
+      'subject' => $subject
     ));
   }
 }

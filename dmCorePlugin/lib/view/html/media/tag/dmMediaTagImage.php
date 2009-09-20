@@ -17,7 +17,7 @@ class dmMediaTagImage extends dmMediaTag
     $this->method(dmConfig::get('image_resize_method', 'center'));
     $this->set('quality', dmConfig::get('image_quality', 92));
     $this->set('background', null);
-    
+
     $this->addAttributeToRemove(array('method', 'quality', 'background', 'filter'));
   }
 
@@ -26,11 +26,11 @@ class dmMediaTagImage extends dmMediaTag
     if (!in_array($method, self::getAvailableMethods()))
     {
       throw new dmException(sprintf('%s is not a valid method. These are : %s',
-        $method,
-        implode(', ', self::getAvailableMethods())
+      $method,
+      implode(', ', self::getAvailableMethods())
       ));
     }
-    
+
     return $this->set('method', $method);
   }
 
@@ -116,6 +116,15 @@ class dmMediaTagImage extends dmMediaTag
   {
     $media = $this->resource->getSource();
 
+    if (empty($attributes['width']))
+    {
+      $attributes['width'] = $media->getWidth();
+    }
+    elseif (empty($attributes['height']))
+    {
+      $attributes['height'] = (int) ($media->getHeight() * ($attributes['width'] / $media->getWidth()));
+    }
+
     if ($attributes['method'] == 'fit')
     {
       $attributes['background'] = trim($attributes['background'], '#');
@@ -166,7 +175,7 @@ class dmMediaTagImage extends dmMediaTag
         catch(sfImageTransformException $e)
         {
           self::$dmContext->getLogger()->err($e->getMessage());
-          
+
           if (sfConfig::get('sf_debug'))
           {
             throw $e;
@@ -184,7 +193,7 @@ class dmMediaTagImage extends dmMediaTag
 
     return $thumbPath;
   }
-  
+
   public static function getAvailableFilters()
   {
     return self::$availableFilters;

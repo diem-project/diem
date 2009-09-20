@@ -43,17 +43,44 @@ class dmAdminActions extends dmAdminBaseActions
     
     $this->userLogView = new dmUserLogViewLittle($this->dmContext->getService('user_log'), $this->context->getI18n(), $this->getUser()->getCulture());
     
-    $this->userLogOptions = array(
-      'delay' => 1000,
-      'refresh_url' => dmAdminLinkTag::build('dmUserLog/refresh?view=little&max=10')->getHref()
-    );
-    
     $this->actionLogView = new dmActionLogViewLittle($this->dmContext->getService('action_log'), $this->context->getI18n(), $this->getUser()->getCulture());
+  }
+  
+  public function executeRefreshLogs(dmWebRequest $request)
+  {
+    $parts = array();
     
-    $this->actionLogOptions = array(
-      'delay' => 1000,
-      'refresh_url' => dmAdminLinkTag::build('dmActionLog/refresh?view=little&max=10')->getHref()
-    );
+    $userLog = $this->dmContext->getService('user_log');
+    $userHash = $userLog->getStateHash();
+    
+    if ($userHash == $request->getParameter('user_hash'))
+    {
+      $parts[0] = '-';
+    }
+    else
+    {
+      require_once(dmOs::join(sfConfig::get('dm_admin_dir'), 'modules/dmUserLog/lib/dmUserLogViewLittle.php'));
+      $view = new dmUserLogViewLittle($userLog, $this->context->getI18n(), $this->getUser()->getCulture());
+      $parts[0] = $view->renderBody(10);
+    }
+    $parts[1] = $userHash;
+    
+    $actionLog = $this->dmContext->getService('action_log');
+    $actionHash = $actionLog->getStateHash();
+    
+    if ($actionHash == $request->getParameter('action_hash'))
+    {
+      $parts[2] = '-';
+    }
+    else
+    {
+      require_once(dmOs::join(sfConfig::get('dm_admin_dir'), 'modules/dmActionLog/lib/dmActionLogViewLittle.php'));
+      $view = new dmActionLogViewLittle($actionLog, $this->context->getI18n(), $this->getUser()->getCulture());
+      $parts[2] = $view->renderBody(10);
+    }
+    $parts[3] = $actionHash;
+    
+    return $this->renderText(implode('__DM_SPLIT__', $parts));
   }
   
   public function executeNothing()

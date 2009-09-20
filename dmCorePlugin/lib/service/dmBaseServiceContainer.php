@@ -77,7 +77,7 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
     /*
      * Enable stylesheet compression
      */
-    if (sfConfig::get('dm_css_compress', true) && !sfConfig::get('dm_debug'))
+    if (!sfConfig::get('dm_debug'))
     {
       $stylesheetCompressor = $this->getService('stylesheet_compressor');
       $stylesheetCompressor->setOption('protect_user_assets', $this->getService('user')->can('code_editor'));
@@ -87,7 +87,7 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
     /*
      * Enable javascript compression
      */
-    if (sfConfig::get('dm_js_compress', true) && !sfConfig::get('dm_debug'))
+    if (!sfConfig::get('dm_debug'))
     {
       $javascriptCompressor = $this->getService('javascript_compressor');
       $javascriptCompressor->setOption('protect_user_assets', $this->getService('user')->can('code_editor'));
@@ -166,7 +166,7 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
     {
       $resource = $this->getMediaResource($resource);
     }
-
+    
     $this->setParameter('media_tag.class', $this->getParameter('media_tag_'.$resource->getMime().'.class'));
     $this->setParameter('media_tag.source', $resource);
     

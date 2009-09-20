@@ -16,7 +16,7 @@
       );
 
       $maxPerPageSelect = new sfWidgetFormSelect(array('choices' => $maxPerPages), array('id' => '__DM_RANDOM_ID__'));
-      echo $maxPerPageSelect->render('dm_max_per_page', $currentMaxPerPage);
+      echo str_replace('id="dm_max_per_page"', 'id="__DM_RANDOM_ID__"', $maxPerPageSelect->render('dm_max_per_page', $currentMaxPerPage));
       unset($maxPerPageSelect);
     ?]
   </div>

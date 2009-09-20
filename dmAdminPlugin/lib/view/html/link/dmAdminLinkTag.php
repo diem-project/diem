@@ -94,15 +94,15 @@ class dmAdminLinkTag extends dmLinkTag
   {
     if (empty($this->options['text']))
     {
-      if(is_object($this->options['source']))
+      if(is_object($this->resource))
       {
-        if($this->options['source'] instanceof DmPage)
+        if($this->resource instanceof DmPage)
         {
-          $text = $this->options['source']->get('name');
+          $text = $this->resource->get('name');
         }
         else
         {
-          $text = (string) $this->options['source'];
+          $text = (string) $this->resource;
         }
       }
       else

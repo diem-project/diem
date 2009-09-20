@@ -87,20 +87,22 @@ abstract class dmDoctrineQuery extends Doctrine_Query
       }
     }
 
-    $me       = $this->getRootAlias();
-    $culture  = null === $culture ? myDoctrineRecord::getDefaultCulture() : $culture;
+    $me           = $this->getRootAlias();
+    $translation  = $me.'Translation';
+    $culture      = null === $culture ? myDoctrineRecord::getDefaultCulture() : $culture;
     
     return $this
-    ->leftJoin($me.'.Translation translation ON '.$me.'.id = translation.id AND translation.lang = ?', $culture);
+    ->leftJoin($me.'.Translation '.$translation.' ON '.$me.'.id = '.$translation.'.id AND '.$translation.'.lang = ?', $culture);
   }
 
   /*
    * Join media for this columnName or alias
-   * return @myDoctrineQuery $this
+   * return @dmDoctrineQuery $this
    */
   public function withDmMedia($alias)
   {
-    return $this->leftJoin(sprintf('%s.%s %s, %s.%s %s', $this->getRootAlias(), $alias, $alias, $alias, 'Folder', $alias.'Folder'));
+    $mediaJoinAlias = dmString::lcfirst($alias);
+    return $this->leftJoin(sprintf('%s.%s %s, %s.%s %s', $this->getRootAlias(), $alias, $mediaJoinAlias, $mediaJoinAlias, 'Folder', $mediaJoinAlias.'Folder'));
   }
   
   public function whereIsActive($boolean = true, $model = null)

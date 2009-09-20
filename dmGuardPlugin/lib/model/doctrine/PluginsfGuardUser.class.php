@@ -10,7 +10,7 @@ abstract class PluginsfGuardUser extends BasesfGuardUser
     $_groups         = null,
     $_permissions    = null,
     $allPermissions = null;
-
+    
   public function __toString()
   {
     return $this->getUsername();

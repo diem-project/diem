@@ -1,4 +1,7 @@
 Catalogue:
+  options:
+    symfony:
+      filter: false
   columns:
     cat_id:                 { type: integer(4), notnull: true, autoincrement: true, primary: true, unsigned: true }
     name:                   { type: string(63), notnull: true, default: "" }

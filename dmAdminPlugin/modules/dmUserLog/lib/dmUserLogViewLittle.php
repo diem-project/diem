@@ -6,7 +6,7 @@ class dmUserLogViewLittle extends dmUserLogView
 {
   protected
   $rows = array(
-    'time'     => 'renderTime',
+//    'time'     => 'renderTime',
     'user'     => 'renderUserAndBrowser',
     'location' => 'renderLocation',
   );

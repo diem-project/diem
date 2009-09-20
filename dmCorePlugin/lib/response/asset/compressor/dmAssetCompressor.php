@@ -39,7 +39,17 @@ abstract class dmAssetCompressor
   
   public function listenFilterAssets(sfEvent $event, array $assets)
   {
-    return $this->process($assets);
+    if ($this->isEnabled())
+    {
+      return $this->process($assets);
+    }
+    
+    return $assets;
+  }
+  
+  public function isEnabled()
+  {
+    return sfConfig::get('dm_'.$this->getType().'_compress', true);
   }
   
   abstract protected function getType();
@@ -76,6 +86,11 @@ abstract class dmAssetCompressor
   
   public function process(array $assets)
   {
+    if (empty($assets))
+    {
+      return array();
+    }
+    
     $timer = dmDebug::timerOrNull('dmAssetCompressor::process('.$this->type.')');
     
     $this->assets           = $assets;
@@ -113,41 +128,51 @@ abstract class dmAssetCompressor
       }
     }
 
-    $this->cacheKey = md5($this->processCacheKey($this->cacheKey));
-
-    $cacheWebPath = '/cache/'.$this->type;
-    $cacheDirPath = $this->webDir.$cacheWebPath;
-    $cacheFilePath = $cacheDirPath.'/'.$this->cacheKey.'.'.$this->type;
-    
-    $this->filesystem->mkdir(sfConfig::get('sf_cache_dir').'/web');
-    $this->filesystem->mkdir(sfConfig::get('sf_cache_dir').'/web/'.$this->type);
-
-    if(!file_exists($cacheFilePath))
+    if (!empty($this->cachedAssets))
     {
-      $cacheContent = '';
+      $this->cacheKey = md5($this->processCacheKey($this->cacheKey));
+  
+      $cacheWebPath = '/cache/'.$this->type;
+      $cacheDirPath = $this->webDir.$cacheWebPath;
+      $cacheFilePath = $cacheDirPath.'/'.$this->cacheKey.'.'.$this->type;
       
-      foreach($this->cachedAssets as $webPath => $options)
+      $this->filesystem->mkdir(sfConfig::get('sf_cache_dir').'/web');
+      $this->filesystem->mkdir(sfConfig::get('sf_cache_dir').'/web/'.$this->type);
+  
+      if(!file_exists($cacheFilePath))
       {
-        $cacheContent .= $this->processAssetContent(file_get_contents($this->webDir.$webPath), $webPath);
+        $cacheContent = '';
+        
+        foreach($this->cachedAssets as $webPath => $options)
+        {
+          $cacheContent .= $this->processAssetContent(file_get_contents($this->webDir.$webPath), $webPath);
+        }
+  
+        $cacheContent = $this->processCacheContent($cacheContent);
+  
+        file_put_contents($cacheFilePath, $cacheContent);
+        chmod($cacheFilePath, 0666);
+        
+        if ($this->options['gz_compression'])
+        {
+          file_put_contents($cacheFilePath.'.gz', gzencode($cacheContent));
+          chmod($cacheFilePath.'.gz', 0666);
+        }
       }
-
-      $cacheContent = $this->processCacheContent($cacheContent);
-
-      file_put_contents($cacheFilePath, $cacheContent);
-      chmod($cacheFilePath, 0666);
       
-      if ($this->options['gz_compression'])
-      {
-        file_put_contents($cacheFilePath.'.gz', gzencode($cacheContent));
-        chmod($cacheFilePath.'.gz', 0666);
-      }
+      $this->processedAssets = array_merge(
+        $this->cdnAssets,
+        array($cacheWebPath.'/'.$this->cacheKey.'.'.$this->type => array()),
+        $this->preservedAssets
+      );
     }
-    
-    $this->processedAssets = array_merge(
-      $this->cdnAssets,
-      array($cacheWebPath.'/'.$this->cacheKey.'.'.$this->type => array()),
-      $this->preservedAssets
-    );
+    else
+    {
+      $this->processedAssets = array_merge(
+        $this->cdnAssets,
+        $this->preservedAssets
+      );
+    }
     
     $this->postProcess();
     

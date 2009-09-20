@@ -99,7 +99,7 @@ abstract class dmCoreLayoutHelper
     $html = '';
     foreach ($stylesheets as $file => $options)
     {
-      $html .= "\n".'<link rel="stylesheet" type="text/css" media="screen" href="'.$this->requestContext['relative_url_root'].$file.'" />';
+      $html .= "\n".'<link rel="stylesheet" type="text/css" media="'.dmArray::get($options, 'media', 'all').'" href="'.$this->requestContext['relative_url_root'].$file.'" />';
     }
     
     sfConfig::set('symfony.asset.stylesheets_included', true);

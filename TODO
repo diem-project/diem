@@ -248,3 +248,11 @@ $.getScript(href, callback);
 * [DONE] remove deprecated dmEventConnector
 
 * in admin diagrams, turn gray the non shared services
+
+* [DONE] disable form and filter creation for models that don't need it
+
+* deprecate model DmMetaWrap and replace it by dmConfig
+
+* fix broken admin user creation because doctrine record save fail on one-to-one relation.
+
+* add constraints to a record media relation to specify if media must have a certain type ( image, video... )

@@ -24,7 +24,7 @@ if ($exists)
     $form
   );
   
-  echo £('pre', array('style' => 'background: #fff; padding: 10px; border: 1px solid #ddd;'), htmlentities($xml));
+  echo £('pre', array('style' => 'background: #fff; padding: 10px; border: 1px solid #ddd;'), htmlentities($xml, ENT_QUOTES, 'UTF-8'));
 }
 else
 {

@@ -1,10 +1,16 @@
 DmMediaFolder:
+  options:
+    symfony:
+      filter: false
   actAs:                    [NestedSet]
   columns:
     id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
     rel_path:               { type: string(255), notnull: true, unique: true, nospace: true }
 
 DmMedia:
+  options:
+    symfony:
+      filter: false
   actAs:                    [Timestampable]
   columns:
     dm_media_folder_id:     { type: integer(4), notnull: true, unsigned: true }

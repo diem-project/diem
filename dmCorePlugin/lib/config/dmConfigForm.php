@@ -23,7 +23,7 @@ class dmConfigForm extends dmForm
     
     $this->widgetSchema[$settingName]->setDefault($setting->get('value'));
     
-    $this->widgetSchema->setHelp($settingName, htmlentities($setting->get('description')));
+    $this->widgetSchema->setHelp($settingName, htmlentities($setting->get('description'), ENT_QUOTES, 'UTF-8'));
     
     $this->validatorSchema[$settingName] = $this->getSettingValidator($setting);
     $this->validatorSchema[$settingName]->setOption('required', false);

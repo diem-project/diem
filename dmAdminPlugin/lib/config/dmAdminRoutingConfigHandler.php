@@ -66,6 +66,23 @@ class dmAdminRoutingConfigHandler extends sfRoutingConfigHandler
       )
     );
     
+    // media library special route
+    if ($dmMediaLibraryModule = dmModuleManager::getModuleOrNull('dmMediaLibrary'))
+    {
+      $config['dm_media_library_path'] = array(
+        'class' => 'sfRoute',
+        'url'   => $dmMediaLibraryModule->getCompleteSlug().'/path/:path',
+        'params' => array(
+          'module' => 'dmMediaLibrary',
+          'action' => 'path',
+          'path'   => ''
+        ),
+        'requirements' => array(
+          'path' => '.*'
+        )
+      );
+    }
+    
     // module routes
     foreach(dmModuleManager::getModules() as $module)
     {
@@ -102,23 +119,6 @@ class dmAdminRoutingConfigHandler extends sfRoutingConfigHandler
           )
         );
       }
-    }
-    
-    // media library special route
-    if ($dmMediaLibraryModule = dmModuleManager::getModuleOrNull('dmMediaLibrary'))
-    {
-      $config['dm_media_library_path'] = array(
-        'class' => 'sfRoute',
-        'url'   => $dmMediaLibraryModule->getCompleteSlug().'/path/:path',
-        'params' => array(
-          'module' => 'dmMediaLibrary',
-          'action' => 'path',
-          'path'   => ''
-        ),
-        'requirements' => array(
-          'path' => '.*'
-        )
-      );
     }
     
     // static routes

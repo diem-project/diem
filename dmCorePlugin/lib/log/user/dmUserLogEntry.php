@@ -9,15 +9,15 @@ class dmUserLogEntry extends dmLogEntry
   public function configure(array $data)
   {
     $this->data = array(
-      'time'          => $data['server']['REQUEST_TIME'],
-      'uri'           => isset($data['server']['PATH_INFO']) ? trim($data['server']['PATH_INFO'], '/') : '/',
-      'code'          => $data['context']->getResponse()->getStatusCode(),
-      'app'           => sfConfig::get('sf_app'),
-      'ip'            => $data['server']['REMOTE_ADDR'],
-      'session_id'    => session_id(),
-      'user_id'       => $data['context']->getUser()->getGuardUserId(),
-      'user_agent'    => $data['server']['HTTP_USER_AGENT'],
-      'timer'         => sprintf('%.0f', (microtime(true) - dm::getStartTime()) * 1000)
+      'time'          => (string) $data['server']['REQUEST_TIME'],
+      'uri'           => (string) isset($data['server']['PATH_INFO']) ? trim($data['server']['PATH_INFO'], '/') : '/',
+      'code'          => (string) $data['context']->getResponse()->getStatusCode(),
+      'app'           => (string) sfConfig::get('sf_app'),
+      'ip'            => (string) $data['server']['REMOTE_ADDR'],
+      'session_id'    => (string) session_id(),
+      'user_id'       => (string) $data['context']->getUser()->getGuardUserId(),
+      'user_agent'    => (string) $data['server']['HTTP_USER_AGENT'],
+      'timer'         => (string) sprintf('%.0f', (microtime(true) - dm::getStartTime()) * 1000)
     );
   }
   

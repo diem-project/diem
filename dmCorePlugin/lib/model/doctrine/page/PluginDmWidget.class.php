@@ -14,7 +14,7 @@ abstract class PluginDmWidget extends BaseDmWidget
 {
   public function getValues()
   {
-    return (array) json_decode($this->value);
+    return json_decode($this->value, true);
   }
 
   public function setValues($v)
@@ -24,6 +24,6 @@ abstract class PluginDmWidget extends BaseDmWidget
 
   public function __toString()
   {
-    return $this->module.'.'.$this->action;
+    return $this->get('module').'.'.$this->get('action');
   }
 }

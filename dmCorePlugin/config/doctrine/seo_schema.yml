@@ -1,4 +1,8 @@
 DmMetaWrap:
+  options:
+    symfony:
+      form: false
+      filter: false
   actAs:                    [Timestampable]
   columns:
     id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
@@ -11,6 +15,9 @@ DmMetaWrap:
     is_active:              { type: boolean, notnull: true, default: true }
 
 DmAutoSeo:
+  options:
+    symfony:
+      filter: false
   actAs:                    [Timestampable]
   columns:
     id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }

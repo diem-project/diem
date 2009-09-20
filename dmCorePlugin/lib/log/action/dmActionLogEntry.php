@@ -8,12 +8,13 @@ class dmActionLogEntry extends dmLogEntry
   public function configure(array $data)
   {
     $this->data = array(
-      'time'          => $data['server']['REQUEST_TIME'],
-      'ip'            => isset($data['server']['REMOTE_ADDR']) ? $data['server']['REMOTE_ADDR'] : '-',
-      'session_id'    => session_id(),
-      'user_id'       => $data['user_id'],
-      'action'        => $data['action'],
-      'subject'       => $data['subject']
+      'time'          => (string) $data['server']['REQUEST_TIME'],
+      'ip'            => (string) isset($data['server']['REMOTE_ADDR']) ? $data['server']['REMOTE_ADDR'] : '-',
+      'session_id'    => (string) session_id(),
+      'user_id'       => (string) $data['user_id'],
+      'action'        => (string) $data['action'],
+      'type'          => (string) $data['type'],
+      'subject'       => (string) $data['subject']
     );
   }
   

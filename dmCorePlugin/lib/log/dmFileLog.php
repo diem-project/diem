@@ -83,12 +83,12 @@ abstract class dmFileLog extends dmLog
   
   protected function encode(array $array)
   {
-    return serialize($array);
+    return json_encode($array);
   }
   
   protected function decode($string)
   {
-    return unserialize($string);
+    return json_decode($string, true);
   }
   
   protected function checkFile()

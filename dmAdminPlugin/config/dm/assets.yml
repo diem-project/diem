@@ -13,6 +13,7 @@ js:
     seoValidation:    dmAdminSeoValidationCtrl
     sort:             dmAdminSortCtrl
     log:              dmAdminLog
+    logs:             dmAdminLogs
     configPanel:      dmAdminConfigPanel
 
 css:

@@ -150,22 +150,22 @@ class dmWidgetContentMediaForm extends dmWidgetPluginForm
       {
         if ($media->isImage())
         {
-          $widgetWidth = dm::getRequest()->getParameter('dm_widget_width');
+          $widgetWidth = self::$serviceContainer->getService('request')->getParameter('dm_widget_width');
           if (empty($values['width']))
           {
             if ($widgetWidth)
             {
               $values['width'] = $widgetWidth;
-              $values['height'] = (int) ($media->height * ($widgetWidth / $media->width));
+              $values['height'] = (int) ($media->getHeight() * ($widgetWidth / $media->getWidth()));
             }
             else
             {
-              $values['width'] = $media->width;
+              $values['width'] = $media->getWidth();
             }
           }
           elseif (empty($values['height']))
           {
-            $values['height'] = (int) ($media->height * ($widgetWidth / $media->width));
+            $values['height'] = (int) ($media->getHeight() * ($values['width'] / $media->getWidth()));
           }
         }
       }

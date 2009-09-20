@@ -34,11 +34,7 @@ class dmHtmlValidator
 
   protected function purifyLine($line)
   {
-    return htmlentities(
-      $line, //preg_replace("|^(\s)+|", "", $line),
-      null,
-      "UTF-8"
-    );
+    return htmlentities($line, ENT_QUOTES, 'UTF-8');
   }
 
   // Retourne un objet XML
