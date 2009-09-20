@@ -244,38 +244,5 @@ abstract class dmContext extends dmMicroCache
     return $this->sfContext->getModuleName() === $module && $this->sfContext->getActionName() === $action;
   }
 
-  public function getAppUrl($app = null, $env = null, $culture = null)
-  {
-    $app = null === $app ? sfConfig::get('sf_app') : $app;
-    $env = null === $env ? sfConfig::get('sf_environment') : $env;
-    $culture = null === $culture ? $this->sfContext->getUser()->getCulture() : $culture;
-
-    $knownAppUrls = json_decode(dmConfig::get('base_urls', '[]'), true);
-
-    $appUrlKey = implode('-', array($app, $env, $culture));
-
-    if (!($appUrl = dmArray::get($knownAppUrls, $appUrlKey)))
-    {
-      if(file_exists(dmOs::join(sfConfig::get('sf_web_dir'), $app.'_'.sfConfig::get('sf_environment').'.php')))
-      {
-        $script = $app.'_'.sfConfig::get('sf_environment').'.php';
-      }
-      elseif(file_exists(dmOs::join(sfConfig::get('sf_web_dir'), $app.'.php')))
-      {
-        $script = $app.'.php';
-      }
-      elseif($app == 'front')
-      {
-        $script = sfConfig::get('sf_environment') == 'prod' ? 'index.php' : sfConfig::get('sf_environment').'.php';
-      }
-      else
-      {
-        throw new dmException(sprintf('Diem can not guess %s app url', $app));
-      }
-
-      $appUrl = $this->sfContext->getRequest()->getAbsoluteUrlRoot().'/'.$script;
-    }
-
-    return $appUrl;
-  }
+  
 }

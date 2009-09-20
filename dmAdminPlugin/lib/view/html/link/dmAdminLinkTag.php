@@ -36,7 +36,7 @@ class dmAdminLinkTag extends dmLinkTag
           $slug = '';
         }
         
-        $resource = self::$dmContext->getAppUrl($app).$slug;
+        $resource = self::$dmContext->getService('script_name_resolver')->get($app).$slug;
       }
       elseif ($this->resource{0} === '/')
       {

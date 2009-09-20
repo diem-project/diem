@@ -1,5 +1,7 @@
 parameters:
 
+  script_name_resolver.class: dmScriptNameResolver
+
   error_watcher.class:        dmErrorWatcher
   error_watcher.options:
     error_description_class:  dmErrorDescription
@@ -64,6 +66,12 @@ parameters:
   helper.class:               dmHelper
  
 services:
+
+  script_name_resolver:
+    class:                    %script_name_resolver.class%
+    shared:                   true
+    arguments:
+      context:                @context
 
   error_watcher:
     class:                    %error_watcher.class%
