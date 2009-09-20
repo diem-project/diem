@@ -91,7 +91,7 @@ class dmDiagramActions extends dmAdminBaseActions
     
     if (!$return)
     {
-      $this->getUser()->logError(sprintf('Diem can not generate the %s dependency diagram : %s', $appName, $this->dmContext->getFilesystem()->getLastExec('output')));
+      $this->getUser()->logError(sprintf('Diem can not generate the %s dependency diagram. Probably graphviz is not installed on the server.', $appName), false);
     }
     
     return '/cache/'.$dependencyDiagramImage;

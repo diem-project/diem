@@ -30,7 +30,7 @@ class dmActionLog extends dmFileLog
   {
     $record = $event->getSubject();
     
-    if ($record instanceof DmError)
+    if ($record instanceof DmError || $record instanceof sfGuardRememberKey)
     {
       return;
     }
