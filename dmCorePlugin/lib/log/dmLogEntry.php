@@ -28,7 +28,7 @@ abstract class dmLogEntry
     return null;
   }
   
-  public function setData(array $data)
+  public function setData($data)
   {
     $this->data = $data;
   }

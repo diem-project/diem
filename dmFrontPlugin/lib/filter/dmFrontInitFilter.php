@@ -31,8 +31,6 @@ class dmFrontInitFilter extends dmInitFilter
         $this->saveHtml();
       }
     }
-    
-    $this->logUser();
   }
 
   protected function guessPage()

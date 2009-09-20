@@ -42,6 +42,7 @@ parameters:
   action_log.options:
     file:                     'data/dm/log/action.log'
     entry_service_name:       action_log_entry
+    ignore_models:            'DmError sfGuardRememberKey'
   
   action_log_entry.class:     dmActionLogEntry
   

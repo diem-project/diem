@@ -21,9 +21,9 @@ abstract class dmFrontBaseServiceContainer extends dmBaseServiceContainer
     ));
   }
 
-  public function configureServices(array $options = array())
+  public function configureServices()
   {
-    parent::configureServices($options);
+    parent::configureServices();
     
     $this->configurePageHelper();
   }
@@ -32,9 +32,12 @@ abstract class dmFrontBaseServiceContainer extends dmBaseServiceContainer
   {
     parent::connectServices();
     
-    $this->getService('page_helper')->connect();
-    
-    $this->getService('layout_helper')->connect();
+    if ($this->options['human'] || sfConfig::get('sf_environment') == 'test')
+    {
+      $this->getService('page_helper')->connect();
+      
+      $this->getService('layout_helper')->connect();
+    }
   }
   
   protected function configureUser()

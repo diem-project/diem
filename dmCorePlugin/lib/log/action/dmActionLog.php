@@ -5,7 +5,8 @@ class dmActionLog extends dmFileLog
   protected
   $defaults = array(
     'file'                => 'data/dm/log/action.log',
-    'entry_service_name'  => 'action_log_entry'
+    'entry_service_name'  => 'action_log_entry',
+    'ignore_models'       => 'DmError sfGuardRememberKey'
   );
   
   public function connect()
@@ -30,7 +31,7 @@ class dmActionLog extends dmFileLog
   {
     $record = $event->getSubject();
     
-    if ($record instanceof DmError || $record instanceof sfGuardRememberKey)
+    if(in_array(get_class($record), explode(' ', $this->options['ignore_models'])))
     {
       return;
     }

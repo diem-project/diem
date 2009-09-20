@@ -2,14 +2,25 @@
 
 abstract class dmBaseServiceContainer extends sfServiceContainer
 {
+  protected
+  $options = array(
+    /*
+     * boolean human
+     * Means that request has been sent by a human, and the application will send html for a browser.
+     * CLI, ajax and flash are NOT human.
+     */
+    'human' => true
+  );
   
   public function configure(array $dependencies, array $options = array())
   {
+    $this->options = array_merge($this->options, $options);
+    
     $this->loadDependencies($dependencies);
     
     $this->loadParameters();
     
-    $this->configureServices($options);
+    $this->configureServices();
   }
   
   protected function loadDependencies(array $dependencies)
@@ -29,16 +40,16 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
   
   protected function loadParameters()
   {
-    $this->setParameter('request.context',  $this->getService('context')->getRequest()->getRequestContext());
+    $this->setParameter('request.context',  $this->getService('request')->getRequestContext());
     
     $this->setParameter('user.culture',     $this->getService('user')->getCulture());
   }
   
-  protected function configureServices(array $options = array())
+  protected function configureServices()
   {
     $this->configureUser();
     
-    if (dmArray::get($options, 'human_response', true))
+    if ($this->options['human'])
     {
       $this->configureResponse();
       
@@ -122,6 +133,14 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
        * Connect the action log to make it aware of database modifications
        */
       $this->getService('action_log')->connect();
+    }
+    
+    if ($this->options['human'])
+    {
+      /*
+       * Connect the user log to make it aware of controller end
+       */
+      $this->getService('user_log')->connect();
     }
   }
 

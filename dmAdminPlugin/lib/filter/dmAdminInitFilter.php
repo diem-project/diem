@@ -28,8 +28,6 @@ class dmAdminInitFilter extends dmInitFilter
         $this->saveHtml();
       }
     }
-
-    $this->logUser();
   }
 
 }

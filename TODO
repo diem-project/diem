@@ -256,3 +256,9 @@ $.getScript(href, callback);
 * fix broken admin user creation because doctrine record save fail on one-to-one relation.
 
 * add constraints to a record media relation to specify if media must have a certain type ( image, video... )
+
+* fix configuration panel do not save modifications
+
+* fix admin toolbar template cache do not care about user credentials
+
+* [DONE] user log must store url params in uri

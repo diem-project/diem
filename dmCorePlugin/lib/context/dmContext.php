@@ -33,7 +33,7 @@ abstract class dmContext extends dmMicroCache
     
     // load the service container instance
     $this->loadServiceContainer();
-
+    
     // configure the service container with its required dependencies
     $this->configureServiceContainer($this->serviceContainer);
     
@@ -105,7 +105,7 @@ abstract class dmContext extends dmMicroCache
       'doctrine_manager'  => Doctrine_Manager::getInstance()
     ),
     array(
-      'human_response'    => $this->isHtmlForHuman()
+      'human'             => $this->isHtmlForHuman()
     ));
   }
   
@@ -205,6 +205,12 @@ abstract class dmContext extends dmMicroCache
     return $this->sfContext;
   }
 
+  
+  /*
+   * Means that request has been sent by a human, and the application will send html for a browser.
+   * CLI, ajax and flash are NOT human.
+   * @return boolean $human
+   */
   public function isHtmlForHuman()
   {
     if ($this->hasCache('is_html_for_human'))
@@ -213,9 +219,10 @@ abstract class dmContext extends dmMicroCache
     }
 
     return $this->setCache('is_html_for_human',
-    !$this->sfContext->getRequest()->isXmlHttpRequest()
-    && !$this->sfContext->getRequest()->isFlashRequest()
-    && $this->sfContext->getResponse()->isHtml()
+        !dmConfig::isCli()
+    &&  !$this->sfContext->getRequest()->isXmlHttpRequest()
+    &&  !$this->sfContext->getRequest()->isFlashRequest()
+    &&  $this->sfContext->getResponse()->isHtml()
     );
   }
 

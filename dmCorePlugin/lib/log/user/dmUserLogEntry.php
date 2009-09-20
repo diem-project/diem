@@ -10,7 +10,7 @@ class dmUserLogEntry extends dmLogEntry
   {
     $this->data = array(
       'time'          => (string) $data['server']['REQUEST_TIME'],
-      'uri'           => (string) isset($data['server']['PATH_INFO']) ? trim($data['server']['PATH_INFO'], '/') : '/',
+      'uri'           => (string) $data['server']['REQUEST_URI'],
       'code'          => (string) $data['context']->getResponse()->getStatusCode(),
       'app'           => (string) sfConfig::get('sf_app'),
       'ip'            => (string) $data['server']['REMOTE_ADDR'],

@@ -55,7 +55,7 @@ class dmFrontPageHelper
     {
       if (null === $this->page)
       {
-        throw new dmException('Can not fetch page area because no page have benn set');
+        throw new dmException('Can not fetch page area because no page have been set');
       }
       
       $this->areas = dmDb::query('DmArea a INDEXBY a.type, a.Zones z, z.Widgets w')

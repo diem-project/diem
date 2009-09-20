@@ -43,3 +43,6 @@ params: array('type' => create|update|delete)
 [dm.table.modification]
 fired by dmDoctrineTable when it's data will be modified
 params: array()
+
+[dm.controller.end]
+fired by dmFrontWebController when application has been succesfully executed

@@ -3,17 +3,6 @@
 abstract class dmInitFilter extends dmFilter
 {
   
-  protected function logUser()
-  {
-    if ($this->dmContext->isHtmlForHuman())
-    {
-      $this->dmContext->getService('user_log')->log(array(
-        'context' => $this->context,
-        'server'  => $_SERVER
-      ));
-    }
-  }
-
   protected function checkFilesystemPermissions()
   {
     return dmProject::checkFilesystemPermissions();
