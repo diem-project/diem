@@ -26,12 +26,7 @@ class dmProjectModule extends dmModule
 
   public function getParent()
   {
-    if ($this->hasCache('parent'))
-    {
-      return $this->getCache('parent');
-    }
-
-    return $this->setCache('parent', $this->manager->getModuleOrNull($this->getParentKey()));
+    return $this->manager->getModule($this->getParentKey());
   }
   
   public function getParentKey()
@@ -41,27 +36,41 @@ class dmProjectModule extends dmModule
 
   public function hasParent()
   {
-    return null !== $this->getParent();
+    return null !== $this->options['parent_key'];
   }
 
   public function getAncestor($ancestorKey)
   {
+    if (!$this->hasParent())
+    {
+      return null;
+    }
+    
     if ($ancestorKey instanceof dmModule)
     {
       $ancestorKey = $ancestorKey->getKey();
     }
+    else
+    {
+      $ancestorKey = dmString::modulize($ancestorKey);
+    }
     
-    return dmArray::get($this->getPath(), dmString::modulize($ancestorKey));
+    return in_array($ancestorKey, $this->options['path_keys']) ? $this->manager->getModule($ancestorKey) : null;
   }
 
   public function hasAncestor($ancestorKey)
   {
+    if (!$this->hasParent())
+    {
+      return null;
+    }
+    
     if ($ancestorKey instanceof dmModule)
     {
       $ancestorKey = $ancestorKey->getKey();
     }
     
-    return array_key_exists(dmString::modulize($ancestorKey), $this->getPath());
+    return in_array(dmString::modulize($ancestorKey), $this->options['path_keys']);
   }
 
   public function knows($module)
@@ -71,11 +80,21 @@ class dmProjectModule extends dmModule
 
   public function getFarthestAncestor()
   {
-    return dmArray::first($this->getPath());
+    if (!$this->hasParent())
+    {
+      return null;
+    }
+
+    return $this->manager->getModule($this->options['path_keys'][0]);
   }
 
   public function getFarthestAncestorWithPage()
   {
+    if (!$this->hasParent())
+    {
+      return null;
+    }
+    
     foreach($this->getPath() as $module)
     {
       if ($module->hasPage())
@@ -86,10 +105,14 @@ class dmProjectModule extends dmModule
 
     return null;
   }
-  
 
   public function getNearestAncestorWithPage()
   {
+    if (!$this->hasParent())
+    {
+      return null;
+    }
+    
     foreach(array_reverse($this->getPath()) as $module)
     {
       if ($module->hasPage())
@@ -100,7 +123,6 @@ class dmProjectModule extends dmModule
 
     return null;
   }
-
 
   public function getDescendant($descendantKey)
   {
@@ -114,7 +136,7 @@ class dmProjectModule extends dmModule
   
   public function hasDescendant($descendantKey)
   {
-    return $this->manager->getModule($descendantKey)->hasAncestor($this->getKey());
+    return $this->manager->getModule($descendantKey)->hasAncestor($this->key);
   }
 
   /*
@@ -123,28 +145,11 @@ class dmProjectModule extends dmModule
    */
   public function getPath($includeMe = false)
   {
-    if ($this->hasCache('path'))
-    {
-      $path = $this->getCache('path');
-    }
-    else
-    {
-      $path = array();
-
-      $ancestorModule = $this;
-      while($ancestorModule = $ancestorModule->getParent())
-      {
-        $path[$ancestorModule->getKey()] = $ancestorModule;
-      }
-
-      $path = array_reverse($path, true);
-
-      $this->setCache('path', $path);
-    }
+    $path = $this->manager->keysToModules($this->options['path_keys']);
 
     if ($includeMe)
     {
-      $path[$this->getKey()] = $this;
+      $path[$this->key] = $this;
     }
 
     return $path;
@@ -187,14 +192,7 @@ class dmProjectModule extends dmModule
 
   public function getChildren()
   {
-    $children = array();
-    
-    foreach($this->options['children_keys'] as $childKey)
-    {
-      $children[$childKey] = $this->manager->getModule($childKey);
-    }
-    
-    return $children;
+    return $this->manager->keysToModules($this->options['children_keys']);
   }
 
   public function hasChildren()

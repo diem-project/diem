@@ -109,32 +109,31 @@ class dmString extends sfInflector
       if ($something instanceof dmModule)
       {
         throw new dmException('dmModule should not be camelized');
-//        return $something->getModel();
       }
+      
       return get_class($something);
     }
 
     if (!is_string($something))
     {
-      return null;
+      xdebug_print_function_stack();
+      if (empty($something))
+      {
+        return '';
+      }
+      throw new dmException('Can not camelize '.$something);
     }
 
-//    return preg_replace(
-//      '/(^|_)(.)/e',
-//      "strtoupper('\\2')",
-//      $something
-//    );
-
-    if (!isset(self::$camelizeCache[$something]))
+    if (isset(self::$camelizeCache[$something]))
     {
-      self::$camelizeCache[$something] = preg_replace(
-        '/(^|_)(\w)/e',
-        "strtoupper('\\2')",
-        $something
-      );
+      return self::$camelizeCache[$something];
     }
 
-    return self::$camelizeCache[$something];
+    return self::$camelizeCache[$something] = preg_replace(
+      '/(^|_)(\w)/e',
+      "strtoupper('\\2')",
+      $something
+    );
   }
 
   public static function humanize($text)

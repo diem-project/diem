@@ -251,7 +251,7 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
     if ($moduleOptions['is_project'])
     {
       $moduleOptions = array_merge($moduleOptions, array(
-        'parent_key' => dmString::modulize(trim(dmArray::get($moduleConfig, 'parent'))),
+        'parent_key' => dmArray::get($moduleConfig, 'parent') ? dmString::modulize(trim(dmArray::get($moduleConfig, 'parent'))) : null,
         'has_page'   => (boolean) dmArray::get($moduleConfig, 'page', false),
         'actions'   => (array) dmArray::get($moduleConfig, 'actions', array())
       ));
@@ -275,6 +275,8 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
           
           $moduleConfig['children_keys'] = $this->getChildrenKeys($moduleKey);
           
+          $moduleConfig['path_keys'] = $this->getPathKeys($moduleKey);
+          
           $this->config[$typeName][$spaceName][$moduleKey] = $moduleConfig;
         }
       }
@@ -294,6 +296,19 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
     }
     
     return $childrenKeys;
+  }
+  
+  protected function getPathKeys($moduleKey)
+  {
+    $pathKeys = array();
+
+    $ancestorModuleKey = $moduleKey;
+    while($ancestorModuleKey = $this->projectModules[$ancestorModuleKey]['parent_key'])
+    {
+      $pathKeys[] = $ancestorModuleKey;
+    }
+
+    return array_reverse($pathKeys);
   }
   
   /**

@@ -146,6 +146,18 @@ class dmModuleManager
     return null;
   }
 
+  
+  public function keysToModules(array $keys)
+  {
+    $modules = array();
+    
+    foreach($keys as $key)
+    {
+      $modules[$key] = $this->getModule($key);
+    }
+    
+    return $modules;
+  }
   /*
    * Remove modules wich are child of another modified module
    * Keep only rooter modified modules

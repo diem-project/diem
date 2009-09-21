@@ -293,8 +293,9 @@ class dmModule extends dmMicroCache
   {
     if (is_string($something))
     {
-      return $this->key == $something;
+      return $this->key == dmString::modulize($something);
     }
+    
     if($something instanceof dmModule)
     {
       return $something->getKey() === $this->key;
