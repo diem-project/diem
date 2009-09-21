@@ -13,7 +13,7 @@ class dmLoremizeService extends dmService
     if ($moduleName = $this->getOption('module_name'))
     {
       $loremizer = new dmModuleLoremizer($this->dispatcher);
-      $loremizer->loremize(dmModuleManager::getModule($moduleName), $this->getOption('nb', self::DEFAULT_NB));
+      $loremizer->loremize(dmContext::getInstance()->getModuleManager()->getModule($moduleName), $this->getOption('nb', self::DEFAULT_NB));
     }
     else
     {

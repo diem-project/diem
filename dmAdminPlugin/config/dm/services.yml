@@ -26,38 +26,24 @@ services:
   link_tag:
     class:                    %link_tag.class%
     shared:                   false
-    arguments:
-      source:                 %link_tag.source%
-      request_context:        %request.context%
-      controller:             @controller
+    arguments:                [ %link_tag.source%, %request.context%, @controller ]
 
   admin_sort_table_form:
     class:                    %admin_sort_table_form.class%
     shared:                   false
-    arguments:
-      defaults:               %admin_sort_form.defaults%
-      options:                %admin_sort_form.options%
+    arguments:                [ %admin_sort_form.defaults%, %admin_sort_form.options% ]
 
   admin_sort_referers_form:
     class:                    %admin_sort_referers_form.class%
     shared:                   false
-    arguments:
-      defaults:               %admin_sort_form.defaults%
-      options:                %admin_sort_form.options%
+    arguments:                [ %admin_sort_form.defaults%, %admin_sort_form.options% ]
       
   admin_menu:
     class:                    %admin_menu.class%
     shared:                   true
-    arguments:
-      dispatcher:             @dispatcher
-      user:                   @user
-      i18n:                   @i18n
-      routing:                @routing
+    arguments:                [ @dispatcher, @user, @i18n, @routing, @module_manager ]
 
   sitemap:
     class:                    %sitemap.class%
     shared:                   false
-    arguments:
-      dispatcher:             @dispatcher
-      filesystem:             @filesystem
-      options:                %sitemap.options%
+    arguments:                [ @dispatcher, @filesystem, %sitemap.options% ]

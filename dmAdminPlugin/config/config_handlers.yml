@@ -10,4 +10,4 @@ config/dm/assets.yml:
   class:          dmInlineAssetConfigHandler
   
 config/routing.yml:
-  class:    dmAdminRoutingConfigHandler
+  class:          dmAdminRoutingConfigHandler

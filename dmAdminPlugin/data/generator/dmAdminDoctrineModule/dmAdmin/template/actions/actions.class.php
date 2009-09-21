@@ -29,7 +29,7 @@ class <?php echo $this->getGeneratedModuleName() ?>Actions extends myAdminBaseGe
   
   protected function getDmModule()
   {
-    return dmModuleManager::getModule('<?php echo $this->getModuleName(); ?>');
+    return $this->context->getModuleManager()->getModule('<?php echo $this->getModuleName(); ?>');
   }
 
 <?php include dirname(__FILE__).'/../../parts/sortAction.php' ?>

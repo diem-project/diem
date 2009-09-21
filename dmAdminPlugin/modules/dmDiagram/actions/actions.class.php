@@ -30,7 +30,7 @@ class dmDiagramActions extends dmAdminBaseActions
   
   protected function loadServiceContainerDumper()
   {
-    $this->context->loadServiceContainerLoader();
+    $this->context->loadServiceContainerExtraStuff();
     
     require_once(dmOs::join(sfConfig::get('dm_core_dir'), 'lib/vendor/sfService/sfServiceContainerDumperGraphviz.php'));
   }
@@ -79,11 +79,11 @@ class dmDiagramActions extends dmAdminBaseActions
     $dumper = new sfServiceContainerDumperGraphviz($sc);
 
     file_put_contents($dotFile, $dumper->dump(array(
-      'graph' => array('concentrate' => 'false', 'bgcolor' => 'transparent', 'ratio' => 'fill', 'size' => '30,7'),
+      'graph' => array('concentrate' => 'false', 'bgcolor' => 'transparent', 'ratio' => 'fill', 'size' => '30,4'),
       'node'  => array('fontsize' => 20, 'fontname' => 'Arial', 'shape' => 'Mrecord'),
       'edge'  => array('fontsize' => 9, 'fontname' => 'Arial', 'color' => 'grey', 'arrowhead' => 'open', 'arrowsize' => 1),
       'node.instance' => array('fillcolor' => '#ffffff', 'style' => 'filled', 'shape' => 'component'),
-      'node.definition' => array('fillcolor' => '#eeeeee'),
+      'node.definition' => array('fillcolor' => 'transparent'),
       'node.missing' => array('fillcolor' => '#ffaaaa', 'style' => 'filled', 'shape' => 'record'),
     )));
     

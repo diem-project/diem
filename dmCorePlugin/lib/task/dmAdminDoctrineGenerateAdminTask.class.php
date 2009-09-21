@@ -21,7 +21,7 @@ class dmAdminDoctrineGenerateAdminTask extends sfDoctrineGenerateAdminTask
    */
   protected function execute($arguments = array(), $options = array())
   {
-    $module = dmModuleManager::getModule(dmString::modulize($arguments['route_or_model']));
+    $module = dmContext::getInstance()->getModuleManager()->getModule(dmString::modulize($arguments['route_or_model']));
     $arguments['module'] = $module;
     $arguments['route_name'] = $module->getUnderscore();
 

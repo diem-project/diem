@@ -4,25 +4,17 @@ class dmModuleSpace
 {
 
   protected
-    $slug,
-    $type,
     $name,
-    $modules;
-
-  public function __construct($name, $modules, dmModuleType $type)
+    $type,
+    $modules,
+    $slug;
+  
+  public function initialize($name, dmModuleType $type, array $modules = array())
   {
-    $this->name = $name;
-    $this->type = $type;
-    $this->modules = array();
-
-    $module_class = $type->isProject() ? 'dmProjectModule' : 'dmModule';
-
-    foreach($modules as $moduleKey => $moduleConfig)
-    {
-      $moduleKey = dmString::modulize($moduleKey);
-
-      $this->modules[$moduleKey] = new $module_class($moduleKey, $moduleConfig, $this);
-    }
+    $this->name     = $name;
+    $this->type     = $type;
+    $this->modules  = $modules;
+    $this->slug     = null;
   }
 
   public function getType()

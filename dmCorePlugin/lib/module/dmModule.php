@@ -4,6 +4,7 @@ class dmModule extends dmMicroCache
 {
 
   protected
+    $manager,
     $space,
     $key,
     $params,
@@ -11,31 +12,38 @@ class dmModule extends dmMicroCache
     $checkedModel,
     $table;
 
-  public function __construct($key, $config = array(), dmModuleSpace $space)
+  public function __construct(dmModuleManager $manager)
   {
-    $this->key   = $key;
-    $this->space = $space;
-
+    $this->manager = $manager;
+  }
+  
+  public function initialize($key, dmModuleSpace $space, array $options)
+  {
+    $this->key    = $key;
+    $this->space  = $space;
+    
     /*
      * Extract plural from name
      * name | plural
      */
-    if (isset($config['name']))
+    if (!empty($options['name']))
     {
-      if (strpos($config['name'], '|'))
+      if (strpos($options['name'], '|'))
       {
-        list($config['name'], $config['plural']) = explode('|', $config['name']);
+        list($options['name'], $options['plural']) = explode('|', $options['name']);
       }
     }
-    
-    $name   = empty($config['name']) ? dmString::humanize($key) : trim($config['name']);
+    else
+    {
+      $options['name'] = dmString::humanize($key);
+    }
     
     $this->params = array(
-      'name' =>       $name,
-      'plural' =>     empty($config['plural']) ? dmString::pluralize($name) : $config['plural'],
-      'model' =>      empty($config['model']) ? dmString::camelize($key) : $config['model'],
-      'credentials' => isset($config['credentials']) ? $config['credentials'] : null,
-      'options' =>    empty($config['options']) ? $this->getDefaultOptions() : array_merge($this->getDefaultOptions(), sfToolkit::stringToArray($config['options']))
+      'name' =>       $options['name'],
+      'plural' =>     empty($options['plural']) ? dmString::pluralize($options['name']) : $options['plural'],
+      'model' =>      empty($options['model']) ? dmString::camelize($key) : $options['model'],
+      'credentials' => isset($options['credentials']) ? $options['credentials'] : null,
+      'options' =>    empty($options['options']) ? $this->getDefaultOptions() : array_merge($this->getDefaultOptions(), sfToolkit::stringToArray($options['options']))
     );
   }
 
@@ -219,7 +227,7 @@ class dmModule extends dmMicroCache
     $foreigns = array();
     foreach($this->getTable()->getRelationHolder()->getForeigns() as $relation)
     {
-      if ($foreignModule = dmModuleManager::getModuleOrNull($relation->getClass()))
+      if ($foreignModule = $this->manager->getModuleOrNull($relation->getClass()))
       {
         $foreigns[$foreignModule->getKey()] = $foreignModule;
       }
@@ -230,7 +238,7 @@ class dmModule extends dmMicroCache
 
   public function getForeign($foreignModuleKey)
   {
-    if ($foreignModule = dmModuleManager::getModuleOrNull($foreignModuleKey))
+    if ($foreignModule = $this->manager->getModuleOrNull($foreignModuleKey))
     {
       if ($this->hasForeign($foreignModule))
       {
@@ -242,7 +250,7 @@ class dmModule extends dmMicroCache
 
   public function hasForeign($something)
   {
-    if ($foreignModule = dmModuleManager::getModuleOrNull($something))
+    if ($foreignModule = $this->manager->getModuleOrNull($something))
     {
       return array_key_exists($foreignModule->getKey(), $this->getForeigns());
     }
@@ -259,7 +267,7 @@ class dmModule extends dmMicroCache
     $locals = array();
     foreach($this->getTable()->getRelationHolder()->getLocals() as $relation)
     {
-      if($localModule = dmModuleManager::getModuleByModel($relation->getClass()))
+      if($localModule = $this->manager->getModuleByModel($relation->getClass()))
       {
         $locals[$localModule->getKey()] = $localModule;
       }
@@ -270,7 +278,7 @@ class dmModule extends dmMicroCache
 
   public function getLocal($localModuleKey)
   {
-    if ($localModule = dmModuleManager::getModuleOrNull($localModule))
+    if ($localModule = $this->manager->getModuleOrNull($localModule))
     {
       if ($this->hasLocal($localModule))
       {
@@ -282,7 +290,7 @@ class dmModule extends dmMicroCache
 
   public function hasLocal($something)
   {
-    if ($localModule = dmModuleManager::getModuleOrNull($something))
+    if ($localModule = $this->manager->getModuleOrNull($something))
     {
       return array_key_exists($localModule->getKey(), $this->getLocals());
     }
@@ -299,7 +307,7 @@ class dmModule extends dmMicroCache
     $associations = array();
     foreach($this->getTable()->getRelationHolder()->getAssociations() as $key => $relation)
     {
-      $associationModule = dmModuleManager::getModule($relation->getClass());
+      $associationModule = $this->manager->getModule($relation->getClass());
       $associations[$associationModule->getKey()] = $associationModule;
     }
 
@@ -308,7 +316,7 @@ class dmModule extends dmMicroCache
 
   public function getAssociation($associationModuleKey)
   {
-    if ($associationModule = dmModuleManager::getModuleOrNull($associationModuleKey))
+    if ($associationModule = $this->manager->getModuleOrNull($associationModuleKey))
     {
       if ($this->hasAssociation($associationModule))
       {
@@ -320,7 +328,7 @@ class dmModule extends dmMicroCache
 
   public function hasAssociation($something)
   {
-    if ($associationModule = dmModuleManager::getModule($something))
+    if ($associationModule = $this->manager->getModule($something))
     {
       return array_key_exists($associationModule->getKey(), $this->getAssociations());
     }
@@ -357,5 +365,13 @@ class dmModule extends dmMicroCache
   public function interactsWithPageTree()
   {
     return $this->isProject();
+  }
+  
+  /*
+   * @return dmModuleManager
+   */
+  public function getManager()
+  {
+    return $this->manager;
   }
 }

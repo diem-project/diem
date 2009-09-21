@@ -7,7 +7,7 @@ class dmFrontGenerateService extends dmService
   {
     $this->log('Generate front for modules');
     
-    foreach(dmModuleManager::getProjectModules() as $moduleKey => $module)
+    foreach(dmContext::getInstance()->getModuleManager()->getProjectModules() as $moduleKey => $module)
     {
       $this->log(sprintf("Generate front for module %s", $moduleKey));
 
@@ -35,7 +35,7 @@ class dmFrontGenerateService extends dmService
   {
     $this->log('Generate front for modules');
 
-    $modules = dmModuleManager::getProjectModules();
+    $modules = dmContext::getInstance()->getModuleManager()->getProjectModules();
 
     $existingModules = sfFinder::type('dir')
     ->maxdepth(0)

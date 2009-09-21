@@ -34,6 +34,7 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
     $this->setService('config_cache',     $dependencies['context']->getConfigCache());
     $this->setService('controller',       $dependencies['context']->getController());
     $this->setService('request',          $dependencies['context']->getRequest());
+    $this->setService('module_manager',   $dependencies['context']->getModuleManager());
     $this->setService('context',          $dependencies['context']);
     $this->setService('doctrine_manager', $dependencies['doctrine_manager']);
   }

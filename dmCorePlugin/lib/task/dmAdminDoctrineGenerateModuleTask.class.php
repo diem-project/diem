@@ -62,7 +62,7 @@ class dmAdminDoctrineGenerateModuleTask extends sfDoctrineGenerateModuleTask
 
   protected function executeInit($arguments = array(), $options = array())
   {
-    $moduleObject = dmModuleManager::getModule($arguments['module']);
+    $moduleObject = dmContext::getInstance()->getModuleManager()->getModule($arguments['module']);
 
     if ($moduleObject->isProject())
     {

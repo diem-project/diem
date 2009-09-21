@@ -6,7 +6,7 @@ class dmAdminGeneratorActions extends dmAdminBaseActions
   public function executeSaveSort(sfWebRequest $request)
   {
     $this->forward404Unless(
-      $module = dmModuleManager::getModuleOrNull(
+      $module = $this->context->getModuleManager()->getModuleOrNull(
         $request->getParameter('dm_module')
       )
     );
@@ -40,13 +40,13 @@ class dmAdminGeneratorActions extends dmAdminBaseActions
   public function executeSaveSortReferers(sfWebRequest $request)
   {
     $this->forward404Unless(
-      $module = dmModuleManager::getModuleOrNull(
+      $module = $this->context->getModuleManager()->getModuleOrNull(
         $request->getParameter('dm_module')
       )
     );
 
     $this->forward404Unless(
-      $refererModule = dmModuleManager::getModuleOrNull(
+      $refererModule = $this->context->getModuleManager()->getModuleOrNull(
         $request->getParameter('dm_referer_module')
       )
     );
@@ -81,7 +81,7 @@ class dmAdminGeneratorActions extends dmAdminBaseActions
   public function executeChangeMaxPerPage(sfWebRequest $request)
   {
     $this->forward404Unless(
-      $module = dmModuleManager::getModuleOrNull(
+      $module = $this->context->getModuleManager()->getModuleOrNull(
         $request->getParameter('dm_module')
       )
     );

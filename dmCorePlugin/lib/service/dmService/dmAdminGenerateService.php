@@ -7,7 +7,7 @@ class dmAdminGenerateService extends dmService
   {
     $this->log('Generate admin for modules');
 
-    $modules = dmModuleManager::getModules();
+    $modules = dmContext::getInstance()->getModuleManager()->getModules();
 
     $existing_modules = sfFinder::type('dir')
     ->maxdepth(0)

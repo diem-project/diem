@@ -2,6 +2,8 @@
 
 abstract class dmDoctrineTable extends Doctrine_Table
 {
+  protected static
+  $moduleManager;
   
   protected
   $hasI18n;
@@ -63,7 +65,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
       $interacts = false;
       foreach($this->getRelationHolder()->getLocals() as $localRelation)
       {
-        if ($localModule = dmModuleManager::getModuleByModel($localRelation['class']))
+        if ($localModule = self::$moduleManager->getModuleByModel($localRelation['class']))
         {
           if ($localModule->interactsWithPageTree())
           {
@@ -428,7 +430,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
       return $this->getCache('dm_module');
     }
 
-    return $this->setCache('dm_module', dmModuleManager::getModuleByModel($this->getComponentName()));
+    return $this->setCache('dm_module', self::$moduleManager->getModuleByModel($this->getComponentName()));
   }
   /*
    * Usefull for generators ( admin, form, filter )
@@ -490,5 +492,10 @@ abstract class dmDoctrineTable extends Doctrine_Table
     }
 
     return $this;
+  }
+  
+  public static function setModuleManager(dmModuleManager $moduleManager)
+  {
+    self::$moduleManager = $moduleManager;
   }
 }

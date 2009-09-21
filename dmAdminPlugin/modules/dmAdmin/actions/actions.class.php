@@ -6,7 +6,7 @@ class dmAdminActions extends dmAdminBaseActions
   public function executeModuleSpace(sfWebRequest $request)
   {
     $this->forward404Unless(
-      $this->type = dmModuleManager::getTypeBySlug($request->getParameter('moduleTypeName'), false),
+      $this->type = $this->context->getModuleManager->getTypeBySlug($request->getParameter('moduleTypeName'), false),
       sprintf('%s is not a module type', $request->getParameter('moduleTypeName'))
     );
 

@@ -55,7 +55,7 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
       $this->table = Doctrine::getTable($model);
       $this->modelName = $model;
 
-      if (dmModuleManager::getModuleOrNull($model))
+      if ($this->module->getManager()->getModuleByModel($model))
       {
         $this->setGeneratorClass('dmDoctrineForm');
       }
@@ -106,7 +106,7 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
 
   public function getModule()
   {
-    return dmModuleManager::getModuleByModel($this->table->getOption('name'));
+    return $this->module->getManager()->getModuleByModel($this->table->getComponentName());
   }
 
   public function getMediaRelations()

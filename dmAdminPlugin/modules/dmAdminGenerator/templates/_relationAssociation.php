@@ -1,8 +1,9 @@
 <?php
 
-$module               = dmModuleManager::getModuleByModel($record->getTable()->getComponentName());
+$moduleManager        = dmContext::getInstance()->getModuleManager();
+$module               = $moduleManager->getModuleByModel($record->getTable()->getComponentName());
 $relation             = $module->getTable()->getRelation($alias);
-$associationModule    = dmModuleManager::getModuleByModel($relation->getClass());
+$associationModule    = $moduleManager->getModuleByModel($relation->getClass());
 $associationRecords   = $record->get($alias);
 $nbassociationRecords = count($associationRecords);
 

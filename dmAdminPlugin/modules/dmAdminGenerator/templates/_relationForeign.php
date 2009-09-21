@@ -1,6 +1,7 @@
 <?php
 
-$module           = dmModuleManager::getModuleByModel($record->getTable()->getComponentName());
+$moduleManager    = dmContext::getInstance()->getModuleManager();
+$module           = $moduleManager->getModuleByModel($record->getTable()->getComponentName());
 
 if(!$module)
 {
@@ -8,7 +9,7 @@ if(!$module)
 }
 
 $relation         = $module->getTable()->getRelation($alias);
-$foreignModule    = dmModuleManager::getModuleByModel($relation->getClass());
+$foreignModule    = $moduleManager->getModuleByModel($relation->getClass());
 $foreignRecords   = $record->get($alias);
 /*
  * One to one relations give only one object instead of a collection

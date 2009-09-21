@@ -13,7 +13,7 @@ class Base<?php echo ucfirst($this->getModuleName()) ?>GeneratorHelper extends s
 
   protected function getModule()
   {
-    return dmModuleManager::getModule("<?php echo $this->getModuleName() ?>");
+    return dmContext::getInstance()->getModuleManager()->getModule("<?php echo $this->getModuleName() ?>");
   }
 
   public function linkToNew($params)

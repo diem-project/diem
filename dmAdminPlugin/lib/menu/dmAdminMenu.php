@@ -7,14 +7,16 @@ class dmAdminMenu
   $dispatcher,
   $user,
   $i18n,
-  $routing;
+  $routing,
+  $moduleManager;
 
-  public function __construct(sfEventDispatcher $dispatcher, dmUser $user, dmI18n $i18n, sfPatternRouting $routing)
+  public function __construct(sfEventDispatcher $dispatcher, dmUser $user, dmI18n $i18n, sfPatternRouting $routing, dmModuleManager $moduleManager)
   {
     $this->dispatcher = $dispatcher;
     $this->user = $user;
     $this->i18n = $i18n;
     $this->routing = $routing;
+    $this->moduleManager = $moduleManager;
     
     $this->initialize();
   }
@@ -36,7 +38,7 @@ class dmAdminMenu
   {
     $menu = array();
 
-    foreach(dmModuleManager::getTypes() as $type_name => $type)
+    foreach($this->moduleManager->getTypes() as $type_name => $type)
     {
       if ($type->hasSpaces() && ($typeMenu = $this->getTypeMenu($type)))
       {

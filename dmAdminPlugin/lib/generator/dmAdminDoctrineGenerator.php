@@ -4,7 +4,22 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
 {
 
   protected
-  $module;
+  $module,
+  $moduleManager;
+  
+  /**
+   * Initializes the current sfGenerator instance.
+   *
+   * @param sfGeneratorManager $generatorManager A sfGeneratorManager instance
+   */
+  public function initialize(sfGeneratorManager $generatorManager)
+  {
+    parent::initialize($generatorManager);
+    
+    $this->moduleManager = dmContext::getInstance()->getModuleManager();
+
+    $this->setGeneratorClass('dmAdminDoctrineModule');
+  }
   
   /**
    * Returns the default configuration for fields.
@@ -23,7 +38,7 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
       $label = dmString::humanize($name);
       if ($localRelation = $this->table->getRelationHolder()->getLocalByColumnName($name))
       {
-        if ($module = dmModuleManager::getModuleByModel($localRelation->getClass()))
+        if ($module = $this->moduleManager->getModuleByModel($localRelation->getClass()))
         {
           if ($module->isProject())
           {
@@ -46,7 +61,7 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
     {
       $name = dmString::underscore($relation['alias']).'_list';
       $names[] = $name;
-      $module = dmModuleManager::getModuleByModel($relation->getClass());
+      $module = $this->moduleManager->getModuleByModel($relation->getClass());
       $fields[$name] = array_merge(array(
         'is_link'      => false,
         'is_real'      => false,
@@ -59,7 +74,7 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
 
     foreach ($this->table->getRelationHolder()->getForeigns() as $alias => $relation)
     {
-      if (dmModuleManager::getModuleByModel($relation->getClass()))
+      if ($this->moduleManager->getModuleByModel($relation->getClass()))
       {
         $name = dmString::underscore($alias).'_list';
         $names[] = $name;
@@ -69,7 +84,7 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
           'is_partial'   => false,
           'is_component' => false,
           'type'         => 'Text',
-          'label'        => dmModuleManager::getModule($relation->getClass())->getPlural()
+          'label'        => $this->moduleManager->getModule($relation->getClass())->getPlural()
         ), isset($this->config['fields'][$name]) ? $this->config['fields'][$name] : array());
       }
     }
@@ -202,23 +217,12 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
     return '[?php echo link_to(__(\''.dmArray::get($params, 'label', dmString::humanize($actionName)).'\', array(), \''.$this->getI18nCatalogue().'\'), \''.$this->getModuleName().'/'.$action.$url_params.', '.$this->asPhp($params['params']).') ?]';
   }
 
-  /**
-   * Initializes the current sfGenerator instance.
-   *
-   * @param sfGeneratorManager $generatorManager A sfGeneratorManager instance
-   */
-  public function initialize(sfGeneratorManager $generatorManager)
-  {
-    parent::initialize($generatorManager);
-
-    $this->setGeneratorClass('dmAdminDoctrineModule');
-  }
 
   public function getModule()
   {
     if ($this->module === null)
     {
-      $this->module = dmModuleManager::getModuleOrNull($this->getModuleName());
+      $this->module = $this->moduleManager->getModuleOrNull($this->getModuleName());
     }
 
     return $this->module;

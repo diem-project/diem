@@ -131,7 +131,7 @@ class dmFrontModuleComponents extends myFrontBaseComponents
   {
     if (null === $this->dmModule)
     {
-      $this->dmModule = dmModuleManager::getModule(preg_replace('|^(.+)Components$|', '$1', get_class($this)));
+      $this->dmModule = $this->context->getModuleManager()->getModule(preg_replace('|^(.+)Components$|', '$1', get_class($this)));
     }
 
     return $this->dmModule;

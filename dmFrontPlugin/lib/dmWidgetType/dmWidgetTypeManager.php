@@ -8,15 +8,17 @@ class dmWidgetTypeManager
   $cacheManager,
   $configCache,
   $controller,
+  $moduleManager,
   $options,
   $widgetTypes;
 
-  public function __construct(sfEventDispatcher $dispatcher, dmCacheManager $cacheManager, sfConfigCache $configCache, sfWebController $controller, array $options = array())
+  public function __construct(sfEventDispatcher $dispatcher, dmCacheManager $cacheManager, sfConfigCache $configCache, sfWebController $controller, dmModuleManager $moduleManager, array $options = array())
   {
-    $this->dispatcher   = $dispatcher;
-    $this->cacheManager = $cacheManager;
-    $this->configCache  = $configCache;
-    $this->controller   = $controller;
+    $this->dispatcher     = $dispatcher;
+    $this->cacheManager   = $cacheManager;
+    $this->configCache    = $configCache;
+    $this->controller     = $controller;
+    $this->moduleManager  = $moduleManager;
 
     $this->initialize($options);
   }
@@ -61,7 +63,7 @@ class dmWidgetTypeManager
           }
         }
 
-        foreach(dmModuleManager::getProjectModules() as $moduleKey => $module)
+        foreach($this->moduleManager->getProjectModules() as $moduleKey => $module)
         {
           $moduleName = $module->getName();
 

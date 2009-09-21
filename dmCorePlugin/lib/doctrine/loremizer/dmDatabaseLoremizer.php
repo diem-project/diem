@@ -17,7 +17,7 @@ class dmDatabaseLoremizer
 
     $this->loremizeDmMedia();
 
-    foreach(dmModuleManager::getProjectModules() as $module)
+    foreach(sfContext::getInstance()->getModuleManager()->getProjectModules() as $module)
     {
       /*
        * Start with root modules
@@ -51,7 +51,7 @@ class dmDatabaseLoremizer
     $nbAssociations = round($this->nbRecordsByTable * 1.5);
 
     $refClasses = array();
-    foreach(dmModuleManager::getProjectModules() as $module)
+    foreach(sfContext::getInstance()->getModuleManager()->getProjectModules() as $module)
     {
       if ($module->hasModel())
       {

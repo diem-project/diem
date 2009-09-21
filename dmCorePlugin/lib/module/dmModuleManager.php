@@ -3,124 +3,120 @@
 class dmModuleManager
 {
 
-  protected static
-  $configFile = 'config/dm/modules.yml',
+  protected
   $types,
   $modules,
   $projectModules;
-
-  public static function getTypes()
+  
+  public function __construct(array $options = array())
   {
-    if(null === self::$types)
+    $this->initialize($options);
+  }
+  
+  public function initialize(array $options = array())
+  {
+    $this->options = $options;
+    
+    $this->load();
+  }
+  
+  protected function load()
+  {
+    $this->types   = array();
+    $this->modules = array();
+    $this->projectModules = array();
+
+    $config = include(sfContext::getInstance()->getConfigCache()->checkConfig('config/dm/modules.yml'));
+    
+    foreach($config as $typeName => $spacesConfig)
     {
-      self::$types = array();
+      $type = new $this->options['type_class'];
+      $typeSpaces = array();
 
-      $config = include(dmContext::getInstance()->getConfigCache()->checkConfig(self::$configFile));
-
-      foreach($config as $typeName => $spaces)
+      $moduleClass = $this->options['Project' === $typeName ? 'module_node_class' : 'module_base_class'];
+      
+      foreach($spacesConfig as $spaceName => $modulesConfig)
       {
-        self::$types[$typeName] = new dmModuleType($typeName, $spaces);
+        $space = new $this->options['space_class'];
+        $spaceModules = array();
+        
+        foreach($modulesConfig as $moduleKey => $moduleConfig)
+        {
+          $moduleKey = dmString::modulize($moduleKey);
+          
+          $module = new $moduleClass($this);
+          
+          $module->initialize($moduleKey, $space, $moduleConfig);
+          
+          $spaceModules[$moduleKey] = $module;
+          
+          /*
+           * Cache modules and project modules for fast access
+           */
+          $this->modules[$moduleKey] = $module;
+          
+          if('Project' === $typeName)
+          {
+            $this->projectModules[$moduleKey] = $module;
+          }
+        }
+      
+        $space->initialize($spaceName, $type, $spaceModules);
+        $typeSpaces[$spaceName] = $space;
+        // unset($spaceModules);
       }
+      
+      $type->configure($typeName, $typeSpaces);
+      // unset($typeSpaces);
+      
+      $this->types[$typeName] = $type;
     }
-
-    return self::$types;
+    
+    unset($config);
   }
 
-  public static function checkModulesConsistency()
+  public function getTypes()
   {
-    //$timer = dmDebug::timerOrNull('dmModuleManager::checkModulesConsistency');
+    return $this->types;
+  }
 
-    foreach(self::getModules() as $module)
+  public function checkModulesConsistency()
+  {
+    if (!$this->getModuleOrNull('main'))
     {
-      if (!$module->isProject())
-      {
-        continue;
-      }
-      //      if ($parent = $module->getParent())
-      //      {
-      //        if (!$parent->hasPage())
-      //        {
-      //          throw new dmException(sprintf(
-      //            '%s is child of %s wich has no page. A parent must have a page ( components: [show] )',
-      //            $module, $parent
-      //          ));
-      //        }
-      //        if (!$module->hasLocal($parent) && !$module->hasAssociation($parent))
-      //        {
-      //          throw new dmException(sprintf(
-      //            '%s is child of %s but %s is not associated to %s. Add a database referer or many2many class',
-      //            $module, $parent, $module->getModel(), $parent->getModel()
-      //          ));
-      //        }
-      //      }
+      throw new dmException('You must have a main module');
     }
-
-    if (!self::getModuleOrNull('main'))
-    {
-      throw new dmException('You must create a main module');
-    }
-
-    //$timer && $timer->addTime();
   }
 
-  public static function getType($typeName)
+  public function getType($typeName)
   {
-    return dmArray::get(self::getTypes(), $typeName);
+    return dmArray::get($this->getTypes(), $typeName);
   }
 
-  public static function getTypeBySlug($slug, $default = null)
+  public function getTypeBySlug($slug, $default = null)
   {
-    foreach(self::getTypes() as $type)
+    foreach($this->getTypes() as $type)
     {
       if ($type->getSlug() === $slug)
       {
         return $type;
       }
     }
+    
     return $default;
   }
-
-  public static function getModules()
+  
+  public function getModules()
   {
-    if (null === self::$modules)
-    {
-      $timer = dmDebug::timerOrNull('dmModuleManager::getModules');
-      self::$modules = array();
-      foreach(self::getTypes() as $type)
-      {
-        foreach($type->getSpaces() as $space)
-        {
-          self::$modules = array_merge(self::$modules, $space->getModules());
-        }
-      }
-      $timer && $timer->addTime();
-
-      if (sfConfig::get('sf_debug'))
-      {
-        self::checkModulesConsistency();
-      }
-    }
-
-    return self::$modules;
+    return $this->modules;
   }
 
-  public static function getProjectModules()
+  public function getProjectModules()
   {
-    if (null === self::$projectModules)
-    {
-      self::$projectModules = array();
-      foreach(self::getModules() as $moduleKey => $module)
-      {
-        if ($module->isProject())
-        {
-          self::$projectModules[$moduleKey] = $module;
-        }
-      }
-    }
-    return self::$projectModules;
+    return $this->projectModules;
   }
 
-  public static function getModule($something, $orNull = false)
+  public function getModule($something, $orNull = false)
   {
     if ($something instanceof dmModule)
     {
@@ -129,11 +125,9 @@ class dmModuleManager
 
     $moduleKey = dmString::modulize($something);
 
-    $modules = self::getModules();
-
-    if (isset($modules[$moduleKey]))
+    if (isset($this->modules[$moduleKey]))
     {
-      return $modules[$moduleKey];
+      return $this->modules[$moduleKey];
     }
 
     if ($orNull)
@@ -144,42 +138,44 @@ class dmModuleManager
     throw new dmException(sprintf("The %s module does not exist", $something));
   }
 
-  public static function getModuleOrNull($something)
+  public function getModuleOrNull($something)
   {
-    return self::getModule($something, true);
+    return $this->getModule($something, true);
   }
 
-  public static function getModulesWithPage()
+  public function getModulesWithPage()
   {
-    $modules = self::getProjectModules();
-
-    foreach($modules as $key => $module)
+    $modulesWithPage = array();
+    
+    foreach($this->projectModules as $key => $module)
     {
-      if (!$module->hasPage())
+      if ($module->hasPage())
       {
-        unset($modules[$key]);
+        $modulesWithPage[$key] = $module;
       }
     }
-    return $modules;
+    
+    return $modulesWithPage;
   }
 
-  public static function getModulesWithModel()
+  public function getModulesWithModel()
   {
-    $modules = self::getProjectModules();
-
-    foreach($modules as $key => $module)
+    $modulesWithModel = array();
+    
+    foreach($this->projectModules as $key => $module)
     {
-      if (!$module->hasModel())
+      if ($module->hasModel())
       {
-        unset($modules[$key]);
+        $modulesWithModel[$key] = $module;
       }
     }
-    return $modules;
+    
+    return $modulesWithModel;
   }
 
-  public static function getModuleByModel($model)
+  public function getModuleByModel($model)
   {
-    foreach(self::getProjectModules() as $module)
+    foreach($this->getProjectModules() as $module)
     {
       if ($module->getModel() == $model)
       {
@@ -187,7 +183,7 @@ class dmModuleManager
       }
     }
 
-    foreach(self::getModules() as $module)
+    foreach($this->getModules() as $module)
     {
       if ($module->getModel() == $model)
       {
@@ -206,6 +202,7 @@ class dmModuleManager
   public static function removeModulesChildren(array $modules)
   {
     $unsettedModules = array();
+    
     foreach($modules as $moduleKey => $module)
     {
       foreach($modules as $_moduleKey => $_module)

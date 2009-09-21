@@ -63,7 +63,7 @@ class dmAdminGeneratorBuilder
     foreach($this->table->getRelationHolder()->getAssociations() as $alias => $relation)
     {
       $fields[dmString::underscore($alias).'_list'] = array(
-        'label' => dmModuleManager::getModuleByModel($relation->getClass())->getPlural()
+        'label' => $this->module->getManager()->getModuleByModel($relation->getClass())->getPlural()
       );
     }
     
@@ -122,7 +122,7 @@ class dmAdminGeneratorBuilder
 
     foreach($this->table->getRelationHolder()->getForeigns() as $alias => $relation)
     {
-      if (dmModuleManager::getModuleOrNull($relation->getClass()))
+      if ($this->module->getManager()->getModuleByModel($relation->getClass()))
       {
         $display[] = dmString::underscore($alias).'_list';
       }
@@ -276,7 +276,7 @@ class dmAdminGeneratorBuilder
 
     foreach($this->table->getRelationHolder()->getAssociations() as $alias => $relation)
     {
-      $associationModule = dmModuleManager::getModuleByModel($relation->getClass());
+      $associationModule = $this->module->getManager()->getModuleByModel($relation->getClass());
       $sets[$associationModule->getPlural()][] = dmString::underscore($alias).'_list';
     }
 

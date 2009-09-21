@@ -268,3 +268,13 @@ $.getScript(href, callback);
 * [DONE] merge dmContext and sfContext.
 
 * fix mvc break in dmDoctrinePager
+
+* [DONE] make dmModuleManager non-static
+
+* [DONE] move module manager to sf factories ( loaded before i18n )
+
+* cache module hierarchy creation
+
+* deprecate the getModuleOrNull dmModuleManager method and add a hasModule method
+
+* restore the admin bread crumb

@@ -11,7 +11,7 @@ echo £('h1.title', 'Auto-generated diagrams');
 foreach($dicImages as $appName => $image)
 {
   echo £('div.dm_box.big.diagram', £('div.title', £('h2', dmString::camelize($appName).' : Dependency Injection Container')).£('div.dm_box_inner',
-    £link($image)->text(£media($image)->set('.full_width_image'))
+    £('div.full_width_image', £link($image)->text(£media($image)))
   ));
 }
 

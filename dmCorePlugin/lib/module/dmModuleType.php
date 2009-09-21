@@ -5,18 +5,14 @@ class dmModuleType
 
   protected
     $name,
-    $slug,
-    $spaces;
+    $spaces,
+    $slug;
 
-  public function __construct($name, $config)
+  public function configure($name, array $spaces = array())
   {
-    $this->name = $name;
-    $this->spaces = array();
-
-    foreach($config as $space_name => $modules)
-    {
-      $this->spaces[$space_name] = new dmModuleSpace($space_name, $modules, $this);
-    }
+    $this->name   = $name;
+    $this->spaces = $spaces;
+    $this->slug   = null;
   }
 
   /*

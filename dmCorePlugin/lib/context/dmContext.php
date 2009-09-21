@@ -61,6 +61,9 @@ class dmContext extends sfContext
      */
     dmDoctrineRecord::setEventDispatcher($this->dispatcher);
     dmDoctrineRecord::setServiceContainer($this->serviceContainer);
+    
+    dmDoctrineQuery::setModuleManager($this->getModuleManager());
+    dmDoctrineTable::setModuleManager($this->getModuleManager());
 
     /*
      * Doctrine cache configuration require a loaded dmContext to run
@@ -93,6 +96,25 @@ class dmContext extends sfContext
     }
 
     throw new sfException(sprintf('The "%s" object does not exist in the current context.', $name));
+  }
+  
+  
+  /**
+   * Loads the symfony factories.
+   */
+  public function loadFactories()
+  {
+    // create a new module_manager
+    $moduleManagerOptions = array(
+      'type_class' => 'dmModuleType',
+      'space_class' => 'dmModuleSpace',
+      'module_base_class' => 'dmModule',
+      'module_node_class' => 'dmProjectModule'
+    );
+    
+    $this->factories['module_manager'] = new dmModuleManager($moduleManagerOptions);
+
+    return parent::loadFactories();
   }
   
   /*
@@ -203,6 +225,14 @@ class dmContext extends sfContext
   public function getHelper()
   {
     return $this->serviceContainer->getService('helper');
+  }
+  
+  /*
+   * @return dmModuleManager
+   */
+  public function getModuleManager()
+  {
+    return $this->factories['module_manager'];
   }
 
   /**

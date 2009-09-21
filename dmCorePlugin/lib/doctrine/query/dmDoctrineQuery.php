@@ -2,6 +2,8 @@
 
 abstract class dmDoctrineQuery extends Doctrine_Query
 {
+  protected static
+  $moduleManager;
 
   protected static
   $cacheDrivers;
@@ -134,12 +136,12 @@ abstract class dmDoctrineQuery extends Doctrine_Query
   #TODO optimize speed by not fetching $ancestorRecord
   public function whereAncestorId($ancestorRecordModel, $ancestorRecordId, $model)
   {
-    if(!$module = dmModuleManager::getModule($model))
+    if(!$module = self::$moduleManager->getModuleByModel($model))
     {
-      throw new dmException(sprintf('No module %s', $model));
+      throw new dmException(sprintf('No module with model %s', $model));
     }
   
-    if ($module->hasAssociation($ancestorModule = dmModuleManager::getModuleByModel($ancestorRecordModel)))
+    if ($module->hasAssociation($ancestorModule = self::$moduleManager->getModuleByModel($ancestorRecordModel)))
     {
       $this->leftJoin(sprintf('%s.%s %s',
         $this->getRootAlias(),
@@ -197,7 +199,7 @@ abstract class dmDoctrineQuery extends Doctrine_Query
    */
   public function whereDescendantId($descendantRecordModel, $descendantRecordId, $model)
   {
-    if(!$module = dmModuleManager::getModule($model))
+    if(!$module = self::$moduleManager->getModule($model))
     {
       throw new dmException(sprintf('No module %s', $model));
     }
@@ -349,4 +351,8 @@ abstract class dmDoctrineQuery extends Doctrine_Query
     return $this->getSqlQuery();
   }
   
+  public static function setModuleManager(dmModuleManager $moduleManager)
+  {
+    self::$moduleManager = $moduleManager;
+  }
 }

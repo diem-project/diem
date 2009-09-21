@@ -47,7 +47,7 @@ class dmActionLog extends dmFileLog
   
     if ($record instanceof DmPage)
     {
-      $type = dmModuleManager::getModule('dmPage')->getKey();
+      $type = $this->serviceContainer->getService('module_manager')->getModule('dmPage')->getKey();
     }
     elseif ($record instanceof dmDoctrineRecord && $module = $record->getDmModule())
     {

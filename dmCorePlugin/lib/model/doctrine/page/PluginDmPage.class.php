@@ -71,7 +71,7 @@ abstract class PluginDmPage extends BaseDmPage
       return $this->getCache('dm_module');
     }
 
-    return $this->setCache('dm_module', dmModuleManager::getModuleOrNull($this->get('module')));
+    return $this->setCache('dm_module', self::$serviceContainer->getService('module_manager')->getModuleOrNull($this->get('module')));
   }
 
   public function getPageView()

@@ -30,9 +30,7 @@ services:
   link_tag:
     class:                    %link_tag.class%
     shared:                   false
-    arguments:
-      source:                 %link_tag.source%
-      request_context:        %request.context%
+    arguments:                [ %link_tag.source%, %request.context% ]
 
   link_resource:
     class:                    %link_resource.class%
@@ -41,35 +39,19 @@ services:
   theme_manager:
     class:                    %theme_manager.class%
     shared:                   true
-    arguments:
-      dispatcher:             @dispatcher
-      service_container:      @service_container
-      options:                %theme_manager.options%
+    arguments:                [ @dispatcher, @service_container, %theme_manager.options% ]
 
   widget_view:
     class:                    %widget_view.class%
     shared:                   false
-    arguments:
-      dispatcher:             @dispatcher
-      helper:                 @helper
-      type:                   %widget_view.type%
-      data:                   %widget_view.data%
+    arguments:                [ @dispatcher, @helper, %widget_view.type%, %widget_view.data% ]
 
   page_helper:
     class:                    %page_helper.class%
     shared:                   true
-    arguments:
-      dispatcher:             @dispatcher
-      widget_type_manager:    @widget_type_manager
-      service_container:      @service_container
-      i18n:                   @i18n
+    arguments:                [ @dispatcher, @widget_type_manager, @service_container, @i18n ]
 
   widget_type_manager:
     class:                    %widget_type_manager.class%
     shared:                   true
-    arguments:
-      dispatcher:             @dispatcher
-      cache_manager:          @cache_manager
-      config_cache:           @config_cache
-      controller:             @controller
-      options:                %widget_type_manager.options%
+    arguments:                [ @dispatcher, @cache_manager, @config_cache, @controller, @module_manager, %widget_type_manager.options% ]

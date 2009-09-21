@@ -7,10 +7,10 @@ class dmPageSyncService extends dmService
   {
     if(empty($onlyModules))
     {
-      $onlyModules = dmModuleManager::getProjectModules();
+      $onlyModules = dmContext::getInstance()->getModuleManager()->getProjectModules();
     }
     
-    $onlyModules = dmModuleManager::removeModulesChildren($onlyModules);
+    $onlyModules = dmContext::getInstance()->getModuleManager()->removeModulesChildren($onlyModules);
     
     $timer = dmDebug::timerOrNull('dmPageSyncService::execute');
 
@@ -148,7 +148,7 @@ class dmPageSyncService extends dmService
   {
     $timer = dmDebug::timerOrNull('dmPageSync : updateListPages');
 
-    $projectModules = dmModuleManager::getProjectModules();
+    $projectModules = dmContext::getInstance()->getModuleManager()->getProjectModules();
     foreach($projectModules as $key => $module)
     {
       if(!$module->hasListPage())

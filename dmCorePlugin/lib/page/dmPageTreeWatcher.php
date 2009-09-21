@@ -4,11 +4,13 @@ class dmPageTreeWatcher
 {
   protected
   $dispatcher,
+  $moduleManager,
   $modifiedTables;
 
-  public function __construct(sfEventDispatcher $dispatcher)
+  public function __construct(sfEventDispatcher $dispatcher, dmModuleManager $moduleManager)
   {
     $this->dispatcher = $dispatcher;
+    $this->moduleManager = $moduleManager;
     
     $this->initialize();
   }
@@ -90,7 +92,7 @@ class dmPageTreeWatcher
       {
         foreach($table->getRelationHolder()->getLocals() as $localRelation)
         {
-          if ($localModule = dmModuleManager::getModuleByModel($localRelation['class']))
+          if ($localModule = $this->moduleManageer->getModuleByModel($localRelation['class']))
           {
             if ($localModule->interactsWithPageTree())
             {

@@ -26,7 +26,11 @@
   {
     $this->forward404Unless($record = $this->getDmModule()->getTable()->find($request->getParameter('id')));
     
-    $this->forward404Unless($refererModule = dmModuleManager::getModuleOrNull($request->getParameter('refererModule')));
+    $this->forward404Unless($moduleKey = $request->getParameter('refererModule'));
+    
+    $this->forward404Unless($this->context->getModuleManager()->hasModule($moduleKey));
+    
+    $refererModule = $this->context->getModuleManager()->getModule($moduleKey);
     
     $this->forward404Unless($refererModule->getTable()->isSortable());
     

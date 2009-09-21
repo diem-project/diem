@@ -9,10 +9,10 @@ class dmUpdateSeoService extends dmService
   {
     if(empty($onlyModules))
     {
-      $onlyModules = dmModuleManager::getProjectModules();
+      $onlyModules = dmContext::getInstance()->getModuleManager()->getProjectModules();
     }
     
-    $onlyModules = dmModuleManager::removeModulesChildren($onlyModules);
+    $onlyModules = dmContext::getInstance()->getModuleManager()->removeModulesChildren($onlyModules);
     
     $culture = dm::getUser()->getCulture();
 

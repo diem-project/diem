@@ -6,7 +6,6 @@ parameters:
   error_watcher.options:
     error_description_class:  dmErrorDescription
 
-  media_tag.class:            dmMediaTag
   media_tag_image.class:      dmMediaTagImage
   media_tag_flash.class:      dmMediaTagFlash
   media_tag_video.class:      dmMediaTagVideo
@@ -70,182 +69,115 @@ services:
   script_name_resolver:
     class:                    %script_name_resolver.class%
     shared:                   true
-    arguments:
-      context:                @context
+    arguments:                [ @context ]
 
   error_watcher:
     class:                    %error_watcher.class%
     shared:                   true
-    arguments:
-      dispatcher:             @dispatcher
-      context:                @context
-      options:                %error_watcher.options%
+    arguments:                [ @dispatcher, @context, %error_watcher.options% ]
 
   media_tag:
     class:                    %media_tag.class%
     shared:                   false
-    arguments:
-      source:                 %media_tag.source%
-      theme:                  %user.theme%
-      culture:                %user.culture%
-      request_context:        %request.context%
+    arguments:                [ %media_tag.source%, %user.theme%, %user.culture%, %request.context% ]
 
   media_resource:
     class:                    %media_resource.class%
     shared:                   false
-    arguments:
-      theme:                  %user.theme%
-      culture:                %user.culture%
-      request_context:        %request.context%
+    arguments:                [ %user.theme%, %user.culture%, %request.context% ]
 
   search_engine:
     class:                    %search_engine.class%
     shared:                   true
-    arguments:
-      dispatcher:             @dispatcher
-      user:                   @user
-      logger:                 @logger
-      serviceContainer:       @service_container
+    arguments:                [ @dispatcher, @user, @logger, @service_container ]
 
   search_index:
     class:                    %search_index.class%
     shared:                   false
-    arguments:
-      dispatcher:             @dispatcher
-      filesystem:             @filesystem
-      logger:                 @logger
+    arguments:                [ @dispatcher, @filesystem, @logger ]
 
   asset_config:
     class:                    %asset_config.class%
     shared:                   true
-    arguments:
-      dispatcher:             @dispatcher
-      user:                   @user
+    arguments:                [ @dispatcher, @user ]
 
   theme:
     class:                    %theme.class%
     shared:                   false
-    arguments:
-      dispatcher:             @dispatcher
-      filesystem:             @filesystem
-      request_context:        %request.context%
-      options:                %theme.options%
-
+    arguments:                [ @dispatcher, @filesystem, %request.context%, %theme.options% ]
+    
   stylesheet_compressor:
     class:                    %stylesheet_compressor.class%
     shared:                   true
-    arguments:
-      dispatcher:             @dispatcher
-      filesystem:             @filesystem
-      request_context:        %request.context%
-      options:                %stylesheet_compressor.options%
+    arguments:                [ @dispatcher, @filesystem, %request.context%, %stylesheet_compressor.options% ]
 
   javascript_compressor:
     class:                    %javascript_compressor.class%
     shared:                   true
-    arguments:
-      dispatcher:             @dispatcher
-      filesystem:             @filesystem
-      request_context:        %request.context%
-      options:                %javascript_compressor.options%
+    arguments:                [ @dispatcher, @filesystem, %request.context%, %javascript_compressor.options% ]
 
   layout_helper:
     class:                    %layout_helper.class%
     shared:                   true
     arguments:
-      dispatcher:             @dispatcher
-      user:                   @user
-      response:               @response
-      action_stack:           @action_stack
-      helper:                 @helper
-      request_context:        %request.context%
+    arguments:                [ @dispatcher, @user, @response, @action_stack, @helper, %request.context% ]
 
   auth_layout_helper:
     class:                    %auth_layout_helper.class%
     shared:                   true
-    arguments:
-      dispatcher:             @dispatcher
-      user:                   @user
-      response:               @response
-      action_stack:           @action_stack
-      helper:                 @helper
-      request_context:        %request.context%
+    arguments:                [ @dispatcher, @user, @response, @action_stack, @helper, %request.context% ]
 
   doctrine_config:
     class:                    %doctrine_config.class%
     shared:                   true
-    arguments:
-      doctrine_manager:       @doctrine_manager
-      dispatcher:             @dispatcher
-      cache_manager:          @cache_manager
+    arguments:                [ @doctrine_manager, @dispatcher, @cache_manager ]
 
   filesystem:
     class:                    %filesystem.class%
     shared:                   true
-    arguments:
-      dispatcher:             @dispatcher
+    arguments:                [ @dispatcher ]
       
   action_log:
     class:                    %action_log.class%
     shared:                   true
-    arguments:
-      dispatcher:             @dispatcher
-      filesystem:             @filesystem
-      service_container:      @service_container
-      options:                %action_log.options%
+    arguments:                [ @dispatcher, @filesystem, @service_container, %action_log.options% ]
       
   action_log_entry:
     class:                    %action_log_entry.class%
     shared:                   false
-    arguments:
-      service_container:      @service_container
+    arguments:                [ @service_container ]
       
   user_log:
     class:                    %user_log.class%
     shared:                   true
-    arguments:
-      dispatcher:             @dispatcher
-      filesystem:             @filesystem
-      service_container:      @service_container
-      options:                %user_log.options%
+    arguments:                [ @dispatcher, @filesystem, @service_container, %user_log.options% ]
       
   user_log_entry:
     class:                    %user_log_entry.class%
     shared:                   false
-    arguments:
-      service_container:      @service_container
+    arguments:                [ @service_container ]
       
   browser:
     class:                    %browser.class%
     shared:                   false
-    arguments:
-      dispatcher:             @dispatcher
+    arguments:                [ @dispatcher ]
       
   page_tree_watcher:
     class:                    %page_tree_watcher.class%
     shared:                   true
-    arguments:
-      dispatcher:             @dispatcher
+    arguments:                [ @dispatcher, @module_manager ]
       
   file_backup:
     class:                    %file_backup.class%
     shared:                   true
-    arguments:
-      dispatcher:             @dispatcher
-      filesystem:             @filesystem
-      options:                %file_backup.options%
+    arguments:                [ @dispatcher, @filesystem, %file_backup.options% ]
   
   helper:
     class:                    %helper.class%
     shared:                   true
-    arguments:
-      dispatcher:             @dispatcher
-      user:                   @user
-      context:                @context
-      request_context:        %request.context%
+    arguments:                [ @dispatcher, @user, @context, %request.context% ]
       
   cache_manager:
     class:                    %cache_manager.class%
     shared:                   true
-    arguments:
-      dispatcher:             @dispatcher
+    arguments:                [ @dispatcher ]

@@ -5,13 +5,14 @@ class dmProjectModule extends dmModule
 
   protected
     $actions = array();
-
-  public function __construct($key, $config, dmModuleSpace $space)
+    
+  public function initialize($key, dmModuleSpace $space, array $options)
   {
-    parent::__construct($key, $config, $space);
+    parent::initialize($key, $space, $options);
 
     $this->params['actions'] = array();
-    foreach(dmArray::get($config, "actions", array()) as $actionKey => $actionConfig)
+    
+    foreach(dmArray::get($options, 'actions', array()) as $actionKey => $actionConfig)
     {
       if (is_integer($actionKey))
       {
@@ -25,9 +26,9 @@ class dmProjectModule extends dmModule
       $this->params['actions'][$actionKey] = $action;
     }
 
-    $this->params['parentKey'] = dmArray::get($config, 'parent');
+    $this->params['parentKey'] = dmArray::get($options, 'parent');
     
-    $this->params['hasPage'] = dmArray::get($config, 'page', false);
+    $this->params['hasPage'] = dmArray::get($options, 'page', false);
   }
 
   public function hasPage()
@@ -65,7 +66,7 @@ class dmProjectModule extends dmModule
       return $this->getCache('parent');
     }
 
-    return $this->setCache('parent', dmModuleManager::getModuleOrNull($this->getParam('parentKey')));
+    return $this->setCache('parent', $this->manager->getModuleOrNull($this->getParam('parentKey')));
   }
 
   public function hasParent()
@@ -135,7 +136,7 @@ class dmProjectModule extends dmModule
   {
     if($this->hasDescendant($descendantKey))
     {
-      return dmModuleManager::getModule($descendantKey);
+      return $this->manager->getModule($descendantKey);
     }
     
     return null;
@@ -143,7 +144,7 @@ class dmProjectModule extends dmModule
   
   public function hasDescendant($descendantKey)
   {
-    return dmModuleManager::getModule($descendantKey)->hasAncestor($this->getKey());
+    return $this->manager->getModule($descendantKey)->hasAncestor($this->getKey());
   }
 
   /*
@@ -185,7 +186,7 @@ class dmProjectModule extends dmModule
    */
   public function getPathFrom($fromModule, $includeMe = false)
   {
-    $fromModule = dmModuleManager::getModule($fromModule);
+    $fromModule = $this->manager->getModule($fromModule);
     
     $path = $this->getPath($includeMe);
     
@@ -221,7 +222,7 @@ class dmProjectModule extends dmModule
       return $this->getCache('children');
     }
     $children = array();
-    foreach(dmModuleManager::getProjectModules() as $otherModule)
+    foreach($this->manager->getProjectModules() as $otherModule)
     {
       if ($otherModule->getParam('parentKey') === $this->key)
       {

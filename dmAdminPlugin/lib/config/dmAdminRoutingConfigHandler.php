@@ -54,6 +54,8 @@ class dmAdminRoutingConfigHandler extends sfRoutingConfigHandler
 
   public static function getDmConfiguration()
   {
+    $moduleManager = dmContext::getInstance()->getModuleManager();
+    
     // homepage first
     $config = array(
       'homepage' => array(
@@ -67,7 +69,7 @@ class dmAdminRoutingConfigHandler extends sfRoutingConfigHandler
     );
     
     // media library special route
-    if ($dmMediaLibraryModule = dmModuleManager::getModuleOrNull('dmMediaLibrary'))
+    if ($dmMediaLibraryModule = $moduleManager->getModuleOrNull('dmMediaLibrary'))
     {
       $config['dm_media_library_path'] = array(
         'class' => 'sfRoute',
@@ -84,7 +86,7 @@ class dmAdminRoutingConfigHandler extends sfRoutingConfigHandler
     }
     
     // module routes
-    foreach(dmModuleManager::getModules() as $module)
+    foreach($moduleManager->getModules() as $module)
     {
       if ($module->isProject())
       {
