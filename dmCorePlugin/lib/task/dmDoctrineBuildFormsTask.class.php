@@ -26,7 +26,7 @@ class dmDoctrineBuildFormsTask extends sfDoctrineBuildFormsTask
   {
     if (!sfContext::hasInstance())
     {
-      sfContext::createInstance($this->configuration);
+      dmContext::createInstance($this->configuration);
     }
 
     $this->logSection('doctrine', 'generating form classes');

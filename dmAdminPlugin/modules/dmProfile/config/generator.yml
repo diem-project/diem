@@ -13,9 +13,6 @@ generator:
       list:
         display:
           - =user_id
-          - created_at
-          - updated_at
-          - last_login
         sort:
           - created_at
           - desc
@@ -26,8 +23,6 @@ generator:
         display:
           - id
           - user_id
-          - created_at
-          - updated_at
       form:
         display:
           NONE: [User]

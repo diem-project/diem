@@ -7,32 +7,11 @@ class dmAction
     $key,
     $params;
 
-  public function __construct($key, $config)
+  public function __construct($key, array $options)
   {
     $this->key = $key;
 
-    $this->params = $config;
-
-    if (!isset($this->params['name']))
-    {
-      $this->params['name'] = dmString::humanize($key);
-    }
-
-    if (!isset($this->params['type']))
-    {
-      if (strncmp($key, 'list', 4) === 0)
-      {
-        $this->params['type'] = 'list';
-      }
-      elseif (strncmp($key, 'show', 4) === 0)
-      {
-        $this->params['type'] = 'show';
-      }
-      else
-      {
-        $this->params['type'] = 'simple';
-      }
-    }
+    $this->params = $options;
   }
 
   public function getParam($key, $default = null)

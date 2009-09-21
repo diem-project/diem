@@ -12,4 +12,9 @@ class PluginsfGuardUserTable extends myDoctrineTable
             ->addWhere('u.is_active = ?', $isActive)
             ->fetchRecord();
   }
+  
+  public function getIdentifierColumnName()
+  {
+    return 'username';
+  }
 }

@@ -6,6 +6,7 @@ parameters:
   error_watcher.options:
     error_description_class:  dmErrorDescription
 
+  media_tag.class:            dmMediaTag
   media_tag_image.class:      dmMediaTagImage
   media_tag_flash.class:      dmMediaTagFlash
   media_tag_video.class:      dmMediaTagVideo

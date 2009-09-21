@@ -30,7 +30,7 @@ class dmAdminGenerateService extends dmService
         $this->log(sprintf("Skip module %s wich has no admin", $moduleKey));
         continue;
       }
-      if (!$module->isInternal() && !$module->isProject())
+      if (!$module->isProject() && strncmp($module->getKey(), 'dm', 2) !== 0)
       {
         $this->log(sprintf("Skip module %s wich is nor internal nor project : probably a plugin one", $moduleKey));
         continue;

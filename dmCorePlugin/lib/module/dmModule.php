@@ -4,47 +4,23 @@ class dmModule extends dmMicroCache
 {
 
   protected
-    $manager,
-    $space,
     $key,
-    $params,
-    $underscoredKey,
-    $checkedModel,
-    $table;
+    $space,
+    $manager,
+    $options;
 
-  public function __construct(dmModuleManager $manager)
-  {
-    $this->manager = $manager;
-  }
-  
-  public function initialize($key, dmModuleSpace $space, array $options)
+  public function __construct($key, dmModuleSpace $space, dmModuleManager $manager, array $options)
   {
     $this->key    = $key;
     $this->space  = $space;
-    
-    /*
-     * Extract plural from name
-     * name | plural
-     */
-    if (!empty($options['name']))
-    {
-      if (strpos($options['name'], '|'))
-      {
-        list($options['name'], $options['plural']) = explode('|', $options['name']);
-      }
-    }
-    else
-    {
-      $options['name'] = dmString::humanize($key);
-    }
-    
-    $this->params = array(
-      'name' =>       $options['name'],
-      'plural' =>     empty($options['plural']) ? dmString::pluralize($options['name']) : $options['plural'],
-      'model' =>      empty($options['model']) ? dmString::camelize($key) : $options['model'],
-      'credentials' => isset($options['credentials']) ? $options['credentials'] : null,
-      'options' =>    empty($options['options']) ? $this->getDefaultOptions() : array_merge($this->getDefaultOptions(), sfToolkit::stringToArray($options['options']))
-    );
+    $this->manager = $manager;
+
+    $this->initialize($options);
+  }
+  
+  protected function initialize(array $options)
+  {
+    $this->options = $options;
   }
 
   public function getSpace()
@@ -52,34 +28,20 @@ class dmModule extends dmMicroCache
     return $this->space;
   }
 
-  public function isInternal()
-  {
-    return !$this->isProject() && strncmp($this->getKey(), 'dm', 2) === 0;
-  }
-
   public function isProject()
   {
-    return $this->getSpace()->getType()->isProject();
+    return $this instanceof dmProjectModule;
   }
 
-  public function getOptions()
-  {
-    return $this->getParam("options");
-  }
-
-  public function getOption($option_key, $default = null)
-  {
-    return dmArray::get($this->getOptions(), $option_key, $default);
-  }
 
   public function hasAdmin()
   {
-    return $this->getOption('admin');
+    return $this->options['admin'];
   }
 
   public function __toString()
   {
-    return $this->getKey();
+    return $this->key;
   }
 
   public function toDebug()
@@ -94,49 +56,37 @@ class dmModule extends dmMicroCache
 
   public function getParam($key)
   {
-    return isset($this->params[$key]) ? $this->params[$key] : null;
+    return isset($this->options[$key]) ? $this->options[$key] : null;
   }
 
   public function setParam($key, $value)
   {
-    return $this->params[$key] = $value;
+    return $this->options[$key] = $value;
   }
 
   public function getName()
   {
-    return $this->getParam("name");
+    return $this->options['name'];
   }
 
   public function getPlural()
   {
-    return $this->getParam("plural");
+    return $this->options['plural'];
   }
   
   public function getCredentials()
   {
-    return $this->getCredentials();
+    return $this->options['credentials'];
   }
 
   public function getModel()
   {
-    if (null === $this->checkedModel)
-    {
-      $this->checkedModel = false;
-      if ($model = $this->getParam("model"))
-      {
-        if(Doctrine::isValidModelClass($model))
-        {
-          $this->checkedModel = $model;
-        }
-      }
-    }
-
-    return $this->checkedModel;
+    return $this->options['model'];
   }
 
   public function hasModel()
   {
-    return $this->getModel() !== false;
+    return false !== $this->options['model'];
   }
 
   public function hasPage()
@@ -146,11 +96,7 @@ class dmModule extends dmMicroCache
 
   public function getUnderscore()
   {
-    if (null === $this->underscoredKey)
-    {
-      $this->underscoredKey = dmString::underscore($this->getKey());
-    }
-    return $this->underscoredKey;
+    return $this->options['underscore'];
   }
 
   public function getSlug()
@@ -160,7 +106,7 @@ class dmModule extends dmMicroCache
       return $this->getCache('slug');
     }
 
-    return $this->setCache('slug', $this->slug = dmString::slugify(dm::getI18n()->__($this->getPlural())));
+    return $this->setCache('slug', dmString::slugify(dm::getI18n()->__($this->getPlural())));
   }
 
   public function getCompleteSlug()
@@ -179,46 +125,45 @@ class dmModule extends dmMicroCache
     );
   }
 
-
   /*
    * Full system path to the symfony module directory
    * @return string|null /path/to/the/module
    */
-  public function getDir()
-  {
-    if($this->hasCache('dir'))
-    {
-      return $this->getCache('dir');
-    }
-
-    $dirs = dmContext::getInstance()->getConfiguration()->getControllerDirs($this->getKey());
-
-    $dir = null;
-    foreach($dirs as $actionPath => $isProject)
-    {
-      if(file_exists($actionPath))
-      {
-        $dir = preg_replace('|^(.+)/actions$|', '$1', $actionPath);
-        break;
-      }
-    }
-    
-    return $this->setCache('dir', $dir);
-  }
+//  public function getDir()
+//  {
+//    if($this->hasCache('dir'))
+//    {
+//      return $this->getCache('dir');
+//    }
+//
+//    $dirs = dmContext::getInstance()->getConfiguration()->getControllerDirs($this->key);
+//
+//    $dir = null;
+//    foreach($dirs as $actionPath => $isProject)
+//    {
+//      if(file_exists($actionPath))
+//      {
+//        $dir = preg_replace('|^(.+)/actions$|', '$1', $actionPath);
+//        break;
+//      }
+//    }
+//    
+//    return $this->setCache('dir', $dir);
+//  }
 
   public function getTable()
   {
-    if (null === $this->table)
+    if ($this->hasCache('table'))
     {
-      $model = $this->getModel();
-      $this->table = $model ? dmDb::table($this->getModel()) : false;
+      return $this->getCache('table');
     }
 
-    return $this->table;
+    return $this->setCache('table', $this->hasModel() ? dmDb::table($this->options['model']) : false);
   }
 
   public function getForeigns()
   {
+    throw new dmException('deprecated?');
     if ($this->hasCache('foreigns'))
     {
       return $this->getCache('foreigns');
@@ -335,20 +280,12 @@ class dmModule extends dmMicroCache
     return false;
   }
 
-  public function getDefaultOptions()
-  {
-    return array(
-      'admin' => true,
-      'page'  => false
-    );
-  }
-
   public function toArray()
   {
     return array(
-      'key' => $this->getKey(),
-      'model' => $this->getModel(),
-      'params' => $this->params
+      'key' => $this->key,
+      'model' => $this->options['model'],
+      'options' => $this->options
     );
   }
 
@@ -356,10 +293,14 @@ class dmModule extends dmMicroCache
   {
     if (is_string($something))
     {
-      return $this->getKey() == $something;
+      return $this->key == $something;
+    }
+    if($something instanceof dmModule)
+    {
+      return $something->getKey() === $this->key;
     }
 
-    return $this == $something;
+    return false;
   }
   
   public function interactsWithPageTree()

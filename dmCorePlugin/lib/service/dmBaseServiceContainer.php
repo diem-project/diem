@@ -204,4 +204,8 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
     return $resource;
   }
   
+  public function get($name)
+  {
+    return $this->getService($name);
+  }
 }

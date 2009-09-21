@@ -273,7 +273,9 @@ $.getScript(href, callback);
 
 * [DONE] move module manager to sf factories ( loaded before i18n )
 
-* cache module hierarchy creation
+* [DONE] cache module hierarchy creation
+
+* move module hierarchy consistency checks to its cache generation
 
 * deprecate the getModuleOrNull dmModuleManager method and add a hasModule method
 

@@ -12,69 +12,19 @@ class dmModuleManager
   {
     $this->initialize($options);
   }
-  
+
   public function initialize(array $options = array())
   {
     $this->options = $options;
-    
-    $this->load();
   }
   
-  protected function load()
+  public function load(array $types, array $modules, array $projectModules)
   {
-    $this->types   = array();
-    $this->modules = array();
-    $this->projectModules = array();
-
-    $config = include(sfContext::getInstance()->getConfigCache()->checkConfig('config/dm/modules.yml'));
-    
-    foreach($config as $typeName => $spacesConfig)
-    {
-      $type = new $this->options['type_class'];
-      $typeSpaces = array();
-
-      $moduleClass = $this->options['Project' === $typeName ? 'module_node_class' : 'module_base_class'];
-      
-      foreach($spacesConfig as $spaceName => $modulesConfig)
-      {
-        $space = new $this->options['space_class'];
-        $spaceModules = array();
-        
-        foreach($modulesConfig as $moduleKey => $moduleConfig)
-        {
-          $moduleKey = dmString::modulize($moduleKey);
-          
-          $module = new $moduleClass($this);
-          
-          $module->initialize($moduleKey, $space, $moduleConfig);
-          
-          $spaceModules[$moduleKey] = $module;
-          
-          /*
-           * Cache modules and project modules for fast access
-           */
-          $this->modules[$moduleKey] = $module;
-          
-          if('Project' === $typeName)
-          {
-            $this->projectModules[$moduleKey] = $module;
-          }
-        }
-      
-        $space->initialize($spaceName, $type, $spaceModules);
-        $typeSpaces[$spaceName] = $space;
-        // unset($spaceModules);
-      }
-      
-      $type->configure($typeName, $typeSpaces);
-      // unset($typeSpaces);
-      
-      $this->types[$typeName] = $type;
-    }
-    
-    unset($config);
+    $this->types          = $types;
+    $this->modules        = $modules;
+    $this->projectModules = $projectModules;
   }
-
+  
   public function getTypes()
   {
     return $this->types;
@@ -175,9 +125,11 @@ class dmModuleManager
 
   public function getModuleByModel($model)
   {
+    $model = dmString::camelize($model);
+    
     foreach($this->getProjectModules() as $module)
     {
-      if ($module->getModel() == $model)
+      if ($module->getModel() === $model)
       {
         return $module;
       }
@@ -185,7 +137,7 @@ class dmModuleManager
 
     foreach($this->getModules() as $module)
     {
-      if ($module->getModel() == $model)
+      if ($module->getModel() === $model)
       {
         return $module;
       }

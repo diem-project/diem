@@ -8,7 +8,7 @@ class dmModuleType
     $spaces,
     $slug;
 
-  public function configure($name, array $spaces = array())
+  public function initialize($name, array $spaces = array())
   {
     $this->name   = $name;
     $this->spaces = $spaces;
@@ -53,9 +53,9 @@ class dmModuleType
   }
 
 
-  public function getSpace($space_name)
+  public function getSpace($name)
   {
-    return $this->spaces[$space_name];
+    return $this->spaces[$name];
   }
 
   public function getSpaceBySlug($slug, $default = null)
@@ -73,10 +73,12 @@ class dmModuleType
   public function getModules()
   {
     $modules = array();
+    
     foreach($this->getSpaces() as $space)
     {
       $modules = array_merge($modules, $space->getModules());
     }
+    
     return $modules;
   }
 

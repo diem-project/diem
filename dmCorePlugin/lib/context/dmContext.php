@@ -104,16 +104,11 @@ class dmContext extends sfContext
    */
   public function loadFactories()
   {
+    $timer = dmDebug::timerOrNull('load module manager');
     // create a new module_manager
-    $moduleManagerOptions = array(
-      'type_class' => 'dmModuleType',
-      'space_class' => 'dmModuleSpace',
-      'module_base_class' => 'dmModule',
-      'module_node_class' => 'dmProjectModule'
-    );
+    $this->factories['module_manager'] = include($this->getConfigCache()->checkConfig('config/dm/modules.yml'));
+    $timer && $timer->addTime();
     
-    $this->factories['module_manager'] = new dmModuleManager($moduleManagerOptions);
-
     return parent::loadFactories();
   }
   

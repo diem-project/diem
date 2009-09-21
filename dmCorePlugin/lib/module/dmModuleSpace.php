@@ -33,6 +33,7 @@ class dmModuleSpace
     {
       $this->slug = dmString::slugify(dm::getI18n()->__($this->getName()));
     }
+    
     return $this->slug;
   }
 

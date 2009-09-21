@@ -10,7 +10,7 @@ class dmPageSyncService extends dmService
       $onlyModules = dmContext::getInstance()->getModuleManager()->getProjectModules();
     }
     
-    $onlyModules = dmContext::getInstance()->getModuleManager()->removeModulesChildren($onlyModules);
+    $onlyModules = dmModuleManager::removeModulesChildren($onlyModules);
     
     $timer = dmDebug::timerOrNull('dmPageSyncService::execute');
 

@@ -27,7 +27,7 @@ EOF;
   {
     if (!sfContext::hasInstance())
     {
-      sfContext::createInstance($this->configuration);
+      dmContext::createInstance($this->configuration);
     }
 
     $databaseManager = new sfDatabaseManager($this->configuration);

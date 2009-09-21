@@ -1,6 +1,6 @@
 <?php
 
-$moduleManager    = dmContext::getInstance()->getModuleManager();
+$moduleManager    = $sf_context->getModuleManager();
 $module           = $moduleManager->getModuleByModel($record->getTable()->getComponentName());
 
 if(!$module)
@@ -31,7 +31,7 @@ echo £o('div.dm_foreigns');
     foreach($foreignRecords as $foreignRecord)
     {
       echo £('li',
-        dmAdminLinkTag::build(array(
+        £link(array(
           'sf_route' => $foreignModule->getUnderscore().'_edit',
           'sf_subject' => $foreignRecord
         ))->text($foreignRecord)
@@ -47,13 +47,13 @@ echo £o('div.dm_foreigns');
   
   if ($relation instanceof Doctrine_Relation_ForeignKey)
   {
-    $newLink->param('defaults['.$relation->getForeign().']', $record->id);
+    $newLink->param('defaults['.$relation->getForeign().']', $record->get('id'));
   }
 
   echo £('ul.actions',
     £('li', $newLink).
     (($foreignModule->getTable()->isSortable() && count($foreignRecords) > 1)
-    ? £('li', dmAdminLinkTag::build(array(
+    ? £('li', £link(array(
       'sf_route'      => $module->getUnderscore().'_do',
       'id'            => $record->get('id'),
       'action'        => 'sortReferers',

@@ -1,5 +1,5 @@
 config/dm/modules.yml:
-  class:          sfSimpleYamlConfigHandler
+  class:          dmModuleManagerConfigHandler
   
 config/dm/project.yml:
   class:          sfDefineEnvironmentConfigHandler

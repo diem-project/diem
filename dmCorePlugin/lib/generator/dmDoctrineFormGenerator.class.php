@@ -3,10 +3,9 @@
 
 class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
 {
-
   protected
-  $module = false;
-
+  $moduleManager;
+  
   /**
    * Initializes the current sfGenerator instance.
    *
@@ -15,6 +14,8 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
   public function initialize(sfGeneratorManager $generatorManager)
   {
     parent::initialize($generatorManager);
+    
+    $this->moduleManager = dmContext::getInstance()->getModuleManager();
 
     $this->setGeneratorClass('dmDoctrineForm');
   }
@@ -55,7 +56,7 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
       $this->table = Doctrine::getTable($model);
       $this->modelName = $model;
 
-      if ($this->module->getManager()->getModuleByModel($model))
+      if ($this->moduleManager->getModuleByModel($model))
       {
         $this->setGeneratorClass('dmDoctrineForm');
       }
@@ -106,7 +107,7 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
 
   public function getModule()
   {
-    return $this->module->getManager()->getModuleByModel($this->table->getComponentName());
+    return $this->moduleManager->getModuleByModel($this->table->getComponentName());
   }
 
   public function getMediaRelations()

@@ -92,7 +92,7 @@ class dmPageTreeWatcher
       {
         foreach($table->getRelationHolder()->getLocals() as $localRelation)
         {
-          if ($localModule = $this->moduleManageer->getModuleByModel($localRelation['class']))
+          if ($localModule = $this->moduleManager->getModuleByModel($localRelation['class']))
           {
             if ($localModule->interactsWithPageTree())
             {

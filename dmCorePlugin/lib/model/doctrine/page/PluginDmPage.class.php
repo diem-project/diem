@@ -28,7 +28,7 @@ abstract class PluginDmPage extends BaseDmPage
       return $this->getCache('is_automatic');
     }
 
-    return $this->setCache('is_automatic', $this->get('action') === 'show' ? $this->getDmModule()->getOption('auto') : false);
+    return $this->setCache('is_automatic', $this->get('action') === 'show');
   }
 
   public function hasRecords()

@@ -2,62 +2,27 @@
 
 class dmProjectModule extends dmModule
 {
-
-  protected
-    $actions = array();
-    
-  public function initialize($key, dmModuleSpace $space, array $options)
-  {
-    parent::initialize($key, $space, $options);
-
-    $this->params['actions'] = array();
-    
-    foreach(dmArray::get($options, 'actions', array()) as $actionKey => $actionConfig)
-    {
-      if (is_integer($actionKey))
-      {
-        $actionKey = $actionConfig;
-        $action = new dmAction($actionKey, array());
-      }
-      else
-      {
-        $action = new dmAction($actionKey, $actionConfig);
-      }
-      $this->params['actions'][$actionKey] = $action;
-    }
-
-    $this->params['parentKey'] = dmArray::get($options, 'parent');
-    
-    $this->params['hasPage'] = dmArray::get($options, 'page', false);
-  }
-
   public function hasPage()
   {
-    return $this->params['hasPage'];
+    return $this->options['has_page'];
   }
 
   // ACCESSEURS
 
-  public function hasModel()
-  {
-    return parent::hasModel() && in_array($this->getModel(), dmProject::getModels());
-  }
-
   public function getActions()
   {
-    return $this->getParam("actions");
+    return $this->options['actions'];
   }
 
   public function getAction($actionKey)
   {
-    return dmArray::get($this->getActions(), $actionKey);
+    return isset($this->options['actions'][$actionKey]) ? $this->options['actions'][$actionKey] : null;
   }
 
   public function hasAction($actionKey)
   {
-    return array_key_exists($actionKey, $this->getActions());
+    return isset($this->options['actions'][$actionKey]);
   }
-
 
   public function getParent()
   {
@@ -66,7 +31,12 @@ class dmProjectModule extends dmModule
       return $this->getCache('parent');
     }
 
-    return $this->setCache('parent', $this->manager->getModuleOrNull($this->getParam('parentKey')));
+    return $this->setCache('parent', $this->manager->getModuleOrNull($this->getParentKey()));
+  }
+  
+  public function getParentKey()
+  {
+    return $this->options['parent_key'];
   }
 
   public function hasParent()
@@ -217,24 +187,19 @@ class dmProjectModule extends dmModule
 
   public function getChildren()
   {
-    if ($this->hasCache('children'))
-    {
-      return $this->getCache('children');
-    }
     $children = array();
-    foreach($this->manager->getProjectModules() as $otherModule)
+    
+    foreach($this->options['children_keys'] as $childKey)
     {
-      if ($otherModule->getParam('parentKey') === $this->key)
-      {
-        $children[$otherModule->getKey()] = $otherModule;
-      }
+      $children[$childKey] = $this->manager->getModule($childKey);
     }
-    return $this->setCache('children', $children);
+    
+    return $children;
   }
 
   public function hasChildren()
   {
-    return count($this->getChildren()) !== 0;
+    return !empty($this->options['children_keys']);
   }
 
   public function getDefaultOptions()
