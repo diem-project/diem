@@ -43,18 +43,6 @@ class dmModuleManager
     return dmArray::get($this->getTypes(), $typeName);
   }
 
-  public function getTypeBySlug($slug, $default = null)
-  {
-    foreach($this->getTypes() as $type)
-    {
-      if ($type->getSlug() === $slug)
-      {
-        return $type;
-      }
-    }
-    
-    return $default;
-  }
   
   public function getModules()
   {
@@ -72,16 +60,15 @@ class dmModuleManager
     return isset($this->modules[$moduleKey]);
   }
   
-  public function getModule($something, $orNull = false)
+  public function getModule($moduleKey, $orNull = false)
   {
-    if ($something instanceof dmModule)
-    {
-      return $something;
-    }
-
-    $moduleKey = dmString::modulize($something);
+    $moduleKey = $moduleKey instanceof dmModule ? $moduleKey->getKey() : $moduleKey;
 
     if (isset($this->modules[$moduleKey]))
+    {
+      return $this->modules[$moduleKey];
+    }
+    elseif (isset($this->modules[$moduleKey = dmString::modulize($moduleKey)]))
     {
       return $this->modules[$moduleKey];
     }
@@ -190,6 +177,11 @@ class dmModuleManager
     }
 
     return $modules;
+  }
+  
+  public static function moduleKey($moduleOrKey)
+  {
+    return $module instanceof dmModule ? $moduleOrKey->getKey() : $moduleOrKey;
   }
 
 }

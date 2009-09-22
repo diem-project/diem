@@ -99,32 +99,6 @@ class dmModule extends dmMicroCache
     return $this->options['underscore'];
   }
 
-  public function getSlug()
-  {
-    if ($this->hasCache('slug'))
-    {
-      return $this->getCache('slug');
-    }
-
-    return $this->setCache('slug', dmString::slugify(dm::getI18n()->__($this->getPlural())));
-  }
-
-  public function getCompleteSlug()
-  {
-    if($this->hasCache('complete_slug'))
-    {
-      return $this->getCache('complete_slug');
-    }
-
-    return $this->setCache('complete_slug',
-      implode('/', array(
-        $this->getSpace()->getType()->getSlug(),
-        $this->getSpace()->getSlug(),
-        $this->getSlug()
-      ))
-    );
-  }
-
   /*
    * Full system path to the symfony module directory
    * @return string|null /path/to/the/module
@@ -239,6 +213,7 @@ class dmModule extends dmMicroCache
     {
       return array_key_exists($localModule->getKey(), $this->getLocals());
     }
+
     return false;
   }
 

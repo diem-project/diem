@@ -24,14 +24,17 @@ class dmAdminFunctionalCoverageTest extends dmCoreFunctionalCoverageTest
   protected function getUrls()
   {
     $urls = array('/');
+    $routing = dmContext::getInstance()->getRouting();
+    
     foreach(dmContext::getInstance()->getModuleManager()->getModules() as $module)
     {
-      if (!$module->getDir())
+      if (!$routing->hasRouteName($module->getKey()))
       {
         continue;
       }
       
-      $moduleUrl = '/'.$module->getCompleteSlug();
+      $moduleUrl = $routing->generate($module->getKey());
+      
       $urls[] = $moduleUrl;
       
       if ($module->hasModel() && $module->getTable()->hasField('id'))

@@ -27,15 +27,6 @@ class dmModuleSpace
     return $this->name;
   }
 
-  public function getSlug()
-  {
-    if(null === $this->slug)
-    {
-      $this->slug = dmString::slugify(dm::getI18n()->__($this->getName()));
-    }
-    
-    return $this->slug;
-  }
 
   public function getModules()
   {

@@ -242,10 +242,9 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
 
     $moduleOptions = array(
       'name' =>       (string) trim($moduleConfig['name']),
-      'plural' =>     (string) trim(empty($moduleConfig['plural']) ? dmString::pluralize($moduleConfig['name']) : $moduleConfig['plural']),
+      'plural' =>     (string) trim(empty($moduleConfig['plural']) ? ($model ? dmString::pluralize($moduleConfig['name']) : $moduleConfig['name']) : $moduleConfig['plural']),
       'model' =>      $model,
       'credentials' => isset($moduleConfig['credentials']) ? trim($moduleConfig['credentials']) : null,
-      'admin'       => true,
       'underscore'  => (string) dmString::underscore($moduleKey),
       'is_project'  => (boolean) dmArray::get($moduleConfig, 'project', $isInProject)
     );

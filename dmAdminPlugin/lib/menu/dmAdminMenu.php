@@ -81,7 +81,7 @@ class dmAdminMenu
     $moduleMenu = array();
     foreach($space->getModules() as $moduleKey => $module)
     {
-      if(!$this->routing->hasRouteName($module->getUnderscore()))
+      if(!$module->hasAdmin())
       {
         continue;
       }

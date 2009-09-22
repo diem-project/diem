@@ -55,6 +55,7 @@ class dmAdminRoutingConfigHandler extends sfRoutingConfigHandler
   public static function getDmConfiguration()
   {
     $moduleManager = dmContext::getInstance()->getModuleManager();
+    $i18n = dmContext::getInstance()->getI18n();
     
     // homepage first
     $config = array(
@@ -67,13 +68,19 @@ class dmAdminRoutingConfigHandler extends sfRoutingConfigHandler
         )
       )
     );
-    
+
     // media library special route
     if ($dmMediaLibraryModule = $moduleManager->getModuleOrNull('dmMediaLibrary'))
     {
+      $baseUrl = implode('/', array(
+        dmString::slugify($i18n->__($dmMediaLibraryModule->getSpace()->getType()->getPublicName())),
+        dmString::slugify($i18n->__($dmMediaLibraryModule->getSpace()->getName())),
+        dmString::slugify($i18n->__($dmMediaLibraryModule->getPlural()))
+      ));
+      
       $config['dm_media_library_path'] = array(
         'class' => 'sfRoute',
-        'url'   => $dmMediaLibraryModule->getCompleteSlug().'/path/:path',
+        'url'   => $baseUrl.'/path/:path',
         'params' => array(
           'module' => 'dmMediaLibrary',
           'action' => 'path',
@@ -88,13 +95,16 @@ class dmAdminRoutingConfigHandler extends sfRoutingConfigHandler
     // module routes
     foreach($moduleManager->getModules() as $module)
     {
-      if ($module->isProject())
+      if (!$module->hasAdmin())
       {
-        if(!file_exists(dmOs::join(sfConfig::get('sf_app_dir'), 'modules', $module->getKey(), 'actions/actions.class.php')))
-        {
-          continue;
-        }
+        continue;
       }
+      
+      $baseUrl = implode('/', array(
+        dmString::slugify($i18n->__($module->getSpace()->getType()->getPublicName())),
+        dmString::slugify($i18n->__($module->getSpace()->getName())),
+        dmString::slugify($i18n->__($module->getPlural()))
+      ));
       
       if ($module->hasModel())
       {
@@ -104,7 +114,7 @@ class dmAdminRoutingConfigHandler extends sfRoutingConfigHandler
             'model'                 => $module->getModel(),
             'column'                => $module->getTable()->getPrimaryKey(),
             'module'                => $module->getKey(),
-            'prefix_path'           => $module->getCompleteSlug(),
+            'prefix_path'           => $baseUrl,
             'with_wildcard_routes'  => false,
             'with_show'             => false
           )
@@ -114,7 +124,7 @@ class dmAdminRoutingConfigHandler extends sfRoutingConfigHandler
       {
         $config[$module->getUnderscore()] = array(
           'class' => 'sfRoute',
-          'url'   => $module->getCompleteSlug().'/:action/*',
+          'url'   => $baseUrl.'/:action/*',
           'params' => array(
             'module' => $module->getKey(),
             'action' => 'index'

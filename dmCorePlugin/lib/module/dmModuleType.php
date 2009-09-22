@@ -33,14 +33,6 @@ class dmModuleType
     return $this->isProject() ? 'Content' : $this->name;
   }
 
-  public function getSlug()
-  {
-    if(null === $this->slug)
-    {
-      $this->slug = dmString::slugify(dm::getI18n()->__($this->getPublicName()));
-    }
-    return $this->slug;
-  }
 
   public function getSpaces()
   {
@@ -58,17 +50,6 @@ class dmModuleType
     return $this->spaces[$name];
   }
 
-  public function getSpaceBySlug($slug, $default = null)
-  {
-    foreach($this->getSpaces() as $space)
-    {
-      if($space->getSlug() === $slug)
-      {
-        return $space;
-      }
-    }
-    return false;
-  }
 
   public function getModules()
   {
