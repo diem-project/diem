@@ -4,6 +4,8 @@ class dmDiagramActions extends dmAdminBaseActions
 {
   public function executeIndex(dmWebRequest $request)
   {
+    $this->withDispatcherLinks = $request->getParameter('with_dispatcher_links');
+    
     $this->loadServiceContainerDumper();
     
     $this->dicImages = array();
@@ -73,10 +75,12 @@ class dmDiagramActions extends dmAdminBaseActions
     $sc->setService('config_cache',     $this->context->getConfigCache());
     $sc->setService('controller',       $this->context->getController());
     $sc->setService('logger',           $this->context->getLogger());
+    $sc->setService('module_manager',   $this->context->getModuleManager());
     $sc->setService('context',          $this->context);
     $sc->setService('doctrine_manager', Doctrine_Manager::getInstance());
     
-    $dumper = new sfServiceContainerDumperGraphviz($sc);
+    $dumper = new dmServiceContainerDumperGraphviz($sc);
+    $dumper->enableDispatcherLinks($this->withDispatcherLinks);
 
     file_put_contents($dotFile, $dumper->dump(array(
       'graph' => array('concentrate' => 'false', 'bgcolor' => 'transparent', 'ratio' => 'fill', 'size' => '30,4'),

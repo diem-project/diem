@@ -66,6 +66,12 @@ class dmModuleManager
     return $this->projectModules;
   }
 
+  
+  public function hasModule($moduleKey)
+  {
+    return isset($this->modules[$moduleKey]);
+  }
+  
   public function getModule($something, $orNull = false)
   {
     if ($something instanceof dmModule)

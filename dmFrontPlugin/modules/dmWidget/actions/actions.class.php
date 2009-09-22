@@ -5,13 +5,9 @@ class dmWidgetActions extends dmFrontBaseActions
 
   public function executeEdit(sfWebRequest $request)
   {
-    $this->forwardSecureUnless(
-      $this->getUser()->can('widget_edit')
-    );
+    $this->forwardSecureUnless($this->getUser()->can('widget_edit'), 'Unsufficient permissions');
 
-    $this->forward404Unless(
-      $widget = dmDb::table('DmWidget')->find($request->getParameter('widget_id'))
-    );
+    $this->forward404Unless($widget = dmDb::table('DmWidget')->find($request->getParameter('widget_id')));
 
     if (!$widgetType = $this->context->get('widget_type_manager')->getWidgetTypeOrNull($widget))
     {
@@ -22,9 +18,9 @@ class dmWidgetActions extends dmFrontBaseActions
         dm::getI18n()->__('Delete')
       ));
     }
-
+    
     $formClass = $widgetType->getFormClass();
-
+    
     $form = new $formClass($widget);
 
     if ($request->isMethod('post'))

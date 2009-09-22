@@ -120,7 +120,7 @@ class dmFrontModuleComponents extends myFrontBaseComponents
     ));
 
     $pager->init();
-
+    
     return $pager;
   }
 

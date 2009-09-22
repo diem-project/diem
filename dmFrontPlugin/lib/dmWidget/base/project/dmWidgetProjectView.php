@@ -10,7 +10,7 @@ abstract class dmWidgetProjectView extends dmWidgetBaseView
   {
     parent::configure();
 
-    $this->dmModule = self::$serviceContainer->getService('module_manager')->getModule($this->widget['module']);
+    $this->dmModule = $this->moduleManager->getModule($this->widget['module']);
 
     $this->dmAction = $this->dmModule->getAction($this->widget['action']);
   }

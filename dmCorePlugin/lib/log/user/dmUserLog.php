@@ -10,10 +10,10 @@ class dmUserLog extends dmFileLog
   
   public function connect()
   {
-    $this->serviceContainer->getService('dispatcher')->connect('dm.controller.end', array($this, 'listenToControllerEndEvent'));
+    $this->serviceContainer->getService('dispatcher')->connect('dm.context.end', array($this, 'listenToContextEndEvent'));
   }
   
-  public function listenToControllerEndEvent(sfEvent $event)
+  public function listenToContextEndEvent(sfEvent $event)
   {
     $this->log(array(
       'context' => $this->serviceContainer->getService('context'),

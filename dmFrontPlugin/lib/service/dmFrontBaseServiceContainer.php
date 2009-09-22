@@ -77,7 +77,7 @@ abstract class dmFrontBaseServiceContainer extends dmBaseServiceContainer
     {
       $resource = $this->getLinkResource($resource);
     }
-
+    
     $this->setParameter('link_tag.class', $this->getParameter('link_tag_'.$resource->getType().'.class'));
     $this->setParameter('link_tag.source', $resource);
     

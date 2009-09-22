@@ -9,6 +9,18 @@ abstract class dmDoctrinePager extends sfDoctrinePager
   ),
   $navigationCache =array();
 
+  /**
+   * Get all the results for the pager instance
+   *
+   * @param integer $hydrationMode Doctrine::HYDRATE_* constants
+   *
+   * @return Doctrine_Collection|array
+   */
+  public function getResults($hydrationMode = Doctrine::HYDRATE_RECORD)
+  {
+    return parent::getResults($hydrationMode)->getData();
+  }
+  
   public function configureNavigation(array $navigationConfiguration)
   {
     $this->navigationConfiguration = $navigationConfiguration;

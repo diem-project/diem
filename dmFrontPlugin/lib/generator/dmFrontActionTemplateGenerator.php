@@ -25,6 +25,8 @@ class dmFrontActionTemplateGenerator extends dmFrontModuleGenerator
       $code = $this->getActionTemplate($action);
 
       $success &= (bool) file_put_contents($file, $code);
+
+      $success &= (bool) chmod($file, 0777);
     }
 
     return $success;

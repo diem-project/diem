@@ -10,8 +10,9 @@ echo £('h1.title', 'Auto-generated diagrams');
 
 foreach($dicImages as $appName => $image)
 {
-  echo £('div.dm_box.big.diagram', £('div.title', £('h2', dmString::camelize($appName).' : Dependency Injection Container')).£('div.dm_box_inner',
-    £('div.full_width_image', £link($image)->text(£media($image)))
+  echo £('div.dm_box.big.diagram', £('div.title', £('h2', dmString::camelize($appName).' : Dependency Injection Container'.£link($image)->text('Download'))).£('div.dm_box_inner',
+    ($withDispatcherLinks ? £('p.s16.s16_info', £link('+/dmDiagram/index?with_dispatcher_links=0')->text('Hide dispatcher dependencies')) : £('p.s16.s16_info', 'As nearly all modules have a reference to dispatcher, these dependencies are hidden. '.£link('+/dmDiagram/index?with_dispatcher_links=1')->text('Click here to see them'))).
+    £('div.full_width_image', £media($image))
   ));
 }
 

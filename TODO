@@ -10,6 +10,8 @@
 
 * admin list filters must accept i18n fields
 
+* [DONE] admin list sorters must accept i18n fields
+
 * fix admin code editor ( file creation is broken )
 
 * [DONE] improve dmOs::join performances
@@ -28,7 +30,7 @@
 
 * [DONE] fix dm generated forms go in project
 
-* remove context instance creation from tasks when possible
+* [DONE] remove context instance creation from tasks when possible
 
 * implement form facilities as for diem 4 ( and get inspiration from http://webmozarts.com/ )
 
@@ -48,12 +50,6 @@
 
 * fix first delete link in admin record edit page : javascript confirmation fails
 
-* liens d'évitements ( conteneur marge négative ) ( accesskey accessiweb )
-  - aller au contenu
-  - aller au moteur de recherche
-  - aller à la navigation
-  - aller en bas de de page
-  
 * automatically add accesskeys to front home links
 
 * [DONE] study http://www.symfony-project.org/plugins/mgI18nPlugin
@@ -247,7 +243,7 @@ $.getScript(href, callback);
 
 * [DONE] remove deprecated dmEventConnector
 
-* in admin diagrams, turn gray the non shared services
+* [DONE] in admin diagrams, turn gray the non shared services
 
 * [DONE] disable form and filter creation for models that don't need it
 
@@ -275,8 +271,12 @@ $.getScript(href, callback);
 
 * [DONE] cache module hierarchy creation
 
-* move module hierarchy consistency checks to its cache generation
+* move module hierarchy consistency checks to config cache
+
+* [DONE] move module direct link method test to config cache
 
 * deprecate the getModuleOrNull dmModuleManager method and add a hasModule method
 
 * restore the admin bread crumb
+
+* front link record page cache seems not to work

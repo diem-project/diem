@@ -27,6 +27,7 @@ class dmHelper
    */
   public function getUser()
   {
+    throw new dmException();
     return $this->user;
   }
   

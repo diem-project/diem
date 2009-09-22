@@ -12,6 +12,17 @@ require_once(realpath(dirname(__FILE__).'/../../../dmCorePlugin/lib/config/dmApp
  */
 abstract class dmFrontApplicationConfiguration extends dmApplicationConfiguration
 {
+
+  /**
+   * @see sfProjectConfiguration
+   */
+  public function initConfiguration()
+  {
+    require_once(sfConfig::get('dm_front_dir').'/lib/config/dmFrontModuleManagerConfigHandler.php');
+    
+    parent::initConfiguration();
+  }
+  
   protected function getDmPlugins()
   {
     return array('dmGuardPlugin', 'dmFrontPlugin');

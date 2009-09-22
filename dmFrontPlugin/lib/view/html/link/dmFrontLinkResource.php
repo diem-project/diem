@@ -56,9 +56,9 @@ class dmFrontLinkResource
        * because they are just a comment
        * ex : page:1?var=val Home
        */
-      if ($blakSpacePos = strpos($source, ' '))
+      if ($blankSpacePos = strpos($source, ' '))
       {
-        $source = substr($source, 0, $blakSpacePos);
+        $source = substr($source, 0, $blankSpacePos);
       }
       
       /*

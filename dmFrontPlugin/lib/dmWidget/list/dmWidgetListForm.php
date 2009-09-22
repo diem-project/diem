@@ -5,7 +5,8 @@ class dmWidgetListForm extends dmWidgetProjectModelForm
   protected
   $firstDefaults = array(
     'orderType'  => 'asc',
-    'maxPerPage' => 5
+    'maxPerPage' => 5,
+    'maxPerPage' => 0
   );
 
   public function configure()
@@ -106,7 +107,7 @@ class dmWidgetListForm extends dmWidgetProjectModelForm
 
   protected function renderContent($attributes)
   {
-    return self::$serviceContainer->getService('page_helper')->renderPartial('dmWidget', 'forms/dmWidgetList', array('form' => $this));
+    return self::$serviceContainer->getService('helper')->renderPartial('dmWidget', 'forms/dmWidgetList', array('form' => $this));
   }
 
   protected function getAvailableOrderFields()

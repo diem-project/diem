@@ -33,39 +33,57 @@ class BasedmFrontActions extends dmFrontBaseActions
   protected function launchDirectActions($request)
   {
     $timerLaunchAction = dmDebug::timerOrNull("dmFrontActions::launchDirectActions");
+  
+    $moduleManager = $this->context->getModuleManager();
     
-    /*
-     * Find module/action for page widget ( including layout )
-     */
+    // Add module action for page
     $moduleActions = array();
+    
+    if($moduleManager->hasModule($this->page->get('module')))
+    {
+      $moduleActions[] = $this->page->get('module').'/'.$this->page->get('action').'Page';
+    }
+    
+    // Find module/action for page widgets ( including layout )
     foreach($this->helper->getAreas() as $areaArray)
     {
       foreach($areaArray['Zones'] as $zoneArray)
       {
         foreach($zoneArray['Widgets'] as $widgetArray)
         {
-          $widgetModuleAction = $widgetArray['module'].'/'.$widgetArray['action'].'Widget';
-          
-          if(!isset($moduleActions[$widgetModuleAction]))
+          if($moduleManager->hasModule($widgetArray['module']))
           {
-            $moduleActions[] = $widgetModuleAction;
+            $widgetModuleAction = $widgetArray['module'].'/'.$widgetArray['action'].'Widget';
+            
+            if(!in_array($widgetModuleAction, $moduleActions))
+            {
+              $moduleActions[] = $widgetModuleAction;
+            }
           }
         }
       }
     }
     
-    // Add module action for page
-    $moduleActions[] = $this->page->get('module').'/'.$this->page->get('action').'Page';
-    
-    $controller = $this->context->getController();
     foreach($moduleActions as $moduleAction)
     {
       list($module, $action) = explode("/", $moduleAction);
-      
-      if ($controller->actionExists($module, $action))
+
+      if ($moduleManager->getModule($module)->hasDirectAction($action))
       {
         $actionToRun = 'execute'.ucfirst($action);
-        $controller->getAction($module, $action)->$actionToRun($request);
+        
+        try
+        {
+          $this->context->getController()->getAction($module, $action)->$actionToRun($request);
+        }
+        catch(Exception $e)
+        {
+          $this->context->getLogger()->err('dmFront directActions : '.$e->getMessage());
+          if (sfConfig::get('dm_debug'))
+          {
+            throw $e;
+          }
+        }
       }
     }
     

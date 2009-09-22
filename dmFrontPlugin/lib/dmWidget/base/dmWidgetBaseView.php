@@ -2,17 +2,18 @@
 
 abstract class dmWidgetBaseView
 {
-
   protected
   $dispatcher,
+  $moduleManager,
   $helper,
   $widgetType,
   $widget,
   $requiredVars = array();
 
-  public function __construct(sfEventDispatcher $dispatcher, dmHelper $helper, dmWidgetType $type, array $data)
+  public function __construct(sfEventDispatcher $dispatcher, dmModuleManager $moduleManager, dmHelper $helper, dmWidgetType $type, array $data)
   {
     $this->dispatcher        = $dispatcher;
+    $this->moduleManager     = $moduleManager;
     $this->helper            = $helper;
     $this->widgetType        = $type;
     $this->widget            = $data;
@@ -134,5 +135,4 @@ abstract class dmWidgetBaseView
       dmString::toArray($vars)
     );
   }
-
 }

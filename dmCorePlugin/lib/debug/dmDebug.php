@@ -86,7 +86,7 @@ class dmDebug
    */
   public static function log()
   {
-    dmContext::getInstance()->getLogger()->log(self::formatAsString(func_get_args()), sfLogger::ERR);
+    dmContext::getInstance()->getLogger()->err(self::formatAsString(func_get_args()));
   }
 
   /*

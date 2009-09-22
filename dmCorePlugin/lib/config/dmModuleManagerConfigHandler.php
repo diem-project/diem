@@ -74,11 +74,13 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
 
           $data[] = sprintf('$spaceModules[\'%s\'] = new %s(\'%s\', $typeSpaces[\'%s\'], $manager, %s);', $moduleKey, $moduleClass, $moduleKey, $spaceName, $this->getExportedModuleOptions($moduleKey, $moduleConfig));
 
-          $data[] = sprintf('$modules[\'%s\'] = $spaceModules[\'%s\'];', $moduleKey, $moduleKey);
-
           if ($moduleConfig['is_project'])
           {
-            $data[] = sprintf('$projectModules[\'%s\'] = $spaceModules[\'%s\'];', $moduleKey, $moduleKey);
+            $data[] = sprintf('$modules[\'%s\'] = $projectModules[\'%s\'] = $spaceModules[\'%s\'];', $moduleKey, $moduleKey, $moduleKey);
+          }
+          else
+          {
+            $data[] = sprintf('$modules[\'%s\'] = $spaceModules[\'%s\'];', $moduleKey, $moduleKey);
           }
         }
 
@@ -133,11 +135,11 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
     
         if (empty($actionConfig['type']))
         {
-          if (strncmp($key, 'list', 4) === 0)
+          if (strncmp($actionKey, 'list', 4) === 0)
           {
             $actionConfig['type'] = 'list';
           }
-          elseif (strncmp($key, 'show', 4) === 0)
+          elseif (strncmp($actionKey, 'show', 4) === 0)
           {
             $actionConfig['type'] = 'show';
           }

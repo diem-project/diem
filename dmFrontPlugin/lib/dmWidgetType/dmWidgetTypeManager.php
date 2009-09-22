@@ -38,7 +38,9 @@ class dmWidgetTypeManager
     
     if (null === $this->widgetTypes)
     {
-      if (!$this->widgetTypes = $this->cacheManager->getCache('dm/widget')->get('types'))
+      $this->widgetTypes = $this->cacheManager->getCache('dm/widget')->get('types');
+      
+      if (empty($this->widgetTypes))
       {
         $internalConfig = include($this->configCache->checkConfig($this->options['config_file']));
 
@@ -79,13 +81,16 @@ class dmWidgetTypeManager
               'view_class' => $baseClass.'View',
               'use_component' => $this->controller->componentExists($moduleKey, $actionKey)
             );
-
+            
             $this->widgetTypes[$moduleKey][$actionKey] = new dmWidgetType($moduleKey, $actionKey, $widgetTypeConfig);
           }
         }
+        
+        $this->cacheManager->getCache('dm/widget')->set('types', $this->widgetTypes);
       }
-      $this->cacheManager->getCache('dm/widget')->set('types', $this->widgetTypes);
     }
+    
+//    dmDebug::kill($this->widgetTypes);
 
     $timer && $timer->addTime();
     return $this->widgetTypes;

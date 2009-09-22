@@ -1,11 +1,12 @@
 parameters:
 
   link_tag.class:             dmFrontLinkTag
-  link_tag_action.class:      dmFrontLinkTagAction
-  link_tag_error.class:       dmFrontLinkTagError
-  link_tag_media.class:       dmFrontLinkTagMedia
+  link_tag_record.class:      dmFrontLinkTagRecord
   link_tag_page.class:        dmFrontLinkTagPage
+  link_tag_media.class:       dmFrontLinkTagMedia
+  link_tag_action.class:      dmFrontLinkTagAction
   link_tag_uri.class:         dmFrontLinkTagUri
+  link_tag_error.class:       dmFrontLinkTagError
 
   link_resource.class:        dmFrontLinkResource
 
@@ -44,7 +45,7 @@ services:
   widget_view:
     class:                    %widget_view.class%
     shared:                   false
-    arguments:                [ @dispatcher, @helper, %widget_view.type%, %widget_view.data% ]
+    arguments:                [ @dispatcher, @module_manager, @helper, %widget_view.type%, %widget_view.data% ]
 
   page_helper:
     class:                    %page_helper.class%

@@ -19,7 +19,7 @@ class dmFrontActionGenerator extends dmFrontModuleGenerator
 
     $code = $this->build();
 
-    return file_put_contents($file, $code);
+    return file_put_contents($file, $code) && chmod($file, 0777);
   }
 
   protected function build()
