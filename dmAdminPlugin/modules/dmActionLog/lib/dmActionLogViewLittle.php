@@ -15,7 +15,7 @@ class dmActionLogViewLittle extends dmActionLogView
   {
     $username = $entry->get('username');
     
-    return ($username ? '<strong class="mr10">'.$username.'</strong>' : '').$entry->get('ip');
+    return ($username ? '<strong class="mr10">'.$username.'</strong><br />' : '').$entry->get('ip');
   }
   
   protected function renderActionAndSubject(dmActionLogEntry $entry)

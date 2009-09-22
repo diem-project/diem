@@ -25,6 +25,7 @@ EOF;
    */
   protected function execute($arguments = array(), $options = array())
   {
+    dmContext::createInstance($this->configuration);
     return $this->executeService("dmSprite", $options);
   }
 }

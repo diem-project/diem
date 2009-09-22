@@ -12,6 +12,8 @@ abstract class dmWebResponse extends sfWebResponse
   
   public function initialize(sfEventDispatcher $dispatcher, $options = array())
   {
+    $options['with_google_maps'] = false;
+    
     parent::initialize($dispatcher, $options);
     
     $this->javascriptConfig = array();
@@ -19,6 +21,37 @@ abstract class dmWebResponse extends sfWebResponse
     $this->dispatcher->connect('user.change_culture', array($this, 'listenToChangeCultureEvent'));
     
     $this->dispatcher->connect('user.change_theme', array($this, 'listenToChangeThemeEvent'));
+    
+    $this->dispatcher->connect('dm.response.filter_javascripts', array($this, 'listenFilterJavascripts'));
+  }
+  
+  /*
+   * Add the google maps api to the response
+   */
+  public function withGoogleMaps($val = true)
+  {
+    $this->options['with_google_maps'] = (bool) $val;
+  }
+  
+  public function listenFilterJavascripts(sfEvent $event, array $assets)
+  {
+    if ($this->options['with_google_maps'])
+    {
+      if (!($key = dmConfig::get('gmap_key')) && $this->options['logging'])
+      {
+        $this->dispatcher->notify(new sfEvent($this, 'application.log', array('priority' => sfLogger::ERR, 'dmResponse can not load google maps api. You must proved an api key in the configuration panel')));
+      }
+      
+      $config = dmArray::get(sfConfig::get('dm_js_api'), 'gmap', array('version' => 2, 'sensor' => false, 'url' => 'http://maps.google.com/maps?file=api&v=%version%&sensor=%sensor%&key=%key%'));
+      
+      $assets[strtr($config['url'], array(
+        '%version%' => $config['version'],
+        '%sensor%'  => $config['sensor'] ? 'true' : 'false',
+        '%key%'     => $key
+      ))] = array();
+    }
+    
+    return $assets;
   }
 
   /**

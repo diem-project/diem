@@ -6,7 +6,8 @@ class dmActionLog extends dmFileLog
   $defaults = array(
     'file'                => 'data/dm/log/action.log',
     'entry_service_name'  => 'action_log_entry',
-    'ignore_models'       => 'DmError sfGuardRememberKey'
+    'ignore_models'       => array(),
+    'ignore_internal_actions' => true
   );
   
   public function connect()
@@ -31,7 +32,7 @@ class dmActionLog extends dmFileLog
   {
     $record = $event->getSubject();
     
-    if(in_array(get_class($record), explode(' ', $this->options['ignore_models'])))
+    if(in_array(get_class($record), $this->options['ignore_models']))
     {
       return;
     }
@@ -47,14 +48,32 @@ class dmActionLog extends dmFileLog
   
     if ($record instanceof DmPage)
     {
+      if ($this->options['ignore_internal_actions'])
+      {
+        return;
+      }
+      
       $type = $this->serviceContainer->getService('module_manager')->getModule('dmPage')->getKey();
     }
-    elseif ($record instanceof dmDoctrineRecord && $module = $record->getDmModule())
+    elseif ($record instanceof dmDoctrineRecord)
     {
-      $type = $module->getName();
+      if ($module = $record->getDmModule())
+      {
+        if ($this->options['ignore_internal_actions'] && !$module->isProject())
+        {
+          return;
+        }
+        
+        $type = $module->getName();
+      }
     }
     else
     {
+      if ($this->options['ignore_internal_actions'])
+      {
+        return;
+      }
+      
       $type = get_class($record);
     }
     

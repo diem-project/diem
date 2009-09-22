@@ -280,3 +280,5 @@ $.getScript(href, callback);
 * front link record page cache seems not to work
 
 * add an option to each page to tell if robots may index it
+
+* filter action log

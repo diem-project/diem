@@ -9,23 +9,61 @@ abstract class dmDoctrineTableExport
 {
   protected
   $table,
-  $query,
   $fields,
   $customGetters;
   
-  public function __construct(myDoctrineTable $table, myDoctrineQuery $query = null)
+  public function __construct(myDoctrineTable $table, array $options = array())
   {
     $this->table = $table;
-    $this->query = null === $query ? $table->createQuery() : $query;
     
-    $this->configure();
+    $this->configure($options);
   }
   
-  public function configure()
+  public function getDefaultOptions()
   {
-    $this->fields = dmArray::valueToKey($this->table->getAllColumnNames());
+    return array(
+      'query'     => $this->table->createQuery(),
+      'format'    => 'csv',
+      'extension' => 'csv',
+      'encoding'  => 'utf-8'
+    );
+  }
+  
+  public function configure(array $options = array())
+  {
+    $this->options = array_merge($this->getDefaultOptions(), $options);
     
-    $this->customGetters = array();
+    $this->fields = $this->getFields();
+    
+    $this->customGetters = $this->findCustomGetters();
+    
+    $this->postConfigure();
+  }
+  
+  protected function postConfigure()
+  {
+  }
+  
+  protected function getFields()
+  {
+    return dmArray::valueToKey($this->table->getAllColumnNames());
+  }
+  
+  protected function findCustomGetters()
+  {
+    $getters = array();
+    
+    foreach(array_keys($this->fields) as $field)
+    {
+      $getter = 'get'.dmString::camelize($field);
+      
+      if (method_exists($this, $getter))
+      {
+        $getters[$field] = $getter;
+      }
+    }
+    
+    return $getters;
   }
   
   public function generate()
@@ -40,7 +78,7 @@ abstract class dmDoctrineTableExport
   
   protected function getRecords()
   {
-    return $this->query->fetchRecords();
+    return $this->options['query']->fetchRecords();
   }
   
   protected function generateHeader()
@@ -70,7 +108,7 @@ abstract class dmDoctrineTableExport
   {
     $row = array();
     
-    foreach($this->fields as $field)
+    foreach($this->fields as $field => $fieldName)
     {
       try
       {
@@ -98,11 +136,18 @@ abstract class dmDoctrineTableExport
     if (isset($this->customGetters[$field]))
     {
       $getter = $this->customGetters[$field];
-      $value = $this->$getter($field, $record);
+      $value = $this->$getter($record);
     }
     else
     {
-      $value = $record->get($field);
+      try
+      {
+        $value = $record->get($field);
+      }
+      catch(Doctrine_Record_UnknownPropertyException $e)
+      {
+        $value = $this->call($record, $field);
+      }
     }
     
     if(empty($value))
@@ -128,5 +173,10 @@ abstract class dmDoctrineTableExport
     }
     
     return $value;
+  }
+  
+  protected function call($record, $field)
+  {
+    throw new dmException(sprintf('The %s field does not exist in %s record', $field, get_class($record)));
   }
 }
