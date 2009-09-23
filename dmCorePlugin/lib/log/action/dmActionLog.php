@@ -66,6 +66,14 @@ class dmActionLog extends dmFileLog
         
         $type = $module->getName();
       }
+      elseif ($this->options['ignore_internal_actions'])
+      {
+        return;
+      }
+      else
+      {
+        $type = get_class($record);
+      }
     }
     else
     {
