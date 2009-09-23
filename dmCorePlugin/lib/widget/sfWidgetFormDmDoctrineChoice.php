@@ -9,7 +9,7 @@ class sfWidgetFormDmDoctrineChoice extends sfWidgetFormDoctrineChoice
     
     $table = dmDb::table($options['model']);
     
-    if ($table instanceof myDoctrineTable)
+    if ($table instanceof dmDoctrineTable)
     {
       $this->addOption('query', $table->getDefaultQuery());
     }

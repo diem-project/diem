@@ -5,7 +5,7 @@ class dmWidgetActions extends dmFrontBaseActions
 
   public function executeEdit(sfWebRequest $request)
   {
-    $this->forwardSecureUnless($this->getUser()->can('widget_edit'), 'Unsufficient permissions');
+    $this->forwardSecureUnless($this->getUser()->can('widget_edit'), 'Insufficient privileges');
 
     $this->forward404Unless($widget = dmDb::table('DmWidget')->find($request->getParameter('widget_id')));
 
