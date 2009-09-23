@@ -15,24 +15,6 @@ class Base<?php echo ucfirst($this->getModuleName()) ?>GeneratorConfiguration ex
 <?php include dirname(__FILE__).'/fieldsConfiguration.php' ?>
 
   /**
-   * Gets a new form object.
-   *
-   * @param  mixed $object
-   *
-   * @return sfForm
-   */
-  public function getForm($object = null)
-  {
-    $class = $this->getFormClass();
-
-    $form = new $class($object, $this->getFormOptions());
-
-    $this->fixFormFields($form);
-
-    return $form;
-  }
-
-  /**
    * Gets the form class name.
    *
    * @return string The form class name
@@ -42,12 +24,7 @@ class Base<?php echo ucfirst($this->getModuleName()) ?>GeneratorConfiguration ex
     return '<?php echo isset($this->config['form']['class']) ? $this->config['form']['class'] : $this->getModelClass().'Form' ?>';
 <?php unset($this->config['form']['class']) ?>
   }
-
-  public function getFormOptions()
-  {
-    return array('culture' => dm::getUser()->getCulture());
-  }
-
+  
   public function hasFilterForm()
   {
     return <?php echo !isset($this->config['filter']['class']) || false !== $this->config['filter']['class'] ? 'true' : 'false' ?>;
@@ -80,10 +57,5 @@ class Base<?php echo ucfirst($this->getModuleName()) ?>GeneratorConfiguration ex
   {
     return '<?php echo isset($this->config['list']['table_count_method']) ? $this->config['list']['table_count_method'] : null ?>';
 <?php unset($this->config['list']['table_count_method']) ?>
-  }
-
-  public function getConnection()
-  {
-    return null;
   }
 }
