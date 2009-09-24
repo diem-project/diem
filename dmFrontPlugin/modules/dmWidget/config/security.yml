@@ -1,6 +1,18 @@
 all:
-  is_secure: true
-  credentials: front_edit
+  is_secure:    true
+  credentials:  front_edit
 
+new:
+  credentials:  widget_add
+  
 edit:
   credentials:  widget_edit
+  
+sort:
+  credentials:  widget_edit
+  
+move:
+  credentials:  widget_edit
+  
+delete:
+  credentials:  widget_delete
