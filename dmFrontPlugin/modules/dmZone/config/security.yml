@@ -1,0 +1,18 @@
+all:
+  is_secure:    true
+  credentials:  front_edit
+
+new:
+  credentials:  zone_add
+  
+edit:
+  credentials:  zone_edit
+  
+sort:
+  credentials:  zone_edit
+  
+move:
+  credentials:  zone_edit
+  
+delete:
+  credentials:  zone_delete
