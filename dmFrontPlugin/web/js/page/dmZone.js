@@ -39,53 +39,53 @@ $.widget('ui.dmZone', {
       return;
     }
 		
-      var $dialog = $.dm.ctrl.ajaxDialog({
-        url:      $.dm.ctrl.getHref('+/dmZone/edit'),
-        data:     { zone_id: zone.getId() },
-        title:    $(this).attr('title'),
-				class:    dialog_class,
-        beforeclose:  function() {
-          if (zone.deleted) return;
-          setTimeout(function() {
-            $.ajax({
-              url:      $.dm.ctrl.getHref('+/dmZone/getAttributes'),
-              data:     { zone_id: zone.getId() },
-              success:  function(data) {
-                datas = data.split('\_\_DM\_SPLIT\_\_');
-                zone.element.attr('class', 'dm_zone '+ datas[1]).css('width', datas[0]);
-              }
-            });
-          }, 100);
-        }
-      }).bind('dmAjaxResponse', function() {
-        $dialog.prepare();
-        /*
-         * Apply generic front form abilities
-         */
-        $dialog.dmFrontForm();
-        var $form = $('form', $dialog).dmAjaxForm({
-          beforeSubmit: function() {
-            $dialog.block();
-            zone.element.block();
-          },
-          success:  function(data) {
-            if (data == 'ok') {
-              $dialog.dialog('close');
+    var $dialog = $.dm.ctrl.ajaxDialog({
+      url:      $.dm.ctrl.getHref('+/dmZone/edit'),
+      data:     { zone_id: zone.getId() },
+      title:    $('#dm_zone_'+zone.getId()+' > a.dm_zone_edit').attr('title'),
+			class:    dialog_class,
+      beforeclose:  function() {
+        if (zone.deleted) return;
+        setTimeout(function() {
+          $.ajax({
+						dataType: 'json',
+            url:      $.dm.ctrl.getHref('+/dmZone/getAttributes'),
+            data:     { zone_id: zone.getId() },
+            success:  function(datas) {
+              zone.element.attr('class', 'dm_zone '+ datas[1]).css('width', datas[0]);
             }
-            $dialog.html(data).trigger('dmAjaxResponse');
-            if(!$('ul.error_list', $form).length) {
-              zone.element.attr('class', 'dm_zone '+ $('input.dm_zone_css_class', $form).val()).css('width', $('input.dm_zone_width', $form).val());
-            }
-            zone.element.unblock();
-          }
-        });
-        $('a.delete', $form).click(function() {
-          if (confirm($(this).attr('title')+" ?")) {
-            zone.delete();
+          });
+        }, 100);
+      }
+    }).bind('dmAjaxResponse', function() {
+      $dialog.prepare();
+      /*
+       * Apply generic front form abilities
+       */
+      $dialog.dmFrontForm();
+      var $form = $('form', $dialog).dmAjaxForm({
+        beforeSubmit: function() {
+          $dialog.block();
+          zone.element.block();
+        },
+        success:  function(data) {
+          if (data == 'ok') {
             $dialog.dialog('close');
           }
-        });
+          $dialog.html(data).trigger('dmAjaxResponse');
+          if(!$('ul.error_list', $form).length) {
+            zone.element.attr('class', 'dm_zone '+ $('input.dm_zone_css_class', $form).val()).css('width', $('input.dm_zone_width', $form).val());
+          }
+          zone.element.unblock();
+        }
       });
+      $('a.delete', $form).click(function() {
+        if (confirm($(this).attr('title')+" ?")) {
+          zone.delete();
+          $dialog.dialog('close');
+        }
+      });
+    });
 	},
   
   initWidgets: function()

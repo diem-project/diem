@@ -2,8 +2,8 @@
 
 abstract class dmWebResponse extends sfWebResponse
 {
-  
   protected
+  $isHtmlForHuman = true,
   $assetAliases,
   $cdnConfig,
   $javascriptConfig,
@@ -177,6 +177,11 @@ abstract class dmWebResponse extends sfWebResponse
    */
   public function addJavascript($asset, $position = '', $options = array())
   {
+    if(!$this->isHtmlForHuman)
+    {
+      return;
+    }
+    
     $this->validatePosition($position);
 
     $file = $this->calculateAssetPath('js', $asset);
@@ -193,6 +198,11 @@ abstract class dmWebResponse extends sfWebResponse
    */
   public function addStylesheet($asset, $position = '', $options = array())
   {
+    if(!$this->isHtmlForHuman)
+    {
+      return;
+    }
+    
     $this->validatePosition($position);
     
     $file = $this->calculateAssetPath('css', $asset);
@@ -208,5 +218,20 @@ abstract class dmWebResponse extends sfWebResponse
   public function clearJavascripts()
   {
     $this->javascripts = array_combine($this->positions, array_fill(0, count($this->positions), array()));
+  }
+  
+  /*
+   * Means that request has been sent by a human, and the application will send html for a browser.
+   * CLI, ajax and flash are NOT human.
+   * @return boolean $human
+   */
+  public function isHtmlForHuman()
+  {
+    return $this->isHtmlForHuman;
+  }
+  
+  public function setIsHtmlForHuman($val)
+  {
+    $this->isHtmlForHuman = (bool) $val;
   }
 }

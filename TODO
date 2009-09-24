@@ -275,10 +275,10 @@ $.getScript(href, callback);
 
 * [DONE] move module direct link method test to config cache
 
-* restore the admin bread crumb
+* restore the admin bread crumb for better usability
 
 * front link record page cache seems not to work
 
-* add an option to each page to tell if robots may index it
+* [DONE] add an option to each page to tell if robots may index it
 
-* filter action log
+* [DONE] filter action log

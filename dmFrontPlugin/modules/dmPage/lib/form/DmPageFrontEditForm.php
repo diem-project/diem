@@ -9,11 +9,7 @@ class DmPageFrontEditForm extends DmPageForm
   {
     parent::configure();
     
-    $this->page = $this->getObject();
-    
-    $this->mergeI18nForm();
-
-    $this->useFields(array('id', 'module', 'action', 'slug', 'name', 'title', 'h1', 'description', 'keywords', 'is_active', 'is_secure'), false);
+    $this->useFields(array('id', 'module', 'action', 'slug', 'name', 'title', 'h1', 'description', 'keywords', 'is_active', 'is_secure', 'is_indexable'), false);
     
     if(!sfConfig::get('dm_seo_use_keywords'))
     {
@@ -22,13 +18,13 @@ class DmPageFrontEditForm extends DmPageForm
     else
     {
       $this->widgetSchema['keywords'] = new sfWidgetFormTextarea(array(), array('rows' => 2));
-      $this->setDefault('keywords', $this->page->keywords);
+      $this->setDefault('keywords', $this->object->keywords);
     }
     
     $this->widgetSchema['description'] = new sfWidgetFormTextarea(array(), array('rows' => 2));
     
     $this->validatorSchema['slug'] = new sfValidatorString(array(
-      'required' => !$this->page->Node->isRoot()
+      'required' => !$this->object->getNode()->isRoot()
     ));
     
     $this->widgetSchema['dm_layout_id'] = new sfWidgetFormDoctrineChoice(array(
@@ -39,7 +35,7 @@ class DmPageFrontEditForm extends DmPageForm
       'model' => 'DmLayout'
     ));
     
-    if (!$this->page->Node->isRoot() && !$this->page->isAutomatic)
+    if (!$this->object->getNode()->isRoot() && !$this->object->isAutomatic)
     {
       $parentChoices = $this->getParentChoices();
       
@@ -48,18 +44,19 @@ class DmPageFrontEditForm extends DmPageForm
       ));
       $this->validatorSchema['parent_id'] = new sfValidatorChoice(array(
         'choices' => array_keys($parentChoices),
-        'required' => !$this->page->Node->isRoot()
+        'required' => !$this->object->getNode()->isRoot()
       ));
       
-      $this->setDefault('parent_id', $this->page->getNodeParentId());
+      $this->setDefault('parent_id', $this->object->getNodeParentId());
     }
     
     $this->widgetSchema['dm_layout_id']->setLabel('Layout');
     $this->widgetSchema['description']->setLabel('Desc');
     $this->widgetSchema['is_active']->setLabel('Available');
     $this->widgetSchema['is_secure']->setLabel('Requires authentification');
+    $this->widgetSchema['is_indexable']->setLabel('Search engine crawlers');
     
-    if ($this->page->Node->isRoot())
+    if ($this->object->getNode()->isRoot())
     {
       foreach(array('slug', 'module', 'action') as $fieldName)
       {
@@ -72,37 +69,21 @@ class DmPageFrontEditForm extends DmPageForm
     $this->mergePostValidator(new sfValidatorCallback(array('callback' => array($this, 'checkModuleAction'))));
     
     $this->setDefaults(array(
-      'dm_layout_id' => $this->page->PageView->dmLayoutId,
-      'name'      => $this->page->name,
-      'slug'      => $this->page->slug,
-      'title'     => $this->page->title,
-      'h1'        => $this->page->h1,
-      'description' => $this->page->description,
-      'is_active' => $this->page->is_active
+      'dm_layout_id' => $this->object->PageView->dmLayoutId,
+      'name'      => $this->object->name,
+      'slug'      => $this->object->slug,
+      'title'     => $this->object->title,
+      'h1'        => $this->object->h1,
+      'description' => $this->object->description,
+      'is_active' => $this->object->is_active,
+      'is_indexable' => $this->object->is_indexable
     ));
-  }
-  
-  public function mergeI18nForm()
-  {
-    $class = $this->getI18nFormClass();
-
-    $i18nObject = $this->object->Translation[dm::getUser()->getCulture()];
-    
-    $i18n = new $class($i18nObject);
-    unset($i18n['id'], $i18n['lang']);
-
-    $this->mergeForm($i18n);
-  }
-  
-  public function embedCurrentI18n($decorator = null)
-  {
-    return;
   }
   
   protected function getParentChoices()
   {
     $_parentChoices = dmDb::query('DmPage p')
-    ->where('p.record_id = 0 AND ( lft < ? OR rgt > ? )', array($this->page->lft, $this->page->rgt))
+    ->where('p.record_id = 0 AND ( lft < ? OR rgt > ? )', array($this->object->lft, $this->object->rgt))
     ->orderBy('p.lft')
     ->withI18n()
     ->select('p.id, p.level, pTranslation.name')
@@ -126,13 +107,13 @@ class DmPageFrontEditForm extends DmPageForm
         throw new dmException('Move page to unknown parent '.$values['parent_id']);
       }
       
-      if ($values['parent_id'] != $this->page->nodeParentId)
+      if ($values['parent_id'] != $this->object->getNodeParentId())
       {
-        $this->page->Node->moveAsLastChildOf(dmDb::table('DmPage')->find($values['parent_id']));
+        $this->object->getNode()->moveAsLastChildOf(dmDb::table('DmPage')->find($values['parent_id']));
       }
     }
     
-    $this->page->PageView->dmLayoutId = $values['dm_layout_id'];
+    $this->object->PageView->dmLayoutId = $values['dm_layout_id'];
     
     parent::doUpdateObject($values);
   }
@@ -144,7 +125,7 @@ class DmPageFrontEditForm extends DmPageForm
       $values['slug'] = dmString::slugify($values['slug'], true);
       
       $existingPageName = dmDb::query('DmPageTranslation t')
-      ->where('t.lang = ? AND t.slug = ? AND t.id != ?', array(dm::getUser()->getCulture(), $values['slug'], $this->page->id))
+      ->where('t.lang = ? AND t.slug = ? AND t.id != ?', array($this->object->lang, $values['slug'], $this->object->id))
       ->select('t.name')
       ->fetchValue();
       
@@ -167,7 +148,7 @@ class DmPageFrontEditForm extends DmPageForm
       $values['action'] = dmString::modulize(str_replace('-', '_', dmString::slugify($values['action'])));
       
       $existingPage = dmDb::query('DmPage p')
-      ->where('p.module = ? AND p.action = ? and p.record_id = ? AND p.id != ?', array($values['module'], $values['action'], $this->page->record_id, $this->page->id))
+      ->where('p.module = ? AND p.action = ? and p.record_id = ? AND p.id != ?', array($values['module'], $values['action'], $this->object->record_id, $this->object->id))
       ->fetchRecord();
       
       if($existingPage)

@@ -49,7 +49,7 @@ class Base<?php echo ucfirst($this->getModuleName()) ?>GeneratorHelper extends s
     array(
     'method' => 'delete',
     'confirm' => false,
-    'class' => 'button red confirm_me',
+    'class' => 'button red dm_js_confirm',
     'title' => __('Delete this element')
     )).'</li>';
   }

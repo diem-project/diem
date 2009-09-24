@@ -5,8 +5,6 @@ class dmWidgetActions extends dmFrontBaseActions
 
   public function executeEdit(sfWebRequest $request)
   {
-    $this->forwardSecureUnless($this->getUser()->can('widget_edit'), 'Insufficient privileges');
-
     $this->forward404Unless($widget = dmDb::table('DmWidget')->find($request->getParameter('widget_id')));
 
     if (!$widgetType = $this->context->get('widget_type_manager')->getWidgetTypeOrNull($widget))
@@ -35,7 +33,9 @@ class dmWidgetActions extends dmFrontBaseActions
         if ($request->hasParameter('and_save'))
         {
           $widget->save();
-          return $this->renderText('ok');
+          return $this->renderJson(array(
+            'type' => 'close'
+          ));
         }
 
         $helper = $this->context->get('page_helper');
@@ -44,26 +44,24 @@ class dmWidgetActions extends dmFrontBaseActions
         
         $widgetArray = $widget->toArray();
 
-        return $this->renderText(
-          $this->renderEdit($widget, $form, $widgetType).
-          '__DM_SPLIT__'.
-          $helper->renderWidgetInner($widgetArray).
-          '__DM_SPLIT__'.
-          implode('__DM_SPLIT__', $helper->getWidgetContainerClasses($widgetArray))
-        );
+        return $this->renderJson(array(
+          'type' => 'form',
+          'html' => $this->renderEdit($form, $widgetType),
+          'widget_html' => $helper->renderWidgetInner($widgetArray),
+          'widget_classes' => $helper->getWidgetContainerClasses($widgetArray)
+        ));
       }
     }
 
-    return $this->renderText($this->renderEdit($widget, $form, $widgetType));
+    return $this->renderJson(array(
+      'type' => 'form',
+      'html' => $this->renderEdit($form, $widgetType)
+    ));
   }
 
-  protected function renderEdit(DmWidget $widget, dmWidgetBaseForm $form, dmWidgetType $widgetType)
+  protected function renderEdit(dmWidgetBaseForm $form, dmWidgetType $widgetType)
   {
-    return sprintf(
-      '<div class="dm dm_widget_edit {form_class: \'%s\'}">%s</div>',
-      $widgetType->getFullKey().'Form',
-      $form->render('.dm_form.list.little')
-    );
+    return '<div class="dm dm_widget_edit {form_class: \''.$widgetType->getFullKey().'\'}">'.$form->render('.dm_form.list.little').'</div>';
   }
 
   public function executeGetInner(sfWebRequest $request)
@@ -80,12 +78,10 @@ class dmWidgetActions extends dmFrontBaseActions
 
     $widgetArray = $widget->toArray();
     
-    return
-    $this->renderText(
-      $helper->renderWidgetInner($widgetArray).
-      '__DM_SPLIT__'.
-      implode('__DM_SPLIT__', $helper->getWidgetContainerClasses($widgetArray))
-    );
+    return $this->renderJson(array(
+      'widget_html' => $helper->renderWidgetInner($widgetArray),
+      'widget_classes' => $helper->getWidgetContainerClasses($widgetArray)
+    ));
   }
 
   public function executeDelete(sfWebRequest $request)

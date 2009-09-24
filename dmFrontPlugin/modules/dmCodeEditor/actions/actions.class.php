@@ -7,17 +7,21 @@ class dmCodeEditorActions extends dmFrontBaseActions
   {
     $this->fileMenu = new dmHtmlMenu($this->getFileMenu());
 
-    $this->js =
+    $js =
     file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), sfConfig::get('dm_core_asset'), 'lib/jquery-ui/js/ui.tabs.min.js')).
     dmJsMinifier::transform(
     file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), sfConfig::get('dm_core_asset'), 'js/dmCoreCodeArea.js')).
     file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), sfConfig::get('dm_front_asset'), 'js/dmFrontCodeEditor.js'))
-    )
-    ;
+    );
 
     $this->css = dmCssMinifier::transform(
     file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), sfConfig::get('dm_front_asset'), 'css/codeEditor.css'))
     );
+    
+    return $this->renderJson(array(
+      'html' => $this->getPartial('dmCodeEditor/launch'),
+      'js' => $js
+    ));
   }
 
   public function executeFile(dmWebRequest $request)
@@ -31,7 +35,7 @@ class dmCodeEditorActions extends dmFrontBaseActions
     $this->path = dmProject::unRootify($this->file);
     $this->isWritable = is_writable($this->file);
 
-    $this->message = $this->isWritable ? '' : dm::getI18n()->__("This file is not writable");
+    $this->message = $this->isWritable ? '' : $this->context->getI18n()->__('This file is not writable');
     
     $this->textareaOptions = array(
       'spellcheck' => 'false'
@@ -52,18 +56,16 @@ class dmCodeEditorActions extends dmFrontBaseActions
     $file.' does not exists'
     );
 
-    $this->getResponse()->setContentType('application/json');
-    
     try
     {
       $this->context->get('file_backup')->save($file);
     }
     catch(dmException $e)
     {
-      return $this->renderText(json_encode(array(
+      return $this->renderJson(array(
         'type' => 'error',
         'message' => 'backup failed : '.$e->getMessage()
-      )));
+      ));
     }
 
     file_put_contents($file, $request->getParameter('code'));
@@ -83,9 +85,9 @@ class dmCodeEditorActions extends dmFrontBaseActions
       );
     }
 
-    $return['message'] = dm::getI18n()->__('Your modifications have been saved');
+    $return['message'] = $this->context->getI18n()->__('Your modifications have been saved');
     
-    return $this->renderText(json_encode($return));
+    return $this->renderJson($return);
   }
 
   protected function getWidgetInnersForFile($file)
@@ -169,7 +171,7 @@ class dmCodeEditorActions extends dmFrontBaseActions
       }
     }
 
-    $cssDir = dm::getUser()->getTheme()->getFullPath('css');
+    $cssDir = $this->getUser()->getTheme()->getFullPath('css');
     $cssFiles = sfFinder::type('file')->name('*.css')->in($cssDir);
     natcasesort($cssFiles);
     $stylesheets = array();
@@ -186,18 +188,18 @@ class dmCodeEditorActions extends dmFrontBaseActions
 
     return array(
     array(
-        'name' => dm::getI18n()->__('Controllers'),
+        'name' => $this->context->getI18n()->__('Controllers'),
         'menu' => $controllers
     ),
     array(
-        'name' => dm::getI18n()->__('Templates'),
+        'name' => $this->context->getI18n()->__('Templates'),
         'menu' => $templates
     ),
     array(
-        'name' => dm::getI18n()->__('Stylesheets'),
+        'name' => $this->context->getI18n()->__('Stylesheets'),
         'menu' => array(
     array(
-            'name' => dm::getUser()->getTheme()->getName(),
+            'name' => $this->getUser()->getTheme()->getName(),
             'menu' => $stylesheets
     )
     )

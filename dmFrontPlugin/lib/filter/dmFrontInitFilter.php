@@ -26,7 +26,7 @@ class dmFrontInitFilter extends dmInitFilter
     
     if ($this->context->getPage())
     {
-      if (sfConfig::get('dm_html_validate', true) && $this->getContext()->getUser()->can('html_validate_front') && $this->context->isHtmlForHuman())
+      if (sfConfig::get('dm_html_validate', true) && $this->getContext()->getUser()->can('html_validate_front') && $this->context->getResponse()->isHtmlForHuman())
       {
         $this->saveHtml();
       }

@@ -121,9 +121,12 @@ class dmFrontPageHelper
 
     $html .= '<div class="dm_zones clearfix">';
 
-    foreach($area['Zones'] as $zone)
+    if (!empty($area['Zones']))
     {
-      $html .= $this->renderZone($zone);
+      foreach($area['Zones'] as $zone)
+      {
+        $html .= $this->renderZone($zone);
+      }
     }
 
     $html .= '</div>';
@@ -170,10 +173,13 @@ class dmFrontPageHelper
     $html = '<div class="'.dmArray::toHtmlCssClasses(array('dm_zone', $zone['css_class'])).'"'.$style.'>';
 
     $html .= '<div class="dm_widgets">';
-
-    foreach($zone['Widgets'] as $widget)
+    
+    if(!empty($zone['Widgets']))
     {
-      $html .= $this->renderWidget($widget);
+      foreach($zone['Widgets'] as $widget)
+      {
+        $html .= $this->renderWidget($widget);
+      }
     }
 
     $html .= '</div>';

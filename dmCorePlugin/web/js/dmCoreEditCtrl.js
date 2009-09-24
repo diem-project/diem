@@ -5,10 +5,10 @@
   
     liveEvents: function()
     {
-      $('a.confirm_me').live('click', function(e)
+      $('.dm_js_confirm').live('click', function(e)
       {
         e.stopPropagation();
-        if (!confirm(($(this).attr('title') || 'Are you sure') + " ?")) 
+        if (!confirm(($(this).attr('title') || 'Are you sure') + ' ?')) 
         {
           return false;
         }
@@ -48,6 +48,37 @@
       {
         $dialog.unblock().find('input[type=text], textarea').filter(':first').focus();
       };
+      
+      return $dialog;
+    },
+    
+    ajaxJsonDialog: function(opt)
+    {
+      self = this;
+      opt = $.extend({
+        title: 'Loading'
+      }, opt);
+      
+      var $dialog = this.dialog(opt).block();
+      
+      $.ajax({
+        url: opt.url,
+        data: opt.data || {},
+				dataType: 'json',
+        success: function(data)
+        {
+					if (data.js)
+					{
+						$.globalEval(data.js);
+					}
+          
+          $dialog.html(data.html).trigger('dmAjaxResponse');
+        },
+        error: function(data)
+        {
+          $dialog.unblock().html(data);
+        }
+      });
       
       return $dialog;
     },

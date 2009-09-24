@@ -36,7 +36,7 @@ class dmPageActions extends dmFrontBaseActions
     
     $this->form = new DmPageFrontEditForm($this->page);
     
-    if ($request->isMethod('post'))
+    if ($request->isMethod('put'))
     {
       $this->form->bind();
 
@@ -53,26 +53,30 @@ class dmPageActions extends dmFrontBaseActions
          */
         $this->page->PageView->save();
         
-        return $this->renderText(implode('__DM_SPLIT__', array(
-          'ok',
-          dmFrontLinkTag::build($this->page)->getHref()
-        )));
+        return $this->renderJson(array(
+          'type'  => 'redirect',
+          'url'   => dmFrontLinkTag::build($this->page)->getHref()
+        ));
       }
       
-      $this->js = false;
+      $js = false;
     }
     else
     {
-      $this->js =
-        dmJsMinifier::transform(
-          file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), sfConfig::get('dm_front_asset'), 'js/dmFrontPageEditForm.js'))
-        )
-      ;
+      $js = dmJsMinifier::transform(
+        file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), sfConfig::get('dm_front_asset'), 'js/dmFrontPageEditForm.js'))
+      );
     }
     
     $this->css = dmCssMinifier::transform(
       file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), sfConfig::get('dm_front_asset'), 'css/pageEditForm.css'))
     );
+    
+    return $this->renderJson(array(
+      'type' => 'form',
+      'js'   => $js,
+      'html' => $this->getPartial('dmPage/edit')
+    ));
   }
   
   public function executeNew(dmWebRequest $request)
@@ -96,13 +100,13 @@ class dmPageActions extends dmFrontBaseActions
         
         $this->page->save();
         
-        return $this->renderText(implode('__DM_SPLIT__', array(
-          'ok',
-          dmFrontLinkTag::build($this->page)->getHref()
-        )));
+        return $this->renderJson(array(
+          'type'  => 'redirect',
+          'url'   => dmFrontLinkTag::build($this->page)->getHref()
+        ));
       }
       
-      $this->js = false;
+      $js = false;
     }
     else
     {
@@ -112,7 +116,7 @@ class dmPageActions extends dmFrontBaseActions
         'slug' => $this->page->slug ? $this->page->slug.'/?' : '?'
       ));
       
-      $this->js = dmJsMinifier::transform(
+      $js = dmJsMinifier::transform(
         file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), sfConfig::get('dm_front_asset'), 'js/dmFrontPageAddForm.js'))
       );
     }
@@ -130,6 +134,12 @@ class dmPageActions extends dmFrontBaseActions
     }
     
     $this->parentSlugsJson = json_encode($parentSlugs);
+    
+    return $this->renderJson(array(
+      'type' => 'form',
+      'js'   => $js,
+      'html' => $this->getPartial('dmPage/new')
+    ));
   }
   
 }

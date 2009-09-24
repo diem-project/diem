@@ -2,7 +2,7 @@ DmPage:
   actAs:
     NestedSet:
     I18n:
-      fields:               [slug, name, title, h1, description, keywords, auto_mod, is_active]
+      fields:               [slug, name, title, h1, description, keywords, auto_mod, is_active, is_indexable]
   columns:
     id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
     module:                 { type: string(127), notnull: true, nospace: true }
@@ -17,6 +17,7 @@ DmPage:
     auto_mod:               { type: string(6), notnull: true, default: 'snthdk', nospace: true } # slug, name, title, h1, description, keywords
     is_active:              { type: boolean, notnull: true, default: true }
     is_secure:              { type: boolean, notnull: true, default: false } # requires authentification
+    is_indexable:           { type: boolean, notnull: true, default: true }
   indexes:
     recordModuleAction:
       fields:               [ module, action, record_id ]

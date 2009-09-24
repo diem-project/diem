@@ -23,9 +23,12 @@ class dmFrontPageEditHelper extends dmFrontPageHelper
 
     $html .= '<div class="dm_widgets">';
 
-    foreach($zone['Widgets'] as $widget)
+    if(!empty($zone['Widgets']))
     {
-      $html .= $this->renderWidget($widget);
+      foreach($zone['Widgets'] as $widget)
+      {
+        $html .= $this->renderWidget($widget);
+      }
     }
 
     $html .= '</div>';

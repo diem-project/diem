@@ -9,12 +9,15 @@ class dmInterfaceActions extends baseDmInterfaceActions
   {
     $tree = new dmFrontRecursivePageList;
 
-    $jsTree =
+    $js =
       file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), sfConfig::get('dm_core_asset'), 'lib/jsTree/source/tree_component.min.js')).
       file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), sfConfig::get('dm_core_asset'), 'lib/jsTree/source/css.js'))
     ;
 
-    return $this->renderText($tree->render().'__DM_SPLIT__'.$jsTree);
+    return $this->renderJson(array(
+      'html' => $tree->render(),
+      'js' => $js
+    ));
   }
 
 }

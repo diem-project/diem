@@ -21,7 +21,7 @@ echo £("div.control",
     ? £("li", £link("dmMediaLibrary/moveFolder?folder_id=".$folder->getId())->text(__("Move this folder"))->set('.move_folder.dialog_me.s16.s16_folder_move'))
     : "").
     (!$folder->isRoot()
-    ? £("li", £link("dmMediaLibrary/deleteFolder?folder_id=".$folder->getId())->textTitle(__("Delete this folder"))->set('.delete_folder.confirm_me.s16.s16_folder_delete'))
+    ? £("li", £link("dmMediaLibrary/deleteFolder?folder_id=".$folder->getId())->textTitle(__("Delete this folder"))->set('.delete_folder.dm_js_confirm.s16.s16_folder_delete'))
     : "")
 
   )

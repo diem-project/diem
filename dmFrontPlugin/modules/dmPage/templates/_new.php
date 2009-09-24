@@ -29,8 +29,3 @@ echo £('div.form',
 echo £('div.parent_slugs.none', $parentSlugsJson);
 
 echo £c('div');
-
-if ($js)
-{
-  echo '__DM_SPLIT__', $js;
-}

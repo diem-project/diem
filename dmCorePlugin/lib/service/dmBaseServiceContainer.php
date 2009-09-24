@@ -3,14 +3,7 @@
 abstract class dmBaseServiceContainer extends sfServiceContainer
 {
   protected
-  $options = array(
-    /*
-     * boolean human
-     * Means that request has been sent by a human, and the application will send html for a browser.
-     * CLI, ajax and flash are NOT human.
-     */
-    'human' => true
-  );
+  $options = array();
   
   public function configure(array $dependencies, array $options = array())
   {
@@ -50,7 +43,7 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
   {
     $this->configureUser();
     
-    if ($this->options['human'])
+    if ($this->getService('response')->isHtmlForHuman())
     {
       $this->configureResponse();
       
@@ -136,7 +129,7 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
       $this->getService('action_log')->connect();
     }
     
-    if ($this->options['human'])
+    if ($this->getService('response')->isHtmlForHuman())
     {
       /*
        * Connect the user log to make it aware of controller end

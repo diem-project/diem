@@ -66,31 +66,27 @@ class DmPageFrontNewForm extends DmPageForm
     
     parent::doUpdateObject($values);
     
-    $page = $this->getObject();
-    
-    $page->module = $parent->module;
+    $this->object->module = $parent->module;
     
     $action = dmString::modulize(str_replace('-', '_', dmString::slugify($values['name'])));
     
-    if (dmDb::query('DmPage p')->where('p.module = ? AND p.action = ?', array($page->module, $action))->exists())
+    if (dmDb::query('DmPage p')->where('p.module = ? AND p.action = ?', array($this->object->module, $action))->exists())
     {
       $iterator = 2;
-      while(dmDb::query('DmPage p')->where('p.module = ? AND p.action = ?', array($page->module, $action.$iterator))->exists())
+      while(dmDb::query('DmPage p')->where('p.module = ? AND p.action = ?', array($this->object->module, $action.$iterator))->exists())
       {
         $iterator++;
       }
       $action .= $iterator;
     }
     
-    $page->action = $action;
+    $this->object->action = $action;
     
-    $page->title = $page->name;
+    $this->object->title = $this->object->name;
 
-    $page->Node->insertAsLastChildOf($parent);
+    $this->object->Node->insertAsLastChildOf($parent);
     
-    $pageView = $page->PageView;
-        
-    $pageView->dmLayoutId = $values['dm_layout_id'];
+    $this->object->PageView->dmLayoutId = $values['dm_layout_id'];
   }
   
   public function checkSlug($validator, $values)
@@ -100,7 +96,7 @@ class DmPageFrontNewForm extends DmPageForm
       $values['slug'] = dmString::slugify($values['slug'], true);
       
       $existingPageName = dmDb::query('DmPageTranslation t')
-      ->where('t.lang = ? AND t.slug = ?', array(dm::getUser()->getCulture(), $values['slug']))
+      ->where('t.lang = ? AND t.slug = ?', array($this->object->lang, $values['slug']))
       ->select('t.name')
       ->fetchValue();
       

@@ -8,11 +8,6 @@ class dmFrontLinkResource
     $type,
     $params;
     
-  public function __construct()
-  {
-    
-  }
-    
   public function getType()
   {
     return $this->type;
@@ -124,7 +119,7 @@ class dmFrontLinkResource
       elseif(strncmp($source, '+/', 2) === 0)
       {
         $this->type = 'action';
-        $this->subject = '/'.$source;
+        $this->subject = substr($source, 2);
       }
       elseif(substr_count($source, '/') === 1)
       {

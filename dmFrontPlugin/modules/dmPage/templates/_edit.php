@@ -1,6 +1,8 @@
 <?php
 
-echo £('div.dm.dm_page_edit_wrap',
+echo '<style type="text/css">'.$css.'</style>',
+
+£('div.dm.dm_page_edit_wrap',
 
   $form->open('.dm_form.list.little').
   $form['id'].
@@ -36,7 +38,8 @@ echo £('div.dm.dm_page_edit_wrap',
     £('div#dm_page_edit_publication',
       £('ul.dm_form_elements',
         $form['is_active']->renderRow().
-        $form['is_secure']->renderRow()
+        $form['is_secure']->renderRow().
+        $form['is_indexable']->renderRow()
       )
     )
   ).
@@ -44,7 +47,7 @@ echo £('div.dm.dm_page_edit_wrap',
   sprintf(
     '<div class="actions clearfix">%s%s%s</div>',
     sprintf('<a class="cancel dm close_dialog button fleft">%s</a>', __('Cancel')),
-    ($sf_user->can('page_delete') && !$page->getNode()->isRoot() && !$page->hasRecord()) ? £link('+/dmPage/delete')->param('id', $page->id)->set('.dm.delete.button.red.ml10.left')->text(__('Delete')) : '',
+    ($sf_user->can('page_delete') && !$page->getNode()->isRoot() && !$page->hasRecord()) ? £link('+/dmPage/delete')->param('id', $page->id)->set('.dm.delete.button.red.ml10.left.dm_js_confirm')->text(__('Delete'))->title(__('Delete this page')) : '',
     sprintf('<input type="submit" class="submit and_save green fright" name="and_save" value="%s" />', __('Save'))
   ).
   
@@ -53,15 +56,4 @@ echo £('div.dm.dm_page_edit_wrap',
   ).
   
   $form->close()
-
 );
-
-if ($css)
-{
-  echo sprintf('<style type="text/css">%s</style>', $css);
-}
-
-if ($js)
-{
-  echo '__DM_SPLIT__', $js;
-}

@@ -34,12 +34,12 @@
       pageBar.element.addClass('loaded');
       pageBar.element.block();
       $.ajax({
+				dataType: 'json',
         url: $.dm.ctrl.getHref('+/dmInterface/loadPageTree'),
         success: function(data)
         {
-					var dataParts = data.split('\_\_DM\_SPLIT\_\_');
-          $('#dm_page_tree').hide().html(dataParts[0]);
-          $.globalEval(dataParts[1]);
+          $.globalEval(data.js);
+          $('#dm_page_tree').hide().html(data.html);
           pageBar.refresh();
           pageBar.element.unblock();
           setTimeout(function()

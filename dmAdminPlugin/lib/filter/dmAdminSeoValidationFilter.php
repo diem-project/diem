@@ -14,7 +14,7 @@ class dmAdminSeoValidationFilter extends dmFilter
   public function execute($filterChain)
   {
 
-    if ($this->context->isHtmlForHuman() && $this->context->getUser()->can('seo'))
+    if ($this->context->getResponse()->isHtmlForHuman() && $this->context->getUser()->can('seo'))
     {
       $validator = new dmSeoValidationService($this->getContext()->getEventDispatcher());
 

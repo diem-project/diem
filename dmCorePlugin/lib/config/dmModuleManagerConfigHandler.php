@@ -247,7 +247,7 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
       'credentials' => isset($moduleConfig['credentials']) ? trim($moduleConfig['credentials']) : null,
       'underscore'  => (string) dmString::underscore($moduleKey),
       'is_project'  => (boolean) dmArray::get($moduleConfig, 'project', $isInProject),
-      'has_admin'  => (boolean) $model && dmArray::get($moduleConfig, 'admin', true),
+      'has_admin'  => (boolean) dmArray::get($moduleConfig, 'admin', $model || !$isInProject),
     );
     
     if ($moduleOptions['is_project'])

@@ -16,6 +16,30 @@ abstract class dmBaseActions extends sfActions
   }
 
   
+  /**
+   * Appends the given json to the response content and bypasses the built-in view system.
+   *
+   * This method must be called as with a return:
+   *
+   * <code>return $this->renderJson(array('key'=>'value'))</code>
+   *
+   * @param string $json Json to append to the response
+   *
+   * @return sfView::NONE
+   */
+  public function renderJson($json)
+  {
+    $this->response->clearJavascripts();
+    $this->response->clearStylesheets();
+    $this->response->setContentType('application/json');
+    $this->setLayout(false);
+    sfConfig::set('sf_web_debug', false);
+    
+    $this->response->setContent(json_encode($json));
+
+    return sfView::NONE;
+  }  
+  
   protected function redirectBack()
   {
     $refererUrl = $this->request->getReferer();

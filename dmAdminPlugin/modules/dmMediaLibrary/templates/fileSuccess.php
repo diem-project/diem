@@ -35,7 +35,7 @@ echo £o('div.clearfix');
       £('a.close_dialog.button', __('Close')).
       £link('dmMediaLibrary/deleteFile?media_id='.$file->getId())
       ->text(__('Delete'))
-      ->set('.button.red.confirm_me')
+      ->set('.button.red.dm_js_confirm')
       ->title(__('Delete this file')).
       ($file->isImage()
       ? £link('dmMediaLibrary/editImage?media_id='.$file->getId())

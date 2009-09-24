@@ -30,7 +30,7 @@
       {
         if (!$('body > div.dm_page_edit_dialog').length) 
         {
-          $dialog = $.dm.ctrl.ajaxDialog({
+          $dialog = $.dm.ctrl.ajaxJsonDialog({
             title: $(this).attr('title'),
             class: 'dm_page_edit_dialog',
             url: $(this).attr('href'),
@@ -50,7 +50,7 @@
       {
         if (!$('body > div.dm_page_add_dialog').length) 
         {
-          $dialog = $.dm.ctrl.ajaxDialog({
+          $dialog = $.dm.ctrl.ajaxJsonDialog({
             title: $(this).attr('title'),
             class: 'dm_page_add_dialog',
             url: $(this).attr('href')
@@ -69,7 +69,7 @@
       {
         if (!$('body > div.dm_code_editor_dialog').length) 
         {
-          $dialog = $.dm.ctrl.ajaxDialog({
+          $dialog = $.dm.ctrl.ajaxJsonDialog({
             title: $(this).attr('title'),
             class: 'dm_code_editor_dialog',
             width: 500,

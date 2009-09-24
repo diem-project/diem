@@ -32,12 +32,15 @@ abstract class dmFrontBaseServiceContainer extends dmBaseServiceContainer
   {
     parent::connectServices();
     
-    if ($this->options['human'] || sfConfig::get('sf_environment') == 'test')
+    if ($this->getService('response')->isHtmlForHuman() || sfConfig::get('sf_environment') == 'test')
     {
       $this->getService('page_helper')->connect();
       
       $this->getService('layout_helper')->connect();
     }
+    
+    // must be called after all connections to event dispatcher
+    $this->getService('user')->getTheme();
   }
   
   protected function configureUser()

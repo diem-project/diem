@@ -25,20 +25,21 @@
       self.parentSlugs = window["eval"]("(" + $('div.parent_slugs', self.element).text() + ")");
       
       self.$form = $('form', self.element).dmAjaxForm({
+				dataType: 'json',
         beforeSubmit: function(data)
         {
           self.element.block();
         },
         success: function(data)
         {
-          if (data.match(/\_\_DM\_SPLIT\_\_/)) 
+          if (data.type == 'redirect')
           {
             self.element.dialog('close');
             $('body').block();
-            location.href = data.split(/\_\_DM\_SPLIT\_\_/)[1];
+            location.href = data.url;
             return;
           }
-          self.element.html(data);
+          self.element.html(data.html);
           self.form();
         }
       });
@@ -82,7 +83,6 @@
     slugify: function(str)
     {
 			if(!str) return '';
-			$.dbg(str);
 //      str = str.replace(/^\s+|\s+$/g, ''); // trim
       str = str.toLowerCase();
 
@@ -94,7 +94,6 @@
       }
       
       str = str.replace(/\s+|-{2,}/g, '-').replace(/[^a-zA-Z0-9-/]/g, '');
-      $.dbg(str);
       return str;
     }
     

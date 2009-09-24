@@ -15,7 +15,7 @@ class dmZoneActions extends dmFrontBaseActions
 
     $this->form = new DmZoneFrontForm($this->zone);
 
-    if ($request->isMethod('post'))
+    if ($request->isMethod('put'))
     {
       $this->form->bind();
 
@@ -46,7 +46,7 @@ class dmZoneActions extends dmFrontBaseActions
       ->fetchPDO()
     );
     
-    return $this->renderText(implode('__DM_SPLIT__', $zone[0]));
+    return $this->renderJson($zone[0]);
   }
 
   public function executeDelete(sfWebRequest $request)

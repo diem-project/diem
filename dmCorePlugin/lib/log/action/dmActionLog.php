@@ -32,7 +32,7 @@ class dmActionLog extends dmFileLog
   {
     $record = $event->getSubject();
     
-    if(in_array(get_class($record), $this->options['ignore_models']))
+    if ($this->isIgnored($record))
     {
       return;
     }
@@ -48,40 +48,14 @@ class dmActionLog extends dmFileLog
   
     if ($record instanceof DmPage)
     {
-      if ($this->options['ignore_internal_actions'])
-      {
-        return;
-      }
-      
       $type = $this->serviceContainer->getService('module_manager')->getModule('dmPage')->getKey();
     }
-    elseif ($record instanceof dmDoctrineRecord)
+    elseif ($record instanceof dmDoctrineRecord && $module = $record->getDmModule())
     {
-      if ($module = $record->getDmModule())
-      {
-        if ($this->options['ignore_internal_actions'] && !$module->isProject())
-        {
-          return;
-        }
-        
-        $type = $module->getName();
-      }
-      elseif ($this->options['ignore_internal_actions'])
-      {
-        return;
-      }
-      else
-      {
-        $type = get_class($record);
-      }
+      $type = $module->getName();
     }
     else
     {
-      if ($this->options['ignore_internal_actions'])
-      {
-        return;
-      }
-      
       $type = get_class($record);
     }
     
@@ -92,5 +66,30 @@ class dmActionLog extends dmFileLog
       'type'    => $type,
       'subject' => $subject
     ));
+  }
+  
+  protected function isIgnored($record)
+  {
+    if(in_array(get_class($record), $this->options['ignore_models']))
+    {
+      return true;
+    }
+    
+    if (!$this->options['ignore_internal_actions'])
+    {
+      return false;
+    }
+    
+    if ($record instanceof DmPage)
+    {
+      return true;
+    }
+    
+    if ($module = $record->getDmModule())
+    {
+      return !$module->isProject();
+    }
+    
+    return true;
   }
 }

@@ -147,6 +147,14 @@ class dmForm extends sfFormSymfony
     return $return;
   }
   
+  /*
+   * Usefull for debugging : will throw the error exception
+   */
+  public function throwError()
+  {
+    throw $this->errorSchema;
+  }
+  
   /**
    * Returns the form field associated with the name (implements the ArrayAccess interface).
    *

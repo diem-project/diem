@@ -1,6 +1,6 @@
 /*
  * jQuery Form Plugin
- * version: 2.28 (10-MAY-2009)
+ * version: 2.32 (17-SEP-2009)
  * @requires jQuery v1.2.2 or later
  *
  * Examples and documentation at: http://malsup.com/jquery/form/
@@ -55,10 +55,10 @@ $.fn.ajaxSubmit = function(options) {
 
     var url = $.trim(this.attr('action'));
     if (url) {
-	    // clean url (don't include hash vaue)
-	    url = (url.match(/^([^#]+)/)||[])[1];
-   	}
-   	url = url || window.location.href || ''
+      // clean url (don't include hash vaue)
+      url = (url.match(/^([^#]+)/)||[])[1];
+    }
+    url = url || window.location.href || '';
 
     options = $.extend({
         url:  url,
@@ -141,9 +141,9 @@ $.fn.ajaxSubmit = function(options) {
         if (files[j])
             found = true;
 
-	var multipart = false;
-//	var mp = 'multipart/form-data';
-//	multipart = ($form.attr('enctype') == mp || $form.attr('encoding') == mp);
+  var multipart = false;
+//  var mp = 'multipart/form-data';
+//  multipart = ($form.attr('enctype') == mp || $form.attr('encoding') == mp);
 
     // options.iframe allows user to force iframe mode
    if (options.iframe || found || multipart) {
@@ -172,7 +172,7 @@ $.fn.ajaxSubmit = function(options) {
         }
 
         var opts = $.extend({}, $.ajaxSettings, options);
-		var s = $.extend(true, {}, $.extend(true, {}, $.ajaxSettings), opts);
+    var s = $.extend(true, {}, $.extend(true, {}, $.ajaxSettings), opts);
 
         var id = 'jqFormIO' + (new Date().getTime());
         var $io = $('<iframe id="' + id + '" name="' + id + '" src="about:blank" />');
@@ -200,9 +200,9 @@ $.fn.ajaxSubmit = function(options) {
         if (g && ! $.active++) $.event.trigger("ajaxStart");
         if (g) $.event.trigger("ajaxSend", [xhr, opts]);
 
-		if (s.beforeSend && s.beforeSend(xhr, s) === false) {
-			s.global && $.active--;
-			return;
+    if (s.beforeSend && s.beforeSend(xhr, s) === false) {
+      s.global && $.active--;
+      return;
         }
         if (xhr.aborted)
             return;
@@ -229,12 +229,12 @@ $.fn.ajaxSubmit = function(options) {
             // make sure form attrs are set
             var t = $form.attr('target'), a = $form.attr('action');
 
-			// update form attrs in IE friendly way
-			form.setAttribute('target',id);
-			if (form.getAttribute('method') != 'POST')
-				form.setAttribute('method', 'POST');
-			if (form.getAttribute('action') != opts.url)
-				form.setAttribute('action', opts.url);
+      // update form attrs in IE friendly way
+      form.setAttribute('target',id);
+      if (form.getAttribute('method') != 'POST')
+        form.setAttribute('method', 'POST');
+      if (form.getAttribute('action') != opts.url)
+        form.setAttribute('action', opts.url);
 
             // ie borks in some cases when setting encoding
             if (! options.skipEncodingOverride) {
@@ -264,13 +264,13 @@ $.fn.ajaxSubmit = function(options) {
             }
             finally {
                 // reset attrs and remove "extra" input elements
-				form.setAttribute('action',a);
+        form.setAttribute('action',a);
                 t ? form.setAttribute('target', t) : $form.removeAttr('target');
                 $(extraInputs).remove();
             }
         }, 10);
 
-        var nullCheckFlag = 0;
+        var domCheckCount = 50;
 
         function cb() {
             if (cbInvoked++) return;
@@ -284,15 +284,20 @@ $.fn.ajaxSubmit = function(options) {
                 var data, doc;
 
                 doc = io.contentWindow ? io.contentWindow.document : io.contentDocument ? io.contentDocument : io.document;
-
-                if ((doc.body == null || doc.body.innerHTML == '') && !nullCheckFlag) {
-                    // in some browsers (cough, Opera 9.2.x) the iframe DOM is not always traversable when
-                    // the onload callback fires, so we give them a 2nd chance
-                    nullCheckFlag = 1;
-                    cbInvoked--;
-                    setTimeout(cb, 100);
-                    return;
-                }
+        
+        var isXml = opts.dataType == 'xml' || doc.XMLDocument || $.isXMLDoc(doc);
+        log('isXml='+isXml);
+                if (!isXml && (doc.body == null || doc.body.innerHTML == '')) {
+                  if (--domCheckCount) {
+                      // in some browsers (Opera) the iframe DOM is not always traversable when
+                      // the onload callback fires, so we loop a bit to accommodate
+                      cbInvoked = 0;
+                      setTimeout(cb, 100);
+                      return;
+                  }
+                  log('Could not access iframe DOM after 50 tries.');
+                  return;
+              }
 
                 xhr.responseText = doc.body ? doc.body.innerHTML : null;
                 xhr.responseXML = doc.XMLDocument ? doc.XMLDocument : doc;
@@ -422,7 +427,7 @@ $.fn.formToArray = function(semantic) {
         if (semantic && form.clk && el.type == "image") {
             // handle image inputs on the fly when semantic == true
             if(!el.disabled && form.clk == el) {
-            	a.push({name: n, value: $(el).val()});
+              a.push({name: n, value: $(el).val()});
                 a.push({name: n+'.x', value: form.clk_x}, {name: n+'.y', value: form.clk_y});
             }
             continue;
@@ -441,7 +446,7 @@ $.fn.formToArray = function(semantic) {
         // input type=='image' are not found in elements array! handle it here
         var $input = $(form.clk), input = $input[0], n = input.name;
         if (n && !input.disabled && input.type == 'image') {
-        	a.push({name: n, value: $input.val()});
+          a.push({name: n, value: $input.val()});
             a.push({name: n+'.x', value: form.clk_x}, {name: n+'.y', value: form.clk_y});
         }
     }
@@ -549,9 +554,9 @@ $.fieldValue = function(el, successful) {
         for(var i=(one ? index : 0); i < max; i++) {
             var op = ops[i];
             if (op.selected) {
-				var v = op.value;
-				if (!v) // extra pain for IE...
-                	v = (op.attributes && op.attributes['value'] && !(op.attributes['value'].specified)) ? op.text : op.value;
+        var v = op.value;
+        if (!v) // extra pain for IE...
+                  v = (op.attributes && op.attributes['value'] && !(op.attributes['value'].specified)) ? op.text : op.value;
                 if (one) return v;
                 a.push(v);
             }

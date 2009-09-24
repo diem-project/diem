@@ -18,7 +18,7 @@ $.widget('ui.dmWidget', {
 			return;
 		}
     
-    var $dialog = $.dm.ctrl.ajaxDialog({
+    var $dialog = $.dm.ctrl.ajaxJsonDialog({
       url:          $.dm.ctrl.getHref('+/dmWidget/edit'),
       data:         { widget_id: widget.getId() },
       title:        $('a.dm_widget_edit', widget.element).attr('title'),
@@ -27,14 +27,14 @@ $.widget('ui.dmWidget', {
       beforeclose:  function() {
         if (widget.deleted) return;
         $.ajax({
+					dataType: 'json',
           url:      $.dm.ctrl.getHref('+/dmWidget/getInner'),
           data:     { widget_id: widget.getId() },
           success:  function(data) {
-            var dataParts = data.split('\_\_DM\_SPLIT\_\_');
-            widget.element.attr('class', dataParts[1])
+            widget.element.attr('class', data.widget_classes[0])
 						.find('div.dm_widget_inner')
-						.attr('class', dataParts[2])
-						.html(dataParts[0]);
+						.attr('class', data.widget_classes[1])
+						.html(data.widget_html);
           }
         });
       }
@@ -62,6 +62,7 @@ $.widget('ui.dmWidget', {
           $form.find('div.dm_tabbed_form').tabs('select', activeTab);
         }
 	      $form.find('form').dmAjaxForm({
+					dataType: 'json',
 	        beforeSubmit: function(data) {
 	          $dialog.block();
 	          widget.element.block();
@@ -71,25 +72,23 @@ $.widget('ui.dmWidget', {
 						}
 	        },
 	        success:  function(data) {
-	          if (data == 'ok') {
+	          if (data.type == 'close') {
 	            $dialog.dialog('close');
 	            widget.element.unblock();
 							return;
 	          }
-	          if (data.indexOf('\_\_DM\_SPLIT\_\_') != -1) {
-	            dataParts = data.split('\_\_DM\_SPLIT\_\_');
+						
+	          if (data.widget_html)
+						{
               widget.element
-							.attr('class', dataParts[2])
+							.attr('class', data.widget_classes[0])
               .find('div.dm_widget_inner')
-							.attr('class', dataParts[3])
-	            .html(dataParts[1]);
-	            formHtml = dataParts[0];
+							.attr('class', data.widget_classes[1])
+	            .html(data.widget_html);
 	          }
-	          else {
-	            formHtml = data;
-	          }
+						
 	          widget.element.unblock();
-	          $dialog.html(formHtml).trigger('dmAjaxResponse');
+	          $dialog.html(data.html).trigger('dmAjaxResponse');
 	        }
 	      });
 			}

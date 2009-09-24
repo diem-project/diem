@@ -1,4 +1,6 @@
 all:
   is_secure: true
-  credentials:
-    - front_edit
+  credentials: front_edit
+
+edit:
+  credentials:  widget_edit

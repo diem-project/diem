@@ -6,8 +6,7 @@ class dmContext extends sfContext
   protected
   $serviceContainer,
   $dmConfiguration,
-  $page,
-  $isHtmlForHuman;
+  $page;
   
   /**
    * Creates a new context instance.
@@ -109,7 +108,14 @@ class dmContext extends sfContext
     $this->factories['module_manager'] = include($this->getConfigCache()->checkConfig('config/dm/modules.yml'));
     $timer && $timer->addTime();
     
-    return parent::loadFactories();
+    parent::loadFactories();
+    
+    $this->factories['response']->setIsHtmlForHuman(
+          !dmConfig::isCli()
+      &&  !$this->factories['request']->isXmlHttpRequest()
+      &&  !$this->factories['request']->isFlashRequest()
+      &&  $this->factories['response']->isHtml()
+    );
   }
   
   /*
@@ -138,9 +144,6 @@ class dmContext extends sfContext
     array(
       'context'           => $this,
       'doctrine_manager'  => Doctrine_Manager::getInstance()
-    ),
-    array(
-      'human'             => $this->isHtmlForHuman()
     ));
   }
   
@@ -240,24 +243,6 @@ class dmContext extends sfContext
     $this->dispatcher->notify(new sfEvent($this, 'dm.context.end'));
   }
 
-  /*
-   * Means that request has been sent by a human, and the application will send html for a browser.
-   * CLI, ajax and flash are NOT human.
-   * @return boolean $human
-   */
-  public function isHtmlForHuman()
-  {
-    if (null !== $this->isHtmlForHuman)
-    {
-      return $this->isHtmlForHuman;
-    }
-
-    return $this->isHtmlForHuman =
-        !dmConfig::isCli()
-    &&  !$this->getRequest()->isXmlHttpRequest()
-    &&  !$this->getRequest()->isFlashRequest()
-    &&  $this->getResponse()->isHtml();
-  }
 
   public function isModuleAction($module, $action)
   {

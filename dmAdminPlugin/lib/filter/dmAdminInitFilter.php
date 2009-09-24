@@ -21,7 +21,7 @@ class dmAdminInitFilter extends dmInitFilter
 
     $filterChain->execute();
     
-    if ($this->context->isHtmlForHuman())
+    if ($this->context->getResponse()->isHtmlForHuman())
     {
       if (sfConfig::get('dm_html_validate', true) && $this->context->getUser()->can('html_validate_admin'))
       {

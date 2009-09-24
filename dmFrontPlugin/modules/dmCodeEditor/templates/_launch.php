@@ -1,5 +1,7 @@
 <?php
 
+echo '<style type="text/css">'.$css.'</style>';
+
 echo £o('div.dm_code_editor_wrap');
 
 echo £o('div.dm_code_editor');
@@ -17,13 +19,3 @@ echo '<div id="dm_code_editor_file_open">'.$fileMenu->render('level0_ul_class=cl
 echo £c('div');
 
 echo £c('div');
-
-if ($css)
-{
-  echo sprintf('<style type="text/css">%s</style>', $css);
-}
-
-if ($js)
-{
-  echo '__DM_SPLIT__', $js;
-}

@@ -68,7 +68,7 @@ class dmFrontLayoutHelper extends dmCoreLayoutHelper
       $metas['keywords'] = $keywords;
     }
     
-    if (!dmConfig::get('site_indexable'))
+    if (!dmConfig::get('site_indexable') || !$this->page->get('is_indexable'))
     {
       $metas['robots'] = 'noindex, nofollow';
     }

@@ -106,10 +106,25 @@ abstract class dmFormDoctrine extends sfFormDoctrine
   }
 
 
+  /**
+   * Returns true if the current form has some associated i18n objects.
+   *
+   * @return Boolean true if the current form has some associated i18n objects, false otherwise
+   */
+  public function isI18n()
+  {
+    return $this->getObject()->getTable()->hasI18n();
+  }
+  
+  protected function mergeI18nForm($culture = null)
+  {
+    $this->mergeForm($this->createI18nForm());
+  }
+  
   /*
    * Create current i18n form
    */
-  protected function createCurrentI18nForm()
+  protected function createI18nForm($culture = null)
   {
     if (!$this->isI18n())
     {
@@ -118,10 +133,10 @@ abstract class dmFormDoctrine extends sfFormDoctrine
 
     $i18nFormClass = $this->getI18nFormClass();
 
-    $culture = dm::getUser()->getCulture();
+    $culture = null === $culture ? dmDoctrineRecord::getDefaultCulture() : $culture;
 
-    $i18nObject = $this->object->Translation[$culture];
-    $i18nForm = new $i18nFormClass($i18nObject);
+    $i18nForm = new $i18nFormClass($this->object->get('Translation')->get($culture));
+    
     unset($i18nForm['id'], $i18nForm['lang']);
 
     return $i18nForm;
