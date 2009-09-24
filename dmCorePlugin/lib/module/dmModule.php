@@ -36,7 +36,7 @@ class dmModule extends dmMicroCache
 
   public function hasAdmin()
   {
-    return $this->options['admin'];
+    return $this->options['has_admin'];
   }
 
   public function __toString()

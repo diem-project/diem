@@ -17,10 +17,11 @@ class <?php echo $this->table->getOption('name') ?>Form extends Base<?php echo $
   public function configure()
   {
     parent::configure();
-  }
 <?php else: ?>
   public function configure()
   {
-  }
 <?php endif; ?>
+    // Unset automatic fields like 'created_at', 'updated_at', 'created_by', 'updated_by'
+    $this->unsetAutoFields();
+  }
 }

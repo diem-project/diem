@@ -8,7 +8,7 @@ class dmAdminModuleManagerConfigHandler extends dmModuleManagerConfigHandler
   {
     $moduleOptions = parent::fixModuleConfig($moduleKey, $moduleConfig, $isInProject);
 
-    $moduleOptions['admin'] = !$moduleOptions['is_project'] || file_exists(dmOs::join(sfConfig::get('sf_app_module_dir'), $moduleKey, 'actions/actions.class.php'));
+//    $moduleOptions['admin'] = !$moduleOptions['is_project'] || file_exists(dmOs::join(sfConfig::get('sf_app_module_dir'), $moduleKey, 'actions/actions.class.php'));
 
     return $moduleOptions;
   }

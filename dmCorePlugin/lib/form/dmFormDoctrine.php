@@ -10,6 +10,24 @@
  */
 abstract class dmFormDoctrine extends sfFormDoctrine
 {
+  protected
+  $autoFieldsToUnset = array('created_at', 'updated_at', 'created_by', 'updated_by');
+  
+  /*
+   * Unset automatic fields like 'created_at', 'updated_at', 'created_by', 'updated_by'
+   */
+  protected function unsetAutoFields($autoFields = null)
+  {
+    $autoFields = is_array($autoFields) ? $autoFields : $this->autoFieldsToUnset;
+    
+    foreach($autoFields as $autoFieldName)
+    {
+      if (isset($this->widgetSchema[$autoFieldName]))
+      {
+        unset($this[$autoFieldName]);
+      }
+    }
+  }
 
   protected function filterValuesByEmbeddedMediaForm(array $values, $local)
   {
