@@ -4,6 +4,10 @@ class dmUpdateSeoService extends dmService
 {
   protected static
   $truncateCache;
+  
+  protected
+  $titlePrefix,
+  $titleSuffix;
 
   public function execute(array $onlyModules = array())
   {
@@ -15,6 +19,9 @@ class dmUpdateSeoService extends dmService
     $onlyModules = dmModuleManager::removeModulesChildren($onlyModules);
     
     $culture = dm::getUser()->getCulture();
+    
+    $this->titlePrefix = dmConfig::get('title_prefix');
+    $this->titleSuffix = dmConfig::get('title_suffix');
 
     $this->log("dmUpdateSeo::execute");
 
@@ -256,7 +263,7 @@ class dmUpdateSeoService extends dmService
           $usedRecord = $record->getAncestorRecord($usedModuleKey);
         }
 
-        if ($usedRecord instanceof myDoctrineRecord)
+        if ($usedRecord instanceof dmDoctrineRecord)
         {
           /*
            * get record value for field
@@ -302,6 +309,10 @@ class dmUpdateSeoService extends dmService
         $value = $parentSlug.'/'.$value;
 
         $value = trim(preg_replace('|(/{2,})|', '/', $value), '/');
+      }
+      elseif($field === 'title')
+      {
+        $value = $this->titlePrefix.$value.$this->titleSuffix;
       }
 
       $values[$field] = $this->truncateValueForField(trim($value), $field);

@@ -282,19 +282,14 @@ abstract class dmDoctrineTable extends Doctrine_Table
 
   public function getDefaultQuery()
   {
-    if ($this->hasCache('dm_default_query'))
-    {
-      return clone $this->getCache('dm_default_query');
-    }
-
-    $q = $this->createQuery('dm_query');
+    $query = $this->createQuery('dm_query');
 
     if ($sortColumnName = $this->getSortColumnName())
     {
-      $q->addOrderBy('dm_query.'.$sortColumnName);
+      $query->addOrderBy('dm_query.'.$sortColumnName);
     }
     
-    return $this->setCache('dm_default_query', $q);
+    return $query;
   }
 
   public function getSortColumnName()

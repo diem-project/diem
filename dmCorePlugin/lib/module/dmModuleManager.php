@@ -6,7 +6,8 @@ class dmModuleManager
   protected
   $types,
   $modules,
-  $projectModules;
+  $projectModules,
+  $modelModules;
   
   public function __construct(array $options = array())
   {
@@ -18,11 +19,12 @@ class dmModuleManager
     $this->options = $options;
   }
   
-  public function load(array $types, array $modules, array $projectModules)
+  public function load(array $types, array $modules, array $projectModules, array $modelModules)
   {
     $this->types          = $types;
     $this->modules        = $modules;
     $this->projectModules = $projectModules;
+    $this->modelModules   = $modelModules;
   }
   
   public function getTypes()
@@ -30,13 +32,6 @@ class dmModuleManager
     return $this->types;
   }
 
-  public function checkModulesConsistency()
-  {
-    if (!$this->getModuleOrNull('main'))
-    {
-      throw new dmException('You must have a main module');
-    }
-  }
 
   public function getType($typeName)
   {
@@ -118,22 +113,13 @@ class dmModuleManager
 
   public function getModuleByModel($model)
   {
-    $model = dmString::camelize($model);
-    
-    foreach($this->getProjectModules() as $module)
+    /*
+     * do NOT camelize the model
+     * because of models like sfGuardUser
+     */
+    if (isset($this->modelModules[$model]))
     {
-      if ($module->getModel() === $model)
-      {
-        return $module;
-      }
-    }
-
-    foreach($this->getModules() as $module)
-    {
-      if ($module->getModel() === $model)
-      {
-        return $module;
-      }
+      return $this->getModule($this->modelModules[$model]);
     }
 
     return null;

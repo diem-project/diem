@@ -30,7 +30,7 @@ default:
     api:                                # external apis
       gmap:                             # google maps api http://code.google.com/apis/maps/
                                         # to configure the api key, go to the settings panel in the admin application.
-        version:          2             # api version
+        version:          3             # api version
         sensor:           false         # use a sensor to determine a user's location
         url:              http://maps.google.com/maps?file=api&v=%version%&sensor=%sensor%&key=%key%
     

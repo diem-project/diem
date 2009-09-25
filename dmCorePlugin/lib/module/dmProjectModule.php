@@ -26,7 +26,7 @@ class dmProjectModule extends dmModule
 
   public function getParent()
   {
-    return $this->manager->getModule($this->getParentKey());
+    return self::$manager->getModule($this->getParentKey());
   }
   
   public function getParentKey()
@@ -55,7 +55,7 @@ class dmProjectModule extends dmModule
       $ancestorKey = dmString::modulize($ancestorKey);
     }
     
-    return in_array($ancestorKey, $this->options['path_keys']) ? $this->manager->getModule($ancestorKey) : null;
+    return in_array($ancestorKey, $this->options['path_keys']) ? self::$manager->getModule($ancestorKey) : null;
   }
 
   public function hasAncestor($ancestorKey)
@@ -85,7 +85,7 @@ class dmProjectModule extends dmModule
       return null;
     }
 
-    return $this->manager->getModule($this->options['path_keys'][0]);
+    return self::$manager->getModule($this->options['path_keys'][0]);
   }
 
   public function getFarthestAncestorWithPage()
@@ -128,7 +128,7 @@ class dmProjectModule extends dmModule
   {
     if($this->hasDescendant($descendantKey))
     {
-      return $this->manager->getModule($descendantKey);
+      return self::$manager->getModule($descendantKey);
     }
     
     return null;
@@ -136,7 +136,7 @@ class dmProjectModule extends dmModule
   
   public function hasDescendant($descendantKey)
   {
-    return $this->manager->getModule($descendantKey)->hasAncestor($this->key);
+    return self::$manager->getModule($descendantKey)->hasAncestor($this->key);
   }
 
   /*
@@ -145,7 +145,7 @@ class dmProjectModule extends dmModule
    */
   public function getPath($includeMe = false)
   {
-    $path = $this->manager->keysToModules($this->options['path_keys']);
+    $path = self::$manager->keysToModules($this->options['path_keys']);
 
     if ($includeMe)
     {
@@ -161,7 +161,7 @@ class dmProjectModule extends dmModule
    */
   public function getPathFrom($fromModule, $includeMe = false)
   {
-    $fromModule = $this->manager->getModule($fromModule);
+    $fromModule = self::$manager->getModule($fromModule);
     
     $path = $this->getPath($includeMe);
     
@@ -192,7 +192,7 @@ class dmProjectModule extends dmModule
 
   public function getChildren()
   {
-    return $this->manager->keysToModules($this->options['children_keys']);
+    return self::$manager->keysToModules($this->options['children_keys']);
   }
 
   public function hasChildren()

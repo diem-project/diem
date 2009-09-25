@@ -23,4 +23,14 @@ class dmDoctrineRoute extends sfDoctrineRoute
     
     parent::__construct($pattern, $defaults, $requirements, $options);
   }
+  
+  public function getOption($name)
+  {
+    return $this->options[$name];
+  }
+  
+  public function isType($type)
+  {
+    return $this->options['type'] == $type;
+  }
 }

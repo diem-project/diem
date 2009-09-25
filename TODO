@@ -131,7 +131,7 @@ $.getScript(href, callback);
 
 * [DONE] front edit : try on zone edit dialog does not work
 
-* consider integrating jquery tools & flow player
+* consider integrate jquery tools & flow player
 
 * (?) front edit deleting a zone does not close its edition dialog
 
@@ -247,19 +247,19 @@ $.getScript(href, callback);
 
 * [DONE] disable form and filter creation for models that don't need it
 
-* deprecate model DmMetaWrap and replace it by dmConfig
+* [DONE] deprecate model DmMetaWrap and replace it by dmConfig
 
 * fix broken admin user creation because doctrine record save fail on one-to-one relation.
 
 * add constraints to a record media relation to specify if media must have a certain type ( image, video... )
 
-* fix configuration panel do not save modifications
+* [DONE] fix configuration panel do not save modifications
 
 * fix admin toolbar template cache do not care about user credentials
 
 * [DONE] user log must store url params in uri
 
-* remove mailer from factories by default. It must be created when needed as it is not always used.
+* [DONE] remove mailer from factories by default. It must be created when needed as it is not always used.
 
 * [DONE] merge dmContext and sfContext.
 
@@ -275,10 +275,18 @@ $.getScript(href, callback);
 
 * [DONE] move module direct link method test to config cache
 
-* restore the admin bread crumb for better usability
+* [DONE] restore the admin bread crumb for better usability
 
 * front link record page cache seems not to work
 
 * [DONE] add an option to each page to tell if robots may index it
 
 * [DONE] filter action log
+
+* take a decision about dmFormDoctrine->unsetAutoFields
+
+* check sfValidatorDmDate
+
+* [DONE] only load mailer on demand
+
+* find a way to simplify admin routing

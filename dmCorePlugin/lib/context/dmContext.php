@@ -7,7 +7,7 @@ class dmContext extends sfContext
   $serviceContainer,
   $dmConfiguration,
   $page;
-  
+
   /**
    * Creates a new context instance.
    *
@@ -21,7 +21,7 @@ class dmContext extends sfContext
   {
     return parent::createInstance($configuration, $name, $class);
   }
-  
+
   /**
    * Initializes the current dmContext instance.
    *
@@ -30,17 +30,17 @@ class dmContext extends sfContext
   public function initialize(sfApplicationConfiguration $configuration)
   {
     parent::initialize($configuration);
-    
+
     $timer = dmDebug::timerOrNull('dmContext::initialize');
-    
+
     sfConfig::set('dm_debug', $this->getRequest()->getParameter('dm_debug', false));
-    
+
     // load the service container instance
     $this->loadServiceContainer();
-    
+
     // configure the service container with its required dependencies
     $this->configureServiceContainer($this->serviceContainer);
-    
+
     // connect the service container and its services to the event dispatcher
     $this->serviceContainer->connect();
 
@@ -48,19 +48,19 @@ class dmContext extends sfContext
      * dmHtmlTag requires service container to create link and media tags
      */
     dmHtmlTag::setContext($this);
-    
+
     /*
      * dmForm requires service container...
      */
     dmForm::setServiceContainer($this->serviceContainer);
-    
+
     /*
      * dmDoctrineRecord needs the event dispatcher to communicate
      * and the service container...
      */
     dmDoctrineRecord::setEventDispatcher($this->dispatcher);
     dmDoctrineRecord::setServiceContainer($this->serviceContainer);
-    
+
     dmDoctrineQuery::setModuleManager($this->getModuleManager());
     dmDoctrineTable::setModuleManager($this->getModuleManager());
 
@@ -71,7 +71,7 @@ class dmContext extends sfContext
 
     // notify that context is ready
     $this->dispatcher->notify(new sfEvent($this, 'dm.context.loaded'));
-    
+
     $timer && $timer->addTime();
   }
 
@@ -88,7 +88,7 @@ class dmContext extends sfContext
     {
       return $this->factories[$name];
     }
-    
+
     if($this->serviceContainer->hasService($name))
     {
       return $this->serviceContainer->getService($name);
@@ -96,8 +96,8 @@ class dmContext extends sfContext
 
     throw new sfException(sprintf('The "%s" object does not exist in the current context.', $name));
   }
-  
-  
+
+
   /**
    * Loads the symfony factories.
    */
@@ -107,17 +107,17 @@ class dmContext extends sfContext
     // create a new module_manager
     $this->factories['module_manager'] = include($this->getConfigCache()->checkConfig('config/dm/modules.yml'));
     $timer && $timer->addTime();
-    
+
     parent::loadFactories();
-    
+
     $this->factories['response']->setIsHtmlForHuman(
-          !dmConfig::isCli()
-      &&  !$this->factories['request']->isXmlHttpRequest()
-      &&  !$this->factories['request']->isFlashRequest()
-      &&  $this->factories['response']->isHtml()
+    !dmConfig::isCli()
+    &&  !$this->factories['request']->isXmlHttpRequest()
+    &&  !$this->factories['request']->isFlashRequest()
+    &&  $this->factories['response']->isHtml()
     );
   }
-  
+
   /*
    * Loads the diem services
    */
@@ -133,7 +133,7 @@ class dmContext extends sfContext
     {
       $this->dumpServiceContainer($name, $file);
     }
-    
+
     require_once($file);
     $this->serviceContainer = new $name;
   }
@@ -146,7 +146,7 @@ class dmContext extends sfContext
       'doctrine_manager'  => Doctrine_Manager::getInstance()
     ));
   }
-  
+
   protected function dumpServiceContainer($name, $file)
   {
     foreach(array(sfConfig::get('dm_cache_dir'), dirname($file)) as $dir)
@@ -168,15 +168,15 @@ class dmContext extends sfContext
 
     $dumper = new sfServiceContainerDumperPhp($sc);
     $baseClass = sfConfig::get('dm_service_container_base_class', 'dm'.ucfirst(sfConfig::get('dm_context_type')).'BaseServiceContainer');
-    
+
     file_put_contents($file, $dumper->dump(array('class' => $name, 'base_class' => $baseClass)));
     chmod($file, 0777);
-    
+
     if(!file_exists($file))
     {
       throw new dmException('Can not write the generated service container to '.$file);
     }
-    
+
     unset($dumper, $loader, $sc);
   }
 
@@ -224,7 +224,7 @@ class dmContext extends sfContext
   {
     return $this->serviceContainer->getService('helper');
   }
-  
+
   /*
    * @return dmModuleManager
    */
@@ -234,12 +234,29 @@ class dmContext extends sfContext
   }
 
   /**
+   * Retrieves the mailer.
+   *
+   * @return sfMailer The current sfMailer implementation instance.
+   */
+  public function getMailer()
+  {
+    if (!isset($this->factories['mailer']))
+    {
+      Swift::registerAutoload();
+      sfMailer::initialize();
+      $this->factories['mailer'] = new $this->mailerConfiguration['class']($this->dispatcher, $this->mailerConfiguration);
+    }
+
+    return $this->factories['mailer'];
+  }
+
+  /**
    * Dispatches the current request.
    */
   public function dispatch()
   {
     $this->getController()->dispatch();
-    
+
     $this->dispatcher->notify(new sfEvent($this, 'dm.context.end'));
   }
 
@@ -260,8 +277,8 @@ class dmContext extends sfContext
   public function setPage(DmPage $page)
   {
     $this->page = $page;
-    
+
     $this->dispatcher->notify(new sfEvent($this, 'dm.context.change_page', array('page' => $page)));
   }
-  
+
 }

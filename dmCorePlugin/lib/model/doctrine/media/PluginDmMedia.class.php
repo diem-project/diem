@@ -156,7 +156,7 @@ abstract class PluginDmMedia extends BaseDmMedia
 
   public function getFullWebPath()
   {
-    return dm::getRequest()->getAbsoluteUrlRoot().'/'.$this->getRelPath();
+    return dm::getRequest()->getAbsoluteUrlRoot().'/'.$this->getWebPath();
   }
 
   public function isImage()

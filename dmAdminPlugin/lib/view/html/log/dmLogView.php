@@ -5,15 +5,15 @@ abstract class dmLogView
   protected
   $log,
   $i18n,
-  $culture,
+  $user,
   $dateFormat;
   
-  public function __construct(dmLog $log, dmI18n $i18n, $culture)
+  public function __construct(dmLog $log, dmI18n $i18n, dmUser $user)
   {
     $this->log = $log;
     $this->i18n = $i18n;
-    $this->culture = $culture;
-    $this->dateFormat = new sfDateFormat($culture);
+    $this->user = $user;
+    $this->dateFormat = new sfDateFormat($user->getCulture());
   }
   
   public function render($max = 20)
@@ -50,7 +50,7 @@ abstract class dmLogView
   {
     $html = '';
     
-    foreach($this->log->getEntries($max) as $index => $entry)
+    foreach($this->getEntries($max) as $index => $entry)
     {
       $html .= '<tr class="'.($index%2 ? 'odd' : 'even').'">';
       
@@ -63,6 +63,11 @@ abstract class dmLogView
     }
     
     return $html;
+  }
+  
+  protected function getEntries($max)
+  {
+    return $this->log->getEntries($max);
   }
   
   public function renderFoot()

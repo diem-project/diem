@@ -2,85 +2,42 @@
 
 class BasedmAdminActions extends dmAdminBaseActions
 {
-  
-  public function executeModuleSpace(sfWebRequest $request)
-  {
-    $this->forward404Unless(
-      $this->type = $this->context->getModuleManager->getTypeBySlug($request->getParameter('moduleTypeName'), false),
-      sprintf('%s is not a module type', $request->getParameter('moduleTypeName'))
-    );
-
-    $this->forward404Unless(
-      $this->space = $this->type->getSpaceBySlug($request->getParameter('moduleSpaceName'), false),
-      sprintf('%s is not a module space in %s type', $request->getParameter('moduleTypeName'), $request->getParameter('moduleTypeName'))
-    );
-
-    $this->modules = $this->space->getModules();
-    
-    foreach($this->modules as $index => $module)
-    {
-      if (!$this->context->getRouting()->hasRouteName($module->getUnderscore()))
-      {
-        unset($this->modules[$index]);
-      }
-    }
-  }
-
-  public function executeModuleType(sfWebRequest $request)
-  {
-    $this->forward404Unless(
-      $this->type = $this->context->getModuleType(),
-      sprintf('%s is not a module type', $request->getParameter('moduleTypeName'))
-    );
-
-    $this->spaces = $this->type->getSpaces();
-  }
-
   public function executeIndex(sfWebRequest $request)
   {
     require_once(dmOs::join(sfConfig::get('dm_admin_dir'), 'modules/dmUserLog/lib/dmUserLogViewLittle.php'));
     require_once(dmOs::join(sfConfig::get('dm_admin_dir'), 'modules/dmActionLog/lib/dmActionLogViewLittle.php'));
     
-    $this->userLogView = new dmUserLogViewLittle($this->context->get('user_log'), $this->context->getI18n(), $this->getUser()->getCulture());
+    $this->userLogView = new dmUserLogViewLittle($this->context->get('user_log'), $this->context->getI18n(), $this->getUser());
     
-    $this->actionLogView = new dmActionLogViewLittle($this->context->get('action_log'), $this->context->getI18n(), $this->getUser()->getCulture());
+    $this->actionLogView = new dmActionLogViewLittle($this->context->get('action_log'), $this->context->getI18n(), $this->getUser());
   }
   
   public function executeRefreshLogs(dmWebRequest $request)
   {
-    $parts = array();
+    $data = array();
     
-    $userLog = $this->context->get('user_log');
-    $userHash = $userLog->getStateHash();
-    
-    if ($userHash == $request->getParameter('user_hash'))
+    foreach(array('user', 'action') as $logName)
     {
-      $parts[0] = '-';
+      $log = $this->context->get($logName.'_log');
+      $data[$logName] = array('hash' => $log->getStateHash());
+      
+      if ($data[$logName]['hash'] == $request->getParameter($logName.'_hash'))
+      {
+        unset($data[$logName]);
+      }
+      else
+      {
+        $viewClass = sprintf('dm%sLogViewLittle', dmString::camelize($logName));
+        require_once(sprintf(
+          dmOs::join(sfConfig::get('dm_admin_dir'), 'modules/dm%sLog/lib/%s.php'),
+          dmString::camelize($logName), $viewClass
+        ));
+        $view = new $viewClass($log, $this->context->getI18n(), $this->getUser());
+        $data[$logName]['html'] = $view->renderBody(12);
+      }
     }
-    else
-    {
-      require_once(dmOs::join(sfConfig::get('dm_admin_dir'), 'modules/dmUserLog/lib/dmUserLogViewLittle.php'));
-      $view = new dmUserLogViewLittle($userLog, $this->context->getI18n(), $this->getUser()->getCulture());
-      $parts[0] = $view->renderBody(12);
-    }
-    $parts[1] = $userHash;
     
-    $actionLog = $this->context->get('action_log');
-    $actionHash = $actionLog->getStateHash();
-    
-    if ($actionHash == $request->getParameter('action_hash'))
-    {
-      $parts[2] = '-';
-    }
-    else
-    {
-      require_once(dmOs::join(sfConfig::get('dm_admin_dir'), 'modules/dmActionLog/lib/dmActionLogViewLittle.php'));
-      $view = new dmActionLogViewLittle($actionLog, $this->context->getI18n(), $this->getUser()->getCulture());
-      $parts[2] = $view->renderBody(12);
-    }
-    $parts[3] = $actionHash;
-    
-    return $this->renderText(implode('__DM_SPLIT__', $parts));
+    return $this->renderJson($data);
   }
   
   public function executeNothing()
@@ -88,4 +45,50 @@ class BasedmAdminActions extends dmAdminBaseActions
     
   }
   
+  public function executeModuleSpace(sfWebRequest $request)
+  {
+    $this->forward404Unless($this->type = $this->getModuleTypeBySlug($request->getParameter('moduleTypeName')), sprintf('%s is not a module type', $request->getParameter('moduleTypeName')));
+  
+    $slug = $request->getParameter('moduleSpaceName');
+    foreach($this->type->getSpaces() as $space)
+    {
+      if (dmString::slugify($space->getPublicName()) == $slug)
+      {
+        $this->space = $space;
+        break;
+      }
+    }
+
+    $this->forward404Unless(
+      isset($this->space), sprintf('%s is not a module space in %s type', $request->getParameter('moduleTypeName'), $request->getParameter('moduleTypeName'))
+    );
+    
+    $this->menu = $this->context->get('admin_menu');
+    
+    $this->moduleManager = $this->context->get('module_manager');
+  }
+
+  public function executeModuleType(sfWebRequest $request)
+  {
+    $this->forward404Unless($this->type = $this->getModuleTypeBySlug($request->getParameter('moduleTypeName')), sprintf('%s is not a module type', $request->getParameter('moduleTypeName')));
+
+    $this->spaces = $this->type->getSpaces();
+    
+    $this->menu = $this->context->get('admin_menu');
+    
+    $this->moduleManager = $this->context->get('module_manager');
+  }
+  
+  protected function getModuleTypeBySlug($slug)
+  {
+    foreach($this->context->getModuleManager()->getTypes() as $type)
+    {
+      if (dmString::slugify($type->getPublicName()) == $slug)
+      {
+        return $type;
+      }
+    }
+    
+    return null;
+  }
 }

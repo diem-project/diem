@@ -55,7 +55,6 @@ class dmAdminRoutingConfigHandler extends sfRoutingConfigHandler
   public static function getDmConfiguration()
   {
     $moduleManager = dmContext::getInstance()->getModuleManager();
-    $i18n = dmContext::getInstance()->getI18n();
     
     // homepage first
     $config = array(
@@ -73,9 +72,9 @@ class dmAdminRoutingConfigHandler extends sfRoutingConfigHandler
     if ($dmMediaLibraryModule = $moduleManager->getModuleOrNull('dmMediaLibrary'))
     {
       $baseUrl = implode('/', array(
-        dmString::slugify($i18n->__($dmMediaLibraryModule->getSpace()->getType()->getPublicName())),
-        dmString::slugify($i18n->__($dmMediaLibraryModule->getSpace()->getName())),
-        dmString::slugify($i18n->__($dmMediaLibraryModule->getPlural()))
+        dmString::slugify($dmMediaLibraryModule->getSpace()->getType()->getPublicName()),
+        dmString::slugify($dmMediaLibraryModule->getSpace()->getPublicName()),
+        dmString::slugify($dmMediaLibraryModule->getPlural())
       ));
       
       $config['dm_media_library_path'] = array(
@@ -101,9 +100,9 @@ class dmAdminRoutingConfigHandler extends sfRoutingConfigHandler
       }
       
       $baseUrl = implode('/', array(
-        dmString::slugify($i18n->__($module->getSpace()->getType()->getPublicName())),
-        dmString::slugify($i18n->__($module->getSpace()->getName())),
-        dmString::slugify($i18n->__($module->getPlural()))
+        dmString::slugify($module->getSpace()->getType()->getPublicName()),
+        dmString::slugify($module->getSpace()->getPublicName()),
+        dmString::slugify($module->getPlural())
       ));
       
       if ($module->hasModel())
@@ -140,14 +139,15 @@ class dmAdminRoutingConfigHandler extends sfRoutingConfigHandler
       'url'   => '/+/:module/:action/*'
     );
     
-//    $config['dm_module_type'] = array(
-//      'class' => 'sfRoute',
-//      'url'   => '/:moduleTypeName',
-//      'params' => array(
-//        'module' => 'dmAdmin',
-//        'action' => 'moduleType'
-//      )
-//    );
+    $config['dm_module_type'] = array(
+      'class' => 'sfRoute',
+      'url'   => '/:moduleTypeName',
+      'params' => array(
+        'module' => 'dmAdmin',
+        'action' => 'moduleType'
+      )
+    );
+    
     $config['dm_module_space'] = array(
       'class' => 'sfRoute',
       'url'   => '/:moduleTypeName/:moduleSpaceName',

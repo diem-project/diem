@@ -74,6 +74,10 @@ body.full_screen #dm_admin_content {
   margin: 4px 5px 0 0;
   line-height: 16px;
 }
+.dm_box .title .link.center {
+  float: none;
+  margin-right: 0;
+}
 
 .dm_box .title .link.s16block {
   margin-top: 5px;

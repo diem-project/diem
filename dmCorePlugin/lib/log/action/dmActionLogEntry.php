@@ -18,6 +18,11 @@ class dmActionLogEntry extends dmLogEntry
     );
   }
   
+  public function isError()
+  {
+    return $this->data['type'] == 'exception';
+  }
+  
   protected function getUser()
   {
     $userId = $this->get('user_id');

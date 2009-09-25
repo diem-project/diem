@@ -1,4 +1,12 @@
 default:
+        
+  module_manager:
+    class:                  dmModuleManager
+    param:
+      type_class:           dmModuleType
+      space_class:          dmModuleSpace
+      module_base_class:    dmModule
+      module_node_class:    dmProjectModule
 
   i18n:
     class:                  dmAdminI18n
@@ -9,16 +17,8 @@ default:
       cache:
         class:              dmMetaCache
         
-  module_manager:
-    class:                  dmModuleManager
-    param:
-      type_class:           dmModuleType
-      space_class:          dmModuleSpace
-      module_base_class:    dmModule
-      module_node_node:     dmProjectModule
-        
   routing:
-    class:                  dmPatternRouting
+    class:                  dmAdminRouting
     param:
       segment_separators:   [ '/' ]
       cache:

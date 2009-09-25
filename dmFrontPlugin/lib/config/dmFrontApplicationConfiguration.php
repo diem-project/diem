@@ -25,6 +25,6 @@ abstract class dmFrontApplicationConfiguration extends dmApplicationConfiguratio
   
   protected function getDmPlugins()
   {
-    return array('dmGuardPlugin', 'dmFrontPlugin');
+    return array('dmFrontPlugin');
   }
 }

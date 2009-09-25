@@ -1,17 +1,17 @@
 #breadCrumb {
   height: 19px;
-  background: url(../../core/images/little_bar_bg.png) top left repeat-x;
+  background: url(../../core/images/default_bg.png) center left repeat-x;
   border: 1px solid #ccc;
   -moz-border-radius: 4px;
 }
 
-#breadCrumb ol li{
+#breadCrumb li {
   display: block;
   float: left;
 }
 
-#breadCrumb ol li > a,
-#breadCrumb ol li > span {
+#breadCrumb a.link,
+#breadCrumb span.link {
   display: block;
   padding: 0 20px 0 10px;
   height: 19px;
@@ -21,11 +21,11 @@
   text-decoration: none;
 }
 
-#breadCrumb ol li a:hover {
+#breadCrumb a.link:hover {
 	color: #046BCA;
 }
 
-#breadCrumb ol li a.home {
+#breadCrumb a.home {
 	padding-top: 2px;
   height: 17px;
 }

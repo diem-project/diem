@@ -1,4 +1,12 @@
 default:
+        
+  module_manager:
+    class:                  dmModuleManager
+    param:
+      type_class:           dmModuleType
+      space_class:          dmModuleSpace
+      module_base_class:    dmModule
+      module_node_class:     dmProjectModule
 
   i18n:
     class:                  dmFrontI18n
@@ -8,14 +16,6 @@ default:
       debug:                false
       cache:
         class:              dmMetaCache
-        
-  module_manager:
-    class:                  dmModuleManager
-    param:
-      type_class:           dmModuleType
-      space_class:          dmModuleSpace
-      module_base_class:    dmModule
-      module_node_node:     dmProjectModule
 
   routing:
     class:                  dmPatternRouting

@@ -33,26 +33,24 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
    */
   public function execute($configFiles)
   {
+    $config = sfFactoryConfigHandler::getConfiguration(sfContext::getInstance()->getConfiguration()->getConfigPaths('config/factories.yml'));
+    
+    $options = $config['module_manager']['param'];
+    $managerClass = $config['module_manager']['class'];
+    
     $this->parse($configFiles);
+    
+    $this->validate();
     
     $this->processHierarchy();
     
-    $managerClass = 'dmModuleManager';
-
-    $options = array(
-      'type_class' => 'dmModuleType',
-      'space_class' => 'dmModuleSpace',
-      'module_base_class' => 'dmModule',
-      'module_node_class' => 'dmProjectModule'
-    );
-
     $data = array();
 
     $data[] = sprintf('$options = %s;', var_export($options, true));
 
     $data[] = sprintf('$manager = new %s($options);', $managerClass);
 
-    $data[] = sprintf('$modules = array(); $projectModules = array();');
+    $data[] = sprintf('$modules = array(); $projectModules = array(); $modelModules = array();');
 
     $data[] = sprintf('$types = array();');
 
@@ -72,15 +70,20 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
         {
           $moduleClass = $options[$moduleConfig['is_project'] ? 'module_node_class' : 'module_base_class'];
 
-          $data[] = sprintf('$spaceModules[\'%s\'] = new %s(\'%s\', $typeSpaces[\'%s\'], $manager, %s);', $moduleKey, $moduleClass, $moduleKey, $spaceName, $this->getExportedModuleOptions($moduleKey, $moduleConfig));
-
           if ($moduleConfig['is_project'])
           {
-            $data[] = sprintf('$modules[\'%s\'] = $projectModules[\'%s\'] = $spaceModules[\'%s\'];', $moduleKey, $moduleKey, $moduleKey);
+            $moduleReceivers = sprintf('$modules[\'%s\'] = $projectModules[\'%s\'] = $spaceModules[\'%s\']', $moduleKey, $moduleKey, $moduleKey);
           }
           else
           {
-            $data[] = sprintf('$modules[\'%s\'] = $spaceModules[\'%s\'];', $moduleKey, $moduleKey);
+            $moduleReceivers = sprintf('$modules[\'%s\'] = $spaceModules[\'%s\']', $moduleKey, $moduleKey);
+          }
+          
+          $data[] = sprintf('%s = new %s(\'%s\', $typeSpaces[\'%s\'], %s);', $moduleReceivers, $moduleClass, $moduleKey, $spaceName, $this->getExportedModuleOptions($moduleKey, $moduleConfig));
+        
+          if ($moduleConfig['model'])
+          {
+            $data[] = sprintf('$modelModules[\'%s\'] = \'%s\';', $moduleConfig['model'], $moduleKey);
           }
         }
 
@@ -94,10 +97,12 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
       $data[] = 'unset($typeSpaces);';
     }
 
-    $data[] = sprintf('$manager->load($types, $modules, $projectModules);');
+    $data[] = sprintf('$manager->load($types, $modules, $projectModules, $modelModules);');
     
-    $data[] = 'unset($types, $modules, $projectModules);';
+    $data[] = 'unset($types, $modules, $projectModules, $modelModules);';
 
+    $data[] = 'dmModule::setManager($manager);';
+    
     $data[] = 'return $manager;';
     
     unset($this->config, $this->modules, $this->projectModules);
@@ -107,61 +112,65 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
                  "// date: %s\n%s", date('Y/m/d H:i:s'), implode("\n", $data)
     );
   }
+  
+  protected function validate()
+  {
+    if (!isset($this->modules['main']))
+    {
+      $this->throwException('No main module');
+    }
+    
+    if (!isset($this->config['Project']))
+    {
+      $this->throwException('No Project module type');
+    }
+    
+    foreach($this->modules as $key => $module)
+    {
+      if (!$module['model'])
+      {
+        if (dmArray::get($module, 'has_page'))
+        {
+          $this->throwException('module %s has a page, but no model', $key);
+        }
+        if (dmArray::get($module, 'parent_key'))
+        {
+          $this->throwException('module %s has a parent, but no model', $key);
+        }
+      }
+      else
+      {
+        if(!Doctrine::isValidModelClass($module['model']))
+        {
+          $this->throwException('module %s has a model that do not exist : %s', $key, $module['model']);
+        }
+        if($parentKey = dmArray::get($module, 'parent_key'))
+        {
+          $this->throwException('module %s has a parent that do not exist : %s', $key, $parentKey);
+        }
+      }
+    }
+  }
+  
+  protected function throwException($message)
+  {
+    $params = func_get_args();
+    
+    if (count($params) > 1)
+    {
+      ob_start();
+      call_user_func_array('printf', $params);
+      $message = ob_get_clean();
+    }
+    
+    $fullMessage = 'Error in config/dm/modules.yml : '.$message;
+    
+    throw new sfConfigurationException($fullMessage);
+  }
 
   protected function getExportedModuleOptions($key, $options)
   {
-    if ($options['is_project'])
-    {
-      $actionsConfig = $options['actions'];
-      
-      $options['actions'] = '__DM_MODULE_ACTIONS_PLACEHOLDER__';
-      
-      $exported  = var_export($options, true);
-      
-      $actions = 'array(';
-
-      foreach($actionsConfig as $actionKey => $actionConfig)
-      {
-        if (is_integer($actionKey))
-        {
-          $actionKey = $actionConfig;
-          $actionConfig = array();
-        }
-        
-        if (empty($actionConfig['name']))
-        {
-          $actionConfig['name'] = dmString::humanize($actionKey);
-        }
-    
-        if (empty($actionConfig['type']))
-        {
-          if (strncmp($actionKey, 'list', 4) === 0)
-          {
-            $actionConfig['type'] = 'list';
-          }
-          elseif (strncmp($actionKey, 'show', 4) === 0)
-          {
-            $actionConfig['type'] = 'show';
-          }
-          else
-          {
-            $actionConfig['type'] = 'simple';
-          }
-        }
-        
-        $actions .= sprintf('\'%s\' => new dmAction(\'%s\', %s), ', $actionKey, $actionKey, var_export($actionConfig, true));
-      }
-
-      $actions .= ')';
-      
-      $exported = str_replace('\'__DM_MODULE_ACTIONS_PLACEHOLDER__\'', $actions, $exported);
-    }
-    else
-    {
-      $exported  = var_export($options, true);
-    }
-
-    return $exported;
+    return var_export($options, true);
   }
   
   protected function getModuleChildrenKeys($key)
@@ -234,10 +243,13 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
       $moduleConfig['name'] = dmString::humanize($moduleKey);
     }
     
-    $model = trim(empty($moduleConfig['model']) ? dmString::camelize($moduleKey) : $moduleConfig['model']);
-    if(!Doctrine::isValidModelClass($model))
+    if (empty($moduleConfig['model']))
     {
-      $model = false;
+      $model = Doctrine::isValidModelClass($moduleKey) ? dmString::camelize($moduleKey) : false;
+    }
+    else
+    {
+      $model = $moduleConfig['model'];
     }
 
     $moduleOptions = array(
@@ -254,8 +266,7 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
     {
       $moduleOptions = array_merge($moduleOptions, array(
         'parent_key' => dmArray::get($moduleConfig, 'parent') ? dmString::modulize(trim(dmArray::get($moduleConfig, 'parent'))) : null,
-        'has_page'   => (boolean) dmArray::get($moduleConfig, 'page', false),
-        'actions'   => (array) dmArray::get($moduleConfig, 'actions', array())
+        'has_page'   => (boolean) dmArray::get($moduleConfig, 'page', false)
       ));
     }
     

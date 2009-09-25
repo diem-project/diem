@@ -1,5 +1,8 @@
+config/factories.yml:
+  class:          dmFactoryConfigHandler
+  
 config/dm/modules.yml:
-  class:          dmAdminModuleManagerConfigHandler
+  class:          dmModuleManagerConfigHandler
   
 config/dm/project.yml:
   class:          sfDefineEnvironmentConfigHandler

@@ -1,0 +1,4 @@
+refreshLogsSuccess:
+  has_layout: false
+  javascripts: [ -* ]
+  stylesheets: [ -* ]

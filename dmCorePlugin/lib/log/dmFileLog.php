@@ -78,7 +78,7 @@ abstract class dmFileLog extends dmLog
   {
     $this->checkFile();
     
-    return md5_file($this->options['file']);
+    return filemtime($this->options['file']);
   }
   
   protected function encode(array $array)

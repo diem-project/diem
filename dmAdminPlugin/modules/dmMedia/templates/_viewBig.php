@@ -14,7 +14,7 @@ echo £('h3.title.none', $object->getFile());
 echo £o('div.clearfix');
 
   echo £('div.view',
-   £link($object->fullWebPath)->text(
+   £link($object->getFullWebPath())->text(
     $object->isImage()
     ? £media($object)->size(250, 150)
     : £media('dmCore/media/unknown.png')->size(64, 64)

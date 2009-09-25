@@ -17,6 +17,37 @@ class dmActionLog extends dmFileLog
     $this->serviceContainer->getService('dispatcher')->connect('application.throw_exception', array($this, 'listenToThrowException'));
   }
   
+  public function getEntriesForUser(dmUser $user, $max = 0)
+  {
+    $entries = array();
+    
+    $encodedLines = array_reverse(file($this->options['file'], FILE_IGNORE_NEW_LINES));
+    
+    $count = 0;
+    foreach($encodedLines as $encodedLine)
+    {
+      $data = $this->decode($encodedLine);
+      
+      if (!empty($data))
+      {
+        $entry = $this->serviceContainer->getService($this->options['entry_service_name']);
+        $entry->setData($data);
+        
+        if (!$entry->isError() || $user->can('error_log'))
+        {
+          $entries[] = $entry;
+          $count++;
+          if ($max && $count == $max)
+          {
+            break;
+          }
+        }
+      }
+    }
+    
+    return $entries;
+  }
+  
   public function listenToThrowException(sfEvent $event)
   {
     $this->log(array(

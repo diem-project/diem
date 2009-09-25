@@ -1,6 +1,6 @@
 <?php
 
-abstract class baseDmInterfaceActions extends dmBaseActions
+abstract class BasedmInterfaceActions extends dmBaseActions
 {
 
   public function executeLoadMediaFolder(sfWebRequest $request)
@@ -20,7 +20,7 @@ abstract class baseDmInterfaceActions extends dmBaseActions
       );
     }
 
-    $this->getUser()->setAttribute('dm_media_browser_folder_id', $this->folder->id);
+    $this->getUser()->setAttribute('dm_media_browser_folder_id', $this->folder->get('id'));
 
     return $this->renderPartial('mediaBarInner');
   }

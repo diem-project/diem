@@ -1,4 +1,4 @@
 _toolBar:
-  enabled: yes
+  enabled: true
 _pageBar:
-  enabled: yes
+  enabled: true

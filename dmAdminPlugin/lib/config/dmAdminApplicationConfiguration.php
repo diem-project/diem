@@ -18,13 +18,13 @@ abstract class dmAdminApplicationConfiguration extends dmApplicationConfiguratio
    */
   public function initConfiguration()
   {
-    require_once(sfConfig::get('dm_admin_dir').'/lib/config/dmAdminModuleManagerConfigHandler.php');
+//    require_once(sfConfig::get('dm_admin_dir').'/lib/config/dmAdminModuleManagerConfigHandler.php');
     
     parent::initConfiguration();
   }
   
   protected function getDmPlugins()
   {
-    return array('dmGuardPlugin', 'dmAdminPlugin');
+    return array('dmAdminPlugin');
   }
 }

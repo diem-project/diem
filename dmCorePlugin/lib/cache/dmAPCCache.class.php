@@ -101,7 +101,8 @@ class dmAPCCache extends sfAPCCache
 
   public static function clearAll()
   {
-    apc_clear_cache('opcode');
+    // clear opcode cache leads to strange behaviors...
+//    apc_clear_cache('opcode');
     return apc_clear_cache('user');
   }
 

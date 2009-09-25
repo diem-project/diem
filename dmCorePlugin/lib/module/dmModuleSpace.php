@@ -27,6 +27,10 @@ class dmModuleSpace
     return $this->name;
   }
 
+  public function getPublicName()
+  {
+    return $this->name;
+  }
 
   public function getModules()
   {

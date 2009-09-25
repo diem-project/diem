@@ -15,22 +15,22 @@ $.dm.ctrl.add($.dm.adminLogs = {
 	refresh: function()
 	{
 		$.ajax({
+			dataType: 'json',
 			url:   $.dm.ctrl.getHref('+/dmAdmin/refreshLogs'),
 			data:  {
 				user_hash: $.dm.adminLogs.userHash,
 				action_hash: $.dm.adminLogs.actionHash
 			},
 			success: function(data) {
-				var parts = data.split(/\_\_DM\_SPLIT\_\_/);
-        if (parts[0] != '-')
+        if (data.user)
         {
-          $.dm.adminLogs.$userContainer.html(parts[0]);
-					$.dm.adminLogs.userHash = parts[1];
+          $.dm.adminLogs.$userContainer.html(data.user.html);
+					$.dm.adminLogs.userHash = data.user.hash;
         }
-        if (parts[2] != '-')
+        if (data.action)
         {
-          $.dm.adminLogs.$actionContainer.html(parts[2]);
-          $.dm.adminLogs.actionHash = parts[3];
+          $.dm.adminLogs.$actionContainer.html(data.action.html);
+          $.dm.adminLogs.actionHash = data.action.hash;
         }
 				setTimeout($.dm.adminLogs.refresh, 1000);
 			},

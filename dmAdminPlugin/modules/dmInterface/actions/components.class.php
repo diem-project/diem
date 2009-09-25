@@ -1,6 +1,8 @@
 <?php
 
-class dmInterfaceComponents extends dmAdminBaseComponents
+include_once(dmOs::join(sfConfig::get('dm_core_dir'), 'modules/dmInterface/lib/BasedmInterfaceComponents.php'));
+
+class dmInterfaceComponents extends BasedmInterfaceComponents
 {
 
   public function executeToolBar()

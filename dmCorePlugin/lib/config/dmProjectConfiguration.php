@@ -10,8 +10,10 @@ class dmProjectConfiguration extends sfProjectConfiguration
     $this->enablePlugins($this->getDependancePlugins());
 
     $this->setPluginPath('dmCorePlugin', dm::getDir().'/dmCorePlugin');
-
     $this->enablePlugins('dmCorePlugin');
+
+    $this->setPluginPath('dmGuardPlugin', dm::getDir().'/dmGuardPlugin');
+    $this->enablePlugins('dmGuardPlugin');
   }
   
   protected function getDependancePlugins()

@@ -44,7 +44,7 @@ abstract class dmBaseActions extends sfActions
   {
     $refererUrl = $this->request->getReferer();
 
-    if (!$refererUrl || $refererUrl === $this->request->getUri())
+    if (!$refererUrl || $refererUrl == $this->request->getUri())
     {
       $refererUrl = '@homepage';
     }

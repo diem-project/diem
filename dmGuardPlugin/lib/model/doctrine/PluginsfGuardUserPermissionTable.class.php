@@ -5,6 +5,9 @@
 class PluginsfGuardUserPermissionTable extends myDoctrineTable
 {
 
-
+  public function getSortColumnName()
+  {
+    return 'name';
+  }
 
 }

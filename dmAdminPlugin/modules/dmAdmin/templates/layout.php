@@ -22,6 +22,8 @@ $helper->renderHtmlTag(),
       $sf_request->getParameter('action')
     ),
 
+      get_partial('dmAdmin/breadCrumb'),
+
       get_partial('dmAdmin/flash'),
   
       $sf_content,

@@ -27,34 +27,32 @@ class dmAdminMenu
 
   public function load()
   {
-    $menu = $this->getModuleStructureMenu();
-    
-    $this->dispatcher->notify(new sfEvent($this, 'dm.admin_menu.loaded', $menu));
+    $event = $this->dispatcher->filter(new sfEvent($this, 'dm.admin.filter_menu'), $this->getModuleStructureMenu());
 
-    return $menu;
+    return $event->getReturnValue();
   }
   
-  protected function getModuleStructureMenu()
+  public function getModuleStructureMenu()
   {
     $menu = array();
 
-    foreach($this->moduleManager->getTypes() as $type_name => $type)
+    foreach($this->moduleManager->getTypes() as $typeName => $type)
     {
-      if ($type->hasSpaces() && ($typeMenu = $this->getTypeMenu($type)))
+      if ($type->isProject() && !$this->user->can('content'))
       {
-        if ($type->isProject() && !$this->user->can('content'))
-        {
-          continue;
-        }
-        
-        $menu[$type_name] = $typeMenu;
+        continue;
+      }
+
+      if ($type->hasSpaces() && $typeMenu = $this->getTypeMenu($type))
+      {
+        $menu[$typeName] = $typeMenu;
       }
     }
     
     return $menu;
   }
 
-  protected function getTypeMenu(dmModuleType $type)
+  public function getTypeMenu(dmModuleType $type)
   {
     $spaceMenu = array();
     foreach($type->getSpaces() as $spaceName => $space)
@@ -76,7 +74,7 @@ class dmAdminMenu
     );
   }
   
-  protected function getSpaceMenu(dmModuleSpace $space)
+  public function getSpaceMenu(dmModuleSpace $space)
   {
     $moduleMenu = array();
     foreach($space->getModules() as $moduleKey => $module)

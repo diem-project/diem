@@ -59,7 +59,7 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
 
     foreach ($this->getManyToManyTables() as $relation)
     {
-      $name = dmString::underscore($relation['alias']).'_list';
+      $name = dmString::underscore($relation->getAlias()).'_list';
       $names[] = $name;
       $module = $this->moduleManager->getModuleByModel($relation->getClass());
       $fields[$name] = array_merge(array(
@@ -68,7 +68,7 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
         'is_partial'   => false,
         'is_component' => false,
         'type'         => 'Text',
-        'label'        => $module ? $module->getPlural() : dmString::humanize($alias)
+        'label'        => $module ? $module->getPlural() : dmString::humanize($relation->getAlias())
       ), isset($this->config['fields'][$name]) ? $this->config['fields'][$name] : array());
     }
 

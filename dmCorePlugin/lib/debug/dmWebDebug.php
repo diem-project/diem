@@ -19,7 +19,6 @@ class dmWebDebug extends sfWebDebug
     }
     
     $debug = $this->asHtml();
-    
     if (strpos($content, '__SF_WEB_DEBUG__'))
     {
       $content = str_replace('__SF_WEB_DEBUG__', $debug, $content);

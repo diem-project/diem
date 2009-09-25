@@ -4,7 +4,7 @@ echo £o('div#dm_tool_bar.clearfix');
 
   echo £link('dmAuth/signout')->textTitle($sf_user->getUsername().' : '.__('Logout'))->set('.widget16.s16block.s16_signout');
 
-  echo £link()->textTitle(__('Home'))->set('.widget16.s16block.s16_home');
+//  echo £link()->textTitle(__('Home'))->set('.widget16.s16block.s16_home');
 
   echo £link('dmService/launch?name=dmRefresh')->textTitle(__('Clear Cache'))->set('.widget16.s16block.s16_clear');
 

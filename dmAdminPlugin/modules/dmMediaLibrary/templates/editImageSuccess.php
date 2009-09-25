@@ -4,7 +4,7 @@ slot('dm.breadCrumb');
 
 $parents = array();
 
-foreach($file->Folder->getPath() as $parent)
+foreach($file->get('Folder')->getPath() as $parent)
 {
   if (!$parent->isRoot())
   {

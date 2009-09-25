@@ -30,8 +30,67 @@ class dmFrontModuleManagerConfigHandler extends dmModuleManagerConfigHandler
       }
       
       $moduleOptions['direct_actions'] = $directActions;
+      
+      $moduleOptions['actions'] = (array) dmArray::get($moduleConfig, 'actions', array());
     }
     
     return $moduleOptions;
+  }
+
+
+  protected function getExportedModuleOptions($key, $options)
+  {
+    if ($options['is_project'])
+    {
+      $actionsConfig = $options['actions'];
+      
+      $options['actions'] = '__DM_MODULE_ACTIONS_PLACEHOLDER__';
+      
+      $exported  = parent::getExportedModuleOptions($key, $options);
+      
+      $actions = 'array(';
+
+      foreach($actionsConfig as $actionKey => $actionConfig)
+      {
+        if (is_integer($actionKey))
+        {
+          $actionKey = $actionConfig;
+          $actionConfig = array();
+        }
+        
+        if (empty($actionConfig['name']))
+        {
+          $actionConfig['name'] = dmString::humanize($actionKey);
+        }
+    
+        if (empty($actionConfig['type']))
+        {
+          if (strncmp($actionKey, 'list', 4) === 0)
+          {
+            $actionConfig['type'] = 'list';
+          }
+          elseif (strncmp($actionKey, 'show', 4) === 0)
+          {
+            $actionConfig['type'] = 'show';
+          }
+          else
+          {
+            $actionConfig['type'] = 'simple';
+          }
+        }
+        
+        $actions .= sprintf('\'%s\' => new dmAction(\'%s\', %s), ', $actionKey, $actionKey, var_export($actionConfig, true));
+      }
+
+      $actions .= ')';
+      
+      $exported = str_replace('\'__DM_MODULE_ACTIONS_PLACEHOLDER__\'', $actions, $exported);
+    }
+    else
+    {
+      $exported  = parent::getExportedModuleOptions($key, $options);
+    }
+
+    return $exported;
   }
 }

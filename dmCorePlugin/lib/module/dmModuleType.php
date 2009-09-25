@@ -2,7 +2,6 @@
 
 class dmModuleType
 {
-
   protected
     $name,
     $spaces,

@@ -126,6 +126,16 @@ class dmDataService extends dmService
         'description' => 'Links to current page are changed from <a> to <span>',
         'group_name' => 'IHM',
         'credentials' => 'ihm_settings'
+      ),
+      'title_prefix' => array(
+        'default_value' => '',
+        'description' => 'Append something at the beginning of all pages title',
+        'group_name' =>'seo'
+      ),
+      'title_suffix' => array(
+        'default_value' => ' | '.dmString::humanize(dmProject::getKey()),
+        'description' => 'Append something at the end of all pages title',
+        'group_name' =>'seo'
       )
     );    
 

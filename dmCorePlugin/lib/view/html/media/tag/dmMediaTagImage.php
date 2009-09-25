@@ -138,7 +138,15 @@ class dmMediaTagImage extends dmMediaTag
 
     if(!self::$context->getFilesystem()->mkdir($thumbDir = dmOs::join($media->get('Folder')->getFullPath(), '.thumbs')))
     {
-      self::$context->getLogger()->err('Thumbnails can not be created in '.$media->get('Folder')->getFullPath());
+      $message = 'Thumbnails can not be created in '.$media->get('Folder')->getFullPath();
+      
+      self::$context->getLogger()->err($message);
+      
+      if (sfConfig::get('dm_debug'))
+      {
+        throw $e;
+      }
+      
       return $media->getFullPath();
     }
 
@@ -164,8 +172,21 @@ class dmMediaTagImage extends dmMediaTag
 
       $image->setQuality($attributes['quality']);
 
-      $image->thumbnail($attributes['width'], $attributes['height'], $attributes['method'], isset($attributes['background']) ? '#'.$attributes['background'] : null);
-
+      try
+      {
+        $image->thumbnail($attributes['width'], $attributes['height'], $attributes['method'], isset($attributes['background']) ? '#'.$attributes['background'] : null);
+      }
+      catch(sfImageTransformException $e)
+      {
+        self::$context->getLogger()->err($media->file.' : '.$e->getMessage());
+        
+        if (sfConfig::get('dm_debug'))
+        {
+          throw $e;
+        }
+        
+        return $media->getFullPath();
+      }
       if ($filter)
       {
         try
@@ -180,6 +201,8 @@ class dmMediaTagImage extends dmMediaTag
           {
             throw $e;
           }
+        
+          return $media->getFullPath();
         }
       }
 
@@ -187,7 +210,16 @@ class dmMediaTagImage extends dmMediaTag
 
       if (!file_exists($thumbPath))
       {
-        throw new dmException($thumbPath.' cannot be created');
+        $message = $thumbPath.' cannot be created';
+      
+        self::$context->getLogger()->err($message);
+        
+        if (sfConfig::get('dm_debug'))
+        {
+          throw $e;
+        }
+        
+        return $media->getFullPath();
       }
     }
 

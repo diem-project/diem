@@ -11,6 +11,11 @@ class dmActionLogView extends dmLogView
     'subject'  => 'renderSubject'
   );
   
+  protected function getEntries($max)
+  {
+    return $this->log->getEntriesForUser($this->user, $max);
+  }
+  
   /*
    * Row renderers
    */

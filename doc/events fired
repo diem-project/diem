@@ -10,9 +10,10 @@ params: none
 fired by dmContext when it's ready
 params: none
 
-[dm.admin_menu.loaded]
-fired by dmAdminMenu when it has been loaded
-params: array the loaded menu
+[dm.admin.filter_menu]
+fired by dmAdminMenu when it has been loaded. With this event you can modify the menu array.
+params: none
+value: array the loaded menu
 
 [dm.browser.unknown]
 fired by dmBrowser when it is unable to configure from user agent because it is unknown
