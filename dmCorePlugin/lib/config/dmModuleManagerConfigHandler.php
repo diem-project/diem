@@ -146,7 +146,10 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
         }
         if($parentKey = dmArray::get($module, 'parent_key'))
         {
-          $this->throwException('module %s has a parent that do not exist : %s', $key, $parentKey);
+          if (!isset($this->modules[$parentKey]))
+          {
+            $this->throwException('module %s has a parent that do not exist : %s', $key, $parentKey);
+          }
         }
       }
     }
@@ -251,7 +254,12 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
     {
       $model = $moduleConfig['model'];
     }
-
+  
+    if(isset($moduleConfig['views']))
+    {
+      throw new dmException('module views are deprecated');
+    }
+    
     $moduleOptions = array(
       'name' =>       (string) trim($moduleConfig['name']),
       'plural' =>     (string) trim(empty($moduleConfig['plural']) ? ($model ? dmString::pluralize($moduleConfig['name']) : $moduleConfig['name']) : $moduleConfig['plural']),

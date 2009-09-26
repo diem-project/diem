@@ -16,6 +16,14 @@ function £media($source)
   return dmMediaTag::build($source);
 }
 
+/*
+ * @return dmTableTag
+ */
+function £table()
+{
+  return dmTableTag::build();
+}
+
 function dm_datetime($datetime)
 {
   return trim($datetime, ' CEST');
@@ -42,6 +50,11 @@ function plural($word, $nb, $showNb = true, $pluralSpec = false)
   return $showNb ? $nb.' '.$pluralizedWord : $pluralizedWord;
 }
 
+
+function markdown($markdown, $opt = array())
+{
+  return £('div.markdown', dmString::toArray($opt), dmMarkdown::toHtml($markdown));
+}
 
 /*
  * a, class='tagada ergrg' id=zegf, contenu

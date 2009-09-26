@@ -35,7 +35,7 @@ class dmWidgetContentLinkView extends dmWidgetPluginView
     
     if($vars['cssClass'])
     {
-      $link->addCssClass($vars['cssClass']);
+      $link->addClass($vars['cssClass']);
     }
     
     return $link->render();

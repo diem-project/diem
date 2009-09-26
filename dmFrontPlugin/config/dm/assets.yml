@@ -17,7 +17,7 @@ js:
 css:
 
   front:
-    dm_reset:         dm_reset
+    dmReset:          dmReset
     toolBar:          toolBar
     pageBar:          pageBar
     mediaBar:         mediaBar

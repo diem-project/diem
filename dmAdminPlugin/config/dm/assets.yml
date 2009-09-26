@@ -36,3 +36,4 @@ css:
     sort:             sort
     log:              log
     configPanel:      configPanel
+    dataTable:        dataTable

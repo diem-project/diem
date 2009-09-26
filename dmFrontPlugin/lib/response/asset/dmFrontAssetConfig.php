@@ -9,7 +9,7 @@ class dmFrontAssetConfig extends dmAssetConfig
       return array(
         'lib.reset',
         sfConfig::get('sf_web_debug') ? 'lib.symfony_debug' : null,
-        'front.dm_reset',
+        'front.dmReset',
         'lib.ui',
         'lib.ui-dialog',
         'lib.ui-resizable',
@@ -29,8 +29,7 @@ class dmFrontAssetConfig extends dmAssetConfig
         'front.toolBar',
         'front.zone',
         'front.widget',
-        'front.form',
-        'front.codeEditor'
+        'front.form'
       );
     }
     

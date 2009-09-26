@@ -24,6 +24,8 @@ class dmFrontWebDebug extends dmWebDebug
     {
       $this->setPanel('time', new dmWebDebugPanelTimer($this));
     }
+    
+    $this->setPanel('memory', new dmWebDebugPanelMemory($this));
 
     $this->setPanel('mailer', new sfWebDebugPanelMailer($this));
   }

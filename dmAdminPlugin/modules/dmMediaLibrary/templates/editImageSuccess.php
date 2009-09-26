@@ -1,23 +1,8 @@
 <?php use_helper('sfPixlr');
 
 slot('dm.breadCrumb');
-
-$parents = array();
-
-foreach($file->get('Folder')->getPath() as $parent)
-{
-  if (!$parent->isRoot())
-  {
-    $parents[] = £('li', £link(dmMediaTools::getAdminUrlFor($parent))->text($parent->getName()));
-  }
-}
-
-$parents[] = £('li', £link($sf_request->getUri())->text($file->getFile()));
-
-$bread = implode("", $parents);
-
-echo $bread;
-
+  include_partial("dmMediaLibrary/breadCrumb", array("folder"=>$folder));
+  echo £('li', £link($sf_request->getUri())->text($file->getFile()));
 end_slot();
 
 //echo £o('div.dm_box.big');

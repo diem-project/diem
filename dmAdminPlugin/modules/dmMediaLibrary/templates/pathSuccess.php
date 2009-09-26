@@ -6,9 +6,9 @@ echo £o("div.dm_media_library", array("json" => $metadata));
 
 echo £o("div.content_wrap");
 
-echo £("div.bread_wrap",
-  get_partial("dmMediaLibrary/breadCrumb", array("folder"=>$folder))
-);
+slot('dm.breadCrumb');
+  include_partial("dmMediaLibrary/breadCrumb", array("folder"=>$folder));
+end_slot();
 
 echo £o("div.list.clearfix");
 

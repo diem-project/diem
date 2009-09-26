@@ -281,16 +281,7 @@ abstract class dmDoctrineQuery extends Doctrine_Query
       {
         return $joinAlias;
       }
-//      else
-//      {
-//        if (isset($queryComponent['relation']))
-//        {
-//          dmDebug::show($joinAlias, $queryComponent['relation']['alias']);
-//        }
-//      }
     }
-    
-//    dmDebug::kill($relationAlias, array_keys($this->getQueryComponents()), $this->getSqlQuery());
     
     return null;
   }

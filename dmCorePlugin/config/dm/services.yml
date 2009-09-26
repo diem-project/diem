@@ -14,6 +14,8 @@ parameters:
 
   media_resource.class:       dmMediaResource
 
+  table_tag.class:            dmTableTag
+
   search_engine.class:        dmSearchEngine
 
   search_index.class:         dmSearchIndex
@@ -87,6 +89,10 @@ services:
     class:                    %media_resource.class%
     shared:                   false
     arguments:                [ %user.theme%, %user.culture%, %request.context% ]
+    
+  table_tag:
+    class:                    %table_tag.class%
+    shared:                   false
 
   search_engine:
     class:                    %search_engine.class%

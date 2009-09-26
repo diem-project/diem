@@ -1,6 +1,4 @@
 <?php
-use_stylesheet('core.browsers');
-use_stylesheet('admin.log');
 
 echo £o('div.dm_box.big.log.user_log');
 
@@ -9,7 +7,7 @@ echo £('div.title',
   £('h1', __('User log').sprintf(' ( %s )', dmOs::humanizeSize($filesize)))
 );
 
-echo £o('div.dm_box_inner');
+echo £o('div.dm_box_inner.dm_data');
 
 echo $view->render(200);
 

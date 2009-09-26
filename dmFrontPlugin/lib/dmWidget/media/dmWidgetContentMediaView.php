@@ -61,7 +61,7 @@ class dmWidgetContentMediaView extends dmWidgetPluginView
       
       if ($vars['cssClass'])
       {
-        $media->addCssClass($vars['cssClass']);
+        $media->addClass($vars['cssClass']);
       }
       
       $html = $media->render();

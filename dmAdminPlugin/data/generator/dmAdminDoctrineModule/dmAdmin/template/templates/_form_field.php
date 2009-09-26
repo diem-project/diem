@@ -22,7 +22,7 @@
       
       echo $form[$name]->renderLabel($label);
       
-      if($form[$name]->getWidget() instanceof sfWidgetFormDmDoctrineChoiceMany)
+      if($form[$name]->getWidget() instanceof sfWidgetFormDmDoctrineChoice && $form[$name]->getWidget()->getOption('multiple'))
       {
         echo sprintf('<div class="control selection"><span class="select_all">%s</span><span class="unselect_all">%s</span></div>', __('Select all'), __('Unselect all'));
       }

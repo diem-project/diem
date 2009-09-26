@@ -49,7 +49,7 @@
   [?php endif; ?]
 </div>
 
-[?php if($sf_user->can('loremize')): ?]
+[?php if($sf_user->can('export_table')): ?]
 <div class="dm_export">
 <?php echo $this->getLinkToAction('Export CSV', array('action' => 'export', 'params' => array('class' => 'dm_sort s16 s16_export')), false); ?>
 </div>
@@ -58,12 +58,15 @@
 [?php if($sf_user->can('loremize')): ?]
 <div class="dm_loremize">
 <p class="dm_sort s16 s16_edit fleft">Loremize :</p>
-<?php foreach(array(1, 5, 10, 20, 50) as $nbRecords): ?>
-  [?php
-    echo £link('dmService/launch?name=dmLoremize&module_name=<?php echo $this->getModuleName() ?>&nb=<?php echo $nbRecords ?>')
-    ->text('<?php echo $nbRecords ?>')
-    ->set('.ml10');
-  ?]
-<?php endforeach; ?>
+[?php
+$loremizeLink = £link('dmService/launch?name=dmLoremize&module_name=<?php echo $this->getModuleName() ?>&nb=__DM_NB_RECORDS__')
+->text('__DM_NB_RECORDS__')
+->set('.ml10')
+->render();
+foreach(array(1, 5, 10, 20, 50) as $nbRecords)
+{
+  echo str_replace('__DM_NB_RECORDS__', $nbRecords, $loremizeLink);
+}
+?]
 </div>
 [?php endif; ?]

@@ -258,6 +258,8 @@ class dmContext extends sfContext
     $this->getController()->dispatch();
 
     $this->dispatcher->notify(new sfEvent($this, 'dm.context.end'));
+    
+//    echo sprintf('%.1f', (memory_get_peak_usage(true) / 1024 / 1024));
   }
 
 

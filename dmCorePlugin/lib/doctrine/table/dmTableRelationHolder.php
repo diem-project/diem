@@ -170,4 +170,17 @@ class dmTableRelationHolder
     return null;
   }
 
+  public function getAssociationByRefClass($class)
+  {
+    foreach($this->getAssociations() as $association)
+    {
+      if ($association->getAssociationTable()->getComponentName() === $class)
+      {
+        return $association;
+      }
+    }
+
+    return null;
+  }
+
 }

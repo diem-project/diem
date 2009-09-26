@@ -9,12 +9,14 @@ class dmWidgetActions extends dmFrontBaseActions
 
     if (!$widgetType = $this->context->get('widget_type_manager')->getWidgetTypeOrNull($widget))
     {
-      return $this->renderText(sprintf('<p class="s16 s16_error">%s</p><div class="clearfix mt30"><a class="dm cancel close_dialog button mr10">%s</a><a class="dm delete button red" title="%s">%s</a></div>',
+      return $this->renderJson(array(
+        'type' => 'error',
+        'html' => sprintf('<p class="s16 s16_error">%s</p><div class="clearfix mt30"><a class="dm cancel close_dialog button mr10">%s</a><a class="dm delete button red" title="%s">%s</a></div>',
         dm::getI18n()->__('The widget can not be rendered because its module does not exist anymore.'),
         dm::getI18n()->__('Cancel'),
         dm::getI18n()->__('Delete this widget'),
         dm::getI18n()->__('Delete')
-      ));
+      )));
     }
     
     $formClass = $widgetType->getFormClass();

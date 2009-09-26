@@ -1,15 +1,11 @@
 <?php
 
-$folders = array();
-
-if ($ancestors = $folder->Node->getAncestors())
+if ($ancestors = $folder->getNode()->getAncestors())
 {
   foreach($ancestors as $parent)
   {
-    $folders[] = £('li', £link(dmMediaTools::getAdminUrlFor($parent))->text($parent->name));
+    echo £('li', £link(dmMediaTools::getAdminUrlFor($parent))->text($parent->get('name')));
   }
 }
 
-$folders[] = £('li', £link(dmMediaTools::getAdminUrlFor($folder))->text($folder->name));
-
-echo £('div#breadCrumb', £('ol', implode("", $folders)));
+echo £('li', £link(dmMediaTools::getAdminUrlFor($folder))->text($folder->get('name')));

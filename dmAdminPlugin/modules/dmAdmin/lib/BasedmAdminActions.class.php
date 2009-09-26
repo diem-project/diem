@@ -15,6 +15,7 @@ class BasedmAdminActions extends dmAdminBaseActions
   public function executeRefreshLogs(dmWebRequest $request)
   {
     $data = array();
+    $nbRecords = 6;
     
     foreach(array('user', 'action') as $logName)
     {
@@ -33,7 +34,7 @@ class BasedmAdminActions extends dmAdminBaseActions
           dmString::camelize($logName), $viewClass
         ));
         $view = new $viewClass($log, $this->context->getI18n(), $this->getUser());
-        $data[$logName]['html'] = $view->renderBody(12);
+        $data[$logName]['html'] = $view->renderBody($nbRecords);
       }
     }
     

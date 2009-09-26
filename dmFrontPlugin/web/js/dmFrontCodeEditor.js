@@ -104,11 +104,10 @@
           {
             self.updateCss(data.path);
           }
-          else 
-            if (data.type == 'php') 
-            {
-              self.updateWidgets(data.widgets);
-            }
+          else if (data.type == 'php') 
+          {
+            self.updateWidgets(data.widgets);
+          }
         }
       });
     },

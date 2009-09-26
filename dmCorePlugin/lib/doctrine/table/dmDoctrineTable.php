@@ -134,15 +134,19 @@ abstract class dmDoctrineTable extends Doctrine_Table
       elseif ($relation->getClass() === 'DmMedia')
       {
         $q->withDmMedia($relation->getAlias());
-//        $q->leftJoin(sprintf('%s.%s %s', $rootAlias, $relation->getAlias(), dmString::lcfirst($relation->getAlias())))
-//        ->leftJoin(sprintf('%s.%s %s', $relation->getLocal(), 'Folder', dmString::lcfirst($relation->getAlias()).'Folder'));
       }
       else
       {
+        if ($relation instanceof Doctrine_Relation_ForeignKey)
+        {
+          if ($this->getRelationHolder()->getAssociationByRefClass($relation->getClass()))
+          {
+            continue;
+          }
+        }
         $q->leftJoin(sprintf('%s.%s %s', $rootAlias, $relation->getAlias(), dmString::lcfirst($relation->getAlias())));
       }
     }
-
     return $q;
   }
   
@@ -181,10 +185,10 @@ abstract class dmDoctrineTable extends Doctrine_Table
   }
 
   /*
-   * @return myDoctrine query
+   * @return dmDoctrine query
    * the default admin list query
    */
-  public function getAdminListQuery(myDoctrineQuery $q)
+  public function getAdminListQuery(dmDoctrineQuery $q)
   {
     return $this->joinAll($q);
   }

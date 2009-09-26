@@ -45,6 +45,18 @@ class dmSetupService extends dmService
     $this->clearCache();
   }
   
+//  protected function validateModel()
+//  {
+//    foreach(dmProject::getModels() as $model)
+//    {
+//      $table = dmDb::table($model);
+//      foreach($table->getRelationHolder()->getAssociations() as $alias => $relation)
+//      {
+//        throw new dmException(sprintf('%s %s', $model, $alias));
+//      }
+//    }
+//  }
+  
   protected function generateFunctionalTests()
   {
     foreach(array('admin', 'front') as $app)

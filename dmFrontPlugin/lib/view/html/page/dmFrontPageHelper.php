@@ -119,7 +119,8 @@ class dmFrontPageHelper
       $area['id']
     );
 
-    $html .= '<div class="dm_zones clearfix">';
+//    $html .= '<div class="dm_zones clearfix">';
+    $html .= '<div class="dm_zones">';
 
     if (!empty($area['Zones']))
     {

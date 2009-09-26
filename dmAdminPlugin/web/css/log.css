@@ -8,29 +8,6 @@ div.log .light {
   color: #666;
 }
 
-div.log table {
-  width: 100%;
-}
-
-div.log table th,
-div.log table td {
-  padding: 5px;
-}
-
-div.log table th {
-  font-weight: bold;
-}
-
-div.log table td {
-  border-top: 1px dotted #ccc;
-  max-width: 600px;
-  overflow: hidden;
-}
-
-div.log table tr.even {
-  background: #fff;
-}
-
 div.log .browser_block {
   display: block;
   width: 24px;

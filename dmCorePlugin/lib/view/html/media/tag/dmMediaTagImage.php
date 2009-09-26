@@ -93,7 +93,21 @@ class dmMediaTagImage extends dmMediaTag
   {
     if ($this->hasSize())
     {
-      $mediaFullPath = $this->getResizedMediaFullPath($attributes);
+      try
+      {
+        $mediaFullPath = $this->getResizedMediaFullPath($attributes);
+      }
+      catch(Exception $e)
+      {
+        self::$context->getLogger()->err($e->getMessage());
+        
+        if (sfConfig::get('dm_debug'))
+        {
+          throw $e;
+        }
+        
+        $mediaFullPath = $this->resource->getSource()->getFullPath();
+      }
 
       $attributes['src'] = $this->requestContext['relative_url_root'].str_replace(sfConfig::get('sf_web_dir'), '', $mediaFullPath);
       /*
@@ -132,22 +146,12 @@ class dmMediaTagImage extends dmMediaTag
 
     if (!in_array($attributes['method'], self::getAvailableMethods()))
     {
-      self::$context->getLogger()->alert(sprintf('%s is not a valid resize method. These are : %s', $attributes['method'], implode(', ', self::getAvailableMethods())));
-      $attributes['method'] = dmConfig::get('image_resize_method', 'center');
+      throw new dmException(sprintf('%s is not a valid resize method. These are : %s', $attributes['method'], implode(', ', self::getAvailableMethods())));
     }
 
     if(!self::$context->getFilesystem()->mkdir($thumbDir = dmOs::join($media->get('Folder')->getFullPath(), '.thumbs')))
     {
-      $message = 'Thumbnails can not be created in '.$media->get('Folder')->getFullPath();
-      
-      self::$context->getLogger()->err($message);
-      
-      if (sfConfig::get('dm_debug'))
-      {
-        throw $e;
-      }
-      
-      return $media->getFullPath();
+      throw new dmException('Thumbnails can not be created in '.$media->get('Folder')->getFullPath());
     }
 
     $filter = dmArray::get($attributes, 'filter');
@@ -166,60 +170,24 @@ class dmMediaTagImage extends dmMediaTag
 
     if (!file_exists($thumbPath))
     {
-      self::$context->getLogger()->notice('Recreate thumb for media '.$media);
+      self::$context->getLogger()->notice('dmMediaTagImage : create thumb for media '.$media);
 
       $image = $media->getImage();
 
       $image->setQuality($attributes['quality']);
 
-      try
-      {
-        $image->thumbnail($attributes['width'], $attributes['height'], $attributes['method'], isset($attributes['background']) ? '#'.$attributes['background'] : null);
-      }
-      catch(sfImageTransformException $e)
-      {
-        self::$context->getLogger()->err($media->file.' : '.$e->getMessage());
-        
-        if (sfConfig::get('dm_debug'))
-        {
-          throw $e;
-        }
-        
-        return $media->getFullPath();
-      }
+      $image->thumbnail($attributes['width'], $attributes['height'], $attributes['method'], isset($attributes['background']) ? '#'.$attributes['background'] : null);
+
       if ($filter)
       {
-        try
-        {
-          $image->$filter();
-        }
-        catch(sfImageTransformException $e)
-        {
-          self::$context->getLogger()->err($e->getMessage());
-
-          if (sfConfig::get('sf_debug'))
-          {
-            throw $e;
-          }
-        
-          return $media->getFullPath();
-        }
+        $image->$filter();
       }
 
       $image->saveAs($thumbPath, $media->get('mime'));
 
       if (!file_exists($thumbPath))
       {
-        $message = $thumbPath.' cannot be created';
-      
-        self::$context->getLogger()->err($message);
-        
-        if (sfConfig::get('dm_debug'))
-        {
-          throw $e;
-        }
-        
-        return $media->getFullPath();
+        throw new dmException(dmProject::unRootify($thumbPath).' cannot be created');
       }
     }
 

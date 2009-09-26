@@ -1,0 +1,22 @@
+div.dm_data table {
+  width: 100%;
+}
+
+div.dm_data table th,
+div.dm_data table td {
+  padding: 5px;
+}
+
+div.dm_data table th {
+  font-weight: bold;
+}
+
+div.dm_data table td {
+  border-top: 1px dotted #ddd;
+  max-width: 600px;
+  overflow: hidden;
+}
+
+div.dm_data table tr.even {
+  background: #fff;
+}

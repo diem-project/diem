@@ -2,12 +2,6 @@
 
 abstract class dmFrontBaseServiceContainer extends dmBaseServiceContainer
 {
-  protected function loadDependencies(array $dependencies)
-  {
-    parent::loadDependencies($dependencies);
-    
-    $this->setService('config_cache',     $dependencies['context']->getConfigCache());
-  }
   
   protected function loadParameters(array $parameters = array())
   {
@@ -32,10 +26,10 @@ abstract class dmFrontBaseServiceContainer extends dmBaseServiceContainer
   {
     parent::connectServices();
     
+    $this->getService('page_helper')->connect();
+    
     if ($this->getService('response')->isHtmlForHuman() || sfConfig::get('sf_environment') == 'test')
     {
-      $this->getService('page_helper')->connect();
-      
       $this->getService('layout_helper')->connect();
     }
     

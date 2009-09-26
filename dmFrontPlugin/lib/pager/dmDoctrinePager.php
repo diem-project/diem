@@ -27,30 +27,14 @@ abstract class dmDoctrinePager extends sfDoctrinePager
   }
 
   
-  /*
-   * @deprecated use renderNavigationTop instead
-   */
-  public function getNavigationTop($options = array())
-  {
-    return $this->renderNavigationTop($options);
-  }
-  
   public function renderNavigationTop($options = array())
   {
     if ($this->navigationConfiguration['top'])
     {
-      return $this->getNavigation($options);
+      return $this->renderNavigation($options);
     }
   }
   
-  /*
-   * @deprecated use renderNavigationBottom instead
-   */
-  public function getNavigationBottom($options = array())
-  {
-    return $this->renderNavigationBottom($options);
-  }
-
   public function renderNavigationBottom($options = array())
   {
     if ($this->navigationConfiguration['bottom'])

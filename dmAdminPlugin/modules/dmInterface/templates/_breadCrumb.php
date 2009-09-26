@@ -9,30 +9,35 @@ $links = array(£link()->text(£('span.s16block.s16_home_gray', __('Home')))->se
 
 if ($module = $sf_context->getModuleManager()->getModuleOrNull($sf_request->getParameter('module')))
 {
+  $route = $sf_request->getAttribute('sf_route');
   $space = $module->getSpace();
   $type  = $space->getType();
   
   $links[] = £link($sf_context->getRouting()->getModuleTypeUrl($type))->text(£('span', __($type->getPublicName())));
   $links[] = £link($sf_context->getRouting()->getModuleSpaceUrl($space))->text(£('span', __($space->getPublicName())));
 
-  $links[] = £link('@'.$module->getUnderscore())->text(__($module->getPlural()));
-
-  $route = $sf_request->getAttribute('sf_route');
   if ($route instanceof dmDoctrineRoute && $route->isType('object'))
   {
+    $links[] = £link('@'.$module->getUnderscore())->text(__($module->getPlural()));
+    
     if ($sf_context->getActionName() == 'new')
     {
-      $links[] = £link('@'.$module->getUnderscore().'_new')->text(__('New'));
+      $links[] = £('span.link', __('New'));
     }
     else
     {
       $object = $sf_request->getAttribute('sf_route')->getObject();
-      $links[] = £link($route->generate($object))->text($object);
+      $links[] = £('span.link', $object->__toString());
     }
   }
   elseif(($action = $sf_context->getActionName()) !== 'index')
   {
-    $links[] = £link($sf_request->getUri())->text(__($action));
+    $links[] = £link('@'.$module->getUnderscore())->text(__($module->getPlural()));
+    $links[] = £('span.link', __($action));
+  }
+  else
+  {
+    $links[] = £('span.link', __($module->getPlural()));
   }
 }
 

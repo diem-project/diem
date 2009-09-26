@@ -83,7 +83,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
   /*
    * Tries to return the nearest records in table
    */
-  public function getNearRecords(Doctrine_Query $q, $nb = 11)
+  public function getNearRecords(dmDoctrineQuery $q, $nb = 11)
   {
     /*
      * Ensure nb is not pair
@@ -99,8 +99,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     }
 
     $qPk = clone $q;
-    $pks = $qPk->select($qPk->getRootAlias().'.'.$pk)->execute(array(), Doctrine::HYDRATE_SCALAR);
-
+    $pks = $qPk->select($qPk->getRootAlias().'.'.$pk)->distinct()->fetchPDO();
     foreach($pks as $key => $attrs)
     {
       $pks[$key] = array_shift($attrs);
@@ -121,8 +120,11 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     }
 
     $rPk = clone $q;
+    $rPk->whereIn($rPk->getRootAlias().'.'.$pk, $selectedPks);
+    
+//    dmDebug::kill($rPk->getSqlQuery(), $rPk->fetchRecords());
 
-    return $rPk->whereIn($rPk->getRootAlias().'.'.$pk, $selectedPks)->execute(array(), Doctrine::HYDRATE_RECORD);
+    return $rPk->fetchRecords();
   }
 
   /*
@@ -457,22 +459,28 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
    */
   public function __toString()
   {
-    $guesses = sfConfig::get('dm_orm_identifier_fields');
-
-    // we try to guess a column which would give a good description of the object
-    foreach ($guesses as $descriptionColumn)
+    try
     {
-      try
+      $string = $this->get($this->table->getIdentifierColumnName());
+    }
+    catch(Exception $e)
+    {
+      self::$serviceContainer->get('logger')->err($e->getMessage());
+      
+      if (sfConfig::get('dm_debug'))
       {
-        return (string) $this->get($descriptionColumn);
+        throw $e;
       }
-      catch (Exception $e)
-      {
-        // Try another one
-      }
+      
+      $string = '';
+    }
+  
+    if (empty($string))
+    {
+      $string = 'No description for object of class '.$this->_table->getComponentName();
     }
 
-    return sprintf('No description for object of class "%s"', $this->_table->getComponentName());
+    return $string;
   }
 
   /*

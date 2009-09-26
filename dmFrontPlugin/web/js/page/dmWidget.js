@@ -71,7 +71,8 @@ $.widget('ui.dmWidget', {
 							activeTab = $tabbedFormActiveTab.find('>a').attr('href');
 						}
 	        },
-	        success:  function(data) {
+	        success:  function(data)
+					{
 	          if (data.type == 'close') {
 	            $dialog.dialog('close');
 	            widget.element.unblock();

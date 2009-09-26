@@ -29,7 +29,7 @@ div.ui-dialog.dm.dm_code_editor_dialog .ui-dialog-content {
 .dm_code_editor .actions {
 }
 
-.dm_code_editor .ui-tabs-nav li a {
+.dm .dm_code_editor .ui-tabs-nav li a {
   padding: 3px 7px 3px 7px;
   line-height: 11px;
 }
@@ -41,18 +41,19 @@ div.ui-dialog.dm.dm_code_editor_dialog .ui-dialog-content {
   cursor: pointer;
 }
 
-.dm_code_editor .ui-tabs-nav .dm_file_open {
+.dm .dm_code_editor .ui-tabs-nav li.dm_file_open {
   margin: 0 3px 0 0;
   padding: 3px;
   border: none;
   -moz-border-radius: 4px;
+  margin-bottom: 2px;
 }
 
-.dm_code_editor .ui-tabs-nav .dm_file_open a {
+.dm .dm_code_editor .ui-tabs-nav li.dm_file_open a {
   padding: 0;
 }
 
-.dm_code_editor .ui-tabs-panel {
+.dm .dm_code_editor .ui-tabs-panel {
   padding: 0;
 }
 
