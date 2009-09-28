@@ -36,7 +36,7 @@ class dmSetupService extends dmService
 
     $this->loadData();
 
-    $this->buildSprites();
+//    $this->buildSprites();
 
     $this->generateAdmins();
     

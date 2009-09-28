@@ -22,7 +22,7 @@
 
 * [DONE] transparently merge i18n forms in admin
 
-* fix admin /systeme/security/groups & admin /systeme/security/permissions
+* [DONE] fix admin /systeme/security/groups & admin /systeme/security/permissions
 
 * [DONE] allow progressive admin & front code generation using Zend CodeGenerator
 
@@ -42,13 +42,13 @@
 
 * open & select current page in front page tree, and open home in admin page tree
 
-* fix fast navigation in admin edit pages
+* [DONE] fix fast navigation in admin edit pages
 
 * fix widget drop into zones don't work when page were loaded without edit mode
 
 * allow admin list booleans ajax edition ( and maybe other kind of data like simple text ? )
 
-* fix first delete link in admin record edit page : javascript confirmation fails
+* [DONE] fix first delete link in admin record edit page : javascript confirmation fails
 
 * automatically add accesskeys to front home links
 

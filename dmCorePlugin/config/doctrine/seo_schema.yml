@@ -1,7 +1,4 @@
 DmAutoSeo:
-  options:
-    symfony:
-      filter: false
   actAs:                    [Timestampable]
   columns:
     id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
