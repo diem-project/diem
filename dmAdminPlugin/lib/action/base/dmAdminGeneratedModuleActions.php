@@ -8,22 +8,25 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
    */
   protected function tryToSortWithForeignColumn(Doctrine_Query $query, array $sort)
   {
-    // If the sort column is a local key, try to sort with foreign table
-    if ($relation = $this->getDmModule()->getTable()->getRelationHolder()->getLocalByColumnName($sort[0]))
+    if('integer' === dmArray::get($this->getDmModule()->getTable()->getColumnDefinition($sort[0]), 'type'))
     {
-      if ($relation instanceof Doctrine_Relation_LocalKey && ($foreignTable = $relation->getTable()) instanceof dmDoctrineTable)
+      // If the sort column is a local key, try to sort with foreign table
+      if ($relation = $this->getDmModule()->getTable()->getRelationHolder()->getLocalByColumnName($sort[0]))
       {
-        if (($foreignColumn = $foreignTable->getIdentifierColumnName()) != 'id')
+        if ($relation instanceof Doctrine_Relation_LocalKey && ($foreignTable = $relation->getTable()) instanceof dmDoctrineTable)
         {
-          if (!$joinAlias = $query->getJoinAliasForRelationAlias($relation->getAlias()))
+          if (($foreignColumn = $foreignTable->getIdentifierColumnName()) != 'id')
           {
-            $query->leftJoin(sprintf(sprintf('%s.%s %s', $query->getRootAlias(), $relation->getAlias(), $relation->getAlias())));
-            $joinAlias = $relation->getAlias();
+            if (!$joinAlias = $query->getJoinAliasForRelationAlias($relation->getAlias()))
+            {
+              $query->leftJoin(sprintf(sprintf('%s.%s %s', $query->getRootAlias(), $relation->getAlias(), $relation->getAlias())));
+              $joinAlias = $relation->getAlias();
+            }
+            
+            $query->addOrderBy(sprintf('%s.%s %s', $joinAlias, $foreignColumn, $sort[1]));
+            // Success, skip default sorting by local column
+            return;
           }
-          
-          $query->addOrderBy(sprintf('%s.%s %s', $joinAlias, $foreignColumn, $sort[1]));
-          // Success, skip default sorting by local column
-          return;
         }
       }
     }

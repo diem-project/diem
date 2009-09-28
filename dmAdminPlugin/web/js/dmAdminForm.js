@@ -7,6 +7,7 @@
     {
       this.$ = $("#dm_admin_content");
       
+			this.deleteLink();
       this.focusFirstInput();
       this.markitup();
       this.selectObject();
@@ -14,6 +15,20 @@
       this.linkDroppable();
       this.hotKeys();
     },
+		
+		deleteLink: function()
+		{
+      $('a.dm_delete_link', this.$).each(function() {
+				$(this).click(function(e)
+	      {
+	        e.stopPropagation();
+	        if (!confirm($(this).attr('title')+ ' ?'))
+	        {
+	          return false;
+	        }
+	      });
+			});
+		},
     
     focusFirstInput: function()
     {
@@ -53,9 +68,8 @@
             $.ajax({
               type: "POST",
               mode: "abort",
-              url: form.options.relative_url_root + '/dm_light.php',
+              url: $.dm.ctrl.getHref('+/dmService/markdown'),
               data: {
-                action: 'markdown',
                 text: value
               },
               success: function(html)

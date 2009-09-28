@@ -13,3 +13,7 @@ div.log .browser_block {
   width: 24px;
   padding: 0 5px 0 0;
 }
+
+div.log.change {
+  border: black 1px dashed;
+}

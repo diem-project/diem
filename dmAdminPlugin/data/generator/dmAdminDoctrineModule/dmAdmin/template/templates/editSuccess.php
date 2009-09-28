@@ -1,5 +1,5 @@
 [?php 
-  use_helper('I18N', 'Date');
+  use_helper('Date');
   use_stylesheet('admin.form');
   use_javascript('core.form');
   use_javascript('admin.form');
@@ -7,6 +7,10 @@
 ?]
 
 <div id="sf_admin_container">
+
+  <div class="dm_search_bar clearfix">
+  [?php include_partial('<?php echo $this->getModuleName() ?>/search');?]
+  </div>
 
 [?php if ($form->hasErrors()): ?]
   <ul class="dm_error_list">
@@ -21,10 +25,6 @@
     [?php endforeach; ?]
   </ul>
 [?php endif; ?]
-
-  <div id="form_header">
-    <h1>[?php echo <?php echo $this->getI18NString('edit.title') ?> ?]</h1>
-  </div>
 
   <div id="sf_admin_header">
     [?php include_partial('<?php echo $this->getModuleName() ?>/form_header', array('<?php echo $this->getSingularName() ?>' => $<?php echo $this->getSingularName() ?>, 'form' => $form, 'configuration' => $configuration)) ?]

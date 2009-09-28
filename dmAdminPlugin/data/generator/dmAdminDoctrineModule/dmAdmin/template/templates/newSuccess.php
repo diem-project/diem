@@ -8,8 +8,8 @@
 
 <div id="sf_admin_container">
 
-  <div id="form_header">
-    <h1>[?php echo <?php echo $this->getI18NString('new.title') ?> ?]</h1>
+  <div class="dm_search_bar clearfix">
+  [?php include_partial('<?php echo $this->getModuleName() ?>/search');?]
   </div>
 
   <div id="sf_admin_header">

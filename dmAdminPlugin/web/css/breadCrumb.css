@@ -11,7 +11,7 @@
 }
 
 #breadCrumb a.link,
-#breadCrumb span.link {
+#breadCrumb h1 {
   display: block;
   padding: 0 20px 0 10px;
   height: 19px;
@@ -23,6 +23,13 @@
 
 #breadCrumb a.link:hover {
 	color: #046BCA;
+}
+
+#breadCrumb h1 {
+	font-weight: bold;
+	font-size: 1.2em;
+	color: #444;
+  background: none;
 }
 
 #breadCrumb a.home {

@@ -6,6 +6,7 @@ class dmUpdateSeoService extends dmService
   $truncateCache;
   
   protected
+  $markdown,
   $titlePrefix,
   $titleSuffix;
 
@@ -19,6 +20,8 @@ class dmUpdateSeoService extends dmService
     $onlyModules = dmModuleManager::removeModulesChildren($onlyModules);
     
     $culture = dm::getUser()->getCulture();
+    
+    $this->markdown = dmContext::getInstance()->get('markdown');
     
     $this->titlePrefix = dmConfig::get('title_prefix');
     $this->titleSuffix = dmConfig::get('title_suffix');
@@ -271,18 +274,29 @@ class dmUpdateSeoService extends dmService
           if ($field == '__toString')
           {
             $usedValue = $usedRecord->__toString();
+            $processMarkdown = true;
           }
           else
           {
             $usedValue = $usedRecord->get($field);
+            
+            $processMarkdown = 
+            $usedRecord->getTable()->hasColumn($field) &&
+            false !== strpos(dmArray::get($usedRecord->getTable()->getColumnDefinition($field), 'extra'), 'markdown');
           }
         }
         else
         {
           $usedValue = $moduleKey.'-'.$usedModuleKey.' not found';
+          $processMarkdown = false;
         }
         
-        $usedValue = trim(dmMarkdown::toText($usedValue));
+        $usedValue = trim();
+        
+        if($processMarkdown)
+        {
+          $usedValue = $this->markdown->toText($usedValue);
+        }
 
         $replacements[$this->wrap($placeholder)] = $usedValue;
       }

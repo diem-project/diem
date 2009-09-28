@@ -1,6 +1,6 @@
 <?php
 
-abstract class dmDoctrinePager extends sfDoctrinePager
+class dmFrontDoctrinePager extends dmDoctrinePager
 {
   protected
   $navigationConfiguration = array(

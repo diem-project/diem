@@ -12,19 +12,19 @@
 class dmForm extends sfFormSymfony
 {
   protected static
-    $serviceContainer,
-    $counter = 1;
+  $serviceContainer,
+  $counter = 1;
 
   protected
-    $key,
-    $name;
+  $key,
+  $name;
 
   public function setup()
   {
     $this->widgetSchema->setFormFormatterName('dmList');
 
     $this->key = "dm_form_".self::$counter++;
-    
+
     $this->setName(dmString::underscore(get_class($this)));
   }
 
@@ -32,14 +32,19 @@ class dmForm extends sfFormSymfony
   {
     $this->name = $name;
     $this->widgetSchema->setNameFormat($name.'[%s]');
+
+    return $this;
   }
-  
+
   public function getName()
   {
     return $this->name;
   }
 
-  public function getKey() { return $this->key; }
+  public function getKey()
+  {
+    return $this->key;
+  }
 
   /**
    * Renders the widget schema associated with this form.
@@ -57,13 +62,13 @@ class dmForm extends sfFormSymfony
     '<ul class="dm_form_elements">'.
     $this->getFormFieldSchema()->render($attributes).
     sprintf('<li class="dm_form_element"><label>%s</label>%s</li>',
-      self::$serviceContainer->getService('i18n')->__('Validate'),
-      $this->renderSubmitTag(self::$serviceContainer->getService('i18n')->__('Validate'))
+    self::$serviceContainer->getService('i18n')->__('Validate'),
+    $this->renderSubmitTag(self::$serviceContainer->getService('i18n')->__('Validate'))
     ).
     '</ul>'.
     $this->close();
   }
-  
+
   public function renderSubmitTag($name = 'submit', $class = null)
   {
     return sprintf('<input type="submit" value="%s" %s/>', $name, $class ? 'class="'.$class.'" ' : '');
@@ -86,7 +91,7 @@ class dmForm extends sfFormSymfony
   public function open($opt = array())
   {
     $opt = dmString::toArray($opt, true);
-    
+
     $defaults = array(
       'class' => dmArray::toHtmlCssClasses(array('validate_me', dmArray::get($opt, 'class'))),
       'id' => $this->getKey()
@@ -107,7 +112,7 @@ class dmForm extends sfFormSymfony
     {
       $action = self::$serviceContainer->getService('request')->getUri();
     }
-    
+
     if (strpos($action, '#') === false)
     {
       $action .= '#'.$this->getKey();
@@ -117,16 +122,16 @@ class dmForm extends sfFormSymfony
 
     return $this->renderFormTag($action, $opt);
 
-//    sfProjectConfiguration::getActive()->loadHelpers(array('Form', 'Tag', 'Url'));
-//
-//    return form_tag($action, $opt);
+    //    sfProjectConfiguration::getActive()->loadHelpers(array('Form', 'Tag', 'Url'));
+    //
+    //    return form_tag($action, $opt);
   }
 
   public function close()
   {
     return '</form>';
   }
-  
+
   /**
    * Sets the service container to be used by all forms.
    *
@@ -146,7 +151,7 @@ class dmForm extends sfFormSymfony
 
     return $return;
   }
-  
+
   /*
    * Usefull for debugging : will throw the error exception
    */
@@ -154,7 +159,7 @@ class dmForm extends sfFormSymfony
   {
     throw $this->errorSchema;
   }
-  
+
   /**
    * Returns the form field associated with the name (implements the ArrayAccess interface).
    *

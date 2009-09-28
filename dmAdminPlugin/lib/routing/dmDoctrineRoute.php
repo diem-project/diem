@@ -21,6 +21,11 @@ class dmDoctrineRoute extends sfDoctrineRoute
     unset($defaults['sf_format']);
     $pattern = str_replace('.:sf_format', '', $pattern);
     
+//    if (empty($options['method']))
+//    {
+//      $options['method'] = 'fetchJoinAll';
+//    }
+    
     parent::__construct($pattern, $defaults, $requirements, $options);
   }
   

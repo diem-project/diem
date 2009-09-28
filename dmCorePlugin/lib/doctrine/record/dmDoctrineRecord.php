@@ -80,6 +80,47 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     return dmRecordLoremizer::loremize($this);
   }
 
+  
+  public function getPrevNextRecords(dmDoctrineQuery $q)
+  {
+    /*
+     * Will not work if table has composite primary key
+     */
+    if (!$pk = $this->_table->getPrimaryKey())
+    {
+      return null;
+    }
+
+    $qPk = clone $q;
+//    $qPk->from(get_class($this).' '.$qPk->getRootAlias())->removeDqlQueryPart('join');
+    $qPk->select($qPk->getRootAlias().'.'.$pk)->distinct();
+    $pks = $qPk->fetchPDO();
+    foreach($pks as $key => $attrs)
+    {
+      $pks[$key] = array_shift($attrs);
+    }
+
+    $recordOffset = array_search($this->getPrimaryKey(), $pks);
+      
+    $map = array(
+      'prev' => 0 == $recordOffset ? null : $pks[$recordOffset-1],
+      'next' => count($pks) == ($recordOffset+1) ? null :$pks[$recordOffset+1]
+    );
+    
+    $pks = array_unique(array_filter(array_values($map)));
+
+    $records = empty($pks) ? array() : $this->_table->createQuery('q INDEXBY q.'.$pk)->whereIn('q.'.$pk, $pks)->fetchRecords();
+
+    foreach($map as $key => $id)
+    {
+      $map[$key] = isset($records[$id]) ? $records[$id] : null;
+    }
+    
+//    dmDebug::kill($map);
+    
+    return $map;
+  }
+  
   /*
    * Tries to return the nearest records in table
    */
@@ -99,7 +140,9 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     }
 
     $qPk = clone $q;
-    $pks = $qPk->select($qPk->getRootAlias().'.'.$pk)->distinct()->fetchPDO();
+    $qPk->removeDqlQueryPart('join')->removeDqlQueryPart('from')->from(get_class($this).' '.$qPk->getRootAlias());
+    $qPk->select($qPk->getRootAlias().'.'.$pk)->distinct();
+    $pks = $qPk->fetchPDO();
     foreach($pks as $key => $attrs)
     {
       $pks[$key] = array_shift($attrs);
@@ -120,6 +163,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     }
 
     $rPk = clone $q;
+    $qPk->removeDqlQueryPart('join');
     $rPk->whereIn($rPk->getRootAlias().'.'.$pk, $selectedPks);
     
 //    dmDebug::kill($rPk->getSqlQuery(), $rPk->fetchRecords());
@@ -163,7 +207,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
       }
     }
 
-    if (!isset($myOffset) || $myOffset === (count($nearRecords)-1))
+    if (!isset($myOffset) || $myOffset === ($nearRecords->count()-1))
     {
       return null;
     }
@@ -477,7 +521,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
   
     if (empty($string))
     {
-      $string = 'No description for object of class '.$this->_table->getComponentName();
+      $string = '-';
     }
 
     return $string;

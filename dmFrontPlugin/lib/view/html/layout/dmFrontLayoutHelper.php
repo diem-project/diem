@@ -101,21 +101,23 @@ class dmFrontLayoutHelper extends dmCoreLayoutHelper
       return '';
     }
     
+    $cacheKey = sfConfig::get('sf_cache') ? $this->user->getCredentialsHash() : null;
+    
     $html = '';
     
     if (sfConfig::get('dm_pageBar_enabled', true) && $this->user->can('page_bar_front'))
     {
-      $html .= $this->helper->renderPartial('dmInterface', 'pageBar');
+      $html .= $this->helper->renderPartial('dmInterface', 'pageBar', array('cacheKey' => $cacheKey));
     }
     
     if (sfConfig::get('dm_mediaBar_enabled', true) && $this->user->can('media_bar_front'))
     {
-      $html .= $this->helper->renderPartial('dmInterface', 'mediaBar');
+      $html .= $this->helper->renderPartial('dmInterface', 'mediaBar', array('cacheKey' => $cacheKey));
     }
     
     if ($this->user->can('tool_bar_front'))
     {
-      $html .= $this->helper->renderComponent('dmInterface', 'toolBar');
+      $html .= $this->helper->renderComponent('dmInterface', 'toolBar', array('cacheKey' => $cacheKey));
     }
     
     return $html;

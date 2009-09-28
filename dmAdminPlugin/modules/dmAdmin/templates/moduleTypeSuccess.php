@@ -2,7 +2,7 @@
 
 slot('dm.breadCrumb');
 
-echo £('li', £('span.link', __($type->getPublicName())));
+echo £('li', £('h1', __($type->getPublicName())));
 
 end_slot();
  

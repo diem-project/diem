@@ -48,7 +48,7 @@ body.mediaBarOpen #sf_admin_content {
   height: 19px;
   line-height: 19px;
   text-align: center;
-  background: url(../images/little_bar_bg.png) top left repeat-x;
+  background: url(../images/default_bg.png) center left repeat-x;
   border-bottom: 1px solid #ccc;
   border-left: 1px solid #ccc;
   font-weight: bold;

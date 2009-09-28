@@ -1,13 +1,33 @@
 [?php
   use_helper('I18N', 'Date');
   use_stylesheet('admin.list');
-
+  
   $appliedFilters = $sf_user->getAppliedFiltersOnModule('<?php echo $this->getModuleName(); ?>');
 ?]
 
 <div id="sf_admin_container" class='{baseUrl: "[?php echo url_for('<?php echo $this->getUrlForAction('list') ?>') ?]"}'>
+  
+  <div class="dm_search_bar clearfix">
+  [?php
+    include_partial('<?php echo $this->getModuleName() ?>/search');
+    
+    $maxPerPages = array();
+    $message = __('elements per page');
+    foreach(sfConfig::get('dm_admin_max_per_page', array(10)) as $maxPerPage)
+    {
+      $maxPerPages[$maxPerPage] = $maxPerPage.' '.$message;
+    }
+
+    $currentMaxPerPage = $sf_user->getAttribute(
+      '<?php echo $this->getModuleName() ?>.max_per_page',
+      <?php echo isset($this->config['list']['max_per_page']) ? (integer) $this->config['list']['max_per_page'] : 10 ?>,
+      'admin_module'
+    );
+    $maxPerPageSelect = new sfWidgetFormSelect(array('choices' => $maxPerPages));
+    echo '<div class="dm_max_per_page">'.__('Display').' '.$maxPerPageSelect->render('dm_max_per_page', $currentMaxPerPage).'</div>';
+  ?]
+  </div>
   <div id="list_header" class="clearfix">
-    <h1>[?php echo <?php echo $this->getI18NString('list.title') ?> ?]</h1>
     [?php
       if (count($appliedFilters))
       {
@@ -32,14 +52,46 @@
     [?php include_partial('<?php echo $this->getModuleName() ?>/list_header', array('pager' => $pager)) ?]
   </div>
 
+  [?php $dmListActionBar = get_partial('<?php echo $this->getModuleName() ?>/dm_list_action_bar', array('pager' => $pager, 'helper' => $helper, 'class' => 'dm_pagination_top')); ?]
+  
   <div id="sf_admin_content" [?php if (!$pager->getNbResults()) echo 'class="no_results"'; ?]>
-<?php if ($this->configuration->getValue('list.batch_actions')): ?>
+    
     <form action="[?php echo url_for('<?php echo $this->getUrlForAction('do') ?>', array('action' => 'batch')) ?]" method="post">
-<?php endif; ?>
+    
+    <div class="dm_list_action_bar dm_list_action_bar_top clearfix">[?php echo str_replace('__DM_RANDOM_ID__', dmString::random(8), $dmListActionBar); ?]</div>
+    
     [?php include_partial('<?php echo $this->getModuleName() ?>/list', array('pager' => $pager, 'sort' => $sort, 'helper' => $helper)) ?]
-<?php if ($this->configuration->getValue('list.batch_actions')): ?>
+    
+    <div class="dm_list_action_bar dm_list_action_bar_bottom clearfix">[?php echo str_replace('__DM_RANDOM_ID__', dmString::random(8), $dmListActionBar); ?]</div>
+    
     </form>
-<?php endif; ?>
+    
+    <div class="dm_list_global_actions clearfix">
+
+      [?php if($sf_user->can('export_table')): ?]
+      <div class="dm_export">
+      <?php echo $this->getLinkToAction('Export CSV', array('action' => 'export', 'params' => array('class' => 'dm_sort s16 s16_export')), false); ?>
+      </div>
+      [?php endif; ?]
+      
+      [?php if($sf_user->can('loremize')): ?]
+      <div class="dm_loremize">
+      <p class="dm_sort s16 s16_edit fleft">Loremize :</p>
+      [?php
+      $loremizeLink = £link('dmService/launch?name=dmLoremize&module_name=<?php echo $this->getModuleName() ?>&nb=__DM_NB_RECORDS__')
+      ->text('__DM_NB_RECORDS__')
+      ->set('.ml10')
+      ->render();
+      foreach(array(1, 5, 10, 20, 50) as $nbRecords)
+      {
+        echo str_replace('__DM_NB_RECORDS__', $nbRecords, $loremizeLink);
+      }
+      ?]
+      </div>
+      [?php endif; ?]
+      
+    </div>
+    
   </div>
 
   <div id="sf_admin_footer">

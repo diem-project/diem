@@ -4,33 +4,21 @@ require_once(dirname(__FILE__).'/vendor/markdown.php');
 
 class dmMarkdown extends MarkdownExtra_Parser
 {
-
-  protected static $instance;
-
-  public static function toHtml($text)
-  {
-    if(null === self::$instance)
-    {
-      self::$instance = new self;
-    }
-
-    return trim(self::$instance->transform($text), "\n");
-  }
   
-  public static function toText($text)
+  public function toText($text)
   {
-    return strip_tags(self::toHtml($text));
+    return strip_tags($this->toHtml($text));
   }
 
-  public function transform($text)
+  public function toHtml($text)
   {
-    return self::postTransform(parent::transform(self::preTransform($text)));
+    return $this->postTransform($this->transform($this->preTransform($text)));
   }
 
-  protected static function preTransform($text)
+  protected function preTransform($text)
   {
     // clean text
-    $text = self::cleanText($text);
+    $text = $this->cleanText($text);
 
     // replace lines with only a dot by a <br />
     $text = preg_replace("|^\.$|ium", "<br />", $text);
@@ -41,13 +29,12 @@ class dmMarkdown extends MarkdownExtra_Parser
     return $text;
   }
 
-  protected static function postTransform($text)
+  protected function postTransform($text)
   {
-
-    return $text;
+    return trim($text, "\n");
   }
 
-  protected static function cleanText($text)
+  protected function cleanText($text)
   {
     return strtr($text, array(
         "&#8217;" => "'"     // apostrophe

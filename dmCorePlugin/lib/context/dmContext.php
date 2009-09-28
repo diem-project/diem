@@ -103,10 +103,8 @@ class dmContext extends sfContext
    */
   public function loadFactories()
   {
-    $timer = dmDebug::timerOrNull('load module manager');
     // create a new module_manager
     $this->factories['module_manager'] = include($this->getConfigCache()->checkConfig('config/dm/modules.yml'));
-    $timer && $timer->addTime();
 
     parent::loadFactories();
 

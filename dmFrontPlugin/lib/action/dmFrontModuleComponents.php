@@ -87,7 +87,7 @@ class dmFrontModuleComponents extends myFrontBaseComponents
         }
         else
         {
-          $filterRecordId = $this->context->getPage()->getRecord()->getAncestorRecordId($filterModule->getModel());
+          $filterRecordId = $this->getPage()->getRecord()->getAncestorRecordId($filterModule->getModel());
 
           if (!$filterRecordId)
           {
@@ -106,13 +106,13 @@ class dmFrontModuleComponents extends myFrontBaseComponents
    * @param myDoctrineQuery $query        The query passed to pager
    * @return myDoctrinePager $pager
    */
-  protected function getPager(myDoctrineQuery $query)
+  protected function getPager(myDoctrineQuery $query, $page = null)
   {
-    $pager = new myDoctrinePager($this->getDmModule()->getModel(), $this->maxPerPage);
+    $pager = $this->context->getServiceContainer()->getDoctrinePager($this->getDmModule()->getModel(), $this->maxPerPage);
 
     $pager->setQuery($query);
 
-    $pager->setPage($this->getRequest()->getParameter('page', 1));
+    $pager->setPage(null === $page ? $this->request->getParameter('page', 1) : $page);
 
     $pager->configureNavigation(array(
       'top'     => $this->navTop,

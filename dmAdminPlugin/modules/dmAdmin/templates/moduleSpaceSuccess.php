@@ -4,7 +4,7 @@ slot('dm.breadCrumb');
 
 echo £('li', £link($sf_context->getRouting()->getModuleTypeUrl($type))->text(__($type->getPublicName())));
 
-echo £('li', £('span.link', __($space->getPublicName())));
+echo £('li', £('h1', __($space->getPublicName())));
 
 end_slot();
 

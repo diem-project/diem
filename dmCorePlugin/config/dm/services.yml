@@ -1,5 +1,7 @@
 parameters:
 
+  markdown.class:             dmMarkdown
+
   script_name_resolver.class: dmScriptNameResolver
 
   error_watcher.class:        dmErrorWatcher
@@ -69,6 +71,10 @@ parameters:
   helper.class:               dmHelper
  
 services:
+
+  markdown:
+    class:                    %markdown.class%
+    shared:                   true
 
   script_name_resolver:
     class:                    %script_name_resolver.class%

@@ -104,7 +104,9 @@ abstract class dmDoctrineQuery extends Doctrine_Query
   public function withDmMedia($alias)
   {
     $mediaJoinAlias = dmString::lcfirst($alias);
-    return $this->leftJoin(sprintf('%s.%s %s, %s.%s %s', $this->getRootAlias(), $alias, $mediaJoinAlias, $mediaJoinAlias, 'Folder', $mediaJoinAlias.'Folder'));
+    $folderJoinAlias = $mediaJoinAlias.'Folder';
+    
+    return $this->leftJoin(sprintf('%s.%s %s, %s.%s %s', $this->getRootAlias(), $alias, $mediaJoinAlias, $mediaJoinAlias, 'Folder', $folderJoinAlias));
   }
   
   public function whereIsActive($boolean = true, $model = null)

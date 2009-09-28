@@ -158,6 +158,9 @@ abstract class dmAssetCompressor
           file_put_contents($cacheFilePath.'.gz', gzencode($cacheContent));
           chmod($cacheFilePath.'.gz', 0666);
         }
+      
+        $message = sprintf('%s : compressed %d assets ( %s )', get_class($this), count($this->cachedAssets), dmOs::humanizeSize($cacheFilePath));
+        $this->dispatcher->notify(new sfEvent($this, 'application.log', array($message, 'priority' => sfLogger::WARNING)));
       }
       
       $this->processedAssets = array_merge(

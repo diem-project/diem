@@ -29,11 +29,7 @@
       
       this.liveEvents();
       
-      //    this.breadCrumb();
-      
       //    this.filters();
-      
-      this.search();
     },
     
     //  filters: function()
@@ -42,25 +38,6 @@
     //    $('a.dm_filters_toggler', self.$).click(function() {
     //    }).find(':first').trigger('click');
     //  },
-    
-    search: function()
-    {
-      self = this;
-      
-      $('input.dm_module_search_input', self.$).each(function()
-      {
-				var $input = $(this).bindKey('return', function()
-        {
-					var query = $input.val() == $input.attr('title') ? '' : $input.val();
-          location.href = $('#sf_admin_container').metadata().baseUrl + '?search=' + query;
-          return false;
-        })
-				.bind('keyup mouseup', function() {
-					$('input.dm_module_search_input', self.$).not($input).val($input.val());
-				})
-				.attr('disabled', false);
-      });
-    },
     
     bars: function()
     {
@@ -76,7 +53,7 @@
     
     fullHeight: function()
     {
-      if ($fullHeight = $('.full_height').orNot()) 
+      if ($fullHeight = $('div.full_height').orNot()) 
       {
         $(window).bind("resize", function()
         {
@@ -98,22 +75,30 @@
     listPage: function()
     {
       self = this;
+			
+			if ($searchInput = $('#dm_module_search_input').orNot())
+			{
+				$searchInput.focus();
+			}
       
-      if ($batchCheckbox = $('#sf_admin_list_batch_checkbox').orNot()) 
-      {
-        $batchCheckbox.click(function()
+      $('input.sf_admin_list_batch_checkbox', self.$).each(function() {
+				$(this).click(function()
         {
-          $('input.sf_admin_batch_checkbox', this.$).attr('checked', $batchCheckbox.attr('checked'));
-        });
-      }
-      
-      $('div.max_per_page select', self.$).each(function()
-      {
-        $(this).change(function()
-        {
-          location.href = self.getHref('+/dmAdminGenerator/changeMaxPerPage') + "?dm_module=" + self.options.module + "&max_per_page=" + $(this).val()
+          $('input.sf_admin_batch_checkbox, input.sf_admin_list_batch_checkbox', self.$).attr('checked', $(this).attr('checked'));
         });
       });
+      
+      $('input.sf_admin_batch_checkbox, input.sf_admin_list_batch_checkbox', self.$).change(function() {
+        $('div.sf_admin_actions > input', self.$).attr('disabled', !$('input.sf_admin_batch_checkbox:checked', self.$).length);
+      });
+      
+      if ($maxPerPage = $('#dm_max_per_page').orNot())
+      {
+        $maxPerPage.change(function()
+        {
+          location.href = self.getHref('+/dmAdminGenerator/changeMaxPerPage') + "?dm_module=" + self.options.module + "&max_per_page=" + $maxPerPage.val()
+        });
+      }
     },
     
     datePickers: function()

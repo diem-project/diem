@@ -5,7 +5,8 @@ class dmGuardUserAdminForm extends sfGuardUserAdminForm
   public function configure()
   {
     parent::configure();
-//    dmDebug::kill($this->getObject()->Profile);
+
+    $this->unsetAutoFields();
     $this->embedForm('Profile', $this->getProfileForm($this->getObject()->Profile));
   }
   

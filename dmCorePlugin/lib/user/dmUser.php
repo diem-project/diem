@@ -179,6 +179,11 @@ abstract class dmUser extends sfGuardSecurityUser implements dmMicroCacheInterfa
     return $this->isSuperAdmin;
   }
   
+  public function getCredentialsHash()
+  {
+    return md5($this->isSuperAdmin.implode(',', $this->credentials));
+  }
+  
   /*
    * Log methods
    */

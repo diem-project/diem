@@ -153,7 +153,8 @@
 			}
 			else 
 			{
-				pTop += (wnd.height() - this.uiDialog.outerHeight()) / 2;
+				var dialogHeight = 350;
+				pTop += (wnd.height() - dialogHeight) / 2;
 			}
 			
 			// prevent the dialog from being too high (make sure the titlebar is accessible)

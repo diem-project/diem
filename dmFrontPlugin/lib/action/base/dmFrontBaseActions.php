@@ -49,7 +49,7 @@ class dmFrontBaseActions extends dmBaseActions
 
     if (!$refererUrl || $refererUrl === $this->request->getUri())
     {
-      if ($page = $this->context->getPage())
+      if ($page = $this->getPage())
       {
         $refererUrl = dmFrontLinkTag::build($page)->getAbsoluteHref();
       }

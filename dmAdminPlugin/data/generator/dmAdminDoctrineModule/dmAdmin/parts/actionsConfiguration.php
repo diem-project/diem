@@ -19,11 +19,11 @@
     return <?php echo $this->asPhp(isset($this->config['form']['actions']) ? $this->config['form']['actions'] : array(
     '_list' => array('label' => 'Back to list'),
     '_save' => array('label' => 'Save'),
-//    '_save_and_add' => array('label' => '& Add'),
-//    '_save_and_list' => array('label' => '& List'),
-//    '_save_and_next' => array('label' => '& Next'),
-    '_add' => null,
-    '_delete' => array('label' => 'Delete')
+    '_save_and_add' => array('label' => 'Save and Add'),
+    '_save_and_list' => array('label' => 'Save and Back to list'),
+    '_save_and_next' => array('label' => 'Save and Next'),
+    '_delete' => array('label' => 'Delete', 'title' => 'Delete this %1%'),
+    '_add' => array('label' => 'Add', 'title' => 'Add a %1%'),
     )) ?>;
 <?php unset($this->config['form']['actions']) ?>
   }
@@ -48,7 +48,7 @@
 
   public function getListActions()
   {
-    return <?php echo $this->asPhp(isset($this->config['list']['actions']) ? $this->config['list']['actions'] : array('_new' => null)) ?>;
+    return <?php echo $this->asPhp(isset($this->config['list']['actions']) ? $this->config['list']['actions'] : array('_new' => array('label' => 'Add', 'title' => 'Add a %1%'))) ?>;
 <?php unset($this->config['list']['actions']) ?>
   }
 

@@ -1,15 +1,22 @@
   public function executeBatch(sfWebRequest $request)
   {
-    $request->checkCSRFProtection();
-
     if (!$ids = $request->getParameter('ids'))
     {
       $this->getUser()->setFlash('error', 'You must at least select one item.');
 
       $this->redirect('@<?php echo $this->getUrlForAction('list') ?>');
     }
+    
+    foreach($request->getParameterHolder()->getAll() as $key => $value)
+    {
+      if (strncmp($key, 'batch', 5) === 0)
+      {
+        $action = $key;
+        break;
+      }
+    }
 
-    if (!$action = $request->getParameter('batch_action'))
+    if (!isset($action))
     {
       $this->getUser()->setFlash('error', 'You must select an action to execute on the selected items.');
 

@@ -5,7 +5,7 @@ if ($sf_context->isModuleAction('dmAdmin', 'index'))
   return;
 }
 
-$links = array(£link()->text(£('span.s16block.s16_home_gray', __('Home')))->set('.home'));
+$links = array(£link()->text(£('span.s16block.s16_home_gray', '&nbsp;'))->title(__('Home'))->set('.home'));
 
 if ($module = $sf_context->getModuleManager()->getModuleOrNull($sf_request->getParameter('module')))
 {
@@ -13,8 +13,8 @@ if ($module = $sf_context->getModuleManager()->getModuleOrNull($sf_request->getP
   $space = $module->getSpace();
   $type  = $space->getType();
   
-  $links[] = £link($sf_context->getRouting()->getModuleTypeUrl($type))->text(£('span', __($type->getPublicName())));
-  $links[] = £link($sf_context->getRouting()->getModuleSpaceUrl($space))->text(£('span', __($space->getPublicName())));
+  $links[] = £link($sf_context->getRouting()->getModuleTypeUrl($type))->text(__($type->getPublicName()));
+  $links[] = £link($sf_context->getRouting()->getModuleSpaceUrl($space))->text(__($space->getPublicName()));
 
   if ($route instanceof dmDoctrineRoute && $route->isType('object'))
   {
@@ -22,36 +22,27 @@ if ($module = $sf_context->getModuleManager()->getModuleOrNull($sf_request->getP
     
     if ($sf_context->getActionName() == 'new')
     {
-      $links[] = £('span.link', __('New'));
+      $links[] = £('h1', __('New'));
     }
     else
     {
       $object = $sf_request->getAttribute('sf_route')->getObject();
-      $links[] = £('span.link', $object->__toString());
+      $links[] = £('h1', $object->__toString());
     }
   }
   elseif(($action = $sf_context->getActionName()) !== 'index')
   {
     $links[] = £link('@'.$module->getUnderscore())->text(__($module->getPlural()));
-    $links[] = £('span.link', __($action));
+    $links[] = £('h1', __($action));
   }
   else
   {
-    $links[] = £('span.link', __($module->getPlural()));
+    $links[] = £('h1', __($module->getPlural()));
   }
 }
 
 echo £o("div#breadCrumb.mt10");
 
-echo £o('ol');
-
-foreach($links as $link)
-{
-  echo '<li>'.$link.'</li>';
-}
-
-include_slot('dm.breadCrumb');
-
-echo £c('ol');
+echo £('ol', '<li>'.implode('</li><li>', $links).'</li>'.get_slot('dm.breadCrumb'));
 
 echo £c('div');

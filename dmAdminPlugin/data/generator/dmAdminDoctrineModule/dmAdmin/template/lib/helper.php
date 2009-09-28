@@ -21,8 +21,10 @@ class Base<?php echo ucfirst($this->getModuleName()) ?>GeneratorHelper extends s
     return link_to1(
     __($params['label']),
     array('sf_route' => $this->getUrlForAction('new')),
-    array('class' => 'sf_admin_action_new s16 s16_add', 'title' => __('Add a').' '.strtolower($this->getModule()->getName()))
-    );
+    array(
+      'class' => 'sf_admin_action_new s16 s16_add',
+      'title' => __($params['title'], array('%1%' => strtolower($this->getModule()->getName())))
+    ));
   }
 
   public function linkToEdit($object, $params)
@@ -37,26 +39,21 @@ class Base<?php echo ucfirst($this->getModuleName()) ?>GeneratorHelper extends s
 
   public function linkToDelete($object, $params)
   {
-    if ($object->isNew())
-    {
-      return '';
-    }
-
-    return '<li class="sf_admin_action_delete">'.link_to1("<span class=\"s16 s16_delete\">".__($params['label'])."</span>", array(
+    return '<li class="sf_admin_action_delete">'.link_to1(__($params['label']), array(
     'sf_route' => $this->getUrlForAction('delete'),
     'sf_subject' => $object
     ),
     array(
+    'class' => 's16 s16_delete ml10 mr10 dm_delete_link',
+    'title' => __($params['title'], array('%1%' => strtolower($this->getModule()->getName()))),
     'method' => 'delete',
-    'confirm' => false,
-    'class' => 'button red dm_js_confirm',
-    'title' => __('Delete this element')
+    'confirm' => false
     )).'</li>';
   }
 
   public function linkToList($params)
   {
-    return '<li class="sf_admin_action_list">'.link_to1(__($params['label']), array('sf_route' => $this->getUrlForAction('list')), array('class' => 's16 s16_arrow_up_left')).'</li>';
+    return '<li class="sf_admin_action_list">'.link_to1(__($params['label']), array('sf_route' => $this->getUrlForAction('list')), array('class' => 's16 s16_arrow_left')).'</li>';
   }
 
   public function linkToSave($object, $params)

@@ -1,5 +1,7 @@
 parameters:
 
+  doctrine_pager.class:       dmFrontDoctrinePager
+
   link_tag.class:             dmFrontLinkTag
   link_tag_record.class:      dmFrontLinkTagRecord
   link_tag_page.class:        dmFrontLinkTagPage
@@ -27,6 +29,11 @@ parameters:
     config_file:              'config/dm/widget_types.yml'        
  
 services:
+
+  doctrine_pager:
+    class:                    %doctrine_pager.class%
+    shared:                   false
+    arguments:                [ %doctrine_pager.model%, %doctrine_pager.max_per_page% ]
 
   link_tag:
     class:                    %link_tag.class%

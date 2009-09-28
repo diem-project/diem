@@ -80,4 +80,15 @@ abstract class dmFrontBaseServiceContainer extends dmBaseServiceContainer
     
     return $this->getService('link_tag');
   }
+  
+  /*
+   * return @dmFrontDoctrinePager
+   */
+  public function getDoctrinePager($model, $maxPerPage)
+  {
+    $this->setParameter('doctrine_pager.model', $model);
+    $this->setParameter('doctrine_pager.max_per_page', $maxPerPage);
+    
+    return $this->getService('doctrine_pager');
+  }
 }

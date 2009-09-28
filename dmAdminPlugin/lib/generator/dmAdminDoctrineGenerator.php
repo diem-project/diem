@@ -144,7 +144,7 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
     }
     else if ('Boolean' == $field->getType())
     {
-      $html = sprintf("get_partial('%s/list_field_boolean', array('value' => %s))", $this->getModuleName(), $html);
+      $html = "sprintf('<span class=\"s16block s16_%s\"></span>', ".$html." ? 'tick' : 'cross');";
     }
     /*
      * Local Relation

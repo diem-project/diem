@@ -63,4 +63,9 @@ class BasedmServiceActions extends dmBaseActions
     $this->services = self::$availableServices;
   }
 
+  public function executeMarkdown(dmWebRequest $request)
+  {
+    return $this->renderText($this->context->get('markdown')->toHtml($request->getParameter('text')));
+  }
+  
 }

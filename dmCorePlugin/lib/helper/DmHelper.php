@@ -53,7 +53,9 @@ function plural($word, $nb, $showNb = true, $pluralSpec = false)
 
 function markdown($markdown, $opt = array())
 {
-  return £('div.markdown', dmString::toArray($opt), dmMarkdown::toHtml($markdown));
+  $html = dmContext::getInstance()->get('markdown')->toHtml($markdown);
+  
+  return £('div.markdown', dmString::toArray($opt), $html);
 }
 
 /*

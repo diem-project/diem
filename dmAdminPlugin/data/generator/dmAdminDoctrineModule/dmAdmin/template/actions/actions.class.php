@@ -13,6 +13,9 @@ require_once(dirname(__FILE__).'/../lib/Base<?php echo ucfirst($this->moduleName
  */
 class <?php echo $this->getGeneratedModuleName() ?>Actions extends myAdminBaseGeneratedModuleActions
 {
+  protected
+  $dmModule;
+  
   public function preExecute()
   {
     $this->configuration = new <?php echo $this->getModuleName() ?>GeneratorConfiguration();
@@ -29,7 +32,12 @@ class <?php echo $this->getGeneratedModuleName() ?>Actions extends myAdminBaseGe
   
   protected function getDmModule()
   {
-    return $this->context->getModuleManager()->getModule('<?php echo $this->getModuleName(); ?>');
+    if ($this->dmModule)
+    {
+      return $this->dmModule;
+    }
+    
+    return $this->dmModule = $this->context->getModuleManager()->getModule('<?php echo $this->getModuleName(); ?>');
   }
 
 <?php include dirname(__FILE__).'/../../parts/sortAction.php' ?>

@@ -26,3 +26,22 @@
 .dm_module_type_show .dm_module p {
   color: #666;
 }
+
+.dm_search_bar {
+  margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.dm_module_search {
+  float: left;
+}
+
+div.dm_module_search input {
+	font-size: 13px;
+  padding: 0 3px;
+}
+
+#dm_module_search_input {
+  width: 300px;
+  margin-right: 5px;
+}

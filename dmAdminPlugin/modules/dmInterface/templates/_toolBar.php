@@ -42,7 +42,7 @@ echo £o('div#dm_tool_bar.clearfix');
     echo '__DM_TIDY_OUTPUT__';
   }
 
-  echo £link('app:front')->textTitle(__('Go to site'))->set('.widget16');
+  echo £link('app:front')->textTitle(__('Go to site'))->set('.widget16.ml10');
   
   if (sfConfig::get('sf_web_debug'))
   {

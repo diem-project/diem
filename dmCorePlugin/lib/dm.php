@@ -40,18 +40,6 @@ class dm
     return self::$startTime;
   }
   
-  public static function lightAction()
-  {
-    switch(isset($_REQUEST['action']) ? $_REQUEST['action'] : null)
-    {
-      case 'markdown':
-        require_once(implode(DIRECTORY_SEPARATOR, array(dm::getDir(), 'dmCorePlugin', 'lib', 'markdown', 'dmMarkdown.php')));
-        print isset($_REQUEST['text']) ? dmMarkdown::toHtml($_REQUEST['text']) : '';
-        break;
-      default:
-        header('HTTP/1.0 404 Page Not Found');
-    }
-  }
   
   public static function checkServer()
   {

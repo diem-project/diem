@@ -24,10 +24,7 @@
       elseif ($request->hasParameter('_save_and_next'))
       {
         $this->getUser()->setFlash('notice', $notice);
-        if(!$<?php echo $this->getSingularName() ?> = $<?php echo $this->getSingularName() ?>->getNextRecord($<?php echo $this->getSingularName() ?>->getNearRecords($this->buildQuery(), 2)))
-        {
-          $<?php echo $this->getSingularName() ?> = $this->form->getObject();
-        }
+        $<?php echo $this->getSingularName() ?> = dmArray::get($<?php echo $this->getSingularName() ?>->getPrevNextRecords($this->buildQuery()), 'next', $this->form->getObject());
         $this->redirect('@<?php echo $this->getUrlForAction('edit') ?>?<?php echo $this->getPrimaryKeyUrlParams() ?>);
       }
       else

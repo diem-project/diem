@@ -91,6 +91,7 @@ class dmAdminGeneratorActions extends dmAdminBaseActions
       $maxPerPages = sfConfig::get('dm_admin_max_per_page', array(10));
       $maxPerPage = in_array($maxPerPage, $maxPerPages) ? $maxPerPage : dmArray::first($maxPerPages);
       $this->getUser()->setAttribute($module.'.max_per_page', $maxPerPage, 'admin_module');
+      $this->getUser()->setAttribute($module.'.page', 1, 'admin_module');
     }
 
     return $this->redirect('@'.$module->getUnderscore());

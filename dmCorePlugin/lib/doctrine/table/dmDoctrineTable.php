@@ -91,49 +91,61 @@ abstract class dmDoctrineTable extends Doctrine_Table
    * Will join all record available medias
    * @return myDoctrineQuery
    */
-  public function joinDmMedias(myDoctrineQuery $q)
+  public function joinDmMedias(myDoctrineQuery $query)
   {
     foreach($this->getRelationHolder()->getLocalMedias() as $relation)
     {
-      $q->withDmMedia($relation->getAlias());
+      $query->withDmMedia($relation->getAlias());
     }
 
-    return $q;
+    return $query;
   }
 
   /*
    * Will join all localKey relations
    * @return myDoctrineQuery
    */
-  public function joinLocals(myDoctrineQuery $q)
+  public function joinLocals(myDoctrineQuery $query)
   {
-    $rootAlias = $q->getRootAlias();
+    $rootAlias = $query->getRootAlias();
 
     foreach($this->getRelationHolder()->getLocals() as $relation)
     {
-      $q->leftJoin(sprintf('%s.%s %s', $rootAlias, $relation->getAlias(), dmString::lcfirst($relation->getAlias())));
+      $query->leftJoin(sprintf('%s.%s %s', $rootAlias, $relation->getAlias(), dmString::lcfirst($relation->getAlias())));
     }
 
-    return $q;
+    return $query;
+  }
+  
+  public function fetchJoinAll($params = array(), $hydrationMode = Doctrine::HYDRATE_RECORD)
+  {
+    return $this->joinAll()->execute($params, $hydrationMode);
   }
 
   /*
    * Will join all relations
    * @return myDoctrineQuery
    */
-  public function joinAll(myDoctrineQuery $q)
+  public function joinAll(dmDoctrineQuery $query = null)
   {
-    $rootAlias = $q->getRootAlias();
-
+    if ($query instanceof dmDoctrineQuery)
+    {
+      $rootAlias = $query->getRootAlias();
+    }
+    else
+    {
+      $query = $this->createQuery($rootAlias = 'q');
+    }
+    
     foreach($this->getRelationHolder()->getAll() as $relation)
     {
       if ($relation->getAlias() === 'Translation')
       {
-        $q->withI18n();
+        $query->withI18n();
       }
       elseif ($relation->getClass() === 'DmMedia')
       {
-        $q->withDmMedia($relation->getAlias());
+        $query->withDmMedia($relation->getAlias());
       }
       else
       {
@@ -144,10 +156,11 @@ abstract class dmDoctrineTable extends Doctrine_Table
             continue;
           }
         }
-        $q->leftJoin(sprintf('%s.%s %s', $rootAlias, $relation->getAlias(), dmString::lcfirst($relation->getAlias())));
+        $query->leftJoin(sprintf('%s.%s %s', $rootAlias, $relation->getAlias(), dmString::lcfirst($relation->getAlias())));
       }
     }
-    return $q;
+    
+    return $query;
   }
   
   /*
@@ -155,7 +168,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
    */
   public function joinRelations(array $aliases)
   {
-    $rootAlias = $q->getRootAlias();
+    $rootAlias = $query->getRootAlias();
 
     foreach($aliases as $alias)
     {
@@ -166,31 +179,31 @@ abstract class dmDoctrineTable extends Doctrine_Table
       
       if ($relation->getAlias() === 'Translation')
       {
-        $q->withI18n();
+        $query->withI18n();
       }
       elseif ($relation->getClass() === 'DmMedia')
       {
         $mediaJoinAlias = dmString::lcfirst($relation->getAlias());
-        $q->leftJoin(sprintf('%s.%s %s', $rootAlias, $relation->getAlias(), $mediaJoinAlias))
+        $query->leftJoin(sprintf('%s.%s %s', $rootAlias, $relation->getAlias(), $mediaJoinAlias))
         ->leftJoin(sprintf('%s.%s %s', $mediaJoinAlias, 'Folder', $mediaJoinAlias.'Folder'));
       }
       else
       {
         $joinAlias = dmString::lcfirst($relation->getAlias());
-        $q->leftJoin(sprintf('%s.%s %s', $rootAlias, $relation->getAlias(), $joinAlias));
+        $query->leftJoin(sprintf('%s.%s %s', $rootAlias, $relation->getAlias(), $joinAlias));
       }
     }
 
-    return $q;
+    return $query;
   }
 
   /*
    * @return dmDoctrine query
    * the default admin list query
    */
-  public function getAdminListQuery(dmDoctrineQuery $q)
+  public function getAdminListQuery(dmDoctrineQuery $query)
   {
-    return $this->joinAll($q);
+    return $this->joinAll($query);
   }
 
   /*

@@ -255,7 +255,7 @@ $.getScript(href, callback);
 
 * [DONE] fix configuration panel do not save modifications
 
-* fix admin toolbar template cache do not care about user credentials
+* [DONE] fix admin & front template cache do not care about user credentials
 
 * [DONE] user log must store url params in uri
 
@@ -283,7 +283,7 @@ $.getScript(href, callback);
 
 * [DONE] filter action log
 
-* take a decision about dmFormDoctrine->unsetAutoFields
+* [DONE] take a decision about dmFormDoctrine->unsetAutoFields
 
 * check sfValidatorDmDate
 
@@ -291,4 +291,6 @@ $.getScript(href, callback);
 
 * find a way to simplify admin routing
 
-* make admin work like gmail
+* [DONE] make admin work like gmail
+
+* [DONE] add front doctrine pager to front service container

@@ -7,7 +7,7 @@
 
   public function getPagerClass()
   {
-    return '<?php echo isset($this->config['list']['pager_class']) ? $this->config['list']['pager_class'] : 'sfDoctrinePager' ?>';
+    return '<?php echo isset($this->config['list']['pager_class']) ? $this->config['list']['pager_class'] : 'dmDoctrinePager' ?>';
 <?php unset($this->config['list']['pager_class']) ?>
   }
 

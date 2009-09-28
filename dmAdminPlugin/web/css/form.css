@@ -1,12 +1,4 @@
-#form_header h1 a{
-  font-size: 12px;
-  font-weight: normal;
-  letter-spacing: 0;
-  margin-left: 5px;
-}
-
 .sf_admin_form form {
-  position: relative;
 }
 
 /* embedded form */
@@ -130,41 +122,41 @@ div.control span.unselect_all {
   list-style: disc inside;
 }
 
-.dm_form_actions {
-  position: absolute;
-  right: 0;
-  height: 24px;
-}
-.dm_form_actions .sf_admin_actions {
-  float: left;
-}
-.dm_form_actions_top {
-  top: -28px;
-}
-.dm_form_actions_bottom {
-  bottom: -30px;
+div.dm_form_action_bar {
+  padding: 5px;
+  background:#E6E6E6 url(../../core/images/default_bg.png) repeat-x scroll 50% 50%;
+  border:1px solid #D3D3D3;
+  -moz-border-radius: 4px;
 }
 
-.dm_form_actions li {
+div.dm_form_action_bar_top {
+  margin-bottom: 5px;
+}
+div.dm_form_action_bar_bottom {
+  margin-top: 5px;
+}
+div.dm_form_action_bar ul.sf_admin_actions {
+  float: left;
+}
+
+div.dm_form_action_bar li {
   float: left;
   display: block;
   margin-left: 5px;
 }
 
-.dm_form_actions a {
-  line-height: 25px;
+div.dm_form_action_bar a {
+  height: 16px;
+  display: block;
+  margin-top: 3px;
 }
 
-.dm_form_actions .dm_form_pagination {
+div.dm_form_action_bar div.dm_form_pagination a {
   float: left;
 }
 
-.dm_form_pagination a,
-.dm_form_pagination select {
-  float: left;
-}
-.dm_form_pagination a {
-  margin-top: 5px;
+div.dm_form_pagination {
+  float: right;
 }
 
 .sf_admin_form ul.checkbox_list {
