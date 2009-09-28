@@ -58,4 +58,10 @@ class Base<?php echo ucfirst($this->getModuleName()) ?>GeneratorConfiguration ex
     return '<?php echo isset($this->config['list']['table_count_method']) ? $this->config['list']['table_count_method'] : null ?>';
 <?php unset($this->config['list']['table_count_method']) ?>
   }
+
+  public function getLoremize()
+  {
+    return <?php echo dmArray::get($this->config['list'], 'loremize', true) ? 'true' : 'false' ?>;
+<?php unset($this->config['list']['loremize']) ?>
+  }
 }

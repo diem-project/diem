@@ -1,14 +1,12 @@
 generator:
-  class: sfDoctrineGenerator
+  class: dmAdminDoctrineGenerator
   param:
     model_class:           sfGuardPermission
-    theme:                 admin
+    theme:                 dmAdmin
     non_verbose_templates: true
     with_show:             false
-    singular:              ~
-    plural:                ~
     route_prefix:          sf_guard_permission
-    with_doctrine_route:     1
+    with_doctrine_route:   true
 
     config:
       list:

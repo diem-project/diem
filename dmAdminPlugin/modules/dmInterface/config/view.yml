@@ -1,4 +1,0 @@
-all:
-  stylesheets: [ -* ]
-  javascripts: [ -* ]
-  has_layout:  false

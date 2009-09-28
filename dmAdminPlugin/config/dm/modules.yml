@@ -36,7 +36,7 @@ Seo:
     dmGoogleAnalytics:
       name:         Google analytics
       credentials:  google_analytics
-    dmWebmasterTools:
+    dmGoogleWebmasterTools:
       name:         Google webmaster tools
       credentials:  google_webmaster_tools
   Sitemap:

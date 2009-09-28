@@ -73,8 +73,8 @@
       <?php echo $this->getLinkToAction('Export CSV', array('action' => 'export', 'params' => array('class' => 'dm_sort s16 s16_export')), false); ?>
       </div>
       [?php endif; ?]
-      
-      [?php if($sf_user->can('loremize')): ?]
+    
+      [?php if($configuration->getLoremize() && $sf_user->can('loremize')): ?]
       <div class="dm_loremize">
       <p class="dm_sort s16 s16_edit fleft">Loremize :</p>
       [?php

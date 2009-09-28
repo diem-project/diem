@@ -291,7 +291,7 @@ class dmUpdateSeoService extends dmService
           $processMarkdown = false;
         }
         
-        $usedValue = trim();
+        $usedValue = trim($usedValue);
         
         if($processMarkdown)
         {

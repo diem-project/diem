@@ -28,12 +28,12 @@ class dmAdminFunctionalCoverageTest extends dmCoreFunctionalCoverageTest
     
     foreach(dmContext::getInstance()->getModuleManager()->getModules() as $module)
     {
-      if (!$routing->hasRouteName($module->getKey()))
+      if (!$routing->hasRouteName($module->getUnderscore()))
       {
         continue;
       }
       
-      $moduleUrl = $routing->generate($module->getKey());
+      $moduleUrl = $routing->generate($module->getUnderscore());
       
       $urls[] = $moduleUrl;
       
