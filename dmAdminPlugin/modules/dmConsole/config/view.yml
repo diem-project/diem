@@ -1,0 +1,8 @@
+indexSuccess:
+
+  stylesheets:
+    - admin.console
+    
+  javascripts:
+    - lib.form
+    - admin.console

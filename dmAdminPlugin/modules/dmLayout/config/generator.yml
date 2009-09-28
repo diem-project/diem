@@ -1,0 +1,37 @@
+generator:
+  class: dmAdminDoctrineGenerator
+  param:
+    model_class: DmLayout
+    theme: dmAdmin
+    non_verbose_templates: true
+    with_show: false
+    route_prefix: dm_layout
+    with_doctrine_route: true
+    config:
+      actions: ~
+      fields: {  }
+      list:
+        display:
+          - =name
+          - page_views_list
+          - areas_list
+          - css_class
+        sort:
+          - name
+          - asc
+        max_per_page: 8
+        table_method: joinAll
+        table_count_method: ~
+      filter:
+        display:
+          - name
+          - css_class
+      form:
+        display:
+          NONE: [name]
+          Others: [css_class]
+        class: DmLayoutAdminForm
+        fields: {  }
+      edit: ~
+      new: ~
+    sortable: false
