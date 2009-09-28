@@ -8,7 +8,7 @@ echo £o('div#dm_tool_bar.dm.clearfix');
   
   echo £link('app:admin')->textTitle(__('Administration'))->set('.widget16.s16block.s16_home');
 
-  echo £link('+/dmService/launch?name=dmRefresh')->textTitle(__('Clear Cache'))->set('.widget16.s16block.s16_clear');
+  echo £link('+/dmService/launch?name=dmRefresh')->textTitle(__('Clear cache'))->set('.widget16.s16block.s16_clear');
   
   if($sf_user->can('code_editor'))
   {

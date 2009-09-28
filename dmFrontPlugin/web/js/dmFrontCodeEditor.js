@@ -6,13 +6,13 @@
     _init: function()
     {
       var self = this;
-			
-			self.element.css('overflow', 'hidden');
-			
-			$('#dm_code_editor_file_open', self.element).css({
-				height: (self.element.height() - 20)+'px',
-				overflowY: 'auto'
-			});
+      
+      self.element.css('overflow', 'hidden');
+      
+      $('#dm_code_editor_file_open', self.element).css({
+        height: (self.element.height() - 20) + 'px',
+        overflowY: 'auto'
+      });
       
       self.$tabs = self.element.find('div.dm_code_editor').tabs({
         cache: true,
@@ -42,17 +42,22 @@
         self.$tabs.tabs('add', url, html);
         return false;
       });
+      
+      if ($.isFunction(self.options.callback || null)) 
+      {
+        self.options.callback($dialog);
+      }
     },
     
     tab: function(ui)
     {
       var self = this, $panel = $('#' + ui.panel.id), $tab = $(ui.tab).parent();
-			
-			$tab.prepend('<img class="close" width="9px" height="8px" src="' + $.dm.ctrl.options.dm_core_asset_root + 'images/cross-small.png' + '" />');
-			
+      
+      $tab.prepend('<img class="close" width="9px" height="8px" src="' + $.dm.ctrl.options.dm_core_asset_root + 'images/cross-small.png' + '" />');
+      
       $('img.close', $tab).click(function()
       {
-        self.$tabs.tabs('remove', $('ul.ui-tabs-nav > li', self.$tabs).index($tab)); 
+        self.$tabs.tabs('remove', $('ul.ui-tabs-nav > li', self.$tabs).index($tab));
         return false;
       });
       
@@ -104,10 +109,18 @@
           {
             self.updateCss(data.path);
           }
-          else if (data.type == 'php') 
-          {
-            self.updateWidgets(data.widgets);
-          }
+          else 
+            if (data.type == 'php') 
+            {
+              self.updateWidgets(data.widgets);
+            }
+        },
+        error: function(xhr)
+        {
+          $panel.unblock();
+					var html = xhr.responseText;
+          var line = html.replace(/\n/g, "").replace(/(.+)on line <i>(\d+)<\/i>(.+)/, '$2');
+          alert('This code contains an error line ' + line + '. You should fix it.');
         }
       });
     },

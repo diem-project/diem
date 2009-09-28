@@ -7,7 +7,7 @@
 }
 .s16,
 .dm .s16 {
-  padding-left: 18px;
+  padding-left: 18px !important;
 }
 .s16block,
 .dm .s16block {

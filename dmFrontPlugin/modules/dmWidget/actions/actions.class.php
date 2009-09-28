@@ -63,7 +63,38 @@ class dmWidgetActions extends dmFrontBaseActions
 
   protected function renderEdit(dmWidgetBaseForm $form, dmWidgetType $widgetType)
   {
-    return '<div class="dm dm_widget_edit {form_class: \''.$widgetType->getFullKey().'\'}">'.$form->render('.dm_form.list.little').'</div>';
+    $codeEditorLinks= '';
+    if ($this->getUser()->can('code_editor') && $form instanceof dmWidgetProjectForm)
+    {
+      if ($this->getUser()->can('code_editor_view'))
+      {
+        $templateDir = dmOs::join(sfConfig::get('sf_app_module_dir'), $form->getDmModule()->getKey(), 'templates', '_'.$form->getDmAction()->getKey().'.php');
+        if (file_exists($templateDir))
+        {
+          $codeEditorLinks .= '<a href="#'.dmProject::unRootify($templateDir).'" class="code_editor s16 s16_code_editor block">'.$this->context->getI18n()->__('Edit template code').'</a>';
+        }
+      }
+      
+      if ($this->getUser()->can('code_editor_controller'))
+      {
+        $componentDir = dmOs::join(sfConfig::get('sf_app_module_dir'), $form->getDmModule()->getKey(), 'actions/components.class.php');
+        if (file_exists($componentDir))
+        {
+          $codeEditorLinks .= '<a href="#'.dmProject::unRootify($componentDir).'" class="code_editor s16 s16_code_editor block">'.$this->context->getI18n()->__('Edit component code').'</a>';
+        }
+      }
+    }
+
+    if ($codeEditorLinks)
+    {
+      $codeEditorLinks = '<div class="code_editor_links">'.$codeEditorLinks.'</div>';
+    }
+
+    return
+    '<div class="dm dm_widget_edit {form_class: \''.$widgetType->getFullKey().'\'}">'.
+    $form->render('.dm_form.list.little').
+    $codeEditorLinks.
+    '</div>';
   }
 
   public function executeGetInner(sfWebRequest $request)

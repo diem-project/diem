@@ -5,10 +5,10 @@ $.widget('ui.dmWidget', {
   _init : function()
   {
     this.initialize();
-    
+
     this.element.data('loaded', true);
   },
-  
+
   openEditDialog: function()
   {
     var widget = this, activeTab = null, dialog_class = widget.element.attr('id')+'_edit_dialog';
@@ -17,7 +17,7 @@ $.widget('ui.dmWidget', {
 		{
 			return;
 		}
-    
+		
     var $dialog = $.dm.ctrl.ajaxJsonDialog({
       url:          $.dm.ctrl.getHref('+/dmWidget/edit'),
       data:         { widget_id: widget.getId() },
@@ -61,6 +61,19 @@ $.widget('ui.dmWidget', {
         {
           $form.find('div.dm_tabbed_form').tabs('select', activeTab);
         }
+				/*
+				 * Enable code editor link
+				 */
+		    if ($codeEditorLink = $form.find('a.code_editor').orNot())
+		    {
+					$codeEditorLink.click(function() {
+			      $('#dm_tool_bar').dmFrontToolBar('openCodeEditor', function($codeEditor)
+						{
+							$codeEditor.find('#dm_code_editor_file_open a[href='+$codeEditorLink.attr('href')+']').trigger('click');
+						});
+				  });
+		    }
+				
 	      $form.find('form').dmAjaxForm({
 					dataType: 'json',
 	        beforeSubmit: function(data) {

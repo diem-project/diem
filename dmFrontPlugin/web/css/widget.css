@@ -46,3 +46,14 @@
   padding-left: 40px;
   min-height: 32px;
 }
+
+div.dm_widget_edit div.code_editor_links {
+  margin-top: 5px;
+  border-top: 1px solid #888;
+  padding-top: 5px;
+}
+
+div.dm_widget_edit div.code_editor_links > a {
+  float: left;
+  margin-right: 10px;
+}

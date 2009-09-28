@@ -20,6 +20,26 @@ class dmMediaTagImage extends dmMediaTag
 
     $this->addAttributeToRemove(array('method', 'quality', 'background', 'filter'));
   }
+  
+  public function htmlWidth($v)
+  {
+    return $this->set('html_width', max(0, (int)$v));
+  }
+
+  public function htmlHeight($v)
+  {
+    return $this->set('html_height', max(0, (int)$v));
+  }
+
+  public function htmlSize($width, $height = null)
+  {
+    if (is_array($width))
+    {
+      list($width, $height) = $width;
+    }
+
+    return $this->htmlWidth($width)->htmlHeight($height);
+  }
 
   public function method($method)
   {
@@ -84,6 +104,17 @@ class dmMediaTagImage extends dmMediaTag
     if ($this->resource->isType(dmMediaResource::MEDIA))
     {
       $attributes = $this->prepareMediaAttributes($attributes);
+    }
+  
+    if (isset($attributes['html_width']))
+    {
+      $attributes['width'] = $attributes['html_width'];
+      unset($attributes['html_width']);
+    }
+    if (isset($attributes['html_height']))
+    {
+      $attributes['height'] = $attributes['html_height'];
+      unset($attributes['html_height']);
     }
 
     return $attributes;
