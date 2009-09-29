@@ -75,6 +75,10 @@ default:
     only_html_response:   true          # will skip web debug panel display on non html response
     config_fast_dump:     true          # use print_r instead of sfYaml::dump to show config in web debug panel. ( ~40x faster )
     
+  toolBar:
+    flavour:              blue          # the toolbar flavour. Diem default values: grey, blue, green, brown, black
+                                        # You can also set a custom flavour and style #dm_tool_bar.flavour_name in your css path
+    
 ###### dm internal config ######
 
   version:                5.0.0_pre1

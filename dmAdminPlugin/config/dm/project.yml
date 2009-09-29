@@ -8,7 +8,7 @@ default:
     doctype:
       name:               'html'                    # Doctype ( 'html', 'xhtml' )
       version:            '5'                       # Doctype xhtml version ( '1.0', '1.1' ) or html version ( '4', '5' )
-    
+
   pageBar:
     enabled:              true
     

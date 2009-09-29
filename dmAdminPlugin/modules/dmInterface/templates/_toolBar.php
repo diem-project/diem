@@ -1,6 +1,6 @@
 <?php
 
-echo £o('div#dm_tool_bar.clearfix');
+echo £o('div#dm_tool_bar.clearfix.'.sfConfig::get('dm_toolBar_flavour', 'blue'));
 
   echo £link('dmAuth/signout')->textTitle($sf_user->getUsername().' : '.__('Logout'))->set('.widget16.s16block.s16_signout');
 
@@ -20,7 +20,7 @@ echo £o('div#dm_tool_bar.clearfix');
 
   if (isset($cultureSelect))
   {
-    echo £('div.widget16.mt5', $cultureSelect->render('dm_select_culture', $sf_user->getCulture()));
+    echo £('div.widget16.mt3', $cultureSelect->render('dm_select_culture', $sf_user->getCulture()));
   }
   
   if (dmAPCCache::isEnabled() && $sf_user->can('systeme'))

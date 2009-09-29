@@ -1,6 +1,6 @@
 <?php
 
-echo £o('div#dm_tool_bar.dm.clearfix');
+echo £o('div#dm_tool_bar.dm.clearfix.'.sfConfig::get('dm_toolBar_flavour', 'blue'));
 
   echo £('a.show_tool_bar_toggle.s16block.s16_chevron_'.($sf_user->getShowToolBar() ? 'down' : 'up'), '+');
 
@@ -17,10 +17,10 @@ echo £o('div#dm_tool_bar.dm.clearfix');
 
   if (isset($cultureSelect))
   {
-    echo £('div.widget16.mt5', $cultureSelect->render('dm_select_culture', $sf_user->getCulture()));
+    echo £('div.widget16.mt3', $cultureSelect->render('dm_select_culture', $sf_user->getCulture()));
   }
   
-  echo £('div.widget16.mt5', $themeSelect->render('dm_select_theme', $sf_user->getTheme()->getKey()));
+  echo £('div.widget16.mt3', $themeSelect->render('dm_select_theme', $sf_user->getTheme()->getKey()));
 
   if (sfConfig::get('dm_html_validate', true) && $sf_user->can('html_validate_front'))
   {

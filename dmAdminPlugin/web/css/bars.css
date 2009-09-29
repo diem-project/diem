@@ -1,77 +1,61 @@
 #dm_tool_bar {
   top: 0;
-  border-bottom:1px solid #D3D3D3;
   -moz-box-shadow: 0 4px 4px #888;
-  
-  background: url(../../core/images/blue_bg.png) center left repeat-x;
-  border-bolor: #216d90;  
-}
-
-#dm_tool_bar a {
-  color: #fff;
-}
-
-#dm_tool_bar li:hover a,
-#dm_tool_bar li.ui-state-active a {
-  color: #222;
 }
 
 #dm_media_bar {
   position: fixed;
-  top: 30px;
+  top: 28px;
 }
 
 #dm_page_bar {
   position: fixed;
-  top: 30px;
+  top: 28px;
 }
 
-#dm_tool_bar .dm_menu {
+#dm_tool_bar div.dm_menu {
   margin: 0 3px;
 }
 #dm_tool_bar ul.level0 {
   position: relative;
-  padding:0.2em 0.2em 0;
+  padding: 2px 2px 0 2px;
 }
 #dm_tool_bar ul.level0 > li {
   float:left;
   margin: 0;
   padding: 1px 1px 0 1px;
   position:relative;
-  height: 26px;
+  height: 25px;
   cursor: default;
   background: none;
   border: none;
 }
-#dm_tool_bar .level0 > li > a {
+#dm_tool_bar ul.level0 > li.ui-state-active {
+  background: #fff;
+  border: 1px solid #aaa;
+  border-bottom: none;
+  padding: 0;
+}
+#dm_tool_bar ul.level0 > li > a {
   float:left;
-  padding: 4px 10px 1px 10px;
+  padding: 3px 10px 1px 10px;
   text-decoration:none;
   font-size: 13px;
   cursor: pointer;
   height: 22px;
   letter-spacing: 1px;
 }
-#dm_tool_bar .level0 > li:hover {
-  background: #fff;
-  border: 1px solid #267fa7;
-  border-bottom: none;
-  padding: 0;
-}
-#dm_tool_bar .level0 > li.ui-state-active {
-  background: #fff;
-  border: 1px solid #267fa7;
-  border-bottom: none;
-  padding: 0;
+#dm_tool_bar ul.level0 > li.ui-state-active > a {
+  color: #222;
 }
 
 #dm_tool_bar ul.level1 {
   font-size: 12px;
   position: absolute;
-  top: 26px;
+  top: 25px;
   width: 200px;
   border-top: 0;
-  padding: 0 10px 10px 10px;
+  padding: 0 10px 5px 10px;
   -moz-border-radius: 0 0 4px 4px;
   -webkit-border-radius:  0 0 4px 4px;
 
@@ -83,14 +67,14 @@
   -moz-box-shadow: 4px 4px 4px #888;
 }
 
-#dm_tool_bar ul.level0 > li.ui-state-active .level1 {
+#dm_tool_bar ul.level0 > li.ui-state-active ul.level1 {
   left: -1px;
 }
 
 #dm_tool_bar ul.level1 > li {
   display: block;
   float: none;
-  padding-top: 10px;
+  padding: 5px 0;
 }
 
 #dm_tool_bar ul.level1 > li > a {
@@ -129,7 +113,7 @@
   overflow-y: auto;
 }
 
-#dm_tool_bar .dm_load_monitor {
+#dm_tool_bar a.dm_load_monitor {
 	margin-top: 3px;
   display: block;
   height: 21px;
@@ -142,7 +126,7 @@
   background-position: -21px 0;
 }
 
-#dm_tool_bar .dm_load_monitor span {
+#dm_tool_bar a.dm_load_monitor > span {
   display: block;
   position: absolute;
   bottom: 0;
