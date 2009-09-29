@@ -2,6 +2,18 @@
   top: 0;
   border-bottom:1px solid #D3D3D3;
   -moz-box-shadow: 0 4px 4px #888;
+  
+  background: url(../../core/images/blue_bg.png) center left repeat-x;
+  border-bolor: #216d90;  
+}
+
+#dm_tool_bar a {
+  color: #fff;
+}
+
+#dm_tool_bar li:hover a,
+#dm_tool_bar li.ui-state-active a {
+  color: #222;
 }
 
 #dm_media_bar {
@@ -38,16 +50,17 @@
   font-size: 13px;
   cursor: pointer;
   height: 22px;
+  letter-spacing: 1px;
 }
 #dm_tool_bar .level0 > li:hover {
-  background: url(../../core/images/default_bg_blue.png) center left repeat-x;
-  border: 1px solid #D3D3D3;
+  background: #fff;
+  border: 1px solid #267fa7;
   border-bottom: none;
   padding: 0;
 }
 #dm_tool_bar .level0 > li.ui-state-active {
   background: #fff;
-  border: 1px solid #aaa;
+  border: 1px solid #267fa7;
   border-bottom: none;
   padding: 0;
 }
@@ -59,8 +72,8 @@
   width: 200px;
   border-top: 0;
   padding: 0 10px 10px 10px;
-  -moz-border-radius: 0 4px 4px 4px;
-  -webkit-border-radius:  0 4px 4px 4px;
+  -moz-border-radius: 0 0 4px 4px;
+  -webkit-border-radius:  0 0 4px 4px;
 
   left: -4000px;
   

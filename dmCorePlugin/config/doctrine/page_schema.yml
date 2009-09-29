@@ -5,16 +5,16 @@ DmPage:
       fields:               [slug, name, title, h1, description, keywords, auto_mod, is_active, is_indexable]
   columns:
     id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
-    module:                 { type: string(127), notnull: true, nospace: true }
-    action:                 { type: string(127), notnull: true, nospace: true }
+    module:                 { type: string(127), notnull: true }
+    action:                 { type: string(127), notnull: true }
     record_id:              { type: integer(4), unsigned: true, notnull: true, default: 0 }
-    slug:                   { type: string(255), notnull: true, nospace: true }
+    slug:                   { type: string(255), notnull: true }
     name:                   { type: string(255), notnull: true }
     title:                  { type: string(255), notnull: false }
     h1:                     { type: string(255), notnull: false }
     description:            { type: string(255), notnull: false }
     keywords:               { type: string(255), notnull: false }
-    auto_mod:               { type: string(6), notnull: true, default: 'snthdk', nospace: true } # slug, name, title, h1, description, keywords
+    auto_mod:               { type: string(6), notnull: true, default: 'snthdk' } # slug, name, title, h1, description, keywords
     is_active:              { type: boolean, notnull: true, default: true }
     is_secure:              { type: boolean, notnull: true, default: false } # requires authentification
     is_indexable:           { type: boolean, notnull: true, default: true }
@@ -26,8 +26,8 @@ DmPage:
 DmPageView:
   columns:
     id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
-    module:                 { type: string(127), notnull: true, nospace: true }
-    action:                 { type: string(127), notnull: true, nospace: true }
+    module:                 { type: string(127), notnull: true }
+    action:                 { type: string(127), notnull: true }
     dm_layout_id:           { type: integer(4), notnull: true, unsigned: true }
   indexes:
     moduleAction:
@@ -76,7 +76,7 @@ DmZone:
     id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
     dm_area_id:             { type: integer(4), notnull: true, unsigned: true }
     css_class:              { type: string(255) }
-    width:                  { type: string(15), nospace: true }
+    width:                  { type: string(15) }
   relations:
     Area:
       class:                DmArea
@@ -88,8 +88,8 @@ DmWidget:
   columns:
     id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
     dm_zone_id:             { type: integer(4), notnull: true, unsigned: true }
-    module:                 { type: string(127), notnull: true, nospace: true }
-    action:                 { type: string(127), notnull: true, nospace: true }
+    module:                 { type: string(127), notnull: true }
+    action:                 { type: string(127), notnull: true }
     value:                  { type: string(65532) }
     css_class:              { type: string(255) }
   relations:

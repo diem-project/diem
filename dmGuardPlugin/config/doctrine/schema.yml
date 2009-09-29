@@ -73,7 +73,7 @@ sfGuardUser:
       type: string(128)
       notnull: true
       unique: true
-    email:                  { type: string(255), notnull: true, unique: true, email: { check_mx: false }}
+    email:                  { type: string(255), notnull: true, unique: true }
     algorithm:
       type: string(128)
       default: sha1

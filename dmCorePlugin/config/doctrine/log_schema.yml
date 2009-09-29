@@ -5,13 +5,13 @@ DmError:
         disabled: true
   columns:
     id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
-    klass:                  { type: string(127), notnull: true, nospace: true }
+    klass:                  { type: string(127), notnull: true }
     name:                   { type: string(255), notnull: true }
     description:            { type: string(65532) }
-    module:                 { type: string(127), notnull: false, nospace: true }
-    action:                 { type: string(127), notnull: false, nospace: true }
-    uri:                    { type: string(255), notnull: true, nospace: true }
-    env:                    { type: string(63), notnull: true, nospace: true }
+    module:                 { type: string(127), notnull: false }
+    action:                 { type: string(127), notnull: false }
+    uri:                    { type: string(255), notnull: true }
+    env:                    { type: string(63), notnull: true }
     
 DmSentMail:
   actAs:

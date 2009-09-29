@@ -2,9 +2,9 @@ DmAutoSeo:
   actAs:                    [Timestampable]
   columns:
     id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
-    module:                 { type: string(127), notnull: true, nospace: true }
-    action:                 { type: string(127), notnull: true, nospace: true }
-    slug:                   { type: string(255), notnull: true, nospace: true }
+    module:                 { type: string(127), notnull: true }
+    action:                 { type: string(127), notnull: true }
+    slug:                   { type: string(255), notnull: true }
     name:                   { type: string(255), notnull: true }
     title:                  { type: string(255), notnull: true }
     h1:                     { type: string(255), notnull: false }
@@ -20,7 +20,7 @@ DmRedirect:
   actAs:                    [Timestampable]
   columns:
     id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
-    source:                 { type: string(255), unique: true, notnull: true, nospace: true }
+    source:                 { type: string(255), unique: true, notnull: true }
     dest:                   { type: string(255), notnull: true }
       
 package:                    dmCorePlugin.lib.model.doctrine.seo

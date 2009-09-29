@@ -5,7 +5,7 @@ DmMediaFolder:
   actAs:                    [NestedSet]
   columns:
     id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
-    rel_path:               { type: string(255), notnull: true, unique: true, nospace: true }
+    rel_path:               { type: string(255), notnull: true, unique: true }
 
 DmMedia:
   options:
@@ -18,9 +18,9 @@ DmMedia:
     legend:                 { type: string(255) }
     author:                 { type: string(255) }
     license:                { type: string(255) }
-    mime:                   { type: string(63), notnull: true, nospace: true }
+    mime:                   { type: string(63), notnull: true }
     size:                   { type: integer(4), unsigned: true }
-    dimensions:             { type: string(15), nospace: true }
+    dimensions:             { type: string(15) }
   relations:
     Folder:
       class:                DmMediaFolder
