@@ -17,16 +17,16 @@ js:
   lib:
     symfony_debug:    symfony/debug
     jquery:           jquery/jquery-1.3.2.min
-    ui-admin:         jquery-ui/js/jquery-ui-1.7.2.admin.min
-    ui-front:         jquery-ui/js/jquery-ui-1.7.2.front.min
-    ui-draggable:     jquery-ui/js/ui.draggable.min
-    ui-datepicker:    jquery-ui/js/ui.datepicker.min
-    ui-droppable:     jquery-ui/js/ui.droppable.min
-    ui-sortable:      jquery-ui/js/ui.sortable.min
-    ui-resizable:     jquery-ui/js/ui.resizable.min
-    ui-tabs:          jquery-ui/js/ui.tabs.min
-    ui-dialog:        jquery-ui/js/ui.dialog.min
-    ui-i18n:          jquery-ui/js/i18n/ui.datepicker-%culture%
+    ui-core:          jquery-ui-18/js/minified/ui.core.min
+    ui-position:      jquery-ui-18/js/minified/ui.position.min
+    ui-draggable:     jquery-ui-18/js/minified/ui.draggable.min
+    ui-datepicker:    jquery-ui-18/js/minified/ui.datepicker.min
+    ui-droppable:     jquery-ui-18/js/minified/ui.droppable.min
+    ui-sortable:      jquery-ui-18/js/minified/ui.sortable.min
+    ui-resizable:     jquery-ui-18/js/minified/ui.resizable.min
+    ui-tabs:          jquery-ui-18/js/minified/ui.tabs.min
+    ui-dialog:        jquery-ui-18/js/minified/ui.dialog.min
+    ui-i18n:          jquery-ui-18/js/minified/i18n/ui.datepicker-%culture%.min
     metadata:         metadata/jquery.metadata.min
     jqtransform:      jqtransform/jquery.jqtransform.min
     form:             form/jquery.form

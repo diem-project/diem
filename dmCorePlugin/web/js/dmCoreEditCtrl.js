@@ -24,13 +24,13 @@
     {
       var opt = $.extend($.ui.dialog.defaults, {
         zIndex: 100,
-        dragStart: function(e, ui)
+        dragStart: function(e)
         {
-          ui.helper.find('div.ui-dialog-content').hide().end().css('opacity', 0.5);
+          $(e.target).hide().parent().css('opacity', 0.5);
         },
-        dragStop: function(e, ui)
+        dragStop: function(e)
         {
-          ui.helper.css('opacity', 1).find('div.ui-dialog-content').show();
+          $(e.target).show().parent().css('opacity', 1);
         },
         resizable: false
 		  }, options || {});

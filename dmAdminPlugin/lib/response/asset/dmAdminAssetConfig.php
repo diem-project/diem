@@ -34,7 +34,7 @@ class dmAdminAssetConfig extends dmAssetConfig
       sfConfig::get('sf_web_debug') ? 'lib.symfony_debug' : null,
       'lib.metadata',
       'lib.cookie',
-      'lib.ui-admin',
+      'lib.ui-core',
       'lib.blockUI',
       'lib.hotkeys',
       'core.config',
