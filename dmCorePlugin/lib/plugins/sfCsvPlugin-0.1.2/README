@@ -1,0 +1,160 @@
+# sfCsvPlugin plugin #
+
+The `sfCsvPlugin` plugin allows you to read CSV files and write them from a Propel table source or another source of your own.
+
+## Installation ##
+
+
+    ./symfony plugin-install http://plugins.symfony-project.com/sfCsvPlugin
+
+
+## Usage ##
+
+There are three classes you can use:
+
+ * `sfCsvReader`: For CSV file reading purposes.
+ * `sfCsvWriter`: Transforms an array of data into a CSV string.
+ * `sfCsvPropelWriter`: Can export a single table from your model.
+
+### sfCsvReader ###
+
+Constructor can take four parameters:
+
+ * `$path`: Path to CSV file.
+ * `$delimiter`, `$enclosure` and `$length`: Those of PHP's fgetcsv function. Default delimiter is ',' and default enclosure is '"'.
+
+`$length` is provided for performance purposes of `fgetcsv`, but you can avoid it.
+
+
+    $reader = new sfCsvReader('/path/to/my/csv/file.csv'[, $delimiter[, $enclosure[, $length]]]);
+
+
+Example:
+
+    $reader = new sfCsvReader('/path/to/my/csv/file.csv');
+    // or: $reader = new sfCsvReader('/path/to/my/csv/file.csv', ';', '"');
+    // ...
+
+    $reader->setSelectColumns('column_A, column_B');
+    // or: $reader->setSelectColumns(array('column_A', 'column_B'));
+
+    $reader->open();
+
+    while ($data = $reader->read())
+    {
+      // Do something with $data['column_A'] and $data['column_B'];
+    }
+
+    $reader->close();
+
+
+If your file has no header you can use numerical indexes:
+
+
+Example:
+
+    $reader = new sfCsvReader('/path/to/my/csv/file.csv');
+    $reader->open();
+
+    while ($data = $reader->read())
+    {
+      // Do something with $data[0], $data[1], etc...
+    }
+
+    $reader->close();
+
+
+In this case you can specify columns to select. If reader detects no matches in first line it maps your expected fields to numerical indexes.
+
+
+    File header: "id","name","email"
+    You expect:  "name","email"
+    Result:      OK
+
+    File header: "id","name","email"
+    You expect:  "id","name","email","address"
+    Result:      ERROR
+
+    File header: NONE
+    You expect:  "name","email"
+    Result:      OK, 0 MATCHES, FIRST LINE IS NOT HEADER SO READER MAPS YOUR SELECTION TO NUMERICAL INDEXES
+    Note:        CSV file must have at least N fields where N is your selected fields count
+
+
+### sfCsvWriter ###
+
+Constructor can take two optional parameters: `$delimiter` (,) and `$enclosure` (").
+
+
+    $writer = new sfCsvWriter([$delimiter[, $enclosure]]);
+
+Example:
+
+    $myExampleData = array(
+      array('carlos', 'escribano', 'carlos@markhaus.com'),
+      array('carlos', 'escribano', 'example@example.com')
+    );
+
+    $writer = new sfCsvWriter();
+    foreach ($myExampleData as $row)
+    {
+      echo $writer->write($row);
+    }
+
+    Results:
+    "carlos","escribano","carlos@markhaus.com"
+    "carlos","escribano","example@example.com"
+
+
+Default charset for writing is Symfony's charset, but you can do this:
+
+
+    $myExampleData = array(
+      array('carlos', 'escribano', 'carlos@markhaus.com'),
+      array('carlos', 'escribano', 'example@example.com')
+    );
+
+    $writer = new sfCsvWriter();
+    $writer->setCharset('UTF-8'); // Conversion to UTF-8
+    // or $writer->setCharset('UTF-8', 'ISO-8859-1'); from ISO-8859-1 to UTF-8
+
+    foreach ($myExampleData as $row)
+    {
+      echo $writer->write($row);
+    }
+
+
+### sfCsvPropelWriter ###
+
+
+    $writer = new sfCsvPropelWriter('MyClass', $myCriteria[, $delimiter[, $enclosure]]);
+
+
+Constructor can take four parameters:
+
+ * `$className`: Propel object class name ('Book', 'Contact', ...).
+ * `$criteria`: Criteria object.
+ * `$delimiter` and `$enclosure`.
+
+
+Example:
+
+
+    header('Content-Type: application/msexcel;charset=ISO-8859-1');
+    header('Content-Disposition: attachment;filename=contacts.csv');
+    
+    $c = new Criteria();
+    $c->add(ContactPeer::EMAIL, null, Criteria::IS_NOT_NULL);
+    $c->clearSelectColumns()
+      ->addSelectColumn(ContactPeer::ID)
+      ->addSelectColumn(ContactPeer::EMAIL);
+    
+    $pwriter = new sfCsvPropelWriter('Contact', $c, ";", '"');
+    $pwriter->getWriter()->setCharset('ISO-8859-1'); // gets sfCsvWriter and configure it
+    
+    echo $pwriter->getHeader();
+    while ($csv = $pwriter->write())
+    {
+      echo "\n".$csv;
+    }
+

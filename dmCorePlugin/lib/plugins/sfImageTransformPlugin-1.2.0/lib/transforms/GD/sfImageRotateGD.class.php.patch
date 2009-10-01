@@ -1,0 +1,233 @@
+21c21
+<  * @version SVN: $Id$
+---
+>  * @version SVN: $Id: sfImageRotateGD.class.php 8 2009-09-17 13:24:30Z georg $
+116,119d115
+< 
+<     // Easy
+<     if (function_exists("imagerotate"))
+<     {
+121,140d116
+<     }
+< 
+<     // Manual
+<     // manual rotating based base on pilot at myupb dot com @ php.net
+<     else
+<     {
+<       throw new sfImageTransformException(sprintf('Cannot perform transform: %s. Your install of GD does not support imagerotate',get_class($this)));
+< 
+<       // TODO: FIX ME!!
+< 
+<       $srcw = imagesx($resource);
+<       $srch = imagesy($resource);
+< 
+<       // Convert the angle to radians
+<       $pi = 3.141592654;
+<       $theta = $this->angle * $pi / 180;
+< 
+<       // Get the origin (center) of the image
+<       $originx = $srcw / 2;
+<       $originy = $srch / 2;
+142,149d117
+<       // The pixels array for the new image
+<       $pixels = array();
+<       $minx = 0;
+<       $maxx = 0;
+<       $miny = 0;
+<       $maxy = 0;
+<       $dstw = 0;
+<       $dsth = 0;
+151,153c119,120
+<       // Loop through every pixel and transform it
+<       for ($x=0;$x<$srcw;$x++)
+<       {
+---
+>     return $image;
+>   }
+155c122
+<         for ($y=0;$y<$srch;$y++)
+---
+>   protected function translateCoordinate($originx, $originy, $x, $y, $toComp=true)
+157,167c124
+< 
+<           list($x1, $y1) = $this->translateCoordinate($originx, $originy, $x, $y, false);
+< 
+<           $x2 = $x * cos($theta) - $y * sin($theta);
+<           $y2 = $x * sin($theta) + $y * cos($theta);
+< 
+<           // Store the pixel color
+<           $pixels[] = array($x2, $y2, imagecolorat($resource, $x, $y));
+< 
+<           // Check our boundaries
+<           if ($x2 > $maxx)
+---
+>     if ($toComp)
+169c126,127
+<             $maxx = $x2;
+---
+>       $newx = $originx + $x;
+>       $newy = $originy - $y;
+172c130
+<           if ($x2 < $minx)
+---
+>     else
+174c132,133
+<             $minx = $x2;
+---
+>       $newx = $x - $originx;
+>       $newy = $originy - $y;
+177,179c136
+<           if ($y2 > $maxy)
+<           {
+<             $maxy = $y2;
+---
+>     return array($newx, $newy);
+181,184d137
+< 
+<           if ($y2 < $miny)
+<           {
+<             $miny = $y2;
+185a139,147
+> 
+> /***
+>  * This code was copied from http://www.php.net/manual/en/function.imagerotate.php
+>  * from the comment of dev at imglib dot endofinternet dot net
+>  */
+> 
+> if(!function_exists("imagerotate")) {
+>     function imagerotate($srcImg, $angle, $bgcolor=0, $ignore_transparent = 0) {
+>         return imagerotateEquivalent($srcImg, $angle, $bgcolor, $ignore_transparent);
+189,191c151,155
+<       // Determine the new image size
+<       $dstw = $maxx - $minx + 1;
+<       $dsth = $maxy - $miny + 1;
+---
+> /*
+>     Imagerotate replacement. ignore_transparent is work for png images
+>     Also, have some standard functions for 90, 180 and 270 degrees.
+>     Rotation is clockwise
+> */
+193,194c157,163
+<       // Create our new image
+<       $dstImg = $image->getAdapter()->getTransparentImage($dstw, $dsth);
+---
+> function imagerotateEquivalent($srcImg, $angle, $bgcolor, $ignore_transparent = 0) {
+>     function rotateX($x, $y, $theta){
+>         return $x * cos($theta) - $y * sin($theta);
+>     }
+>     function rotateY($x, $y, $theta){
+>         return $x * sin($theta) + $y * cos($theta);
+>     }
+196,198c165,166
+<       // Get the new origin
+<       $neworiginx = -$minx;
+<       $neworiginy = -$miny;
+---
+>     $srcw = imagesx($srcImg);
+>     $srch = imagesy($srcImg);
+200,204c168,171
+<       // Fill in the pixels
+<       foreach($pixels as $data)
+<       {
+<         list($x, $y, $color) = $data;
+<         list($newx, $newy) = $this->translateCoordinate($neworiginx, $neworiginy, $x, $y);
+---
+>     //Normalize angle
+>     $angle %= 360;
+>     //Set rotate to clockwise
+>     $angle = -$angle;
+206c173,177
+<         imagesetpixel($dstImg, (int)$newx, (int)$newy, $color);
+---
+>     if($angle == 0) {
+>         if ($ignore_transparent == 0) {
+>             imagesavealpha($srcImg, true);
+>         }
+>         return $srcImg;
+209,210c180,181
+<       unset($resource);
+<       $image->getAdapter()->setHolder($dstImg);
+---
+>     // Convert the angle to radians
+>     $theta = deg2rad ($angle);
+211a183,196
+>     //Standart case of rotate
+>     if ( (abs($angle) == 90) || (abs($angle) == 270) ) {
+>         $width = $srch;
+>         $height = $srcw;
+>         if ( ($angle == 90) || ($angle == -270) ) {
+>             $minX = 0;
+>             $maxX = $width;
+>             $minY = -$height+1;
+>             $maxY = 1;
+>         } else if ( ($angle == -90) || ($angle == 270) ) {
+>             $minX = -$width+1;
+>             $maxX = 1;
+>             $minY = 0;
+>             $maxY = $height;
+212a198,214
+>     } else if (abs($angle) === 180) {
+>         $width = $srcw;
+>         $height = $srch;
+>         $minX = -$width+1;
+>         $maxX = 1;
+>         $minY = -$height+1;
+>         $maxY = 1;
+>     } else {
+>         // Calculate the width of the destination image.
+>         $temp = array (rotateX(0, 0, 0-$theta),
+>         rotateX($srcw, 0, 0-$theta),
+>         rotateX(0, $srch, 0-$theta),
+>         rotateX($srcw, $srch, 0-$theta)
+>         );
+>         $minX = floor(min($temp));
+>         $maxX = ceil(max($temp));
+>         $width = $maxX - $minX;
+214c216,224
+<     return $image;
+---
+>         // Calculate the height of the destination image.
+>         $temp = array (rotateY(0, 0, 0-$theta),
+>         rotateY($srcw, 0, 0-$theta),
+>         rotateY(0, $srch, 0-$theta),
+>         rotateY($srcw, $srch, 0-$theta)
+>         );
+>         $minY = floor(min($temp));
+>         $maxY = ceil(max($temp));
+>         $height = $maxY - $minY;
+217,222c227,230
+<   protected function translateCoordinate($originx, $originy, $x, $y, $toComp=true)
+<   {
+<     if ($toComp)
+<     {
+<       $newx = $originx + $x;
+<       $newy = $originy - $y;
+---
+>     $destimg = imagecreatetruecolor($width, $height);
+>     if ($ignore_transparent == 0) {
+>         imagefill($destimg, 0, 0, imagecolorallocatealpha($destimg, 255,255, 255, 127));
+>         imagesavealpha($destimg, true);
+225,228c233,242
+<     else
+<     {
+<       $newx = $x - $originx;
+<       $newy = $originy - $y;
+---
+>     // sets all pixels in the new image
+>     for($x=$minX; $x<$maxX; $x++) {
+>         for($y=$minY; $y<$maxY; $y++) {
+>             // fetch corresponding pixel from the source image
+>             $srcX = round(rotateX($x, $y, $theta));
+>             $srcY = round(rotateY($x, $y, $theta));
+>             if($srcX >= 0 && $srcX < $srcw && $srcY >= 0 && $srcY < $srch) {
+>                 $color = imagecolorat($srcImg, $srcX, $srcY );
+>             } else {
+>                 $color = $bgcolor;
+230,231c244
+< 
+<     return array($newx, $newy);
+---
+>             imagesetpixel($destimg, $x-$minX, $y-$minY, $color);
+233a247,248
+>     return $destimg;
+> }
