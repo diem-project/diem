@@ -28,27 +28,12 @@ class dmProjectConfiguration extends sfProjectConfiguration
 
   public function configureDoctrine(Doctrine_Manager $manager)
   {
-    Doctrine::debug(sfConfig::get("sf_debug"));
+//    Doctrine::debug(sfConfig::get("sf_debug"));
 
     /*
      * Set up doctrine extensions dir
      */
-    Doctrine::setExtensionsPath(sfConfig::get('dm_core_dir').'/lib/doctrine/extension');
-
-    /*
-     * I want Doctrine to autoload table classes
-     */
-    $manager->setAttribute(Doctrine::ATTR_AUTOLOAD_TABLE_CLASSES, true);
-
-    /*
-     * make $record->setSomething($value) override $record->_set('something', $value);
-     */
-    $manager->setAttribute(Doctrine::ATTR_AUTO_ACCESSOR_OVERRIDE, true);
-
-    /*
-     * Enable doctrine validators
-     */
-    $manager->setAttribute(Doctrine::ATTR_VALIDATE, Doctrine::VALIDATE_ALL);
+//    Doctrine::setExtensionsPath(sfConfig::get('dm_core_dir').'/lib/doctrine/extension');
 
     /*
      * Configure inheritance
@@ -66,7 +51,6 @@ class dmProjectConfiguration extends sfProjectConfiguration
      * Configure hydrators
      */
     $manager->registerHydrator('dmFlat', 'Doctrine_Hydrator_dmFlat');
-    $manager->registerHydrator('dmAssoc', 'Doctrine_Hydrator_dmAssoc');
     
     /*
      * Configure builder
@@ -77,6 +61,10 @@ class dmProjectConfiguration extends sfProjectConfiguration
       'baseTableClassName'    => 'myDoctrineTable',
       'suffix'                => '.class.php'
     ));
+    
+    $this->dispatcher->disconnect('debug.web.load_panels', array('sfWebDebugPanelDoctrine', 'listenToAddPanelEvent'));
+    
+    $this->dispatcher->connect('debug.web.load_panels', array('dmWebDebugPanelDoctrine', 'listenToAddPanelEvent'));
   }
 
 }

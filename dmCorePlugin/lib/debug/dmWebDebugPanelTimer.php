@@ -26,11 +26,11 @@ class dmWebDebugPanelTimer extends sfWebDebugPanelTimer
     {
       $sfTime = (microtime(true) - self::$startTime) * 1000;
       
-      $return = sprintf('%.0f+%.0f', $sfTime, $dmTime-$sfTime);
+      $return = round($sfTime).'+'.round($dmTime-$sfTime);
     }
     else
     {
-      $return = sprintf('%.0f', $dmTime);
+      $return = round($dmTime);
     }
 
     return $return;

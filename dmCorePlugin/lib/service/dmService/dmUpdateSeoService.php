@@ -156,13 +156,15 @@ class dmUpdateSeoService extends dmService
       ->fetchValue();
       $parentSlug = isset($parentSlugs[$parentId]) ? $parentSlugs[$parentId] : '';
 
-       $modifiedFields = $this->updatePage($page, $record, $patterns, $parentSlug, $culture);
-
-       if (!empty($modifiedFields))
-       {
-         $modifiedPages[$page['id']] = $modifiedFields;
-       }
+      $modifiedFields = $this->updatePage($page, $record, $patterns, $parentSlug, $culture);
+      
+      if (!empty($modifiedFields))
+      {
+        $modifiedPages[$page['id']] = $modifiedFields;
+      }
     }
+    
+    $records->free();
 
     /*
      * Save modifications
@@ -201,7 +203,10 @@ class dmUpdateSeoService extends dmService
         $conn->rollback();
         throw $e;
       }
+    
     }
+    
+    unset($pages);
 
     foreach($module->getChildren() as $child)
     {
@@ -226,10 +231,10 @@ class dmUpdateSeoService extends dmService
      */
 
     $module = $record->getDmModule();
-    $moduleModel = get_class($record);
+    $moduleModel = $module->getModel();
     $moduleKey = $module->getKey();
 
-    preg_match_all('/%([^%]+)%/i', implode('', $patterns), $results);
+    preg_match_all('/%([\w\d-]+)%/i', implode('', $patterns), $results);
 
     $placeholders = array_unique($results[1]);
 
@@ -284,6 +289,8 @@ class dmUpdateSeoService extends dmService
             $usedRecord->getTable()->hasColumn($field) &&
             false !== strpos(dmArray::get($usedRecord->getTable()->getColumnDefinition($field), 'extra'), 'markdown');
           }
+          
+          unset($usedRecord);
         }
         else
         {

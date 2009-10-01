@@ -74,7 +74,7 @@ class dmOs
 
   public static function getFileWithoutExtension($file)
   {
-    dmArray::get(pathinfo($file), 'filename');
+    return dmArray::get(pathinfo($file), 'filename');
   }
 
   public static function getFileMime($file)

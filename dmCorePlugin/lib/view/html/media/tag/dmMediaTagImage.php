@@ -8,14 +8,15 @@ class dmMediaTagImage extends dmMediaTag
    */
   protected static
   $availableMethods = array('fit', 'scale', 'inflate', 'left', 'right', 'top', 'bottom', 'center'),
-  $availableFilters = array('greyscale');
+  $availableFilters = array('greyscale'),
+  $verifiedThumbDirs = array();
 
   public function initialize()
   {
     parent::initialize();
 
     $this->method(dmConfig::get('image_resize_method', 'center'));
-    $this->set('quality', dmConfig::get('image_quality', 92));
+    $this->quality(dmConfig::get('image_quality', 92));
     $this->set('background', null);
 
     $this->addAttributeToRemove(array('method', 'quality', 'background', 'filter'));
@@ -56,7 +57,7 @@ class dmMediaTagImage extends dmMediaTag
 
   public function quality($v)
   {
-    return $this->set('quality', (float) $v);
+    return $this->set('quality', (int) $v);
   }
 
   public function background($v)
@@ -180,24 +181,31 @@ class dmMediaTagImage extends dmMediaTag
       throw new dmException(sprintf('%s is not a valid resize method. These are : %s', $attributes['method'], implode(', ', self::getAvailableMethods())));
     }
 
-    if(!self::$context->getFilesystem()->mkdir($thumbDir = dmOs::join($media->get('Folder')->getFullPath(), '.thumbs')))
+    if (!$thumbDir = dmArray::get(self::$verifiedThumbDirs, $media->get('dm_media_folder_id')))
     {
-      throw new dmException('Thumbnails can not be created in '.$media->get('Folder')->getFullPath());
+      $thumbDir = dmOs::join($media->get('Folder')->getFullPath(), '.thumbs');
+      
+      if(!self::$context->getFilesystem()->mkdir($thumbDir))
+      {
+        throw new dmException('Thumbnails can not be created in '.$media->get('Folder')->getFullPath());
+      }
+      
+      self::$verifiedThumbDirs[$media->get('dm_media_folder_id')] = $thumbDir;
     }
 
     $filter = dmArray::get($attributes, 'filter');
 
-    $thumbBasename = sprintf('%sx%s-%s_%s_%s_%d_%s',
-    $attributes['width'],
-    $attributes['height'],
-    $attributes['method'] == 'fit' ? 'fit'.$attributes['background'] : $attributes['method'],
-    $filter,
-    $attributes['quality'],
-    $media->getLittleMTime(),
-    $media->file
-    );
+    $pathInfo = pathinfo($media->get('file'));
+    $thumbRelPath = $pathInfo['filename'].'_'.substr(md5(implode('-', array(
+      $attributes['width'],
+      $attributes['height'],
+      $attributes['method'] == 'fit' ? 'fit'.$attributes['background'] : $attributes['method'],
+      $filter,
+      $attributes['quality'],
+      $media->getTimeHash()
+    ))), -6).'.'.$pathInfo['extension'];
 
-    $thumbPath = dmOs::join($thumbDir, $thumbBasename);
+    $thumbPath = $thumbDir.'/'.$thumbRelPath;
 
     if (!file_exists($thumbPath))
     {
@@ -207,7 +215,7 @@ class dmMediaTagImage extends dmMediaTag
 
       $image->setQuality($attributes['quality']);
 
-      $image->thumbnail($attributes['width'], $attributes['height'], $attributes['method'], isset($attributes['background']) ? '#'.$attributes['background'] : null);
+      $image->thumbnail($attributes['width'], $attributes['height'], $attributes['method'], !empty($attributes['background']) ? '#'.$attributes['background'] : null);
 
       if ($filter)
       {

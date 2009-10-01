@@ -63,17 +63,39 @@ class PluginDmPageTable extends myDoctrineTable
     }
   }
 
-  public function prepareRecordPageCache($module)
+  public function prepareRecordPageCache($module, array $ids)
   {
     $timer = dmDebug::timerOrNull('DmPageTable::prepareRecordPageCache');
     
-    $module = dmString::modulize($module);
+    if(!empty($this->recordPageCache[$module]))
+    {
+      foreach($ids as $index => $id)
+      {
+        if (isset($this->recordPageCache[$module][$index]))
+        {
+          unset($ids[$index]);
+        }
+      }
+    }
+    else
+    {
+      $this->recordPageCache[$module] = array();
+    }
     
-    $this->recordPageCache[$module] = $this->createQuery('p INDEXBY p.record_id')
+    $pages = $this->createQuery('p INDEXBY p.record_id')
     ->withI18n()
     ->select('p.id, p.module, p.action, p.record_id, p.is_secure, p.lft, p.rgt, pTranslation.slug, pTranslation.name, pTranslation.is_active')
-    ->where('module = ? AND p.record_id != 0', $module)
-    ->fetchRecords();
+    ->where('p.module = ? AND p.action = ?', array($module, 'show'))
+    ->andWhereIn('p.record_id', $ids)
+    ->fetchRecords()
+    ->getData();
+    
+    foreach($pages as $recordId => $page)
+    {
+      $this->recordPageCache[$module][$recordId] = $page;
+    }
+    
+    unset($pages);
     
     $timer && $timer->addTime();
   }
@@ -176,10 +198,10 @@ class PluginDmPageTable extends myDoctrineTable
   {
     $module = $record->getDmModule()->getKey();
     
-    if (!isset($this->recordPageCache[$module]))
-    {
-      $this->prepareRecordPageCache($module);
-    }
+//    if (!isset($this->recordPageCache[$module]))
+//    {
+//      $this->prepareRecordPageCache($module);
+//    }
     
     if (isset($this->recordPageCache[$module][$record->get('id')]))
     {

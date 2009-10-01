@@ -15,17 +15,10 @@ abstract class PluginDmMedia extends BaseDmMedia
   protected
   $isRefreshed = false;
 
-  /*
-   * Returns last 4 numbers of filemtime
-   */
-  public function getLittleMTime()
+  public function getTimeHash()
   {
-    if ($this->hasCache('little_m_time'))
-    {
-      return $this->getCache('little_m_time');
-    }
-
-    return $this->setCache('little_m_time', $this->checkFileExists() ? substr(filemtime($this->getFullPath()), -4) : null);
+    
+    return $this->checkFileExists() ? substr(md5(filemtime($this->getFullPath())), -4) : null;
   }
 
   /*
@@ -121,7 +114,7 @@ abstract class PluginDmMedia extends BaseDmMedia
 
     $exists = file_exists($this->getFullPath());
 
-    if (!$exists && $orDelete)
+    if (false === $exists && $orDelete)
     {
       $this->delete();
     }
@@ -269,10 +262,9 @@ abstract class PluginDmMedia extends BaseDmMedia
     {
       return true;
     }
-
+    
     $thumbs = sfFinder::type('file')
-    // width x height - method _ quality _ littleMTime _ filename
-    ->name('/^[0-9]*x[0-9]*-[a-z]+_[0-9]*_[0-9]{4}_'.preg_quote($this->getFile(), '|').'$/')
+    ->name(dmOs::getFileWithoutExtension($this->get('file')).'*')
     ->maxdepth(0)
     ->in(dmOs::join($this->Folder->getFullPath(), '.thumbs'));
 

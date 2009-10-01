@@ -97,6 +97,10 @@ class dmFrontModuleComponents extends myFrontBaseComponents
 
         $query->whereAncestorId($filterModule->getModel(), $filterRecordId, $this->getDmModule()->getModel());
       }
+      else
+      {
+        throw new dmException(sprintf('Can not process filter %s on module %s', $filterKey, $this->getDmModule()));
+      }
     }
 
     return $query;
@@ -121,7 +125,46 @@ class dmFrontModuleComponents extends myFrontBaseComponents
 
     $pager->init();
     
+    try
+    {
+      $this->preloadPages($pager->getResults());
+    }
+    catch(Exception $e)
+    {
+      $this->getLogger()->err(sprintf('Can not prepare page cache for module %s : %s', $this->getDmModule()->getKey(), $e->getMessage()));
+      
+      if (sfConfig::get('dm_debug'))
+      {
+        throw $e;
+      }
+    }
+    
     return $pager;
+  }
+  
+  /*
+   * Preload all pages related to records
+   */
+  protected function preloadPages($records)
+  {
+    if ($records instanceof Doctrine_Collection)
+    {
+      $records = $records->getData();
+    }
+    
+    if (!empty($records))
+    {
+      if (($module = dmArray::first($records)->getDmModule()) && $module->hasPage())
+      {
+        $ids = array();
+        foreach($records as $record)
+        {
+          $ids[] = $record->get('id');
+        }
+        
+        dmDb::table('DmPage')->prepareRecordPageCache($module->getKey(), array_unique($ids));
+      }
+    }
   }
 
   /*
