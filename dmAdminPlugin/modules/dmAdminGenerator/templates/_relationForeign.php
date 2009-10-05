@@ -34,7 +34,10 @@ echo £o('div.dm_foreigns');
         £link(array(
           'sf_route' => $foreignModule->getUnderscore().'_edit',
           'sf_subject' => $foreignRecord
-        ))->text($foreignRecord)
+        ))
+        ->text($foreignRecord->__toString())
+        ->title(__('Open'))
+        ->set('.associated_record.s16right.s16_arrow_up_right_medium')
       );
     }
 

@@ -224,8 +224,6 @@ class dmFrontPageHelper
 
   public function renderWidgetInner(array $widget, dmWidgetType $widgetType = null)
   {
-//    ob_start();
-    
     try
     {
       if (null === $widgetType)
@@ -240,13 +238,10 @@ class dmFrontPageHelper
       ));
       
       $html = $this->serviceContainer->getService('widget_view')->render();
-      
-//      ob_clean();
     }
     catch(Exception $e)
     {
-//      ob_clean();
-      if (sfConfig::get('dm_debug'))
+      if (sfConfig::get('dm_debug') || sfConfig::get('dm_serach_populating'))
       {
         throw $e;
       }

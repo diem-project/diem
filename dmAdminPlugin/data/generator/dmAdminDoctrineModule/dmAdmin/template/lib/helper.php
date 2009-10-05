@@ -39,15 +39,16 @@ class Base<?php echo ucfirst($this->getModuleName()) ?>GeneratorHelper extends s
 
   public function linkToDelete($object, $params)
   {
+    $title = __($params['title'], array('%1%' => strtolower($this->getModule()->getName())));
     return '<li class="sf_admin_action_delete">'.link_to1(__($params['label']), array(
     'sf_route' => $this->getUrlForAction('delete'),
     'sf_subject' => $object
     ),
     array(
     'class' => 's16 s16_delete ml10 mr10 dm_delete_link',
-    'title' => __($params['title'], array('%1%' => strtolower($this->getModule()->getName()))),
+    'title' => $title,
     'method' => 'delete',
-    'confirm' => false
+    'confirm' => $title.' ?'
     )).'</li>';
   }
 

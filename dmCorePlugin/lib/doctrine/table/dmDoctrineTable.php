@@ -314,6 +314,11 @@ abstract class dmDoctrineTable extends Doctrine_Table
     return $this->getDefaultSortColumnName();
   }
 
+  public function isMarkdownColumn($columnName)
+  {
+    return strpos(dmArray::get($this->getColumnDefinition($columnName), 'extra', ''), 'markdown') !== false;
+  }
+  
   /*
    * Please override getSortColumnName instead
    */

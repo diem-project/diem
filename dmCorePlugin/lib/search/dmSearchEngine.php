@@ -15,12 +15,18 @@ class dmSearchEngine extends dmSearchIndexGroup
     $this->name             = get_class($this);
   }
   
+  public function setLogger(sfLogger $logger)
+  {
+    $this->logger = $logger;
+  }
+  
   protected function configure()
   {
     foreach(sfConfig::get('dm_i18n_cultures') as $culture)
     {
       $index = $this->serviceContainer->getService('search_index');
       $index->setCulture($culture);
+      $index->setLogger($this->logger);
       $this->addIndex($index->getName(), $index);
     }
   }
@@ -70,7 +76,7 @@ class dmSearchEngine extends dmSearchIndexGroup
     $this->logger->log($this->getName().' : Populating group...');
     
     $oldCulture = $this->user->getCulture();
-
+    
     foreach ($this->getIndices() as $name => $index)
     {
       $this->logger->log($this->getName().' : Populating index "' . $name . '"...');
@@ -84,6 +90,8 @@ class dmSearchEngine extends dmSearchIndexGroup
 
     $this->logger->log($this->getName().' : Group populated in "' . round(microtime(true) - $start, 2) . '" seconds.');
   
+    $this->logger->log('-----> Search index population successfully completed');
+    
     return true;
   }
   

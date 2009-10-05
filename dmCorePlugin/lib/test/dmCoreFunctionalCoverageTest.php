@@ -54,7 +54,7 @@ abstract class dmCoreFunctionalCoverageTest
   {
     $configuration = ProjectConfiguration::getApplicationConfiguration($this->options['app'], $this->options['env'], $this->options['debug']);
 
-    dmContext::createInstance($configuration);
+    dm::createContext($configuration);
 
     // remove all cache
     sfToolkit::clearDirectory(sfConfig::get('sf_app_cache_dir'));

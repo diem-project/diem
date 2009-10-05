@@ -17,7 +17,7 @@ default:
     
   admin:
     max_per_page:         [ 3, 5, 10, 15, 20, 30, 50, 100, ∞ ]  # admin lists paginators
-    list_truncate:        200                                   # truncate big descriptions in admin lists
+    list_truncate:        120                                   # truncate big descriptions in admin lists
     
   console:                                          # emulate a linux shell
                                                     # commands available

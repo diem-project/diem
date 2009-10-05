@@ -13,26 +13,28 @@
       {
         $this->getUser()->setFlash('notice', $notice.' You can add another one below.');
 
-        $this->redirect('@<?php echo $this->getUrlForAction('new') ?>');
+        $redirection = '@<?php echo $this->getUrlForAction('new') ?>';
       }
       elseif ($request->hasParameter('_save_and_list'))
       {
         $this->getUser()->setFlash('notice', $notice);
 
-        $this->redirect('@<?php echo $this->getUrlForAction('list') ?>');
+        $redirection = '@<?php echo $this->getUrlForAction('list') ?>';
       }
       elseif ($request->hasParameter('_save_and_next'))
       {
         $this->getUser()->setFlash('notice', $notice);
         $<?php echo $this->getSingularName() ?> = dmArray::get($<?php echo $this->getSingularName() ?>->getPrevNextRecords($this->buildQuery()), 'next', $this->form->getObject());
-        $this->redirect('@<?php echo $this->getUrlForAction('edit') ?>?<?php echo $this->getPrimaryKeyUrlParams() ?>);
+        $redirection = '@<?php echo $this->getUrlForAction('edit') ?>?<?php echo $this->getPrimaryKeyUrlParams() ?>;
       }
       else
       {
         $this->getUser()->setFlash('notice', $notice);
 
-        $this->redirect(array('sf_route' => '<?php echo $this->getUrlForAction('edit') ?>', 'sf_subject' => $<?php echo $this->getSingularName() ?>));
+        $redirection = array('sf_route' => '<?php echo $this->getUrlForAction('edit') ?>', 'sf_subject' => $<?php echo $this->getSingularName() ?>);
       }
+
+      $this->redirect($redirection);
     }
     else
     {

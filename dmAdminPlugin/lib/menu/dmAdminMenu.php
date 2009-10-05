@@ -79,17 +79,7 @@ class dmAdminMenu
     $moduleMenu = array();
     foreach($space->getModules() as $moduleKey => $module)
     {
-      if (!$module->isProject() && !in_array($moduleKey, sfConfig::get('sf_enabled_modules')))
-      {
-        continue;
-      }
-      
-      if(!$module->hasAdmin())
-      {
-        continue;
-      }
-      
-      if ($module->getParam('credentials') && !$this->user->can($module->getParam('credentials')))
+      if (!$this->user->canAccessToModule($module))
       {
         continue;
       }

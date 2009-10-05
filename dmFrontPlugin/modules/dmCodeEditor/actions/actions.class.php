@@ -6,16 +6,19 @@ class dmCodeEditorActions extends dmFrontBaseActions
   public function executeLaunch(dmWebRequest $request)
   {
     $this->fileMenu = new dmHtmlMenu($this->getFileMenu());
+    
+    $assetAliases = include($this->context->get('config_cache')->checkConfig('config/dm/assets.yml'));
 
     $js =
-    file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), sfConfig::get('dm_core_asset'), 'lib/jquery-ui/js/ui.tabs.min.js')).
+    file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), $assetAliases['js.lib.ui-tabs'])).
     dmJsMinifier::transform(
-    file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), sfConfig::get('dm_core_asset'), 'js/dmCoreCodeArea.js')).
-    file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), sfConfig::get('dm_front_asset'), 'js/dmFrontCodeEditor.js'))
+    file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), $assetAliases['js.core.codeArea'])).';'.
+    file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), $assetAliases['js.front.codeEditor']))
     );
 
     $this->css = dmCssMinifier::transform(
-    file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), sfConfig::get('dm_front_asset'), 'css/codeEditor.css'))
+    file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), $assetAliases['css.lib.ui-tabs'])).
+    file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), $assetAliases['css.front.codeEditor']))
     );
     
     return $this->renderJson(array(

@@ -36,6 +36,8 @@ DmPageView:
   relations:
     Layout:
       class:                DmLayout
+      local:                dm_layout_id
+      foreign:              id
       onDelete:             CASCADE
       foreignAlias:         PageViews
     Area:
@@ -62,12 +64,15 @@ DmArea:
   relations:
     Layout:
       class:                DmLayout
-      onDelete:             CASCADE
+      local:                dm_layout_id
+      foreign:              id
       foreignAlias:         Areas
+      onDelete:             CASCADE
     PageView:
       class:                DmPageView
       local:                dm_page_view_id
       foreign:              id
+      foreignAlias:         Area
       onDelete:             CASCADE
 
 DmZone:
@@ -80,8 +85,10 @@ DmZone:
   relations:
     Area:
       class:                DmArea
-      onDelete:             CASCADE
+      local:                dm_area_id
+      foreign:              id
       foreignAlias:         Zones
+      onDelete:             CASCADE
   
 DmWidget:
   actAs:                    [Sortable, Timestampable]
@@ -95,7 +102,9 @@ DmWidget:
   relations:
     Zone:
       class:                DmZone
-      onDelete:             CASCADE
+      local:                dm_zone_id
+      foreign:              id
       foreignAlias:         Widgets
+      onDelete:             CASCADE
       
 package:                    dmCorePlugin.lib.model.doctrine.page

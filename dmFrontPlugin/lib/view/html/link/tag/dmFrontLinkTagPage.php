@@ -43,41 +43,35 @@ class dmFrontLinkTagPage extends dmFrontLinkTag
     $tagName = $preparedAttributes['tag'];
     unset($preparedAttributes['tag']);
     
-    if ($tagName == 'span')
+    if ($tagName === 'span')
     {
       unset($preparedAttributes['href'], $preparedAttributes['target']);
     }
     
-    $attributes = $this->convertAttributesToHtml($preparedAttributes);
-    
-    $tag = sprintf('<%s%s>%s</%s>',
-      $tagName,
-      $attributes,
-      $this->renderText(),
-      $tagName
-    );
-    
-    return $tag;
+    return '<'.$tagName.$this->convertAttributesToHtml($preparedAttributes).'>'.$this->renderText().'</'.$tagName.'>';
   }
   
   protected function prepareAttributesForHtml(array $attributes)
   {
     $attributes = parent::prepareAttributesForHtml($attributes);
 
-    if($currentPage = self::$context->getPage())
+    if (!sfConfig::get('dm_search_populating'))
     {
-      if ($currentPage->get('id') === $this->page->get('id'))
+      if($currentPage = self::$context->getPage())
       {
-        $attributes['class'][] = 'dm_current';
-        
-        if(dmConfig::get('link_current_span', true))
+        if ($currentPage->get('id') === $this->page->get('id'))
         {
-          $attributes['tag'] = 'span';
+          $attributes['class'][] = 'dm_current';
+          
+          if(dmConfig::get('link_current_span', true))
+          {
+            $attributes['tag'] = 'span';
+          }
         }
-      }
-      elseif($currentPage->getNode()->isDescendantOf($this->page))
-      {
-        $attributes['class'][] = 'dm_parent';
+        elseif($currentPage->getNode()->isDescendantOf($this->page))
+        {
+          $attributes['class'][] = 'dm_parent';
+        }
       }
     }
     

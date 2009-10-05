@@ -1,7 +1,7 @@
 Utils:
   Configuration:
     dmConfigPanel:
-      name:         Configuration panel | Configuration panel
+      name:         Configuration panel
       credentials:  config_panel
   Translation:
     dmTransUnit:
@@ -14,10 +14,10 @@ Utils:
       credentials:  user_profile
   Logs:
     dmUserLog:
-      name:         User log | User log
+      name:         User log
       credentials:  user_log
     dmActionLog:
-      name:         Action log | Action log
+      name:         Action log
       credentials:  action_log
   Accessibility:
     dmLang:
@@ -30,6 +30,10 @@ Utils:
     dmMediaLibrary:
       name:         Media
       credentials:  media_library
+  "Search engine":
+    dmSearchEngine:
+      name:         Manage index
+      credentials:  search_engine
   
 Seo:
   Services:
@@ -41,7 +45,7 @@ Seo:
       credentials:  google_webmaster_tools
   Sitemap:
     dmSitemap:
-      name:         Generate sitemap|Generate sitemap
+      name:         Generate sitemap
       credentials:  sitemap
   Metas:
     dmAutoSeo:
@@ -84,41 +88,14 @@ System:
       credentials:  security_group
   Dev:
     dmDiagram:
-      name:         "See diagrams | See diagrams"
+      name:         See diagrams
       credentials:  system
     dmCodeEditor:
-      name:         "Code Editor | Code Editor"
+      name:         Code Editor
       credentials:  code_editor
     dmConsole:
-      name:         "Diem Console | Diem Console"
+      name:         Diem Console
       credentials:  system
-    dmSearchEngine:
-      name:         "Search Engine | Search Engine"
-      credentials:  search_engine
     dmServer:
-      name:         "Server | Server"
-      credentials:  system
-#  Media:
-#    dmMediaFolder:
-#      name:         Folder
-#    dmMedia:
-#      name:         File
-  Page:
-    dmPage:
-      name:         Page
-      credentials:  system
-    dmPageView:
-      name:         Page View
-      credentials:  system
-    dmLayout:
-      name:         Layout
-      credentials:  system
-    dmArea:
-      name:         Area
-      credentials:  system
-    dmZone:
-      name:         Zone
-      credentials:  system
-    dmWidget:
-      name:         Widget
+      name:         Server
       credentials:  system

@@ -58,6 +58,11 @@ function markdown($markdown, $opt = array())
   return £('div.markdown', dmString::toArray($opt), $html);
 }
 
+function unMarkdown($markdown)
+{
+  return dmContext::getInstance()->get('markdown')->toText($markdown);
+}
+
 /*
  * a, class='tagada ergrg' id=zegf, contenu
  * a class=tagada id=truc, contenu

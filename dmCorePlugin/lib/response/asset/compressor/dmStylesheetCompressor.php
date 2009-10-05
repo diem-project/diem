@@ -37,7 +37,9 @@ class dmStylesheetCompressor extends dmAssetCompressor
     return $this->options['minify'] ? dmCssMinifier::transform($content) : $content;
   }
 
-  protected function fixCssPaths($content, $path)
+
+  
+  public function fixCssPaths($content, $path)
   {
     if (preg_match_all("/url\(\s?[\'|\"]?(.+)[\'|\"]?\s?\)/ix", $content, $urlMatches))
     {

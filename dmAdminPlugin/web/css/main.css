@@ -7,7 +7,7 @@ h1{
 }
 h2{font-size:123.1%;}
 h3{font-size:108%;}
-h1,h2,h3,h4,h5,h6,strong{color: #555; font-weight:bold;}
+h1,h2,h3,h4,h5,h6,strong{color: #333; font-weight:bold;}
 h1 { letter-spacing: 1px; }
 abbr,acronym{border-bottom:1px dotted #000;cursor:help;}
 em{font-style:italic;}

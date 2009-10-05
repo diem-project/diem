@@ -13,14 +13,12 @@ generator:
       list:
         display:
           - =name
-          - page_views_list
-          - areas_list
           - css_class
         sort:
           - name
           - asc
         max_per_page: 8
-        table_method: joinAll
+        table_method: ~
         table_count_method: ~
       filter:
         display:

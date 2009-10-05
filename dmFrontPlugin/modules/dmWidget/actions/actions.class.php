@@ -54,10 +54,57 @@ class dmWidgetActions extends dmFrontBaseActions
         ));
       }
     }
+    
+    $html = $this->renderEdit($form, $widgetType);
+  
+    $js = '';
+    $css = '';
+    
+    if (strpos($html, 'dm_tabbed_form'))
+    {
+      $assetAliases = include($this->context->get('config_cache')->checkConfig('config/dm/assets.yml'));
+      
+      $js .=
+      file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), $assetAliases['js.lib.ui-tabs'])).
+      dmJsMinifier::transform(
+      file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), $assetAliases['js.core.tabForm']))
+      );
+      
+      $css .= file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), $assetAliases['css.lib.ui-tabs']));
+    }
+    
+    if (strpos($html, 'dm_markdown'))
+    {
+      $assetAliases = include($this->context->get('config_cache')->checkConfig('config/dm/assets.yml'));
+      
+      $js .=
+      file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), $assetAliases['js.lib.ui-resizable'])).
+      file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), $assetAliases['js.lib.markitup'])).
+      file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), $assetAliases['js.lib.markitupSet']))
+      ;
+      
+      $stylesheetCompressor = $this->context->get('stylesheet_compressor');
+      
+      foreach(array('css.lib.markitup', 'css.lib.markitupSet', 'css.lib.ui-resizable') as $cssKey)
+      {
+        $css .= $stylesheetCompressor->fixCssPaths(
+          file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), $assetAliases[$cssKey])),
+          $assetAliases[$cssKey]
+        );
+      }
+      
+      $css = dmCssMinifier::transform($css);
+    }
+    
+    if ($css)
+    {
+      $html = '<style type="text/css">'.$css.'</style>' . $html;
+    }
 
     return $this->renderJson(array(
       'type' => 'form',
-      'html' => $this->renderEdit($form, $widgetType)
+      'html' => $html,
+      'js'   => $js
     ));
   }
 
@@ -89,9 +136,8 @@ class dmWidgetActions extends dmFrontBaseActions
     {
       $codeEditorLinks = '<div class="code_editor_links">'.$codeEditorLinks.'</div>';
     }
-
-    return
-    '<div class="dm dm_widget_edit {form_class: \''.$widgetType->getFullKey().'\'}">'.
+    
+    return '<div class="dm dm_widget_edit {form_class: \''.$widgetType->getFullKey().'Form\'}">'.
     $form->render('.dm_form.list.little').
     $codeEditorLinks.
     '</div>';

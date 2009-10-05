@@ -28,6 +28,12 @@ class dmSearchIndex extends dmSearchIndexCommon
     $this->filesystem = $filesystem;
     $this->logger     = $logger;
   }
+  
+  
+  public function setLogger(sfLogger $logger)
+  {
+    $this->logger = $logger;
+  }
 
   public function setCulture($culture)
   {
@@ -98,9 +104,12 @@ class dmSearchIndex extends dmSearchIndexCommon
       return;
     }
 
+    $nb = 0;
+    $nbMax = count($pages);
     foreach ($pages as $page)
     {
-      $this->logger->log($this->getName().' : '.$page->get('slug'));
+      ++$nb;
+      $this->logger->log($this->getName().' '.$nb.'/'.$nbMax.' : '.$page->get('slug'));
       $this->index->addDocument(new dmSearchPageDocument($page));
     }
 

@@ -16,7 +16,7 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
     
     $this->store('page_id', $page->get('id'));
 
-    $this->index('body', $this->getPageBodyText($page));
+    $this->index('body', $this->getPageBodyText($page), 1);
 
     $this->index('slug', dmString::unSlugify($i18n->get('slug')), 2);
 
@@ -55,18 +55,25 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
       throw new dmException('Can only be used in front app ( current : '.sfConfig::get('sf_app').' )');
     }
     
+    $helper = dmContext::getInstance()->get('page_helper');
+    
     dmContext::getInstance()->setPage($page);
     
-    $area = dmDb::query('DmArea a, a.Zones z, z.Widgets w')
-      ->select('a.id, z.width, z.css_class, w.module, w.action, w.value, w.css_class')
-      ->where('a.type = ? AND a.dm_page_view_id = ?', array('content', $page->get('PageView')->get('id')))
+    $area = dmDb::query('DmPageView pv, pv.Area a')
+    ->select('a.id')
+    ->where('pv.module = ? AND pv.action = ?', array($page->get('module'), $page->get('action')))
+    ->fetchPDO();
+    
+    $zones = dmDb::query('DmZone z, z.Widgets w')
+      ->select('z.dm_area_id, w.module, w.action, w.value')
+      ->where('z.dm_area_id = ?',$area[0][0])
       ->fetchArray();
     
-    $helper = dmContext::getInstance()->get('page_helper');
+    sfConfig::set('dm_search_populating', true);
     
     $html = '';
     
-    foreach($area[0]['Zones'] as $zone)
+    foreach($zones as $zone)
     {
       foreach($zone['Widgets'] as $widget)
       {
@@ -77,9 +84,11 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
       }
     }
     
-    unset($area);
+    sfConfig::set('dm_search_populating', false);
     
     $indexableText = dmSearchIndex::cleanText($html);
+    
+    unset($area, $html, $helper);
     
     return $indexableText;
   }

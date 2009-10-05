@@ -128,6 +128,7 @@ abstract class dmLinkTag extends dmHtmlTag
         array_merge(dmString::getDataFromUrl($attributes['href']), $attributes['params'])
         );
       }
+      
       unset($attributes['params']);
     }
 

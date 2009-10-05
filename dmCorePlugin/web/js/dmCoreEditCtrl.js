@@ -13,10 +13,12 @@
           return false;
         }
       });
+			
       $('div.ui-dialog a.close_dialog').live('click', function()
       {
         $(this).closest('div.ui-dialog-content').dialog('close');
       });
+			
       $('input.hint').hint();
     },
     
@@ -114,14 +116,6 @@
       });
       
       return $dialog;
-    },
-    
-    flashMessages: function()
-    {
-      $("#flash").click(function()
-      {
-        $(this).remove();
-      });
     }
   });
 	

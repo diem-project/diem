@@ -10,7 +10,6 @@
   color: #666;
 }
 
-
 .dm_module_type_show .title {
 	margin-bottom: 10px;
 }
@@ -43,5 +42,33 @@ div.dm_module_search input {
 
 #dm_module_search_input {
   width: 300px;
-  margin-right: 5px;
+  padding:2px;
+  border: 1px solid #ccc;
+}
+
+div.dm_module_search input.dm_submit {
+  padding:1px 5px;
+  border: 1px solid #ccc;
+  margin-left: -1px;
+  border-left: none;
+  background: url(../../core/images/default_bg.png) center left repeat-x;
+  color: #444;
+  cursor: pointer;
+}
+div.dm_module_search input.dm_submit:hover {
+  color: #046BCA;
+}
+
+a.associated_record {
+  background-position: right -1072px;
+  padding-left: 0px !important;
+  padding-right: 18px;
+  text-decoration: none;
+  color: inherit;
+}
+
+a.associated_record:hover {
+  background-position: right -1056px;
+  color: #046BCA;
+  text-decoration: underline;
 }

@@ -7,7 +7,6 @@
     {
       this.$ = $("#dm_admin_content");
       
-			this.deleteLink();
       this.focusFirstInput();
       this.markitup();
       this.selectObject();
@@ -15,20 +14,6 @@
       this.linkDroppable();
       this.hotKeys();
     },
-		
-		deleteLink: function()
-		{
-      $('a.dm_delete_link', this.$).each(function() {
-				$(this).click(function(e)
-	      {
-	        e.stopPropagation();
-	        if (!confirm($(this).attr('title')+ ' ?'))
-	        {
-	          return false;
-	        }
-	      });
-			});
-		},
     
     focusFirstInput: function()
     {

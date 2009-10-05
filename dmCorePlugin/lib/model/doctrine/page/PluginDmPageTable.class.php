@@ -71,7 +71,7 @@ class PluginDmPageTable extends myDoctrineTable
     {
       foreach($ids as $index => $id)
       {
-        if (isset($this->recordPageCache[$module][$index]))
+        if (isset($this->recordPageCache[$module][$id]))
         {
           unset($ids[$index]);
         }
@@ -82,7 +82,7 @@ class PluginDmPageTable extends myDoctrineTable
       $this->recordPageCache[$module] = array();
     }
     
-    $pages = $this->createQuery('p INDEXBY p.record_id')
+    $pages = $this->createQuery('p')
     ->withI18n()
     ->select('p.id, p.module, p.action, p.record_id, p.is_secure, p.lft, p.rgt, pTranslation.slug, pTranslation.name, pTranslation.is_active')
     ->where('p.module = ? AND p.action = ?', array($module, 'show'))
@@ -90,9 +90,9 @@ class PluginDmPageTable extends myDoctrineTable
     ->fetchRecords()
     ->getData();
     
-    foreach($pages as $recordId => $page)
+    foreach($pages as $page)
     {
-      $this->recordPageCache[$module][$recordId] = $page;
+      $this->recordPageCache[$module][$page->get('record_id')] = $page;
     }
     
     unset($pages);
@@ -197,11 +197,6 @@ class PluginDmPageTable extends myDoctrineTable
   public function findOneByRecordWithI18n(myDoctrineRecord $record)
   {
     $module = $record->getDmModule()->getKey();
-    
-//    if (!isset($this->recordPageCache[$module]))
-//    {
-//      $this->prepareRecordPageCache($module);
-//    }
     
     if (isset($this->recordPageCache[$module][$record->get('id')]))
     {

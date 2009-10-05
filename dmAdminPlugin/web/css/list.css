@@ -61,9 +61,7 @@ div.dm_form_pagination > div {
   margin: 0 3px;
 }
 
-div.dm_form_pagination strong
-{
-	color: #000;
+div.dm_form_pagination strong {
 }
 
 .sf_list_actions {
@@ -100,12 +98,13 @@ div.dm_form_pagination strong
 }
 
 .sf_admin_list tr.even {
-	background: #F1F5FE;
+	background: #F0F4FC;
 }
 
 .sf_admin_list td {
   border: none;
   padding: 5px 5px;
+  color: #222;
 }
 
 .dm_list_action_bar .sf_admin_actions {

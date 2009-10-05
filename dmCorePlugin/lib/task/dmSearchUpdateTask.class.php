@@ -26,7 +26,7 @@ class dmSearchUpdateTask extends dmBaseTask
   {
     if (!sfContext::hasInstance())
     {
-      dmContext::createInstance($this->configuration);
+      dm::createContext($this->configuration);
     }
 
     $databaseManager = new sfDatabaseManager($this->configuration);
@@ -34,7 +34,7 @@ class dmSearchUpdateTask extends dmBaseTask
     $this->log('Search engine index update');
     
     $index = dmContext::getInstance()->get('search_engine');
-    $index->setLogger(new dmLoggerTask($this->dispatcher, $this->formatter));
+    $index->setLogger(new sfConsoleLogger($this->dispatcher));
     
     $index->populate();
     $index->optimize();

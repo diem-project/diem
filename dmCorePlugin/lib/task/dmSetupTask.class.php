@@ -36,7 +36,7 @@ EOF;
   {
 //    if (!sfContext::hasInstance())
 //    {
-//      dmContext::createInstance($this->configuration);
+//      dm::createContext($this->configuration);
 //    }
 //
 //    new sfDatabaseManager($this->configuration);

@@ -123,7 +123,7 @@ class dmMediaTagImage extends dmMediaTag
 
   protected function prepareMediaAttributes(array $attributes)
   {
-    if ($this->hasSize())
+    if ($this->hasSize() && !sfConfig::get('dm_search_populating'))
     {
       try
       {

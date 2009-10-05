@@ -41,37 +41,35 @@ class dmWidgetContentTextView extends dmWidgetContentMediaView
   {
     extract($vars);
     
-    $html = '';
-    
-    echo dmStaticHelper::£o('div.dm_text.text_'.$style);
+    $html = dmHelper::£o('div.dm_text.text_'.$style);
 
     if ($title && $titlePosition == 'outside')
     {
-      $html .= dmStaticHelper::£('h2.text_title.outside', $title);
+      $html .= dmHelper::£('h2.text_title.outside', $title);
     }
 
-    $html .= dmStaticHelper::£o('div.text_content.clearfix');
+    $html .= dmHelper::£o('div.text_content.clearfix');
   
       if ($media && $mediaPosition != 'bottom')
       {
-        $html .= dmStaticHelper::£('div.text_image'.$mediaClass, $media);
+        $html .= dmHelper::£('div.text_image'.$mediaClass, $media);
       }
     
       if ($title && $titlePosition == 'inside')
       {
-        $html .= dmStaticHelper::£('h2.text_title.inside', $title);
+        $html .= dmHelper::£('h2.text_title.inside', $title);
       }
     
-      $html .= dmStaticHelper::£('text_markdown', dmContext::getInstance()->get('markdown')->toHtml($text));
+      $html .= dmHelper::£('text_markdown', dmContext::getInstance()->get('markdown')->toHtml($text));
     
       if ($media && $mediaPosition == 'bottom')
       {
-        $html .= dmStaticHelper::£('div.text_image'.$mediaClass, $media);
+        $html .= dmHelper::£('div.text_image'.$mediaClass, $media);
       }
   
-    $html .= dmStaticHelper::£c('div');
+    $html .= dmHelper::£c('div');
     
-    $html .= dmStaticHelper::£c('div');
+    $html .= dmHelper::£c('div');
     
     return $html;
   }

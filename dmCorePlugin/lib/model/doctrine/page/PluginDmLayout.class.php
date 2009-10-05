@@ -27,7 +27,7 @@ abstract class PluginDmLayout extends BaseDmLayout
       throw new dmException(sprintf('%s is not a valid area type. These are : %s', $type, implode(', ', self::getAreaTypes())));
     }
 
-    foreach($this->Areas as $area)
+    foreach($this->get('Areas') as $area)
     {
       if($area->get('type') == $type)
       {

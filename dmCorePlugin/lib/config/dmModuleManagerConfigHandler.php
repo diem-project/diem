@@ -153,6 +153,25 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
         }
       }
     }
+    
+    $moduleKeys = array();
+    foreach($this->config as $typeName => $typeConfig)
+    {
+      foreach($typeConfig as $spaceName => $modulesConfig)
+      {
+        foreach($modulesConfig as $moduleKey => $moduleConfig)
+        {
+          if (in_array($moduleKey, $moduleKeys))
+          {
+            $this->throwException('The module '.$moduleKey.' is declared twice');
+          }
+          else
+          {
+            $moduleKeys[] = $moduleKey;
+          }
+        }
+      }
+    }
   }
   
   protected function throwException($message)

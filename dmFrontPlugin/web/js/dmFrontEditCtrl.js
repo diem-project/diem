@@ -9,8 +9,6 @@
 			
       this.bars();
       
-      this.flashMessages();
-      
       this.liveEvents();
       
       this.page();

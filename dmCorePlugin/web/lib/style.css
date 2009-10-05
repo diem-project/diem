@@ -1,0 +1,153 @@
+/* TREE LAYOUT */
+.tree ul {
+	margin:0 0 0 5px;
+	padding:0 0 0 0;
+	list-style-type:none;
+}
+.tree li {
+	display:block;
+	min-height:18px;
+	line-height:18px;
+	padding:0 0 0 15px;
+	margin:0 0 0 0;
+
+	/* Background fix */
+	clear:both;
+	_height:18px;
+	#height:auto;
+}
+.tree li ul {
+	display:none;
+}
+.tree li a,
+.tree li span {
+	/*
+	vertical-align:bottom;
+	display:-moz-inline-stack;
+	*/
+	display:inline-block;
+	line-height:16px;
+	height:16px;
+	color:black;
+	white-space:nowrap;
+	text-decoration:none;
+	padding:1px 4px 1px 1px;
+	margin:0;
+}
+.tree li a:hover, 
+.tree li a.hover {
+
+}
+.tree li a.clicked,
+.tree li a.clicked:hover,
+.tree li span.clicked {
+
+}
+.tree li a:focus {
+	outline: none;
+}
+
+.tree li a input,
+.tree li span input {
+	margin:0;
+	padding:0 0;
+	display:inline-block;
+	height:12px !important;
+	border:1px solid white;
+	background:white;
+	font-size:10px;
+	font-family:Verdana;
+}
+.tree li a input:not([class="xxx"]),
+.tree li span input:not([class="xxx"]) {
+	padding:1px 0;
+}
+
+.locked li a {
+	color:gray;
+}
+
+/* FOR DOTS */
+.tree li.last {
+	float:left;
+}
+
+/* OPEN OR CLOSE */
+.tree li.open ul {
+	display:block;
+}
+.tree li.closed ul {
+	display:none !important;
+}
+
+/* FOR DRAGGING */
+.tree #dragged {
+	padding:0 3px;
+	margin:0;
+	background:white;
+	opacity: .85;
+	filter: alpha(opacity=85);
+
+	position:absolute;
+	top:-10px;
+	left:-10px;
+}
+.tree #dragged.last,
+.tree #dragged:last-child {
+	background:white;
+}
+.tree #dragged ul ul {
+	display:none;
+}
+
+/* RTL modification */
+.rtl, .rtl * {
+	direction:rtl;
+}
+.rtl ul {
+	margin:0 5px 0 0;
+}
+.rtl li {
+	padding:0 15px 0 0;
+}
+.rtl li.last {
+	float:right !important;
+}
+.rtl li a,
+.rtl li span {
+	padding:1px 1px 1px 4px;
+}
+
+/* CONTEXT MENU */
+.tree-default-context {
+	display:none;
+	position:absolute;
+	list-style-type:none;
+	margin:0;
+	padding:0;
+}
+.tree-default-context .separator {
+	display:none;
+}
+.tree-default-context a {
+	display:block;
+	margin:0;
+	padding:0;
+}
+
+/** FIREFOX2 fix **/
+.tree li a, x:-moz-any-link { display:inline; float:left; }
+.rtl li a, x:-moz-any-link { display:inline; float:right; }
+.tree li, .tree li ul, .tree li.open ul, x:-moz-any-link { clear:both; }
+/** FIREFOX3 restore **/
+.tree li a, .rtl li a, x:-moz-any-link, x:default { display:inline-block; float:none; }
+.tree li ul, .tree li.open ul, x:-moz-any-link, x:default { clear:none; }
+/** IE7 Restore **/
+.tree li a, .rtl li a { #display:inline-block; #float:none; }
+.tree li ul, .tree li.open ul { #clear:none; }
+
+.tree li { _width:1px; }
+.tree > ul { float:left; margin-bottom:9px; }
+.tree > ul > li.last { margin-bottom:-9px !important; height:9px; }
+.tree li li { overflow:hidden; #overflow:visible; _overflow:visible; }
+/* @-moz-document url-prefix() {} */

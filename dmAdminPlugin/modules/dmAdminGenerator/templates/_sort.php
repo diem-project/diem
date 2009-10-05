@@ -20,7 +20,7 @@ echo £o('div.dm_sort.dm_box.big');
 
     echo $form->open();
   
-    echo £('div.fleft', £link('@'.$module->getUnderscore())->text('&laquo; '.__('Back to list')));
+    echo £('div.fleft', £link('@'.$form->getModule()->getUnderscore())->text('&laquo; '.__('Back to list')));
   
     echo $submit;
   

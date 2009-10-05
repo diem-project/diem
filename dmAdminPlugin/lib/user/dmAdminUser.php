@@ -3,7 +3,8 @@
 class dmAdminUser extends dmUser
 {
   protected
-  $theme;
+  $theme,
+  $availableModules = array();
 
   /*
    * @return dmTheme the current user theme
@@ -49,4 +50,31 @@ class dmAdminUser extends dmUser
     return $appliedFilters;
   }
 
+  public function canAccessToModule($moduleKey)
+  {
+    if ($moduleKey instanceof dmModule)
+    {
+      $moduleKey = $moduleKey->getKey();
+    }
+
+    if (isset($this->availableModules[$moduleKey]))
+    {
+      return $this->availableModules[$moduleKey];
+    }
+    
+    if ($moduleKey instanceof dmModule)
+    {
+      $module = $moduleKey;
+    }
+    else
+    {
+      $module = dmContext::getInstance()->getModuleManager()->getModule($moduleKey);
+    }
+    
+    return $this->availableModules[$module->getKey()] =
+    $module->hasAdmin()
+    && ($module->isProject() || in_array($moduleKey, sfConfig::get('sf_enabled_modules')))
+    && (!$module->getParam('credentials') || $this->can($module->getParam('credentials')));
+  }
+  
 }

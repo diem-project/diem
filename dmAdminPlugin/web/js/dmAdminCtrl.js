@@ -107,6 +107,14 @@
 			{
 				$("input.datepicker_me", this.$).datepicker({});
 			}
+    },
+    
+    flashMessages: function()
+    {
+      $("#flash").click(function()
+      {
+        $(this).remove();
+      });
     }
     
   });

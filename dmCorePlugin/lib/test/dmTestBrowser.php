@@ -28,7 +28,7 @@ class dmTestBrowser extends sfBrowser
       }
       
       // create context
-      $this->context = dmContext::createInstance($configuration);
+      $this->context = dm::createContext($configuration);
       unset($currentConfiguration);
 
       if (!$isContextEmpty)

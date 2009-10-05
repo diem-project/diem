@@ -1,0 +1,13 @@
+/* Dialog
+----------------------------------*/
+.dm.ui-dialog { position: relative; padding: .2em; width: 300px; background: #fff; -moz-box-shadow: 0 0 10px #000; }
+.dm.ui-dialog .ui-dialog-titlebar { padding: 3px 3px 1px 12px; position: relative;  }
+.dm.ui-dialog .ui-dialog-title { float: left; margin: .1em 0 .2em; } 
+.dm.ui-dialog .ui-dialog-titlebar-close { position: absolute; right: .3em; top: 50%; width: 19px; margin: -10px 0 0 0; padding: 1px; height: 18px; }
+.dm.ui-dialog .ui-dialog-titlebar-close span { display: block; margin: 1px; }
+.dm.ui-dialog .ui-dialog-titlebar-close:hover, .dm.ui-dialog .ui-dialog-titlebar-close:focus { padding: 0; }
+.dm.ui-dialog .ui-dialog-content { border: 0; overflow: hidden; padding: 5px; background: none; zoom: 1; }
+.dm.ui-dialog .ui-dialog-buttonpane { text-align: left; border-width: 1px 0 0 0; background-image: none; margin: .5em 0 0 0; padding: .3em 1em .5em .4em; }
+.dm.ui-dialog .ui-dialog-buttonpane button { float: right; margin: .5em .4em .5em 0; cursor: pointer; padding: .2em .6em .3em .6em; line-height: 1.4em; width:auto; overflow:visible; }
+.dm.ui-dialog .ui-resizable-se { width: 14px; height: 14px; right: 3px; bottom: 3px; }
+.dm.ui-draggable .ui-dialog-titlebar { cursor: move; }

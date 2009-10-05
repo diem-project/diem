@@ -40,7 +40,7 @@ class dmPageIndexableContentTask extends dmBaseTask
     {
       if (!sfContext::hasInstance())
       {
-        dmContext::createInstance($this->configuration);
+        dm::createContext($this->configuration);
       }
       $databaseManager = new sfDatabaseManager($this->configuration);
 

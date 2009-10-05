@@ -8,6 +8,7 @@ js:
     toolBar:          dmFrontToolBar
     pageBar:          dmFrontPageBar
     mediaBar:         dmFrontMediaBar
+    codeEditor:       dmFrontCodeEditor
     page:             page/dmPage
     area:             page/dmArea
     zone:             page/dmZone

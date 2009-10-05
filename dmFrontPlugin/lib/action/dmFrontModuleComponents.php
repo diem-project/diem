@@ -151,7 +151,7 @@ class dmFrontModuleComponents extends myFrontBaseComponents
     {
       $records = $records->getData();
     }
-    
+        
     if (!empty($records))
     {
       if (($module = dmArray::first($records)->getDmModule()) && $module->hasPage())

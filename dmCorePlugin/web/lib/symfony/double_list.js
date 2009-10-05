@@ -1,0 +1,59 @@
+var sfDoubleList =
+{
+  init: function(id, className)
+  {
+    form = sfDoubleList.get_current_form(id);
+
+    callback = function() { sfDoubleList.submit(form, className) };
+    
+    $(form).bind('submit', function(e) {
+      $('select[class$=-selected] option', $(this)).attr('selected', true);
+    });
+  },
+
+  move: function(srcId, destId)
+  {
+    var src = document.getElementById(srcId);
+    var dest = document.getElementById(destId);
+    for (var i = 0; i < src.options.length; i++)
+    {
+      if (src.options[i].selected)
+      {
+        dest.options[dest.length] = new Option(src.options[i].text, src.options[i].value);
+        src.options[i] = null;
+        --i;
+      }
+    }
+  },
+
+  submit: function(form, className)
+  {
+    
+    var element;
+    
+    for (var i = 0; i < form.elements.length; i++)
+    {
+      element = form.elements[i];
+      if (element.type == 'select-multiple')
+      {
+        if (element.className == className + '-selected')
+        {
+          for (var j = 0; j < element.options.length; j++)
+          {
+            element.options[j].selected = true;
+          }
+        }
+      }
+    }
+  },
+
+  get_current_form: function(el)
+  {
+    if ("form" != el.tagName.toLowerCase())
+    {
+      return sfDoubleList.get_current_form(el.parentNode);
+    }
+
+    return el;
+  }
+}

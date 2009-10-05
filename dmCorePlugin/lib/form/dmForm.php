@@ -113,10 +113,10 @@ class dmForm extends sfFormSymfony
       $action = self::$serviceContainer->getService('request')->getUri();
     }
 
-    if (strpos($action, '#') === false)
-    {
-      $action .= '#'.$this->getKey();
-    }
+//    if (strpos($action, '#') === false)
+//    {
+//      $action .= '#'.$this->getKey();
+//    }
 
     if (isset($opt['action'])) unset($opt['action']);
 

@@ -157,7 +157,23 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
       }
       else
       {
-        $html = '$'.$this->getSingularName()."->get('".$relation->getLocalColumnName()."') ? $".$this->getSingularName()."->get('".$relation->getAlias()."') : '-'";
+        $localModule = dmContext::getInstance()->getModuleManager()->getModuleByModel($relation->getClass());
+        
+        if ($localModule && $localModule->hasAdmin())
+        {
+          $html = "(\$sf_user->canAccessToModule('{$localModule->getUnderscore()}')
+? £link(array('sf_route' => '{$localModule->getUnderscore()}_edit', 'sf_subject' => \${$this->getSingularName()}->get('{$relation->getAlias()}')))
+->text(\${$this->getSingularName()}->get('{$relation->getAlias()}')->__toString())
+->title(__('Open'))
+->set('.associated_record.s16right.s16_arrow_up_right_medium')
+: $".$this->getSingularName()."->get('".$relation->getAlias()."'))";
+        }
+        else
+        {
+          $html = "$".$this->getSingularName()."->get('".$relation->getAlias()."')";
+        }
+        
+        $html = '$'.$this->getSingularName()."->get('".$relation->getLocalColumnName()."') ? ".$html." : '-'";
       }
     }
     /*
@@ -184,14 +200,66 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
     else
     {
       $html = 'htmlentities(dmString::truncate('.$html.', '.$field->getConfig('truncate', sfConfig::get('dm_admin_list_truncate', 120)).'), ENT_QUOTES, \'UTF-8\')';
+      
+      if ($this->module->getTable()->isMarkdownColumn($fieldName))
+      {
+        $html = "str_replace(array('*', '#'), '', ".$html.");";
+      }
     }
 
     if ($field->isLink())
     {
-      $html = sprintf("link_to(%s, '%s', \$%s)", $html, $this->getUrlForAction('edit'), $this->getSingularName());
+      $html = sprintf("£link(\$%s)->text(%s)->title('Open')", $this->getSingularName(), $html);
     }
 
     return $html;
+  }
+  
+  /**
+   * Returns the getter either non-developped: 'getFoo' or developped: '$class->getFoo()'.
+   *
+   * @param string  $column     The column name
+   * @param boolean $developed  true if you want developped method names, false otherwise
+   * @param string  $prefix     The prefix value
+   *
+   * @return string PHP code
+   */
+  public function getColumnGetter($column, $developed = false, $prefix = '')
+  {
+    $getter = 'get(\''.$column.'\')';
+    if ($developed)
+    {
+      $getter = sprintf('$%s%s->%s', $prefix, $this->getSingularName(), $getter);
+    }
+
+    return $getter;
+  }
+  
+  /**
+   * Returns PHP code to add to a URL for primary keys.
+   *
+   * @param string $prefix The prefix value
+   *
+   * @return string PHP code
+   */
+  public function getPrimaryKeyUrlParams($prefix = '', $full = false)
+  {
+    $params = array();
+    foreach ($this->getPrimaryKeys() as $pk)
+    {
+      $fieldName = sfInflector::underscore($pk);
+
+      if ($full)
+      {
+        $params[] = sprintf("%s='.%s->%s", $fieldName, $prefix, $this->getColumnGetter($fieldName, false));
+      }
+      else
+      {
+        $params[] = sprintf("%s='.%s", $fieldName, $this->getColumnGetter($fieldName, true, $prefix));
+      }
+    }
+
+    return implode(".'&", $params);
   }
 
   public function getColumns()

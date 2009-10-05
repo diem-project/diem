@@ -90,7 +90,7 @@ class dmAdminRoutingConfigHandler extends sfRoutingConfigHandler
         )
       );
     }
-    
+
     // module routes
     foreach($moduleManager->getModules() as $module)
     {

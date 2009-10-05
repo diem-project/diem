@@ -1,11 +1,12 @@
 <?php
 
 $html = '';
+
 foreach(array('info', 'notice', 'alert', 'error') as $log_type)
 {
   foreach(array('dm_log_', '') as $prefix)
   {
-    if (count($messages = (array)$sf_user->getFlash($prefix.$log_type)))
+    if (count($messages = (array) $sf_user->getFlash($prefix.$log_type)))
     {
       $class = $log_type === 'notice' ? 'info' : $log_type;
       $html .= £o("ul.flashs.".$class.'s');
@@ -23,5 +24,5 @@ foreach(array('info', 'notice', 'alert', 'error') as $log_type)
 
 if ($html)
 {
-  echo £("div#flash", $html);
+  echo £('div#flash', array('title' => __('Close')), $html);
 }

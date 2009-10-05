@@ -1,0 +1,75 @@
+/* -------------------------------------------------------------------
+// markItUp! Universal MarkUp Engine, JQuery plugin
+// By Jay Salvat - http://markitup.jaysalvat.com/
+// ------------------------------------------------------------------*/
+div.markItUp a:link,
+div.markItUp a:visited {
+	color:#000;
+	text-decoration:none;
+}
+div.markItUp  {
+	width:700px;
+	margin:5px 0 5px 0;
+	border:5px solid #F5F5F5;	
+}
+div.markItUpContainer  {
+	border:1px solid #3C769D;	
+	background:#FFF url(images/bg-container.png) repeat-x top left;
+	padding:5px 5px 2px 5px;
+	font:11px Verdana, Arial, Helvetica, sans-serif;
+}
+div.markItUpEditor {
+	font:12px 'Courier New', Courier, monospace;
+	padding:5px 5px 5px 35px;
+	border:3px solid #3C769D;
+	width:643px;
+	height:320px;
+	background-image:url(images/bg-editor.png);
+	background-repeat:no-repeat;
+	clear:both; display:block;
+	line-height:18px;
+	overflow:auto;
+}
+div.markItUpFooter {
+	width:100%;
+	cursor:n-resize;
+}
+div.markItUpResizeHandle {
+	overflow:hidden;
+	width:22px; height:5px;
+	margin-left:auto;
+	margin-right:auto;
+	background-image:url(images/handle.png);
+	cursor:n-resize;
+}
+/***************************************************************************************/
+/* first row of buttons */
+div.markItUpHeader ul li	{
+	list-style:none;
+	float:left;
+	position:relative;
+}
+div.markItUpHeader ul li ul{
+	display:none;
+}
+div.markItUpHeader ul li:hover > ul{
+	display:block;
+}
+div.markItUpHeader ul li.markItUpSeparator {
+	margin:0 10px;
+	width:1px;
+	height:16px;
+	overflow:hidden;
+	background-color:#CCC;
+}
+div.markItUpHeader ul a {
+	display:block;
+	width:16px; height:16px;
+	text-indent:-10000px;
+	background-repeat:no-repeat;
+	padding:3px;
+	margin:0px;
+}
+.markdown div.markItUpEditor {
+	background-image:url(images/bg-editor-markdown.png);
+}
