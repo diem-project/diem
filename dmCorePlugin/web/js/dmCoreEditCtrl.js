@@ -18,8 +18,6 @@
       {
         $(this).closest('div.ui-dialog-content').dialog('close');
       });
-			
-      $('input.hint').hint();
     },
     
     dialog: function(options)

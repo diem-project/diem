@@ -12,12 +12,12 @@ echo £('div.message',
       £('li.dm_form_element.clearfix',
         $form['username']->renderError().
         $form['username']->renderLabel(__('Username')).
-        $form['username']->render(array('class' => 'hint'))
+        $form['username']->render()
       ).
       £('li.dm_form_element.clearfix',
         $form['password']->renderError().
         $form['password']->renderLabel(__('Password')).
-        $form['password']->render(array('class' => 'hint'))
+        $form['password']->render()
       )
     ).
     $form->renderSubmitTag(__('Login'), 'button blue fright mt10').

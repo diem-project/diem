@@ -19,15 +19,6 @@
       });
     },
     
-    bindKey: function(data, fn)
-    {
-      return this.bind('keydown', data, function(e)
-      {
-        e.stopPropagation();
-        return fn(e);
-      });
-    },
-    
     outClick: function(callback)
     {
       callback = callback || null;

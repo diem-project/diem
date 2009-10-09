@@ -1,26 +1,8 @@
 (function($)
 {
-	var isFirstDebug = true;
-
   $.dbg = function()
   {
-		/*
-		 * Fix firefox 3.6 alpha firebug bug
-		 */
-		if (isFirstDebug)
-		{
-			try 
-			{
-				console.debug('dm : start debugging');
-			}
-			catch(e)
-			{
-				
-			}
-			
-			isFirstDebug = false;
-		}
-    if (!$.dm.ctrl.options.debug) 
+    if (typeof console !== 'object' || !$.dm.ctrl.options.debug) 
     {
       return;
     }
@@ -59,38 +41,12 @@
         }
       });
     },
-    hint: function()
+    bindKey: function(data, fn)
     {
-      var blurClass = 'blur';
-      return this.each(function()
+      return this.bind('keydown', data, function(e)
       {
-        var $input = $(this);
-        
-        var message = $input.attr('title'), $form = $(this.form), $win = $(window);
-        
-        var remove = function()
-        {
-          if ($input.val() === message && $input.hasClass(blurClass)) 
-          {
-            $input.val('').removeClass(blurClass);
-          }
-        };
-        
-        // only apply logic if the element has the attribute
-        if (message) 
-        {
-          // on blur, set value to title attr if text is blank
-          $input.blur(function()
-          {
-            if (this.value === '') 
-            {
-              $input.val(message).addClass(blurClass);
-            }
-          }).focus(remove).blur(); // now change all inputs to title
-          // clear the pre-defined text when form is submitted
-          $form.submit(remove);
-          $win.unload(remove); // handles Firefox's autocomplete
-        }
+        e.stopPropagation();
+        return fn(e);
       });
     }
   });
