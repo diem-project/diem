@@ -143,8 +143,8 @@ abstract class PluginDmPage extends BaseDmPage
 
     return $this->getTable()->createQuery('p')
     ->select('p.id as id')
-    ->where("p.lft < ? AND p.rgt > ?", array($this->get('lft'), $this->get('rgt')))
-    ->orderBy("p.rgt asc")
+    ->where('p.lft < ? AND p.rgt > ?', array($this->get('lft'), $this->get('rgt')))
+    ->orderBy('p.rgt asc')
     ->limit(1)
     ->fetchValue();
   }

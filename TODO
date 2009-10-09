@@ -70,7 +70,7 @@
 
 * [DONE] create a check config page like http://iliaz.com/dmsPlugin/index.php
 
-* improve record loremizer. Currently when only one record is loremized, associations with other tables are not created.
+* [DONE] improve record loremizer. Currently when only one record is loremized, associations with other tables are not created.
 
 * allow to unsynchronize automatic pages
 
@@ -88,8 +88,7 @@
 
 * add the text widget
 
-* {INTERNET} front edit : dynamically load widget forms js & css ( tabs, markdown... ) for performance reasons
-$.getScript(href, callback);
+* [DONE] front edit : dynamically load widget forms js & css ( tabs, markdown... ) for performance reasons
 
 * [DONE] front edit dmWidgetMedia is broken : can not add a file by upload
 
@@ -133,9 +132,9 @@ $.getScript(href, callback);
 
 * consider integrate jquery tools & flow player
 
-* (?) front edit deleting a zone does not close its edition dialog
+* [DONE] front edit deleting a zone does not close its edition dialog
 
-* admin record edition : try changing save button like pages link on top of netvibes
+* [DONE] admin record edition : try changing save button like pages link on top of netvibes
 
 * [DONE] consider removing views as each view generaly require a different sql query...
 
@@ -213,7 +212,7 @@ $.getScript(href, callback);
 
 * [DONE] remove dmHtml ArrayAccess implementation for performance reasons
 
-* desactivate automatic thumbnail creation on search index population context for performance reasons
+* [DONE] desactivate automatic thumbnail creation on search index population context for performance reasons
 
 * [DONE] split dmServiceContainer into dmFrontServiceContainer and dmAdminServiceContainer
 
@@ -294,3 +293,5 @@ $.getScript(href, callback);
 * [DONE] make admin work like gmail
 
 * [DONE] add front doctrine pager to front service container
+
+* upgrade jsTree

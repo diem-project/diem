@@ -92,6 +92,29 @@ class dmMediaTagImage extends dmMediaTag
 
     return $tag;
   }
+  
+  public function getRealSize()
+  {
+    if ($this->hasSize() && !sfConfig::get('dm_search_populating'))
+    {
+      try
+      {
+        $mediaFullPath = $this->getResizedMediaFullPath($this->options);
+      }
+      catch(Exception $e)
+      {
+        $mediaFullPath = $this->resource->getSource()->getFullPath();
+      }
+    }
+    else
+    {
+      $mediaFullPath = $this->resource->getSource()->getFullPath();
+    }
+    
+    $infos = getimagesize($mediaFullPath);
+    
+    return array($infos[0], $infos[1]);
+  }
 
   protected function prepareAttributesForHtml(array $attributes)
   {

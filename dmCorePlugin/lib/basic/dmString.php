@@ -382,4 +382,19 @@ class dmString extends sfInflector
     $string{0} = strtolower($string{0});
     return $string;
   }
+  
+  public static function str_replace_once($search, $replace, $subject)
+  {
+    $firstChar = strpos($subject, $search);
+    if($firstChar !== false)
+    {
+      $beforeStr = substr($subject,0,$firstChar);
+      $afterStr = substr($subject, $firstChar + strlen($search));
+      return $beforeStr.$replace.$afterStr;
+    }
+    else
+    {
+      return $subject;
+    }
+  }
 }

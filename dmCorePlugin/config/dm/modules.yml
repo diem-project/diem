@@ -1,0 +1,12 @@
+Internal:
+  Page:
+    dmPage:
+      admin:        false
+    dmPageView:
+      admin:        false
+    dmArea:
+      admin:        false
+    dmZone:
+      admin:        false
+    dmWidget:
+      admin:        false

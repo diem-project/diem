@@ -64,15 +64,14 @@ $.widget('ui.dmWidget', {
 				/*
 				 * Enable code editor link
 				 */
-		    if ($codeEditorLink = $form.find('a.code_editor').orNot())
-		    {
-					$codeEditorLink.click(function() {
+				$form.find('a.code_editor').each(function() {
+					var $this = $(this).click(function() {
 			      $('#dm_tool_bar').dmFrontToolBar('openCodeEditor', function($codeEditor)
 						{
-							$codeEditor.find('#dm_code_editor_file_open a[href='+$codeEditorLink.attr('href')+']').trigger('click');
+							$codeEditor.find('#dm_code_editor_file_open a[href='+$this.attr('href')+']').trigger('click');
 						});
-				  });
-		    }
+          });
+        });
 				
 	      $form.find('form').dmAjaxForm({
 					dataType: 'json',

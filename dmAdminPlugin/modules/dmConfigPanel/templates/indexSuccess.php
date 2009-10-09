@@ -5,11 +5,7 @@ use_javascript('lib.ui-tabs');
 use_javascript('core.tabForm');
 use_javascript('admin.configPanel');
 
-echo £o('div.dm_box.big.sitemap');
-
-echo £('h1.title', __('Edit configuration'));
-
-echo £o('div.dm_box_inner.dm_config_panel');
+echo £o('div.dm_config_panel.mt20');
 
 echo £o('ul');
 foreach($groups as $group)
@@ -46,7 +42,5 @@ foreach($settings as $group => $groupSettings)
 echo $form->renderSubmitTag(__('Save modifications'));
 
 echo '</form>';
-
-echo £c('div');
 
 echo £c('div');

@@ -25,9 +25,7 @@ class dmWidgetActions extends dmFrontBaseActions
 
     if ($request->isMethod('post'))
     {
-      $form->bind();
-
-      if ($form->isValid())
+      if ($form->bindAndValid($request))
       {
         $widget->values   = $form->getWidgetValues();
         $widget->cssClass = $form->getValue('cssClass');

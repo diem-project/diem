@@ -46,6 +46,13 @@ class dmForm extends sfFormSymfony
     return $this->key;
   }
 
+  
+  public function changeToHidden($fieldName)
+  {
+    $this->widgetSchema[$fieldName] = new sfWidgetFormInputHidden;
+    return $this;
+  }
+  
   /**
    * Renders the widget schema associated with this form.
    *
@@ -56,7 +63,6 @@ class dmForm extends sfFormSymfony
   public function render($attributes = array())
   {
     $attributes = dmString::toArray($attributes, true);
-
     return
     $this->open($attributes).
     '<ul class="dm_form_elements">'.
@@ -69,23 +75,35 @@ class dmForm extends sfFormSymfony
     $this->close();
   }
 
-  public function renderSubmitTag($name = 'submit', $class = null)
+  public function renderSubmitTag($name = 'submit', $attributes = array())
   {
-    return sprintf('<input type="submit" value="%s" %s/>', $name, $class ? 'class="'.$class.'" ' : '');
+    $attributes = array_merge(array(
+      'value' => $name,
+      'type' => 'submit'
+    ), dmString::toArray($attributes, true));
+
+    return sprintf('<input%s />', $this->getWidgetSchema()->attributesToHtml($attributes));
   }
 
-  /*
-   * utilise automatiquement la requete en cours
-   * @see lib/form/sfForm#bind()
+  
+  /**
+   * Binds the current form and save the to the database in one step.
+   *
+   * @param  array      An array of tainted values to use to bind the form
+   * @param  array      An array of uploaded files (in the $_FILES or $_GET format)
+   * @param  Connection An optional Doctrine Connection object
+   *
+   * @return Boolean    true if the form is valid, false otherwise
    */
-  public function bind(array $taintedValues = null, array $taintedFiles = null)
+  public function bindAndValid(sfWebRequest $request)
   {
-    $taintedValues = !empty($taintedValues) ? $taintedValues : self::$serviceContainer->getService('request')->getParameter($this->name);
-    $taintedFiles = !empty($taintedFiles) ? $taintedFiles : self::$serviceContainer->getService('request')->getFiles($this->name);
-
-    $return = parent::bind($taintedValues, $taintedFiles);
-
-    return $return;
+    return $this->bindRequest($request)->isValid();
+  }
+  
+  public function bindRequest(sfWebRequest $request)
+  {
+    $this->bind($request->getParameter($this->name), $request->getFiles($this->name));
+    return $this;
   }
 
   public function open($opt = array())
@@ -121,10 +139,6 @@ class dmForm extends sfFormSymfony
     if (isset($opt['action'])) unset($opt['action']);
 
     return $this->renderFormTag($action, $opt);
-
-    //    sfProjectConfiguration::getActive()->loadHelpers(array('Form', 'Tag', 'Url'));
-    //
-    //    return form_tag($action, $opt);
   }
 
   public function close()

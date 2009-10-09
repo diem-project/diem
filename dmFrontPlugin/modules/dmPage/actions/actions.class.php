@@ -38,9 +38,7 @@ class dmPageActions extends dmFrontBaseActions
     
     if ($request->isMethod('put'))
     {
-      $this->form->bind();
-
-      if ($this->form->isValid())
+      if ($this->form->bindAndValid($request))
       {
         $this->form->updateObject();
         $this->page = $this->form->getObject();
@@ -63,13 +61,19 @@ class dmPageActions extends dmFrontBaseActions
     }
     else
     {
-      $js = dmJsMinifier::transform(
-        file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), sfConfig::get('dm_front_asset'), 'js/dmFrontPageEditForm.js'))
+      $assetAliases = include($this->context->get('config_cache')->checkConfig('config/dm/assets.yml'));
+  
+      $js =
+      file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), $assetAliases['js.lib.ui-tabs'])).
+      dmJsMinifier::transform(
+      file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), $assetAliases['js.core.tabForm'])).';'.
+      file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), $assetAliases['js.front.pageEditForm']))
       );
     }
     
     $this->css = dmCssMinifier::transform(
-      file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), sfConfig::get('dm_front_asset'), 'css/pageEditForm.css'))
+      file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), $assetAliases['css.lib.ui-tabs'])).
+      file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), $assetAliases['css.front.pageEditForm']))
     );
     
     return $this->renderJson(array(

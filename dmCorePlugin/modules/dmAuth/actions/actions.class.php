@@ -9,7 +9,10 @@ class dmAuthActions extends BasesfGuardAuthActions
   {
     if ($request->isXmlHttpRequest())
     {
-      return $this->ajaxLogin($request);
+      $this->getResponse()->setHeaderOnly(true);
+      $this->getResponse()->setStatusCode(401);
+
+      return sfView::NONE;
     }
     
     if (sfConfig::get('sf_environment') != 'test' && !$this->getUser()->getBrowser()->isModern())

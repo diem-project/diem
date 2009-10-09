@@ -52,7 +52,12 @@ class dmFrontLayoutHelper extends dmCoreLayoutHelper
   
   public function renderBodyTag()
   {
-    return '<body class="'.$this->page->get('module').'_'.$this->page->get('action').'">';
+    $bodyClass = dmArray::toHtmlCssClasses(array(
+      $this->page->get('module').'_'.$this->page->get('action'),
+      $this->page->getPageView()->get('Layout')->get('css_class')
+    ));
+    
+    return '<body class="'.$bodyClass.'">';
   }
 
   protected function getMetas()

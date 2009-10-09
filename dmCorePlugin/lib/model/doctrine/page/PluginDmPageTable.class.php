@@ -194,6 +194,14 @@ class PluginDmPageTable extends myDoctrineTable
     ->fetchOne();
   }
   
+  public function fetchRootWithI18n($culture = null)
+  {
+    return $this->createQuery('p')
+    ->withI18n($culture)
+    ->where('p.lft = ?', 1)
+    ->fetchOne();
+  }
+  
   public function findOneByRecordWithI18n(myDoctrineRecord $record)
   {
     $module = $record->getDmModule()->getKey();

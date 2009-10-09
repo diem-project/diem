@@ -1,6 +1,6 @@
 <?php
 
-class dmDoctrineMigrateTask extends dmServiceTask
+class dmDoctrineMigrateTask extends sfDoctrineGenerateMigrationsDiffTask
 {
   /**
    * @see sfTask
@@ -9,14 +9,8 @@ class dmDoctrineMigrateTask extends dmServiceTask
   {
     parent::configure();
 
-    $this->addOptions(array(
-    ));
-
     $this->namespace = 'dm';
     $this->name = 'migrate';
-    $this->briefDescription = 'Migrate doctrine database';
-
-    $this->detailedDescription = 'Migrate doctrine database';
   }
 
   /**
@@ -24,7 +18,16 @@ class dmDoctrineMigrateTask extends dmServiceTask
    */
   protected function execute($arguments = array(), $options = array())
   {
-    return $this->executeService("dmDoctrineMigrate", $options);
+    $dir = sfConfig::get('sf_lib_dir').'/migration/doctrine';
+    if (!is_dir($dir))
+    {
+      mkdir($dir, 0777, true);
+    }
+    
+    require_once(dmOs::join(sfConfig::get('dm_core_dir'), 'lib/doctrine/task/Doctrine_Task_DmGenerateMigrationsDiff.php'));
+
+    $databaseManager = new sfDatabaseManager($this->configuration);
+    $this->callDoctrineCli('dm-generate-migrations-diff');
   }
 
 }

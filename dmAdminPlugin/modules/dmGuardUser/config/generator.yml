@@ -24,7 +24,6 @@ generator:
           - _profile
           - email
           - groups_list
-          - permissions_list
           - is_active
           - is_super_admin
           - last_login

@@ -36,11 +36,11 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
   
   protected function processSortForm($form)
   {
-    if ($this->getRequest()->isMethod('post'))
+    $request = $this->getRequest();
+    
+    if ($request->isMethod('post'))
     {
-      $form->bind();
-      
-      if($form->isValid())
+      if($form->bindAndValid($request))
       {
         try
         {
@@ -59,6 +59,53 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
         $this->getUser()->logInfo($this->context->getI18n()->__('The items have been sorted successfully'), true);
         
         return $this->redirect($this->getRequest()->getUri());
+      }
+    }
+  }
+  
+  protected function processSearchQuery(dmDoctrineQuery $query, $search)
+  {
+    $searchParts = explode(' ', $search);
+    
+    $alias = $query->getRootAlias();
+    
+    foreach($searchParts as $searchPart)
+    {
+      $ors = array();
+      $params = array();
+      
+      foreach($this->getDmModule()->getTable()->getColumns() as $columnName => $column)
+      {
+        switch($column['type'])
+        {
+          case 'blob':
+          case 'clob':
+          case 'string':
+          case 'enum':
+          case 'date':
+            $ors[] = $alias.'.'.$columnName.' LIKE ?';
+            $params[] = '%'.$searchPart.'%';
+            break;
+          case 'integer':
+          case 'float':
+          case 'decimal':
+            if (is_numeric($searchPart))
+            {
+              $ors[] = $alias.'.'.$columnName.' = ?';
+              $params[] = $searchPart;
+            }
+            break;
+          case 'boolean':
+          case 'time':
+          case 'timestamp':
+          case 'date':
+          default:
+        }
+      }
+      
+      if(count($ors))
+      {
+        $query->addWhere(implode(' OR ', $ors), $params);
       }
     }
   }

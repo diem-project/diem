@@ -127,9 +127,7 @@ class dmMediaLibraryActions extends dmAdminBaseActions
       dmDb::table('DmMedia')->find(dmArray::get($request->getParameter('dm_media'), 'id'))
     );
 
-    $this->form->bind();
-
-    if ($this->form->isValid())
+    if ($this->form->bindAndValid($request))
     {
       if($object = $this->form->updateObject())
       {
@@ -221,9 +219,7 @@ class dmMediaLibraryActions extends dmAdminBaseActions
       'can not find folder'
     );
 
-    $this->form->bind();
-
-    if ($this->form->isValid())
+    if ($this->form->bindAndValid($request))
     {
       $oldName = $this->form->getObject()->getName();
 

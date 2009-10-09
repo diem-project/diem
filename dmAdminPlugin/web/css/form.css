@@ -34,6 +34,7 @@
 .sf_admin_form fieldset .fieldset_title > span.fieldset_name {
   line-height: 22px;
   cursor: default;
+  font-size: 14px;
 }
 
 .sf_admin_form fieldset .ui-accordion-header {
@@ -59,7 +60,7 @@
 }
 
 .sf_admin_form .fieldset_none {
-  border-top: 1px solid #aaa;
+  border-top: 1px solid #D3D3D3;
 }
 
 .sf_admin_form .sf_admin_form_row {

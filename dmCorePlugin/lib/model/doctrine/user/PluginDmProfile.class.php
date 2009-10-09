@@ -15,21 +15,31 @@ abstract class PluginDmProfile extends BaseDmProfile
   
   public function __toString()
   {
-    return $this->User->__toString();
+    return $this->get('User')->__toString();
   }
-  
+
   public function getUsername()
   {
-    return $this->User->username;
+    return $this->get('User')->get('username');
+  }
+  
+  public function setUsername($username)
+  {
+    return $this->get('User')->set('username', $username);
   }
   
   public function getEmail()
   {
-    return $this->User->email;
+    return $this->get('User')->get('email');
+  }
+  
+  public function setEmail($email)
+  {
+    return $this->get('User')->set('email', $email);
   }
   
   public function getLastLogin()
   {
-    return $this->User->lastLogin;
+    return $this->get('User')->get('last_login');
   }
 }

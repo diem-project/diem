@@ -13,9 +13,7 @@ class dmZoneActions extends dmFrontBaseActions
 
     if ($request->isMethod('put'))
     {
-      $this->form->bind();
-
-      if ($this->form->isValid())
+      if ($this->form->bindAndValid($request))
       {
         $this->form->updateObject();
 

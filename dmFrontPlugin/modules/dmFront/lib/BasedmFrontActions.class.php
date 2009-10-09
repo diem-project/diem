@@ -63,7 +63,7 @@ class BasedmFrontActions extends dmFrontBaseActions
         }
       }
     }
-    
+
     foreach($moduleActions as $moduleAction)
     {
       list($module, $action) = explode("/", $moduleAction);

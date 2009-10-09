@@ -10,7 +10,7 @@
  * @author     ##NAME## <##EMAIL##>
  * @version    SVN: $Id: Builder.php 5845 2009-06-09 07:36:57Z jwage $
  */
-class PluginCatalogue extends BaseCatalogue
+abstract class PluginCatalogue extends BaseCatalogue
 {
   public static function retrieveBySourceTargetSpace($source, $target, $space)
   {

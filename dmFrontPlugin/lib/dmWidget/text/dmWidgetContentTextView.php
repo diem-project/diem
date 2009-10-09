@@ -48,7 +48,7 @@ class dmWidgetContentTextView extends dmWidgetContentMediaView
       $html .= dmHelper::£('h2.text_title.outside', $title);
     }
 
-    $html .= dmHelper::£o('div.text_content.clearfix');
+    $html .= dmHelper::£o('div.text_content');
   
       if ($media && $mediaPosition != 'bottom')
       {
@@ -60,7 +60,7 @@ class dmWidgetContentTextView extends dmWidgetContentMediaView
         $html .= dmHelper::£('h2.text_title.inside', $title);
       }
     
-      $html .= dmHelper::£('text_markdown', dmContext::getInstance()->get('markdown')->toHtml($text));
+      $html .= dmHelper::£('div.markdown.text_markdown', dmContext::getInstance()->get('markdown')->toHtml($text));
     
       if ($media && $mediaPosition == 'bottom')
       {

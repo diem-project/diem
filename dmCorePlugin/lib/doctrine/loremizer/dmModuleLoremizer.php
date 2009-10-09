@@ -22,7 +22,7 @@ class dmModuleLoremizer
 
     for($it = $nbRecords; $it < $nbMax; $it++)
     {
-      $collection[] = dmRecordLoremizer::loremize($table->getComponentName());
+      $collection[] = dmRecordLoremizer::loremize($table->getComponentName(), false, true);
     }
 
     try

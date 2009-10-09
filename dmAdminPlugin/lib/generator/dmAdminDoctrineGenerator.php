@@ -35,16 +35,21 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
     {
       $names[] = $name;
 
-      $label = dmString::humanize($name);
       if ($localRelation = $this->table->getRelationHolder()->getLocalByColumnName($name))
       {
-        if ($module = $this->moduleManager->getModuleByModel($localRelation->getClass()))
-        {
-          if ($module->isProject())
-          {
-            $label = $module->getName();
-          }
-        }
+//        if ($module = $this->moduleManager->getModuleByModel($localRelation->getClass()))
+//        {
+//          $label = $module->getName();
+//        }
+//        else
+//        {
+//          $label = dmString::humanize($localRelation->getAlias());
+//        }
+        $label = dmString::humanize($localRelation->getAlias());
+      }
+      else
+      {
+        $label = dmString::humanize($name);
       }
       $fields[$name] = array_merge(array(
         'is_link'      => (boolean) $column->isPrimaryKey(),
@@ -199,11 +204,11 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
     }
     else
     {
-      $html = 'htmlentities(dmString::truncate('.$html.', '.$field->getConfig('truncate', sfConfig::get('dm_admin_list_truncate', 120)).'), ENT_QUOTES, \'UTF-8\')';
+      $html = 'htmlentities(dmString::truncate('.$html.', '.$field->getConfig('truncate', sfConfig::get('dm_admin_list_truncate', 120)).'), ENT_COMPAT, \'UTF-8\')';
       
       if ($this->module->getTable()->isMarkdownColumn($fieldName))
       {
-        $html = "str_replace(array('*', '#'), '', ".$html.");";
+        $html = "str_replace(array('*', '#'), '', ".$html.")";
       }
     }
 

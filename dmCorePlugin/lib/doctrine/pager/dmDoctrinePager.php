@@ -2,6 +2,8 @@
 
 class dmDoctrinePager extends sfDoctrinePager
 {
+  protected
+  $collection;
   
   /**
    * Get all the results for the pager instance
@@ -17,7 +19,17 @@ class dmDoctrinePager extends sfDoctrinePager
       return $this->results;
     }
     
-    return $this->results = $this->getQuery()->execute(array(), $hydrationMode)->getData();
+    return $this->results = $this->getCollection($hydrationMode)->getData();
+  }
+  
+  public function getCollection($hydrationMode = Doctrine::HYDRATE_RECORD)
+  {
+    if(null !== $this->collection)
+    {
+      return $this->collection;
+    }
+    
+    return $this->collection = $this->getQuery()->execute(array(), $hydrationMode);
   }
 
   public function getCountQuery()

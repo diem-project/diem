@@ -20,81 +20,6 @@
  */
 class dmWebDebugPanelDoctrine extends sfWebDebugPanelDoctrine
 {
-  /**
-   * Get the title/icon for the panel
-   *
-   * @return string $html
-   */
-  public function getTitle()
-  {
-    if ($events = $this->getDoctrineEvents())
-    {
-      return '<img src="'.$this->webDebug->getOption('image_root_path').'/database.png" alt="SQL queries" /> '.count($events);
-    }
-  }
-
-  /**
-   * Get the verbal title of the panel
-   *
-   * @return string $title
-   */
-  public function getPanelTitle()
-  {
-    return 'SQL queries';
-  }
-
-  /**
-   * Get the html content of the panel
-   *
-   * @return string $html
-   */
-  public function getPanelContent()
-  {
-    return '
-      <div id="sfWebDebugDatabaseLogs">
-        <ol>'.implode("\n", $this->getSqlLogs()).'</ol>
-      </div>
-    ';
-  }
-
-  /**
-   * Hook to allow the loading of the Doctrine webdebug toolbar with the rest of the panels
-   *
-   * @param sfEvent $event 
-   * @return void
-   */
-  static public function listenToAddPanelEvent(sfEvent $event)
-  {
-    $event->getSubject()->setPanel('db', new self($event->getSubject()));
-  }
-
-  /**
-   * Returns an array of Doctrine query events.
-   * 
-   * @return array
-   */
-  protected function getDoctrineEvents()
-  {
-    $databaseManager = sfContext::getInstance()->getDatabaseManager();
-
-    $events = array();
-    foreach ($databaseManager->getNames() as $name)
-    {
-      $database = $databaseManager->getDatabase($name);
-      if ($database instanceof sfDoctrineDatabase && $profiler = $database->getProfiler())
-      {
-        foreach ($profiler->getQueryExecutionEvents() as $event)
-        {
-          $events[$event->getSequence()] = $event;
-        }
-      }
-    }
-
-    // sequence events
-    ksort($events);
-
-    return $events;
-  }
 
   /**
    * Builds the sql logs and returns them as an array.
@@ -115,7 +40,7 @@ class dmWebDebugPanelDoctrine extends sfWebDebugPanelDoctrine
       // interpolate parameters
       foreach ($params as $param)
       {
-        $query = join(var_export($param, true), explode('?', $query, 2));
+        $query = join(var_export(is_scalar($param) ? $param : (string) $param, true), explode('?', $query, 2));
       }
 
       // slow query

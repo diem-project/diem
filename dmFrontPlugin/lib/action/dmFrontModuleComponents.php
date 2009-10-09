@@ -60,46 +60,52 @@ class dmFrontModuleComponents extends myFrontBaseComponents
     /*
      * Apply order
      */
-    if ($this->orderType == 'rand')
+    if(!empty($this->orderType))
     {
-      $query->addOrderBy('RAND()');
-    }
-    else
-    {
-      $query->addOrderBy($this->orderField.' '.$this->orderType);
+      if ($this->orderType == 'rand')
+      {
+        $query->addOrderBy('RAND()');
+      }
+      else
+      {
+        $query->addOrderBy($this->orderField.' '.$this->orderType);
+      }
     }
 
     /*
      * Apply filters
      */
-    foreach($this->filters as $filterKey => $filterValue)
+    if(!empty($this->filters))
     {
-      if (($filterModule = $this->getDmModule()->getAncestor($filterKey)) || ($filterModule = $this->getDmModule()->getAssociation($filterKey)))
+      foreach($this->filters as $filterKey => $filterValue)
       {
-        if ($filterValue)
+        if (($filterModule = $this->getDmModule()->getAncestor($filterKey)) || ($filterModule = $this->getDmModule()->getAssociation($filterKey)))
         {
-          $filterRecordId = $filterValue;
-
-          if (!$filterRecordId)
+          if ($filterValue)
           {
-            throw new dmException(sprintf('No filter record found for %s %d', $filterModule, $filterValue));
+            $filterRecordId = $filterValue;
+  
+            if (!$filterRecordId)
+            {
+              throw new dmException(sprintf('No filter record found for %s %d', $filterModule, $filterValue));
+            }
           }
+          else
+          {
+            $filterRecordId = $this->getPage()->getRecord()->getAncestorRecordId($filterModule->getModel());
+  
+            if (!$filterRecordId)
+            {
+              throw new dmException(sprintf('Can not determine auto filter %s for page %s', $filterModule, $page));
+            }
+          }
+  
+          $query->whereAncestorId($filterModule->getModel(), $filterRecordId, $this->getDmModule()->getModel());
         }
         else
         {
-          $filterRecordId = $this->getPage()->getRecord()->getAncestorRecordId($filterModule->getModel());
-
-          if (!$filterRecordId)
-          {
-            throw new dmException(sprintf('Can not determine auto filter %s for page %s', $filterModule, $page));
-          }
+          throw new dmException(sprintf('Can not process filter %s on module %s', $filterKey, $this->getDmModule()));
         }
-
-        $query->whereAncestorId($filterModule->getModel(), $filterRecordId, $this->getDmModule()->getModel());
-      }
-      else
-      {
-        throw new dmException(sprintf('Can not process filter %s on module %s', $filterKey, $this->getDmModule()));
       }
     }
 

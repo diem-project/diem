@@ -97,6 +97,19 @@ abstract class dmDoctrineQuery extends Doctrine_Query
     ->leftJoin($me.'.Translation '.$translation.' ON '.$me.'.id = '.$translation.'.id AND '.$translation.'.lang = ?', $culture);
   }
 
+  
+  /*
+   * Join profile for this columnName or alias
+   * return @dmDoctrineQuery $this
+   */
+  public function withDmProfile($alias)
+  {
+    $profileJoinAlias = dmString::lcfirst($alias);
+    $userJoinAlias = $profileJoinAlias.'User';
+    
+    return $this->leftJoin(sprintf('%s.%s %s, %s.%s %s', $this->getRootAlias(), $alias, $profileJoinAlias, $profileJoinAlias, 'User', $userJoinAlias));
+  }
+  
   /*
    * Join media for this columnName or alias
    * return @dmDoctrineQuery $this
@@ -142,16 +155,28 @@ abstract class dmDoctrineQuery extends Doctrine_Query
     {
       throw new dmException(sprintf('No module with model %s', $model));
     }
+    
+    $ancestorModule = self::$moduleManager->getModuleByModel($ancestorRecordModel);
   
-    if ($module->hasAssociation($ancestorModule = self::$moduleManager->getModuleByModel($ancestorRecordModel)))
+    if ($module->hasLocal($ancestorModule))
+    {
+      $this->addWhere(sprintf('%s.%s = ?',
+        $this->getRootAlias(),
+        $module->getTable()->getRelationHolder()->getLocalByClass($ancestorRecordModel)->getLocal()
+      ),
+        $ancestorRecordId
+      );
+    }
+    elseif ($module->hasAssociation($ancestorModule))
     {
       $this->leftJoin(sprintf('%s.%s %s',
         $this->getRootAlias(),
         $module->getTable()->getRelationHolder()->getByClass($ancestorRecordModel)->getAlias(),
         $ancestorModule->getKey()
-      ));
+      ))
+      ->addWhere($ancestorModule->getKey().'.id = ?', $ancestorRecordId);
     }
-    elseif($ancestorModule = $module->getAncestor($ancestorRecordModel))
+    elseif($module->hasAncestor($ancestorModule))
     {
       $current      = $module;
       $currentAlias = $this->getRootAlias();
@@ -164,7 +189,7 @@ abstract class dmDoctrineQuery extends Doctrine_Query
           return null;
         }
   
-        $this->leftJoin($currentAlias.'.'.$relation['alias'].' '.$ancestorKey);
+        $this->leftJoin($currentAlias.'.'.$relation->getAlias().' '.$ancestorKey);
   
         if ($ancestor->is($ancestorModule))
         {
@@ -174,14 +199,14 @@ abstract class dmDoctrineQuery extends Doctrine_Query
         $current       = $ancestor;
         $currentAlias  = $ancestor->getKey();
       }
+      
+      $this->addWhere($ancestorModule->getKey().'.id = ?', $ancestorRecordId);
     }
     else
     {
       throw new dmRecordException(sprintf('%s is not an ancestor of %s, nor associated', $ancestorRecordModel, $module));
       return null;
     }
-    
-    $this->addWhere($ancestorModule->getKey().'.id = ?', $ancestorRecordId);
 
     return $this;
   }

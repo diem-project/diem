@@ -234,7 +234,7 @@ class dmUpdateSeoService extends dmService
     $moduleModel = $module->getModel();
     $moduleKey = $module->getKey();
 
-    preg_match_all('/%([\w\d-]+)%/i', implode('', $patterns), $results);
+    preg_match_all('/%([\w\d\.-]+)%/i', implode('', $patterns), $results);
 
     $placeholders = array_unique($results[1]);
 

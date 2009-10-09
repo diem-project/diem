@@ -21,9 +21,9 @@ abstract class dmDoctrineCollection extends Doctrine_Collection
    */
   public function processDiff()
   {
-    if ($translationPos = strpos($this->getTable()->getComponentName(), 'Translation'))
+    if ($translationPos = strpos($this->_table->getComponentName(), 'Translation'))
     {
-      $baseRecordClass = substr($this->getTable()->getComponentName(), 0, $translationPos);
+      $baseRecordClass = substr($this->_table->getComponentName(), 0, $translationPos);
       
       if ($baseTable = dmDb::table($baseRecordClass))
       {

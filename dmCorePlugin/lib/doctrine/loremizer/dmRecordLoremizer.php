@@ -8,7 +8,7 @@ class dmRecordLoremizer
 {
   protected $record;
 
-  public static function loremize($classOrObject, $override = false)
+  public static function loremize($classOrObject, $override = false, $createAssociations = false)
   {
     if ($classOrObject instanceof myDoctrineRecord)
     {
@@ -25,7 +25,7 @@ class dmRecordLoremizer
 
     $loremizer = new self($object);
 
-    return $loremizer->execute($override);
+    return $loremizer->execute($override, $createAssociations);
   }
 
   public function __construct(myDoctrineRecord $record)
@@ -33,7 +33,7 @@ class dmRecordLoremizer
     $this->record = $record;
   }
 
-  public function execute($override = false)
+  public function execute($override = false, $createAssociations = false)
   {
     $this->record->clearRelated();
     
@@ -67,6 +67,28 @@ class dmRecordLoremizer
       }
 
       $this->record->set($columnName, $val);
+    }
+    
+    if ($createAssociations)
+    {
+      foreach($this->record->getTable()->getRelationHolder()->getAssociations() as $relation)
+      {
+        if (rand(0, 3))
+        {
+          $ids = dmDb::query($relation->getClass().' t')
+          ->select('t.id')
+          ->orderBy('RANDOM()')
+          ->limit(rand(1, 5))
+          ->fetchPDO();
+          
+          foreach($ids as $index => $array)
+          {
+            $ids[$index] = $array[0];
+          }
+          
+          $this->record->link($relation->getAlias(), array_unique($ids));
+        }
+      }
     }
     
     return $this->record;

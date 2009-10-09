@@ -328,7 +328,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     }
 
     return dmDb::query($ancestorModule->getModel().' '.$ancestorModule->getKey())
-    ->whereDescendantId(get_class($this), $this->id, $ancestorModule->getModel())
+    ->whereDescendantId($module->getModel(), $this->get('id'), $ancestorModule->getModel())
     ->fetchRecord();
 
     //    $ancestorRecord = $this;
@@ -363,7 +363,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
   {
     if (get_class($this) == $class)
     {
-      return $this->id;
+      return $this->get('id');
     }
 
     $module = $this->getDmModule();
@@ -374,11 +374,12 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
       throw new dmRecordException(sprintf('%s is not an ancestor of %s', $ancestorKey, $module));
       return null;
     }
+    
+    $query = dmDb::query($ancestorModule->getModel().' '.$ancestorModule->getKey())
+    ->whereDescendantId($module->getModel(), $this->get('id'), $ancestorModule->getModel())
+    ->select($ancestorModule->getKey().'.id');
 
-    return dmDb::query($ancestorModule->getModel().' '.$ancestorModule->getKey())
-    ->whereDescendantId($module->getModel(), $this->id, $ancestorModule->getModel())
-    ->select($ancestorModule->getKey().'.id')
-    ->fetchValue();
+    return $query->fetchValue();
     //
     //    $ancestorRecord = $this;
     //    foreach(array_reverse($module->getPath()) as $aModule)
@@ -427,7 +428,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     elseif($relation instanceof Doctrine_Relation_ForeignKey)
     {
       return $relation['table']->createQuery('foreign')
-      ->where('foreign.'.$relation->getForeignColumnName().' = ?', $this->id)
+      ->where('foreign.'.$relation->getForeignColumnName().' = ?', $this->get('id'))
       ->dmCache()
       ->fetchRecord(array(), $hydrationMode);
     }
@@ -435,7 +436,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     {
       return $relation['table']->createQuery('foreign')
       ->leftJoin('foreign.'.$relation['refTable']->getComponentName().' ref_table')
-      ->where('ref_table.'.$relation['local'].' = ?', $this->id)
+      ->where('ref_table.'.$relation['local'].' = ?', $this->get('id'))
       ->dmCache()
       ->fetchRecord(array(), $hydrationMode);
     }
@@ -467,7 +468,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     {
       return $relation['table']->createQuery('foreign')
       ->select('foreign.id')
-      ->where('foreign.'.$relation->getForeignColumnName().' = ?', $this->id)
+      ->where('foreign.'.$relation->getForeignColumnName().' = ?', $this->get('id'))
       ->limit(1)
       ->dmCache()
       ->fetchValue();
@@ -476,7 +477,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     {
       return $relation->getAssociationTable()->createQuery('association')
       ->select('association.'.$relation['foreign'])
-      ->where('association.'.$relation['local'].' = ?', $this->id)
+      ->where('association.'.$relation['local'].' = ?', $this->get('id'))
       ->limit(1)
       ->dmCache()
       ->fetchValue();

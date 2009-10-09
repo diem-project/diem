@@ -130,12 +130,14 @@ class dmDataService extends dmService
       'title_prefix' => array(
         'default_value' => '',
         'description' => 'Append something at the beginning of all pages title',
-        'group_name' =>'seo'
+        'group_name' =>'seo',
+        'credentials' => 'static_metas'
       ),
       'title_suffix' => array(
         'default_value' => ' | '.dmString::humanize(dmProject::getKey()),
         'description' => 'Append something at the end of all pages title',
-        'group_name' =>'seo'
+        'group_name' =>'seo',
+        'credentials' => 'static_metas'
       )
     );    
 
@@ -322,6 +324,7 @@ class dmDataService extends dmService
       "export_table" => "Export table contents",
       "sitemap" => "Regenerate sitemap",
       "automatic_metas" => "Configure automatic pages metas",
+      "static_metas" => "Configure static pages metas",
       "metas_validation" => "See meta validation",
       "google_analytics" => "Configure google analytics",
       "google_webmaster_tools" => "Configure google webmaster tools",
@@ -372,6 +375,7 @@ class dmDataService extends dmService
           'admin',
           'sitemap',
           'automatic_metas',
+          'static_metas',
           'metas_validation',
           'google_analytics',
           'google_webmaster_tools',
@@ -381,7 +385,8 @@ class dmDataService extends dmService
           'page_bar_front',
           'user_log',
           'action_log',
-          'config_panel'
+          'config_panel',
+          'site_view'
         )
       ),
       "integrator" => array(
@@ -415,7 +420,8 @@ class dmDataService extends dmService
           'translation',
           'accessibility',
           'layout',
-          'ihm_settings'
+          'ihm_settings',
+          'site_view'
         )
       ),
       "webmaster 1" => array(
@@ -423,7 +429,6 @@ class dmDataService extends dmService
         'permissions' => array(
           'admin',
           'content',
-          'export_table',
           'tool_bar_admin',
           'page_bar_admin',
           'media_bar_admin',
@@ -436,7 +441,20 @@ class dmDataService extends dmService
           'config_panel',
           'translation',
           'user_profile',
-          'accessibility'
+          'accessibility',
+          'site_view'
+        )
+      ),
+      "writer" => array(
+        'description' => "Writer",
+        'permissions' => array(
+          'admin',
+          'content',
+          'tool_bar_admin',
+          'user_log',
+          'action_log',
+          'accessibility',
+          'site_view'
         )
       )
     );

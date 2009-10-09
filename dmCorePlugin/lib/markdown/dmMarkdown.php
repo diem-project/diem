@@ -31,7 +31,13 @@ class dmMarkdown extends MarkdownExtra_Parser
 
   protected function postTransform($text)
   {
-    return trim($text, "\n");
+    // remove first and last line feed
+    $text = trim($text, "\n");
+    
+    // add the "first_p" css class to the first p
+    $text = dmString::str_replace_once('<p>', '<p class="first_p">', $text);
+    
+    return $text;
   }
 
   protected function cleanText($text)

@@ -1,5 +1,7 @@
 parameters:
 
+  form_manager.class:         dmFormManager
+
   doctrine_pager.class:       dmFrontDoctrinePager
 
   link_tag.class:             dmFrontLinkTag
@@ -29,6 +31,10 @@ parameters:
     config_file:              'config/dm/widget_types.yml'        
  
 services:
+
+  form_manager:
+    class:                    %form_manager.class%
+    shared:                   true
 
   doctrine_pager:
     class:                    %doctrine_pager.class%

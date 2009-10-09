@@ -14,7 +14,7 @@ class dmWidgetAdvancedSearchResultsView extends dmWidgetPluginView
     
     $form = new mySearchForm();
     
-    $form->bind();
+    $form->bindRequest(dm::getRequest());
     
     $vars['query'] = $form->getValue('query');
     

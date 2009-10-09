@@ -37,9 +37,7 @@ class dmConfigPanelActions extends dmAdminBaseActions
 
     if($request->isMethod('post'))
     {
-      $this->form->bind();
-
-      if ($this->form->isValid())
+      if ($this->form->bindAndValid($request))
       {
         $formValues = $this->form->getValues();
         foreach($this->settings as $group => $settings)

@@ -68,40 +68,41 @@ div.dm_form_pagination strong {
 	float: left;
 }
 
-.sf_admin_list table {
+div.sf_admin_list table {
   width: 100%;
   color:#444;
 }
 
-.sf_admin_list thead tr,
-.sf_admin_list tfoot tr {
+div.sf_admin_list thead tr,
+div.sf_admin_list tfoot tr {
   background:#E6E6E6 url(../../core/images/default_bg.png) repeat-x scroll 50% 50%;
   border:1px solid #D3D3D3;
   color:#666;
 }
 
-.sf_admin_list thead tr {
+div.sf_admin_list thead tr {
   border-top: none;
 }
 
-.sf_admin_list tfoot tr {
+div.sf_admin_list tfoot tr {
   border-bottom: none;
 }
 
-.sf_admin_list th {
+div.sf_admin_list th {
 	border: none;
   padding: 3px 5px;
 }
 
-.sf_admin_list th a {
+div.sf_admin_list th a {
   color: #555;
+  white-space: nowrap;
 }
 
-.sf_admin_list tr.even {
+div.sf_admin_list tr.even {
 	background: #F0F4FC;
 }
 
-.sf_admin_list td {
+div.sf_admin_list td {
   border: none;
   padding: 5px 5px;
   color: #222;
