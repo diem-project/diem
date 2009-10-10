@@ -1,4 +1,5 @@
-.sf_admin_form form {
+#sf_admin_container {
+  margin-top: 10px;
 }
 
 /* embedded form */

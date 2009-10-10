@@ -9,7 +9,7 @@
     printf('<input type="submit" class="dm_submit ui-corner-right" value="%s" />', __('Search'));
     if ($currentSearch)
     {
-      printf('<a href="%s" class="s16 s16_cross ml5 mr5" title="%s">&nbsp;</a>', url_for1(array('sf_route' => '<?php echo $this->getModule()->getUnderscore(); ?>')).'?search=', __('Cancel search'));
+      printf('<a href="%s" class="s16block s16_cross dm_cancel_search" title="%s">&nbsp;</a>', url_for1(array('sf_route' => '<?php echo $this->getModule()->getUnderscore(); ?>')).'?search=', __('Cancel search'));
     }
   ?]
   </form>

@@ -1,24 +1,28 @@
 #breadCrumb {
   height: 19px;
-  background: url(../../core/images/default_bg.png) center left repeat-x;
-  border: 1px solid #ccc;
-  -moz-border-radius: 4px;
 }
 
 #breadCrumb li {
   display: block;
   float: left;
+  height: 19px;
+  line-height: 19px;
+  color: #666;
 }
 
 #breadCrumb a.link,
 #breadCrumb h1 {
   display: block;
-  padding: 0 20px 0 10px;
-  height: 19px;
-  line-height: 19px;
-  background: url(../images/breadCrumb/chevron.png) top right no-repeat;
   color: #666;
   text-decoration: none;
+  height: 19px;
+  line-height: 19px;
+}
+
+#breadCrumb a.link,
+#breadCrumb h1,
+#breadCrumb li.sep {
+  padding: 0 5px;
 }
 
 #breadCrumb a.link:hover {
@@ -34,5 +38,41 @@
 
 #breadCrumb a.home {
 	padding-top: 2px;
+	padding-left: 0;
   height: 17px;
+}
+
+#breadCrumb div.dm_mini_search_form {
+  float: right;
+}
+
+#dm_module_search_input {
+  font-size: 13px;
+	height: 17px;
+  padding: 2px 5px 0 5px;
+  width: 150px;
+  border: 1px solid #D3D3D3;
+  border-right: none;
+  float: left;
+}
+
+#breadCrumb div.dm_mini_search_form input.dm_submit {
+  font-size: 12px;
+  background: url(../../core/images/default_bg.png) center left repeat-x;
+  color: #444;
+  cursor: pointer;
+  padding: 2px 5px 1px 5px;
+  border: 1px solid #D3D3D3;
+  border-left: none;
+  float: left;
+}
+
+#breadCrumb div.dm_mini_search_form input.dm_submit:hover {
+  color: #046BCA;
+}
+
+#breadCrumb div.dm_mini_search_form a.dm_cancel_search {
+	float: left;
+	margin-left: 5px;
+	margin-top: 3px;
 }

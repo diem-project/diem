@@ -5,28 +5,14 @@
   $appliedFilters = $sf_user->getAppliedFiltersOnModule('<?php echo $this->getModuleName(); ?>');
 ?]
 
-<div id="sf_admin_container" class='{baseUrl: "[?php echo url_for('<?php echo $this->getUrlForAction('list') ?>') ?]"}'>
-  
-  <div class="dm_search_bar clearfix">
-  [?php
-    include_partial('<?php echo $this->getModuleName() ?>/search');
-    
-    $maxPerPages = array();
-    $message = __('elements per page');
-    foreach(sfConfig::get('dm_admin_max_per_page', array(10)) as $maxPerPage)
-    {
-      $maxPerPages[$maxPerPage] = $maxPerPage.' '.$message;
-    }
+[?php
+  slot('dm.mini_search_form');
+  include_partial('<?php echo $this->getModuleName() ?>/search');
+  end_slot();
+?]
 
-    $currentMaxPerPage = $sf_user->getAttribute(
-      '<?php echo $this->getModuleName() ?>.max_per_page',
-      <?php echo isset($this->config['list']['max_per_page']) ? (integer) $this->config['list']['max_per_page'] : 10 ?>,
-      'admin_module'
-    );
-    $maxPerPageSelect = new sfWidgetFormSelect(array('choices' => $maxPerPages));
-    echo '<div class="dm_max_per_page">'.__('Display').' '.$maxPerPageSelect->render('dm_max_per_page', $currentMaxPerPage).'</div>';
-  ?]
-  </div>
+<div id="sf_admin_container" class='{baseUrl: "[?php echo url_for('<?php echo $this->getUrlForAction('list') ?>') ?]"}'>
+
   <div id="list_header" class="clearfix">
     [?php
       if (count($appliedFilters))

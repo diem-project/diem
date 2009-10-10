@@ -3,6 +3,7 @@
 }
 
 #sf_admin_container {
+	margin-top: 10px;
 }
 
 div.sf_admin_list {
@@ -14,43 +15,38 @@ div.sf_admin_list {
 	margin: 20px 0;
 }
 
-div.dm_max_per_page {
-	float: right;
-	color: #444;
-}
-
 #list_header .dm_active_search {
 	margin-bottom: 6px;
 	color: #444;
 }
 
-.dm_list_action_bar {
+div.dm_list_action_bar {
   border: 1px solid #D3D3D3;
   height: 20px;
   padding: 4px 5px 0 5px;
 }
 
-.dm_list_action_bar_top {
+div.dm_list_action_bar_top {
   background:#EDEDED;
   border-bottom: none;
   -moz-border-radius: 4px 4px 0 0;
 }
 
-.dm_list_action_bar_bottom {
+div.dm_list_action_bar_bottom {
   background:#eeeeee;
   border-top: none;
   -moz-border-radius: 0 0 4px 4px;
 }
-.dm_list_action_bar > div {
+div.dm_list_action_bar > div {
   float: left;
   margin-right: 10px;
 }
-.dm_list_action_bar > div.sf_admin_action a {
+div.dm_list_action_bar > div.sf_admin_action a {
   display: block;
   height: 16px;
 }
 
-div.dm_form_pagination {
+div.dm_list_action_bar > div.dm_form_pagination {
 	float: right;
 	margin-right: 0;
 }
@@ -59,6 +55,12 @@ div.dm_form_pagination > a,
 div.dm_form_pagination > div {
   float: left;
   margin: 0 3px;
+}
+
+div.dm_list_action_bar > select.dm_max_per_page {
+  float: right;
+  margin-top:-3px;
+  margin-right: 10px;
 }
 
 div.dm_form_pagination strong {

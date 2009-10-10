@@ -41,8 +41,13 @@ if ($module = $sf_context->getModuleManager()->getModuleOrNull($sf_request->getP
   }
 }
 
-echo £o("div#breadCrumb.mt10");
+echo £o('div#breadCrumb.mt10.clearfix');
 
-echo £('ol', '<li>'.implode('</li><li>', $links).'</li>'.get_slot('dm.breadCrumb'));
+echo £('ol', '<li>'.implode('</li><li class="sep">&gt;</li><li>', $links).'</li>'.get_slot('dm.breadCrumb'));
+
+if (has_slot('dm.mini_search_form'))
+{
+  echo £('div.dm_mini_search_form', get_slot('dm.mini_search_form'));
+}
 
 echo £c('div');

@@ -92,7 +92,7 @@
         $('div.sf_admin_actions > input', self.$).attr('disabled', !$('input.sf_admin_batch_checkbox:checked', self.$).length);
       });
       
-      if ($maxPerPage = $('#dm_max_per_page').orNot())
+      if ($maxPerPage = $('select.dm_max_per_page').orNot())
       {
         $maxPerPage.change(function()
         {

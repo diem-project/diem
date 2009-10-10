@@ -6,11 +6,13 @@
   use_javascript('lib.ui-resizable');
 ?]
 
-<div id="sf_admin_container">
+[?php
+  slot('dm.mini_search_form');
+  include_partial('<?php echo $this->getModuleName() ?>/search');
+  end_slot();
+?]
 
-  <div class="dm_search_bar clearfix">
-  [?php include_partial('<?php echo $this->getModuleName() ?>/search');?]
-  </div>
+<div id="sf_admin_container">
 
 [?php if ($form->hasErrors()): ?]
   <ul class="dm_error_list">
