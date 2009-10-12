@@ -214,7 +214,7 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
 
     if ($field->isLink())
     {
-      $html = sprintf("£link(\$%s)->text(%s)->title('Open')", $this->getSingularName(), $html);
+      $html = sprintf("£link(\$%s)->text(%s)->title(__('Open'))", $this->getSingularName(), $html);
     }
 
     return $html;

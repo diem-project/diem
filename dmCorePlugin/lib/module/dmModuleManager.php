@@ -73,7 +73,7 @@ class dmModuleManager
       return null;
     }
 
-    throw new dmException(sprintf("The %s module does not exist", $something));
+    throw new dmException(sprintf("The %s module does not exist", $moduleKey));
   }
 
   public function getModuleOrNull($something)

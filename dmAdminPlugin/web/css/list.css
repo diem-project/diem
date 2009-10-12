@@ -22,24 +22,27 @@ div.sf_admin_list {
 
 div.dm_list_action_bar {
   border: 1px solid #D3D3D3;
-  height: 20px;
-  padding: 4px 5px 0 5px;
 }
 
 div.dm_list_action_bar_top {
   background:#EDEDED;
   border-bottom: none;
   -moz-border-radius: 4px 4px 0 0;
+  padding: 4px 5px 0 5px;
 }
 
 div.dm_list_action_bar_bottom {
   background:#eeeeee;
   border-top: none;
   -moz-border-radius: 0 0 4px 4px;
+  padding: 0 5px 4px 5px;
 }
 div.dm_list_action_bar > div {
   float: left;
   margin-right: 10px;
+}
+div.dm_list_action_bar > div.sf_admin_action {
+  margin-top: 3px;
 }
 div.dm_list_action_bar > div.sf_admin_action a {
   display: block;
@@ -48,7 +51,7 @@ div.dm_list_action_bar > div.sf_admin_action a {
 
 div.dm_list_action_bar > div.dm_form_pagination {
 	float: right;
-	margin-right: 0;
+	margin: 3px 0 0 0;
 }
 
 div.dm_form_pagination > a,
@@ -59,7 +62,6 @@ div.dm_form_pagination > div {
 
 div.dm_list_action_bar > select.dm_max_per_page {
   float: right;
-  margin-top:-3px;
   margin-right: 10px;
 }
 
@@ -111,8 +113,6 @@ div.sf_admin_list td {
 }
 
 .dm_list_action_bar .sf_admin_actions {
-	margin-top: -3px;
-  float:left;
 }
 
 div.dm_list_global_actions {

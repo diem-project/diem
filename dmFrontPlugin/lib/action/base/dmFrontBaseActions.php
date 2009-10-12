@@ -55,6 +55,7 @@ class dmFrontBaseActions extends dmBaseActions
 
     if (!dmConfig::get('site_active'))
     {
+      $credentials = (array) $credentials;
       $credentials[] = 'site_view';
     }
 

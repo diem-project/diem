@@ -19,7 +19,7 @@ class dmFrontModuleComponents extends myFrontBaseComponents
     {
       $query->addWhere($query->getRootAlias().'.id = ?', $this->recordId)->fetchRecord();
     }
-    else
+    elseif ($this->getPage()->getDmModule()->hasModel())
     {
       $query->whereDescendantId($this->getPage()->getDmModule()->getModel(), $this->getPage()->get('record_id'), $this->getDmModule()->getModel());
     }
@@ -31,11 +31,11 @@ class dmFrontModuleComponents extends myFrontBaseComponents
    * @param myDoctrineQuery $query        The query used to fetch the record
    * @return myDoctrineRecord $record
    */
-  protected function getRecord($query)
+  protected function getRecord(dmDoctrineQuery $query)
   {
     $record = $query->fetchOne();
 
-    if (!$record instanceof myDoctrineRecord)
+    if (!$record instanceof dmDoctrineRecord)
     {
       throw new dmException(sprintf('No record found for %s %d', $this->getDmModule(), $this->recordId));
     }

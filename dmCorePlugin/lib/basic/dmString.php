@@ -116,7 +116,6 @@ class dmString extends sfInflector
 
     if (!is_string($something))
     {
-      xdebug_print_function_stack();
       if (empty($something))
       {
         return '';

@@ -8,7 +8,7 @@
       this.$ = $("#dm_admin_content");
       
       this.launchControllers(this.$);
-
+      
       this.fullHeight();
       
       this.bars();
@@ -62,51 +62,43 @@
       }
     },
     
-    //  breadCrumb: function()
-    //  {
-    //    $('#breadCrumb span.s16_home_gray').hover(function() {
-    //      $(this).addClass('s16_home_blue').removeClass('s16_home_gray');
-    //    },
-    //    function() {
-    //      $(this).addClass('s16_home_gray').removeClass('s16_home_blue');
-    //    });
-    //  },
-    
     listPage: function()
     {
       self = this;
-			
-			if ($searchInput = $('#dm_module_search_input').orNot())
-			{
-				$searchInput.focus();
-			}
       
-      $('input.sf_admin_list_batch_checkbox', self.$).each(function() {
-				$(this).click(function()
+      if ($searchInput = $('#dm_module_search_input').orNot()) 
+      {
+        $searchInput.focus();
+      }
+      
+      $('input.sf_admin_list_batch_checkbox', self.$).each(function()
+      {
+        $(this).click(function()
         {
           $('input.sf_admin_batch_checkbox, input.sf_admin_list_batch_checkbox', self.$).attr('checked', $(this).attr('checked'));
         });
       });
       
-      $('input.sf_admin_batch_checkbox, input.sf_admin_list_batch_checkbox', self.$).change(function() {
+      $('input.sf_admin_batch_checkbox, input.sf_admin_list_batch_checkbox', self.$).change(function()
+      {
         $('div.sf_admin_actions > input', self.$).attr('disabled', !$('input.sf_admin_batch_checkbox:checked', self.$).length);
       });
       
-      if ($maxPerPage = $('select.dm_max_per_page').orNot())
+      $('select.dm_max_per_page', self.$).each(function()
       {
-        $maxPerPage.change(function()
+        $(this).change(function()
         {
-          location.href = self.getHref('+/dmAdminGenerator/changeMaxPerPage') + "?dm_module=" + self.options.module + "&max_per_page=" + $maxPerPage.val()
+          location.href = self.getHref('+/dmAdminGenerator/changeMaxPerPage') + "?dm_module=" + self.options.module + "&max_per_page=" + $(this).val()
         });
-      }
+      });
     },
     
     datePickers: function()
     {
-			if ($.fn.datepicker) 
-			{
-				$("input.datepicker_me", this.$).datepicker({});
-			}
+      if ($.fn.datepicker) 
+      {
+        $("input.datepicker_me", this.$).datepicker({});
+      }
     },
     
     flashMessages: function()

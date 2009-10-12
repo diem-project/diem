@@ -9,19 +9,17 @@ class dmWidgetActions extends dmFrontBaseActions
 
     if (!$widgetType = $this->context->get('widget_type_manager')->getWidgetTypeOrNull($widget))
     {
-      return $this->renderJson(array(
-        'type' => 'error',
-        'html' => sprintf('<p class="s16 s16_error">%s</p><div class="clearfix mt30"><a class="dm cancel close_dialog button mr10">%s</a><a class="dm delete button red" title="%s">%s</a></div>',
-        dm::getI18n()->__('The widget can not be rendered because its module does not exist anymore.'),
-        dm::getI18n()->__('Cancel'),
-        dm::getI18n()->__('Delete this widget'),
-        dm::getI18n()->__('Delete')
-      )));
+      return $this->renderError();
     }
     
     $formClass = $widgetType->getFormClass();
     
     $form = new $formClass($widget);
+    
+    if (!$form->getDmAction())
+    {
+      return $this->renderError();
+    }
 
     if ($request->isMethod('post'))
     {
@@ -104,6 +102,18 @@ class dmWidgetActions extends dmFrontBaseActions
       'html' => $html,
       'js'   => $js
     ));
+  }
+  
+  protected function renderError()
+  {
+    return $this->renderJson(array(
+      'type' => 'error',
+      'html' => sprintf('<p class="s16 s16_error">%s</p><div class="clearfix mt30"><a class="dm cancel close_dialog button mr10">%s</a><a class="dm delete button red" title="%s">%s</a></div>',
+      dm::getI18n()->__('The widget can not be rendered because its type does not exist anymore.'),
+      dm::getI18n()->__('Cancel'),
+      dm::getI18n()->__('Delete this widget'),
+      dm::getI18n()->__('Delete')
+    )));
   }
 
   protected function renderEdit(dmWidgetBaseForm $form, dmWidgetType $widgetType)
