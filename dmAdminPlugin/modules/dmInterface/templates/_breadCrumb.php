@@ -20,7 +20,7 @@ if ($module = $sf_context->getModuleManager()->getModuleOrNull($sf_request->getP
   {
     $links[] = £link('@'.$module->getUnderscore())->text(__($module->getPlural()));
     
-    if ($sf_context->getActionName() == 'new')
+    if (in_array($sf_context->getActionName(), array('new', 'create')))
     {
       $links[] = £('h1', __('New'));
     }

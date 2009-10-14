@@ -241,13 +241,14 @@ class dmFrontPageHelper
     }
     catch(Exception $e)
     {
-      if (sfConfig::get('dm_debug') || sfConfig::get('dm_serach_populating'))
+      if (sfConfig::get('dm_debug') || sfConfig::get('dm_search_populating'))
       {
         throw $e;
       }
       elseif (sfConfig::get('sf_debug'))
       {
-        $html = dmFrontLinkTag::build(dm::getRequest()->getUri())
+        $html = dmFrontLinkTag::build($this->page)
+        ->currentSpan(false)
         ->param('dm_debug', 1)
         ->text(sprintf('[%s/%s] : %s', $widget['module'], $widget['action'], $e->getMessage()))
         ->title('Click to see the exception details')

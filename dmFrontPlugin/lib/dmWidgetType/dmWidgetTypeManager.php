@@ -107,7 +107,7 @@ class dmWidgetTypeManager
       $module = $moduleOrWidget;
     }
 
-    $widgetType = dmArray::get(dmArray::get($this->getWidgetTypes(), dmString::modulize($module), array()), dmString::modulize($action));
+    $widgetType = dmArray::get(dmArray::get($this->getWidgetTypes(), $module, array()), $action);
 
     if (!$widgetType)
     {

@@ -16,11 +16,6 @@ class dmWidgetActions extends dmFrontBaseActions
     
     $form = new $formClass($widget);
     
-    if (!$form->getDmAction())
-    {
-      return $this->renderError();
-    }
-
     if ($request->isMethod('post'))
     {
       if ($form->bindAndValid($request))

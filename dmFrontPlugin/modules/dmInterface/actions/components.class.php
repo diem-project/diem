@@ -59,13 +59,16 @@ class dmInterfaceComponents extends BasedmInterfaceComponents
         $spaceMenu[$key] = array(
           'name' => $this->context->getI18n()->__($widgetType->getName()),
           'class' => 'widget_add move',
-          'id' => sprintf('dmwa_%s_%s', $widgetType->getModule(), $widgetType->getAction())
+          'id' => sprintf('dmwa_%s-%s', $widgetType->getModule(), $widgetType->getAction())
         );
       }
       
       $spaceName = $space == 'main'
       ? dmConfig::get('site_name')
-      : $this->context->getI18n()->__(dmString::humanize(str_replace('dmWidget', '', $space)));
+      : ( ($module = $this->context->getModuleManager()->getModuleOrNull($space))
+        ? $this->context->getI18n()->__($module->getName())
+        : $this->context->getI18n()->__(dmString::humanize(str_replace('dmWidget', '', $space)))
+      );
 
       $menu[$space] = array(
         'name' => $spaceName,

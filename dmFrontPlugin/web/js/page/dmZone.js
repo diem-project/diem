@@ -144,12 +144,12 @@ $.widget('ui.dmZone', {
   
   addWidget: function($widget)
   {
-    var zone = this;
+    var zone = this, mod_act = $widget.attr('id').replace(/dmwa\_/, '').split(/-/);
     $.ajax({
       url:      $.dm.ctrl.getHref('+/dmWidget/add')+"?to_dm_zone="+zone.getId(),
       data: {
-        mod:    $widget.attr('id').split(/_/)[1],
-        act:    $widget.attr('id').split(/_/)[2]
+        mod:    mod_act[0],
+        act:    mod_act[1]
 			},
       success:  function(widgetHtml) {
         $('div.dm_widgets', zone.element).find('span.widget_add').replaceWith(widgetHtml);

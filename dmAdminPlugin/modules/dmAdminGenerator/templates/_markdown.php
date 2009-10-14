@@ -2,6 +2,7 @@
   use_stylesheet('lib.markitup');
   use_stylesheet('lib.markitupSet');
   use_stylesheet('lib.ui-resizable');
+  use_javascript('lib.ui-resizable');
   use_javascript('lib.markitup');
   use_javascript('lib.markitupSet');
   $attributes = array_merge(

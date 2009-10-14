@@ -250,19 +250,20 @@ class dmAdminGeneratorBuilder
       }
     }
 
-    foreach($this->table->getRelationHolder()->getLocals() as $relation)
+    foreach($this->table->getRelationHolder()->getLocals() as $alias => $relation)
     {
-      $sets['NONE'][] = $relation->getLocalColumnName();
-      unset($fields[$relation->getLocalColumnName()]);
-    }
-
-
-    foreach($this->table->getRelationHolder()->getLocalMedias() as $alias => $relation)
-    {
-      $sets[dmString::humanize($relation['local'])] = array(
-        $relation['local'].'_form',
-        $relation['local'].'_view'
-      );
+      if ($relation->getClass() == 'DmMedia')
+      {
+        $sets[dmString::humanize($relation['local'])] = array(
+          $relation['local'].'_form',
+          $relation['local'].'_view'
+        );
+      }
+      else
+      {
+        $sets['NONE'][] = $relation->getLocalColumnName();
+        unset($fields[$relation->getLocalColumnName()]);
+      }
     }
 
     foreach($this->getTextFields($fields) as $field)

@@ -57,6 +57,7 @@ abstract class dmFormDoctrine extends sfFormDoctrine
     // uploading a file
     if($values[$formName]['file'])
     {
+      $values[$formName]['dm_media_folder_id'] = $this->object->getTable()->getDmMediaFolder()->get('id');
       /*
        * We have a media with same folder / filename
        * let's use it

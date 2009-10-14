@@ -26,6 +26,7 @@ $currentMaxPerPage = $sf_user->getAttribute(
 $maxPerPageSelect = new sfWidgetFormSelect(array('choices' => $maxPerPages));
 echo $maxPerPageSelect->render('dm_max_per_page', $currentMaxPerPage, array(
   'id' => '__DM_RANDOM_ID__',
-  'class' => 'dm_max_per_page'
+  'class' => 'dm_max_per_page',
+  'disabled' => $pager->getNbResults() === 0
 ));
 ?]

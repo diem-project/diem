@@ -127,6 +127,24 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
     
     foreach($this->modules as $key => $module)
     {
+      if ($key != dmString::modulize($key))
+      {
+        $this->throwModulizeException($key);
+      }
+
+      foreach(dmArray::get($module, 'actions', array()) as $actionKey => $action)
+      {
+        if (is_numeric($actionKey))
+        {
+          $actionKey = $action;
+        }
+        
+        if ($actionKey != dmString::modulize($actionKey))
+        {
+          $this->throwModulizeException($actionKey);
+        }
+      }
+      
       if (!$module['model'])
       {
         if (dmArray::get($module, 'has_page'))
@@ -189,6 +207,13 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
     
     throw new sfConfigurationException($fullMessage);
   }
+  
+  protected function throwModulizeException($string)
+  {
+    return $this->throwException(sprintf('The word "%s" must follow the symfony module convention : "%s"',
+      $string, dmString::modulize($string)
+    ));
+  }
 
   protected function getExportedModuleOptions($key, $options)
   {
@@ -229,6 +254,11 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
         foreach($spaceConfig as $moduleKey => $moduleConfig)
         {
           $moduleKey = dmString::modulize($moduleKey);
+          
+          if (isset($this->modules[$moduleKey]))
+          {
+            continue;
+          }
           
           $moduleConfig = $this->fixModuleConfig($moduleKey, $moduleConfig, $isInProject);
           

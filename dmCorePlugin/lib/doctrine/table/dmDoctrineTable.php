@@ -35,7 +35,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
     {
       return $this->getCache('dm_media_folder');
     }
-
+    
     return $this->setCache('dm_media_folder', dmDb::table('DmMediaFolder')->findOneByRelPathOrCreate($this->getDmModule()->getUnderscore()));
   }
   /*

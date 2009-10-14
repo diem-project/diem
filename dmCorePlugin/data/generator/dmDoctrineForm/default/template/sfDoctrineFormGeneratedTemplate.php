@@ -86,7 +86,7 @@ class Base<?php echo $this->modelName ?>Form extends <?php echo $this->getFormCl
     parent::doBind($values);
   }
   
-  public function processValues($values = null)
+  public function processValues($values)
   {
     $values = parent::processValues($values);
 <?php foreach($this->getMediaRelations() as $mediaRelation): ?>

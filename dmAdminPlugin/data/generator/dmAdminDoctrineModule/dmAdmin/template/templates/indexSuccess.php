@@ -3,9 +3,7 @@
   use_stylesheet('admin.list');
   
   $appliedFilters = $sf_user->getAppliedFiltersOnModule('<?php echo $this->getModuleName(); ?>');
-?]
 
-[?php
   slot('dm.mini_search_form');
   include_partial('<?php echo $this->getModuleName() ?>/search');
   end_slot();

@@ -40,6 +40,11 @@ class dmContext extends sfContext
 
     // configure the service container with its required dependencies
     $this->configureServiceContainer($this->serviceContainer);
+    
+    if (method_exists($this->configuration, 'configureServiceContainer'))
+    {
+      $this->configuration->configureServiceContainer($this->serviceContainer);
+    }
 
     // connect the service container and its services to the event dispatcher
     $this->serviceContainer->connect();

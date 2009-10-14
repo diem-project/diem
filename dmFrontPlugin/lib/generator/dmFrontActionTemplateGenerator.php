@@ -64,7 +64,7 @@ echo £o('div.{$this->module->getUnderscore()}.{$action->getUnderscore()}');
   {
     echo £o('li.element');
     
-      echo £link(\${$this->module->getKey()});
+      echo ".($this->module->hasPage() ? "£link(\${$this->module->getKey()});" : "\${$this->module->getKey()};")."
       
     echo £c('li');
   }

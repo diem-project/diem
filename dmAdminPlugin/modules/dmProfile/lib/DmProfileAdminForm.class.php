@@ -16,11 +16,18 @@ class DmProfileAdminForm extends BaseDmProfileForm
     $this->embedForm('User', $this->getUserForm($this->getObject()->User));
   }
   
+  protected function doBind(array $values)
+  {
+    $values['user_id'] = $values['User']['id'];
+    
+    return parent::doBind($values);
+  }
+  
   protected function getUserForm(sfGuardUser $user)
   {
     $userForm = new BasesfGuardUserAdminForm($user);
     
-    $userForm->useFields(array('username', 'email', 'password', 'password_again', 'is_active'));
+    $userForm->useFields(array('username', 'email', 'password', 'password_again'));
     
     return $userForm;
   }

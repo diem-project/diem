@@ -13,7 +13,7 @@ class dmWidgetType
     $this->module  = $module;
     $this->action  = $action;
 
-    $name = trim(dmArray::get($config, "name", dmString::humanize($action)));
+    $name = trim(dmArray::get($config, 'name', dmString::humanize($action)));
 
     $this->params = array(
       'name'       => $name,

@@ -37,6 +37,11 @@ div.dm_list_action_bar_bottom {
   -moz-border-radius: 0 0 4px 4px;
   padding: 0 5px 4px 5px;
 }
+
+div.no_results div.dm_list_action_bar {
+	padding: 4px 5px;
+}
+
 div.dm_list_action_bar > div {
   float: left;
   margin-right: 10px;

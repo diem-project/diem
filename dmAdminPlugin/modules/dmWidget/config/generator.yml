@@ -23,7 +23,6 @@ generator:
         sort:
           - position
           - asc
-        max_per_page: 8
         table_method: joinAll
         table_count_method: ~
       filter:

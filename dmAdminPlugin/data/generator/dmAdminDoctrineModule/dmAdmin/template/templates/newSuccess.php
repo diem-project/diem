@@ -1,16 +1,15 @@
 [?php
-  use_helper('I18N', 'Date');
+  use_helper('Date');
   use_stylesheet('admin.form');
   use_javascript('core.form');
   use_javascript('admin.form');
-  use_javascript('lib.ui-resizable');
+
+  slot('dm.mini_search_form');
+  include_partial('<?php echo $this->getModuleName() ?>/search');
+  end_slot();
 ?]
 
 <div id="sf_admin_container">
-
-  <div class="dm_search_bar clearfix">
-  [?php include_partial('<?php echo $this->getModuleName() ?>/search');?]
-  </div>
 
   <div id="sf_admin_header">
     [?php include_partial('<?php echo $this->getModuleName() ?>/form_header', array('<?php echo $this->getSingularName() ?>' => $<?php echo $this->getSingularName() ?>, 'form' => $form, 'configuration' => $configuration)) ?]

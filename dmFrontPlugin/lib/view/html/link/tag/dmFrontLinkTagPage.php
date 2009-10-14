@@ -17,6 +17,14 @@ class dmFrontLinkTagPage extends dmFrontLinkTag
     }
     
     $this->set('tag', 'a');
+    $this->set('current_span', dmConfig::get('link_current_span', true));
+    
+    $this->addAttributeToRemove('current_span');
+  }
+  
+  public function currentSpan($bool)
+  {
+    return $this->set('current_span', (bool) $bool);
   }
 
   protected function getBaseHref()
@@ -63,7 +71,7 @@ class dmFrontLinkTagPage extends dmFrontLinkTag
         {
           $attributes['class'][] = 'dm_current';
           
-          if(dmConfig::get('link_current_span', true))
+          if($attributes['current_span'])
           {
             $attributes['tag'] = 'span';
           }

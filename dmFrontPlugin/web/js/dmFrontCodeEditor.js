@@ -32,7 +32,11 @@
       
       self.$dialog.bind('resize', function()
       {
-        $('textarea', self.element).height(self.$dialog.height() - 77).width(self.$dialog.width() - 39);
+				var dWidth = 42;
+				$textarea = $('textarea', self.element).each(function() {
+					dHeight = $(this).hasClass('dm_readonly') ? 95 : 72;
+					$(this).height(self.$dialog.height() - dHeight).width(self.$dialog.width() - dWidth);
+				});
       });
       
       self.element.find('div#dm_code_editor_file_open ul.level2 a').click(function(e)

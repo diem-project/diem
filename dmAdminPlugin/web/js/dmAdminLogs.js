@@ -11,7 +11,7 @@ $.dm.ctrl.add($.dm.adminLogs = {
 			}
 		});
 		
-	  setTimeout($.dm.adminLogs.refresh, 300);
+	  setTimeout($.dm.adminLogs.refresh, 500);
   },
 	
 	refresh: function()
@@ -35,10 +35,10 @@ $.dm.ctrl.add($.dm.adminLogs = {
 	          $.dm.adminLogs[this].$wrapper.removeClass('change');
 	        }
 				});
-				setTimeout($.dm.adminLogs.refresh, 1000);
+				setTimeout($.dm.adminLogs.refresh, 3000);
 			},
 			error: function() {
-				setTimeout($.dm.adminLogs.refresh, 2000);
+				setTimeout($.dm.adminLogs.refresh, 5000);
 			}
 		})
 	}

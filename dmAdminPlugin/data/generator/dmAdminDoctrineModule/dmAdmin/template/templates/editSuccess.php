@@ -3,10 +3,7 @@
   use_stylesheet('admin.form');
   use_javascript('core.form');
   use_javascript('admin.form');
-  use_javascript('lib.ui-resizable');
-?]
 
-[?php
   slot('dm.mini_search_form');
   include_partial('<?php echo $this->getModuleName() ?>/search');
   end_slot();

@@ -57,7 +57,7 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
         'is_partial'   => false,
         'is_component' => false,
         'type'         => $this->getType($column),
-        'markdown'     => strpos($column->getDefinitionKey('extra'), 'markdown') !== false,
+        'markdown'     => $this->module->getTable()->isMarkdownColumn($name),
         'label'        => $label
       ), isset($this->config['fields'][$name]) ? $this->config['fields'][$name] : array());
     }
