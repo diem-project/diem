@@ -3,7 +3,7 @@
 class dmFrontBaseActions extends dmBaseActions
 {
   protected
-  $formManager;
+  $forms;
   
   /**
    * Initializes this component.
@@ -18,7 +18,7 @@ class dmFrontBaseActions extends dmBaseActions
   {
     parent::initialize($context, $moduleName, $actionName);
     
-    $this->formManager = $context->get('form_manager');
+    $this->forms = $context->get('form_manager');
   }
   
   /*

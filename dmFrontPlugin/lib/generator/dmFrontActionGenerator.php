@@ -1,55 +1,103 @@
 <?php
 
-/*
- * generate action classes for front module
- */
 class dmFrontActionGenerator extends dmFrontModuleGenerator
 {
+  protected
+  $class,
+  $indentation = '  ';
 
   public function execute()
   {
-    $file = dmOs::join(sfConfig::get('sf_apps_dir'), 'front', 'modules', $this->module->getKey(), 'actions', 'actions.class.php');
+    require_once(dmOs::join(sfConfig::get('dm_core_dir'), 'lib/vendor/Zend/Reflection/File.php'));
+    require_once(dmOs::join(sfConfig::get('dm_core_dir'), 'lib/vendor/Zend/CodeGenerator/Php/File.php'));
+    require_once(dmOs::join(sfConfig::get('dm_core_dir'), 'lib/vendor/dmZend/CodeGenerator/Php/Class.php'));
+    
+    $file = dmOs::join(sfConfig::get('sf_apps_dir'), 'front/modules', $this->module->getKey(), 'actions/actions.class.php');
 
     $this->filesystem->mkdir(dirname($file));
-
+    
+    $className = $this->module->getKey().'Actions';
+    
     if (file_exists($file))
     {
-      return true;
+      include_once($file);
+      $this->class = dmZendCodeGeneratorPhpClass::fromReflection(new Zend_Reflection_Class($className));
+      
+      foreach($this->class->getMethods() as $method)
+      {
+        $method->setIndentation($this->indentation);
+      }
+    }
+    else
+    {
+      $this->class = $this->buildClass($className);
+    }
+    
+    $this->class->setIndentation($this->indentation);
+    
+    if ($this->module->hasModel())
+    {
+      foreach($this->module->getActions() as $action)
+      {
+        if ($action->getType() == 'form')
+        {
+          $methodName = 'execute'.dmString::camelize($action->getKey()).'Widget';
+          
+          if (!$this->class->getMethod($methodName))
+          {
+            $this->class->setMethod($this->buildFormMethod($methodName, $action));
+          }
+        }
+      }
     }
 
-    $code = $this->build();
+    if ($code = $this->class->generate())
+    {
+      $return = file_put_contents($file, "<?php\n".$code) && chmod($file, 0777);
+    }
+    else
+    {
+      $return = true;
+    }
 
-    return file_put_contents($file, $code) && chmod($file, 0777);
+    return $return;
   }
-
-  protected function build()
+  
+  protected function buildClass($className)
   {
-    return
-    $this->getHead().
-    $this->getMethods().
-    $this->getFoot();
+    return new Zend_CodeGenerator_Php_Class(array(
+      'name' => $className,
+      'extendedClass' => 'dmFrontModuleComponents',
+      'docBlock' => array(
+        'shortDescription' => $this->module->getName().' actions'
+      )
+    ));
   }
-
-  protected function getHead()
+  
+  protected function buildFormMethod($methodName, dmAction $action)
   {
-    return "<?php
-
-/*
- * {$this->module->getName()} : actions
- */
-class {$this->module->getKey()}Actions extends dmFrontModuleActions
+    $body = "\$form = new {$this->module->getModel()}Form;
+    
+if (\$request->isMethod('post') && \$form->bindAndValid(\$request))
 {
-";
-  }
+  \$form->save();
+  \$this->redirectBack();
+}
 
-  protected function getMethods()
-  {
-    return '';
+// Give the form to all components
+\$this->forms['commentaire'] = \$form;";
+    
+    return new dmZendCodeGeneratorPhpMethod(array(
+      'indentation' => $this->indentation,
+      'name'        => $methodName,
+      'visibility'  => 'public',
+      'body'        => $body,
+      'parameters'  => array(
+        array('name' => 'request', 'type' => 'dmWebRequest')
+      )
+//      'docblock'    => new Zend_CodeGenerator_Php_Docblock(array(
+//        'shortDescription' => $action->getName()
+//      ))
+    ));
   }
-
-  protected function getFoot()
-  {
-    return "}";
-  }
-
 }

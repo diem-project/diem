@@ -122,7 +122,7 @@ $test->run();');
       sfToolkit::clearDirectory(dmOs::join(sfConfig::get("sf_lib_dir"), "model/doctrine/base"));
     }
 
-    $task = new dmDoctrineBuildModelTask($this->dispatcher, $this->formatter);
+    $task = new sfDoctrineBuildModelTask($this->dispatcher, $this->formatter);
     $task->run(array(), array());
   }
 
@@ -148,7 +148,7 @@ $test->run();');
       sfToolkit::clearDirectory(dmOs::join(sfConfig::get("sf_lib_dir"), "filter/doctrine/base"));
     }
 
-    $task = new dmDoctrineBuildFiltersTask($this->dispatcher, $this->formatter);
+    $task = new sfDoctrineBuildFiltersTask($this->dispatcher, $this->formatter);
     $task->run(array(), array());
   }
 

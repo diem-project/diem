@@ -1,0 +1,271 @@
+# PROFILE SCHEMA
+
+DmProfile:  # do not require timestampable behavior because it is provided by its sfGuardUser
+  columns:
+    user_id:                { type: integer(4), notnull: true, unique: true, unsigned: true }
+  relations:
+    User:
+      class:                sfGuardUser
+      local:                user_id
+      foreign:              id
+      onDelete:             CASCADE
+
+# PAGE SCHEMA
+
+DmPage:
+  actAs:
+    NestedSet:
+    I18n:
+      fields:               [slug, name, title, h1, description, keywords, auto_mod, is_active, is_indexable]
+  columns:
+    id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
+    module:                 { type: string(127), notnull: true }
+    action:                 { type: string(127), notnull: true }
+    record_id:              { type: integer(4), unsigned: true, notnull: true, default: 0 }
+    slug:                   { type: string(255), notnull: true }
+    name:                   { type: string(255), notnull: true }
+    title:                  { type: string(255), notnull: false }
+    h1:                     { type: string(255), notnull: false }
+    description:            { type: string(255), notnull: false }
+    keywords:               { type: string(255), notnull: false }
+    auto_mod:               { type: string(6), notnull: true, default: 'snthdk' } # slug, name, title, h1, description, keywords
+    is_active:              { type: boolean, notnull: true, default: true }
+    is_secure:              { type: boolean, notnull: true, default: false } # requires authentification
+    is_indexable:           { type: boolean, notnull: true, default: true }
+  indexes:
+    recordModuleAction:
+      fields:               [ module, action, record_id ]
+      type:                 unique
+
+DmPageView:
+  columns:
+    id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
+    module:                 { type: string(127), notnull: true }
+    action:                 { type: string(127), notnull: true }
+    dm_layout_id:           { type: integer(4), notnull: true, unsigned: true }
+  indexes:
+    moduleAction:
+      fields:               [ module, action ]
+      type:                 unique
+  relations:
+    Layout:
+      class:                DmLayout
+      local:                dm_layout_id
+      foreign:              id
+      onDelete:             CASCADE
+      foreignAlias:         PageViews
+    Area:
+      class:                DmArea
+      local:                id
+      foreign:              dm_page_view_id
+
+DmLayout:
+  columns:
+    id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
+    name:                   { type: string(127), notnull: true, unique: true }
+    css_class:              { type: string(255) }
+
+DmArea:
+  columns:
+    id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
+    dm_layout_id:           { type: integer(4), notnull: false, unsigned: true }
+    dm_page_view_id:        { type: integer(4), notnull: false, unsigned: true }
+    type:                   { type: enum, notnull: true, values: [content, top, bottom, left, right], default: 'content' }
+  indexes:
+    layoutType:
+      fields:               [ dm_layout_id, type ]
+      type:                 unique
+  relations:
+    Layout:
+      class:                DmLayout
+      local:                dm_layout_id
+      foreign:              id
+      foreignAlias:         Areas
+      onDelete:             CASCADE
+    PageView:
+      class:                DmPageView
+      local:                dm_page_view_id
+      foreign:              id
+      foreignAlias:         Area
+      onDelete:             CASCADE
+
+DmZone:
+  actAs:                    [Sortable]
+  columns:
+    id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
+    dm_area_id:             { type: integer(4), notnull: true, unsigned: true }
+    css_class:              { type: string(255) }
+    width:                  { type: string(15) }
+  relations:
+    Area:
+      class:                DmArea
+      local:                dm_area_id
+      foreign:              id
+      foreignAlias:         Zones
+      onDelete:             CASCADE
+  
+DmWidget:
+  actAs:                    [Sortable, Timestampable]
+  columns:
+    id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
+    dm_zone_id:             { type: integer(4), notnull: true, unsigned: true }
+    module:                 { type: string(127), notnull: true }
+    action:                 { type: string(127), notnull: true }
+    value:                  { type: string(65532) }
+    css_class:              { type: string(255) }
+  relations:
+    Zone:
+      class:                DmZone
+      local:                dm_zone_id
+      foreign:              id
+      foreignAlias:         Widgets
+      onDelete:             CASCADE
+
+# MEDIA SCHEMA
+
+DmMediaFolder:
+  options:
+    symfony:
+      filter: false
+  actAs:                    [NestedSet]
+  columns:
+    id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
+    rel_path:               { type: string(255), notnull: true, unique: true }
+
+DmMedia:
+  options:
+    symfony:
+      filter: false
+  actAs:                    [Timestampable]
+  columns:
+    dm_media_folder_id:     { type: integer(4), notnull: true, unsigned: true }
+    file:                   { type: string(255), notnull: true }
+    legend:                 { type: string(255) }
+    author:                 { type: string(255) }
+    license:                { type: string(255) }
+    mime:                   { type: string(63), notnull: true }
+    size:                   { type: integer(4), unsigned: true }
+    dimensions:             { type: string(15) }
+  relations:
+    Folder:
+      class:                DmMediaFolder
+      onDelete:             CASCADE
+      foreignAlias:         Medias
+  indexes:
+    folderFile:
+      fields:               [ dm_media_folder_id, file ]
+      type:                 unique
+
+# ACCESSIBILITY SCHEMA
+
+DmLang:
+  columns:
+    id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
+    name:                   { type: string(255), unique: true, notnull: true }
+    lang:                   { type: string(3), notnull: true, default: "en" }
+
+DmAbbr:
+  columns:
+    id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
+    name:                   { type: string(255), unique: true, notnull: true }
+    title:                  { type: string(65532), notnull: true }
+
+# LOG SCHEMA
+
+DmError:
+  actAs:
+    Timestampable:
+      updated:
+        disabled: true
+  columns:
+    id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
+    klass:                  { type: string(127), notnull: true }
+    name:                   { type: string(255), notnull: true }
+    description:            { type: string(65532) }
+    module:                 { type: string(127), notnull: false }
+    action:                 { type: string(127), notnull: false }
+    uri:                    { type: string(255), notnull: true }
+    env:                    { type: string(63), notnull: true }
+    
+DmSentMail:
+  actAs:
+    Timestampable:
+      updated:
+        disabled: true
+  columns:
+    id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
+    name:                   { type: string(255) }
+    header:                 { type: string(65532) }
+    description:            { type: string(65532) }
+
+# SEO SCHEMA
+
+DmAutoSeo:
+  actAs:                    [Timestampable]
+  columns:
+    id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
+    module:                 { type: string(127), notnull: true }
+    action:                 { type: string(127), notnull: true }
+    slug:                   { type: string(255), notnull: true }
+    name:                   { type: string(255), notnull: true }
+    title:                  { type: string(255), notnull: true }
+    h1:                     { type: string(255), notnull: false }
+    description:            { type: string(255), notnull: false }
+    keywords:               { type: string(255), notnull: false }
+    strip_words:            { type: string(65532) }
+  indexes:
+    moduleAction:
+      fields:               [ module, action ]
+      type:                 unique
+
+DmRedirect:
+  actAs:                    [Timestampable]
+  columns:
+    id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
+    source:                 { type: string(255), unique: true, notnull: true }
+    dest:                   { type: string(255), notnull: true }
+
+# SETTING SCHEMA
+
+DmSetting:
+  actAs:
+    I18n:
+      fields:               [description, value, default_value]
+  columns:
+    id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
+    name:                   { type: string(127), notnull: true, unique: true }
+    description:            { type: string(255) }
+    type:                   { type: enum, notnull: true, values: [text, boolean, select, textarea, number], default: 'text' }
+    value:                  { type: string(65532) }
+    params:                 { type: string(65532) }
+    group_name:             { type: string(255), notnull: true, default: '' }
+    default_value:          { type: string(65532), default: '' }
+    credentials:            { type: string(255) }
+
+# TRANSLATION SCHEMA
+
+Catalogue:
+  options:
+    symfony:
+      filter: false
+  columns:
+    cat_id:                 { type: integer(4), notnull: true, autoincrement: true, primary: true, unsigned: true }
+    name:                   { type: string(63), notnull: true, default: "" }
+    source_lang:            { type: string(63), notnull: true, default: "" }
+    target_lang:            { type: string(63), notnull: true, default: "" }
+    date_created:           { type: integer(4), notnull: true, default: 0, unsigned: true }
+    date_modified:          { type: integer(4), notnull: true, default: 0, unsigned: true }
+    
+TransUnit:
+  columns:
+    msg_id:                 { type: integer(4), notnull: true, autoincrement: true, primary: true, unsigned: true }
+    cat_id:                 { type: integer(4), notnull: true, default: 1, unsigned: true }
+    source:                 { type: string(65532), notnull: true }
+    target:                 { type: string(65532), notnull: true }
+    meta:                   { type: string(63) }
+  relations:
+    Catalogue:
+      local:                cat_id
+      foreign:              cat_id
+      onDelete:             CASCADE
+      foreignAlias:         Units

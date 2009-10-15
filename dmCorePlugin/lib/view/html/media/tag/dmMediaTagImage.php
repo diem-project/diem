@@ -165,17 +165,10 @@ class dmMediaTagImage extends dmMediaTag
       }
 
       $attributes['src'] = $this->requestContext['relative_url_root'].str_replace(sfConfig::get('sf_web_dir'), '', $mediaFullPath);
-      /*
-       * When thumb method is scale,
-       * html width and height
-       * should be different than request width and height
-       */
-      if ($attributes['method'] === 'scale' )
-      {
-        $infos = getimagesize($mediaFullPath);
-        $attributes['width'] = $infos[0];
-        $attributes['height'] = $infos[1];
-      }
+      
+      $infos = getimagesize($mediaFullPath);
+      $attributes['width'] = $infos[0];
+      $attributes['height'] = $infos[1];
     }
 
     return $attributes;

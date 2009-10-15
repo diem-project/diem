@@ -41,13 +41,17 @@
         }
       });
     },
-    bindKey: function(data, fn)
+    bindKey: function(key, fn)
     {
-      return this.bind('keydown', data, function(e)
+      return this.bind('keydown', key, function(e)
       {
         e.stopPropagation();
         return fn(e);
       });
+    },
+    unbindKey: function(key)
+    {
+      return this.unbind('keydown', key);
     }
   });
   

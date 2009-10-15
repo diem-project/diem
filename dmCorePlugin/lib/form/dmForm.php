@@ -80,7 +80,9 @@ class dmForm extends sfFormSymfony
     $attributes = array_merge(array(
       'value' => $name,
       'type' => 'submit'
-    ), dmString::toArray($attributes, true));
+    ), dmString::toArray($attributes));
+    
+    $attributes['class'] = dmArray::toHtmlCssClasses(array_merge(dmArray::get($attributes, 'class', array()), array('submit')));
 
     return sprintf('<input%s />', $this->getWidgetSchema()->attributesToHtml($attributes));
   }
@@ -111,7 +113,7 @@ class dmForm extends sfFormSymfony
     $opt = dmString::toArray($opt, true);
 
     $defaults = array(
-      'class' => dmArray::toHtmlCssClasses(array('validate_me', dmArray::get($opt, 'class'))),
+      'class' => dmArray::get($opt, 'class'), //dmArray::toHtmlCssClasses(array('validate_me', dmArray::get($opt, 'class'))),
       'id' => $this->getKey()
     );
 
@@ -131,10 +133,10 @@ class dmForm extends sfFormSymfony
       $action = self::$serviceContainer->getService('request')->getUri();
     }
 
-//    if (strpos($action, '#') === false)
-//    {
-//      $action .= '#'.$this->getKey();
-//    }
+    if (strpos($action, '#') === false)
+    {
+      $action .= '#'.$this->getKey();
+    }
 
     if (isset($opt['action'])) unset($opt['action']);
 
@@ -203,9 +205,14 @@ class dmForm extends sfFormSymfony
         $value = $widget instanceof sfWidgetFormSchema ? $widget->getDefaults() : $widget->getDefault();
       }
 
-      $class = $widget instanceof sfWidgetFormSchema ? 'sfFormFieldSchema' : 'sfFormField';
+      $class = $widget instanceof sfWidgetFormSchema ? 'sfFormFieldSchema' : self::$serviceContainer->getParameter('form_field.class');
 
       $this->formFields[$name] = new $class($widget, $this->getFormFieldSchema(), $name, $value, $this->errorSchema[$name]);
+    
+      if ($this->formFields[$name] instanceof dmFormField && ($validator = $this->getValidatorSchema()->offsetGet($name)))
+      {
+        $this->formFields[$name]->setIsRequired($validator->getOption('required'));
+      }
     }
 
     return $this->formFields[$name];

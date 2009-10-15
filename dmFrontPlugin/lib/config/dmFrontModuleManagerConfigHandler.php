@@ -73,6 +73,10 @@ class dmFrontModuleManagerConfigHandler extends dmModuleManagerConfigHandler
           {
             $actionConfig['type'] = 'show';
           }
+          elseif (strncmp($actionKey, 'form', 4) === 0)
+          {
+            $actionConfig['type'] = 'form';
+          }
           else
           {
             $actionConfig['type'] = 'simple';

@@ -40,9 +40,9 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
     $file = sfConfig::get('sf_lib_dir').'/form/doctrine/BaseFormDoctrine.class.php';
     if (!file_exists($file))
     {
-      if (!is_dir(sfConfig::get('sf_lib_dir').'/form/doctrine/base'))
+      if (!is_dir($directory = dirname($file)))
       {
-        mkdir(sfConfig::get('sf_lib_dir').'/form/doctrine/base', 0777, true);
+        mkdir($directory, 0777, true);
       }
 
       file_put_contents($file, $this->evalTemplate('sfDoctrineFormBaseTemplate.php'));
@@ -53,7 +53,7 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
     // create a form class for every Doctrine class
     foreach ($models as $model)
     {
-      $this->table = Doctrine::getTable($model);
+      $this->table = Doctrine_Core::getTable($model);
       $this->modelName = $model;
 
       if ($this->moduleManager->getModuleByModel($model))

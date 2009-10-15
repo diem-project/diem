@@ -1,5 +1,7 @@
 parameters:
 
+  form_field.class:           dmFormField
+
   markdown.class:             dmMarkdown
 
   script_name_resolver.class: dmScriptNameResolver

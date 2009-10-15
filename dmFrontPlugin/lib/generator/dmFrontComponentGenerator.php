@@ -83,6 +83,9 @@ To make redirections or manipulate database, use the actions class.'
         $body = "\$query = \$this->getShowQuery();
 \$this->{$this->module->getKey()} = \$this->getRecord(\$query);";
         break;
+      case 'form':
+        $body = "\$this->form = \$this->forms['{$this->module->getKey()}'];";
+        break;
       default:
         $body = "// Your code here";
     }
@@ -97,25 +100,4 @@ To make redirections or manipulate database, use the actions class.'
 //      ))
     ));
   }
-  
-//  protected function buildPagerQueryMethod($methodName)
-//  {
-//    return new dmZendCodeGeneratorPhpMethod(array(
-//      'indentation' => $this->indentation,
-//      'name'        => $methodName,
-//      'visibility'  => 'protected',
-//      'body'        => "return \$this->getDmModule()->getTable()->createQuery('{$this->module->getKey()}')->whereIsActive(true, '{$this->module->getModel()}');",
-//      'parameters'  => array(),
-//      'docblock'    => new Zend_CodeGenerator_Php_Docblock(array(
-//        'shortDescription' => 'Create the default pager query for this module list widgets',
-//        'longDescription'  => "If you want to add custom joins or other stuff to the list queries,\nthis is the right place.",
-//        'tags'             => array(
-//          new Zend_CodeGenerator_Php_Docblock_Tag_Return(array(
-//            'paramName' => 'query',
-//            'datatype'  => 'myDoctrineQuery'
-//          )),
-//        ),
-//      ))
-//    ));
-//  }
 }

@@ -1,6 +1,6 @@
 <?php
 
-class dmFormManager
+class dmFormManager implements ArrayAccess
 {
   protected
   $forms;
@@ -15,23 +15,58 @@ class dmFormManager
     $this->forms = array();
   }
   
-  public function set($key, dmForm $form)
+  /**
+   * Returns true if the parameter exists (implements the ArrayAccess interface).
+   *
+   * @param  string  $name  The parameter name
+   *
+   * @return Boolean true if the parameter exists, false otherwise
+   */
+  public function offsetExists($name)
   {
-    $this->forms[$key] = $form;
+    return array_key_exists($name, $this->forms);
   }
-  
-  public function get($key)
+
+  /**
+   * Returns a parameter value (implements the ArrayAccess interface).
+   *
+   * @param  string  $name  The parameter name
+   *
+   * @return mixed  The parameter value
+   */
+  public function offsetGet($name)
   {
-    if (!$this->has($key))
+    if (!array_key_exists($name, $this->forms))
     {
-      throw new dmException('Form '.$key.' does not exist');
+      throw new InvalidArgumentException(sprintf('The form manager has no "%s" form.', $name));
+    }
+
+    return $this->forms[$name];
+  }
+
+  /**
+   * Sets a parameter (implements the ArrayAccess interface).
+   *
+   * @param string  $name   The parameter name
+   * @param mixed   $value  The parameter value 
+   */
+  public function offsetSet($name, $value)
+  {
+    if (!$value instanceof dmForm)
+    {
+      throw new InvalidArgumentException(sprintf('The object "%s" is not an instance of dmForm', get_class($value)));
     }
     
-    return $this->forms[$key];
+    $this->forms[$name] = $value;
   }
-  
-  public function has($key)
+
+  /**
+   * Removes a parameter (implements the ArrayAccess interface).
+   *
+   * @param string $name    The parameter name
+   */
+  public function offsetUnset($name)
   {
-    return isset($this->forms[$key]);
+    unset($this->forms[$name]);
   }
 }
