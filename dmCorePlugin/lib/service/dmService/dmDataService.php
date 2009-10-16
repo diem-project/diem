@@ -378,6 +378,7 @@ class dmDataService extends dmService
           'automatic_metas',
           'static_metas',
           'metas_validation',
+          'url_redirection',
           'google_analytics',
           'google_webmaster_tools',
           'tool_bar_admin',
