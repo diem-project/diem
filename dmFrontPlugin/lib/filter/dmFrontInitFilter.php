@@ -85,7 +85,37 @@ class dmFrontInitFilter extends dmInitFilter
         {
           $url = $redirection->dest;
         }
-        $this->context->getController()->redirect($url, 301);
+        
+        return $this->context->getController()->redirect($url, 301);
+      }
+      
+      if (dmConfig::get('smart_404'))
+      {
+        try
+        {
+          $searchIndex = $this->context->get('search_engine')->getCurrentIndex();
+          
+          $query = Zend_Search_Lucene_Search_QueryParser::parse(
+            str_replace('/', ' ', dmString::unSlugify($slug))
+          );
+          
+          $results = $searchIndex->search($query);
+          
+          if ($result = dmArray::first($results))
+          {
+            if ($result->getScore() > 0.5)
+            {
+              return $this->context->getController()->redirect(dmFrontLinkTag::build($result->getPage())->getHref(), 301);
+            }
+          }
+        }
+        catch(Exception $e)
+        {
+          if(sfConfig::get('sf_debug'))
+          {
+            throw $e;
+          }
+        }
       }
     }
     

@@ -78,23 +78,6 @@ class dmSearchIndexGroup extends dmSearchIndexCommon
     $this->insert($page);
   }
 
-  public function populate()
-  {
-    $this->setup();
-
-    $start = microtime(true);
-
-    $this->getLogger()->log('Populating group...', $this->getName());
-    
-    foreach ($this->getIndices() as $name => $index)
-    {
-      $this->getLogger()->log('Populating index "' . $name . '"...', $this->getName());
-
-      $index->populate();
-    }
-
-    $this->getLogger()->log('Group populated in "' . round(microtime(true) - $start, 2) . '" seconds.', $this->getName());
-  }
   
   public function optimize()
   {

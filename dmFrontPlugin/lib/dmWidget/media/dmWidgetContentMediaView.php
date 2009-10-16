@@ -70,7 +70,7 @@ class dmWidgetContentMediaView extends dmWidgetPluginView
     return $html;
   }
   
-  public function toIndexableString(array $vars)
+  protected function doRenderForIndex(array $vars)
   {
     return $vars['legend'];
   }

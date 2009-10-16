@@ -138,6 +138,13 @@ class dmDataService extends dmService
         'description' => 'Append something at the end of all pages title',
         'group_name' =>'seo',
         'credentials' => 'static_metas'
+      ),
+      'smart_404' => array(
+        'type' => 'boolean',
+        'default_value' => 1,
+        'description' => 'When a page is not found, user is redirect to a similar page. The internal search index is used to find the best page for requested url.',
+        'group_name' => 'seo',
+        'credentials' => 'url_redirection'
       )
     );    
 

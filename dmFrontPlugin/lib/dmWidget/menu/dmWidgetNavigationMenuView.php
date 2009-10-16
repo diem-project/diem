@@ -2,6 +2,8 @@
 
 class dmWidgetNavigationMenuView extends dmWidgetPluginView
 {
+  protected
+  $isIndexable = false;
 
   public function configure()
   {
@@ -10,10 +12,6 @@ class dmWidgetNavigationMenuView extends dmWidgetPluginView
     $this->addRequiredVar('elements');
   }
   
-  public function toIndexableString(array $vars)
-  {
-    return '';
-  }
   
   protected function doRender(array $vars)
   {

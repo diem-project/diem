@@ -2,6 +2,8 @@
 
 class dmWidgetAdvancedSearchFormView extends dmWidgetPluginView
 {
+  protected
+  $isIndexable = false;
 
   public function getRequiredVars()
   {
@@ -15,11 +17,6 @@ class dmWidgetAdvancedSearchFormView extends dmWidgetPluginView
     $vars['form'] = new mySearchForm;
     
     return $vars;
-  }
-  
-  public function toIndexableString(array $vars)
-  {
-    return '';
   }
 
 }

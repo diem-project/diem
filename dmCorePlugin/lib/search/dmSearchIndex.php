@@ -55,9 +55,12 @@ class dmSearchIndex extends dmSearchIndexCommon
   {
     $this->open();
 
-    $query = $this->cleanText($query);
+    if (!$query instanceof Zend_Search_Lucene_Search_Query)
+    {
+      $query = $this->getLuceneQuery($this->cleanText($query));
+    }
 
-    $luceneHits = $this->index->find($this->getLuceneQuery($query));
+    $luceneHits = $this->index->find($query);
     $hits = array();
     foreach($luceneHits as $hit)
     {
@@ -88,7 +91,7 @@ class dmSearchIndex extends dmSearchIndexCommon
 //    return new Zend_Search_Lucene_Search_Query_Fuzzy($term, 0.4);
   }
 
-  public function populate()
+  public function populate(dmFrontContext $context)
   {
     $start = microtime(true);
     $this->logger->log($this->getName().' : Populating index...');
@@ -110,7 +113,10 @@ class dmSearchIndex extends dmSearchIndexCommon
     {
       ++$nb;
       $this->logger->log($this->getName().' '.$nb.'/'.$nbMax.' : '.$page->get('slug'));
-      $this->index->addDocument(new dmSearchPageDocument($page));
+      $document = $context->get('search_page');
+      $document->populate($page);
+      $this->index->addDocument($document);
+      unset($document);
     }
 
     $time = microtime(true) - $start;

@@ -19,6 +19,8 @@ class dmWidgetListView extends dmWidgetProjectModelView
         }
       }
     }
+    
+    $this->isIndexable = !$this->dmModule->hasPage();
   }
 
   /*

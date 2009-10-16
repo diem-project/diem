@@ -74,7 +74,7 @@ class dmWidgetContentTextView extends dmWidgetContentMediaView
     return $html;
   }
   
-  public function toIndexableString(array $vars)
+  protected function doRenderForIndex(array $vars)
   {
     return implode(' ', $vars['title'], $vars['text'], $vars['legend']);
   }

@@ -2,6 +2,8 @@
 
 class dmWidgetAdvancedSearchResultsView extends dmWidgetPluginView
 {
+  protected
+  $isIndexable = false;
 
   public function getRequiredVars()
   {

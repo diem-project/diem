@@ -3,14 +3,14 @@
 class dmSearchPageDocument extends Zend_Search_Lucene_Document
 {
   protected static
-  $skipWidgets = array(
-    'dmWidgetNavigation.breadCrumb',
-    'dmWidgetContent.link',
-    'dmWidgetContent.media',
-    'dmWidgetContent.gallery'
-  );
+  $context;
   
-  public function __construct(DmPage $page)
+  public function __construct(dmFrontContext $context)
+  {
+    $this->context = $context;
+  }
+  
+  public function populate(DmPage $page)
   {
     $i18n = $page['Translation'][sfDoctrineRecord::getDefaultCulture()];
     
@@ -55,9 +55,9 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
       throw new dmException('Can only be used in front app ( current : '.sfConfig::get('sf_app').' )');
     }
     
-    $helper = dmContext::getInstance()->get('page_helper');
+    $this->context->setPage($page);
     
-    dmContext::getInstance()->setPage($page);
+    $helper = $this->context->get('page_helper');
     
     $area = dmDb::query('DmPageView pv, pv.Area a')
     ->select('a.id')
@@ -77,10 +77,15 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
     {
       foreach($zone['Widgets'] as $widget)
       {
-        if (!in_array($widget['module'].'.'.$widget['action'], self::$skipWidgets))
-        {
-          $html .= $helper->renderWidgetInner($widget);
-        }
+        $widgetType = $this->context->get('widget_type_manager')->getWidgetType($widget['module'], $widget['action']);
+
+        $this->context->getServiceContainer()->addParameters(array(
+          'widget_view.class' => $widgetType->getViewClass(),
+          'widget_view.type'  => $widgetType,
+          'widget_view.data'  => $widget
+        ));
+        
+        $html .= $this->context->getServiceContainer()->getService('widget_view')->renderForIndex();
       }
     }
     

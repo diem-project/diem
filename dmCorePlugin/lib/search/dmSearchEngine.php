@@ -67,7 +67,7 @@ class dmSearchEngine extends dmSearchIndexGroup
     return $this->getIndex('dm_'.$this->user->getCulture());
   }
   
-  public function populate()
+  public function populate(dmFrontContext $context)
   {
     $this->setup();
 
@@ -83,7 +83,7 @@ class dmSearchEngine extends dmSearchIndexGroup
 
       $this->user->setCulture($index->getCulture());
       
-      $index->populate();
+      $index->populate($context);
     }
     
     $this->user->setCulture($oldCulture);

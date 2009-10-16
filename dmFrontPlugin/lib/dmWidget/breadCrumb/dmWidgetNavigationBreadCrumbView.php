@@ -2,6 +2,8 @@
 
 class dmWidgetNavigationBreadCrumbView extends dmWidgetPluginView
 {
+  protected
+  $isIndexable = false;
 
   public function getRequiredVars()
   {
@@ -52,9 +54,5 @@ class dmWidgetNavigationBreadCrumbView extends dmWidgetPluginView
     return $html;
   }
   
-  public function toIndexableString(array $vars)
-  {
-    return '';
-  }
 
 }

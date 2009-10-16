@@ -24,7 +24,7 @@ class dmWidgetContentTitleView extends dmWidgetPluginView
     return dmHelper::£($vars['tag'], array('class' => $vars['cssClass']), $vars['text']);
   }
   
-  public function toIndexableString(array $vars)
+  protected function doRenderForIndex(array $vars)
   {
     return $vars['text'];
   }

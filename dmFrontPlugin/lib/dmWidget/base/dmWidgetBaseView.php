@@ -8,7 +8,8 @@ abstract class dmWidgetBaseView
   $helper,
   $widgetType,
   $widget,
-  $requiredVars = array();
+  $requiredVars = array(),
+  $isIndexable = true;
 
   public function __construct(sfEventDispatcher $dispatcher, dmModuleManager $moduleManager, dmHelper $helper, dmWidgetType $type, array $data)
   {
@@ -107,9 +108,23 @@ abstract class dmWidgetBaseView
     return $html;
   }
 
-  public function toIndexableString(array $vars)
+  public function renderForIndex(array $vars = array())
   {
-    return $this->render($vars);
+    if ($this->isIndexable && $this->isValid())
+    {
+      $text = $this->doRenderForIndex($this->getViewVars($vars));
+    }
+    else
+    {
+      $text = '';
+    }
+    
+    return $text;
+  }
+
+  protected function doRenderForIndex(array $vars)
+  {
+    return $this->doRender($vars);
   }
   
   public function isValid()

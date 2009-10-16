@@ -258,6 +258,20 @@ abstract class dmDoctrineTable extends Doctrine_Table
 
     return $this->setCache('human_columns', $columns);
   }
+  
+  public function getIndexableColumns()
+  {
+    $columns = $this->getHumanColumns();
+    foreach($columns as $columnName => $column)
+    {
+      if(in_array($column['type'], array('time', 'timestamp', 'boolean')))
+      {
+        unset($columns[$columnName]);
+      }
+    }
+    
+    return $columns;
+  }
 
   public function getAllColumnNames()
   {

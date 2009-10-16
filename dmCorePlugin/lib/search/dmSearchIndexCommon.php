@@ -4,7 +4,8 @@ abstract class dmSearchIndexCommon
 {
   protected
   $dispatcher,
-  $logger;
+  $logger,
+  $serviceContainer;
 
   /**
    * The name of this index.

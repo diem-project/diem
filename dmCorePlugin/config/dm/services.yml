@@ -23,6 +23,8 @@ parameters:
   search_engine.class:        dmSearchEngine
 
   search_index.class:         dmSearchIndex
+  
+  search_page.class:          dmSearchPageDocument
 
   theme.class:                dmTheme
 
@@ -111,6 +113,11 @@ services:
     class:                    %search_index.class%
     shared:                   false
     arguments:                [ @dispatcher, @filesystem, @logger ]
+
+  search_page:
+    class:                    %search_page.class%
+    shared:                   false
+    arguments:                [ @context ]
 
   asset_config:
     class:                    %asset_config.class%

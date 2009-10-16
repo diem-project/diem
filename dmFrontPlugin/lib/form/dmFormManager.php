@@ -36,9 +36,20 @@ class dmFormManager implements ArrayAccess
    */
   public function offsetGet($name)
   {
+    $name = dmString::modulize($name);
+    
     if (!array_key_exists($name, $this->forms))
     {
-      throw new InvalidArgumentException(sprintf('The form manager has no "%s" form.', $name));
+      $formClass = dmString::camelize($name).'Form';
+      
+      if (!class_exists($formClass))
+      {
+        throw new InvalidArgumentException(sprintf('The form manager has no "%s" form.', $formClass));
+      }
+      else
+      {
+        $this->forms[$name] = new $formClass;
+      }
     }
 
     return $this->forms[$name];

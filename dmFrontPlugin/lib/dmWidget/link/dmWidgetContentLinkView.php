@@ -41,8 +41,8 @@ class dmWidgetContentLinkView extends dmWidgetPluginView
     return $link->render();
   }
   
-  public function toIndexableString(array $vars)
+  public function doRenderForIndex(array $vars)
   {
-    return implode(' ', $vars['text'], $vars['title']);
+    return $vars['text'].' '.$vars['title'];
   }
 }

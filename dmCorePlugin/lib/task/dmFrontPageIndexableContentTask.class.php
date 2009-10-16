@@ -74,8 +74,14 @@ class dmPageIndexableContentTask extends dmBaseTask
             $widgetViewClass = $widgetTypeManager->getWidgetType($widget['module'], $widget['action'])->getViewClass();
   
             $widgetView = new $widgetViewClass($widget);
-  
-            $html .= $widgetView->toIndexableString();
+            try
+            {
+              $html .= $widgetView->toIndexableString();
+            }
+            catch(Exception $e)
+            {
+              $this->log($e->getMessage());
+            }
           }
         }
       }

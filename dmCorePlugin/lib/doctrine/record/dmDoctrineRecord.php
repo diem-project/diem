@@ -550,6 +550,17 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
       'data' => $this->toArray()
     );
   }
+  
+  public function toIndexableString()
+  {
+    $indexParts = array();
+    foreach($this->_table->getIndexableColumns() as $columnName => $column)
+    {
+      $indexParts[] = $this->get($columnName);
+    }
+    
+    return implode(' ', $indexParts);
+  }
 
   public function isFieldModified($field)
   {

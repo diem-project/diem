@@ -36,7 +36,7 @@ class dmSearchUpdateTask extends dmBaseTask
     $index = dmContext::getInstance()->get('search_engine');
     $index->setLogger(new sfConsoleLogger($this->dispatcher));
     
-    $index->populate();
+    $index->populate(dmContext::getInstance());
     $index->optimize();
   }
 }
