@@ -73,6 +73,22 @@ class dmFrontInitFilter extends dmInitFilter
   
   protected function handlePageNotFound()
   {
+    if ($slug = $this->context->getRequest()->getParameter('slug'))
+    {
+      if ($redirection = dmDb::query('DmRedirect r')->where('r.source = ?', $slug)->fetchRecord())
+      {
+        if ($page = dmDb::table('DmPage')->findOneBySource($redirection->dest))
+        {
+          $url = dmFrontLinkTag::build($page)->getHref();
+        }
+        else
+        {
+          $url = $redirection->dest;
+        }
+        $this->context->getController()->redirect($url, 301);
+      }
+    }
+    
     return $this->forwardTo404Page();
   }
 

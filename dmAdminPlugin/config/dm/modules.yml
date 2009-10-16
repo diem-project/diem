@@ -54,6 +54,10 @@ Seo:
     dmSeoValidation:
       name:         Seo Validation
       credentials:  metas_validation
+  Redirections:
+    dmRedirect:
+      name:         Url Redirections
+      credentials:  url_redirection
 
 Integration:
   Layout:

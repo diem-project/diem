@@ -1,0 +1,44 @@
+generator:
+  class: dmAdminDoctrineGenerator
+  param:
+    model_class: DmRedirect
+    theme: dmAdmin
+    non_verbose_templates: true
+    with_show: false
+    route_prefix: dm_redirect
+    with_doctrine_route: true
+    config:
+      actions: ~
+      fields:
+        source:
+          label:            "Old url"
+          help:             "Ex: /example/url"
+        dest:
+          label:            "New url"
+          help:             "Use the tree to the left to drag & drop a page here"
+      list:
+        display:
+          - =source
+          - =dest
+          - created_at
+          - updated_at
+        sort:
+          - created_at
+          - desc
+        table_method: getAdminListQuery
+        table_count_method: ~
+      filter:
+        display:
+          - id
+          - source
+          - dest
+          - created_at
+          - updated_at
+      form:
+        display:
+          NONE: [source, dest]
+        class: DmRedirectAdminForm
+        fields: {  }
+      edit: ~
+      new: ~
+    sortable: false

@@ -325,6 +325,7 @@ class dmDataService extends dmService
       "sitemap" => "Regenerate sitemap",
       "automatic_metas" => "Configure automatic pages metas",
       "static_metas" => "Configure static pages metas",
+      'url_redirection' => 'Configure url redirections',
       "metas_validation" => "See meta validation",
       "google_analytics" => "Configure google analytics",
       "google_webmaster_tools" => "Configure google webmaster tools",
