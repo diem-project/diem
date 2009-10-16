@@ -1,6 +1,9 @@
 config/factories.yml:
   class:          dmFactoryConfigHandler
   
+config/routing.yml:
+  class:          dmFrontRoutingConfigHandler
+  
 config/dm/modules.yml:
   class:          dmFrontModuleManagerConfigHandler
   

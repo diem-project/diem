@@ -9,12 +9,7 @@ $helper->renderDoctype(),
 $helper->renderHtmlTag(),
 
   "\n<head>\n",
-    $helper->renderHttpMetas(),
-    $helper->renderMetas(),
-    $helper->renderStylesheets(),
-    $helper->renderBrowserStylesheets(),
-    $helper->renderFavicon(),
-    $helper->renderIeHtml5Fix(),
+    $helper->renderHead(),
   "\n</head>\n",
   
   $helper->renderBodyTag(),

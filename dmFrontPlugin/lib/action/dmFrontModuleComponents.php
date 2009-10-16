@@ -148,30 +148,6 @@ class dmFrontModuleComponents extends myFrontBaseComponents
     return $pager;
   }
   
-  /*
-   * Preload all pages related to records
-   */
-  protected function preloadPages($records)
-  {
-    if ($records instanceof Doctrine_Collection)
-    {
-      $records = $records->getData();
-    }
-        
-    if (!empty($records))
-    {
-      if (($module = dmArray::first($records)->getDmModule()) && $module->hasPage())
-      {
-        $ids = array();
-        foreach($records as $record)
-        {
-          $ids[] = $record->get('id');
-        }
-        
-        dmDb::table('DmPage')->prepareRecordPageCache($module->getKey(), array_unique($ids));
-      }
-    }
-  }
 
   /*
    * @return dmModule the current module for this component

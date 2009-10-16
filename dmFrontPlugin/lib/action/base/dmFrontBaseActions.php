@@ -80,4 +80,12 @@ class dmFrontBaseActions extends dmBaseActions
     
     return $this->redirect($refererUrl);
   }
+  
+  /*
+   * Preload all pages related to records
+   */
+  protected function preloadPages($records)
+  {
+    dmDb::table('DmPage')->preloadPagesForRecords($records);
+  }
 }

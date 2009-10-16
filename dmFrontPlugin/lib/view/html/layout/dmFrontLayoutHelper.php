@@ -25,19 +25,34 @@ class dmFrontLayoutHelper extends dmCoreLayoutHelper
     $this->page = $page;
   }
   
+  
+  public function renderHead()
+  {
+    return
+    $this->renderHttpMetas().
+    $this->renderMetas().
+    $this->renderStylesheets().
+    $this->renderBrowserStylesheets().
+    $this->renderFavicon().
+    $this->renderIeHtml5Fix();
+  }
+  
   public function renderBrowserStylesheets()
   {
     $html = '';
 
     // search in theme_dir/css/browser/ieX.css
-    foreach(array(6, 7, 8) as $ieVersion)
+    if (is_dir($this->theme->getFullPath('css/browser')))
     {
-      if (file_exists($this->theme->getFullPath('css/browser/msie'.$ieVersion.'.css')))
+      foreach(array(6, 7, 8) as $ieVersion)
       {
-        $html .= "\n".sprintf('<!--[if IE %d]><link href="%s" rel="stylesheet" type="text/css" /><![endif]-->',
-          $ieVersion,
-          $this->theme->getWebPath('css/browser/msie'.$ieVersion.'.css')
-        );
+        if (file_exists($this->theme->getFullPath('css/browser/msie'.$ieVersion.'.css')))
+        {
+          $html .= "\n".sprintf('<!--[if IE %d]><link href="%s" rel="stylesheet" type="text/css" /><![endif]-->',
+            $ieVersion,
+            $this->theme->getWebPath('css/browser/msie'.$ieVersion.'.css')
+          );
+        }
       }
     }
 

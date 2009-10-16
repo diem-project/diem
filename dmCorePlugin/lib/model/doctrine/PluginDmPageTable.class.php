@@ -63,6 +63,29 @@ class PluginDmPageTable extends myDoctrineTable
     }
   }
 
+  
+  public function preloadPagesForRecords($records)
+  {
+    if ($records instanceof Doctrine_Collection)
+    {
+      $records = $records->getData();
+    }
+        
+    if (!empty($records))
+    {
+      if (($module = dmArray::first($records)->getDmModule()) && $module->hasPage())
+      {
+        $ids = array();
+        foreach($records as $record)
+        {
+          $ids[] = $record->get('id');
+        }
+        
+        $this->prepareRecordPageCache($module->getKey(), array_unique($ids));
+      }
+    }
+  }
+  
   public function prepareRecordPageCache($module, array $ids)
   {
     $timer = dmDebug::timerOrNull('DmPageTable::prepareRecordPageCache');
