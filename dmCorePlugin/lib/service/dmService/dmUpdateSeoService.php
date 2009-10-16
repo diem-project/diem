@@ -328,19 +328,18 @@ class dmUpdateSeoService extends dmService
           $slugReplacements[$key] = dmString::slugify($replacement);
         }
         
-        $value = strtr($pattern, $slugReplacements);
-        
-//        $value = dmString::slugify($value, true);
-
         // add parent slug
-        $value = $parentSlug.'/'.$value;
+        $value = $parentSlug.'/'.strtr($pattern, $slugReplacements);
 
         $value = trim(preg_replace('|(/{2,})|', '/', $value), '/');
       }
       elseif($field === 'title')
       {
+        $value = $this->titlePrefix.strtr($pattern, $replacements).$this->titleSuffix;
+      }
+      else
+      {
         $value = strtr($pattern, $replacements);
-        $value = $this->titlePrefix.$value.$this->titleSuffix;
       }
 
       $values[$field] = $this->truncateValueForField(trim($value), $field);
