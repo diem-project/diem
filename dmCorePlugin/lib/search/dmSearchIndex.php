@@ -91,7 +91,7 @@ class dmSearchIndex extends dmSearchIndexCommon
 //    return new Zend_Search_Lucene_Search_Query_Fuzzy($term, 0.4);
   }
 
-  public function populate(dmFrontContext $context)
+  public function populate(dmContext $context)
   {
     $start = microtime(true);
     $this->logger->log($this->getName().' : Populating index...');
@@ -136,7 +136,7 @@ class dmSearchIndex extends dmSearchIndexCommon
     $this->open();
     $this->index->optimize();
 
-    $this->logger->log($this->getName().' : Index optimized in "' . round($time, 2) . '" seconds.');
+    $this->logger->log($this->getName().' : Index optimized in "' . round(microtime(true) - $start, 2) . '" seconds.');
   }
 
   protected function open()

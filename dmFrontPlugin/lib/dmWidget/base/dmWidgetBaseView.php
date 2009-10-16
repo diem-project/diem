@@ -145,7 +145,7 @@ abstract class dmWidgetBaseView
   public function getViewVars(array $vars = array())
   {
     return array_merge(
-      array('cssClass' => $this->widget['css_class']),
+      array('cssClass' => isset($this->widget['css_class']) ? $this->widget['css_class'] : null),
       (array) json_decode($this->widget['value']),
       dmString::toArray($vars)
     );

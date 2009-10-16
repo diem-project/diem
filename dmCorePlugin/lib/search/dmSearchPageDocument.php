@@ -2,10 +2,10 @@
 
 class dmSearchPageDocument extends Zend_Search_Lucene_Document
 {
-  protected static
+  protected
   $context;
   
-  public function __construct(dmFrontContext $context)
+  public function __construct(dmContext $context)
   {
     $this->context = $context;
   }

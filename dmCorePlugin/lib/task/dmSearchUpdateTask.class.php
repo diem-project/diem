@@ -26,7 +26,7 @@ class dmSearchUpdateTask extends dmBaseTask
   {
     if (!sfContext::hasInstance())
     {
-      dm::createContext($this->configuration, null, 'dmFrontContext');
+      dm::createContext($this->configuration);
     }
 
     $databaseManager = new sfDatabaseManager($this->configuration);
