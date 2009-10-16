@@ -36,11 +36,11 @@ class dmFormManager implements ArrayAccess
    */
   public function offsetGet($name)
   {
-    $name = dmString::modulize($name);
+    $name = dmString::camelize($name);
     
     if (!array_key_exists($name, $this->forms))
     {
-      $formClass = dmString::camelize($name).'Form';
+      $formClass = $name.'Form';
       
       if (!class_exists($formClass))
       {
