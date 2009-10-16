@@ -25,7 +25,12 @@ abstract class dmLinkTag extends dmHtmlTag
    * @return string baseHref the href without query string
    */
   abstract protected function getBaseHref();
-
+  
+  public function getHrefPrefix()
+  {
+    return sfConfig::get('sf_no_script_name') ? $this->requestContext['prefix'] : $this->requestContext['script_name'];
+  }
+  
   /*
    * Set text
    * @return dmLinkTag $this
