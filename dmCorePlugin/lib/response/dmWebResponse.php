@@ -152,7 +152,7 @@ abstract class dmWebResponse extends sfWebResponse
       }
       elseif($type === 'css')
       {
-        $path = $this->theme->getWebPath('css/'.$asset.'.css');
+        $path = $this->theme->getPath('css/'.$asset.'.css');
       }
       else
       {
