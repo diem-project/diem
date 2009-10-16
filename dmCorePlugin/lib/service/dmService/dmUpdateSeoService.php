@@ -320,11 +320,17 @@ class dmUpdateSeoService extends dmService
     $values = array();
     foreach($patterns as $field => $pattern)
     {
-      $value = strtr($pattern, $replacements);
-
       if ($field === 'slug')
       {
-        $value = dmString::slugify($value, true);
+        $slugReplacements = array();
+        foreach($replacements as $key => $replacement)
+        {
+          $slugReplacements[$key] = dmString::slugify($replacement);
+        }
+        
+        $value = strtr($pattern, $slugReplacements);
+        
+//        $value = dmString::slugify($value, true);
 
         // add parent slug
         $value = $parentSlug.'/'.$value;
@@ -333,6 +339,7 @@ class dmUpdateSeoService extends dmService
       }
       elseif($field === 'title')
       {
+        $value = strtr($pattern, $replacements);
         $value = $this->titlePrefix.$value.$this->titleSuffix;
       }
 
