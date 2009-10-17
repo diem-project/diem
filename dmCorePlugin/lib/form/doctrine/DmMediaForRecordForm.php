@@ -16,6 +16,11 @@ class DmMediaForRecordForm extends DmMediaForm
     {
       $media = $record->get($alias);
     }
+    else
+    {
+      $media = new DmMedia;
+      $media->set('dm_media_folder_id', $record->getDmMediaFolder()->get('id'));
+    }
 
     $form = new self($media);
     $form->configureRequired($required);

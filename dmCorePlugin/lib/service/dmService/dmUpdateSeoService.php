@@ -335,7 +335,7 @@ class dmUpdateSeoService extends dmService
       }
       elseif($field === 'title')
       {
-        $value = $this->titlePrefix.strtr($pattern, $replacements).$this->titleSuffix;
+        $value = $this->titlePrefix.ucfirst(strtr($pattern, $replacements)).$this->titleSuffix;
       }
       else
       {
