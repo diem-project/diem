@@ -198,7 +198,7 @@ class dmModule extends dmMicroCache
 
   public function getLocal($localModuleKey)
   {
-    if ($localModule = self::$manager->getModuleOrNull($localModule))
+    if ($localModule = self::$manager->getModuleOrNull($localModuleKey))
     {
       if ($this->hasLocal($localModule))
       {

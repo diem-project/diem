@@ -79,7 +79,7 @@ class dmFrontModuleComponents extends myFrontBaseComponents
     {
       foreach($this->filters as $filterKey => $filterValue)
       {
-        if (($filterModule = $this->getDmModule()->getAncestor($filterKey)) || ($filterModule = $this->getDmModule()->getAssociation($filterKey)))
+        if (($filterModule = $this->getDmModule()->getAncestor($filterKey)) || ($filterModule = $this->getDmModule()->getAssociation($filterKey)) || ($filterModule = $this->getDmModule()->getLocal($filterKey)))
         {
           if ($filterValue)
           {

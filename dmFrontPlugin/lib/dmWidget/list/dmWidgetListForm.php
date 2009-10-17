@@ -60,7 +60,15 @@ class dmWidgetListForm extends dmWidgetProjectModelForm
      */
     foreach($this->dmAction->getParam('filters', array()) as $filter)
     {
-      if (($filterModule = $this->dmModule->getAncestor($filter)) || ($filterModule = $this->dmModule->getAssociation($filter)))
+      if (!$filterModule = $this->dmModule->getAncestor($filter))
+      {
+        if(!$filterModule = $this->dmModule->getAssociation($filter))
+        {
+          $filterModule = $this->dmModule->getLocal($filter);
+        }  
+      }
+      
+      if ($filterModule)
       {
         $filterName = 'filter'.$filterModule->getModel();
 
@@ -77,6 +85,10 @@ class dmWidgetListForm extends dmWidgetProjectModelForm
         ));
 
         $this->widgetSchema[$filterName]->setLabel(dm::getI18n()->__($filterModule->getName()));
+      }
+      else
+      {
+        throw new dmException('Diem can not find a link between %s and %s modules', $this->dmModule, $filter);
       }
     }
 
