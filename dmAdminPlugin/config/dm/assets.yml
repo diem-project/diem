@@ -37,3 +37,4 @@ css:
     log:              log
     configPanel:      configPanel
     dataTable:        dataTable
+    seoService:       seoService

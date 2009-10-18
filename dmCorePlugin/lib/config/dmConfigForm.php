@@ -7,6 +7,14 @@ class dmConfigForm extends dmForm
   {
   }
   
+  public function save()
+  {
+    foreach($this->widgetSchema->getFields() as $name => $field)
+    {
+      dmConfig::set($name, $this->getValue($name));
+    }
+  }
+  
   public function addSettings(array $settings)
   {
     foreach($settings as $setting)

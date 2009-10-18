@@ -1,0 +1,41 @@
+div.seo_service {
+  padding: 40px;
+  text-align: center;
+}
+
+div.seo_service iframe.full_size {
+  width: 100%;
+  height: 500px;
+  border: none;
+  margin-top: 10px;
+}
+
+div.seo_service .dm_big_button {
+  padding: 20px;
+  background: url(../../core/images/default_bg.png) center left repeat-x;
+  font-size: 13px;
+  border: 1px solid #D3D3D3;
+  color: #444;
+  -moz-border-radius: 8px;
+}
+
+div.seo_service .dm_big_button:hover {
+  text-decoration: none;
+  background: url(../../core/images/default_bg_green.png) center left repeat-x;
+}
+
+div.seo_service form {
+	text-align: left;
+  display: block;
+  margin: 40px auto;
+  padding: 20px;
+  background: url(../../core/images/default_bg.png) center left repeat-x;
+  border: 1px solid #D3D3D3;
+  -moz-border-radius: 4px;
+  width: 300px;
+}
+
+div.seo_service form .dm_help_wrap {
+  color: #666;
+  font-style: italic;
+}

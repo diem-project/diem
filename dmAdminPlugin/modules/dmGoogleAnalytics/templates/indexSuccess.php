@@ -1,16 +1,17 @@
-<?php use_helper('Date');
+<?php
 
-echo £o('div.dm_box.big.google_analytics');
+echo £('div.dm_google_analytics.seo_service',
 
-echo £('h1.title', __('Google analytics'));
-
-echo £o('div.dm_box_inner');
-
-echo $form->open(),
-£('ul', ""
-),
-'</form>';
-
-echo £c('div');
-
-echo £c('div');
+  £link('https://www.google.com/analytics/settings/?et=reset&hl='.$sf_user->getCulture())
+  ->set('.dm_big_button')
+  ->target('blank')
+  ->text('Open Google Analytics page').
+  
+  (isset($form)
+  ? $form->open().
+  $form['ga_key']->renderRow().
+  $form->renderSubmitTag(__('Save')).
+  $form->close()
+  : '')
+  
+);

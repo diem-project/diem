@@ -4,6 +4,13 @@
 class PluginDmSettingTable extends myDoctrineTable
 {
   
+  public function fetchOneByName($name)
+  {
+    return $this->createQuery('r')
+    ->where('r.name = ?', $name)
+    ->fetchRecord();
+  }
+  
   public function getGroupNames()
   {
     $groups = dmDb::query('DmSetting s')->select('s.group_name')->groupBy('s.group_name')->fetchPDO();

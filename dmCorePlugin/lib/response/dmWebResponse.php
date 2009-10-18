@@ -39,7 +39,7 @@ abstract class dmWebResponse extends sfWebResponse
     {
       if (!($key = dmConfig::get('gmap_key')) && $this->options['logging'])
       {
-        $this->dispatcher->notify(new sfEvent($this, 'application.log', array('priority' => sfLogger::ERR, 'dmResponse can not load google maps api. You must proved an api key in the configuration panel')));
+        $this->dispatcher->notify(new sfEvent($this, 'application.log', array('priority' => sfLogger::ERR, 'dmResponse can not load google maps api. You must provide an api key in the configuration panel')));
       }
       else
       {

@@ -1,2 +1,2 @@
 all:
-  credentials: google_analytics
+  credentials: use_google_webmaster_tools
