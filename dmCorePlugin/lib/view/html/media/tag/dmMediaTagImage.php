@@ -15,11 +15,11 @@ class dmMediaTagImage extends dmMediaTag
   {
     parent::initialize();
 
-    $this->method(dmConfig::get('image_resize_method', 'center'));
-    $this->quality(dmConfig::get('image_quality', 92));
-    $this->set('background', null);
-
-    $this->addAttributeToRemove(array('method', 'quality', 'background', 'filter'));
+    $this
+    ->method(dmConfig::get('image_resize_method', 'center'))
+    ->quality(dmConfig::get('image_quality', 92))
+    ->set('background', null)
+    ->addAttributeToRemove(array('method', 'quality', 'background', 'filter', 'overlay'));
   }
   
   public function htmlWidth($v)
@@ -59,6 +59,23 @@ class dmMediaTagImage extends dmMediaTag
   {
     return $this->set('quality', (int) $v);
   }
+  
+  public function overlay($image, $position = 'center')
+  {
+    if (!$image instanceof dmMediaTagImage)
+    {
+      $image = dmMediaTag::build($image);
+      if (!$image instanceof dmMediaTagImage)
+      {
+        throw new dmException($image.' is not an image and cannot be used as overlay');
+      }
+    }
+    
+    return $this->set('overlay', array(
+      'image' => $image,
+      'position' => $position
+    ));
+  }
 
   public function background($v)
   {
@@ -95,25 +112,23 @@ class dmMediaTagImage extends dmMediaTag
   
   public function getRealSize()
   {
-    if ($this->hasSize() && !sfConfig::get('dm_search_populating'))
+    $infos = getimagesize($this->getServerFullPath());
+    
+    return array($infos[0], $infos[1]);
+  }
+  
+  public function getServerFullPath()
+  {
+    if ($this->hasSize() && !sfConfig::get('dm_search_populating') && $this->resource->getSource() instanceof DmMedia)
     {
-      try
-      {
-        $mediaFullPath = $this->getResizedMediaFullPath($this->options);
-      }
-      catch(Exception $e)
-      {
-        $mediaFullPath = $this->resource->getSource()->getFullPath();
-      }
+      $fullPath = $this->getResizedMediaFullPath($this->options);
     }
     else
     {
-      $mediaFullPath = $this->resource->getSource()->getFullPath();
+      $fullPath = $this->resource->getFullPath();
     }
     
-    $infos = getimagesize($mediaFullPath);
-    
-    return array($infos[0], $infos[1]);
+    return $fullPath;
   }
 
   protected function prepareAttributesForHtml(array $attributes)
@@ -164,6 +179,7 @@ class dmMediaTagImage extends dmMediaTag
         $mediaFullPath = $this->resource->getSource()->getFullPath();
       }
 
+      $attributes['full_server_path'] = $mediaFullPath;
       $attributes['src'] = $this->requestContext['relative_url_root'].str_replace(sfConfig::get('sf_web_dir'), '', $mediaFullPath);
       
       $infos = getimagesize($mediaFullPath);
@@ -177,6 +193,11 @@ class dmMediaTagImage extends dmMediaTag
   protected function getResizedMediaFullPath(array $attributes)
   {
     $media = $this->resource->getSource();
+    
+    if (!$media instanceof DmMedia)
+    {
+      throw new dmException('Can be used only if the source is a DmMedia instance');
+    }
 
     if (empty($attributes['width']))
     {
@@ -210,6 +231,7 @@ class dmMediaTagImage extends dmMediaTag
     }
 
     $filter = dmArray::get($attributes, 'filter');
+    $overlay = dmArray::get($attributes, 'overlay', array());
 
     $pathInfo = pathinfo($media->get('file'));
     $thumbRelPath = $pathInfo['filename'].'_'.substr(md5(implode('-', array(
@@ -217,6 +239,7 @@ class dmMediaTagImage extends dmMediaTag
       $attributes['height'],
       $attributes['method'] == 'fit' ? 'fit'.$attributes['background'] : $attributes['method'],
       $filter,
+      implode(' ', $overlay),
       $attributes['quality'],
       $media->getTimeHash()
     ))), -6).'.'.$pathInfo['extension'];
@@ -232,10 +255,21 @@ class dmMediaTagImage extends dmMediaTag
       $image->setQuality($attributes['quality']);
 
       $image->thumbnail($attributes['width'], $attributes['height'], $attributes['method'], !empty($attributes['background']) ? '#'.$attributes['background'] : null);
-
+    
       if ($filter)
       {
         $image->$filter();
+      }
+    
+      if (!empty($overlay))
+      {
+        $overlayPath = $overlay['image']->getServerFullPath();
+        $type = dmOs::getFileMime($overlayPath);
+        if ($type != 'image/png')
+        {
+          throw new dmException('Only png images can be used as overlay.');
+        }
+        $image->overlay(new sfImage($overlayPath, $type), $overlay['position']);
       }
 
       $image->saveAs($thumbPath, $media->get('mime'));

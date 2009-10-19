@@ -157,6 +157,10 @@ abstract class PluginDmMedia extends BaseDmMedia
     return strncmp($this->mime, 'image/', 6) === 0;
   }
 
+  
+  /*
+   * @return dmImage
+   */
   public function getImage()
   {
     if(!$this->isImage())

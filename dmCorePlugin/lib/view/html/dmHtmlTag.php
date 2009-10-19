@@ -52,7 +52,7 @@ abstract class dmHtmlTag
         $this->set($n, $v);
       }
     }
-    elseif (null !== $value)
+    elseif (2 === func_num_args())
     {
       $this->options[$name] = $value;
     }
@@ -62,7 +62,7 @@ abstract class dmHtmlTag
      */
     else
     {
-      if ($firstSpacePos = strpos($name, " "))
+      if ($firstSpacePos = strpos($name, ' '))
       {
         $stringOpt = substr($name, $firstSpacePos + 1);
         $name = substr($name, 0, $firstSpacePos);

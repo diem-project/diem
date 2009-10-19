@@ -61,9 +61,9 @@ class dmMediaResource
   {
     switch($this->getType())
     {
-      case MEDIA:
+      case self::MEDIA:
         return $this->source->getFullPath();
-      case FILE:
+      case self::FILE:
         return dmOs::join(sfConfig::get('sf_web_dir'), $this->getPathFromWebDir());
     }
   }

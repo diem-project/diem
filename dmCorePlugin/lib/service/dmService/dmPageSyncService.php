@@ -180,18 +180,31 @@ class dmPageSyncService extends dmService
        */
       if (!isset($listPages[$moduleKey]))
       {
-        dmDb::create('DmPage', array(
-          'module'      => $moduleKey,
-          'action'      => 'list',
-          'Translation' => array(
-            myDoctrineRecord::getDefaultCulture() => array(
-              'name'        => $module->getPlural(),
-              'title'       => $module->getPlural(),
-              'slug'        => dmString::slugify($module->getPlural()),
-              'description' => $module->getPlural()
+        if (isset($listPages[strtolower($moduleKey)]))
+        {
+          // fix page module
+          dmDb::table('DmPage')->createQuery()
+          ->update('DmPage')
+          ->where('id = ?', $listPages[strtolower($moduleKey)]['id'])
+          ->set('module', "'".$moduleKey."'")
+          ->execute();
+        }
+        else
+        {
+          // create page
+          dmDb::create('DmPage', array(
+            'module'      => $moduleKey,
+            'action'      => 'list',
+            'Translation' => array(
+              myDoctrineRecord::getDefaultCulture() => array(
+                'name'        => $module->getPlural(),
+                'title'       => $module->getPlural(),
+                'slug'        => dmString::slugify($module->getPlural()),
+                'description' => $module->getPlural()
+              )
             )
-          )
-        ))->getNode()->insertAsLastChildOf($rootPage);
+          ))->getNode()->insertAsLastChildOf($rootPage);
+        }
       }
     }
 
