@@ -173,7 +173,6 @@ class dmPageSyncService extends dmService
 //        dmDb::table('DmPage')->find($listPage['id'])->getNode()->delete();
 //      }
 //    }
-
     foreach($projectModules as $moduleKey => $module)
     {
       /*

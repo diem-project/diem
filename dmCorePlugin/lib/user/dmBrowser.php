@@ -50,6 +50,13 @@ class dmBrowser
       {
         $this->setVersion($matches['version'][$i]);
       }
+      
+      //Google chrome has a safari like signature
+      if ('safari' === $this->name && strpos($formattedUserAgent, 'chrome/'))
+      {
+        $this->setName('chrome');
+        $this->setVersion(preg_replace('|.+chrome/([0-9]+(?:\.[0-9]+)?).+|', '$1', $formattedUserAgent));
+      }
     }
     else
     {

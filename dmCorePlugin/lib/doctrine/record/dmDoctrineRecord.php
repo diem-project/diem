@@ -49,12 +49,12 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
   /*
    * Add page tree watcher registering
    */
-  public function unlinkInDb($alias, $ids = array())
-  {
-    $this->notify('delete');
-
-    $return = parent::unlinkInDb($alias, $ids);
-  }
+//  public function unlinkInDb($alias, $ids = array())
+//  {
+//    $this->notify('delete');
+//
+//    $return = parent::unlinkInDb($alias, $ids);
+//  }
   
   public function notify($type = 'update')
   {

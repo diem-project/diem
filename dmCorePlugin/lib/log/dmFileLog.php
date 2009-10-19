@@ -47,6 +47,28 @@ abstract class dmFileLog extends dmLog
     {
       throw new dmException(sprintf('Can not log in %s', $this->options['file']));
     }
+    
+    if (dmArray::get($this->options, 'rotation', true))
+    {
+      $this->checkRotation();
+    }
+  }
+  
+  protected function checkRotation()
+  {
+    if (rand(0, 10))
+    {
+      return;
+    }
+
+    $maxSize = dmArray::get($this->options, 'max_size_megabytes', 2) * 1024 * 1024;
+    
+    if (filesize($this->options['file']) > $maxSize)
+    {
+      $logs = file($this->options['file']);
+      file_put_contents($this->options['file'], implode("\n", array_slice($logs, round(count($logs)/2))));
+      unset($logs);
+    }
   }
   
   public function getEntries($max = 0)

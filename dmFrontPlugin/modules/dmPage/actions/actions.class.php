@@ -36,6 +36,8 @@ class dmPageActions extends dmFrontBaseActions
     
     $this->form = new DmPageFrontEditForm($this->page);
     
+    $assetAliases = include($this->context->get('config_cache')->checkConfig('config/dm/assets.yml'));
+    
     if ($request->isMethod('put'))
     {
       if ($this->form->bindAndValid($request))
@@ -61,8 +63,6 @@ class dmPageActions extends dmFrontBaseActions
     }
     else
     {
-      $assetAliases = include($this->context->get('config_cache')->checkConfig('config/dm/assets.yml'));
-  
       $js =
       file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), $assetAliases['js.lib.ui-tabs'])).
       dmJsMinifier::transform(

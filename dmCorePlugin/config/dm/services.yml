@@ -52,6 +52,8 @@ parameters:
   action_log.options:
     file:                     'data/dm/log/action.log'
     entry_service_name:       action_log_entry
+    rotation:                 true
+    max_size_megabytes:       2
     ignore_models:            []
     ignore_internal_actions:  true
   
@@ -61,6 +63,8 @@ parameters:
   user_log.options:
     file:                     'data/dm/log/user.log'
     entry_service_name:       user_log_entry
+    rotation:                 true
+    max_size_megabytes:       2
   
   user_log_entry.class:       dmUserLogEntry
     
