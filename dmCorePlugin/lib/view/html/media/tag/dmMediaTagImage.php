@@ -179,7 +179,6 @@ class dmMediaTagImage extends dmMediaTag
         $mediaFullPath = $this->resource->getSource()->getFullPath();
       }
 
-      $attributes['full_server_path'] = $mediaFullPath;
       $attributes['src'] = $this->requestContext['relative_url_root'].str_replace(sfConfig::get('sf_web_dir'), '', $mediaFullPath);
       
       $infos = getimagesize($mediaFullPath);
