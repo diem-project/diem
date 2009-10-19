@@ -56,6 +56,11 @@ class dmMediaResource
   {
     return $this->pathFromWebDir;
   }
+  
+  public function getWebPath()
+  {
+    return $this->requestContext['relative_url_root'].$this->pathFromWebDir;
+  }
 
   public function getFullPath()
   {
@@ -105,18 +110,18 @@ class dmMediaResource
          */
         if(strpos($source, sfConfig::get('sf_web_dir')) === 0)
         {
-          $this->pathFromWebDir = $this->requestContext['relative_url_root'].str_replace(sfConfig::get('sf_web_dir'), '', $source);
+          $this->pathFromWebDir = str_replace(sfConfig::get('sf_web_dir'), '', $source);
         }
         // Web path ( ex: /swf/file.swf )
         elseif(strncmp($source, '/', 1) === 0)
         {
-          $this->pathFromWebDir = $this->requestContext['relative_url_root'].$source;
+          $this->pathFromWebDir = $source;
         }
         // dm asset ( ex: dmFront/images/file.png )
         elseif(strncmp($source, 'dm', 2) === 0)
         {
           $type = preg_replace('|^dm(\w+)/.+$|', '$1', $source);
-          $this->pathFromWebDir = $this->requestContext['relative_url_root'].'/'.sfConfig::get('dm_'.dmString::modulize($type).'_asset').'/'.str_replace('dm'.$type.'/', '', $source);
+          $this->pathFromWebDir = '/'.sfConfig::get('dm_'.dmString::modulize($type).'_asset').'/'.str_replace('dm'.$type.'/', '', $source);
         }
         // theme asset ( ex: images/file.png and file.png will both result to /myTheme/images/file.png )
         else
@@ -124,11 +129,11 @@ class dmMediaResource
           // and now some magic to allow to use "images/file.png" writing only "file.png"
           if (strncmp($source, 'images/', 7) !== 0 && file_exists($this->theme->getFullPath('images/'.$source)) && !file_exists($this->theme->getFullPath($source)))
           {
-            $this->pathFromWebDir = $this->theme->getWebPath('images/'.$source);
+            $this->pathFromWebDir = $this->theme->getPath('images/'.$source);
           }
           else
           {
-            $this->pathFromWebDir = $this->theme->getWebPath($source);
+            $this->pathFromWebDir = $this->theme->getPath($source);
           }
         }
   
@@ -149,7 +154,7 @@ class dmMediaResource
   {
     $this->source         = $media;
     $this->type           = self::MEDIA;
-    $this->pathFromWebDir = $media->getwebPath();
+    $this->pathFromWebDir = $media->getWebPath();
     $this->mime           = $this->getSimpleMime($media->get('mime'));
   }
 
