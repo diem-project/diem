@@ -31,7 +31,17 @@ class dmGapi extends gapi
   {
     $options = array_merge($this->getDefaultReportOptions(), $options);
     
-    return $this->requestReportData($this->getReportId(), $options['dimensions'], $options['metrics'], $options['sort_metric'], $options['filter'], $options['start_date'], $options['end_date'], $options['start_index'], $options['max_results']);
+    return $this->requestReportData(
+    $this->getReportId(),
+    $options['dimensions'],
+    $options['metrics'],
+    $options['sort_metric'],
+    $options['filter'],
+    $options['start_date'],
+    $options['end_date'],
+    $options['start_index'],
+    $options['max_results']
+    );
   }
   
   public function getDefaultReportOptions()

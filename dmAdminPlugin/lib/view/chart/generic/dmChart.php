@@ -7,7 +7,8 @@ abstract class dmChart extends pChart
   protected static
   $colors = array(
     'grey1' => array(220, 220, 220),
-    'grey2' => array(140, 140, 140)
+    'grey2' => array(140, 140, 140),
+    'blue' => array(180, 220, 250)
   );
 
   protected

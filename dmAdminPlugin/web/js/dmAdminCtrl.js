@@ -28,16 +28,29 @@
         }
       
       this.liveEvents();
-      
-      //    this.filters();
+			
+			this.autoLoading();
     },
-    
-    //  filters: function()
-    //  {
-    //    self = this;
-    //    $('a.dm_filters_toggler', self.$).click(function() {
-    //    }).find(':first').trigger('click');
-    //  },
+		
+		autoLoading: function()
+		{
+			var self = this, nbElements = 1;
+			
+			$('.dm_auto_loading', self.$).each(function()
+			{
+				var $this = $(this), metadata = $this.metadata();
+				$this.height(metadata.height || 200).block();
+        setTimeout(function() {
+					$.ajax({
+						url:     metadata.url,
+						success: function(html) {
+							$this.unblock().height('auto').html(html);
+						}
+					});
+			  }, nbElements*300);
+				nbElements ++;
+			});
+		},
     
     bars: function()
     {

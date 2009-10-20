@@ -7,8 +7,8 @@ echo £('div.dm_box',
     ->textTitle(__('Expanded view')).
     £('h2', __($chart->getName()))
   ).
-  £('div.dm_box_inner.dm_data.m5', $image
-  ? £link('@dm_chart?name='.$chartKey)->text($image->htmlWidth('100%'))->title(__('Expanded view'))
-  : __('This chart is currently not available')
-  )
+  £('div.dm_box_inner.dm_data.m5.dm_auto_loading', array('json' => array(
+    'url' => £link('@dm_chart?action=image&name='.$chartKey)->getHref(),
+    'height' => 200
+  )))
 );

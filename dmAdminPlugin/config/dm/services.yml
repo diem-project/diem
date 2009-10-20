@@ -1,5 +1,9 @@
 parameters:
 
+  week_chart.class:           dmWeekChart
+  week_chart.options:
+    name:                     This Week
+
   visit_chart.class:          dmVisitChart
   visit_chart.options:
     name:                     Popularity
@@ -36,6 +40,11 @@ parameters:
     file:                     sitemap.xml
  
 services:
+
+  week_chart:
+    class:                    %week_chart.class%
+    shared:                   false
+    arguments:                [ @service_container, %week_chart.options% ]
 
   browser_chart:
     class:                    %browser_chart.class%

@@ -19,6 +19,27 @@ class dmChartActions extends dmAdminBaseActions
     return $charts;
   }
   
+  public function executeImage(dmWebRequest $request)
+  {
+    $chartKey = $request->getParameter('name');
+    
+    $this->tryToGetChartImage($chartKey.'_chart', array(
+      'width' => 500,
+      'height' => 300
+    ));
+    
+    if ($this->image)
+    {
+      return $this->renderText(
+        dmLinkTag::build('@dm_chart?name='.$chartKey)->text($this->image->htmlWidth('100%'))
+      );
+    }
+    else
+    {
+      return $this->renderText($this->context->getI18n()->__('This chart is currently not available'));
+    }
+  }
+  
   public function executeIndex(dmWebRequest $request)
   {
     $this->charts = $this->getCharts();
@@ -30,15 +51,15 @@ class dmChartActions extends dmAdminBaseActions
   {
     $chartKey = $request->getParameter('name');
     
-    $this->tryToGetChartImage($chartKey.'_chart');
-  }
-
-  protected function tryToGetChartImage($serviceName)
-  {
-    $this->context->getServiceContainer()->mergeParameter($serviceName.'.options', array(
+    $this->tryToGetChartImage($chartKey.'_chart', array(
       'width' => 1000,
       'height' => 500
     ));
+  }
+
+  protected function tryToGetChartImage($serviceName, array $options = array())
+  {
+    $this->context->getServiceContainer()->mergeParameter($serviceName.'.options', $options);
     
     $this->chart = $this->context->get($serviceName);
     
