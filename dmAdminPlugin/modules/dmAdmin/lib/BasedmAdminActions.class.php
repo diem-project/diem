@@ -2,14 +2,8 @@
 
 class BasedmAdminActions extends dmAdminBaseActions
 {
-  public function executeIndex(sfWebRequest $request)
+  public function executeIndex(dmWebRequest $request)
   {
-    require_once(dmOs::join(sfConfig::get('dm_admin_dir'), 'modules/dmUserLog/lib/dmUserLogViewLittle.php'));
-    require_once(dmOs::join(sfConfig::get('dm_admin_dir'), 'modules/dmActionLog/lib/dmActionLogViewLittle.php'));
-    
-    $this->userLogView = new dmUserLogViewLittle($this->context->get('user_log'), $this->context->getI18n(), $this->getUser());
-    
-    $this->actionLogView = new dmActionLogViewLittle($this->context->get('action_log'), $this->context->getI18n(), $this->getUser());
   }
   
   public function executeRefreshLogs(dmWebRequest $request)

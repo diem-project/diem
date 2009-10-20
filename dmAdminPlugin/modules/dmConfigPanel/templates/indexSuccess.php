@@ -18,6 +18,10 @@ echo $form->open('.dm_form.list');
 
 foreach($settings as $group => $groupSettings)
 {
+  if ('internal' == $group)
+  {
+    continue;
+  }
   echo £o('div#dm_setting_group_'.dmString::slugify($group));
   
   echo £('h2', __(dmString::humanize($group)));

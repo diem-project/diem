@@ -36,7 +36,9 @@ class dmActionLogView extends dmLogView
   
   protected function renderSubject(dmActionLogEntry $entry)
   {
-    return $entry->get('subject');
+    return 'exception' === $entry->get('type')
+    ? dmLinkTag::build('@dm_error')->param('search', $entry->get('subject'))->text($entry->get('subject'))
+    : $entry->get('subject');
   }
   
   protected function renderAction(dmActionLogEntry $entry)

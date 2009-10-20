@@ -13,6 +13,11 @@ class dmConfigPanelActions extends dmAdminBaseActions
 
     foreach($this->settings as $group => $settings)
     {
+      if ('internal' == $group)
+      {
+        continue;
+      }
+      
       foreach($settings as $index => $setting)
       {
         if($this->getUser()->can($setting->get('credentials')))

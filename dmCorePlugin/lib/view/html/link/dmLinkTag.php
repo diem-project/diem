@@ -107,7 +107,7 @@ abstract class dmLinkTag extends dmHtmlTag
   {
     foreach($params as $key => $value)
     {
-      $params[$key] = urlencode($value);
+      $params[$key] = $value;
     }
 
     return $this->set('params', array_merge($this->get('params', array()), $params));

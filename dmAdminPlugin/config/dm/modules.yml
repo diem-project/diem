@@ -12,7 +12,10 @@ Utils:
     dmProfile:
       name:         Profile
       credentials:  user_profile
-  Logs:
+  Monitoring:
+    dmChart:
+      name:         Chart
+      credentials:  see_chart
     dmUserLog:
       name:         User log
       credentials:  user_log
@@ -39,10 +42,10 @@ Seo:
   Services:
     dmGoogleAnalytics:
       name:         Google analytics
-      credentials:  google_analytics
+      credentials:  use_google_analytics
     dmGoogleWebmasterTools:
       name:         Google webmaster tools
-      credentials:  google_webmaster_tools
+      credentials:  use_google_webmaster_tools
   Sitemap:
     dmSitemap:
       name:         Generate sitemap

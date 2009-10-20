@@ -274,8 +274,8 @@ class gapi
       $report_root_parameters[$key] = intval($open_search_result);
     }
     
-    $account_root_parameters['startDate'] = strval($google_results->startDate);
-    $account_root_parameters['endDate'] = strval($google_results->endDate);
+    $account_root_parameters['startDate'] = strval($open_search_results->startDate);
+    $account_root_parameters['endDate'] = strval($open_search_results->endDate);
     
     //Load result entries
     
@@ -735,8 +735,8 @@ class gapiAccountEntry
  */
 class gapiReportEntry
 {
-  private $metrics = array();
-  private $dimensions = array();
+  protected $metrics = array();
+  protected $dimensions = array();
   
   public function __construct($metrics,$dimesions)
   {

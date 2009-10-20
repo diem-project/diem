@@ -15,6 +15,7 @@ js:
     log:              dmAdminLog
     logs:             dmAdminLogs
     configPanel:      dmAdminConfigPanel
+    chart:            dmAdminChart
 
 css:
 

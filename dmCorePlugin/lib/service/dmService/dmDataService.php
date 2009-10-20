@@ -71,6 +71,16 @@ class dmDataService extends dmService
         'group_name' =>'tracking',
         'credentials' => 'google_analytics'
       ),
+      'ga_email' => array(
+        'description' => 'Required to display google analytics data into Diem',
+        'group_name' => 'tracking',
+        'credentials' => 'google_analytics'
+      ),
+      'ga_password' => array(
+        'description' => 'Required to display google analytics data into Diem',
+        'group_name' => 'tracking',
+        'credentials' => 'google_analytics'
+      ),
       'gwt_key' => array(
         'description' => 'The google webmaster tools filename without google and .html ( Ex: a913b555ba9b4f13 )',
         'group_name' =>'tracking',
@@ -342,6 +352,7 @@ class dmDataService extends dmService
       "search_engine" => "Manage internal search engine",
       "user_log" => "See the user log",
       "action_log" => "See the action log",
+      'see_chart' => 'See the charts',
       "config_panel" => "Use the configuration panel",
       "translation" => "Use the translation interface",
       "user_profile" => "Use the profile interface",

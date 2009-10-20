@@ -1,5 +1,19 @@
 parameters:
 
+  visit_chart.class:          dmVisitChart
+  visit_chart.options:
+    name:                     Popularity
+
+  content_chart.class:        dmContentChart
+  content_chart.options:
+    name:                     Activity
+
+  browser_chart.class:        dmBrowserChart
+  browser_chart.options:
+    name:                     Browsers
+
+  gapi.class:                 dmGapi
+
   link_tag.class:             dmAdminLinkTag
 
   theme.options:
@@ -22,6 +36,26 @@ parameters:
     file:                     sitemap.xml
  
 services:
+
+  browser_chart:
+    class:                    %browser_chart.class%
+    shared:                   false
+    arguments:                [ @service_container, %browser_chart.options% ]
+
+  visit_chart:
+    class:                    %visit_chart.class%
+    shared:                   false
+    arguments:                [ @service_container, %visit_chart.options% ]
+
+  content_chart:
+    class:                    %content_chart.class%
+    shared:                   false
+    arguments:                [ @service_container, %content_chart.options% ]
+
+  gapi:
+    class:                    %gapi.class%
+    shared:                   true
+    arguments:                [ %gapi.email%, %gapi.password%, %gapi.auth_token% ]
 
   link_tag:
     class:                    %link_tag.class%

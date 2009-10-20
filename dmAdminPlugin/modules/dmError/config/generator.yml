@@ -38,7 +38,7 @@ generator:
       form:
         display:
           NONE: [name]
-          Description: [description]
+          Description: [_description]
           Others: [klass, module, action, uri, env]
         class: DmErrorAdminForm
         fields: {  }

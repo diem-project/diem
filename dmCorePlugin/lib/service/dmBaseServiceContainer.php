@@ -201,4 +201,15 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
   {
     return $this->getService($name);
   }
+  
+  /**
+   * Merges a service container parameter.
+   *
+   * @param string $name       The parameter name
+   * @param mixed  $parameters The parameter value
+   */
+  public function mergeParameter($name, $value)
+  {
+    $this->parameters[strtolower($name)] = array_merge($this->parameters[strtolower($name)], $value);
+  }
 }

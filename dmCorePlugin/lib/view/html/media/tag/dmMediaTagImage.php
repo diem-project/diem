@@ -24,12 +24,12 @@ class dmMediaTagImage extends dmMediaTag
   
   public function htmlWidth($v)
   {
-    return $this->set('html_width', max(0, (int)$v));
+    return $this->set('html_width', strpos($v, '%') ? $v : max(0, (int)$v));
   }
 
   public function htmlHeight($v)
   {
-    return $this->set('html_height', max(0, (int)$v));
+    return $this->set('html_height', strpos($v, '%') ? $v : max(0, (int)$v));
   }
 
   public function htmlSize($width, $height = null)

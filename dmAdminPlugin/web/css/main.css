@@ -42,8 +42,16 @@ body.full_screen #dm_admin_content {
   margin-right: auto;
 }
 
-.dm_box_inner {
-	margin: 10px;
+.dm_third .dm_box {
+	margin: 0 5px 10px 5px;
+}
+
+div.dm_box_inner {
+  margin: 10px;
+}
+
+div.dm_box_inner.m5 {
+  margin: 5px;
 }
 
 .dm_box.little {
