@@ -101,12 +101,25 @@ class dmFrontInitFilter extends dmInitFilter
           
           $results = $searchIndex->search($query);
           
-          if ($result = dmArray::first($results))
+          $foundPage = null;
+          foreach($results as $result)
           {
             if ($result->getScore() > 0.5)
             {
-              return $this->context->getController()->redirect(dmFrontLinkTag::build($result->getPage())->getHref(), 301);
+              if($foundPage = $result->getPage())
+              {
+                break;
+              }
             }
+            else
+            {
+              $break;
+            }
+          }
+          
+          if ($foundPage)
+          {
+            return $this->context->getController()->redirect(dmFrontLinkTag::build($foundPage)->getHref(), 301);
           }
         }
         catch(Exception $e)
