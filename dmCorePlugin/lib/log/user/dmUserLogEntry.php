@@ -17,6 +17,7 @@ class dmUserLogEntry extends dmLogEntry
       'session_id'    => (string) session_id(),
       'user_id'       => (string) $data['context']->getUser()->getGuardUserId(),
       'user_agent'    => (string) $data['server']['HTTP_USER_AGENT'],
+      'mem'           => (string) memory_get_peak_usage(true),
       'timer'         => (string) sprintf('%.0f', (microtime(true) - dm::getStartTime()) * 1000)
     );
   }

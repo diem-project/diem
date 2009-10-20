@@ -1,5 +1,9 @@
 parameters:
 
+  log_chart.class:            dmLogChart
+  log_chart.options:
+    name:                     Server
+
   week_chart.class:           dmWeekChart
   week_chart.options:
     name:                     This Week
@@ -40,6 +44,11 @@ parameters:
     file:                     sitemap.xml
  
 services:
+
+  log_chart:
+    class:                    %log_chart.class%
+    shared:                   false
+    arguments:                [ @service_container, %log_chart.options% ]
 
   week_chart:
     class:                    %week_chart.class%

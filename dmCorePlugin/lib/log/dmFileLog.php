@@ -61,7 +61,7 @@ abstract class dmFileLog extends dmLog
       return;
     }
 
-    $maxSize = dmArray::get($this->options, 'max_size_megabytes', 2) * 1024 * 1024;
+    $maxSize = dmArray::get($this->options, 'max_size_megabytes', 4) * 1024 * 1024;
     
     if (filesize($this->options['file']) > $maxSize)
     {
