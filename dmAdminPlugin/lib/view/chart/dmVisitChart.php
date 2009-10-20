@@ -43,7 +43,7 @@ class dmVisitChart extends dmGaChart
     $this->drawPlotGraph($dataSet->GetData(),$dataSet->GetDataDescription(),3,2,255,255,255);
 
     // Finish the graph
-    $this->drawLegend(45,35,$dataSet->GetDataDescription(),255,255,255);
+    $this->drawLegend(45,5,$dataSet->GetDataDescription(),255,255,255);
   }
 
   protected function getData()

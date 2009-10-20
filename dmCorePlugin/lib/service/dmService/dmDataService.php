@@ -410,7 +410,8 @@ class dmDataService extends dmService
           'user_log',
           'action_log',
           'config_panel',
-          'site_view'
+          'site_view',
+          'see_chart'
         )
       ),
       "integrator" => array(
@@ -445,7 +446,8 @@ class dmDataService extends dmService
           'accessibility',
           'layout',
           'ihm_settings',
-          'site_view'
+          'site_view',
+          'see_chart'
         )
       ),
       "webmaster 1" => array(
@@ -466,7 +468,8 @@ class dmDataService extends dmService
           'translation',
           'user_profile',
           'accessibility',
-          'site_view'
+          'site_view',
+          'see_chart'
         )
       ),
       "writer" => array(
@@ -478,7 +481,8 @@ class dmDataService extends dmService
           'user_log',
           'action_log',
           'accessibility',
-          'site_view'
+          'site_view',
+          'see_chart'
         )
       )
     );

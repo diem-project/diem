@@ -79,7 +79,7 @@ class dmContentChart extends dmChart
         $data['modules'][$moduleKey] = array();
       }
       
-      for($monthDelta = 12; $monthDelta > 0; $monthDelta--)
+      for($monthDelta = 11; $monthDelta >= 0; $monthDelta--)
       {
         $data['dates'][] = date('m/Y', strtotime($monthDelta.' month ago'));
         
@@ -98,7 +98,7 @@ class dmContentChart extends dmChart
   protected function getInternalModules()
   {
     return $this->serviceContainer->getService('module_manager')->keysToModules(array(
-      'DmError',
+      'dmSentMail',
       'dmGuardUser'
     ));
   }
