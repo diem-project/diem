@@ -25,9 +25,7 @@ abstract class dmChart extends pChart
     
     parent::pChart($this->getWidth(), $this->getHeight());
 
-    $this->data = $this->getData();
-
-    $this->addToCacheKey(array($this->options, $this->data));
+    $this->addToCacheKey($this->options);
 
     $this->setup();
   }
@@ -55,6 +53,10 @@ abstract class dmChart extends pChart
 
   public function getImage()
   {
+    $this->data = $this->getData();
+
+    $this->addToCacheKey($this->data);
+    
     $cacheKey = md5($this->cacheKey);
 
     $image = sprintf('%s_%s.png', get_class($this), $cacheKey);
