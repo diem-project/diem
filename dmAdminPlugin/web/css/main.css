@@ -105,3 +105,18 @@ dl.dm_little_dl dd {
 .dm .ui-state-default, .dm .ui-widget-content .ui-state-default {
 	background-image: url(../../core/images/default_bg.png);
 }
+
+.dm_big_button {
+  padding: 20px;
+  background: url(../../core/images/default_bg.png) center left repeat-x;
+  font-size: 13px;
+  border: 1px solid #D3D3D3;
+  color: #444;
+  -moz-border-radius: 40px;
+  color: #046BCA;
+}
+
+.dm_big_button:hover {
+  text-decoration: none;
+  background: url(../../core/images/default_bg_green.png) center left repeat-x;
+}

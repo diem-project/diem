@@ -5,11 +5,16 @@
   <a title="[?php echo __('First page'); ?]" href="[?php echo url_for('<?php echo $this->getUrlForAction('list') ?>') ?]?page=1">
     <span class="s16block s16_first">&lt;&lt;</span>
   </a>
+[?php else: ?]
+    <div class="disabled"><span class="s16block s16_first"></span></div>
 [?php endif; ?]
   
   <a title="[?php echo __('Previous page'); ?]" href="[?php echo url_for('<?php echo $this->getUrlForAction('list') ?>') ?]?page=[?php echo ($pager->getPage() - 1) ?]">
     <span class="s16block s16_previous">&lt;</span>
   </a>
+[?php else: ?]
+    <div class="disabled"><span class="s16block s16_first"></span></div>
+    <div class="disabled"><span class="s16block s16_previous"></span></div>
 [?php endif; ?]
   
   [?php echo £('div.dm_pagination_status.fleft', preg_replace('|(\d+)|', '<strong>$1</strong>', __('%1% - %2% on %3%',
@@ -29,6 +34,11 @@
   <a title="[?php echo __('Last page'); ?]" href="[?php echo url_for('<?php echo $this->getUrlForAction('list') ?>') ?]?page=[?php echo $pager->getLastPage() ?]">
     <span class="s16block s16_last">&nbsp;</span>
   </a>
+[?php else: ?]
+    <div class="disabled"><span class="s16block s16_next"></span></div>
 [?php endif; ?]
+[?php else: ?]
+    <div class="disabled"><span class="s16block s16_next"></span></div>
+    <div class="disabled"><span class="s16block s16_last"></span></div>
 [?php endif; ?]
 </div>

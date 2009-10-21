@@ -36,7 +36,7 @@ class dmChartActions extends dmAdminBaseActions
     }
     else
     {
-      return $this->renderText($this->context->getI18n()->__('This chart is currently not available'));
+      return $this->renderPartial('error');
     }
   }
   

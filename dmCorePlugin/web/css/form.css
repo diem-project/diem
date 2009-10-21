@@ -17,9 +17,16 @@
 .dm_form.little {
 }
 
+.dm_form.list .separator {
+	height: 0;
+	border-bottom: 1px solid #D3D3D3;
+	margin: 10px 20%;
+}
+
 .dm_form.list .dm_form_element > label {
   float: left;
-  width: 30%;
+  width: 28%;
+  margin-right: 2%;
   text-align:right;
 }
 

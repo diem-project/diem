@@ -22,11 +22,11 @@ class dmLogChart extends dmChart
 //    $dataSet->SetXAxisFormat("date");
     $dataSet->SetSerieName("Requests/H", "nbReq");
     $dataSet->SetSerieName("Errors/H", "nbErr");
-    $dataSet->SetSerieName("Latency in ms", "time");
+    $dataSet->SetSerieName("Latency in s", "time");
     $dataSet->SetSerieName("Memory used %", "mem");
 
     // Prepare the graph area
-    $this->setGraphArea(40, 10, $this->getWidth()-40, $this->getHeight()-20);
+    $this->setGraphArea(20, 10, $this->getWidth()-30, $this->getHeight()-20);
     $this->drawGraphArea(255, 255, 255);
     $dataSet->AddSerie("date");
 //    $this->drawCubicCurve($dataSet->GetData(),$dataSet->GetDataDescription(), .3);
@@ -36,12 +36,13 @@ class dmLogChart extends dmChart
     $dataSet->AddSerie("nbReq");
     $dataSet->AddSerie("nbErr");
     $this->drawRightScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_NORMAL, self::$colors['grey2'][0], self::$colors['grey2'][1], self::$colors['grey2'][2],TRUE,0,0, false, 8);
+    $this->drawGrid(4,TRUE, self::$colors['grey1'][0], self::$colors['grey1'][1], self::$colors['grey1'][2]);
     $this->drawFilledCubicCurve($dataSet->GetData(),$dataSet->GetDataDescription(), 0.2, 10); 
 
     $this->clearScale();
     $dataSet->removeAllSeries();
     $dataSet->AddSerie("time");
-    $dataSet->SetYAxisName("time");
+    $dataSet->SetYAxisName("Latency in s");
     $this->drawScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_NORMAL, self::$colors['grey2'][0], self::$colors['grey2'][1], self::$colors['grey2'][2],TRUE,0,0, false, 8);
     $this->drawFilledCubicCurve($dataSet->GetData(),$dataSet->GetDataDescription(), 0.2, 20);
 
@@ -98,7 +99,7 @@ class dmLogChart extends dmChart
         {
           if($nb = count($tmpTimes))
           {
-            $data['date'][] = date('d/m', $stepDate);
+            $data['date'][] = $stepDate;
             $data['nbReq'][] = $nb/3;
             $data['nbErr'][] = $tmpErrs/3;
             $data['time'][] = array_sum($tmpTimes) / $nb;
@@ -121,7 +122,7 @@ class dmLogChart extends dmChart
     
       if($nb = count($tmpTimes))
       {
-        $data['date'][] = date('d/m', $stepDate);
+        $data['date'][] = $stepDate;
         $data['nbReq'][] = $nb/3;
         $data['nbErr'][] = $tmpErrs/3;
         $data['time'][] = array_sum($tmpTimes) / $nb;
@@ -132,10 +133,14 @@ class dmLogChart extends dmChart
       {
         $data[$key] = array_reverse($data[$key]);
       }
-      
+    
       foreach($data['mem'] as $index => $value)
       {
         $data['mem'][$index] = $value / (1024*1024);
+        
+        $data['time'][$index] = $data['time'][$index] / 1000;
+        
+        $data['date'][$index] = date('d/m', $data['date'][$index]);
       }
       
       $this->serviceContainer->getService('cache_manager')->getCache('chart/data')->set('log', $data);

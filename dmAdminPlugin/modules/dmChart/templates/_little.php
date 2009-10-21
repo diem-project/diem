@@ -1,5 +1,10 @@
 <?php
 
+if (!$sf_user->can($chart->getCredentials()))
+{
+  return;
+}
+
 echo £('div.dm_box',
   £('div.title',
     £link('@dm_chart?name='.$chartKey)

@@ -26,25 +26,13 @@ class dmContentChart extends dmChart
     $this->drawGrid(4,TRUE,self::$colors['grey1'][0], self::$colors['grey1'][1], self::$colors['grey1'][2],50);
   
     // Draw the 0 line
-    $this->drawTreshold(0,143,55,72,TRUE,TRUE);
+//    $this->drawTreshold(0,143,55,72,TRUE,TRUE);
     
     // Draw the bar graph  
     $this->drawStackedBarGraph($dataSet->GetData(), $dataSet->GetDataDescription(),TRUE);
   
-//    foreach($this->modules as $moduleKey => $module)
-//    {
-//      // Draw the pages graph
-//      $dataSet->removeAllSeries();
-//      $dataSet->AddSerie($moduleKey);
-//      // Clear the scale
-//      $this->clearScale();
-//      $this->drawScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_NORMAL, self::$colors['grey2'][0], self::$colors['grey2'][1], self::$colors['grey2'][2],TRUE,0,0, false, 3);
-//      $this->drawCubicCurve($dataSet->GetData(),$dataSet->GetDataDescription());
-//      
-//    }
-  
     // Finish the graph
-    $this->drawLegend(45,5,$dataSet->GetDataDescription(),255,255,255);
+    $this->drawLegend(45,0,$dataSet->GetDataDescription(),255,255,255);
   }
   
   protected function getModules()

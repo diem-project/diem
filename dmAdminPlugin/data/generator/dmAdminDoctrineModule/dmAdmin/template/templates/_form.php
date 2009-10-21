@@ -13,7 +13,7 @@
 
     <div class="sf_admin_form_inner ui-widget ui-accordion">
 
-    [?php echo $form->renderHiddenFields() ?]
+    [?php echo $form->renderHiddenFields(false) ?]
 
     [?php if ($form->hasGlobalErrors()): ?]
       [?php echo $form->renderGlobalErrors() ?]

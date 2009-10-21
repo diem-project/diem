@@ -310,5 +310,14 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
   {
     return sfConfig::get('dm_i18n_catalogue');
   }
-
+  
+  /**
+   * Gets the actions base class for the generated module.
+   *
+   * @return string The actions base class
+   */
+  public function getActionsBaseClass()
+  {
+    return isset($this->params['actions_base_class']) ? $this->params['actions_base_class'] : 'myAdminBaseGeneratedModuleActions';
+  }
 }

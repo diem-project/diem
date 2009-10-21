@@ -64,6 +64,13 @@ div.dm_form_pagination > div {
   float: left;
   margin: 0 3px;
 }
+div.dm_form_pagination > div.dm_pagination_status {
+	text-align:center;
+  width:100px;
+}
+div.dm_form_pagination > div.disabled {
+  opacity: 0.3;
+}
 
 div.dm_list_action_bar > select.dm_max_per_page {
   float: right;

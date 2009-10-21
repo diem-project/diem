@@ -67,12 +67,13 @@ class Doctrine_Cache_Dm extends Doctrine_Cache_Driver
    *
    * Note : $data is always saved as a string
    *
-   * @param string $data    data to cache
-   * @param string $id    cache id
-   * @param int $lifeTime   if != false, set a specific lifetime for this cache record (null => infinite lifeTime)
+   * @param string $id        cache id
+   * @param string $data      data to cache
+   * @param int $lifeTime     if != false, set a specific lifetime for this cache record (null => infinite lifeTime)
+   * @param boolean $saveKey  Whether or not to save the key in the cache key index
    * @return boolean true if no problem
    */
-  public function save($id, $data, $lifeTime = false)
+  public function saveCache($id, $data, $lifeTime = false)
   {
     return $this->getCache()->_set($id, $data, $lifeTime);
   }
@@ -83,7 +84,7 @@ class Doctrine_Cache_Dm extends Doctrine_Cache_Driver
    * @param string $id cache id
    * @return boolean true if no problem
    */
-  public function delete($id)
+  public function deleteCache($id)
   {
     return $this->getCache()->remove($id);
   }

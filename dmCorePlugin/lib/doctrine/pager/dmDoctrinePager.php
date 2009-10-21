@@ -3,34 +3,42 @@
 class dmDoctrinePager extends sfDoctrinePager
 {
   protected
-  $collection;
+  $cache;
   
   /**
    * Get all the results for the pager instance
    *
-   * @param integer $hydrationMode Doctrine::HYDRATE_* constants
+   * @param mixed $hydrationMode A hydration mode identifier
    *
    * @return Doctrine_Collection|array
    */
-  public function getResults($hydrationMode = Doctrine::HYDRATE_RECORD)
+  public function getResults($hydrationMode = null)
   {
-    if(null !== $this->results)
+    if (null === $this->cache)
     {
-      return $this->results;
+      $this->cache = parent::getResults($hydrationMode);
     }
     
-    return $this->results = $this->getCollection($hydrationMode)->getData();
+    return $this->cache;
   }
   
-  public function getCollection($hydrationMode = Doctrine::HYDRATE_RECORD)
+  /**
+   * @see sfPager
+   */
+  public function count()
   {
-    if(null !== $this->collection)
-    {
-      return $this->collection;
-    }
-    
-    return $this->collection = $this->getQuery()->execute(array(), $hydrationMode);
+    return count($this->getResults());
   }
+ 
+//  public function getCollection($hydrationMode = Doctrine::HYDRATE_RECORD)
+//  {
+//    if(null !== $this->collection)
+//    {
+//      return $this->collection;
+//    }
+//    
+//    return $this->collection = $this->getQuery()->execute(array(), $hydrationMode);
+//  }
 
   public function getCountQuery()
   {

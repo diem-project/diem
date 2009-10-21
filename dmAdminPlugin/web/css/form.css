@@ -153,8 +153,15 @@ div.dm_form_action_bar a {
   margin-top: 3px;
 }
 
-div.dm_form_action_bar div.dm_form_pagination a {
+div.dm_form_action_bar div.dm_form_pagination > a {
   float: left;
+}
+div.dm_form_action_bar div.dm_form_pagination > span.disabled {
+	float: left;
+  opacity: 0.3;
+  height: 16px;
+  display: block;
+  margin-top: 3px;
 }
 
 div.dm_form_pagination {

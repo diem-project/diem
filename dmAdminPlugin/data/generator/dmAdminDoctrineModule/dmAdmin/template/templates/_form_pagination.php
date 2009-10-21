@@ -9,6 +9,10 @@
         $previousRecord
       ))->textTitle($previousRecord)->set('.previous.s16block.s16_previous');
     }
+    else
+    {
+      echo £('span.disabled.s16block.s16_previous');
+    }
 
     if ($nextRecord = $nearRecords['next'])
     {
@@ -16,6 +20,10 @@
         '<?php echo $this->getModule()->getUnderscore(); ?>_edit',
         $nextRecord
       ))->textTitle($nextRecord)->set('.next.s16block.s16_next');
+    }
+    else
+    {
+      echo £('span.disabled.s16block.s16_next');
     }
   }
   ?]

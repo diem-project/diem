@@ -16,6 +16,11 @@
   font-size: 0;
 }
 
+.s16block.s16_none,
+.dm .s16block.s16_none {
+  background: transparent;
+}
+
 .s24, .s24block, .s24right,
 .dm .s24, .dm .s24block, .dm .s24right {
   background-color: transparent;
