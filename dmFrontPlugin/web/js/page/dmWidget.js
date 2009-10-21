@@ -85,12 +85,6 @@ $.widget('ui.dmWidget', {
 	        },
 	        success:  function(data)
 					{
-	          if (data.type == 'close') {
-	            $dialog.dialog('close');
-	            widget.element.unblock();
-							return;
-	          }
-						
 	          if (data.widget_html)
 						{
               widget.element
@@ -100,7 +94,13 @@ $.widget('ui.dmWidget', {
 	            .html(data.widget_html);
 	          }
 						
-	          widget.element.unblock();
+            widget.element.unblock();
+						
+            if (data.type == 'close') {
+              $dialog.dialog('close');
+              return;
+            }
+						
 	          $dialog.html(data.html).trigger('dmAjaxResponse');
 	        }
 	      });

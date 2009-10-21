@@ -47,7 +47,7 @@
 							$this.unblock().height('auto').html(html);
 						}
 					});
-			  }, nbElements*300);
+			  }, nbElements*500);
 				nbElements ++;
 			});
 		},

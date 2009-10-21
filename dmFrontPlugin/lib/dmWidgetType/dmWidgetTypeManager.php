@@ -55,10 +55,12 @@ class dmWidgetTypeManager
             $fullKey = $moduleKey.dmString::camelize($actionKey);
 
             $widgetTypeConfig = array(
-              'name'       => dmArray::get($action, 'name'),
+              'full_key'   => $moduleKey,
+              'name'       => dmArray::get($action, 'name', dmString::humanize($actionKey)),
               'form_class' => dmArray::get($action, 'form_class', $fullKey.'Form'),
               'view_class' => dmArray::get($action, 'view_class', $fullKey.'View'),
-              'use_component' => $this->controller->componentExists('dmWidget', $fullKey)
+              'use_component' => $this->controller->componentExists('dmWidget', $fullKey),
+              'cache'      => dmArray::get($action, 'cache', false)
             );
 
             $this->widgetTypes[$moduleKey][$actionKey] = new dmWidgetType($moduleKey, $actionKey, $widgetTypeConfig);
@@ -76,10 +78,12 @@ class dmWidgetTypeManager
             $baseClass = 'dmWidget'.dmString::camelize($action->getType());
 
             $widgetTypeConfig = array(
-              'name'   => $action->getName(),
+              'full_key'   => $moduleKey,
+              'name'       => $action->getName(),
               'form_class' => $baseClass.'Form',
               'view_class' => $baseClass.'View',
-              'use_component' => $this->controller->componentExists($moduleKey, $actionKey)
+              'use_component' => $this->controller->componentExists($moduleKey, $actionKey),
+              'cache'      => $action->isCachable()
             );
             
             $this->widgetTypes[$moduleKey][$actionKey] = new dmWidgetType($moduleKey, $actionKey, $widgetTypeConfig);
@@ -89,8 +93,6 @@ class dmWidgetTypeManager
         $this->cacheManager->getCache('dm/widget')->set('types', $this->widgetTypes);
       }
     }
-    
-//    dmDebug::kill($this->widgetTypes);
 
     $timer && $timer->addTime();
     return $this->widgetTypes;

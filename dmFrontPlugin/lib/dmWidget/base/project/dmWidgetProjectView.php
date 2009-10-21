@@ -9,10 +9,16 @@ abstract class dmWidgetProjectView extends dmWidgetBaseView
   protected function configure()
   {
     parent::configure();
+  
+    if (!$this->dmModule = $this->context->get('module_manager')->getModule($this->widget['module']))
+    {
+      throw new dmException('the module "%s" does not exist', $this->dmWidget->get('module'));
+    }
 
-    $this->dmModule = $this->moduleManager->getModule($this->widget['module']);
-
-    $this->dmAction = $this->dmModule->getAction($this->widget['action']);
+    if (!$this->dmAction = $this->dmModule->getAction($this->widget['action']))
+    {
+      throw new dmException(sprintf('the action "%s" does not exist for module "%s"', $this->widget['action'], $this->dmModule));
+    }
   }
 
   protected function doRenderPartial(array $vars)
@@ -22,11 +28,11 @@ abstract class dmWidgetProjectView extends dmWidgetBaseView
 
     if ($this->widgetType->useComponent())
     {
-      $html = $this->helper->renderComponent($module, $action, $vars);
+      $html = $this->context->get('helper')->renderComponent($module, $action, $vars);
     }
     else
     {
-      $html = $this->helper->renderPartial($module, $action, $vars);
+      $html = $this->context->get('helper')->renderPartial($module, $action, $vars);
     }
 
     return $html;

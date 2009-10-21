@@ -6,7 +6,7 @@ class dmWidgetActions extends dmFrontBaseActions
   public function executeEdit(sfWebRequest $request)
   {
     $this->forward404Unless($widget = dmDb::table('DmWidget')->find($request->getParameter('widget_id')));
-
+  
     if (!$widgetType = $this->context->get('widget_type_manager')->getWidgetTypeOrNull($widget))
     {
       return $this->renderError();
@@ -14,7 +14,14 @@ class dmWidgetActions extends dmFrontBaseActions
     
     $formClass = $widgetType->getFormClass();
     
-    $form = new $formClass($widget);
+    try
+    {
+      $form = new $formClass($widget);
+    }
+    catch(dmException $e)
+    {
+      return $this->renderError();
+    }
     
     if ($request->isMethod('post'))
     {
@@ -22,20 +29,21 @@ class dmWidgetActions extends dmFrontBaseActions
       {
         $widget->values   = $form->getWidgetValues();
         $widget->cssClass = $form->getValue('cssClass');
+
+        $helper = $this->context->get('page_helper');
+        $widgetArray = $widget->toArray();
         
         if ($request->hasParameter('and_save'))
         {
           $widget->save();
           return $this->renderJson(array(
-            'type' => 'close'
+            'type' => 'close',
+            'widget_html' => $helper->renderWidgetInner($widgetArray),
+            'widget_classes' => $helper->getWidgetContainerClasses($widgetArray)
           ));
         }
 
-        $helper = $this->context->get('page_helper');
-
         $form = new $formClass($widget);
-        
-        $widgetArray = $widget->toArray();
 
         return $this->renderJson(array(
           'type' => 'form',
@@ -113,7 +121,7 @@ class dmWidgetActions extends dmFrontBaseActions
 
   protected function renderEdit(dmWidgetBaseForm $form, dmWidgetType $widgetType)
   {
-    $codeEditorLinks= '';
+    $devActions= '';
     if ($this->getUser()->can('code_editor') && $form instanceof dmWidgetProjectForm)
     {
       if ($this->getUser()->can('code_editor_view'))
@@ -121,7 +129,7 @@ class dmWidgetActions extends dmFrontBaseActions
         $templateDir = dmOs::join(sfConfig::get('sf_app_module_dir'), $form->getDmModule()->getKey(), 'templates', '_'.$form->getDmAction()->getKey().'.php');
         if (file_exists($templateDir))
         {
-          $codeEditorLinks .= '<a href="#'.dmProject::unRootify($templateDir).'" class="code_editor s16 s16_code_editor block">'.$this->context->getI18n()->__('Edit template code').'</a>';
+          $devActions .= '<a href="#'.dmProject::unRootify($templateDir).'" class="code_editor s16 s16_code_editor block">'.$this->context->getI18n()->__('Edit template code').'</a>';
         }
       }
       
@@ -130,19 +138,19 @@ class dmWidgetActions extends dmFrontBaseActions
         $componentDir = dmOs::join(sfConfig::get('sf_app_module_dir'), $form->getDmModule()->getKey(), 'actions/components.class.php');
         if (file_exists($componentDir))
         {
-          $codeEditorLinks .= '<a href="#'.dmProject::unRootify($componentDir).'" class="code_editor s16 s16_code_editor block">'.$this->context->getI18n()->__('Edit component code').'</a>';
+          $devActions .= '<a href="#'.dmProject::unRootify($componentDir).'" class="code_editor s16 s16_code_editor block">'.$this->context->getI18n()->__('Edit component code').'</a>';
         }
       }
     }
 
-    if ($codeEditorLinks)
+    if ($devActions)
     {
-      $codeEditorLinks = '<div class="code_editor_links">'.$codeEditorLinks.'</div>';
+      $devActions = '<div class="code_editor_links">'.$devActions.'</div>';
     }
     
     return '<div class="dm dm_widget_edit {form_class: \''.$widgetType->getFullKey().'Form\'}">'.
     $form->render('.dm_form.list.little').
-    $codeEditorLinks.
+    $devActions.
     '</div>';
   }
 

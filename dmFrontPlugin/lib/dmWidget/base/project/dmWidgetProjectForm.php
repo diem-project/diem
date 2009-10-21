@@ -10,9 +10,15 @@ abstract class dmWidgetProjectForm extends dmWidgetBaseForm
   {
     parent::configure();
 
-    $this->dmModule = self::$serviceContainer->getService('module_manager')->getModule($this->dmWidget->get('module'));
+    if (!$this->dmModule = self::$serviceContainer->getService('module_manager')->getModule($this->dmWidget->get('module')))
+    {
+      throw new dmException('the module "%s" does not exist', $this->dmWidget->get('module'));
+    }
 
-    $this->dmAction = $this->dmModule->getAction($this->dmWidget->action);
+    if(!$this->dmAction = $this->dmModule->getAction($this->dmWidget->get('action')))
+    {
+      throw new dmException(sprintf('the action "%s" does not exist for module "%s"', $this->dmWidget->get('action'), $this->dmModule));
+    }
   }
 
   public function getDmModule()

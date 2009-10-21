@@ -3,21 +3,18 @@
 abstract class dmWidgetBaseView
 {
   protected
-  $dispatcher,
-  $moduleManager,
-  $helper,
+  $context,
   $widgetType,
   $widget,
   $requiredVars = array(),
   $isIndexable = true;
 
-  public function __construct(sfEventDispatcher $dispatcher, dmModuleManager $moduleManager, dmHelper $helper, dmWidgetType $type, array $data)
+  public function __construct(dmContext $context, dmWidgetType $type, array $data)
   {
-    $this->dispatcher        = $dispatcher;
-    $this->moduleManager     = $moduleManager;
-    $this->helper            = $helper;
-    $this->widgetType        = $type;
-    $this->widget            = $data;
+    $this->context        = $context;
+    
+    $this->widgetType     = $type;
+    $this->widget         = $data;
 
     $this->configure();
   }
@@ -66,7 +63,6 @@ abstract class dmWidgetBaseView
     }
   }
 
-  
   public function render(array $vars = array())
   {
     if ($this->isValid())
@@ -83,6 +79,22 @@ abstract class dmWidgetBaseView
   
   protected function doRender(array $vars)
   {
+    return $this->renderPartial($vars);
+  }
+  
+  protected function renderPartial(array $vars)
+  {
+    if ($this->widgetType->isCachable())
+    {
+      $this->context->getViewCacheManager()->addCache($this->widget['module'], '_'.$this->widget['action'], array(
+        'withLayout' => false,
+        'lifeTime' => 86400,
+        'clientLifeTime' => 86400,
+        'contextual' => true,
+        'vary' => array ()
+      ));
+    }
+    
     return $this->doRenderPartial($vars);
   }
   
@@ -90,12 +102,12 @@ abstract class dmWidgetBaseView
 
   public function renderDefault()
   {
-    if (dm::getUser()->can('widget_edit'))
+    if ($this->context->getUser()->can('widget_edit'))
     {
       $html = sprintf(
         '<div class="%s">%s %s.%s</div>',
         'dm dm_new_widget',
-        dm::getI18n()->__('New widget'),
+        $this->context->getI18n()->__('New widget'),
         $this->widget['module'],
         $this->widget['action']
       );

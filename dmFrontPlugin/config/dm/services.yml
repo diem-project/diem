@@ -58,7 +58,7 @@ services:
   widget_view:
     class:                    %widget_view.class%
     shared:                   false
-    arguments:                [ @dispatcher, @module_manager, @helper, %widget_view.type%, %widget_view.data% ]
+    arguments:                [ @context, %widget_view.type%, %widget_view.data% ]
 
   page_helper:
     class:                    %page_helper.class%

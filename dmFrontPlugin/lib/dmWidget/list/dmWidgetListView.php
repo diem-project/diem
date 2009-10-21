@@ -48,6 +48,6 @@ class dmWidgetListView extends dmWidgetProjectModelView
 
   protected function allowFilterAutoRecordId(dmModule $filterModule)
   {
-    return dmContext::getInstance()->getPage()->getDmModule()->knows($filterModule);
+    return $this->context->getPage()->getDmModule()->knows($filterModule);
   }
 }

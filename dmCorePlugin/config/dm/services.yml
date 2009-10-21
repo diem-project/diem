@@ -1,5 +1,10 @@
 parameters:
 
+  cache_cleaner.class:        dmCacheCleaner
+  cache_cleaner.options:
+    applications:           [ admin, front ]
+    environments:           [ prod, dev ]
+
   form_field.class:           dmFormField
 
   markdown.class:             dmMarkdown
@@ -79,6 +84,11 @@ parameters:
   helper.class:               dmHelper
  
 services:
+
+  cache_cleaner:
+    class:                    %cache_cleaner.class%
+    shared:                   true
+    arguments:                [ @cache_manager, @dispatcher, %cache_cleaner.options% ]
 
   markdown:
     class:                    %markdown.class%
@@ -207,4 +217,4 @@ services:
   cache_manager:
     class:                    %cache_manager.class%
     shared:                   true
-    arguments:                [ @dispatcher ]
+    arguments:                [ %cache_manager.options% ]

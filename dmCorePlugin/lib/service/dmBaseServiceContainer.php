@@ -127,6 +127,11 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
        * Connect the action log to make it aware of database modifications
        */
       $this->getService('action_log')->connect();
+      
+      /*
+       * Connect the cache cleaner
+       */
+      $this->getService('cache_cleaner')->connect();
     }
     
     if ($this->getService('response')->isHtmlForHuman())

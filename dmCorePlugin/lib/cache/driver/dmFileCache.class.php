@@ -46,13 +46,11 @@ class dmFileCache extends sfFileCache
     return parent::get($key, $default);
   }
 
-//  public function clear($mode = sfCache::ALL)
-//  {
-//    if (is_dir($this->getOption("cache_dir")))
-//    {
-//      $this->removePattern("**");
-//    }
-//  }
+
+  public function clear()
+  {
+    $this->removePattern('**');
+  }
 
   public static function clearAll()
   {

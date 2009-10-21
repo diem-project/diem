@@ -49,7 +49,8 @@ class dmLogChart extends dmChart
     $this->clearScale();
     $dataSet->removeAllSeries();
     $dataSet->AddSerie("mem");
-    $this->setFixedScale(0, (int) ini_get('memory_limit'));
+    $maxMem = 64; //(int) ini_get('memory_limit')
+    $this->setFixedScale(0, $maxMem);
     $this->drawScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_NORMAL, 0, 0, 0,false,0,0, false, 8);
     $this->drawFilledCubicCurve($dataSet->GetData(),$dataSet->GetDataDescription(), 0.2, 20);
     

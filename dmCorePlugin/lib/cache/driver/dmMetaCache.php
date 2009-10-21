@@ -67,6 +67,11 @@ class dmMetaCache extends sfCache
   {
     return $this->cache->clean($mode);
   }
+  
+  public function clear()
+  {
+    return $this->cache->clear();
+  }
 
   public function getTimeout($key)
   {

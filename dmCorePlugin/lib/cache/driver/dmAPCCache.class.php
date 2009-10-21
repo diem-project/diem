@@ -57,13 +57,23 @@ class dmAPCCache extends sfAPCCache
 
   public function clear()
   {
-    $this->removePattern('**');
-    //aze::debug();
-    // cache systeme puis user
-    //apc_clear_cache('user');
-    //aze::debug(apc_cache_info('user'));
+    $infos = apc_cache_info('user');
+    if (!is_array($infos['cache_list']))
+    {
+      return;
+    }
+    
+    $prefix = $this->getOption('prefix');
+    $prefixLength = strlen($prefix);
+    
+    foreach($infos['cache_list'] as $info)
+    {
+      if (strncmp($info['info'], $prefix, $prefixLength) === 0)
+      {
+        apc_delete($info['info']);
+      }
+    }
   }
-
   
   public static function isEnabled()
   {
@@ -123,4 +133,5 @@ class dmAPCCache extends sfAPCCache
       'percent' => min(100, (($total - $free) / $total) * 100)
     );
   }
+
 }

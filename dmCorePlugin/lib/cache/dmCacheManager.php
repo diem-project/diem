@@ -3,25 +3,27 @@
 class dmCacheManager
 {
   protected
-    $dispatcher,
     $options,
     $isApcEnabled,
     $caches;
 
-  public function __construct(sfEventDispatcher $dispatcher, array $options = array())
+  public function __construct(array $options = array())
   {
-    $this->dispatcher = $dispatcher;
-    
     $this->initialize($options);
   }
     
   public function initialize(array $options = array())
   {
-    $this->options = array_merge(array(
-      'meta_cache_class' => 'dmMetaCache'
-    ));
+    $this->options = array_merge($this->getDefaultOptions(), $options);
     
     $this->reset();
+  }
+  
+  protected function getDefaultOptions()
+  {
+    return array(
+      'meta_cache_class' => 'dmMetaCache'
+    );
   }
 
   public function getCache($cacheName)
@@ -63,5 +65,4 @@ class dmCacheManager
 
     return $success;
   }
-
 }

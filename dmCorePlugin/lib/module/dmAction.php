@@ -13,6 +13,11 @@ class dmAction
 
     $this->params = $options;
   }
+  
+  public function isCachable()
+  {
+    return $this->getParam('cache', false);
+  }
 
   public function getParam($key, $default = null)
   {

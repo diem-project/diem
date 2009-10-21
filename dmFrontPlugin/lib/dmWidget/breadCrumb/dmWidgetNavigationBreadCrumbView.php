@@ -14,7 +14,7 @@ class dmWidgetNavigationBreadCrumbView extends dmWidgetPluginView
   {
     $vars = parent::getViewVars($vars);
 
-    $currentPage = dmContext::getInstance()->getPage();
+    $currentPage = $this->context->getPage();
 
     $treeObject = dmDb::table('DmPage')->getTree();
     $treeObject->setBaseQuery(dmDb::table('DmPage')->createQuery('p')->withI18n());
@@ -53,6 +53,5 @@ class dmWidgetNavigationBreadCrumbView extends dmWidgetPluginView
     
     return $html;
   }
-  
 
 }

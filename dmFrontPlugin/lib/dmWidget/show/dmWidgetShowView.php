@@ -15,7 +15,7 @@ class dmWidgetShowView extends dmWidgetProjectModelView
 
   protected function allowAutoRecordId()
   {
-    return dmContext::getInstance()->getPage()->getDmModule()->knows($this->dmModule);
+    return $this->context->getPage()->getDmModule()->knows($this->dmModule);
   }
   
   protected function doRenderForIndex(array $vars)
@@ -26,7 +26,7 @@ class dmWidgetShowView extends dmWidgetProjectModelView
     {
       $query->addWhere('r.id = ?', $vars['recordId'])->fetchRecord();
     }
-    elseif (($page = dmContext::getInstance()->getPage()) && $page->getDmModule()->hasModel())
+    elseif (($page = $this->context->getPage()) && $page->getDmModule()->hasModel())
     {
       $query->whereDescendantId($page->getDmModule()->getModel(), $page->get('record_id'), $this->dmModule->getModel());
     }

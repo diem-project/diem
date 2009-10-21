@@ -141,7 +141,7 @@ abstract class dmDoctrineQuery extends Doctrine_Query
    */
   public function whereAncestor(myDoctrineRecord $ancestorRecord, $model)
   {
-    return $this->whereAncestorId(get_class($ancestorRecord), $ancestorRecord->id, $model);
+    return $this->whereAncestorId(get_class($ancestorRecord), $ancestorRecord->get('id'), $model);
   }
 
   /*

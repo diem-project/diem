@@ -13,15 +13,7 @@ class dmWidgetType
     $this->module  = $module;
     $this->action  = $action;
 
-    $name = trim(dmArray::get($config, 'name', dmString::humanize($action)));
-
-    $this->params = array(
-      'name'       => $name,
-      'form_class' => $config['form_class'],
-      'view_class' => $config['view_class'],
-      'full_key'   => $module.dmString::camelize($action),
-      'use_component' => $config['use_component']
-    );
+    $this->params = $config;
   }
 
   public function getModule()
@@ -37,6 +29,11 @@ class dmWidgetType
   public function getFullKey()
   {
     return $this->getParam('full_key');
+  }
+  
+  public function isCachable()
+  {
+    return $this->getParam('cache');
   }
 
   public function getNewWidget()

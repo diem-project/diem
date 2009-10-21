@@ -13,7 +13,7 @@ $.dm.ctrl.add($.dm.adminLogs = {
 			$.dm.adminLogs[this].$wrapper.find('div.dm_box_inner').height(200);
 		});
 		
-	  setTimeout($.dm.adminLogs.refresh, 500);
+	  setTimeout($.dm.adminLogs.refresh, 300);
   },
 	
 	refresh: function()
