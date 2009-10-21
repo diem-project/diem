@@ -8,18 +8,18 @@ class Doctrine_Cache_Dm extends Doctrine_Cache_Driver
   $cache;
 
   /**
-   * Configure cache driver with an array of options
+     * constructor
    *
-   * @param array $_options      an array of options
+     * @param array $options    associative array of cache driver options
    */
   public function __construct($options = array())
   {
-    $this->_options = $options;
-    
     if (!isset($options['cache_manager']))
     {
       throw new dmException('Not supported yet');
     }
+    
+    parent::__construct($options);
   }
 
   public function getCache()
@@ -28,20 +28,19 @@ class Doctrine_Cache_Dm extends Doctrine_Cache_Driver
     {
       $this->cache = $this->_options['cache_manager']->getCache('dm/doctrine');
     }
-
     return $this->cache;
   }
 
   /**
-   * Test if a cache is available for the given id and (if yes) return it (false else).
+     * Fetch a cache record from this cache driver instance
    *
    * @param string $id cache id
    * @param boolean $testCacheValidity  if set to false, the cache validity won't be tested
-   * @return mixed The stored variable on success. FALSE on failure.
+   * @return string cached datas (or false)
    */
   public function fetch($id, $testCacheValidity = true)
   {
-    if ($results = $this->getCache()->_get($id))
+    if ($results = $this->getCache()->_get($this->_getKey($id)))
     {
       return $results;
     }
@@ -52,20 +51,19 @@ class Doctrine_Cache_Dm extends Doctrine_Cache_Driver
   }
 
   /**
-   * Test if a cache is available or not (for the given id)
+     * Test if a cache record exists for the passed id
    *
    * @param string $id cache id
    * @return mixed false (a cache is not available) or "last modified" timestamp (int) of the available cache record
    */
   public function contains($id)
   {
-    return $this->getCache()->has($id);
+    return $this->getCache()->has($this->_getKey($id));
   }
 
   /**
-   * Save some string datas into a cache record
-   *
-   * Note : $data is always saved as a string
+     * Save a cache record directly. This method is implemented by the cache
+     * drivers and used in Doctrine_Cache_Driver::save()
    *
    * @param string $id        cache id
    * @param string $data      data to cache
@@ -79,7 +77,8 @@ class Doctrine_Cache_Dm extends Doctrine_Cache_Driver
   }
 
   /**
-   * Remove a cache record
+     * Remove a cache record directly. This method is implemented by the cache
+     * drivers and used in Doctrine_Cache_Driver::delete()
    *
    * @param string $id cache id
    * @return boolean true if no problem

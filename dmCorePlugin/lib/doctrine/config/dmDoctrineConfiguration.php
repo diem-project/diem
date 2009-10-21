@@ -50,8 +50,18 @@ class dmDoctrineConfiguration
 
   protected function getCacheDriver()
   {
-    return new Doctrine_Cache_Dm(array(
-      'cache_manager' => $this->cacheManager
-    ));
+    if(dmAPCCache::isEnabled())
+    {
+      $driver = new Doctrine_Cache_Dm(array('cache_manager' => $this->cacheManager));
+//      $driver = new Doctrine_Cache_Apc(array(
+//        'prefix' => dmProject::getKey().'/doctrine/'
+//      ));
+    }
+    else
+    {
+      $driver = null;
+    }
+    
+    return $driver;
   }
 }

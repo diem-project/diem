@@ -65,7 +65,7 @@ class dmAPCCache extends sfAPCCache
   }
 
   
-  public static function isEnabled($val = null)
+  public static function isEnabled()
   {
     if (null === self::$isApcEnabled)
     {
