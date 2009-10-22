@@ -65,7 +65,23 @@ abstract class dmChart extends pChart
 
     $imageFullPath = dmOs::join(sfConfig::get('sf_cache_dir'), 'web', $image);
 
-    if (!file_exists($imageFullPath))
+    if (file_exists($imageFullPath))
+    {
+      if (filemtime($imageFullPath) < (time() - $this->options['lifetime']))
+      {
+        $reload = true;
+      }
+      else
+      {
+        $reload = false;
+      }
+    }
+    else
+    {
+      $reload = true;
+    }
+    
+    if ($reload)
     {
       if (!$this->serviceContainer->getService('filesystem')->mkdir(dirname($imageFullPath)))
       {
@@ -89,7 +105,8 @@ abstract class dmChart extends pChart
       'height' => 300,
       'name' => get_class($this),
       'key' => preg_replace('|(\w+)Chart|', '$1', get_class($this)),
-      'credentials' => 'see_chart'
+      'credentials' => 'see_chart',
+      'lifetime' => 60 * 60 * 24
     );
   }
   

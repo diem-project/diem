@@ -5,6 +5,7 @@ parameters:
   log_chart.class:            dmLogChart
   log_chart.options:
     name:                     Server
+    lifetime:                 3600 # 1 hour
 
   week_chart.class:           dmWeekChart
   week_chart.options:

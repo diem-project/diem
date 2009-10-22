@@ -35,9 +35,7 @@
 .dm .ui-widget { font-family: Verdana,Arial,sans-serif; font-size: 11px; }
 .dm .ui-widget input, .dm .ui-widget select, .dm .ui-widget textarea, .dm .ui-widget button { font-family: Verdana,Arial,sans-serif; font-size: 1em; }
 .dm .ui-widget-content { border: 1px solid #aaaaaa; background: #ffffff; color: #222222; }
-.dm .ui-widget-content a { color: #222222; }
 .dm .ui-widget-header { border: 1px solid #aaaaaa; background: #cccccc url(images/ui-bg_highlight-soft_75_cccccc_1x100.png) 50% 50% repeat-x; color: #222222; font-weight: bold; }
-.dm .ui-widget-header a { color: #222222; }
 
 /* Interaction states
 ----------------------------------*/
