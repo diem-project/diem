@@ -2,6 +2,12 @@
 
 class dmLogChart extends dmChart
 {
+  protected
+  $eventsFilter = array(
+    'clear cache',
+    'update sitemap',
+    'update search'
+  );
 
   protected function configure()
   {
@@ -18,8 +24,10 @@ class dmLogChart extends dmChart
     $dataSet->AddPoint($this->data['nbReq'], 'nbReq');
     $dataSet->AddPoint($this->data['nbErr'], 'nbErr');
     $dataSet->AddPoint($this->data['mem'], 'mem');
+    
     $dataSet->SetAbsciseLabelSerie('date');
-//    $dataSet->SetXAxisFormat("date");
+    $dataSet->SetXAxisFormat('date');
+
     $dataSet->SetSerieName("Requests/H", "nbReq");
     $dataSet->SetSerieName("Errors/H", "nbErr");
     $dataSet->SetSerieName("Latency in s", "time");
@@ -38,13 +46,21 @@ class dmLogChart extends dmChart
     $this->drawRightScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_NORMAL, self::$colors['grey2'][0], self::$colors['grey2'][1], self::$colors['grey2'][2],TRUE,0,0, false, 8);
     $this->drawGrid(4,TRUE, self::$colors['grey1'][0], self::$colors['grey1'][1], self::$colors['grey1'][2]);
     $this->drawFilledCubicCurve($dataSet->GetData(),$dataSet->GetDataDescription(), 0.2, 10); 
-
+    
+//    $this->setLabel($dataSet->GetData(), $dataSet->GetDataDescription(), 'nbReq', '19/10', 'Label test', 221,230,174);
+    
     $this->clearScale();
     $dataSet->removeAllSeries();
     $dataSet->AddSerie("time");
     $dataSet->SetYAxisName("Latency in s");
     $this->drawScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_NORMAL, self::$colors['grey2'][0], self::$colors['grey2'][1], self::$colors['grey2'][2],TRUE,0,0, false, 8);
     $this->drawFilledCubicCurve($dataSet->GetData(),$dataSet->GetDataDescription(), 0.2, 20);
+  
+    // Add labels
+    foreach($this->data['events'] as $event)
+    {
+      $this->setLabel($dataSet->GetData(), $dataSet->GetDataDescription(), 'time', $event['time'], $event['action'].' '.$event['type'], 221,230,174);
+    }
 
     $this->clearScale();
     $dataSet->removeAllSeries();
@@ -60,8 +76,8 @@ class dmLogChart extends dmChart
 
   protected function getData()
   {
-    if (!$data = $this->serviceContainer->getService('cache_manager')->getCache('chart/data')->get('log'))
-    {
+//    if (!$data = $this->serviceContainer->getService('cache_manager')->getCache('chart/data')->get('log'))
+//    {
       $data = array(
         'date' => array(),
         'timer' => array()
@@ -120,7 +136,7 @@ class dmLogChart extends dmChart
           }
         }
       }
-    
+      
       if($nb = count($tmpTimes))
       {
         $data['date'][] = $stepDate;
@@ -141,13 +157,52 @@ class dmLogChart extends dmChart
         
         $data['time'][$index] = $data['time'][$index] / 1000;
         
-        $data['date'][$index] = date('d/m', $data['date'][$index]);
+//        $data['date'][$index] = date('d/m', $data['date'][$index]);
       }
       
-      $this->serviceContainer->getService('cache_manager')->getCache('chart/data')->set('log', $data);
+//      $this->serviceContainer->getService('cache_manager')->getCache('chart/data')->set('log', $data);
+//    }
+
+    $events = $this->serviceContainer->getService('event_log')
+    ->getFilteredEntries(5000, array($this, 'filterEvent'));
+    $data['events'] = array();
+    foreach($events as $event)
+    {
+      $eventArray = $event->toArray();
+      
+      $eventTime = $eventArray['time'];
+      
+      $timeDelta = time();
+      $nearestTime = null;
+      foreach($data['date'] as $time)
+      {
+        $eventTimeDelta = abs($time - $eventTime);
+        
+        if ($eventTimeDelta < $timeDelta)
+        {
+          $nearestTime = $time;
+          $timeDelta = $eventTimeDelta;
+        }
+      }
+      
+      if ($nearestTime == null)
+      {
+        dmDebug::kill($eventTime, $data['date']);
+      }
+      
+      $eventArray['time'] = $nearestTime;
+      
+      $data['events'][] = $eventArray;
     }
+    
+    unset($events);
 
     return $data;
+  }
+  
+  public function filterEvent(array $data)
+  {
+    return in_array($data['action'].' '.$data['type'], $this->eventsFilter);
   }
 
 }
