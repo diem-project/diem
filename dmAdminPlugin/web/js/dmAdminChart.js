@@ -5,11 +5,17 @@
 		
     init: function()
     {
-      $('div.dm_charts', this.$dom).tabs({
-				cache: true
-			});
-			
-			$('a.dm_chart_link.selected').trigger('click');
+      var $tabs = $('div.dm_charts', this.$dom);
+      
+      $tabs.tabs($.extend({
+        cache: true,
+        select: function() {
+          $tabs.block();
+        },
+        show: function() {
+          $tabs.unblock();
+        }
+      }, $tabs.metadata()));
     }
     
   });

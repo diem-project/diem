@@ -16,8 +16,8 @@ echo £('div.clearfix',
   ).
 
   £('div.dm_third',
-    get_component('dmUserLog', 'little').
-    get_component('dmActionLog', 'little')
+    get_component('dmLog', 'little', array('name' => 'request')).
+    get_component('dmLog', 'little', array('name' => 'event'))
   )
   
 );

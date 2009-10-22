@@ -12,7 +12,12 @@ class dmChartActions extends dmAdminBaseActions
     {
       if (substr($serviceId, -6) === '_chart')
       {
-        $charts[substr($serviceId, 0, strlen($serviceId)-6)] = $sc->getService($serviceId);
+        $chart = $sc->getService($serviceId);
+        
+        if ($chart instanceof dmChart)
+        {
+          $charts[substr($serviceId, 0, strlen($serviceId)-6)] = $chart;
+        }
       }
     }
     
@@ -44,7 +49,7 @@ class dmChartActions extends dmAdminBaseActions
   {
     $this->charts = $this->getCharts();
     
-    $this->selectedChartKey = $request->getParameter('name');
+    $this->selectedIndex = array_search($request->getParameter('name'), array_keys($this->charts));
   }
   
   public function executeShow(dmWebRequest $request)

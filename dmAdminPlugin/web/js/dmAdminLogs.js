@@ -4,7 +4,7 @@ $.dm.ctrl.add($.dm.adminLogs = {
 	
 	init: function()
 	{
-		$.each(['user', 'action'], function(){
+		$.each(['request', 'event'], function(){
 			$.dm.adminLogs[this] = {
 				hash: '',
 				$wrapper: $('div.'+this+'_log')
@@ -20,13 +20,13 @@ $.dm.ctrl.add($.dm.adminLogs = {
 	{
 		$.ajax({
 			dataType: 'json',
-			url:   $.dm.ctrl.getHref('+/dmAdmin/refreshLogs'),
+			url:   $.dm.ctrl.getHref('+/dmLog/refresh'),
 			data:  {
-				user_hash: $.dm.adminLogs.user.hash,
-				action_hash: $.dm.adminLogs.action.hash
+				request_hash: $.dm.adminLogs.request.hash,
+				event_hash: $.dm.adminLogs.event.hash
 			},
 			success: function(data) {
-				$.each(['user', 'action'], function(){
+				$.each(['request', 'event'], function(){
 					if (data[this])
 	        {
 						var current = this;

@@ -22,7 +22,7 @@ $helper->renderHtmlTag(),
       $sf_request->getParameter('action')
     ),
 
-      get_partial('dmInterface/breadCrumb'),
+      $sf_context->get('bread_crumb')->render(),
 
       get_partial('dmInterface/flash'),
   

@@ -6,34 +6,6 @@ class BasedmAdminActions extends dmAdminBaseActions
   {
   }
   
-  public function executeRefreshLogs(dmWebRequest $request)
-  {
-    $data = array();
-    $nbRecords = 6;
-    
-    foreach(array('user', 'action') as $logName)
-    {
-      $log = $this->context->get($logName.'_log');
-      $data[$logName] = array('hash' => $log->getStateHash());
-      
-      if ($data[$logName]['hash'] == $request->getParameter($logName.'_hash'))
-      {
-        unset($data[$logName]);
-      }
-      else
-      {
-        $viewClass = sprintf('dm%sLogViewLittle', dmString::camelize($logName));
-        require_once(sprintf(
-          dmOs::join(sfConfig::get('dm_admin_dir'), 'modules/dm%sLog/lib/%s.php'),
-          dmString::camelize($logName), $viewClass
-        ));
-        $view = new $viewClass($log, $this->context->getI18n(), $this->getUser());
-        $data[$logName]['html'] = $view->renderBody($nbRecords);
-      }
-    }
-    
-    return $this->renderJson($data);
-  }
   
   public function executeNothing()
   {

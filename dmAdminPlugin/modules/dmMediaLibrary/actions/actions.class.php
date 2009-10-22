@@ -72,6 +72,8 @@ class dmMediaLibraryActions extends dmAdminBaseActions
 
   public function executePath(sfWebRequest $request)
   {
+    $this->context->getEventDispatcher()->connect('dm.bread_crumb.filterLinks', array($this, 'listenToBreadCrumbFilterLinksEvent'));
+    
     $path = $request->getParameter('path', '');
 
     if(!$this->folder = dmDb::table('DmMediaFolder')->findOneByRelPath($path))
@@ -97,6 +99,23 @@ class dmMediaLibraryActions extends dmAdminBaseActions
     {
       $this->metadata['open_media'] = $this->getUser()->getFlash('dm_media_open');
     }
+  }
+  
+  public function listenToBreadCrumbFilterLinksEvent(sfEvent $event, $links)
+  {
+    unset($links['action']);
+    
+    if ($ancestors = $this->folder->getNode()->getAncestors())
+    {
+      foreach($ancestors as $parent)
+      {
+        $links[] = dmLinkTag::build(dmMediaTools::getAdminUrlFor($parent))->text($parent->get('name'));
+      }
+    }
+    
+    $links[] = £('h1', $this->folder->get('name'));
+    
+    return $links;
   }
 
   public function executeNewFile(sfWebRequest $request)

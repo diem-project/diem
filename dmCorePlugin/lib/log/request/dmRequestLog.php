@@ -1,12 +1,15 @@
 <?php
 
-class dmUserLog extends dmFileLog
+class dmRequestLog extends dmFileLog
 {
-  protected
-  $defaults = array(
-    'file'                => 'data/dm/log/user.log',
-    'entry_service_name'  => 'user_log_entry'
-  );
+  protected function getDefaultOptions()
+  {
+    return array_merge(parent::getDefaultOptions(), array(
+      'name'                => 'Requests',
+      'file'                => 'data/dm/log/request.log',
+      'entry_service_name'  => 'request_log_entry'
+    ));
+  }
   
   public function connect()
   {

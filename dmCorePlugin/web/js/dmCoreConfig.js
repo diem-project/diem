@@ -29,8 +29,13 @@ if ($.datepicker)
 
 if ($.blockUI)
 {
-  $.blockUI.defaults.css = {};
-  $.blockUI.defaults.message = ' ';
+	$.blockUI.defaults = $.extend($.blockUI.defaults, {
+    css: {},
+    message: ' ',
+		fadeIn: 0,
+		fadeOut: 0
+	});
+	
 }
 
 })(jQuery);

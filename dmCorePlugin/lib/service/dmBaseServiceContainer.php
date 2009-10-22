@@ -114,19 +114,9 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
     if (!dmConfig::isCli())
     {
       /*
-       * Connect the error watcher to make it aware of thrown exceptions
-       */
-      $this->getService('error_watcher')->connect();
-      
-      /*
        * Connect the tree watcher to make it aware of database modifications
        */
       $this->getService('page_tree_watcher')->connect();
-      
-      /*
-       * Connect the action log to make it aware of database modifications
-       */
-      $this->getService('action_log')->connect();
       
       /*
        * Connect the cache cleaner
@@ -134,12 +124,22 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
       $this->getService('cache_cleaner')->connect();
     }
     
-    if ($this->getService('response')->isHtmlForHuman())
+    if ('test' != sfConfig::get('sf_environment'))
     {
       /*
-       * Connect the user log to make it aware of controller end
+       * Connect the error watcher to make it aware of thrown exceptions
        */
-      $this->getService('user_log')->connect();
+      $this->getService('error_watcher')->connect();
+      
+      /*
+       * Connect the event log to make it aware of database modifications
+       */
+      $this->getService('event_log')->connect();
+      
+      /*
+       * Connect the request log to make it aware of controller end
+       */
+      $this->getService('request_log')->connect();
     }
   }
 

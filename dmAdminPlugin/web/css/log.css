@@ -1,19 +1,15 @@
-div.log strong {
+div.dm_log strong {
   font-weight: bold;
   color: #000;
 }
 
-div.log .light {
+div.dm_log .light {
   font-size: 10px;
   color: #666;
 }
 
-div.log .browser_block {
+div.dm_log .browser_block {
   display: block;
   width: 24px;
   padding: 0 5px 0 0;
-}
-
-div.log.change {
-  border: black 1px dashed;
 }

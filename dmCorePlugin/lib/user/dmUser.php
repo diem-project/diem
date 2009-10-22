@@ -150,8 +150,18 @@ abstract class dmUser extends sfGuardSecurityUser implements dmMicroCacheInterfa
 
   public function signOut()
   {
-    parent::signout();
+    $this->dispatcher->notify(new sfEvent($this, 'user.sign_out'));
+    
+    parent::signOut();
+    
     $this->isSuperAdmin = false;
+  }
+  
+  public function signIn($user, $remember = false, $con = null)
+  {
+    parent::signIn($user, $remember, $con);
+    
+    $this->dispatcher->notify(new sfEvent($this, 'user.sign_in'));
   }
 
   public function getGuardUser()
@@ -165,7 +175,7 @@ abstract class dmUser extends sfGuardSecurityUser implements dmMicroCacheInterfa
         // the user does not exist anymore in the database
         $this->signOut();
 
-        throw new sfException('The user does not exist anymore in the database.');
+        throw new sfException('The user does not exist anymore in the database. Please reload the page and login.');
       }
       
       $this->isSuperAdmin = $this->user->get('is_super_admin');

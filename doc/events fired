@@ -41,9 +41,22 @@ params: array('page' => DmPage instance)
 fired by dmDoctrineRecord when it will be saved or deleted
 params: array('type' => create|update|delete)
 
-[dm.table.modification]
-fired by dmDoctrineTable when it's data will be modified
-params: array()
-
 [dm.context.end]
 fired by dmContext when application has been succesfully executed
+
+[dm.bread_crumb.filterLinks]
+fired by dmAdminBreadcrumb before rendering links. With this event you can modify breadCrumb links just before rendering.
+params: none
+value: array of linkType => options
+
+[dm.sitemap.generated]
+fired by dmSitemap when sitemap has been written to disk
+params: array('file' => full server path, 'url' => full web path)
+
+[dm.search.populated]
+fired by dmSearchIndex when index has been written to disk
+params: array('name' => index name, 'nb_documents' => number of documents generated, 'time' => population time in seconds)
+
+[dm.config.updated]
+fired by static dmConfig when a value has been changed
+params: array('name' => setting name, 'value' => setting value', 'culture' => setting culture)

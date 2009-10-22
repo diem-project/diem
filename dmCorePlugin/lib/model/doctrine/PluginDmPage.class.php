@@ -12,6 +12,8 @@
  */
 abstract class PluginDmPage extends BaseDmPage
 {
+  protected
+  $nameBackup;
 
   protected static
   $autoSeoFields = array('slug', 'name', 'title', 'h1', 'description', 'keywords');
@@ -157,7 +159,7 @@ abstract class PluginDmPage extends BaseDmPage
 
       if ($this->getIsAutomatic())
       {
-        if (!($this->getRecord() instanceof myDoctrineRecord))
+        if (!($this->getRecord() instanceof dmDoctrineRecord))
         {
           throw new dmException(sprintf(
             '%s automatic page can not be saved because it has no object for record_id = %s',
@@ -177,10 +179,21 @@ abstract class PluginDmPage extends BaseDmPage
     return $return;
   }
 
+  public function preDelete($event)
+  {
+    parent::preDelete($event);
+    
+    $this->nameBackup = $this->get('name');
+  }
+  
+  public function getNameBackup()
+  {
+    return $this->nameBackup;
+  }
 
   public function __toString()
   {
-    return sprintf('#%d %s.%s',
+    return $this->nameBackup ? $this->nameBackup : sprintf('#%d %s.%s',
       $this->get('id'),
       $this->get('module'),
       $this->get('action')
@@ -226,13 +239,12 @@ abstract class PluginDmPage extends BaseDmPage
     return self::$autoSeoFields;
   }
 
-
   /*
    * @return boolean true if the field must be setted automatically
    */
   public function isSeoAuto($seoField)
   {
-    return strpos($this->get('autoMod'), $seoField{0}) !== false;
+    return strpos($this->get('auto_mod'), $seoField{0}) !== false;
   }
   
   /*
@@ -250,7 +262,7 @@ abstract class PluginDmPage extends BaseDmPage
       return;
     }
     
-    $modifiedFields = $this->get('Translation')->get($this->get('lang'))->getModified();
+    $modifiedFields = $this->get('Translation')->get(self::getDefaultCulture())->getModified();
     
     foreach(self::getAutoSeoFields() as $seoField)
     {

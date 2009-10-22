@@ -58,3 +58,7 @@ ul.ui-tabs-nav > li.dm_error.ui-tabs-selected {
 .dm .ui-state-default, .dm .ui-widget-content .ui-state-default {
   background-image: url(../images/default_bg.png);
 }
+
+.dm .ui-state-default, .dm .ui-widget-content .ui-state-default.ui-state-active {
+  background: #fff;
+}

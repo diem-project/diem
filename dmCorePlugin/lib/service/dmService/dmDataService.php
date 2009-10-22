@@ -350,8 +350,7 @@ class dmDataService extends dmService
       "google_webmaster_tools" => "Configure google webmaster tools",
       "xiti" => "Configure Xiti",
       "search_engine" => "Manage internal search engine",
-      "user_log" => "See the user log",
-      "action_log" => "See the action log",
+      "see_log" => "See the logs",
       'see_chart' => 'See the charts',
       "config_panel" => "Use the configuration panel",
       "translation" => "Use the translation interface",
@@ -407,8 +406,7 @@ class dmDataService extends dmService
           'page_bar_admin',
           'tool_bar_front',
           'page_bar_front',
-          'user_log',
-          'action_log',
+          'see_log',
           'config_panel',
           'site_view',
           'see_chart'
@@ -447,7 +445,8 @@ class dmDataService extends dmService
           'layout',
           'ihm_settings',
           'site_view',
-          'see_chart'
+          'see_chart',
+          'see_log'
         )
       ),
       "webmaster 1" => array(
@@ -462,8 +461,7 @@ class dmDataService extends dmService
           'page_bar_front',
           'media_bar_front',
           'search_engine',
-          'user_log',
-          'action_log',
+          'see_log',
           'config_panel',
           'translation',
           'user_profile',
@@ -478,8 +476,7 @@ class dmDataService extends dmService
           'admin',
           'content',
           'tool_bar_admin',
-          'user_log',
-          'action_log',
+          'see_log',
           'accessibility',
           'site_view',
           'see_chart'

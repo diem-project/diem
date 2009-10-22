@@ -20,3 +20,7 @@ div.dm_data table td {
 div.dm_data table tr.even {
   background: #fff;
 }
+
+div.dm_data table tr.odd {
+  background: #F0F4FC;
+}

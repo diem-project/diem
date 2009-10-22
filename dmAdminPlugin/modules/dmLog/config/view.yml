@@ -1,0 +1,3 @@
+indexSuccess:
+  stylesheets: [ lib.ui-tabs, admin.dataTable, core.browsers, admin.log ]
+  javascripts: [ lib.ui-tabs, admin.log ]

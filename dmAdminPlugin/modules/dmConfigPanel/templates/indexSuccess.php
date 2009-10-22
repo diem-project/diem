@@ -5,7 +5,7 @@ use_javascript('lib.ui-tabs');
 use_javascript('core.tabForm');
 use_javascript('admin.configPanel');
 
-echo £o('div.dm_config_panel.mt20');
+echo £o('div.dm_config_panel.mt10');
 
 echo £o('ul');
 foreach($groups as $group)

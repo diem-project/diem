@@ -1,6 +1,6 @@
 <?php
 
-class dmUserLogEntry extends dmLogEntry
+class dmRequestLogEntry extends dmLogEntry
 {
   protected static
   $browsersCache = array(),
@@ -8,6 +8,8 @@ class dmUserLogEntry extends dmLogEntry
   
   public function configure(array $data)
   {
+    $isXhr = $data['context']->getRequest()->isXmlHttpRequest();
+    
     $this->data = array(
       'time'          => (string) $data['server']['REQUEST_TIME'],
       'uri'           => (string) $data['server']['REQUEST_URI'],
@@ -16,7 +18,8 @@ class dmUserLogEntry extends dmLogEntry
       'ip'            => (string) $data['server']['REMOTE_ADDR'],
       'session_id'    => (string) session_id(),
       'user_id'       => (string) $data['context']->getUser()->getGuardUserId(),
-      'user_agent'    => (string) $data['server']['HTTP_USER_AGENT'],
+      'user_agent'    => (string) $isXhr ? null : $data['server']['HTTP_USER_AGENT'],
+      'xhr'           => (int)    $isXhr,
       'mem'           => (string) memory_get_peak_usage(true),
       'timer'         => (string) sprintf('%.0f', (microtime(true) - dm::getStartTime()) * 1000)
     );

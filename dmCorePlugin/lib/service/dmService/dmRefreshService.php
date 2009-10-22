@@ -11,7 +11,7 @@ class dmRefreshService extends dmService
     {
       $this->generateCode();
       
-      $this->executeService('dmClearCache');
+      dmFileCache::clearAll();
     }
 
     $this->executeService('dmPageSync');

@@ -83,7 +83,7 @@ class dmLogChart extends dmChart
         'mem'     => array()
       );
       
-      foreach($this->serviceContainer->getService('user_log')->getEntries(5000) as $userLogEntry)
+      foreach($this->serviceContainer->getService('request_log')->getEntries(5000) as $userLogEntry)
       {
         $date = $userLogEntry->get('time');
         $timer = $userLogEntry->get('timer');

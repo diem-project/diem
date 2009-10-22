@@ -1,5 +1,7 @@
 parameters:
 
+  bread_crumb.class:          dmAdminBreadCrumb
+
   log_chart.class:            dmLogChart
   log_chart.options:
     name:                     Server
@@ -10,7 +12,7 @@ parameters:
 
   visit_chart.class:          dmVisitChart
   visit_chart.options:
-    name:                     Popularity
+    name:                     This Year
 
   content_chart.class:        dmContentChart
   content_chart.options:
@@ -44,6 +46,11 @@ parameters:
     file:                     sitemap.xml
  
 services:
+
+  bread_crumb:
+    class:                    %bread_crumb.class%
+    shared:                   false
+    arguments:                [ @context ]
 
   log_chart:
     class:                    %log_chart.class%

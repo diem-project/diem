@@ -1,12 +1,6 @@
 <?php
 
-echo £o('div.dm_box.big.console');
-
-echo £('h1.title', __('Console'));
-
-echo £o('div.dm_box_inner');
-
-echo £o('div#dm_console');
+echo £o('div#dm_console.mt10');
   echo £o('ul#dm_lines');
     echo £("li.dm_command_intro", sprintf("Logged as %s on %s", $whoami, $uname));
     echo £("li.dm_command_intro", str_repeat("-", 20));
@@ -26,4 +20,3 @@ echo £o('div#dm_console');
   echo £c('div');
 echo £c('div');
 
-echo £c('div'), £c('div');

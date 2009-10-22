@@ -6,7 +6,9 @@ abstract class dmLogView
   $log,
   $i18n,
   $user,
-  $dateFormat;
+  $dateFormat,
+  $maxEntries = 10,
+  $entries;
   
   public function __construct(dmLog $log, dmI18n $i18n, dmUser $user)
   {
@@ -16,11 +18,19 @@ abstract class dmLogView
     $this->dateFormat = new sfDateFormat($user->getCulture());
   }
   
-  public function render($max = 20)
+  public function setMax($max)
+  {
+    $this->maxEntries = $max;
+    $this->entries    = null;
+    
+    return $this;
+  }
+  
+  public function render()
   {
     return
     $this->renderHead().
-    '<tbody>'.$this->renderBody($max).'</tbody>'.
+    '<tbody>'.$this->renderBody().'</tbody>'.
     $this->renderFoot();
   }
   
@@ -38,7 +48,7 @@ abstract class dmLogView
     
     foreach($this->rows as $name => $method)
     {
-      $html .= '<th>'.$this->i18n->__($name).'</th>';
+      $html .= '<th>'.$this->i18n->__(dmString::humanize($name)).'</th>';
     }
     
     $html .= '</tr></thead>';
@@ -46,11 +56,11 @@ abstract class dmLogView
     return $html;
   }
   
-  public function renderBody($max = 20)
+  public function renderBody()
   {
     $html = '';
     
-    foreach($this->getEntries($max) as $index => $entry)
+    foreach($this->getEntries() as $index => $entry)
     {
       $html .= '<tr class="'.($index%2 ? 'odd' : 'even').'">';
       
@@ -65,9 +75,31 @@ abstract class dmLogView
     return $html;
   }
   
-  protected function getEntries($max)
+  protected function getEntries()
   {
-    return $this->log->getEntries($max);
+    if(null === $this->entries)
+    {
+      $this->entries = $this->doGetEntries();
+    }
+    
+    return $this->entries;
+  }
+  
+  public function getHash()
+  {
+    $data = array();
+    
+    foreach($this->getEntries() as $entry)
+    {
+      $data[] = $entry->toArray();
+    }
+    
+    return md5(serialize($data));
+  }
+  
+  protected function doGetEntries()
+  {
+    return $this->log->getEntries($this->maxEntries);
   }
   
   public function renderFoot()

@@ -78,6 +78,11 @@ class dmSitemap
     {
       throw new dmException('Can not save to '.dmProject::unRootify($this->getFullPath()));
     }
+    
+    $this->dispatcher->notify(new sfEvent($this, 'dm.sitemap.generated', array(
+      'file' => $this->getFullPath(),
+      'url'  => $this->getWebPath()
+    )));
   }
   
   protected function getXml($culture)

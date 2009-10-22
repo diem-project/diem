@@ -6,6 +6,7 @@
 class dmConfig
 {
   protected static
+  $dispatcher,
   $culture,
   $config,
   $loaded = false;
@@ -24,6 +25,7 @@ class dmConfig
     {
       throw new dmException(sprintf('There is no setting called "%s". Available settings are : %s', $name, implode(', ', array_keys(self::$config))));
     }
+    
     return self::$config[$name];
   }
 
@@ -71,6 +73,12 @@ class dmConfig
     $setting->value = $value;
 
     $setting->save();
+    
+    self::$dispatcher->notify(new sfEvent(null, 'dm.config.updated', array(
+      'name'  => $name,
+      'value' => $value,
+      'culture' => self::$culture
+    )));
 
     return self::$config[$name] = $value;
   }
@@ -92,7 +100,14 @@ class dmConfig
 
   public static function initialize(sfEventDispatcher $dispatcher)
   {
-    $dispatcher->connect('user.change_culture', array('dmConfig', 'listenToChangeCultureEvent'));
+    self::$dispatcher = $dispatcher;
+    
+    self::connect();
+  }
+  
+  public static function connect()
+  {
+    self::$dispatcher->connect('user.change_culture', array('dmConfig', 'listenToChangeCultureEvent'));
   }
 
   /**

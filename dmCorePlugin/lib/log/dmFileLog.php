@@ -6,8 +6,15 @@ abstract class dmFileLog extends dmLog
   $dispatcher,
   $filesystem,
   $serviceContainer,
-  $options,
-  $defaults = array();
+  $options;
+  
+  protected function getDefaultOptions()
+  {
+    return array_merge(parent::getDefaultOptions(), array(
+      'rotation'            => true,
+      'max_size_megabytes'  => 4
+    ));
+  }
   
   public function __construct(sfEventDispatcher $dispatcher, dmFileSystem $filesystem, sfServiceContainer $serviceContainer, array $options = array())
   {
@@ -20,7 +27,7 @@ abstract class dmFileLog extends dmLog
   
   public function initialize(array $options)
   {
-    $this->options = array_merge($this->defaults, $options);
+    parent::initialize($options);
     
     if ('/' !== $this->options['file']{0})
     {
@@ -56,7 +63,7 @@ abstract class dmFileLog extends dmLog
   
   protected function checkRotation()
   {
-    if (rand(0, 10))
+    if (rand(0, 20))
     {
       return;
     }
@@ -71,7 +78,7 @@ abstract class dmFileLog extends dmLog
     }
   }
   
-  public function getEntries($max = 0)
+  public function getEntries($max = 100)
   {
     $entries = array();
     
@@ -81,26 +88,55 @@ abstract class dmFileLog extends dmLog
     {
       $encodedLines = array_slice($encodedLines, 0, $max);
     }
+    
     foreach($encodedLines as $encodedLine)
     {
       $data = $this->decode($encodedLine);
       
       if (!empty($data))
       {
-        $entry = $this->serviceContainer->getService($this->options['entry_service_name']);
-        $entry->setData($data);
-        $entries[] = $entry;
+        $entries[] = $this->buildEntry($data);
       }
     }
+    
+    unset($encodedLines);
     
     return $entries;
   }
   
-  public function getStateHash()
+  public function getFilteredEntries($max = 100, $filterCallback)
   {
-    $this->checkFile();
+    $entries = array();
     
-    return filemtime($this->options['file']);
+    $encodedLines = array_reverse(file($this->options['file'], FILE_IGNORE_NEW_LINES));
+    
+    $nb = 0;
+    
+    foreach($encodedLines as $encodedLine)
+    {
+      $data = $this->decode($encodedLine);
+      
+      if (!empty($data) && call_user_func($filterCallback, $data))
+      {
+        $entries[] = $this->buildEntry($data);
+        
+        if ($max && (++$nb == $max))
+        {
+          break;
+        }
+      }
+    }
+    
+    unset($encodedLines);
+    
+    return $entries;
+  }
+  
+  protected function buildEntry(array $data)
+  {
+    $entry = $this->serviceContainer->getService($this->options['entry_service_name']);
+    $entry->setData($data);
+    return $entry;
   }
   
   protected function encode(array $array)

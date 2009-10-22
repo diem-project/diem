@@ -125,6 +125,12 @@ class dmSearchIndex extends dmSearchIndexCommon
 
     $this->logger->log($this->getName().' : Time per document "' . round($time / count($pages), 3) . '" seconds.');
 
+    $this->dispatcher->notify(new sfEvent($this, 'dm.search.populated', array(
+      'name' => $this->getName(),
+      'nb_documents' => count($pages),
+      'time' => $time
+    )));
+    
     unset($pages);
   }
 

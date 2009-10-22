@@ -18,10 +18,6 @@ class dmWebRequest extends sfWebRequest
 
   /**
    * Returns true if the request is a XMLHttpRequest.
-   *
-   * It works if your JavaScript library set an X-Requested-With HTTP header.
-   * Works with Prototype, Mootools, jQuery, and perhaps others.
-   *
    * @return bool true if the request is an XMLHttpRequest, false otherwise
    */
   public function isXmlHttpRequest()

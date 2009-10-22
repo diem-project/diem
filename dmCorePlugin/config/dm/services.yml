@@ -53,25 +53,27 @@ parameters:
 
   filesystem.class:           dmFilesystem
   
-  action_log.class:           dmActionLog
-  action_log.options:
-    file:                     'data/dm/log/action.log'
-    entry_service_name:       action_log_entry
+  event_log.class:            dmEventLog
+  event_log.options:
+    name:                     Events
+    file:                     'data/dm/log/event.log'
+    entry_service_name:       event_log_entry
     rotation:                 true
     max_size_megabytes:       4
     ignore_models:            []
     ignore_internal_actions:  true
   
-  action_log_entry.class:     dmActionLogEntry
+  event_log_entry.class:      dmEventLogEntry
   
-  user_log.class:             dmUserLog
-  user_log.options:
-    file:                     'data/dm/log/user.log'
-    entry_service_name:       user_log_entry
+  request_log.class:          dmRequestLog
+  request_log.options:
+    name:                     Requests
+    file:                     'data/dm/log/request.log'
+    entry_service_name:       request_log_entry
     rotation:                 true
     max_size_megabytes:       4
   
-  user_log_entry.class:       dmUserLogEntry
+  request_log_entry.class:    dmRequestLogEntry
     
   browser.class:              dmBrowser
     
@@ -174,23 +176,23 @@ services:
     shared:                   true
     arguments:                [ @dispatcher ]
       
-  action_log:
-    class:                    %action_log.class%
+  event_log:
+    class:                    %event_log.class%
     shared:                   true
-    arguments:                [ @dispatcher, @filesystem, @service_container, %action_log.options% ]
+    arguments:                [ @dispatcher, @filesystem, @service_container, %event_log.options% ]
       
-  action_log_entry:
-    class:                    %action_log_entry.class%
+  event_log_entry:
+    class:                    %event_log_entry.class%
     shared:                   false
     arguments:                [ @service_container ]
       
-  user_log:
-    class:                    %user_log.class%
+  request_log:
+    class:                    %request_log.class%
     shared:                   true
-    arguments:                [ @dispatcher, @filesystem, @service_container, %user_log.options% ]
+    arguments:                [ @dispatcher, @filesystem, @service_container, %request_log.options% ]
       
-  user_log_entry:
-    class:                    %user_log_entry.class%
+  request_log_entry:
+    class:                    %request_log_entry.class%
     shared:                   false
     arguments:                [ @service_container ]
       

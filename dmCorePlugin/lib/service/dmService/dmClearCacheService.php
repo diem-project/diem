@@ -5,7 +5,7 @@ class dmClearCacheService extends dmService
 
   public function execute()
   {
-    $this->log("clear cache");
+    $this->log('clear cache');
     
     dmFileCache::clearAll();
 

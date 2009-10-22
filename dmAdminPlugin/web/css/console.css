@@ -8,7 +8,7 @@ div.console div.dm_box_inner
   background: #000 url(../images/console/bg2.jpg) repeat center center;
   font-family: monospace;
   font-size: 12px;
-  height: 500px;
+  height: 540px;
   overflow-x: hidden;
   overflow-y: scroll;
   padding: 5px;

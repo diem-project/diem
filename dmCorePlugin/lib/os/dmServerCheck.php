@@ -36,7 +36,6 @@ class dmServerCheck
     new dmServerCheckUnit('version', SYMFONY_VERSION, '1.3.0-DEV', self::ERROR)
     ),
        'php extensions' => array(
-//    new dmServerCheckUnit('mysql', extension_loaded('mysql'), true, self::ERROR),
     new dmServerCheckUnit('spl', extension_loaded('spl'), true, self::ERROR),
     new dmServerCheckUnit('pdo', extension_loaded('pdo'), true, self::ERROR),
     new dmServerCheckUnit('pdo_mysql', extension_loaded('pdo_mysql'), true, self::ERROR),

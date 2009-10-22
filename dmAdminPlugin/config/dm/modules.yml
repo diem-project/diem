@@ -16,12 +16,9 @@ Utils:
     dmChart:
       name:         Chart
       credentials:  see_chart
-    dmUserLog:
-      name:         User log
-      credentials:  user_log
-    dmActionLog:
-      name:         Action log
-      credentials:  action_log
+    dmLog:
+      name:         Log
+      credentials:  see_log
   Accessibility:
     dmLang:
       name:         Lang span
