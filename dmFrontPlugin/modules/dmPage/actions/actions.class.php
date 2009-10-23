@@ -94,9 +94,7 @@ class dmPageActions extends dmFrontBaseActions
     
     if ($request->isMethod('post'))
     {
-      $this->form->bind();
-
-      if ($this->form->isValid())
+      if ($this->form->bindAndValid($request))
       {
         $this->page = $this->form->save();
         

@@ -73,7 +73,7 @@ abstract class dmFileLog extends dmLog
     if (filesize($this->options['file']) > $maxSize)
     {
       $logs = file($this->options['file']);
-      file_put_contents($this->options['file'], implode("\n", array_slice($logs, round(count($logs)/2))));
+      file_put_contents($this->options['file'], implode("\n", array_slice($logs, round(count($logs)/4))));
       unset($logs);
     }
   }

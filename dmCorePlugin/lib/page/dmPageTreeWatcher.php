@@ -31,12 +31,29 @@ class dmPageTreeWatcher
   
   public function listenToRecordModificationEvent(sfEvent $event)
   {
-    $table = $event->getSubject()->getTable();
+    $record = $event->getSubject();
+    $table  = $record->getTable();
     
     if ($table instanceof dmDoctrineTable && !isset($this->modifiedTables[$table->getComponentName()]) && $table->interactsWithPageTree())
     {
       $this->addModifiedTable($table);
     }
+    
+//    if($record->isFieldModified('is_active'))
+//    {
+//      $isActive = $record->get('is_active');
+//      
+//      if ($record instanceof DmPage && ($pageRecord = $record->getRecord()) && $pageRecord->getTable()->hasField('is_active') && $isActive != $pageRecord->get('is_active'))
+//      {
+//        $pageRecord->set('is_active', $record->get('is_active'));
+//        $pageRecord->save();
+//      }
+//      elseif($record->getDmModule()->hasPage() && ($page = $record->getDmPage()) && $isActive != $page->get('is_active'))
+//      {
+//        $page->set('is_active', $record->get('is_active'));
+//        $page->save();
+//      }
+//    }
   }
   
   public function addModifiedTable(dmDoctrineTable $table)
@@ -57,7 +74,7 @@ class dmPageTreeWatcher
   public function update()
   {
     $modifiedModules = $this->getModifiedModules();
-    
+
     if(!empty($modifiedModules))
     {
       $this->serviceContainer->getService('page_synchronizer')->execute($modifiedModules);

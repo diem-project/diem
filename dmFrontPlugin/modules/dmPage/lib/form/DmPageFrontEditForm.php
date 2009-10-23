@@ -144,9 +144,12 @@ class DmPageFrontEditForm extends DmPageForm
   {
     if (!empty($values['module']) && !empty($values['action']))
     {
-      $values['module'] = dmString::modulize(str_replace('-', '_', dmString::slugify($values['module'])));
-      $values['action'] = dmString::modulize(str_replace('-', '_', dmString::slugify($values['action'])));
       
+      foreach(array('module', 'action') as $key)
+      {
+        $values[$key] = dmString::modulize(str_replace('-', '_', dmString::slugify(dmString::underscore($values[$key]))));
+      }
+
       $existingPage = dmDb::query('DmPage p')
       ->where('p.module = ? AND p.action = ? and p.record_id = ? AND p.id != ?', array($values['module'], $values['action'], $this->object->record_id, $this->object->id))
       ->fetchRecord();

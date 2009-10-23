@@ -24,7 +24,7 @@ abstract class dmChart extends pChart
     $this->serviceContainer = $serviceContainer;
 
     $this->options = array_merge($this->getDefaultOptions(), $options);
-    
+
     parent::pChart($this->getWidth(), $this->getHeight());
 
     $this->setup();
@@ -33,33 +33,33 @@ abstract class dmChart extends pChart
   protected function setup()
   {
     $this->addToCacheKey($this->options);
-    
+
     $this->setFontProperties("Fonts/tahoma.ttf", 10);
-    
+
     if (sfConfig::get('sf_debug'))
     {
       $reflection = new ReflectionClass(get_class($this));
       $this->addToCacheKey(filemtime($reflection->getFilename()));
     }
-    
+
     $this->configure();
   }
-  
+
   protected function configure()
   {
     // override me
   }
-  
+
   protected function getCache($name)
   {
     return $this->serviceContainer->getService('cache_manager')->getCache('chart/'.$this->getKey())->get($name);
   }
-  
+
   protected function setCache($name, $value)
   {
     return $this->serviceContainer->getService('cache_manager')->getCache('chart/'.$this->getKey())->set($name, $value, $this->options['lifetime']);
   }
-  
+
   protected function choosePalette($number)
   {
     return $this->loadColorPalette(dmOs::join(sfConfig::get('dm_admin_dir'), 'lib/view/chart/palettes/tones-'.$number.'.txt'));
@@ -73,9 +73,9 @@ abstract class dmChart extends pChart
   public function getImage()
   {
     $this->data = $this->getData();
-    
+
     $this->addToCacheKey($this->data);
-    
+
     $cacheKey = md5($this->cacheKey);
 
     $image = sprintf('%s_%s.png', get_class($this), $cacheKey);
@@ -88,7 +88,7 @@ abstract class dmChart extends pChart
       {
         throw new dmException(sprintf('Can not mkdir %s', dirname($imageFullPath)));
       }
-      
+
       $this->serviceContainer->getService('logger')->notice('Refresh chart '.get_class($this));
 
       $this->draw();
@@ -110,27 +110,27 @@ abstract class dmChart extends pChart
       'lifetime' => 60 * 60 * 24
     );
   }
-  
+
   public function getKey()
   {
     return $this->options['key'];
   }
-  
+
   public function getName()
   {
     return $this->options['name'];
   }
-  
+
   public function setName($v)
   {
     $this->options['name'] = $v;
   }
-  
+
   public function getCredentials()
   {
     return $this->options['credentials'];
   }
-  
+
   public function setCredentials($v)
   {
     $this->options['credentials'] = $v;
@@ -153,14 +153,61 @@ abstract class dmChart extends pChart
   {
     return array($this->options['width'], $this->options['height']);
   }
-  
+
   public function getWidth()
   {
     return $this->options['width'];
   }
-  
+
   public function getHeight()
   {
     return $this->options['height'];
+  }
+
+  /* This function write the values of the specified series */
+  function writeValuesOptions($Data,$DataDescription,$Series, array $options = array())
+  {
+    $options = array_merge(array(
+        '>' => null,
+        '<' => null
+    ), $options);
+
+    /* Validate the Data and DataDescription array */
+    $this->validateDataDescription("writeValues",$DataDescription);
+    $this->validateData("writeValues",$Data);
+
+    if ( !is_array($Series) ) { $Series = array($Series); }
+
+    foreach($Series as $Key => $Serie)
+    {
+      $ID = 0;
+      foreach ( $DataDescription["Description"] as $keyI => $ValueI )
+      { if ( $keyI == $Serie ) { $ColorID = $ID; }; $ID++; }
+
+      $XPos  = $this->GArea_X1 + $this->GAreaXOffset;
+      $XLast = -1;
+      foreach ( $Data as $Key => $Values )
+      {
+
+        if ( isset($Data[$Key][$Serie]) && is_numeric($Data[$Key][$Serie]))
+        {
+          $Value = $Data[$Key][$Serie];
+           
+          if ((null === $options['<'] || $Value < $options['<']) && (null === $options['>'] || $Value > $options['>']))
+          {
+            $YPos = $this->GArea_Y2 - (($Value-$this->VMin) * $this->DivisionRatio);
+
+            $Positions = imagettfbbox($this->FontSize,0,$this->FontName,$Value);
+            $Width  = $Positions[2] - $Positions[6]; $XOffset = $XPos - ($Width/2);
+            $Height = $Positions[3] - $Positions[7]; $YOffset = $YPos - 4;
+
+            $C_TextColor =$this->AllocateColor($this->Picture,$this->Palette[$ColorID]["R"],$this->Palette[$ColorID]["G"],$this->Palette[$ColorID]["B"]);
+            imagettftext($this->Picture,$this->FontSize,0,$XOffset,$YOffset,$C_TextColor,$this->FontName,$Value);
+          }
+        }
+        $XPos = $XPos + $this->DivisionWidth;
+      }
+
+    }
   }
 }

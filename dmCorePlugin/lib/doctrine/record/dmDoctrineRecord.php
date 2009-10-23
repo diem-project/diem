@@ -22,6 +22,11 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
       self::initializeI18n();
     }
   }
+  
+  public function getCurrentTranslation()
+  {
+    return $this->get('Translation')->get(self::getDefaultCulture());
+  }
 
   /*
    * Add page tree watcher registering
@@ -29,7 +34,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
   public function preSave($event)
   {
     parent::preSave($event);
-
+    
     if ($this->isModified())
     {
       $this->notify($this->isNew() ? 'create' : 'update');
@@ -581,7 +586,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
       return true;
     }
     
-    if (!$this->_table instanceof myDoctrineTable)
+    if (!$this->_table instanceof dmDoctrineTable)
     {
       return false;
     }

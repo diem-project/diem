@@ -64,6 +64,9 @@ class dmLogChart extends dmChart
     }
     $this->drawScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_NORMAL, 0, 0, 0,false);
     $this->drawStackedBarGraph($dataSet->GetData(), $dataSet->GetDataDescription(), 30, false);
+    $this->writeValuesOptions($dataSet->GetData(), $dataSet->GetDataDescription(), 'clear cache', array(
+      '>' => 0
+    ));
 
     $this->clearScale();
     $dataSet->removeAllSeries();

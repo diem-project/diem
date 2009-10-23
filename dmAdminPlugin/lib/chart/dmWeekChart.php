@@ -65,6 +65,7 @@ class dmWeekChart extends dmGaChart
 //    $this->drawCubicCurve($dataSet->GetData(),$dataSet->GetDataDescription(), .1);
 //    $this->drawPlotGraph($dataSet->GetData(),$dataSet->GetDataDescription(),3,2,255,255,255);
     $this->drawBarGraph($dataSet->GetData(),$dataSet->GetDataDescription(),false, 30); 
+    $this->writeValues($dataSet->GetData(), $dataSet->GetDataDescription(), 'pageviews');
     
     // Clear the scale
 //    $this->clearScale();

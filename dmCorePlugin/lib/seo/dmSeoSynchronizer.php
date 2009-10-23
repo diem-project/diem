@@ -149,11 +149,6 @@ class dmSeoSynchronizer
     $modifiedPages = array();
     foreach($pages as $page)
     {
-//      if (isset($record['is_active']))
-//      {
-//        $page->is_active = $record['is_active'];
-//      }
-
       $record = $records[$page['record_id']];
       $parentId = $pageTable->createQuery('p')
       ->select('p.id as id')
@@ -221,7 +216,7 @@ class dmSeoSynchronizer
     }
   }
 
-  public function updatePage(array $page, myDoctrineRecord $record, $patterns, $parentSlug)
+  public function updatePage(array $page, dmDoctrineRecord $record, $patterns, $parentSlug)
   {
     $pageAutoMod = dmArray::get($page, 'auto_mod', 'snthdk');
 

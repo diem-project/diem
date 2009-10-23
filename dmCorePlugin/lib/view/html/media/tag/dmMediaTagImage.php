@@ -161,6 +161,13 @@ class dmMediaTagImage extends dmMediaTag
 
   protected function prepareMediaAttributes(array $attributes)
   {
+    $media = $this->resource->getSource();
+    
+    if (!$media->checkFileExists())
+    {
+      throw new dmException('The media file does not exist : '.$media->relPath);
+    }
+    
     if ($this->hasSize() && !sfConfig::get('dm_search_populating'))
     {
       try
@@ -176,12 +183,12 @@ class dmMediaTagImage extends dmMediaTag
           throw $e;
         }
         
-        $mediaFullPath = $this->resource->getSource()->getFullPath();
+        $mediaFullPath = $media->getFullPath();
       }
     }
     else
     {
-      $mediaFullPath = $this->resource->getSource()->getFullPath();
+      $mediaFullPath = $media->getFullPath();
     }
     
     if (@$infos = getimagesize($mediaFullPath))
