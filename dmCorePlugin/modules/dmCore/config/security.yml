@@ -1,0 +1,3 @@
+refresh:
+  is_secure:    true
+  credential:   clear_cache

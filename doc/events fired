@@ -70,3 +70,6 @@ params: array('slug' => the not found slug)
 fired by dmPageNotFoundHandler with a notifyUntil after searching for a possible redirection, and found nothing.
 Assign an url to the event's return value to redirect the request.
 params: array('slug' => the not found slug)
+
+[dm.refresh]
+fired by dmCoreActions when user refreshed the site.
