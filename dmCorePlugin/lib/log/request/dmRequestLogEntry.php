@@ -10,19 +10,39 @@ class dmRequestLogEntry extends dmLogEntry
   {
     $isXhr = $data['context']->getRequest()->isXmlHttpRequest();
     
+    $uri = $this->cleanUri($data['server']['REQUEST_URI']);
+    
     $this->data = array(
       'time'          => (string) $data['server']['REQUEST_TIME'],
-      'uri'           => (string) $data['server']['REQUEST_URI'],
+      'uri'           => (string) $uri,
       'code'          => (string) $data['context']->getResponse()->getStatusCode(),
       'app'           => (string) sfConfig::get('sf_app'),
       'ip'            => (string) $data['server']['REMOTE_ADDR'],
-      'session_id'    => (string) session_id(),
       'user_id'       => (string) $data['context']->getUser()->getGuardUserId(),
       'user_agent'    => (string) $isXhr ? null : $data['server']['HTTP_USER_AGENT'],
       'xhr'           => (int)    $isXhr,
       'mem'           => (string) memory_get_peak_usage(true),
       'timer'         => (string) sprintf('%.0f', (microtime(true) - dm::getStartTime()) * 1000)
     );
+  }
+  
+  protected function cleanUri($uri)
+  {
+    if (strpos($uri, '?_='))
+    {
+      $cleanUri = preg_replace('|(.+)(?:\?_=\d+)(.*)|', '$1$2', $uri);
+      
+      if ($firstAmp = strpos($cleanUri, '&'))
+      {
+        $cleanUri{$firstAmp} = '?';
+      }
+    }
+    else
+    {
+      $cleanUri = $uri;
+    }
+    
+    return $cleanUri;
   }
   
   protected function getUser()

@@ -27,13 +27,13 @@ abstract class dmChart extends pChart
     
     parent::pChart($this->getWidth(), $this->getHeight());
 
-    $this->addToCacheKey($this->options);
-
     $this->setup();
   }
 
   protected function setup()
   {
+    $this->addToCacheKey($this->options);
+    
     $this->setFontProperties("Fonts/tahoma.ttf", 10);
     
     if (sfConfig::get('sf_debug'))
@@ -41,6 +41,23 @@ abstract class dmChart extends pChart
       $reflection = new ReflectionClass(get_class($this));
       $this->addToCacheKey(filemtime($reflection->getFilename()));
     }
+    
+    $this->configure();
+  }
+  
+  protected function configure()
+  {
+    // override me
+  }
+  
+  protected function getCache($name)
+  {
+    return $this->serviceContainer->getService('cache_manager')->getCache('chart/'.$this->getKey())->get($name);
+  }
+  
+  protected function setCache($name, $value)
+  {
+    return $this->serviceContainer->getService('cache_manager')->getCache('chart/'.$this->getKey())->set($name, $value, $this->options['lifetime']);
   }
   
   protected function choosePalette($number)
@@ -56,7 +73,7 @@ abstract class dmChart extends pChart
   public function getImage()
   {
     $this->data = $this->getData();
-
+    
     $this->addToCacheKey($this->data);
     
     $cacheKey = md5($this->cacheKey);
@@ -65,23 +82,7 @@ abstract class dmChart extends pChart
 
     $imageFullPath = dmOs::join(sfConfig::get('sf_cache_dir'), 'web', $image);
 
-    if (file_exists($imageFullPath))
-    {
-      if (filemtime($imageFullPath) < (time() - $this->options['lifetime']))
-      {
-        $reload = true;
-      }
-      else
-      {
-        $reload = false;
-      }
-    }
-    else
-    {
-      $reload = true;
-    }
-    
-    if ($reload)
+    if (!file_exists($imageFullPath))
     {
       if (!$this->serviceContainer->getService('filesystem')->mkdir(dirname($imageFullPath)))
       {
@@ -90,7 +91,7 @@ abstract class dmChart extends pChart
       
       $this->serviceContainer->getService('logger')->notice('Refresh chart '.get_class($this));
 
-      $this->configure();
+      $this->draw();
 
       $this->render($imageFullPath);
     }
@@ -135,7 +136,7 @@ abstract class dmChart extends pChart
     $this->options['credentials'] = $v;
   }
 
-  abstract protected function configure();
+  abstract protected function draw();
 
   abstract protected function getData();
 

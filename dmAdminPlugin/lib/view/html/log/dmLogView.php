@@ -75,31 +75,19 @@ abstract class dmLogView
     return $html;
   }
   
-  protected function getEntries()
+  protected function getEntries(array $options = array())
   {
-    if(null === $this->entries)
-    {
-      $this->entries = $this->doGetEntries();
-    }
-    
-    return $this->entries;
+    return $this->doGetEntries($options);
   }
   
   public function getHash()
   {
-    $data = array();
-    
-    foreach($this->getEntries() as $entry)
-    {
-      $data[] = $entry->toArray();
-    }
-    
-    return md5(serialize($data));
+    return substr(md5(serialize($this->getEntries(array('hydrate' => false)))), -4);
   }
   
-  protected function doGetEntries()
+  protected function doGetEntries(array $options)
   {
-    return $this->log->getEntries($this->maxEntries);
+    return $this->log->getEntries($this->maxEntries, $options);
   }
   
   public function renderFoot()

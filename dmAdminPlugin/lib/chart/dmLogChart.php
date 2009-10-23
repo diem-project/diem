@@ -5,11 +5,16 @@ class dmLogChart extends dmChart
   protected
   $eventsFilter = array(
     'clear cache',
-    'update sitemap',
-    'update search'
+//    'update sitemap',
+//    'update search'
   );
 
   protected function configure()
+  {
+//    $this->options['lifetime'] = 1;
+  }
+  
+  protected function draw()
   {
     $this->choosePalette('diem');
     $this->setColorPalette(1, 200, 40, 40);
@@ -18,55 +23,68 @@ class dmLogChart extends dmChart
     $this->setColorPalette(3, 250, 200, 40);
     
     $dataSet = new dmChartData;
-
+    
     $dataSet->AddPoint($this->data['date'], 'date');
     $dataSet->AddPoint($this->data['time'], 'time');
     $dataSet->AddPoint($this->data['nbReq'], 'nbReq');
     $dataSet->AddPoint($this->data['nbErr'], 'nbErr');
     $dataSet->AddPoint($this->data['mem'], 'mem');
+
+    $dataSet->SetSerieName("Requests / minute", "nbReq");
+    $dataSet->SetSerieName("Errors / minute", "nbErr");
+    $dataSet->SetSerieName("Latency in ms", "time");
+    $dataSet->SetSerieName("Memory used %", "mem");
+    
+    foreach($this->eventsFilter as $eventType)
+    {
+      $dataSet->AddPoint($this->data['events'][$eventType], $eventType);
+      $dataSet->SetSerieName(dmString::humanize($eventType), $eventType);
+    }
     
     $dataSet->SetAbsciseLabelSerie('date');
     $dataSet->SetXAxisFormat('date');
-
-    $dataSet->SetSerieName("Requests/H", "nbReq");
-    $dataSet->SetSerieName("Errors/H", "nbErr");
-    $dataSet->SetSerieName("Latency in s", "time");
-    $dataSet->SetSerieName("Memory used %", "mem");
-
     // Prepare the graph area
-    $this->setGraphArea(20, 10, $this->getWidth()-30, $this->getHeight()-20);
+    $this->setGraphArea(40, 10, $this->getWidth()-30, $this->getHeight()-20);
     $this->drawGraphArea(255, 255, 255);
     $dataSet->AddSerie("date");
-//    $this->drawCubicCurve($dataSet->GetData(),$dataSet->GetDataDescription(), .3);
+    
+    $this->clearScale();
+    $dataSet->removeAllSeries();
+    $dataSet->AddSerie("nbReq");
+    $dataSet->AddSerie("nbErr");
+    $this->drawRightScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_NORMAL, self::$colors['grey2'][0], self::$colors['grey2'][1], self::$colors['grey2'][2],TRUE,0,0, false, 10);
+    $this->drawGrid(4,TRUE, self::$colors['grey1'][0], self::$colors['grey1'][1], self::$colors['grey1'][2]);
+    $this->drawFilledCubicCurve($dataSet->GetData(),$dataSet->GetDataDescription(), 0.2, 10);
+    
+    $this->clearScale();
+    $dataSet->removeAllSeries();
+    foreach($this->eventsFilter as $eventType)
+    {
+      $dataSet->addSerie($eventType);
+    }
+    $this->drawScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_NORMAL, 0, 0, 0,false);
+    $this->drawStackedBarGraph($dataSet->GetData(), $dataSet->GetDataDescription(), 30, false);
 
     $this->clearScale();
     $dataSet->removeAllSeries();
     $dataSet->AddSerie("mem");
     $maxMem = 64; //(int) ini_get('memory_limit')
     $this->setFixedScale(0, $maxMem);
-    $this->drawScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_NORMAL, 0, 0, 0,false,0,0, false, 8);
-    $this->drawGrid(4,TRUE, self::$colors['grey1'][0], self::$colors['grey1'][1], self::$colors['grey1'][2]);
+    $this->drawScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_NORMAL, 0, 0, 0,false,0,0, false, 10);
     $this->drawFilledCubicCurve($dataSet->GetData(),$dataSet->GetDataDescription(), 0.2, 20);
-    
-    $this->clearScale();
-    $dataSet->removeAllSeries();
-    $dataSet->AddSerie("nbReq");
-    $dataSet->AddSerie("nbErr");
-    $this->drawRightScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_NORMAL, self::$colors['grey2'][0], self::$colors['grey2'][1], self::$colors['grey2'][2],TRUE,0,0, false, 8);
-    $this->drawFilledCubicCurve($dataSet->GetData(),$dataSet->GetDataDescription(), 0.2, 20); 
     
     $this->clearScale();
     $dataSet->removeAllSeries();
     $dataSet->AddSerie("time");
     $dataSet->SetYAxisName("Latency in s");
-    $this->drawScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_NORMAL, self::$colors['grey2'][0], self::$colors['grey2'][1], self::$colors['grey2'][2],TRUE,0,0, false, 8);
+    $this->drawScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_NORMAL, self::$colors['grey2'][0], self::$colors['grey2'][1], self::$colors['grey2'][2],TRUE,0,0, false, 10);
     $this->drawFilledCubicCurve($dataSet->GetData(),$dataSet->GetDataDescription(), 0.2, 30);
-  
+    
     // Add labels
-    foreach($this->data['events'] as $event)
-    {
-      $this->setLabel($dataSet->GetData(), $dataSet->GetDataDescription(), 'time', $event['time'], $event['action'].' '.$event['type'], 221,230,174);
-    }
+//    foreach($this->data['events'] as $event)
+//    {
+//      $this->setLabel($dataSet->GetData(), $dataSet->GetDataDescription(), 'time', $event['time'], $event['msg'], 221,230,174);
+//    }
     
     // Finish the graph
     $this->drawLegend(45,5,$dataSet->GetDataDescription(),255,255,255);
@@ -74,17 +92,24 @@ class dmLogChart extends dmChart
 
   protected function getData()
   {
-//    if (!$data = $this->serviceContainer->getService('cache_manager')->getCache('chart/data')->get('log'))
-//    {
+    if (!$data = $this->getCache('data'))
+    {
       $data = array(
         'date' => array(),
         'timer' => array()
       );
+      
+      $requestLogEntries = $this->serviceContainer->getService('request_log')->getEntries(0, array(
+        'hydrate' => false
+      ));
   
-      $nbSteps = 0;
-      $nbStepMax = 8*10;
-      $stepMix = 3;
-      $step = 60*60*$stepMix;
+      $logDelta = dmArray::get(dmArray::first($requestLogEntries), 'time') - dmArray::get(dmArray::last($requestLogEntries), 'time');
+      
+      $hours = $logDelta / 3600;
+      
+      $stepFactor = $hours / 40;
+      
+      $step = round(60*60*$stepFactor);
       $stepDate = $_SERVER['REQUEST_TIME']-$step;
       $tmpTimes = array();
       $tmpMems = array();
@@ -97,12 +122,12 @@ class dmLogChart extends dmChart
         'mem'     => array()
       );
       
-      foreach($this->serviceContainer->getService('request_log')->getEntries(5000) as $userLogEntry)
+      foreach($requestLogEntries as $userLogEntry)
       {
-        $date = $userLogEntry->get('time');
-        $timer = $userLogEntry->get('timer');
-        $mem = $userLogEntry->get('mem');
-        $err = in_array($userLogEntry->get('code'), array('500', '404'));
+        $date = $userLogEntry['time'];
+        $timer = $userLogEntry['timer'];
+        $mem = $userLogEntry['mem'];
+        $err = in_array($userLogEntry['code'], array('500', '404'));
         
         if ($date > $stepDate)
         {
@@ -115,31 +140,23 @@ class dmLogChart extends dmChart
           if($nb = count($tmpTimes))
           {
             $data['date'][] = $stepDate;
-            $data['nbReq'][] = $nb/3;
-            $data['nbErr'][] = $tmpErrs/3;
+            $data['nbReq'][] = $nb/$stepFactor;
+            $data['nbErr'][] = $tmpErrs/$stepFactor;
             $data['time'][] = array_sum($tmpTimes) / $nb;
             $data['mem'][] = array_sum($tmpMems) / $nb;
           }
-          if (++$nbSteps == $nbStepMax)
-          {
-            $tmpTimes = array();
-            break;
-          }
-          else
-          {
-            $stepDate -= $step;
-            $tmpTimes = array($timer);
-            $tmpMems = array($mem);
-            $tmpErrs  = $err;
-          }
+          $stepDate -= $step;
+          $tmpTimes = array($timer);
+          $tmpMems = array($mem);
+          $tmpErrs  = $err;
         }
       }
       
       if($nb = count($tmpTimes))
       {
         $data['date'][] = $stepDate;
-        $data['nbReq'][] = $nb/3;
-        $data['nbErr'][] = $tmpErrs/3;
+        $data['nbReq'][] = $nb/$stepFactor;
+        $data['nbErr'][] = $tmpErrs/$stepFactor;
         $data['time'][] = array_sum($tmpTimes) / $nb;
         $data['mem'][] = array_sum($tmpMems) / $nb;
       }
@@ -153,48 +170,48 @@ class dmLogChart extends dmChart
       {
         $data['mem'][$index] = $value / (1024*1024);
         
-        $data['time'][$index] = $data['time'][$index] / 1000;
+        $data['nbReq'][$index] = $data['nbReq'][$index] / 60;
         
-//        $data['date'][$index] = date('d/m', $data['date'][$index]);
+        $data['nbErr'][$index] = $data['nbErr'][$index] / 60;
       }
       
-//      $this->serviceContainer->getService('cache_manager')->getCache('chart/data')->set('log', $data);
-//    }
-
-    $events = $this->serviceContainer->getService('event_log')
-    ->getFilteredEntries(5000, array($this, 'filterEvent'));
-    $data['events'] = array();
-    foreach($events as $event)
-    {
-      $eventArray = $event->toArray();
-      
-      $eventTime = $eventArray['time'];
-      
-      $timeDelta = time();
-      $nearestTime = null;
-      foreach($data['date'] as $time)
+      $events = $this->serviceContainer->getService('event_log')
+      ->getFilteredEntries(1000, array($this, 'filterEvent'), array('hydrate' => false));
+      $data['events'] = array();
+      foreach($this->eventsFilter as $eventType)
       {
-        $eventTimeDelta = abs($time - $eventTime);
-        
-        if ($eventTimeDelta < $timeDelta)
+        $data['events'][$eventType] = array();
+        for($it=0,$itMax=count($data['date']); $it<$itMax; $it++)
         {
-          $nearestTime = $time;
-          $timeDelta = $eventTimeDelta;
+          $data['events'][$eventType][] = 0;
         }
       }
       
-      if ($nearestTime == null)
+      $time = time();
+      foreach($events as $event)
       {
-        dmDebug::kill($eventTime, $data['date']);
+        $eventType = $event['action'].' '.$event['type'];
+        $timeDelta = $time;
+        $nearestTimeIndex = null;
+        foreach($data['date'] as $index => $time)
+        {
+          $eventTimeDelta = abs($time - $event['time']);
+          
+          if ($eventTimeDelta < $timeDelta)
+          {
+            $nearestTimeIndex = $index;
+            $timeDelta = $eventTimeDelta;
+          }
+        }
+        
+        ++$data['events'][$eventType][$nearestTimeIndex];
       }
       
-      $eventArray['time'] = $nearestTime;
+      unset($events);
       
-      $data['events'][] = $eventArray;
+      $this->setCache('data', $data);
     }
     
-    unset($events);
-
     return $data;
   }
   

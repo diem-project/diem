@@ -3,7 +3,7 @@
 class dmDebug
 {
 
-  const MAX_DEBUG_LENGTH = 100000;
+  const MAX_DEBUG_LENGTH = 1000000;
 
   public function __construct()
   {

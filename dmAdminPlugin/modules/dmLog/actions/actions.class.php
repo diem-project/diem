@@ -61,7 +61,7 @@ class dmLogActions extends dmAdminBaseActions
   public function executeRefresh(dmWebRequest $request)
   {
     $data = array();
-    $nbEntries = 6;
+    $nbEntries = 5;
     
     foreach(array('request', 'event') as $logKey)
     {
@@ -73,7 +73,7 @@ class dmLogActions extends dmAdminBaseActions
       
       $hash = $view->getHash();
       
-      if ($hash != $request->getParameter($logKey.'_hash'))
+      if ($hash != $request->getParameter($logKey{0}.'h'))
       {
         $data[$logKey] = array(
           'hash' => $hash,

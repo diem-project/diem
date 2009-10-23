@@ -47,7 +47,7 @@ abstract class dmFileLog extends dmLog
 
     if($fp = fopen($this->options['file'], 'a'))
     {
-      fwrite($fp, $data."\n");
+      fwrite($fp, "\n".$data);
       fclose($fp);
     }
     else
@@ -78,8 +78,13 @@ abstract class dmFileLog extends dmLog
     }
   }
   
-  public function getEntries($max = 100)
+  public function getEntries($max = 100, array $options = array())
   {
+    $options = array_merge(array(
+      'fix_log' => true,
+      'hydrate' => true
+    ), $options);
+    
     $entries = array();
     
     $encodedLines = array_reverse(file($this->options['file'], FILE_IGNORE_NEW_LINES));
@@ -89,13 +94,18 @@ abstract class dmFileLog extends dmLog
       $encodedLines = array_slice($encodedLines, 0, $max);
     }
     
-    foreach($encodedLines as $encodedLine)
+    foreach($encodedLines as $index => $encodedLine)
     {
       $data = $this->decode($encodedLine);
       
       if (!empty($data))
       {
-        $entries[] = $this->buildEntry($data);
+        $entries[] = $options['hydrate'] ? $this->buildEntry($data) : $data;
+      }
+      elseif($options['fix_log'])
+      {
+        $this->fixLog();
+        return $this->getEntries($max, $options);
       }
     }
     
@@ -104,8 +114,33 @@ abstract class dmFileLog extends dmLog
     return $entries;
   }
   
-  public function getFilteredEntries($max = 100, $filterCallback)
+  protected function fixLog()
   {
+    $lines = file($this->options['file'], FILE_IGNORE_NEW_LINES);
+    
+    // remove empty lines
+    $lines = array_filter($lines);
+    
+    // separate collapsed lines
+    $lines = str_replace('"}{"', "\"}\n{\"", $lines);
+    
+    file_put_contents($this->options['file'], implode("\n", $lines));
+    
+    unset($lines);
+    
+    $this->dispatcher->notify(new sfEvent($this, 'application.log', array(
+      $this->getKey().' log has been fixed',
+      sfLogger::NOTICE
+    )));
+  }
+  
+  public function getFilteredEntries($max = 100, $filterCallback, array $options = array())
+  {
+    $options = array_merge(array(
+      'fix_log' => true,
+      'hydrate' => true
+    ), $options);
+
     $entries = array();
     
     $encodedLines = array_reverse(file($this->options['file'], FILE_IGNORE_NEW_LINES));
@@ -116,14 +151,22 @@ abstract class dmFileLog extends dmLog
     {
       $data = $this->decode($encodedLine);
       
-      if (!empty($data) && call_user_func($filterCallback, $data))
+      if (!empty($data))
       {
-        $entries[] = $this->buildEntry($data);
-        
-        if ($max && (++$nb == $max))
+        if (call_user_func($filterCallback, $data))
         {
-          break;
+          $entries[] = $options['hydrate'] ? $this->buildEntry($data) : $data;
+          
+          if ($max && (++$nb == $max))
+          {
+            break;
+          }
         }
+      }
+      elseif($options['fix_log'])
+      {
+        $this->fixLog();
+        return $this->getFilteredEntries($max, $filterCallback, $options);
       }
     }
     

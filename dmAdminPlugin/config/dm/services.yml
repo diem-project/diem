@@ -5,23 +5,27 @@ parameters:
   log_chart.class:            dmLogChart
   log_chart.options:
     name:                     Server
-    lifetime:                 1 # 1 hour
+    lifetime:                 3600 # 1 hour
 
   week_chart.class:           dmWeekChart
   week_chart.options:
     name:                     This Week
+    lifetime:                 43200 # 12 hours
 
   visit_chart.class:          dmVisitChart
   visit_chart.options:
     name:                     This Year
+    lifetime:                 86400 # 24 hours
 
   content_chart.class:        dmContentChart
   content_chart.options:
     name:                     Activity
+    lifetime:                 86400 # 24 hours
 
   browser_chart.class:        dmBrowserChart
   browser_chart.options:
     name:                     Browsers
+    lifetime:                 86400 # 24 hours
 
   gapi.class:                 dmGapi
 

@@ -63,7 +63,7 @@ parameters:
     file:                     'data/dm/log/event.log'
     entry_service_name:       event_log_entry
     rotation:                 true
-    max_size_megabytes:       4
+    max_size_megabytes:       2
     ignore_models:            []
     ignore_internal_actions:  true
   
@@ -75,7 +75,7 @@ parameters:
     file:                     'data/dm/log/request.log'
     entry_service_name:       request_log_entry
     rotation:                 true
-    max_size_megabytes:       4
+    max_size_megabytes:       12
   
   request_log_entry.class:    dmRequestLogEntry
     

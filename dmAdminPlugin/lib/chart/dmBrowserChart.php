@@ -3,7 +3,7 @@
 class dmBrowserChart extends dmGaChart
 {
   
-  protected function configure()
+  protected function draw()
   {
     $dataSet = new dmChartData;
     $dataSet->AddPoint($this->data['name']['pageviews'], 'namePageviews');

@@ -2,7 +2,7 @@
 
 class dmVisitChart extends dmGaChart
 {
-  protected function configure()
+  protected function draw()
   {
     $this->choosePalette('diem');
     $this->setColorPalette(1, 140, 140, 200);

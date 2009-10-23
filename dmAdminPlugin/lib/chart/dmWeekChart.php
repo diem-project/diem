@@ -2,7 +2,7 @@
 
 class dmWeekChart extends dmGaChart
 {
-  protected function configure()
+  protected function draw()
   {
     $this->choosePalette('diem');
     $this->setColorPalette(1, 40, 60, 200);

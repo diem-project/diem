@@ -22,8 +22,8 @@ $.dm.ctrl.add($.dm.adminLogs = {
 			dataType: 'json',
 			url:   $.dm.ctrl.getHref('+/dmLog/refresh'),
 			data:  {
-				request_hash: $.dm.adminLogs.request.hash,
-				event_hash: $.dm.adminLogs.event.hash
+				rh: $.dm.adminLogs.request.hash,
+				eh: $.dm.adminLogs.event.hash
 			},
 			success: function(data) {
 				$.each(['request', 'event'], function(){

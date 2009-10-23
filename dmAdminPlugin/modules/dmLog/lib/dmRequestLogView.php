@@ -67,9 +67,9 @@ class dmRequestLogView extends dmLogView
     return $entry->get('app');
   }
   
-  protected function doGetEntries()
+  protected function doGetEntries(array $options)
   {
-    return $this->log->getFilteredEntries($this->maxEntries, array($this, 'filterEntry'));
+    return $this->log->getFilteredEntries($this->maxEntries, array($this, 'filterEntry'), $options);
   }
   
   public function filterEntry(array $data)

@@ -5,7 +5,7 @@ class dmContentChart extends dmChart
   protected
   $modules;
   
-  protected function configure()
+  protected function draw()
   {
     $dataSet = new dmChartData;
     
