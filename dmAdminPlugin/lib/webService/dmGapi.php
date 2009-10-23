@@ -172,7 +172,7 @@ class dmGapi extends gapi
     }
     catch(Exception $e)
     {
-      throw new dmException('GAPI: Failed to authenticate with '.$email.'. Please configure email and password in the admin configuration panel');
+      throw new dmException('GAPI: Failed to authenticate with email '.$email.'. Please configure email and password in the admin configuration panel');
     }
   }
   

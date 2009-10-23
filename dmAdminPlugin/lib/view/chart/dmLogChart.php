@@ -41,34 +41,32 @@ class dmLogChart extends dmChart
 
     $this->clearScale();
     $dataSet->removeAllSeries();
+    $dataSet->AddSerie("mem");
+    $maxMem = 64; //(int) ini_get('memory_limit')
+    $this->setFixedScale(0, $maxMem);
+    $this->drawScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_NORMAL, 0, 0, 0,false,0,0, false, 8);
+    $this->drawGrid(4,TRUE, self::$colors['grey1'][0], self::$colors['grey1'][1], self::$colors['grey1'][2]);
+    $this->drawFilledCubicCurve($dataSet->GetData(),$dataSet->GetDataDescription(), 0.2, 20);
+    
+    $this->clearScale();
+    $dataSet->removeAllSeries();
     $dataSet->AddSerie("nbReq");
     $dataSet->AddSerie("nbErr");
     $this->drawRightScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_NORMAL, self::$colors['grey2'][0], self::$colors['grey2'][1], self::$colors['grey2'][2],TRUE,0,0, false, 8);
-    $this->drawGrid(4,TRUE, self::$colors['grey1'][0], self::$colors['grey1'][1], self::$colors['grey1'][2]);
-    $this->drawFilledCubicCurve($dataSet->GetData(),$dataSet->GetDataDescription(), 0.2, 10); 
-    
-//    $this->setLabel($dataSet->GetData(), $dataSet->GetDataDescription(), 'nbReq', '19/10', 'Label test', 221,230,174);
+    $this->drawFilledCubicCurve($dataSet->GetData(),$dataSet->GetDataDescription(), 0.2, 20); 
     
     $this->clearScale();
     $dataSet->removeAllSeries();
     $dataSet->AddSerie("time");
     $dataSet->SetYAxisName("Latency in s");
     $this->drawScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_NORMAL, self::$colors['grey2'][0], self::$colors['grey2'][1], self::$colors['grey2'][2],TRUE,0,0, false, 8);
-    $this->drawFilledCubicCurve($dataSet->GetData(),$dataSet->GetDataDescription(), 0.2, 20);
+    $this->drawFilledCubicCurve($dataSet->GetData(),$dataSet->GetDataDescription(), 0.2, 30);
   
     // Add labels
     foreach($this->data['events'] as $event)
     {
       $this->setLabel($dataSet->GetData(), $dataSet->GetDataDescription(), 'time', $event['time'], $event['action'].' '.$event['type'], 221,230,174);
     }
-
-    $this->clearScale();
-    $dataSet->removeAllSeries();
-    $dataSet->AddSerie("mem");
-    $maxMem = 64; //(int) ini_get('memory_limit')
-    $this->setFixedScale(0, $maxMem);
-    $this->drawScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_NORMAL, 0, 0, 0,false,0,0, false, 8);
-    $this->drawFilledCubicCurve($dataSet->GetData(),$dataSet->GetDataDescription(), 0.2, 20);
     
     // Finish the graph
     $this->drawLegend(45,5,$dataSet->GetDataDescription(),255,255,255);

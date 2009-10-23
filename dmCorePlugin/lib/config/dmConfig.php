@@ -75,8 +75,7 @@ class dmConfig
     $setting->save();
     
     self::$dispatcher->notify(new sfEvent(null, 'dm.config.updated', array(
-      'name'  => $name,
-      'value' => $value,
+      'setting'  => $setting,
       'culture' => self::$culture
     )));
 

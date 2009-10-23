@@ -7,8 +7,11 @@ echo £o('div#dm_tool_bar.dm.clearfix.'.sfConfig::get('dm_toolBar_flavour', 'blu
   echo £link('+/dmAuth/signout')->textTitle($sf_user->getUsername().' : '.__('Logout'))->set('.widget16.s16block.s16_signout');
   
   echo £link('app:admin')->textTitle(__('Administration'))->set('.widget16.s16block.s16_home');
-
-  echo £link('+/dmService/launch?name=dmRefresh')->textTitle(__('Clear cache'))->set('.widget16.s16block.s16_clear');
+  
+  if ($sf_user->can('clear_cache'))
+  {
+    echo £link('+/dmCore/refresh')->textTitle(__('Clear cache'))->set('.widget16.s16block.s16_clear');
+  }
   
   if($sf_user->can('code_editor'))
   {

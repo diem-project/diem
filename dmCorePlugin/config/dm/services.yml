@@ -1,9 +1,13 @@
 parameters:
 
+  page_synchronizer.class:    dmPageSynchronizer
+
+  seo_synchronizer.class:     dmSeoSynchronizer
+
   cache_cleaner.class:        dmCacheCleaner
   cache_cleaner.options:
-    applications:           [ admin, front ]
-    environments:           [ prod, dev ]
+    applications:             [ admin, front ]
+    environments:             [ prod, dev ]
 
   form_field.class:           dmFormField
 
@@ -86,6 +90,16 @@ parameters:
   helper.class:               dmHelper
  
 services:
+
+  page_synchronizer:
+    class:                    %page_synchronizer.class%
+    shared:                   true
+    arguments:                [ @module_manager ]
+
+  seo_synchronizer:
+    class:                    %seo_synchronizer.class%
+    shared:                   true
+    arguments:                [ @module_manager, @markdown, %user.culture% ]
 
   cache_cleaner:
     class:                    %cache_cleaner.class%
@@ -204,7 +218,7 @@ services:
   page_tree_watcher:
     class:                    %page_tree_watcher.class%
     shared:                   true
-    arguments:                [ @dispatcher, @module_manager ]
+    arguments:                [ @dispatcher, @module_manager, @service_container ]
       
   file_backup:
     class:                    %file_backup.class%
@@ -219,4 +233,4 @@ services:
   cache_manager:
     class:                    %cache_manager.class%
     shared:                   true
-    arguments:                [ %cache_manager.options% ]
+    arguments:                [ @dispatcher, %cache_manager.options% ]

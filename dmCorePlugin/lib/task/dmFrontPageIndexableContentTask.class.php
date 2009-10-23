@@ -1,6 +1,6 @@
 <?php
 
-class dmPageIndexableContentTask extends dmBaseTask
+class dmPageIndexableContentTask extends dmContextTask
 {
 
   protected static
@@ -38,11 +38,7 @@ class dmPageIndexableContentTask extends dmBaseTask
      */
     protected function execute($arguments = array(), $options = array())
     {
-      if (!sfContext::hasInstance())
-      {
-        dm::createContext($this->configuration);
-      }
-      $databaseManager = new sfDatabaseManager($this->configuration);
+      $this->withDatabase();
 
       $page = dmDb::table('DmPage')->findOneByIdWithI18n($arguments['id'], $arguments['culture']);
        
@@ -51,18 +47,16 @@ class dmPageIndexableContentTask extends dmBaseTask
         throw new dmException('No page with id = '.$arguments['id']);
       }
        
-      $dmContext = dmContext::getInstance();
-       
-      $dmContext->setPage($page);
+      $this->getContext()->setPage($page);
 
       $area = dmDb::query('DmArea a, a.Zones z, z.Widgets w')
-      ->select('a.id, z.width, z.css_class, w.module, w.action, w.value, w.css_class')
-      ->where('a.type = ? AND a.dm_page_view_id = ?', array('content', $page->PageView->id))
+      ->select('a.id, z.id, w.module, w.action, w.value')
+      ->where('a.type = ? AND a.dm_page_view_id = ?', array('content', $page->get('PageView')->get('id')))
       ->orderBy('z.position asc, w.position asc')
       ->fetchArray();
        
       $widgetTypeManager = $dmContext->get('widget_type_manager');
-      
+
       $html = '';
        
       foreach($area[0]['Zones'] as $zone)
@@ -71,9 +65,12 @@ class dmPageIndexableContentTask extends dmBaseTask
         {
           if (!in_array($widget['module'].'.'.$widget['action'], self::$skipWidgets))
           {
+            $widget['css_class'] = null;
+            
             $widgetViewClass = $widgetTypeManager->getWidgetType($widget['module'], $widget['action'])->getViewClass();
-  
+
             $widgetView = new $widgetViewClass($widget);
+            
             try
             {
               $html .= $widgetView->toIndexableString();

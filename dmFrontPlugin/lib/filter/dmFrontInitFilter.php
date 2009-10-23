@@ -73,68 +73,18 @@ class dmFrontInitFilter extends dmInitFilter
   
   protected function handlePageNotFound()
   {
-    if ($slug = $this->context->getRequest()->getParameter('slug'))
+    $handler = $this->context->get('page_not_found_handler');
+    
+    $slug = $this->context->getRequest()->getParameter('slug');
+    
+    if ($redirectionUrl = $handler->getRedirection($slug))
     {
-      if ($redirection = dmDb::query('DmRedirect r')->where('r.source = ?', $slug)->fetchRecord())
-      {
-        if ($page = dmDb::table('DmPage')->findOneBySource($redirection->dest))
-        {
-          $url = dmFrontLinkTag::build($page)->getHref();
-        }
-        else
-        {
-          $url = $redirection->dest;
-        }
-        
-        return $this->context->getController()->redirect($url, 301);
-      }
-      
-      if (dmConfig::get('smart_404'))
-      {
-        try
-        {
-          $searchIndex = $this->context->get('search_engine')->getCurrentIndex();
-          
-          $query = Zend_Search_Lucene_Search_QueryParser::parse(
-            str_replace('/', ' ', dmString::unSlugify($slug))
-          );
-          
-          $results = $searchIndex->search($query);
-          
-          $foundPage = null;
-          foreach($results as $result)
-          {
-            if ($result->getScore() > 0.5)
-            {
-              if($foundPage = $result->getPage())
-              {
-                break;
-              }
-            }
-            else
-            {
-              $break;
-            }
-          }
-          
-          if ($foundPage)
-          {
-            return $this->context->getController()->redirect(dmFrontLinkTag::build($foundPage)->getHref(), 301);
-          }
-        }
-        catch(Exception $e)
-        {
-          if(sfConfig::get('sf_debug'))
-          {
-            throw $e;
-          }
-        }
-      }
+      return $this->context->getController()->redirect($redirectionUrl, 301);
     }
     
     return $this->forwardTo404Page();
   }
-
+  
   protected function forwardTo404Page()
   {
     dmDb::table('DmPage')->checkBasicPages();

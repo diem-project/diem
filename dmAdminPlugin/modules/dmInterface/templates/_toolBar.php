@@ -6,8 +6,11 @@ echo £o('div#dm_tool_bar.clearfix.'.sfConfig::get('dm_toolBar_flavour', 'blue')
 
 //  echo £link()->textTitle(__('Home'))->set('.widget16.s16block.s16_home');
 
-  echo £link('dmService/launch?name=dmRefresh')->textTitle(__('Clear Cache'))->set('.widget16.s16block.s16_clear');
-
+  if ($sf_user->can('clear_cache'))
+  {
+    echo £link('dmCore/refresh')->textTitle(__('Clear Cache'))->set('.widget16.s16block.s16_clear');
+  }
+  
 //  echo £link('dmCodeEditor/index')->textTitle(__('Code Editor'))->set('.widget16.s16block.s16_code_editor');
 
   echo £o("div.dm_menu.widget16"),

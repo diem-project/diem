@@ -62,7 +62,7 @@
       <div class="dm_loremize">
       <p class="dm_sort s16 s16_edit fleft">Loremize :</p>
       [?php
-      $loremizeLink = £link('dmService/launch?name=dmLoremize&module_name=<?php echo $this->getModuleName() ?>&nb=__DM_NB_RECORDS__')
+      $loremizeLink = £link('<?php echo $this->getModule()->getUnderscore() ?>/loremize?nb=__DM_NB_RECORDS__')
       ->text('__DM_NB_RECORDS__')
       ->set('.ml10')
       ->render();

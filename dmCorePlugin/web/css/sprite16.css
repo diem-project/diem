@@ -1,68 +1,68 @@
-.s16_signout { background-position: 0 -0px; }
-.s16_home_gray { background-position: 0 -16px; }
-.s16_help { background-position: 0 -32px; }
-.s16_clear { background-position: 0 -48px; }
-.s16_layer { background-position: 0 -64px; }
-.s16_alert { background-position: 0 -80px; }
-.s16_error { background-position: 0 -96px; }
-.s16_first { background-position: 0 -112px; }
-.s16_previous { background-position: 0 -128px; }
-.s16_next { background-position: 0 -144px; }
-.s16_last { background-position: 0 -160px; }
-.s16_delete { background-position: 0 -176px; }
-.s16_add { background-position: 0 -192px; }
-.s16_tick { background-position: 0 -208px; }
-.s16_cross { background-position: 0 -224px; }
-.s16_edit { background-position: 0 -240px; }
-.s16_magnifier { background-position: 0 -256px; }
-.s16_sort_asc { background-position: 0 -272px; }
-.s16_sort_desc { background-position: 0 -288px; }
-.s16_right_little { background-position: 0 -304px; }
-.s16_add_little { background-position: 0 -320px; }
-.s16_object_edit { background-position: 0 -336px; }
-.s16_folder_delete { background-position: 0 -352px; }
-.s16_folder_add { background-position: 0 -368px; }
-.s16_folder_edit { background-position: 0 -384px; }
-.s16_folder_zip { background-position: 0 -400px; }
-.s16_file_delete { background-position: 0 -416px; }
-.s16_file_add { background-position: 0 -432px; }
-.s16_file_edit { background-position: 0 -448px; }
-.s16_folder_move { background-position: 0 -464px; }
-.s16_bandaid { background-position: 0 -480px; }
-.s16_trophy { background-position: 0 -496px; }
-.s16_folder_closed { background-position: 0 -512px; }
-.s16_folder_open { background-position: 0 -528px; }
-.s16_file { background-position: 0 -544px; }
-.s16_file_html { background-position: 0 -560px; }
-.s16_file_flash { background-position: 0 -576px; }
-.s16_file_video { background-position: 0 -592px; }
-.s16_file_sound { background-position: 0 -608px; }
-.s16_file_pdf { background-position: 0 -624px; }
-.s16_file_php { background-position: 0 -640px; }
-.s16_file_image { background-position: 0 -656px; }
-.s16_file_odp { background-position: 0 -672px; }
-.s16_file_js { background-position: 0 -688px; }
-.s16_file_text { background-position: 0 -704px; }
-.s16_file_zip { background-position: 0 -720px; }
-.s16_file_css { background-position: 0 -736px; }
-.s16_file_odt { background-position: 0 -752px; }
-.s16_file_ods { background-position: 0 -768px; }
-.s16_info { background-position: 0 -784px; }
-.s16_folder_clear { background-position: 0 -800px; }
-.s16_folder_clear_alert { background-position: 0 -816px; }
-.s16_code_editor { background-position: 0 -832px; }
-.s16_page_auto { background-position: 0 -848px; }
-.s16_page_manual { background-position: 0 -864px; }
-.s16_home { background-position: 0 -880px; }
-.s16_bottom { background-position: 0 -896px; }
-.s16_sort { background-position: 0 -912px; }
-.s16_export { background-position: 0 -928px; }
-.s16_chevron_up { background-position: 0 -944px; }
-.s16_chevron_down { background-position: 0 -960px; }
-.s16_rss { background-position: 0 -976px; }
-.s16_status { background-position: 0 -992px; }
-.s16_status_busy { background-position: 0 -1008px; }
-.s16_arrow_up_right { background-position: 0 -1024px; }
-.s16_arrow_left { background-position: 0 -1040px; }
-.s16_arrow_up_right_medium { background-position: 0 -1056px; }
-.s16_arrow_up_right_medium { background-position: 0 -1072px; }
+.s16_signout{background-position:0 -0px;}
+.s16_home_gray{background-position:0 -16px;}
+.s16_help{background-position:0 -32px;}
+.s16_clear{background-position:0 -48px;}
+.s16_layer{background-position:0 -64px;}
+.s16_alert{background-position:0 -80px;}
+.s16_error{background-position:0 -96px;}
+.s16_first{background-position:0 -112px;}
+.s16_previous{background-position:0 -128px;}
+.s16_next{background-position:0 -144px;}
+.s16_last{background-position:0 -160px;}
+.s16_delete{background-position:0 -176px;}
+.s16_add{background-position:0 -192px;}
+.s16_tick{background-position:0 -208px;}
+.s16_cross{background-position:0 -224px;}
+.s16_edit{background-position:0 -240px;}
+.s16_magnifier{background-position:0 -256px;}
+.s16_sort_asc{background-position:0 -272px;}
+.s16_sort_desc{background-position:0 -288px;}
+.s16_right_little{background-position:0 -304px;}
+.s16_add_little{background-position:0 -320px;}
+.s16_object_edit{background-position:0 -336px;}
+.s16_folder_delete{background-position:0 -352px;}
+.s16_folder_add{background-position:0 -368px;}
+.s16_folder_edit{background-position:0 -384px;}
+.s16_folder_zip{background-position:0 -400px;}
+.s16_file_delete{background-position:0 -416px;}
+.s16_file_add{background-position:0 -432px;}
+.s16_file_edit{background-position:0 -448px;}
+.s16_folder_move{background-position:0 -464px;}
+.s16_bandaid{background-position:0 -480px;}
+.s16_trophy{background-position:0 -496px;}
+.s16_folder_closed{background-position:0 -512px;}
+.s16_folder_open{background-position:0 -528px;}
+.s16_file{background-position:0 -544px;}
+.s16_file_html{background-position:0 -560px;}
+.s16_file_flash{background-position:0 -576px;}
+.s16_file_video{background-position:0 -592px;}
+.s16_file_sound{background-position:0 -608px;}
+.s16_file_pdf{background-position:0 -624px;}
+.s16_file_php{background-position:0 -640px;}
+.s16_file_image{background-position:0 -656px;}
+.s16_file_odp{background-position:0 -672px;}
+.s16_file_js{background-position:0 -688px;}
+.s16_file_text{background-position:0 -704px;}
+.s16_file_zip{background-position:0 -720px;}
+.s16_file_css{background-position:0 -736px;}
+.s16_file_odt{background-position:0 -752px;}
+.s16_file_ods{background-position:0 -768px;}
+.s16_info{background-position:0 -784px;}
+.s16_folder_clear{background-position:0 -800px;}
+.s16_folder_clear_alert{background-position:0 -816px;}
+.s16_code_editor{background-position:0 -832px;}
+.s16_page_auto{background-position:0 -848px;}
+.s16_page_manual{background-position:0 -864px;}
+.s16_home{background-position:0 -880px;}
+.s16_bottom{background-position:0 -896px;}
+.s16_sort{background-position:0 -912px;}
+.s16_export{background-position:0 -928px;}
+.s16_chevron_up{background-position:0 -944px;}
+.s16_chevron_down{background-position:0 -960px;}
+.s16_rss{background-position:0 -976px;}
+.s16_status{background-position:0 -992px;}
+.s16_status_busy{background-position:0 -1008px;}
+.s16_arrow_up_right{background-position:0 -1024px;}
+.s16_arrow_left{background-position:0 -1040px;}
+.s16_arrow_up_right_medium{background-position:0 -1056px;}
+.s16_arrow_up_right_medium{background-position:0 -1072px;}

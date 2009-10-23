@@ -59,4 +59,14 @@ params: array('name' => index name, 'nb_documents' => number of documents genera
 
 [dm.config.updated]
 fired by static dmConfig when a value has been changed
-params: array('name' => setting name, 'value' => setting value', 'culture' => setting culture)
+params: array('setting' => DmSetting record, 'culture' => setting culture)
+
+[dm.page_not_found.before]
+fired by dmPageNotFoundHandler with a notifyUntil before searching for a possible redirection.
+Assign an url to the event's return value to redirect the request.
+params: array('slug' => the not found slug)
+
+[dm.page_not_found.after]
+fired by dmPageNotFoundHandler with a notifyUntil after searching for a possible redirection, and found nothing.
+Assign an url to the event's return value to redirect the request.
+params: array('slug' => the not found slug)

@@ -12,12 +12,6 @@
  */
 abstract class PluginCatalogue extends BaseCatalogue
 {
-  public static function retrieveBySourceTargetSpace($source, $target, $space)
-  {
-    return dmDb::query('Catalogue c')
-    ->where('c.source_lang = ? AND c.target_lang = ? AND c.name = ?', array($source, $target, $space.'.'.$target))
-    ->fetchRecord();
-  }
 
   public function __toString()
   {

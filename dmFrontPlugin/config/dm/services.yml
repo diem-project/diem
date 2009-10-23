@@ -1,5 +1,7 @@
 parameters:
 
+  page_not_found_handler.class: dmPageNotFoundHandler
+
   form_manager.class:         dmFormManager
 
   doctrine_pager.class:       dmFrontDoctrinePager
@@ -31,6 +33,11 @@ parameters:
     config_file:              'config/dm/widget_types.yml'        
  
 services:
+
+  page_not_found_handler:
+    class:                    %page_not_found_handler.class%
+    shared:                   false
+    arguments:                [ @service_container, @dispatcher ]
 
   form_manager:
     class:                    %form_manager.class%

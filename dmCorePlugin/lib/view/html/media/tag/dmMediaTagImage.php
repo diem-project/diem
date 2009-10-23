@@ -178,13 +178,23 @@ class dmMediaTagImage extends dmMediaTag
         
         $mediaFullPath = $this->resource->getSource()->getFullPath();
       }
-
-      $attributes['src'] = $this->requestContext['relative_url_root'].str_replace(sfConfig::get('sf_web_dir'), '', $mediaFullPath);
-      
-      $infos = getimagesize($mediaFullPath);
+    }
+    else
+    {
+      $mediaFullPath = $this->resource->getSource()->getFullPath();
+    }
+    
+    if (@$infos = getimagesize($mediaFullPath))
+    {
       $attributes['width'] = $infos[0];
       $attributes['height'] = $infos[1];
     }
+    else
+    {
+      throw new dmException('The image is not readable : '.dmProject::unRootify($mediaFullPath));
+    }
+
+    $attributes['src'] = $this->requestContext['relative_url_root'].str_replace(sfConfig::get('sf_web_dir'), '', $mediaFullPath);
 
     return $attributes;
   }

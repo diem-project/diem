@@ -1,25 +1,26 @@
 <?php
 
-class dmCacheManager
+class dmCacheManager extends dmConfigurable
 {
   protected
-    $options,
-    $isApcEnabled,
+    $dispatcher,
     $caches;
 
-  public function __construct(array $options = array())
+  public function __construct(sfEventDispatcher $dispatcher, array $options = array())
   {
-    $this->initialize($options);
+    $this->dispatcher = $dispatcher;
+    
+    $this->configure($options);
+    
+    $this->initialize();
   }
     
-  public function initialize(array $options = array())
+  public function initialize()
   {
-    $this->options = array_merge($this->getDefaultOptions(), $options);
-    
     $this->reset();
   }
   
-  protected function getDefaultOptions()
+  public function getDefaultOptions()
   {
     return array(
       'meta_cache_class' => 'dmMetaCache'
@@ -53,16 +54,28 @@ class dmCacheManager
   {
     $success = true;
 
-    // Always clear file cache
-    ob_start();
     dmFileCache::clearAll();
-    $success = !ob_get_clean();
+
+    if(count($survivors = glob(sfConfig::get('sf_cache_dir').'/*')))
+    {
+      $success = false;
+      $message = 'Can not be removed from cache : '.implode(', ', $survivors);
+      $this->dispatcher->notify(new sfEvent($this, 'application.log', array($message, 'priority' => sfLogger::ERR)));
+    }
     
     if (dmAPCCache::isEnabled())
     {
-      $success &= dmAPCCache::clearAll();
+      if(!dmAPCCache::clearAll())
+      {
+        $success = false;
+        $message = 'Can not clear APC cache';
+        $this->dispatcher->notify(new sfEvent($this, 'application.log', array($message, 'priority' => sfLogger::ERR)));
+      }
     }
+
+    $this->dispatcher->notify(new sfEvent($this, 'dm.cache.clear', array('success' => $success)));
 
     return $success;
   }
+  
 }

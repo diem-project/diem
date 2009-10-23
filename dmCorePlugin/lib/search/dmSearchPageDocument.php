@@ -65,9 +65,9 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
     ->fetchPDO();
     
     $zones = dmDb::query('DmZone z, z.Widgets w')
-      ->select('z.dm_area_id, w.module, w.action, w.value')
-      ->where('z.dm_area_id = ?',$area[0][0])
-      ->fetchArray();
+    ->select('z.dm_area_id, w.module, w.action, w.value')
+    ->where('z.dm_area_id = ?',$area[0][0])
+    ->fetchArray();
     
     sfConfig::set('dm_search_populating', true);
     
@@ -85,7 +85,7 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
           'widget_view.data'  => $widget
         ));
         
-        $html .= $this->context->getServiceContainer()->getService('widget_view')->renderForIndex();
+        $html .= $this->context->get('widget_view')->renderForIndex();
       }
     }
     

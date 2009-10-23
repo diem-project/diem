@@ -84,7 +84,7 @@ abstract class dmWidgetBaseView
   
   protected function renderPartial(array $vars)
   {
-    if ($this->widgetType->isCachable())
+    if ($this->widgetType->isCachable() && $this->context->getViewCacheManager())
     {
       $this->context->getViewCacheManager()->addCache($this->widget['module'], '_'.$this->widget['action'], array(
         'withLayout' => false,

@@ -6,9 +6,9 @@
 
 * [DONE] ensure cross-apps links consistency
 
-* allow ajax admin list filters
+* [LATER] allow ajax admin list filters
 
-* admin list filters must accept i18n fields
+* [LATER] admin list filters must accept i18n fields
 
 * [DONE] admin list sorters must accept i18n fields
 
@@ -32,7 +32,7 @@
 
 * [DONE] remove context instance creation from tasks when possible
 
-* implement form facilities as for diem 4 ( and get inspiration from http://webmozarts.com/ )
+* [DONE] implement form facilities as for diem 4 ( and get inspiration from http://webmozarts.com/ )
 
 * [DONE] replace overrides of form::updateObject with form::doReplaceObject
 

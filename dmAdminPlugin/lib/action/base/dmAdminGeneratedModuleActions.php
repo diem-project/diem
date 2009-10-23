@@ -2,6 +2,30 @@
 
 class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 {
+  
+  public function executeLoremize(dmWebRequest $request)
+  {
+    $loremizer = new dmModuleLoremizer($this->dispatcher);
+    
+    try
+    {
+      $loremizer->loremize($this->getDmModule(), $request->getParameter('nb', 10));
+      
+      $this->getUser()->logInfo('Successfully loremized');
+    }
+    catch(Exception $e)
+    {
+      $this->getUser()->logError('An error occured during loremization');
+      
+      if (sfConfig::get('dm_debug'))
+      {
+        throw $e;
+      }
+    }
+    
+    return $this->redirectBack();
+  }
+  
   /*
    * When sorting by a localKey column ( ex: categ_id ),
    * try to sort with foreign's table identifier column ( ex: categ.name )

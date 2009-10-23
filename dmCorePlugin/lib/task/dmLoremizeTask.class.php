@@ -1,6 +1,6 @@
 <?php
 
-class dmLoremizeTask extends dmServiceTask
+class dmLoremizeTask extends dmContextTask
 {
 
   /**
@@ -11,8 +11,8 @@ class dmLoremizeTask extends dmServiceTask
     parent::configure();
 
     $this->addOptions(array(
-      new sfCommandOption('model', null, sfCommandOption::PARAMETER_REQUIRED, 'The model name'),
-      new sfCommandOption('nb', null, sfCommandOption::PARAMETER_OPTIONAL, 'nb records to create', 30),
+      new sfCommandOption('module', null, sfCommandOption::PARAMETER_REQUIRED, 'The module name'),
+      new sfCommandOption('nb', null, sfCommandOption::PARAMETER_OPTIONAL, 'nb records to create', 20),
     ));
 
     $this->namespace = 'dm';
@@ -29,14 +29,22 @@ EOF;
    */
   protected function execute($arguments = array(), $options = array())
   {
-    if (!sfContext::hasInstance())
+    $this->log('dmLoremize::execute');
+    
+    $this->withDatabase();
+
+    if ($moduleName = $options['module'])
     {
-      dm::createContext($this->configuration);
+      $loremizer = new dmModuleLoremizer($this->dispatcher);
+      $loremizer->loremize($this->get('module_manager')->getModule($moduleName), $options['nb']);
     }
-
-    $databaseManager = new sfDatabaseManager($this->configuration);
-
-    return $this->executeService("dmLoremize", $options);
+    else
+    {
+      $loremizer = new dmDatabaseLoremizer($this->dispatcher);
+      $loremizer->loremize($options['nb']);
+    }
+    
+    $this->log('Successfully loremized');
   }
 
 }

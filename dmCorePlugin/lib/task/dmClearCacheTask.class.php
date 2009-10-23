@@ -3,7 +3,7 @@
 /**
  * Install Diem
  */
-class dmClearCacheTask extends dmServiceTask
+class dmClearCacheTask extends dmContextTask
 {
   /**
    * @see sfTask
@@ -27,6 +27,13 @@ EOF;
    */
   protected function execute($arguments = array(), $options = array())
   {
-    return $this->executeService("dmClearCache", $options);
+    if ($this->get('cache_manager')->clearAll())
+    {
+      $this->log('Cache successfully cleared');
+    }
+    else
+    {
+      $this->log('Some files can not be deleted. Please check permissions in /cache dir');
+    }
   }
 }

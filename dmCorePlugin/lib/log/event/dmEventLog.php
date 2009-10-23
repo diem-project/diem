@@ -39,11 +39,18 @@ class dmEventLog extends dmFileLog
   
   public function listenToConfigUpdatedEvent(sfEvent $event)
   {
+    $setting = $event['setting'];
+    
+    if ('internal' == strtolower($setting->groupName))
+    {
+      return;
+    }
+    
     $this->log(array(
       'server'  => $_SERVER,
       'action'  => 'update',
       'type'    => 'config',
-      'subject' => sprintf('%s = %s ( %s )', $event['name'], dmString::truncate($event['value'], 80), $event['culture'])
+      'subject' => sprintf('%s = %s ( %s )', $setting->name, dmString::truncate($setting->value, 80), $event['culture'])
     ));
   }
   

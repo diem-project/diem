@@ -5,12 +5,14 @@ class dmPageTreeWatcher
   protected
   $dispatcher,
   $moduleManager,
+  $serviceContainer,
   $modifiedTables;
 
-  public function __construct(sfEventDispatcher $dispatcher, dmModuleManager $moduleManager)
+  public function __construct(sfEventDispatcher $dispatcher, dmModuleManager $moduleManager, dmBaseServiceContainer $serviceContainer)
   {
     $this->dispatcher = $dispatcher;
     $this->moduleManager = $moduleManager;
+    $this->serviceContainer = $serviceContainer;
     
     $this->initialize();
   }
@@ -58,11 +60,9 @@ class dmPageTreeWatcher
     
     if(!empty($modifiedModules))
     {
-      $service = new dmPageSyncService($this->dispatcher);
-      $service->execute($modifiedModules);
+      $this->serviceContainer->getService('page_synchronizer')->execute($modifiedModules);
       
-      $service = new dmUpdateSeoService($this->dispatcher);
-      $service->execute($modifiedModules);
+      $this->serviceContainer->getService('seo_synchronizer')->execute($modifiedModules);
     }
 
     $this->initialize();

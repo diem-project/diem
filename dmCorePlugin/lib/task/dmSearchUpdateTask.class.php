@@ -1,6 +1,6 @@
 <?php
 
-class dmSearchUpdateTask extends dmBaseTask
+class dmSearchUpdateTask extends dmContextTask
 {
   /**
    * @see sfTask
@@ -24,19 +24,13 @@ class dmSearchUpdateTask extends dmBaseTask
    */
   protected function execute($arguments = array(), $options = array())
   {
-    if (!sfContext::hasInstance())
-    {
-      dm::createContext($this->configuration);
-    }
-
-    $databaseManager = new sfDatabaseManager($this->configuration);
+    $this->withDatabase();
     
     $this->log('Search engine index update');
     
-    $index = dmContext::getInstance()->get('search_engine');
-    $index->setLogger(new sfConsoleLogger($this->dispatcher));
+    $this->get('search_engine')->setLogger(new sfConsoleLogger($this->dispatcher));
     
-    $index->populate(dmContext::getInstance());
-    $index->optimize();
+    $this->get('search_engine')->populate($this->getContext());
+    $this->get('search_engine')->optimize();
   }
 }

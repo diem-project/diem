@@ -131,7 +131,7 @@ class dmFilesystem extends sfFilesystem
     $sfCommand = sprintf(
       '%s "%s" %s',
       sfToolkit::getPhpCli(),
-      sfConfig::get("sf_root_dir").'/symfony',
+      sfConfig::get('sf_root_dir').'/symfony',
       $command
     );
     
