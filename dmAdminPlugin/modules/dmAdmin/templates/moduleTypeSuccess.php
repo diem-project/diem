@@ -1,18 +1,10 @@
 <?php
 
-slot('dm.breadCrumb');
-
-echo £('li', £('h1', __($type->getPublicName())));
-
-end_slot();
- 
-echo £('h1.title', __($type->getPublicName()));
-
-echo £o('ul');
+echo £o('ul.dm_module_spaces.dm_module_type.mt10');
 
   foreach($spaces as $space)
   {
-    echo £o('li.dm_module_type.dm_module_type_show.dm_box.fleft.mr20.mb20');
+    echo £o('li.dm_module_space.dm_module_type_show.dm_box.fleft.mr20.mb20');
     
     echo £('h2.title', £link($sf_context->getRouting()->getModuleSpaceUrl($space))->text(__($space->getPublicName()))->set('.center'));
     

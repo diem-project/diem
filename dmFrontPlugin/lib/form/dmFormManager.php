@@ -63,6 +63,8 @@ class dmFormManager implements ArrayAccess
    */
   public function offsetSet($name, $value)
   {
+    $name = dmString::camelize($name);
+    
     if (!$value instanceof dmForm)
     {
       throw new InvalidArgumentException(sprintf('The object "%s" is not an instance of dmForm', get_class($value)));

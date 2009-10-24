@@ -26,45 +26,47 @@ class dmAdminBreadCrumb
       return array();
     }
     
+    $module = $this->context->getModuleManager()->getModuleOrNull(
+      $this->context->getRequest()->getParameter('module')
+    );
+    
     $links = array();
     
     $links['home'] = array();
     
-    if (!$module = $this->context->getModuleManager()->getModuleOrNull($this->context->getRequest()->getParameter('module')))
+    if ($module)
     {
-      return $links;
-    }
-    
-    $space = $module->getSpace();
-    $type  = $space->getType();
+      $space = $module->getSpace();
+      $type  = $space->getType();
+        
+      $links['module_type']   = array('type' => $type);
+      $links['module_space']  = array('space' => $space);
+      $links['module']        = array('module' => $module);
       
-    $links['module_type'] = array('type' => $type);
-    $links['module_space'] = array('space' => $space);
-    $links['module'] = array('module' => $module);
-    
-    $route = $this->context->getRequest()->getAttribute('sf_route');
-    
-    if ($route instanceof dmDoctrineRoute && $route->isType('object'))
-    {
-      if (in_array($this->context->getActionName(), array('new', 'create')))
+      $route = $this->context->getRequest()->getAttribute('sf_route');
+      
+      if ($route instanceof dmDoctrineRoute && $route->isType('object'))
       {
-        $links['action'] = array('action' => 'New');
+        if (in_array($this->context->getActionName(), array('new', 'create')))
+        {
+          $links['action'] = array('action' => 'New');
+        }
+        else
+        {
+          $links['object'] = array('object' => $route->getObject());
+        }
       }
-      else
+      elseif(($action = $this->context->getActionName()) !== 'index')
       {
-        $links['object'] = array('object' => $route->getObject());
+        $links['action'] = array('action' => dmString::humanize($action));
       }
-    }
-    elseif(($action = $this->context->getActionName()) !== 'index')
-    {
-      $links['action'] = array('action' => dmString::humanize($action));
     }
     
     /*
      * Allow listeners of dm.response.filter_stylesheets event
      * to filter and modify the stylesheets list
      */
-    return $this->context->getEventDispatcher()->filter(new sfEvent($this, 'dm.bread_crumb.filterLinks'), $links)->getReturnValue();
+    return $this->context->getEventDispatcher()->filter(new sfEvent($this, 'dm.bread_crumb.filter_links'), $links)->getReturnValue();
   }
   
   public function renderHomeLink(array $options = array())

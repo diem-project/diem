@@ -39,3 +39,4 @@ css:
     configPanel:      configPanel
     dataTable:        dataTable
     seoService:       seoService
+    moduleSpace:      moduleSpace

@@ -72,7 +72,7 @@ class dmMediaLibraryActions extends dmAdminBaseActions
 
   public function executePath(sfWebRequest $request)
   {
-    $this->context->getEventDispatcher()->connect('dm.bread_crumb.filterLinks', array($this, 'listenToBreadCrumbFilterLinksEvent'));
+    $this->context->getEventDispatcher()->connect('dm.bread_crumb.filter_links', array($this, 'listenToBreadCrumbFilterLinksEvent'));
     
     $path = $request->getParameter('path', '');
 
@@ -101,7 +101,7 @@ class dmMediaLibraryActions extends dmAdminBaseActions
     }
   }
   
-  public function listenToBreadCrumbFilterLinksEvent(sfEvent $event, $links)
+  public function listenToBreadCrumbFilterLinksEvent(sfEvent $event, array $links)
   {
     unset($links['action']);
     
@@ -113,7 +113,7 @@ class dmMediaLibraryActions extends dmAdminBaseActions
       }
     }
     
-    $links[] = £('h1', $this->folder->get('name'));
+    $links[] = dmHelper::£('h1', $this->folder->get('name'));
     
     return $links;
   }

@@ -6,15 +6,29 @@ class BasedmAdminActions extends dmAdminBaseActions
   {
   }
   
-  
-  public function executeNothing()
+
+  public function executeModuleType(dmWebRequest $request)
   {
+    $this->forward404Unless(
+      $this->type = $this->getModuleTypeBySlug($request->getParameter('moduleTypeName')),
+      sprintf('%s is not a module type', $request->getParameter('moduleTypeName'))
+    );
+
+    $this->spaces = $this->type->getSpaces();
     
+    $this->menu = $this->context->get('admin_menu');
+    
+    $this->moduleManager = $this->context->get('module_manager');
+    
+    $this->context->getEventDispatcher()->connect('dm.bread_crumb.filter_links', array($this, 'listenToBreadCrumbFilterLinksEvent'));
   }
   
-  public function executeModuleSpace(sfWebRequest $request)
+  public function executeModuleSpace(dmWebRequest $request)
   {
-    $this->forward404Unless($this->type = $this->getModuleTypeBySlug($request->getParameter('moduleTypeName')), sprintf('%s is not a module type', $request->getParameter('moduleTypeName')));
+    $this->forward404Unless(
+      $this->type = $this->getModuleTypeBySlug($request->getParameter('moduleTypeName')),
+      sprintf('%s is not a module type', $request->getParameter('moduleTypeName'))
+    );
   
     $slug = $request->getParameter('moduleSpaceName');
     foreach($this->type->getSpaces() as $space)
@@ -27,23 +41,32 @@ class BasedmAdminActions extends dmAdminBaseActions
     }
 
     $this->forward404Unless(
-      isset($this->space), sprintf('%s is not a module space in %s type', $request->getParameter('moduleTypeName'), $request->getParameter('moduleTypeName'))
+      isset($this->space),
+      sprintf('%s is not a module space in %s type', $request->getParameter('moduleTypeName'), $request->getParameter('moduleTypeName'))
     );
     
     $this->menu = $this->context->get('admin_menu');
     
     $this->moduleManager = $this->context->get('module_manager');
+    
+    $this->context->getEventDispatcher()->connect('dm.bread_crumb.filter_links', array($this, 'listenToBreadCrumbFilterLinksEvent'));
   }
-
-  public function executeModuleType(sfWebRequest $request)
+  
+  public function listenToBreadCrumbFilterLinksEvent(sfEvent $event, array $links)
   {
-    $this->forward404Unless($this->type = $this->getModuleTypeBySlug($request->getParameter('moduleTypeName')), sprintf('%s is not a module type', $request->getParameter('moduleTypeName')));
-
-    $this->spaces = $this->type->getSpaces();
+    if (isset($this->space))
+    {
+      $links[] = dmLinkTag::build($this->context->getRouting()->getModuleTypeUrl($this->type))
+      ->text($this->context->getI18n()->__($this->type->getPublicName()));
+      
+      $links[] = dmHelper::£('h1', $this->context->getI18n()->__($this->space->getPublicName()));
+    }
+    else
+    {
+      $links[] = dmHelper::£('h1', $this->context->getI18n()->__($this->type->getPublicName()));
+    }
     
-    $this->menu = $this->context->get('admin_menu');
-    
-    $this->moduleManager = $this->context->get('module_manager');
+    return $links;
   }
   
   protected function getModuleTypeBySlug($slug)

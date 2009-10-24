@@ -1,0 +1,5 @@
+moduleTypeSuccess:
+  stylesheets:  [ admin.moduleSpace ]
+
+moduleSpaceSuccess:
+  stylesheets:  [ admin.moduleSpace ]

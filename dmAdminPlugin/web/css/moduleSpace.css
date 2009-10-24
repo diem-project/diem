@@ -1,0 +1,38 @@
+.dm_module_space_show .dm_modules {
+  text-align: center;
+}
+
+.dm_module_space_show .link {
+  display: block;
+  width: 20%;
+  font-size: 200%;
+  margin: 20px auto;
+}
+
+.dm_module_space_show .link .infos{
+  color: #888;
+  display: block;
+  margin-top: 1em;
+  font-size: 12px;
+  font-style: italic;
+}
+
+.dm_module_type .dm_module_space {
+  min-width: 12%;
+}
+
+.dm_module_type .dm_module_space .title {
+  margin-bottom: 10px;
+}
+
+.dm_module_type .dm_module_space .dm_modules {
+  margin: 0 0 10px 1em;
+}
+.dm_module_type .dm_module_space .dm_module {
+  color: #aaa;
+  list-style: square;
+  margin: 5px;
+}
+.dm_module_type .dm_module_space .dm_module p {
+  color: #666;
+}

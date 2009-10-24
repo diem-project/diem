@@ -30,6 +30,7 @@
 
 .sf_admin_form fieldset .fieldset_title {
   height: 24px;
+  background: url(../../core/images/default_bg.png) center left repeat-x;
 }
 
 .sf_admin_form fieldset .fieldset_title > span.fieldset_name {

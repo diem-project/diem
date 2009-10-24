@@ -44,7 +44,7 @@ params: array('type' => create|update|delete)
 [dm.context.end]
 fired by dmContext when application has been succesfully executed
 
-[dm.bread_crumb.filterLinks]
+[dm.bread_crumb.filter_links]
 fired by dmAdminBreadcrumb before rendering links. With this event you can modify breadCrumb links just before rendering.
 params: none
 value: array of linkType => options

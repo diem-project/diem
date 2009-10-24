@@ -21,6 +21,8 @@ class dmForm extends sfFormSymfony
 
   public function setup()
   {
+    parent::setup();
+    
     $this->widgetSchema->setFormFormatterName('dmList');
 
     $this->key = "dm_form_".self::$counter++;

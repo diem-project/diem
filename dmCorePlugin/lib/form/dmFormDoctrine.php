@@ -148,9 +148,9 @@ abstract class dmFormDoctrine extends sfFormDoctrine
   /**
    * Sets the current object for this form.
    *
-   * @return BaseObject The current object setted.
+   * @return dmDoctrineRecord The current object setted.
    */
-  public function setObject(myDoctrineRecord $record)
+  public function setObject(dmDoctrineRecord $record)
   {
     return $this->object = $record;
   }

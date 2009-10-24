@@ -13,8 +13,8 @@ class dmVisitChart extends dmGaChart
     $dataSet->AddPoint($this->data['visitors'], 'visitors');
     $dataSet->AddPoint($this->data['dates'], 'dates');
     $dataSet->SetAbsciseLabelSerie("dates");
-    $dataSet->SetSerieName("Pages", "pageviews");
-    $dataSet->SetSerieName("Visitors", "visitors");
+    $dataSet->SetSerieName("Pages / month", "pageviews");
+    $dataSet->SetSerieName("Visitors / month", "visitors");
 
     // Prepare the graph area
     $this->setGraphArea(40, 10, $this->getWidth()-40, $this->getHeight()-20);

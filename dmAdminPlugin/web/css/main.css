@@ -120,3 +120,17 @@ dl.dm_little_dl dd {
   text-decoration: none;
   background: url(../../core/images/default_bg_green.png) center left repeat-x;
 }
+
+a.associated_record {
+  background-position: right -1072px;
+  padding-left: 0px !important;
+  padding-right: 18px;
+  text-decoration: none;
+  color: inherit;
+}
+
+a.associated_record:hover {
+  background-position: right -1056px;
+  color: #046BCA;
+  text-decoration: underline;
+}
