@@ -24,14 +24,25 @@ class PluginDmAutoSeoTable extends myDoctrineTable
     $module = self::$moduleManager->getModule($module);
 
     $moduleUnderscore = $module->getUnderscore();
+    
+    $identifierColumnName = $module->getTable()->getIdentifierColumnName();
+    
+    if ('id' == $identifierColumnName)
+    {
+      $column = '';
+    }
+    else
+    {
+      $column = '.'.$identifierColumnName;
+    }
 
     return $this->create(array(
       'module'      => $module->getKey(),
       'action'      => $action,
-      'slug'        => '%'.$moduleUnderscore.'%',
-      'name'        => '%'.$moduleUnderscore.'%',
-      'title'       => '%'.$moduleUnderscore.'%',
-      'description' => $module->getTable()->hasField('description') ? '%'.$moduleUnderscore.'.description%' : '%'.$moduleUnderscore.'%'
+      'slug'        => '%'.$moduleUnderscore.$column.'%',
+      'name'        => '%'.$moduleUnderscore.$column.'%',
+      'title'       => '%'.$moduleUnderscore.$column.'%',
+      'description' => $module->getTable()->hasField('description') ? '%'.$moduleUnderscore.'.description%' : '%'.$moduleUnderscore.$column.'%'
     ));
   }
 }

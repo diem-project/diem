@@ -168,6 +168,8 @@ class dmMediaTagImage extends dmMediaTag
       throw new dmException('The media file does not exist : '.$media->relPath);
     }
     
+    $validImage = true;
+    
     if ($this->hasSize() && !sfConfig::get('dm_search_populating'))
     {
       try
@@ -183,6 +185,7 @@ class dmMediaTagImage extends dmMediaTag
           throw $e;
         }
         
+        $validImage = false;
         $mediaFullPath = $media->getFullPath();
       }
     }
@@ -193,8 +196,11 @@ class dmMediaTagImage extends dmMediaTag
     
     if (@$infos = getimagesize($mediaFullPath))
     {
-      $attributes['width'] = $infos[0];
-      $attributes['height'] = $infos[1];
+      if ($validImage)
+      {
+        $attributes['width'] = $infos[0];
+        $attributes['height'] = $infos[1];
+      }
     }
     else
     {

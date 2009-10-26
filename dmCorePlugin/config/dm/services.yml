@@ -1,5 +1,9 @@
 parameters:
 
+  thread_launcher.class:      dmThreadLauncher
+  thread_launcher.options:
+    cli_file:                 cache/dm/cli.php
+
   page_synchronizer.class:    dmPageSynchronizer
 
   seo_synchronizer.class:     dmSeoSynchronizer
@@ -63,7 +67,7 @@ parameters:
     file:                     'data/dm/log/event.log'
     entry_service_name:       event_log_entry
     rotation:                 true
-    max_size_megabytes:       2
+    max_size_megabytes:       1
     ignore_models:            []
     ignore_internal_actions:  true
   
@@ -75,13 +79,15 @@ parameters:
     file:                     'data/dm/log/request.log'
     entry_service_name:       request_log_entry
     rotation:                 true
-    max_size_megabytes:       12
+    max_size_megabytes:       3
   
   request_log_entry.class:    dmRequestLogEntry
     
   browser.class:              dmBrowser
     
   page_tree_watcher.class:    dmPageTreeWatcher
+  page_tree_watcher.options:
+    use_thread:               auto # launch big tasks on another processus ( auto, true, false )
   
   file_backup.class:          dmFileBackup
   file_backup.options:
@@ -90,6 +96,11 @@ parameters:
   helper.class:               dmHelper
  
 services:
+
+  thread_launcher:
+    class:                    %thread_launcher.class%
+    shared:                   false
+    arguments:                [ @filesystem, %thread_launcher.options% ]
 
   page_synchronizer:
     class:                    %page_synchronizer.class%
@@ -218,7 +229,7 @@ services:
   page_tree_watcher:
     class:                    %page_tree_watcher.class%
     shared:                   true
-    arguments:                [ @dispatcher, @module_manager, @service_container ]
+    arguments:                [ @dispatcher, @service_container, %page_tree_watcher.options% ]
       
   file_backup:
     class:                    %file_backup.class%

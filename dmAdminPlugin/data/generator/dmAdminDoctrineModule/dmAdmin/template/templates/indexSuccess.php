@@ -40,7 +40,7 @@
   
   <div id="sf_admin_content" [?php if (!$pager->getNbResults()) echo 'class="no_results"'; ?]>
     
-    <form action="[?php echo url_for('<?php echo $this->getUrlForAction('do') ?>', array('action' => 'batch')) ?]" method="post">
+    <form action="[?php echo url_for($helper->getRouteArrayForAction('batch')) ?]" method="post">
     
     <div class="dm_list_action_bar dm_list_action_bar_top clearfix">[?php echo str_replace('__DM_RANDOM_ID__', dmString::random(8), $dmListActionBar); ?]</div>
     

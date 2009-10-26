@@ -8,82 +8,33 @@
  * @author     ##AUTHOR_NAME##
  * @version    SVN: $Id: helper.php 12482 2008-10-31 11:13:22Z fabien $
  */
-class Base<?php echo ucfirst($this->getModuleName()) ?>GeneratorHelper extends sfModelGeneratorHelper
+class Base<?php echo ucfirst($this->getModuleName()) ?>GeneratorHelper extends dmAdminModelGeneratorHelper
 {
 
-  protected function getModule()
+  protected function getModuleName()
   {
-    return dmContext::getInstance()->getModuleManager()->getModule("<?php echo $this->getModuleName() ?>");
+    return '<?php echo $this->getModuleName() ?>';
   }
 
-  public function linkToNew($params)
+  public function getRouteArrayForAction($action, $object = null)
   {
-    return link_to1(
-    __($params['label']),
-    array('sf_route' => $this->getUrlForAction('new')),
-    array(
-      'class' => 'sf_admin_action_new s16 s16_add',
-      'title' => __($params['title'], array('%1%' => strtolower($this->getModule()->getName())))
-    ));
-  }
-
-  public function linkToEdit($object, $params)
-  {
-    return '<li class="sf_admin_action_edit">'.link_to1(__($params['label']), array(
-    'sf_route' => $this->getUrlForAction('edit'),
-    'sf_subject' => $object
-    ),
-    array('class' => 's16block s16_edit')
-    ).'</li>';
-  }
-
-  public function linkToDelete($object, $params)
-  {
-    $title = __($params['title'], array('%1%' => strtolower($this->getModule()->getName())));
-    return '<li class="sf_admin_action_delete">'.link_to1(__($params['label']), array(
-    'sf_route' => $this->getUrlForAction('delete'),
-    'sf_subject' => $object
-    ),
-    array(
-    'class' => 's16 s16_delete ml10 mr10 dm_delete_link',
-    'title' => $title,
-    'method' => 'delete',
-    'confirm' => $title.' ?'
-    )).'</li>';
-  }
-
-  public function linkToList($params)
-  {
-    return '<li class="sf_admin_action_list">'.link_to1(__($params['label']), array('sf_route' => $this->getUrlForAction('list')), array('class' => 's16 s16_arrow_left')).'</li>';
-  }
-
-  public function linkToSave($object, $params)
-  {
-    return '<li class="sf_admin_action_save"><input class="green" type="submit" value="'.__($params['label']).'" /></li>';
-  }
-
-  public function linkToAdd($params)
-  {
-    return '<li class="sf_admin_action_add">'.$this->linkToNew($params).'</li>';
-  }
-
-  public function linkToSaveAndAdd($object, $params)
-  {
-    return '<li class="sf_admin_action_save_and_add"><input class="green" type="submit" value="'.__($params['label']).'" name="_save_and_add" /></li>';
-  }
-
-  public function linkToSaveAndList($object, $params)
-  {
-    return '<li class="sf_admin_action_save_and_list"><input class="green" type="submit" value="'.__($params['label']).'" name="_save_and_list" /></li>';
-  }
-
-  public function linkToSaveAndNext($object, $params)
-  {
-    return '<li class="sf_admin_action_save_and_next"><input class="green" type="submit" value="'.__($params['label']).'" name="_save_and_next" /></li>';
+    $route = array('sf_route' => '<?php echo $this->params['route_prefix'] ?>');
+    
+    if ('list' !== $action)
+    {
+      $route['action'] = $action;
+    }
+    
+    if (null !== $object)
+    {
+      $route['pk'] = $object->getPrimaryKey();
+    }
+    
+    return $route;
   }
 
   public function getUrlForAction($action)
   {
-    return 'list' == $action ? '<?php echo $this->params['route_prefix'] ?>' : '<?php echo $this->params['route_prefix'] ?>_'.$action;
+    return '<?php echo $this->params['route_prefix'] ?>?action='.$action;
   }
 }

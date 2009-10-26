@@ -14,10 +14,7 @@ echo £o('div.dm_associations');
   foreach($associationRecords as $associationRecord)
   {
     echo £('li',
-      £link(array(
-        'sf_route' => $associationModule->getUnderscore().'_edit',
-        'sf_subject' => $associationRecord
-      ))
+      £link($associationRecord)
       ->text($associationRecord->__toString())
       ->title(__('Open'))
       ->set('.associated_record.s16right.s16_arrow_up_right_medium')

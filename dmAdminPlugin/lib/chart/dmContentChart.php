@@ -7,6 +7,11 @@ class dmContentChart extends dmChart
   
   protected function draw()
   {
+    for($it=0;$it<2;$it++)
+    {
+      $this->Palette = array_merge($this->Palette, $this->Palette);
+    }
+    
     $dataSet = new dmChartData;
     
     foreach($this->getModules() as $moduleKey => $module)

@@ -1,23 +1,36 @@
 <?php
 
-class dmPageTreeWatcher
+class dmPageTreeWatcher extends dmConfigurable
 {
   protected
   $dispatcher,
-  $moduleManager,
   $serviceContainer,
+  $options,
   $modifiedTables;
 
-  public function __construct(sfEventDispatcher $dispatcher, dmModuleManager $moduleManager, dmBaseServiceContainer $serviceContainer)
+  public function __construct(sfEventDispatcher $dispatcher, dmBaseServiceContainer $serviceContainer, array $options = array())
   {
     $this->dispatcher = $dispatcher;
-    $this->moduleManager = $moduleManager;
     $this->serviceContainer = $serviceContainer;
     
-    $this->initialize();
+    $this->initialize($options);
+  }
+  
+  public function getDefaultOptions()
+  {
+    return array(
+      'use_thread' => 'auto'
+    );
   }
 
-  public function initialize()
+  public function initialize(array $options = array())
+  {
+    $this->configure($options);
+    
+    $this->reset();
+  }
+  
+  public function reset()
   {
     $this->modifiedTables = array();
   }
@@ -74,12 +87,12 @@ class dmPageTreeWatcher
   public function update()
   {
     $modifiedModules = $this->getModifiedModules();
-
+    
     if(!empty($modifiedModules))
     {
-      $this->serviceContainer->getService('page_synchronizer')->execute($modifiedModules);
+      $this->synchronizePages($modifiedModules);
       
-      $this->serviceContainer->getService('seo_synchronizer')->execute($modifiedModules);
+      $this->synchronizeSeo($modifiedModules);
     }
 
     $this->initialize();
@@ -98,7 +111,7 @@ class dmPageTreeWatcher
       {
         if ($module->interactsWithPageTree())
         {
-          $modifiedModules[$module->getKey()] = $module;
+          $modifiedModules[] = $module->getKey();
         }
       }
       /*
@@ -107,13 +120,15 @@ class dmPageTreeWatcher
        */
       else
       {
+        $moduleManager = $this->serviceContainer->getService('module_manager');
+        
         foreach($table->getRelationHolder()->getLocals() as $localRelation)
         {
-          if ($localModule = $this->moduleManager->getModuleByModel($localRelation['class']))
+          if ($localModule = $this->moduleManager->getModuleByModel($localRelation->getClass()))
           {
             if ($localModule->interactsWithPageTree())
             {
-              $modifiedModules[$localModule->getKey()] = $localModule;
+              $modifiedModules[] = $localModule->getKey();
             }
           }
         }
@@ -121,5 +136,79 @@ class dmPageTreeWatcher
     }
 
     return $modifiedModules;
+  }
+  
+  protected function useThread()
+  {
+    if ('auto' == $this->getOption('use_thread'))
+    {
+      $useThread = false;
+      
+      $apacheMemoryLimit = dmString::convertBytes(ini_get('memory_limit'));
+      
+      if($apacheMemoryLimit < 128 * 1024 * 1024)
+      {
+        $filesystem = $this->serviceContainer->getService('filesystem');
+        
+        if ($filesystem->exec('php -r "die(ini_get(\'memory_limit\'));"'))
+        {
+          $cliMemoryLimit = dmString::convertBytes($filesystem->getLastExec('output'));
+          
+          $useThread = ($cliMemoryLimit >= $apacheMemoryLimit);
+        }
+      }
+      
+      $this->setOption('use_thread', $useThread);
+    }
+    
+    return $this->getOption('use_thread');
+  }
+  
+  public function synchronizePages(array $modules = array())
+  {
+    if ($this->useThread())
+    {
+      $threadLauncher = $this->serviceContainer->getService('thread_launcher');
+    
+      $pageSynchronizerSuccess = $threadLauncher->execute('dmPageSynchronizerThread', array(
+        'class'   => $this->serviceContainer->getParameter('page_synchronizer.class'),
+        'modules' => $modules
+      ));
+      
+      if (!$pageSynchronizerSuccess)
+      {
+        dmDebug::showPre($threadLauncher->getLastExec());
+        throw new dmException('Error while synchronizing pages');
+      }
+    }
+    else
+    {
+      $this->serviceContainer->getService('page_synchronizer')->execute($modules);
+    }
+  }
+  
+  public function synchronizeSeo(array $modules = array())
+  {
+    if ($this->useThread())
+    {
+      $threadLauncher = $this->serviceContainer->getService('thread_launcher');
+      
+      $seoSynchronizerSuccess = $threadLauncher->execute('dmSeoSynchronizerThread', array(
+        'class'   => $this->serviceContainer->getParameter('seo_synchronizer.class'),
+        'markdown_class' => $this->serviceContainer->getParameter('markdown.class'),
+        'culture' => $this->serviceContainer->getParameter('user.culture'),
+        'modules' => $modules
+      ));
+      
+      if (!$seoSynchronizerSuccess)
+      {
+        dmDebug::showPre($threadLauncher->getLastExec());
+        throw new dmException('Error while synchronizing seo');
+      }
+    }
+    else
+    {
+      $this->serviceContainer->getService('seo_synchronizer')->execute($modules);
+    }
   }
 }

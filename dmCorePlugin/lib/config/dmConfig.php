@@ -171,6 +171,11 @@ LEFT JOIN dm_setting_translation t ON t.id=s.id AND t.lang IN (?, ?)');
     return self::$culture;
   }
 
+  public static function setCulture($culture)
+  {
+    self::$culture = $culture;
+  }
+
   public static function isCli()
   {
     return defined('STDIN');

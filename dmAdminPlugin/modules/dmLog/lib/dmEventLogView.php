@@ -62,7 +62,7 @@ class dmEventLogView extends dmLogView
   
   protected function doGetEntries(array $options)
   {
-    return $this->log->getFilteredEntries($this->maxEntries, array($this, 'filterEntry'), $options);
+    return $this->log->getEntries($this->maxEntries, array_merge($options, array('filter' => array($this, 'filterEntry'))));
   }
   
   public function filterEntry(array $data)

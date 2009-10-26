@@ -24,3 +24,8 @@ div.dm_data table tr.even {
 div.dm_data table tr.odd {
   background: #F0F4FC;
 }
+
+div.dm_data .light {
+  font-size: 10px;
+  color: #666;
+}

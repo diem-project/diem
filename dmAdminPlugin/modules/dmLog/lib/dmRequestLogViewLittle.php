@@ -22,16 +22,4 @@ class dmRequestLogViewLittle extends dmRequestLogView
       $browser->getVersion()
     );
   }
-  
-  protected function renderLocation(dmRequestLogEntry $entry)
-  {
-    return sprintf('%s<br />%s',
-      $this->renderLink($entry),
-      sprintf('<span class="s16 s16_%s">%s<span class="light">%s ms</span></span>',
-        $entry->get('is_ok') ? 'status' : 'status_busy',
-        $entry->get('is_ok') ? '' : sprintf('<strong class="mr10">%s</strong>', $entry->get('code')),
-        $entry->get('timer')
-      )
-    );
-  }
 }

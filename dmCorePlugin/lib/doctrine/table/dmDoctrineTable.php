@@ -232,6 +232,8 @@ abstract class dmDoctrineTable extends Doctrine_Table
     {
       return true;
     }
+    
+    return false;
   }
 
 

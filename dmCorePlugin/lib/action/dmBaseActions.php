@@ -41,15 +41,20 @@ abstract class dmBaseActions extends sfActions
   }  
   
   protected function redirectBack()
+  {    
+    return $this->redirect($this->getBackUrl());
+  }
+  
+  protected function getBackUrl()
   {
-    $refererUrl = $this->request->getReferer();
+    $backUrl = $this->request->getReferer();
 
-    if (!$refererUrl || $refererUrl == $this->request->getUri())
+    if (!$backUrl || $backUrl == $this->request->getUri())
     {
-      $refererUrl = '@homepage';
+      $backUrl = '@homepage';
     }
     
-    return $this->redirect($refererUrl);
+    return $backUrl;
   }
   
   /*

@@ -72,8 +72,17 @@ abstract class PluginDmPage extends BaseDmPage
     {
       return $this->getCache('dm_module');
     }
+    
+    if ($serviceContainer = self::$serviceContainer)
+    {
+      $moduleManager = self::$serviceContainer->getService('module_manager');
+    }
+    elseif(!$moduleManager = self::$moduleManager)
+    {
+      throw new dmException('DmPage has no reference to moduleManager');
+    }
 
-    return $this->setCache('dm_module', self::$serviceContainer->getService('module_manager')->getModuleOrNull($this->get('module')));
+    return $this->setCache('dm_module', $moduleManager->getModuleOrNull($this->get('module')));
   }
 
   public function getPageView()
@@ -108,15 +117,18 @@ abstract class PluginDmPage extends BaseDmPage
     return $this->setCache('page_view', $pageView);
   }
 
-  public function setPageView(DmPageView $pageView)
+  public function setPageView(DmPageView $pageView, $check = true)
   {
-    if ($pageView->get('module') != $this->get('module'))
+    if ($check)
     {
-      throw new dmException('Assigning page view with wrong module');
-    }
-    if ($pageView->get('action') != $this->get('action'))
-    {
-      throw new dmException('Assigning page view with wrong action');
+      if ($pageView->get('module') != $this->get('module'))
+      {
+        throw new dmException('Assigning page view with wrong module');
+      }
+      if ($pageView->get('action') != $this->get('action'))
+      {
+        throw new dmException('Assigning page view with wrong action');
+      }
     }
 
     return $this->setCache('page_view', $pageView);
@@ -138,17 +150,22 @@ abstract class PluginDmPage extends BaseDmPage
    */
   public function getNodeParentId()
   {
-    if ($this->getNode()->isRoot())
+    if (!$this->get('lft'))
     {
       return null;
     }
 
-    return $this->getTable()->createQuery('p')
-    ->select('p.id as id')
-    ->where('p.lft < ? AND p.rgt > ?', array($this->get('lft'), $this->get('rgt')))
-    ->orderBy('p.rgt asc')
-    ->limit(1)
-    ->fetchValue();
+    $stmt = Doctrine_Manager::connection()->prepare('SELECT p.id
+FROM dm_page p
+WHERE p.lft < ? AND p.rgt > ?
+ORDER BY p.rgt ASC
+LIMIT 1')->getStatement();
+
+    $stmt->execute(array($this->get('lft'), $this->get('rgt')));
+    
+    $result = $stmt->fetch(PDO::FETCH_NUM);
+    
+    return $result[0];
   }
 
   public function save(Doctrine_Connection $conn = null)

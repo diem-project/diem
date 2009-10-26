@@ -5,7 +5,11 @@
 
   [?php $formActions = get_partial('<?php echo $this->getModuleName() ?>/dm_form_action_bar', array('<?php echo $this->getSingularName() ?>' => $<?php echo $this->getSingularName() ?>, 'form' => $form, 'configuration' => $configuration, 'helper' => $helper, 'nearRecords' => $nearRecords)); ?]
 
-  [?php echo form_tag_for($form, '@<?php echo $this->params['route_prefix'] ?>') ?]
+  [?php echo $form->renderFormTag(url_for(
+    $form->getObject()->isNew()
+    ? $helper->getRouteArrayForAction('create')
+    : $helper->getRouteArrayForAction('update', $form->getObject())
+  )); ?]
 
   <div class="dm_form_action_bar dm_form_action_bar_top clearfix">
     [?php echo $formActions; ?]

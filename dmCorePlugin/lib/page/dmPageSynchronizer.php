@@ -3,7 +3,8 @@
 class dmPageSynchronizer
 {
   protected
-  $moduleManager;
+  $moduleManager,
+  $nodeParentIdStmt;
   
   public function __construct(dmModuleManager $moduleManager)
   {
@@ -16,44 +17,33 @@ class dmPageSynchronizer
     {
       $onlyModules = $this->moduleManager->getProjectModules();
     }
+    elseif(is_string(dmArray::first($onlyModules)))
+    {
+      $onlyModules = $this->moduleManager->keysToModules($onlyModules);
+    }
     
     $onlyModules = dmModuleManager::removeModulesChildren($onlyModules);
     
-    $timer = dmDebug::timerOrNull('dmPageSynchronizer::execute');
-
-    dmDB::cache(false);
-
     $this->updateListPages();
+    
 
+//    dmDebug::show(dmOs::getPerformanceInfos());
     $this->removeShowPages($onlyModules);
+//    dmDebug::kill(dmOs::getPerformanceInfos());
 
-    $timer2 = dmDebug::timerOrNull('dmPageSynchronizer::updateShowPagesRecursive()');
     $this->updateShowPages($onlyModules);
-    $timer2 && $timer2->addTime();
 
-    //    $this->removeShowPages();
-
-    dmDB::cache(true);
-
-    $timer && $timer->addTime();
+    unset($this->nodeParentIdStmt);
   }
 
   protected function removeShowPages(array $onlyModules)
   {
-    $timer = dmDebug::timerOrNull('dmPageSync : removeShowPages');
-
-    $modulesToCheck = dmDb::query('DmPage p')
-    ->select('p.module as mod')
-    ->where('p.action = ?', 'show')
-    ->distinct()
-    ->fetchFlat();
-
+    $modulesToCheck = dmDb::pdo('SELECT DISTINCT p.module FROM dm_page p WHERE p.action = ?', array('show'))->fetchAll(PDO::FETCH_COLUMN);
+    
     foreach($onlyModules as $moduleKey => $module)
     {
       $this->removeModuleShowPagesRecursive($module, $modulesToCheck);
     }
-
-    $timer && $timer->addTime();
   }
 
   protected function removeModuleShowPagesRecursive(dmModule $module, array $modulesToCheck)
@@ -69,24 +59,29 @@ class dmPageSynchronizer
       return;
     }
 
-    $showPages = dmDb::query('DmPage p')
-    ->select('p.module, p.id, p.record_id')
-    ->where('p.module = ? AND p.action = ?', array($moduleKey, 'show'))
-    ->fetchArray();
-
+    $showPages = dmDb::pdo('SELECT p.id, p.module, p.record_id FROM dm_page p WHERE p.module = ? AND p.action = ?', array($moduleKey, 'show'))->fetchAll(PDO::FETCH_ASSOC);
+    
     $showPageRecordIds = array();
     foreach($showPages as $showPage)
     {
       $showPageRecordIds[] = $showPage['record_id'];
     }
 
-    $timerDeleteShowPreparation = dmDebug::timerOrNull('delete show preparation');
     if ($module->hasListPage())
     {
-      $records = array_flip($module->getTable()->createQuery('r INDEXBY r.id')
-      ->select('r.id')
-      ->whereIn('r.id', $showPageRecordIds)
-      ->fetchFlat());
+      if (!empty($showPageRecordIds))
+      {
+        $query = sprintf('SELECT r.id FROM %s r WHERE r.id IN (%s)',
+          $module->getTable()->getTableName(),
+          implode(',', $showPageRecordIds)
+        );
+        $records = array_flip(dmDb::pdo($query)->fetchAll(PDO::FETCH_COLUMN));
+      }
+      else
+      {
+        $records = array();
+      }
+      
       $parentModule = $module;
       $parentRecordIds = false;
     }
@@ -97,14 +92,29 @@ class dmPageSynchronizer
       {
         $select .= ', r.'.$module->getTable()->getRelationHolder()->getLocalByClass($module->getParent()->getModel())->getLocal();
       }
-      $records = $module->getTable()->createQuery('r INDEXBY r.id')
-      ->select($select)
-      ->whereIn('r.id', $showPageRecordIds)
-      ->fetchArray();
+      
+      if (!empty($showPageRecordIds))
+      {
+        $query = sprintf('SELECT %s FROM %s r WHERE r.id IN (%s)',
+          $select,
+          $module->getTable()->getTableName(),
+          implode(',', $showPageRecordIds)
+        );
+        $_records = dmDb::pdo($query)->fetchAll(PDO::FETCH_ASSOC);
+        $records = array();
+        foreach($_records as $_record)
+        {
+          $records[$_record['id']] = $_record;
+        }
+      }
+      else
+      {
+        $records = array();
+      }
+      
       $parentModule = $module->getNearestAncestorWithPage();
-      $parentRecordIds = $this->getParentRecordIds($module, $parentModule, $records);
+      $parentRecordIds = $this->getParentRecordIds($module, $parentModule);
     }
-    $timerDeleteShowPreparation && $timerDeleteShowPreparation->addTime();
 
     foreach($showPages as $showPage)
     {
@@ -127,9 +137,7 @@ class dmPageSynchronizer
         }
         else
         {
-          $timerAncestor = dmDebug::timerOrNull('find ancestor');
           $parentRecordId = dmDb::create($module->getModel(), $record)->getAncestorRecordId($parentModule->getModel());
-          $timerAncestor && $timerAncestor->addTime();
         }
         if (!$parentRecordId)
         {
@@ -151,9 +159,7 @@ class dmPageSynchronizer
 
   protected function updateListPages()
   {
-    $timer = dmDebug::timerOrNull('dmPageSync : updateListPages');
-
-    $projectModules = dmContext::getInstance()->getModuleManager()->getProjectModules();
+    $projectModules = $this->moduleManager->getProjectModules();
     foreach($projectModules as $key => $module)
     {
       if(!$module->hasListPage())
@@ -162,22 +168,15 @@ class dmPageSynchronizer
       }
     }
     $projectModuleKeys = array_keys($projectModules);
-
-    $listPages = dmDb::query('DmPage p INDEXBY p.module')
-    ->select('p.id, p.module')
-    //    ->whereIn('p.module', array_keys($projectModules))
-    ->where('p.action = ?', 'list')
-    ->fetchArray();
-
-    $rootPage = dmDb::table('DmPage')->getTree()->fetchRoot();
-
-//    foreach($listPages as $listPage)
-//    {
-//      if (!in_array($listPage['module'], $projectModuleKeys))
-//      {
-//        dmDb::table('DmPage')->find($listPage['id'])->getNode()->delete();
-//      }
-//    }
+    
+    $_listPages = dmDb::pdo('SELECT p.id, p.module FROM dm_page p WHERE p.action = ?', array('list'))->fetchAll(PDO::FETCH_ASSOC);
+    
+    $listPages = array();
+    foreach($_listPages as $_listPage)
+    {
+      $listPages[$_listPage['module']] = $_listPage['id'];
+    }
+    
     foreach($projectModules as $moduleKey => $module)
     {
       /*
@@ -190,7 +189,7 @@ class dmPageSynchronizer
           // fix page module
           dmDb::table('DmPage')->createQuery()
           ->update('DmPage')
-          ->where('id = ?', $listPages[strtolower($moduleKey)]['id'])
+          ->where('id = ?', $listPages[strtolower($moduleKey)])
           ->set('module', "'".$moduleKey."'")
           ->execute();
         }
@@ -200,22 +199,16 @@ class dmPageSynchronizer
           dmDb::create('DmPage', array(
             'module'      => $moduleKey,
             'action'      => 'list',
-            'Translation' => array(
-              dmDoctrineRecord::getDefaultCulture() => array(
-                'name'        => $module->getPlural(),
-                'title'       => $module->getPlural(),
-                'slug'        => dmString::slugify($module->getPlural()),
-                'description' => $module->getPlural()
-              )
-            )
-          ))->getNode()->insertAsLastChildOf($rootPage);
+            'name'        => $module->getPlural(),
+            'title'       => $module->getPlural(),
+            'slug'        => dmString::slugify($module->getPlural()),
+            'description' => $module->getPlural()
+          ))->getNode()->insertAsLastChildOf(dmDb::table('DmPage')->getTree()->fetchRoot());
         }
       }
     }
-
-    $timer && $timer->addTime();
   }
-
+  
   protected function updateShowPages(array $onlyModules)
   {
     foreach($onlyModules as $moduleKey => $module)
@@ -238,19 +231,18 @@ class dmPageSynchronizer
       return;
     }
     
-    $timerPreparations = dmDebug::timerOrNull('dmPageSync : preparations');
-
     /*
      * prepares pages to update
      */
-    $timerPreparationsPages = dmDebug::timerOrNull('dmPageSync : preparations - pages');
-    $showPages = dmDb::query('DmPage p INDEXBY p.record_id')
-    ->where('p.module = ? AND p.action = ?', array($moduleKey, 'show'))
-    ->fetchRecords();
-    $timerPreparationsPages && $timerPreparationsPages->addTime();
-
-    $pageView = $this->getPageViewForModuleAndAction($moduleKey, 'show');
-
+    $_showPages = dmDb::pdo('SELECT p.id, p.module, p.record_id, p.lft, p.rgt FROM dm_page p WHERE p.module = ? AND p.action = ?', array(
+      $moduleKey, 'show'
+    ))->fetchAll(PDO::FETCH_ASSOC);
+    $showPages = array();
+    foreach($_showPages as $_showPage)
+    {
+      $showPages[$_showPage['record_id']] = $_showPage;
+    }
+    
     if ($module->hasListPage())
     {
       $parentModule = $module;
@@ -258,22 +250,19 @@ class dmPageSynchronizer
       /*
        * prepare records
        */
-      $timerPreparationsRecords = dmDebug::timerOrNull('dmPageSync : preparations - records');
-      $records = $module->getTable()->createQuery('r')->select('r.id')->fetchPDO();
-      array_walk($records, create_function('&$a', '$a = array("id" => $a[0]);'));
-      $timerPreparationsRecords && $timerPreparationsRecords->addTime();
-
+      $records = dmDb::pdo('SELECT r.id FROM '.$module->getTable()->getTableName().' r')->fetchAll(PDO::FETCH_ASSOC);
+      
       /*
        * prepare parent pages
        */
-      $parentPageIds = dmDb::table('DmPage')->createQuery('p')
-      ->select('p.id')
-      ->where('p.module = ? AND p.action = ?', array($moduleKey, 'list'))
-      ->fetchValue();
+      $parentPageIds = dmDb::pdo('SELECT p.id FROM dm_page p WHERE p.module = ? AND p.action = ?', array($moduleKey, 'list'))->fetch(PDO::FETCH_NUM);
+      $parentPageIds = $parentPageIds[0];
+      
       if (!$parentPageIds)
       {
         throw new dmException(sprintf('%s needs a parent page, %s.%s, but it does not exists', $module, $moduleKey, 'list'));
       }
+      
       $parentRecordIds = false;
     }
     else
@@ -289,32 +278,23 @@ class dmPageSynchronizer
       /*
        * prepare records
        */
-      $timerPreparationsRecords = dmDebug::timerOrNull('dmPageSync : preparations - records');
       $select = 'r.id';
       if ($module->hasLocal($module->getParent()))
       {
         $select .= ', r.'.$module->getTable()->getRelationHolder()->getLocalByClass($module->getParent()->getModel())->getLocal();
       }
-      $records = $module->getTable()->createQuery('r')->select($select)->fetchArray();
-      $timerPreparationsRecords && $timerPreparationsRecords->addTime();
-
+      $records = dmDb::pdo('SELECT '.$select.' FROM '.$module->getTable()->getTableName().' r')->fetchAll(PDO::FETCH_ASSOC);
+      
       /*
        * prepare parent pages
        */
-      $_parentPageIds = dmDb::query('DmPage p')
-      ->select('p.id, p.record_id')
-      ->where('p.module = ? AND p.action = ?', array($parentModule->getKey(), 'show'))
-      ->fetchPDO();
+      $_parentPageIds = dmDb::pdo('SELECT p.id, p.record_id FROM dm_page p WHERE p.module = ? AND p.action = ?', array($parentModule->getKey(), 'show'))->fetchAll(PDO::FETCH_NUM);
 
       $parentPageIds = array();
       foreach($_parentPageIds as $value) $parentPageIds[$value[1]] = $value[0];
 
-      $parentRecordIds = $this->getParentRecordIds($module, $parentModule, $records);
+      $parentRecordIds = $this->getParentRecordIds($module, $parentModule);
     }
-
-    $updatedPages = new myDoctrineCollection('DmPage');
-
-    $timerPreparations && $timerPreparations->addTime();
 
     foreach($records as $record)
     {
@@ -324,42 +304,35 @@ class dmPageSynchronizer
       }
       else
       {
-        $page = dmDb::create('DmPage', array(
+        $page = array(
+          'id'        => null,
           'record_id' => $record['id'],
-          'module'    => $module->getKey(),
+          'module'    => $moduleKey,
           'action'    => 'show'
-        ));
+        );
       }
 
       try
       {
-        $page->setPageView($pageView);
-
         $this->updatePageFromRecord($page, $record, $module, $parentModule, $parentPageIds, $parentRecordIds);
-
-        $updatedPages[] = $page;
       }
       catch(dmPageMustNotExistException $e)
       {
-        if (!$page->isNew())
+        if ($page['id'])
         {
-          $page->getNode()->delete();
+          dmDb::table('DmPage')->find($page['id'])->getNode()->delete();
         }
       }
     }
-
-    $updatedPages->save();
-
+    
     foreach($module->getChildren() as $child)
     {
       $this->updateModuleShowPagesRecursive($child);
     }
   }
 
-  public function updatePageFromRecord(DmPage $page, array $record, dmProjectModule $module, dmProjectModule $parentModule, $parentPageIds, $parentRecordIds)
+  public function updatePageFromRecord(array $page, array $record, dmProjectModule $module, dmProjectModule $parentModule, $parentPageIds, $parentRecordIds)
   {
-    $timer = dmDebug::timerOrNull('dmPageSync : updatePageFromRecord');
-
     $moduleKey    = $module->getKey();
     $recordTable  = $module->getTable();
     $pageTable    = dmDb::table('DmPage');
@@ -381,7 +354,7 @@ class dmPageSynchronizer
 
       if(!$parentRecordId)
       {
-        throw new dmPageMustNotExistException(sprintf('No parent record found for %s %s, page %s must not exist', $module->getModel(), $record, $page));
+        throw new dmPageMustNotExistException(sprintf('No parent record found for %s, page %s must not exist', $module->getModel(), $page['id']));
       }
       elseif (!($parentPageId = dmArray::get($parentPageIds, $parentRecordId)))
       {
@@ -392,57 +365,52 @@ class dmPageSynchronizer
       }
     }
 
-    if ($page->isNew())
+    $modified = false;
+    
+    if (!$page['id'])
     {
       if (!$parentPage = $pageTable->find($parentPageId))
       {
-        throw new dmException(sprintf('parent page with id %d for new page %s was not found', $parentPageId, $page));
+        throw new dmException(sprintf('parent page with id %d for new page %s was not found', $parentPageId, $page['module'].'.show'));
       }
-      $page->getNode()->insertAsLastChildOf($parentPage);
+      
+      dmDb::table('DmPage')->create($page)->getNode()->insertAsLastChildOf($parentPage);
     }
     else
     {
-      if ($page->getNodeParentId() != $parentPageId)
+      if ($this->getNodeParentId($page) != $parentPageId)
       {
         if (!$parentPage = $pageTable->find($parentPageId))
         {
-          throw new dmException(sprintf('parent page with id %d for new page %s was not found', $parentPageId, $page));
+          throw new dmException(sprintf('parent page with id %d for new page %s was not found', $parentPageId, $page['module'].'.show'));
         }
-        //        dmDebug::show($page->getNodeParentId(), $parentPageId);
-        //        dmDebug::show($page, $parentPage, $parentPage->getNode()->getChildren());
-        $page->refresh();
-        //        $parentPage->refresh();
-        $page->getNode()->moveAsLastChildOf($parentPage);
-        //        $page->refresh();
-        //        $parentPage->refresh();
-        //        $page->refresh();
-        //        dmDebug::kill($page, $parentPage, $parentPage->getNode()->getChildren());
+        
+        $pageRecord = dmDb::table('DmPage')->find($page['id']);
+        $pageRecord->refresh();
+        $pageRecord->getNode()->moveAsLastChildOf($parentPage);
       }
     }
-
-    $timer && $timer->addTime();
   }
 
-  protected function getPageViewForModuleAndAction($module, $action)
+  protected function getNodeParentId(array $pageData)
   {
-    $pageView = dmDb::table('DmPageView')
-    ->createQuery('v')
-    ->where('v.module = ? AND v.action = ?', array($module, 'show'))
-    ->fetchRecord();
-
-    if(!$pageView)
+    if (null === $this->nodeParentIdStmt)
     {
-      $pageView = dmDb::create('DmPageView', array(
-        'module' => $module,
-        'action' => 'show',
-        'dm_layout_id' => dmDb::table('DmLayout')->findFirstOrCreate()
-      ))->saveGet();
+      $this->nodeParentIdStmt = Doctrine_Manager::connection()->prepare('SELECT p.id
+FROM dm_page p
+WHERE p.lft < ? AND p.rgt > ?
+ORDER BY p.rgt ASC
+LIMIT 1')->getStatement();
     }
 
-    return $pageView;
+    $this->nodeParentIdStmt->execute(array($pageData['lft'], $pageData['rgt']));
+    
+    $result = $this->nodeParentIdStmt->fetch(PDO::FETCH_NUM);
+    
+    return $result[0];
   }
-
-  protected function getParentRecordIds(dmProjectModule $module, dmProjectModule $parentModule, array $records)
+  
+  protected function getParentRecordIds(dmProjectModule $module, dmProjectModule $parentModule)
   {
     /*
      * if parent is local relation for module,
@@ -452,11 +420,13 @@ class dmPageSynchronizer
     {
       $local = $module->getTable()->getRelationHolder()->getLocalByClass($parentModule->getModel())->getLocal();
       
-      $_parentRecordIds = $module->getTable()->createQuery('r')
-      ->select('r.id, r.'.$local)
-      ->where('EXISTS (SELECT page.id FROM DmPage page WHERE page.module = ? AND page.action = ? AND page.record_id = r.'.$local.')', array($parentModule->getKey(), 'show'))
-      ->fetchPDO();
-      
+      $query = sprintf('SELECT r.id, r.%s FROM %s r WHERE EXISTS (SELECT page.id FROM dm_page page WHERE page.module = ? AND page.action = ? AND page.record_id = r.%s)',
+        $local,
+        $module->getTable()->getTableName(),
+        $local
+      );
+      $_parentRecordIds = dmDb::pdo($query, array($parentModule->getKey(), 'show'))->fetchAll(PDO::FETCH_NUM);
+    
       $parentRecordIds = array();
       foreach($_parentRecordIds as $_parentRecordId)
       {
@@ -469,19 +439,21 @@ class dmPageSynchronizer
      */
     elseif ($module->hasAssociation($parentModule))
     {
-      $relation = $module
+      $association = $module
       ->getTable()
       ->getRelationHolder()
       ->getAssociationByClass($parentModule->getModel());
 
-      $_parentRecordIds = $relation->getAssociationTable()
-      ->createQuery('association')
-      ->select('association.'.$relation['foreign'].', association.'.$relation['local'])
-      //->whereIn('association.'.$relation['local'], array_keys($records))
-      ->andWhere('EXISTS (SELECT page.id FROM DmPage page WHERE page.module = ? AND page.action = ? AND page.record_id = association.'.$relation['foreign'].')', array($parentModule->getKey(), 'show'))
-      ->groupBy('association.'.$relation['local'])
-      ->fetchPDO();
-
+      $query = sprintf('SELECT association.%s, association.%s FROM %s association WHERE EXISTS (SELECT page.id FROM dm_page page WHERE page.module = ? AND page.action = ? AND page.record_id = association.%s) GROUP BY association.%s',
+        $association->getForeign(),
+        $association->getLocal(),
+        $association->getAssociationTable()->getTableName(),
+        $association->getForeign(),
+        $association->getLocal()
+      );
+      
+      $_parentRecordIds = dmDb::pdo($query, array($parentModule->getKey(), 'show'))->fetchAll(PDO::FETCH_NUM);
+      
       $parentRecordIds = array();
       foreach($_parentRecordIds as $value) $parentRecordIds[$value[1]] = $value[0];
     }

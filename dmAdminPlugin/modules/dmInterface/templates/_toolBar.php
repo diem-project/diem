@@ -8,7 +8,7 @@ echo £o('div#dm_tool_bar.clearfix.'.sfConfig::get('dm_toolBar_flavour', 'blue')
 
   if ($sf_user->can('clear_cache'))
   {
-    echo £link('dmCore/refresh')->textTitle(__('Clear Cache'))->set('.widget16.s16block.s16_clear');
+    echo £link('dmCore/refresh')->textTitle(__('Update project'))->set('.dm_refresh_link.widget16.s16block.s16_clear');
   }
   
 //  echo £link('dmCodeEditor/index')->textTitle(__('Code Editor'))->set('.widget16.s16block.s16_code_editor');

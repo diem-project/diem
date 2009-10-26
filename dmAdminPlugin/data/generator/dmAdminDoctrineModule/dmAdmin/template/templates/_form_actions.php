@@ -27,6 +27,9 @@
 <?php elseif ('_add' == $name): ?>
   <?php echo $this->addCredentialCondition('[?php if(!$form->getObject()->isNew()): echo $helper->linkToAdd('.$this->asPhp($params).'); endif; ?]', $params) ?>
 
+<?php elseif ('_view_page' == $name): ?>
+  <?php if ($this->getModule()->hasPage()) echo $this->addCredentialCondition('[?php if(!$form->getObject()->isNew()): echo $helper->linkToViewPage($form->getObject(), '.$this->asPhp($params).'); endif; ?]', $params) ?>
+
 <?php else: ?>
   <li class="sf_admin_action_<?php echo $params['class_suffix'] ?>">
 [?php if (method_exists($helper, 'linkTo<?php echo $method = ucfirst(sfInflector::camelize($name)) ?>')): ?]

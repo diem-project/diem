@@ -202,7 +202,7 @@ class PluginDmPageTable extends myDoctrineTable
   {
     return $this->createQuery('p')
     ->where('p.module = ? AND p.action = ? AND record_id = ?', array(
-      $record->dmModule->getKey(), 'show', $record->id
+      $record->getDmModule()->getKey(), 'show', $record->get('id')
     ))
     ->dmCache()
     ->fetchRecord();
@@ -225,7 +225,7 @@ class PluginDmPageTable extends myDoctrineTable
     ->fetchOne();
   }
   
-  public function findOneByRecordWithI18n(myDoctrineRecord $record)
+  public function findOneByRecordWithI18n(dmDoctrineRecord $record)
   {
     $module = $record->getDmModule()->getKey();
     

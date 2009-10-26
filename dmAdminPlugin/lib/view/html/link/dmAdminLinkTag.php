@@ -77,8 +77,9 @@ class dmAdminLinkTag extends dmLinkTag
     elseif(is_object($this->resource) && $this->resource instanceof dmDoctrineRecord && ($module = $this->resource->getDmModule()))
     {
       $resource = array(
-        'sf_route' => $module->getUnderscore().'_edit',
-        'sf_subject' => $this->resource
+        'sf_route' => $module->getUnderscore(),
+        'action'   => 'edit',
+        'pk'       => $this->resource->getPrimaryKey()
       );
     }
     

@@ -52,9 +52,19 @@ class dmDb
   {
     return self::table($class)->create($values);
   }
-
-  public static function cache($val)
+  
+  public static function pdo($query, array $values = array())
   {
-    dmContext::getInstance()->get('doctrine_config')->activateCache((bool) $val);
+    try
+    {
+      $stmt = Doctrine_Manager::connection()->prepare($query)->getStatement();
+      $stmt->execute($values);
+    }
+    catch(Exception $e)
+    {
+      dmDebug::show($query);
+      throw $e;
+    }
+    return $stmt;
   }
 }

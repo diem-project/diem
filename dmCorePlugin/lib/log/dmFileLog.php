@@ -12,7 +12,8 @@ abstract class dmFileLog extends dmLog
   {
     return array_merge(parent::getDefaultOptions(), array(
       'rotation'            => true,
-      'max_size_megabytes'  => 4
+      'max_size_megabytes'  => 3,
+      'buffer_size'         => 1024 * 16
     ));
   }
   
@@ -82,35 +83,77 @@ abstract class dmFileLog extends dmLog
   {
     $options = array_merge(array(
       'fix_log' => true,
-      'hydrate' => true
+      'hydrate' => true,
+      'keys'    => null,
+      'filter'  => null
     ), $options);
     
+    $file = $this->options['file'];
+    $fileSize = filesize($file);
+    $bufferSize = $this->options['buffer_size'];
+    
     $entries = array();
+    $nb = 0;
     
-    $encodedLines = array_reverse(file($this->options['file'], FILE_IGNORE_NEW_LINES));
+    $filter = $options['filter'];
     
-    if($max)
+    for($filePosition = $fileSize - $bufferSize; $filePosition > 0; $filePosition -= $bufferSize)
     {
-      $encodedLines = array_slice($encodedLines, 0, $max);
-    }
-    
-    foreach($encodedLines as $index => $encodedLine)
-    {
-      $data = $this->decode($encodedLine);
+      if (!$data = file_get_contents($file, 0, null, $filePosition, $bufferSize))
+      {
+        break;
+      }
       
-      if (!empty($data))
+      $encodedLines = explode("\n", $data);
+      
+      // first line is always corrupted. remove it from encodedLine and decrement filePosition to catch it next time
+      $filePosition += mb_strlen($encodedLines[0]);
+      unset($encodedLines[0]);
+      
+      foreach(array_reverse($encodedLines) as $encodedLine)
       {
-        $entries[] = $options['hydrate'] ? $this->buildEntry($data) : $data;
+        $data = $this->decode($encodedLine);
+        
+        if (!empty($data))
+        {
+          if ($filter && !call_user_func($filter, $data))
+          {
+            continue;
+          }
+          
+          if ($options['hydrate'])
+          {
+            $entries[] = $this->buildEntry($data);
+          }
+          elseif($options['keys'])
+          {
+            $entry = array();
+            foreach($options['keys'] as $key)
+            {
+              $entry[$key] = $data[$key];
+            }
+            $entries[] = $entry;
+          }
+          else
+          {
+            $entries[] = $data;
+          }
+          
+          if ($max && (++$nb == $max))
+          {
+            break 2;
+          }
+        }
+        elseif($options['fix_log'])
+        {
+          $this->fixLog();
+          return $this->getEntries($max, $options);
+        }
       }
-      elseif($options['fix_log'])
-      {
-        $this->fixLog();
-        return $this->getEntries($max, $options);
-      }
+      
+      unset($encodedLines, $data);
     }
-    
-    unset($encodedLines);
-    
+
     return $entries;
   }
   

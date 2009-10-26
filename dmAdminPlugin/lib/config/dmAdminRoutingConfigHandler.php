@@ -105,31 +105,14 @@ class dmAdminRoutingConfigHandler extends sfRoutingConfigHandler
         dmString::slugify($module->getPlural())
       ));
       
-      if ($module->hasModel())
-      {
-        $config[$module->getUnderscore()] = array(
-          'class' => 'dmDoctrineRouteCollection',
-          'options' => array(
-            'model'                 => $module->getModel(),
-            'column'                => $module->getTable()->getPrimaryKey(),
-            'module'                => $module->getKey(),
-            'prefix_path'           => $baseUrl,
-            'with_wildcard_routes'  => false,
-            'with_show'             => false
-          )
-        );
-      }
-      else
-      {
-        $config[$module->getUnderscore()] = array(
-          'class' => 'sfRoute',
-          'url'   => $baseUrl.'/:action/*',
-          'params' => array(
-            'module' => $module->getKey(),
-            'action' => 'index'
-          )
-        );
-      }
+      $config[$module->getUnderscore()] = array(
+        'class' => 'sfRoute',
+        'url'   => $baseUrl.'/:action/*',
+        'params' => array(
+          'module' => $module->getKey(),
+          'action' => 'index'
+        )
+      );
     }
     
     // static routes

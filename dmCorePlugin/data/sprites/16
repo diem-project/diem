@@ -60,9 +60,10 @@ export
 chevron_up
 chevron_down
 rss
-status
+status_ok
 status_busy
 arrow_up_right
 arrow_left
 arrow_up_right_medium
 arrow_up_right_medium
+status_away

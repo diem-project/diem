@@ -152,16 +152,14 @@ class dmString extends sfInflector
     }
     
     $text = self::removeAccents($text);
+    
+    $text = str_replace('œ', 'oe', $text);
 
     // strip all non word chars
     $text = preg_replace('/\W/', ' ', $text);
 
     // replace all white space sections with a dash
-    $text = preg_replace('/\ +/', '-', $text);
-
-    // trim dashes
-//    $text = preg_replace('/\-$/', '', $text);
-//    $text = preg_replace('/^\-/', '', $text);
+    $text = preg_replace('/\s+/', '-', $text);
 
     // trim and lowercase
     $text = strtolower(trim($text, '-'));
@@ -394,6 +392,37 @@ class dmString extends sfInflector
     else
     {
       return $subject;
+    }
+  }
+  
+  /**
+   * Convert a shorthand byte value from a PHP configuration directive to an integer value
+   * @param    string   $value
+   * @return   int
+   */
+  public static function convertBytes( $value )
+  {
+    if ( is_numeric( $value ) )
+    {
+      return $value;
+    } 
+    else
+    {
+      $value_length = strlen( $value );
+      $qty = substr( $value, 0, $value_length - 1 );
+      $unit = strtolower( substr( $value, $value_length - 1 ) );
+      switch ( $unit ) {
+        case 'k':
+          $qty *= 1024;
+          break;
+        case 'm':
+          $qty *= 1048576;
+          break;
+        case 'g':
+          $qty *= 1073741824;
+          break;
+      }
+      return $qty;
     }
   }
 }

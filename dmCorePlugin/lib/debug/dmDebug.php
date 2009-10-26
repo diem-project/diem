@@ -140,7 +140,11 @@ class dmDebug
   {
     return self::debugger(func_get_args(), 3, array("force" => true));
   }
-
+  
+  public static function showForce()
+  {
+    return self::debugger(func_get_args(), 2, array("force" => true, 'tag' => 'pre'));
+  }
 
   public static function simpleStack($msg = "")
   {

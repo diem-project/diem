@@ -33,7 +33,7 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
    */
   public function execute($configFiles)
   {
-    $config = sfFactoryConfigHandler::getConfiguration(sfContext::getInstance()->getConfiguration()->getConfigPaths('config/factories.yml'));
+    $config = sfFactoryConfigHandler::getConfiguration(ProjectConfiguration::getActive()->getConfigPaths('config/factories.yml'));
     
     $options = $config['module_manager']['param'];
     $managerClass = $config['module_manager']['class'];

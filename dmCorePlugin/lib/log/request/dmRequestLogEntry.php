@@ -2,6 +2,9 @@
 
 class dmRequestLogEntry extends dmLogEntry
 {
+  const MEM_ALERT   = 33554432;  // 32 Mb
+  const TIME_ALERT  = 1000;      // 1 s
+  
   protected static
   $browsersCache = array(),
   $usersCache    = array();
@@ -10,13 +13,14 @@ class dmRequestLogEntry extends dmLogEntry
   {
     $isXhr = $data['context']->getRequest()->isXmlHttpRequest();
     
-    $uri = $this->cleanUri($data['server']['REQUEST_URI']);
+    $uri = $this->cleanUri(dmArray::get($data['server'], 'PATH_INFO'));
     
     $this->data = array(
       'time'          => (string) $data['server']['REQUEST_TIME'],
       'uri'           => (string) $uri,
       'code'          => (string) $data['context']->getResponse()->getStatusCode(),
       'app'           => (string) sfConfig::get('sf_app'),
+      'env'           => (string) sfConfig::get('sf_environment'),
       'ip'            => (string) $data['server']['REMOTE_ADDR'],
       'user_id'       => (string) $data['context']->getUser()->getGuardUserId(),
       'user_agent'    => (string) $isXhr ? null : $data['server']['HTTP_USER_AGENT'],
@@ -42,10 +46,10 @@ class dmRequestLogEntry extends dmLogEntry
       $cleanUri = $uri;
     }
     
-    return $cleanUri;
+    return '' === $cleanUri ? '/' : $cleanUri;
   }
   
-  protected function getUser()
+  public function getUser()
   {
     $userId = $this->get('user_id');
     
@@ -58,12 +62,12 @@ class dmRequestLogEntry extends dmLogEntry
   }
   
   
-  protected function getUsername()
+  public function getUsername()
   {
     return ($user = $this->getUser()) ? $user->get('username') : null;
   }
   
-  protected function getBrowser()
+  public function getBrowser()
   {
     $hash = md5($this->get('user_agent'));
     
@@ -77,9 +81,24 @@ class dmRequestLogEntry extends dmLogEntry
     return self::$browsersCache[$hash];
   }
   
-  protected function getIsOk()
+  public function renderCodeOrNull()
   {
-    return in_array($this->get('code'), array(200));
+    return 200 == $this->get('code') ? '' : $this->get('code');
+  }
+  
+  public static function isError(array $data)
+  {
+    return !in_array($data['code'], array(200, 301, 302));
+  }
+  
+  public static function isAlert(array $data)
+  {
+    return $data['timer'] > self::TIME_ALERT || $data['mem'] > self::MEM_ALERT;
+  }
+  
+  public function getStatus()
+  {
+    return self::isError($this->data) ? 'busy' : (self::isAlert($this->data) ? 'away' : 'ok');
   }
   
 }

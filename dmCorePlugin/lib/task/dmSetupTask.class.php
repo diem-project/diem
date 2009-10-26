@@ -45,6 +45,8 @@ EOF;
     $this->createAssetSymlinks();
     
     $this->updateIncrementalSkeleton();
+    
+    $this->migrate();
 
 //    $this->updateMysql();
 
@@ -69,6 +71,18 @@ EOF;
     $this->generateFunctionalTests();
 
     $this->get('cache_manager')->clearAll();
+  }
+  
+  protected function migrate()
+  {
+    try
+    {
+      $this->executeTask('sfDoctrineGenerateMigrationsDiff');
+    }
+    catch(Doctrine_Task_Exception $e)
+    {
+      $this->log('The database is up to date');
+    }
   }
   
   protected function updateIncrementalSkeleton()

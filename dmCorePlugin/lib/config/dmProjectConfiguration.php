@@ -28,7 +28,7 @@ class dmProjectConfiguration extends sfProjectConfiguration
 
   public function configureDoctrine(Doctrine_Manager $manager)
   {
-//    Doctrine::debug(sfConfig::get("sf_debug"));
+    Doctrine::debug(sfConfig::get('dm_debug'));
 
     /*
      * Set up doctrine extensions dir

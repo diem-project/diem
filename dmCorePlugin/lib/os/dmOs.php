@@ -169,5 +169,15 @@ class dmOs
     
     return self::$isInternetAvailable;
   }
+  
+  public static function getPerformanceInfos()
+  {
+    return array(
+      'usage' => memory_get_usage(true) / (1024*1024),
+      'peak' => memory_get_peak_usage(true) / (1024*1024),
+      'max' => ini_get('memory_limit'),
+      'time' => round(1000*(microtime(true) - dm::getStartTime()))
+    );
+  }
 
 }

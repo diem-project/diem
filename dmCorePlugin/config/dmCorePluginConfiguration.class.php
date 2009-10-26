@@ -3,12 +3,12 @@
 class dmCorePluginConfiguration extends sfPluginConfiguration
 {
   protected static
-    $modules = array('dmCore', 'dmAuth', 'dmService', 'dmUtil'),
+    $modules = array('dmCore', 'dmAuth'),
     $helpers = array('Partial', 'I18N', 'Dm');
 
   public function configure()
   {
-    sfConfig::set('dm_core_dir', realpath(dirname(__FILE__)."/.."));
+    sfConfig::set('dm_core_dir', realpath(dirname(__FILE__).'/..'));
     require_once(sfConfig::get('dm_core_dir').'/lib/config/dmInlineAssetConfigHandler.php');
   }
 

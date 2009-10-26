@@ -4,7 +4,8 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
 {
   protected static
   $eventDispatcher,
-  $serviceContainer;
+  $serviceContainer,
+  $moduleManager;
   
   protected
   $i18nFallback = null;
@@ -308,7 +309,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
       throw new dmException(sprintf('record %s has no page because module %s has no page', get_class($this), $this->getDmModule()));
     }
 
-    return dmDb::table('DmPage')->findOneByRecord($this);
+    return dmDb::table('DmPage')->findOneByRecordWithI18n($this);
   }
 
   /*
@@ -332,31 +333,9 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
       return null;
     }
 
-    return dmDb::query($ancestorModule->getModel().' '.$ancestorModule->getKey())
+    return $ancestorModule->getTable()->createQuery($ancestorModule->getKey())
     ->whereDescendantId($module->getModel(), $this->get('id'), $ancestorModule->getModel())
     ->fetchRecord();
-
-    //    $ancestorRecord = $this;
-    //    foreach(array_reverse($module->getPath()) as $aModule)
-    //    {
-    //      /*
-    //       * Found ancestor
-    //       */
-    //      if($aModule->getModel() == $ancestorModule->getModel())
-    //      {
-    //        return $ancestorRecord->getRelatedRecord($aModule->getModel(), $hydrationMode);
-    //      }
-    //
-    //      /*
-    //       * Record ancestor chain terminated.
-    //       */
-    //      if(!$ancestorRecord = $ancestorRecord->getRelatedRecord($aModule->getModel()))
-    //      {
-    //        return null;
-    //      }
-    //    }
-    //
-    //    return null;
   }
 
   /*
@@ -777,6 +756,11 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
   public static function setServiceContainer(dmBaseServiceContainer $serviceContainer)
   {
     self::$serviceContainer = $serviceContainer;
+  }
+  
+  public static function setModuleManager(dmModuleManager $moduleManager)
+  {
+    self::$moduleManager = $moduleManager;
   }
   
   /*

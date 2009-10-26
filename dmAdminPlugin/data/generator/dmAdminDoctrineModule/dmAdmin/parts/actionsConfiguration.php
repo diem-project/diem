@@ -24,6 +24,7 @@
     '_save_and_next' => array('label' => 'Save and Next'),
     '_delete' => array('label' => 'Delete', 'title' => 'Delete this %1%'),
     '_add' => array('label' => 'Add', 'title' => 'Add a %1%'),
+    '_view_page' => array('label' => 'Show', 'title' => 'View page on the site')
     )) ?>;
 <?php unset($this->config['form']['actions']) ?>
   }

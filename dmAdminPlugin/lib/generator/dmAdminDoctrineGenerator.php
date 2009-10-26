@@ -166,8 +166,8 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
         
         if ($localModule && $localModule->hasAdmin())
         {
-          $html = "(\$sf_user->canAccessToModule('{$localModule->getUnderscore()}')
-? £link(array('sf_route' => '{$localModule->getUnderscore()}_edit', 'sf_subject' => \${$this->getSingularName()}->get('{$relation->getAlias()}')))
+          $html = "(\$sf_user->canAccessToModule('{$localModule->getKey()}')
+? £link(\${$this->getSingularName()}->get('{$relation->getAlias()}'))
 ->text(\${$this->getSingularName()}->get('{$relation->getAlias()}')->__toString())
 ->title(__('Open'))
 ->set('.associated_record.s16right.s16_arrow_up_right_medium')

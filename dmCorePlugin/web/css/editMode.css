@@ -3,12 +3,11 @@
   border-color: #bbb;
 }	
 
-.blockUI.blockMsg {
+.blockUI.blockMsg.blockElement {
   width:          48px;
   height:         48px;
   top:            40%;
   left:           35%;
-  textAlign:      center;
   color:          #000;
   border:         3px solid #aaa;
   background:     #fff url(../images/48/loader.gif) 10px 10px no-repeat;
@@ -18,10 +17,32 @@
   opacity:        0.7;
 }
 
+.blockUI.blockMsg.blockPage {
+  cursor:         wait;
+  width:          100%;
+  text-align:     center;
+  top:            30%;
+}
+
+.blockUI.blockMsg.blockPage > div.blockUIWrap {
+	width:         400px;
+	margin:        auto;
+  color:          #000;
+  border:         1px solid #aaa;
+  background:     url(../images/default_bg.png) center repeat-x;
+  cursor:         wait;
+  padding:        10px;
+  cursor:         wait;
+  padding:        10px;
+  -moz-border-radius: 8px;
+  -moz-box-shadow: 5px 5px 10px #444;
+}
+
 .blockUI.blockOverlay {
   background:     #444;
   opacity:        0.2;
   -moz-border-radius: 4px;
+  cursor:         wait;
 }
 
 div.jGrowl div.jGrowl-notification, div.jGrowl div.jGrowl-closer {

@@ -55,6 +55,7 @@ class dmLogChart extends dmChart
     $this->drawRightScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_NORMAL, self::$colors['grey2'][0], self::$colors['grey2'][1], self::$colors['grey2'][2],TRUE,0,0, false, 10);
     $this->drawGrid(4,TRUE, self::$colors['grey1'][0], self::$colors['grey1'][1], self::$colors['grey1'][2]);
     $this->drawFilledCubicCurve($dataSet->GetData(),$dataSet->GetDataDescription(), 0.2, 10);
+//    $this->drawFilledLineGraph($dataSet->GetData(),$dataSet->GetDataDescription(), 0.2, 10);
     
     $this->clearScale();
     $dataSet->removeAllSeries();
@@ -75,6 +76,7 @@ class dmLogChart extends dmChart
     $this->setFixedScale(0, $maxMem);
     $this->drawScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_NORMAL, 0, 0, 0,false,0,0, false, 10);
     $this->drawFilledCubicCurve($dataSet->GetData(),$dataSet->GetDataDescription(), 0.2, 20);
+//    $this->drawFilledLineGraph($dataSet->GetData(),$dataSet->GetDataDescription(), 10);
     
     $this->clearScale();
     $dataSet->removeAllSeries();
@@ -102,12 +104,12 @@ class dmLogChart extends dmChart
         'timer' => array()
       );
       
-      $requestLogEntries = $this->serviceContainer->getService('request_log')->getEntries(0, array(
-        'hydrate' => false
+      $requestLogEntries = $this->serviceContainer->getService('request_log')->getEntries(10000, array(
+        'hydrate' => false,
+        'keys' => array('time', 'timer', 'code', 'mem')
       ));
-  
-      $logDelta = dmArray::get(dmArray::first($requestLogEntries), 'time') - dmArray::get(dmArray::last($requestLogEntries), 'time');
       
+      $logDelta = dmArray::get(dmArray::first($requestLogEntries), 'time') - dmArray::get(dmArray::last($requestLogEntries), 'time');
       $hours = $logDelta / 3600;
       
       $stepFactor = $hours / 40;
@@ -140,14 +142,15 @@ class dmLogChart extends dmChart
         }
         else
         {
-          if($nb = count($tmpTimes))
-          {
-            $data['date'][] = $stepDate;
-            $data['nbReq'][] = $nb/$stepFactor;
-            $data['nbErr'][] = $tmpErrs/$stepFactor;
-            $data['time'][] = array_sum($tmpTimes) / $nb;
-            $data['mem'][] = array_sum($tmpMems) / $nb;
-          }
+          $nb = count($tmpTimes);
+          $trustableData = $nb>=10;
+          
+          $data['date'][] = $stepDate;
+          $data['nbReq'][] = $trustableData ? $nb/$stepFactor : '';
+          $data['nbErr'][] = $trustableData ? $tmpErrs/$stepFactor : '';
+          $data['time'][] = $trustableData ? array_sum($tmpTimes) / $nb : '';
+          $data['mem'][] = $trustableData ? array_sum($tmpMems) / $nb : '';
+
           $stepDate -= $step;
           $tmpTimes = array($timer);
           $tmpMems = array($mem);
@@ -155,14 +158,14 @@ class dmLogChart extends dmChart
         }
       }
       
-      if($nb = count($tmpTimes))
-      {
-        $data['date'][] = $stepDate;
-        $data['nbReq'][] = $nb/$stepFactor;
-        $data['nbErr'][] = $tmpErrs/$stepFactor;
-        $data['time'][] = array_sum($tmpTimes) / $nb;
-        $data['mem'][] = array_sum($tmpMems) / $nb;
-      }
+      $nb = count($tmpTimes);
+      $trustableData = $nb>=5;
+        
+      $data['date'][] = $stepDate;
+      $data['nbReq'][] = $nb/$stepFactor;
+      $data['nbErr'][] = $tmpErrs/$stepFactor;
+      $data['time'][] = $trustableData ? array_sum($tmpTimes) / $nb : "";
+      $data['mem'][] = $trustableData ? array_sum($tmpMems) / $nb : "";
       
       foreach(array_keys($data) as $key)
       {
@@ -171,16 +174,20 @@ class dmLogChart extends dmChart
     
       foreach($data['mem'] as $index => $value)
       {
-        $data['mem'][$index] = $value / (1024*1024);
-        
         $data['nbReq'][$index] = $data['nbReq'][$index] / 60;
         
         $data['nbErr'][$index] = $data['nbErr'][$index] / 60;
+          
+        if ("" != $data['mem'][$index])
+        {
+          $data['mem'][$index] = $value / (1024*1024);
+        }
       }
       
       $events = $this->serviceContainer->getService('event_log')
       ->getFilteredEntries(1000, array($this, 'filterEvent'), array('hydrate' => false));
       $data['events'] = array();
+
       foreach($this->eventsFilter as $eventType)
       {
         $data['events'][$eventType] = array();

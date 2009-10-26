@@ -144,6 +144,7 @@ class dmFilesystem extends sfFilesystem
     {
       return $this->lastExec;
     }
+    
     return dmArray::get($this->lastExec, $key);
   }
 

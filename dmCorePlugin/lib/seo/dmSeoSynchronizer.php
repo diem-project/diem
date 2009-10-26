@@ -10,7 +10,8 @@ class dmSeoSynchronizer
   $markdown,
   $culture,
   $titlePrefix,
-  $titleSuffix;
+  $titleSuffix,
+  $nodeParentIdStmt;
   
   public function __construct(dmModuleManager $moduleManager, dmMarkdown $markdown, $culture)
   {
@@ -30,20 +31,20 @@ class dmSeoSynchronizer
     {
       $onlyModules = $this->moduleManager->getProjectModules();
     }
+    elseif(is_string(dmArray::first($onlyModules)))
+    {
+      $onlyModules = $this->moduleManager->keysToModules($onlyModules);
+    }
     
     $onlyModules = dmModuleManager::removeModulesChildren($onlyModules);
     
     $this->titlePrefix = (string) dmConfig::get('title_prefix');
     $this->titleSuffix = (string) dmConfig::get('title_suffix');
 
-    $timer = dmDebug::timerOrNull('dmUpdateSeo::execute');
-
     foreach($onlyModules as $module)
     {
       $this->updateRecursive($module);
     }
-
-    $timer && $timer->addTime();
   }
 
   public function updateRecursive($module)
@@ -59,16 +60,15 @@ class dmSeoSynchronizer
     }
 
     $pageTable = dmDb::table('DmPage');
+    $moduleTable = $module->getTable();
 
     /*
      * get autoSeo patterns
      */
-    $patternArray = dmDb::query('DmAutoSeo as')
-    ->select('as.slug, as.name, as.title, as.h1, as.description, as.keywords')
-    ->where('as.module = ? AND as.action = ?', array($module->getKey(), 'show'))
-    ->limit(1)
-    ->fetchArray();
-
+    $patternArray = dmDb::pdo('SELECT a.slug, a.name, a.title, a.h1, a.description, a.keywords
+    FROM dm_auto_seo a
+    WHERE a.module = ? AND a.action = ?', array($module->getKey(), 'show'))->fetchAll(PDO::FETCH_ASSOC);
+    
     if(empty($patternArray))
     {
       $patterns = dmDb::table('DmAutoSeo')->createFromModuleAndAction($module, 'show')->saveGet()->toArray();
@@ -95,43 +95,26 @@ class dmSeoSynchronizer
     /*
      * get pages
      */
-    $timerGetPages = dmDebug::timerOrNull('update seo get pages');
-    $pdoPages = $pageTable->createQuery('p')
-    ->leftJoin('p.Translation t on t.id = p.id AND t.lang = ?', $this->culture)
-    ->where('p.module = ? AND p.action = ?', array($module->getKey(), 'show'))
-    ->select('p.id, p.lft, p.rgt, p.record_id, t.auto_mod, t.slug, t.name, t.title, t.h1, t.description, t.keywords, t.id')
-    ->fetchPDO();
+    $pdoPages = dmDb::pdo('
+    SELECT p.id, p.lft, p.rgt, p.record_id, t.auto_mod, t.slug, t.name, t.title, t.h1, t.description, t.keywords, t.id as exist
+    FROM dm_page p LEFT JOIN dm_page_translation t ON (t.id = p.id AND t.lang = ?)
+    WHERE p.module = ? AND p.action = ?', array($this->culture, $module->getKey(), 'show')
+    )->fetchAll(PDO::FETCH_ASSOC);
 
     $pages = array();
     foreach($pdoPages as $p)
     {
-      $pages[$p[0]] = array(
-        'id' => $p[0],
-        'lft' => $p[1],
-        'rgt' => $p[2],
-        'record_id' => $p[3],
-        'auto_mod' => $p[4],
-        'slug' => $p[5],
-        'name' => $p[6],
-        'title' => $p[7],
-        'h1' => $p[8],
-        'description' => $p[9],
-        'keywords' => $p[10],
-        'exists' => (bool) $p[11]
-      );
+      $pages[$p['id']] = $p;
     }
-
     unset($pdoPages);
-
-    $timerGetPages && $timerGetPages->addTime();
-
+    
     /*
      * get records
      */
     $records = $module->getTable()->createQuery('r INDEXBY r.id')
     ->withI18n($this->culture, $module->getModel())
     ->fetchRecords();
-
+    
     /*
      * get parent slugs
      * if slug pattern starts with a /
@@ -150,15 +133,10 @@ class dmSeoSynchronizer
     foreach($pages as $page)
     {
       $record = $records[$page['record_id']];
-      $parentId = $pageTable->createQuery('p')
-      ->select('p.id as id')
-      ->where("p.lft < ? AND p.rgt > ?", array($page['lft'], $page['rgt']))
-      ->orderBy("p.rgt asc")
-      ->limit(1)
-      ->fetchValue();
+      $parentId = $this->getNodeParentId($page);
       $parentSlug = isset($parentSlugs[$parentId]) ? $parentSlugs[$parentId] : '';
 
-      $modifiedFields = $this->updatePage($page, $record, $patterns, $parentSlug);
+      $modifiedFields = $this->updatePage($page, $module, $record, $patterns, $parentSlug);
       
       if (!empty($modifiedFields))
       {
@@ -166,7 +144,7 @@ class dmSeoSynchronizer
       }
     }
     
-    $records->free();
+    $records->free(true);
 
     /*
      * Save modifications
@@ -180,11 +158,11 @@ class dmSeoSynchronizer
 
         foreach($modifiedPages as $id => $modifiedFields)
         {
-          if (!$pages[$id]['exists'])
+          if (!$pages[$id]['exist'])
           {
             $modifiedFields['id'] = $id;
             $modifiedFields['lang'] = $this->culture;
-            $translation = new DmPageTranslation();
+            $translation = new DmPageTranslation;
             $translation->fromArray($modifiedFields);
             $conn->unitOfWork->processSingleInsert($translation);
           }
@@ -216,7 +194,7 @@ class dmSeoSynchronizer
     }
   }
 
-  public function updatePage(array $page, dmDoctrineRecord $record, $patterns, $parentSlug)
+  public function updatePage(array $page, dmProjectModule $module, dmDoctrineRecord $record, $patterns, $parentSlug)
   {
     $pageAutoMod = dmArray::get($page, 'auto_mod', 'snthdk');
 
@@ -231,8 +209,6 @@ class dmSeoSynchronizer
     /*
      * Calculate replacements
      */
-
-    $module = $record->getDmModule();
     $moduleModel = $module->getModel();
     $moduleKey = $module->getKey();
 
@@ -342,7 +318,7 @@ class dmSeoSynchronizer
         $value = strtr($pattern, $replacements);
       }
 
-      $values[$field] = $this->truncateValueForField(trim($value), $field);
+      $values[$field] = self::truncateValueForField(trim($value), $field);
     }
 
     /*
@@ -384,12 +360,12 @@ class dmSeoSynchronizer
       ));
     }
 
-    $parentSlugResults = dmDb::table('DmPage')->createQuery('p')
-    ->leftJoin('DmPageTranslation t')
-    ->select('t.id, t.slug')
-    ->where('p.module = ? AND p.action = ? AND p.id = t.id AND t.lang = ?', array($parentPageModuleKey, $parentPageActionKey, $this->culture))
-    ->fetchPDO();
-
+    $parentSlugResults = dmDb::pdo('SELECT t.id, t.slug
+    FROM dm_page p, dm_page_translation t
+    WHERE p.module = ? AND p.action = ? AND p.id = t.id AND t.lang = ?',
+    array($parentPageModuleKey, $parentPageActionKey, $this->culture))
+    ->fetchAll(PDO::FETCH_NUM);
+    
     $parentSlugs = array();
     foreach($parentSlugResults as $psr)
     {
@@ -398,6 +374,24 @@ class dmSeoSynchronizer
     unset($parentSlugsResult);
 
     return $parentSlugs;
+  }
+  
+  protected function getNodeParentId(array $pageData)
+  {
+    if (null === $this->nodeParentIdStmt)
+    {
+      $this->nodeParentIdStmt = Doctrine_Manager::connection()->prepare('SELECT p.id
+FROM dm_page p
+WHERE p.lft < ? AND p.rgt > ?
+ORDER BY p.rgt ASC
+LIMIT 1')->getStatement();
+    }
+
+    $this->nodeParentIdStmt->execute(array($pageData['lft'], $pageData['rgt']));
+    
+    $result = $this->nodeParentIdStmt->fetch(PDO::FETCH_NUM);
+    
+    return $result[0];
   }
 
   /*

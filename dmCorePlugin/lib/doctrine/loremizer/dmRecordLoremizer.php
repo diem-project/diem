@@ -10,7 +10,7 @@ class dmRecordLoremizer
 
   public static function loremize($classOrObject, $override = false, $createAssociations = false)
   {
-    if ($classOrObject instanceof myDoctrineRecord)
+    if ($classOrObject instanceof dmDoctrineRecord)
     {
       $object = $classOrObject;
     }

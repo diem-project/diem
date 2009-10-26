@@ -17,10 +17,9 @@ class dmRequestLogView extends dmLogView
   
   protected function renderUser(dmRequestLogEntry $entry)
   {
-    return sprintf('%s%s<br /><span class=light>%s</span>',
-      ($username = $entry->get('username')) ? sprintf('<strong class="mr10">%s</strong>', $username) : '',
-      $entry->get('ip'),
-      $entry->get('session_id')
+    return sprintf('%s%s',
+      ($username = $entry->get('username')) ? sprintf('<strong class="mr10">%s</strong><br />', $username) : '',
+      $entry->get('ip')
     );
   }
   
@@ -40,8 +39,8 @@ class dmRequestLogView extends dmLogView
     return sprintf('<span class="dm_nowrap">%s</span><br />%s<span class="light">%s ms</span>&nbsp;<span class="light">%s Mb</span>',
       $this->renderLink($entry),
       sprintf('<span class="s16 s16_%s">%s</span>',
-        $entry->get('is_ok') ? 'status' : 'status_busy',
-        $entry->get('is_ok') ? '' : $entry->get('code').' '
+        'status_'.$entry->getStatus(),
+        $entry->renderCodeOrNull().' '
       ),
       $entry->get('timer'),
       round($entry->get('mem') / (1024*1024))
@@ -64,19 +63,21 @@ class dmRequestLogView extends dmLogView
   
   protected function renderApp(dmRequestLogEntry $entry)
   {
-    return $entry->get('app');
+    $env = $entry->get('env');
+    
+    return $entry->get('app').('prod' !== $env ? ' '.$env : '');
   }
   
   protected function doGetEntries(array $options)
   {
-    return $this->log->getFilteredEntries($this->maxEntries, array($this, 'filterEntry'), $options);
+    return $this->log->getEntries($this->maxEntries, array_merge($options, array('filter' => array($this, 'filterEntry'))));
   }
   
   public function filterEntry(array $data)
   {
     if (!empty($data['xhr']))
     {
-      return false;
+      return (dmRequestLogEntry::isAlert($data) || dmRequestLogEntry::isError($data)) && $this->user->can('error_log');
     }
     
     return true;

@@ -43,7 +43,7 @@ class dmBase
    */
   public static function createContext(sfApplicationConfiguration $configuration, $name = null, $class = 'dmContext')
   {
-    return dmContext::createInstance($configuration, $name, 'dmContext');
+    return dmContext::createInstance($configuration, $name, $class);
   }
   
   public static function checkServer()

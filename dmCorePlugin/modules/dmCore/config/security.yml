@@ -1,3 +1,7 @@
 refresh:
   is_secure:    true
   credential:   clear_cache
+  
+refreshStep:
+  is_secure:    true
+  credential:   clear_cache

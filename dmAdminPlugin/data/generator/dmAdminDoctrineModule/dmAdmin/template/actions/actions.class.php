@@ -32,15 +32,13 @@ class <?php echo $this->getGeneratedModuleName() ?>Actions extends <?php echo $t
   
   protected function getDmModule()
   {
-    if ($this->dmModule)
+    if (null !== $this->dmModule)
     {
       return $this->dmModule;
     }
     
     return $this->dmModule = $this->context->getModuleManager()->getModule('<?php echo $this->getModuleName(); ?>');
   }
-
-<?php include dirname(__FILE__).'/../../parts/sortAction.php' ?>
 
 <?php include dirname(__FILE__).'/../../parts/exportAction.php' ?>
 
@@ -60,10 +58,6 @@ class <?php echo $this->getGeneratedModuleName() ?>Actions extends <?php echo $t
 
 <?php include dirname(__FILE__).'/../../parts/deleteAction.php' ?>
 
-<?php if ($this->configuration->getValue('list.batch_actions')): ?>
-<?php include dirname(__FILE__).'/../../parts/batchAction.php' ?>
-<?php endif; ?>
-
 <?php include dirname(__FILE__).'/../../parts/processFormAction.php' ?>
 
 <?php if ($this->configuration->hasFilterForm()): ?>
@@ -71,8 +65,4 @@ class <?php echo $this->getGeneratedModuleName() ?>Actions extends <?php echo $t
 <?php endif; ?>
 
 <?php include dirname(__FILE__).'/../../parts/paginationAction.php' ?>
-
-<?php include dirname(__FILE__).'/../../parts/sortingAction.php' ?>
-
-<?php include dirname(__FILE__).'/../../parts/searchingAction.php' ?>
 }
