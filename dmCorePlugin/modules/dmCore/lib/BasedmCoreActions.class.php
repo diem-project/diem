@@ -61,18 +61,7 @@ class BasedmCoreActions extends dmBaseActions
         break;
         
       case 2:
-        $serviceContainer = $this->context->getServiceContainer();
-        $threadLauncher = $serviceContainer->getService('thread_launcher');
-  
-        $pageSynchronizerSuccess = $threadLauncher->execute('dmPageSynchronizerThread', array(
-          'class'   => $serviceContainer->getParameter('page_synchronizer.class')
-        ));
-        
-        if (!$pageSynchronizerSuccess)
-        {
-          dmDebug::showPre($threadLauncher->getLastExec());
-          throw new dmException('Error while synchronizing pages');
-        }
+        $this->context->get('page_tree_watcher')->synchronizePages();
         
         $data = array(
           'msg'  => $this->context->getI18n()->__('Synchronise SEO'),
@@ -82,8 +71,7 @@ class BasedmCoreActions extends dmBaseActions
         break;
         
       case 3:
-        
-        $this->context->get('page_tree_watcher')->synchronizePages();
+        $this->context->get('page_tree_watcher')->synchronizeSeo();
         
         $data = array(
           'msg'  => $this->context->getI18n()->__('Regenerate interface'),
