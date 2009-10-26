@@ -1,3 +1,3 @@
 indexSuccess:
-  stylesheets: [ lib.ui-tabs, admin.chart ]
+  stylesheets: [ lib.ui-tabs ]
   javascripts: [ lib.ui-tabs, admin.chart ]
