@@ -18,13 +18,13 @@ class dmWidgetShowView extends dmWidgetProjectModelView
     return $this->context->getPage()->getDmModule()->knows($this->dmModule);
   }
   
-  protected function doRenderForIndex(array $vars)
+  protected function doRenderForIndex()
   {
     $query = $this->dmModule->getTable()->createQuery('r');
 
-    if ($vars['recordId'])
+    if ($this->compiledVars['recordId'])
     {
-      $query->addWhere('r.id = ?', $vars['recordId'])->fetchRecord();
+      $query->addWhere('r.id = ?', $this->compiledVars['recordId']);
     }
     elseif (($page = $this->context->getPage()) && $page->getDmModule()->hasModel())
     {

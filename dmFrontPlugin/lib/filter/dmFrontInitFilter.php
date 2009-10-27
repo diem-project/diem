@@ -42,7 +42,7 @@ class dmFrontInitFilter extends dmInitFilter
       $page = dmDb::query('DmPage p, p.Translation t')
       ->where('t.slug = ? AND t.lang = ?', array($slug, $this->context->getUser()->getCulture()))
       ->fetchOne();
-
+      
       if (!$page)
       {
         throw new dmPageNotFoundException(sprintf('There is no page with slug %s in %s culture', $slug, $this->context->getUser()->getCulture()));
@@ -52,7 +52,7 @@ class dmFrontInitFilter extends dmInitFilter
     {
       $page = dmDb::query('DmPage p')
       ->where('p.id = ?', $this->context->getRequest()->getParameter('dm_cpi'))
-      ->withI18n()
+      ->leftJoin('p.Translation t ON p.id = t.id AND t.lang = ?', $culture)
       ->fetchOne();
 
       if (!$page)

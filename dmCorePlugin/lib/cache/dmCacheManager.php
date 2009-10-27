@@ -29,8 +29,6 @@ class dmCacheManager extends dmConfigurable
 
   public function getCache($cacheName)
   {
-    $cacheName = dmString::modulize($cacheName);
-
     if (!isset($this->caches[$cacheName]))
     {
       $this->caches[$cacheName] = new $this->options['meta_cache_class'](array(

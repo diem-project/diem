@@ -10,7 +10,7 @@ class dmWidgetAdvancedSearchResultsView extends dmWidgetPluginView
     return array('maxPerPage');
   }
 
-  public function getViewVars(array $vars = array())
+  protected function filterViewVars(array $vars = array())
   {
     $vars = parent::getViewVars($vars);
     

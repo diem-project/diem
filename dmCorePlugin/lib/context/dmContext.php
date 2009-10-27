@@ -69,11 +69,6 @@ class dmContext extends sfContext
     dmDoctrineQuery::setModuleManager($this->getModuleManager());
     dmDoctrineTable::setModuleManager($this->getModuleManager());
 
-    /*
-     * Doctrine cache configuration require a loaded dmContext to run
-     */
-    $this->serviceContainer->getService('doctrine_config')->configureCache();
-
     // notify that context is ready
     $this->dispatcher->notify(new sfEvent($this, 'dm.context.loaded'));
 

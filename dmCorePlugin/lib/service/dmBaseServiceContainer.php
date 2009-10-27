@@ -217,4 +217,44 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
   {
     $this->parameters[strtolower($name)] = array_merge($this->parameters[strtolower($name)], $value);
   }
+  
+  /**
+   * Returns true if the given service is defined.
+   *
+   * @param  string  $id      The service identifier
+   *
+   * @return Boolean true if the service is defined, false otherwise
+   */
+  public function hasService($id)
+  {
+    return isset($this->services[$id]) || (!empty($id) && method_exists($this, 'get'.dmString::camelize($id).'Service'));
+  }
+
+  /**
+   * Gets a service.
+   *
+   * If a service is both defined through a setService() method and
+   * with a set*Service() method, the former has always precedence.
+   *
+   * @param  string $id The service identifier
+   *
+   * @return object The associated service
+   *
+   * @throw InvalidArgumentException if the service is not defined
+   */
+  public function getService($id)
+  {
+    if (isset($this->services[$id]))
+    {
+      return $this->services[$id];
+    }
+    
+    if (!empty($id) && method_exists($this, $method = 'get'.dmString::camelize($id).'Service'))
+    {
+      return $this->$method();
+    }
+
+    throw new InvalidArgumentException(sprintf('The service "%s" does not exist.', $id));
+  }
+  
 }

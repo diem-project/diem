@@ -139,22 +139,14 @@ class dmConfig
 
     if(self::$culture == sfConfig::get('sf_default_culture'))
     {
-      $stmt = Doctrine_Manager::connection()->prepare('SELECT s.name, t.value
-FROM dm_setting s
-LEFT JOIN dm_setting_translation t ON t.id=s.id AND t.lang = ?');
-
-      $stmt->execute(array(self::$culture));
+      $results = dmDb::pdo('SELECT s.name, t.value FROM dm_setting s LEFT JOIN dm_setting_translation t ON t.id=s.id AND t.lang = ?',
+      array(self::$culture))->fetchAll(PDO::FETCH_NUM);
     }
     else
     {
-      $stmt = Doctrine_Manager::connection()->prepare('SELECT s.name, t.value
-FROM dm_setting s
-LEFT JOIN dm_setting_translation t ON t.id=s.id AND t.lang IN (?, ?)');
-
-      $stmt->execute(array(self::$culture, sfConfig::get('sf_default_culture')));
+      $results = dmDb::pdo('SELECT s.name, t.value FROM dm_setting s LEFT JOIN dm_setting_translation t ON t.id=s.id AND t.lang IN (?, ?)',
+      array(self::$culture, sfConfig::get('sf_default_culture')))->fetchAll(PDO::FETCH_NUM);
     }
-
-    $results = $stmt->fetchAll(Doctrine::FETCH_NUM);
 
     self::$config = array();
     foreach($results as $result)

@@ -31,7 +31,14 @@ class dmFrontLinkTagPage extends dmFrontLinkTag
   {
     $pageSlug = $this->page->_getI18n('slug');
     
-    return $this->getHrefPrefix().($pageSlug ? '/'.$pageSlug : '');
+    $baseHref = $this->getHrefPrefix().($pageSlug ? '/'.$pageSlug : '');
+    
+    if(empty($baseHref))
+    {
+      $baseHref = '/';
+    }
+    
+    return $baseHref;
   }
 
   protected function renderText()

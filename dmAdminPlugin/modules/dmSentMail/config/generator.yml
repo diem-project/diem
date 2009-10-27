@@ -29,9 +29,8 @@ generator:
           - created_at
       form:
         display:
-          NONE: [name]
-          Header: [header]
-          Description: [description]
+          NONE: [name, created_at]
+          Content: [header, description]
         class: DmSentMailAdminForm
         fields: {  }
       edit: ~

@@ -122,16 +122,16 @@ class dmString extends sfInflector
       }
       throw new dmException('Can not camelize '.$something);
     }
-
+    
     if (isset(self::$camelizeCache[$something]))
     {
       return self::$camelizeCache[$something];
     }
 
     return self::$camelizeCache[$something] = preg_replace(
-      '/(^|_)(\w)/e',
-      "strtoupper('\\2')",
-      $something
+      '/_(\w)/e',
+      "strtoupper('\\1')",
+      ucfirst($something)
     );
   }
 
@@ -156,10 +156,8 @@ class dmString extends sfInflector
     $text = str_replace('œ', 'oe', $text);
 
     // strip all non word chars
-    $text = preg_replace('/\W/', ' ', $text);
-
     // replace all white space sections with a dash
-    $text = preg_replace('/\s+/', '-', $text);
+    $text = preg_replace(array('/\W/', '/\s+/'), array(' ', '-'), $text);
 
     // trim and lowercase
     $text = strtolower(trim($text, '-'));

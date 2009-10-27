@@ -33,7 +33,12 @@ class dmWidgetType
   
   public function isCachable()
   {
-    return $this->getParam('cache');
+    return (bool) $this->getParam('cache');
+  }
+  
+  public function isStatic()
+  {
+    return 'static' === $this->getParam('cache');
   }
 
   public function getNewWidget()

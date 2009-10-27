@@ -4,7 +4,8 @@ class dmAdminBreadCrumb
 {
   protected
   $context,
-  $i18n;
+  $i18n,
+  $record;
   
   public function __construct(dmContext $context)
   {
@@ -17,6 +18,16 @@ class dmAdminBreadCrumb
   protected function initialize()
   {
     
+  }
+  
+  public function connect()
+  {
+    $this->context->getEventDispatcher()->connect('admin.edit_object', array($this, 'listenToEditObjectEvent'));
+  }
+  
+  public function listenToEditObjectEvent(sfEvent $event)
+  {
+    $this->record = $event['object'];
   }
   
   public function getLinks()
@@ -43,22 +54,13 @@ class dmAdminBreadCrumb
       $links['module_space']  = array('space' => $space);
       $links['module']        = array('module' => $module);
       
-      $route = $this->context->getRequest()->getAttribute('sf_route');
-      
-      if ($route instanceof dmDoctrineRoute && $route->isType('object'))
+      if ($this->record)
       {
-        if (in_array($this->context->getActionName(), array('new', 'create')))
-        {
-          $links['action'] = array('action' => 'New');
-        }
-        else
-        {
-          $links['object'] = array('object' => $route->getObject());
-        }
+        $links['action'] = array('action' => $this->record->__toString());
       }
       elseif(($action = $this->context->getActionName()) !== 'index')
       {
-        $links['action'] = array('action' => dmString::humanize($action));
+        $links['action'] = array('action' => dmString::humanize('create' === $action ? 'new' : $action));
       }
     }
     
@@ -115,6 +117,7 @@ class dmAdminBreadCrumb
   {
     $html = array();
     $nbLinks = count($links);
+    
     $it = 0;
     
     foreach($links as $type => $options)
@@ -147,19 +150,21 @@ class dmAdminBreadCrumb
     
     if (empty($links))
     {
-      return '';
+      $html = '';
     }
-    
-    $html =
-    dmHelper::£o('div#breadCrumb.mt10.clearfix').
-    dmHelper::£('ol', '<li>'.implode('</li><li class="sep">&gt;</li><li>', $links).'</li>');
-    
-    if ($miniSearchForm = dmArray::get($this->context->getResponse()->getSlots(), 'dm.mini_search_form'))
+    else
     {
-      $html .= dmHelper::£('div.dm_mini_search_form', $miniSearchForm);
+      $html =
+      dmHelper::£o('div#breadCrumb.mt10.clearfix').
+      dmHelper::£('ol', '<li>'.implode('</li><li class="sep">&gt;</li><li>', $links).'</li>');
+      
+      if ($miniSearchForm = dmArray::get($this->context->getResponse()->getSlots(), 'dm.mini_search_form'))
+      {
+        $html .= dmHelper::£('div.dm_mini_search_form', $miniSearchForm);
+      }
+      
+      $html .= dmHelper::£c('div');
     }
-    
-    $html .= dmHelper::£c('div');
     
     $t && $t->addTime();
     

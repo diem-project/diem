@@ -10,17 +10,24 @@ class dmWidgetContentLinkView extends dmWidgetPluginView
     $this->addRequiredVar(array('href'));
   }
   
-  public function getViewVars(array $vars = array())
+  protected function filterViewVars(array $vars = array())
   {
-    $vars = parent::getViewVars($vars);
+    $vars = parent::filterViewVars($vars);
     
     $vars['text'] = nl2br($vars['text']);
     
     return $vars;
   }
 
-  protected function doRender(array $vars)
+  protected function doRender()
   {
+    if ($this->isCachable() && $cache = $this->getCache())
+    {
+      return $cache;
+    }
+    
+    $vars = $this->getViewVars();
+    
     $link = dmFrontLinkTag::build($vars['href']);
 
     if($vars['text'])
@@ -38,11 +45,18 @@ class dmWidgetContentLinkView extends dmWidgetPluginView
       $link->addClass($vars['cssClass']);
     }
     
-    return $link->render();
+    $html = $link->render();
+    
+    if ($this->isCachable())
+    {
+      $this->setCache($html);
+    }
+    
+    return $html;
   }
   
-  public function doRenderForIndex(array $vars)
+  public function doRenderForIndex()
   {
-    return $vars['text'].' '.$vars['title'];
+    return $this->compiledVars['text'].' '.$this->compiledVars['title'];
   }
 }

@@ -31,47 +31,14 @@ abstract class dmDoctrineQuery extends Doctrine_Query
    * @param integer $timeToLive                        how long the cache entry is valid
    * @return Doctrine_Hydrate                          this object
    */
-  public function dmCache($driver = true, $timeToLive = null, $force = false)
+  public function dmCache($driver = true, $timeToLive = null, $resultCacheHash = null)
   {
-    if ($driver !== true)
+    if (sfConfig::get('dm_orm_cache_result_enabled'))
     {
-      if (!$driver)
-      {
-        $driver = null;
-      }
-      elseif(is_string($driver))
-      {
-        $driver = self::getCacheDriver($driver);
-      }
-    }
-
-    if ($force || (sfConfig::get('dm_orm_cache_result_enabled') && sfConfig::get('dm_orm_cache_result_activated')))
-    {
-      $this->useResultCache($driver, $timeToLive);
+      $this->useResultCache($driver, $timeToLive, $resultCacheHash);
     }
 
     return $this;
-  }
-
-  /*
-   * use cache even if disabled
-   * @see dmCache
-   */
-  public function dmCacheForce($driver = true, $timeToLive = null)
-  {
-    return $this->dmCache($driver, $timeToLive, true);
-  }
-
-  public static function getCacheDriver($name)
-  {
-    $driverClass = 'Doctrine_Cache_'.ucfirst($name);
-
-    if (!isset(self::$cacheDrivers[$driverClass]))
-    {
-      self::$cacheDrivers[$driverClass] = new $driverClass;
-    }
-
-    return self::$cacheDrivers[$driverClass];
   }
 
   /*

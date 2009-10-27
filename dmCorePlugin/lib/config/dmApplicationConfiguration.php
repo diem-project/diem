@@ -37,6 +37,11 @@ abstract class dmApplicationConfiguration extends sfApplicationConfiguration
     {
       sfAutoloadAgain::getInstance()->unregister();
     }
+    
+    /*
+     * Now that we have the project config, we can configure the doctrine cache
+     */
+    $this->configureDoctrineCache(Doctrine_Manager::getInstance());
   }
 
   public function setup()

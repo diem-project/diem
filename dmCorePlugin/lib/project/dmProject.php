@@ -16,7 +16,7 @@ class dmProject
   {
     if (null === self::$key)
     {
-      self::$key = basename(sfConfig::get("sf_root_dir"));
+      self::$key = basename(sfConfig::get('sf_root_dir'));
     }
     
     return self::$key;

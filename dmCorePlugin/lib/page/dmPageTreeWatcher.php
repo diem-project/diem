@@ -124,7 +124,7 @@ class dmPageTreeWatcher extends dmConfigurable
         
         foreach($table->getRelationHolder()->getLocals() as $localRelation)
         {
-          if ($localModule = $this->moduleManager->getModuleByModel($localRelation->getClass()))
+          if ($localModule = $moduleManager->getModuleByModel($localRelation->getClass()))
           {
             if ($localModule->interactsWithPageTree())
             {
@@ -176,7 +176,7 @@ class dmPageTreeWatcher extends dmConfigurable
       
       if (!$pageSynchronizerSuccess)
       {
-        dmDebug::showPre($threadLauncher->getLastExec());
+        print_r($threadLauncher->getLastExec());
         throw new dmException('Error while synchronizing pages');
       }
     }
@@ -201,7 +201,7 @@ class dmPageTreeWatcher extends dmConfigurable
       
       if (!$seoSynchronizerSuccess)
       {
-        dmDebug::showPre($threadLauncher->getLastExec());
+        print_r($threadLauncher->getLastExec());
         throw new dmException('Error while synchronizing seo');
       }
     }

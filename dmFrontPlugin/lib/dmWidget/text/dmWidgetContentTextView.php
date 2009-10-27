@@ -10,9 +10,9 @@ class dmWidgetContentTextView extends dmWidgetContentMediaView
     $this->removeRequiredVar(array('mediaId', 'method'));
   }
 
-  public function getViewVars(array $vars = array())
+  public function filterViewVars(array $vars = array())
   {
-    $vars = parent::getViewVars($vars);
+    $vars = parent::filterViewVars($vars);
     
     if (!empty($vars['mediaId']))
     {
@@ -37,9 +37,14 @@ class dmWidgetContentTextView extends dmWidgetContentMediaView
     return $vars;
   }
   
-  protected function doRender(array $vars)
+  protected function doRender()
   {
-    extract($vars);
+    if ($this->isCachable() && $cache = $this->getCache())
+    {
+      return $cache;
+    }
+
+    extract($this->getViewVars());
     
     $html = dmHelper::£o('div.dm_text.text_'.$style);
 
@@ -71,11 +76,17 @@ class dmWidgetContentTextView extends dmWidgetContentMediaView
     
     $html .= dmHelper::£c('div');
     
+    if ($this->isCachable())
+    {
+      $this->setCache($html);
+    }
+    
     return $html;
   }
   
-  protected function doRenderForIndex(array $vars)
+  protected function doRenderForIndex()
   {
+    $vars = $this->compiledVars();
     return implode(' ', $vars['title'], $vars['text'], $vars['legend']);
   }
 }

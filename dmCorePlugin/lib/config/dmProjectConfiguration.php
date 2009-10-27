@@ -26,6 +26,7 @@ class dmProjectConfiguration extends sfProjectConfiguration
     return $this->setWebDir(sfConfig::get('sf_root_dir').'/'.$webDirName);
   }
 
+  
   public function configureDoctrine(Doctrine_Manager $manager)
   {
     Doctrine::debug(sfConfig::get('dm_debug'));
@@ -65,6 +66,22 @@ class dmProjectConfiguration extends sfProjectConfiguration
     $this->dispatcher->disconnect('debug.web.load_panels', array('sfWebDebugPanelDoctrine', 'listenToAddPanelEvent'));
     
     $this->dispatcher->connect('debug.web.load_panels', array('dmWebDebugPanelDoctrine', 'listenToAddPanelEvent'));
+  }
+  
+  protected function configureDoctrineCache(Doctrine_Manager $manager)
+  {
+    if(sfConfig::get('dm_orm_cache_enabled', true) && dmAPCCache::isEnabled())
+    {
+      $driver = new Doctrine_Cache_Apc(array('prefix' => dmProject::getKey().'/doctrine/'));
+      
+      $manager->setAttribute(Doctrine::ATTR_QUERY_CACHE, $driver);
+      
+      if(sfConfig::get('dm_cache_result_enabled'))
+      {
+        $manager->setAttribute(Doctrine::ATTR_RESULT_CACHE, $driver);
+        $manager->setAttribute(Doctrine::ATTR_RESULT_CACHE_LIFESPAN, 24 * 60 * 60);
+      }
+    }
   }
 
 }

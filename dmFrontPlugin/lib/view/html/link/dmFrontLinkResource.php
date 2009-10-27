@@ -38,10 +38,10 @@ class dmFrontLinkResource
     $this->source = $source;
     $this->params = false;
     
-    if (null === $source)
+    if (empty($source))
     {
       $this->type = 'page';
-      $this->subject = dmDb::table('DmPage')->findOneBySource($source);
+      $this->subject = dmDb::table('DmPage')->findOneBySource(null);
     }
     elseif (is_string($source))
     {

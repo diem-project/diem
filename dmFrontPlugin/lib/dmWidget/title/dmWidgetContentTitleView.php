@@ -10,22 +10,24 @@ class dmWidgetContentTitleView extends dmWidgetPluginView
     $this->addRequiredVar(array('text', 'tag'));
   }
   
-  public function getViewVars(array $vars = array())
+  protected function filterViewVars(array $vars = array())
   {
-    $vars = parent::getViewVars($vars);
+    $vars = parent::filterViewVars($vars);
     
     $vars['text'] = nl2br($vars['text']);
     
     return $vars;
   }
 
-  protected function doRender(array $vars)
+  protected function doRender()
   {
+    $vars = $this->getViewVars();
+    
     return dmHelper::£($vars['tag'], array('class' => $vars['cssClass']), $vars['text']);
   }
   
-  protected function doRenderForIndex(array $vars)
+  protected function doRenderForIndex()
   {
-    return $vars['text'];
+    return $this->compiledVars['text'];
   }
 }

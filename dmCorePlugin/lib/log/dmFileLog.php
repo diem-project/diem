@@ -38,27 +38,42 @@ abstract class dmFileLog extends dmLog
   
   public function log(array $data)
   {
-    $this->checkFile();
-    
-    $entry = $this->serviceContainer->getService($this->options['entry_service_name']);
-    
-    $entry->configure($data);
-    
-    $data = $this->encode($entry->toArray());
-
-    if($fp = fopen($this->options['file'], 'a'))
+    try
     {
-      fwrite($fp, "\n".$data);
-      fclose($fp);
+      $this->checkFile();
+      
+      $entry = $this->serviceContainer->getService($this->options['entry_service_name']);
+      
+      $entry->configure($data);
+      
+      $data = $this->encode($entry->toArray());
+  
+      if($fp = fopen($this->options['file'], 'a'))
+      {
+        fwrite($fp, "\n".$data);
+        fclose($fp);
+      }
+      else
+      {
+        throw new dmException(sprintf('Can not log in %s', $this->options['file']));
+      }
+      
+      if (dmArray::get($this->options, 'rotation', true))
+      {
+        $this->checkRotation();
+      }
     }
-    else
+    catch(Exception $e)
     {
-      throw new dmException(sprintf('Can not log in %s', $this->options['file']));
-    }
-    
-    if (dmArray::get($this->options, 'rotation', true))
-    {
-      $this->checkRotation();
+      $this->dispatcher->notify(new sfEvent($this, 'application.log', array(
+        'Can not log this request : '.$e->getMessage(),
+        sfLogger::ERR
+      )));
+      
+      if (sfConfig::get('dm_debug'))
+      {
+        throw $e;
+      }
     }
   }
   

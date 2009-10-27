@@ -7,7 +7,8 @@ abstract class dmWidgetBaseView
   $widgetType,
   $widget,
   $requiredVars = array(),
-  $isIndexable = true;
+  $isIndexable = true,
+  $vars;
 
   public function __construct(dmContext $context, dmWidgetType $type, array $data)
   {
@@ -62,12 +63,23 @@ abstract class dmWidgetBaseView
       unset($this->requiredVars[$varIndex]);
     }
   }
+  
+  protected function compileVars(array $vars = array())
+  {
+    $this->compiledVars = array_merge(
+      array('cssClass' => isset($this->widget['css_class']) ? $this->widget['css_class'] : null),
+      (array) json_decode($this->widget['value'], true),
+      dmString::toArray($vars)
+    );
+  }
 
   public function render(array $vars = array())
   {
+    $this->compileVars($vars);
+    
     if ($this->isValid())
     {
-      $html = $this->doRender($this->getViewVars($vars));
+      $html = $this->doRender();
     }
     else
     {
@@ -77,21 +89,21 @@ abstract class dmWidgetBaseView
     return $html;
   }
   
-  protected function doRender(array $vars)
+  protected function doRender()
   {
-    return $this->renderPartial($vars);
+    return $this->renderPartial($this->filterViewVars($this->compiledVars));
   }
   
   protected function renderPartial(array $vars)
   {
-    if ($this->widgetType->isCachable() && $this->context->getViewCacheManager())
+    if ($this->isCachable() && $this->context->getViewCacheManager())
     {
       $this->context->getViewCacheManager()->addCache($this->widget['module'], '_'.$this->widget['action'], array(
         'withLayout' => false,
         'lifeTime' => 86400,
         'clientLifeTime' => 86400,
-        'contextual' => true,
-        'vary' => array ()
+        'contextual' => !$this->isStatic(),
+        'vary' => array()
       ));
     }
     
@@ -122,9 +134,14 @@ abstract class dmWidgetBaseView
 
   public function renderForIndex(array $vars = array())
   {
-    if ($this->isIndexable && $this->isValid())
+    $this->compileVars($vars);
+    
+    if ($this->isIndexable)
     {
-      $text = $this->doRenderForIndex($this->getViewVars($vars));
+      if ($this->isValid())
+      {
+        $text = $this->doRenderForIndex();
+      }
     }
     else
     {
@@ -134,18 +151,16 @@ abstract class dmWidgetBaseView
     return $text;
   }
 
-  protected function doRenderForIndex(array $vars)
+  protected function doRenderForIndex()
   {
-    return $this->doRender($vars);
+    return $this->doRender();
   }
   
-  public function isValid()
+  protected function isValid()
   {
-    $viewVars = (array) json_decode($this->widget['value']);
-
     foreach($this->getRequiredVars() as $requiredVar)
     {
-      if (!isset($viewVars[$requiredVar]))
+      if (!isset($this->compiledVars[$requiredVar]))
       {
         return false;
       }
@@ -153,13 +168,54 @@ abstract class dmWidgetBaseView
 
     return true;
   }
-
-  public function getViewVars(array $vars = array())
+  
+  public function getViewVars()
   {
-    return array_merge(
-      array('cssClass' => isset($this->widget['css_class']) ? $this->widget['css_class'] : null),
-      (array) json_decode($this->widget['value']),
-      dmString::toArray($vars)
-    );
+    return $this->filterViewVars($this->compiledVars);
+  }
+  
+  protected function filterViewVars(array $vars = array())
+  {
+    return $vars;
+  }
+  
+  public function isCachable()
+  {
+    return sfConfig::get('sf_cache') && $this->widgetType->isCachable();
+  }
+  
+  public function isStatic()
+  {
+    return $this->widgetType->isStatic();
+  }
+  
+  public function getCache()
+  {
+    return $this->context->getCacheManager()->getCache($this->getCacheName())->get($this->generateCacheKey());
+  }
+  
+  public function setCache($html)
+  {
+    return $this->context->getCacheManager()->getCache($this->getCacheName())->set($this->generateCacheKey(), $html, 86400);
+  }
+  
+  protected function getCacheName()
+  {
+    return sprintf('%s/%s/template', sfConfig::get('sf_app'), sfConfig::get('sf_environment'));
+  }
+  
+  protected function generateCacheKey()
+  {
+    return sprintf('widget/%s/%s/%s', $this->widget['module'], $this->widget['action'], md5(serialize($this->filterCacheVars($this->compiledVars))));
+  }
+  
+  protected function filterCacheVars(array $vars)
+  {
+    if (!$this->isStatic())
+    {
+      $vars['page_id'] = $this->context->getPage()->get('id');
+    }
+    
+    return $vars;
   }
 }

@@ -278,7 +278,7 @@ class dmSeoSynchronizer
         
         if($processMarkdown)
         {
-          $usedValue = $this->markdown->toText($usedValue);
+          $usedValue = $this->markdown->brutalToText($usedValue);
         }
 
         $replacements[$this->wrap($placeholder)] = $usedValue;

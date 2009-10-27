@@ -57,8 +57,6 @@ parameters:
   cache_manager.options:
     meta_cache_class:         dmMetaCache
 
-  doctrine_config.class:      dmDoctrineConfiguration
-
   filesystem.class:           dmFilesystem
   
   event_log.class:            dmEventLog
@@ -190,11 +188,6 @@ services:
     class:                    %auth_layout_helper.class%
     shared:                   true
     arguments:                [ @dispatcher, @user, @response, @action_stack, @helper, %request.context% ]
-
-  doctrine_config:
-    class:                    %doctrine_config.class%
-    shared:                   true
-    arguments:                [ @doctrine_manager, @dispatcher, @cache_manager ]
 
   filesystem:
     class:                    %filesystem.class%

@@ -406,14 +406,12 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     {
       return $relation['table']->createQuery('foreign')
       ->where('foreign.id  = ?', $this->get($relation['local']))
-      ->dmCache()
       ->fetchRecord(array(), $hydrationMode);
     }
     elseif($relation instanceof Doctrine_Relation_ForeignKey)
     {
       return $relation['table']->createQuery('foreign')
       ->where('foreign.'.$relation->getForeignColumnName().' = ?', $this->get('id'))
-      ->dmCache()
       ->fetchRecord(array(), $hydrationMode);
     }
     elseif($relation instanceof Doctrine_Relation_Association)
@@ -421,7 +419,6 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
       return $relation['table']->createQuery('foreign')
       ->leftJoin('foreign.'.$relation['refTable']->getComponentName().' ref_table')
       ->where('ref_table.'.$relation['local'].' = ?', $this->get('id'))
-      ->dmCache()
       ->fetchRecord(array(), $hydrationMode);
     }
     else
@@ -454,7 +451,6 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
       ->select('foreign.id')
       ->where('foreign.'.$relation->getForeignColumnName().' = ?', $this->get('id'))
       ->limit(1)
-      ->dmCache()
       ->fetchValue();
     }
     elseif($relation instanceof Doctrine_Relation_Association)
@@ -463,7 +459,6 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
       ->select('association.'.$relation['foreign'])
       ->where('association.'.$relation['local'].' = ?', $this->get('id'))
       ->limit(1)
-      ->dmCache()
       ->fetchValue();
     }
     else
@@ -582,6 +577,36 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
   }
 
 
+  /**
+   * returns a value of a property or a related component
+   *
+   * @param mixed $fieldName                  name of the property or related component
+   * @param boolean $load                     whether or not to invoke the loading procedure
+   * @throws Doctrine_Record_Exception        if trying to get a value of unknown property / related component
+   * @return mixed
+   */
+  public function get($fieldName, $load = true)
+  {
+    $hasAccessor = $this->hasAccessor($fieldName);
+    
+    if ($hasAccessor || $this->_table->getAttribute(Doctrine_Core::ATTR_AUTO_ACCESSOR_OVERRIDE))
+    {
+      $componentName = $this->_table->getComponentName();
+
+      $accessor = $this->hasAccessor($fieldName) 
+        ? $this->getAccessor($fieldName)
+        : 'get' . dmString::camelize($fieldName);
+        
+      if ($hasAccessor || method_exists($this, $accessor))
+      {
+        $this->hasAccessor($fieldName, $accessor);
+        return $this->$accessor($load);
+      }
+    }
+    
+    return $this->_get($fieldName, $load);
+  }
+  
   /*
    * Pure overload without parent::_get
    */

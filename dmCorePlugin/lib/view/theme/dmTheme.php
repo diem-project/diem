@@ -32,19 +32,34 @@ class dmTheme
     $this->name     = dmArray::get($options, 'name', dmString::humanize($options['key']));
     $this->enabled  = dmArray::get($options, 'enabled', true);
     
+    $this->connect();
+  }
+  
+  protected function connect()
+  {
+    $this->dispatcher->connect('dm.refresh', array($this, 'listenToDmRefreshEvent'));
+  }
+  
+  public function listenToDmRefreshEvent(sfEvent $event)
+  {
     if (!$this->exists())
     {
       try
       {
         $this->create();
       }
-      catch(dmException $e)
+      catch(Exception $e)
       {
-        $this->dispatcher->notify(new sfEvent($this, 'application.log', array('priority' => sfLogger::ERR, sprintf(
-          'Theme %s could not be created. Please check %s permissions',
+        $message = sprintf(
+          'Theme %s can not be created. Please check %s permissions',
           $this->path,
           $this->getBasePath()
-        ))));
+        );
+        
+        $this->dispatcher->notify(new sfEvent($this, 'application.log', array('priority' => sfLogger::ERR, $message)));
+        
+        $event->getSubject()->getUser()->logError($message);
+        
         if (sfConfig::get('sf_debug'))
         {
           throw $e;
@@ -72,10 +87,7 @@ class dmTheme
     {
       if (!$this->filesystem->mkdir($fullPath))
       {
-        throw new dmException(sprintf(
-          '%s can not be created',
-          $fullPath
-        ));
+        throw new dmException(sprintf('%s can not be created', $fullPath));
       }
     }
 

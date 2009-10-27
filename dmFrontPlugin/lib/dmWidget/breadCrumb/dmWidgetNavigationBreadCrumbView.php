@@ -10,9 +10,9 @@ class dmWidgetNavigationBreadCrumbView extends dmWidgetPluginView
     return array('separator', 'includeCurrent');
   }
 
-  public function getViewVars(array $vars = array())
+  protected function filterViewVars(array $vars = array())
   {
-    $vars = parent::getViewVars($vars);
+    $vars = parent::filterViewVars($vars);
 
     $currentPage = $this->context->getPage();
 
@@ -34,9 +34,16 @@ class dmWidgetNavigationBreadCrumbView extends dmWidgetPluginView
 
     return $vars;
   }
-  
-  protected function doRender(array $vars)
+
+  protected function doRender()
   {
+    if ($this->isCachable() && $cache = $this->getCache())
+    {
+      return $cache;
+    }
+    
+    $vars = $this->getViewVars();
+    
     $html = '<ol>';
 
     foreach($vars['pages'] as $position => $page)

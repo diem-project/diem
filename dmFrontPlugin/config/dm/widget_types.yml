@@ -10,7 +10,7 @@ dmWidgetContent:
 #   cache:              true
 
   title:
-    cache:              true
+    cache:              static
 
   link:
     cache:              true
@@ -35,7 +35,7 @@ dmWidgetNavigation:
 dmWidgetAdvanced:
 
   googleMap:
-    cache:              true
+    cache:              static
     
   searchForm:
     cache:              false

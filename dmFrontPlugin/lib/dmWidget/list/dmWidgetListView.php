@@ -27,9 +27,9 @@ class dmWidgetListView extends dmWidgetProjectModelView
    * Will put filters in an array
    * @return array viewVars
    */
-  public function getViewVars(array $vars = array())
+  protected function filterViewVars(array $vars = array())
   {
-    $viewVars = parent::getViewVars($vars);
+    $viewVars = parent::filterViewVars($vars);
 
     $filters = array();
     foreach($viewVars as $key => $val)

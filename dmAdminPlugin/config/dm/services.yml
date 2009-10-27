@@ -54,7 +54,7 @@ services:
 
   bread_crumb:
     class:                    %bread_crumb.class%
-    shared:                   false
+    shared:                   true
     arguments:                [ @context ]
 
   log_chart:

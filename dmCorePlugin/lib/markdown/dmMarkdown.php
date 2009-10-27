@@ -9,7 +9,7 @@ class dmMarkdown extends MarkdownExtra_Parser
   {
     return strip_tags($this->toHtml($text));
   }
-
+  
   public function toHtml($text)
   {
     return $this->postTransform($this->transform($this->preTransform($text)));
@@ -51,5 +51,10 @@ class dmMarkdown extends MarkdownExtra_Parser
       , '’'       => '&rsquo;'
       , '�'       => ' '
     ));
+  }
+  
+  public function brutalToText($text)
+  {
+    return str_replace(array('-', '*', '#'), '', $text);
   }
 }

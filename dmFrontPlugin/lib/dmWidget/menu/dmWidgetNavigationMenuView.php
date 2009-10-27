@@ -13,8 +13,10 @@ class dmWidgetNavigationMenuView extends dmWidgetPluginView
   }
   
   
-  protected function doRender(array $vars)
+  protected function doRender()
   {
+    $vars = $this->getViewVars();
+    
     $html = '<ul class="dm_menu_elements">';
     
     foreach($vars['elements'] as $element)

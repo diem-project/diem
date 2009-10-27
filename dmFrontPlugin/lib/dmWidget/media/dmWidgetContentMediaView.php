@@ -10,9 +10,9 @@ class dmWidgetContentMediaView extends dmWidgetPluginView
     $this->addRequiredVar(array('mediaId', 'method'));
   }
 
-  public function getViewVars(array $vars = array())
+  protected function filterViewVars(array $vars = array())
   {
-    $vars = parent::getViewVars($vars);
+    $vars = parent::filterViewVars($vars);
     
     if (!empty($vars['mediaId']) || $this->isRequiredVar('mediaId'))
     {
@@ -44,8 +44,15 @@ class dmWidgetContentMediaView extends dmWidgetPluginView
     return $vars;
   }
 
-  protected function doRender(array $vars)
+  protected function doRender()
   {
+    if ($this->isCachable() && $cache = $this->getCache())
+    {
+      return $cache;
+    }
+    
+    $vars = $this->getViewVars();
+    
     if (!$vars['mediaTag'])
     {
       $html = '';
@@ -65,6 +72,11 @@ class dmWidgetContentMediaView extends dmWidgetPluginView
       }
       
       $html = $media->render();
+    }
+    
+    if ($this->isCachable())
+    {
+      $this->setCache($html);
     }
     
     return $html;
