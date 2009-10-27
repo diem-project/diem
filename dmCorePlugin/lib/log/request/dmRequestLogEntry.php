@@ -3,7 +3,7 @@
 class dmRequestLogEntry extends dmLogEntry
 {
   const MEM_ALERT   = 33554432;  // 32 Mb
-  const TIME_ALERT  = 1000;      // 1 s
+  const TIME_ALERT  = 2000;      // 2 s
   
   protected static
   $browsersCache = array(),

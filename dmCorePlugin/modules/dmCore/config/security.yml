@@ -5,3 +5,7 @@ refresh:
 refreshStep:
   is_secure:    true
   credential:   clear_cache
+
+markdown:
+  is_secure:    true
+  credential:   admin

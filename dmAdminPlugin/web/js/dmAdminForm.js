@@ -53,7 +53,7 @@
             $.ajax({
               type: "POST",
               mode: "abort",
-              url: $.dm.ctrl.getHref('+/dmService/markdown'),
+              url: $.dm.ctrl.getHref('+/dmCore/markdown'),
               data: {
                 text: value
               },
