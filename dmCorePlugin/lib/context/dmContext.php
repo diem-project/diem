@@ -68,6 +68,7 @@ class dmContext extends sfContext
 
     dmDoctrineQuery::setModuleManager($this->getModuleManager());
     dmDoctrineTable::setModuleManager($this->getModuleManager());
+    dmDoctrineTable::setEventDispatcher($this->dispatcher);
 
     // notify that context is ready
     $this->dispatcher->notify(new sfEvent($this, 'dm.context.loaded'));
@@ -114,6 +115,8 @@ class dmContext extends sfContext
     &&  !$this->factories['request']->isFlashRequest()
     &&  $this->factories['response']->isHtml()
     );
+    
+    $this->factories['i18n']->setUseAdminCatalogue($this->getUser()->can('admin'));
   }
 
   /*

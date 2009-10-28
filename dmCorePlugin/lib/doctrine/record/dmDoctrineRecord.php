@@ -404,20 +404,20 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
 
     if ($relation instanceof Doctrine_Relation_LocalKey)
     {
-      return $relation['table']->createQuery('foreign')
-      ->where('foreign.id  = ?', $this->get($relation['local']))
+      return $relation['table']->createQuery('dm_foreign')
+      ->where('dm_foreign.id  = ?', $this->get($relation['local']))
       ->fetchRecord(array(), $hydrationMode);
     }
     elseif($relation instanceof Doctrine_Relation_ForeignKey)
     {
-      return $relation['table']->createQuery('foreign')
-      ->where('foreign.'.$relation->getForeignColumnName().' = ?', $this->get('id'))
+      return $relation['table']->createQuery('dm_foreign')
+      ->where('dm_foreign.'.$relation->getForeignColumnName().' = ?', $this->get('id'))
       ->fetchRecord(array(), $hydrationMode);
     }
     elseif($relation instanceof Doctrine_Relation_Association)
     {
-      return $relation['table']->createQuery('foreign')
-      ->leftJoin('foreign.'.$relation['refTable']->getComponentName().' ref_table')
+      return $relation['table']->createQuery('dm_foreign')
+      ->leftJoin('dm_foreign.'.$relation['refTable']->getComponentName().' ref_table')
       ->where('ref_table.'.$relation['local'].' = ?', $this->get('id'))
       ->fetchRecord(array(), $hydrationMode);
     }
@@ -447,16 +447,16 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     }
     elseif($relation instanceof Doctrine_Relation_ForeignKey)
     {
-      return $relation['table']->createQuery('foreign')
-      ->select('foreign.id')
-      ->where('foreign.'.$relation->getForeignColumnName().' = ?', $this->get('id'))
+      return $relation['table']->createQuery('dm_foreign')
+      ->select('dm_foreign.id')
+      ->where('dm_foreign.'.$relation->getForeignColumnName().' = ?', $this->get('id'))
       ->limit(1)
       ->fetchValue();
     }
     elseif($relation instanceof Doctrine_Relation_Association)
     {
       return $relation->getAssociationTable()->createQuery('association')
-      ->select('association.'.$relation['foreign'])
+      ->select('association.'.$relation['dm_foreign'])
       ->where('association.'.$relation['local'].' = ?', $this->get('id'))
       ->limit(1)
       ->fetchValue();

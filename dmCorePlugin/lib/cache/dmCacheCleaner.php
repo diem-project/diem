@@ -86,6 +86,8 @@ class dmCacheCleaner
         $this->cacheManager->getCache(sprintf('%s/%s/template', $app, $env))->clear();
       }
     }
+
+    $this->dispatcher->notify(new sfEvent($this, 'dm.cache.clear_template', array()));
   }
   
 }

@@ -45,7 +45,15 @@ class dmPageTreeWatcher extends dmConfigurable
   public function listenToRecordModificationEvent(sfEvent $event)
   {
     $record = $event->getSubject();
-    $table  = $record->getTable();
+    
+    if ($record instanceof DmAutoSeo)
+    {
+      $table = $record->getTargetDmModule()->getTable();
+    }
+    else
+    {
+      $table = $record->getTable();
+    }
     
     if ($table instanceof dmDoctrineTable && !isset($this->modifiedTables[$table->getComponentName()]) && $table->interactsWithPageTree())
     {
@@ -90,9 +98,21 @@ class dmPageTreeWatcher extends dmConfigurable
     
     if(!empty($modifiedModules))
     {
-      $this->synchronizePages($modifiedModules);
+      try
+      {
+        $this->synchronizePages($modifiedModules);
       
-      $this->synchronizeSeo($modifiedModules);
+        $this->synchronizeSeo($modifiedModules);
+      }
+      catch(Exception $e)
+      {
+        $this->serviceContainer->get('user')->logError('Something went wrong when updating project');
+        
+        if (sfConfig::get('sf_debug'))
+        {
+          throw $e;
+        }
+      }
     }
 
     $this->initialize();
@@ -173,12 +193,6 @@ class dmPageTreeWatcher extends dmConfigurable
         'class'   => $this->serviceContainer->getParameter('page_synchronizer.class'),
         'modules' => $modules
       ));
-      
-      if (!$pageSynchronizerSuccess)
-      {
-        print_r($threadLauncher->getLastExec());
-        throw new dmException('Error while synchronizing pages');
-      }
     }
     else
     {
@@ -198,12 +212,6 @@ class dmPageTreeWatcher extends dmConfigurable
         'culture' => $this->serviceContainer->getParameter('user.culture'),
         'modules' => $modules
       ));
-      
-      if (!$seoSynchronizerSuccess)
-      {
-        print_r($threadLauncher->getLastExec());
-        throw new dmException('Error while synchronizing seo');
-      }
     }
     else
     {

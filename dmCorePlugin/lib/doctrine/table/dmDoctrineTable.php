@@ -3,6 +3,7 @@
 abstract class dmDoctrineTable extends Doctrine_Table
 {
   protected static
+  $eventDispatcher,
   $moduleManager;
   
   protected
@@ -259,6 +260,28 @@ abstract class dmDoctrineTable extends Doctrine_Table
     }
 
     return $this->setCache('human_columns', $columns);
+  }
+  
+  public function getSeoColumns()
+  {
+    $columns = array_keys($this->getHumanColumns());
+    
+    $columns = array();
+    
+    foreach($this->getHumanColumns() as $columnName => $column)
+    {
+      if (in_array($column['type'], array('string', 'blob', 'clob', 'enum')))
+      {
+        $columns[] = $columnName;
+      }
+    }
+    
+    if ($pk = $this->getPrimaryKey())
+    {
+      $columns[] = $pk;
+    }
+    
+    return $columns;
   }
   
   public function getIndexableColumns()

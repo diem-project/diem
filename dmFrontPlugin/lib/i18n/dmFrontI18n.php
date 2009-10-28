@@ -12,7 +12,7 @@ class dmFrontI18n extends dmI18n
 
     $result = parent::__($string, $args, $catalogue);
 
-    if ($result === $string && $catalogue !== 'dm')
+    if ($result === $string && $catalogue !== 'dm' && $this->useAdminCatalogue)
     {
       $result = parent::__($string, $args, 'dm');
     }

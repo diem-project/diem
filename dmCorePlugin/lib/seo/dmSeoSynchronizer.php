@@ -209,120 +209,15 @@ class dmSeoSynchronizer
     /*
      * Calculate replacements
      */
-    $moduleModel = $module->getModel();
-    $moduleKey = $module->getKey();
-
-    preg_match_all('/%([\w\d\.-]+)%/i', implode('', $patterns), $results);
-
-    $placeholders = array_unique($results[1]);
-
-    $replacements = array();
-
-    foreach ($placeholders as $placeholder)
-    {
-      try
-      {
-        /*
-         * Extract model and field from "model.field" or "model"
-         */
-        if (strpos($placeholder, "."))
-        {
-          list($usedModuleKey, $field) = explode(".", $placeholder);
-        }
-        else
-        {
-          $usedModuleKey = $placeholder;
-          $field = '__toString';
-        }
-
-        $usedModuleKey = dmString::modulize($usedModuleKey);
-        $usedRecord = null;
-        /*
-         * Retrieve used record
-         */
-        if ($usedModuleKey == $moduleKey)
-        {
-          $usedRecord = $record;
-        }
-        else
-        {
-          $usedRecord = $record->getAncestorRecord($usedModuleKey);
-        }
-
-        if ($usedRecord instanceof dmDoctrineRecord)
-        {
-          /*
-           * get record value for field
-           */
-          if ($field == '__toString')
-          {
-            $usedValue = $usedRecord->__toString();
-            $processMarkdown = true;
-          }
-          else
-          {
-            $usedValue = $usedRecord->get($field);
-            
-            $processMarkdown = $usedRecord->getTable()->hasColumn($field) && $usedRecord->getTable()->isMarkdownColumn($field);
-          }
-          
-          unset($usedRecord);
-        }
-        else
-        {
-          $usedValue = $moduleKey.'-'.$usedModuleKey.' not found';
-          $processMarkdown = false;
-        }
-        
-        $usedValue = trim($usedValue);
-        
-        if($processMarkdown)
-        {
-          $usedValue = $this->markdown->brutalToText($usedValue);
-        }
-
-        $replacements[$this->wrap($placeholder)] = $usedValue;
-      }
-      catch(Exception $e)
-      {
-        throw $e;
-        $replacements[$this->wrap($placeholder)] = "[ ".$placeholder." : ".$e->getMessage()." ]";
-      }
-    }
+    $replacements = $this->getReplacementsForPatterns($module, $patterns, $record);
 
     /*
      * Assign replacements to patterns
      */
-    $values = array();
-    foreach($patterns as $field => $pattern)
-    {
-      if ($field === 'slug')
-      {
-        $slugReplacements = array();
-        foreach($replacements as $key => $replacement)
-        {
-          $slugReplacements[$key] = dmString::slugify($replacement);
-        }
-        
-        // add parent slug
-        $value = $parentSlug.'/'.strtr($pattern, $slugReplacements);
-
-        $value = trim(preg_replace('|(/{2,})|', '/', $value), '/');
-      }
-      elseif($field === 'title')
-      {
-        $value = $this->titlePrefix.ucfirst(strtr($pattern, $replacements)).$this->titleSuffix;
-      }
-      else
-      {
-        $value = strtr($pattern, $replacements);
-      }
-
-      $values[$field] = self::truncateValueForField(trim($value), $field);
-    }
+    $values = $this->compilePatterns($patterns, $replacements, $record, $parentSlug);
 
     /*
-     * Compare obtained seo values to page values
+     * Compare obtained seo values with page values
      */
     $modifiedFields = array();
     foreach($values as $field => $value)
@@ -336,6 +231,140 @@ class dmSeoSynchronizer
     return $modifiedFields;
   }
 
+  public function validatePattern(dmProjectModule $module, $field, $pattern, dmDoctrineRecord $record = null)
+  {
+    $record = null === $record ? $module->getTable()->findOne() : $record;
+
+    try
+    {
+      $this->getReplacementsForPatterns($module, array($pattern), $record);
+    }
+    catch(Exception $e)
+    {
+      return false;
+    }
+    
+    return true;
+  }
+  
+  public function getReplacementsForPatterns(dmProjectModule $module, $patterns, dmDoctrineRecord $record)
+  {
+    preg_match_all('/%([\w\d\.-]+)%/i', implode('', $patterns), $results);
+    $placeholders = array_unique($results[1]);
+    
+    $moduleKey = $module->getKey();
+    $replacements = array();
+    
+    foreach ($placeholders as $placeholder)
+    {
+      /*
+       * Extract model and field from 'model.field' or 'model'
+       */
+      if (strpos($placeholder, '.'))
+      {
+        list($usedModuleKey, $field) = explode('.', $placeholder);
+      }
+      else
+      {
+        $usedModuleKey = $placeholder;
+        $field = '__toString';
+      }
+
+      $usedModuleKey = dmString::modulize($usedModuleKey);
+      $usedRecord = null;
+      /*
+       * Retrieve used record
+       */
+      if ($usedModuleKey == $moduleKey)
+      {
+        $usedRecord = $record;
+      }
+      elseif($module->hasAncestor($usedModuleKey))
+      {
+        $usedRecord = $record->getAncestorRecord($usedModuleKey);
+      }
+      else
+      {
+        $usedRecord = $record->getRelatedRecord($this->moduleManager->getModule($usedModuleKey)->getModel());
+      }
+
+      if ($usedRecord instanceof dmDoctrineRecord)
+      {
+        /*
+         * get record value for field
+         */
+        if ($field == '__toString')
+        {
+          $usedValue = $usedRecord->__toString();
+          $processMarkdown = true;
+        }
+        else
+        {
+          $usedValue = $usedRecord->get($field);
+          
+          $processMarkdown = $usedRecord->getTable()->hasColumn($field) && $usedRecord->getTable()->isMarkdownColumn($field);
+        }
+        
+        unset($usedRecord);
+      }
+      else
+      {
+        $usedValue = $moduleKey.'-'.$usedModuleKey.' not found';
+        $processMarkdown = false;
+      }
+      
+      $usedValue = trim($usedValue);
+      
+      if($processMarkdown)
+      {
+        $usedValue = $this->markdown->brutalToText($usedValue);
+      }
+
+      $replacements[$this->wrap($placeholder)] = $usedValue;
+    }
+    
+    return $replacements;
+  }
+  
+  public function compilePatterns(array $patterns, array $replacements, dmDoctrineRecord $record, $parentSlug)
+  {
+    $values = array();
+    
+    foreach($patterns as $field => $pattern)
+    {
+      if ($field === 'slug')
+      {
+        $slugReplacements = array();
+        foreach($replacements as $key => $replacement)
+        {
+          $slugReplacements[$key] = dmString::slugify($replacement);
+        }
+        
+        $value = strtr($pattern, $slugReplacements);
+        
+        // add parent slug
+        if ($pattern{0} != '/')
+        {
+          $value = $parentSlug.'/'.strtr($pattern, $slugReplacements);
+        }
+        
+        $value = trim(preg_replace('|(/{2,})|', '/', $value), '/');
+      }
+      elseif($field === 'title')
+      {
+        $value = $this->titlePrefix.ucfirst(strtr($pattern, $replacements)).$this->titleSuffix;
+      }
+      else
+      {
+        $value = strtr($pattern, $replacements);
+      }
+
+      $values[$field] = self::truncateValueForField(trim($value), $field);
+    }
+    
+    return $values;
+  }
+  
   public function wrap($property)
   {
     return '%'.$property.'%';

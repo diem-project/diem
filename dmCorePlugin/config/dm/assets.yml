@@ -26,6 +26,7 @@ js:
     ui-resizable:     jquery-ui/js/minified/ui.resizable.min
     ui-tabs:          jquery-ui/js/minified/ui.tabs.min
     ui-dialog:        jquery-ui/js/minified/ui.dialog.min
+    ui-accordion:     jquery-ui/js/minified/ui.accordion.min
     ui-i18n:          jquery-ui/js/minified/i18n/ui.datepicker-%culture%.min
     metadata:         metadata/jquery.metadata.min
     jqtransform:      jqtransform/jquery.jqtransform.min
@@ -68,6 +69,7 @@ css:
     ui-dialog:        jquery-ui/css/jquery-ui-dialog.1.7.2
     ui-resizable:     jquery-ui/css/jquery-ui-resizable.1.7.2
     ui-tabs:          jquery-ui/css/jquery-ui-tabs.1.7.2
+    ui-accordion:     jquery-ui/css/jquery-ui-accordion.1.7.2
     jqtransform:      jqtransform/jqtransform
     jgrowl:           jgrowl/jquery.jgrowl
     markitup:         dmMarkitup/skins/markitup/style

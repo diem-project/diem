@@ -2,9 +2,13 @@
 
 class dmI18n extends sfI18N
 {
-
-  protected static
-  $default_culture;
+  protected
+  $useAdminCatalogue = false;
+  
+  public function setUseAdminCatalogue($v)
+  {
+    $this->useAdminCatalogue = (bool) $v;
+  }
 
   public function translateArray(array $array, $args = array(), $catalogue = 'messages')
   {

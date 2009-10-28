@@ -288,7 +288,7 @@
 
 * [DONE] only load mailer on demand
 
-* find a way to simplify admin routing
+* [DONE] find a way to simplify admin routing
 
 * [DONE] make admin work like gmail
 

@@ -97,7 +97,7 @@ class sfMessageSource_dmMySQL extends sfMessageSource_MySQL
 
       if ($this->cache)
       {
-        $data = unserialize($this->cache->get($variant.':'.$this->culture));
+        $data = $this->cache->get($variant.':'.$this->culture);
 
         if (is_array($data))
         {
@@ -116,7 +116,7 @@ class sfMessageSource_dmMySQL extends sfMessageSource_MySQL
           $this->messages[$variant] = $data;
           if ($this->cache)
           {
-            $this->cache->set($variant.':'.$this->culture, serialize($data));
+            $this->cache->set($variant.':'.$this->culture, $data);
           }
         }
 

@@ -78,10 +78,10 @@ class dmForm extends sfFormSymfony
     $this->close();
   }
 
-  public function renderSubmitTag($name = 'submit', $attributes = array())
+  public function renderSubmitTag($value = 'submit', $attributes = array())
   {
     $attributes = array_merge(array(
-      'value' => $name,
+      'value' => $value,
       'type' => 'submit'
     ), dmString::toArray($attributes));
     
@@ -92,7 +92,7 @@ class dmForm extends sfFormSymfony
 
   
   /**
-   * Binds the current form and save the to the database in one step.
+   * Binds the current form validate it in one step.
    *
    * @param  array      An array of tainted values to use to bind the form
    * @param  array      An array of uploaded files (in the $_FILES or $_GET format)
@@ -108,6 +108,7 @@ class dmForm extends sfFormSymfony
   public function bindRequest(sfWebRequest $request)
   {
     $this->bind($request->getParameter($this->name), $request->getFiles($this->name));
+    
     return $this;
   }
 
@@ -136,13 +137,18 @@ class dmForm extends sfFormSymfony
       $action = self::$serviceContainer->getService('request')->getUri();
     }
 
-    if (strpos($action, '#') === false)
+//    if (strpos($action, '#') === false)
+//    {
+//      $action .= '#'.$this->getKey();
+//    }
+    
+    if (!isset($opt['method']))
     {
-      $action .= '#'.$this->getKey();
+      $opt['method'] = 'post';
     }
 
     if (isset($opt['action'])) unset($opt['action']);
-
+    
     return $this->renderFormTag($action, $opt);
   }
 

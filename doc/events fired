@@ -73,3 +73,15 @@ params: array('slug' => the not found slug)
 
 [dm.refresh]
 fired by dmCoreActions when user refreshed the site.
+params: array()
+
+[dm.cache.clear]
+fired by dmCacheCleaner when all cache has been cleared
+params: array('success' => cache cleared successfully ( or not )
+
+[dm.cache.clear_template]
+fired by dmCacheCleaner when template cache has been cleared
+params: array()
+
+[admin.edit_object]
+fired by an admin module edit action when a record will be edited or updated

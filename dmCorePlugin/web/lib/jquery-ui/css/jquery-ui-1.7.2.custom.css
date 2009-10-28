@@ -71,6 +71,7 @@
 .dm .ui-state-error .ui-icon, .dm .ui-state-error-text .ui-icon {background-image: url(images/ui-icons_cd0a0a_256x240.png); }
 
 .dm .ui-icon-triangle-1-e { background-position: -32px -16px; }
+.dm .ui-icon-triangle-1-s { background-position: -64px -16px; }
 .dm .ui-icon-closethick { background-position: -96px -128px; }
 .dm .ui-icon-circle-triangle-e { background-position: -48px -192px; }
 .dm .ui-icon-circle-triangle-w { background-position: -80px -192px; }

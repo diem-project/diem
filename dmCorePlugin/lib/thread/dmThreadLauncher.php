@@ -22,7 +22,12 @@ class dmThreadLauncher extends dmConfigurable
       serialize($threadOptions)
     );
     
-    return $this->filesystem->exec($command);
+    if (!$this->filesystem->exec($command))
+    {
+      throw new dmThreadException(sprintf('Thread %s failed ( app: %s, env: %s ) with message : %s',
+        $threadClass, $this->options['app'], $this->options['env'], $this->getLastExec('output')
+      ));
+    }
   }
   
   public function getLastExec($name = null)

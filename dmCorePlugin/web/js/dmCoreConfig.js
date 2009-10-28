@@ -3,8 +3,7 @@
 $.dm = {
   defaults : {
     ajaxData: {
-      dm_cpi:  dm_configuration.page_id || 0,
-      dm_xhr:  1
+      dm_cpi:  dm_configuration.page_id || 0
     }
   },
   base : {

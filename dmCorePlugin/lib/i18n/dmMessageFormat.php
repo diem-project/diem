@@ -44,7 +44,7 @@ class dmMessageFormat extends sfMessageFormat
 
     // well we did not find the translation string.
     $this->source->append($string);
-
+    
     return $this->postscript[0].$this->replaceArgs($string, $args).$this->postscript[1];
   }
 }

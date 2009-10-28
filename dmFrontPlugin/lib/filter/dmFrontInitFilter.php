@@ -35,17 +35,19 @@ class dmFrontInitFilter extends dmInitFilter
 
   protected function guessPage()
   {
+    $culture = $this->context->getUser()->getCulture();
+    
     if ($this->context->isModuleAction('dmFront', 'page'))
     {
       $slug = $this->context->getRequest()->getParameter('slug');
 
       $page = dmDb::query('DmPage p, p.Translation t')
-      ->where('t.slug = ? AND t.lang = ?', array($slug, $this->context->getUser()->getCulture()))
+      ->where('t.slug = ? AND t.lang = ?', array($slug, $culture))
       ->fetchOne();
       
       if (!$page)
       {
-        throw new dmPageNotFoundException(sprintf('There is no page with slug %s in %s culture', $slug, $this->context->getUser()->getCulture()));
+        throw new dmPageNotFoundException(sprintf('There is no page with slug %s in %s culture', $slug, $culture));
       }
     }
     elseif($this->context->getRequest()->hasParameter('dm_cpi'))

@@ -87,7 +87,7 @@ abstract class dmLinkTag extends dmHtmlTag
    */
   public function anchor($v)
   {
-    return $this->set('anchor', trim((string) $anchor, '#'));
+    return $this->set('anchor', trim((string) $v, '#'));
   }
 
   /*
@@ -135,6 +135,13 @@ abstract class dmLinkTag extends dmHtmlTag
       }
       
       unset($attributes['params']);
+    }
+    
+    if (isset($attributes['anchor']))
+    {
+      $attributes['href'] .= '#'.$attributes['anchor'];
+      
+      unset($attributes['anchor']);
     }
 
     return $attributes;

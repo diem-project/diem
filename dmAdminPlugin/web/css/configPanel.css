@@ -1,3 +1,7 @@
+div.dm_config_panel.ui-tabs div.ui-tabs-panel {
+  background:url(../images/edit/separator_bg.png) no-repeat scroll 50% 50% transparent;
+}
+
 .dm_config_panel li.dm_form_element {
   float: left;
   width: 46%;

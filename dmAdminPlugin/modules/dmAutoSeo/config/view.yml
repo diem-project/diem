@@ -1,0 +1,3 @@
+all:
+  stylesheets:  [ lib.ui-tabs, lib.ui-accordion, admin.autoSeo ]
+  javascripts:  [ lib.ui-accordion, admin.autoSeo ]

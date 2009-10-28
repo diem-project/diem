@@ -22,7 +22,7 @@ class dmWebRequest extends sfWebRequest
    */
   public function isXmlHttpRequest()
   {
-    return parent::isXmlHttpRequest() || $this->getParameter('dm_xhr');
+    return parent::isXmlHttpRequest();
   }
 
   public function isFlashRequest()

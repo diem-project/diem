@@ -1,0 +1,57 @@
+div.dm_auto_seo {
+	padding: 10px;
+}
+
+div.dm_auto_seo div.dm_half1 {
+  float: left;
+  width: 60%;
+}
+
+div.dm_auto_seo div.dm_half2 {
+  float: left;
+  width: 40%;
+}
+
+div.dm_auto_seo h2 {
+	text-align: center;
+}
+
+div.dm_auto_seo li.dm_form_element {
+	padding: 10px;
+}
+
+div.dm_auto_seo li.dm_form_element > label {
+  width: 18%;
+}
+
+div.dm_auto_seo li.dm_form_element > div.dm_help_wrap {
+  margin-left: 20%;
+  color: #666;
+}
+
+div.dm_auto_seo li.dm_meta_preview {
+  padding: 10px;
+}
+
+div.dm_auto_seo div.dm_variables_wrap {
+  float: left;
+  width: 30%;
+}
+
+div.dm_auto_seo div.dm_form_wrap {
+  float: left;
+  width: 70%;
+}
+
+div.dm_auto_seo li.dm_variable {
+  margin: 5px 0 5px 10px;
+}
+
+div.dm_auto_seo .ui-accordion .ui-accordion-content {
+  padding: 5px;
+}
+
+div.dm_info {
+  padding: 10px;
+  border: 1px solid #D3D3D3;
+}

@@ -3,6 +3,14 @@
  */
 class PluginDmAutoSeoTable extends myDoctrineTable
 {
+  
+  public function findActives()
+  {
+    return $this->createQuery('a')
+    ->whereIn('a.module', array_keys(self::$moduleManager->getModulesWithPage()))
+    ->dmCache()
+    ->fetchRecords();
+  }
 
   /*
    * @return DmAutoSeo found or created record

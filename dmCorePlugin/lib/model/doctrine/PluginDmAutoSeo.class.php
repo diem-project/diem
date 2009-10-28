@@ -12,12 +12,25 @@
  */
 abstract class PluginDmAutoSeo extends BaseDmAutoSeo
 {
+  
+  public function getTargetDmModule()
+  {
+    if ($this->hasCache('target_module'))
+    {
+      return $this->getCache('target_module');
+    }
+    
+    return $this->setCache('target_module', self::$serviceContainer->getService('module_manager')->getModule($this->module));
+  }
+  
   public function __toString()
   {
-    return sprintf('DmAutoSeo #%d %s.%s',
-      $this->getId(),
-      $this->getModule(),
-      $this->getAction()
-    );
+    return $this->getTargetDmModule()->getPlural();
+    
+//    return sprintf('DmAutoSeo #%d %s.%s',
+//      $this->getId(),
+//      $this->getModule(),
+//      $this->getAction()
+//    );
   }
 }

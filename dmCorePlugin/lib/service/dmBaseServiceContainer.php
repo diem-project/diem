@@ -218,6 +218,20 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
     $this->parameters[strtolower($name)] = array_merge($this->parameters[strtolower($name)], $value);
   }
   
+  
+  public function reload($id)
+  {
+    if (!$this->hasService($id))
+    {
+      throw new InvalidArgumentException(sprintf('The service "%s" does not exist.', $id));
+    }
+    
+    if(isset($this->shared[$id]))
+    {
+      unset($this->shared[$id]);
+    }
+  }
+  
   /**
    * Returns true if the given service is defined.
    *

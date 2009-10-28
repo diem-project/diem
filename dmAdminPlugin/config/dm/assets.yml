@@ -16,6 +16,7 @@ js:
     logs:             dmAdminLogs
     configPanel:      dmAdminConfigPanel
     chart:            dmAdminChart
+    autoSeo:          dmAdminAutoSeo
 
 css:
 
@@ -40,3 +41,4 @@ css:
     dataTable:        dataTable
     seoService:       seoService
     moduleSpace:      moduleSpace
+    autoSeo:          autoSeo

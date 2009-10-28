@@ -49,7 +49,7 @@ abstract class dmBaseActions extends sfActions
   {
     $backUrl = $this->request->getReferer();
 
-    if (!$backUrl || $backUrl == $this->request->getUri())
+    if (!$backUrl || ($backUrl == $this->request->getUri() && $this->request->isMethod('get')))
     {
       $backUrl = '@homepage';
     }

@@ -39,50 +39,81 @@ class BasedmCoreActions extends dmBaseActions
   
   public function executeRefreshStep(dmWebRequest $request)
   {
-    $this->step = $request->getParameter('step');
-    
-    switch($this->step)
+    if ($request->hasParameter('dm_use_thread'))
     {
-      case 1:
-        $this->context->get('cache_manager')->clearAll();
-     
-        if ($this->getUser()->can('system'))
-        {
-          $this->context->get('filesystem')->sf('dmFront:generate');
+      $this->context->getServiceContainer()->mergeParameter('page_tree_watcher.options', array('use_thread' => $request->getParameter('use_thread')));
+      $this->context->getServiceContainer()->reload('page_tree_watcher');
+    }
     
-          dmFileCache::clearAll();
+    $this->step = $request->getParameter('step');
+    try
+    {
+      switch($this->step)
+      {
+        case 1:
+          $this->context->get('cache_manager')->clearAll();
+       
+          if ($this->getUser()->can('system'))
+          {
+            $this->context->get('filesystem')->sf('dmFront:generate');
+      
+            dmFileCache::clearAll();
+          }
+          
+          $data = array(
+            'msg'  => $this->context->getI18n()->__('Synchronize pages'),
+            'type' => 'ajax',
+            'url'  => dmLinkTag::build('+/dmCore/refreshStep?step=2')->getHref()
+          );
+          break;
+          
+        case 2:
+          $this->context->get('page_tree_watcher')->synchronizePages();
+          
+          $data = array(
+            'msg'  => $this->context->getI18n()->__('Synchronise SEO'),
+            'type' => 'ajax',
+            'url'  => dmLinkTag::build('+/dmCore/refreshStep?step=3')->getHref()
+          );
+          break;
+          
+        case 3:
+          $this->context->get('page_tree_watcher')->synchronizeSeo();
+          
+          $data = array(
+            'msg'  => $this->context->getI18n()->__('Regenerate interface'),
+            'type' => 'redirect',
+            'url'  => $this->getUser()->getAttribute('dm_refresh_back_url')
+          );
+          
+          $this->context->getEventDispatcher()->notify(new sfEvent($this, 'dm.refresh', array()));
+          $this->getUser()->getAttributeHolder()->remove('dm_refresh_back_url');
+          $this->getUser()->logInfo('Project successfully updated');
+          break;
+      }
+    
+    }
+    catch(Exception $e)
+    {
+      $this->getUser()->logError('Something went wrong when updating project');
+      
+      $data = array(
+        'msg'  => $this->context->getI18n()->__('Something went wrong'),
+        'type' => 'redirect',
+        'url'  => $this->getUser()->getAttribute('dm_refresh_back_url')
+      );
+    
+      if (sfConfig::get('sf_debug'))
+      {
+        if ($request->isXmlHttpRequest())
+        {
+          $data['url'] = $request->getUri().'&dm_use_thread=0';
         }
-        
-        $data = array(
-          'msg'  => $this->context->getI18n()->__('Synchronize pages'),
-          'type' => 'ajax',
-          'url'  => dmLinkTag::build('+/dmCore/refreshStep?step=2')->getHref()
-        );
-        break;
-        
-      case 2:
-        $this->context->get('page_tree_watcher')->synchronizePages();
-        
-        $data = array(
-          'msg'  => $this->context->getI18n()->__('Synchronise SEO'),
-          'type' => 'ajax',
-          'url'  => dmLinkTag::build('+/dmCore/refreshStep?step=3')->getHref()
-        );
-        break;
-        
-      case 3:
-        $this->context->get('page_tree_watcher')->synchronizeSeo();
-        
-        $data = array(
-          'msg'  => $this->context->getI18n()->__('Regenerate interface'),
-          'type' => 'redirect',
-          'url'  => $this->getUser()->getAttribute('dm_refresh_back_url')
-        );
-        
-        $this->context->getEventDispatcher()->notify(new sfEvent($this, 'dm.refresh', array()));
-        $this->getUser()->getAttributeHolder()->remove('dm_refresh_back_url');
-        $this->getUser()->logInfo('Project successfully updated');
-        break;
+        else
+        {
+          throw $e;
+        }
+      }
     }
     
     if ($this->getRequest()->isXmlHttpRequest())
@@ -92,7 +123,7 @@ class BasedmCoreActions extends dmBaseActions
     
     $this->data = $data;
   }
-
+  
   public function executeMarkdown(dmWebRequest $request)
   {
     return $this->renderText($this->context->get('markdown')->toHtml($request->getParameter('text')));
