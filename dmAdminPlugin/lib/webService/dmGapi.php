@@ -21,7 +21,7 @@ class dmGapi extends gapi
    */
   public function __construct($email, $password, $token=null)
   {
-    if (!($email && $password) || !$token)
+    if (!($email && $password) && !$token)
     {
       throw new dmException('No google analytics account configured');
     }

@@ -160,7 +160,7 @@ abstract class dmAssetCompressor
         }
       
         $message = sprintf('%s : compressed %d assets ( %s )', get_class($this), count($this->cachedAssets), dmOs::humanizeSize($cacheFilePath));
-        $this->dispatcher->notify(new sfEvent($this, 'application.log', array($message, 'priority' => sfLogger::WARNING)));
+        $this->dispatcher->notify(new sfEvent($this, 'application.log', array($message, 'priority' => sfLogger::INFO)));
       }
       
       $this->processedAssets = array_merge(
