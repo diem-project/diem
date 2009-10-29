@@ -1,0 +1,20 @@
+all:
+
+  theme:                                          # front css themes
+    list:                                         # list of themes
+      default_theme:
+        name:             'Diem default theme'    # theme name
+        path:             'dm/front/defaultTheme' # theme path from web dir
+        enabled:          true                    # theme disponibility from dmThemeManager 
+      my_theme:
+        name:             'My theme'              # theme name
+        path:             'theme'                 # theme path from web dir
+        enabled:          true                    # theme disponibility from dmThemeManager 
+    default:              my_theme                # default theme when user arrive on site
+
+  html:
+    validate:             false                   # Validates Html in front ( credential: w3c_html_front ) and admin ( credential: w3c_html_admin )
+    doctype:
+      name:               'html'                  # Doctype name ( 'html', 'xhtml' )
+      version:            '5'                     # Doctype xhtml version ( '1.0', '1.1' ) or html version ( '4', '5' )
+      compliance:         'transitional'          # Doctype xhtml compliance ( 'strict', 'transitional' )

@@ -1,0 +1,15 @@
+default:
+  http_metas:
+    content-type: text/html
+
+  metas:
+
+  stylesheets:
+    - layout
+    - markdown
+
+  javascripts:
+    - front
+
+  has_layout:     true
+  layout:         layout

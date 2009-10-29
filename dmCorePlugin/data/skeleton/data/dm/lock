@@ -1,0 +1,1 @@
+To remove this lock file, please run the dm:setup task : "php symfony dm:setup"
