@@ -13,16 +13,6 @@ require_once(dm::getDir().'/dmCorePlugin/lib/config/dmApplicationConfiguration.p
 abstract class dmAdminApplicationConfiguration extends dmApplicationConfiguration
 {  
 
-  /**
-   * @see sfProjectConfiguration
-   */
-  public function initConfiguration()
-  {
-//    require_once(sfConfig::get('dm_admin_dir').'/lib/config/dmAdminModuleManagerConfigHandler.php');
-    
-    parent::initConfiguration();
-  }
-  
   protected function getDmPlugins()
   {
     return array('dmAdminPlugin');

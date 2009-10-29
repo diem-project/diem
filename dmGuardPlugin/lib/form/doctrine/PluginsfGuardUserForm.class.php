@@ -11,5 +11,14 @@ abstract class PluginsfGuardUserForm extends BasesfGuardUserForm
 {
   public function configure()
   {
+    $this->validatorSchema['username'] = new sfValidatorAnd(array(
+      $this->validatorSchema['username'],
+      new sfValidatorRegex(array('pattern' => '/^[\w\d\-\s@\.]+$/')),
+    ));
+    
+    $this->validatorSchema['email'] = new sfValidatorAnd(array(
+      $this->validatorSchema['email'],
+      new sfValidatorEmail(),
+    ));
   }
 }

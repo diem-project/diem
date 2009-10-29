@@ -7,7 +7,7 @@ config/routing.yml:
 config/dm/modules.yml:
   class:          dmFrontModuleManagerConfigHandler
   
-config/dm/project.yml:
+config/dm/config.yml:
   class:          sfDefineEnvironmentConfigHandler
   param:
     prefix:       dm_

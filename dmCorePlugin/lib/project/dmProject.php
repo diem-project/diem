@@ -85,7 +85,7 @@ class dmProject
 //      dmOs::join(sfConfig::get('dm_data_dir'), 'index'),
 //      dmOs::join(sfConfig::get('dm_data_dir'), 'log'),
       sfConfig::get('sf_upload_dir'),
-      dmOs::join(sfConfig::get('sf_lib_dir'), 'migration/doctrine')
+//      dmOs::join(sfConfig::get('sf_lib_dir'), 'migration/doctrine')
     );
 
     $messages = array();
@@ -95,7 +95,7 @@ class dmProject
       if (!is_dir($requiredWritableDir))
       {
         $oldUmask = umask(0);
-        mkdir($requiredWritableDir, 0777, true);
+        @mkdir($requiredWritableDir, 0777, true);
         umask($oldUmask);
       }
     

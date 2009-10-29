@@ -60,7 +60,7 @@ class dmContentChart extends dmChart
 
   protected function getData()
   {
-    if (!$data = $this->serviceContainer->getService('cache_manager')->getCache('chart/data')->get('content'))
+    if (!$data = $this->getCache('data'))
     {
       $data = array(
         'date' => array(),
@@ -82,7 +82,7 @@ class dmContentChart extends dmChart
         }
       }
       
-      $this->serviceContainer->getService('cache_manager')->getCache('chart/data')->set('content', $data);
+      $this->setCache('data', $data);
     }
     
     return $data;

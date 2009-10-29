@@ -9,6 +9,26 @@ class dmGapi extends gapi
   $reportId,
   $defaultReportOptions;
   
+  /**
+   * Constructor function for all new gapi instances
+   * 
+   * Set up authenticate with Google and get auth_token
+   *
+   * @param String $email
+   * @param String $password
+   * @param String $token
+   * @return gapi
+   */
+  public function __construct($email, $password, $token=null)
+  {
+    if (!($email && $password) || !$token)
+    {
+      throw new dmException('No google analytics account configured');
+    }
+    
+    parent::__construct($email, $password, $token);
+  }
+  
   public function getTotalPageViews()
   {
     $report = $this->getReport(array(

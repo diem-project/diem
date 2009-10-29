@@ -7,6 +7,17 @@ class dmGuardUserAdminForm extends sfGuardUserAdminForm
     parent::configure();
 
     $this->unsetAutoFields();
+    
+    $this->validatorSchema['username'] = new sfValidatorAnd(array(
+      $this->validatorSchema['username'],
+      new sfValidatorRegex(array('pattern' => '/^[\w\d\-\s@\.]+$/')),
+    ));
+    
+    $this->validatorSchema['email'] = new sfValidatorAnd(array(
+      $this->validatorSchema['email'],
+      new sfValidatorEmail(),
+    ));
+    
     $this->embedForm('Profile', $this->getProfileForm($this->getObject()->Profile));
   }
   

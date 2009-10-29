@@ -127,6 +127,11 @@ class dmLogChart extends dmChart
         'mem'     => array()
       );
       
+      if (count($requestLogEntries < 50))
+      {
+        throw new dmException('Not enough log entries');
+      }
+      
       foreach($requestLogEntries as $userLogEntry)
       {
         $date = $userLogEntry['time'];

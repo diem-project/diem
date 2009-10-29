@@ -51,24 +51,28 @@ class dmVisitChart extends dmGaChart
 
   protected function getData()
   {
-    $report = $this->serviceContainer->getGapi()->getReport(array(
-      'dimensions'  => array('month', 'year'),
-      'metrics'     => array('pageviews', 'visitors')
-    ));
-    
-//    dmDebug::kill($report);
-    
-    $data = array(
-      'dates' => array(),
-      'pageviews' => array(),
-      'visitors' => array()
-    );
-
-    foreach($report as $entry)
+    if (!$data = $this->getCache('data'))
     {
-      $data['dates'][] = $entry->get('month').'/'.$entry->get('year');
-      $data['pageviews'][] = $entry->get('pageviews');
-      $data['visitors'][] = $entry->get('visitors');
+      $report = $this->gapi->getReport(array(
+        'dimensions'  => array('month', 'year'),
+        'metrics'     => array('pageviews', 'visitors')
+      ));
+      
+  //    dmDebug::kill($report);
+      
+      $data = array(
+        'dates' => array(),
+        'pageviews' => array(),
+        'visitors' => array()
+      );
+  
+      foreach($report as $entry)
+      {
+        $data['dates'][] = $entry->get('month').'/'.$entry->get('year');
+        $data['pageviews'][] = $entry->get('pageviews');
+        $data['visitors'][] = $entry->get('visitors');
+      }
+      $this->setCache('data', $data);
     }
     
     return $data;

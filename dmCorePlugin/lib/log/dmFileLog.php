@@ -48,9 +48,14 @@ abstract class dmFileLog extends dmLog
       
       $data = $this->encode($entry->toArray());
   
+      if (0 !== filesize($this->options['file']))
+      {
+        $data = "\n".$data;
+      }
+      
       if($fp = fopen($this->options['file'], 'a'))
       {
-        fwrite($fp, "\n".$data);
+        fwrite($fp, $data);
         fclose($fp);
       }
       else
@@ -96,6 +101,8 @@ abstract class dmFileLog extends dmLog
   
   public function getEntries($max = 100, array $options = array())
   {
+    $this->checkFile();
+    
     $options = array_merge(array(
       'fix_log' => true,
       'hydrate' => true,
@@ -105,14 +112,15 @@ abstract class dmFileLog extends dmLog
     
     $file = $this->options['file'];
     $fileSize = filesize($file);
-    $bufferSize = $this->options['buffer_size'];
+    $bufferSize = min($fileSize, $this->options['buffer_size']);
     
     $entries = array();
     $nb = 0;
     
     $filter = $options['filter'];
     
-    for($filePosition = $fileSize - $bufferSize; $filePosition > 0; $filePosition -= $bufferSize)
+    
+    for($filePosition = $fileSize - $bufferSize; $filePosition >= 0; $filePosition -= $bufferSize)
     {
       if (!$data = file_get_contents($file, 0, null, $filePosition, $bufferSize))
       {
@@ -121,9 +129,12 @@ abstract class dmFileLog extends dmLog
       
       $encodedLines = explode("\n", $data);
       
-      // first line is always corrupted. remove it from encodedLine and decrement filePosition to catch it next time
-      $filePosition += mb_strlen($encodedLines[0]);
-      unset($encodedLines[0]);
+      // first line is corrupted. remove it from encodedLine and decrement filePosition to catch it next time
+      if ('}' !== $encodedLines[0]{strlen($encodedLines[0])-1})
+      {
+        $filePosition += mb_strlen($encodedLines[0]);
+        unset($encodedLines[0]);
+      }
       
       foreach(array_reverse($encodedLines) as $encodedLine)
       {
@@ -175,7 +186,6 @@ abstract class dmFileLog extends dmLog
   protected function fixLog()
   {
     $lines = file($this->options['file'], FILE_IGNORE_NEW_LINES);
-    
     // remove empty lines
     $lines = array_filter($lines);
     

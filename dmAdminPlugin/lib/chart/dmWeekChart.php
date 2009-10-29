@@ -85,26 +85,24 @@ class dmWeekChart extends dmGaChart
 
   protected function getData()
   {
-    $report = $this->serviceContainer->getGapi()->getReport(array(
-      'dimensions'  => array('day', 'month', 'date'),
-      'metrics'     => array('pageviews', 'visitors', 'bounces'),
-      'sort_metric' => 'date',
-      'start_date'  => date('Y-m-d',strtotime('10 days ago')),
-      'end_date'  => date('Y-m-d',strtotime('1 day ago'))
-    ));
-    
-    $data = $this->reportToData($report, array(
-      'date',
-      'pageviews',
-      'visitors',
-      'bounces'
-    ));
-    
-//    $data['pagesPerVisitor'] = array();
-//    foreach($data['pageviews'] as $index => $pageviews)
-//    {
-//      $data['pagesPerVisitor'][$index] = $pageviews/$data['visitors'][$index];
-//    }
+    if (!$data = $this->getCache('data'))
+    {
+      $report = $this->gapi->getReport(array(
+        'dimensions'  => array('day', 'month', 'date'),
+        'metrics'     => array('pageviews', 'visitors', 'bounces'),
+        'sort_metric' => 'date',
+        'start_date'  => date('Y-m-d',strtotime('10 days ago')),
+        'end_date'  => date('Y-m-d',strtotime('1 day ago'))
+      ));
+      
+      $data = $this->reportToData($report, array(
+        'date',
+        'pageviews',
+        'visitors',
+        'bounces'
+      ));
+      $this->setCache('data', $data);
+    }
     
     return $data;
   }

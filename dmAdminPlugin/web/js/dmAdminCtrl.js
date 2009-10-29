@@ -39,12 +39,12 @@
 			$('.dm_auto_loading', self.$).each(function()
 			{
 				var $this = $(this), metadata = $this.metadata();
-				$this.height(metadata.height || 200).block();
+				$this.height(metadata.height || ($this.width()/500) * 300);
         setTimeout(function() {
 					$.ajax({
 						url:     metadata.url,
 						success: function(html) {
-							$this.unblock().height('auto').html(html);
+							$this.hide().html(html).fadeIn(1000);
 						}
 					});
 			  }, nbElements*500);

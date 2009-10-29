@@ -18,7 +18,7 @@ default:
         class:              dmMetaCache
 
   routing:
-    class:                  dmPatternRouting
+    class:                  dmFrontRouting
     param:
       segment_separators:   [ '/' ]
       cache:

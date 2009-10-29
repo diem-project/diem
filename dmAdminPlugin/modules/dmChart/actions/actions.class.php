@@ -39,11 +39,12 @@ class dmChartActions extends dmAdminBaseActions
         dmLinkTag::build('@dm_chart?name='.$chartKey)
         ->text($this->image->htmlWidth('100%'))
         ->title($this->context->getI18n()->__('Expanded view'))
+        ->set('.block')
       );
     }
     else
     {
-      return $this->renderPartial('error');
+      return $this->renderPartial($this->chart instanceof dmGaChart ? 'gaError' : 'error');
     }
   }
   
@@ -69,6 +70,11 @@ class dmChartActions extends dmAdminBaseActions
     $this->context->getServiceContainer()->mergeParameter($serviceName.'.options', $options);
     
     $this->chart = $this->context->get($serviceName);
+    
+    if (!$this->chart->isAvailable())
+    {
+      return false;
+    }
     
     try
     {

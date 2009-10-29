@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * The current Diem version.
+ */
+define('DIEM_VERSION', '5.0.0-DEV');
+
 class dmBase
 {
 
@@ -8,16 +13,16 @@ class dmBase
   $version,
   $dir;
 
-  public static function register($dir)
+  public static function start($dir = null)
   {
     if (null !== self::$dir)
     {
-      throw new Exception('Diem has already been registered');
+      throw new Exception('Diem has already been started');
     }
     
     self::resetStartTime();
 
-    self::$dir = $dir;
+    self::$dir = null === $dir ? realpath(dirname(__FILE__).'/../../..') : $dir;
 
     require_once(self::$dir.'/dmCorePlugin/lib/config/dmProjectConfiguration.php');
   }
@@ -48,8 +53,10 @@ class dmBase
   
   public static function checkServer()
   {
-    $configuration = ProjectConfiguration::getApplicationConfiguration('admin', 'test', true);
-    dm::createContext($configuration);
+//    $configuration = ProjectConfiguration::getApplicationConfiguration('admin', 'test', true);
+//    dm::createContext($configuration);
+    
+    require_once(realpath(dirname(__FILE__).'/../os/dmServerCheck.php'));
     
     $serverCheck = new dmServerCheck;
     
@@ -107,14 +114,6 @@ class dmBase
     return dmContext::getInstance()->getConfiguration()->loadHelpers($helpers);
   }
 
-  /*
-   * Diem common features shortcuts
-   */
-
-  public static function version()
-  {
-    return sfConfig::get('dm_version');
-  }
 
   /*
    * Gadgets

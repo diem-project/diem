@@ -13,7 +13,6 @@ echo £('div.dm_box',
     £('h2', __($chart->getName()))
   ).
   £('div.dm_box_inner.dm_data.m5.dm_auto_loading', array('json' => array(
-    'url' => £link('@dm_chart?action=image&name='.$chartKey)->getHref(),
-    'height' => 200
+    'url' => £link('@dm_chart?action=image&name='.$chartKey)->getHref()
   )))
 );

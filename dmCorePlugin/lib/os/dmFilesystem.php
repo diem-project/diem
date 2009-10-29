@@ -118,12 +118,14 @@ class dmFilesystem extends sfFilesystem
   public function exec($command)
   {
     exec($command, $output, $returnCode);
+    
     $this->lastExec = array(
-      "command" => $command,
-      "output" => implode("\n", $output),
-      "return" => $returnCode
+      'command' => $command,
+      'output' => implode("\n", $output),
+      'return' => $returnCode
     );
-    return $returnCode == 0;
+    
+    return 0 === $returnCode;
   }
 
   public function sf($command)

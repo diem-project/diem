@@ -1,5 +1,7 @@
 <?php
 
+require_once(realpath(dirname(__FILE__).'/dmOs.php'));
+
 class dmServerCheck
 {
   protected $checks;
@@ -21,10 +23,10 @@ class dmServerCheck
       'php config' => array(
     new dmServerCheckUnit('version', phpversion(), '5.2.4', self::ERROR),
     new dmServerCheckUnit('version != 5.2.9 (buggy)', version_compare(phpversion(), '5.2.9', '!='), true, self::ERROR),
-    new dmServerCheckUnit('memory', ini_get('memory_limit'), 48, self::ERROR),
+    new dmServerCheckUnit('memory', ini_get('memory_limit'), '48M', self::ERROR),
     new dmServerCheckUnit('magic quote gpc', ini_get('magic_quotes_gpc'), false),
-    new dmServerCheckUnit('upload max filesize', ini_get('upload_max_filesize'), 4),
-    new dmServerCheckUnit('post max size', ini_get('post_max_size'), 4),
+    new dmServerCheckUnit('upload max filesize', ini_get('upload_max_filesize'), '2M'),
+    new dmServerCheckUnit('post max size', ini_get('post_max_size'), '2M'),
     new dmServerCheckUnit('register globals', ini_get('register_globals'), false),
     new dmServerCheckUnit('session auto_start', ini_get('session.auto_start'), false),
     new dmServerCheckUnit('token_get_all()', function_exists('token_get_all'), true),
@@ -78,11 +80,10 @@ class dmServerCheck
     return
     sprintf('<h1>Diem %s System Check</h1>', sfConfig::get('dm_version')).
     '<div class="clearfix">'.
-    sprintf('<div class="half">%s%s%s%s</div>',
+    sprintf('<div class="half">%s%s%s</div>',
     $this->renderTable('server'),
     $this->renderTable('php config'),
-    $this->renderTable('symfony'),
-    $this->renderSymfonyCheck()
+    $this->renderTable('symfony')
     ).
     sprintf('<div class="half">%s</div>', $this->renderTable('php extensions')).
     '</div>';
@@ -133,21 +134,6 @@ class dmServerCheck
     return '</html>';
   }
   
-  protected function renderSymfonyCheck()
-  {
-    ob_start();
-    include(realpath(sfConfig::get('sf_symfony_lib_dir').'/../data/bin').'/check_configuration.php');
-    $html = ob_get_clean();
-    
-    return str_replace('<pre>', '<pre style="line-height: 1; margin-top: 0">', $html);
-//    $command = sprintf('php %s',
-//      realpath(sfConfig::get('sf_symfony_lib_dir').'/../data/bin').'/check_configuration.php'
-//    );
-//    
-//    exec($command, $output, $returnCode);
-//    
-//    return implode('<br />', $output);
-  }
 }
 
 class dmServerCheckUnit
@@ -200,7 +186,7 @@ class dmServerCheckUnit
   public function renderDiagnostic()
   {
     $diagnostic = $this->getDiagnostic();
-    return sprintf('<img src="dm/core/images/24/%s.png" alt="%s" />', $diagnostic, strtoupper($diagnostic));
+    return sprintf('<img src="%sdm/core/images/24/%s.png" alt="%s" />', $this->getBaseUri(), $diagnostic, strtoupper($diagnostic));
   }
 
   public function getDiagnostic()
@@ -264,4 +250,19 @@ class dmServerCheckUnit
 
     return round($val / (1024 * 1024));
   }
+  
+  protected function getBaseUri()
+  {
+    return str_replace('dm_check.php', '', $_SERVER['REQUEST_URI']);
+  }
+  
+  public function __toString()
+  {
+    return $this->renderName();
+  }
+}
+
+class dmServerCheckException extends Exception
+{
+  
 }

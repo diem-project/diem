@@ -47,9 +47,7 @@ EOF;
     $this->updateIncrementalSkeleton();
     
     $this->migrate();
-
-//    $this->updateMysql();
-
+    
     $this->buildModel();
 
     if ($options['clear-db'])
@@ -68,20 +66,28 @@ EOF;
 
     $this->generateAdmins();
     
-    $this->generateFunctionalTests();
-
     $this->get('cache_manager')->clearAll();
+    
+    if (file_exists(dmOs::join(sfConfig::get('dm_data_dir'), 'lock')))
+    {
+      $this->get('filesystem')->remove(dmOs::join(sfConfig::get('dm_data_dir'), 'lock'));
+      
+      $this->logBlock('Your project is now ready for web access. See you on admin_dev.php. Your login is admin and your password is the database password.', 'INFO_LARGE');
+    }
   }
   
   protected function migrate()
   {
-    try
+    if (count(sfFinder::type('file')->maxDepth(0)->in(dmProject::rootify('lib/model/doctrine'))))
     {
-      $this->executeTask('sfDoctrineGenerateMigrationsDiff');
-    }
-    catch(Doctrine_Task_Exception $e)
-    {
-      $this->log('The database is up to date');
+      try
+      {
+        $this->executeTask('sfDoctrineGenerateMigrationsDiff');
+      }
+      catch(Doctrine_Task_Exception $e)
+      {
+        $this->log('The database is up to date');
+      }
     }
   }
   
@@ -107,37 +113,6 @@ EOF;
     }
   }
   
-  protected function generateFunctionalTests()
-  {
-    foreach(array('admin', 'front') as $app)
-    {
-      if (dmProject::appExists($app))
-      {
-        $file = dmProject::rootify('test/functional/'.$app.'/dmTest.php');
-        
-        if(!file_exists($file))
-        {
-          $this->get('filesystem')->mkdir(dirname($file));
-          
-          file_put_contents($file, '<?php
-
-require_once realpath(dirname(__FILE__).\'/../../../config/ProjectConfiguration.class.php\');
-
-$config = array(
-  \'env\'       => \'test\',
-  \'debug\'     => false,
-  \'login\'     => '.($app == 'admin' ? 'true' : 'false').',
-  \'username\'  => \'admin\',
-  \'password\'  => \'admin\'
-);
-
-$test = new dm'.ucfirst($app).'FunctionalCoverageTest($config);
-
-$test->run();');
-        }
-      }
-    }
-  }
 
   protected function generateAdmins()
   {
@@ -192,27 +167,6 @@ $test->run();');
   
   protected function createAssetSymlinks()
   {
-    $projectWebPath = sfConfig::get('sf_web_dir');
-
-    $this->get('filesystem')->mkdir($projectWebPath.'/dm');
-
-    foreach(array("core", "admin", "front") as $plugin)
-    {
-      $pluginDir = dmOs::join(dm::getDir(), 'dm'.dmString::camelize($plugin).'Plugin');
-      $origin = dmOs::join($pluginDir, "web");
-      $target = dmOs::join($projectWebPath, sfConfig::get('dm_'.$plugin.'_asset', 'dm/'.$plugin));
-
-      if (file_exists($origin))
-      {
-        $this->log("symlink $target");
-        $this->get('filesystem')->relativeSymlink($origin, $target);
-      }
-    }
-
-    $this->get('filesystem')->mkdir(sfConfig::get('sf_cache_dir').'/web');
-    $this->get('filesystem')->relativeSymlink(
-      sfConfig::get('sf_cache_dir').'/web',
-      dmOs::join($projectWebPath, 'cache')
-    );
+    return $this->runTask('dm:publish-assets');
   }
 }

@@ -40,11 +40,6 @@ class dmCorePluginConfiguration extends sfPluginConfiguration
       'dm_cache_dir'        => dmOs::join(sfConfig::get('sf_cache_dir'), 'dm')
     ));
     
-    if(null === sfConfig::get('lazy_cache_key'))
-    {
-      sfConfig::set('lazy_cache_key', true);
-    }
-    
     dmConfig::initialize($this->dispatcher);
   }
 

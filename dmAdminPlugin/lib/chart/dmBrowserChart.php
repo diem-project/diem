@@ -54,38 +54,43 @@ class dmBrowserChart extends dmGaChart
 
   protected function getData()
   {
-    $months = 1;
-    $minPageView = 20*$months;
-    
-    $startDate = date('Y-m-d', strtotime($months.' month ago'));
-    
-//    $totalPageviews = $this->serviceContainer->getGapi()->getTotalPageViews();
-    
-    $report = $this->serviceContainer->getGapi()->getReport(array(
-      'dimensions'  => array('browser'),
-      'metrics'     => array('pageviews'),
-      'sort_metric' => '-pageviews',
-      'filter'      => 'pageviews > '.$minPageView,
-      'start_date'  => $startDate
-    ));
-    
-    $data = array('name' => $this->reportToData($report, array('browser', 'pageviews')));
-    
-    $data['name']['browser'][array_search('Internet Explorer', $data['name']['browser'])] = 'IE';
-    
-    $report = $this->serviceContainer->getGapi()->getReport(array(
-      'dimensions'  => array('browserVersion'),
-      'metrics'     => array('pageviews'),
-      'sort_metric' => 'browserVersion',
-      'filter'      => 'browser == Internet Explorer && pageviews > '.$minPageView,
-      'start_date'  => $startDate
-    ));
-    
-    $data['ieVersion'] = $this->reportToData($report, array('browserVersion', 'pageviews'));
-    
-    foreach($data['ieVersion']['browserVersion'] as $index => $value)
+    if (!$data = $this->getCache('data'))
     {
-      $data['ieVersion']['browserVersion'][$index] = 'IE '.$value;
+      $months = 1;
+      $minPageView = 20*$months;
+      
+      $startDate = date('Y-m-d', strtotime($months.' month ago'));
+      
+  //    $totalPageviews = $this->serviceContainer->getGapi()->getTotalPageViews();
+      
+      $report = $this->gapi->getReport(array(
+        'dimensions'  => array('browser'),
+        'metrics'     => array('pageviews'),
+        'sort_metric' => '-pageviews',
+        'filter'      => 'pageviews > '.$minPageView,
+        'start_date'  => $startDate
+      ));
+      
+      $data = array('name' => $this->reportToData($report, array('browser', 'pageviews')));
+      
+      $data['name']['browser'][array_search('Internet Explorer', $data['name']['browser'])] = 'IE';
+      
+      $report = $this->gapi->getReport(array(
+        'dimensions'  => array('browserVersion'),
+        'metrics'     => array('pageviews'),
+        'sort_metric' => 'browserVersion',
+        'filter'      => 'browser == Internet Explorer && pageviews > '.$minPageView,
+        'start_date'  => $startDate
+      ));
+      
+      $data['ieVersion'] = $this->reportToData($report, array('browserVersion', 'pageviews'));
+      
+      foreach($data['ieVersion']['browserVersion'] as $index => $value)
+      {
+        $data['ieVersion']['browserVersion'][$index] = 'IE '.$value;
+      }
+      
+      $this->setCache('data', $data);
     }
     
     return $data;

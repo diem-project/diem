@@ -95,14 +95,14 @@ abstract class dmAssetCompressor
     
     $this->assets           = $assets;
     $this->cachedAssets     = array();
-    $this->cdnAssets  = array();
+    $this->cdnAssets        = array();
     $this->preservedAssets  = array();
     $this->processedAssets  = array();
     $this->cacheKey         = '';
     $this->webDir           = sfConfig::get('sf_web_dir');
 
     $this->preProcess();
-
+    
     foreach($this->assets as $webPath => $options)
     {
       if ($this->isOnFilesystem($webPath))

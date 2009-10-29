@@ -17,6 +17,7 @@ abstract class dmChart extends pChart
   $cacheKey = '',
   $data,
   $name,
+  $available = true,
   $credentials;
 
   function dmChart(dmBaseServiceContainer $serviceContainer, array $options = array())
@@ -28,6 +29,11 @@ abstract class dmChart extends pChart
     parent::pChart($this->getWidth(), $this->getHeight());
 
     $this->setup();
+  }
+  
+  public function isAvailable()
+  {
+    return $this->available;
   }
 
   protected function setup()

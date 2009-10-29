@@ -23,7 +23,7 @@ abstract class dmApplicationConfiguration extends sfApplicationConfiguration
   {
     parent::initConfiguration();
 
-    include($this->getConfigCache()->checkConfig('config/dm/project.yml'));
+    include($this->getConfigCache()->checkConfig('config/dm/config.yml'));
 
     /*
      * Replace sf default culture by first culture in dm cultures configuration

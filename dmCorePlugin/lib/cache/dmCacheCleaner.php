@@ -47,11 +47,21 @@ class dmCacheCleaner
   
   public function listenToRecordModificationEvent(sfEvent $event)
   {
-    $model = get_class($event->getSubject());
-    
-    if (!in_array($model, $this->options['safe_models']))
+    if (!$this->isModelSafe(get_class($event->getSubject())))
     {
       $this->addToQueue(self::TEMPLATE);
+    }
+  }
+  
+  public function isModelSafe($model)
+  {
+    if (in_array($model, $this->options['safe_models']))
+    {
+      return true;
+    }
+    else
+    {
+      return strncmp($model, 'sfGuard', 7) === 0;
     }
   }
   

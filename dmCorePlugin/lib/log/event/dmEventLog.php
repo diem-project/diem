@@ -89,7 +89,7 @@ class dmEventLog extends dmFileLog
   {
     $this->log(array(
       'server'  => $_SERVER,
-      'action'  => 'clearte',
+      'action'  => 'clear',
       'type'    => 'template_cache',
       'subject' => 'Template cache cleared'
     ));

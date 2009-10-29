@@ -11,7 +11,4 @@ dm_init:
 
 cache:        ~
 
-common:
-  enabled:    false
-
 execution:    ~

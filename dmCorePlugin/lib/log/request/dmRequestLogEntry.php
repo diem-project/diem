@@ -13,7 +13,7 @@ class dmRequestLogEntry extends dmLogEntry
   {
     $isXhr = $data['context']->getRequest()->isXmlHttpRequest();
     
-    $uri = $this->cleanUri(dmArray::get($data['server'], 'PATH_INFO'));
+    $uri = $this->cleanUri(dmArray::get($data['server'], 'PATH_INFO', $data['server']['REQUEST_URI']));
     
     $this->data = array(
       'time'          => (string) $data['server']['REQUEST_TIME'],

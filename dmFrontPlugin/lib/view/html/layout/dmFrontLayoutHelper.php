@@ -80,7 +80,7 @@ class dmFrontLayoutHelper extends dmCoreLayoutHelper
     $metas = array(
       'description'  => $this->page->get('description'),
       'language'     => $this->user->getCulture(),
-      'generator'    => 'Diem '.dm::version()
+      'generator'    => 'Diem '.DIEM_VERSION
     );
     
     if (sfConfig::get('dm_seo_use_keywords') && $keywords = $this->page->get('keywords'))
