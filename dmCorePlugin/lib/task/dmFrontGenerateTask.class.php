@@ -34,21 +34,21 @@ EOF;
     {
       $this->log(sprintf("Generate front for module %s", $moduleKey));
 
-      $actionGenerator = new dmFrontActionGenerator($module, $this->dispatcher);
+      $actionGenerator = new dmFrontActionGenerator($module, $this->dispatcher, $this->getFilesystem());
       
       if (!$actionGenerator->execute())
       {
         $this->logBlock('Can NOT create actions for module '.$module);
       }
 
-      $componentGenerator = new dmFrontComponentGenerator($module, $this->dispatcher);
+      $componentGenerator = new dmFrontComponentGenerator($module, $this->dispatcher, $this->getFilesystem());
       
       if (!$componentGenerator->execute())
       {
         $this->logBlock('Can NOT create components for module '.$module);
       }
 
-      $actionTemplateGenerator = new dmFrontActionTemplateGenerator($module, $this->dispatcher);
+      $actionTemplateGenerator = new dmFrontActionTemplateGenerator($module, $this->dispatcher, $this->getFilesystem());
       
       if (!$actionTemplateGenerator->execute())
       {

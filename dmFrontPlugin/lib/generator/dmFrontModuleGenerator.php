@@ -8,11 +8,11 @@ abstract class dmFrontModuleGenerator
   $dispatcher,
   $filesystem;
 
-  public function __construct(dmProjectModule $module, sfEventDispatcher $dispatcher)
+  public function __construct(dmProjectModule $module, sfEventDispatcher $dispatcher, dmFilesystem $filesystem)
   {
     $this->module = $module;
     $this->dispatcher = $dispatcher;
-    $this->filesystem = dmContext::getInstance()->getFilesystem();
+    $this->filesystem = $filesystem;
   }
 
   abstract public function execute();

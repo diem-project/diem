@@ -9,6 +9,15 @@ class dmFrontUser extends dmUser
    * The namespace under which theme keys will be stored.
    */
   const THEME_NAMESPACE = 'symfony/user/sfUser/theme';
+
+  public function listenToContextLoadedEvent(sfEvent $e)
+  {
+    parent::listenToContextLoadedEvent($e);
+    
+    $this->setThemeManager($e->getSubject()->get('theme_manager'));
+    
+    $this->getTheme();
+  }
   
   public function setThemeManager(dmThemeManager $themeManager)
   {

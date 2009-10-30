@@ -100,31 +100,6 @@ class dmModule extends dmMicroCache
     return $this->options['underscore'];
   }
 
-  /*
-   * Full system path to the symfony module directory
-   * @return string|null /path/to/the/module
-   */
-//  public function getDir()
-//  {
-//    if($this->hasCache('dir'))
-//    {
-//      return $this->getCache('dir');
-//    }
-//
-//    $dirs = dmContext::getInstance()->getConfiguration()->getControllerDirs($this->key);
-//
-//    $dir = null;
-//    foreach($dirs as $actionPath => $isProject)
-//    {
-//      if(file_exists($actionPath))
-//      {
-//        $dir = preg_replace('|^(.+)/actions$|', '$1', $actionPath);
-//        break;
-//      }
-//    }
-//    
-//    return $this->setCache('dir', $dir);
-//  }
 
   public function getTable()
   {

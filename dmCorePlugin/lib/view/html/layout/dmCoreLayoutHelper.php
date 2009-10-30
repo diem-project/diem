@@ -4,30 +4,20 @@ abstract class dmCoreLayoutHelper
 {
   protected
     $dispatcher,
-    $user,
-    $response,
-    $actionStack,
-    $helper,
-    $requestContext,
-    $theme,
+    $serviceContainer,
     $baseWebPath,
     $isHtml5;
 
-  public function __construct(sfEventDispatcher $dispatcher, dmUser $user, dmWebResponse $response, sfActionStack $actionStack, dmHelper $helper, array $requestContext)
+  public function __construct(sfEventDispatcher $dispatcher, dmBaseServiceContainer $serviceContainer)
   {
     $this->dispatcher = $dispatcher;
-    $this->user       = $user;
-    $this->response   = $response;
-    $this->actionStack = $actionStack;
-    $this->helper     = $helper;
-    $this->requestContext = $requestContext;
+    $this->serviceContainer = $serviceContainer;
     
     $this->initialize();
   }
   
   protected function initialize()
   {
-    $this->theme    = $this->user->getTheme();
     $this->isHtml5  = sfConfig::get('dm_html_doctype_version', 5) == 5;
   }
 
@@ -62,7 +52,7 @@ abstract class dmCoreLayoutHelper
       return '<html>';
     }
     
-    $culture = $this->user->getCulture();
+    $culture = $this->serviceContainer->getParameter('user.culture');
 
     return sprintf(
       '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="%s" lang="%s">',
@@ -73,7 +63,7 @@ abstract class dmCoreLayoutHelper
   
   public function renderHttpMetas()
   {
-    $httpMetas = $this->response->getHttpMetas();
+    $httpMetas = $this->serviceContainer->getService('response')->getHttpMetas();
     
     $html = '';
     
@@ -93,13 +83,15 @@ abstract class dmCoreLayoutHelper
      */
     $stylesheets = $this->dispatcher->filter(
       new sfEvent($this, 'dm.response.filter_stylesheets'),
-      $this->response->getStylesheets()
+      $this->serviceContainer->getService('response')->getStylesheets()
     )->getReturnValue();
+    
+    $relativeUrlRoot = dmArray::get($this->serviceContainer->getParameter('request.context'), 'relative_url_root');
 
     $html = '';
     foreach ($stylesheets as $file => $options)
     {
-      $html .= "\n".'<link rel="stylesheet" type="text/css" media="'.dmArray::get($options, 'media', 'all').'" href="'.$this->requestContext['relative_url_root'].$file.'" />';
+      $html .= "\n".'<link rel="stylesheet" type="text/css" media="'.dmArray::get($options, 'media', 'all').'" href="'.$relativeUrlRoot.$file.'" />';
     }
     
     sfConfig::set('symfony.asset.stylesheets_included', true);
@@ -115,15 +107,17 @@ abstract class dmCoreLayoutHelper
      */
     $javascripts = $this->dispatcher->filter(
       new sfEvent($this, 'dm.response.filter_javascripts'),
-      $this->response->getJavascripts()
+      $this->serviceContainer->getService('response')->getJavascripts()
     )->getReturnValue();
     
     sfConfig::set('symfony.asset.javascripts_included', true);
     
+    $relativeUrlRoot = dmArray::get($this->serviceContainer->getParameter('request.context'), 'relative_url_root');
+    
     $html = '';
     foreach ($javascripts as $file => $options)
     {
-      $html .= '<script type="text/javascript" src="'.($file{0} === '/' ? $this->requestContext['relative_url_root'].$file : $file).'"></script>';
+      $html .= '<script type="text/javascript" src="'.($file{0} === '/' ? $relativeUrlRoot.$file : $file).'"></script>';
     }
   
     return $html;
@@ -131,13 +125,15 @@ abstract class dmCoreLayoutHelper
   
   protected function getJavascriptConfig()
   {
-    return array_merge($this->response->getJavascriptConfig(), array(
-      'relative_url_root'  => $this->requestContext['relative_url_root'],
-      'dm_core_asset_root' => $this->requestContext['relative_url_root'].'/'.sfConfig::get('dm_core_asset').'/',
-      'script_name'        => $this->requestContext['script_name'].'/',
+    $requestContext = $this->serviceContainer->getParameter('request.context');
+    
+    return array_merge($this->serviceContainer->getService('response')->getJavascriptConfig(), array(
+      'relative_url_root'  => $requestContext['relative_url_root'],
+      'dm_core_asset_root' => $requestContext['relative_url_root'].'/'.sfConfig::get('dm_core_asset').'/',
+      'script_name'        => $requestContext['script_name'].'/',
       'debug'              => sfConfig::get('sf_debug') ? 'true' : 'false',
-      'culture'            => $this->user->getCulture(),
-      'module'             => $this->actionStack->getLastEntry()->getModuleName()
+      'culture'            => $this->serviceContainer->getParameter('user.culture'),
+      'module'             => $this->serviceContainer->getParameter('controller.module')
     ));
   }
   
@@ -163,7 +159,7 @@ abstract class dmCoreLayoutHelper
 
     if (isset($favicon))
     {
-      return "\n".'<link rel="shortcut icon" href="'.$this->requestContext['relative_url_root'].'/'.$favicon.'" />';
+      return "\n".'<link rel="shortcut icon" href="'.dmArray::get($this->serviceContainer->getParameter('request.context'), 'relative_url_root').'/'.$favicon.'" />';
     }
 
     return '';

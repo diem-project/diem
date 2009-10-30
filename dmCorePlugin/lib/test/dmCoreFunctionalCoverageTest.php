@@ -3,6 +3,7 @@
 abstract class dmCoreFunctionalCoverageTest
 {
   protected
+  $context,
   $options,
   $browser,
   $stats,
@@ -54,7 +55,7 @@ abstract class dmCoreFunctionalCoverageTest
   {
     $configuration = ProjectConfiguration::getApplicationConfiguration($this->options['app'], $this->options['env'], $this->options['debug']);
 
-    dm::createContext($configuration);
+    $this->context = dm::createContext($configuration);
     
     sfConfig::set('sf_logging_enabled', false);
 

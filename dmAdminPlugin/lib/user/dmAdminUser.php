@@ -4,8 +4,23 @@ class dmAdminUser extends dmUser
 {
   protected
   $theme,
+  $moduleManager,
   $availableModules = array();
-
+  
+  public function listenToContextLoadedEvent(sfEvent $e)
+  {
+    parent::listenToContextLoadedEvent($e);
+    
+    $this->setModuleManager($e->getSubject()->getModuleManager());
+    
+    $this->setTheme($e->getSubject()->get('theme'));
+  }
+  
+  public function setModuleManager(dmModuleManager $moduleManager)
+  {
+    $this->moduleManager = $moduleManager;
+  }
+  
   /*
    * @return dmTheme the current user theme
    */
@@ -68,7 +83,7 @@ class dmAdminUser extends dmUser
     }
     else
     {
-      $module = dmContext::getInstance()->getModuleManager()->getModule($moduleKey);
+      $module = $this->moduleManager->getModule($moduleKey);
     }
     
     return $this->availableModules[$module->getKey()] =

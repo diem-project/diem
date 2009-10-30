@@ -97,12 +97,12 @@ class dmWidgetListForm extends dmWidgetProjectModelForm
 
   protected function allowFilterAutoRecordId(dmModule $filterModule)
   {
-    return dmContext::getInstance()->getPage()->getDmModule()->knows($filterModule);
+    return $this->getPage()->getDmModule()->knows($filterModule);
   }
 
   protected function getFilterAutoRecord(dmModule $filterModule)
   {
-    return dmContext::getInstance()->getPage()->getRecord()->getAncestorRecord($filterModule->getModel());
+    return $this->getPage()->getRecord()->getAncestorRecord($filterModule->getModel());
   }
 
   protected function getFirstDefaults()

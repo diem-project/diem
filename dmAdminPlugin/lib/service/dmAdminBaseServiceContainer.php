@@ -14,9 +14,6 @@ abstract class dmAdminBaseServiceContainer extends dmBaseServiceContainer
     parent::connectServices();
     
     $this->getService('bread_crumb')->connect();
-    
-    // must be called after all connections to event dispatcher
-    $this->getService('user')->setTheme($this->getService('theme'));
   }
   
   /*

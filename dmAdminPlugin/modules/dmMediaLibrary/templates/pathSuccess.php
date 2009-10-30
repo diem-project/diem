@@ -26,7 +26,7 @@ if ($folder->isRoot())
 }
 else
 {
-  echo £('li', (£link(dmMediaTools::getAdminUrlFor($folder->getNode()->getParent()))->text(£media('dmAdmin/images/media/up.png')->size(64, 64))));
+  echo £('li', (£link($sf_context->getRouting()->getMediaUrl($folder->getNode()->getParent()))->text(£media('dmAdmin/images/media/up.png')->size(64, 64))));
 }
 
 if ($children = $folder->getNode()->getChildren())
@@ -34,7 +34,7 @@ if ($children = $folder->getNode()->getChildren())
   foreach($children as $f)
   {
     echo £('li.folder',
-      £link(dmMediaTools::getAdminUrlFor($f))->text(
+      £link($sf_context->getRouting()->getMediaUrl($f))->text(
         ($f->isWritable() ? £media('dmAdmin/images/media/folder.png')->size(64, 64)
         : £media('dmAdmin/images/media/folder-locked.png')).
         £('span.name', media_wrap_text($f->getName())).
@@ -48,7 +48,7 @@ foreach($files as $f)
 {
   echo £('li.file.media_id_'.$f->getId(),
     ($f->isImage()
-    ? £link(dmMediaTools::getAdminUrlFor($f))->text(
+    ? £link($sf_context->getRouting()->getMediaUrl($f))->text(
         £('span.image_background',
           array('style' => sprintf(
             'background: url(%s) top left no-repeat',
@@ -57,7 +57,7 @@ foreach($files as $f)
           £('span.name', media_wrap_text(dmString::truncate($f->getFile(), 40)))
         )
       )
-    : £link(dmMediaTools::getAdminUrlFor($f))->text(
+    : £link($sf_context->getRouting()->getMediaUrl($f))->text(
         media_file_image_tag($f).
         £('span.name', media_wrap_text(dmString::truncate($f->getFile(), 40)))
       )

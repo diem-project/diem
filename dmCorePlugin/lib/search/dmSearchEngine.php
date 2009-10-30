@@ -6,10 +6,9 @@ class dmSearchEngine extends dmSearchIndexGroup
   $user,
   $serviceContainer;
   
-  public function __construct(sfEventDispatcher $dispatcher, dmUser $user, sfLogger $logger, sfServiceContainer $serviceContainer)
+  public function __construct(sfEventDispatcher $dispatcher, sfLogger $logger, sfServiceContainer $serviceContainer)
   {
     $this->dispatcher       = $dispatcher;
-    $this->user             = $user;
     $this->logger           = $logger;
     $this->serviceContainer = $serviceContainer;
     $this->name             = get_class($this);
@@ -64,7 +63,7 @@ class dmSearchEngine extends dmSearchIndexGroup
   
   public function getCurrentIndex()
   {
-    return $this->getIndex('dm_'.$this->user->getCulture());
+    return $this->getIndex('dm_'.$this->serviceContainer->getParameter('user.culture'));
   }
   
   public function populate(dmContext $context)
@@ -75,18 +74,18 @@ class dmSearchEngine extends dmSearchIndexGroup
 
     $this->logger->log($this->getName().' : Populating group...');
     
-    $oldCulture = $this->user->getCulture();
+    $oldCulture = $this->serviceContainer->getParameter('user.culture');
     
     foreach ($this->getIndices() as $name => $index)
     {
       $this->logger->log($this->getName().' : Populating index "' . $name . '"...');
 
-      $this->user->setCulture($index->getCulture());
+      $context->getUser()->setCulture($index->getCulture());
       
       $index->populate($context);
     }
     
-    $this->user->setCulture($oldCulture);
+    $context->getUser()->setCulture($oldCulture);
 
     $this->logger->log($this->getName().' : Group populated in "' . round(microtime(true) - $start, 2) . '" seconds.');
   

@@ -9,6 +9,16 @@ abstract class dmUser extends sfGuardSecurityUser implements dmMicroCacheInterfa
   $isSuperAdmin = null,
   $cache = array();
   
+  public function connect()
+  {
+    $this->dispatcher->connect('dm.context.loaded', array($this, 'listenToContextLoadedEvent'));
+  }
+  
+  public function listenToContextLoadedEvent(sfEvent $e)
+  {
+    $this->setBrowser($e->getSubject()->get('browser'));
+  }
+  
   public function setCulture($culture)
   {
     if (!in_array($culture, sfConfig::get('dm_i18n_cultures')))

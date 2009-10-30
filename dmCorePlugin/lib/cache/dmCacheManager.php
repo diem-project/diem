@@ -72,6 +72,7 @@ class dmCacheManager extends dmConfigurable
     }
 
     $this->dispatcher->notify(new sfEvent($this, 'dm.cache.clear', array('success' => $success)));
+    $this->dispatcher->notify(new sfEvent($this, 'task.cache.clear'));
 
     return $success;
   }

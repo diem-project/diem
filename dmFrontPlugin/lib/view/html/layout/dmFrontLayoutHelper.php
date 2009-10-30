@@ -40,17 +40,18 @@ class dmFrontLayoutHelper extends dmCoreLayoutHelper
   public function renderBrowserStylesheets()
   {
     $html = '';
+    $theme = $this->serviceContainer->getParameter('user.theme');
 
     // search in theme_dir/css/browser/ieX.css
-    if (is_dir($this->theme->getFullPath('css/browser')))
+    if (is_dir($theme->getFullPath('css/browser')))
     {
       foreach(array(6, 7, 8) as $ieVersion)
       {
-        if (file_exists($this->theme->getFullPath('css/browser/msie'.$ieVersion.'.css')))
+        if (file_exists($theme->getFullPath('css/browser/msie'.$ieVersion.'.css')))
         {
           $html .= "\n".sprintf('<!--[if IE %d]><link href="%s" rel="stylesheet" type="text/css" /><![endif]-->',
             $ieVersion,
-            $this->theme->getWebPath('css/browser/msie'.$ieVersion.'.css')
+            $theme->getWebPath('css/browser/msie'.$ieVersion.'.css')
           );
         }
       }
@@ -79,8 +80,7 @@ class dmFrontLayoutHelper extends dmCoreLayoutHelper
   {
     $metas = array(
       'description'  => $this->page->get('description'),
-      'language'     => $this->user->getCulture(),
-      'generator'    => 'Diem '.DIEM_VERSION
+      'language'     => $this->serviceContainer->getParameter('user.culture')
     );
     
     if (sfConfig::get('dm_seo_use_keywords') && $keywords = $this->page->get('keywords'))
@@ -116,28 +116,32 @@ class dmFrontLayoutHelper extends dmCoreLayoutHelper
   
   public function renderEditBars()
   {
-    if (!$this->user->can('admin'))
+    $user = $this->serviceContainer->getService('user');
+    
+    if (!$user->can('admin'))
     {
       return '';
     }
     
-    $cacheKey = sfConfig::get('sf_cache') ? $this->user->getCredentialsHash() : null;
+    $helper = $this->serviceContainer->getService('helper');
+    
+    $cacheKey = sfConfig::get('sf_cache') ? $user->getCredentialsHash() : null;
     
     $html = '';
     
-    if (sfConfig::get('dm_pageBar_enabled', true) && $this->user->can('page_bar_front'))
+    if (sfConfig::get('dm_pageBar_enabled', true) && $user->can('page_bar_front'))
     {
-      $html .= $this->helper->renderPartial('dmInterface', 'pageBar', array('cacheKey' => $cacheKey));
+      $html .= $helper->renderPartial('dmInterface', 'pageBar', array('cacheKey' => $cacheKey));
     }
     
-    if (sfConfig::get('dm_mediaBar_enabled', true) && $this->user->can('media_bar_front'))
+    if (sfConfig::get('dm_mediaBar_enabled', true) && $user->can('media_bar_front'))
     {
-      $html .= $this->helper->renderPartial('dmInterface', 'mediaBar', array('cacheKey' => $cacheKey));
+      $html .= $helper->renderPartial('dmInterface', 'mediaBar', array('cacheKey' => $cacheKey));
     }
     
-    if ($this->user->can('tool_bar_front'))
+    if ($user->can('tool_bar_front'))
     {
-      $html .= $this->helper->renderComponent('dmInterface', 'toolBar', array('cacheKey' => $cacheKey));
+      $html .= $helper->renderComponent('dmInterface', 'toolBar', array('cacheKey' => $cacheKey));
     }
     
     return $html;
@@ -152,7 +156,9 @@ class dmFrontLayoutHelper extends dmCoreLayoutHelper
   
   public function renderGoogleAnalytics()
   {
-    if (dmConfig::get('ga_key') && !$this->user->can('admin') && !dmOs::isLocalhost())
+    $user = $this->serviceContainer->getService('user');
+    
+    if (dmConfig::get('ga_key') && !$user->can('admin') && !dmOs::isLocalhost())
     {
       return str_replace("\n", ' ', '<script type="text/javascript">
 var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");

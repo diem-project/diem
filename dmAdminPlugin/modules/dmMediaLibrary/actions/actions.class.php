@@ -109,7 +109,7 @@ class dmMediaLibraryActions extends dmAdminBaseActions
     {
       foreach($ancestors as $parent)
       {
-        $links[] = dmLinkTag::build(dmMediaTools::getAdminUrlFor($parent))->text($parent->get('name'));
+        $links[] = dmLinkTag::build($this->getRouting()->getMediaUrl($parent))->text($parent->get('name'));
       }
     }
     
@@ -155,7 +155,7 @@ class dmMediaLibraryActions extends dmAdminBaseActions
         if($this->form->getValue('file'))
         {
           $this->getUser()->setFlash('dm_media_open', $object->getId());
-          return $this->renderText('[OK]|'.dmMediaTools::getAdminUrlFor($object->Folder));
+          return $this->renderText('[OK]|'.$this->getRouting()->getMediaUrl($object->Folder));
         }
       }
     }
@@ -179,7 +179,7 @@ class dmMediaLibraryActions extends dmAdminBaseActions
       $this->file->delete();
     }
 
-    return $this->redirect(dmMediaTools::getAdminUrlFor($this->file->Folder));
+    return $this->redirect($this->getRouting()->getMediaUrl($this->file->Folder));
 
   }
 
@@ -261,7 +261,7 @@ class dmMediaLibraryActions extends dmAdminBaseActions
 
       $object->save();
 
-      return $this->renderText('[OK]|'.dmMediaTools::getAdminUrlFor($object));
+      return $this->renderText('[OK]|'.$this->getRouting()->getMediaUrl($object));
     }
 
     $this->setTemplate('editFolder');
@@ -287,7 +287,7 @@ class dmMediaLibraryActions extends dmAdminBaseActions
       $this->folder->delete();
     }
 
-    return $this->redirect(dmMediaTools::getAdminUrlFor($parent));
+    return $this->redirect($this->getRouting()->getMediaUrl($parent));
   }
 
 }

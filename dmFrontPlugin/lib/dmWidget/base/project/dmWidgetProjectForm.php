@@ -30,4 +30,9 @@ abstract class dmWidgetProjectForm extends dmWidgetBaseForm
   {
     return $this->dmAction;
   }
+  
+  public function getPage()
+  {
+    return self::$serviceContainer->getParameter('context.page');
+  }
 }

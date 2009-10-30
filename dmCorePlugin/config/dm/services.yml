@@ -85,7 +85,7 @@ parameters:
     
   page_tree_watcher.class:    dmPageTreeWatcher
   page_tree_watcher.options:
-    use_thread:               auto # launch big tasks on another processus ( auto, true, false )
+    use_thread:               auto # launch heavy synchronization tasks on another processus ( auto, true, false )
   
   file_backup.class:          dmFileBackup
   file_backup.options:
@@ -146,7 +146,7 @@ services:
   search_engine:
     class:                    %search_engine.class%
     shared:                   true
-    arguments:                [ @dispatcher, @user, @logger, @service_container ]
+    arguments:                [ @dispatcher, @logger, @service_container ]
 
   search_index:
     class:                    %search_index.class%
@@ -181,13 +181,12 @@ services:
   layout_helper:
     class:                    %layout_helper.class%
     shared:                   true
-    arguments:
-    arguments:                [ @dispatcher, @user, @response, @action_stack, @helper, %request.context% ]
+    arguments:                [ @dispatcher, @service_container ]
 
   auth_layout_helper:
     class:                    %auth_layout_helper.class%
     shared:                   true
-    arguments:                [ @dispatcher, @user, @response, @action_stack, @helper, %request.context% ]
+    arguments:                [ @dispatcher, @service_container ]
 
   filesystem:
     class:                    %filesystem.class%
@@ -232,7 +231,7 @@ services:
   helper:
     class:                    %helper.class%
     shared:                   true
-    arguments:                [ @dispatcher, @user, @context, %request.context% ]
+    arguments:                [ @dispatcher, @context ]
       
   cache_manager:
     class:                    %cache_manager.class%

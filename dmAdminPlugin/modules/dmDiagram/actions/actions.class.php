@@ -71,7 +71,6 @@ class dmDiagramActions extends dmAdminBaseActions
     $sc->setService('response',         $this->context->getResponse());
     $sc->setService('i18n',             $this->context->getI18n());
     $sc->setService('routing',          $this->context->getRouting());
-    $sc->setService('action_stack',     $this->context->getActionStack());
     $sc->setService('config_cache',     $this->context->getConfigCache());
     $sc->setService('controller',       $this->context->getController());
     $sc->setService('logger',           $this->context->getLogger());

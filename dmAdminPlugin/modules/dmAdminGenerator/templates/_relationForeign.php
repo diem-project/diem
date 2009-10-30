@@ -1,26 +1,30 @@
 <?php
 
-$moduleManager    = $sf_context->getModuleManager();
-$module           = $moduleManager->getModuleByModel($record->getTable()->getComponentName());
-
-if(!$module)
+/*
+ * Yes, this is a controller and should live in a component.
+ * But sometimes a single partial is faster.
+ */
+if(!$module = $record->getDmModule())
 {
-  throw new dmException(sprintf('no module found for model %s', $record->getTable()->getComponentName()));
+  throw new dmException(sprintf('no module found for model %s', get_class($record)));
 }
 
 $relation         = $module->getTable()->getRelation($alias);
-$foreignModule    = $moduleManager->getModuleByModel($relation->getClass());
+$foreignModule    = $sf_context->getModuleManager()->getModuleByModel($relation->getClass());
 $foreignRecords   = $record->get($alias);
 /*
  * One to one relations give only one object instead of a collection
  * transform it into an array
  */
-if ($foreignRecords instanceof myDoctrineRecord)
+if ($foreignRecords instanceof dmDoctrineRecord)
 {
   $foreignRecords = array($foreignRecords);
 }
-
 $nbforeignRecords = count($foreignRecords);
+
+/*
+ * End of the infamous controller
+ */
 
 echo £o('div.dm_foreigns');
 
@@ -41,7 +45,7 @@ echo £o('div.dm_foreigns');
     echo £c('ul');
   }
   
-  $newLink = dmAdminLinkTag::build('@'.$foreignModule->getUnderscore().'?action=new')
+  $newLink = £link('@'.$foreignModule->getUnderscore().'?action=new')
   ->text(__('New'))
   ->set('.s16.s16_add_little');
   

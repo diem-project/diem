@@ -22,26 +22,30 @@ abstract class dmFrontBaseServiceContainer extends dmBaseServiceContainer
     $this->configurePageHelper();
   }
   
+  public function connect()
+  {
+    parent::connect();
+    
+    $this->getService('dispatcher')->connect('dm.context.change_page', array($this, 'listenToContextChangePageEvent'));
+  }
+  
   protected function connectServices()
   {
     parent::connectServices();
     
     $this->getService('page_helper')->connect();
     
-    if ($this->getService('response')->isHtmlForHuman() || sfConfig::get('sf_environment') == 'test')
-    {
-      $this->getService('layout_helper')->connect();
-    }
-    
-    // must be called after all connections to event dispatcher
-    $this->getService('user')->getTheme();
+    $this->getService('layout_helper')->connect();
   }
   
-  protected function configureUser()
+  /**
+   * Listens to the dm.context.change_page event.
+   *
+   * @param sfEvent An sfEvent instance
+   */
+  public function listenToContextChangePageEvent(sfEvent $event)
   {
-    parent::configureUser();
-    
-    $this->getService('user')->setThemeManager($this->getService('theme_manager'));
+    $this->setParameter('context.page', $event['page']);
   }
   
   protected function configurePageHelper()

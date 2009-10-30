@@ -4,16 +4,12 @@ class dmHelper
 {
   protected
   $dispatcher,
-  $user,
-  $context,
-  $requestContext;
+  $context;
   
-  public function __construct(sfEventDispatcher $dispatcher, dmUser $user, dmContext $context, array $requestContext)
+  public function __construct(sfEventDispatcher $dispatcher, dmContext $context)
   {
     $this->dispatcher      = $dispatcher;
     $this->context         = $context;
-    $this->user            = $user;
-    $this->requestContext  = $requestContext;
     
     $this->initialize();
   }
@@ -21,45 +17,6 @@ class dmHelper
   public function initialize()
   {
   }
-  
-  /*
-   * @return dmUser
-   */
-  public function getUser()
-  {
-    throw new dmException();
-    return $this->user;
-  }
-  
-  /*
-   * @return dmTheme
-   */
-  public function getTheme()
-  {
-    return $this->user->getTheme();
-  }
-  
-  /*
-   * @return string
-   */
-  public function getCulture()
-  {
-    return $this->user->getCulture();
-  }
-  
-  /*
-   * @return string
-   */
-  public function getRequestContext($key = null)
-  {
-    if (null === $key)
-    {
-      return $this->requestContext;
-    }
-    
-    return $this->requestContext[$key];
-  }
-  
   
   public function renderPartial($moduleName, $actionName, $vars = array())
   {
@@ -156,10 +113,8 @@ class dmHelper
         $tagOpt['class'][] = is_array($opt['class']) ? implode(' ', $opt['class']) : $opt['class'];
         unset($opt['class']);
       }
-      $tagOpt = array_merge(
-      $tagOpt,
-      $opt
-      );
+      
+      $tagOpt = array_merge($tagOpt, $opt);
     }
 
     // SYMFONY STYLE - string opt
@@ -171,13 +126,11 @@ class dmHelper
         $tagOpt['class'][] = explode(' ', $opt['class']);
         unset($opt['class']);
       }
-      $tagOpt = array_merge(
-      $tagOpt,
-      $opt
-      );
+      
+      $tagOpt = array_merge($tagOpt, $opt);
     }
 
-    if (!$content) // Pas de content
+    if (!$content)
     {
       if (!is_array($opt))
       {
@@ -209,9 +162,9 @@ class dmHelper
       $isBeaf = false;
     }
 
-    if(isset($tagOpt['lang']))
+    if(isset($tagOpt['lang']) && sfContext::hasInstance())
     {
-      if($tagOpt['lang'] == dm::getUser()->getCulture())
+      if($tagOpt['lang'] === sfContext::getInstance()->getServiceContainer()->getParameter('user.culture'))
       {
         unset($tagOpt['lang']);
       }

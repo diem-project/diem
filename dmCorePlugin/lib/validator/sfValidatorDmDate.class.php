@@ -37,7 +37,7 @@ class sfValidatorDmDate extends sfValidatorDate
     $this->addMessage('max', $i18n->__('The date must be before').' %max%.');
     $this->addMessage('min', $i18n->__('The date must be after').' %min%.');
 
-//    $this->addOption('date_format', $this->getDateFormat(dm::getUser()->getCulture()));
+    //    $this->addOption('date_format', $this->getDateFormat(dm::getUser()->getCulture()));
     $this->addOption('context', dmContext::getInstance());
   }
 

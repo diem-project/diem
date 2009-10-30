@@ -186,7 +186,9 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
     }
     else if ($name !== $this->name)
     {
-      if(dmMediaTools::sanitizeDirName($name) != $name)
+      $sanitizedName = trim(preg_replace('/[^\w\._-]+/i', '-', dmString::removeAccents($file)), '-');
+      
+      if($sanitizedName != $name)
       {
         throw new dmException('The target folder name "%name%" contains incorrect characters. The folder has not be renamed.', array('%name%' => $name));
       }
@@ -195,7 +197,7 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
       $fs = self::$serviceContainer->getService('filesystem');
 
       if(!$fs->exec(sprintf('cd %s && mv %s %s',
-        dmOs::join($this->getNode()->geParent()->getFullPath()), $oldName, $name
+        dmOs::join($this->getNode()->getParent()->getFullPath()), $oldName, $name
       )))
       {
         throw new dmException($fs->getLastExec());

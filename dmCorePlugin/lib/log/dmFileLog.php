@@ -130,7 +130,7 @@ abstract class dmFileLog extends dmLog
       $encodedLines = explode("\n", $data);
       
       // first line is corrupted. remove it from encodedLine and decrement filePosition to catch it next time
-      if ('}' !== $encodedLines[0]{strlen($encodedLines[0])-1})
+      if (!is_array($this->decode($encodedLines[0])))
       {
         $filePosition += mb_strlen($encodedLines[0]);
         unset($encodedLines[0]);
@@ -140,8 +140,9 @@ abstract class dmFileLog extends dmLog
       {
         $data = $this->decode($encodedLine);
         
-        if (!empty($data))
+        if (!empty($data) && is_array($data))
         {
+          if (!is_array($data)) dmDebug::kill($data);
           if ($filter && !call_user_func($filter, $data))
           {
             continue;
@@ -200,47 +201,6 @@ abstract class dmFileLog extends dmLog
       $this->getKey().' log has been fixed',
       sfLogger::NOTICE
     )));
-  }
-  
-  public function getFilteredEntries($max = 100, $filterCallback, array $options = array())
-  {
-    $options = array_merge(array(
-      'fix_log' => true,
-      'hydrate' => true
-    ), $options);
-
-    $entries = array();
-    
-    $encodedLines = array_reverse(file($this->options['file'], FILE_IGNORE_NEW_LINES));
-    
-    $nb = 0;
-    
-    foreach($encodedLines as $encodedLine)
-    {
-      $data = $this->decode($encodedLine);
-      
-      if (!empty($data))
-      {
-        if (call_user_func($filterCallback, $data))
-        {
-          $entries[] = $options['hydrate'] ? $this->buildEntry($data) : $data;
-          
-          if ($max && (++$nb == $max))
-          {
-            break;
-          }
-        }
-      }
-      elseif($options['fix_log'])
-      {
-        $this->fixLog();
-        return $this->getFilteredEntries($max, $filterCallback, $options);
-      }
-    }
-    
-    unset($encodedLines);
-    
-    return $entries;
   }
   
   protected function buildEntry(array $data)

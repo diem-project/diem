@@ -57,6 +57,12 @@ abstract class dmBaseActions extends sfActions
     return $backUrl;
   }
   
+  
+  protected function getRouting()
+  {
+    return $this->context->getRouting();
+  }
+  
   /*
    * To download a file using its absolute path or raw data
    */

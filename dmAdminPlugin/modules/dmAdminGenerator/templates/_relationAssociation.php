@@ -1,17 +1,10 @@
 <?php
 
-$moduleManager        = dmContext::getInstance()->getModuleManager();
-$module               = $moduleManager->getModuleByModel($record->getTable()->getComponentName());
-$relation             = $module->getTable()->getRelation($alias);
-$associationModule    = $moduleManager->getModuleByModel($relation->getClass());
-$associationRecords   = $record->get($alias);
-$nbassociationRecords = count($associationRecords);
-
 echo £o('div.dm_associations');
 
   echo £o('ul.list');
 
-  foreach($associationRecords as $associationRecord)
+  foreach($record->get($alias) as $associationRecord)
   {
     echo £('li',
       £link($associationRecord)

@@ -111,6 +111,11 @@ class dmLogChart extends dmChart
       
       $logDelta = dmArray::get(dmArray::first($requestLogEntries), 'time') - dmArray::get(dmArray::last($requestLogEntries), 'time');
       $hours = $logDelta / 3600;
+    
+      if ($hours < 1)
+      {
+        throw new dmException('Not enough log entries');
+      }
       
       $stepFactor = $hours / 40;
       
@@ -127,7 +132,7 @@ class dmLogChart extends dmChart
         'mem'     => array()
       );
       
-      if (count($requestLogEntries < 50))
+      if (count($requestLogEntries) < 50)
       {
         throw new dmException('Not enough log entries');
       }
@@ -190,7 +195,7 @@ class dmLogChart extends dmChart
       }
       
       $events = $this->serviceContainer->getService('event_log')
-      ->getFilteredEntries(1000, array($this, 'filterEvent'), array('hydrate' => false));
+      ->getEntries(1000, array('filter' => array($this, 'filterEvent'), 'hydrate' => false));
       $data['events'] = array();
 
       foreach($this->eventsFilter as $eventType)

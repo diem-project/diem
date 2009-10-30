@@ -1,6 +1,7 @@
 prod:
   .settings:
     no_script_name:         false
+    cache:                  true
     logging_enabled:        false
 
 dev:
@@ -14,10 +15,11 @@ dev:
 test:
   .settings:
     error_reporting:        <?php echo ((E_ALL | E_STRICT) ^ E_NOTICE)."\n" ?>
-    cache:                  false
+    cache:                  true
     web_debug:              false
     no_script_name:         false
     etag:                   false
+    logging_enabled:        false
 
 all:
   .settings:

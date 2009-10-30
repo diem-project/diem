@@ -5,12 +5,12 @@ class dmAdminLayoutHelper extends dmCoreLayoutHelper
 
   public function renderMetas()
   {
-    return sprintf('<title>%s</title>', $this->response->getTitle());
+    return sprintf('<title>%s</title>', $this->serviceContainer->getService('response')->getTitle());
   }
   
   public function renderBodyTag($class = null)
   {
-    $actionName = $this->actionStack->getLastEntry()->getActionName();
+    $actionName = $this->serviceContainer->getParameter('controller.action');
     
     return sprintf('<body class="dm%s%s%s%s">',
       $actionName == 'index' ? ' list' : '',
@@ -22,28 +22,32 @@ class dmAdminLayoutHelper extends dmCoreLayoutHelper
   
   public function renderEditBars()
   {
-    if (!$this->user->can('admin'))
+    $user = $this->serviceContainer->getService('user');
+    
+    if (!$user->can('admin'))
     {
       return '';
     }
     
-    $cacheKey = sfConfig::get('sf_cache') ? $this->user->getCredentialsHash() : null;
+    $helper = $this->serviceContainer->getService('helper');
+    
+    $cacheKey = sfConfig::get('sf_cache') ? $user->getCredentialsHash() : null;
     
     $html = '';
     
-    if (sfConfig::get('dm_pageBar_enabled', true) && $this->user->can('page_bar_admin'))
+    if (sfConfig::get('dm_pageBar_enabled', true) && $user->can('page_bar_admin'))
     {
-      $html .= $this->helper->renderPartial('dmInterface', 'pageBar', array('cacheKey' => $cacheKey));
+      $html .= $helper->renderPartial('dmInterface', 'pageBar', array('cacheKey' => $cacheKey));
     }
     
-    if (sfConfig::get('dm_mediaBar_enabled', true) && $this->user->can('media_bar_admin'))
+    if (sfConfig::get('dm_mediaBar_enabled', true) && $user->can('media_bar_admin'))
     {
-      $html .= $this->helper->renderPartial('dmInterface', 'mediaBar', array('cacheKey' => $cacheKey));
+      $html .= $helper->renderPartial('dmInterface', 'mediaBar', array('cacheKey' => $cacheKey));
     }
     
-    if ($this->user->can('tool_bar_admin'))
+    if ($user->can('tool_bar_admin'))
     {
-      $html .= $this->helper->renderComponent('dmInterface', 'toolBar', array('cacheKey' => $cacheKey));
+      $html .= $helper->renderComponent('dmInterface', 'toolBar', array('cacheKey' => $cacheKey));
     }
     
     return $html;

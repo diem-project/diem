@@ -5,20 +5,14 @@ class dmWidgetTypeManager
 
   protected
   $dispatcher,
-  $cacheManager,
-  $configCache,
-  $controller,
-  $moduleManager,
+  $serviceContainer,
   $options,
   $widgetTypes;
 
-  public function __construct(sfEventDispatcher $dispatcher, dmCacheManager $cacheManager, sfConfigCache $configCache, sfWebController $controller, dmModuleManager $moduleManager, array $options = array())
+  public function __construct(sfEventDispatcher $dispatcher, dmFrontBaseServiceContainer $serviceContainer, array $options = array())
   {
-    $this->dispatcher     = $dispatcher;
-    $this->cacheManager   = $cacheManager;
-    $this->configCache    = $configCache;
-    $this->controller     = $controller;
-    $this->moduleManager  = $moduleManager;
+    $this->dispatcher       = $dispatcher;
+    $this->serviceContainer = $serviceContainer;
 
     $this->initialize($options);
   }
@@ -38,13 +32,15 @@ class dmWidgetTypeManager
     
     if (null === $this->widgetTypes)
     {
-      $this->widgetTypes = $this->cacheManager->getCache('dm/widget')->get('types');
+      $this->widgetTypes = $this->serviceContainer->getService('cache_manager')->getCache('dm/widget')->get('types');
       
       if (empty($this->widgetTypes))
       {
-        $internalConfig = include($this->configCache->checkConfig($this->options['config_file']));
+        $internalConfig = include($this->serviceContainer->getService('config_cache')->checkConfig($this->options['config_file']));
 
         $this->widgetTypes = array();
+        
+        $controller = $this->serviceContainer->getService('controller');
 
         foreach($internalConfig as $moduleKey => $actions)
         {
@@ -59,7 +55,7 @@ class dmWidgetTypeManager
               'name'       => dmArray::get($action, 'name', dmString::humanize($actionKey)),
               'form_class' => dmArray::get($action, 'form_class', $fullKey.'Form'),
               'view_class' => dmArray::get($action, 'view_class', $fullKey.'View'),
-              'use_component' => $this->controller->componentExists('dmWidget', $fullKey),
+              'use_component' => $controller->componentExists('dmWidget', $fullKey),
               'cache'      => dmArray::get($action, 'cache', false)
             );
 
@@ -67,7 +63,7 @@ class dmWidgetTypeManager
           }
         }
 
-        foreach($this->moduleManager->getProjectModules() as $moduleKey => $module)
+        foreach($this->serviceContainer->getService('module_manager')->getProjectModules() as $moduleKey => $module)
         {
           $moduleName = $module->getName();
 
@@ -82,7 +78,7 @@ class dmWidgetTypeManager
               'name'       => $action->getName(),
               'form_class' => $baseClass.'Form',
               'view_class' => $baseClass.'View',
-              'use_component' => $this->controller->componentExists($moduleKey, $actionKey),
+              'use_component' => $controller->componentExists($moduleKey, $actionKey),
               'cache'      => $action->isCachable()
             );
             
@@ -90,7 +86,7 @@ class dmWidgetTypeManager
           }
         }
         
-        $this->cacheManager->getCache('dm/widget')->set('types', $this->widgetTypes);
+        $this->serviceContainer->getService('cache_manager')->getCache('dm/widget')->set('types', $this->widgetTypes);
       }
     }
 

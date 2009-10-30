@@ -22,7 +22,6 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
     $this->setService('user',             $dependencies['context']->getUser());
     $this->setService('response',         $dependencies['context']->getResponse());
     $this->setService('i18n',             $dependencies['context']->getI18n());
-    $this->setService('action_stack',     $dependencies['context']->getActionStack());
     $this->setService('logger',           $dependencies['context']->getLogger());
     $this->setService('config_cache',     $dependencies['context']->getConfigCache());
     $this->setService('controller',       $dependencies['context']->getController());
@@ -79,32 +78,35 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
   
   protected function configureAssetCompressor()
   {
-    /*
-     * Enable stylesheet compression
-     */
     if (!sfConfig::get('dm_debug'))
     {
+      $userCanCodeEditor = $this->getService('user')->can('code_editor');
+      
+      /*
+       * Enable stylesheet compression
+       */
       $stylesheetCompressor = $this->getService('stylesheet_compressor');
-      $stylesheetCompressor->setOption('protect_user_assets', $this->getService('user')->can('code_editor'));
+      $stylesheetCompressor->setOption('protect_user_assets', $userCanCodeEditor);
       $stylesheetCompressor->connect();
-    }
 
-    /*
-     * Enable javascript compression
-     */
-    if (!sfConfig::get('dm_debug'))
-    {
+      /*
+       * Enable javascript compression
+       */
       $javascriptCompressor = $this->getService('javascript_compressor');
-      $javascriptCompressor->setOption('protect_user_assets', $this->getService('user')->can('code_editor'));
+      $javascriptCompressor->setOption('protect_user_assets', $userCanCodeEditor);
       $javascriptCompressor->connect();
     }
   }
   
   public function connect()
   {
-    $this->getService('dispatcher')->connect('user.change_culture', array($this, 'listenToChangeCultureEvent'));
+    $dispatcher = $this->getService('dispatcher');
     
-    $this->getService('dispatcher')->connect('user.change_theme', array($this, 'listenToChangeThemeEvent'));
+    $dispatcher->connect('user.change_culture', array($this, 'listenToChangeCultureEvent'));
+    
+    $dispatcher->connect('user.change_theme', array($this, 'listenToChangeThemeEvent'));
+    
+    $dispatcher->connect('controller.change_action', array($this, 'listenToChangeActionEvent'));
     
     $this->connectServices();
   }
@@ -141,6 +143,8 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
        */
       $this->getService('request_log')->connect();
     }
+    
+    $this->getService('user')->connect();
   }
 
   /**
@@ -162,7 +166,16 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
   {
     $this->setParameter('user.theme', $event['theme']);
   }
-
+  /**
+   * Listens to the controller.change_action event.
+   *
+   * @param sfEvent An sfEvent instance
+   */
+  public function listenToChangeActionEvent(sfEvent $event)
+  {
+    $this->setParameter('controller.module', $event['module']);
+    $this->setParameter('controller.action', $event['action']);
+  }
   
   /*
    * @return dmMediaResource
@@ -202,6 +215,10 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
     return $resource;
   }
   
+  
+  /*
+   * Compatibility with sfContext
+   */
   public function get($name)
   {
     return $this->getService($name);

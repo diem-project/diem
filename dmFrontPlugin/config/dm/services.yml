@@ -75,4 +75,4 @@ services:
   widget_type_manager:
     class:                    %widget_type_manager.class%
     shared:                   true
-    arguments:                [ @dispatcher, @cache_manager, @config_cache, @controller, @module_manager, %widget_type_manager.options% ]
+    arguments:                [ @dispatcher, @service_container, %widget_type_manager.options% ]
