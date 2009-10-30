@@ -19,11 +19,6 @@ class dmFilesystem extends sfFilesystem
 //    return self::$instance;
 //  }
 
-  public function __construct(sfEventDispatcher $dispatcher)
-  {
-    $this->dispatcher = $dispatcher;
-  }
-
   public function whois($ip = null)
   {
     $ip = $ip ? $ip : $_SERVER['REMOTE_ADDR'];

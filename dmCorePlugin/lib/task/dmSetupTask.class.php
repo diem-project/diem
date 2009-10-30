@@ -18,14 +18,13 @@ class dmSetupTask extends dmContextTask
 
     $this->namespace = 'dm';
     $this->name = 'setup';
-    $this->briefDescription = 'Safely setup a project';
+    $this->briefDescription = 'Safely setup a project. Can be run several times without side effect.';
 
     $this->detailedDescription = <<<EOF
 Will create symlinks in your web directory,
 Build models, forms and filters,
 Load data,
-Rebuild sprites,
-generate admin modules
+generate missing admin modules...
 EOF;
   }
 
@@ -36,36 +35,70 @@ EOF;
   {
     $this->withDatabase();
     
-//    $this->setOption('clear', true);
+    $this->logSection('diem', 'Setup '.dmProject::getKey());
 
-    $this->log('Setup '.dmProject::getKey());
-
-    $this->get('cache_manager')->clearAll();
-
-    $this->runTask('dm:publish-assets');
+    $this->runTask('dm:clear-cache');
     
     $this->migrate();
     
-    $this->buildModel();
+    $this->runTask('doctrine:build-model');
 
     if ($options['clear-db'])
     {
-      $this->clearDb();
+      $this->runTask('doctrine:build', array('db' => true));
     }
-
-    $this->buildForms();
-
-    if (true)
-    {
-      $this->buildFilters();
-    }
+    
+    $this->runTask('dm:build-forms');
+    
+    $this->runTask('dm:build-filters');
 
     $this->runTask('dm:data');
 
-    $this->executeTask('dmAdmin:generate');
+    $this->runTask('dm:publish-assets');
+
+    $this->runTask('dmAdmin:generate');
     
-    $this->get('cache_manager')->clearAll();
+    $this->runTask('dm:clear-cache');
     
+    $this->logBlock('Setup successfull', 'INFO');
+    
+    $this->unlockProject();
+  }
+  
+  protected function migrate()
+  {
+    switch($this->runTask('dm:migrate'))
+    {
+      case dmMigrateTask::UP_TO_DATE:
+        break;
+      case dmMigrateTask::DIFF_GENERATED:
+        $this->logBlock('New doctrine migration classes have been generated', 'INFO_LARGE');
+        $this->logSection('diem', 'You should check them in /lib/migration/doctrine,');
+        $this->logSection('diem', 'Then decide if you want to apply changes.');
+        $confirm = $this->askConfirmation('Apply migration changes ? (y/N)', 'QUESTION', false);
+        
+        if (!$confirm)
+        {
+          if (!$this->askConfirmation('Continue the setup ? (y/N)', 'QUESTION', false))
+          {
+            $this->logSection('diem', 'Setup aborted.');
+            exit;
+          }
+        }
+        
+        if (!$this->runTask('doctrine:migrate'))
+        {
+          $this->logSection('diem', 'Can not apply migration changes');
+          exit;
+        }
+        break;
+      default:
+        throw new dmException('Unexpected case');
+    }
+  }
+  
+  protected function unlockProject()
+  {
     if (file_exists(dmOs::join(sfConfig::get('dm_data_dir'), 'lock')))
     {
       $this->get('filesystem')->remove(dmOs::join(sfConfig::get('dm_data_dir'), 'lock'));
@@ -73,62 +106,5 @@ EOF;
       $this->logBlock('Your project is now ready for web access. See you on admin_dev.php. Your login is admin and your password is the database password.', 'INFO_LARGE');
     }
   }
-  
-  protected function migrate()
-  {
-    if (count(sfFinder::type('file')->maxDepth(0)->in(dmProject::rootify('lib/model/doctrine'))))
-    {
-      try
-      {
-        $this->executeTask('sfDoctrineGenerateMigrationsDiff');
-      }
-      catch(Doctrine_Task_Exception $e)
-      {
-        $this->log('The database is up to date');
-      }
-    }
-  }
-  
-  protected function clearDb()
-  {
-    $this->log("clear database");
-
-    $task = new sfDoctrineDropDbTask($this->dispatcher, $this->formatter);
-    $task->run(array(), array());
-
-    $task = new sfDoctrineBuildDbTask($this->dispatcher, $this->formatter);
-    $task->run(array(), array());
-
-    $task = new sfDoctrineInsertSqlTask($this->dispatcher, $this->formatter);
-    $task->run(array(), array());
-  }
-
-  protected function buildModel()
-  {
-    $this->log("build doctrine model");
-
-//    sfToolkit::clearDirectory(dmOs::join(sfConfig::get("sf_lib_dir"), "model/doctrine/base"));
-
-    return $this->executeTask('sfDoctrineBuildModel');
-  }
-
-  protected function buildForms()
-  {
-    $this->log("build doctrine forms");
-
-//    sfToolkit::clearDirectory(dmOs::join(sfConfig::get("sf_lib_dir"), "form/doctrine/base"));
-
-    return $this->executeTask('dmDoctrineBuildForms');
-  }
-
-  protected function buildFilters()
-  {
-    $this->log("build doctrine filters");
-
-//    sfToolkit::clearDirectory(dmOs::join(sfConfig::get("sf_lib_dir"), "filter/doctrine/base"));
-
-    return $this->executeTask('sfDoctrineBuildFilters');
-  }
-
   
 }

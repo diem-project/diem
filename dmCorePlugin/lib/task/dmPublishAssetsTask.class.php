@@ -20,7 +20,7 @@ class dmPublishAssetsTask extends sfPluginPublishAssetsTask
     parent::execute($arguments, $options);
     
     $projectWebPath = sfConfig::get('sf_web_dir');
-    $filesystem = new dmFilesystem($this->dispatcher);
+    $filesystem = new dmFilesystem($this->dispatcher, $this->formatter);
 
     $filesystem->mkdir($projectWebPath.'/dm');
 
@@ -34,6 +34,11 @@ class dmPublishAssetsTask extends sfPluginPublishAssetsTask
       {
         $filesystem->relativeSymlink($origin, $target);
       }
+      
+      if (is_link(dmOs::join($projectWebPath, 'dm'.dmString::camelize($plugin).'Plugin')))
+      {
+        $filesystem->remove(dmOs::join($projectWebPath, 'dm'.dmString::camelize($plugin).'Plugin'));
+      }
     }
 
     $filesystem->mkdir(sfConfig::get('sf_cache_dir').'/web');
@@ -42,10 +47,13 @@ class dmPublishAssetsTask extends sfPluginPublishAssetsTask
       dmOs::join($projectWebPath, 'cache')
     );
 
-    $filesystem->relativeSymlink(
-      realpath(sfConfig::get('sf_symfony_lib_dir').'/../data/web/sf'),
-      dmOs::join($projectWebPath, 'sf'),
-      true
-    );
+    if (!file_exists(dmOs::join($projectWebPath, 'sf')))
+    {
+      $filesystem->relativeSymlink(
+        realpath(sfConfig::get('sf_symfony_lib_dir').'/../data/web/sf'),
+        dmOs::join($projectWebPath, 'sf'),
+        true
+      );
+    }
   }
 }

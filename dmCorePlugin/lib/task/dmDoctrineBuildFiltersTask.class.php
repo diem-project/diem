@@ -1,13 +1,6 @@
 <?php
 
-/*
- * Je modifie la classe sfDoctrineFormFormGenerator en dmDoctrineFormFormGenerator
- * qui, lui, va gérer l'internationalisation de :
- * label "is empty"
- * options "yes", "no", "yes or no"
- */
-
-class dmDoctrineBuildFormsTask extends sfDoctrineBuildFormsTask
+class dmDoctrineBuildFiltersTask extends sfDoctrineBuildFiltersTask
 {
   /**
    * @see sfTask
@@ -24,17 +17,12 @@ class dmDoctrineBuildFormsTask extends sfDoctrineBuildFormsTask
    */
   protected function execute($arguments = array(), $options = array())
   {
-    if (!sfContext::hasInstance())
-    {
-      dm::createContext($this->configuration);
-    }
-
-    $this->logSection('doctrine', 'generating form classes');
+    $this->logSection('doctrine', 'generating filter form classes');
     $databaseManager = new sfDatabaseManager($this->configuration);
     $generatorManager = new sfGeneratorManager($this->configuration);
-    $generatorManager->generate('dmDoctrineFormGenerator', array(
-      'model_dir_name' => $options['model-dir-name'],
-      'form_dir_name'  => $options['form-dir-name'],
+    $generatorManager->generate('dmDoctrineFormFilterGenerator', array(
+      'model_dir_name'  => $options['model-dir-name'],
+      'filter_dir_name' => $options['filter-dir-name'],
     ));
 
     $properties = parse_ini_file(sfConfig::get('sf_config_dir').DIRECTORY_SEPARATOR.'properties.ini', true);
@@ -47,7 +35,7 @@ class dmDoctrineBuildFormsTask extends sfDoctrineBuildFormsTask
     // customize php and yml files
     $finder = sfFinder::type('file')->name('*.php');
     $quietFilesystem = new sfFilesystem;
-    $quietFilesystem->replaceTokens($finder->in(sfConfig::get('sf_lib_dir').'/form/'), '##', '##', $constants);
+    $quietFilesystem->replaceTokens($finder->in(sfConfig::get('sf_lib_dir').'/filter/'), '##', '##', $constants);
 
     $this->reloadAutoload();
   }

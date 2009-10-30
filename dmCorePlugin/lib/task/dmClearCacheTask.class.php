@@ -29,11 +29,11 @@ EOF;
   {
     if ($this->get('cache_manager')->clearAll())
     {
-      $this->log('Cache successfully cleared');
+      $this->logSection('diem', 'Cache successfully cleared');
     }
     else
     {
-      $this->log('Some files can not be deleted. Please check permissions in /cache dir');
+      $this->logSection('diem', 'Some files can not be deleted. Please check permissions in /cache dir');
     }
   }
 }

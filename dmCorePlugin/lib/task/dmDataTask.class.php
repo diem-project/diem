@@ -41,7 +41,7 @@ EOF;
     
     foreach($this->datas as $data)
     {
-      $this->log("load data $data");
+      $this->logSection('diem', "load data $data");
       $method = "load".dmString::camelize($data);
       $this->$method();
     }

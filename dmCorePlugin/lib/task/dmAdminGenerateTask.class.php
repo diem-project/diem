@@ -31,7 +31,7 @@ EOF;
    */
   protected function execute($arguments = array(), $options = array())
   {
-    $this->log('Generate admin for modules');
+    $this->logSection('diem', 'Generate admin for modules');
 
     $modules = $this->get('module_manager')->getModules();
 
@@ -48,22 +48,22 @@ EOF;
     {
       if ($options['only'] && $moduleKey != $options['only'])
       {
-        $this->log("Skipping $module");
+//        $this->logSection('diem', "Skipping $module");
         continue;
       }
       if ($module->isProject() && !$module->hasAdmin())
       {
-        $this->log(sprintf("Skip module %s wich has no admin", $moduleKey));
+//        $this->logSection('diem', sprintf("Skip module %s wich has no admin", $moduleKey));
         continue;
       }
       if (!$module->isProject() && strncmp($module->getKey(), 'dm', 2) !== 0)
       {
-        $this->log(sprintf("Skip module %s wich is nor internal nor project : probably a plugin one", $moduleKey));
+//        $this->logSection('diem', sprintf("Skip module %s wich is nor internal nor project : probably a plugin one", $moduleKey));
         continue;
       }
       if (!$module->hasModel())
       {
-        $this->log(sprintf("Skip module %s wich has no associated model", $moduleKey));
+//        $this->logSection('diem', sprintf("Skip module %s wich has no associated model", $moduleKey));
         continue;
       }
 
@@ -71,12 +71,12 @@ EOF;
       {
         if (!$options['clear'] || !$module->isProject())
         {
-          $this->log(sprintf("Skip existing module %s", $moduleKey));
+//          $this->logSection('diem', sprintf("Skip existing module %s", $moduleKey));
           continue;
         }
         else
         {
-          $this->log(sprintf("Remove existing module %s", $moduleKey));
+          $this->logSection('diem', sprintf("Remove existing module %s", $moduleKey));
 
           $moduleDir = sfConfig::get('sf_app_module_dir').'/'.$moduleKey;
 
@@ -84,7 +84,7 @@ EOF;
         }
       }
 
-      $this->log(sprintf("Generate admin for module %s", $moduleKey));
+      $this->logSection('diem', sprintf('Generate admin for module %s', $moduleKey));
 
       $arguments = array(
         'application' => 'admin',

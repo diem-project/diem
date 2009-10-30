@@ -38,7 +38,7 @@ class dmAdminDoctrineGenerateAdminTask extends sfDoctrineGenerateAdminTask
     $task->setCommandApplication($this->commandApplication);
     $task->setConfiguration($this->configuration);
     
-    $this->logSection('app', sprintf('Generating admin module "%s" for model "%s"', $module->getKey(), $module->getModel()));
+    $this->logSection('diem', sprintf('Generating admin module "%s" for model "%s"', $module->getKey(), $module->getModel()));
 
     return $task->run(array($arguments['application'], $module->getKey(), $module->getModel()), array(
       'theme'                 => $options['theme'],
