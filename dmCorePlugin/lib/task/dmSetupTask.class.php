@@ -42,9 +42,7 @@ EOF;
 
     $this->get('cache_manager')->clearAll();
 
-    $this->createAssetSymlinks();
-    
-    $this->updateIncrementalSkeleton();
+    $this->runTask('dm:publish-assets');
     
     $this->migrate();
     
@@ -62,9 +60,9 @@ EOF;
       $this->buildFilters();
     }
 
-    $this->loadData();
+    $this->runTask('dm:data');
 
-    $this->generateAdmins();
+    $this->executeTask('dmAdmin:generate');
     
     $this->get('cache_manager')->clearAll();
     
@@ -91,34 +89,6 @@ EOF;
     }
   }
   
-  protected function updateIncrementalSkeleton()
-  {
-    $incrementalSkeletonPath = dmOs::join(sfConfig::get('dm_core_dir'), 'data/incrementalSkeleton');
-
-    foreach(sfFinder::type('dir')->maxDepth(0)->in($incrementalSkeletonPath) as $dir)
-    {
-      $userPath = sfConfig::get(basename($dir));
-       
-      foreach(sfFinder::type('dir')->in($dir) as $skelDir)
-      {
-        $userDir = dmOs::join($userPath, preg_replace('|^('.preg_quote($dir, '|').')|', '', $skelDir));
-        $this->mkdir($userDir);
-      }
-
-      foreach(sfFinder::type('file')->in($dir) as $skelFile)
-      {
-        $userFile = dmOs::join($userPath, preg_replace('|^('.preg_quote($dir, '|').')|', '', $skelFile));
-        $this->copy($skelFile, $userFile);
-      }
-    }
-  }
-  
-
-  protected function generateAdmins()
-  {
-    $this->executeTask('dmAdminGenerate');
-  }
-
   protected function clearDb()
   {
     $this->log("clear database");
@@ -160,13 +130,5 @@ EOF;
     return $this->executeTask('sfDoctrineBuildFilters');
   }
 
-  protected function loadData()
-  {
-    return $this->executeTask('dmData');
-  }
   
-  protected function createAssetSymlinks()
-  {
-    return $this->runTask('dm:publish-assets');
-  }
 }
