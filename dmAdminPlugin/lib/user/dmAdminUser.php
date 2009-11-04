@@ -1,6 +1,6 @@
 <?php
 
-class dmAdminUser extends dmUser
+class dmAdminUser extends dmCoreUser
 {
   protected
   $theme,

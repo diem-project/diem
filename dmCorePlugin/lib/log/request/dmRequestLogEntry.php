@@ -22,7 +22,7 @@ class dmRequestLogEntry extends dmLogEntry
       'app'           => (string) sfConfig::get('sf_app'),
       'env'           => (string) sfConfig::get('sf_environment'),
       'ip'            => (string) $data['server']['REMOTE_ADDR'],
-      'user_id'       => (string) $data['context']->getUser()->getGuardUserId(),
+      'user_id'       => (string) $data['context']->getUser()->getUserId(),
       'user_agent'    => (string) $isXhr ? null : $data['server']['HTTP_USER_AGENT'],
       'xhr'           => (int)    $isXhr,
       'mem'           => (string) memory_get_peak_usage(true),
@@ -55,7 +55,7 @@ class dmRequestLogEntry extends dmLogEntry
     
     if(!isset(self::$usersCache[$userId]))
     {
-      self::$usersCache[$userId] = $userId ? dmDb::query('sfGuardUser u')->where('u.id = ?', $userId)->fetchRecord() : null;
+      self::$usersCache[$userId] = $userId ? dmDb::query('DmUser u')->where('u.id = ?', $userId)->fetchRecord() : null;
     }
     
     return self::$usersCache[$userId];

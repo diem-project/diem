@@ -92,7 +92,7 @@ class dmContentChart extends dmChart
   {
     return $this->serviceContainer->getService('module_manager')->keysToModules(array(
       'dmSentMail',
-      'dmGuardUser'
+      'dmUser'
     ));
   }
   

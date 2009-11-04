@@ -66,18 +66,6 @@ abstract class dmDoctrineQuery extends Doctrine_Query
 
   
   /*
-   * Join profile for this columnName or alias
-   * return @dmDoctrineQuery $this
-   */
-  public function withDmProfile($alias)
-  {
-    $profileJoinAlias = dmString::lcfirst($alias);
-    $userJoinAlias = $profileJoinAlias.'User';
-    
-    return $this->leftJoin(sprintf('%s.%s %s, %s.%s %s', $this->getRootAlias(), $alias, $profileJoinAlias, $profileJoinAlias, 'User', $userJoinAlias));
-  }
-  
-  /*
    * Join media for this columnName or alias
    * return @dmDoctrineQuery $this
    */

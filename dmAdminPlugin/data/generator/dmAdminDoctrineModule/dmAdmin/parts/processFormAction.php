@@ -19,7 +19,7 @@
       {
         $this->getUser()->setFlash('notice', $notice);
 
-        $redirection = $this->getRouteArrayForAction('list');
+        $redirection = $this->getRouteArrayForAction('index');
       }
       elseif ($request->hasParameter('_save_and_next'))
       {

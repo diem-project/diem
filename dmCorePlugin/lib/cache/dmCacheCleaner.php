@@ -1,11 +1,10 @@
 <?php
 
-class dmCacheCleaner
+class dmCacheCleaner extends dmConfigurable
 {
   protected
   $cacheManager,
   $dispatcher,
-  $options,
   $queue;
   
   const
@@ -21,7 +20,7 @@ class dmCacheCleaner
   
   protected function initialize(array $options = array())
   {
-    $this->options = array_merge($this->getDefaultOptions(), $options);
+    $thiss->configure($options);
     
     $this->queue = array();
   }
@@ -29,7 +28,9 @@ class dmCacheCleaner
   protected function getDefaultOptions()
   {
     return array(
-      'safe_models' => array('DmSentMail', 'DmError', 'DmRedirect')
+      'applications' => array('admin', 'front'),
+      'environments' => array('prod', 'dev'),
+      'safe_models' => array('DmSentMail', 'DmError', 'DmRedirect', 'DmUser', 'DmPermission', 'DmGroup', 'DmGroupPermission', 'DmUserPermission', 'DmUserGroup', 'DmRememberKey')
     );
   }
   
@@ -55,14 +56,7 @@ class dmCacheCleaner
   
   public function isModelSafe($model)
   {
-    if (in_array($model, $this->options['safe_models']))
-    {
-      return true;
-    }
-    else
-    {
-      return strncmp($model, 'sfGuard', 7) === 0;
-    }
+    return in_array($model, $this->getOption('safe_models'));
   }
   
   public function listenToControllerRedirectionEvent(sfEvent $event)
@@ -89,9 +83,9 @@ class dmCacheCleaner
   
   public function clearTemplate()
   {
-    foreach($this->options['applications'] as $app)
+    foreach($this->getOption('applications') as $app)
     {
-      foreach($this->options['environments'] as $env)
+      foreach($this->getOption('environments') as $env)
       {
         $this->cacheManager->getCache(sprintf('%s/%s/template', $app, $env))->clear();
       }

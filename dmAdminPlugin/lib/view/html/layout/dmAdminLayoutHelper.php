@@ -2,11 +2,6 @@
 
 class dmAdminLayoutHelper extends dmCoreLayoutHelper
 {
-
-  public function renderMetas()
-  {
-    return sprintf('<title>%s</title>', $this->serviceContainer->getService('response')->getTitle());
-  }
   
   public function renderBodyTag($class = null)
   {

@@ -52,21 +52,13 @@ class dmDoctrineGraphviz
     {
       case null: $tables = $this->getAllTables(); break;
       case 'user':
-        $tables = array();
-        foreach($this->getAllTables() as $tableName)
-        {
-          if (strncmp($tableName, 'sfGuard', 7) === 0 || $tableName === 'DmProfile')
-          {
-            $tables[] = $tableName;
-          }
-        }
+        $tables = array('DmUser', 'DmPermission', 'DmGroup', 'DmGroupPermission', 'DmUserPermission', 'DmUserGroup', 'DmRememberKey');
         break;
       case 'core':
         $tables = dmProject::getDmModels();
         break;
       case 'project':
         $tables = dmProject::getModels();
-        $tables[] = 'DmProfile';
         $tables[] = 'DmMedia';
         break;
       default:

@@ -91,7 +91,7 @@ abstract class dmCoreFunctionalCoverageTest
       throw new dmException('You must provide a username and a password to login');
     }
     
-    $form = new sfGuardFormSignin;
+    $form = new DmFormSignin;
     
     $form->bind(array(
       'username' => $this->options['username'],

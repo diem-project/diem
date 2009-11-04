@@ -67,7 +67,7 @@ $webDirName = $this->askAndValidate('Choose a web directory name ( default: web 
     array('invalid' => 'This directory is already used')
   )
 )));
-$settings['web_dir_name'] = (empty($webDirName) || 'QUESTION' == $webDirName) ? 'web' : $webDirName;
+$settings['web_dir_name'] = empty($webDirName) ? 'web' : $webDirName;
 
 do
 {
@@ -167,16 +167,12 @@ $task = $this->createTask('doctrine:build');
 $task->setConfiguration($config);
 $task->run(array(), array('all' => true, 'no-confirmation' => true));
 
-$superAdmin = dmDb::create('sfGuardUser', array(
+$superAdmin = dmDb::create('DmUser', array(
   'is_super_admin' => true,
   'username' => 'admin',
   'password' => $settings['database']['password'],
   'email' => 'admin@'.dmProject::getKey().'.com'
 ))->saveGet();
-
-dmDb::create('DmProfile', array(
-  'user_id' => $superAdmin->id
-))->save();
 
 // fix permission for common directories
 $fixPerms = new dmProjectPermissionsTask($this->dispatcher, $this->formatter);

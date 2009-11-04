@@ -1,15 +1,3 @@
-# PROFILE SCHEMA
-
-DmProfile:  # do not require timestampable behavior because it is provided by its sfGuardUser
-  columns:
-    user_id:                { type: integer(4), notnull: true, unique: true, unsigned: true }
-  relations:
-    User:
-      class:                sfGuardUser
-      local:                user_id
-      foreign:              id
-      onDelete:             CASCADE
-
 # PAGE SCHEMA
 
 DmPage:
@@ -18,10 +6,9 @@ DmPage:
     I18n:
       fields:               [slug, name, title, h1, description, keywords, auto_mod, is_active, is_indexable]
   columns:
-    id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
     module:                 { type: string(127), notnull: true }
     action:                 { type: string(127), notnull: true }
-    record_id:              { type: integer(4), unsigned: true, notnull: true, default: 0 }
+    record_id:              { type: integer, unsigned: true, notnull: true, default: 0 }
     slug:                   { type: string(255), notnull: true }
     name:                   { type: string(255), notnull: true }
     title:                  { type: string(255), notnull: false }
@@ -39,10 +26,9 @@ DmPage:
 
 DmPageView:
   columns:
-    id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
     module:                 { type: string(127), notnull: true }
     action:                 { type: string(127), notnull: true }
-    dm_layout_id:           { type: integer(4), notnull: true, unsigned: true }
+    dm_layout_id:           { type: integer, notnull: true }
   indexes:
     moduleAction:
       fields:               [ module, action ]
@@ -61,15 +47,13 @@ DmPageView:
 
 DmLayout:
   columns:
-    id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
     name:                   { type: string(127), notnull: true, unique: true }
     css_class:              { type: string(255) }
 
 DmArea:
   columns:
-    id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
-    dm_layout_id:           { type: integer(4), notnull: false, unsigned: true }
-    dm_page_view_id:        { type: integer(4), notnull: false, unsigned: true }
+    dm_layout_id:           { type: integer, notnull: false }
+    dm_page_view_id:        { type: integer, notnull: false }
     type:                   { type: enum, notnull: true, values: [content, top, bottom, left, right], default: 'content' }
   indexes:
     layoutType:
@@ -92,8 +76,7 @@ DmArea:
 DmZone:
   actAs:                    [Sortable]
   columns:
-    id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
-    dm_area_id:             { type: integer(4), notnull: true, unsigned: true }
+    dm_area_id:             { type: integer, notnull: true }
     css_class:              { type: string(255) }
     width:                  { type: string(15) }
   relations:
@@ -107,11 +90,10 @@ DmZone:
 DmWidget:
   actAs:                    [Sortable, Timestampable]
   columns:
-    id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
-    dm_zone_id:             { type: integer(4), notnull: true, unsigned: true }
+    dm_zone_id:             { type: integer, notnull: true }
     module:                 { type: string(127), notnull: true }
     action:                 { type: string(127), notnull: true }
-    value:                  { type: string(65532) }
+    value:                  { type: string(60000) }
     css_class:              { type: string(255) }
   relations:
     Zone:
@@ -129,7 +111,6 @@ DmMediaFolder:
       filter: false
   actAs:                    [NestedSet]
   columns:
-    id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
     rel_path:               { type: string(255), notnull: true, unique: true }
 
 DmMedia:
@@ -138,7 +119,7 @@ DmMedia:
       filter: false
   actAs:                    [Timestampable]
   columns:
-    dm_media_folder_id:     { type: integer(4), notnull: true, unsigned: true }
+    dm_media_folder_id:     { type: integer, notnull: true }
     file:                   { type: string(255), notnull: true }
     legend:                 { type: string(255) }
     author:                 { type: string(255) }
@@ -160,15 +141,13 @@ DmMedia:
 
 DmLang:
   columns:
-    id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
     name:                   { type: string(255), unique: true, notnull: true }
     lang:                   { type: string(3), notnull: true, default: "en" }
 
 DmAbbr:
   columns:
-    id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
     name:                   { type: string(255), unique: true, notnull: true }
-    title:                  { type: string(65532), notnull: true }
+    title:                  { type: string(60000), notnull: true }
 
 # LOG SCHEMA
 
@@ -178,10 +157,9 @@ DmError:
       updated:
         disabled: true
   columns:
-    id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
     klass:                  { type: string(127), notnull: true }
     name:                   { type: string(255), notnull: true }
-    description:            { type: string(65532) }
+    description:            { type: string(60000) }
     module:                 { type: string(127), notnull: false }
     action:                 { type: string(127), notnull: false }
     uri:                    { type: string(255), notnull: true }
@@ -193,17 +171,15 @@ DmSentMail:
       updated:
         disabled: true
   columns:
-    id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
     name:                   { type: string(255) }
-    header:                 { type: string(65532) }
-    description:            { type: string(65532) }
+    header:                 { type: string(60000) }
+    description:            { type: string(60000) }
 
 # SEO SCHEMA
 
 DmAutoSeo:
   actAs:                    [Timestampable]
   columns:
-    id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
     module:                 { type: string(127), notnull: true }
     action:                 { type: string(127), notnull: true }
     slug:                   { type: string(255), notnull: true }
@@ -212,7 +188,7 @@ DmAutoSeo:
     h1:                     { type: string(255), notnull: false }
     description:            { type: string(255), notnull: false }
     keywords:               { type: string(255), notnull: false }
-    strip_words:            { type: string(65532) }
+    strip_words:            { type: string(10000) }
   indexes:
     moduleAction:
       fields:               [ module, action ]
@@ -221,7 +197,6 @@ DmAutoSeo:
 DmRedirect:
   actAs:                    [Timestampable]
   columns:
-    id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
     source:                 { type: string(255), unique: true, notnull: true }
     dest:                   { type: string(255), notnull: true }
 
@@ -232,14 +207,13 @@ DmSetting:
     I18n:
       fields:               [description, value, default_value]
   columns:
-    id:                     { type: integer(4), primary: true, autoincrement: true, unsigned: true }
     name:                   { type: string(127), notnull: true, unique: true }
     description:            { type: string(255) }
     type:                   { type: enum, notnull: true, values: [text, boolean, select, textarea, number], default: 'text' }
-    value:                  { type: string(65532) }
-    params:                 { type: string(65532) }
+    value:                  { type: string(60000) }
+    params:                 { type: string(60000) }
     group_name:             { type: string(255), notnull: true, default: '' }
-    default_value:          { type: string(65532), default: '' }
+    default_value:          { type: string(60000), default: '' }
     credentials:            { type: string(255) }
 
 # TRANSLATION SCHEMA
@@ -249,19 +223,19 @@ Catalogue:
     symfony:
       filter: false
   columns:
-    cat_id:                 { type: integer(4), notnull: true, autoincrement: true, primary: true, unsigned: true }
+    cat_id:                 { type: integer, notnull: true, autoincrement: true, primary: true }
     name:                   { type: string(63), notnull: true, default: "" }
     source_lang:            { type: string(63), notnull: true, default: "" }
     target_lang:            { type: string(63), notnull: true, default: "" }
-    date_created:           { type: integer(4), notnull: true, default: 0, unsigned: true }
-    date_modified:          { type: integer(4), notnull: true, default: 0, unsigned: true }
+    date_created:           { type: integer, notnull: true, default: 0, unsigned: true }
+    date_modified:          { type: integer, notnull: true, default: 0, unsigned: true }
     
 TransUnit:
   columns:
-    msg_id:                 { type: integer(4), notnull: true, autoincrement: true, primary: true, unsigned: true }
-    cat_id:                 { type: integer(4), notnull: true, default: 1, unsigned: true }
-    source:                 { type: string(65532), notnull: true }
-    target:                 { type: string(65532), notnull: true }
+    msg_id:                 { type: integer, notnull: true, autoincrement: true, primary: true }
+    cat_id:                 { type: integer, notnull: true, default: 1 }
+    source:                 { type: string(60000), notnull: true }
+    target:                 { type: string(60000), notnull: true }
     meta:                   { type: string(63) }
   relations:
     Catalogue:

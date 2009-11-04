@@ -11,7 +11,7 @@ class dmEventLogEntry extends dmLogEntry
       'time'          => (string) $data['server']['REQUEST_TIME'],
       'ip'            => (string) isset($data['server']['REMOTE_ADDR']) ? $data['server']['REMOTE_ADDR'] : '-',
       'session_id'    => (string) session_id(),
-      'user_id'       => (string) dmArray::get($data, 'user_id', $this->serviceContainer->getService('user')->getGuardUserId()),
+      'user_id'       => (string) dmArray::get($data, 'user_id', $this->serviceContainer->getService('user')->getUserId()),
       'action'        => (string) $data['action'],
       'type'          => (string) $data['type'],
       'subject'       => (string) $data['subject']
@@ -29,7 +29,7 @@ class dmEventLogEntry extends dmLogEntry
     
     if(!isset(self::$usersCache[$userId]))
     {
-      self::$usersCache[$userId] = $userId ? dmDb::query('sfGuardUser u')->where('u.id = ?', $userId)->fetchRecord() : null;
+      self::$usersCache[$userId] = $userId ? dmDb::query('DmUser u')->where('u.id = ?', $userId)->fetchRecord() : null;
     }
     
     return self::$usersCache[$userId];

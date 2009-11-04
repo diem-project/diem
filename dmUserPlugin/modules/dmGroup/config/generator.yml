@@ -1,0 +1,22 @@
+generator:
+  class: dmAdminDoctrineGenerator
+  param:
+    model_class:           DmGroup
+    theme:                 dmAdmin
+    non_verbose_templates: true
+    with_show:             false
+    route_prefix:          dm_group
+    with_doctrine_route:   true
+
+    config:
+      list:
+        display: [=name, description, created_at, updated_at]
+        sort:
+          - name
+          - asc
+        table_method: joinAll
+        table_count_method: ~
+        loremize: false
+
+      form:
+        display: [name, description, users_list, permissions_list]

@@ -4,7 +4,8 @@ class dmFrontPluginConfiguration extends sfPluginConfiguration
 {
   protected static
   $dependencies = array(),
-  $helpers = array('Dm', 'DmFront');
+  $helpers = array('Dm', 'DmFront'),
+  $externalModules = array('dmAuth');
 
   public function configure()
   {
@@ -36,7 +37,8 @@ class dmFrontPluginConfiguration extends sfPluginConfiguration
     {
       $modules[] = basename($dir);
     }
-    return $modules;
+
+    return array_unique(array_merge($modules, self::$externalModules));
   }
 
   protected function enableHelpers()

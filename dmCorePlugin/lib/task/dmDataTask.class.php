@@ -37,12 +37,13 @@ EOF;
    */
   protected function execute($arguments = array(), $options = array())
   {
+    $this->logSection('diem', 'load basic data');
+      
     $this->get('dispatcher')->notify(new sfEvent($this, 'dm.data.before'));
     
     foreach($this->datas as $data)
     {
-      $this->logSection('diem', "load data $data");
-      $method = "load".dmString::camelize($data);
+      $method = 'load'.dmString::camelize($data);
       $this->$method();
     }
     
@@ -194,21 +195,14 @@ EOF;
 
   protected function loadUsers()
   {
-    if (!$superAdmin = dmDb::query('sfGuardUser u')->where('u.is_super_admin = ?', true)->fetchRecord())
+    if (!$superAdmin = dmDb::query('DmUser u')->where('u.is_super_admin = ?', true)->fetchRecord())
     {
-      $superAdmin = dmDb::create('sfGuardUser', array(
+      $superAdmin = dmDb::create('DmUser', array(
         'is_super_admin' => true,
         'username' => 'admin',
         'password' => 'admin',
         'email' => 'admin@'.dmProject::getKey().'.com'
       ))->saveGet();
-    }
-
-    if(!$superAdminProfile = $superAdmin->Profile->orNull())
-    {
-      dmDb::create('DmProfile', array(
-        'user_id' => $superAdmin->id
-      ))->save();
     }
   }
 
@@ -365,7 +359,6 @@ EOF;
       'see_chart' => 'See the charts',
       "config_panel" => "Use the configuration panel",
       "translation" => "Use the translation interface",
-      "user_profile" => "Use the profile interface",
       "accessibility" => "Use the span & abbr interface",
       "layout" => "Use the layout interface",
       'sent_mail' => 'See mails sent by server',
@@ -373,16 +366,16 @@ EOF;
       'ihm_settings' => 'Manage IHM settings like default image resize method'
     );
 
-    $existingPermissions = dmDb::query('sfGuardPermission p INDEXBY p.name')
+    $existingPermissions = dmDb::query('DmPermission p INDEXBY p.name')
     ->select('p.name')
     ->fetchArray();
 
-    $addedPermissions = new myDoctrineCollection('sfGuardPermission');
+    $addedPermissions = new myDoctrineCollection('DmPermission');
     foreach($array as $name => $description)
     {
       if (!isset($existingPermissions[$name]))
       {
-        $addedPermissions->add(dmDb::create('sfGuardPermission', array(
+        $addedPermissions->add(dmDb::create('DmPermission', array(
           'name' => $name,
           'description' => $description
         )));
@@ -475,7 +468,6 @@ EOF;
           'see_log',
           'config_panel',
           'translation',
-          'user_profile',
           'accessibility',
           'site_view',
           'see_chart'
@@ -495,14 +487,14 @@ EOF;
       )
     );
 
-    $permissions = dmDb::query('sfGuardPermission p INDEXBY name')->select('p.name')->fetchArray();
+    $permissions = dmDb::query('DmPermission p INDEXBY name')->select('p.name')->fetchArray();
 
-    $groups = new Doctrine_Collection(dmDb::table('sfGuardGroup'));
+    $groups = new Doctrine_Collection(dmDb::table('DmGroup'));
     foreach($array as $name => $params)
     {
-      if (!$group = dmDb::query('sfGuardGroup g')->where('g.name = ?', $name)->fetchRecord())
+      if (!$group = dmDb::query('DmGroup g')->where('g.name = ?', $name)->fetchRecord())
       {
-        $group = dmDb::create('sfGuardGroup', array(
+        $group = dmDb::create('DmGroup', array(
           'name' => $name,
           'description' => $params['description']
         ))->saveGet();

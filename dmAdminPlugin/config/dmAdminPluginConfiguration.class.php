@@ -2,9 +2,9 @@
 class dmAdminPluginConfiguration extends sfPluginConfiguration
 {
   protected static
-    $dependencies = array(),
-    $helpers = array('Dm'),
-    $externalModules = array('sfGuardPermission', 'sfGuardGroup', 'sfPixlr');
+  $dependencies = array(),
+  $helpers = array('Dm'),
+  $externalModules = array('dmAuth', 'dmUser', 'dmPermission', 'dmGroup', 'sfPixlr');
 
   public function configure()
   {
@@ -38,7 +38,7 @@ class dmAdminPluginConfiguration extends sfPluginConfiguration
       $modules[] = basename($dir);
     }
 
-    return array_merge($modules, self::$externalModules);
+    return array_unique(array_merge($modules, self::$externalModules));
   }
 
   protected function enableHelpers()

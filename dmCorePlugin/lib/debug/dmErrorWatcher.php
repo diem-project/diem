@@ -54,16 +54,11 @@ class dmErrorWatcher
 
   protected function mailSuperadmin(dmErrorDescription $error)
   {
-    if (!$superAdmin = dmDb::query('sfGuardUser u')->where('u.is_super_admin = ?', true)->fetchRecord())
+    if (!$superAdmin = dmDb::query('DmUser u')->where('u.is_super_admin = ?', true)->fetchRecord())
     {
       return;
     }
     
-    if (!$superAdminEmail = $superAdmin->get('email'))
-    {
-      return;
-    }
-
     $subject = "Exception - {$error->env} - {$error->name}";
     $body = "Exception notification for the environment {$error->env} - {$error->date}\n\n";
     $body .= $error->exception . "\n\n\n\n\n";

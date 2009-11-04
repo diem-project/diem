@@ -28,15 +28,15 @@ class dmMigrateTask extends sfDoctrineBaseTask
    */
   protected function execute($arguments = array(), $options = array())
   {
-    $migration = new Doctrine_Migration(dmProject::rootify('lib/migration/doctrine'));
-    $version = $migration->getCurrentVersion();
-    
-    $this->logSection('diem', 'Current database version : '.$version);
+//    $migration = new Doctrine_Migration(dmProject::rootify('lib/migration/doctrine'));
+//    $version = $migration->getCurrentVersion();
+//    
+//    $this->logSection('diem', 'Current database version : '.$version);
     
     if (!count(dmProject::getModels()))
     {
-      $this->logSection('diem', 'There is no model in the /lib/model/doctrine dir');
-      return;
+      $this->logSection('diem', 'There is no model in the /lib/model/doctrine/base dir');
+      return self::UP_TO_DATE;
     }
     
     try

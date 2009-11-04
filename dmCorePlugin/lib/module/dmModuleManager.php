@@ -115,7 +115,6 @@ class dmModuleManager
   {
     /*
      * do NOT camelize the model
-     * because of models like sfGuardUser
      */
     if (isset($this->modelModules[$model]))
     {

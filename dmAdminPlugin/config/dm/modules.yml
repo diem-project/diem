@@ -8,10 +8,6 @@ Utils:
       name:         Sentence
       model:        TransUnit
       credentials:  translation
-  Users:
-    dmProfile:
-      name:         Profile
-      credentials:  user_profile
   Monitoring:
     dmChart:
       name:         Chart
@@ -78,17 +74,17 @@ System:
       name:         Error
       credentials:  error_log
   Security:
-    dmGuardUser:
+    dmUser:
       name:         User
-      model:        sfGuardUser
+      model:        DmUser
       credentials:  security_user
-    sfGuardPermission:
+    dmPermission:
       name:         Permission
-      model:        sfGuardPermission
+      model:        DmPermission
       credentials:  security_permission
-    sfGuardGroup:
+    dmGroup:
       name:         Group
-      model:        sfGuardGroup
+      model:        DmGroup
       credentials:  security_group
   Dev:
     dmDiagram:

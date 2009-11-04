@@ -34,8 +34,6 @@ abstract class dmFrontBaseServiceContainer extends dmBaseServiceContainer
     parent::connectServices();
     
     $this->getService('page_helper')->connect();
-    
-    $this->getService('layout_helper')->connect();
   }
   
   /**

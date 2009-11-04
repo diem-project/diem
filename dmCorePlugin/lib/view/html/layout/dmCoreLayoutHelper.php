@@ -1,6 +1,6 @@
 <?php
 
-abstract class dmCoreLayoutHelper
+class dmCoreLayoutHelper
 {
   protected
     $dispatcher,
@@ -19,6 +19,14 @@ abstract class dmCoreLayoutHelper
   protected function initialize()
   {
     $this->isHtml5  = sfConfig::get('dm_html_doctype_version', 5) == 5;
+  }
+
+  public function renderBodyTag()
+  {
+    return sprintf('<body class="%s_%s">',
+      $this->serviceContainer->getParameter('controller.module'),
+      $this->serviceContainer->getParameter('controller.action')
+    );
   }
 
   protected function isHtml5()
@@ -59,6 +67,12 @@ abstract class dmCoreLayoutHelper
       $culture,
       $culture
     );
+  }
+  
+  
+  public function renderMetas()
+  {
+    return sprintf('<title>%s</title>', $this->serviceContainer->getService('response')->getTitle());
   }
   
   public function renderHttpMetas()

@@ -40,12 +40,14 @@ EOF;
     $this->runTask('dm:clear-cache');
     
     $this->migrate();
-    
-    $this->runTask('doctrine:build-model');
 
     if ($options['clear-db'])
     {
-      $this->runTask('doctrine:build', array('db' => true));
+      $this->runTask('doctrine:build', array(), array('db' => true));
+    }
+    else
+    {
+      $this->runTask('doctrine:build', array(), array('model' => true));
     }
     
     $this->runTask('dm:build-forms');
@@ -67,17 +69,29 @@ EOF;
   
   protected function migrate()
   {
-    switch($this->runTask('dm:migrate'))
+    switch($migrateResponse = $this->runTask('dm:migrate'))
     {
       case dmMigrateTask::UP_TO_DATE:
         break;
+
       case dmMigrateTask::DIFF_GENERATED:
         $this->logBlock('New doctrine migration classes have been generated', 'INFO_LARGE');
         $this->logSection('diem', 'You should check them in /lib/migration/doctrine,');
         $this->logSection('diem', 'Then decide if you want to apply changes.');
-        $confirm = $this->askConfirmation('Apply migration changes ? (y/N)', 'QUESTION', false);
         
-        if (!$confirm)
+        if ($this->askConfirmation('Apply migration changes ? (y/N)', 'QUESTION', false))
+        {
+          $this->runTask('dm:clear-cache'); // load the new migration classes
+          
+          $migrationSuccess = $this->runTask('doctrine:migrate');
+          
+          if (0 !== $migrationSuccess)
+          {
+            $this->logBlock('Can not apply migration changes', 'ERROR');
+          }
+        }
+        
+        if(empty($migrationSuccess))
         {
           if (!$this->askConfirmation('Continue the setup ? (y/N)', 'QUESTION', false))
           {
@@ -85,15 +99,10 @@ EOF;
             exit;
           }
         }
-        
-        if (!$this->runTask('doctrine:migrate'))
-        {
-          $this->logSection('diem', 'Can not apply migration changes');
-          exit;
-        }
         break;
+
       default:
-        throw new dmException('Unexpected case');
+        throw new dmException('Unexpected case : '.$migrateResponse);
     }
   }
   
@@ -101,7 +110,7 @@ EOF;
   {
     if (file_exists(dmOs::join(sfConfig::get('dm_data_dir'), 'lock')))
     {
-      $this->get('filesystem')->remove(dmOs::join(sfConfig::get('dm_data_dir'), 'lock'));
+      $this->getFilesystem()->remove(dmOs::join(sfConfig::get('dm_data_dir'), 'lock'));
       
       $this->logBlock('Your project is now ready for web access. See you on admin_dev.php. Your login is admin and your password is the database password.', 'INFO_LARGE');
     }

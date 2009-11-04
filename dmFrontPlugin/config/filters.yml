@@ -1,7 +1,7 @@
 rendering:    ~
 
 remember_me:
-  class:      sfGuardRememberMeFilter
+  class:      dmRememberMeFilter
 
 security:
   class:      dmSecurityFilter

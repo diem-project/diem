@@ -5,26 +5,17 @@ class dmFrontLayoutHelper extends dmCoreLayoutHelper
   protected
     $page;
 
-  public function connect()
+  protected function initialize()
   {
-    $this->dispatcher->connect('dm.context.change_page', array($this, 'listenToChangePageEvent'));
+    parent::initialize();
+
+    $this->setPage($this->serviceContainer->getParameter('context.page'));
   }
-  
-  /**
-   * Listens to the user.change_culture event.
-   *
-   * @param sfEvent An sfEvent instance
-   */
-  public function listenToChangePageEvent(sfEvent $event)
-  {
-    $this->setPage($event['page']);
-  }
-  
+    
   public function setPage(DmPage $page)
   {
     $this->page = $page;
   }
-  
   
   public function renderHead()
   {

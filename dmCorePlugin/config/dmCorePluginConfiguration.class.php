@@ -34,8 +34,6 @@ class dmCorePluginConfiguration extends sfPluginConfiguration
       'sf_i18n'             => true,
       'sf_charset'          => 'utf-8',
       'sf_upload_dir_name'  => str_replace(sfConfig::get('sf_web_dir').'/', '', sfConfig::get('sf_upload_dir')),
-      'app_sf_guard_plugin_remember_key_expiration_age' => 2592000, // 30 days
-      'app_sf_guard_plugin_remember_cookie_name' => 'diem_remember_'.dmProject::getKey(),
       'dm_data_dir'         => dmOs::join(sfConfig::get('sf_data_dir'), 'dm'),
       'dm_cache_dir'        => dmOs::join(sfConfig::get('sf_cache_dir'), 'dm')
     ));

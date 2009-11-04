@@ -12,6 +12,7 @@ parameters:
   cache_cleaner.options:
     applications:             [ admin, front ]
     environments:             [ prod, dev ]
+    safe_models:              [ DmSentMail, DmError, DmRedirect, DmUser, DmPermission, DmGroup, DmGroupPermission, DmUserPermission, DmUserGroup, DmRememberKey ]
 
   form_field.class:           dmFormField
 
@@ -180,12 +181,12 @@ services:
 
   layout_helper:
     class:                    %layout_helper.class%
-    shared:                   true
+    shared:                   false
     arguments:                [ @dispatcher, @service_container ]
 
   auth_layout_helper:
     class:                    %auth_layout_helper.class%
-    shared:                   true
+    shared:                   false
     arguments:                [ @dispatcher, @service_container ]
 
   filesystem:
