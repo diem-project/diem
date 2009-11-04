@@ -9,14 +9,25 @@ generator:
     with_doctrine_route:   true
 
     config:
+      actions: ~
+      fields:
+        groups_list:
+          label: Groups
+        users_list:
+          label: Users
       list:
         display: [=name, description, created_at, updated_at]
         sort:
           - name
           - asc
-        table_method: joinAll
+        table_method: getAdminListQuery
         table_count_method: ~
         loremize: false
 
       form:
-        display: [name, description, groups_list, users_list]
+        display:
+          NONE: [name]
+          Groups: [groups_list]
+          Users: [users_list]
+          Others: [description]
+        class: DmPermissionAdminForm

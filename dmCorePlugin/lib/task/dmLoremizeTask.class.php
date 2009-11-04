@@ -44,7 +44,7 @@ EOF;
       $loremizer->loremize($options['nb']);
     }
     
-    $this->log('Successfully loremized');
+    $this->logSection('Loremize', 'Database successfully loremized');
   }
 
 }

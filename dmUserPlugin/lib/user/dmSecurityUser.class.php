@@ -173,7 +173,7 @@ class dmSecurityUser extends sfBasicSecurityUser
       // remove other keys from this user
       Doctrine::getTable('DmRememberKey')->createQuery()
         ->delete()
-        ->where('user_id = ?', $user->getId())
+        ->where('dm_user_id = ?', $user->getId())
         ->execute();
 
       // generate new keys

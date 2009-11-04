@@ -147,14 +147,14 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
       
       if (!$module['model'])
       {
-        if (dmArray::get($module, 'has_page'))
-        {
-          $this->throwException('module %s has a page, but no model', $key);
-        }
-        if (dmArray::get($module, 'parent_key'))
-        {
-          $this->throwException('module %s has a parent, but no model', $key);
-        }
+//        if (dmArray::get($module, 'has_page'))
+//        {
+//          $this->throwException('module %s has a page, but no model', $key);
+//        }
+//        if (dmArray::get($module, 'parent_key'))
+//        {
+//          $this->throwException('module %s has a parent, but no model', $key);
+//        }
       }
       else
       {

@@ -8,10 +8,6 @@ require_once(sfConfig::get('dm_core_dir').'/lib/os/dmOs.php');
 require_once(sfConfig::get('dm_core_dir').'/lib/project/dmProject.php');
 require_once(sfConfig::get('dm_core_dir').'/lib/task/dmServerCheckTask.class.php');
 
-/*
- * CHECKS
- */
-
 if ('/' !== DIRECTORY_SEPARATOR)
 {
   $this->logBlock('Sorry, but Diem 5 only run on Unix servers.', 'ERROR_LARGE');
@@ -20,7 +16,8 @@ if ('/' !== DIRECTORY_SEPARATOR)
 
 $this->logBlock('Diem '.DIEM_VERSION.' installer', 'INFO_LARGE');
 
-$this->askConfirmation('Welcome in the Diem installation wizard. We will now check that your server matches Symfony 1.3 & Diem 5 requirements. Press ENTER');
+$this->logSection('Diem', 'Welcome in the Diem installation wizard. We will now check that your server matches Symfony 1.3 & Diem 5 requirements.');
+$this->askConfirmation('Press ENTER');
 
 $serverCheck = new dmServerCheckTask($this->dispatcher, $this->formatter);
 $serverCheck->setCommandApplication($this->commandApplication);

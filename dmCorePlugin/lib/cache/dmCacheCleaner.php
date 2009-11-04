@@ -20,12 +20,12 @@ class dmCacheCleaner extends dmConfigurable
   
   protected function initialize(array $options = array())
   {
-    $thiss->configure($options);
+    $this->configure($options);
     
     $this->queue = array();
   }
   
-  protected function getDefaultOptions()
+  public function getDefaultOptions()
   {
     return array(
       'applications' => array('admin', 'front'),

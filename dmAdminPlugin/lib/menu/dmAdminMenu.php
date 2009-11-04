@@ -10,7 +10,7 @@ class dmAdminMenu
   $routing,
   $moduleManager;
 
-  public function __construct(sfEventDispatcher $dispatcher, dmUser $user, dmI18n $i18n, sfPatternRouting $routing, dmModuleManager $moduleManager)
+  public function __construct(sfEventDispatcher $dispatcher, dmCoreUser $user, dmI18n $i18n, sfPatternRouting $routing, dmModuleManager $moduleManager)
   {
     $this->dispatcher = $dispatcher;
     $this->user = $user;

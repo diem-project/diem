@@ -5,7 +5,7 @@ class dmFrontPageEditHelper extends dmFrontPageHelper
   protected
     $user;
     
-  public function setUser(dmUser $user)
+  public function setUser(dmCoreUser $user)
   {
     $this->user = $user;
   }

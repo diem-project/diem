@@ -6,7 +6,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
   $eventDispatcher,
   $serviceContainer,
   $moduleManager;
-  
+
   protected
   $i18nFallback = null;
 
@@ -23,7 +23,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
       self::initializeI18n();
     }
   }
-  
+
   public function getCurrentTranslation()
   {
     return $this->get('Translation')->get(self::getDefaultCulture());
@@ -35,7 +35,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
   public function preSave($event)
   {
     parent::preSave($event);
-    
+
     if ($this->isModified())
     {
       $this->notify($this->isNew() ? 'create' : 'update');
@@ -55,13 +55,13 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
   /*
    * Add page tree watcher registering
    */
-//  public function unlinkInDb($alias, $ids = array())
-//  {
-//    $this->notify('delete');
-//
-//    $return = parent::unlinkInDb($alias, $ids);
-//  }
-  
+  //  public function unlinkInDb($alias, $ids = array())
+  //  {
+  //    $this->notify('delete');
+  //
+  //    $return = parent::unlinkInDb($alias, $ids);
+  //  }
+
   public function notify($type = 'update')
   {
     if (self::$eventDispatcher)
@@ -86,7 +86,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     return dmRecordLoremizer::loremize($this);
   }
 
-  
+
   public function getPrevNextRecords(dmDoctrineQuery $q)
   {
     /*
@@ -98,7 +98,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     }
 
     $qPk = clone $q;
-//    $qPk->from(get_class($this).' '.$qPk->getRootAlias())->removeDqlQueryPart('join');
+    //    $qPk->from(get_class($this).' '.$qPk->getRootAlias())->removeDqlQueryPart('join');
     $qPk->select($qPk->getRootAlias().'.'.$pk)->distinct();
     $pks = $qPk->fetchPDO();
     foreach($pks as $key => $attrs)
@@ -107,12 +107,12 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     }
 
     $recordOffset = array_search($this->getPrimaryKey(), $pks);
-      
+
     $map = array(
       'prev' => 0 == $recordOffset ? null : $pks[$recordOffset-1],
       'next' => count($pks) == ($recordOffset+1) ? null :$pks[$recordOffset+1]
     );
-    
+
     $pks = array_unique(array_filter(array_values($map)));
 
     $records = empty($pks) ? array() : $this->_table->createQuery('q INDEXBY q.'.$pk)->whereIn('q.'.$pk, $pks)->fetchRecords();
@@ -121,12 +121,12 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     {
       $map[$key] = isset($records[$id]) ? $records[$id] : null;
     }
-    
-//    dmDebug::kill($map);
-    
+
+    //    dmDebug::kill($map);
+
     return $map;
   }
-  
+
   /*
    * Tries to return the nearest records in table
    */
@@ -171,8 +171,8 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     $rPk = clone $q;
     $qPk->removeDqlQueryPart('join');
     $rPk->whereIn($rPk->getRootAlias().'.'.$pk, $selectedPks);
-    
-//    dmDebug::kill($rPk->getSqlQuery(), $rPk->fetchRecords());
+
+    //    dmDebug::kill($rPk->getSqlQuery(), $rPk->fetchRecords());
 
     return $rPk->fetchRecords();
   }
@@ -245,12 +245,12 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
   public function getDmMediaByColumnName($columnName)
   {
     $relation = $this->_table->getRelationHolder()->getLocalByColumnName($columnName);
-  
+
     if (!$relation instanceof Doctrine_Relation_LocalKey)
     {
       throw new dmException(sprintf('%s is not a DmMedia LocalKey columnName : %s', $columnName, get_class($relation)));
     }
-  
+
     if ($relation->getClass() != 'DmMedia')
     {
       throw new dmException(sprintf('%s is not a DmMedia relation', $relation->getAlias()));
@@ -358,7 +358,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
       throw new dmRecordException(sprintf('%s is not an ancestor of %s', $ancestorKey, $module));
       return null;
     }
-    
+
     $query = dmDb::query($ancestorModule->getModel().' '.$ancestorModule->getKey())
     ->whereDescendantId($module->getModel(), $this->get('id'), $ancestorModule->getModel())
     ->select($ancestorModule->getKey().'.id');
@@ -490,15 +490,15 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     catch(Exception $e)
     {
       self::$serviceContainer->get('logger')->err($e->getMessage());
-      
+
       if (sfConfig::get('dm_debug'))
       {
         throw $e;
       }
-      
+
       $string = '';
     }
-  
+
     if (empty($string))
     {
       $string = '-';
@@ -529,7 +529,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
       'data' => $this->toArray()
     );
   }
-  
+
   public function toIndexableString()
   {
     $indexParts = array();
@@ -537,7 +537,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     {
       $indexParts[] = $this->get($columnName);
     }
-    
+
     return implode(' ', $indexParts);
   }
 
@@ -559,7 +559,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     {
       return true;
     }
-    
+
     if (!$this->_table instanceof dmDoctrineTable)
     {
       return false;
@@ -588,35 +588,37 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
   public function get($fieldName, $load = true)
   {
     $hasAccessor = $this->hasAccessor($fieldName);
-    
+
     if ($hasAccessor || $this->_table->getAttribute(Doctrine_Core::ATTR_AUTO_ACCESSOR_OVERRIDE))
     {
       $componentName = $this->_table->getComponentName();
 
-      $accessor = $this->hasAccessor($fieldName) 
-        ? $this->getAccessor($fieldName)
-        : 'get' . dmString::camelize($fieldName);
-        
+      $accessor = $this->hasAccessor($fieldName)
+      ? $this->getAccessor($fieldName)
+      : 'get' . dmString::camelize($fieldName);
+
       if ($hasAccessor || method_exists($this, $accessor))
       {
         $this->hasAccessor($fieldName, $accessor);
         return $this->$accessor($load);
       }
     }
-    
+
     return $this->_get($fieldName, $load);
   }
-  
+
   /*
    * Pure overload without parent::_get
    */
   public function _get($fieldName, $load = true)
   {
-    if (isset($this->_values[$fieldName])) {
+    $value = self::$_null;
+
+    if (array_key_exists($fieldName, $this->_values)) {
       return $this->_values[$fieldName];
     }
 
-    if (isset($this->_data[$fieldName])) {
+    if (array_key_exists($fieldName, $this->_data)) {
       // check if the value is the Doctrine_Null object located in self::$_null)
       if ($this->_data[$fieldName] === self::$_null && $load) {
         $this->load();
@@ -634,7 +636,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     /*
      * Add i18n capabilities
      */
-    
+
     if ($fieldName != 'Translation' && $this->_table->hasI18n())
     {
       $i18nTable = $this->_table->getI18nTable();
@@ -702,9 +704,9 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
   public function _getI18n($fieldName, $load = true)
   {
     $culture = self::getDefaultCulture();
-    
+
     $translation = $this->get('Translation');
-  
+
     // we have a translation
     if($translation->contains($culture))
     {
@@ -721,7 +723,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
       $i18n = $this->_table->getI18nTable()->createQuery('t')
       ->where('t.id = ? AND t.lang = ?', array($this->get('id'), $culture))
       ->fetchRecord();
-      
+
       // existing translation fetched
       if($i18n)
       {
@@ -741,14 +743,14 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
 
     return $i18n->get($fieldName, $load);
   }
-  
+
   public function getI18nFallback()
   {
     if ($this->i18nFallback)
     {
       return $this->i18nFallback;
     }
-    
+
     return $this->i18nFallback = $this->_table->getI18nTable()->createQuery('t')
     ->where('t.id = ? AND t.lang = ?', array($this->get('id'), sfConfig::get('sf_default_culture')))
     ->fetchRecord();
@@ -772,22 +774,22 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     return parent::_set($fieldName, $value, $load);
   }
 
-  
+
   public static function setEventDispatcher(sfEventDispatcher $eventDispatcher)
   {
     self::$eventDispatcher = $eventDispatcher;
   }
-  
+
   public static function setServiceContainer(dmBaseServiceContainer $serviceContainer)
   {
     self::$serviceContainer = $serviceContainer;
   }
-  
+
   public static function setModuleManager(dmModuleManager $moduleManager)
   {
     self::$moduleManager = $moduleManager;
   }
-  
+
   /*
    * dmMicroCache
    */

@@ -6,7 +6,7 @@ abstract class dmAssetConfig
   $dispatcher,
   $user;
   
-  public function __construct(sfEventDispatcher $dispatcher, dmUser $user)
+  public function __construct(sfEventDispatcher $dispatcher, dmCoreUser $user)
   {
     $this->dispatcher = $dispatcher;
     $this->user       = $user;

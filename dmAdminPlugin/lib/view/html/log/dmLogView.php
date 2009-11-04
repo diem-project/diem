@@ -10,7 +10,7 @@ abstract class dmLogView
   $maxEntries = 10,
   $entries;
   
-  public function __construct(dmLog $log, dmI18n $i18n, dmUser $user)
+  public function __construct(dmLog $log, dmI18n $i18n, dmCoreUser $user)
   {
     $this->log = $log;
     $this->i18n = $i18n;

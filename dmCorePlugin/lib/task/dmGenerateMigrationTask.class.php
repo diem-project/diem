@@ -1,6 +1,6 @@
 <?php
 
-class dmMigrateTask extends sfDoctrineBaseTask
+class dmGenerateMigrationTask extends sfDoctrineBaseTask
 {
   const
   UP_TO_DATE = 4001,
@@ -17,8 +17,8 @@ class dmMigrateTask extends sfDoctrineBaseTask
     ));
 
     $this->namespace = 'dm';
-    $this->name = 'migrate';
-    $this->briefDescription = 'Automatically migrate the database';
+    $this->name = 'generate-migration';
+    $this->briefDescription = 'Automatically generate the migration classes';
 
     $this->detailedDescription = $this->briefDescription;
   }

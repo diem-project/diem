@@ -46,7 +46,7 @@ EOF;
 
     foreach($modules as $moduleKey => $module)
     {
-      if ($options['only'] && $moduleKey != $options['only'])
+      if (dmArray::get($options, 'only') && $moduleKey != dmArray::get($options, 'only'))
       {
 //        $this->logSection('diem', "Skipping $module");
         continue;
@@ -56,7 +56,7 @@ EOF;
 //        $this->logSection('diem', sprintf("Skip module %s wich has no admin", $moduleKey));
         continue;
       }
-      if (!$module->isProject() && strncmp($module->getKey(), 'dm', 2) !== 0)
+      if (!$module->isProject())
       {
 //        $this->logSection('diem', sprintf("Skip module %s wich is nor internal nor project : probably a plugin one", $moduleKey));
         continue;

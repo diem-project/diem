@@ -510,7 +510,7 @@ EOF;
         }
         $groupPermissions[] = $permissions[$permissionName]['id'];
       }
-      $group->link('permissions', $groupPermissions);
+      $group->link('Permissions', $groupPermissions);
     }
     $groups->save();
   }

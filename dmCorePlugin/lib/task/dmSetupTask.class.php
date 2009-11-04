@@ -69,7 +69,7 @@ EOF;
   
   protected function migrate()
   {
-    switch($migrateResponse = $this->runTask('dm:migrate'))
+    switch($migrateResponse = $this->runTask('dm:generate-migration'))
     {
       case dmMigrateTask::UP_TO_DATE:
         break;

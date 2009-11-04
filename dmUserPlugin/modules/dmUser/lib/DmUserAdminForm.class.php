@@ -10,10 +10,4 @@
  */
 class DmUserAdminForm extends BaseDmUserAdminForm
 {
-  /**
-   * @see sfForm
-   */
-  public function configure()
-  {
-  }
 }

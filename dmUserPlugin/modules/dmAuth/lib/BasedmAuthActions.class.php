@@ -65,9 +65,9 @@ class BasedmAuthActions extends dmBaseActions
       }
 
       $this->getResponse()->setStatusCode(401);
+
+      $this->setLayout(dmOs::join(dm::getDir(), 'dmUserPlugin/modules/dmAuth/templates/layout'));
     }
-    
-    $this->setLayout(realpath(dirname(__FILE__).'/../templates/layout'));
   }
 
   public function executeSignout($request)

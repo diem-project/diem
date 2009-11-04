@@ -20,7 +20,7 @@ generator:
         sort:
           - id
           - asc
-        table_method: joinAll
+        table_method: getAdminListQuery
         table_count_method: ~
       filter:
         display:

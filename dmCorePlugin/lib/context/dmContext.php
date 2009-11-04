@@ -171,7 +171,7 @@ class dmContext extends sfContext
     $baseClass = sfConfig::get('dm_service_container_base_class', 'dm'.ucfirst(sfConfig::get('dm_context_type')).'BaseServiceContainer');
 
     file_put_contents($file, $dumper->dump(array('class' => $name, 'base_class' => $baseClass)));
-    chmod($file, 0777);
+    @chmod($file, 0777);
 
     if(!file_exists($file))
     {
