@@ -30,7 +30,7 @@ generator:
           - created_at
           - updated_at
         sort:
-          - name
+          - username
           - asc
         table_method: getAdminListQuery
         table_count_method: ~

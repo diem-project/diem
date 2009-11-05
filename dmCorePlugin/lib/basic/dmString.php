@@ -120,6 +120,7 @@ class dmString extends sfInflector
       {
         return '';
       }
+      
       throw new dmException('Can not camelize '.$something);
     }
     
@@ -266,8 +267,9 @@ class dmString extends sfInflector
     $values = 'abcdefghijklmnopqrstuvwxyz0123456789';
     for ( $i = 0; $i < $length; $i++ )
     {
-      $val .= $values[mt_rand( 0, 35 )];
+      $val .= $values[rand( 0, 35 )];
     }
+    
     return $val;
   }
 
@@ -374,7 +376,11 @@ class dmString extends sfInflector
   
   public static function lcfirst($string)
   {
-    $string{0} = strtolower($string{0});
+    if (!empty($string))
+    {
+      $string{0} = strtolower($string{0});
+    }
+    
     return $string;
   }
   

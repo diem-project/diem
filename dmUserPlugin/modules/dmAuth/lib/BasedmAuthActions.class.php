@@ -28,6 +28,8 @@ class BasedmAuthActions extends dmBaseActions
     $class = sfConfig::get('dm_security_signin_form', 'DmFormSignin'); 
     $this->form = new $class();
 
+    $this->setLayout(dmOs::join(dm::getDir(), 'dmUserPlugin/modules/dmAuth/templates/layout'));
+
     if ($request->isMethod('post'))
     {
       $this->form->bind($request->getParameter('signin'));
@@ -65,8 +67,6 @@ class BasedmAuthActions extends dmBaseActions
       }
 
       $this->getResponse()->setStatusCode(401);
-
-      $this->setLayout(dmOs::join(dm::getDir(), 'dmUserPlugin/modules/dmAuth/templates/layout'));
     }
   }
 

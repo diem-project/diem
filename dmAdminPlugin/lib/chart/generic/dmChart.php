@@ -97,7 +97,7 @@ abstract class dmChart extends pChart
 
       $this->serviceContainer->getService('logger')->notice('Refresh chart '.get_class($this));
 
-      $this->draw();
+      @$this->draw();
 
       $this->render($imageFullPath);
     }

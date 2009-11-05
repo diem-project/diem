@@ -11,9 +11,19 @@ class PluginDmUserTable extends myDoctrineTable
    */
   public function retrieveByUsername($username, $isActive = true)
   {
-    return Doctrine::getTable('DmUser')->createQuery('u')
-            ->where('u.username = ?', $username)
-            ->addWhere('u.is_active = ?', $isActive)
-            ->fetchOne();
+    return $this->createQuery('u')
+    ->where('u.username = ?', $username)
+    ->addWhere('u.is_active = ?', $isActive)
+    ->fetchRecord();
+  }
+  
+  public function fetchOneById($id)
+  {
+    return $this->createQuery('u')->where('u.id = ', $id)->fetchRecord();
+  }
+  
+  public function getAdminListQuery(dmDoctrineQuery $query)
+  {
+    return $query;
   }
 }

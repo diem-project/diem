@@ -174,6 +174,7 @@ class dmSecurityUser extends sfBasicSecurityUser
       Doctrine::getTable('DmRememberKey')->createQuery()
         ->delete()
         ->where('dm_user_id = ?', $user->getId())
+        ->orWhere('ip_address = ?', $_SERVER['REMOTE_ADDR'])
         ->execute();
 
       // generate new keys
@@ -188,7 +189,11 @@ class dmSecurityUser extends sfBasicSecurityUser
 
       // make key as a cookie
       $remember_cookie = sfConfig::get('dm_security_remember_cookie_name', 'dm_remember_'.dmProject::getKey());
-      sfContext::getInstance()->getResponse()->setCookie($remember_cookie, $key, time() + $expiration_age);
+      
+      if (dmContext::hasInstance() && $response = dmContext::getInstance()->getResponse())
+      {
+        $response->setCookie($remember_cookie, $key, time() + $expiration_age);
+      }
     }
     
     $this->dispatcher->notify(new sfEvent($this, 'user.sign_in'));
@@ -202,14 +207,7 @@ class dmSecurityUser extends sfBasicSecurityUser
    */
   protected function generateRandomKey($len = 20)
   {
-    $string = '';
-    $pool   = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    for ($i = 1; $i <= $len; $i++)
-    {
-      $string .= substr($pool, rand(0, 61), 1);
-    }
-
-    return md5($string);
+    return md5(dmString::random(20));
   }
 
   /**
@@ -220,13 +218,18 @@ class dmSecurityUser extends sfBasicSecurityUser
   {
     $this->dispatcher->notify(new sfEvent($this, 'user.sign_out'));
     
+    $this->setAttribute('user_id', null, 'dmSecurityUser');
     $this->getAttributeHolder()->removeNamespace('dmSecurityUser');
     $this->user = null;
     $this->clearCredentials();
     $this->setAuthenticated(false);
     $expiration_age = sfConfig::get('dm_security_remember_key_expiration_age', 15 * 24 * 3600);
     $remember_cookie = sfConfig::get('dm_security_remember_cookie_name', 'dm_remember_'.dmProject::getKey());
-    sfContext::getInstance()->getResponse()->setCookie($remember_cookie, '', time() - $expiration_age);
+    
+    if (dmContext::hasInstance() && $response = dmContext::getInstance()->getResponse())
+    {
+      $response->setCookie($remember_cookie, '', time() - $expiration_age);
+    }
     
     $this->isSuperAdmin = false;
   }
@@ -238,14 +241,20 @@ class dmSecurityUser extends sfBasicSecurityUser
    */
   public function getUser()
   {
-    if (!$this->user && $id = $this->getAttribute('user_id', null, 'dmSecurityUser'))
+    if (!$this->user && ($id = $this->getAttribute('user_id', null, 'dmSecurityUser')))
     {
-      $this->user = Doctrine::getTable('DmUser')->find($id);
+      $this->user = dmDb::table('DmUser')->findOneById($id);
 
       if (!$this->user)
       {
         // the user does not exist anymore in the database
         $this->signOut();
+        
+        if (dmContext::hasInstance() && $controller = dmContext::getInstance()->get('controller'))
+        {
+          $this->shutdown();
+          $controller->redirect('@homepage');
+        }
 
         throw new sfException('The user does not exist anymore in the database.');
       }

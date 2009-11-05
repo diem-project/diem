@@ -195,12 +195,12 @@ EOF;
 
   protected function loadUsers()
   {
-    if (!$superAdmin = dmDb::query('DmUser u')->where('u.is_super_admin = ?', true)->fetchRecord())
+    if (!$superAdmin = dmDb::query('DmUser u')->where('u.is_super_admin = ?', true)->count())
     {
-      $superAdmin = dmDb::create('DmUser', array(
+      dmDb::create('DmUser', array(
         'is_super_admin' => true,
         'username' => 'admin',
-        'password' => 'admin',
+        'password' => Doctrine_Manager::connection()->getOption('password'),
         'email' => 'admin@'.dmProject::getKey().'.com'
       ))->saveGet();
     }
