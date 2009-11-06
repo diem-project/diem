@@ -5,7 +5,6 @@ echo £o('div.dm.dm_auth');
 echo £('h1.site_name', dmConfig::get('site_name'));
 
 echo £('div.message',
-  £('p', __("Please login to access this page.")).
   $form->open('.dm_form.list.little.clearfix action=+/dmAuth/signin').
     $form->renderGlobalErrors().
     £('ul',

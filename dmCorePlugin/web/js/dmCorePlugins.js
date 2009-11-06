@@ -31,16 +31,6 @@
     {
       return this.unbind(type, fn).bind(type, data, fn);
     },
-    noRightClick: function()
-    {
-      this.each(function()
-      {
-        $(this)[0].oncontextmenu = function()
-        {
-          return false;
-        }
-      });
-    },
     bindKey: function(key, fn)
     {
       return this.bind('keydown', key, function(e)

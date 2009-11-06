@@ -62,7 +62,7 @@ class dmFrontModuleComponents extends myFrontBaseComponents
      */
     if(!empty($this->orderType))
     {
-      if ($this->orderType == 'rand')
+      if ('rand' === $this->orderType)
       {
         $query->addOrderBy('RAND()');
       }

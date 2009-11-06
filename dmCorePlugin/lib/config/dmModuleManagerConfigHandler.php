@@ -158,10 +158,10 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
       }
       else
       {
-        if(!Doctrine::isValidModelClass($module['model']))
-        {
-          $this->throwException('module %s has a model that do not exist : %s', $key, $module['model']);
-        }
+//        if(!Doctrine::isValidModelClass($module['model']))
+//        {
+//          $this->throwException('module %s has a model that do not exist : %s', $key, $module['model']);
+//        }
         if($parentKey = dmArray::get($module, 'parent_key'))
         {
           if (!isset($this->modules[$parentKey]))
@@ -297,7 +297,11 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
     
     if (empty($moduleConfig['model']))
     {
-      $model = Doctrine::isValidModelClass($moduleKey) ? dmString::camelize($moduleKey) : false;
+      $candidateModel = dmString::camelize($moduleKey);
+      
+      $model = class_exists('Base'.$candidateModel, true) ?
+      Doctrine::isValidModelClass($candidateModel) ? $candidateModel : false
+      : false;
     }
     else
     {

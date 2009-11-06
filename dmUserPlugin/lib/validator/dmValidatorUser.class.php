@@ -51,6 +51,6 @@ class dmValidatorUser extends sfValidatorBase
 
   protected function getTable()
   {
-    return Doctrine::getTable('DmUser');
+    return dmDb::table('DmUser');
   }
 }

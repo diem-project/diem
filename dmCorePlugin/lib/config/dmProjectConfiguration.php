@@ -47,7 +47,7 @@ class dmProjectConfiguration extends sfProjectConfiguration
      */
     $manager->setCharset('utf8');
     $manager->setCollate('utf8_unicode_ci');
-    
+
     /*
      * Configure hydrators
      */

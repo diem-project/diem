@@ -39,7 +39,7 @@ EOF;
 
     $this->runTask('dm:clear-cache');
     
-    $this->migrate();
+//    $this->migrate();
 
     if ($options['clear-db'])
     {
@@ -71,10 +71,10 @@ EOF;
   {
     switch($migrateResponse = $this->runTask('dm:generate-migration'))
     {
-      case dmMigrateTask::UP_TO_DATE:
+      case dmGenerateMigrationTask::UP_TO_DATE:
         break;
 
-      case dmMigrateTask::DIFF_GENERATED:
+      case dmGenerateMigrationTask::DIFF_GENERATED:
         $this->logBlock('New doctrine migration classes have been generated', 'INFO_LARGE');
         $this->logSection('diem', 'You should check them in /lib/migration/doctrine,');
         $this->logSection('diem', 'Then decide if you want to apply changes.');
@@ -104,6 +104,8 @@ EOF;
       default:
         throw new dmException('Unexpected case : '.$migrateResponse);
     }
+    
+    throw new dmException;
   }
   
   protected function unlockProject()

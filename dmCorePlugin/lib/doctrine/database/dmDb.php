@@ -53,18 +53,13 @@ class dmDb
     return self::table($class)->create($values);
   }
   
-  public static function pdo($query, array $values = array())
+  public static function pdo($query, array $values = array(), Doctrine_Connection $conn = null)
   {
-    try
-    {
-      $stmt = Doctrine_Manager::connection()->prepare($query)->getStatement();
-      $stmt->execute($values);
-    }
-    catch(Exception $e)
-    {
-      dmDebug::show($query);
-      throw $e;
-    }
+    $conn = null === $conn ? Doctrine_Manager::connection() : $conn;
+    
+    $stmt = $conn->prepare($query)->getStatement();
+    $stmt->execute($values);
+    
     return $stmt;
   }
 }

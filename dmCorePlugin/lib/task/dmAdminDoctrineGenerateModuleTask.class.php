@@ -29,7 +29,7 @@ class dmAdminDoctrineGenerateModuleTask extends sfDoctrineGenerateModuleTask
       'singular'              => $options['singular'],
       'plural'                => $options['plural'],
       'route_prefix'          => $options['route-prefix'],
-      'with_doctrine_route'   => $options['with-doctrine-route'],
+      'with_doctrine_route'   => false,
     ));
 
     $moduleDir = sfConfig::get('sf_app_module_dir').'/'.$arguments['module'];

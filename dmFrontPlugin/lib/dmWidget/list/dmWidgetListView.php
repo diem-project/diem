@@ -34,9 +34,9 @@ class dmWidgetListView extends dmWidgetProjectModelView
     $filters = array();
     foreach($viewVars as $key => $val)
     {
-      if (strncmp($key, 'filter', 6) === 0)
+      if ('Filter' === substr($key, -6))
       {
-        $filters[dmString::modulize(preg_replace('|^filter(.+)$|', '$1', $key))] = $val;
+        $filters[substr($key, 0, strlen($key)-6)] = $val;
         unset($viewVars[$key]);
       }
     }

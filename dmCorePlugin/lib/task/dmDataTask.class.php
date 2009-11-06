@@ -202,7 +202,7 @@ EOF;
         'username' => 'admin',
         'password' => Doctrine_Manager::connection()->getOption('password'),
         'email' => 'admin@'.dmProject::getKey().'.com'
-      ))->saveGet();
+      ))->save();
     }
   }
 

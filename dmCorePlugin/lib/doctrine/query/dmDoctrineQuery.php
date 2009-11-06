@@ -181,7 +181,7 @@ abstract class dmDoctrineQuery extends Doctrine_Query
    */
   public function whereDescendantId($descendantRecordModel, $descendantRecordId, $model)
   {
-    if(!$module = self::$moduleManager->getModule($model))
+    if(!$module = self::$moduleManager->getModuleByModel($model))
     {
       throw new dmException(sprintf('No module %s', $model));
     }

@@ -123,9 +123,22 @@ class dmAPCCache extends sfAPCCache
       throw new dmException('APC is not available on this environment');
     }
     
-    $infos = apc_sma_info(true);
-    $total = $infos['seg_size'];
-    $free = $infos['avail_mem'];
+    try
+    {
+      $infos = apc_sma_info(true);
+      $total = $infos['seg_size'];
+      $free = $infos['avail_mem'];
+    }
+    catch(RuntimeException $e)
+    {
+      if(sfConfig::get('dm_debug'))
+      {
+        throw $e;
+      }
+      
+      $total = 1;
+      $free = 1;
+    }
     
     return array(
       'usage'   => round(($total - $free) / (1024*1024)).'Mo',

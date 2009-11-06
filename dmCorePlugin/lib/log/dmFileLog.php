@@ -174,6 +174,7 @@ abstract class dmFileLog extends dmLog
         elseif($options['fix_log'])
         {
           $this->fixLog();
+          $options['fix_log'] = false;
           return $this->getEntries($max, $options);
         }
       }

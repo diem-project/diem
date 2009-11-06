@@ -21,7 +21,7 @@ class dmMarkdown extends MarkdownExtra_Parser
     $text = $this->cleanText($text);
 
     // replace lines with only a dot by a <br />
-    $text = preg_replace("|^\.$|ium", "<br />", $text);
+    $text = preg_replace('|^\.$|ium', '<br />', $text);
 
     // add two spaces before every line end to allow new lines
     $text = str_replace("\n", "  \n", $text);

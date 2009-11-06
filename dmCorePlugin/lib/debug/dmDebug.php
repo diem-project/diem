@@ -223,7 +223,7 @@ class dmDebug
 
     $opt = dmString::toArray($opt);
 
-    if (!sfConfig::get("sf_debug") && !dmArray::get($opt, "force"))
+    if (!sfConfig::get('sf_debug') && !dmArray::get($opt, "force"))
     {
       return;
     }
@@ -262,7 +262,6 @@ class dmDebug
     if(dmConfig::isCli())
     {
       $debugString = print_r($var, true);
-      $debugString = strip_tags($debugString);
       $debugString = substr($debugString, 0, self::MAX_DEBUG_LENGTH);
       echo $debugString;
       if (strlen($debugString) > self::MAX_DEBUG_LENGTH)

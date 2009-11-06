@@ -11,7 +11,7 @@ class dmZoneActions extends dmFrontBaseActions
 
     $this->form = new DmZoneFrontForm($this->zone);
 
-    if ($request->isMethod('put'))
+    if ($request->isMethod('post'))
     {
       if ($this->form->bindAndValid($request))
       {

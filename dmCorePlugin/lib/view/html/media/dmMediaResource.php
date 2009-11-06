@@ -142,6 +142,11 @@ class dmMediaResource
     }
     elseif($source instanceof DmMedia)
     {
+      if ($source->isNew())
+      {
+        throw new dmException('Can not build media from new DmMedia');
+      }
+      
       $this->fromMedia($source);
     }
     else

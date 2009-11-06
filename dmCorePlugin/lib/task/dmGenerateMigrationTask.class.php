@@ -14,6 +14,7 @@ class dmGenerateMigrationTask extends sfDoctrineBaseTask
     parent::configure();
 
     $this->addOptions(array(
+      new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev')
     ));
 
     $this->namespace = 'dm';
@@ -28,28 +29,62 @@ class dmGenerateMigrationTask extends sfDoctrineBaseTask
    */
   protected function execute($arguments = array(), $options = array())
   {
-//    $migration = new Doctrine_Migration(dmProject::rootify('lib/migration/doctrine'));
-//    $version = $migration->getCurrentVersion();
-//    
-//    $this->logSection('diem', 'Current database version : '.$version);
-    
     if (!count(dmProject::getModels()))
     {
       $this->logSection('diem', 'There is no model in the /lib/model/doctrine/base dir');
       return self::UP_TO_DATE;
     }
     
+    $this->removeDoubleMigrations();
+    
     try
     {
       $this->runTask('doctrine:generate-migrations-diff');
+      
+      $this->removeDoubleMigrations();
+    
+      $this->reloadAutoload();
+      
+      return self::DIFF_GENERATED;
     }
     catch(Doctrine_Task_Exception $e)
     {
       $this->logSection('diem', 'The database is up to date');
       return self::UP_TO_DATE;
     }
+  }
+  
+  protected function removeDoubleMigrations()
+  {
+    $files = sfFinder::type('file')->in(dmProject::rootify('lib/migration/doctrine'));
     
-    return self::DIFF_GENERATED;
+    sort($files);
+    
+    if(count($files) < 2)
+    {
+      return;
+    }
+    
+    foreach($files as $index => $file)
+    {
+      $code = file_get_contents($file);
+      
+      $code = str_replace(array("\n", ' '), '', $code);
+
+      $code = preg_replace('/^.+{(.+)}(^})*$/uU', '$1', $code);
+      
+      if ($index > 0)
+      {
+        if ($code === $previousCode)
+        {
+          $this->getFilesystem()->remove($file);
+          $removedClasses = true;
+        }
+      }
+      
+      $previousCode = $code;
+      $previousFile = $file;
+    }
   }
   
 }

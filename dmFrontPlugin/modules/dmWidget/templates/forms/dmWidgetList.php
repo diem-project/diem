@@ -25,7 +25,7 @@ echo
  */
 foreach($form as $widgetName => $widget)
 {
-  if(strncmp($widgetName, 'filter', 6) === 0)
+  if('Filter' === substr($widgetName, -6))
   {
     echo $widget->renderRow();
   }

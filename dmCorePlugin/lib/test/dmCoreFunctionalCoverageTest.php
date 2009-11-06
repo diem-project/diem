@@ -91,6 +91,7 @@ abstract class dmCoreFunctionalCoverageTest
       throw new dmException('You must provide a username and a password to login');
     }
     
+    require_once(dmOs::join(dm::getDir(), 'dmUserPlugin/modules/dmAuth/lib/DmFormSignin.php'));
     $form = new DmFormSignin;
     
     $form->bind(array(

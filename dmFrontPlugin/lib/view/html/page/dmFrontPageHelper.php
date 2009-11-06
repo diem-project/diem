@@ -273,12 +273,12 @@ class dmFrontPageHelper
         $widgetWrappedClasses[$index] = $class.'_wrap';
       }
       
-      $widgetWrapClass  = dmArray::toHtmlCssClasses(array('dm_widget', $widget['action'], implode(' ', $widgetWrappedClasses)));
+      $widgetWrapClass  = dmArray::toHtmlCssClasses(array('dm_widget', dmString::underscore($widget['module']), dmString::underscore($widget['action']), implode(' ', $widgetWrappedClasses)));
       $widgetInnerClass = dmArray::toHtmlCssClasses(array('dm_widget_inner', in_array($widget['module'].'.'.$widget['action'], self::$innerCssClassWidgets) ? '' : $widget['css_class']));
     }
     else
     {
-      $widgetWrapClass  = 'dm_widget '.$widget['action'];
+      $widgetWrapClass  = 'dm_widget '.dmString::underscore($widget['module']).' '.dmString::underscore($widget['action']);
       $widgetInnerClass = 'dm_widget_inner';
     }
     

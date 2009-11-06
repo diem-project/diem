@@ -137,15 +137,22 @@ class dmConfig
       }
     }
 
-    if(self::$culture == sfConfig::get('sf_default_culture'))
+    try
     {
-      $results = dmDb::pdo('SELECT s.name, t.value FROM dm_setting s LEFT JOIN dm_setting_translation t ON t.id=s.id AND t.lang = ?',
-      array(self::$culture))->fetchAll(PDO::FETCH_NUM);
+      if(self::$culture == sfConfig::get('sf_default_culture'))
+      {
+        $results = dmDb::pdo('SELECT s.name, t.value FROM dm_setting s LEFT JOIN dm_setting_translation t ON t.id=s.id AND t.lang = ?',
+        array(self::$culture))->fetchAll(PDO::FETCH_NUM);
+      }
+      else
+      {
+        $results = dmDb::pdo('SELECT s.name, t.value FROM dm_setting s LEFT JOIN dm_setting_translation t ON t.id=s.id AND t.lang IN (?, ?)',
+        array(self::$culture, sfConfig::get('sf_default_culture')))->fetchAll(PDO::FETCH_NUM);
+      }
     }
-    else
+    catch(PDOException $e)
     {
-      $results = dmDb::pdo('SELECT s.name, t.value FROM dm_setting s LEFT JOIN dm_setting_translation t ON t.id=s.id AND t.lang IN (?, ?)',
-      array(self::$culture, sfConfig::get('sf_default_culture')))->fetchAll(PDO::FETCH_NUM);
+      $results = array();
     }
 
     self::$config = array();

@@ -94,7 +94,7 @@ class dmFrontLayoutHelper extends dmCoreLayoutHelper
   
   public function renderMetas()
   {
-    $metaHtml = "\n".'<title>'.$this->page->get('title').'</title>';
+    $metaHtml = "\n".'<title>'.dmConfig::get('title_prefix').$this->page->get('title').dmConfig::get('title_suffix').'</title>';
     
     foreach($this->getMetas() as $key => $value)
     {

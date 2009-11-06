@@ -38,7 +38,7 @@ class dmPageActions extends dmFrontBaseActions
     
     $assetAliases = include($this->context->get('config_cache')->checkConfig('config/dm/assets.yml'));
     
-    if ($request->isMethod('put'))
+    if ($request->isMethod('post'))
     {
       if ($this->form->bindAndValid($request))
       {

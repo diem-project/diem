@@ -21,7 +21,7 @@ class dmWidgetListForm extends dmWidgetProjectModelForm
     ));
     $this->validatorSchema['maxPerPage']  = new sfValidatorInteger(array(
       'min' => 0,
-      'max' => 9999
+      'max' => 99999
     ));
 
     /*
@@ -70,7 +70,7 @@ class dmWidgetListForm extends dmWidgetProjectModelForm
       
       if ($filterModule)
       {
-        $filterName = 'filter'.$filterModule->getModel();
+        $filterName = $filterModule->getKey().'Filter';
 
         $this->widgetSchema[$filterName]    = new sfWidgetFormDoctrineSelect(array(
           'model'     => $filterModule->getModel(),

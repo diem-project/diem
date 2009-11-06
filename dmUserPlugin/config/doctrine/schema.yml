@@ -1,3 +1,45 @@
+DmUser:
+  actAs: [Timestampable]
+  columns:
+    username:
+      type: string(255)
+      notnull: true
+      unique: true
+    email:
+      type: string(255)
+      notnull: true
+      unique: true
+    algorithm:
+      type: string(128)
+      default: sha1
+      notnull: true
+    salt: string(128)
+    password: string(128)
+    is_active:
+      type: boolean
+      default: true
+    is_super_admin:
+      type: boolean
+      default: false
+    last_login:
+      type: timestamp
+  indexes:
+    is_active_idx:
+      fields: [is_active]
+  relations:
+    Groups:
+      class: DmGroup
+      local: dm_user_id
+      foreign: dm_group_id
+      refClass: DmUserGroup
+      foreignAlias: Users
+    Permissions:
+      class: DmPermission
+      local: dm_user_id
+      foreign: dm_permission_id
+      refClass: DmUserPermission
+      foreignAlias: Users
+      
 DmGroup:
   actAs: [Timestampable]
   columns:
@@ -49,48 +91,6 @@ DmGroupPermission:
       class: DmPermission
       local: dm_permission_id
       onDelete: CASCADE
-
-DmUser:
-  actAs: [Timestampable]
-  columns:
-    username:
-      type: string(255)
-      notnull: true
-      unique: true
-    email:
-      type: string(255)
-      notnull: true
-      unique: true
-    algorithm:
-      type: string(128)
-      default: sha1
-      notnull: true
-    salt: string(128)
-    password: string(128)
-    is_active:
-      type: boolean
-      default: true
-    is_super_admin:
-      type: boolean
-      default: false
-    last_login:
-      type: timestamp
-  indexes:
-    is_active_idx:
-      fields: [is_active]
-  relations:
-    Groups:
-      class: DmGroup
-      local: dm_user_id
-      foreign: dm_group_id
-      refClass: DmUserGroup
-      foreignAlias: Users
-    Permissions:
-      class: DmPermission
-      local: dm_user_id
-      foreign: dm_permission_id
-      refClass: DmUserPermission
-      foreignAlias: Users
 
 DmUserPermission:
   options:

@@ -9,8 +9,6 @@ class dmSeoSynchronizer
   $moduleManager,
   $markdown,
   $culture,
-  $titlePrefix,
-  $titleSuffix,
   $nodeParentIdStmt;
   
   public function __construct(dmModuleManager $moduleManager, dmMarkdown $markdown, $culture)
@@ -38,9 +36,6 @@ class dmSeoSynchronizer
     
     $onlyModules = dmModuleManager::removeModulesChildren($onlyModules);
     
-    $this->titlePrefix = (string) dmConfig::get('title_prefix');
-    $this->titleSuffix = (string) dmConfig::get('title_suffix');
-
     foreach($onlyModules as $module)
     {
       $this->updateRecursive($module);
@@ -352,7 +347,7 @@ class dmSeoSynchronizer
       }
       elseif($field === 'title')
       {
-        $value = $this->titlePrefix.ucfirst(strtr($pattern, $replacements)).$this->titleSuffix;
+        $value = ucfirst(strtr($pattern, $replacements));
       }
       else
       {

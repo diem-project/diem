@@ -48,6 +48,12 @@ class dmAdminFunctionalCoverageTest extends dmCoreFunctionalCoverageTest
       }
     }
     
+    $uriPrefixLength = strlen($this->context->getRequest()->getUriPrefix());
+    foreach($urls as $index => $url)
+    {
+      $urls[$index] = '/'.substr($url, $uriPrefixLength);
+    }
+    
     return $urls;
   }
 }
