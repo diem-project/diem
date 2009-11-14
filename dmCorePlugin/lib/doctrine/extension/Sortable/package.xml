@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" packagerversion="1.4.1" version="2.0" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
+  <name>Sortable</name>
+  <channel>pear.phpdoctrine.org</channel>
+  <summary>Add sorting capabilities to your models.</summary>
+  <description>Adds ability to sort your models. Move models up or down and move them before or after another record.</description>
+  <lead>
+    <name>Yosmany Garcia</name>
+    <user>yosmanyga</user>
+    <email></email>
+    <active>yes</active>
+  </lead>
+  <date>2009-07-03</date>
+  <version>
+    <release>1.0</release>
+    <api>1.0</api>
+  </version>
+  <stability>
+    <release>1.0</release>
+    <api>stable</api>
+  </stability>
+  <notes>-</notes>
+  <contents>
+  </contents>
+  <dependencies>
+    <required>
+      <php>
+        <min>5.2.4</min>
+      </php>
+      <pearinstaller>
+        <min>1.4.1</min>
+      </pearinstaller>
+      <package>
+        <name>Doctrine</name>
+        <channel>pear.phpdoctrine.org</channel>
+        <min>1.2.0</min>
+        <max>1.2.0</max>
+      </package>
+    </required>
+  </dependencies>
+  <phprelease></phprelease>
+  <changelog></changelog>
+</package>

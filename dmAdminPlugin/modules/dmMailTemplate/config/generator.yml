@@ -1,0 +1,57 @@
+generator:
+  class: dmAdminDoctrineGenerator
+  param:
+    model_class: DmMailTemplate
+    theme: dmAdmin
+    non_verbose_templates: true
+    with_show: false
+    route_prefix: dm_mail_template
+    with_doctrine_route: false
+    config:
+      actions: ~
+      fields:
+        is_html:
+          label: Html
+        is_active:
+          label: Active
+      list:
+        display:
+          - '=name'
+          - description
+          - vars
+          - title
+          - body
+          - from_email
+          - to_email
+          - is_html
+          - is_active
+          - created_at
+          - updated_at
+        sort:
+          - created_at
+          - desc
+        table_method: getAdminListQuery
+        table_count_method: ~
+      filter:
+        display:
+          - name
+          - is_html
+          - is_active
+          - description
+          - vars
+          - title
+          - body
+          - from_email
+          - to_email
+          - created_at
+          - updated_at
+      form:
+        display:
+          NONE: [name, is_html, is_active]
+          Body: [body]
+          Others: [description, vars, title, from_email, to_email]
+        class: DmMailTemplateAdminForm
+        fields: {  }
+      edit: ~
+      new: ~
+    sortable: false
