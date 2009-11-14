@@ -72,18 +72,19 @@ class BasedmFrontActions extends dmFrontBaseActions
       {
         $actionToRun = 'execute'.ucfirst($action);
         
-        try
-        {
-          $this->context->getController()->getAction($module, $action)->$actionToRun($request);
-        }
-        catch(Exception $e)
-        {
-          $this->context->getLogger()->err('dmFront directActions : '.$e->getMessage());
-          if (sfConfig::get('dm_debug'))
-          {
-            throw $e;
-          }
-        }
+        $this->context->getController()->getAction($module, $action)->$actionToRun($request);
+//        try
+//        {
+//          $this->context->getController()->getAction($module, $action)->$actionToRun($request);
+//        }
+//        catch(Exception $e)
+//        {
+//          $this->context->getLogger()->err('dmFront directActions : '.$e->getMessage());
+//          if (sfConfig::get('dm_debug'))
+//          {
+//            throw $e;
+//          }
+//        }
       }
     }
     

@@ -40,6 +40,11 @@ class dmPublishAssetsTask extends sfPluginPublishAssetsTask
         $filesystem->remove(dmOs::join($projectWebPath, 'dm'.dmString::camelize($plugin).'Plugin'));
       }
     }
+      
+    if (is_link(dmOs::join($projectWebPath, 'sfDoctrinePlugin')))
+    {
+      $filesystem->remove(dmOs::join($projectWebPath, 'sfDoctrinePlugin'));
+    }
 
     $filesystem->mkdir(sfConfig::get('sf_cache_dir').'/web');
     $filesystem->relativeSymlink(

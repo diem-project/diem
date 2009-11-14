@@ -88,4 +88,19 @@ class dmThemeManager
     
     return $this->themes;
   }
+  
+  public function getThemesEnabled()
+  {
+    $themes = $this->getThemes();
+    
+    foreach($themes as $key => $theme)
+    {
+      if (!$theme->isEnabled())
+      {
+        unset($themes[$key]);
+      }
+    }
+  
+    return $themes;
+  }
 }

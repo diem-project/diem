@@ -16,30 +16,19 @@ class dmDoctrinePager extends sfDoctrinePager
   {
     if (null === $this->cache)
     {
-      $this->cache = parent::getResults($hydrationMode);
+      $this->cache = parent::getResults($hydrationMode)->getData();
     }
     
     return $this->cache;
   }
   
-  /**
-   * @see sfPager
-   */
-  public function count()
+  public function serialize()
   {
-    return count($this->getResults());
+    $vars = get_object_vars($this);
+    unset($vars['query'], $vars['cache']);
+    return serialize($vars);
   }
- 
-//  public function getCollection($hydrationMode = Doctrine::HYDRATE_RECORD)
-//  {
-//    if(null !== $this->collection)
-//    {
-//      return $this->collection;
-//    }
-//    
-//    return $this->collection = $this->getQuery()->execute(array(), $hydrationMode);
-//  }
-
+  
   public function getCountQuery()
   {
     $selectQuery = $this->getQuery();

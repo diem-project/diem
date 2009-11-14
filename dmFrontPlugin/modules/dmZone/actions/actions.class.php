@@ -10,6 +10,8 @@ class dmZoneActions extends dmFrontBaseActions
     );
 
     $this->form = new DmZoneFrontForm($this->zone);
+    
+    $this->form->removeCsrfProtection();
 
     if ($request->isMethod('post'))
     {

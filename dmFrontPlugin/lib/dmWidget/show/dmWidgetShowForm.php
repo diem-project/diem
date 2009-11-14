@@ -14,7 +14,7 @@ class dmWidgetShowForm extends dmWidgetProjectModelForm
     /*
      * Record id
      */
-    $this->widgetSchema['recordId']     = new sfWidgetFormDoctrineSelect(array(
+    $this->widgetSchema['recordId']     = new sfWidgetFormDoctrineChoice(array(
       'model'     => $this->dmModule->getModel(),
       'add_empty' => $this->allowAutoRecordId()
       ? sprintf('(%s) %s', dm::getI18n()->__('automatic'), $this->getAutoRecord()->__toString())

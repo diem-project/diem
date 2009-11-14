@@ -15,10 +15,12 @@ js:
     widget:           page/dmWidget
     widgetForms:      page/dmWidgetForms
     pageEditForm:     dmFrontPageEditForm
+    pageAddForm:      dmFrontPageAddForm
 
 css:
 
   front:
+    base:             base
     dmReset:          dmReset
     toolBar:          toolBar
     pageBar:          pageBar

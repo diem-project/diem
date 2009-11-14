@@ -5,11 +5,6 @@ class dmFrontUser extends dmCoreUser
   protected
     $themeManager;
     
-  /**
-   * The namespace under which theme keys will be stored.
-   */
-  const THEME_NAMESPACE = 'symfony/user/sfUser/theme';
-
   public function listenToContextLoadedEvent(sfEvent $e)
   {
     parent::listenToContextLoadedEvent($e);
@@ -34,7 +29,7 @@ class dmFrontUser extends dmCoreUser
       return $this->getCache('theme');
     }
     
-    $themeKey = $this->storage->read(self::THEME_NAMESPACE);
+    $themeKey = $this->getAttribute('dm_theme');
     
     if (!$this->themeManager->themeKeyExists($themeKey))
     {
@@ -56,9 +51,9 @@ class dmFrontUser extends dmCoreUser
       throw new dmException(sprintf('%s is not a valid dmTheme', $theme));
     }
     
-    if ($theme->getKey() != $this->storage->read(self::THEME_NAMESPACE))
+    if ($theme->getKey() != $this->getAttribute('dm_theme'))
     {
-      $this->storage->write(self::THEME_NAMESPACE, $theme->getKey());
+      $this->setAttribute('dm_theme', $theme->getKey());
     }
 
     $this->dispatcher->notify(new sfEvent($this, 'user.change_theme', array('theme' => $theme)));

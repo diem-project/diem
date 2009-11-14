@@ -72,24 +72,24 @@ abstract class dmBaseActions extends sfActions
     {
       $data = file_get_contents($pathOrData);
 
-      if(empty($options['fileName']))
+      if(empty($options['file_name']))
       {
-        $options['fileName'] = dmProject::getKey().'-'.basename($path);
+        $options['file_name'] = dmProject::getKey().'-'.basename($path);
       }
     }
     else
     {
       $data = $pathOrData;
 
-      if(empty($options['fileName']))
+      if(empty($options['file_name']))
       {
-        $options['fileName'] = dmProject::getKey().'-'.dmString::random(8);
+        $options['file_name'] = dmProject::getKey().'-'.dmString::random(8);
       }
     }
 
     //Gather relevent info about file
     $fileLenght = strlen($data);
-    $fileType = dmArray::get($options, 'type', dmOs::getFileMime($options['filename']));
+    $fileType = dmArray::get($options, 'type', dmOs::getFileMime($options['file_name']));
 
     //Begin writing headers
     header("Pragma: public");
@@ -102,7 +102,7 @@ abstract class dmBaseActions extends sfActions
     header("Content-Type: $fileType");
 
     //Force the download
-    header("Content-Disposition: attachment; filename=\"".$options['filename']."\";");
+    header("Content-Disposition: attachment; filename=\"".$options['file_name']."\";");
     header("Content-Transfer-Encoding: binary");
     header("Content-Length: ".$fileLenght);
     print $data;

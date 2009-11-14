@@ -48,7 +48,7 @@ class dmAdminRoutingConfigHandler extends sfRoutingConfigHandler
   {
     return array_merge(
       self::getDmConfiguration(),
-      self::parseYamls($configFiles)
+      parent::getConfiguration($configFiles)
     );
   }
 

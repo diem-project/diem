@@ -10,8 +10,8 @@ class dmInterfaceActions extends BasedmInterfaceActions
     $tree = new dmAdminRecursivePageList();
 
     $js =
-      file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), sfConfig::get('dm_core_asset'), 'lib/jsTree/source/tree_component.min.js')).
-      file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), sfConfig::get('dm_core_asset'), 'lib/jsTree/source/css.js'))
+      file_get_contents($this->context->get('helper')->getJavascriptFullPath('lib.tree-component')).
+      file_get_contents($this->context->get('helper')->getJavascriptFullPath('lib.tree-css'))
     ;
 
     return $this->renderJson(array(

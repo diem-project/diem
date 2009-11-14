@@ -28,11 +28,9 @@
       
       self.$dialog = self.element.parent();
       
-      //      self.element.dialog('option', 'resizable', true);
-      
       self.$dialog.bind('resize', function()
       {
-				var dWidth = 42;
+				var dWidth = 14;
 				$textarea = $('textarea', self.element).each(function() {
 					dHeight = $(this).hasClass('dm_readonly') ? 95 : 72;
 					$(this).height(self.$dialog.height() - dHeight).width(self.$dialog.width() - dWidth);
@@ -144,7 +142,7 @@
       {
         $('#dm_widget_' + id + ' div.dm_widget_inner').html(widgets[id]);
       };
-          }
+    }
     
   });
   

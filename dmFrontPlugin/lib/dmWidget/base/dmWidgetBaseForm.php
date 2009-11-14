@@ -21,7 +21,7 @@ abstract class dmWidgetBaseForm extends dmForm
     }
 
     $this->dmWidget = $widget;
-
+    
     parent::__construct($widget->values, $options, $CSRFSecret);
   }
   
@@ -94,13 +94,13 @@ abstract class dmWidgetBaseForm extends dmForm
    */
   protected function getDefaultsFromLastUpdated(array $fields = array())
   {
-    if ($this->dmWidget->value)
+    if ($this->dmWidget->get('value'))
     {
-      return array_merge($this->dmWidget->values, array('cssClass' => $this->dmWidget->cssClass));
+      return array_merge($this->dmWidget->getValues(), array('cssClass' => $this->dmWidget->get('css_class')));
     }
 
     $lastWidgetValue = dmDb::query('DmWidget w')
-    ->where('w.module = ? AND w.action = ?', array($this->dmWidget->module, $this->dmWidget->action))
+    ->where('w.module = ? AND w.action = ?', array($this->dmWidget->get('module'), $this->dmWidget->get('action')))
     ->orderBy('w.updated_at desc')
     ->limit(1)
     ->select('w.value')

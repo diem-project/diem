@@ -13,9 +13,9 @@
       var self = this;
       
 			self.element.dmFrontForm();
-			
+
       self.$tabs = self.element.find('div.dm_page_edit').dmCoreTabForm({});
-      
+
       self.$form = $('form', self.element).dmAjaxForm({
 				dataType: 'json',
         beforeSubmit: function(data)

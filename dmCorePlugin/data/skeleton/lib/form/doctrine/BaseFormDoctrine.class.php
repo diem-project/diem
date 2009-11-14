@@ -1,12 +1,8 @@
 <?php
 
 /**
- * Project form base class.
+ * Project doctrine form base class.
  */
 abstract class BaseFormDoctrine extends dmFormDoctrine
 {
-  public function setup()
-  {
-    parent::setup();
-  }
 }

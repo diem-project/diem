@@ -26,6 +26,8 @@ echo £o('div.dm_google_analytics.seo_service');
       $form->renderSubmitTag(__('Save')).
       $form->close()
     );
+    
+    echo £c('div');
   }
   
 echo £c('div');

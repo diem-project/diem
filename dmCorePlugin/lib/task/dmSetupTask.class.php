@@ -44,19 +44,24 @@ EOF;
     if ($options['clear-db'])
     {
       $this->runTask('doctrine:build', array(), array('db' => true));
+      
+      // well, we no more need migration classes...
+      sfToolkit::clearDirectory(dmProject::rootify('lib/migration/doctrine'));
     }
     else
     {
       $this->runTask('doctrine:build', array(), array('model' => true));
     }
     
-    $this->runTask('dm:build-forms');
+    $this->runTask('doctrine:build-forms', array(), array('generator-class' => 'dmDoctrineFormGenerator'));
     
-    $this->runTask('dm:build-filters');
+    $this->runTask('doctrine:build-filters', array(), array('generator-class' => 'dmDoctrineFormFilterGenerator'));
 
     $this->runTask('dm:data');
 
     $this->runTask('dm:publish-assets');
+    
+    $this->reloadAutoload();
 
     $this->runTask('dmAdmin:generate');
     
@@ -83,9 +88,9 @@ EOF;
         {
           $this->runTask('dm:clear-cache'); // load the new migration classes
           
-          $migrationSuccess = $this->runTask('doctrine:migrate');
+          $migrationSuccess = 0 === $this->runTask('doctrine:migrate');
           
-          if (0 !== $migrationSuccess)
+          if (!$migrationSuccess)
           {
             $this->logBlock('Can not apply migration changes', 'ERROR');
           }
@@ -104,8 +109,6 @@ EOF;
       default:
         throw new dmException('Unexpected case : '.$migrateResponse);
     }
-    
-    throw new dmException;
   }
   
   protected function unlockProject()
@@ -114,7 +117,7 @@ EOF;
     {
       $this->getFilesystem()->remove(dmOs::join(sfConfig::get('dm_data_dir'), 'lock'));
       
-      $this->logBlock('Your project is now ready for web access. See you on admin_dev.php. Your login is admin and your password is the database password.', 'INFO_LARGE');
+      $this->logBlock('Your project is now ready for web access. See you on admin_dev.php. Your login is admin and your password is the database password, or "admin" if the database has no password.', 'INFO_LARGE');
     }
   }
   

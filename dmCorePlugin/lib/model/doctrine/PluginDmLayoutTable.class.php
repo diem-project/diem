@@ -19,4 +19,12 @@ class PluginDmLayoutTable extends myDoctrineTable
 
     return $this->firstLayout;
   }
+  
+  public function getAdminListQuery(dmDoctrineQuery $q)
+  {
+    return $q->leftJoin($q->getRootAlias().'.Areas a')
+    ->leftJoin('a.Zones z')
+    ->leftJoin('z.Widgets w')
+    ->orderBy('a.type DESC');
+  }
 }

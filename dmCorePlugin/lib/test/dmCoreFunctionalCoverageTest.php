@@ -109,12 +109,12 @@ abstract class dmCoreFunctionalCoverageTest
     ->setField('signin[username]', $this->options['username'])
     ->setField('signin[password]', $this->options['password'])
     ->click(dm::getI18n()->__('Login'))
-    ->isRedirected()
+    ->with('response')->begin()->isRedirected()->end()
     ->followRedirect();
     
     while(in_array($this->browser->getResponse()->getStatusCode(), array(301, 302)))
     {
-      $this->browser->isRedirected()->followRedirect();
+      $this->browser->with('response')->begin()->isRedirected()->end()->followRedirect();
     }
     
     $this->browser->with('response')->begin()
@@ -134,7 +134,7 @@ abstract class dmCoreFunctionalCoverageTest
 
     while(in_array($this->browser->getResponse()->getStatusCode(), array(301, 302)))
     {
-      $this->browser->isRedirected()->followRedirect();
+      $this->browser->with('response')->begin()->isRedirected()->end()->followRedirect();
       
       $nbRedirects++;
       if ($nbRedirects > $this->options['maxRedirections'])

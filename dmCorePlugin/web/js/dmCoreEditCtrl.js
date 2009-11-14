@@ -67,10 +67,21 @@
 				dataType: 'json',
         success: function(data)
         {
-					if (data.js)
+					if (data.stylesheets)
 					{
-						$.globalEval(data.js);
+						$.each(data.stylesheets, function()
+						{
+				      if (!$('link[rel=stylesheet][href=' + this + ']').length) 
+				      {
+				        $("head").append('<link rel="stylesheet" href="' + this + '">');
+				      }
+					  });
 					}
+					
+          if (data.js)
+          {
+            $.globalEval(data.js);
+          }
           
           $dialog.html(data.html).trigger('dmAjaxResponse');
         },

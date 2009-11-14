@@ -61,7 +61,7 @@ class dmFrontLayoutHelper extends dmCoreLayoutHelper
   {
     $bodyClass = dmArray::toHtmlCssClasses(array(
       $this->page->get('module').'_'.$this->page->get('action'),
-      $this->page->getPageView()->get('Layout')->get('css_class')
+      $this->page->getPageView()->getLayout()->get('css_class')
     ));
     
     return '<body class="'.$bodyClass.'">';

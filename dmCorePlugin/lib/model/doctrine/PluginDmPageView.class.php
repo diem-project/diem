@@ -12,14 +12,26 @@
  */
 abstract class PluginDmPageView extends BaseDmPageView
 {
+  
+  public function getLayout()
+  {
+    if (!$layout = $this->_get('Layout'))
+    {
+      $layout = dmDb::table('DmLayout')->findFirstOrCreate();
+      $this->set('Layout', $layout);
+      $this->save();
+    }
+    
+    return $layout;
+  }
 
   public function save(Doctrine_Connection $conn = null)
   {
     $return = parent::save($conn);
 
-    if ($this->Area->isNew())
+    if ($this->get('Area')->isNew())
     {
-      $this->Area->fromArray(array(
+      $this->get('Area')->fromArray(array(
         'type' => 'content'
       ))->save();
     }

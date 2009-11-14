@@ -1,12 +1,12 @@
 [?php
   $required = ($validator = $form->getValidatorSchema()->offsetGet($name)) ? $validator->getOption('required') : false;
-  $divClass = dmArray::toHtmlCssClasses(array($class, $field->isBig() ? 'big' : '', $required ? 'required' : ''));
+  $divClass = dmArray::toHtmlCssClasses(array($class, ($field->getConfig('is_big') || $field->getConfig('markdown')) ? 'big' : '', $required ? 'required' : ''));
 ?]
 [?php if ($field->isPartial()): ?]
   <div class="[?php echo $divClass ?]">[?php include_partial('<?php echo $this->getModuleName() ?>/'.$name, array('<?php echo $this->getModuleName() ?>' => $form->getObject(), 'form' => $form, 'attributes' => $attributes instanceof sfOutputEscaper ? $attributes->getRawValue() : $attributes)) ?]</div>
 [?php elseif ($field->isComponent()): ?]
   <div class="[?php echo $divClass ?]">[?php include_component('<?php echo $this->getModuleName() ?>', $name, array('<?php echo $this->getModuleName() ?>' => $form->getObject(), 'form' => $form, 'attributes' => $attributes instanceof sfOutputEscaper ? $attributes->getRawValue() : $attributes)) ?]</div>
-[?php elseif ($field->isMarkdown()): ?]
+[?php elseif ($field->getConfig('markdown')): ?]
   [?php include_partial("dmAdminGenerator/markdown", array("form" => $form, "field" => $field, "class" => $class, "name" => $name, "label" => $label, "attributes" => $attributes, "help" => $help)); ?]
 [?php elseif(isset($form[$name])): ?]
   <div class="[?php echo $divClass ?][?php $form[$name]->hasError() and print ' errors' ?]">
@@ -45,7 +45,11 @@
 [?php else: //check if is a media view ?]
   <div class="[?php echo $divClass ?]">
     [?php
-    if (substr($name, -5) === '_view')
+    if ('dm_gallery' === $name)
+    {
+      include_partial('dmMedia/galleryMedium', array('record' => $form->getObject()));
+    }
+    elseif (substr($name, -5) === '_view')
     {
       include_partial('dmMedia/viewBig', array('object' => $form->getObject()->getDmMediaByColumnName(substr($name, 0, strlen($name)-5))));
     }

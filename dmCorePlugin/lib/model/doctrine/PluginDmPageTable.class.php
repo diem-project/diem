@@ -167,7 +167,7 @@ class PluginDmPageTable extends myDoctrineTable
       }
       elseif(substr_count($source, '/') === 1)
       {
-        $parts = explode("/", $source);
+        $parts = explode('/', $source);
         
         $this->findByStringCache[$source] = $this->findOneByModuleAndActionWithI18n($parts[0], $parts[1]);
       }
@@ -244,15 +244,26 @@ class PluginDmPageTable extends myDoctrineTable
   public function findByModuleAndAction($module, $action)
   {
     return $this->createQuery('p')
-    ->where('p.module = ? AND p.action = ?', array($module, $action))
+    ->where('p.module = ?', $module)
+    ->andWhere('p.action = ?', $action)
     ->dmCache()
     ->fetchRecords();
+  }
+
+  public function findOneByModuleAndAction($module, $action)
+  {
+    return $this->createQuery('p')
+    ->where('p.module = ?', $module)
+    ->andWhere('p.action = ?', $action)
+    ->dmCache()
+    ->fetchRecord();
   }
 
   public function findOneByModuleAndActionWithI18n($module, $action, $culture = null)
   {
     return $this->createQuery('p')
-    ->where('p.module = ? AND p.action = ?', array($module, $action))
+    ->where('p.module = ?', $module)
+    ->andWhere('p.action = ?', $action)
     ->withI18n($culture)
     ->dmCache()
     ->fetchOne();

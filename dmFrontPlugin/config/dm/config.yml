@@ -5,11 +5,7 @@ default:
       default_theme:
         name:             'Diem default theme'    # theme name
         path:             'dm/front/defaultTheme' # theme path from web dir
-        enabled:          true                    # theme disponibility from dmThemeManager 
-      my_theme:
-        name:             'My theme'              # theme name
-        path:             'theme'                 # theme path from web dir
-        enabled:          true                    # theme disponibility from dmThemeManager 
+        enabled:          true                    # theme disponibility from theme_manager 
     default:              default_theme           # default theme when user arrive on site
 
   accessibility:

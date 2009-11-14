@@ -22,6 +22,7 @@ class dmFrontAssetConfig extends dmAssetConfig
         'core.pageBar',
         'core.mediaBar',
         'core.form',
+        'front.base',
         'front.toolBar',
         'front.zone',
         'front.widget',
@@ -32,7 +33,8 @@ class dmFrontAssetConfig extends dmAssetConfig
     return array(
       'lib.reset',
       sfConfig::get('sf_web_debug') ? 'lib.symfony_debug' : null,
-      'core.util'
+      'core.util',
+      'front.base'
     );
   }
   

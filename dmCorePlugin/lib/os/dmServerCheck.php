@@ -22,16 +22,14 @@ class dmServerCheck
     ),
       'php config' => array(
     new dmServerCheckUnit('version', phpversion(), '5.2.4', self::ERROR),
-    new dmServerCheckUnit('version != 5.2.9 (buggy)', version_compare(phpversion(), '5.2.9', '!='), true, self::ERROR),
+//    new dmServerCheckUnit('version != 5.2.9 (buggy)', version_compare(phpversion(), '5.2.9', '!='), true, self::ERROR),
     new dmServerCheckUnit('memory', ini_get('memory_limit'), '48M', self::ERROR),
     new dmServerCheckUnit('magic quote gpc', ini_get('magic_quotes_gpc'), false),
     new dmServerCheckUnit('upload max filesize', ini_get('upload_max_filesize'), '2M'),
     new dmServerCheckUnit('post max size', ini_get('post_max_size'), '2M'),
     new dmServerCheckUnit('register globals', ini_get('register_globals'), false),
     new dmServerCheckUnit('session auto_start', ini_get('session.auto_start'), false),
-    new dmServerCheckUnit('token_get_all()', function_exists('token_get_all'), true),
     new dmServerCheckUnit('mb_strlen()', function_exists('mb_strlen'), true),
-    new dmServerCheckUnit('iconv()', function_exists('token_get_all'), true),
     new dmServerCheckUnit('utf8_decode()', function_exists('utf8_decode'), true),
     ),
        'symfony' => array(
@@ -51,7 +49,7 @@ class dmServerCheck
     new dmServerCheckUnit('reflection', extension_loaded('Reflection'), true, self::ERROR),
     new dmServerCheckUnit('session', extension_loaded('session'), true, self::ERROR),
     new dmServerCheckUnit('simplexml', extension_loaded('SimpleXML'), true, self::ERROR),
-    new dmServerCheckUnit('bitset', extension_loaded('bitset'), true),
+//    new dmServerCheckUnit('bitset', extension_loaded('bitset'), true),
     new dmServerCheckUnit('apc', function_exists('apc_store') ? phpversion('apc') : false, '3.0'),
     new dmServerCheckUnit('mbstring', extension_loaded('mbstring'), true),
     new dmServerCheckUnit('curl', extension_loaded('curl'), true),
@@ -164,6 +162,11 @@ class dmServerCheckUnit
   public function renderRequirement()
   {
     return $this->renderValue($this->requirement);
+  }
+  
+  public function isRequired()
+  {
+    return dmServerCheck::ERROR === $this->level;
   }
 
   public function renderState()

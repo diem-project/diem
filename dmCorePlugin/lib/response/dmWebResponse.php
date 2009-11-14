@@ -8,7 +8,8 @@ abstract class dmWebResponse extends sfWebResponse
   $cdnConfig,
   $javascriptConfig,
   $culture,
-  $theme;
+  $theme,
+  $serviceContainer;
   
   public function initialize(sfEventDispatcher $dispatcher, $options = array())
   {
@@ -23,6 +24,11 @@ abstract class dmWebResponse extends sfWebResponse
     $this->dispatcher->connect('user.change_theme', array($this, 'listenToChangeThemeEvent'));
     
     $this->dispatcher->connect('dm.response.filter_javascripts', array($this, 'listenFilterJavascripts'));
+  }
+  
+  public function setServiceContainer(dmBaseServiceContainer $serviceContainer)
+  {
+    $this->serviceContainer = $serviceContainer;
   }
   
   /*
@@ -81,14 +87,20 @@ abstract class dmWebResponse extends sfWebResponse
     $this->theme = $theme;
   }
   
-  /**
-   * Sets the assets aliases
-   *
-   * @param array the asset aliases
-   */
-  public function setAssetAliases(array $assetAliases)
+
+  public function getAssetAliases()
   {
-    $this->assetAliases = $assetAliases;
+    if (null === $this->assetAliases)
+    {
+      if (!$this->serviceContainer)
+      {
+        throw new dmException('No service container setted');
+      }
+      
+      $this->assetAliases = include($this->serviceContainer->getService('config_cache')->checkConfig('config/dm/assets.yml'));
+    }
+    
+    return $this->assetAliases;
   } 
   
   /**
@@ -109,14 +121,17 @@ abstract class dmWebResponse extends sfWebResponse
     }
   }
   
-  /**
-   * Sets the cdn configuration
-   *
-   * @param array the cdn configuration
-   */
-  public function setCdnConfig(array $cdnConfig)
+  public function getCdnConfig()
   {
-    $this->cdnConfig = $cdnConfig;
+    if (null === $this->cdnConfig)
+    {
+      $this->cdnConfig = array(
+        'css' => sfConfig::get('dm_css_cdn',  array('enabled' => false)),
+        'js'  => sfConfig::get('dm_js_cdn',   array('enabled' => false))
+      );
+    }
+    
+    return $this->cdnConfig;
   }
   
   public function getJavascriptConfig()
@@ -134,7 +149,7 @@ abstract class dmWebResponse extends sfWebResponse
     return strpos($this->getContentType(), 'text/html') === 0;
   }
 
-  protected function calculateAssetPath($type, $asset)
+  public function calculateAssetPath($type, $asset)
   {
     if ($asset{0} === '/' || strpos($asset, 'http://') === 0)
     {
@@ -142,13 +157,16 @@ abstract class dmWebResponse extends sfWebResponse
     }
     else
     {
-      if($this->cdnConfig[$type]['enabled'] && isset($this->cdnConfig[$type][$asset]))
+      $cdnConfig = $this->getCdnConfig();
+      $assetAliases = $this->getAssetAliases();
+      
+      if($this->cdnConfig[$type]['enabled'] && isset($cdnConfig[$type][$asset]))
       {
-        $path = $this->cdnConfig[$type][$asset];
+        $path = $cdnConfig[$type][$asset];
       }
-      elseif(isset($this->assetAliases[$type.'.'.$asset]))
+      elseif(isset($assetAliases[$type.'.'.$asset]))
       {
-        $path = $this->assetAliases[$type.'.'.$asset];
+        $path = $assetAliases[$type.'.'.$asset];
       }
       elseif($type === 'css')
       {

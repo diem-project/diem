@@ -69,7 +69,7 @@ EOF;
 
       if (in_array($moduleKey, $existingModules))
       {
-        if (!$options['clear'] || !$module->isProject())
+        if (empty($options['clear']) || !$module->isProject())
         {
 //          $this->logSection('diem', sprintf("Skip existing module %s", $moduleKey));
           continue;

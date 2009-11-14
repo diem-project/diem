@@ -51,7 +51,7 @@ class dmWidgetTypeManager
             $fullKey = $moduleKey.dmString::camelize($actionKey);
 
             $widgetTypeConfig = array(
-              'full_key'   => $moduleKey,
+              'full_key'   => $moduleKey.ucfirst($actionKey),
               'name'       => dmArray::get($action, 'name', dmString::humanize($actionKey)),
               'form_class' => dmArray::get($action, 'form_class', $fullKey.'Form'),
               'view_class' => dmArray::get($action, 'view_class', $fullKey.'View'),
@@ -74,7 +74,7 @@ class dmWidgetTypeManager
             $baseClass = 'dmWidget'.dmString::camelize($action->getType());
 
             $widgetTypeConfig = array(
-              'full_key'   => $moduleKey,
+              'full_key'   => $moduleKey.ucfirst($actionKey),
               'name'       => $action->getName(),
               'form_class' => $baseClass.'Form',
               'view_class' => $baseClass.'View',
@@ -89,7 +89,6 @@ class dmWidgetTypeManager
         $this->serviceContainer->getService('cache_manager')->getCache('dm/widget')->set('types', $this->widgetTypes);
       }
     }
-
     $timer && $timer->addTime();
     return $this->widgetTypes;
   }

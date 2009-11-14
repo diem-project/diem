@@ -110,4 +110,14 @@ class dmBrowser
     
     return $isModern;
   }
+  
+  public function __toString()
+  {
+    return $this->getFullName();
+  }
+  
+  public function getFullName()
+  {
+    return $this->getName().' '.$this->getVersion();
+  }
 }

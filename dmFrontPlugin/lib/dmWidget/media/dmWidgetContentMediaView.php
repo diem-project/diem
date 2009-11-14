@@ -31,6 +31,11 @@ class dmWidgetContentMediaView extends dmWidgetPluginView
       {
         $mediaTag->background($vars['background']);
       }
+      
+      if ($vars['legend'])
+      {
+        $mediaTag->alt($vars['legend']);
+      }
     }
     else
     {
@@ -82,8 +87,9 @@ class dmWidgetContentMediaView extends dmWidgetPluginView
     return $html;
   }
   
-  protected function doRenderForIndex(array $vars)
+  protected function doRenderForIndex()
   {
+    $vars = $this->compiledVars();
     return $vars['legend'];
   }
   

@@ -3,38 +3,55 @@
 class dmMail
 {
   protected
-  $mailTemplate,
+  $serviceContainer,
+  $template,
   $data,
-  $attributes = array(
-    'title' => null,
-    'body'  => null,
-    'from'  => array(),
-    'to'    => array()
-  );
+  $attributes;
 
   protected static
   $swiftLoaded = false;
-
-  public static function build($mailTemplateName)
+  
+  public function __construct(dmBaseServiceContainer $serviceContainer)
   {
-    if (!$mailTemplate = dmDb::query('DmMailTemplate t')->where('t.name = ?', $mailTemplateName))
-    {
-      throw new dmException('Can not build a dmMail because '.$mailTemplateName.' is not a valid mail template name');
-    }
-
-    $mail = new self($mailTemplate);
+    $this->serviceContainer = $serviceContainer;
+    
+    $this->initialize();
+  }
+  
+  protected function initialize()
+  {
+    $this->data = array();
+    $this->attributes = array(
+      'title' => null,
+      'body'  => null,
+      'from'  => array(),
+      'to'    => array()
+    );
   }
 
-  public function __construct(DmMailTemplate $mailTemplate)
+  public function setTemplate($templateName)
   {
-    $this->mailTemplate = $mailTemplate;
+    if (!$this->template = dmDb::query('DmMailTemplate t')->where('t.name = ?', $templateName)->fetchRecord())
+    {
+      $this->template = dmDb::create('DmMailTemplate', array('name' => $templateName));
+    }
+    
+    return $this;
   }
 
   public function set($data)
   {
-    if ($data instanceof myDoctrinRecord)
+    if ($data instanceof dmDoctrinRecord)
     {
       $data = $data->toArray();
+    }
+    elseif($data instanceof dmFormDoctrine)
+    {
+      $data = $data->getObject()->toArray();
+    }
+    elseif($data instanceof dmForm)
+    {
+      $data = $data->getValues();
     }
     else
     {
@@ -78,11 +95,48 @@ class dmMail
 
   protected function bind()
   {
+    if (!$this->template instanceof DmMailTemplate)
+    {
+      throw new dmException('You must call setTemplate() to set a mail template');
+    }
+    
+    $this->updateTemplate();
+    
     $this->attributes = array(
-    'title' => null,
-    'body'  => null,
-    'from'  => array('email' => 'name'),
-    'to'    => array('email' => 'name')
+      'title' => null,
+      'body'  => null,
+      'from'  => array('email' => 'name'),
+      'to'    => array('email' => 'name')
     );
+    
+    dmDebug::kill($this->attributes, $this->data);
+  }
+  
+  protected function updateTemplate()
+  {
+    if ($this->template->get('vars') != implode(', ', array_keys($this->data)))
+    {
+      $this->template->set('vars', implode(', ', array_keys($this->data)));
+    }
+    
+    if (!$this->template->get('body'))
+    {
+      $body = array();
+      foreach($this->data as $key =>  $value)
+      {
+        $body[] = dmString::humanize($key).' : '.$this->wrap($key);
+      }
+      $this->template->set('body', implode("\n", $body));
+    }
+    
+    if($this->template->isModified())
+    {
+      $this->template->save();
+    }
+  }
+  
+  public function wrap($key)
+  {
+    return '%'.$key.'%';
   }
 }

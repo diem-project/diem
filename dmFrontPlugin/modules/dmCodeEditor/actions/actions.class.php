@@ -15,15 +15,14 @@ class dmCodeEditorActions extends dmFrontBaseActions
     file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), $assetAliases['js.core.codeArea'])).';'.
     file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), $assetAliases['js.front.codeEditor']))
     );
-
-    $this->css = dmCssMinifier::transform(
-    file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), $assetAliases['css.lib.ui-tabs'])).
-    file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), $assetAliases['css.front.codeEditor']))
-    );
     
     return $this->renderJson(array(
       'html' => $this->getPartial('dmCodeEditor/launch'),
-      'js' => $js
+      'js' => $js,
+      'stylesheets' => array(
+        $this->context->get('helper')->getStylesheetWebPath('lib.ui-tabs'),
+        $this->context->get('helper')->getStylesheetWebPath('front.codeEditor')
+      )
     ));
   }
 
@@ -108,7 +107,7 @@ class dmCodeEditorActions extends dmFrontBaseActions
       {
         foreach($zoneArray['Widgets'] as $widgetArray)
         {
-          if($widgetArray['module'] == $module)
+          if($widgetArray['module'] === $module)
           {
             $widgets[$widgetArray['id']] = $helper->renderWidgetInner($widgetArray);
           }

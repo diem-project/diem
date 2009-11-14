@@ -35,8 +35,6 @@ class dmGenerateMigrationTask extends sfDoctrineBaseTask
       return self::UP_TO_DATE;
     }
     
-    $this->removeDoubleMigrations();
-    
     try
     {
       $this->runTask('doctrine:generate-migrations-diff');

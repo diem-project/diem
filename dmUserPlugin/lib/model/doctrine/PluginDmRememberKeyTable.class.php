@@ -1,6 +1,6 @@
 <?php
 
-class PluginDmRememberKeyTable extends myDoctrineTable
+abstract class PluginDmRememberKeyTable extends myDoctrineTable
 {
 
 

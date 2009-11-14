@@ -14,12 +14,12 @@ abstract class PluginDmWidget extends BaseDmWidget
 {
   public function getValues()
   {
-    return json_decode($this->value, true);
+    return json_decode($this->get('value'), true);
   }
 
   public function setValues($v)
   {
-    $this->value = json_encode($v);
+    $this->set('value', json_encode($v));
   }
 
   public function __toString()

@@ -362,6 +362,7 @@ EOF;
       "accessibility" => "Use the span & abbr interface",
       "layout" => "Use the layout interface",
       'sent_mail' => 'See mails sent by server',
+      'mail_template' => 'Configure mail templates',
       'error_log' => 'See error log',
       'ihm_settings' => 'Manage IHM settings like default image resize method'
     );

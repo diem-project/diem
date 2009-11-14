@@ -23,14 +23,15 @@ $form->renderGlobalErrors(),
 £('div#'.$baseTabId.'_media',
   $sf_context->get('helper')->renderPartial('dmWidget', 'forms/dmWidgetContentMedia', array(
     'form' => $form,
-    'hasMedia' => $hasMedia
+    'hasMedia' => $hasMedia,
+    'skipCssClass' => true
   ))
 ),
 
 £('div#'.$baseTabId.'_links',
   £('ul.dm_form_elements',
-    $form['titleLink']->renderRow().
-    $form['mediaLink']->renderRow()
+    £('li.dm_form_element.clearfix', $form['titleLink']->label('Title')->field('.dm_link_droppable')->error()).
+    £('li.dm_form_element.clearfix', $form['mediaLink']->label('Media')->field('.dm_link_droppable')->error())
   )
 ),
 

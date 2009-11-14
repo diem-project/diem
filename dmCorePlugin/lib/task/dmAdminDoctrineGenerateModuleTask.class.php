@@ -115,7 +115,7 @@ class dmAdminDoctrineGenerateModuleTask extends sfDoctrineGenerateModuleTask
     // move form file
     if (file_exists($config = $moduleDir.'/lib/form.php'))
     {
-      if (file_exists($target = $moduleDir.'/lib/'.$arguments['model'].'AdminForm.class.php'))
+      if (file_exists($target = $moduleDir.'/lib/'.$arguments['model'].'AdminForm.php'))
       {
         $this->getFilesystem()->remove($config);
       }
@@ -160,7 +160,7 @@ EOF
       $options['non-verbose-templates'] ? 'true' : 'false',
       $options['with-show'] ? 'true' : 'false',
       $options['route-prefix'] ? $options['route-prefix'] : '~',
-      $options['with-doctrine-route'] ? 'true' : 'false'
+      'false'
     );
 
     $this->getFilesystem()->replaceTokens($finder->in($moduleDir), '##', '##', $this->constants);

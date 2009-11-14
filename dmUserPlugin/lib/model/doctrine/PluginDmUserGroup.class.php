@@ -2,14 +2,9 @@
 
 abstract class PluginDmUserGroup extends BaseDmUserGroup
 {
-  /**
-   * Saves the current DmUserGroup object in database.
-   *
-   * @param Doctrine_Connection $conn A Doctrine_Connection object
-   */
-  public function save(Doctrine_Connection $conn = null)
+  public function postSave($event)
   {
-    parent::save($conn);
+    parent::postSave($event);
 
     $this->getUser()->reloadGroupsAndPermissions();
   }

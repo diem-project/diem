@@ -1,6 +1,6 @@
 <?php
 
-abstract class dmAssetCompressor
+abstract class dmAssetCompressor extends dmConfigurable
 {
   protected
   $dispatcher,
@@ -23,18 +23,18 @@ abstract class dmAssetCompressor
   
   public function initialize(array $options = array())
   {
-    $this->options = array_merge(array(
-      'gz_compression'      => true,
-      'minify'              => true,
-      'protect_user_assets' => false
-    ), $options);
-    
+    $this->configure($options);
+        
     $this->type = $this->getType();
   }
   
-  public function setOption($name, $value)
+  public function getDefaultOptions()
   {
-    $this->options[$name] = $value;
+    return array(
+      'gz_compression'      => true,
+      'minify'              => true,
+      'protect_user_assets' => false
+    );
   }
   
   public function listenFilterAssets(sfEvent $event, array $assets)

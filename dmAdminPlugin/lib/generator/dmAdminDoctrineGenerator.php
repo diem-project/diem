@@ -156,7 +156,7 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
      */
     elseif($relation = $this->table->getRelationHolder()->getLocalByColumnName($fieldName))
     {
-      if ($relation->getClass() === 'DmMedia')
+      if ('DmMedia' === $relation->getClass())
       {
         $html = '$'.$this->getSingularName()."->get('".$relation->getLocalColumnName()."') ? get_partial('dmMedia/viewLittle', array('object' => $".$this->getSingularName()."->get('".$relation->getAlias()."'))) : '-'";
       }
@@ -192,6 +192,7 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
       }
       if ($relation)
       {
+        
         if($relation instanceof Doctrine_Relation_ForeignKey)
         {
           $html = "get_partial('dmAdminGenerator/relationForeign', array('record' => $".$this->getSingularName().", 'alias' => '".$alias."'));";
@@ -201,6 +202,10 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
           $html = "get_partial('dmAdminGenerator/relationAssociation', array('record' => $".$this->getSingularName().", 'alias' => '".$alias."'));";
         }
       }
+    }
+    elseif ('dm_gallery' === $fieldName)
+    {
+      $html = "get_partial('dmMedia/galleryLittle', array('record' => $".$this->getSingularName()."));";
     }
     else
     {

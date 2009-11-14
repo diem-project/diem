@@ -146,6 +146,11 @@ abstract class dmDoctrineTable extends Doctrine_Table
       }
       elseif ($relation->getClass() === 'DmMedia')
       {
+        if ($relation instanceof Doctrine_Relation_Association && $this->hasTemplate('DmGallery'))
+        {
+          continue;
+        }
+        
         $query->withDmMedia($relation->getAlias());
       }
       else
@@ -315,7 +320,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
 
   public function isSortable()
   {
-    return $this->hasTemplate('Sortable') && $this->getPrimaryKey() == 'id';
+    return $this->hasTemplate('Sortable') && 'id' === $this->getPrimaryKey();
   }
 
   public function hasI18n()
@@ -467,13 +472,20 @@ abstract class dmDoctrineTable extends Doctrine_Table
     }
 
     $records = $this->createQuery('q INDEXBY q.id')->whereIn('q.id', array_keys($order))->fetchRecords();
-
+    $modifiedRecords = new Doctrine_Collection($this);
+    
     foreach ($order as $id => $position)
     {
-      $records[$id]->set('position', $position);
+      if ($position != $records[$id]->get('position'))
+      {
+        $records[$id]->set('position', $position);
+        $modifiedRecords[] = $records[$id];
+      }
     }
 
-    $records->save();
+    $modifiedRecords->save();
+    
+    unset($records, $modifiedRecords);
   }
 
   /*

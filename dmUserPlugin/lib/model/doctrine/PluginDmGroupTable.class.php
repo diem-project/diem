@@ -1,6 +1,6 @@
 <?php
 
-class PluginDmGroupTable extends myDoctrineTable
+abstract class PluginDmGroupTable extends myDoctrineTable
 {
 
 

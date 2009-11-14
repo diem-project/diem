@@ -37,6 +37,18 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
     $models = $this->loadModels();
 
     // create the project base class for all forms
+    $file = sfConfig::get('sf_lib_dir').'/form/BaseForm.class.php';
+    if (!file_exists($file))
+    {
+      if (!is_dir($directory = dirname($file)))
+      {
+        mkdir($directory, 0777, true);
+      }
+
+      copy(dmOs::join(sfConfig::get('dm_core_dir'), 'data/skeleton/lib/form/BaseForm.class.php'), $file);
+    }
+
+    // create the project base class for all doctrine forms
     $file = sfConfig::get('sf_lib_dir').'/form/doctrine/BaseFormDoctrine.class.php';
     if (!file_exists($file))
     {
@@ -45,7 +57,7 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
         mkdir($directory, 0777, true);
       }
 
-      file_put_contents($file, $this->evalTemplate('sfDoctrineFormBaseTemplate.php'));
+      copy(dmOs::join(sfConfig::get('dm_core_dir'), 'data/skeleton/lib/form/doctrine/BaseFormDoctrine.class.php'), $file);
     }
 
     $pluginPaths = $this->generatorManager->getConfiguration()->getAllPluginPaths();

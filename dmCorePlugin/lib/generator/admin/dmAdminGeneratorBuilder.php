@@ -62,8 +62,22 @@ class dmAdminGeneratorBuilder
      */
     foreach($this->table->getRelationHolder()->getAssociations() as $alias => $relation)
     {
+      if ($this->table->hasTemplate('DmGallery') && 'DmMedia' === $relation->getClass())
+      {
+        continue;
+      }
+      
+      if ($relationModule = $this->module->getManager()->getModuleByModel($relation->getClass()))
+      {
+        $label = $module->getPlural();
+      }
+      else
+      {
+        $label = dmString::humanize($alias);
+      }
+      
       $fields[dmString::underscore($alias).'_list'] = array(
-        'label' => $this->module->getManager()->getModuleByModel($relation->getClass())->getPlural()
+        'label' => $label
       );
     }
     
@@ -79,7 +93,12 @@ class dmAdminGeneratorBuilder
         );
       }
     }
-
+    
+    if ($this->table->hasTemplate('DmGallery'))
+    {
+      $fields['dm_gallery'] = 'Gallery';
+    }
+    
     return $fields;
   }
 
@@ -119,6 +138,11 @@ class dmAdminGeneratorBuilder
       $display[] = $relation->getLocalColumnName();
       unset($fields[$relation->getLocalColumnName()]);
     }
+  
+    if ($this->table->hasTemplate('DmGallery'))
+    {
+      $display[] = 'dm_gallery';
+    }
 
     foreach($this->table->getRelationHolder()->getForeigns() as $alias => $relation)
     {
@@ -130,6 +154,11 @@ class dmAdminGeneratorBuilder
 
     foreach($this->table->getRelationHolder()->getAssociations() as $alias => $relation)
     {
+      if ($this->table->hasTemplate('DmGallery') && 'DmMedia' === $relation->getClass())
+      {
+        continue;
+      }
+      
       $display[] = dmString::underscore($alias).'_list';
     }
 
@@ -277,8 +306,26 @@ class dmAdminGeneratorBuilder
 
     foreach($this->table->getRelationHolder()->getAssociations() as $alias => $relation)
     {
-      $associationModule = $this->module->getManager()->getModuleByModel($relation->getClass());
-      $sets[$associationModule->getPlural()][] = dmString::underscore($alias).'_list';
+      if ($this->table->hasTemplate('DmGallery') && 'DmMedia' === $relation->getClass())
+      {
+        continue;
+      }
+      
+      if ($relationModule = $this->module->getManager()->getModuleByModel($relation->getClass()))
+      {
+        $label = $module->getPlural();
+      }
+      else
+      {
+        $label = dmString::humanize($alias);
+      }
+      
+      $sets[$label][] = dmString::underscore($alias).'_list';
+    }
+    
+    if ($this->table->hasTemplate('DmGallery'))
+    {
+      $sets['Gallery'][] = 'dm_gallery';
     }
 
     $sets['Others'] = array();

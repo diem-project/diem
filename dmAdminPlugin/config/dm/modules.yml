@@ -3,6 +3,9 @@ Utils:
     dmConfigPanel:
       name:         Configuration panel
       credentials:  config_panel
+    dmMailTemplate:
+      name:         Mail template
+      credential:   mail_template
   Translation:
     dmTransUnit:
       name:         Sentence

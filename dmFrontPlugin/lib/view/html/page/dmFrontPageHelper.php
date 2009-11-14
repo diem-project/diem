@@ -60,7 +60,7 @@ class dmFrontPageHelper
       
       $this->areas = dmDb::query('DmArea a INDEXBY a.type, a.Zones z, z.Widgets w')
       ->select('a.type, z.width, z.css_class, w.module, w.action, w.value, w.css_class')
-      ->where('a.dm_layout_id = ? OR a.dm_page_view_id = ?', array($this->page->getPageView()->get('Layout')->get('id'), $this->page->getPageView()->get('id')))
+      ->where('a.dm_layout_id = ? OR a.dm_page_view_id = ?', array($this->page->getPageView()->getLayout()->get('id'), $this->page->getPageView()->get('id')))
       ->orderBy('z.position asc, w.position asc')
       ->fetchArray();
     }
@@ -96,30 +96,33 @@ class dmFrontPageHelper
     return $html;
   }
 
-  public function renderArea($type)
+  public function renderArea($type, $options = array())
   {
+    $options = dmString::toArray($options);
+    
     $tagName = $this->getAreaTypeTagName($type);
 
     $area = $this->getArea($type);
+    
+    $options['class'] = array_merge(dmArray::get($options, 'class', array()), array(
+      'dm_area',
+      'content' === $type ? 'dm_content' : 'dm_layout_'.$type
+    ));
+    
+    $options['id'] = dmArray::get($options, 'id', 'dm_area_'.$area['id']);
 
     $html = '';
 
     /*
      * Add a content id for accessibility purpose ( access links )
      */
-    if ($type === 'content')
+    if ('content' === $type)
     {
       $html .= '<div id="dm_content">';
     }
+    
+    $html .= dmHelper::£o($tagName, $options);
 
-    $html .= sprintf(
-      '<%s class="dm_area %s" id="dm_area_%d">',
-      $tagName,
-      $type === 'content' ? 'dm_content' : 'dm_layout_'.$type,
-      $area['id']
-    );
-
-//    $html .= '<div class="dm_zones clearfix">';
     $html .= '<div class="dm_zones">';
 
     if (!empty($area['Zones']))
@@ -137,7 +140,7 @@ class dmFrontPageHelper
     /*
      * Add a content id for accessibility purpose ( access links )
      */
-    if ($type === 'content')
+    if ('content' === $type)
     {
       $html .= '</div>';
     }
@@ -252,7 +255,8 @@ class dmFrontPageHelper
         ->param('dm_debug', 1)
         ->text(sprintf('[%s/%s] : %s', $widget['module'], $widget['action'], $e->getMessage()))
         ->title('Click to see the exception details')
-        ->set('.dm_exception.s16.s16_error');
+        ->set('.dm_exception.s16.s16_error')
+        ->render();
       }
       else
       {

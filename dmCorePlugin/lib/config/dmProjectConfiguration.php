@@ -34,11 +34,12 @@ class dmProjectConfiguration extends sfProjectConfiguration
     /*
      * Set up doctrine extensions dir
      */
-//    Doctrine::setExtensionsPath(sfConfig::get('dm_core_dir').'/lib/doctrine/extension');
+    Doctrine::setExtensionsPath(sfConfig::get('dm_core_dir').'/lib/doctrine/extension');
 
     /*
      * Configure inheritance
      */
+    $manager->setAttribute(Doctrine::ATTR_TABLE_CLASS, 'myDoctrineTable');
     $manager->setAttribute(Doctrine::ATTR_QUERY_CLASS, 'myDoctrineQuery');
     $manager->setAttribute(Doctrine::ATTR_COLLECTION_CLASS, 'myDoctrineCollection');
     

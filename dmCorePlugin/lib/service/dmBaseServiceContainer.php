@@ -42,12 +42,7 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
   {
     $this->configureUser();
     
-    if ($this->getService('response')->isHtmlForHuman())
-    {
-      $this->configureResponse();
-      
-      $this->configureAssetCompressor();
-    }
+    $this->configureResponse();
   }
   
   protected function configureUser()
@@ -57,46 +52,22 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
   
   protected function configureResponse()
   {
-    /*
-     * Response require asset aliases
-     */
-    $this->getService('response')->setAssetAliases(include($this->getService('config_cache')->checkConfig('config/dm/assets.yml')));
+    $response = $this->getService('response');
     
-    /*
-     * Response require cdn configuration
-     */
-    $this->getService('response')->setCdnConfig(array(
-      'css' => sfConfig::get('dm_css_cdn',  array('enabled' => false)),
-      'js'  => sfConfig::get('dm_js_cdn',   array('enabled' => false))
-    ));
+    $response->setServiceContainer($this);
     
-    /*
-     * Response require asset configuration
-     */
-    $this->getService('response')->setAssetConfig($this->getService('asset_config'));
-  }
-  
-  protected function configureAssetCompressor()
-  {
-    if (!sfConfig::get('dm_debug'))
+    if ($response->isHtmlForHuman())
     {
+      $response->setAssetConfig($this->getService('asset_config'));
+      
       $userCanCodeEditor = $this->getService('user')->can('code_editor');
       
-      /*
-       * Enable stylesheet compression
-       */
-      $stylesheetCompressor = $this->getService('stylesheet_compressor');
-      $stylesheetCompressor->setOption('protect_user_assets', $userCanCodeEditor);
-      $stylesheetCompressor->connect();
-
-      /*
-       * Enable javascript compression
-       */
-      $javascriptCompressor = $this->getService('javascript_compressor');
-      $javascriptCompressor->setOption('protect_user_assets', $userCanCodeEditor);
-      $javascriptCompressor->connect();
+      $this->getService('stylesheet_compressor')->setOption('protect_user_assets', $userCanCodeEditor);
+  
+      $this->getService('javascript_compressor')->setOption('protect_user_assets', $userCanCodeEditor);
     }
   }
+  
   
   public function connect()
   {
@@ -142,6 +113,19 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
        * Connect the request log to make it aware of controller end
        */
       $this->getService('request_log')->connect();
+    }
+    
+    if ($this->getService('response')->isHtmlForHuman())
+    {
+      /*
+       * Enable stylesheet compression
+       */
+      $this->getService('stylesheet_compressor')->connect();
+      
+      /*
+       * Enable javascript compression
+       */
+      $this->getService('javascript_compressor')->connect();
     }
     
     $this->getService('user')->connect();

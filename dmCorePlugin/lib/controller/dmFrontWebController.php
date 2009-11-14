@@ -12,10 +12,8 @@ class dmFrontWebController extends sfFrontWebController
    */
   public function redirect($url, $delay = 0, $statusCode = 302)
   {
-    $url = $this->genUrl($url, true);
-    
     $this->dispatcher->notify(new sfEvent($this, 'dm.controller.redirect'));
     
-    parent::redirect($url, $delay, $statusCode);
+    return parent::redirect($url, $delay, $statusCode);
   }
 }

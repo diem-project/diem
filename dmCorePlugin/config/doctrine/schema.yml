@@ -28,7 +28,7 @@ DmPageView:
   columns:
     module:                 { type: string(127), notnull: true }
     action:                 { type: string(127), notnull: true }
-    dm_layout_id:           { type: integer, notnull: true }
+    dm_layout_id:           { type: integer }
   indexes:
     moduleAction:
       fields:               [ module, action ]
@@ -38,7 +38,7 @@ DmPageView:
       class:                DmLayout
       local:                dm_layout_id
       foreign:              id
-      onDelete:             CASCADE
+      onDelete:             SET NULL
       foreignAlias:         PageViews
     Area:
       class:                DmArea
@@ -47,7 +47,7 @@ DmPageView:
 
 DmLayout:
   columns:
-    name:                   { type: string(127), notnull: true, unique: true }
+    name:                   { type: string(255), notnull: true, unique: true }
     css_class:              { type: string(255) }
 
 DmArea:
@@ -88,7 +88,11 @@ DmZone:
       onDelete:             CASCADE
   
 DmWidget:
-  actAs:                    [Sortable, Timestampable]
+  actAs:
+    Sortable:               {}
+    Timestampable:
+      created:
+        disabled: true
   columns:
     dm_zone_id:             { type: integer, notnull: true }
     module:                 { type: string(127), notnull: true }
@@ -243,3 +247,16 @@ TransUnit:
       foreign:              cat_id
       onDelete:             CASCADE
       foreignAlias:         Units
+
+DmMailTemplate:
+  actAs:                    [ Timestampable ]
+  columns:
+    name:                   { type: string(255), notnull: true, unique: true }
+    description:            { type: string(5000) }
+    vars:                   { type: string(5000) }
+    title:                  { type: string(5000) }
+    body:                   { type: clob }
+    from_email:             { type: string(5000) }
+    to_email:               { type: string(5000) }
+    is_html:                { type: boolean, notnull: true, default: false }
+    is_active:              { type: boolean, notnull: true, default: true }

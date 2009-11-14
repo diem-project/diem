@@ -11,18 +11,18 @@ class dmPageActions extends dmFrontBaseActions
     );
     
     $this->forward404If(
-      $page->Node->isRoot(),
+      $page->getNode()->isRoot(),
       'Can not delete root page'
     );
     
     $this->forward404If(
       $page->hasRecord(),
-      'Can not delete record page. Delete record instead.'
+      'Can not delete record page. Please delete record instead.'
     );
     
-    $redirectUrl = dmFrontLinkTag::build($page->Node->getParent())->getHref();
+    $redirectUrl = dmFrontLinkTag::build($page->getNode()->getParent())->getHref();
     
-    $page->delete();
+    $page->getNode()->delete();
     
     return $this->redirect($redirectUrl);
   }
@@ -36,7 +36,7 @@ class dmPageActions extends dmFrontBaseActions
     
     $this->form = new DmPageFrontEditForm($this->page);
     
-    $assetAliases = include($this->context->get('config_cache')->checkConfig('config/dm/assets.yml'));
+    $this->form->removeCsrfProtection();
     
     if ($request->isMethod('post'))
     {
@@ -51,7 +51,7 @@ class dmPageActions extends dmFrontBaseActions
         /*
          * dmPageView.dmLayoutId may be modified
          */
-        $this->page->PageView->save();
+        $this->page->getPageView()->save();
         
         return $this->renderJson(array(
           'type'  => 'redirect',
@@ -64,22 +64,21 @@ class dmPageActions extends dmFrontBaseActions
     else
     {
       $js =
-      file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), $assetAliases['js.lib.ui-tabs'])).
+      file_get_contents($this->context->get('helper')->getJavascriptFullPath('lib.ui-tabs')).
       dmJsMinifier::transform(
-      file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), $assetAliases['js.core.tabForm'])).';'.
-      file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), $assetAliases['js.front.pageEditForm']))
+      file_get_contents($this->context->get('helper')->getJavascriptFullPath('core.tabForm')).';'.
+      file_get_contents($this->context->get('helper')->getJavascriptFullPath('front.pageEditForm'))
       );
     }
-    
-    $this->css = dmCssMinifier::transform(
-      file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), $assetAliases['css.lib.ui-tabs'])).
-      file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), $assetAliases['css.front.pageEditForm']))
-    );
     
     return $this->renderJson(array(
       'type' => 'form',
       'js'   => $js,
-      'html' => $this->getPartial('dmPage/edit')
+      'html' => $this->getPartial('dmPage/edit'),
+      'stylesheets' => array(
+        $this->context->get('helper')->getStylesheetWebPath('lib.ui-tabs'),
+        $this->context->get('helper')->getStylesheetWebPath('front.pageEditForm')
+      )
     ));
   }
   
@@ -91,6 +90,8 @@ class dmPageActions extends dmFrontBaseActions
     );
     
     $this->form = new DmPageFrontNewForm();
+    
+    $this->form->removeCsrfProtection();
     
     if ($request->isMethod('post'))
     {
@@ -119,7 +120,7 @@ class dmPageActions extends dmFrontBaseActions
       ));
       
       $js = dmJsMinifier::transform(
-        file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), sfConfig::get('dm_front_asset'), 'js/dmFrontPageAddForm.js'))
+        file_get_contents($this->context->get('helper')->getJavascriptFullPath('front.pageAddForm'))
       );
     }
     

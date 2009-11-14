@@ -1,7 +1,5 @@
 <?php
 
-echo '<style type="text/css">', $css, '</style>';
-
 echo £o('div.dm_code_editor_wrap');
 
 echo £o('div.dm_code_editor');

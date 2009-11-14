@@ -43,33 +43,33 @@ class dmWidgetContentTextView extends dmWidgetContentMediaView
     {
       return $cache;
     }
-
+    
     extract($this->getViewVars());
     
-    $html = dmHelper::£o('div.dm_text.text_'.$style);
+    $html = dmHelper::£o('div.dm_text.text_'.$style.'.clearfix');
 
     if ($title && $titlePosition == 'outside')
     {
-      $html .= dmHelper::£('h2.text_title.outside', $title);
+      $html .= dmHelper::£('h2.text_title.outside', $titleLink ? dmFrontLinkTag::build($titleLink)->text($title) : $title);
     }
 
     $html .= dmHelper::£o('div.text_content');
   
       if ($media && $mediaPosition != 'bottom')
       {
-        $html .= dmHelper::£('div.text_image'.$mediaClass, $media);
+        $html .= dmHelper::£('div.text_image'.$mediaClass, $mediaLink ? dmFrontLinkTag::build($mediaLink)->text($mediaTag) : $mediaTag);
       }
     
       if ($title && $titlePosition == 'inside')
       {
-        $html .= dmHelper::£('h2.text_title.inside', $title);
+        $html .= dmHelper::£('h2.text_title.inside', $titleLink ? dmFrontLinkTag::build($titleLink)->text($title) : $title);
       }
     
       $html .= dmHelper::£('div.markdown.text_markdown', $this->context->get('markdown')->toHtml($text));
     
       if ($media && $mediaPosition == 'bottom')
       {
-        $html .= dmHelper::£('div.text_image'.$mediaClass, $media);
+        $html .= dmHelper::£('div.text_image'.$mediaClass, $mediaLink ? dmFrontLinkTag::build($mediaLink)->text($mediaTag) : $mediaTag);
       }
   
     $html .= dmHelper::£c('div');
@@ -87,6 +87,6 @@ class dmWidgetContentTextView extends dmWidgetContentMediaView
   protected function doRenderForIndex()
   {
     $vars = $this->compiledVars();
-    return implode(' ', $vars['title'], $vars['text'], $vars['legend']);
+    return implode(' ', array($vars['title'], $vars['text'], $vars['legend']));
   }
 }

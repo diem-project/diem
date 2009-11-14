@@ -27,7 +27,12 @@ class dmAdminBreadCrumb
   
   public function listenToEditObjectEvent(sfEvent $event)
   {
-    $this->record = $event['object'];
+    $this->setRecord($event['object']);
+  }
+  
+  public function setRecord(dmDoctrineRecord $record)
+  {
+    $this->record = $record;
   }
   
   public function getLinks()
@@ -37,7 +42,7 @@ class dmAdminBreadCrumb
       return array();
     }
     
-    $module = $this->context->getModuleManager()->getModuleOrNull(
+    $module = $this->record ? $this->record->getDmModule() : $this->context->getModuleManager()->getModuleOrNull(
       $this->context->getRequest()->getParameter('module')
     );
     
@@ -56,7 +61,7 @@ class dmAdminBreadCrumb
       
       if ($this->record)
       {
-        $links['action'] = array('action' => $this->record->__toString());
+        $links['object'] = array('object' => $this->record);
       }
       elseif(($action = $this->context->getActionName()) !== 'index')
       {
@@ -105,7 +110,9 @@ class dmAdminBreadCrumb
   
   public function renderObjectLink(array $options = array())
   {
-    return dmHelper::£('h1', $options['object']->__toString());
+    return dmArray::get($options, 'last')
+    ? dmHelper::£('h1', $options['object']->__toString())
+    : dmLinkTag::build($options['object']);
   }
   
   public function renderRawLink($html)

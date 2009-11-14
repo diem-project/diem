@@ -68,8 +68,10 @@ $settings['web_dir_name'] = empty($webDirName) ? 'web' : $webDirName;
 
 do
 {
+  $defaultDbName = dmString::underscore(str_replace('-', '_', $projectKey));
+  
   $settings['database'] = array(
-    'name' => $this->ask('What is the database name ? ( default : '.dmString::underscore($projectKey).' )', 'QUESTION', dmString::underscore($projectKey)),
+    'name' => $this->ask('What is the database name ? ( default : '.$defaultDbName.' )', 'QUESTION', $defaultDbName),
     'host' => $this->ask('What is the database host ? ( default : localhost )', 'QUESTION', 'localhost'),
     'user' => $this->ask('What is the database user ?'),
     'password' => $this->ask('What is the database password ?')
@@ -167,7 +169,7 @@ $task->run(array(), array('all' => true, 'no-confirmation' => true));
 dmDb::create('DmUser', array(
   'is_super_admin' => true,
   'username' => 'admin',
-  'password' => $settings['database']['password'],
+  'password' => !empty($settings['database']['password']) ? $settings['database']['password'] : 'admin',
   'email' => 'admin@'.dmProject::getKey().'.com'
 ))->save();
 

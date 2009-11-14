@@ -5,26 +5,26 @@ $.fn.extend({
   dmWidgetContentMediaForm: function(widget)
   {
     var self = this, $form = self.find('form:first');
-		
+
     $form.append('<input type="hidden" name="dm_widget_width" value="'+widget.element.width()+'" />');
 		
-    $('input.dm_media_receiver', self).droppable({
+    $('input.dm_media_receiver', $form).droppable({
       accept:       '#dm_media_bar li.file',
       activeClass:  'droppable_active',
       hoverClass:   'droppable_hover',
       tolerance:    'touch',
       drop:         function(event, ui) {
-        $('input.dm_media_id', self).val(ui.draggable.attr('id').replace(/dmm/, ''));
+        $('input.dm_media_id', $form).val(ui.draggable.attr('id').replace(/dmm/, ''));
         $form.submit();
       }
     });
     
-    $('a.show_media_fields', self).click(function() {
-      $('ul.media_fields', self).toggle(500);
+    $('a.show_media_fields', $form).click(function() {
+      $('ul.media_fields', $form).toggle();
     });
     
-    $('select#dm_widget_content_media_form_method', self).bind('change', function() {
-      $('li.background', self)[$(this).val() == 'fit' ? 'show' : 'hide']();
+    $('select.dm_media_method', $form).bind('change', function() {
+      $('li.background', $form)[$(this).val() == 'fit' ? 'show' : 'hide']();
     }).trigger('change');
   },
   

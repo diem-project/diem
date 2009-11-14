@@ -46,8 +46,6 @@ class DmPageFrontEditForm extends DmPageForm
         'choices' => array_keys($parentChoices),
         'required' => !$this->object->getNode()->isRoot()
       ));
-      
-      $this->setDefault('parent_id', $this->object->getNodeParentId());
     }
     
     $this->widgetSchema['dm_layout_id']->setLabel('Layout');
@@ -76,7 +74,8 @@ class DmPageFrontEditForm extends DmPageForm
       'h1'        => $this->object->h1,
       'description' => $this->object->description,
       'is_active' => $this->object->is_active,
-      'is_indexable' => $this->object->is_indexable
+      'is_indexable' => $this->object->is_indexable,
+      'parent_id' => $this->object->getNodeParentId()
     ));
   }
   

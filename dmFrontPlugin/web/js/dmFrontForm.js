@@ -9,8 +9,10 @@ $.widget('ui.dmFrontForm', $.extend({}, $.dm.coreForm, {
 		this.form = $('form:first', this.element);
 		
     this.markitup();
+		
     this.linkDroppable();
-    this.hotKeys();
+    
+		this.hotKeys();
   },
 	
 	hotKeys: function()
@@ -30,7 +32,7 @@ $.widget('ui.dmFrontForm', $.extend({}, $.dm.coreForm, {
     $('textarea.dm_markdown', self.form).each(function()
 		{
       $(this).markItUp(dmMarkitupMarkdown);
-      $(this).resizable({handles: 's'});
+      $(this).resizable({handles: 's'}).parent().css('position', 'relative');
     });
   }
   

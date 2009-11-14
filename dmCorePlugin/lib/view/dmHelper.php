@@ -206,4 +206,24 @@ class dmHelper
 
     return $tag;
   }
+  
+  public function getStylesheetWebPath($asset)
+  {
+    return $this->context->getRequest()->getRelativeUrlRoot().$this->context->getResponse()->calculateAssetPath('css', $asset);
+  }
+  
+  public function getStylesheetFullPath($asset)
+  {
+    return dmOs::join(sfConfig::get('sf_web_dir'), $this->context->getResponse()->calculateAssetPath('css', $asset));
+  }
+  
+  public function getJavascriptWebPath($asset)
+  {
+    return $this->context->getRequest()->getRelativeUrlRoot().$this->context->getResponse()->calculateAssetPath('js', $asset);
+  }
+  
+  public function getJavascriptFullPath($asset)
+  {
+    return dmOs::join(sfConfig::get('sf_web_dir'), $this->context->getResponse()->calculateAssetPath('js', $asset));
+  }
 }

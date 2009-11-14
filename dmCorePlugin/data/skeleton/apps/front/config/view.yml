@@ -6,7 +6,9 @@ default:
 
   stylesheets:
     - layout
+    - main
     - markdown
+    - navigation
 
   javascripts:
     - front

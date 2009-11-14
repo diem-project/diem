@@ -19,6 +19,7 @@ class Base<?php echo $this->modelName ?>Form extends <?php echo $this->getFormCl
       '<?php echo $column->getFieldName() ?>'<?php echo str_repeat(' ', $this->getColumnNameMaxLength() - strlen($column->getFieldName())) ?> => new <?php echo $this->getWidgetClassForColumn($column) ?>(<?php echo $this->getWidgetOptionsForColumn($column) ?>),
 <?php endforeach; ?>
 <?php foreach ($this->getManyToManyRelations() as $relation): ?>
+  <?php if ('DmMedia' === $relation->getClass()) continue; ?>
       '<?php echo $this->underscore($relation['alias']) ?>_list'<?php echo str_repeat(' ', $this->getColumnNameMaxLength() - strlen($this->underscore($relation['alias']).'_list')) ?> => new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => '<?php echo $relation['table']->getOption('name') ?>', 'expanded' => true)),
 <?php endforeach; ?>
     ));
@@ -28,6 +29,7 @@ class Base<?php echo $this->modelName ?>Form extends <?php echo $this->getFormCl
       '<?php echo $column->getFieldName() ?>'<?php echo str_repeat(' ', $this->getColumnNameMaxLength() - strlen($column->getFieldName())) ?> => new <?php echo $this->getValidatorClassForColumn($column) ?>(<?php echo $this->getValidatorOptionsForColumn($column) ?>),
 <?php endforeach; ?>
 <?php foreach ($this->getManyToManyRelations() as $relation): ?>
+  <?php if ('DmMedia' === $relation->getClass()) continue; ?>
       '<?php echo $this->underscore($relation['alias']) ?>_list'<?php echo str_repeat(' ', $this->getColumnNameMaxLength() - strlen($this->underscore($relation['alias']).'_list')) ?> => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => '<?php echo $relation['table']->getOption('name') ?>', 'required' => false)),
 <?php endforeach; ?>
     ));
@@ -65,9 +67,6 @@ class Base<?php echo $this->modelName ?>Form extends <?php echo $this->getFormCl
     $this->setupInheritance();
 
     parent::setup();
-    
-    // Unset automatic fields like 'created_at', 'updated_at', 'created_by', 'updated_by'
-    $this->unsetAutoFields();
   }
 
 <?php foreach($this->getMediaRelations() as $mediaRelation): ?>

@@ -23,6 +23,8 @@ class dmWidgetActions extends dmFrontBaseActions
       return $this->renderError();
     }
     
+    $form->removeCsrfProtection();
+    
     if ($request->isMethod('post'))
     {
       if ($form->bindAndValid($request))
@@ -44,6 +46,7 @@ class dmWidgetActions extends dmFrontBaseActions
         }
 
         $form = new $formClass($widget);
+        $form->removeCsrfProtection();
 
         return $this->renderJson(array(
           'type' => 'form',
@@ -57,53 +60,35 @@ class dmWidgetActions extends dmFrontBaseActions
     $html = $this->renderEdit($form, $widgetType);
   
     $js = '';
-    $css = '';
+    $stylesheets = array();
+    $helper = $this->context->get('helper');
     
     if (strpos($html, 'dm_tabbed_form'))
     {
-      $assetAliases = include($this->context->get('config_cache')->checkConfig('config/dm/assets.yml'));
-      
       $js .=
-      file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), $assetAliases['js.lib.ui-tabs'])).
-      dmJsMinifier::transform(
-      file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), $assetAliases['js.core.tabForm']))
-      );
+      file_get_contents($helper->getJavascriptFullPath('lib.ui-tabs')).
+      dmJsMinifier::transform(file_get_contents($helper->getJavascriptFullPath('core.tabForm')));
       
-      $css .= file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), $assetAliases['css.lib.ui-tabs']));
+      $stylesheets[] = $helper->getStylesheetWebPath('lib.ui-tabs');
     }
     
     if (strpos($html, 'dm_markdown'))
-    {
-      $assetAliases = include($this->context->get('config_cache')->checkConfig('config/dm/assets.yml'));
+    {    
+      $stylesheets[] = $helper->getStylesheetWebPath('lib.markitup');
+      $stylesheets[] = $helper->getStylesheetWebPath('lib.markitupSet');
+      $stylesheets[] = $helper->getStylesheetWebPath('lib.ui-resizable');
       
       $js .=
-      file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), $assetAliases['js.lib.ui-resizable'])).
-      file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), $assetAliases['js.lib.markitup'])).
-      file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), $assetAliases['js.lib.markitupSet']))
-      ;
-      
-      $stylesheetCompressor = $this->context->get('stylesheet_compressor');
-      
-      foreach(array('css.lib.markitup', 'css.lib.markitupSet', 'css.lib.ui-resizable') as $cssKey)
-      {
-        $css .= $stylesheetCompressor->fixCssPaths(
-          file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), $assetAliases[$cssKey])),
-          $assetAliases[$cssKey]
-        );
-      }
-      
-      $css = dmCssMinifier::transform($css);
+      file_get_contents($helper->getJavascriptFullPath('lib.ui-resizable')).
+      file_get_contents($helper->getJavascriptFullPath('lib.markitup')).
+      file_get_contents($helper->getJavascriptFullPath('lib.markitupSet'));
     }
     
-    if ($css)
-    {
-      $html = '<style type="text/css">'.$css.'</style>' . $html;
-    }
-
     return $this->renderJson(array(
       'type' => 'form',
       'html' => $html,
-      'js'   => $js
+      'js'   => $js,
+      'stylesheets' => $stylesheets
     ));
   }
   
@@ -112,10 +97,10 @@ class dmWidgetActions extends dmFrontBaseActions
     return $this->renderJson(array(
       'type' => 'error',
       'html' => sprintf('<p class="s16 s16_error">%s</p><div class="clearfix mt30"><a class="dm cancel close_dialog button mr10">%s</a><a class="dm delete button red" title="%s">%s</a></div>',
-      dm::getI18n()->__('The widget can not be rendered because its type does not exist anymore.'),
-      dm::getI18n()->__('Cancel'),
-      dm::getI18n()->__('Delete this widget'),
-      dm::getI18n()->__('Delete')
+      $this->context->getI18()->__('The widget can not be rendered because its type does not exist anymore.'),
+      $this->context->getI18()->__('Cancel'),
+      $this->context->getI18()->__('Delete this widget'),
+      $this->context->getI18()->__('Delete')
     )));
   }
 
@@ -227,6 +212,8 @@ class dmWidgetActions extends dmFrontBaseActions
 
     $formClass = $widgetType->getFormClass();
     $form = new $formClass($widgetType->getNewWidget());
+    
+    $form->removeCsrfProtection();
 
     $widget = dmDb::create('DmWidget', array(
       'module' => $widgetModule,
@@ -284,7 +271,7 @@ class dmWidgetActions extends dmFrontBaseActions
         throw $e;
       }
 
-      $this->getUser()->logError(dm::getI18n()->__('A problem occured when sorting the items'));
+      $this->getUser()->logError($this->context->getI18()->__('A problem occured when sorting the items'));
     }
   }
 }

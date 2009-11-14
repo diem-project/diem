@@ -83,6 +83,7 @@ class dmMediaTagImage extends dmMediaTag
     {
       throw new dmException(sprintf('%s is not a valid hexadecimal color', $v));
     }
+    
     return $this->set('background', $hexColor);
   }
 
@@ -96,11 +97,12 @@ class dmMediaTagImage extends dmMediaTag
     if (!in_array($filterName, self::getAvailableFilters()))
     {
       throw new dmMediaImageException(sprintf('%s is not a valid filter. These are : %s',
-      filterName,
+      $filterName,
       implode(', ', self::$filters)
       ));
     }
-    return $this->set('filter', (string)$filterName);
+    
+    return $this->set('filter', (string) $filterName);
   }
 
   public function render()

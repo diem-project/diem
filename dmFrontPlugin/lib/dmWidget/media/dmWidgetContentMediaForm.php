@@ -40,7 +40,6 @@ class dmWidgetContentMediaForm extends dmWidgetPluginForm
       'required' => false
     ));
 
-
     $this->widgetSchema['legend'] = new sfWidgetFormInputText();
     $this->validatorSchema['legend'] = new sfValidatorString(array(
       'required' => false
@@ -70,7 +69,7 @@ class dmWidgetContentMediaForm extends dmWidgetPluginForm
     }
 
     $this->widgetSchema['background'] = new sfWidgetFormInputText(array(), array('size' =>7));
-    $this->validatorSchema['background'] = new dmValidatorHexColor(array(
+    $this->validatorSchema['background'] = new sfValidatorString(array(
       'required' => false
     ));
 
@@ -87,9 +86,10 @@ class dmWidgetContentMediaForm extends dmWidgetPluginForm
       $this->setDefault('mediaName', dm::getI18n()->__('Drag & Drop a media here'));
     }
 
-    $this->validatorSchema->setPostValidator(
-      new sfValidatorCallback(array('callback' => array($this, 'checkMediaSource')))
-    );
+    $this->validatorSchema->setPostValidator(new sfValidatorAnd(array(
+      new sfValidatorCallback(array('callback' => array($this, 'checkMediaSource'))),
+      new sfValidatorCallback(array('callback' => array($this, 'checkBackground')))
+    )));
 
     parent::configure();
   }
@@ -104,6 +104,15 @@ class dmWidgetContentMediaForm extends dmWidgetPluginForm
     return $values;
   }
 
+  public function checkBackground($validator, $values)
+  {
+    if ('fit' == $values['method'] && !dmString::hexColor($values['background']))
+    {
+      throw new sfValidatorErrorSchema($validator, array('background' => new sfValidatorError($validator, 'This is not a valid hexadecimal color')));
+    }
+
+    return $values;
+  }
 
   protected function renderContent($attributes)
   {

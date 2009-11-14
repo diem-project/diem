@@ -49,10 +49,24 @@ class dmForm extends sfFormSymfony
   }
 
   
+  public function removeCsrfProtection()
+  {
+    if ($this->isCSRFProtected())
+    {
+      unset($this[self::$CSRFFieldName]);
+    }
+    
+    return $this;
+  }
+  
   public function changeToHidden($fieldName)
   {
     $this->widgetSchema[$fieldName] = new sfWidgetFormInputHidden;
     return $this;
+  }
+  public function changeToEmail($fieldName)
+  {
+    $this->validatorSchema[$fieldName] = new sfValidatorEmail($this->validatorSchema[$fieldName]->getOptions());
   }
   
   /**
@@ -89,7 +103,11 @@ class dmForm extends sfFormSymfony
 
     return sprintf('<input%s />', $this->getWidgetSchema()->attributesToHtml($attributes));
   }
-
+  
+  public function submit($value = 'submit', $attributes = array())
+  {
+    return $this->renderSubmitTag($value, $attributes);
+  }
   
   /**
    * Binds the current form validate it in one step.
@@ -149,7 +167,12 @@ class dmForm extends sfFormSymfony
 
     if (isset($opt['action'])) unset($opt['action']);
     
-    return $this->renderFormTag($action, $opt);
+    return $this->renderFormTag($action, $opt).$this->renderCsrfProtection();
+  }
+  
+  public function renderCsrfProtection()
+  {
+    return $this->isCSRFProtected() ? $this[self::getCSRFFieldName()]->field() : '';
   }
 
   public function close()

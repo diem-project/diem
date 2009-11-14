@@ -14,10 +14,12 @@ generator:
         display:
           - =name
           - css_class
+          - _content
+          - _duplicate
         sort:
           - name
           - asc
-        table_method: ~
+        table_method: getAdminListQuery
         table_count_method: ~
       filter:
         display:
@@ -25,8 +27,7 @@ generator:
           - css_class
       form:
         display:
-          NONE: [name]
-          Others: [css_class]
+          NONE: [name, css_class]
         class: DmLayoutAdminForm
         fields: {  }
       edit: ~

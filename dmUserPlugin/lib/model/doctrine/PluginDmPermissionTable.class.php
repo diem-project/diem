@@ -1,6 +1,6 @@
 <?php
 
-class PluginDmPermissionTable extends myDoctrineTable
+abstract class PluginDmPermissionTable extends myDoctrineTable
 {
 
 

@@ -54,6 +54,7 @@ class dmEventLogView extends dmLogView
       case 'update': $class = 's24 s24_edit'; break;
       case 'delete': $class = 's24 s24_delete'; break;
       case 'error':  $class = 's24 s24_error'; break;
+      case 'clear':  $class = 's24 s24_info'; break;
       default:       $class = '';
     }
     

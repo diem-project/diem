@@ -1,6 +1,6 @@
 <?php
 
-class PluginDmUserTable extends myDoctrineTable
+abstract class PluginDmUserTable extends myDoctrineTable
 {
   /**
    * Retrieves a DmUser object from his username and is_active flag.
@@ -25,5 +25,14 @@ class PluginDmUserTable extends myDoctrineTable
   public function getAdminListQuery(dmDoctrineQuery $query)
   {
     return $query;
+  }
+  
+  public function getHumanColumns()
+  {
+    $columns = parent::getHumanColumns();
+    
+    unset($columns['algorithm'], $columns['salt'], $columns['password']);
+    
+    return $columns;
   }
 }

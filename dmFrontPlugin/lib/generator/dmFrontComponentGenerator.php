@@ -84,7 +84,7 @@ To make redirections or manipulate database, use the actions class.'
 \$this->{$this->module->getKey()} = \$this->getRecord(\$query);";
         break;
       case 'form':
-        $body = "\$this->form = \$this->forms['{$this->module->getKey()}'];";
+        $body = "\$this->form = \$this->forms['{$this->module->getModel()}'];";
         break;
       default:
         $body = "// Your code here";

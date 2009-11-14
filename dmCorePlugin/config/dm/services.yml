@@ -1,5 +1,7 @@
 parameters:
 
+  mail.class:                 dmMail
+
   thread_launcher.class:      dmThreadLauncher
   thread_launcher.options:
     cli_file:                 cache/dm/cli.php
@@ -12,7 +14,7 @@ parameters:
   cache_cleaner.options:
     applications:             [ admin, front ]
     environments:             [ prod, dev ]
-    safe_models:              [ DmSentMail, DmError, DmRedirect, DmUser, DmPermission, DmGroup, DmGroupPermission, DmUserPermission, DmUserGroup, DmRememberKey ]
+    safe_models:              [ DmSentMail, DmError, DmRedirect, DmUser, DmPermission, DmGroup, DmGroupPermission, DmUserPermission, DmUserGroup, DmRememberKey, DmMailTemplate ]
 
   form_field.class:           dmFormField
 
@@ -95,6 +97,11 @@ parameters:
   helper.class:               dmHelper
  
 services:
+
+  mail:
+    class:                    %mail.class%
+    shared:                   false
+    arguments:                [ @service_container ]
 
   thread_launcher:
     class:                    %thread_launcher.class%

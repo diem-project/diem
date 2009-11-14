@@ -105,6 +105,11 @@ class dmTheme
   {
     return $this->name;
   }
+  
+  public function isEnabled()
+  {
+    return $this->enabled;
+  }
 
   public function getBasePath()
   {

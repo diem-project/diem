@@ -134,3 +134,18 @@ a.associated_record:hover {
   color: #046BCA;
   text-decoration: underline;
 }
+
+div.dm_gallery_little img.media {
+  float: left;
+  margin: 2px 2px 0 0;
+}
+
+div.dm_gallery_medium img.media {
+  float: left;
+  margin: 5px 5px 0 0;
+}
+
+div.dm_gallery_medium a.dm_gallery_link {
+  float: left;
+  margin: 40px 0 0 10px;
+}

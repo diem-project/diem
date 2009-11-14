@@ -30,13 +30,15 @@ if ($hasMedia)
     $form['width']->render().
     'x'.
     $form['height']->render().
-    $form['method']->renderLabel(null, array('class' => 'ml10 mr10 fnone')).$form['method']->render().$form['method']->renderError()
+    $form['method']->label(null, array('class' => 'ml10 mr10 fnone'))->field('.dm_media_method')->error()
   ).
   £('li.dm_form_element.multi_inputs.background.clearfix.none',
     $form['width']->renderError().
-    $form['background']->renderLabel().
-    $form['background']->render()
+    $form['background']->label()->field()->error()
   );
 }
 
-echo $form['cssClass']->renderRow();
+if (!isset($skipCssClass))
+{
+  echo $form['cssClass']->renderRow();
+}

@@ -1,0 +1,226 @@
+/*--------------------------------------------------------------------------------------------------
+  
+   Simply Buttons, version 1.0
+   (c) 2007-2009 Kevin Miller
+
+   This script is freely distributable under the terms of an MIT-style license.
+
+   BUTTON DEFINITIONS 
+  
+   Edit below at your own risk, everything done here is for a reason for cross browser
+   compatibility so that the buttons will appear identical in the tested browsers.
+   
+   Tested on: IE6 IE7 FF(PC/MAC) Safari SafariMobile Opera(PC/MAC)
+   
+--------------------------------------------------------------------------------------------------*/
+
+button,
+a.button,
+a.button:link,
+a.button:visited {
+  /*
+      Strip down the button and link elements to a base we can work with.
+  */
+  padding: 0 0 0 0;
+  margin: 0 3px 0 3px;
+  border: none;
+  display: block;
+  float: left;
+  cursor: pointer;
+  text-decoration: none;
+  outline: none;
+  white-space: nowrap;
+  overflow: visible;
+}
+
+  * html a.button,
+  * html a.button:link,
+  * html a.button:visited {
+    /*
+        IE6 fix to make link fit text.
+    */
+    width: 1%;
+  }
+
+  button, x:-moz-any-link {
+    /*
+        FF fix to make button spacing even across browsers.
+    */
+    margin: 0 0 0 0;
+  }
+
+  *:first-child+html button {
+    /*
+        Reset IE7 back to what it was for previous fix.
+    */
+    margin: 0 3px 0 3px;
+  }
+
+  button span,
+  a.button span,
+  a.button:link span,
+  a.button:visited span {
+    /*
+        Set the span tags to display: block, as they will work our background-image magic.
+    */
+    display: block;
+  }
+
+/*--------------------------------------------------------------------------------------------------
+  
+   CUSTOMIZATIONS 
+  
+   Edit below to change the look and feel of the buttons and even add more classes for
+   different looks and feels.
+   
+--------------------------------------------------------------------------------------------------*/
+
+button,
+a.button,
+a.button:link,
+a.button:visited {
+  /* 
+      HEIGHT - Total height of button. 
+  */
+  height: 26px; 
+
+  /*
+      NOTE - You must define the font here otherwise your buttons and links could end up diffrent.
+  */
+	font-family: "Helvetica Neue", Helvetica, clean, sans-serif;
+
+  font-size: 13px;
+  color: #666666;
+  background-color: #ffffff;
+}
+
+  button.button_active,
+  a.button_active {
+  }
+
+  button span,
+  a.button span,
+  a.button:link span,
+  a.button:visited span {
+    /* 
+        Right side padding for button (default). 
+    */
+    padding: 0 14px 0 0;
+
+    /* 
+        SPAN HEIGHT - This should be 2px smaller than the height set on the button (see HEIGHT).
+    */
+    height: 24px;
+
+    /*
+        We define our background top left and use the 'Sliding Doors' Technique for some fast loading buttons.
+    */
+    background: url(../images/bg_button_right.gif) top right;
+  }
+
+  button span span,
+  a.button span span,
+  a.button:link span span,
+  a.button:visited span span {
+    /* 
+        Left side padding for button (default). 
+    */
+    padding: 0 0 0 13px;
+
+    /* 
+        SPAN HEIGHT - This should be 1px smaller than the height set on the button (see HEIGHT).
+    */
+    height: 24px;
+
+    /* 
+        SPAN LINE-HEIGHT - This should be 1px smaller than the height set on the button (see HEIGHT) and will 
+                            center the text vertcailly.
+    */
+    line-height: 24px;
+
+    /*
+        We define our background top left and use the 'Sliding Doors' Technique for some fast loading buttons.
+    */
+    background: url(../images/bg_button_left.gif) top left;
+  }
+
+  button:hover,
+  a.button:hover {
+    color: #000000;
+  }
+
+  button.submit span,
+  a.submit span,
+  a.submit:link span,
+  a.submit:visited span {
+  }
+
+  button.submit span span,
+  a.submit span span,
+  a.submit:link span span,
+  a.submit:visited span span {
+    /*
+        Give some extra space for the icon.
+    */
+    padding-left: 26px;
+
+    /*
+        Add in a left side piece with an icon.
+    */
+    background-image: url(../images/bg_button_left_submit.gif);
+  }
+
+  button.submit:hover,
+  a.submit:hover {
+  }
+
+  button.cancel span,
+  a.cancel span,
+  a.cancel:link span,
+  a.cancel:visited span {
+  }
+
+  button.cancel span span,
+  a.cancel span span,
+  a.cancel:link span span,
+  a.cancel:visited span span {
+    /*
+        Give some extra space for the icon.
+    */
+    padding-left: 26px;
+
+    /*
+        Add in a left side piece with an icon.
+    */
+    background-image: url(../images/bg_button_left_cancel.gif);
+  }
+
+  button.cancel:hover,
+  a.cancel:hover {
+  }
+
+  button:active span,
+  a:active:active span,
+  /*
+      'button_active' is the class used by SimplyButtons.js to create the button states in IE.
+  */
+  button.button_active span,
+  a.button_active:active span {
+    /*
+        Using the 'Sliding Doors' Technique we 'slide' the new button state into view.
+    */
+    background-position: bottom right;
+  }
+
+  button:active span span,
+  a:active:active span span,
+  /*
+      'button_active' is the class used by SimplyButtons.js to create the button states in IE.
+  */
+  button.button_active span span,
+  a.button_active:active span span {
+    /*
+        Using the 'Sliding Doors' Technique we 'slide' the new button state into view.
+    */
+    background-position: bottom left;
+  }

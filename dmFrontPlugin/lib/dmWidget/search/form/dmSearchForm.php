@@ -10,6 +10,8 @@ class dmSearchForm extends BaseForm
     $this->widgetSchema['query'] = new sfWidgetFormInputText();
     
     $this->validatorSchema['query'] = new sfValidatorString(array('required' => false));
+    
+    $this->removeCsrfProtection();
   }
   
 }

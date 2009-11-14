@@ -17,6 +17,7 @@ js:
     configPanel:      dmAdminConfigPanel
     chart:            dmAdminChart
     autoSeo:          dmAdminAutoSeo
+    gallery:          dmAdminGalleryCtrl
 
 css:
 
@@ -29,7 +30,6 @@ css:
     list:             list
     form:             form
     verticalBar:      verticalBar
-    module:           module
     generator:        generator
     media:            media
     console:          console
@@ -42,3 +42,4 @@ css:
     seoService:       seoService
     moduleSpace:      moduleSpace
     autoSeo:          autoSeo
+    gallery:          gallery
