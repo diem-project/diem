@@ -440,7 +440,7 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
   {
     $this->batchToggleBoolean($request->getParameter('ids'), 'is_active', true);
       
-    $this->redirect('@'.$this-getDmModule()->getUnderscore());
+    $this->redirect('@'.$this->getDmModule()->getUnderscore());
   }
 
   protected function executeBatchDesactivate(sfWebRequest $request)

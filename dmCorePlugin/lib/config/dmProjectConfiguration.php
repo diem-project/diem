@@ -52,7 +52,7 @@ class dmProjectConfiguration extends sfProjectConfiguration
     /*
      * Configure hydrators
      */
-    $manager->registerHydrator('dmFlat', 'Doctrine_Hydrator_dmFlat');
+    $manager->registerHydrator('dmFlat', 'Doctrine_Hydrator_dmFlatDriver');
     
     /*
      * Configure builder

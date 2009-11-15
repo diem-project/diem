@@ -261,12 +261,15 @@ class PluginDmPageTable extends myDoctrineTable
 
   public function findOneByModuleAndActionWithI18n($module, $action, $culture = null)
   {
-    return $this->createQuery('p')
+    $timer = dmDebug::timerOrNull('dmPageTable::findOneByModuleAndActionWithI18n');
+    $page = $this->createQuery('p')
     ->where('p.module = ?', $module)
     ->andWhere('p.action = ?', $action)
     ->withI18n($culture)
     ->dmCache()
     ->fetchOne();
+    $timer->addTime();
+    return $page;
   }
 
 }

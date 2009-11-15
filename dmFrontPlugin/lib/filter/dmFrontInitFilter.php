@@ -41,9 +41,12 @@ class dmFrontInitFilter extends dmInitFilter
     {
       $slug = $this->context->getRequest()->getParameter('slug');
 
+      $timer = dmDebug::timerOrNull('dmFrontInitFilter::fetchPage');
       $page = dmDb::query('DmPage p, p.Translation t')
-      ->where('t.slug = ? AND t.lang = ?', array($slug, $culture))
+      ->where('t.slug = ?', $slug)
+      ->andWhere('t.lang = ?', $culture)
       ->fetchOne();
+      $timer->addTime();
       
       if (!$page)
       {

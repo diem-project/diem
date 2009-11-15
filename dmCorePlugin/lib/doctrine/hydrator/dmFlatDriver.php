@@ -6,7 +6,7 @@
  * @subpackage  Hydrate
  * @since       1.2
  */
-class Doctrine_Hydrator_dmFlat extends Doctrine_Hydrator_Abstract
+class Doctrine_Hydrator_dmFlatDriver extends Doctrine_Hydrator_Abstract
 {
   public function hydrateResultSet($stmt)
   {
