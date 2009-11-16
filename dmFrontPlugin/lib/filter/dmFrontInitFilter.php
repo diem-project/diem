@@ -46,7 +46,7 @@ class dmFrontInitFilter extends dmInitFilter
       ->where('t.slug = ?', $slug)
       ->andWhere('t.lang = ?', $culture)
       ->fetchOne();
-      $timer->addTime();
+      $timer && $timer->addTime();
       
       if (!$page)
       {

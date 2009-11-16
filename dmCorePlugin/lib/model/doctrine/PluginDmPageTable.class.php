@@ -268,7 +268,7 @@ class PluginDmPageTable extends myDoctrineTable
     ->withI18n($culture)
     ->dmCache()
     ->fetchOne();
-    $timer->addTime();
+    $timer && $timer->addTime();
     return $page;
   }
 
