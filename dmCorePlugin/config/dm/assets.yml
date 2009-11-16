@@ -52,7 +52,6 @@ css:
   core:
     util:             util
     editMode:         editMode
-    interface:        interface
     sprites:          sprites
     sprite16:         sprite16
     sprite24:         sprite24

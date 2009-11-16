@@ -3,52 +3,62 @@
 class dmMediaLibraryActions extends dmAdminBaseActions
 {
 
-  public function executeEditImage(sfWebRequest $request)
-  {
-    $this->forward404Unless(
-      $this->file = dmDb::table('DmMedia')->find($request->getParameter('media_id')),
-      'media not found'
-    );
+//  public function executeEditImage(sfWebRequest $request)
+//  {
+//    $this->forward404Unless(
+//      $this->file = dmDb::table('DmMedia')->find($request->getParameter('media_id')),
+//      'media not found'
+//    );
+//
+//    $this->file->backup();
+//
+//    $options = array(
+//      'app'       => 'express',
+//      'title'     => $this->file->file.' | Diem image editor',
+//      'loc'       => $this->getUser()->getCulture(),
+//      'save_to'   => $this->file->Folder->relPath,
+//      'referrer'  => dmConfig::get('site_name'),
+//      'skip_default' => true,
+//      'exit'      => $this->generateUrl('dm_media_library_path', array(
+//        'path'    => $this->file->Folder->relPath
+//      ), true)
+//    );
+//    
+//    if (dmOs::isLocalhost())
+//    {
+//      $options['file'] = $this->file->getFullPath();
+//      
+//      $options['target'] = $this->generateUrl('dm_media_library', array(
+//        'action'    => 'editImageSave',
+//        'media_id'  => $this->file->get('id'),
+//        'options'   => base64_encode(serialize($options))
+//      ));
+//    
+//      return url_for("@sf_pixlr_post?".http_build_query($query_vars, '', '&'));
+//    }
+//    $this->iframeSrc = dmOs::isLocalhost()
+//    ? pixlr_express_post_url($absoluteServerUrl, $target, $options)
+//    : pixlr_express_get_url($absoluteWebUrl, $target, $options);
+//
+//    sfConfig::set('dm_admin_full_screen', true);
+//  }
 
-    $this->file->backup();
-
-    $this->absoluteWebUrl = $this->file->getFullWebPath();
-    $this->absoluteServerUrl = $this->file->getFullPath();
-
-    $this->target = $this->generateUrl('dm_media_library', array(
-      'action'    => 'editImageSave',
-      'media_id'  => $this->file->getId()
-    ), true);
-
-    $this->options = array(
-      'loc'       => $this->getUser()->getCulture(),
-      'save_to'   => $this->file->Folder->getRelPath(),
-      'referrer'  => dmConfig::get('site_name'),
-      'skip_default' => true,
-      'exit'      => $this->generateUrl('dm_media_library_path', array(
-        'path'    => $this->file->Folder->getRelPath()
-      ), true)
-    );
-
-    sfConfig::set('dm_admin_full_screen', true);
-  }
-
-  public function executeEditImageSave(sfWebRequest $request)
-  {
-    $this->forward404Unless(
-      $this->file = dmDb::table('DmMedia')->find($request->getParameter('media_id')),
-      'meddia not found'
-    );
-
-    $this->file->destroyThumbnails();
-
-    $dmPixlr = new dmPixlr();
-    $dmPixlr->save($request);
-
-    $this->redirect($this->generateUrl('dm_media_library_path', array(
-      'path'    => $this->file->Folder->getRelPath()
-    )));
-  }
+//  public function executeEditImageSave(sfWebRequest $request)
+//  {
+//    $this->forward404Unless(
+//      $this->file = dmDb::table('DmMedia')->find($request->getParameter('media_id')),
+//      'media not found'
+//    );
+//
+//    $this->file->destroyThumbnails();
+//
+//    $dmPixlr = new dmPixlr();
+//    $dmPixlr->save($request);
+//
+//    $this->redirect($this->generateUrl('dm_media_library_path', array(
+//      'path'    => $this->file->Folder->getRelPath()
+//    )));
+//  }
 
   public function executeFile(sfWebRequest $request)
   {
@@ -59,7 +69,7 @@ class dmMediaLibraryActions extends dmAdminBaseActions
 
     if (!$this->file->isWritable())
     {
-      $this->getUser()->logAlert(dm::getI18n()->__('This file is not writable'));
+      $this->getUser()->logAlert($this->context->getI18n()->__('This file is not writable'), false);
     }
 
     $this->form = new DmMediaForm($this->file);
@@ -87,7 +97,7 @@ class dmMediaLibraryActions extends dmAdminBaseActions
 
     if (!$this->folder->isWritable())
     {
-      $this->getUser()->logAlert(dm::getI18n()->__('This folder is not writable'), false);
+      $this->getUser()->logAlert($this->context->getI18n()->__('This folder is not writable'), false);
     }
 
     $this->folder->sync();
@@ -128,7 +138,7 @@ class dmMediaLibraryActions extends dmAdminBaseActions
     if  (!$parent->isWritable())
     {
       $this->getUser()->logAlert(
-        dm::getI18n()->__('Folder %1% is not writable', array('%1%' => $parent->getFullPath()))
+        $this->context->getI18n()->__('Folder %1% is not writable', array('%1%' => $parent->getFullPath()))
       );
 
       return $this->renderPartial('dmAdmin/flash');
@@ -142,21 +152,25 @@ class dmMediaLibraryActions extends dmAdminBaseActions
 
   public function executeSaveFile(sfWebRequest $request)
   {
-    $this->form = new DmMediaForm(
-      dmDb::table('DmMedia')->find(dmArray::get($request->getParameter('dm_media'), 'id'))
-    );
+    if ($mediaId = dmArray::get($request->getParameter('dm_media_form'), 'id'))
+    {
+      $this->forward404Unless($media = dmDb::table('DmMedia')->find($mediaId));
+    }
+    else
+    {
+      $media = null;
+    }
+    
+    $this->form = new DmMediaForm($media);
 
     if ($this->form->bindAndValid($request))
     {
-      if($object = $this->form->updateObject())
-      {
-        $object->save();
+      $object = $this->form->save();
 
-        if($this->form->getValue('file'))
-        {
-          $this->getUser()->setFlash('dm_media_open', $object->getId());
-          return $this->renderText('[OK]|'.$this->getRouting()->getMediaUrl($object->Folder));
-        }
+      if($this->form->getValue('file'))
+      {
+        $this->getUser()->setFlash('dm_media_open', $object->id, false);
+        return $this->renderText('[OK]|'.$this->getRouting()->getMediaUrl($object->Folder));
       }
     }
 
@@ -172,7 +186,7 @@ class dmMediaLibraryActions extends dmAdminBaseActions
 
     if (!$this->file->isWritable())
     {
-      $this->getUser()->logAlert(dm::getI18n()->__('File %1% is not writable', array('%1%' => $this->file->getRelPath())));
+      $this->getUser()->logAlert($this->context->getI18n()->__('File %1% is not writable', array('%1%' => $this->file->getRelPath())));
     }
     else
     {
@@ -198,7 +212,7 @@ class dmMediaLibraryActions extends dmAdminBaseActions
 
     if (!$this->folder->isWritable())
     {
-      $this->getUser()->logAlert(dm::getI18n()->__('Folder %1% is not writable', array('%1%' => $this->folder->getRelPath())));
+      $this->getUser()->logAlert($this->context->getI18n()->__('Folder %1% is not writable', array('%1%' => $this->folder->getRelPath())));
       return $this->renderPartial('dmAdmin/flash');
     }
 
@@ -219,21 +233,34 @@ class dmMediaLibraryActions extends dmAdminBaseActions
     if  (!$parent->isWritable())
     {
       $this->getUser()->logAlert(
-        dm::getI18n()->__('Folder %1% is not writable', array('%1%' => $parent->getFullPath()))
+        $this->context->getI18n()->__('Folder %1% is not writable', array('%1%' => $parent->getFullPath())),
+        false
       );
 
       return $this->renderPartial('dmAdmin/flash');
     }
 
-    $this->form = new DmMediaFolderForm();
+    $this->form = new DmAdminNewMediaFolderForm;
     $this->form->setDefault('parent_id', $parent->getId());
+  }
+  
+  public function executeCreateFolder(dmWebRequest $request)
+  {
+    $this->form = new DmAdminNewMediaFolderForm;
+    
+    if ($this->form->bindAndValid($request))
+    {
+      $this->form->save();
 
-    $this->setTemplate('editFolder');
+      return $this->renderText('[OK]|'.$this->getRouting()->getMediaUrl($this->form->getObject()));
+    }
+    
+    $this->setTemplate('newFolder');
   }
 
   public function executeSaveFolder(sfWebRequest $request)
   {
-    $this->form = new DmMediaFolderForm(
+    $this->form = new DmAdminMediaFolderForm(
       dmDb::table('DmMediaFolder')->find(dmArray::get($request->getParameter('dm_media_folder'), 'id')),
       'can not find folder'
     );
@@ -280,7 +307,7 @@ class dmMediaLibraryActions extends dmAdminBaseActions
 
     if (!$this->folder->isWritable())
     {
-      $this->getUser()->logAlert(dm::getI18n()->__('Folder %1% is not writable', array('%1%' => $this->folder->getRelPath())));
+      $this->getUser()->logAlert($this->context->getI18n()->__('Folder %1% is not writable', array('%1%' => $this->folder->getRelPath())));
     }
     else
     {

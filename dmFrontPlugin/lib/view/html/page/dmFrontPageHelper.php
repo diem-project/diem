@@ -233,7 +233,7 @@ class dmFrontPageHelper
       {
         $widgetType = $this->widgetTypeManager->getWidgetType($widget['module'], $widget['action']);
       }
-  
+      
       $this->serviceContainer->addParameters(array(
         'widget_view.class' => $widgetType->getViewClass(),
         'widget_view.type'  => $widgetType,

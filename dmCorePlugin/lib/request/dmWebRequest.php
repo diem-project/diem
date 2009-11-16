@@ -22,7 +22,13 @@ class dmWebRequest extends sfWebRequest
    */
   public function isXmlHttpRequest()
   {
-    return parent::isXmlHttpRequest();
+    /*
+     * When a file is submitted during an ajax request,
+     * parent::isXmlHttpRequest() returns false,
+     * so we have to specify the request parameter dm_xhr
+     * to tell the server the request is asynchronous
+     */
+    return parent::isXmlHttpRequest() || $this->getParameter('dm_xhr');
   }
 
   public function isFlashRequest()

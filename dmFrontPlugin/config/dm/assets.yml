@@ -1,7 +1,6 @@
 js:
 
   front:
-    config:           dmFrontConfig
     ctrl:             dmFrontCtrl
     editCtrl:         dmFrontEditCtrl
     form:             dmFrontForm

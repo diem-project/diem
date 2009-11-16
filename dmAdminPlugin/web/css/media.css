@@ -113,11 +113,6 @@ div.dm_media_library div.dm_media_file .actions {
   margin: 10px 0;
 }
 
-div.dm_media_library div.dm_media_file .actions .button {
-  float: right;
-  margin-left: 10px;
-}
-
 div.dm_media_library .control li {
   margin: 10px 0;
 }

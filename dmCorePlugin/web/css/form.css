@@ -1,20 +1,8 @@
-.dm_form {
-}
-
-.dm_form .error_list {
-}
-
 .dm_form .error_list > li {
   min-height: 16px;
   background: url(../images/16/error.png) top left no-repeat;
   padding-left: 18px;
   color: #be1111;
-}
-
-.dm_form.list {
-}
-
-.dm_form.little {
 }
 
 .dm_form.list .separator {
@@ -78,4 +66,60 @@
 	background: url(../../core/images/default_bg_green.png) repeat-x scroll 50% 50%;
   border: 1px solid #D3D3D3;
   -moz-border-radius: 4px;
+}
+
+/*
+ * buttons
+ */
+
+div.ui-dialog.dm input[type=submit],
+div.ui-dialog.dm a.button {
+  background: url(../../core/images/default_bg.png) repeat-x scroll 50% 50%;
+  border:1px solid #D3D3D3;
+  color:#555;
+  -moz-border-radius: 4px;
+  -webkit-border-radius:  4px;
+  height: 24px;
+  line-height: 24px;
+  cursor: pointer;
+  padding: 0 5px;
+  text-decoration: none;
+  font-size: 12px;
+}
+
+div.ui-dialog.dm a.button {
+  display: block;
+  float: left;
+  height: 22px;
+}
+
+div.ui-dialog.dm a.button.fright {
+  float: right;
+}
+
+div.ui-dialog.dm input.green[type=submit],
+div.ui-dialog.dm a.button.green {
+  background: url(../../core/images/default_bg_green.png) repeat-x scroll 50% 50%;
+}
+
+div.ui-dialog.dm input.blue[type=submit],
+div.ui-dialog a.button.blue {
+  background: url(../../core/images/default_bg_blue.png) repeat-x scroll 50% 50%;
+}
+
+div.ui-dialog.dm input.red[type=submit],
+div.ui-dialog.dm a.button.red {
+  background: url(../../core/images/default_bg_red.png) repeat-x scroll 50% 50%;
+}
+
+div.ui-dialog.dm input.yellow[type=submit],
+div.ui-dialog.dm a.button.yellow {
+  background: url(../../core/images/default_bg_yellow.png) repeat-x scroll 50% 50%;
+}
+
+div.ui-dialog.dm input[type=submit]:hover,
+div.ui-dialog.dm a.button:hover {
+  border-color: #999;
+  color:#212121;
+  text-decoration: none;
 }

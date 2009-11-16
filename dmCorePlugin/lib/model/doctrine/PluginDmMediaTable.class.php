@@ -7,10 +7,12 @@ class PluginDmMediaTable extends myDoctrineTable
   /*
    * Performance shortcuts
    */
-  
   public function findOneByIdWithFolder($id)
   {
-    return $this->createQuery('m, m.Folder f')->where('m.id = ?', $id)->fetchOne();
+    return $this->createQuery('m')
+    ->where('m.id = ?', $id)
+    ->leftJoin('m.Folder f')
+    ->fetchOne();
   }
 
 

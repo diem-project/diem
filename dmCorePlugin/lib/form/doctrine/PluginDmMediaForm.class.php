@@ -20,8 +20,8 @@ abstract class PluginDmMediaForm extends BaseDmMediaForm
     $this->validatorSchema['file'] = new sfValidatorFile(array(
       'required' => $this->getObject()->isNew()
     ));
-
-    $this->widgetSchema['dm_media_folder_id'] = new sfWidgetFormInputHidden();
+    
+    $this->changeToHidden('dm_media_folder_id');
 
     $this->mergePostValidator(new sfValidatorCallback(array('callback' => array($this, 'clearName'))));
     $this->mergePostValidator(new sfValidatorCallback(array('callback' => array($this, 'checkExistingNameInParent'))));

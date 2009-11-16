@@ -182,15 +182,15 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
   {
     if($this->getNode()->getParent()->hasSubFolder($name))
     {
-      throw new dmException('The parent folder already contains a folder named "%name%". The folder has not been renamed.', array('%name%' => $name));
+      throw new dmException('The parent folder already contains a folder named "%name%".', array('%name%' => $name));
     }
     else if ($name !== $this->name)
     {
-      $sanitizedName = trim(preg_replace('/[^\w\._-]+/i', '-', dmString::removeAccents($file)), '-');
+      $sanitizedName = self::sanitizeName($name);
       
       if($sanitizedName != $name)
       {
-        throw new dmException('The target folder name "%name%" contains incorrect characters. The folder has not be renamed.', array('%name%' => $name));
+        throw new dmException('The target folder name "%name%" contains incorrect characters.', array('%name%' => $name));
       }
       $oldName = $this->name;
 
@@ -346,17 +346,22 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
    */
   public function getNodeParentId()
   {
-    if ($this->getNode()->isRoot())
+    if (!$this->get('lft'))
     {
       return null;
     }
 
-    return $this->getTable()->createQuery('f')
-    ->select('f.id as id')
-    ->where('f.lft < ? AND f.rgt > ?', array($this->get('lft'), $this->get('rgt')))
-    ->orderBy('f.rgt asc')
-    ->limit(1)
-    ->fetchValue();
+    $stmt = Doctrine_Manager::connection()->prepare('SELECT p.id
+FROM dm_media_folder p
+WHERE p.lft < ? AND p.rgt > ?
+ORDER BY p.rgt ASC
+LIMIT 1')->getStatement();
+
+    $stmt->execute(array($this->get('lft'), $this->get('rgt')));
+    
+    $result = $stmt->fetch(PDO::FETCH_NUM);
+    
+    return $result[0];
   }
 
   /*
@@ -369,10 +374,14 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
   }
 
 
+  public static function sanitizeName($name)
+  {
+    return trim(preg_replace('/[^\w\._-]+/i', '-', dmString::removeAccents($name)), '-');
+  }
+  
   /*
    * Override methods
    */
-
   public function save(Doctrine_Connection $conn = null)
   {
 //    if(!$this->isFieldModified('rel_path'))

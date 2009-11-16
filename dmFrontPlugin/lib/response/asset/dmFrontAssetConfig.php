@@ -14,7 +14,6 @@ class dmFrontAssetConfig extends dmAssetConfig
         'lib.ui-dialog',
         'core.util',
         'core.editMode',
-        'core.interface',
         'core.sprites',
         'core.sprite16',
         'core.sprite24',
@@ -65,7 +64,6 @@ class dmFrontAssetConfig extends dmAssetConfig
         'core.toolBar',
         'core.pageBar',
         'core.mediaBar',
-        'front.config',
         'front.ctrl',
         'front.editCtrl',
         'front.form',
@@ -87,7 +85,6 @@ class dmFrontAssetConfig extends dmAssetConfig
       'core.config',
       'core.plugins',
       'core.ctrl',
-      'front.config',
       'front.ctrl'
     );
   }

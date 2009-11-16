@@ -2,7 +2,7 @@
 {
   $.dbg = function()
   {
-    if (typeof console !== 'object' || !$.dm.ctrl.options.debug) 
+    if (typeof console !== 'object' || ($.dm.ctrl && !$.dm.ctrl.options.debug)) 
     {
       return;
     }
@@ -12,13 +12,12 @@
     } 
     catch(e) 
     {
-			
-			alert(e);
-      for (var i in arguments) 
-      {
-        if (i < 5) 
-          alert(arguments[i]);
-      }
+//			alert(e);
+//      for (var i in arguments) 
+//      {
+//        if (i < 5) 
+//          alert(arguments[i]);
+//      }
     }
   };
   

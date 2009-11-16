@@ -56,31 +56,5 @@ class dmDoctrineFormFilterGenerator extends sfDoctrineFormFilterGenerator
     return count($options) ? sprintf('array(%s)', implode(', ', $options)) : '';
   }
 
-  public function getWidgetClassForColumn($column)
-  {
-    switch ($column->getDoctrineType())
-    {
-      case 'boolean':
-        $name = 'Choice';
-        break;
-      case 'date':
-      case 'datetime':
-      case 'timestamp':
-        $name = 'DmFilterDate';
-        break;
-      case 'enum':
-        $name = 'Choice';
-        break;
-      default:
-        $name = 'DmFilterInput';
-    }
-
-    if ($column->isForeignKey())
-    {
-      $name = 'DoctrineChoice';
-    }
-
-    return sprintf('sfWidgetForm%s', $name);
-  }
   
 }

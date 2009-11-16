@@ -83,10 +83,10 @@ class dmForm extends sfFormSymfony
     $this->open($attributes).
     '<ul class="dm_form_elements">'.
     $this->getFormFieldSchema()->render($attributes).
-    $this->renderHiddenFields().
+//    $this->renderHiddenFields().
     sprintf('<li class="dm_form_element"><label>%s</label>%s</li>',
-    self::$serviceContainer->getService('i18n')->__('Validate'),
-    $this->renderSubmitTag(self::$serviceContainer->getService('i18n')->__('Validate'))
+    $this->__('Validate'),
+    $this->renderSubmitTag($this->__('Validate'))
     ).
     '</ul>'.
     $this->close();
@@ -248,5 +248,10 @@ class dmForm extends sfFormSymfony
     }
 
     return $this->formFields[$name];
+  }
+  
+  protected function __($text, $args = array(), $catalogue = null)
+  {
+    return self::$serviceContainer->getService('i18n')->__($text, $args, $catalogue);
   }
 }

@@ -44,7 +44,6 @@ class dmAdminAssetConfig extends dmAssetConfig
       'core.toolBar',
       'core.pageBar',
       'core.mediaBar',
-      'admin.config',
       'admin.ctrl',
       'admin.toolBar',
       'admin.pageBar',

@@ -7,9 +7,9 @@ abstract class dmHtmlTag
   $context;
 
   protected
-    $options = array('class' => array()),
-    $attributesToRemove = array(),
-    $emptyAttributesToRemove = array('class');
+  $options = array('class' => array()),
+  $attributesToRemove = array(),
+  $emptyAttributesToRemove = array('class');
 
   abstract public function render();
 

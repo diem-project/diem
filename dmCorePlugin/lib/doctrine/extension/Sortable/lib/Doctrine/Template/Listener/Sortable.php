@@ -33,14 +33,19 @@
 class Doctrine_Template_Listener_Sortable extends Doctrine_Record_Listener
 {
 
-  public function __construct($options)
+  public function __construct($options = array())
   {
-    $this->_options = array_merge($this->_options, $options);
+    $this->_options = array_merge(array('new' => 'last'), $this->_options, $options);
+    
+    if (!in_array($this->_options['new'], array('first', 'last')))
+    {
+      throw new dmException($this->_options['new'].' is not a valid new record insertion method ( first, last )');
+    }
   }
 
   public function postInsert(Doctrine_Event $event)
   {
-    if ('first' === dmArray::get($this->_options, 'new'))
+    if ('first' === $this->_options['new'])
     {
       $position = $event->getInvoker()->getTable()->createQuery('r')
       ->select('MIN(r.position)')

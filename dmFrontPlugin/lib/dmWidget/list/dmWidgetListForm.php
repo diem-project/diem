@@ -20,6 +20,7 @@ class dmWidgetListForm extends dmWidgetProjectModelForm
       'size' => 3
     ));
     $this->validatorSchema['maxPerPage']  = new sfValidatorInteger(array(
+      'required' => false,
       'min' => 0,
       'max' => 99999
     ));

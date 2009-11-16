@@ -1,9 +1,4 @@
-<?php use_helper('sfPixlr');
-
-slot('dm.breadCrumb');
-  include_partial("dmMediaLibrary/breadCrumb", array("folder"=>$folder));
-  echo £('li', £link($sf_request->getUri())->text($file->getFile()));
-end_slot();
+<?php
 
 //echo £o('div.dm_box.big');
 //
@@ -15,9 +10,7 @@ end_slot();
 //dmDebug::kill(urldecode(pixlr_express_post_url($absoluteWebUrl, $target, $options)));
 echo sprintf(
   '<iframe class="dm_media pixlr full_height loader" src="%s" width="%s" height="%s" style="border: 0;">%s</iframe>',
-  dmOs::isLocalhost()
-  ? pixlr_express_post_url($absoluteServerUrl, $target, $options)
-  : pixlr_express_get_url($absoluteWebUrl, $target, $options),
+  $iframeSrc,
   '100%',
   '500px',
   __('Loading...')

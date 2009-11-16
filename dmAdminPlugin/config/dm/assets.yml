@@ -1,7 +1,6 @@
 js:
 
   admin:
-    config:           dmAdminConfig
     ctrl:             dmAdminCtrl
     form:             dmAdminForm
     toolBar:          dmAdminToolBar

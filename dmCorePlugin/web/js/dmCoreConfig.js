@@ -13,11 +13,11 @@ $.dm = {
 
 // configuration de jQuery
 $.ajaxSetup({
-  global : false,
+  global :  false,
   timeout : false,
-  type : "GET",
-  cache : false,
-  data: $.dm.defaults.ajaxData
+  type :    "GET",
+  cache :   false,
+  data:     $.dm.defaults.ajaxData
 });
 
 //Configuration de jQuery UI
@@ -29,12 +29,11 @@ if ($.datepicker)
 if ($.blockUI)
 {
 	$.blockUI.defaults = $.extend($.blockUI.defaults, {
-    css: {},
-    message: ' ',
-		fadeIn: 0,
-		fadeOut: 0
+    css:      {},
+    message:  ' ',
+		fadeIn:   0,
+		fadeOut:  0
 	});
-	
 }
 
 })(jQuery);

@@ -2,7 +2,7 @@
 
 echo £o('div.dm_media_file');
 
-echo £('h1.title.none', $file->getFile());
+echo £('h1.title.none', $file->file);
 
 echo £o('div.clearfix');
 
@@ -18,10 +18,10 @@ echo £o('div.clearfix');
 
     £('div.infos',
       definition_list(array(
-        __('Size') => dmOs::humanizeSize($file->getSize()),
-        __('Type') => $file->getMime(),
-        __('Created at') => format_datetime($file->getCreatedAt()),
-        __('Updated at') => format_datetime($file->getUpdatedAt()),
+        __('Size') => dmOs::humanizeSize($file->size),
+        __('Type') => $file->mime,
+        __('Created at') => format_datetime($file->createdAt),
+        __('Updated at') => format_datetime($file->updatedAt),
         __('Url') => $file->getFullWebPath(),
         __('Referers') => media_file_referers_link($file)
       ), '.clearfix')
@@ -29,16 +29,16 @@ echo £o('div.clearfix');
 
     get_partial('dmInterface/flash').
 
-    £('div.form', $form->render('.dm_form.list.little action=dmMediaLibrary/saveFile')).
+    £('div.form', $form->render('.dm_form.list.little action="dmMediaLibrary/saveFile?dm_xhr=1"')).
 
     £('div.actions.clearfix',
-      £('a.close_dialog.button', __('Close')).
-      £link('dmMediaLibrary/deleteFile?media_id='.$file->getId())
+      £('a.close_dialog.button.fright', __('Close')).
+      £link('dmMediaLibrary/deleteFile?media_id='.$file->id)
       ->text(__('Delete'))
-      ->set('.button.red.dm_js_confirm')
+      ->set('.button.red.dm_js_confirm.fleft')
       ->title(__('Delete this file')).
-      ($file->isImage()
-      ? £link('dmMediaLibrary/editImage?media_id='.$file->getId())
+      ((false && $file->isImage())
+      ? £link('dmMediaLibrary/editImage?media_id='.$file->id)
       ->text(__('Edit image'))
       ->set('.button.edit_image')
       : '')

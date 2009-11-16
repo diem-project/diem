@@ -20,7 +20,6 @@ $.dm.mediaCtrl = {
 		
     $('li.file a.link', $content).bind('click', function() {
       var $dialog = $.dm.ctrl.ajaxDialog({
-        modal:  true,
         url:    $(this).attr("href"),
         class:  'dm_media_library dm_media_file_dialog',
         width:  700,

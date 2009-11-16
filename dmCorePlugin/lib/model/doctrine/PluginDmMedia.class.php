@@ -31,15 +31,13 @@ abstract class PluginDmMedia extends BaseDmMedia
       throw new dmException(sprintf('Can not create backup folder for %s', $this));
     }
 
-    $backupMedia = dmDb::create('DmMedia')->setDmMediaFolder($backupFolder);
-
-    $this->copyTo($backupMedia)->saveGet();
+    $this->copyTo(dmDb::create('DmMedia')->set('Folder', $backupFolder))->save();
   }
 
   public function getBackupFolder()
   {
     return dmDb::table('DmMediaFolder')->findOneByRelPathOrCreate(
-    dmOs::join($this->get('Folder')->get('rel_path'), 'backup')
+      $this->get('Folder')->get('rel_path').'/backup'
     );
   }
 
@@ -205,24 +203,26 @@ abstract class PluginDmMedia extends BaseDmMedia
    */
   public function copyTo(DmMedia $toMedia)
   {
-    $toMedia->file = $this->file;
+    $toMedia->set('file', $this->get('file'));
 
-    if (!@copy($this->fullPath, $toMedia->fullPath))
+    if (!copy($this->getFullPath(), $toMedia->getFullPath()))
     {
       throw new dmException(sprintf(
         'Can not copy from %s to %s',
-        $this->fullPath,
-        $toMedia->fullPath
+        $this->getFullPath(),
+        $toMedia->getFullPath()
       ));
     }
-
-    return $toMedia
-    ->setLegend($this->getLegend())
-    ->setAuthor($this->getAuthor())
-    ->setCopyright($this->getCopyright())
-    ->setMime($this->getMime())
-    ->setSize($this->getSize())
-    ->setDimensions($this->getDimensions());
+    
+    $toMedia->fromArray(array(
+      'legend'      => $this->get('legend'),
+      'author'      => $this->get('author'),
+      'license'     => $this->get('license'),
+      'mime'        => $this->get('mime'),
+      'dimensions'  => $this->get('dimensions')
+    ));
+    
+    return $toMedia;
   }
 
 

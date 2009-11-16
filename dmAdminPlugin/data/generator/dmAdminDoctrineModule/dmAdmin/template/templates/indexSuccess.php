@@ -62,11 +62,11 @@
       <div class="dm_loremize">
       <p class="dm_sort s16 s16_edit fleft">Loremize :</p>
       [?php
-      $loremizeLink = £link('<?php echo $this->getModule()->getUnderscore() ?>/loremize?nb=__DM_NB_RECORDS__')
+      $loremizeLink = £link('@<?php echo $this->getModule()->getUnderscore() ?>?action=loremize&nb=__DM_NB_RECORDS__')
       ->text('__DM_NB_RECORDS__')
       ->set('.ml10')
       ->render();
-      foreach(array(1, 5, 10, 20, 50) as $nbRecords)
+      foreach(array(1, 5, 10, 20, 50, 100) as $nbRecords)
       {
         echo str_replace('__DM_NB_RECORDS__', $nbRecords, $loremizeLink);
       }

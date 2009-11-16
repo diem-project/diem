@@ -2,6 +2,25 @@
 
 class dmPixlr
 {
+  
+  public function getPostUrl()
+  {
+    $query_vars = array("file"=>$file, "target"=>$target);
+    foreach(array('referrer','title','exit','loc','app','target_vars','save_to') as $key)
+    {
+      if(isset($options[$key]))
+      {
+        $query_vars[$key] = $options[$key];
+      }
+    }
+  
+    if(!isset($options['skip_default']) || $options['skip_default']==FALSE)
+    {
+      $query_vars['target'] = url_for("@sf_pixlr_save?options=".base64_encode(serialize($query_vars)), true);
+    }
+  
+    return url_for("@sf_pixlr_post?".http_build_query($query_vars, '', '&'));
+  }
 
   public function save(sfWebRequest $request)
   {
@@ -70,7 +89,7 @@ class dmPixlr
 
   private function copyFromUrl($url, $full_path)
   {
-    dmDebug::log("aaaaaaaaaaaaaa {$url}->{$full_path}");
+//    dmDebug::log("aaaaaaaaaaaaaa {$url}->{$full_path}");
 
     $file = file_get_contents($url);
     if($file===FALSE)

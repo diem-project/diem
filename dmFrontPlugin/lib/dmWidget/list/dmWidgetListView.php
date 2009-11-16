@@ -7,7 +7,7 @@ class dmWidgetListView extends dmWidgetProjectModelView
   {
     parent::configure();
 
-    $this->addRequiredVar(array('maxPerPage', 'orderField', 'orderType'));
+    $this->addRequiredVar(array('orderField', 'orderType'));
 
     foreach($this->dmAction->getParam('filters', array()) as $filter)
     {
@@ -30,6 +30,8 @@ class dmWidgetListView extends dmWidgetProjectModelView
   protected function filterViewVars(array $vars = array())
   {
     $viewVars = parent::filterViewVars($vars);
+    
+    $viewVars['maxPerPage'] = isset($viewVars['maxPerPage']) ? $viewVars['maxPerPage'] : 0;
 
     $filters = array();
     foreach($viewVars as $key => $val)
