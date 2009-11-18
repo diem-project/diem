@@ -8,6 +8,13 @@
       this.initPageBar(this);
     },
     
+    loaded: function()
+    {
+      this.element.find('a').each(function() {
+        $(this).attr('href', $.dm.ctrl.options.script_name+$(this).attr('href'));
+      });
+    },
+    
     getTreeOptions: function()
     {
       return {
@@ -27,7 +34,7 @@
         callback: {
           ondblclk: function(NODE, TREE_OBJ)
           {
-						location.href = $.dm.ctrl.options.script_name+$('a', NODE).attr('href');
+						location.href = $('a', NODE).attr('href');
           },
           onselect: function(NODE, TREE_OBJ)
           {

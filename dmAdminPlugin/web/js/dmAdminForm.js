@@ -39,7 +39,7 @@
     {
       var form = this;
       
-      $('textarea.markdown_editor', form.element).each(function()
+      $('textarea.dm_markdown', form.element).each(function()
       {
         $editor = $(this);
         $preview = $editor.closest('div.fieldset_content_inner').find('div.markdown_preview');

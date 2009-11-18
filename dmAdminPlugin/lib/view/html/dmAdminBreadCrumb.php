@@ -70,8 +70,8 @@ class dmAdminBreadCrumb
     }
     
     /*
-     * Allow listeners of dm.response.filter_stylesheets event
-     * to filter and modify the stylesheets list
+     * Allow listeners of dm.bread_crumb.filter_links event
+     * to filter and modify the links list
      */
     return $this->context->getEventDispatcher()->filter(new sfEvent($this, 'dm.bread_crumb.filter_links'), $links)->getReturnValue();
   }

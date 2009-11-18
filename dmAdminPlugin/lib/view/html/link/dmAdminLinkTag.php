@@ -74,13 +74,20 @@ class dmAdminLinkTag extends dmLinkTag
       }
     }
 
-    elseif(is_object($this->resource) && $this->resource instanceof dmDoctrineRecord && ($module = $this->resource->getDmModule()))
+    elseif(is_object($this->resource) && $this->resource instanceof dmDoctrineRecord)
     {
-      $resource = array(
-        'sf_route' => $module->getUnderscore(),
-        'action'   => 'edit',
-        'pk'       => $this->resource->getPrimaryKey()
-      );
+      if (($module = $this->resource->getDmModule()) && $module->hasAdmin())
+      {
+        $resource = array(
+          'sf_route' => $module->getUnderscore(),
+          'action'   => 'edit',
+          'pk'       => $this->resource->getPrimaryKey()
+        );
+      }
+      elseif($this->resource instanceof DmPage)
+      {
+        $resource = self::$context->get('script_name_resolver')->get('front').'/'.$this->resource->get('slug');
+      }
     }
     
     if(isset($resource))

@@ -7,7 +7,7 @@
   use_javascript('lib.markitupSet');
   $attributes = array_merge(
     $attributes instanceof sfOutputEscaper ? $attributes->getRawValue() : $attributes,
-    array('class' => 'markdown_editor')
+    array('class' => 'dm_markdown')
   );
 ?>
 

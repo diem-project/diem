@@ -50,10 +50,12 @@ abstract class PluginDmPage extends BaseDmPage
       return $this->getCache('record');
     }
     
-    return $this->setCache('record', $this->hasRecord() ?
-      $this->getDmModule()->getTable()->find($this->get('record_id'))
-      : false
-    );
+    if (($module = $this->getDmModule()) && ($table = $module->getTable()))
+    {
+      return $this->setCache('record', $table->find($this->get('record_id')));
+    }
+    
+    return $this->setCache('record', false);
   }
 
   public function setRecord(myDoctrineRecord $record)

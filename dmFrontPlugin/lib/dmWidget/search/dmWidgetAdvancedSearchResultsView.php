@@ -5,14 +5,9 @@ class dmWidgetAdvancedSearchResultsView extends dmWidgetPluginView
   protected
   $isIndexable = false;
 
-  public function getRequiredVars()
-  {
-    return array('maxPerPage');
-  }
-
   protected function filterViewVars(array $vars = array())
   {
-    $vars = parent::getViewVars($vars);
+    $vars = parent::filterViewVars($vars);
     
     $form = new mySearchForm;
     
@@ -31,8 +26,8 @@ class dmWidgetAdvancedSearchResultsView extends dmWidgetPluginView
     
     if(count($results = $this->index->search($vars['query'])))
     {
-      $pager = new dmSearchPager($results, $vars['maxPerPage']);
-      $pager->setPage($this->context->getParameter('page', 1));
+      $pager = new dmSearchPager($results, dmArray::get($vars, 'maxPerPage', 99999));
+      $pager->setPage($this->context->getRequest()->getParameter('page', 1));
       $pager->init();
     }
     else

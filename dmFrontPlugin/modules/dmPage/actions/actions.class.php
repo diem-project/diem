@@ -16,7 +16,7 @@ class dmPageActions extends dmFrontBaseActions
     );
     
     $this->forward404If(
-      $page->hasRecord(),
+      $page->hasRecord() && $page->getRecord(),
       'Can not delete record page. Please delete record instead.'
     );
     
@@ -70,6 +70,11 @@ class dmPageActions extends dmFrontBaseActions
       file_get_contents($this->context->get('helper')->getJavascriptFullPath('front.pageEditForm'))
       );
     }
+    
+    $this->deletePageLink =
+        $this->getUser()->can('page_delete')
+    &&  !$this->page->getNode()->isRoot()
+    &&  (!$this->page->hasRecord() || !$this->page->getRecord());
     
     return $this->renderJson(array(
       'type' => 'form',

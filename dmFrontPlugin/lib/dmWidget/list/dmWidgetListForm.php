@@ -94,6 +94,11 @@ class dmWidgetListForm extends dmWidgetProjectModelForm
     }
 
     $this->setDefaults($this->getDefaultsFromLastUpdated(array('maxPerPage', 'navTop', 'navBottom', 'view', 'orderField', 'orderType')));
+  
+    if($this->dmModule->getTable()->isSortable())
+    {
+      $this->setDefault('orderField', 'position');
+    }
   }
 
   protected function allowFilterAutoRecordId(dmModule $filterModule)

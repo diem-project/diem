@@ -28,7 +28,10 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
 
     $this->index('description', $i18n->get('description'), 2);
 
-    $this->index('keywords', $i18n->get('keywords'), 3);
+    if (sfConfig::get('dm_seo_use_keywords'))
+    {
+      $this->index('keywords', $i18n->get('keywords'), 3);
+    }
   }
   
   protected function store($name, $value, $boost = 1)

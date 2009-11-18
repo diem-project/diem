@@ -2,11 +2,11 @@
 
 abstract class dmBaseActions extends sfActions
 {
-  protected function forwardSecureUnless($condition, $message = null)
+  protected function forwardSecureUnless($condition)
   {
     if (!$condition)
     {
-      return $this->forwardSecure($message);
+      return $this->forwardSecure();
     }
   }
 
@@ -22,6 +22,10 @@ abstract class dmBaseActions extends sfActions
    * This method must be called as with a return:
    *
    * <code>return $this->renderJson(array('key'=>'value'))</code>
+   * 
+   * Important : due to a limitation of the jquery form plugin (http://jquery.malsup.com/form/#file-upload)
+   * when a file have been uploaded, the contentType is set to text/html
+   * and the json response is wrapped into a textarea
    *
    * @param string $json Json to append to the response
    *
@@ -31,11 +35,19 @@ abstract class dmBaseActions extends sfActions
   {
     $this->response->clearJavascripts();
     $this->response->clearStylesheets();
-    $this->response->setContentType('application/json');
     $this->setLayout(false);
     sfConfig::set('sf_web_debug', false);
     
-    $this->response->setContent(json_encode($json));
+    if ($this->request->isMethod('post') && $this->request->isXmlHttpRequest() && !in_array('application/json', $this->request->getAcceptableContentTypes()))
+    {
+      $this->response->setContentType('text/html');
+      $this->response->setContent('<textarea>'.json_encode($json).'</textarea>');
+    }
+    else
+    {
+      $this->response->setContentType('application/json');
+      $this->response->setContent(json_encode($json));
+    }
 
     return sfView::NONE;
   }  

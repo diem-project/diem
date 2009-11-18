@@ -19,7 +19,8 @@ class dmWidgetAdvancedSearchResultsForm extends dmWidgetPluginForm
     ));
     $this->validatorSchema['maxPerPage']  = new sfValidatorInteger(array(
       'min' => 0,
-      'max' => 9999
+      'max' => 99999,
+      'required' => false
     ));
   }
 

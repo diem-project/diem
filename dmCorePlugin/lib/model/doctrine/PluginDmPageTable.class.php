@@ -86,7 +86,7 @@ class PluginDmPageTable extends myDoctrineTable
     }
   }
   
-  public function prepareRecordPageCache($module, array $ids)
+  public function prepareRecordPageCache($module, array $ids, $culture = null)
   {
     $timer = dmDebug::timerOrNull('DmPageTable::prepareRecordPageCache');
     
@@ -106,10 +106,11 @@ class PluginDmPageTable extends myDoctrineTable
     }
     
     $pages = $this->createQuery('p')
-    ->withI18n()
     ->select('p.id, p.module, p.action, p.record_id, p.is_secure, p.lft, p.rgt, pTranslation.slug, pTranslation.name, pTranslation.is_active')
-    ->where('p.module = ? AND p.action = ?', array($module, 'show'))
+    ->where('p.module = ?', $module)
+    ->andWhere('p.action = ?', 'show')
     ->andWhereIn('p.record_id', $ids)
+    ->withI18n($culture, null, 'p')
     ->fetchRecords()
     ->getData();
     
@@ -136,8 +137,8 @@ class PluginDmPageTable extends myDoctrineTable
   
   public function findAllForCulture($culture, $hydrationMode = Doctrine::HYDRATE_ARRAY)
   {
-    return $this->createQuery()
-    ->withI18n($culture)
+    return $this->createQuery('p')
+    ->withI18n($culture, null, 'p')
     ->execute(array(), $hydrationMode);
   }
   
@@ -180,14 +181,6 @@ class PluginDmPageTable extends myDoctrineTable
     return $this->findByStringCache[$source];
   }
 
-  public function findOneBySlug($slug)
-  {
-    return $this->createQuery('p')
-    ->withI18n()
-    ->where('pTranslation.slug = ?', $slug)
-    ->fetchRecord();
-  }
-
   public function findByAction($action)
   {
     return $this->createQuery('p')->where('p.action = ?', $action)->fetchRecords();
@@ -212,16 +205,16 @@ class PluginDmPageTable extends myDoctrineTable
   public function findOneByIdWithI18n($id, $culture = null)
   {
     return $this->createQuery('p')
-    ->withI18n($culture)
     ->where('p.id = ?', $id)
+    ->withI18n($culture, null, 'p')
     ->fetchOne();
   }
   
   public function fetchRootWithI18n($culture = null)
   {
     return $this->createQuery('p')
-    ->withI18n($culture)
     ->where('p.lft = ?', 1)
+    ->withI18n($culture, null, 'p')
     ->fetchOne();
   }
   
@@ -235,8 +228,10 @@ class PluginDmPageTable extends myDoctrineTable
     }
 
     return $this->createQuery('p')
-    ->where('p.module = ? AND p.action = ? AND record_id = ?', array($module, 'show', $record->get('id')))
-    ->withI18n()
+    ->where('p.module = ?', $module)
+    ->andWhere('p.action = ?', 'show')
+    ->andWhere('p.record_id = ?', $record->get('id'))
+    ->withI18n(null, null, 'p')
     ->dmCache()
     ->fetchOne();
   }
@@ -265,7 +260,7 @@ class PluginDmPageTable extends myDoctrineTable
     $page = $this->createQuery('p')
     ->where('p.module = ?', $module)
     ->andWhere('p.action = ?', $action)
-    ->withI18n($culture)
+    ->withI18n($culture, null, 'p')
     ->dmCache()
     ->fetchOne();
     $timer && $timer->addTime();

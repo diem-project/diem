@@ -30,7 +30,7 @@ js:
     ui-i18n:          jquery-ui/js/minified/i18n/ui.datepicker-%culture%.min
     metadata:         metadata/jquery.metadata.min
     jqtransform:      jqtransform/jquery.jqtransform.min
-    form:             form/jquery.form
+    form:             form/jquery.form.hack
     jsTree:           jsTree/source/tree_component.min
     jsTreeCss:        jsTree/source/css
     blockUI:          blockUI/jquery.blockUI.min
@@ -46,6 +46,7 @@ js:
     jmap:             jmap/jquery.jmap.min
     tree-component:   jsTree/source/tree_component.min
     tree-css:         jsTree/source/css
+    fieldSelection:   jquery-fieldselection/jquery-fieldselection.min
 
 css:
 

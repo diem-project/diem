@@ -16,7 +16,12 @@ abstract class PluginDmArea extends BaseDmArea
   # TODO more precise permissions
   public function isEditable()
   {
-    return dm::getUser()->can('zone_add');
+    if (!self::$serviceContainer)
+    {
+      return false;
+    }
+    
+    return self::$serviceContainer->getService('user')->can('zone_add');
   }
 
   public function __toString()
@@ -30,7 +35,7 @@ abstract class PluginDmArea extends BaseDmArea
     
     $return = parent::save($conn);
     
-    if ($wasNew)
+    if ($wasNew && !$this->getZones()->count())
     {
       dmDb::create('DmZone', array(
         'dm_area_id' => $this->id

@@ -6,7 +6,7 @@ if (!$page)
 {
   echo £('div.alert', 'There is no page to preview');
 }
-else
+elseif (isset($metas))
 {
   echo £o('ul');
   
@@ -16,6 +16,10 @@ else
   }
   
   echo £c('ul');
+}
+else
+{
+  echo __('The configuration is not valid.');
 }
 
 echo £c('div');

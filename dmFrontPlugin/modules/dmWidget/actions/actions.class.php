@@ -79,9 +79,10 @@ class dmWidgetActions extends dmFrontBaseActions
       $stylesheets[] = $helper->getStylesheetWebPath('lib.ui-resizable');
       
       $js .=
-      file_get_contents($helper->getJavascriptFullPath('lib.ui-resizable')).
-      file_get_contents($helper->getJavascriptFullPath('lib.markitup')).
-      file_get_contents($helper->getJavascriptFullPath('lib.markitupSet'));
+      file_get_contents($helper->getJavascriptFullPath('lib.ui-resizable')).';'.
+      file_get_contents($helper->getJavascriptFullPath('lib.markitup')).';'.
+      file_get_contents($helper->getJavascriptFullPath('lib.markitupSet')).';'.
+      file_get_contents($helper->getJavascriptFullPath('lib.fieldSelection'));
     }
     
     return $this->renderJson(array(
@@ -97,10 +98,10 @@ class dmWidgetActions extends dmFrontBaseActions
     return $this->renderJson(array(
       'type' => 'error',
       'html' => sprintf('<p class="s16 s16_error">%s</p><div class="clearfix mt30"><a class="dm cancel close_dialog button mr10">%s</a><a class="dm delete button red" title="%s">%s</a></div>',
-      $this->context->getI18()->__('The widget can not be rendered because its type does not exist anymore.'),
-      $this->context->getI18()->__('Cancel'),
-      $this->context->getI18()->__('Delete this widget'),
-      $this->context->getI18()->__('Delete')
+      $this->context->getI18n()->__('The widget can not be rendered because its type does not exist anymore.'),
+      $this->context->getI18n()->__('Cancel'),
+      $this->context->getI18n()->__('Delete this widget'),
+      $this->context->getI18n()->__('Delete')
     )));
   }
 

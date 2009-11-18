@@ -91,14 +91,13 @@ class BasedmCoreActions extends dmBaseActions
           $this->getUser()->logInfo('Project successfully updated');
           break;
       }
-    
     }
     catch(Exception $e)
     {
-      $this->getUser()->logError('Something went wrong when updating project');
+      $this->getUser()->logError($this->context->getI18n()->__('Something went wrong when updating project'));
       
       $data = array(
-        'msg'  => $this->context->getI18n()->__('Something went wrong'),
+        'msg'  => $this->context->getI18n()->__('Something went wrong when updating project'),
         'type' => 'redirect',
         'url'  => $this->getUser()->getAttribute('dm_refresh_back_url')
       );
@@ -107,7 +106,7 @@ class BasedmCoreActions extends dmBaseActions
       {
         if ($request->isXmlHttpRequest())
         {
-          $data['url'] = $request->getUri().'&dm_use_thread=0';
+          $data['url'] = str_replace('dm_xhr=1', 'dm_xhr=0', $request->getUri().'&dm_use_thread=0');
         }
         else
         {

@@ -100,6 +100,8 @@ article, aside, dialog, figure, footer, header, hgroup, menu, nav, section { dis
 .mb40 { margin-bottom: 40px !important; }
 .ml40 { margin-left: 40px !important; }
 
+.ml1p { margin-left: 1% !important; }
+.mr1p { margin-right: 1% !important;}
 .ml2p { margin-left: 2% !important; }
 .mr2p { margin-right: 2% !important;}
 .ml4p { margin-left: 4% !important; }

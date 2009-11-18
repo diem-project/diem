@@ -10,7 +10,7 @@ $form->renderGlobalErrors(),
   £('li', £link('#'.$baseTabId.'_text')->text(__('Text'))).
   £('li', £link('#'.$baseTabId.'_media')->text(__('Media'))).
   £('li', £link('#'.$baseTabId.'_links')->text(__('Links'))).
-  £('li', £link('#'.$baseTabId.'_advanced')->text(__('Advanced')))
+  £('li', £link('#'.$baseTabId.'_advanced')->text(__('Presentation')))
 ),
 
 £('div#'.$baseTabId.'_text',
@@ -37,7 +37,8 @@ $form->renderGlobalErrors(),
 
 £('div#'.$baseTabId.'_advanced',
   £('ul.dm_form_elements',
-    $form['cssClass']->renderRow()
+    $form['cssClass']->renderRow().
+    $form['titlePosition']->renderRow()
   )
 ),
 

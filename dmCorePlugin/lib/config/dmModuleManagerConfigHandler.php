@@ -164,6 +164,10 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
 //        }
         if($parentKey = dmArray::get($module, 'parent_key'))
         {
+          if ($parentKey == $key)
+          {
+            $this->throwException('module %s is it\'s own parent...');
+          }
           if (!isset($this->modules[$parentKey]))
           {
             $this->throwException('module %s has a parent that do not exist : %s', $key, $parentKey);

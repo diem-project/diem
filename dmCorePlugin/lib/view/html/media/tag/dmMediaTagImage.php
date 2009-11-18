@@ -232,6 +232,17 @@ class dmMediaTagImage extends dmMediaTag
       $attributes['height'] = (int) ($media->getHeight() * ($attributes['width'] / $media->getWidth()));
     }
 
+    $filter = dmArray::get($attributes, 'filter');
+    $overlay = dmArray::get($attributes, 'overlay', array());
+    
+    /*
+     * Nothing to change, return the original image
+     */
+    if ($attributes['width'] == $media->getWidth() && $attributes['height'] == $media->getHeight() && !$filter && !$overlay)
+    {
+      return $media->getFullPath();
+    }
+
     if ($attributes['method'] == 'fit')
     {
       $attributes['background'] = trim($attributes['background'], '#');
@@ -253,9 +264,6 @@ class dmMediaTagImage extends dmMediaTag
       
       self::$verifiedThumbDirs[$media->get('dm_media_folder_id')] = $thumbDir;
     }
-
-    $filter = dmArray::get($attributes, 'filter');
-    $overlay = dmArray::get($attributes, 'overlay', array());
 
     $pathInfo = pathinfo($media->get('file'));
     $thumbRelPath = $pathInfo['filename'].'_'.substr(md5(implode('-', array(

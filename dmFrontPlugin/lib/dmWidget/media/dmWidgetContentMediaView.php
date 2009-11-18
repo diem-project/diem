@@ -89,8 +89,7 @@ class dmWidgetContentMediaView extends dmWidgetPluginView
   
   protected function doRenderForIndex()
   {
-    $vars = $this->compiledVars();
-    return $vars['legend'];
+    return $this->compiledVars['legend'];
   }
   
 }

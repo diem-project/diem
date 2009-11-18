@@ -33,13 +33,25 @@ class dmAutoSeoComponents extends dmAdminBaseComponents
     
     if ($this->page = dmDb::table('DmPage')->findOneByIdWithI18n($pageId))
     {
-      $seoSynchronizer = $this->context->get('seo_synchronizer');
-      $this->metas = $seoSynchronizer->compilePatterns(
-        $this->rules,
-        $seoSynchronizer->getReplacementsForPatterns($this->module, $this->rules, $this->page->getRecord()),
-        $this->page->getRecord(),
-        $this->page->getNode()->getParent()->get('slug')
-      );
+      try
+      {
+        $seoSynchronizer = $this->context->get('seo_synchronizer');
+        $this->metas = $seoSynchronizer->compilePatterns(
+          $this->rules,
+          $seoSynchronizer->getReplacementsForPatterns($this->module, $this->rules, $this->page->getRecord()),
+          $this->page->getRecord(),
+          $this->page->getNode()->getParent()->get('slug')
+        );
+      }
+      catch(Exception $e)
+      {
+        $this->getUser()->logError($e->getMessage(), false);
+        
+        if(sfConfig::get('dm_debug'))
+        {
+          throw $e;
+        }
+      }
     }
   }
   

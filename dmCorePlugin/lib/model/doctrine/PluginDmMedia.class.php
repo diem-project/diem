@@ -84,18 +84,22 @@ abstract class PluginDmMedia extends BaseDmMedia
 
   public function getWidth()
   {
-    if ($dimensions = $this->get('dimensions'))
+    if($this->hasCache('width'))
     {
-      return substr($dimensions, 0, strpos($dimensions, 'x'));
+      return $this->getCache('width');
     }
+    
+    return $this->setCache('width', ($dimensions = $this->get('dimensions')) ? substr($dimensions, 0, strpos($dimensions, 'x')) : null);
   }
 
   public function getHeight()
   {
-    if ($dimensions = $this->get('dimensions'))
+    if($this->hasCache('height'))
     {
-      return substr($dimensions, strpos($dimensions, 'x')+1);
+      return $this->getCache('height');
     }
+    
+    return $this->setCache('height', ($dimensions = $this->get('dimensions')) ? substr($dimensions, strpos($dimensions, 'x')+1) : null);
   }
 
   public function isWritable()

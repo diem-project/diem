@@ -8,6 +8,7 @@ class dmWidgetContentTextView extends dmWidgetContentMediaView
     parent::configure();
 
     $this->removeRequiredVar(array('mediaId', 'method'));
+    $this->addRequiredVar('titlePosition');
   }
 
   public function filterViewVars(array $vars = array())
@@ -20,8 +21,6 @@ class dmWidgetContentTextView extends dmWidgetContentMediaView
       $vars['mediaPosition'] = 'top';
     }
 
-    $vars['titlePosition'] = 'outside';
-    
     $vars['style'] = 'default';
     
     if(!isset($vars['title']))
@@ -86,7 +85,6 @@ class dmWidgetContentTextView extends dmWidgetContentMediaView
   
   protected function doRenderForIndex()
   {
-    $vars = $this->compiledVars();
-    return implode(' ', array($vars['title'], $vars['text'], $vars['legend']));
+    return implode(' ', array($this->compiledVars['title'], $this->compiledVars['text'], $this->compiledVars['legend']));
   }
 }

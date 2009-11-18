@@ -49,6 +49,11 @@ fired by dmAdminBreadcrumb before rendering links. With this event you can modif
 params: none
 value: array of linkType => options
 
+[dm.bread_crumb.filter_pages]
+fired by dmWidgetNavigationBreadcrumb before rendering page links. With this event you can modify breadCrumb pages.
+params: none
+value: array of module.action => DmPage
+
 [dm.sitemap.generated]
 fired by dmSitemap when sitemap has been written to disk
 params: array('file' => full server path, 'url' => full web path)

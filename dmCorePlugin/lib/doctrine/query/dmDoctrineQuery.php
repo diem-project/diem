@@ -46,7 +46,7 @@ abstract class dmDoctrineQuery extends Doctrine_Query
    * if $model is specified, will verify that it has I18n
    * return @myDoctrineQuery $this
    */
-  public function withI18n($culture = null, $model = null)
+  public function withI18n($culture = null, $model = null, $rootAlias = null)
   {
     if (null !== $model)
     {
@@ -56,12 +56,12 @@ abstract class dmDoctrineQuery extends Doctrine_Query
       }
     }
 
-    $me           = $this->getRootAlias();
-    $translation  = $me.'Translation';
+    $rootAlias    = null === $rootAlias ? $this->getRootAlias() : $rootAlias;
+    $translation  = $rootAlias.'Translation';
     $culture      = null === $culture ? myDoctrineRecord::getDefaultCulture() : $culture;
     
     return $this
-    ->leftJoin($me.'.Translation '.$translation.' ON '.$me.'.id = '.$translation.'.id AND '.$translation.'.lang = ?', $culture);
+    ->leftJoin($rootAlias.'.Translation '.$translation.' ON '.$rootAlias.'.id = '.$translation.'.id AND '.$translation.'.lang = ?', $culture);
   }
 
 

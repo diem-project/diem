@@ -2,4 +2,4 @@
 
 echo $form->renderGlobalErrors();
 
-echo $form->render('.dm_form.list.little action="dmMediaLibrary/saveFile?dm_xhr=1"');
+echo $form->render('.dm_form.list.little dmMediaLibrary/saveFile');

@@ -29,7 +29,7 @@ echo £o('div.clearfix');
 
     get_partial('dmInterface/flash').
 
-    £('div.form', $form->render('.dm_form.list.little action="dmMediaLibrary/saveFile?dm_xhr=1"')).
+    £('div.form', $form->render('.dm_form.list.little action=dmMediaLibrary/saveFile')).
 
     £('div.actions.clearfix',
       £('a.close_dialog.button.fright', __('Close')).

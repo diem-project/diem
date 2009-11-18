@@ -51,6 +51,8 @@ class dmForm extends sfFormSymfony
   
   public function removeCsrfProtection()
   {
+    $this->localCSRFSecret = false;
+    
     if ($this->isCSRFProtected())
     {
       unset($this[self::$CSRFFieldName]);

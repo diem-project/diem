@@ -22,7 +22,25 @@ class dmSearchEngineActions extends dmAdminBaseActions
 
   public function executeReload()
   {
-    $this->context->getFilesystem()->sf('dm:search-update');
+    $filesystem = $this->context->getFilesystem();
+    
+    if (!$filesystem->sf('dm:search-update'))
+    {
+      $this->getUser()->logError($this->context->getI18n()->__('Something went wrong when updating the search index'));
+      
+      if (sfConfig::get('sf_debug'))
+      {
+        $this->getUser()->logError(implode("\n", array(
+          $filesystem->getLastExec('command'),
+          $filesystem->getLastExec('output'),
+          'Try running php symfony dm:search-update in a console'
+        )));
+      }
+    }
+    else
+    {
+      $this->getUser()->logInfo($this->context->getI18n()->__('The search index has been updated'));
+    }
 
     return $this->redirect('dmSearchEngine/index');
   }

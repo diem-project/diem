@@ -76,7 +76,7 @@ class dmCodeEditorActions extends dmFrontBaseActions
     {
       $return = array(
         'type' => 'css',
-        'path' => str_replace(sfConfig::get('sf_web_dir'), '', $file)
+        'path' => $this->context->get('helper')->getStylesheetWebPath(dmOs::getFileWithoutExtension($file))
       );
     }
     else

@@ -23,16 +23,6 @@ textarea.markItUpEditor,
 	overflow:auto;
 }
 
-div.markItUp.active div.markItUpContainer,
-.sf_admin_form_row_inner div.markItUp.active div.markItUpContainer {
-  border-color: #00CC22;
-}
-
-div.markItUp.active textarea.markItUpEditor,
-.sf_admin_form_row_inner div.markItUp.active textarea.markItUpEditor {
-  border-color: #00CC22;
-}
-
 div.markItUpFooter {
 	width:100%;
 }

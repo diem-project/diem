@@ -2,25 +2,32 @@
 
 if (!$pager)
 {
-  echo £('h2', __('No results'));
+  echo £('h1', __('No results for "%1%"', array('%1%' => $query)));
   return;
 }
 
-//include_partial('pager', array('pager' => $pager));
+echo £('h1', __('Results %1% to %2% of %3%', array(
+  '%1%' => $pager->getFirstIndice(),
+  '%2%' => $pager->getLastIndice(),
+  '%3%' => $pager->getNbResults()
+)));
 
-echo £('h2',
-  sprintf('Results %d to %d of %d', $pager->getFirstIndice(), $pager->getLastIndice(), $pager->getNbResults())
-);
-
-echo £o("ol.search_results.clearfix start=".$pager->getFirstIndice());
+echo £o('ol.search_results.clearfix start='.$pager->getFirstIndice());
 
 foreach($pager->getResults() as $result)
 {
-  echo £("li.search_result.ml20.mb5",
-    £("span.score.mr10", round(100*$result->getScore())."%").
-    £link('app:front/'.$result->getPage()->slug)
-    ->text(£('strong', $result->getPage()->name).£('span.ml10', $result->getPage()->description))
+  echo £('li.search_result.ml20.mb5',
+  
+    £('span.score.mr10', round(100*$result->getScore()).'%').
+    
+    £link($result->getPage())
+    ->text(
+      £('strong', $result->getPage()->name).
+      ($result->getPage()->description
+      ? £('span.ml10', $result->getPage()->description)
+      : '')
+    )
   );
 }
 
-echo £c("ol");
+echo £c('ol');

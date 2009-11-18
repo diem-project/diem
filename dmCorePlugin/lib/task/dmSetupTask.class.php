@@ -60,6 +60,8 @@ EOF;
     $this->runTask('dm:data');
 
     $this->runTask('dm:publish-assets');
+
+    $this->runTask('dm:clear-cache');
     
     $this->reloadAutoload();
 
@@ -117,7 +119,8 @@ EOF;
     {
       $this->getFilesystem()->remove(dmOs::join(sfConfig::get('dm_data_dir'), 'lock'));
       
-      $this->logBlock('Your project is now ready for web access. See you on admin_dev.php. Your login is admin and your password is the database password, or "admin" if the database has no password.', 'INFO_LARGE');
+      $this->logBlock('Your project is now ready for web access. See you on admin_dev.php.', 'INFO_LARGE');
+      $this->logBlock('Your login is admin and your password is the database password, or "admin" if the database has no password.', 'INFO_LARGE');
     }
   }
   

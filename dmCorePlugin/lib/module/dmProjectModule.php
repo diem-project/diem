@@ -187,7 +187,7 @@ class dmProjectModule extends dmModule
 
   public function hasListPage()
   {
-    return !$this->hasParent() && $this->hasModel();
+    return !$this->hasParent() && $this->hasModel() && $this->hasPage();
   }
 
   public function getChildren()

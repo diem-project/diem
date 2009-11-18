@@ -119,6 +119,7 @@ abstract class dmFileLog extends dmLog
     
     $filter = $options['filter'];
     
+    $strlenFunction = function_exists('mb_strlen') ? 'mb_strlen' : 'strlen';
     
     for($filePosition = $fileSize - $bufferSize; $filePosition >= 0; $filePosition -= $bufferSize)
     {
@@ -132,7 +133,7 @@ abstract class dmFileLog extends dmLog
       // first line is corrupted. remove it from encodedLine and decrement filePosition to catch it next time
       if (!is_array($this->decode($encodedLines[0])))
       {
-        $filePosition += mb_strlen($encodedLines[0]);
+        $filePosition += $strlenFunction($encodedLines[0]);
         unset($encodedLines[0]);
       }
       

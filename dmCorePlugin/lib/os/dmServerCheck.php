@@ -30,7 +30,7 @@ class dmServerCheck
     new dmServerCheckUnit('register globals', ini_get('register_globals'), false),
     new dmServerCheckUnit('session auto_start', ini_get('session.auto_start'), false),
     new dmServerCheckUnit('mb_strlen()', function_exists('mb_strlen'), true),
-    new dmServerCheckUnit('utf8_decode()', function_exists('utf8_decode'), true),
+    new dmServerCheckUnit('utf8_decode()', function_exists('utf8_decode'), true)
     ),
        'symfony' => array(
     new dmServerCheckUnit('version', SYMFONY_VERSION, '1.3.0-DEV', self::ERROR)

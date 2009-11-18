@@ -106,7 +106,7 @@ div.control span.unselect_all {
 .sf_admin_form div.sf_admin_form_row_inner textarea {
   width: 76%;
 }
-.sf_admin_form div.sf_admin_form_row_inner textarea.markdown_editor {
+.sf_admin_form div.sf_admin_form_row_inner textarea.dm_markdown {
 	width: 98.5%;
 }
 

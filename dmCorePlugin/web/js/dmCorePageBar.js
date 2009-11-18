@@ -31,8 +31,9 @@
       {
         return;
       }
-      pageBar.element.addClass('loaded');
-      pageBar.element.block();
+			
+      pageBar.element.addClass('loaded').block();
+			
       $.ajax({
 				dataType: 'json',
         url: $.dm.ctrl.getHref('+/dmInterface/loadPageTree'),
@@ -44,11 +45,17 @@
           pageBar.element.unblock();
           setTimeout(function()
           {
+            pageBar.loaded();
             $('#dm_page_tree').show();
-          }, 10);
+          }, 50);
         }
       });
     },
+		
+		loaded: function()
+		{
+			
+		},
     
     open: function()
     {

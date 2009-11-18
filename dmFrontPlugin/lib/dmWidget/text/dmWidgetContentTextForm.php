@@ -18,6 +18,13 @@ class dmWidgetContentTextForm extends dmWidgetContentMediaForm
     
     $this->widgetSchema['mediaLink'] = new sfWidgetFormInputText();
     $this->validatorSchema['mediaLink'] = new sfValidatorString(array('required' => false));
+    
+    $this->widgetSchema['titlePosition'] = new sfWidgetFormChoice(array(
+      'choices' => array('outside' => 'Outside', 'inside' => 'Inside')
+    ));
+    $this->validatorSchema['titlePosition'] = new sfValidatorChoice(array(
+      'choices' => array('outside', 'inside')
+    ));
   }
   
   protected function renderContent($attributes)
