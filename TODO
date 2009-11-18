@@ -6,9 +6,9 @@
 
 * [DONE] ensure cross-apps links consistency
 
-* [LATER] allow ajax admin list filters
+* allow ajax admin list filters
 
-* [LATER] admin list filters must accept i18n fields
+* admin list filters must accept i18n fields
 
 * [DONE] admin list sorters must accept i18n fields
 
@@ -50,7 +50,7 @@
 
 * [DONE] fix first delete link in admin record edit page : javascript confirmation fails
 
-* automatically add accesskeys to front home links
+* [DONE] automatically add accesskeys to front home links
 
 * [DONE] study http://www.symfony-project.org/plugins/mgI18nPlugin
 
@@ -82,11 +82,11 @@
 
 * [DONE] do NOT autoload Zend components
 
-* add the search widget
+* [DONE] add the search widget
 
 * [DONE] use Zend Code Generator to create/update front modules
 
-* add the text widget
+* [DONE] add the text widget
 
 * [DONE] front edit : dynamically load widget forms js & css ( tabs, markdown... ) for performance reasons
 
@@ -228,7 +228,7 @@
 
 * [DONE] remove deprecated DmAdminHelper
 
-* front interface performance : try to load more javascripts on the fly ( like markitup )
+* [DONE] front interface performance : try to load more javascripts on the fly ( like markitup )
 
 * [DONE] fix admin generator list foreign table sorting when join alias is not relation alias, or doesn't exist
 
@@ -236,9 +236,9 @@
 
 * [DONE] desactivate action log on cli env
 
-* fix duplicated cli logs on tasks like dm:setup
+* [DONE] fix duplicated cli logs on tasks like dm:setup
 
-* provide http://colorpowered.com/colorbox/ by default
+* [REJECTED] provide http://colorpowered.com/colorbox/ by default
 
 * [DONE] remove deprecated dmEventConnector
 
@@ -248,7 +248,7 @@
 
 * [DONE] deprecate model DmMetaWrap and replace it by dmConfig
 
-* fix broken admin user creation because doctrine record save fail on one-to-one relation.
+* [DONE] fix broken admin user creation because doctrine record save fail on one-to-one relation.
 
 * add constraints to a record media relation to specify if media must have a certain type ( image, video... )
 
@@ -262,7 +262,7 @@
 
 * [DONE] merge dmContext and sfContext.
 
-* fix mvc break in dmDoctrinePager
+* [DONE] fix mvc break in dmDoctrinePager
 
 * [DONE] make dmModuleManager non-static
 

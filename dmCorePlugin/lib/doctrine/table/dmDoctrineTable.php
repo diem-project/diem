@@ -341,48 +341,10 @@ abstract class dmDoctrineTable extends Doctrine_Table
     );
   }
 
-  public function getDefaultQuery()
-  {
-    $query = $this->createQuery('dm_query');
-
-    if ($sortColumnName = $this->getSortColumnName())
-    {
-      $query->addOrderBy('dm_query.'.$sortColumnName);
-    }
-    
-    return $query;
-  }
-
-  public function getSortColumnName()
-  {
-    return $this->getDefaultSortColumnName();
-  }
 
   public function isMarkdownColumn($columnName)
   {
     return strpos(dmArray::get($this->getColumnDefinition($columnName), 'extra', ''), 'markdown') !== false;
-  }
-  
-  /*
-   * Please override getSortColumnName instead
-   */
-  protected final function getDefaultSortColumnName()
-  {
-    if ($this->hasCache('dm_default_sort_column_name'))
-    {
-      return $this->getCache('dm_default_sort_column_name');
-    }
-    
-    if ($this->isSortable())
-    {
-      #FIXME try to return SortableTemplate columnName instead of default position
-      $columnName = 'position';
-    }
-    else
-    {
-      $columnName = $this->getIdentifierColumnName();
-    }
-    return $this->setCache('dm_default_sort_column_name', $columnName);
   }
 
   /*
