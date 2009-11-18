@@ -71,6 +71,19 @@ class dmTableRelationHolder
 
     return $this->foreignRelations;
   }
+  
+  public function getForeignByClass($class)
+  {
+    foreach($this->getForeigns() as $foreign)
+    {
+      if ($foreign->getClass() === $class)
+      {
+        return $foreign;
+      }
+    }
+
+    return null;
+  }
 
   public function getLocals()
   {
