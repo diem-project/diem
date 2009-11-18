@@ -1,4 +1,10 @@
 <?php
+/*
+ * Variables available :
+ * - $query (string)        the searched query
+ * - $form  (mySearchForm)  the search form
+ * - $pager (dmSearchPager) the search pager
+ */
 
 if (!$pager)
 {
@@ -18,7 +24,7 @@ foreach($pager->getResults() as $result)
 {
   echo £('li.search_result.ml20.mb5',
   
-    £('span.score.mr10', round(100*$result->getScore()).'%').
+    £('span.score.mr10', ceil(100*$result->getScore()).'%').
     
     £link($result->getPage())
     ->text(

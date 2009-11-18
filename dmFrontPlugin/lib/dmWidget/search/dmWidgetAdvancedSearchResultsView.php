@@ -9,11 +9,11 @@ class dmWidgetAdvancedSearchResultsView extends dmWidgetPluginView
   {
     $vars = parent::filterViewVars($vars);
     
-    $form = new mySearchForm;
+    $vars['form'] = new mySearchForm;
     
-    $form->bindRequest($this->context->getRequest());
+    $vars['form']->bindRequest($this->context->getRequest());
     
-    $vars['query'] = $form->getValue('query');
+    $vars['query'] = $vars['form']->getValue('query');
     
     $vars['pager'] = $this->getResultsPager($vars);
     

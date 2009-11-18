@@ -23,7 +23,7 @@ class dmAdminHtmlFilter extends dmHtmlFilter
         );
         if (isset($matches[1]))
         {
-          $title = 'Admin : '.strip_tags($matches[1]).' - '.dmConfig::get('site_name').' | Diem';
+          $title = 'Admin : '.strip_tags($matches[1]).' - '.dmConfig::get('site_name');
           $html = preg_replace('|<title>[^<]*</title>|iuUx', '<title>'.$title.'</title>', $html);
         }
       }

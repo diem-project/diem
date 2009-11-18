@@ -70,9 +70,39 @@ class dmCoreLayoutHelper
   }
   
   
+  protected function getMetas()
+  {
+    return array(
+      'title'       => $this->serviceContainer->getService('response')->getTitle(),
+      'language'    => $this->serviceContainer->getParameter('user.culture'),
+    );
+  }
+  
   public function renderMetas()
   {
-    return sprintf('<title>%s</title>', $this->serviceContainer->getService('response')->getTitle());
+    /*
+     * Allow listeners of dm.response.filter_metas event
+     * to filter and modify the metas list
+     */
+    $metas = $this->dispatcher->filter(
+      new sfEvent($this, 'dm.response.filter_metas'),
+      $this->getMetas()
+    )->getReturnValue();
+    
+    $metasHtml = '';
+    foreach( $metas as $key => $value)
+    {
+      if ('title' === $key)
+      {
+        $metasHtml = "\n".'<title>'.$value.'</title>';
+      }
+      else
+      {
+        $metasHtml .= "\n".'<meta name="'.$key.'" content="'.$value.'" />';
+      }
+    }
+
+    return $metasHtml;
   }
   
   public function renderHttpMetas()

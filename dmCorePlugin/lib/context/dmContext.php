@@ -104,8 +104,7 @@ class dmContext extends sfContext
    */
   public function loadFactories()
   {
-    // create a new module_manager
-    $this->factories['module_manager'] = include($this->getConfigCache()->checkConfig('config/dm/modules.yml'));
+    $this->reloadModuleManager();
 
     parent::loadFactories();
 
@@ -117,6 +116,12 @@ class dmContext extends sfContext
     );
     
     $this->factories['i18n']->setUseAdminCatalogue($this->getUser()->can('admin'));
+  }
+  
+  public function reloadModuleManager()
+  {
+    // create a new module_manager
+    $this->factories['module_manager'] = include($this->getConfigCache()->checkConfig('config/dm/modules.yml'));
   }
 
   /*

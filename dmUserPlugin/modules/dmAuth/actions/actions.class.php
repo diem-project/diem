@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-require_once(dirname(__FILE__).'/../lib/BasedmAuthActions.class.php');
+require_once(dm::getDir().'/dmUserPlugin/modules/dmAuth/lib/BasedmAuthActions.class.php');
 
 /**
  *

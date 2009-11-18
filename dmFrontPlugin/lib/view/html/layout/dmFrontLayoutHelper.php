@@ -71,7 +71,8 @@ class dmFrontLayoutHelper extends dmCoreLayoutHelper
   {
     $metas = array(
       'description'  => $this->page->get('description'),
-      'language'     => $this->serviceContainer->getParameter('user.culture')
+      'language'     => $this->serviceContainer->getParameter('user.culture'),
+      'title'        => dmConfig::get('title_prefix').$this->page->get('title').dmConfig::get('title_suffix')
     );
     
     if (sfConfig::get('dm_seo_use_keywords') && $keywords = $this->page->get('keywords'))
@@ -91,19 +92,6 @@ class dmFrontLayoutHelper extends dmCoreLayoutHelper
     
     return $metas;
   }
-  
-  public function renderMetas()
-  {
-    $metaHtml = "\n".'<title>'.dmConfig::get('title_prefix').$this->page->get('title').dmConfig::get('title_suffix').'</title>';
-    
-    foreach($this->getMetas() as $key => $value)
-    {
-      $metaHtml .= "\n".'<meta name="'.$key.'" content="'.$value.'" />';
-    }
-
-    return $metaHtml;
-  }
-  
   
   public function renderEditBars()
   {

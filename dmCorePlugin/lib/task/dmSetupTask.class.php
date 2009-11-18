@@ -64,6 +64,8 @@ EOF;
     $this->runTask('dm:clear-cache');
     
     $this->reloadAutoload();
+    
+    $this->getContext()->reloadModuleManager();
 
     $this->runTask('dmAdmin:generate');
     

@@ -41,16 +41,16 @@ class Doctrine_Template_Sortable extends Doctrine_Template
       $this->_table->setOption('orderBy', 'position ASC');
     }
     
-    foreach($this->_table->getRelationHolder()->getLocals() as $alias => $relation)
-    {
-      if ($foreignRelation = $relation->getTable()->getRelationHolder()->getForeignByClass($this->_table->getComponentName()))
-      {
-        if (!$foreignRelation->offsetGet('orderBy'))
-        {
-          $foreignRelation->offsetSet('orderBy', 'position ASC');
-        }
-      }
-    }
+//    foreach($this->_table->getRelationHolder()->getLocals() as $alias => $relation)
+//    {
+//      if ($foreignRelation = $relation->getTable()->getRelationHolder()->getForeignByClass($this->_table->getComponentName()))
+//      {
+//        if (!$foreignRelation->offsetGet('orderBy'))
+//        {
+//          $foreignRelation->offsetSet('orderBy', 'position ASC');
+//        }
+//      }
+//    }
 
     $this->hasColumn('position', 'integer');
     $this->addListener(new Doctrine_Template_Listener_Sortable($this->_options));

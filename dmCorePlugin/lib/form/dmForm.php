@@ -66,6 +66,7 @@ class dmForm extends sfFormSymfony
     $this->widgetSchema[$fieldName] = new sfWidgetFormInputHidden;
     return $this;
   }
+  
   public function changeToEmail($fieldName)
   {
     $this->validatorSchema[$fieldName] = new sfValidatorEmail($this->validatorSchema[$fieldName]->getOptions());
@@ -81,11 +82,11 @@ class dmForm extends sfFormSymfony
   public function render($attributes = array())
   {
     $attributes = dmString::toArray($attributes, true);
+    
     return
     $this->open($attributes).
     '<ul class="dm_form_elements">'.
     $this->getFormFieldSchema()->render($attributes).
-//    $this->renderHiddenFields().
     sprintf('<li class="dm_form_element"><label>%s</label>%s</li>',
     $this->__('Validate'),
     $this->renderSubmitTag($this->__('Validate'))
@@ -138,7 +139,8 @@ class dmForm extends sfFormSymfony
 
     $defaults = array(
       'class' => dmArray::get($opt, 'class'), //dmArray::toHtmlCssClasses(array('validate_me', dmArray::get($opt, 'class'))),
-      'id' => $this->getKey()
+      'id' => $this->getKey(),
+      'anchor' => false
     );
 
     if (isset($opt['class']))
@@ -157,10 +159,10 @@ class dmForm extends sfFormSymfony
       $action = self::$serviceContainer->getService('request')->getUri();
     }
 
-//    if (strpos($action, '#') === false)
-//    {
-//      $action .= '#'.$this->getKey();
-//    }
+    if ($opt['anchor'] && strpos($action, '#') === false)
+    {
+      $action .= '#'.(is_string($opt['anchor']) ? $opt['anchor'] : $this->getKey());
+    }
     
     if (!isset($opt['method']))
     {
@@ -169,14 +171,9 @@ class dmForm extends sfFormSymfony
 
     if (isset($opt['action'])) unset($opt['action']);
     
-    return $this->renderFormTag($action, $opt).$this->renderCsrfProtection();
+    return $this->renderFormTag($action, $opt).$this->renderHiddenFields();
   }
   
-  public function renderCsrfProtection()
-  {
-    return $this->isCSRFProtected() ? $this[self::getCSRFFieldName()]->field() : '';
-  }
-
   public function close()
   {
     return '</form>';
