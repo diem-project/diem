@@ -13,7 +13,8 @@ abstract class dmCoreFunctionalCoverageTest
     'env'    => 'test',
     'debug'  => false,
     'login'  => false,
-    'maxRedirections' => 5
+    'maxRedirections' => 5,
+    'validate' => true
   );
 
   public function __construct(array $options)
@@ -86,6 +87,10 @@ abstract class dmCoreFunctionalCoverageTest
 
   protected function login()
   {
+//    $this->browser->with('user')->begin()
+//    ->signin(dmDb::table('DmUser')->findOneByUsername($this->options['username']))
+//    ->end();
+//    return;
     if (empty($this->options['username']) || empty($this->options['password']))
     {
       throw new dmException('You must provide a username and a password to login');
@@ -108,7 +113,7 @@ abstract class dmCoreFunctionalCoverageTest
     ->get('/+/dmAuth/signin')
     ->setField('signin[username]', $this->options['username'])
     ->setField('signin[password]', $this->options['password'])
-    ->click(dm::getI18n()->__('Login'))
+    ->click('input[type="submit"]')
     ->with('response')->begin()->isRedirected()->end()
     ->followRedirect();
     
@@ -149,6 +154,11 @@ abstract class dmCoreFunctionalCoverageTest
     $this->browser->with('response')->begin()
     ->isStatusCode($expectedStatusCode)
     ->end();
+    
+    if ($this->options['validate'])
+    {
+      $this->browser->with('response')->begin()->isValid()->end();
+    }
   }
 
   protected function startCounter($url)

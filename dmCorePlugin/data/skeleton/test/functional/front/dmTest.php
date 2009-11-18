@@ -7,7 +7,8 @@ $config = array(
   'debug'     => true,
   'login'     => false,
   'username'  => 'admin',
-  'password'  => ##DIEM_PROJECT_PASSWORD##
+  'password'  => ##DIEM_PROJECT_PASSWORD##,
+  'validate'  => true
 );
 
 $test = new dmFrontFunctionalCoverageTest($config);

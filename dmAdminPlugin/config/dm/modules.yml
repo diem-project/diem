@@ -50,9 +50,9 @@ Seo:
     dmAutoSeo:
       name:         Automatic Page
       credentials:  automatic_metas
-    dmSeoValidation:
-      name:         Seo Validation
-      credentials:  metas_validation
+#    dmSeoValidation:
+#      name:         Seo Validation
+#      credentials:  metas_validation
   Redirections:
     dmRedirect:
       name:         Url Redirections

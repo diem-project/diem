@@ -41,7 +41,21 @@ class BasedmAuthActions extends dmBaseActions
         // always redirect to a URL set in app.yml
         // or to the referer
         // or to the homepage
-        $signinUrl = sfConfig::get('dm_security_success_signin_url', $user->getReferer($request->getReferer()));
+        if ($this->getUser()->can('admin'))
+        {
+          $signinUrl = sfConfig::get('dm_security_success_signin_url', $user->getReferer($request->getReferer()));
+        }
+        else
+        {
+          try
+          {
+            $signinUrl = $this->context->get('script_name_resolver')->get('front');
+          }
+          catch(dmException $e)
+          {
+            // user can't go in admin, and front script_name can't be found.
+          }
+        }
 
         return $this->redirect('' != $signinUrl ? $signinUrl : '@homepage');
       }

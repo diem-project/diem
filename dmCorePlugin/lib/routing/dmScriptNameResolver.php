@@ -35,23 +35,29 @@ class dmScriptNameResolver
   
   protected function guessBootScriptFromWebDir($app, $env)
   {
-    if(file_exists(dmOs::join(sfConfig::get('sf_web_dir'), $app.'_'.$env.'.php')))
+    $script = false;
+    $webDir = sfConfig::get('sf_web_dir');
+    
+    if(file_exists(dmOs::join($webDir, $app.'_'.$env.'.php')))
     {
       $script = $app.'_'.$env.'.php';
     }
-    elseif(file_exists(dmOs::join(sfConfig::get('sf_web_dir'), $app.'.php')))
+    elseif('front' === $app)
+    {
+      if (file_exists(dmOs::join($webDir, 'index.php')))
+      {
+        $script = 'index.php';
+      }
+      if ('prod' !== $env && file_exists(dmOs::join($webDir, $env.'.php')))
+      {
+        $script = $env.'.php';
+      }
+    }
+    elseif(file_exists(dmOs::join($webDir, $app.'.php')))
     {
       $script = $app.'.php';
     }
-    elseif($app == 'front')
-    {
-      $script = $env == 'prod' ? 'index.php' : $env.'.php';
-    }
-    else
-    {
-      $script = false;
-    }
-    
+
     return $script;
   }
 }

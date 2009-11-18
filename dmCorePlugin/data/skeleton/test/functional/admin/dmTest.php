@@ -7,7 +7,8 @@ $config = array(
   'debug'     => true,
   'login'     => true,
   'username'  => 'admin',
-  'password'  => ##DIEM_PROJECT_PASSWORD##
+  'password'  => ##DIEM_PROJECT_PASSWORD##,
+  'validate'  => true
 );
 
 $test = new dmAdminFunctionalCoverageTest($config);

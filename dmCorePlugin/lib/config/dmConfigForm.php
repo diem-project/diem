@@ -29,12 +29,11 @@ class dmConfigForm extends dmForm
     
     $this->widgetSchema[$settingName] = $this->getSettingWidget($setting);
     
-    $this->widgetSchema[$settingName]->setDefault($setting->get('value'));
+//    $this->widgetSchema[$settingName]->setDefault($setting->get('value'));
     
     $this->widgetSchema->setHelp($settingName, htmlentities($setting->get('description'), ENT_QUOTES, 'UTF-8'));
     
-    $this->validatorSchema[$settingName] = $this->getSettingValidator($setting);
-    $this->validatorSchema[$settingName]->setOption('required', false);
+    $this->validatorSchema[$settingName] = $this->getSettingValidator($setting)->setOption('required', false);
   }
   
   public function removeSetting($settingName)
@@ -59,8 +58,11 @@ class dmConfigForm extends dmForm
   //Type Textarea
   protected function getTextSettingWidget(DmSetting $setting)
   {
-    return new sfWidgetFormInputText(array(), $setting->getParamsArray());
+    $widget = new sfWidgetFormInputText(array(), $setting->getParamsArray());
+    
+    return $widget->setDefault($setting->get('value'));
   }
+  
   protected function getTextSettingValidator(DmSetting $setting)
   {
     return new sfValidatorString();
@@ -69,8 +71,11 @@ class dmConfigForm extends dmForm
   //Type Textarea
   protected function getTextareaSettingWidget(DmSetting $setting)
   {
-    return new sfWidgetFormTextarea(array(), $setting->getParamsArray());
+    $widget = new sfWidgetFormTextarea(array(), $setting->getParamsArray());
+    
+    return $widget->setDefault($setting->get('value'));
   }
+  
   protected function getTextareaSettingValidator(DmSetting $setting)
   {
     return new sfValidatorString();
@@ -79,8 +84,11 @@ class dmConfigForm extends dmForm
   // Type Number
   protected function getNumberSettingWidget(DmSetting $setting)
   {
-    return new sfWidgetFormInputText(array(), $setting->getParamsArray());
+    $widget = new sfWidgetFormInputText(array(), $setting->getParamsArray());
+    
+    return $widget->setDefault($setting->get('value'));
   }
+  
   protected function getNumberSettingValidator(DmSetting $setting)
   {
     return new sfValidatorNumber();
@@ -89,8 +97,11 @@ class dmConfigForm extends dmForm
   // Type Boolean
   protected function getBooleanSettingWidget(DmSetting $setting)
   {
-    return new sfWidgetFormInputCheckbox(array(), $setting->getParamsArray());
+    $widget = new sfWidgetFormInputCheckbox(array(), $setting->getParamsArray());
+    
+    return $widget->setDefault(1 == $setting->get('value') ? true : false);
   }
+  
   protected function getBooleanSettingValidator(DmSetting $setting)
   {
     return new sfValidatorBoolean();
@@ -99,8 +110,11 @@ class dmConfigForm extends dmForm
   //Type Select List
   protected function getSelectSettingWidget(DmSetting $setting)
   {
-    return new sfWidgetFormSelect(array('choices' => $setting->getParamsArray()));
+    $widget = new sfWidgetFormSelect(array('choices' => $setting->getParamsArray()));
+    
+    return $widget->setDefault($setting->get('value'));
   }
+  
   protected function getSelectSettingValidator(DmSetting $setting)
   {
     return new sfValidatorChoice(array('choices' => array_keys($setting->getParamsArray())));
