@@ -152,7 +152,7 @@ class dmForm extends sfFormSymfony
 
     if ($action = dmArray::get($opt, 'action'))
     {
-      $action = self::$serviceContainer->getLinkTag($action)->getHref();
+      $action = self::$serviceContainer->getService('helper')->£link($action)->getHref();
     }
     else
     {

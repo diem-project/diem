@@ -4,6 +4,15 @@ require_once(dirname(__FILE__).'/vendor/markdown.php');
 
 class dmMarkdown extends MarkdownExtra_Parser
 {
+  protected
+  $helper;
+  
+  public function __construct(dmHelper $helper)
+  {
+    $this->helper = $helper;
+    
+    parent::MarkdownExtra_Parser();
+  }
   
   public function toText($text)
   {
@@ -35,20 +44,20 @@ class dmMarkdown extends MarkdownExtra_Parser
   {
     return preg_replace_callback(
       '#\[([^\]]*)\]\(page\:(\d+)\)#u',
-      get_class($this).'::replaceInternalLinkCallback',
+      array($this, 'replaceInternalLinkCallback'),
       $text
     );
   }
   
-  private static function replaceInternalLinkCallback(array $matches)
+  protected function replaceInternalLinkCallback(array $matches)
   {
     if ($page = dmDb::table('DmPage')->findOneByIdWithI18n($matches[2]))
     {
-      $link = dmLinkTag::build($page);
+      $link = $this->helper->£link($page);
     }
     else
     {
-      $link = dmLinkTag::build('#');
+      $link = $this->helper->£link('#');
     }
     
     if ($matches[1])

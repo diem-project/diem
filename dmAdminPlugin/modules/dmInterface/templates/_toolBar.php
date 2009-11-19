@@ -35,16 +35,6 @@ echo £o('div#dm_tool_bar.clearfix.'.sfConfig::get('dm_toolBar_flavour', 'blue')
     ->text(sprintf('<span style="height: %dpx;"></span>', round($apcLoad['percent'] * 0.21))); 
   }
 
-  if (sfConfig::get('dm_html_validate', true) && $sf_user->can('html_validate_admin'))
-  {
-    echo '<div id="dm_html_validate" class="widget16">validation...</div>';
-  }
-
-  if ($sf_request->useTidy() && $sf_user->can('tidy_output'))
-  {
-    echo '__DM_TIDY_OUTPUT__';
-  }
-
   echo £link('app:front')->textTitle(__('Go to site'))->set('.widget16.ml10');
   
   if (sfConfig::get('sf_web_debug'))

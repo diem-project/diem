@@ -10,11 +10,6 @@ class dmTableTag extends dmHtmlTag
   protected static
   $toggler;
   
-  public static function build()
-  {
-    return self::$serviceContainer->get('table_tag');
-  }
-  
   public function __construct()
   {
     $this->initialize();

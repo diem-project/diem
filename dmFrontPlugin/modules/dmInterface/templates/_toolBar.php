@@ -25,16 +25,6 @@ echo £o('div#dm_tool_bar.dm.clearfix.'.sfConfig::get('dm_toolBar_flavour', 'blu
   
   echo £('div.widget16.mt3', $themeSelect->render('dm_select_theme', $sf_user->getTheme()->getKey()));
 
-  if (sfConfig::get('dm_html_validate', true) && $sf_user->can('html_validate_front'))
-  {
-    echo '<div id="dm_html_validate" class="widget16">'.__('Validation').' ...</div>';
-  }
-
-  if ($sf_request->useTidy() && $sf_user->can('tidy_output'))
-  {
-    echo '__DM_TIDY_OUTPUT__';
-  }
-  
   if ($sf_user->can('page_edit'))
   {
     echo £link('+/dmPage/edit')->set('a.page_edit_form.widget24.s24block.s24_page_edit')->textTitle(__('Edit page'));

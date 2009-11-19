@@ -96,7 +96,7 @@ class dmMediaActions extends dmAdminBaseActions
   
   public function listenToBreadCrumbFilterLinksEvent(sfEvent $event, array $links)
   {
-    $links[] = dmHelper::£('h1', $this->context->getI18n()->__('Gallery'));
+    $links[] = $this->context->getHelper()->£('h1', $this->context->getI18n()->__('Gallery'));
     
     return $links;
   }

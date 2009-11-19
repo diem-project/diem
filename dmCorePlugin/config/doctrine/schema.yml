@@ -141,18 +141,6 @@ DmMedia:
       fields:               [ dm_media_folder_id, file ]
       type:                 unique
 
-# ACCESSIBILITY SCHEMA
-
-DmLang:
-  columns:
-    name:                   { type: string(255), unique: true, notnull: true }
-    lang:                   { type: string(3), notnull: true, default: "en" }
-
-DmAbbr:
-  columns:
-    name:                   { type: string(255), unique: true, notnull: true }
-    title:                  { type: string(60000), notnull: true }
-
 # LOG SCHEMA
 
 DmError:
@@ -222,29 +210,25 @@ DmSetting:
 
 # TRANSLATION SCHEMA
 
-Catalogue:
+DmCatalogue:
   options:
     symfony:
-      filter: false
+      form:                 false
+      filter:               false
   columns:
-    cat_id:                 { type: integer, notnull: true, autoincrement: true, primary: true }
-    name:                   { type: string(63), notnull: true, default: "" }
-    source_lang:            { type: string(63), notnull: true, default: "" }
-    target_lang:            { type: string(63), notnull: true, default: "" }
-    date_created:           { type: integer, notnull: true, default: 0, unsigned: true }
-    date_modified:          { type: integer, notnull: true, default: 0, unsigned: true }
+    name:                   { type: string(255), notnull: true }
+    source_lang:            { type: string(15), notnull: true }
+    target_lang:            { type: string(15), notnull: true }
     
-TransUnit:
+DmTransUnit:
+  actAs:                    [ Timestampable ]
   columns:
-    msg_id:                 { type: integer, notnull: true, autoincrement: true, primary: true }
-    cat_id:                 { type: integer, notnull: true, default: 1 }
+    dm_catalogue_id:        { type: integer, notnull: true }
     source:                 { type: string(60000), notnull: true }
     target:                 { type: string(60000), notnull: true }
-    meta:                   { type: string(63) }
+    meta:                   { type: string(255) }
   relations:
-    Catalogue:
-      local:                cat_id
-      foreign:              cat_id
+    DmCatalogue:
       onDelete:             CASCADE
       foreignAlias:         Units
 

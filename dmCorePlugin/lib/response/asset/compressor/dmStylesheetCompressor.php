@@ -4,7 +4,7 @@ class dmStylesheetCompressor extends dmAssetCompressor
 {
   public function connect()
   {
-    $this->dispatcher->connect('dm.response.filter_stylesheets', array($this, 'listenFilterAssets'));
+    $this->dispatcher->connect('dm.layout.filter_stylesheets', array($this, 'listenToFilterAssetsEvent'));
   }
   
   protected function getType()

@@ -95,6 +95,8 @@ parameters:
     dir:                      'data/dm/backup/filesystem'
     
   helper.class:               dmHelper
+  helper.options:
+    use_beaf:                 false
  
 services:
 
@@ -126,6 +128,7 @@ services:
   markdown:
     class:                    %markdown.class%
     shared:                   true
+    arguments:                [ @helper ]
 
   script_name_resolver:
     class:                    %script_name_resolver.class%
@@ -239,7 +242,7 @@ services:
   helper:
     class:                    %helper.class%
     shared:                   true
-    arguments:                [ @dispatcher, @context ]
+    arguments:                [ @dispatcher, @context, %helper.options% ]
       
   cache_manager:
     class:                    %cache_manager.class%

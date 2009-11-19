@@ -37,7 +37,7 @@ abstract class dmAssetCompressor extends dmConfigurable
     );
   }
   
-  public function listenFilterAssets(sfEvent $event, array $assets)
+  public function listenToFilterAssetsEvent(sfEvent $event, array $assets)
   {
     if ($this->isEnabled())
     {

@@ -23,7 +23,7 @@ abstract class dmWebResponse extends sfWebResponse
     
     $this->dispatcher->connect('user.change_theme', array($this, 'listenToChangeThemeEvent'));
     
-    $this->dispatcher->connect('dm.response.filter_javascripts', array($this, 'listenFilterJavascripts'));
+    $this->dispatcher->connect('dm.layout.filter_javascripts', array($this, 'listenToFilterJavascriptsEvent'));
   }
   
   public function setServiceContainer(dmBaseServiceContainer $serviceContainer)
@@ -39,7 +39,7 @@ abstract class dmWebResponse extends sfWebResponse
     $this->options['with_google_maps'] = (bool) $val;
   }
   
-  public function listenFilterJavascripts(sfEvent $event, array $assets)
+  public function listenToFilterJavascriptsEvent(sfEvent $event, array $assets)
   {
     if ($this->options['with_google_maps'])
     {

@@ -119,11 +119,11 @@ class dmMediaLibraryActions extends dmAdminBaseActions
     {
       foreach($ancestors as $parent)
       {
-        $links[] = dmLinkTag::build($this->getRouting()->getMediaUrl($parent))->text($parent->get('name'));
+        $links[] = $this->context->getHelper()->£link($this->getRouting()->getMediaUrl($parent))->text($parent->get('name'));
       }
     }
     
-    $links[] = dmHelper::£('h1', $this->folder->get('name'));
+    $links[] = $this->context->getHelper()->£('h1', $this->folder->get('name'));
     
     return $links;
   }

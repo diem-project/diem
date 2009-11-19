@@ -12,7 +12,7 @@ class dmLogComponents extends dmAdminBaseComponents
     $logViewClass = get_class($this->log).'ViewLittle';
     require_once(dmOs::join(sfConfig::get('dm_admin_dir'), 'modules/dmLog/lib/'.$logViewClass.'.php'));
     
-    $this->logView = new $logViewClass($this->log, $this->context->getI18n(), $this->getUser());
+    $this->logView = new $logViewClass($this->log, $this->context->getI18n(), $this->getUser(), $this->context->getHelper());
   }
   
 }

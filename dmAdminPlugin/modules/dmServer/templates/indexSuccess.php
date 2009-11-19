@@ -8,4 +8,4 @@
 
 echo £('iframe.mt10 src='.$sf_request->getAbsoluteUrlRoot().'/dm_check.php');
 
-echo £('iframe.mt20 src='.dmAdminLinkTag::build('dmServer/phpinfo')->getHref());
+echo £('iframe.mt20 src='.£link('dmServer/phpinfo')->getHref());

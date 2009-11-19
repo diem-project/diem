@@ -161,44 +161,6 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
     $this->setParameter('controller.action', $event['action']);
   }
   
-  /*
-   * @return dmMediaResource
-   */
-  public function getMediaResource($source)
-  {
-    $resource = $this->getService('media_resource');
-    $resource->initialize($source);
-    
-    return $resource;
-  }
-  
-  /*
-   * @return dmMediaTag
-   */
-  public function getMediaTag($resource)
-  {
-    if (!$resource instanceof dmMediaResource)
-    {
-      $resource = $this->getMediaResource($resource);
-    }
-    
-    $this->setParameter('media_tag.class', $this->getParameter('media_tag_'.$resource->getMime().'.class'));
-    $this->setParameter('media_tag.source', $resource);
-    
-    return $this->getService('media_tag');
-  }
-  
-  /*
-   * @return dmLinkResource
-   */
-  public function getLinkResource($source)
-  {
-    $resource = $this->getService('link_resource');
-    $resource->initialize($source);
-    
-    return $resource;
-  }
-  
   
   /*
    * Compatibility with sfContext

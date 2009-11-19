@@ -57,6 +57,6 @@ class dmLayoutActions extends autoDmLayoutActions
 
     $newLayout->save();
     
-    return $this->redirect(dmLinkTag::build($newLayout)->getHref());
+    return $this->redirect($this->context->getHelper()->£link($newLayout)->getHref());
   }
 }

@@ -4,18 +4,29 @@ class dmHelper
 {
   protected
   $dispatcher,
-  $context;
+  $context,
+  $serviceContainer,
+  $options;
   
-  public function __construct(sfEventDispatcher $dispatcher, dmContext $context)
+  public function __construct(sfEventDispatcher $dispatcher, dmContext $context, array $options = array())
   {
-    $this->dispatcher      = $dispatcher;
-    $this->context         = $context;
+    $this->dispatcher       = $dispatcher;
+    $this->context          = $context;
+    $this->serviceContainer = $context->getServiceContainer();
     
-    $this->initialize();
+    $this->initialize($options);
   }
 
-  public function initialize()
+  public function initialize(array $options)
   {
+    $this->options = array_merge($this->getDefaultOptions(), $options);
+  }
+  
+  public function getDefaultOptions()
+  {
+    return array(
+      'use_beaf' => false
+    );
   }
   
   public function renderPartial($moduleName, $actionName, $vars = array())
@@ -50,18 +61,18 @@ class dmHelper
    * a, array(), contenu
    * a#truc.tagada, contenu
    */
-  public static function £o($tagName, array $opt = array())
+  public function £o($tagName, array $opt = array())
   {
-    return self::£($tagName, $opt, false, false);
+    return $this->£($tagName, $opt, false, false);
   }
 
-  public static function £c($tagName)
+  public function £c($tagName)
   {
     if (($pos = strpos($tagName, '.')) !== false)
     {
       $classes = substr($tagName, $pos+1);
       $tagName = substr($tagName, 0, $pos);
-      if (strpos($classes, 'beafh') !== false || strpos($classes, 'beafv') !== false)
+      if ($this->options['use_beaf'] && (strpos($classes, 'beafh') !== false || strpos($classes, 'beafv') !== false))
       {
         if (in_array($tagName, array('span', 'a', 'p')))
         {
@@ -78,7 +89,7 @@ class dmHelper
     return '</'.$tagName.'>';
   }
 
-  public static function £($tagName, $opt = array(), $content = false, $openAndClose = true)
+  public function £($tagName, $opt = array(), $content = false, $openAndClose = true)
   {
     if (!($tagName = trim($tagName)))
     {
@@ -87,7 +98,7 @@ class dmHelper
 
     $tagOpt = array();
 
-    // séparation du nom du tag et des attributs dans $tagName
+    // separate tag name from attribues in $tagName
     if ($firstSpacePos = strpos($tagName, ' '))
     {
       $tagNameOpt = substr($tagName, $firstSpacePos + 1);
@@ -136,22 +147,15 @@ class dmHelper
       {
         $content = $opt;
       }
-      else // Pas de opt
+      else // No opt
       {
-        if ($tagName === 'span')
-        {
-          $content = '&nbsp;';
-        }
-        else
-        {
-          $content = null;
-        }
+        $content = null;
       }
     }
 
     $class = isset($tagOpt['class']) ? $tagOpt['class'] : array();
 
-    if (in_array('beafh', $class) || in_array('beafv', $class))
+    if ($this->options['use_beaf'] && (in_array('beafh', $class) || in_array('beafv', $class)))
     {
       $isBeaf = true;
       $tagOpt['class'][] = 'clearfix';
@@ -162,9 +166,9 @@ class dmHelper
       $isBeaf = false;
     }
 
-    if(isset($tagOpt['lang']) && sfContext::hasInstance())
+    if(isset($tagOpt['lang']))
     {
-      if($tagOpt['lang'] === sfContext::getInstance()->getServiceContainer()->getParameter('user.culture'))
+      if($tagOpt['lang'] === $this->context->getUser()->getCulture())
       {
         unset($tagOpt['lang']);
       }
@@ -181,7 +185,7 @@ class dmHelper
       $optHtml .= ' '.$key.'="'.htmlentities($val, ENT_COMPAT, 'UTF-8').'"';
     }
 
-    if ($openAndClose === true)
+    if ($openAndClose)
     {
       if ($isBeaf)
       {
@@ -205,6 +209,29 @@ class dmHelper
     }
 
     return $tag;
+  }
+  
+  public function £link($source = null)
+  {
+    $this->serviceContainer->setParameter('link_tag.source', $source);
+    
+    return $this->serviceContainer->getService('link_tag');
+  }
+  
+  public function £media($source)
+  {
+    $resource = $this->serviceContainer->getService('media_resource');
+    $resource->initialize($source);
+    
+    $this->serviceContainer->setParameter('media_tag.class', $this->serviceContainer->getParameter('media_tag_'.$resource->getMime().'.class'));
+    $this->serviceContainer->setParameter('media_tag.source', $resource);
+    
+    return $this->serviceContainer->getService('media_tag');
+  }
+  
+  public function £table()
+  {
+    return $this->serviceContainer->get('table_tag');
   }
   
   public function getStylesheetWebPath($asset)

@@ -5,7 +5,7 @@ class BasedmFrontActions extends dmFrontBaseActions
   
   public function executeToAdmin(dmWebRequest $request)
   {
-    return $this->redirect(dmFrontLinkTag::build('app:admin')->getHref());
+    return $this->redirect($this->context->getHelper()->£link('app:admin')->getHref());
   }
 
   public function executePage(dmWebRequest $request)

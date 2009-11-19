@@ -12,7 +12,7 @@ default:
     class:                  dmAdminI18n
     param:
       database:             default
-      source:               dmMySQL
+      source:               dm
       debug:                false
       cache:
         class:              dmMetaCache

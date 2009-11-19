@@ -255,7 +255,7 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
       {
         $this->config[$typeName][$spaceName] = array();
         
-        foreach($spaceConfig as $moduleKey => $moduleConfig)
+        foreach((array) $spaceConfig as $moduleKey => $moduleConfig)
         {
           $moduleKey = dmString::modulize($moduleKey);
           

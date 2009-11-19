@@ -25,6 +25,8 @@ class dmFrontFunctionalCoverageTest extends dmCoreFunctionalCoverageTest
   
   protected function getPages()
   {
-    return dmDb::table('DmPage')->findAll();
+    return dmDb::query('DmPage p')
+    ->withI18n()
+    ->fetchRecords();
   }
 }

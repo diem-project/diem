@@ -36,7 +36,7 @@ class dmChartActions extends dmAdminBaseActions
     if ($this->image)
     {
       return $this->renderText(
-        dmLinkTag::build('@dm_chart?name='.$chartKey)
+        $this->context->getHelper()->£link('@dm_chart?name='.$chartKey)
         ->text($this->image->htmlWidth('100%'))
         ->title($this->context->getI18n()->__('Expanded view'))
         ->set('.block')

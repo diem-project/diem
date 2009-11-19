@@ -12,7 +12,7 @@ echo £('h1.title', __('Apc monitor'));
 
 echo £o('div.dm_box_inner');
 
-echo £('iframe src='.dmAdminLinkTag::build('dmServer/includeApc')->getHref());
+echo £('iframe src='.£link('dmServer/includeApc')->getHref());
 
 echo £c('div');
 

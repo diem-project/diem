@@ -11,11 +11,4 @@ dm_init:
   
 cache:        ~
 
-dm_seo:
-  class:      dmAdminSeoValidationFilter
-  enabled:    false
-
-dm_html:
-  class:      dmAdminHtmlFilter
-  
 execution:    ~

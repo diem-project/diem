@@ -30,7 +30,9 @@ parameters:
   
   widget_type_manager.class:  dmWidgetTypeManager
   widget_type_manager.options:
-    config_file:              'config/dm/widget_types.yml'        
+    config_file:              'config/dm/widget_types.yml'  
+    
+  helper.class:               dmFrontHelper      
  
 services:
 
@@ -70,7 +72,7 @@ services:
   page_helper:
     class:                    %page_helper.class%
     shared:                   true
-    arguments:                [ @dispatcher, @widget_type_manager, @service_container, @i18n ]
+    arguments:                [ @dispatcher, @widget_type_manager, @service_container, @i18n, @helper ]
 
   widget_type_manager:
     class:                    %widget_type_manager.class%

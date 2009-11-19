@@ -60,17 +60,8 @@ class dmMediaTagImage extends dmMediaTag
     return $this->set('quality', (int) $v);
   }
   
-  public function overlay($image, $position = 'center')
+  public function overlay(dmMediaTagImage $image, $position = 'center')
   {
-    if (!$image instanceof dmMediaTagImage)
-    {
-      $image = dmMediaTag::build($image);
-      if (!$image instanceof dmMediaTagImage)
-      {
-        throw new dmException($image.' is not an image and cannot be used as overlay');
-      }
-    }
-    
     return $this->set('overlay', array(
       'image' => $image,
       'position' => $position

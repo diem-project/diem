@@ -36,10 +36,10 @@ class Doctrine_Template_Sortable extends Doctrine_Template
 
   public function setTableDefinition()
   {
-    if (!$this->_table->getOption('orderBy'))
-    {
-      $this->_table->setOption('orderBy', 'position ASC');
-    }
+//    if (!$this->_table->getOption('orderBy'))
+//    {
+//      $this->_table->setOption('orderBy', 'position ASC');
+//    }
     
 //    foreach($this->_table->getRelationHolder()->getLocals() as $alias => $relation)
 //    {

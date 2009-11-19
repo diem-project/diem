@@ -6,15 +6,17 @@ abstract class dmLogView
   $log,
   $i18n,
   $user,
+  $helper,
   $dateFormat,
   $maxEntries = 10,
   $entries;
   
-  public function __construct(dmLog $log, dmI18n $i18n, dmCoreUser $user)
+  public function __construct(dmLog $log, dmI18n $i18n, dmCoreUser $user, dmHelper $helper)
   {
     $this->log = $log;
     $this->i18n = $i18n;
     $this->user = $user;
+    $this->helper = $helper;
     $this->dateFormat = new sfDateFormat($user->getCulture());
   }
   

@@ -5,12 +5,14 @@ class dmAdminBreadCrumb
   protected
   $context,
   $i18n,
+  $helper,
   $record;
   
-  public function __construct(dmContext $context)
+  public function __construct(dmContext $context, dmI18n $i18n, dmHelper $helper)
   {
     $this->context  = $context;
-    $this->i18n = $context->getI18n();
+    $this->i18n     = $i18n;
+    $this->helper   = $helper;
     
     $this->initialize();
   }
@@ -78,41 +80,41 @@ class dmAdminBreadCrumb
   
   public function renderHomeLink(array $options = array())
   {
-    return dmLinkTag::build()
+    return $this->helper->£link()
     ->text(£('span.s16block.s16_home_gray', '&nbsp;'))
     ->title($this->i18n->__('Home'))->set('.home');
   }
   
   public function renderModuleTypeLink(array $options = array())
   {
-    return dmLinkTag::build($this->context->getRouting()->getModuleTypeUrl($options['type']))
+    return $this->helper->£link($this->context->getRouting()->getModuleTypeUrl($options['type']))
     ->text($this->i18n->__($options['type']->getPublicName()));
   }
   
   public function renderModuleSpaceLink(array $options = array())
   {
-    return dmLinkTag::build($this->context->getRouting()->getModuleSpaceUrl($options['space']))
+    return $this->helper->£link($this->context->getRouting()->getModuleSpaceUrl($options['space']))
     ->text($this->i18n->__($options['space']->getPublicName()));
   }
   
   public function renderModuleLink(array $options = array())
   {
     return dmArray::get($options, 'last')
-    ? dmHelper::£('h1', $this->i18n->__($options['module']->getPlural()))
-    : dmLinkTag::build('@'.$options['module']->getUnderscore())
+    ? $this->helper->£('h1', $this->i18n->__($options['module']->getPlural()))
+    : $this->helper->£link('@'.$options['module']->getUnderscore())
     ->text($this->i18n->__($options['module']->getPlural()));
   }
   
   public function renderActionLink(array $options = array())
   {
-    return dmHelper::£('h1', __($options['action']));
+    return $this->helper->£('h1', __($options['action']));
   }
   
   public function renderObjectLink(array $options = array())
   {
     return dmArray::get($options, 'last')
-    ? dmHelper::£('h1', $options['object']->__toString())
-    : dmLinkTag::build($options['object']);
+    ? $this->helper->£('h1', $options['object']->__toString())
+    : $this->helper->£link($options['object']);
   }
   
   public function renderRawLink($html)
@@ -162,15 +164,15 @@ class dmAdminBreadCrumb
     else
     {
       $html =
-      dmHelper::£o('div#breadCrumb.mt10.clearfix').
-      dmHelper::£('ol', '<li>'.implode('</li><li class="sep">&gt;</li><li>', $links).'</li>');
+      $this->helper->£o('div#breadCrumb.mt10.clearfix').
+      $this->helper->£('ol', '<li>'.implode('</li><li class="sep">&gt;</li><li>', $links).'</li>');
       
       if ($miniSearchForm = dmArray::get($this->context->getResponse()->getSlots(), 'dm.mini_search_form'))
       {
-        $html .= dmHelper::£('div.dm_mini_search_form', $miniSearchForm);
+        $html .= $this->helper->£('div.dm_mini_search_form', $miniSearchForm);
       }
       
-      $html .= dmHelper::£c('div');
+      $html .= $this->helper->£c('div');
     }
     
     $t && $t->addTime();

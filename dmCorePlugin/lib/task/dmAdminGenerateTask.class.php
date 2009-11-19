@@ -51,20 +51,23 @@ EOF;
 //        $this->logSection('diem', "Skipping $module");
         continue;
       }
-      if ($module->isProject() && !$module->hasAdmin())
+      else
       {
-//        $this->logSection('diem', sprintf("Skip module %s wich has no admin", $moduleKey));
-        continue;
-      }
-      if (!$module->isProject())
-      {
-//        $this->logSection('diem', sprintf("Skip module %s wich is nor internal nor project : probably a plugin one", $moduleKey));
-        continue;
-      }
-      if (!$module->hasModel())
-      {
-//        $this->logSection('diem', sprintf("Skip module %s wich has no associated model", $moduleKey));
-        continue;
+        if ($module->isProject() && !$module->hasAdmin())
+        {
+  //        $this->logSection('diem', sprintf("Skip module %s wich has no admin", $moduleKey));
+          continue;
+        }
+        if (!$module->isProject())
+        {
+  //        $this->logSection('diem', sprintf("Skip module %s wich is nor internal nor project : probably a plugin one", $moduleKey));
+          continue;
+        }
+        if (!$module->hasModel())
+        {
+  //        $this->logSection('diem', sprintf("Skip module %s wich has no associated model", $moduleKey));
+          continue;
+        }
       }
 
       if (in_array($moduleKey, $existingModules))

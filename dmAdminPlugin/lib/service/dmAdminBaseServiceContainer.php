@@ -16,15 +16,6 @@ abstract class dmAdminBaseServiceContainer extends dmBaseServiceContainer
     $this->getService('bread_crumb')->connect();
   }
   
-  /*
-   * @return dmAdminLinkTag
-   */
-  public function getLinkTag($source)
-  {
-    $this->setParameter('link_tag.source', $source);
-    
-    return $this->getService('link_tag');
-  }
   
   public function getGapi()
   {

@@ -102,7 +102,7 @@ abstract class dmChart extends pChart
       $this->render($imageFullPath);
     }
 
-    return dmMediaTag::build('/cache/'.$image);
+    return $this->serviceContainer->getService('helper')->£media('/cache/'.$image);
   }
 
   protected function getDefaultOptions()

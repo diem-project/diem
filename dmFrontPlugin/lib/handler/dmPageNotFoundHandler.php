@@ -79,7 +79,7 @@ class dmPageNotFoundHandler
     {
       if ($page = dmDb::table('DmPage')->findOneBySource($dmRedirect->dest))
       {
-        $redirectionUrl = dmFrontLinkTag::build($page)->getHref();
+        $redirectionUrl = $this->serviceContainer->getService('helper')->£link($page)->getHref();
       }
       else
       {
@@ -125,7 +125,7 @@ class dmPageNotFoundHandler
 
       if ($foundPage)
       {
-        return dmFrontLinkTag::build($foundPage)->getHref();
+        return $this->serviceContainer->getService('helper')->£link($foundPage)->getHref();
       }
     }
     catch(Exception $e)

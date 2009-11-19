@@ -21,7 +21,7 @@ class dmWidgetNavigationMenuView extends dmWidgetPluginView
     
     foreach($vars['elements'] as $element)
     {
-      $link = dmFrontLinkTag::build($element['source']);
+      $link = $this->context->getHelper()->£link($element['source']);
       
       if (!empty($element['text']))
       {

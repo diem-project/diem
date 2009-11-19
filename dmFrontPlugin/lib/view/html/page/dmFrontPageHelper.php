@@ -7,18 +7,20 @@ class dmFrontPageHelper
     $widgetTypeManager,
     $serviceContainer,
     $i18n,
+    $helper,
     $page,
     $areas;
 
   protected static
   $innerCssClassWidgets = array('dmWidgetContent.title', 'dmWidgetContent.media', 'dmWidgetContent.link');
     
-  public function __construct(sfEventDispatcher $dispatcher, dmWidgetTypeManager $widgetTypeManager, sfServiceContainer $serviceContainer, sfI18n $i18n)
+  public function __construct(sfEventDispatcher $dispatcher, dmWidgetTypeManager $widgetTypeManager, sfServiceContainer $serviceContainer, sfI18n $i18n, dmHelper $helper)
   {
     $this->dispatcher        = $dispatcher;
     $this->widgetTypeManager = $widgetTypeManager;
     $this->serviceContainer  = $serviceContainer;
     $this->i18n              = $i18n;
+    $this->helper            = $helper;
     
     $this->initialize();
   }
@@ -121,7 +123,7 @@ class dmFrontPageHelper
       $html .= '<div id="dm_content">';
     }
     
-    $html .= dmHelper::£o($tagName, $options);
+    $html .= $this->helper->£o($tagName, $options);
 
     $html .= '<div class="dm_zones">';
 
@@ -250,7 +252,7 @@ class dmFrontPageHelper
       }
       elseif (sfConfig::get('sf_debug'))
       {
-        $html = dmFrontLinkTag::build($this->page)
+        $html = $this->helper->£link($this->page)
         ->currentSpan(false)
         ->param('dm_debug', 1)
         ->text(sprintf('[%s/%s] : %s', $widget['module'], $widget['action'], $e->getMessage()))

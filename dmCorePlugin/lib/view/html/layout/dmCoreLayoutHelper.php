@@ -85,7 +85,7 @@ class dmCoreLayoutHelper
      * to filter and modify the metas list
      */
     $metas = $this->dispatcher->filter(
-      new sfEvent($this, 'dm.response.filter_metas'),
+      new sfEvent($this, 'dm.layout.filter_metas'),
       $this->getMetas()
     )->getReturnValue();
     
@@ -123,11 +123,11 @@ class dmCoreLayoutHelper
   public function renderStylesheets()
   {
     /*
-     * Allow listeners of dm.response.filter_stylesheets event
+     * Allow listeners of dm.layout.filter_stylesheets event
      * to filter and modify the stylesheets list
      */
     $stylesheets = $this->dispatcher->filter(
-      new sfEvent($this, 'dm.response.filter_stylesheets'),
+      new sfEvent($this, 'dm.layout.filter_stylesheets'),
       $this->serviceContainer->getService('response')->getStylesheets()
     )->getReturnValue();
     
@@ -147,11 +147,11 @@ class dmCoreLayoutHelper
   public function renderJavascripts()
   {
     /*
-     * Allow listeners of dm.response.filter_javascripts event
+     * Allow listeners of dm.layout.filter_javascripts event
      * to filter and modify the javascripts list
      */
     $javascripts = $this->dispatcher->filter(
-      new sfEvent($this, 'dm.response.filter_javascripts'),
+      new sfEvent($this, 'dm.layout.filter_javascripts'),
       $this->serviceContainer->getService('response')->getJavascripts()
     )->getReturnValue();
     

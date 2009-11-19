@@ -8,11 +8,6 @@ abstract class dmMediaTag extends dmHtmlTag
   $culture,
   $requestContext;
 
-  public static function build($source)
-  {
-    return self::$serviceContainer->getMediaTag($source);
-  }
-
   public function __construct(dmMediaResource $resource, dmTheme $theme, $culture, array $requestContext)
   {
     $this->resource         = $resource;

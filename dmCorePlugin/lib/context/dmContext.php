@@ -6,7 +6,8 @@ class dmContext extends sfContext
   protected
   $serviceContainer,
   $dmConfiguration,
-  $page;
+  $page,
+  $helper;
 
   /**
    * Creates a new context instance.
@@ -69,6 +70,8 @@ class dmContext extends sfContext
     dmDoctrineQuery::setModuleManager($this->getModuleManager());
     dmDoctrineTable::setModuleManager($this->getModuleManager());
     dmDoctrineTable::setEventDispatcher($this->dispatcher);
+    
+    $this->reloadHelper();
 
     // notify that context is ready
     $this->dispatcher->notify(new sfEvent($this, 'dm.context.loaded'));
@@ -228,7 +231,12 @@ class dmContext extends sfContext
    */
   public function getHelper()
   {
-    return $this->serviceContainer->getService('helper');
+    return $this->helper;
+  }
+  
+  public function reloadHelper()
+  {
+    $this->helper = $this->serviceContainer->getService('helper');
   }
 
   /*

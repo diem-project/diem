@@ -2,7 +2,7 @@ Project:
 
   Global:
   
-    main:
+    main:                   # the main module is required, and must not be removed.
       actions:
         header:
         footer:

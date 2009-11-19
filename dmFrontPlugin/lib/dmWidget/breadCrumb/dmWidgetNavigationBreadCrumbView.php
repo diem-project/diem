@@ -62,7 +62,7 @@ class dmWidgetNavigationBreadCrumbView extends dmWidgetPluginView
     $it = 0;
     foreach($vars['pages'] as $page)
     {
-      $html .= dmHelper::£('li', dmFrontLinkTag::build($page)->render());
+      $html .= $this->context->getHelper()->£('li', $this->context->getHelper()->£link($page)->render());
     
       if ($vars['separator'] && (++$it < $vars['nbPages']))
       {

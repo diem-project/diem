@@ -2,10 +2,6 @@
 
 class dmHtmlMenu
 {
-
-  protected static
-  $defaultOptions = array();
-
   protected
   $menu,
   $options;
@@ -17,7 +13,7 @@ class dmHtmlMenu
 
   public function render($options = array())
   {
-    $this->options = array_merge(self::$defaultOptions, dmString::toArray($options));
+    $this->options = dmString::toArray($options);
 
     $html = '<ul class="'.dmArray::toHtmlCssClasses(array('level0', $this->getLevelOption(0, 'ul_class'))).'">';
     foreach($this->menu as $elem)

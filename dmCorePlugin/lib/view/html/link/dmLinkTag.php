@@ -5,11 +5,6 @@ abstract class dmLinkTag extends dmHtmlTag
   protected
   $resource,
   $requestContext;
-
-  public static function build($source = null)
-  {
-    return self::$serviceContainer->getLinkTag($source);
-  }
   
   protected function initialize()
   {

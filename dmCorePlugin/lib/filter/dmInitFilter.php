@@ -10,7 +10,7 @@ abstract class dmInitFilter extends dmFilter
   
   protected function saveApplicationUrl()
   {
-    if(sfConfig::get('sf_environment') == 'test')
+    if(sfConfig::get('sf_environment') === 'test')
     {
       return;
     }
@@ -26,15 +26,6 @@ abstract class dmInitFilter extends dmFilter
       $knownBaseUrls[$appUrlKey] = $appUrl;
       dmConfig::set('base_urls', json_encode($knownBaseUrls));
     }
-  }
-
-  protected function saveHtml()
-  {
-    $this->context->getCacheManager()->getCache("dm/view/html/validate")->set(
-      session_id(),
-      $this->context->getResponse()->getContent(),
-      10
-    );
   }
 
   protected function redirectTrailingSlash()

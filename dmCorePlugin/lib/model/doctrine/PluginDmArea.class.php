@@ -38,7 +38,7 @@ abstract class PluginDmArea extends BaseDmArea
     if ($wasNew && !$this->getZones()->count())
     {
       dmDb::create('DmZone', array(
-        'dm_area_id' => $this->id
+        'dm_area_id' => $this->get('id')
       ))->save();
     }
   }

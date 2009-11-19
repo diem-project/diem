@@ -42,7 +42,7 @@ class dmLogActions extends dmAdminBaseActions
     $logViewClass = get_class($this->log).'View';
     require_once(dmOs::join(sfConfig::get('dm_admin_dir'), 'modules/dmLog/lib/'.$logViewClass.'.php'));
     
-    $this->logView = new $logViewClass($this->log, $this->context->getI18n(), $this->getUser());
+    $this->logView = new $logViewClass($this->log, $this->context->getI18n(), $this->getUser(), $this->context->getHelper());
     $this->logView->setMax($nbEntries);
   }
   
@@ -68,7 +68,7 @@ class dmLogActions extends dmAdminBaseActions
       $log = $this->context->get($logKey.'_log');
       
       $viewClass = get_class($log).'ViewLittle';
-      $view = new $viewClass($log, $this->context->getI18n(), $this->getUser());
+      $view = new $viewClass($log, $this->context->getI18n(), $this->getUser(), $this->context->getHelper());
       $view->setMax($nbEntries);
       
       $hash = $view->getHash();

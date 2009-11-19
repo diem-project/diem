@@ -70,7 +70,7 @@ class dmConfig
 
     $setting = dmDb::query('DmSetting s')->where('s.name = ?', $name)->withI18n(self::$culture)->fetchOne();
 
-    $setting->value = $value;
+    $setting->set('value', $value);
 
     $setting->save();
     

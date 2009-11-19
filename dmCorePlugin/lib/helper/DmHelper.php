@@ -9,7 +9,7 @@ function escape($text)
  */
 function £link($source = null)
 {
-  return dmLinkTag::build($source);
+  return sfContext::getInstance()->getHelper()->£link($source);
 }
 
 /*
@@ -17,7 +17,7 @@ function £link($source = null)
  */
 function £media($source)
 {
-  return dmMediaTag::build($source);
+  return sfContext::getInstance()->getHelper()->£media($source);
 }
 
 /*
@@ -25,7 +25,7 @@ function £media($source)
  */
 function £table()
 {
-  return dmTableTag::build();
+  return sfContext::getInstance()->getHelper()->£table();
 }
 
 function dm_datetime($datetime)
@@ -57,12 +57,12 @@ function plural($word, $nb, $showNb = true, $pluralSpec = false)
 
 function markdown($markdown, $opt = array())
 {
-  return £('div.markdown', dmString::toArray($opt), dmContext::getInstance()->get('markdown')->toHtml($markdown));
+  return £('div.markdown', dmString::toArray($opt), sfContext::getInstance()->get('markdown')->toHtml($markdown));
 }
 
 function unMarkdown($markdown)
 {
-  return dmContext::getInstance()->get('markdown')->toText($markdown);
+  return sfContext::getInstance()->get('markdown')->toText($markdown);
 }
 
 /*
@@ -74,17 +74,17 @@ function unMarkdown($markdown)
  */
 function £o($name, array $opt = array())
 {
-  return dmHelper::£o($name, $opt);
+  return sfContext::getInstance()->getHelper()->£o($name, $opt);
 }
 
 function £c($name)
 {
-  return dmHelper::£c($name);
+  return sfContext::getInstance()->getHelper()->£c($name);
 }
 
 function £($name, $opt = array(), $content = false, $openAndClose = true)
 {
-  return dmHelper::£($name, $opt, $content, $openAndClose);
+  return sfContext::getInstance()->getHelper()->£($name, $opt, $content, $openAndClose);
 }
 
 function toggle($text = 'odd')

@@ -30,7 +30,7 @@ class BasedmCoreActions extends dmBaseActions
   {
     $this->next = array(
       'type' => 'ajax',
-      'url'  => dmLinkTag::build('+/dmCore/refreshStep?step=1')->getHref(),
+      'url'  => $this->context->getHelper()->£link('+/dmCore/refreshStep?step=1')->getHref(),
       'msg'  => 'Clear the cache'
     );
     
@@ -63,7 +63,7 @@ class BasedmCoreActions extends dmBaseActions
           $data = array(
             'msg'  => $this->context->getI18n()->__('Synchronize pages'),
             'type' => 'ajax',
-            'url'  => dmLinkTag::build('+/dmCore/refreshStep?step=2')->getHref()
+            'url'  => $this->context->getHelper()->£link('+/dmCore/refreshStep?step=2')->getHref()
           );
           break;
           
@@ -73,7 +73,7 @@ class BasedmCoreActions extends dmBaseActions
           $data = array(
             'msg'  => $this->context->getI18n()->__('Synchronise SEO'),
             'type' => 'ajax',
-            'url'  => dmLinkTag::build('+/dmCore/refreshStep?step=3')->getHref()
+            'url'  => $this->context->getHelper()->£link('+/dmCore/refreshStep?step=3')->getHref()
           );
           break;
           

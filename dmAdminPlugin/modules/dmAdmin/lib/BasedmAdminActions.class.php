@@ -56,14 +56,14 @@ class BasedmAdminActions extends dmAdminBaseActions
   {
     if (isset($this->space))
     {
-      $links[] = dmLinkTag::build($this->context->getRouting()->getModuleTypeUrl($this->type))
+      $links[] = $this->context->getHelper()->£link($this->context->getRouting()->getModuleTypeUrl($this->type))
       ->text($this->context->getI18n()->__($this->type->getPublicName()));
       
-      $links[] = dmHelper::£('h1', $this->context->getI18n()->__($this->space->getPublicName()));
+      $links[] = $this->context->getHelper()->£('h1', $this->context->getI18n()->__($this->space->getPublicName()));
     }
     else
     {
-      $links[] = dmHelper::£('h1', $this->context->getI18n()->__($this->type->getPublicName()));
+      $links[] = $this->context->getHelper()->£('h1', $this->context->getI18n()->__($this->type->getPublicName()));
     }
     
     return $links;

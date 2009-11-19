@@ -18,7 +18,7 @@ class dmWidgetContentMediaView extends dmWidgetPluginView
     {
       $media = dmDb::table('DmMedia')->findOneByIdWithFolder($vars['mediaId']);
       
-      $mediaTag = dmMediaTag::build($media);
+      $mediaTag = $this->context->getHelper()->£media($media);
   
       if (!empty($vars['width']) || !empty($vars['height']))
       {

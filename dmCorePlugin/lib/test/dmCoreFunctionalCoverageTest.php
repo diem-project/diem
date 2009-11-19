@@ -41,7 +41,6 @@ abstract class dmCoreFunctionalCoverageTest
     {
       $this->login();
     }
-    
     /*
      * Preload cache to ensure stats consistency
      */
@@ -87,10 +86,10 @@ abstract class dmCoreFunctionalCoverageTest
 
   protected function login()
   {
-//    $this->browser->with('user')->begin()
-//    ->signin(dmDb::table('DmUser')->findOneByUsername($this->options['username']))
-//    ->end();
-//    return;
+    $this->browser->getContext()->getUser()
+    ->signin(dmDb::table('DmUser')->findOneByUsername($this->options['username']));
+    return;
+    
     if (empty($this->options['username']) || empty($this->options['password']))
     {
       throw new dmException('You must provide a username and a password to login');

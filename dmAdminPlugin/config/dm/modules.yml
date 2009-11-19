@@ -9,7 +9,6 @@ Utils:
   Translation:
     dmTransUnit:
       name:         Sentence
-      model:        TransUnit
       credentials:  translation
   Monitoring:
     dmChart:
@@ -18,13 +17,6 @@ Utils:
     dmLog:
       name:         Log
       credentials:  see_log
-  Accessibility:
-    dmLang:
-      name:         Lang span
-      credentials:  accessibility
-    dmAbbr:
-      name:         Abbreviation
-      credentials:  accessibility
   Media:
     dmMediaLibrary:
       name:         Media

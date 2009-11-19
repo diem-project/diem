@@ -20,7 +20,7 @@ class dmPageActions extends dmFrontBaseActions
       'Can not delete record page. Please delete record instead.'
     );
     
-    $redirectUrl = dmFrontLinkTag::build($page->getNode()->getParent())->getHref();
+    $redirectUrl = $this->context->getHelper()->£link($page->getNode()->getParent())->getHref();
     
     $page->getNode()->delete();
     
@@ -55,7 +55,7 @@ class dmPageActions extends dmFrontBaseActions
         
         return $this->renderJson(array(
           'type'  => 'redirect',
-          'url'   => dmFrontLinkTag::build($this->page)->getHref()
+          'url'   => $this->context->getHelper()->£link($this->page)->getHref()
         ));
       }
       
@@ -110,7 +110,7 @@ class dmPageActions extends dmFrontBaseActions
         
         return $this->renderJson(array(
           'type'  => 'redirect',
-          'url'   => dmFrontLinkTag::build($this->page)->getHref()
+          'url'   => $this->context->getHelper()->£link($this->page)->getHref()
         ));
       }
       

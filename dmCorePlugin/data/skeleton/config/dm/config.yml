@@ -6,13 +6,6 @@ all:
   cache:
     apc:                  true          # (RECOMMENDED) Use Apc if available
     
-  tidy:
-    enabled:              false         # activate tidy validation on each page ( when user has credentials )
-    replace:              false         # activate tidy replacements on each page
-    
-  html:
-    validate:             false         # Validates Html in front ( credential: w3c_html_front ) and admin ( credential: w3c_html_admin )
-        
   js:
     compress:             true          # (RECOMMENDED) Performance : Minifies javascripts and put them into a single compressed file
     cdn:
@@ -21,12 +14,6 @@ all:
   css:
     compress:             true          # (RECOMMENDED) Performance : Minifies stylesheets and put them into a single compressed file
     
-  seo:
-    unique_validation:                  # Check html page attributes are unique in website
-      slug:               true          # (RECOMMENDED) Check pages slugs are unique
-      title:              false         # Check pages titles are unique
-      description:        false         # Check pages descriptions are unique
-
   orm:                                  # Doctrine configuration
                                         # More configuration : please use ProjectConfiguration::configureDoctrine* methods
     identifier_fields:    [ name, title, subject, description, id ]   # Fields used to represent a record with a string

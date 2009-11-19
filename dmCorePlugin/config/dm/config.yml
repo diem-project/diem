@@ -37,14 +37,6 @@ default:
   css:
     compress:             true          # (RECOMMENDED) Performance : Minifies stylesheets and put them into a single file
     
-  tidy:                                 # Parses, checks & cleans HTML output
-    enabled:              true          # Enable tidy ( if available on server )
-    replace:              true          # Enable on the fly tidy replacements on html output ( indentation & correction )
-    indent:               true          # Enable indentation
-    indent-spaces:        2             # Indentation spaces
-    wrap:                 160           # Wrap long lines for code readability
-    params:               { }           # Free tidy params ( passed to $tidy->parseString )
-
   seo:                                  # Search engine optimization configuration
     use_keywords:         true          # Keywords are useless for seo, but you can use them if you want
     unique_validation:                  # Check html page attributes are unique in website

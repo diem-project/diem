@@ -49,13 +49,15 @@ parameters:
   sitemap.class:              dmSitemap
   sitemap.options:
     file:                     sitemap.xml
+    
+  helper.class:               dmAdminHelper
  
 services:
 
   bread_crumb:
     class:                    %bread_crumb.class%
     shared:                   true
-    arguments:                [ @context ]
+    arguments:                [ @context, @i18n, @helper ]
 
   log_chart:
     class:                    %log_chart.class%

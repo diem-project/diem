@@ -1,7 +1,7 @@
 generator:
   class: dmAdminDoctrineGenerator
   param:
-    model_class: TransUnit
+    model_class: DmTransUnit
     theme: dmAdmin
     non_verbose_templates: true
     with_show: false
@@ -14,24 +14,24 @@ generator:
         display:
           - =source
           - target
-          - cat_id
+          - dm_catalogue_id
           - meta
         sort:
-          - msg_id
+          - id
           - asc
         table_method: getAdminListQuery
         table_count_method: ~
       filter:
         display:
-          - msg_id
-          - cat_id
+          - id
+          - dm_catalogue_id
           - source
           - target
           - meta
       form:
         display:
-          NONE: [source, target, cat_id, meta]
-        class: TransUnitAdminForm
+          NONE: [source, target, dm_catalogue_id, meta]
+        class: DmTransUnitAdminForm
         fields: {  }
       edit: ~
       new: ~

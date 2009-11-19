@@ -28,7 +28,7 @@ class dmWidgetContentLinkView extends dmWidgetPluginView
     
     $vars = $this->getViewVars();
     
-    $link = dmFrontLinkTag::build($vars['href']);
+    $link = $this->context->getHelper()->£link($vars['href']);
 
     if($vars['text'])
     {

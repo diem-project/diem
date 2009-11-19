@@ -10,22 +10,24 @@ class dmAdminInitFilter extends dmInitFilter
    */
   public function execute($filterChain)
   {
-    if ($culture = $this->context->getRequest()->getParameter('culture'))
-    {
-      $this->context->getUser()->setCulture($culture);
-    }
-    
     $this->checkFilesystemPermissions();
     
     $this->saveApplicationUrl();
 
     $filterChain->execute();
     
-    if ($this->context->getResponse()->isHtmlForHuman())
+    $response = $this->context->getResponse();
+
+    // If response has no title, generate one with the H1
+    if ($response->isHtmlForHuman() && !$response->getTitle())
     {
-      if (sfConfig::get('dm_html_validate', true) && $this->context->getUser()->can('html_validate_admin'))
+      preg_match('|<h1[^>]*>(.*)</h1>|iuUx', $response->getContent(), $matches);
+        
+      if (isset($matches[1]))
       {
-        $this->saveHtml();
+        $title = 'Admin : '.strip_tags($matches[1]).' - '.dmConfig::get('site_name');
+      
+        $response->setContent(str_replace('<title></title>', '<title>'.$title.'</title>', $response->getContent()));
       }
     }
   }

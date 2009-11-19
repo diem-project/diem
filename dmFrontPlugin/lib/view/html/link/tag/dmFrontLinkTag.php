@@ -11,27 +11,6 @@ abstract class dmFrontLinkTag extends dmLinkTag
     $this->initialize();
   }
 
-  public static function build($source = null)
-  {
-    try
-    {
-      $linkTagObject = parent::build($source);
-    }
-    catch(Exception $e)
-    {
-      if (sfConfig::get('dm_debug') || $source instanceof Exception)
-      {
-        throw $e;
-      }
-      else
-      {
-        $linkTagObject = self::build($e);
-      }
-    }
-
-    return $linkTagObject;
-  }
-
   protected function initialize()
   {
     parent::initialize();

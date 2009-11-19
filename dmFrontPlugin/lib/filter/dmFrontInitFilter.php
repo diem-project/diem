@@ -23,14 +23,6 @@ class dmFrontInitFilter extends dmInitFilter
     }
 
     $filterChain->execute();
-    
-    if ($this->context->getPage())
-    {
-      if (sfConfig::get('dm_html_validate', true) && $this->getContext()->getUser()->can('html_validate_front') && $this->context->getResponse()->isHtmlForHuman())
-      {
-        $this->saveHtml();
-      }
-    }
   }
 
   protected function guessPage()

@@ -233,18 +233,18 @@ EOF;
       /*
        * English to $culture
        */
-      if (!dmDb::table('Catalogue')->retrieveBySourceTargetSpace('en', $culture, 'messages'))
+      if (!dmDb::table('DmCatalogue')->retrieveBySourceTargetSpace('en', $culture, 'messages'))
       {
-        dmDb::create('Catalogue', array(
+        dmDb::create('DmCatalogue', array(
           'source_lang' => 'en',
           'target_lang' => $culture,
           'name' => 'messages.'.$culture
         ))->save();
       }
 
-      if ($culture != 'en' && !dmDb::table('Catalogue')->retrieveBySourceTargetSpace('en', $culture, 'dm'))
+      if ($culture != 'en' && !dmDb::table('DmCatalogue')->retrieveBySourceTargetSpace('en', $culture, 'dm'))
       {
-        dmDb::create('Catalogue', array(
+        dmDb::create('DmCatalogue', array(
           'source_lang' => 'en',
           'target_lang' => $culture,
           'name' => 'dm.'.$culture
@@ -256,9 +256,9 @@ EOF;
        */
       if ($culture != sfConfig::get('sf_default_culture'))
       {
-        if (!dmDb::table('Catalogue')->retrieveBySourceTargetSpace(sfConfig::get('sf_default_culture'), $culture, 'messages'))
+        if (!dmDb::table('DmCatalogue')->retrieveBySourceTargetSpace(sfConfig::get('sf_default_culture'), $culture, 'messages'))
         {
-          dmDb::create('Catalogue', array(
+          dmDb::create('DmCatalogue', array(
             'source_lang' => 'en',
             'target_lang' => $culture,
             'name' => 'messages.'.$culture
@@ -283,20 +283,20 @@ EOF;
       if (is_readable($data_file))
       {
         $data = sfYaml::load(file_get_contents($data_file));
-        $catalogue = dmDb::table('Catalogue')->retrieveBySourceTargetSpace('en', $culture, 'dm');
+        $catalogue = dmDb::table('DmCatalogue')->retrieveBySourceTargetSpace('en', $culture, 'dm');
 
-        $existingTranslations = dmDb::query('TransUnit t INDEXBY t.source')
+        $existingTranslations = dmDb::query('DmTransUnit t INDEXBY t.source')
         ->select('t.source')
-        ->where('t.cat_id = ?', $catalogue->cat_id)
+        ->where('t.dm_catalogue_id = ?', $catalogue->id)
         ->fetchArray();
 
-        $addedTranslations = new Doctrine_Collection(dmDb::table('TransUnit'));
+        $addedTranslations = new Doctrine_Collection(dmDb::table('DmTransUnit'));
         foreach($data as $source => $target)
         {
           if (!isset($existingTranslations[$source]))
           {
-            $addedTranslations->add(dmDb::create('TransUnit', array(
-              'cat_id' => $catalogue->cat_id,
+            $addedTranslations->add(dmDb::create('DmTransUnit', array(
+              'dm_catalogue_id' => $catalogue->get('id'),
               'source' => $source,
               'target' => $target
             )));
@@ -322,9 +322,6 @@ EOF;
       "security_permission" => "Manage security permissions",
       "security_group" => "Manage security groups",
       "content" => "CRUD dynamic content in admin",
-      "tidy_output" => "View tidy output",
-      "html_validate_admin" => "View Html validation in admin",
-      "html_validate_front" => "View Html validation in front",
       "zone_add" => "Add zones",
       "zone_edit" => "Edit zones",
       "zone_delete" => "Delete zones",
@@ -348,7 +345,6 @@ EOF;
       "automatic_metas" => "Configure automatic pages metas",
       "static_metas" => "Configure static pages metas",
       'url_redirection' => 'Configure url redirections',
-      "metas_validation" => "See meta validation",
       "use_google_analytics" => "Use google analytics",
       "google_analytics" => "Configure google analytics",
       "use_google_webmaster_tools" => "Use google webmaster tools",
@@ -359,7 +355,6 @@ EOF;
       'see_chart' => 'See the charts',
       "config_panel" => "Use the configuration panel",
       "translation" => "Use the translation interface",
-      "accessibility" => "Use the span & abbr interface",
       "layout" => "Use the layout interface",
       'sent_mail' => 'See mails sent by server',
       'mail_template' => 'Configure mail templates',
@@ -401,7 +396,6 @@ EOF;
           'sitemap',
           'automatic_metas',
           'static_metas',
-          'metas_validation',
           'url_redirection',
           'google_analytics',
           'use_google_analytics',
@@ -422,8 +416,6 @@ EOF;
         'permissions' => array(
           'admin',
           'content',
-          'tidy_output',
-          'html_validate_front',
           'code_editor',
           'code_editor_view',
           'media_library',
@@ -446,7 +438,6 @@ EOF;
           'page_delete',
           'config_panel',
           'translation',
-          'accessibility',
           'layout',
           'ihm_settings',
           'site_view',
@@ -469,7 +460,6 @@ EOF;
           'see_log',
           'config_panel',
           'translation',
-          'accessibility',
           'site_view',
           'see_chart'
         )
@@ -481,7 +471,6 @@ EOF;
           'content',
           'tool_bar_admin',
           'see_log',
-          'accessibility',
           'site_view',
           'see_chart'
         )
