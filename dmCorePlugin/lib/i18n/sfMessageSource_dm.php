@@ -6,6 +6,11 @@ class sfMessageSource_dm extends sfMessageSource
   $catalogueTable = 'dm_catalogue',
   $transUnitTable = 'dm_trans_unit';
 
+  public function __construct()
+  {
+    
+  }
+  
   /**
    * Gets an array of messages for a particular catalogue and cultural variant.
    *
