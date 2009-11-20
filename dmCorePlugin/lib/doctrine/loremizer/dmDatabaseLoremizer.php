@@ -177,7 +177,7 @@ class dmDatabaseLoremizer
     return true;
   }
 
-  protected function loremizeDmMedia()
+  public function loremizeDmMedia()
   {
     dmDb::table('DmMediaFolder')->checkRoot()->sync();
     

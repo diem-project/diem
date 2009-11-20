@@ -273,7 +273,7 @@ class dmString extends sfInflector
     return $val;
   }
 
-  public static function truncate($text, $length = 30, $truncate_string = '...', $truncate_lastspace = false)
+  public static function truncate($text, $length = 30, $truncateString = '...', $truncateLastspace = false)
   {
     if (empty($text))
     {
@@ -301,14 +301,14 @@ class dmString extends sfInflector
 
     if ($strlen($text) > $length)
     {
-      $text = $substr($text, 0, $length - $strlen($truncate_string));
+      $text = $substr($text, 0, $length - $strlen($truncateString));
 
-      if ($truncate_lastspace)
+      if ($truncateLastspace)
       {
         $text = preg_replace('/\s+?(\S+)?$/', '', $text);
       }
 
-      $text = $truncate_text.$truncate_string;
+      $text = $text.$truncateString;
     }
       
     return $text;

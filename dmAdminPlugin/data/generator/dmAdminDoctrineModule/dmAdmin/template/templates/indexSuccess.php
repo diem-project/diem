@@ -52,7 +52,7 @@
     
     <div class="dm_list_global_actions clearfix">
 
-      [?php if($sf_user->can('export_table')): ?]
+      [?php if(false && $sf_user->can('export_table')): ?]
       <div class="dm_export">
       <?php echo $this->getLinkToAction('Export CSV', array('action' => 'export', 'params' => array('class' => 'dm_sort s16 s16_export')), false); ?>
       </div>

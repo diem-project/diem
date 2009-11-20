@@ -12,7 +12,7 @@ class dmModuleLoremizer
 
   public function loremize(dmModule $module,  $nbMax)
   {
-    dmDb::table('DmMediaFolder')->checkRoot()->sync();
+    $this->loremizeDmMedia();
     
     $table = $module->getTable();
 
@@ -38,5 +38,11 @@ class dmModuleLoremizer
     return true;
   }
 
+  protected function loremizeDmMedia()
+  {
+    $databaseLoremizer = new dmDatabaseLoremizer($this->dispatcher);
+    
+    $databaseLoremizer->loremizeDmMedia();
+  }
   
 }

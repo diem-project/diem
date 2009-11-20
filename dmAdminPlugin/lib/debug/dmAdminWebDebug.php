@@ -21,7 +21,7 @@ class dmAdminWebDebug extends dmWebDebug
 
     if (sfConfig::get('sf_debug'))
     {
-      $this->setPanel('time', new dmWebDebugPanelTimer($this));
+      $this->setPanel('time', new sfWebDebugPanelTimer($this));
     }
     
     $this->setPanel('memory', new dmWebDebugPanelMemory($this));
