@@ -210,4 +210,8 @@ class dmCoreLayoutHelper
     return '';
   }
 
+  protected function getHelper()
+  {
+    return $this->serviceContainer->getService('helper');
+  }
 }

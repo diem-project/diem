@@ -16,7 +16,9 @@ if ('/' !== DIRECTORY_SEPARATOR)
 
 $this->logBlock('Diem '.DIEM_VERSION.' installer', 'INFO_LARGE');
 
-$this->logSection('Diem', 'Welcome in the Diem installation wizard. We will now check that your server matches Symfony 1.3 & Diem 5 requirements.');
+$this->logSection('Diem', 'Welcome in the Diem installation wizard. We will now check that your server matches Symfony '.SYMFONY_VERSION.' & Diem 5 requirements.');
+
+usleep(1000000);
 $this->askConfirmation('Press ENTER');
 
 $serverCheck = new dmServerCheckTask($this->dispatcher, $this->formatter);

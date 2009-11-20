@@ -54,6 +54,7 @@ class dmHelper
     return get_component($moduleName, $componentName, $vars);
   }
   
+  
   /*
    * a, class='tagada ergrg' id=zegf, contenu
    * a class=tagada id=truc, contenu

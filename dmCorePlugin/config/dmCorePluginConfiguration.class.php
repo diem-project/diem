@@ -38,6 +38,11 @@ class dmCorePluginConfiguration extends sfPluginConfiguration
       'dm_cache_dir'        => dmOs::join(sfConfig::get('sf_cache_dir'), 'dm')
     ));
     
+    if(extension_loaded('mbstring'))
+    {
+      mb_internal_encoding('UTF-8');
+    }
+    
     dmConfig::initialize($this->dispatcher);
   }
 

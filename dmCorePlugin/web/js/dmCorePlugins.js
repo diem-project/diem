@@ -2,7 +2,7 @@
 {
   $.dbg = function()
   {
-    if (typeof console !== 'object' || ($.dm.ctrl && !$.dm.ctrl.options.debug)) 
+    if (typeof console !== 'object' || ($.dm.ctrl && $.dm.ctrl.options && !$.dm.ctrl.options.debug)) 
     {
       return;
     }

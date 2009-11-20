@@ -15,4 +15,13 @@ class dmInstallerProjectConfiguration extends dmProjectConfiguration
     return self::$active = new self($rootDir, $dispatcher);
   }
   
+  /**
+   * Returns the environment name.
+   *
+   * @return string The environment name
+   */
+  public function getEnvironment()
+  {
+    return 'dev';
+  }
 }

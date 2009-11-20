@@ -18,7 +18,12 @@ $.dm.ctrl.add({
       beforeStop:             function(e, ui, o) {
         $('li.object.active', $(this)).removeClass('active');
         ui.helper.addClass('active');
-      }
+      },
+			stop:                   function(event, ui) {
+				$('li.object', $(this)).each(function(index) {
+					$('>input', $(this)).val(index+1);
+				});
+			}
     });
     
   }

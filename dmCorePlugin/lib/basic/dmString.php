@@ -288,9 +288,8 @@ class dmString extends sfInflector
 
     $text = (string) $text;
 
-    if($mbstring = extension_loaded('mbstring'))
+    if(extension_loaded('mbstring'))
     {
-      mb_internal_encoding('UTF-8');
       $strlen = 'mb_strlen';
       $substr = 'mb_substr';
     }
@@ -302,19 +301,17 @@ class dmString extends sfInflector
 
     if ($strlen($text) > $length)
     {
-      $truncate_text = $substr($text, 0, $length - $strlen($truncate_string));
+      $text = $substr($text, 0, $length - $strlen($truncate_string));
 
       if ($truncate_lastspace)
       {
-        $truncate_text = preg_replace('/\s+?(\S+)?$/', '', $truncate_text);
+        $text = preg_replace('/\s+?(\S+)?$/', '', $text);
       }
 
-      return $truncate_text.$truncate_string;
+      $text = $truncate_text.$truncate_string;
     }
-    else
-    {
-      return $text;
-    }
+      
+    return $text;
   }
 
   public static function encode($value)

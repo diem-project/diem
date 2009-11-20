@@ -420,9 +420,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
    * Beware that there is no check made on the positions passed
    * So incoherent positions will result in an incoherent list
    *
-   * @param string peer class of the sortable objects
    * @param array id/position pairs
-   * @param Connection an optional connection object
    *
    * @return Boolean true if the reordering took place, false if a database problem prevented it
    **/

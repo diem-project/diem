@@ -162,15 +162,22 @@ class PluginDmPageTable extends myDoctrineTable
       {
         $this->findByStringCache[$source] = $this->getTree()->fetchRoot();
       }
-      elseif (strncmp($source, 'page:', 5) === 0)
+      elseif(is_string($source))
       {
-        $this->findByStringCache[$source] = $this->findOneByIdWithI18n(substr($source, 5));
-      }
-      elseif(substr_count($source, '/') === 1)
-      {
-        $parts = explode('/', $source);
-        
-        $this->findByStringCache[$source] = $this->findOneByModuleAndActionWithI18n($parts[0], $parts[1]);
+        if ($anchorPos = strpos($source, 0, '#'))
+        {
+          $source = substr($source, $anchorPos);
+        }
+        if (strncmp($source, 'page:', 5) === 0)
+        {
+          $this->findByStringCache[$source] = $this->findOneByIdWithI18n(substr($source, 5));
+        }
+        elseif(substr_count($source, '/') === 1)
+        {
+          $parts = explode('/', $source);
+          
+          $this->findByStringCache[$source] = $this->findOneByModuleAndActionWithI18n($parts[0], $parts[1]);
+        }
       }
       else
       {

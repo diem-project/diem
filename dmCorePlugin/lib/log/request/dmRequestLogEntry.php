@@ -17,13 +17,13 @@ class dmRequestLogEntry extends dmLogEntry
     
     $this->data = array(
       'time'          => (string) $data['server']['REQUEST_TIME'],
-      'uri'           => (string) $uri,
+      'uri'           => dmString::truncate($uri, 500),
       'code'          => (string) $data['context']->getResponse()->getStatusCode(),
       'app'           => (string) sfConfig::get('sf_app'),
       'env'           => (string) sfConfig::get('sf_environment'),
       'ip'            => (string) $data['server']['REMOTE_ADDR'],
       'user_id'       => (string) $data['context']->getUser()->getUserId(),
-      'user_agent'    => (string) $isXhr ? null : $data['server']['HTTP_USER_AGENT'],
+      'user_agent'    => dmString::truncate($isXhr ? '' : $data['server']['HTTP_USER_AGENT'], 500),
       'xhr'           => (int)    $isXhr,
       'mem'           => (string) memory_get_peak_usage(true),
       'timer'         => (string) sprintf('%.0f', (microtime(true) - dm::getStartTime()) * 1000)

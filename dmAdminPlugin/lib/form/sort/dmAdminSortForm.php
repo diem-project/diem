@@ -7,14 +7,19 @@ abstract class dmAdminSortForm extends BaseForm
   
   protected function configureRecordFields()
   {
-    foreach($this->getRecords() as $record)
+    foreach($this->getRecords() as $index => $record)
     {
-      $fieldName = $record->get('id');
-      $this->widgetSchema[$fieldName] = new sfWidgetFormInputHidden;
-      $this->widgetSchema[$fieldName]->setLabel($record->__toString());
-      $this->validatorSchema[$fieldName] = new sfValidatorPass;
-      $this->setDefault($fieldName, 1);
+      $this->configureRecordField($index, $record);
     }
+  }
+  
+  protected function configureRecordField($index, $record)
+  {
+    $fieldName = $record->get('id');
+    $this->widgetSchema[$fieldName] = new sfWidgetFormInputHidden;
+    $this->widgetSchema[$fieldName]->setLabel($record->__toString());
+    $this->validatorSchema[$fieldName] = new sfValidatorPass;
+    $this->setDefault($fieldName, $index+1);
   }
   
   public function getModule()
@@ -34,16 +39,6 @@ abstract class dmAdminSortForm extends BaseForm
   
   public function save()
   {
-    $values = $this->getValues();
-    
-    $currentPosition = 0;
-    $recordPositions = array();
-    
-    foreach(array_keys($this->getValues()) as $recordId)
-    {
-      $recordPositions[$recordId] = ++$currentPosition;
-    }
-    
-    $this->options['module']->getTable()->doSort($recordPositions);
+    $this->options['module']->getTable()->doSort($this->getValues());
   }
 }

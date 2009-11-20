@@ -61,7 +61,7 @@ class dmLogActions extends dmAdminBaseActions
   public function executeRefresh(dmWebRequest $request)
   {
     $data = array();
-    $nbEntries = 5;
+    $nbEntries = 6;
     
     foreach(array('request', 'event') as $logKey)
     {

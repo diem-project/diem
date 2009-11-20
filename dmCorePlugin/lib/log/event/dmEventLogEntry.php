@@ -14,7 +14,7 @@ class dmEventLogEntry extends dmLogEntry
       'user_id'       => (string) dmArray::get($data, 'user_id', $this->serviceContainer->getService('user')->getUserId()),
       'action'        => (string) $data['action'],
       'type'          => (string) $data['type'],
-      'subject'       => (string) $data['subject']
+      'subject'       => dmString::truncate($data['subject'], 500)
     );
   }
   

@@ -29,7 +29,7 @@ class dmServerCheck
     new dmServerCheckUnit('post max size', ini_get('post_max_size'), '2M'),
     new dmServerCheckUnit('register globals', ini_get('register_globals'), false),
     new dmServerCheckUnit('session auto_start', ini_get('session.auto_start'), false),
-    new dmServerCheckUnit('mb_strlen()', function_exists('mb_strlen'), true),
+    new dmServerCheckUnit('mbstring', extension_loaded('mbstring'), true),
     new dmServerCheckUnit('utf8_decode()', function_exists('utf8_decode'), true)
     ),
        'symfony' => array(

@@ -46,14 +46,18 @@ abstract class dmLogView
   
   public function renderHead()
   {
-    $html = '<table><thead><tr>';
+    $html = '<table>';
     
-    foreach($this->rows as $name => $method)
-    {
-      $html .= '<th>'.$this->i18n->__(dmString::humanize($name)).'</th>';
-    }
+//    $html .= '<thead><tr>';
+//    
+//    foreach($this->rows as $name => $method)
+//    {
+//      $html .= '<th>'.$this->i18n->__(dmString::humanize($name)).'</th>';
+//    }
+//    
+//    $html .= '</tr>';
     
-    $html .= '</tr></thead>';
+    $html .= '</thead>';
     
     return $html;
   }

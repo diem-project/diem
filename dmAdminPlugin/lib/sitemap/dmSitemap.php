@@ -162,12 +162,12 @@ class dmSitemap
   {
     if (!$this->filesystem->mkdir(dirname($this->getFullPath())))
     {
-      throw new dmException(sprintf('%s is not writable', dirname($this->getFullPath())));
+      throw new dmSitemapNotWritableException(sprintf('%s is not writable', dmProject::unRootify(dirname($this->getFullPath()))));
     }
     
     if (file_exists($this->getFullPath()) && !is_writable($this->getFullPath()))
     {
-      throw new dmException(sprintf('%s is not writable', $this->getFullPath()));
+      throw new dmSitemapNotWritableException(sprintf('%s is not writable', dmProject::unRootify($this->getFullPath())));
     }
   }
   
@@ -178,4 +178,9 @@ class dmSitemap
       throw new dmException('You must pass a baseUrl');
     }
   }
+}
+
+class dmSitemapNotWritableException extends dmException
+{
+  
 }

@@ -19,6 +19,10 @@ parameters:
   form_field.class:           dmFormField
 
   markdown.class:             dmMarkdown
+  markdown.options:
+    h2_id:                    _%%text%%
+    h3_id:                    __%%text%%
+    h4_id:                    false
 
   script_name_resolver.class: dmScriptNameResolver
 

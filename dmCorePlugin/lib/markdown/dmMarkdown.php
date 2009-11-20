@@ -7,11 +7,27 @@ class dmMarkdown extends MarkdownExtra_Parser
   protected
   $helper;
   
-  public function __construct(dmHelper $helper)
+  public function __construct(dmHelper $helper, array $options = array())
   {
     $this->helper = $helper;
     
     parent::MarkdownExtra_Parser();
+    
+    $this->initialize($options);
+  }
+  
+  public function initialize(array $options)
+  {
+    $this->options = array_merge($options, $this->getDefaultOptions());
+  }
+  
+  public function getDefaultOptions()
+  {
+    return array(
+      'h2_id' => '_%text%',
+      'h3_id' => '__%text%',
+      'h4_id' => false
+    );
   }
   
   public function toText($text)
@@ -43,7 +59,7 @@ class dmMarkdown extends MarkdownExtra_Parser
   protected function replaceInternalLinks($text)
   {
     return preg_replace_callback(
-      '#\[([^\]]*)\]\(page\:(\d+)\)#u',
+      '#\[([^\]]*)\]\((page\:[^\)]+)\)#u',
       array($this, 'replaceInternalLinkCallback'),
       $text
     );
@@ -51,9 +67,16 @@ class dmMarkdown extends MarkdownExtra_Parser
   
   protected function replaceInternalLinkCallback(array $matches)
   {
-    if ($page = dmDb::table('DmPage')->findOneByIdWithI18n($matches[2]))
+    $source = $matches[2];
+    
+    if ($page = dmDb::table('DmPage')->findOneBySource($source))
     {
       $link = $this->helper->£link($page);
+      
+      if ($anchorPos = strpos($source, '#'))
+      {
+        $link->anchor(substr($source, $anchorPos+1));
+      }
     }
     else
     {
@@ -68,22 +91,60 @@ class dmMarkdown extends MarkdownExtra_Parser
     return $link->render();
   }
 
-  protected function postTransform($text)
+  protected function postTransform($html)
   {
     // remove first and last line feed
-    $text = trim($text, "\n");
+    $html = trim($html, "\n");
     
     // add the "first_p" css class to the first p
-    $text = dmString::str_replace_once('<p>', '<p class="first_p">', $text);
+    $html = dmString::str_replace_once('<p>', '<p class="first_p">', $html);
     
-    return $text;
+    $html = $this->addHeaderIds($html);
+    
+    return $html;
+  }
+  
+  protected function addHeaderIds($html)
+  {
+    foreach(array('h2', 'h3', 'h4') as $tag)
+    {
+      if (!$pattern = $this->options[$tag.'_id'] || !strpos($html, '<'.$tag.' />'))
+      {
+        continue;
+      }
+      
+      $html = preg_replace_callback(
+        '#<('.$tag.')[^>]*>(.*)</'.$tag.'>#uUx',
+        array($this, 'addHeaderIdCallback'),
+        $html
+      );
+    }
+    
+    return $html;
+  }
+  
+  protected function addHeaderIdCallback(array $matches)
+  {
+    $tag = $matches[1];
+    
+    $text = str_replace('œ', 'oe', dmString::removeAccents($matches[2]));
+
+    // strip all non word chars
+    // replace all white space sections with a dash
+    $text = preg_replace(array('/\W/', '/\s+/'), array(' ', '_'), $text);
+
+    $text = trim($text, '_');
+    
+    $id = str_replace('%text%', $text, $this->options[$tag.'_id']);
+    
+    return str_replace('<'.$tag, '<'.$tag.' id="'.$id.'" ', $matches[0]);
   }
 
   protected function cleanText($text)
   {
     return strtr($text, array(
         "\r\n"    => "\n",
-        "&#8217;" => "'"     // apostrophe
+        "&#8217;" => "'"
       , '“'       => '&lquot;'
       , '”'       => '&rquot;'
       , '®'       => '&reg;'
