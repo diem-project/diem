@@ -54,8 +54,6 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
   {
     $response = $this->getService('response');
     
-    $response->setServiceContainer($this);
-    
     if ($response->isHtmlForHuman())
     {
       $response->setAssetConfig($this->getService('asset_config'));

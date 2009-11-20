@@ -8,8 +8,7 @@ abstract class dmWebResponse extends sfWebResponse
   $cdnConfig,
   $javascriptConfig,
   $culture,
-  $theme,
-  $serviceContainer;
+  $theme;
   
   public function initialize(sfEventDispatcher $dispatcher, $options = array())
   {
@@ -24,11 +23,6 @@ abstract class dmWebResponse extends sfWebResponse
     $this->dispatcher->connect('user.change_theme', array($this, 'listenToChangeThemeEvent'));
     
     $this->dispatcher->connect('dm.layout.filter_javascripts', array($this, 'listenToFilterJavascriptsEvent'));
-  }
-  
-  public function setServiceContainer(dmBaseServiceContainer $serviceContainer)
-  {
-    $this->serviceContainer = $serviceContainer;
   }
   
   /*
@@ -92,12 +86,7 @@ abstract class dmWebResponse extends sfWebResponse
   {
     if (null === $this->assetAliases)
     {
-      if (!$this->serviceContainer)
-      {
-        throw new dmException('No service container setted');
-      }
-      
-      $this->assetAliases = include($this->serviceContainer->getService('config_cache')->checkConfig('config/dm/assets.yml'));
+      $this->assetAliases = include(dmContext::getInstance()->get('config_cache')->checkConfig('config/dm/assets.yml'));
     }
     
     return $this->assetAliases;
