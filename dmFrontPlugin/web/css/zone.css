@@ -15,7 +15,7 @@
 }
 
 #dm_page .dm_zone .dm_zone_edit {
-	margin-left: 3px;
+  margin-left: 3px;
   margin-top: 3px;
   background: url(../images/zone_widget_sprite.png) no-repeat;
   background-position: 0 -38px;
@@ -25,7 +25,7 @@
 }
 
 #dm_page.edit .dm_zone .dm_zone_edit {
-	display: block;
+  display: block;
 }
 
 #dm_page.edit .dm_zone:hover .dm_zone_edit {
@@ -39,5 +39,5 @@
 }
 
 .dm_zone_helper {
-	
+  
 }

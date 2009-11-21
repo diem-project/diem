@@ -1,9 +1,9 @@
 body {
-	margin-bottom: 30px;
+  margin-bottom: 30px;
 }
 
 #dm_tool_bar {
-	bottom: 0;
+  bottom: 0;
   -moz-box-shadow: 0 -4px 4px #888;
 }
 
@@ -140,7 +140,7 @@ div.dm_zone_add_helper {
 
 #dm_tool_bar #sfWebDebug .sfWebDebugTop
 {
-	top: auto;
+  top: auto;
   bottom: 30px;
   padding: 10px 1% 0 1%;
   height: 400px;

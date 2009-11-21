@@ -58,7 +58,7 @@ div.ui-dialog.dm.dm_code_editor_dialog .ui-dialog-content {
 }
 
 #dm_code_editor_file_open .type {
-	margin-top: 5px;
+  margin-top: 5px;
   width: 30%;
   padding: 1%;
   float: left;

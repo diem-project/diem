@@ -1,5 +1,5 @@
 .dm_form {
-	font-size: 11px;
+  font-size: 11px;
 }
 
 .dm_form .droppable_active {
@@ -12,7 +12,7 @@
 
 .dm_form .radio_list,
 .dm_form .checkbox_list {
-	margin-top: 3px;
+  margin-top: 3px;
 }
 
 .dm_form .radio_list li {
