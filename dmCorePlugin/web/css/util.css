@@ -115,8 +115,8 @@ article, aside, dialog, figure, footer, header, hgroup, menu, nav, section { dis
 }
 
 .dm_third {
-	width: 33.3%;
-	float: left;
+  width: 33.3%;
+  float: left;
 }
 
 .dm_half {

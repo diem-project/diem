@@ -5,9 +5,9 @@ class dmFrontLinkTagError extends dmFrontLinkTag
   protected
   $exception;
  
-  protected function initialize()
+  protected function initialize(array $options = array())
   {
-    parent::initialize();
+    parent::initialize($options);
     
     $this->exception = $this->resource->getSubject();
   }

@@ -8,14 +8,14 @@ abstract class dmMediaTag extends dmHtmlTag
   $culture,
   $requestContext;
 
-  public function __construct(dmMediaResource $resource, dmTheme $theme, $culture, array $requestContext)
+  public function __construct(dmMediaResource $resource, dmTheme $theme, $culture, array $requestContext, array $options = array())
   {
     $this->resource         = $resource;
     $this->theme            = $theme;
     $this->culture          = $culture;
     $this->requestContext   = $requestContext;
     
-    $this->initialize();
+    $this->initialize($options);
   }
   
   public function width($v)

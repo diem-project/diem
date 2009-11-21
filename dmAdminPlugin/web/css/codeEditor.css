@@ -11,23 +11,23 @@
 
 #dm_code_editor
 {
-	position: relative;
+  position: relative;
 }
 
 #dm_code_editor_tree
 {
   position: absolute;
-	width:300px;
-	height: 600px;
-	overflow-y: auto;
-	overflow-x: hidden;
-	width: 21.5%;
+  width:300px;
+  height: 600px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 21.5%;
 }
 #dm_code_editor_content
 {
-	width: 78%;
-	position: absolute;
-	left: 22%;
+  width: 78%;
+  position: absolute;
+  left: 22%;
 }
 
 #dm_code_editor .ui-tabs .ui-tabs-panel {

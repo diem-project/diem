@@ -1,18 +1,30 @@
 parameters:
 
+  html_sitemap.class:         dmFrontHtmlSitemap
+
   page_not_found_handler.class: dmPageNotFoundHandler
 
   form_manager.class:         dmFormManager
 
   doctrine_pager.class:       dmFrontDoctrinePager
 
-  link_tag.class:             dmFrontLinkTag
   link_tag_record.class:      dmFrontLinkTagRecord
+  link_tag_record.options:    []
+  
   link_tag_page.class:        dmFrontLinkTagPage
+  link_tag_page.options:      []
+  
   link_tag_media.class:       dmFrontLinkTagMedia
+  link_tag_media.options:     []
+  
   link_tag_action.class:      dmFrontLinkTagAction
+  link_tag_action.options:    []
+  
   link_tag_uri.class:         dmFrontLinkTagUri
+  link_tag_uri.options:       []
+  
   link_tag_error.class:       dmFrontLinkTagError
+  link_tag_error.options:     []
 
   link_resource.class:        dmFrontLinkResource
 
@@ -36,6 +48,10 @@ parameters:
  
 services:
 
+  html_sitemap:
+    class:                    %html_sitemap.class%
+    arguments:                [ @helper, %user.culture% ]
+
   page_not_found_handler:
     class:                    %page_not_found_handler.class%
     shared:                   false
@@ -49,11 +65,38 @@ services:
     class:                    %doctrine_pager.class%
     shared:                   false
     arguments:                [ %doctrine_pager.model%, %doctrine_pager.max_per_page% ]
+    calls:
+      - [ setContext, [ @context ] ]
 
-  link_tag:
-    class:                    %link_tag.class%
+  link_tag_record:
+    class:                    %link_tag_record.class%
     shared:                   false
-    arguments:                [ %link_tag.source%, %request.context% ]
+    arguments:                [ %link_tag.resource%, %request.context%, %link_tag_record.options% ]
+
+  link_tag_page:
+    class:                    %link_tag_page.class%
+    shared:                   false
+    arguments:                [ %link_tag.resource%, %request.context%, %link_tag_page.options% ]
+
+  link_tag_media:
+    class:                    %link_tag_media.class%
+    shared:                   false
+    arguments:                [ %link_tag.resource%, %request.context%, %link_tag_media.options% ]
+
+  link_tag_action:
+    class:                    %link_tag_action.class%
+    shared:                   false
+    arguments:                [ %link_tag.resource%, %request.context%, %link_tag_action.options% ]
+
+  link_tag_uri:
+    class:                    %link_tag_uri.class%
+    shared:                   false
+    arguments:                [ %link_tag.resource%, %request.context%, %link_tag_uri.options% ]
+
+  link_tag_error:
+    class:                    %link_tag_error.class%
+    shared:                   false
+    arguments:                [ %link_tag.resource%, %request.context%, %link_tag_error.options% ]
 
   link_resource:
     class:                    %link_resource.class%

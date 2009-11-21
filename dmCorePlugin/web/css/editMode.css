@@ -1,7 +1,7 @@
 .dm .ui-widget-header {
   background: url(../images/default_bg.png) center center repeat-x;
   border-color: #bbb;
-}	
+}  
 
 .blockUI.blockMsg.blockElement {
   width:          48px;
@@ -25,8 +25,8 @@
 }
 
 .blockUI.blockMsg.blockPage > div.blockUIWrap {
-	width:         400px;
-	margin:        auto;
+  width:         400px;
+  margin:        auto;
   color:          #000;
   border:         1px solid #aaa;
   background:     url(../images/default_bg.png) center repeat-x;
@@ -50,7 +50,7 @@ div.jGrowl div.jGrowl-notification, div.jGrowl div.jGrowl-closer {
 }
 
 #ui-datepicker-div {
-	z-index: 1010;
+  z-index: 1010;
 }
 
 .loader {

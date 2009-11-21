@@ -6,7 +6,7 @@ echo $helper->renderAccessLinks();
 
   echo £('div.dm_layout',
 
-    $helper->renderArea('top').
+    $helper->renderArea('top', '.clearfix').
 
     £('div.dm_layout_center.clearfix',
 
@@ -18,7 +18,7 @@ echo $helper->renderAccessLinks();
 
     ).
 
-    $helper->renderArea('bottom')
+    $helper->renderArea('bottom', '.clearfix')
 
   );
 

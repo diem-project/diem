@@ -176,7 +176,9 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
    */
   public function mergeParameter($name, $value)
   {
-    $this->parameters[strtolower($name)] = array_merge($this->parameters[strtolower($name)], $value);
+    $name = strtolower($name);
+    
+    $this->parameters[$name] = array_merge($this->parameters[$name], $value);
   }
   
   

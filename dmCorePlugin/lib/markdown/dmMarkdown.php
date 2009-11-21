@@ -68,14 +68,30 @@ class dmMarkdown extends MarkdownExtra_Parser
   protected function replaceInternalLinkCallback(array $matches)
   {
     $source = $matches[2];
+      
+    if ($anchorPos = strpos($source, '#'))
+    {
+      $anchor = substr($source, $anchorPos+1);
+      $source = substr($source, 0, $anchorPos);
+    }
+      
+    if ($titlePos = strpos($source, ' '))
+    {
+      $title  = trim(substr($source, $titlePos+1), '"');
+      $source = substr($source, 0, $titlePos);
+    }
     
     if ($page = dmDb::table('DmPage')->findOneBySource($source))
     {
       $link = $this->helper->£link($page);
       
-      if ($anchorPos = strpos($source, '#'))
+      if (isset($anchor))
       {
-        $link->anchor(substr($source, $anchorPos+1));
+        $link->anchor($anchor);
+      }
+      if (isset($title))
+      {
+        $link->title($title);
       }
     }
     else

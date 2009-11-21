@@ -5,9 +5,9 @@ class dmFrontLinkTagMedia extends dmFrontLinkTag
   protected
   $media;
 
-  protected function initialize()
+  protected function initialize(array $options = array())
   {
-    parent::initialize();
+    parent::initialize($options);
     
     $this->media = $this->resource->getSubject();
   }

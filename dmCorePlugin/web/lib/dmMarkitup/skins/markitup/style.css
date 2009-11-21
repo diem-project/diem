@@ -1,59 +1,59 @@
 div.markItUp a:link,
 div.markItUp a:visited {
-	color:#000;
-	text-decoration:none;
+  color:#000;
+  text-decoration:none;
 }
 div.markItUp  {
 }
 div.markItUpContainer  {
-	border:1px solid #3C769D;	
-	background:#FFF url(images/bg-container.png) repeat-x top left;
-	padding:5px 5px 2px 5px;
-	font:11px Verdana, Arial, Helvetica, sans-serif;
+  border:1px solid #3C769D;  
+  background:#FFF url(images/bg-container.png) repeat-x top left;
+  padding:5px 5px 2px 5px;
+  font:11px Verdana, Arial, Helvetica, sans-serif;
   -moz-border-radius: 4px;
 }
 textarea.markItUpEditor,
 .sf_admin_form_row_inner textarea.markItUpEditor {
-	font:12px 'Courier New', Courier, monospace;
-	border:3px solid #3C769D;
-	width: 98%;
+  font:12px 'Courier New', Courier, monospace;
+  border:3px solid #3C769D;
+  width: 98%;
   background:#FFF url(images/bg-editor.png) repeat-x top left;
-	clear:both; display:block;
-	line-height:18px;
-	overflow:auto;
+  clear:both; display:block;
+  line-height:18px;
+  overflow:auto;
 }
 
 div.markItUpFooter {
-	width:100%;
+  width:100%;
 }
 div.markItUpResizeHandler {
-	overflow:hidden;
-	width:22px; height:5px;
-	margin-left:auto;
-	margin-right:auto;
-	background-image:url(images/handle.png);
+  overflow:hidden;
+  width:22px; height:5px;
+  margin-left:auto;
+  margin-right:auto;
+  background-image:url(images/handle.png);
 }
 /***************************************************************************************/
 /* first row of buttons */
-div.markItUpHeader ul li	{
-	list-style:none;
-	float:left;
-	position:relative;
+div.markItUpHeader ul li  {
+  list-style:none;
+  float:left;
+  position:relative;
 }
 div.markItUpHeader ul li.markItUpSeparator {
-	margin:0 10px;
-	width:1px;
-	height:16px;
-	overflow:hidden;
-	background-color:#CCC;
+  margin:0 10px;
+  width:1px;
+  height:16px;
+  overflow:hidden;
+  background-color:#CCC;
 }
 div.markItUpHeader ul a {
-	display:block;
-	width:16px; height:16px;
-	text-indent:-10000px;
-	background-repeat:no-repeat;
-	padding:3px !important;
-	margin:0px;
+  display:block;
+  width:16px; height:16px;
+  text-indent:-10000px;
+  background-repeat:no-repeat;
+  padding:3px !important;
+  margin:0px;
 }
 
 .markdown_preview {

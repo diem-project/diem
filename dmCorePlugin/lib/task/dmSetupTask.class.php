@@ -68,6 +68,8 @@ EOF;
     $this->getContext()->reloadModuleManager();
 
     $this->runTask('dmAdmin:generate');
+
+    $this->runTask('dm:permissions');
     
     $this->runTask('dm:clear-cache');
     

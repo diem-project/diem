@@ -187,26 +187,16 @@ LIMIT 1')->getStatement();
       
       $this->getPageView();
 
-      if ($this->getIsAutomatic())
+      if ($this->getIsAutomatic() && !($this->getRecord() instanceof dmDoctrineRecord))
       {
-        if (!($this->getRecord() instanceof dmDoctrineRecord))
-        {
-          throw new dmException(sprintf(
-            '%s automatic page can not be saved because it has no object for record_id = %s',
-            $this, $this->record_id
-          ));
-        }
+        throw new dmException(sprintf(
+          '%s automatic page can not be saved because it has no object for record_id = %s',
+          $this, $this->record_id
+        ));
       }
     }
 
-//    if ($this->getNode()->isRoot() && $this->slug !== '')
-//    {
-//      $this->slug = '';
-//    }
-
-    $return = parent::save($conn);
-
-    return $return;
+    return parent::save($conn);
   }
 
   public function preDelete($event)
@@ -319,19 +309,6 @@ LIMIT 1')->getStatement();
    */
   public function initializeManualPage()
   {
-    $zone = dmDb::create('DmZone');
-    $widget = dmDb::create('DmWidget', array(
-      'module' => 'dmWidgetContent',
-      'action' => 'title',
-      'values' => array(
-        'tag' => 'h1',
-        'text' => $this->name 
-      )
-    ));
-    
-    $zone->Widgets[] = $widget;
-    $this->PageView->Area->Zones[] = $zone;
-    $this->PageView->Area->save();
   }
   
   /*

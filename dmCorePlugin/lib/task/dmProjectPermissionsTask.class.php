@@ -44,12 +44,31 @@ EOF;
   {
     parent::execute();
     
-    $this->chmod(sfConfig::get('sf_apps_dir'), 0777);
+    $this->current = null;
+    $this->failed  = array();
     
-    $this->chmod(sfConfig::get('sf_lib_dir'), 0777);
-    
-    $this->chmod(sfConfig::get('sf_data_dir'), 0777);
-    
-    $this->chmod(sfConfig::get('sf_web_dir'), 0777);
+    $dirs = array(
+      sfConfig::get('sf_apps_dir'),
+      sfConfig::get('sf_lib_dir'),
+      sfConfig::get('sf_data_dir')
+    );
+
+    $dirFinder = sfFinder::type('dir');
+    $fileFinder = sfFinder::type('file');
+
+    foreach ($dirs as $dir)
+    {
+      $this->chmod($dirFinder->in($dir), 0777);
+      $this->chmod($fileFinder->in($dir), 0666);
+    }
+
+    // note those files that failed
+    if (count($this->failed))
+    {
+      $this->logBlock(array_merge(
+        array('Permissions on the following file(s) could not be fixed:', ''),
+        array_map(create_function('$f', 'return \' - \'.sfDebug::shortenFilePath($f);'), $this->failed)
+      ), 'ERROR_LARGE');
+    }
   }
 }

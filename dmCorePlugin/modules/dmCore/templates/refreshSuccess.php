@@ -1,8 +1,8 @@
 <?php
 
-echo £('div.blockUIWrap', £('div.dm_refresh_show', array('json' => $next),
+echo £('div.blockUIWrap', £('div.dm_refresh_show.dm', array('json' => $next),
 
-  £('h1.title', __('Updating project')).
+  £('p.title', __('Updating project')).
   
   £('ul.dm_steps',
     ''

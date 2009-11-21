@@ -127,7 +127,7 @@ EOF;
         'group_name' => 'IHM',
         'credentials' => 'ihm_settings'
       ),
-      'image_quality' => array(
+      'image_resize_quality' => array(
         'type' => 'number',
         'default_value' => 95,
         'description' => 'Jpeg default quality when generating thumbnails',
@@ -145,6 +145,13 @@ EOF;
         'type' => 'boolean',
         'default_value' => 1,
         'description' => 'Links to current page are changed from <a> to <span>',
+        'group_name' => 'IHM',
+        'credentials' => 'ihm_settings'
+      ),
+      'link_use_page_title' => array(
+        'type' => 'boolean',
+        'default_value' => 1,
+        'description' => 'Add an automatic title on link based on the target page title',
         'group_name' => 'IHM',
         'credentials' => 'ihm_settings'
       ),
@@ -210,8 +217,29 @@ EOF;
   {
     if (!dmDb::table('DmLayout')->count())
     {
-      dmDb::create('DmLayout', array('name' => 'Global'))->save();
-      dmDb::create('DmLayout', array('name' => 'Home'))->save();
+      dmDb::create('DmLayout', array('name' => 'Global'))->saveGet()->refresh(true);
+      dmDb::create('DmLayout', array('name' => 'Home'))->saveGet()->refresh(true);
+      
+      dmDb::create('DmWidget', array(
+        'dm_zone_id' => dmDb::table('DmLayout')->findOneByName('Home')->getArea('top')->Zones[0]->id,
+        'module' => 'dmWidgetContent',
+        'action' => 'title',
+        'values' => array(
+          'text' => dmConfig::get('site_name'),
+          'tag'  => 'h1'
+        )
+      ))->save();
+      
+      dmDb::create('DmWidget', array(
+        'dm_zone_id' => dmDb::table('DmLayout')->findOneByName('Global')->getArea('top')->Zones[0]->id,
+        'module' => 'dmWidgetContent',
+        'action' => 'link',
+        'values' => array(
+          'href' => 'page:1 Home',
+          'text' => dmConfig::get('site_name'),
+          'title' => 'Back to home'
+        )
+      ))->save();
     }
   }
 

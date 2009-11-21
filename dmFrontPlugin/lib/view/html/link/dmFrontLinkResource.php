@@ -194,5 +194,7 @@ class dmFrontLinkResource
     {
       throw new dmException(sprintf('dmFrontLinkResource can not determine type of %s', $source));
     }
+    
+    return $this;
   }
 }

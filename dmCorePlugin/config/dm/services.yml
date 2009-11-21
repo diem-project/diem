@@ -20,9 +20,9 @@ parameters:
 
   markdown.class:             dmMarkdown
   markdown.options:
-    h2_id:                    _%%text%%
-    h3_id:                    __%%text%%
-    h4_id:                    false
+    h2_id:                    _%%text%%             # Add an automatic id on h2 tags based on this pattern
+    h3_id:                    __%%text%%            # Add an automatic id on h2 tags based on this pattern
+    h4_id:                    false                 # Add an automatic id on h2 tags based on this pattern
 
   script_name_resolver.class: dmScriptNameResolver
 
@@ -30,11 +30,17 @@ parameters:
   error_watcher.options:
     error_description_class:  dmErrorDescription
 
-  media_tag.class:            dmMediaTag
   media_tag_image.class:      dmMediaTagImage
+  media_tag_image.options:    []
+  
   media_tag_flash.class:      dmMediaTagFlash
+  media_tag_flash.options:    []
+  
   media_tag_video.class:      dmMediaTagVideo
+  media_tag_video.options:    []
+  
   media_tag_audio.class:      dmMediaTagAudio
+  media_tag_audio.options:    []
 
   media_resource.class:       dmMediaResource
 
@@ -132,7 +138,7 @@ services:
   markdown:
     class:                    %markdown.class%
     shared:                   true
-    arguments:                [ @helper ]
+    arguments:                [ @helper, %markdown.options% ]
 
   script_name_resolver:
     class:                    %script_name_resolver.class%
@@ -144,10 +150,25 @@ services:
     shared:                   true
     arguments:                [ @dispatcher, @context, %error_watcher.options% ]
 
-  media_tag:
-    class:                    %media_tag.class%
+  media_tag_image:
+    class:                    %media_tag_image.class%
     shared:                   false
-    arguments:                [ %media_tag.source%, %user.theme%, %user.culture%, %request.context% ]
+    arguments:                [ %media_tag.source%, %user.theme%, %user.culture%, %request.context%, %media_tag_image.options% ]
+
+  media_tag_flash:
+    class:                    %media_tag_flash.class%
+    shared:                   false
+    arguments:                [ %media_tag.source%, %user.theme%, %user.culture%, %request.context%, %media_tag_flash.options% ]
+
+  media_tag_video:
+    class:                    %media_tag_video.class%
+    shared:                   false
+    arguments:                [ %media_tag.source%, %user.theme%, %user.culture%, %request.context%, %media_tag_video.options% ]
+
+  media_tag_audio:
+    class:                    %media_tag_audio.class%
+    shared:                   false
+    arguments:                [ %media_tag.source%, %user.theme%, %user.culture%, %request.context%, %media_tag_audio.options% ]
 
   media_resource:
     class:                    %media_resource.class%

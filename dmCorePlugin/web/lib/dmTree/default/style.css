@@ -1,38 +1,38 @@
 /* TREE LAYOUT */
 .dm .dm_tree ul {
-	margin:0 0 0 5px;
-	padding:0 0 0 0;
-	list-style-type:none;
+  margin:0 0 0 5px;
+  padding:0 0 0 0;
+  list-style-type:none;
 }
 .dm .dm_tree li {
-	display:block;
-	min-height:18px;
-	line-height:18px;
-	padding:0 0 0 15px;
-	margin:0 0 0 0;
+  display:block;
+  min-height:18px;
+  line-height:18px;
+  padding:0 0 0 15px;
+  margin:0 0 0 0;
 
-	/* Background fix */
-	clear:both;
-	_height:18px;
-	#height:auto;
+  /* Background fix */
+  clear:both;
+  _height:18px;
+  #height:auto;
 }
 .dm .dm_tree li ul {
-	display:none;
+  display:none;
 }
 .dm .dm_tree li a,
 .dm .dm_tree li span {
-	/*
-	vertical-align:bottom;
-	display:-moz-inline-stack;
-	*/
-	display:inline-block;
-	line-height:16px;
-	height:16px;
-	color:black;
-	white-space:nowrap;
-	text-decoration:none;
-	padding:1px 4px 1px 1px;
-	margin:0;
+  /*
+  vertical-align:bottom;
+  display:-moz-inline-stack;
+  */
+  display:inline-block;
+  line-height:16px;
+  height:16px;
+  color:black;
+  white-space:nowrap;
+  text-decoration:none;
+  padding:1px 4px 1px 1px;
+  margin:0;
 }
 .dm .dm_tree li a:hover, 
 .dm .dm_tree li a.hover {
@@ -44,95 +44,95 @@
 
 }
 .dm .dm_tree li a:focus {
-	outline: none;
+  outline: none;
 }
 
 .dm .dm_tree li a input,
 .dm .dm_tree li span input {
-	margin:0;
-	padding:0 0;
-	display:inline-block;
-	height:12px !important;
-	border:1px solid white;
-	background:white;
-	font-size:10px;
-	font-family:Verdana;
+  margin:0;
+  padding:0 0;
+  display:inline-block;
+  height:12px !important;
+  border:1px solid white;
+  background:white;
+  font-size:10px;
+  font-family:Verdana;
 }
 .dm .dm_tree li a input:not([class="xxx"]),
 .dm .dm_tree li span input:not([class="xxx"]) {
-	padding:1px 0;
+  padding:1px 0;
 }
 
 .locked li a {
-	color:gray;
+  color:gray;
 }
 
 /* FOR DOTS */
 .dm .dm_tree li.last {
-	float:left;
+  float:left;
 }
 
 /* OPEN OR CLOSE */
 .dm .dm_tree li.open ul {
-	display:block;
+  display:block;
 }
 .dm .dm_tree li.closed ul {
-	display:none !important;
+  display:none !important;
 }
 
 /* FOR DRAGGING */
 .dm .dm_tree #dragged {
-	padding:0 3px;
-	margin:0;
-	background:white;
-	opacity: .85;
-	filter: alpha(opacity=85);
+  padding:0 3px;
+  margin:0;
+  background:white;
+  opacity: .85;
+  filter: alpha(opacity=85);
 
-	position:absolute;
-	top:-10px;
-	left:-10px;
+  position:absolute;
+  top:-10px;
+  left:-10px;
 }
 .dm .dm_tree #dragged.last,
 .dm .dm_tree #dragged:last-child {
-	background:white;
+  background:white;
 }
 .dm .dm_tree #dragged ul ul {
-	display:none;
+  display:none;
 }
 
 /* RTL modification */
 .rtl, .rtl * {
-	direction:rtl;
+  direction:rtl;
 }
 .rtl ul {
-	margin:0 5px 0 0;
+  margin:0 5px 0 0;
 }
 .rtl li {
-	padding:0 15px 0 0;
+  padding:0 15px 0 0;
 }
 .rtl li.last {
-	float:right !important;
+  float:right !important;
 }
 .rtl li a,
 .rtl li span {
-	padding:1px 1px 1px 4px;
+  padding:1px 1px 1px 4px;
 }
 
 /* CONTEXT MENU */
 .tree-default-context {
-	display:none;
-	position:absolute;
-	list-style-type:none;
-	margin:0;
-	padding:0;
+  display:none;
+  position:absolute;
+  list-style-type:none;
+  margin:0;
+  padding:0;
 }
 .tree-default-context .separator {
-	display:none;
+  display:none;
 }
 .tree-default-context a {
-	display:block;
-	margin:0;
-	padding:0;
+  display:block;
+  margin:0;
+  padding:0;
 }
 
 /** FIREFOX2 fix **/

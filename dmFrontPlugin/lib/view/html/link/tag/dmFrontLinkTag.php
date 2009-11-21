@@ -3,17 +3,17 @@
 abstract class dmFrontLinkTag extends dmLinkTag
 {
   
-  public function __construct(dmFrontLinkResource $resource, array $requestContext)
+  public function __construct(dmFrontLinkResource $resource, array $requestContext, array $options = array())
   {
     $this->resource       = $resource;
     $this->requestContext = $requestContext;
     
-    $this->initialize();
+    $this->initialize($options);
   }
 
-  protected function initialize()
+  protected function initialize(array $options = array())
   {
-    parent::initialize();
+    parent::initialize($options);
     
     if ($this->resource->hasParams())
     {

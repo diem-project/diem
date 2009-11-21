@@ -2,15 +2,11 @@ all:
 
   theme:                                          # front css themes
     list:                                         # list of themes
-      default_theme:
-        name:             Diem default theme      # theme name
-        path:             dm/front/defaultTheme   # theme path from web dir
-        enabled:          true                    # theme disponibility from dmThemeManager 
-      my_theme:
-        name:             My theme                # theme name
+      theme:
+        name:             Theme                   # theme name
         path:             theme                   # theme path from web dir
         enabled:          true                    # theme disponibility from dmThemeManager 
-    default:              my_theme                # default theme when user arrive on site
+    default:              theme                   # default theme when user arrive on site
 
   html:
     doctype:

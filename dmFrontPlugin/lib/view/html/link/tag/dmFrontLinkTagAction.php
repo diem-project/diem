@@ -5,9 +5,9 @@ class dmFrontLinkTagAction extends dmFrontLinkTag
   protected
   $action;
   
-  protected function initialize()
+  protected function initialize(array $options = array())
   {
-    parent::initialize();
+    parent::initialize($options);
     
     $this->action = $this->resource->getSubject();
   }

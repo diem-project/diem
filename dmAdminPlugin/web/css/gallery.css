@@ -33,15 +33,14 @@ div.dm_gallery_big ul.list li.ui-state-highlight {
 }
 
 div.dm_gallery_big form.dm_add_media {
-	width: 40%;
-	border: 1px solid #D3D3D3;
-	background: url(../../core/images/default_bg) center left repeat-x;
-	padding: 10px;
-	margin-bottom: 10px;
+   width: 40%;    border: 1px solid #D3D3D3  
+  background: url(../../core/images/default_bg) center left repeat-  ;
+  padding: 10  x;
+  margin-bottom: 10px;
 }
 
-div.dm_gallery_big div.dm_gallery_actions a {
-	float: left;
+div.dm_gallery_big div.dm_gallery_actions  a {
+  float: left;
   display:block;
   width: 100px;
   margin: 10px 0;

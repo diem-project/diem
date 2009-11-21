@@ -1,23 +1,23 @@
 #sf_admin_content {
-	margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 #sf_admin_container {
-	margin-top: 10px;
+  margin-top: 10px;
 }
 
 div.sf_admin_list {
-	margin-left: 1px;
+  margin-left: 1px;
 }
 
 .no_results h2 {
-	text-align: center;
-	margin: 20px 0;
+  text-align: center;
+  margin: 20px 0;
 }
 
 #list_header .dm_active_search {
-	margin-bottom: 6px;
-	color: #444;
+  margin-bottom: 6px;
+  color: #444;
 }
 
 div.dm_list_action_bar {
@@ -39,7 +39,7 @@ div.dm_list_action_bar_bottom {
 }
 
 div.no_results div.dm_list_action_bar {
-	padding: 4px 5px;
+  padding: 4px 5px;
 }
 
 div.dm_list_action_bar > div {
@@ -55,8 +55,8 @@ div.dm_list_action_bar > div.sf_admin_action a {
 }
 
 div.dm_list_action_bar > div.dm_form_pagination {
-	float: right;
-	margin: 3px 0 0 0;
+  float: right;
+  margin: 3px 0 0 0;
 }
 
 div.dm_form_pagination > a,
@@ -65,7 +65,7 @@ div.dm_form_pagination > div {
   margin: 0 3px;
 }
 div.dm_form_pagination > div.dm_pagination_status {
-	text-align:center;
+  text-align:center;
   width:100px;
 }
 div.dm_form_pagination > div.disabled {
@@ -81,7 +81,7 @@ div.dm_form_pagination strong {
 }
 
 .sf_list_actions {
-	float: left;
+  float: left;
 }
 
 div.sf_admin_list table {
@@ -105,7 +105,7 @@ div.sf_admin_list tfoot tr {
 }
 
 div.sf_admin_list th {
-	border: none;
+  border: none;
   padding: 3px 5px;
 }
 
@@ -115,7 +115,7 @@ div.sf_admin_list th a {
 }
 
 div.sf_admin_list tr.even {
-	background: #F0F4FC;
+  background: #F0F4FC;
 }
 
 div.sf_admin_list td {
@@ -128,11 +128,11 @@ div.sf_admin_list td {
 }
 
 div.dm_list_global_actions {
-	margin-top: 10px;
+  margin-top: 10px;
 }
 
 div.dm_export, div.dm_loremize {
-	float: left;
+  float: left;
   margin-right: 10px;
   padding: 10px;
   background:#E6E6E6 url(../../core/images/default_bg.png) repeat-x scroll 50% 50%;

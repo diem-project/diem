@@ -7,13 +7,18 @@ class dmFrontDoctrinePager extends dmDoctrinePager
     'top' => true,
     'bottom' => true
   ),
-  $navigationCache =array();
+  $navigationCache = array(),
+  $context;
 
   public function configureNavigation(array $navigationConfiguration)
   {
     $this->navigationConfiguration = $navigationConfiguration;
   }
 
+  public function setContext(dmContext $context)
+  {
+    $this->context = $context;
+  }
   
   public function renderNavigationTop($options = array())
   {
@@ -42,7 +47,9 @@ class dmFrontDoctrinePager extends dmDoctrinePager
       'next'            => "&gt;",
       'last'            => "&gt;&gt;",
       'nbLinks'         => 9,
-      'uri'             => dm::getRequest()->getUri()
+      'uri'             => $this->context->getPage()
+      ? $this->context->getHelper()->£link($this->context->getPage())->getAbsoluteHref()
+      : $this->context->getRequest()->getUri()
     );
   }
 
@@ -66,23 +73,23 @@ class dmFrontDoctrinePager extends dmDoctrinePager
 
     $options['uri'] = preg_replace("|/page/([0-9]+)|", "?page=$1", $options['uri']);
 
-    dmContext::getInstance()->getConfiguration()->loadHelpers('Dm');
+    $helper = $this->context->getHelper();
 
-    $html = £o('div.pager'.(!empty($options['class']) ? '.'.implode('.', $options['class']) : ''));
+    $html = $helper->£o('div.pager'.(!empty($options['class']) ? '.'.implode('.', $options['class']) : ''));
 
-    $html .= £o('ul.clearfix');
+    $html .= $helper->£o('ul.clearfix');
 
     // First and previous page
     if ($this->getPage() != 1)
     {
       if($options['first'])
       {
-        $html .= £("li.page.first", £link($options['uri'])->param('page', $this->getFirstPage())->text($options['first']));
+        $html .= $helper->£("li.page.first", $helper->£link($options['uri'])->param('page', $this->getFirstPage())->text($options['first']));
       }
 
       if($options['prev'])
       {
-        $html .= £("li.page.prev", £link($options['uri'])->param('page', $this->getPreviousPage())->text($options['prev']));
+        $html .= $helper->£("li.page.prev", $helper->£link($options['uri'])->param('page', $this->getPreviousPage())->text($options['prev']));
       }
     }
 
@@ -93,11 +100,11 @@ class dmFrontDoctrinePager extends dmDoctrinePager
       // current page
       if($page == $this->getPage())
       {
-        $links[] = £("li.page.".$options['currentClass'], £('span.link', $page));
+        $links[] = $helper->£("li.page.".$options['currentClass'], $helper->£('span.link', $page));
       }
       else
       {
-        $links[] = £("li.page", £link($options['uri'])->param('page', $page)->text($page));
+        $links[] = $helper->£("li.page", $helper->£link($options['uri'])->param('page', $page)->text($page));
       }
     }
 
@@ -108,11 +115,11 @@ class dmFrontDoctrinePager extends dmDoctrinePager
     {
       if($options['next'])
       {
-        $html .= £("li.page.next", £link($options['uri'])->param('page', $this->getNextPage())->text($options['next']));
+        $html .= $helper->£("li.page.next", $helper->£link($options['uri'])->param('page', $this->getNextPage())->text($options['next']));
       }
       if($options['last'])
       {
-        $html .= £("li.page.first", £link($options['uri'])->param('page', $this->getLastPage())->text($options['last']));
+        $html .= $helper->£("li.page.first", $helper->£link($options['uri'])->param('page', $this->getLastPage())->text($options['last']));
       }
     }
 

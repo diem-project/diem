@@ -1,5 +1,5 @@
 <?php
-  
+
 sfConfig::set('dm_core_dir', realpath(dirname(__FILE__).'/..'));
 
 require_once(sfConfig::get('dm_core_dir').'/lib/core/dm.php');

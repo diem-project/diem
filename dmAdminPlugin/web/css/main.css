@@ -1,6 +1,6 @@
 body{font:12px arial,helvetica,verdana,sans-serif;*font-size:small;*font:x-small;}select,input,button,textarea{font:99% arial,helvetica,clean,sans-serif;}table{font-size:inherit;font:100%;}pre,code,kbd,samp,tt{font-family:monospace;*font-size:108%;line-height:100%;}
 h1{
-	font-size:138.5%;
+  font-size:138.5%;
   height: 2em;
   line-height: 2em;
   letter-spacing: -1px;
@@ -18,16 +18,16 @@ ul li{list-style: none;}
 dl dd{margin-left:1em;}
 a {
   color: #046BCA;
-	text-decoration: none;
+  text-decoration: none;
   cursor: pointer;
 }
 a:hover {
-	text-decoration: underline;
+  text-decoration: underline;
 }
 
 #dm_admin_content {
-	margin: 30px 20px 0 20px;
-	padding-top: 1px;
+  margin: 30px 20px 0 20px;
+  padding-top: 1px;
 }
 
 body.full_screen #dm_admin_content {
@@ -43,7 +43,7 @@ body.full_screen #dm_admin_content {
 }
 
 .dm_third .dm_box {
-	margin: 0 5px 10px 5px;
+  margin: 0 5px 10px 5px;
 }
 
 div.dm_box_inner {
@@ -103,7 +103,7 @@ dl.dm_little_dl dd {
 }
 
 .dm .ui-state-default, .dm .ui-widget-content .ui-state-default {
-	background-image: url(../../core/images/default_bg.png);
+  background-image: url(../../core/images/default_bg.png);
 }
 
 .dm_big_button {

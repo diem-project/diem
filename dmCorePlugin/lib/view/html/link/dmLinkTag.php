@@ -6,9 +6,9 @@ abstract class dmLinkTag extends dmHtmlTag
   $resource,
   $requestContext;
   
-  protected function initialize()
+  protected function initialize(array $options = array())
   {
-    parent::initialize();
+    parent::initialize($options);
     
     $this->addAttributeToRemove('text');
     $this->addEmptyAttributeToRemove('target', 'title');
@@ -53,14 +53,6 @@ abstract class dmLinkTag extends dmHtmlTag
     return $this->text($v)->title($v);
   }
 
-  /*
-   * Transform into rss link
-   * @return dmLinkTag $this
-   */
-  public function rss($v)
-  {
-    return $this->set('rss', (bool) $v);
-  }
 
   /*
    * Set link target

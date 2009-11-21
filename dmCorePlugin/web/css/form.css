@@ -6,9 +6,9 @@
 }
 
 .dm_form.list .separator {
-	height: 0;
-	border-bottom: 1px solid #D3D3D3;
-	margin: 10px 20%;
+  height: 0;
+  border-bottom: 1px solid #D3D3D3;
+  margin: 10px 20%;
 }
 
 .dm_form.list .dm_form_element > label {
@@ -35,7 +35,7 @@
 }
 
 .dm_form.list .dm_form_element > .input {
-	float: left;
+  float: left;
 }
 
 .dm_form.list.little .dm_form_element {
@@ -63,7 +63,7 @@
   color: #000;
 }
 .dm_media_receiver.hover {
-	background: url(../../core/images/default_bg_green.png) repeat-x scroll 50% 50%;
+  background: url(../../core/images/default_bg_green.png) repeat-x scroll 50% 50%;
   border: 1px solid #D3D3D3;
   -moz-border-radius: 4px;
 }

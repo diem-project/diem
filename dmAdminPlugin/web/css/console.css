@@ -1,6 +1,6 @@
 div.console div.dm_box_inner
 {
-	margin: 0;
+  margin: 0;
 }
 
 #dm_console
@@ -15,7 +15,7 @@ div.console div.dm_box_inner
 }
 #dm_console strong
 {
-	color: #DDD;
+  color: #DDD;
 }
 .dm_console_wait
 {
@@ -43,7 +43,7 @@ div.console div.dm_box_inner
 }
 #dm_lines li.dm_command_user
 {
-	color:#88FF88;
+  color:#88FF88;
 }
 
 #dm_command_wrap
@@ -58,7 +58,7 @@ div.console div.dm_box_inner
 }
 #dm_console form
 {
-	margin: 0;
+  margin: 0;
 }
 #dm_command
 {

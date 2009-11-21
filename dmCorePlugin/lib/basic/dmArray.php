@@ -129,7 +129,7 @@ class dmArray
   {
     foreach($keys as $key)
     {
-      if(isset($array[$key]) && empty($array[$key]))
+      if(empty($array[$key]) && array_key_exists($key, $array))
       {
         unset($array[$key]);
       }

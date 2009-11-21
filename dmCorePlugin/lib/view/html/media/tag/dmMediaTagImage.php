@@ -11,15 +11,13 @@ class dmMediaTagImage extends dmMediaTag
   $availableFilters = array('greyscale'),
   $verifiedThumbDirs = array();
 
-  public function initialize()
+  public function initialize(array $options = array())
   {
-    parent::initialize();
+    parent::initialize($options);
 
     $this
-    ->method(dmConfig::get('image_resize_method', 'center'))
-    ->quality(dmConfig::get('image_quality', 92))
     ->set('background', null)
-    ->addAttributeToRemove(array('method', 'quality', 'background', 'filter', 'overlay'));
+    ->addAttributeToRemove(array('resize_method', 'resize_quality', 'background', 'filter', 'overlay'));
   }
   
   public function htmlWidth($v)
@@ -52,12 +50,12 @@ class dmMediaTagImage extends dmMediaTag
       ));
     }
 
-    return $this->set('method', $method);
+    return $this->set('resize_method', $method);
   }
 
   public function quality($v)
   {
-    return $this->set('quality', (int) $v);
+    return $this->set('resize_quality', (int) $v);
   }
   
   public function overlay(dmMediaTagImage $image, $position = 'center')
@@ -234,14 +232,14 @@ class dmMediaTagImage extends dmMediaTag
       return $media->getFullPath();
     }
 
-    if ($attributes['method'] == 'fit')
+    if ($attributes['resize_method'] == 'fit')
     {
       $attributes['background'] = trim($attributes['background'], '#');
     }
 
-    if (!in_array($attributes['method'], self::getAvailableMethods()))
+    if (!in_array($attributes['resize_method'], self::getAvailableMethods()))
     {
-      throw new dmException(sprintf('%s is not a valid resize method. These are : %s', $attributes['method'], implode(', ', self::getAvailableMethods())));
+      throw new dmException(sprintf('%s is not a valid resize method. These are : %s', $attributes['resize_method'], implode(', ', self::getAvailableMethods())));
     }
 
     if (!$thumbDir = dmArray::get(self::$verifiedThumbDirs, $media->get('dm_media_folder_id')))
@@ -260,10 +258,10 @@ class dmMediaTagImage extends dmMediaTag
     $thumbRelPath = $pathInfo['filename'].'_'.substr(md5(implode('-', array(
       $attributes['width'],
       $attributes['height'],
-      $attributes['method'] == 'fit' ? 'fit'.$attributes['background'] : $attributes['method'],
+      $attributes['resize_method'] === 'fit' ? 'fit'.$attributes['background'] : $attributes['resize_method'],
       $filter,
       implode(' ', $overlay),
-      $attributes['quality'],
+      $attributes['resize_quality'],
       $media->getTimeHash()
     ))), -6).'.'.$pathInfo['extension'];
 
@@ -275,9 +273,9 @@ class dmMediaTagImage extends dmMediaTag
 
       $image = $media->getImage();
 
-      $image->setQuality($attributes['quality']);
+      $image->setQuality($attributes['resize_quality']);
 
-      $image->thumbnail($attributes['width'], $attributes['height'], $attributes['method'], !empty($attributes['background']) ? '#'.$attributes['background'] : null);
+      $image->thumbnail($attributes['width'], $attributes['height'], $attributes['resize_method'], !empty($attributes['background']) ? '#'.$attributes['background'] : null);
     
       if ($filter)
       {

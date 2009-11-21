@@ -221,13 +221,12 @@ class dmHelper
   
   public function £media($source)
   {
-    $resource = $this->serviceContainer->getService('media_resource');
-    $resource->initialize($source);
+    $this->serviceContainer->setParameter(
+      'media_tag.source',
+      $resource = $this->serviceContainer->getService('media_resource')->initialize($source)
+    );
     
-    $this->serviceContainer->setParameter('media_tag.class', $this->serviceContainer->getParameter('media_tag_'.$resource->getMime().'.class'));
-    $this->serviceContainer->setParameter('media_tag.source', $resource);
-    
-    return $this->serviceContainer->getService('media_tag');
+    return $this->serviceContainer->getService('media_tag_'.$resource->getMime());
   }
   
   public function £table()

@@ -25,11 +25,11 @@ div.dm_media_library ul.content a {
   color: #333;
 }
 div.dm_media_library ul.content span.image_background {
-	position: relative;
-	width: 126px;
-	height: 126px;
-	border: 1px solid #888;
-	display: block;
+  position: relative;
+  width: 126px;
+  height: 126px;
+  border: 1px solid #888;
+  display: block;
 }
 
 div.dm_media_library ul.content a:hover {

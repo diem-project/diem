@@ -11,12 +11,12 @@
   -moz-border-radius: 4px;
 }
 .sf_admin_form form ul.dm_form_elements li.dm_form_element {
-	margin: 5px;
+  margin: 5px;
 }
 
 .sf_admin_form_inner {
-	margin-top: 10px;
-	font-size: inherit;
+  margin-top: 10px;
+  font-size: inherit;
 }
 
 .sf_admin_form form .dm_help_wrap,
@@ -41,12 +41,12 @@
 }
 
 .sf_admin_form fieldset .ui-accordion-header {
-	position: inherit;
+  position: inherit;
 }
 .sf_admin_form fieldset .ui-accordion-header .ui-icon {
-	position: inherit;
-	float: left;
-	margin-top: 4px;
+  position: inherit;
+  float: left;
+  margin-top: 4px;
 }
 
 .sf_admin_form .fieldset_content {
@@ -95,10 +95,10 @@
 
 div.control span.select_all,
 div.control span.unselect_all {
-	margin-top: 1em;
-	cursor: pointer;
-	display: block;
-	color: #046BCA;
+  margin-top: 1em;
+  cursor: pointer;
+  display: block;
+  color: #046BCA;
 }
 
 .sf_admin_form div.sf_admin_form_row_inner input,
@@ -107,7 +107,7 @@ div.control span.unselect_all {
   width: 76%;
 }
 .sf_admin_form div.sf_admin_form_row_inner textarea.dm_markdown {
-	width: 98.5%;
+  width: 98.5%;
 }
 
 .sf_admin_form div.sf_admin_form_row_inner input.datepicker_me {
@@ -159,7 +159,7 @@ div.dm_form_action_bar div.dm_form_pagination > a {
   float: left;
 }
 div.dm_form_action_bar div.dm_form_pagination > span.disabled {
-	float: left;
+  float: left;
   opacity: 0.3;
   height: 16px;
   display: block;
@@ -171,10 +171,10 @@ div.dm_form_pagination {
 }
 
 .sf_admin_form ul.checkbox_list {
-	max-height: 300px;
-	overflow-y: auto;
-	border: 1px solid #ddd;
-	moz-border-radius: 4px;
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  moz-border-radius: 4px;
 }
 
 .sf_admin_form ul.checkbox_list > li {

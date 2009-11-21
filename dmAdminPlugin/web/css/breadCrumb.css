@@ -26,19 +26,19 @@
 }
 
 #breadCrumb a.link:hover {
-	color: #046BCA;
+  color: #046BCA;
 }
 
 #breadCrumb h1 {
-	font-weight: bold;
-	font-size: 1.2em;
-	color: #444;
+  font-weight: bold;
+  font-size: 1.2em;
+  color: #444;
   background: none;
 }
 
 #breadCrumb a.home {
-	padding-top: 2px;
-	padding-left: 0;
+  padding-top: 2px;
+  padding-left: 0;
   height: 17px;
 }
 
@@ -48,7 +48,7 @@
 
 #dm_module_search_input {
   font-size: 13px;
-	height: 17px;
+  height: 17px;
   padding: 2px 5px 0 5px;
   width: 150px;
   border: 1px solid #D3D3D3;
@@ -72,7 +72,7 @@
 }
 
 #breadCrumb div.dm_mini_search_form a.dm_cancel_search {
-	float: left;
-	margin-left: 5px;
-	margin-top: 3px;
+  float: left;
+  margin-left: 5px;
+  margin-top: 3px;
 }

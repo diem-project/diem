@@ -20,7 +20,7 @@ h1 {
 }
 
 table {
-	-moz-box-shadow: 0 0 5px #76C6D2;
+  -moz-box-shadow: 0 0 5px #76C6D2;
 }
 
 table thead th {
@@ -28,11 +28,11 @@ table thead th {
 }
 
 table tbody th {
-	background: #F4F4FF;
+  background: #F4F4FF;
 }
 
 table tbody tr td, table tbody tr th {
-	border-bottom: 1px solid #C3D9FF;
+  border-bottom: 1px solid #C3D9FF;
 }
 
 table tr.warning {

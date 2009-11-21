@@ -5,9 +5,9 @@ class dmFrontLinkTagUri extends dmFrontLinkTag
   protected
   $uri;
 
-  protected function initialize()
+  protected function initialize(array $options = array())
   {
-    parent::initialize();
+    parent::initialize($options);
     
     $this->uri = $this->resource->getSubject();
   }

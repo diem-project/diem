@@ -106,7 +106,7 @@ class PluginDmPageTable extends myDoctrineTable
     }
     
     $pages = $this->createQuery('p')
-    ->select('p.id, p.module, p.action, p.record_id, p.is_secure, p.lft, p.rgt, pTranslation.slug, pTranslation.name, pTranslation.is_active')
+    ->select('p.id, p.module, p.action, p.record_id, p.is_secure, p.lft, p.rgt, pTranslation.slug, pTranslation.name, pTranslation.title, pTranslation.is_active')
     ->where('p.module = ?', $module)
     ->andWhere('p.action = ?', 'show')
     ->andWhereIn('p.record_id', $ids)

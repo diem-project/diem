@@ -175,6 +175,9 @@ class dmContext extends sfContext
     $loader = new sfServiceContainerLoaderFileYaml($sc);
     $loader->load($this->configuration->getConfigPaths('config/dm/services.yml'));
 
+    $loader = new dmServiceContainerLoaderConfiguration($sc, $this->dispatcher);
+    $loader->load(dmConfig::getAll());
+
     $dumper = new sfServiceContainerDumperPhp($sc);
     $baseClass = sfConfig::get('dm_service_container_base_class', 'dm'.ucfirst(sfConfig::get('dm_context_type')).'BaseServiceContainer');
 

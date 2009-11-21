@@ -64,9 +64,7 @@ class dmFrontComponentGenerator extends dmFrontModuleGenerator
       'extendedClass' => 'dmFrontModuleComponents',
       'docBlock' => array(
         'shortDescription' => $this->module->getName().' components',
-        'longDescription' => 'Components are micro-controllers that prepare data for a template.
-You should not use redirection or database manipulation ( insert, update, delete ) here.
-To make redirections or manipulate database, use the actions class.'
+        'longDescription' => 'No redirection nor database manipulation ( insert, update, delete ) here'
       )
     ));
   }

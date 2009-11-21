@@ -13,9 +13,9 @@ abstract class dmHtmlTag
 
   abstract public function render();
 
-  protected function initialize()
+  protected function initialize(array $options = array())
   {
-    
+    $this->options = array_merge($this->options, $options);
   }
   
   public function __toString()
@@ -136,7 +136,7 @@ abstract class dmHtmlTag
      */
     foreach($this->attributesToRemove as $key)
     {
-      if (isset($attributes[$key]))
+      if (array_key_exists($key, $attributes))
       {
         unset($attributes[$key]);
       }

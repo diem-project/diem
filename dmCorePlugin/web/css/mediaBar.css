@@ -56,10 +56,10 @@ body.mediaBarOpen #sf_admin_content {
 }
 
 #dm_media_bar .breadCrumb {
-	font-size: 12px;
-	padding-bottom: 5px;
-	border-bottom: 1px solid #ccc;
-	margin-bottom: 5px;
+  font-size: 12px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 5px;
 }
 
 #dm_media_bar #dm_media_browser {

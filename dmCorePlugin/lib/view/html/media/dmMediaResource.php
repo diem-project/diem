@@ -153,6 +153,8 @@ class dmMediaResource
     {
       throw new dmException('Bad media : '.$source);
     }
+    
+    return $this;
   }
   
   protected function fromMedia(DmMedia $media)

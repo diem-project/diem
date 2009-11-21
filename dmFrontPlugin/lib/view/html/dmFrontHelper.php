@@ -26,13 +26,12 @@ class dmFrontHelper extends dmHelper
   
   protected function getLinkTag($source)
   {
-    $resource = $this->serviceContainer->getService('link_resource');
-    $resource->initialize($source);
+    $this->serviceContainer->setParameter(
+      'link_tag.resource',
+      $resource = $this->serviceContainer->getService('link_resource')->initialize($source)
+    );
     
-    $this->serviceContainer->setParameter('link_tag.class', $this->serviceContainer->getParameter('link_tag_'.$resource->getType().'.class'));
-    $this->serviceContainer->setParameter('link_tag.source', $resource);
-    
-    return $this->serviceContainer->getService('link_tag');
+    return $this->serviceContainer->getService('link_tag_'.$resource->getType());
   }
   
 }

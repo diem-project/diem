@@ -5,9 +5,9 @@ class dmFrontLinkTagPage extends dmFrontLinkTag
   protected
   $page;
 
-  protected function initialize()
+  protected function initialize(array $options = array())
   {
-    parent::initialize();
+    parent::initialize($options);
     
     $this->page = $this->resource->getSubject();
     
@@ -17,16 +17,20 @@ class dmFrontLinkTagPage extends dmFrontLinkTag
     }
     
     $this->set('tag', 'a');
-    $this->set('current_span', dmConfig::get('link_current_span', true));
     
-    $this->addAttributeToRemove('current_span');
+    if ($this->options['use_page_title'])
+    {
+      $this->title($this->page->_getI18n('title'));
+    }
+    
+    $this->addAttributeToRemove(array('current_span', 'use_page_title'));
   }
   
   public function currentSpan($bool)
   {
     return $this->set('current_span', (bool) $bool);
   }
-
+  
   protected function getBaseHref()
   {
     $pageSlug = $this->page->_getI18n('slug');
@@ -60,10 +64,17 @@ class dmFrontLinkTagPage extends dmFrontLinkTag
     
     if ($tagName === 'span')
     {
-      unset($preparedAttributes['href'], $preparedAttributes['target']);
+      unset($preparedAttributes['href'], $preparedAttributes['target'], $preparedAttributes['title']);
     }
     
-    return '<'.$tagName.$this->convertAttributesToHtml($preparedAttributes).'>'.$this->renderText().'</'.$tagName.'>';
+    $text = $this->renderText();
+    
+    if (isset($preparedAttributes['title']) && $preparedAttributes['title'] == $text)
+    {
+      unset($preparedAttributes['title']);
+    }
+    
+    return '<'.$tagName.$this->convertAttributesToHtml($preparedAttributes).'>'.$text.'</'.$tagName.'>';
   }
   
   protected function prepareAttributesForHtml(array $attributes)
