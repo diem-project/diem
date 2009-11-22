@@ -136,8 +136,8 @@ class dmContext extends sfContext
     require_once(sfConfig::get('dm_core_dir').'/lib/vendor/sfService/sfServiceContainer.php');
 
     $name = 'dm'.dmString::camelize(sfConfig::get('sf_app')).'ServiceContainer';
-    $file = dmOs::join(sfConfig::get('dm_cache_dir'), 'services', $name.'.php');
-     
+    $file = dmOs::join(sfConfig::get('dm_cache_dir'), $name.'.php');
+
     if (!file_exists($file))
     {
       $this->dumpServiceContainer($name, $file);
@@ -145,6 +145,15 @@ class dmContext extends sfContext
 
     require_once($file);
     $this->serviceContainer = new $name;
+    
+    $this->dispatcher->connect('dm.config.updated', array($this, 'listenToConfigUpdatedEvent'));
+  }
+  
+  public function listenToConfigUpdatedEvent(sfEvent $e)
+  {
+    $this->getFilesystem()->unlink(
+      sfFinder::type('file')->pattern('dm*ServiceContainer.php')->in(sfConfig::get('dm_cache_dir'))
+    );
   }
 
   public function configureServiceContainer(dmBaseServiceContainer $serviceContainer)

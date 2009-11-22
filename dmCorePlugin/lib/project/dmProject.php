@@ -78,7 +78,6 @@ class dmProject
     $requiredWritableDirs = array(
       sfConfig::get('sf_cache_dir'),
       sfConfig::get('dm_cache_dir'),
-      dmOs::join(sfConfig::get('dm_cache_dir'), 'services'),
       sfConfig::get('sf_log_dir'),
 //      sfConfig::get('dm_data_dir'),
 //      dmOs::join(sfConfig::get('dm_data_dir'), 'backup'),

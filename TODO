@@ -295,3 +295,7 @@
 * [DONE] add front doctrine pager to front service container
 
 * upgrade jsTree
+
+* dmSetting update must clear the DIC
+
+* check that dmSetup builds dm forms

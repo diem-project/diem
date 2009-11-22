@@ -7,7 +7,8 @@ class dmServiceContainerLoaderConfiguration implements sfServiceContainerLoaderI
 {
   protected
     $container,
-    $dispatcher;
+    $dispatcher,
+    $config;
 
   /**
    * Constructor.
@@ -28,6 +29,8 @@ class dmServiceContainerLoaderConfiguration implements sfServiceContainerLoaderI
    */
   public function load($config)
   {
+    $this->config = $config;
+    
     $this->add('media_tag_image', 'resize_method',  'image_resize_method');
     $this->add('media_tag_image', 'resize_quality', 'image_resize_quality');
     
@@ -41,15 +44,17 @@ class dmServiceContainerLoaderConfiguration implements sfServiceContainerLoaderI
       'container' => $this->container,
       'config'    => $config
     )));
+    
+    unset($this->config);
   }
   
   protected function add($service, $key, $configKey)
   {
-    if (isset($config[$configKey]) && $this->container->hasParameter($service.'.options'))
+    if (isset($this->config[$configKey]) && $this->container->hasParameter($service.'.options'))
     {
       $this->container->setParameter(
         $service.'.options',
-        array_merge($this->container->getParameter($service.'.options'), array($key => $config[$configKey]))
+        array_merge($this->container->getParameter($service.'.options'), array($key => $this->config[$configKey]))
       );
     }
   }
