@@ -3,13 +3,15 @@
 class dmAdminLinkTag extends dmLinkTag
 {
   protected
-  $controller;
+  $controller,
+  $scriptNameResolver;
   
-  public function __construct($resource, array $requestContext, sfWebController $controller)
+  public function __construct($resource, dmScriptNameResolver $scriptNameResolver, array $requestContext, sfWebController $controller)
   {
     $this->resource       = empty($resource) ? '@homepage' : $resource;
     $this->requestContext = $requestContext;
     $this->controller     = $controller;
+    $this->scriptNameResolver = $scriptNameResolver;
     
     $this->initialize();
   }
@@ -35,7 +37,7 @@ class dmAdminLinkTag extends dmLinkTag
           $slug = '';
         }
         
-        $resource = self::$context->get('script_name_resolver')->get($app).$slug;
+        $resource = $this->scriptNameResolver->get($app).$slug;
       }
       elseif ($this->resource{0} === '/')
       {
@@ -85,7 +87,7 @@ class dmAdminLinkTag extends dmLinkTag
       }
       elseif($this->resource instanceof DmPage)
       {
-        $resource = self::$context->get('script_name_resolver')->get('front').'/'.$this->resource->get('slug');
+        $resource = $this->scriptNameResolver->get('front').'/'.$this->resource->get('slug');
       }
     }
     

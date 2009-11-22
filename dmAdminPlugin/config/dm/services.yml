@@ -92,7 +92,7 @@ services:
   link_tag:
     class:                    %link_tag.class%
     shared:                   false
-    arguments:                [ %link_tag.source%, %request.context%, @controller ]
+    arguments:                [ %link_tag.source%, @script_name_resolver, %request.context%, @controller ]
 
   admin_sort_table_form:
     class:                    %admin_sort_table_form.class%
