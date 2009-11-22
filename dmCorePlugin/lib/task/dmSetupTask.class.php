@@ -38,14 +38,34 @@ EOF;
     $this->logSection('diem', 'Setup '.dmProject::getKey());
 
     $this->runTask('dm:clear-cache');
+
+    $this->runTask('dm:upgrade');
     
 //    $this->migrate();
 
     if ($options['clear-db'])
     {
-      $this->runTask('doctrine:build', array(), array('db' => true));
+      $task = new sfDoctrineDropDbTask($this->dispatcher, $this->formatter);
+      $task->setCommandApplication($this->commandApplication);
+      $task->setConfiguration($this->configuration);
+      $ret = $task->run(array(), array('no-confirmation' => false));
+
+      if ($ret)
+      {
+        return $ret;
+      }
+
+      $task = new sfDoctrineBuildDbTask($this->dispatcher, $this->formatter);
+      $task->setCommandApplication($this->commandApplication);
+      $task->setConfiguration($this->configuration);
+      $ret = $task->run();
+
+      if ($ret)
+      {
+        return $ret;
+      }
       
-      // well, we no more need migration classes...
+      // well, we don't need migration classes anymore...
       sfToolkit::clearDirectory(dmProject::rootify('lib/migration/doctrine'));
     }
     else
@@ -80,6 +100,8 @@ EOF;
   
   protected function migrate()
   {
+    throw new dmException('Disabled');
+    
     switch($migrateResponse = $this->runTask('dm:generate-migration'))
     {
       case dmGenerateMigrationTask::UP_TO_DATE:

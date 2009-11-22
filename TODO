@@ -296,6 +296,6 @@
 
 * upgrade jsTree
 
-* dmSetting update must clear the DIC
+[DONE] dmSetting update must clear the DIC
 
 * check that dmSetup builds dm forms

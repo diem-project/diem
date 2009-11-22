@@ -15,8 +15,9 @@ class dmTableTag extends dmHtmlTag
     $this->initialize();
   }
   
-  protected function initialize()
+  protected function initialize(array $options = array())
   {
+    parent:: initialize($options);
     $this->head = $this->body = $this->foot = array();
   }
   
