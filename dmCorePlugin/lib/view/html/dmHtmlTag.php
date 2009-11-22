@@ -2,10 +2,6 @@
 
 abstract class dmHtmlTag
 {
-  protected static
-  $serviceContainer,
-  $context;
-
   protected
   $options = array('class' => array()),
   $attributesToRemove = array(),
@@ -183,9 +179,4 @@ abstract class dmHtmlTag
   }
 
 
-  public static function setContext(dmContext $context)
-  {
-    self::$serviceContainer = $context->getServiceContainer();
-    self::$context = $context;
-  }
 }

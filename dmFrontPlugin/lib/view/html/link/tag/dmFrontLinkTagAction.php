@@ -3,7 +3,15 @@
 class dmFrontLinkTagAction extends dmFrontLinkTag
 {
   protected
-  $action;
+  $action,
+  $controller;
+  
+  public function __construct(dmFrontLinkResource $resource, sfWebController $controller, array $requestContext, array $options = array())
+  {
+    $this->controller     = $controller;
+    
+    parent::__construct($resource, $requestContext, $options);
+  }
   
   protected function initialize(array $options = array())
   {
@@ -14,7 +22,7 @@ class dmFrontLinkTagAction extends dmFrontLinkTag
 
   protected function getBaseHref()
   {
-    return self::$context->getController()->genUrl($this->action);
+    return $this->controller->genUrl($this->action);
   }
 
 }

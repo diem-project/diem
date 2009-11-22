@@ -71,4 +71,32 @@ EOF;
       ), 'ERROR_LARGE');
     }
   }
+  
+  /**
+   * Returns the filesystem instance.
+   *
+   * @return sfFilesystem A sfFilesystem instance
+   */
+  public function getFilesystem()
+  {
+    if (!isset($this->filesystem))
+    {
+      $this->filesystem = new sfFilesystem();
+    }
+
+    return $this->filesystem;
+  }
+
+  /**
+   * Captures those chmod commands that fail.
+   * 
+   * @see http://www.php.net/set_error_handler
+   */
+  public function handleError($no, $string, $file, $line, $context)
+  {
+    if (!is_writable($this->current))
+    {
+      $this->failed[] = $this->current;
+    }
+  }
 }

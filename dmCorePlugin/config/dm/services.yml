@@ -153,22 +153,22 @@ services:
   media_tag_image:
     class:                    %media_tag_image.class%
     shared:                   false
-    arguments:                [ %media_tag.source%, %user.theme%, %user.culture%, %request.context%, %media_tag_image.options% ]
+    arguments:                [ %media_tag.source%, @context, %media_tag_image.options% ]
 
   media_tag_flash:
     class:                    %media_tag_flash.class%
     shared:                   false
-    arguments:                [ %media_tag.source%, %user.theme%, %user.culture%, %request.context%, %media_tag_flash.options% ]
+    arguments:                [ %media_tag.source%, @context, %media_tag_flash.options% ]
 
   media_tag_video:
     class:                    %media_tag_video.class%
     shared:                   false
-    arguments:                [ %media_tag.source%, %user.theme%, %user.culture%, %request.context%, %media_tag_video.options% ]
+    arguments:                [ %media_tag.source%, @context, %media_tag_video.options% ]
 
   media_tag_audio:
     class:                    %media_tag_audio.class%
     shared:                   false
-    arguments:                [ %media_tag.source%, %user.theme%, %user.culture%, %request.context%, %media_tag_audio.options% ]
+    arguments:                [ %media_tag.source%, @context, %media_tag_audio.options% ]
 
   media_resource:
     class:                    %media_resource.class%

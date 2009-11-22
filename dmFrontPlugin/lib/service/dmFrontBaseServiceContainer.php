@@ -13,6 +13,8 @@ abstract class dmFrontBaseServiceContainer extends dmBaseServiceContainer
         'default' => sfConfig::get('dm_theme_default')
       )
     ));
+    
+    $this->setParameter('context.page', null);
   }
 
   public function configureServices()

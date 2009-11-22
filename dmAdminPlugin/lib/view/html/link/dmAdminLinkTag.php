@@ -3,7 +3,6 @@
 class dmAdminLinkTag extends dmLinkTag
 {
   protected
-  $requestContext,
   $controller;
   
   public function __construct($resource, array $requestContext, sfWebController $controller)

@@ -3,8 +3,16 @@
 class dmFrontLinkTagPage extends dmFrontLinkTag
 {
   protected
-  $page;
+  $page,
+  $currentPage;
 
+  public function __construct(dmFrontLinkResource $resource, DmPage $currentPage = null, array $requestContext, array $options = array())
+  {
+    $this->currentPage    = $currentPage;
+    
+    parent::__construct($resource, $requestContext, $options);
+  }
+  
   protected function initialize(array $options = array())
   {
     parent::initialize($options);
@@ -83,9 +91,9 @@ class dmFrontLinkTagPage extends dmFrontLinkTag
 
     if (!sfConfig::get('dm_search_populating'))
     {
-      if($currentPage = self::$context->getPage())
+      if($this->currentPage)
       {
-        if ($currentPage->get('id') === $this->page->get('id'))
+        if ($this->currentPage->get('id') === $this->page->get('id'))
         {
           $attributes['class'][] = 'dm_current';
           
@@ -94,7 +102,7 @@ class dmFrontLinkTagPage extends dmFrontLinkTag
             $attributes['tag'] = 'span';
           }
         }
-        elseif($currentPage->getNode()->isDescendantOf($this->page))
+        elseif($this->currentPage->getNode()->isDescendantOf($this->page))
         {
           $attributes['class'][] = 'dm_parent';
         }

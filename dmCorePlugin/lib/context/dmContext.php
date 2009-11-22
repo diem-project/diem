@@ -51,11 +51,6 @@ class dmContext extends sfContext
     $this->serviceContainer->connect();
 
     /*
-     * dmHtmlTag requires service container to create link and media tags
-     */
-    dmHtmlTag::setContext($this);
-
-    /*
      * dmForm requires service container...
      */
     dmForm::setServiceContainer($this->serviceContainer);
@@ -71,7 +66,7 @@ class dmContext extends sfContext
     dmDoctrineTable::setModuleManager($this->getModuleManager());
     dmDoctrineTable::setEventDispatcher($this->dispatcher);
     
-    $this->reloadHelper();
+    $this->helper = $this->serviceContainer->getService('helper');
 
     // notify that context is ready
     $this->dispatcher->notify(new sfEvent($this, 'dm.context.loaded'));
@@ -246,10 +241,6 @@ class dmContext extends sfContext
     return $this->helper;
   }
   
-  public function reloadHelper()
-  {
-    $this->helper = $this->serviceContainer->getService('helper');
-  }
 
   /*
    * @return dmModuleManager

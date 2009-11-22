@@ -169,7 +169,7 @@ class dmMediaTagImage extends dmMediaTag
       }
       catch(Exception $e)
       {
-        self::$context->getLogger()->err($e->getMessage());
+        $this->context->getLogger()->err($e->getMessage());
         
         if (sfConfig::get('dm_debug'))
         {
@@ -198,7 +198,7 @@ class dmMediaTagImage extends dmMediaTag
       throw new dmException('The image is not readable : '.dmProject::unRootify($mediaFullPath));
     }
 
-    $attributes['src'] = $this->requestContext['relative_url_root'].str_replace(sfConfig::get('sf_web_dir'), '', $mediaFullPath);
+    $attributes['src'] = $this->context->getRequest()->getRelativeUrlRoot().str_replace(sfConfig::get('sf_web_dir'), '', $mediaFullPath);
 
     return $attributes;
   }
@@ -246,7 +246,7 @@ class dmMediaTagImage extends dmMediaTag
     {
       $thumbDir = dmOs::join($media->get('Folder')->getFullPath(), '.thumbs');
       
-      if(!self::$context->getFilesystem()->mkdir($thumbDir))
+      if(!$this->context->getFilesystem()->mkdir($thumbDir))
       {
         throw new dmException('Thumbnails can not be created in '.$media->get('Folder')->getFullPath());
       }
@@ -269,7 +269,7 @@ class dmMediaTagImage extends dmMediaTag
 
     if (!file_exists($thumbPath))
     {
-      self::$context->getLogger()->notice('dmMediaTagImage : create thumb for media '.$media);
+      $this->context->getLogger()->notice('dmMediaTagImage : create thumb for media '.$media);
 
       $image = $media->getImage();
 
@@ -298,6 +298,10 @@ class dmMediaTagImage extends dmMediaTag
       if (!file_exists($thumbPath))
       {
         throw new dmException(dmProject::unRootify($thumbPath).' cannot be created');
+      }
+      else
+      {
+        $this->context->getFilesystem()->chmod($thumbPath, 0666);
       }
     }
 

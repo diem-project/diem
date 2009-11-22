@@ -17,8 +17,7 @@ abstract class PluginDmMedia extends BaseDmMedia
 
   public function getTimeHash()
   {
-    
-    return $this->checkFileExists() ? substr(md5(filemtime($this->getFullPath())), -4) : null;
+    return $this->checkFileExists() ? substr(md5(filemtime($this->getFullPath())), -5) : null;
   }
 
   /*

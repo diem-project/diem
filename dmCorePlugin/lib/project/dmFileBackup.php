@@ -67,6 +67,8 @@ class dmFileBackup
       return false;
     }
     
+    $this->filesystem->chmod($file, 0777);
+    
     return true;
   }
   

@@ -71,12 +71,12 @@ services:
   link_tag_record:
     class:                    %link_tag_record.class%
     shared:                   false
-    arguments:                [ %link_tag.resource%, %request.context%, %link_tag_record.options% ]
+    arguments:                [ %link_tag.resource%, %context.page%, %request.context%, %link_tag_record.options% ]
 
   link_tag_page:
     class:                    %link_tag_page.class%
     shared:                   false
-    arguments:                [ %link_tag.resource%, %request.context%, %link_tag_page.options% ]
+    arguments:                [ %link_tag.resource%, %context.page%, %request.context%, %link_tag_page.options% ]
 
   link_tag_media:
     class:                    %link_tag_media.class%
@@ -86,12 +86,12 @@ services:
   link_tag_action:
     class:                    %link_tag_action.class%
     shared:                   false
-    arguments:                [ %link_tag.resource%, %request.context%, %link_tag_action.options% ]
+    arguments:                [ %link_tag.resource%, @controller, %request.context%, %link_tag_action.options% ]
 
   link_tag_uri:
     class:                    %link_tag_uri.class%
     shared:                   false
-    arguments:                [ %link_tag.resource%, %request.context%, %link_tag_uri.options% ]
+    arguments:                [ %link_tag.resource%, @controller, %request.context%, %link_tag_uri.options% ]
 
   link_tag_error:
     class:                    %link_tag_error.class%
