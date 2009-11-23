@@ -161,10 +161,10 @@ $this->runTask('configure:database', array(
   'password' => $db['password']
 ));
 
-dm::start();
+//dm::start();
 //require_once(dmProject::rootify('config/dmInstallerProjectConfiguration.class.php'));
 //$configuration = dmInstallerProjectConfiguration::activate(sfConfig::get('sf_root_dir'), $this->dispatcher);
-$this->filesystem->remove(dmProject::rootify('config/dmInstallerProjectConfiguration.class.php'));
+//$this->filesystem->remove(dmProject::rootify('config/dmInstallerProjectConfiguration.class.php'));
 
 //$configuration = ProjectConfiguration::getApplicationConfiguration('admin', 'dev', true, null, $this->dispatcher);
 
