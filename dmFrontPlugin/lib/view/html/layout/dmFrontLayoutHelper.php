@@ -87,7 +87,7 @@ class dmFrontLayoutHelper extends dmCoreLayoutHelper
     
     if (dmConfig::get('gwt_key') && $this->page->getNode()->isRoot())
     {
-      $metas['verify-v1'] = dmConfig::get('gwt_key');
+      $metas['google-site-verification'] = dmConfig::get('gwt_key');
     }
     
     return $metas;

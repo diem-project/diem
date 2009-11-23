@@ -5,7 +5,7 @@ class dmInstallerProjectConfiguration extends dmProjectConfiguration
 
   public function setup()
   {
-  	parent::setup();
+    parent::setup();
 
     $this->setWebDirName(##DIEM_WEB_DIR_NAME##);
   }

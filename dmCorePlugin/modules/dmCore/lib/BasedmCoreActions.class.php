@@ -51,13 +51,13 @@ class BasedmCoreActions extends dmBaseActions
       switch($this->step)
       {
         case 1:
-          $this->context->get('cache_manager')->clearAll();
+          @$this->context->get('cache_manager')->clearAll();
        
           if ($this->getUser()->can('system'))
           {
             $this->context->get('filesystem')->sf('dmFront:generate');
       
-            dmFileCache::clearAll();
+            @dmFileCache::clearAll();
           }
           
           $data = array(

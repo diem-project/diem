@@ -113,9 +113,9 @@ class sfImageTransformImageMagickAdapter extends sfImageTransformAdapterAbstract
    */
   
    public function loadString($string)
-	{
+  {
     return $this->getHolder()->readImageBlob($string);;
-	 }
+   }
  
   /**
    * Get the image as string

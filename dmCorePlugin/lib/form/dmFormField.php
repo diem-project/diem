@@ -20,10 +20,10 @@ class dmFormField extends sfFormField
 
   public function field($attributes = array())
   {
-  	$attributes = dmString::toArray($attributes);
-  	
-  	$attributes['class'] = dmArray::get($attributes, 'class', array());
-  	
+    $attributes = dmString::toArray($attributes);
+    
+    $attributes['class'] = dmArray::get($attributes, 'class', array());
+    
     if ($this->isRequired)
     {
       $attributes['class'][] = 'required';
@@ -45,8 +45,8 @@ class dmFormField extends sfFormField
       array('class' => 'label'),
       dmString::toArray($attributes)
     );
-  	$label = null === $label ? $this->parent->getWidget()->getLabel($this->name) : $label;
-  	
+    $label = null === $label ? $this->parent->getWidget()->getLabel($this->name) : $label;
+    
     $this->htmlBuffer .= parent::renderLabel($label, $attributes);
     
     return $this;
