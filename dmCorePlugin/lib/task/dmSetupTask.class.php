@@ -33,22 +33,25 @@ EOF;
    */
   protected function execute($arguments = array(), $options = array())
   {
-    $this->withDatabase();
-    
     $this->logSection('diem', 'Setup '.dmProject::getKey());
 
-    $this->runTask('dm:clear-cache');
-
-    $this->runTask('dm:upgrade');
-    
+    if (!$this->isProjectLocked())
+    {
+      $this->runTask('dm:upgrade');
+      $this->runTask('dm:clear-cache');
+    }
 //    $this->migrate();
 
-    if ($options['clear-db'])
+    if ($options['clear-db'] || $this->isProjectLocked())
     {
+      $this->runTask('doctrine:build', array(), array('model' => true));
+    
+      $this->reloadAutoload();
+      
       $task = new sfDoctrineDropDbTask($this->dispatcher, $this->formatter);
       $task->setCommandApplication($this->commandApplication);
       $task->setConfiguration($this->configuration);
-      $ret = $task->run(array(), array('no-confirmation' => false));
+      $ret = $task->run(array(), array('no-confirmation' => $this->isProjectLocked()));
 
       if ($ret)
       {
@@ -59,11 +62,15 @@ EOF;
       $task->setCommandApplication($this->commandApplication);
       $task->setConfiguration($this->configuration);
       $ret = $task->run();
-
+      
       if ($ret)
       {
         return $ret;
       }
+      
+      $this->runTask('doctrine:build-sql', array(), array());
+      
+      $this->runTask('doctrine:insert-sql', array(), array());
       
       // well, we don't need migration classes anymore...
       sfToolkit::clearDirectory(dmProject::rootify('lib/migration/doctrine'));
@@ -72,6 +79,8 @@ EOF;
     {
       $this->runTask('doctrine:build', array(), array('model' => true));
     }
+    
+    $this->withDatabase();
     
     $this->runTask('doctrine:build-forms', array(), array('generator-class' => 'dmDoctrineFormGenerator'));
     
@@ -141,7 +150,7 @@ EOF;
   
   protected function unlockProject()
   {
-    if (file_exists(dmOs::join(sfConfig::get('dm_data_dir'), 'lock')))
+    if ($this->isProjectLocked())
     {
       $this->getFilesystem()->remove(dmOs::join(sfConfig::get('dm_data_dir'), 'lock'));
       
@@ -152,4 +161,8 @@ EOF;
     }
   }
   
+  protected function isProjectLocked()
+  {
+    return file_exists(dmOs::join(sfConfig::get('dm_data_dir'), 'lock'));
+  }
 }

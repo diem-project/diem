@@ -110,16 +110,18 @@ while(!$isDatabaseOk);
 
 $this->logBlock('Your configuration is valid', 'INFO_LARGE');
 
-$confirmationMessage = sprintf('Are you ready to create the %s project ? This will erase the %s database'.' (Y/n)',
-  dmProject::getKey(),
-  $settings['database']['name']
-);
+usleep(2000000);
 
-if (!$this->askConfirmation($confirmationMessage))
-{
-  $this->log('Aborting.');
-  exit;
-}
+//$confirmationMessage = sprintf('Are you ready to create the %s project ? This will erase the %s database'.' (Y/n)',
+//  dmProject::getKey(),
+//  $settings['database']['name']
+//);
+//
+//if (!$this->askConfirmation($confirmationMessage))
+//{
+//  $this->log('Aborting.');
+//  exit;
+//}
 
 $this->filesystem->mirror(
   dmOs::join(sfConfig::get('dm_core_dir'), 'data/skeleton'),
@@ -159,43 +161,43 @@ $this->runTask('configure:database', array(
   'password' => $db['password']
 ));
 
-/*
- * Let's fly
- */
-
 dm::start();
-require_once(dmProject::rootify('config/dmInstallerProjectConfiguration.class.php'));
-$config = dmInstallerProjectConfiguration::activate(sfConfig::get('sf_root_dir'), $this->dispatcher);
+//require_once(dmProject::rootify('config/dmInstallerProjectConfiguration.class.php'));
+//$configuration = dmInstallerProjectConfiguration::activate(sfConfig::get('sf_root_dir'), $this->dispatcher);
 $this->filesystem->remove(dmProject::rootify('config/dmInstallerProjectConfiguration.class.php'));
 
-sfConfig::set('sf_debug', true);
+//$configuration = ProjectConfiguration::getApplicationConfiguration('admin', 'dev', true, null, $this->dispatcher);
 
-sfConfig::set('sf_error_reporting', (E_ALL | E_STRICT));
+//print_r(get_class($configuration));
 
-$task = $this->createTask('doctrine:build');
-$task->setConfiguration($config);
-$task->run(array(), array('all' => true, 'no-confirmation' => true));
+//sfConfig::set('sf_debug', true);
+//
+//sfConfig::set('sf_error_reporting', (E_ALL | E_STRICT));
 
-dmDb::create('DmUser', array(
-  'is_super_admin' => true,
-  'username' => 'admin',
-  'password' => !empty($settings['database']['password']) ? $settings['database']['password'] : 'admin',
-  'email' => 'admin@'.dmProject::getKey().'.com'
-))->save();
+//$task = $this->createTask('doctrine:build');
+//$task->setConfiguration($configuration);
+//$task->run(array(), array('all' => true, 'no-confirmation' => true));
 
-// fix permission for common directories
-$fixPerms = new dmProjectPermissionsTask($this->dispatcher, $this->formatter);
-$fixPerms->setCommandApplication($this->commandApplication);
-$fixPerms->setConfiguration($config);
-$fixPerms->run();
+//dmDb::create('DmUser', array(
+//  'is_super_admin' => true,
+//  'username' => 'admin',
+//  'password' => !empty($settings['database']['password']) ? $settings['database']['password'] : 'admin',
+//  'email' => 'admin@'.dmProject::getKey().'.com'
+//))->save();
 
 // fix permission for common directories
-$fixPerms = new dmPublishAssetsTask($this->dispatcher, $this->formatter);
-$fixPerms->setCommandApplication($this->commandApplication);
-$fixPerms->setConfiguration($config);
-$fixPerms->run();
+//$fixPerms = new dmProjectPermissionsTask($this->dispatcher, $this->formatter);
+//$fixPerms->setCommandApplication($this->commandApplication);
+//$fixPerms->setConfiguration($config);
+//$fixPerms->run();
 
-$this->logBlock('Cool ! Everything went fine', 'INFO_LARGE');
+// fix permission for common directories
+//$fixPerms = new dmPublishAssetsTask($this->dispatcher, $this->formatter);
+//$fixPerms->setCommandApplication($this->commandApplication);
+//$fixPerms->setConfiguration($config);
+//$fixPerms->run();
+
+$this->logBlock('Everything went fine', 'INFO_LARGE');
 
 $this->logBlock('There is a last thing to do. Please run : php symfony dm:setup', 'INFO_LARGE');
 

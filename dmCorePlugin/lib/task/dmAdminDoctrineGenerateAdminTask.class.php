@@ -42,7 +42,7 @@ class dmAdminDoctrineGenerateAdminTask extends sfDoctrineGenerateAdminTask
 
     return $task->run(array($arguments['application'], $module->getKey(), $module->getModel()), array(
       'theme'                 => $options['theme'],
-      'env'              => $options['env'],
+      'env'                   => $options['env'],
       'route-prefix'          => $module->getUnderscore(),
       'with-doctrine-route'   => true,
       'generate-in-cache'     => true,

@@ -25,7 +25,6 @@ class dmProjectConfiguration extends sfProjectConfiguration
   {
     return $this->setWebDir(sfConfig::get('sf_root_dir').'/'.$webDirName);
   }
-
   
   public function configureDoctrine(Doctrine_Manager $manager)
   {
