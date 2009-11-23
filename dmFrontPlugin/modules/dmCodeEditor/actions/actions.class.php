@@ -60,7 +60,7 @@ class dmCodeEditorActions extends dmFrontBaseActions
 
     try
     {
-      $this->context->get('file_backup')->save($file);
+      @$this->context->get('file_backup')->save($file);
     }
     catch(dmException $e)
     {
@@ -70,7 +70,7 @@ class dmCodeEditorActions extends dmFrontBaseActions
       ));
     }
 
-    file_put_contents($file, $request->getParameter('code'));
+    @file_put_contents($file, $request->getParameter('code'));
 
     if (dmOs::getFileExtension($file, false) == 'css')
     {

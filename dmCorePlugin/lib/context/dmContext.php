@@ -147,7 +147,7 @@ class dmContext extends sfContext
   public function listenToConfigUpdatedEvent(sfEvent $e)
   {
     $this->getFilesystem()->unlink(
-      sfFinder::type('file')->pattern('dm*ServiceContainer.php')->in(sfConfig::get('dm_cache_dir'))
+      sfFinder::type('file')->name('dm*ServiceContainer.php')->in(sfConfig::get('dm_cache_dir'))
     );
   }
 

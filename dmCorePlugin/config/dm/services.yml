@@ -20,9 +20,7 @@ parameters:
 
   markdown.class:             dmMarkdown
   markdown.options:
-    h2_id:                    _%%text%%             # Add an automatic id on h2 tags based on this pattern
-    h3_id:                    __%%text%%            # Add an automatic id on h2 tags based on this pattern
-    h4_id:                    false                 # Add an automatic id on h2 tags based on this pattern
+    auto_header_id:           true                  # Add an automatic id on header tags
 
   script_name_resolver.class: dmScriptNameResolver
 

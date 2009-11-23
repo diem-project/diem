@@ -5,6 +5,7 @@ require_once(dirname(__FILE__).'/vendor/markdown.php');
 class dmMarkdown extends MarkdownExtra_Parser
 {
   protected
+  $headerIdStack,
   $helper;
   
   public function __construct(dmHelper $helper, array $options = array())
@@ -24,20 +25,31 @@ class dmMarkdown extends MarkdownExtra_Parser
   public function getDefaultOptions()
   {
     return array(
-      'h2_id' => '_%text%',
-      'h3_id' => '__%text%',
-      'h4_id' => false
+      'auto_header_id' => true
     );
+  }
+  
+  public function reset()
+  {
+    $this->headerIdStack = array(
+      1 => null,
+      2 => null,
+      3 => null,
+      4 => null,
+      5 => null
+    );
+  }
+  
+  public function toHtml($text)
+  {
+    $this->reset();
+    
+    return $this->postTransform($this->transform($this->preTransform($text)));
   }
   
   public function toText($text)
   {
     return strip_tags($this->toHtml($text));
-  }
-  
-  public function toHtml($text)
-  {
-    return $this->postTransform($this->transform($this->preTransform($text)));
   }
 
   protected function preTransform($text)
@@ -115,47 +127,44 @@ class dmMarkdown extends MarkdownExtra_Parser
     // add the "first_p" css class to the first p
     $html = dmString::str_replace_once('<p>', '<p class="first_p">', $html);
     
-    $html = $this->addHeaderIds($html);
-    
     return $html;
   }
   
-  protected function addHeaderIds($html)
+  public function _doHeaders_callback_atx($matches)
   {
-    foreach(array('h2', 'h3', 'h4') as $tag)
+    $level = strlen($matches[1]);
+    
+    $attr  = $this->_doHeaders_attr($id =& $matches[3]);
+    
+    $text = $this->runSpanGamut($matches[2]);
+    
+    if ($this->options['auto_header_id'] && false === strpos($attr, 'id="'))
     {
-      if (!$pattern = $this->options[$tag.'_id'] || !strpos($html, '<'.$tag.' />'))
+      $id = '';
+      
+      if(1 !== $level && !empty($this->headerIdStack[$level-1]))
       {
-        continue;
+        $id = $this->headerIdStack[$level-1].':';
       }
       
-      $html = preg_replace_callback(
-        '#<('.$tag.')[^>]*>(.*)</'.$tag.'>#uUx',
-        array($this, 'addHeaderIdCallback'),
-        $html
-      );
+      $id .= dmString::slugify($text);
+      
+      if (!empty($id))
+      {
+        $attr = ' id="'.$id.'"';
+        
+        if ($level < 6)
+        {
+          $this->headerIdStack[$level] = $id;
+        }
+      }
     }
     
-    return $html;
+    $block = "<h$level$attr>".$text."</h$level>";
+    
+    return "\n" . $this->hashBlock($block) . "\n\n";
   }
   
-  protected function addHeaderIdCallback(array $matches)
-  {
-    $tag = $matches[1];
-    
-    $text = str_replace('œ', 'oe', dmString::removeAccents($matches[2]));
-
-    // strip all non word chars
-    // replace all white space sections with a dash
-    $text = preg_replace(array('/\W/', '/\s+/'), array(' ', '_'), $text);
-
-    $text = trim($text, '_');
-    
-    $id = str_replace('%text%', $text, $this->options[$tag.'_id']);
-    
-    return str_replace('<'.$tag, '<'.$tag.' id="'.$id.'" ', $matches[0]);
-  }
-
   protected function cleanText($text)
   {
     return strtr($text, array(

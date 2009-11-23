@@ -20,8 +20,13 @@ class dmInterfaceComponents extends BasedmInterfaceComponents
       $this->cultureSelect = new sfWidgetFormSelect(array('choices' => $cultures));
     }
     
-    $this->themeSelect = new sfWidgetFormSelect(array('choices' => $this->context->getServiceContainer()->getService('theme_manager')->getThemesEnabled()));
-
+    $themeManager = $this->context->getServiceContainer()->getService('theme_manager');
+    
+    if ($themeManager->getNbThemesEnabled() > 1)
+    {
+      $this->themeSelect = new sfWidgetFormSelect(array('choices' => $themeManager->getThemesEnabled()));
+    }
+    
     if ($this->getUser()->can('widget_add'))
     {
       $this->addMenu = new dmHtmlMenu($this->addMenu());

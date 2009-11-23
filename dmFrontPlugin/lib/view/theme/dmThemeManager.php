@@ -1,11 +1,10 @@
 <?php
 
-class dmThemeManager
+class dmThemeManager extends dmConfigurable
 {
   protected
   $dispatcher,
   $serviceContainer,
-  $options,
   $themes;
   
   public function __construct(sfEventDispatcher $dispatcher, sfServiceContainer $serviceContainer, array $options)
@@ -18,16 +17,7 @@ class dmThemeManager
   
   public function initialize(array $options)
   {
-    $this->options = sfToolkit::arrayDeepMerge(array(
-      'list' => array(
-        'default_theme' => array(
-          'name' => 'Diem default theme',
-          'path' => 'dm/front/defaultTheme',
-          'enabled' => true
-        )
-      ),
-      'default' => 'default_theme'
-    ), $options);
+    $this->configure($options);
     
     if (!$this->themeKeyExists($this->options['default']))
     {
@@ -87,6 +77,11 @@ class dmThemeManager
     }
     
     return $this->themes;
+  }
+  
+  public function getNbThemesEnabled()
+  {
+    return count($this->getThemesEnabled());
   }
   
   public function getThemesEnabled()

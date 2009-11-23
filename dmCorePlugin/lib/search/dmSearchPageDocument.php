@@ -12,25 +12,25 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
   
   public function populate(DmPage $page)
   {
-    $i18n = $page['Translation'][sfDoctrineRecord::getDefaultCulture()];
+    $i18n = $page->getCurrentTranslation();
     
     $this->store('page_id', $page->get('id'));
 
     $this->index('body', $this->getPageBodyText($page), 1);
 
-    $this->index('slug', dmString::unSlugify($i18n->get('slug')), 2);
+    $this->index('slug', dmString::unSlugify($i18n->get('slug')), 3);
 
-    $this->index('name', $i18n->get('name'), 2);
+    $this->index('name', $i18n->get('name'), 3);
 
-    $this->index('title', $i18n->get('title'), 3);
+    $this->index('title', $i18n->get('title'), 4);
 
-    $this->index('h1', $i18n->get('h1'), 3);
+    $this->index('h1', $i18n->get('h1'), 4);
 
-    $this->index('description', $i18n->get('description'), 2);
+    $this->index('description', $i18n->get('description'), 3);
 
     if (sfConfig::get('dm_seo_use_keywords'))
     {
-      $this->index('keywords', $i18n->get('keywords'), 3);
+      $this->index('keywords', $i18n->get('keywords'), 5);
     }
   }
   
@@ -62,14 +62,14 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
     
     $helper = $this->context->get('page_helper');
     
-    $area = dmDb::query('DmPageView pv, pv.Area a')
+    $areas = dmDb::query('DmPageView pv, pv.Area a')
     ->select('a.id')
     ->where('pv.module = ? AND pv.action = ?', array($page->get('module'), $page->get('action')))
     ->fetchPDO();
     
     $zones = dmDb::query('DmZone z, z.Widgets w')
     ->select('z.dm_area_id, w.module, w.action, w.value')
-    ->where('z.dm_area_id = ?',$area[0][0])
+    ->where('z.dm_area_id = ?',$areas[0][0])
     ->fetchArray();
     
     sfConfig::set('dm_search_populating', true);
@@ -96,7 +96,7 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
     
     $indexableText = dmSearchIndex::cleanText($html);
     
-    unset($area, $html, $helper);
+    unset($areas, $html, $helper);
     
     return $indexableText;
   }

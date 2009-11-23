@@ -30,7 +30,7 @@ class dmFileBackup extends dmConfigurable
   
   public function getDir()
   {
-    return dmProject::rootify(dmArray::get($this->options['dir']));
+    return dmProject::rootify($this->options['dir']);
   }
   
   public function clear()

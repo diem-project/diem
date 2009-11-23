@@ -145,8 +145,10 @@ EOF;
     {
       $this->getFilesystem()->remove(dmOs::join(sfConfig::get('dm_data_dir'), 'lock'));
       
+      $password = Doctrine_Core::getConnectionByTableName('DmPage')->getOption('password');
+      
       $this->logBlock('Your project is now ready for web access. See you on admin_dev.php.', 'INFO_LARGE');
-      $this->logBlock('Your login is admin and your password is the database password, or "admin" if the database has no password.', 'INFO_LARGE');
+      $this->logBlock('Your login is admin and your password is '.(empty($password) ? '"admin"' : 'the database password'), 'INFO_LARGE');
     }
   }
   
