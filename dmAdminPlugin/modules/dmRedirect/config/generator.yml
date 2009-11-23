@@ -17,6 +17,7 @@ generator:
           label:            "New url"
           help:             "Use the tree to the left to drag & drop a page here"
       list:
+        loremize: false
         display:
           - =source
           - =dest
