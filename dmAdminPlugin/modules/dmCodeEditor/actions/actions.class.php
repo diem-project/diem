@@ -28,6 +28,8 @@ class dmCodeEditorActions extends dmAdminBaseActions
       )
     );
     
+    $this->getUser()->logInfo('The admin code editor is not completed yet an may not work');
+    
     $this->getResponse()->addJavascriptConfig('dm_tree_json', $treeJson);
   }
   
