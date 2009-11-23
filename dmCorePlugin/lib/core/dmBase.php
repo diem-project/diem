@@ -113,6 +113,11 @@ class dmBase
   {
     return dmContext::getInstance()->getConfiguration()->loadHelpers($helpers);
   }
+  
+  public function getHelper()
+  {
+    return dmContext::getInstance()->getHelper();
+  }
 
 
   /*

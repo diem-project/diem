@@ -1,11 +1,10 @@
 <?php
 
-class dmFileBackup
+class dmFileBackup extends dmConfigurable
 {
   protected
   $dispatcher,
-  $filesystem,
-  $dir;
+  $filesystem;
   
   public function __construct(sfEventDispatcher $dispatcher, dmFilesystem $filesystem, array $options = array())
   {
@@ -17,9 +16,21 @@ class dmFileBackup
   
   public function initialize(array $options = array())
   {
-    $this->dir = dmProject::rootify(dmArray::get($options, 'dir', 'data/dm/backup/filesystem'));
+    $this->configure($options);
     
     $this->checkDirIsWritable();
+  }
+  
+  public function getDefaultOptions()
+  {
+    return array(
+      'dir' => 'data/dm/backup/filesystem'
+    );
+  }
+  
+  public function getDir()
+  {
+    return dmProject::rootify(dmArray::get($this->options['dir']));
   }
   
   public function clear()
@@ -85,10 +96,6 @@ class dmFileBackup
     }
   }
   
-  public function getDir()
-  {
-    return $this->dir;
-  }
   
   public function isEnabled()
   {

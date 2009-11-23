@@ -36,50 +36,50 @@ class Doctrine_Template_Sortable extends Doctrine_Template
 
   public function setTableDefinition()
   {
-//    if (!$this->_table->getOption('orderBy'))
-//    {
-//      $this->_table->setOption('orderBy', 'position ASC');
-//    }
-    
-//    foreach($this->_table->getRelationHolder()->getLocals() as $alias => $relation)
-//    {
-//      if ($foreignRelation = $relation->getTable()->getRelationHolder()->getForeignByClass($this->_table->getComponentName()))
-//      {
-//        if (!$foreignRelation->offsetGet('orderBy'))
-//        {
-//          $foreignRelation->offsetSet('orderBy', 'position ASC');
-//        }
-//      }
-//    }
-
     $this->hasColumn('position', 'integer');
     $this->addListener(new Doctrine_Template_Listener_Sortable($this->_options));
   }
 
   public function getPrevious()
   {
+    return $this->getPreviousQuery()->fetchOne();
+  }
+  
+  public function getPreviousQuery($rootAlias = 'r')
+  {
     $many = $this->_options['manyListsColumn'];
-
-    $q = $this->getInvoker()->getTable()->createQuery()
-    ->addWhere('position < ?', $this->getInvoker()->position)
-    ->orderBy('position DESC');
-    if (!empty($many)) {
-      $q->addWhere($many . ' = ?', $this->getInvoker()->$many);
+    
+    $q = $this->getInvoker()->getTable()->createQuery($rootAlias)
+    ->addWhere($rootAlias.'.position < ?', $this->getInvoker()->get('position'))
+    ->orderBy($rootAlias.'.position DESC');
+    
+    if (!empty($many))
+    {
+      $q->addWhere($many . ' = ?', $this->getInvoker()->get($many));
     }
-    return $q->fetchOne();
+    
+    return $q;
   }
 
   public function getNext()
   {
+    return $this->getNextQuery()->fetchOne();
+  }
+  
+  public function getNextQuery($rootAlias = 'r')
+  {
     $many = $this->_options['manyListsColumn'];
-
-    $q = $this->getInvoker()->getTable()->createQuery()
-    ->addWhere('position > ?', $this->getInvoker()->position)
-    ->orderBy('position ASC');
-    if (!empty($many)) {
-      $q->addWhere($many . ' = ?', $this->getInvoker()->$many);
+    
+    $q = $this->getInvoker()->getTable()->createQuery($rootAlias)
+    ->addWhere($rootAlias.'.position > ?', $this->getInvoker()->get('position'))
+    ->orderBy($rootAlias.'.position ASC');
+    
+    if (!empty($many))
+    {
+      $q->addWhere($many . ' = ?', $this->getInvoker()->get($many));
     }
-    return $q->fetchOne();
+    
+    return $q;
   }
 
   public function swapWith(Doctrine_Record $record2)

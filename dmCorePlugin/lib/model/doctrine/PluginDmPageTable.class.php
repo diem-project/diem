@@ -70,6 +70,14 @@ class PluginDmPageTable extends myDoctrineTable
     {
       $records = $records->getData();
     }
+    
+    foreach($records as $index => $record)
+    {
+      if (!$record instanceof dmDoctrineRecord)
+      {
+        unset($records[$index]);
+      }
+    }
         
     if (!empty($records))
     {
