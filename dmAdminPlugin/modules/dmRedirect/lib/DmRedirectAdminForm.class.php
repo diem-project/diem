@@ -15,5 +15,7 @@ class DmRedirectAdminForm extends BaseDmRedirectForm
     parent::configure();
     
     $this->widgetSchema['dest']->setAttribute('class', 'dm_link_droppable');
+    
+    $this->unsetAutoFields();
   }
 }

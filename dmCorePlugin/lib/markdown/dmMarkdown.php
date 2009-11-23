@@ -190,7 +190,7 @@ class dmMarkdown extends MarkdownExtra_Parser
     $text = str_replace(array('-', '*', '#'), '', $text);
     
     // remove links
-    $text = preg_replace('#\[([^\]]*)\]\([^\)]*\)#u', '$1', $text);
+    $text = preg_replace('#\[([^\]]*)\]\([^\)]*\)#um', '$1', $text);
     
     return $text;
   }
