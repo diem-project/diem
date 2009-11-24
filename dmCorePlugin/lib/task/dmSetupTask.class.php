@@ -47,7 +47,7 @@ EOF;
     {
       $this->reloadAutoload();
       
-      if ($ret = $this->runTask('doctrine:drop-db', array(), array('no-confirmation' => $this->isProjectLocked())))
+      if ($ret = $this->runTask('doctrine:drop-db', array(), array()))
       {
         return $ret;
       }

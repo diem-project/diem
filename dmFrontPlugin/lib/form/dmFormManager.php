@@ -3,16 +3,58 @@
 class dmFormManager implements ArrayAccess
 {
   protected
+  $serviceContainer,
   $forms;
   
-  public function __construct()
+  public function __construct(dmFrontServiceContainer $serviceContainer)
   {
+    $this->serviceContainer = $serviceContainer;
+    
     $this->initialize();
   }
   
   public function initialize()
   {
     $this->forms = array();
+  }
+  
+  protected function createForm($name)
+  {
+    $formClass = $name.'Form';
+      
+    if (!class_exists($formClass))
+    {
+      throw new InvalidArgumentException(sprintf('The form manager has no "%s" form.', $formClass));
+    }
+    
+    $form = new $formClass;
+    
+    $this->prepareFormForPage($form);
+    
+    return $form;
+  }
+  
+  protected function prepareFormForPage(dmForm $form)
+  {
+    if (!$page = $this->serviceContainer->getParameter('context.page'))
+    {
+      return $form;
+    }
+    
+    if (!$pageRecord = $page->getRecord())
+    {
+      return $form;
+    }
+    
+    foreach( $form->getWidgetSchema()->getFields() as $widgetKey => $widget)
+    {
+      $widgetModel = $widget->getOption('model');
+      
+      if ($widget instanceof sfWidgetFormDoctrineChoice && $pageRecord instanceof $widgetModel)
+      {
+        $form->changeToHidden($widgetKey)->setDefault($widgetKey, $pageRecord->getPrimaryKey());
+      }
+    }
   }
   
   /**
@@ -40,16 +82,7 @@ class dmFormManager implements ArrayAccess
     
     if (!array_key_exists($name, $this->forms))
     {
-      $formClass = $name.'Form';
-      
-      if (!class_exists($formClass))
-      {
-        throw new InvalidArgumentException(sprintf('The form manager has no "%s" form.', $formClass));
-      }
-      else
-      {
-        $this->forms[$name] = new $formClass;
-      }
+      $this->forms[$name] = $this->createForm($name);
     }
 
     return $this->forms[$name];

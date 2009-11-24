@@ -59,6 +59,7 @@ services:
 
   form_manager:
     class:                    %form_manager.class%
+    arguments:                [ @service_container ]
     shared:                   true
 
   doctrine_pager:
