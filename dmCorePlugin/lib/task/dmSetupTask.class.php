@@ -93,7 +93,7 @@ EOF;
     
     $this->runTask('dm:clear-cache');
     
-    $this->logBlock('Setup successfull', 'INFO_LARGE');
+    $this->logBlock('Setup successful', 'INFO_LARGE');
     
     $this->unlockProject();
   }
