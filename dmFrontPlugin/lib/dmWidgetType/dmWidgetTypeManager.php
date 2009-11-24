@@ -85,11 +85,12 @@ class dmWidgetTypeManager
             $this->widgetTypes[$moduleKey][$actionKey] = new dmWidgetType($moduleKey, $actionKey, $widgetTypeConfig);
           }
         }
-        
+      
         $this->serviceContainer->getService('cache_manager')->getCache('dm/widget')->set('types', $this->widgetTypes);
       }
     }
     $timer && $timer->addTime();
+    
     return $this->widgetTypes;
   }
 

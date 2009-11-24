@@ -64,11 +64,6 @@ class dmFilesystem extends sfFilesystem
       umask($oldUmask);
     }
 
-//    if (!@chmod($path, $mode))
-//    {
-//      //dmDebug::log(sprintf('dmFilesystem can not chmod %s %s', $mode, $path));
-//    }
-
     return is_writable($path);
   }
 

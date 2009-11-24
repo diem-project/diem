@@ -7,7 +7,10 @@ class dmFrontActionTemplateGenerator extends dmFrontModuleGenerator
   {
     $dir = dmOs::join(sfConfig::get('sf_apps_dir'), 'front', 'modules', $this->module->getKey(), 'templates');
 
-    $this->filesystem->mkdir($dir);
+    if (!$this->filesystem->mkdir($dir))
+    {
+      $this->logError('can not create directory '.$dir);
+    }
 
     $success = true;
 
@@ -24,7 +27,14 @@ class dmFrontActionTemplateGenerator extends dmFrontModuleGenerator
 
       $code = $this->getActionTemplate($action);
 
-      $success &= (file_put_contents($file, $code) && $this->filesystem->chmod($file, 0777));
+      $fileSuccess &= (file_put_contents($file, $code) && $this->filesystem->chmod($file, 0777));    
+      
+      if(!$fileSuccess)
+      {
+        $this->logError('can not write to '.dmProject::unrootify($file));
+      }
+      
+      $success &= $fileSuccess;
     }
 
     return $success;

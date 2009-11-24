@@ -30,29 +30,34 @@ EOF;
   {
     $this->log('Generate front for modules');
     
+    sfConfig::set('sf_debug', true);
+    
     foreach($this->get('module_manager')->getProjectModules() as $moduleKey => $module)
     {
       $this->log(sprintf("Generate front for module %s", $moduleKey));
 
       $actionGenerator = new dmFrontActionGenerator($module, $this->dispatcher, $this->get('filesystem'));
+      $actionGenerator->setFormatter($this->formatter);
       
       if (!$actionGenerator->execute())
       {
-        $this->logBlock('Can NOT create actions for module '.$module);
+        $this->logBlock('Can NOT create actions for module '.$module, 'ERROR');
       }
 
       $componentGenerator = new dmFrontComponentGenerator($module, $this->dispatcher, $this->get('filesystem'));
+      $componentGenerator->setFormatter($this->formatter);
       
       if (!$componentGenerator->execute())
       {
-        $this->logBlock('Can NOT create components for module '.$module);
+        $this->logBlock('Can NOT create components for module '.$module, 'ERROR');
       }
 
       $actionTemplateGenerator = new dmFrontActionTemplateGenerator($module, $this->dispatcher, $this->get('filesystem'));
+      $actionTemplateGenerator->setFormatter($this->formatter);
       
       if (!$actionTemplateGenerator->execute())
       {
-        $this->logBlock('Can NOT create action templates for module '.$module);
+        $this->logBlock('Can NOT create action templates for module '.$module, 'ERROR');
       }
     }
   }

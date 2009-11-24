@@ -34,7 +34,7 @@ abstract class dmContextTask extends dmBaseTask
   {
     if (!$this->get('filesystem')->mkdir($path))
     {
-      $this->logBlock(sprintf('Can not mkdir %s', $path));
+      $this->logBlock(sprintf('Can not mkdir %s', $path), 'ERROR');
     }
     else
     {
@@ -51,7 +51,7 @@ abstract class dmContextTask extends dmBaseTask
     {
       if (!copy($from, $to))
       {
-        $this->logBlock(sprintf('Can not copy %s to %s', $from, $to));
+        $this->logBlock(sprintf('Can not copy %s to %s', $from, $to), 'ERROR');
       }
       else
       {

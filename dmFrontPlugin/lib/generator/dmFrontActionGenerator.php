@@ -14,7 +14,10 @@ class dmFrontActionGenerator extends dmFrontModuleGenerator
     
     $file = dmOs::join(sfConfig::get('sf_apps_dir'), 'front/modules', $this->module->getKey(), 'actions/actions.class.php');
 
-    $this->filesystem->mkdir(dirname($file));
+    if (!$this->filesystem->mkdir(dirname($file)))
+    {
+      $this->logError('can not create directory '.dmProject::unrootify(dirname($file)));
+    }
     
     $className = $this->module->getKey().'Actions';
     
@@ -59,7 +62,12 @@ class dmFrontActionGenerator extends dmFrontModuleGenerator
     {
       $return = true;
     }
-
+    
+    if(!$return)
+    {
+      $this->logError('can not write to '.dmProject::unrootify($file));
+    }
+    
     return $return;
   }
   
