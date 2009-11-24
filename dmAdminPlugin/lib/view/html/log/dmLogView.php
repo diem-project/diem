@@ -57,7 +57,7 @@ abstract class dmLogView
 //    
 //    $html .= '</tr>';
     
-    $html .= '</thead>';
+//    $html .= '</thead>';
     
     return $html;
   }

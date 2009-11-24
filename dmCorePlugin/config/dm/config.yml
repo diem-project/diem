@@ -1,7 +1,7 @@
 default:
 
   i18n:                                 # internationalization
-    cultures:             [  ]          # Available cultures
+    cultures:             [ en ]        # Available cultures
   
   search:                               # Internal search engine
     fields:                             # Pages fields to search in, with boost level
@@ -16,14 +16,13 @@ default:
   
   cache:                                # Cache management
     apc:                  true          # (RECOMMENDED) Use Apc if available on current server
-    full:                 false          # Cache full pages for max speed ( may cause problems with random content )
-    
+
   error:                                # What to do when an error occured
-    mail_superadmin:      true          # Send mail to superadmin ( uses superadmin's profile's email )
+    mail_superadmin:      false         # Send mail to superadmin ( uses superadmin's profile's email )
     store_in_db:          true          # Store error in database
     
   js:
-    compress:             true          # (RECOMMENDED) Performance : Minifies javascripts and put them into a single file
+    compress:             true          # (RECOMMENDED) Performance : Minifies javascripts and put them into a single compressed file
     cdn:                                # use cdn to load libraries
       enabled:            <?php echo !sfConfig::get('sf_debug') ?> # (RECOMMENDED) Will use cdn to load javascript libraries faster
       lib.jquery:         'http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js'
@@ -35,7 +34,7 @@ default:
         url:              http://maps.google.com/maps?file=api&v=%version%&sensor=%sensor%&key=%key%
     
   css:
-    compress:             true          # (RECOMMENDED) Performance : Minifies stylesheets and put them into a single file
+    compress:             true          # (RECOMMENDED) Performance : Minifies stylesheets and put them into a single compressed file
     
   seo:                                  # Search engine optimization configuration
     use_keywords:         true          # Keywords are useless for seo, but you can use them if you want

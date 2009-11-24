@@ -8,6 +8,14 @@ class dmFrontModuleManagerConfigHandler extends dmModuleManagerConfigHandler
   {
     $moduleOptions = parent::fixModuleConfig($moduleKey, $moduleConfig, $isInProject);
     
+    foreach(dmArray::get($moduleConfig, 'actions', array()) as $actionKey => $actionConfig)
+    {
+      if(is_array($actionConfig) && array_key_exists('filters', $actionConfig) && !is_array($actionConfig['filters']))
+      {
+        $moduleConfig['actions'][$actionKey]['filters'] = array($actionConfig['filters']);
+      }
+    }
+    
     if ($moduleOptions['is_project'])
     {
       $directActions = array();
