@@ -17,11 +17,11 @@ generator:
       list:
         display:
           - '=name'
-          - description
-          - value
-          - default_value
           - group_name
+          - description
           - type
+          - value
+          - credentials
         sort:
           - name
           - asc
@@ -35,7 +35,7 @@ generator:
           - group_name
       form:
         display:
-          NONE: [name, description, group_name]
+          NONE: [name, description, group_name, credentials]
           Type: [ type, params ]
           Values: [ value, default_value ]
         class: DmSettingAdminForm
