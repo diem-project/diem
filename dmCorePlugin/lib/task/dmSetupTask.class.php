@@ -69,6 +69,10 @@ EOF;
     
     $this->withDatabase();
     
+    $this->runTask('dm:clear-cache');
+    
+    $this->getContext()->reloadModuleManager();
+    
     $this->runTask('doctrine:build-forms', array(), array('generator-class' => 'dmDoctrineFormGenerator'));
     
     $this->runTask('doctrine:build-filters', array(), array('generator-class' => 'dmDoctrineFormFilterGenerator'));

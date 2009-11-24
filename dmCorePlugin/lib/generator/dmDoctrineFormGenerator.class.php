@@ -76,7 +76,7 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
       {
         $this->setGeneratorClass('sfDoctrineForm');
       }
-
+      
       $baseDir = sfConfig::get('sf_lib_dir') . '/form/doctrine';
 
       $isPluginModel = $this->isPluginModel($model);
