@@ -6,27 +6,6 @@ abstract class dmDoctrineTable extends Doctrine_Table
   $eventDispatcher,
   $moduleManager;
   
-  protected
-  $hasI18n;
-
-  /**
-   * Construct template method.
-   *
-   * This method provides concrete Table classes with the possibility
-   * to hook into the constructor procedure. It is called after the
-   * Doctrine_Table construction process is finished.
-   *
-   * @return void
-   */
-  public function construct()
-  {
-    $this->hasI18n = $this->hasTemplate('Doctrine_Template_I18n');
-    
-    if ($this->hasI18n)
-    {
-      $this->unshiftFilter(new dmDoctrineRecordI18nFilter);
-    }
-  }
   /*
    * @return DmMediaFolder the DmMediaFolder used to store this table's record's medias
    */
@@ -219,7 +198,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
   {
     $columns = $this->getColumns();
 
-    if($this->hasI18n)
+    if($this->hasI18n())
     {
       $columns = array_merge($columns, $this->getI18nTable()->getColumns());
     }
@@ -234,7 +213,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
       return true;
     }
     
-    if ($this->hasI18n && $this->getI18nTable()->hasField($fieldName))
+    if ($this->hasI18n() && $this->getI18nTable()->hasField($fieldName))
     {
       return true;
     }
@@ -325,7 +304,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
 
   public function hasI18n()
   {
-    return $this->hasI18n;
+    return $this->hasRelation('Translation');
   }
 
   public function getI18nTable()
@@ -335,7 +314,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
       return $this->getCache('i18n_table');
     }
 
-    return $this->setCache('i18n_table', $this->hasI18n
+    return $this->setCache('i18n_table', $this->hasI18n()
     ? $this->getRelationHolder()->get('Translation')->getTable()
     : false
     );

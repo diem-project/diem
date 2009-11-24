@@ -138,7 +138,7 @@ class dmForm extends sfFormSymfony
     $opt = dmString::toArray($opt, true);
 
     $defaults = array(
-      'class' => dmArray::get($opt, 'class'), //dmArray::toHtmlCssClasses(array('validate_me', dmArray::get($opt, 'class'))),
+      'class' => dmArray::get($opt, 'class'),
       'id' => $this->getKey(),
       'anchor' => false
     );

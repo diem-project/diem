@@ -11,16 +11,24 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
   $i18nFallback = null;
 
   /**
-   * Custom myDoctrineRecord constructor.
-   * Used to initialize I18n to make sure the culture is set from symfony
+   * Initializes internationalization.
    *
-   * @return void
+   * @see Doctrine_Record
    */
   public function construct()
   {
-    if ($this->_table->hasI18n())
+    if ($this->getTable()->hasI18n())
     {
       self::initializeI18n();
+
+      // only add filter to each table once
+      if (!$this->getTable()->getOption('has_symfony_i18n_filter'))
+      {
+        $this->getTable()
+          ->unshiftFilter(new dmDoctrineRecordI18nFilter())
+          ->setOption('has_symfony_i18n_filter', true)
+        ;
+      }
     }
   }
 
