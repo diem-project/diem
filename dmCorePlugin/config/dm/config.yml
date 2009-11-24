@@ -39,10 +39,6 @@ default:
     
   seo:                                  # Search engine optimization configuration
     use_keywords:         true          # Keywords are useless for seo, but you can use them if you want
-    unique_validation:                  # Check html page attributes are unique in website
-      slug:               true          # (RECOMMENDED) Check pages slugs are unique
-      title:              true          # Check pages titles are unique ( optional / preformance issue )
-      description:        true          # Check pages descriptions are unique ( optional / preformance issue )
     truncate:                           # Max length for meta fields. Can not exceed 255 characters
       slug:               255
       name:               255

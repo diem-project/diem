@@ -126,7 +126,7 @@ services:
   seo_synchronizer:
     class:                    %seo_synchronizer.class%
     shared:                   true
-    arguments:                [ @module_manager, @markdown, %user.culture% ]
+    arguments:                [ @module_manager, %user.culture% ]
 
   cache_cleaner:
     class:                    %cache_cleaner.class%

@@ -7,14 +7,12 @@ class dmSeoSynchronizer
   
   protected
   $moduleManager,
-  $markdown,
   $culture,
   $nodeParentIdStmt;
   
-  public function __construct(dmModuleManager $moduleManager, dmMarkdown $markdown, $culture)
+  public function __construct(dmModuleManager $moduleManager, $culture)
   {
     $this->moduleManager  = $moduleManager;
-    $this->markdown       = $markdown;
     $this->culture        = $culture;
   }
   
@@ -312,7 +310,7 @@ class dmSeoSynchronizer
       
       if($processMarkdown)
       {
-        $usedValue = $this->markdown->brutalToText($usedValue);
+        $usedValue = dmMarkdown::brutalToText($usedValue);
       }
 
       $replacements[$this->wrap($placeholder)] = $usedValue;

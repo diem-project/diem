@@ -24,8 +24,13 @@ class dmThreadLauncher extends dmConfigurable
     
     if (!$this->filesystem->exec($command))
     {
-      throw new dmThreadException(sprintf('Thread %s failed ( app: %s, env: %s ) with message : %s',
-        $threadClass, $this->options['app'], $this->options['env'], $this->getLastExec('output')
+      throw new dmThreadException(sprintf(
+        "Thread %s failed ( app: %s, env: %s )\ncommand : %s\nmessage : %s",
+        $threadClass,
+        $this->options['app'],
+        $this->options['env'],
+        $this->getLastExec('command'),
+        $this->getLastExec('output')
       ));
     }
   }
@@ -49,7 +54,7 @@ class dmThreadLauncher extends dmConfigurable
     return array(
       'app'       => sfConfig::get('sf_app'),
       'env'       => sfConfig::get('sf_environment'),
-      'debug'     => false,
+      'debug'     => sfConfig::get('sf_debug'),
       'cli_file'  => 'cache/dm/cli.php'
     );
   }

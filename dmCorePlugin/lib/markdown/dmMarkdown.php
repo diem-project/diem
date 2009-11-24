@@ -184,7 +184,7 @@ class dmMarkdown extends MarkdownExtra_Parser
    * Very fast function to translate markdown text to pure text without formatting
    * This function is less efficient than toText
    */
-  public function brutalToText($text)
+  public static function brutalToText($text)
   {
     // remove common formatting
     $text = str_replace(array('-', '*', '#'), '', $text);

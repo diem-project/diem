@@ -40,30 +40,19 @@ EOF;
       $this->runTask('dm:upgrade');
       $this->runTask('dm:clear-cache');
     }
-//    $this->migrate();
+    
+    $this->runTask('doctrine:build', array(), array('model' => true));
 
     if ($options['clear-db'] || $this->isProjectLocked())
     {
-      $this->runTask('doctrine:build', array(), array('model' => true));
-    
       $this->reloadAutoload();
       
-      $task = new sfDoctrineDropDbTask($this->dispatcher, $this->formatter);
-      $task->setCommandApplication($this->commandApplication);
-      $task->setConfiguration($this->configuration);
-      $ret = $task->run(array(), array('no-confirmation' => $this->isProjectLocked()));
-
-      if ($ret)
+      if ($ret = $this->runTask('doctrine:drop-db', array(), array('no-confirmation' => $this->isProjectLocked())))
       {
         return $ret;
       }
 
-      $task = new sfDoctrineBuildDbTask($this->dispatcher, $this->formatter);
-      $task->setCommandApplication($this->commandApplication);
-      $task->setConfiguration($this->configuration);
-      $ret = $task->run();
-      
-      if ($ret)
+      if ($ret = $this->runTask('doctrine:build-db', array(), array()))
       {
         return $ret;
       }
@@ -75,10 +64,8 @@ EOF;
       // well, we don't need migration classes anymore...
       sfToolkit::clearDirectory(dmProject::rootify('lib/migration/doctrine'));
     }
-    else
-    {
-      $this->runTask('doctrine:build', array(), array('model' => true));
-    }
+    
+    $this->reloadAutoload();
     
     $this->withDatabase();
     
