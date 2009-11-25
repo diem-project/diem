@@ -34,8 +34,8 @@ dmWidgetNavigation:
     
 dmWidgetAdvanced:
 
-  googleMap:
-    cache:              static
+#  googleMap:
+#    cache:              static
     
   searchForm:
     cache:              false
