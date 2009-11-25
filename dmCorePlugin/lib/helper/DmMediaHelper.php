@@ -69,7 +69,7 @@ function media_file_image_tag($file, $options = array())
   }
   else
   {
-    $image = £media('dmCore/media/unknown.png')->size($options['width'], $options['height']);
+    $image = £media('dmCore/images/media/unknown.png')->size($options['width'], $options['height']);
   }
 
   return $image;

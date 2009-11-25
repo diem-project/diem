@@ -3,63 +3,6 @@
 class dmMediaLibraryActions extends dmAdminBaseActions
 {
 
-//  public function executeEditImage(sfWebRequest $request)
-//  {
-//    $this->forward404Unless(
-//      $this->file = dmDb::table('DmMedia')->find($request->getParameter('media_id')),
-//      'media not found'
-//    );
-//
-//    $this->file->backup();
-//
-//    $options = array(
-//      'app'       => 'express',
-//      'title'     => $this->file->file.' | Diem image editor',
-//      'loc'       => $this->getUser()->getCulture(),
-//      'save_to'   => $this->file->Folder->relPath,
-//      'referrer'  => dmConfig::get('site_name'),
-//      'skip_default' => true,
-//      'exit'      => $this->generateUrl('dm_media_library_path', array(
-//        'path'    => $this->file->Folder->relPath
-//      ), true)
-//    );
-//    
-//    if (dmOs::isLocalhost())
-//    {
-//      $options['file'] = $this->file->getFullPath();
-//      
-//      $options['target'] = $this->generateUrl('dm_media_library', array(
-//        'action'    => 'editImageSave',
-//        'media_id'  => $this->file->get('id'),
-//        'options'   => base64_encode(serialize($options))
-//      ));
-//    
-//      return url_for("@sf_pixlr_post?".http_build_query($query_vars, '', '&'));
-//    }
-//    $this->iframeSrc = dmOs::isLocalhost()
-//    ? pixlr_express_post_url($absoluteServerUrl, $target, $options)
-//    : pixlr_express_get_url($absoluteWebUrl, $target, $options);
-//
-//    sfConfig::set('dm_admin_full_screen', true);
-//  }
-
-//  public function executeEditImageSave(sfWebRequest $request)
-//  {
-//    $this->forward404Unless(
-//      $this->file = dmDb::table('DmMedia')->find($request->getParameter('media_id')),
-//      'media not found'
-//    );
-//
-//    $this->file->destroyThumbnails();
-//
-//    $dmPixlr = new dmPixlr();
-//    $dmPixlr->save($request);
-//
-//    $this->redirect($this->generateUrl('dm_media_library_path', array(
-//      'path'    => $this->file->Folder->getRelPath()
-//    )));
-//  }
-
   public function executeFile(sfWebRequest $request)
   {
     $this->forward404Unless(

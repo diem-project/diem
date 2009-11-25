@@ -93,7 +93,7 @@ class dmTheme
 
     $this->filesystem->touch($this->getFullPath('css/markdown.css'));
     
-    $this->dispatcher->notify(new sfEvent($this, 'dm.theme.created', $this));
+    $this->dispatcher->notify(new sfEvent($this, 'dm.theme.created', array()));
   }
 
   public function getKey()

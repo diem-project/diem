@@ -47,7 +47,7 @@ class dmContentChart extends dmChart
       $this->modules = array();
       foreach($this->serviceContainer->getService('module_manager')->getProjectModules() as $module)
       {
-        if ($module->hasModel() && $module->getTable()->hasField('created_at'))
+        if ($module->hasModel() && $module->getTable()->hasField('created_at') && $module->getTable()->createQuery()->count())
         {
           $this->modules[$module->getKey()] = $module;
         }
@@ -90,10 +90,19 @@ class dmContentChart extends dmChart
   
   protected function getInternalModules()
   {
-    return $this->serviceContainer->getService('module_manager')->keysToModules(array(
-      'dmSentMail',
-      'dmUser'
-    ));
+    $modules = $this->serviceContainer->getService('module_manager')->keysToModules(
+      array('dmSentMail', 'dmUser')
+    );
+    
+    foreach($modules as $key => $module)
+    {
+      if (!$module->getTable()->createQuery()->count())
+      {
+        unset($modules[$key]);
+      }
+    }
+    
+    return $modules;
   }
   
   protected function getNbRecordsForModuleAndMonthDelta(dmModule $module, $monthDelta)
