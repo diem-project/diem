@@ -8,7 +8,7 @@ class dmAdminAssetConfig extends dmAssetConfig
       'lib.reset',
       sfConfig::get('sf_web_debug') ? 'lib.symfony_debug' : null,
       'lib.ui',
-      'core.util',
+      'core.tool',
       'core.editMode',
       'core.sprites',
       'core.sprite16',

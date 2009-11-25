@@ -12,7 +12,7 @@ class dmFrontAssetConfig extends dmAssetConfig
         'front.dmReset',
         'lib.ui',
         'lib.ui-dialog',
-        'core.util',
+        'core.tool',
         'core.editMode',
         'core.sprites',
         'core.sprite16',
@@ -32,7 +32,7 @@ class dmFrontAssetConfig extends dmAssetConfig
     return array(
       'lib.reset',
       sfConfig::get('sf_web_debug') ? 'lib.symfony_debug' : null,
-      'core.util',
+      'core.tool',
       'front.base'
     );
   }

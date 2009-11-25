@@ -86,44 +86,23 @@ abstract class dmCoreFunctionalCoverageTest
 
   protected function login()
   {
-    $this->browser->getContext()->getUser()
-    ->signin(dmDb::table('DmUser')->findOneByUsername($this->options['username']));
-    return;
+    $user = dmDb::table('DmUser')->findOneByUsername($this->options['username']);
     
-    if (empty($this->options['username']) || empty($this->options['password']))
+    if(!$user instanceof DmUser)
     {
-      throw new dmException('You must provide a username and a password to login');
+      throw new dmException(sprintf(
+        'The "%s" user does not exist. Please provide a valid username in your functional test, or disable login',
+        $this->options['username']
+      ));
     }
     
-    require_once(dmOs::join(dm::getDir(), 'dmUserPlugin/modules/dmAuth/lib/DmFormSignin.php'));
-    $form = new DmFormSignin;
+    $this->browser->getContext()->getUser()->signin($user);
     
-    $form->bind(array(
-      'username' => $this->options['username'],
-      'password' => $this->options['password']
-    ));
+    // make the login persistent
+    $this->browser->getContext()->getUser()->shutdown();
+    $this->browser->getContext()->getStorage()->shutdown();
     
-    if (!$form->isValid())
-    {
-      throw new dmException('Can not login : bad username / password');
-    }
-
-    $this->browser->info('Login as '.$this->options['username'])
-    ->get('/+/dmAuth/signin')
-    ->setField('signin[username]', $this->options['username'])
-    ->setField('signin[password]', $this->options['password'])
-    ->click('input[type="submit"]')
-    ->with('response')->begin()->isRedirected()->end()
-    ->followRedirect();
-    
-    while(in_array($this->browser->getResponse()->getStatusCode(), array(301, 302)))
-    {
-      $this->browser->with('response')->begin()->isRedirected()->end()->followRedirect();
-    }
-    
-    $this->browser->with('response')->begin()
-    ->isStatusCode(200)
-    ->end();
+    $this->browser->with('user')->begin()->isAuthenticated()->end();
   }
 
   protected function testUrl($url, $expectedStatusCode = 200)
@@ -133,7 +112,7 @@ abstract class dmCoreFunctionalCoverageTest
     $this->startCounter($url);
     
     dm::resetStartTime();
-
+    
     $this->browser->get($url);
 
     while(in_array($this->browser->getResponse()->getStatusCode(), array(301, 302)))

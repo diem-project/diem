@@ -61,7 +61,11 @@ class dmLogActions extends dmAdminBaseActions
   public function executeRefresh(dmWebRequest $request)
   {
     $data = array();
-    $nbEntries = 6;
+    
+    $nbEntries = array(
+      'request' => 8,
+      'event'   => 5
+    );
     
     foreach(array('request', 'event') as $logKey)
     {
@@ -69,7 +73,7 @@ class dmLogActions extends dmAdminBaseActions
       
       $viewClass = get_class($log).'ViewLittle';
       $view = new $viewClass($log, $this->context->getI18n(), $this->getUser(), $this->context->getHelper());
-      $view->setMax($nbEntries);
+      $view->setMax($nbEntries[$logKey]);
       
       $hash = $view->getHash();
       

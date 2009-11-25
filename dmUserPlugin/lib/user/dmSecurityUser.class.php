@@ -147,7 +147,7 @@ class dmSecurityUser extends sfBasicSecurityUser
    * @param boolean $remember Whether or not to remember the user
    * @param Doctrine_Connection $con A Doctrine_Connection object
    */
-  public function signIn($user, $remember = false, $con = null)
+  public function signIn(DmUser $user, $remember = false, $con = null)
   {
     // signin
     $this->setAttribute('user_id', $user->get('id'), 'dmSecurityUser');
