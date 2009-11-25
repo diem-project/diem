@@ -50,12 +50,14 @@ class dmEventLogView extends dmLogView
   {
     switch($action)
     {
-      case 'create': $class = 's24 s24_add'; break;
-      case 'update': $class = 's24 s24_edit'; break;
-      case 'delete': $class = 's24 s24_delete'; break;
-      case 'error':  $class = 's24 s24_error'; break;
-      case 'clear':  $class = 's24 s24_info'; break;
-      default:       $class = '';
+      case 'create':    $class = 's24 s24_add'; break;
+      case 'update':    $class = 's24 s24_edit'; break;
+      case 'delete':    $class = 's24 s24_delete'; break;
+      case 'error':     $class = 's24 s24_error'; break;
+      case 'clear':     $class = 's24 s24_info'; break;
+      case 'sign_in':
+      case 'sign_out':  $class = 's24 s24_user'; break;
+      default:          $class = '';
     }
     
     return $class;
