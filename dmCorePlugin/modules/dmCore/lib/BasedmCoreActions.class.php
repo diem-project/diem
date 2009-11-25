@@ -55,7 +55,7 @@ class BasedmCoreActions extends dmBaseActions
        
           if ($this->getUser()->can('system'))
           {
-            $this->context->get('filesystem')->sf('dmFront:generate');
+            @$this->context->get('filesystem')->sf('dmFront:generate');
       
             @dmFileCache::clearAll();
           }

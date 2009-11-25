@@ -88,6 +88,9 @@ EOF;
     $this->getContext()->reloadModuleManager();
 
     $this->runTask('dmAdmin:generate');
+    
+    $this->logSection('front', 'generate missing modules');
+    $this->context->get('filesystem')->sf('dmFront:generate');
 
     $this->runTask('dm:permissions');
     
