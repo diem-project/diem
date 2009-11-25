@@ -34,9 +34,9 @@ class dmWidgetNavigationBreadCrumbView extends dmWidgetPluginView
     {
       $ancestors[] = $this->context->getPage();
     }
-    
+
     $pages = array();
-    foreach($ancestors ? $ancestors->getData() : array() as $page)
+    foreach($ancestors as $page)
     {
       $pages[$page->get('module').'.'.$page->get('action')] = $page;
     }

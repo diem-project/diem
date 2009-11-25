@@ -20,14 +20,22 @@ dmWidgetContent:
 
   media:
     cache:              true
+    
+#  gallery:
+#    cache:              true
+    
+dmWidgetNavigation:
 
   breadCrumb:
     cache:              true
     
+#  menu:
+#    cache:              true
+    
 dmWidgetAdvanced:
 
-#  googleMap:
-#    cache:              static
+  googleMap:
+    cache:              static
     
   searchForm:
     cache:              false
