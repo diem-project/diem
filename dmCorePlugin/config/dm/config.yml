@@ -64,7 +64,7 @@ default:
     
 ###### dm internal config ######
 
-  version:                5.0.0_alpha1
+  version:                5.0.0_ALPHA1
   
   core:
     asset:                dm/core
