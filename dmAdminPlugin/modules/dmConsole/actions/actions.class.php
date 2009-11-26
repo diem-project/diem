@@ -11,7 +11,7 @@ class dmConsoleActions extends dmAdminBaseActions
 {
   
   protected static
-    $defaultCommands = 'sf man ll ls pwd cat mkdir rm cp mv touch chmod free df find clear';
+    $defaultCommands = 'sf man ll ls pwd cat mkdir rm cp mv touch chmod free df find clear php';
 
   protected function getCommands()
   {
