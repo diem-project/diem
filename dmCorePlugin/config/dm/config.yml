@@ -17,10 +17,6 @@ default:
   cache:                                # Cache management
     apc:                  true          # (RECOMMENDED) Use Apc if available on current server
 
-  error:                                # What to do when an error occured
-    mail_superadmin:      false         # Send mail to superadmin ( uses superadmin's profile's email )
-    store_in_db:          true          # Store error in database
-    
   js:
     compress:             true          # (RECOMMENDED) Performance : Minifies javascripts and put them into a single compressed file
     cdn:                                # use cdn to load libraries

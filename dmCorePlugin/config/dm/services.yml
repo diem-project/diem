@@ -1,46 +1,50 @@
 parameters:
 
-  mail.class:                 dmMail
+  mail.class:                 dmMail                # Responsible for building an email from a DmMailTemplate and a data array, then pass it to Swift.
 
-  thread_launcher.class:      dmThreadLauncher
+  thread_launcher.class:      dmThreadLauncher      # Responsible for launching background tasks using an internal shell.
   thread_launcher.options:
-    cli_file:                 cache/dm/cli.php
+    cli_file:                 cache/dm/cli.php      # where to write the task bootstrap, relative to the project root directory
 
-  page_synchronizer.class:    dmPageSynchronizer
+  page_synchronizer.class:    dmPageSynchronizer    # Responsible for adding, updating and removing pages when the site content changes.
 
-  seo_synchronizer.class:     dmSeoSynchronizer
+  seo_synchronizer.class:     dmSeoSynchronizer     # Responsible for updating pages metas when the site content changes.
 
-  cache_cleaner.class:        dmCacheCleaner
+  cache_cleaner.class:        dmCacheCleaner        # Responsible for clearing the cache automatically when the site content changes.
   cache_cleaner.options:
-    applications:             [ admin, front ]
-    environments:             [ prod, dev ]
+    applications:             [ admin, front ]      # applications whose cache should be cleared
+    environments:             [ prod, dev ]         # environments whose cache should be cleared
+    
+    # when a instance of this models is created/updated/deleted, the cache is **NOT** cleared.
     safe_models:              [ DmSentMail, DmError, DmRedirect, DmUser, DmPermission, DmGroup, DmGroupPermission, DmUserPermission, DmUserGroup, DmRememberKey, DmMailTemplate ]
 
-  form_field.class:           dmFormField
+  form_field.class:           dmFormField           # Represents a field in a form. Allows chainability in form template helpers.
 
-  markdown.class:             dmMarkdown
+  markdown.class:             dmMarkdown            # Responsible for parsing markdown text and generating HTML.
   markdown.options:
-    auto_header_id:           true                  # Add an automatic id on header tags
+    auto_header_id:           true                  # whether to generate automatic header ids, based on header text and previous headers structure
 
-  script_name_resolver.class: dmScriptNameResolver
+  script_name_resolver.class: dmScriptNameResolver  # Responsible for finding applications bootstrap urls. Allows to make a link to the site from the admin, and a link to admin from the site.
 
-  error_watcher.class:        dmErrorWatcher
+  error_watcher.class:        dmErrorWatcher        # Responsible for listening the "application.throw_exception" events and make something with the errors
   error_watcher.options:
-    error_description_class:  dmErrorDescription
+    error_description_class:  dmErrorDescription    # class used to describe an error
+    mail_superadmin:          false                 # send mail to superadmin ( uses superadmin's email )
+    store_in_db:              true                  # store error in database
 
-  media_tag_image.class:      dmMediaTagImage
-  media_tag_image.options:    []
+  media_tag_image.class:      dmMediaTagImage       # Responsible for rendering <img> tags
+  media_tag_image.options:    []                    # Configurable from the graphical configuration panel
   
-  media_tag_flash.class:      dmMediaTagFlash
+  media_tag_flash.class:      dmMediaTagFlash       # Responsible for rendering flash objects
   media_tag_flash.options:    []
   
-  media_tag_video.class:      dmMediaTagVideo
+  media_tag_video.class:      dmMediaTagVideo       # Responsible for rendering video
   media_tag_video.options:    []
   
-  media_tag_audio.class:      dmMediaTagAudio
+  media_tag_audio.class:      dmMediaTagAudio       # Responsible for rendering audio
   media_tag_audio.options:    []
 
-  media_resource.class:       dmMediaResource
+  media_resource.class:       dmMediaResource       # Ressource for a media_tag_*
 
   table_tag.class:            dmTableTag
 
@@ -96,11 +100,11 @@ parameters:
     
   page_tree_watcher.class:    dmPageTreeWatcher
   page_tree_watcher.options:
-    use_thread:               auto # launch heavy synchronization tasks on another processus ( auto, true, false )
+    use_thread:               auto                        # launch heavy synchronization tasks on another processus ( auto, true, false )
   
-  file_backup.class:          dmFileBackup
+  file_backup.class:          dmFileBackup                # Responsible for saving a copy of files edited. All files modified with a Diem code editor are backuped.
   file_backup.options:
-    dir:                      'data/dm/backup/filesystem'
+    dir:                      'data/dm/backup/filesystem' # where to save files, relative to project root directory.
     
   helper.class:               dmHelper
   helper.options:

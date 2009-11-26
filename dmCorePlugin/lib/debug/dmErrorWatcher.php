@@ -1,6 +1,6 @@
 <?php
 
-class dmErrorWatcher
+class dmErrorWatcher extends dmConfigurable
 {
   protected
   $dispatcher,
@@ -12,14 +12,16 @@ class dmErrorWatcher
     $this->dispatcher = $dispatcher;
     $this->context    = $context;
     
-    $this->initialize($options);
+    $this->configure($options);
   }
   
-  public function initialize(array $options = array())
+  public function getDefaultOptions()
   {
-    $this->options = array_merge(array(
-      'error_description_class' => 'dmErrorDescription'
-    ), $options);
+    return array(
+      'error_description_class' => 'dmErrorDescription',
+      'mail_superadmin'         => false,
+      'store_in_db'             => false
+    );
   }
   
   public function connect()
@@ -31,16 +33,16 @@ class dmErrorWatcher
   {
     try
     {
-      if (sfConfig::get('dm_error_mail_superadmin') || sfConfig::get('dm_error_store_in_db'))
+      if ($this->getOption('mail_superadmin') || $this->getOption('store_in_db'))
       {
         $error = new $this->options['error_description_class']($event->getSubject(), $this->context);
 
-        if(sfConfig::get('dm_error_mail_superadmin'))
+        if($this->getOption('mail_superadmin'))
         {
           $this->mailSuperadmin($error);
         }
 
-        if(sfConfig::get('dm_error_store_in_db'))
+        if($this->getOption('store_in_db'))
         {
           $this->storeInDb($error);
         }
@@ -54,7 +56,7 @@ class dmErrorWatcher
 
   protected function mailSuperadmin(dmErrorDescription $error)
   {
-    if (!$superAdmin = dmDb::query('DmUser u')->where('u.is_super_admin = ?', true)->fetchRecord())
+    if (!$superAdmin = $this->getSuperadmin())
     {
       return;
     }
@@ -68,7 +70,12 @@ class dmErrorWatcher
       $body .= $attribute . " => " . $error->$attribute . "\n\n";
     }
 
-    //mail($superAdminEmail, $subject, $body);
+    mail($superAdmin->email, $subject, $body);
+  }
+  
+  protected function getSuperadmin()
+  {
+    return dmDb::query('DmUser u')->where('u.is_super_admin = ?', true)->fetchRecord();
   }
 
   protected function storeInDb(dmErrorDescription $error)

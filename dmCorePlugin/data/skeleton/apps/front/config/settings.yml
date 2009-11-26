@@ -1,6 +1,6 @@
 prod:
   .settings:
-    no_script_name:         true
+    no_script_name:         false
     cache:                  true
     logging_enabled:        false
 
