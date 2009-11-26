@@ -41,8 +41,8 @@
       
       $('textarea.dm_markdown', form.element).each(function()
       {
-        $editor = $(this);
-        $preview = $editor.closest('div.fieldset_content_inner').find('div.markdown_preview');
+        var $editor = $(this);
+        var $preview = $editor.closest('div.fieldset_content_inner').find('div.markdown_preview');
         $editor.markItUp(dmMarkitupMarkdown);
         var value = $editor.val();
         setInterval(function()
