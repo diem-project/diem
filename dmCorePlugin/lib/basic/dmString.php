@@ -145,7 +145,7 @@ class dmString extends sfInflector
    * Transform any text into a valid slug
    * @return string slug
    */
-  public static public function slugify($text, $preserveSlashes = false)
+  public static function slugify($text, $preserveSlashes = false)
   {
     if ($preserveSlashes)
     {

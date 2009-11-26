@@ -151,35 +151,36 @@ abstract class dmCoreFunctionalCoverageTest
   protected function stopCounter()
   {
     $time = sprintf('%01.3f', 1000 * (microtime(true) - $this->counter['time']));
-    $mem = sprintf('%01.3f', (memory_get_usage() - $this->counter['mem'])/1024);
+//    $mem = sprintf('%01.3f', (memory_get_usage() - $this->counter['mem'])/1024);
      
-    $this->browser->info(round($time).' ms | '.round($mem).' Ko');
+//    $this->browser->info(round($time).' ms | '.round($mem).' Ko');
+    $this->browser->info(round($time).' ms');
 
     if ($time > $this->stats['maxTime']['value'])
     {
       $this->stats['maxTime'] = array('url' => $this->counter['url'], 'value' => $time);
     }
-    if ($mem > $this->stats['maxMem']['value'])
-    {
-      $this->stats['maxMem'] = array('url' => $this->counter['url'], 'value' => $mem);
-    }
+//    if ($mem > $this->stats['maxMem']['value'])
+//    {
+//      $this->stats['maxMem'] = array('url' => $this->counter['url'], 'value' => $mem);
+//    }
 
     $this->stats['totalTime'] += $time;
-    $this->stats['totalMem'] += $mem;
+//    $this->stats['totalMem'] += $mem;
     $this->stats['nbUrls'] += 1;
   }
   
   protected function showStats()
   {
     $averageTime  = $this->stats['totalTime'] / $this->stats['nbUrls'];
-    $averageMem   = $this->stats['totalMem'] / $this->stats['nbUrls'];
+//    $averageMem   = $this->stats['totalMem'] / $this->stats['nbUrls'];
     
     $this->browser->info('------------------------------------------------');
     
     $this->browser->info(sprintf('Average time : %01.3f ms', $averageTime));
-    $this->browser->info(sprintf('Average memory : %01.3f Ko', $averageMem));
+//    $this->browser->info(sprintf('Average memory : %01.3f Ko', $averageMem));
     
     $this->browser->info(sprintf('Max time : %01.3f ms on %s', $this->stats['maxTime']['value'], $this->stats['maxTime']['url']));
-    $this->browser->info(sprintf('Max memory : %01.3f Ko on %s', $this->stats['maxMem']['value'], $this->stats['maxMem']['url']));
+//    $this->browser->info(sprintf('Max memory : %01.3f Ko on %s', $this->stats['maxMem']['value'], $this->stats['maxMem']['url']));
   }
 }

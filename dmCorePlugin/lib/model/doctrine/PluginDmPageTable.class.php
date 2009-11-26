@@ -172,7 +172,7 @@ class PluginDmPageTable extends myDoctrineTable
       }
       elseif(is_string($source))
       {
-        if ($anchorPos = strpos($source, 0, '#'))
+        if ($anchorPos = strpos($source, '#'))
         {
           $source = substr($source, $anchorPos);
         }

@@ -33,7 +33,7 @@ class dmServerCheck
     new dmServerCheckUnit('utf8_decode()', function_exists('utf8_decode'), true)
     ),
        'symfony' => array(
-    new dmServerCheckUnit('version', SYMFONY_VERSION, '1.3.0-DEV', self::ERROR)
+    new dmServerCheckUnit('version', SYMFONY_VERSION, '1.3.0', self::ERROR)
     ),
        'php extensions' => array(
     new dmServerCheckUnit('spl', extension_loaded('spl'), true, self::ERROR),
@@ -54,9 +54,7 @@ class dmServerCheck
     new dmServerCheckUnit('mbstring', extension_loaded('mbstring'), true),
     new dmServerCheckUnit('curl', extension_loaded('curl'), true),
     new dmServerCheckUnit('xml', extension_loaded('xml'), true),
-    new dmServerCheckUnit('xsl', extension_loaded('xsl'), true),
-    new dmServerCheckUnit('ftp', extension_loaded('ftp'), true),
-    new dmServerCheckUnit('tidy', extension_loaded('tidy'), true)
+    new dmServerCheckUnit('xsl', extension_loaded('xsl'), true)
     )
     );
   }
