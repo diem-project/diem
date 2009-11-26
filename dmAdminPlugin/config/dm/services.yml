@@ -1,56 +1,56 @@
 parameters:
 
-  bread_crumb.class:          dmAdminBreadCrumb
+  bread_crumb.class:          dmAdminBreadCrumb # Responsible for building and rendering the admin automatic breadcrumbs.
 
-  log_chart.class:            dmLogChart
+  log_chart.class:            dmLogChart        # Responsible for rendering the log chart
   log_chart.options:
-    name:                     Server
-    lifetime:                 3600 # 1 hour
+    name:                     Server            # public name for this chart
+    lifetime:                 3600              # time in seconds to keep a cached version of the chart
 
-  week_chart.class:           dmWeekChart
+  week_chart.class:           dmWeekChart       # Responsible for rendering the week chart
   week_chart.options:
-    name:                     This Week
-    lifetime:                 43200 # 12 hours
+    name:                     This Week         # public name for this chart
+    lifetime:                 43200             # time in seconds to keep a cached version of the chart
 
-  visit_chart.class:          dmVisitChart
+  visit_chart.class:          dmVisitChart      # Responsible for rendering the visit chart
   visit_chart.options:
-    name:                     This Year
-    lifetime:                 86400 # 24 hours
+    name:                     This Year         # public name for this chart
+    lifetime:                 86400             # time in seconds to keep a cached version of the chart
 
-  content_chart.class:        dmContentChart
+  content_chart.class:        dmContentChart    # Responsible for rendering the content chart
   content_chart.options:
-    name:                     Activity
-    lifetime:                 86400 # 24 hours
+    name:                     Activity          # public name for this chart
+    lifetime:                 86400             # time in seconds to keep a cached version of the chart
 
-  browser_chart.class:        dmBrowserChart
+  browser_chart.class:        dmBrowserChart    # Responsible for rendering the browser chart
   browser_chart.options:
-    name:                     Browsers
-    lifetime:                 86400 # 24 hours
+    name:                     Browsers          # public name for this chart
+    lifetime:                 86400             # time in seconds to keep a cached version of the chart
 
-  gapi.class:                 dmGapi
+  gapi.class:                 dmGapi            # Responsible for fetching data from google analytics
 
-  link_tag.class:             dmAdminLinkTag
+  link_tag.class:             dmAdminLinkTag    # Responsible for rendering admin link tags with the £link helper
 
-  theme.options:
+  theme.options:                                # Override the core theme options
     key:                      diem_admin
     path:                     themeAdmin
     name:                     "Admin Theme"
 
-  asset_config.class:         dmAdminAssetConfig
+  asset_config.class:         dmAdminAssetConfig # Responsible for loading required assets
 
-  admin_sort_table_form.class:    dmAdminSortTableForm
+  admin_sort_table_form.class:    dmAdminSortTableForm # Generic form to sort a table
 
-  admin_sort_referers_form.class: dmAdminSortReferersForm
+  admin_sort_referers_form.class: dmAdminSortReferersForm # Generic form to sort table's referers
 
-  layout_helper.class:        dmAdminLayoutHelper
+  layout_helper.class:        dmAdminLayoutHelper # Responsible for rendering the admin layout
 
-  admin_menu.class:           dmAdminMenu
+  admin_menu.class:           dmAdminMenu       # Responsible for building and rendering the admin menu
     
-  sitemap.class:              dmSitemap
+  sitemap.class:              dmSitemap         # Responsible for generating and saving an automatic sitemap.xml
   sitemap.options:
-    file:                     sitemap.xml
+    file:                     sitemap.xml       # where to save the file, relative to web directory
     
-  helper.class:               dmAdminHelper
+  helper.class:               dmAdminHelper     # Override the core helper options
  
 services:
 

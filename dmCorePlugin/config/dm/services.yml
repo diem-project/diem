@@ -46,69 +46,69 @@ parameters:
 
   media_resource.class:       dmMediaResource       # Ressource for a media_tag_*
 
-  table_tag.class:            dmTableTag
+  table_tag.class:            dmTableTag            # Responsible for rendering HTML tables with the £table helper
 
-  search_engine.class:        dmSearchEngine
+  search_engine.class:        dmSearchEngine        # Responsible for managing search indices and provide a handfull programming interface.
 
-  search_index.class:         dmSearchIndex
+  search_index.class:         dmSearchIndex         # Responsible for maintaining and querying an index ( for example, the "en" index )
   
-  search_page.class:          dmSearchPageDocument
+  search_page.class:          dmSearchPageDocument  # Responsible for indexing a page
 
-  theme.class:                dmTheme
+  theme.class:                dmTheme               # Responsible for managing a CSS theme
 
-  stylesheet_compressor.class: dmStylesheetCompressor
+  stylesheet_compressor.class: dmStylesheetCompressor # Responsible for minifying, merging and compressing stylesheets
   stylesheet_compressor.options:
-    minify:                   true
-    gz_compression:           true
+    minify:                   true                  # whether to minify code
+    gz_compression:           true                  # whether to compress with gzip
 
-  javascript_compressor.class: dmJavascriptCompressor
+  javascript_compressor.class: dmJavascriptCompressor # Responsible for minifying, merging and compressing javascripts
   javascript_compressor.options:
-    minify:                   true
-    gz_compression:           true
+    minify:                   true                  # whether to minify code
+    gz_compression:           true                  # whether to compress with gzip
 
-  auth_layout_helper.class:   dmAuthLayoutHelper
+  auth_layout_helper.class:   dmAuthLayoutHelper    # Responsible for rendering the authentication page layout
 
-  cache_manager.class:        dmCacheManager
+  cache_manager.class:        dmCacheManager        # Responsible for managing cache
   cache_manager.options:
-    meta_cache_class:         dmMetaCache
+    meta_cache_class:         dmMetaCache           # class for metacache ( use file cache or apc cache depending on server )
 
-  filesystem.class:           dmFilesystem
+  filesystem.class:           dmFilesystem          # Extension of sfFilesystem
   
-  event_log.class:            dmEventLog
+  event_log.class:            dmEventLog            # Responsible for logging all notable events
   event_log.options:
-    name:                     Events
-    file:                     'data/dm/log/event.log'
-    entry_service_name:       event_log_entry
-    rotation:                 true
-    max_size_megabytes:       1
-    ignore_models:            []
-    ignore_internal_actions:  true
+    name:                     Events                # the log visible name
+    file:                     'data/dm/log/event.log' # where to save the log file, relative to project root directory
+    entry_service_name:       event_log_entry       # service name for an entry of this log
+    rotation:                 true                  # enable rotation on the log file ( strongly recommended )
+    max_size_megabytes:       1                     # max size for the log file before rotating
+    ignore_models:            []                    # models not to log
+    ignore_internal_actions:  true                  # whether to ignore Diem internal actions
   
-  event_log_entry.class:      dmEventLogEntry
+  event_log_entry.class:      dmEventLogEntry       # An entry of the event log
   
-  request_log.class:          dmRequestLog
+  request_log.class:          dmRequestLog          # Responsible for logging all requests
   request_log.options:
-    name:                     Requests
-    file:                     'data/dm/log/request.log'
-    entry_service_name:       request_log_entry
-    rotation:                 true
-    max_size_megabytes:       3
+    name:                     Requests              # the log visible name
+    file:                     'data/dm/log/request.log' # where to save the log file, relative to project root directory
+    entry_service_name:       request_log_entry     # service name for an entry of this log
+    rotation:                 true                  # enable rotation on the log file ( strongly recommended )
+    max_size_megabytes:       3                     # max size for the log file before rotating
   
-  request_log_entry.class:    dmRequestLogEntry
+  request_log_entry.class:    dmRequestLogEntry     # An entry of the event log
     
-  browser.class:              dmBrowser
+  browser.class:              dmBrowser             # Responsible for detecting user browser depending on its user agent
     
-  page_tree_watcher.class:    dmPageTreeWatcher
+  page_tree_watcher.class:    dmPageTreeWatcher     # Responsible for listening all events that may require a page synchronization, and launch the synchronization if any before redirections.
   page_tree_watcher.options:
-    use_thread:               auto                        # launch heavy synchronization tasks on another processus ( auto, true, false )
+    use_thread:               auto                  # launch heavy synchronization tasks on another process ( auto, true, false )
   
-  file_backup.class:          dmFileBackup                # Responsible for saving a copy of files edited. All files modified with a Diem code editor are backuped.
+  file_backup.class:          dmFileBackup          # Responsible for saving a copy of files edited. All files modified with a Diem code editor are backuped.
   file_backup.options:
     dir:                      'data/dm/backup/filesystem' # where to save files, relative to project root directory.
     
-  helper.class:               dmHelper
+  helper.class:               dmHelper              # Object oriented template helper.
   helper.options:
-    use_beaf:                 false
+    use_beaf:                 false                 # whether to use the "before-after" functionality on £ helper
  
 services:
 

@@ -1,50 +1,50 @@
 parameters:
 
-  html_sitemap.class:         dmFrontHtmlSitemap
+  html_sitemap.class:         dmFrontHtmlSitemap    # Responsible for building and rendering an HTML sitemap. Not to be confused with the xml sitemap, the HTML one is intended to be displayed on the site.
 
-  page_not_found_handler.class: dmPageNotFoundHandler
+  page_not_found_handler.class: dmPageNotFoundHandler # Responsible to redirect or forward the user when the request page is not found.
 
-  form_manager.class:         dmFormManager
+  form_manager.class:         dmFormManager         # Responsible for creating and managing front forms.
 
-  doctrine_pager.class:       dmFrontDoctrinePager
+  doctrine_pager.class:       dmFrontDoctrinePager  # Responsible for paginating the front doctrine collections, and rendering the pagination links.
 
-  link_tag_record.class:      dmFrontLinkTagRecord
+  link_tag_record.class:      dmFrontLinkTagRecord  # Responsible for rendering a link tag to a record with the £link helper. Configurable from the graphical configuration panel.
   link_tag_record.options:    []
   
-  link_tag_page.class:        dmFrontLinkTagPage
+  link_tag_page.class:        dmFrontLinkTagPage    # Responsible for rendering a link tag to a DmPage instance with the £link helper. Configurable from the graphical configuration panel.
   link_tag_page.options:      []
   
-  link_tag_media.class:       dmFrontLinkTagMedia
+  link_tag_media.class:       dmFrontLinkTagMedia   # Responsible for rendering a link tag to a DmMedia instance with the £link helper. Configurable from the graphical configuration panel.
   link_tag_media.options:     []
   
-  link_tag_action.class:      dmFrontLinkTagAction
+  link_tag_action.class:      dmFrontLinkTagAction  # Responsible for rendering a link tag to a symfony action with the £link helper. Configurable from the graphical configuration panel.
   link_tag_action.options:    []
   
-  link_tag_uri.class:         dmFrontLinkTagUri
+  link_tag_uri.class:         dmFrontLinkTagUri     # Responsible for rendering a link tag to an external uri with the £link helper. Configurable from the graphical configuration panel.
   link_tag_uri.options:       []
   
-  link_tag_error.class:       dmFrontLinkTagError
+  link_tag_error.class:       dmFrontLinkTagError   # Responsible for rendering a link tag to an exception with the £link helper. Configurable from the graphical configuration panel.
   link_tag_error.options:     []
 
-  link_resource.class:        dmFrontLinkResource
+  link_resource.class:        dmFrontLinkResource   # Ressource for a link_tag_*.
 
-  asset_config.class:         dmFrontAssetConfig
+  asset_config.class:         dmFrontAssetConfig    # Responsible for loading required assets.
 
-  theme_manager.class:        dmThemeManager
+  theme_manager.class:        dmThemeManager        # Responsible for managing available themes.
 
-  widget_view.class:          dmWidgetBaseView
+  widget_view.class:          dmWidgetBaseView      # Responsible for rendering a widget.
 
-  layout_helper.class:        dmFrontLayoutHelper
+  layout_helper.class:        dmFrontLayoutHelper   # Responsible for rendering the front layout.
 
-  page_helper.class:          dmFrontPageHelper
+  page_helper.class:          dmFrontPageHelper     # Responsible for rendering the front content.
   page_helper.view_class:     dmFrontPageHelper
   page_helper.edit_class:     dmFrontPageEditHelper
   
-  widget_type_manager.class:  dmWidgetTypeManager
+  widget_type_manager.class:  dmWidgetTypeManager   # Responsible for managing widget types.
   widget_type_manager.options:
-    config_file:              'config/dm/widget_types.yml'  
+    config_file:              'config/dm/widget_types.yml' # path to the widget type configuration file, relative to the project directory
     
-  helper.class:               dmFrontHelper      
+  helper.class:               dmFrontHelper         # Override the core helper options 
  
 services:
 
