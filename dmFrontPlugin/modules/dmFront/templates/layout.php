@@ -14,9 +14,7 @@ $helper->renderHtmlTag(),
   
   $helper->renderBodyTag(),
   
-    "\n<!-- DM_SITE_START -->\n",
     $sf_content,
-    "\n<!-- DM_SITE_END -->\n",
     
     $helper->renderEditBars(),
     
