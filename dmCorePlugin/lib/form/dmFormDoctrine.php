@@ -40,8 +40,10 @@ abstract class dmFormDoctrine extends sfFormDoctrine
       return $values;
     }
     
+    $isFileProvided = isset($values[$formName]['file']) && !empty($values[$formName]['file']['size']);
+    
     //no existing media, no file, and it is not required : skip all
-    if ($this->embeddedForms[$formName]->getObject()->isNew() && !isset($values[$formName]['file']) && !$this->embeddedForms[$formName]->getValidator('file')->getOption('required'))
+    if ($this->embeddedForms[$formName]->getObject()->isNew() && !$isFileProvided && !$this->embeddedForms[$formName]->getValidator('file')->getOption('required'))
     {
       // remove the embedded media form if the file field was not provided
       unset($this->embeddedForms[$formName], $values[$formName]);
