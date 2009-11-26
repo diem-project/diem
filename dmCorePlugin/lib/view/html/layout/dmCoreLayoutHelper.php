@@ -92,7 +92,7 @@ class dmCoreLayoutHelper
     $metasHtml = '';
     foreach( $metas as $key => $value)
     {
-      $value = htmlentities($value);
+      $value = htmlentities($value, ENT_COMPAT, 'UTF-8');
       if ('title' === $key)
       {
         $metasHtml = "\n".'<title>'.$value.'</title>';
