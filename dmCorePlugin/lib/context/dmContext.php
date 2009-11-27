@@ -178,8 +178,10 @@ class dmContext extends sfContext
 
     $sc = new sfServiceContainerBuilder;
 
+    $configPaths = $this->configuration->getConfigPaths('config/dm/services.yml');
+    
     $loader = new sfServiceContainerLoaderFileYaml($sc);
-    $loader->load($this->configuration->getConfigPaths('config/dm/services.yml'));
+    $loader->load($configPaths);
 
     $loader = new dmServiceContainerLoaderConfiguration($sc, $this->dispatcher);
     $loader->load(dmConfig::getAll());
@@ -188,7 +190,10 @@ class dmContext extends sfContext
     $baseClass = sfConfig::get('dm_service_container_base_class', 'dm'.ucfirst(sfConfig::get('dm_context_type')).'BaseServiceContainer');
 
     file_put_contents($file, $dumper->dump(array('class' => $name, 'base_class' => $baseClass)));
+    
+    $oldUmask = umask(0);
     @chmod($file, 0777);
+    umask($oldUmask);
 
     if(!file_exists($file))
     {

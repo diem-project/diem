@@ -10,6 +10,62 @@
  */
 abstract class dmApplicationConfiguration extends sfApplicationConfiguration
 {
+  
+  /**
+   * Diem override :
+   * symfony getConfigPath badly handle config/dm/*.yml files
+   * 
+   * Gets the configuration file paths for a given relative configuration path.
+   *
+   * @param string $configPath The configuration path
+   *
+   * @return array An array of paths
+   */
+  public function getConfigPaths($configPath)
+  {
+    $globalConfigPath = basename(dirname($configPath)).'/'.basename($configPath);
+
+    $files = array(
+      $this->getSymfonyLibDir().'/config/'.$globalConfigPath, // symfony
+    );
+
+    foreach ($this->getPluginPaths() as $path)
+    {
+      if (is_file($file = $path.'/'.$globalConfigPath))
+      {
+        $files[] = $file;                                     // plugins
+      }
+    }
+
+    foreach ($this->getPluginPaths() as $path)
+    {
+      if (is_file($file = $path.'/'.$configPath))
+      {
+        $files[] = $file;                                     // plugins
+      }
+    }
+
+    $files = array_merge($files, array(
+      $this->getRootDir().'/'.$globalConfigPath,              // project
+      $this->getRootDir().'/'.$configPath,                    // project
+      sfConfig::get('sf_app_dir').'/'.$globalConfigPath,      // application
+      sfConfig::get('sf_app_cache_dir').'/'.$configPath,      // generated modules
+    ));
+
+    $files[] = sfConfig::get('sf_app_dir').'/'.$configPath;   // module
+
+    $configs = array();
+    foreach (array_unique($files) as $file)
+    {
+      if (is_readable($file))
+      {
+        $configs[] = $file;
+      }
+    }
+
+    return $configs;
+  }
+  
   /*
    * Wich dmPlugins are usefull for this application ?
    * @returns array plugin names
