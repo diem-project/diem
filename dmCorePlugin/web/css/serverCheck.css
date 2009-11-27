@@ -27,7 +27,12 @@ table thead th {
   width: 32%;
 }
 
+table tbody .required th {
+	font-weight: bold;
+}
+
 table tbody th {
+  font-weight: normal;
   background: #F4F4FF;
 }
 

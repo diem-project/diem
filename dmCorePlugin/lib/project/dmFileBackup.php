@@ -57,7 +57,6 @@ class dmFileBackup extends dmConfigurable
     if (!is_readable($file))
     {
       throw new dmException('Can no read '.$file);
-      return false;
     }
     
     $relFile = dmProject::unRootify($file);
@@ -67,16 +66,16 @@ class dmFileBackup extends dmConfigurable
     if(!$this->filesystem->mkdir($backupPath))
     {
       throw new dmException('Can not create backup dir '.$backupPath);
-      return false;
     }
     
     $backupFile = dmOs::join($backupPath, basename($relFile).'.'.date('Y-m-d_H-i-s'));
     
-    if (!copy($file, $backupFile))
+    if (!$this->filesystem->touch($backupFile, 0777))
     {
       throw new dmException('Can not copy '.$file.' to '.$backupFile);
-      return false;
     }
+    
+    file_put_contents($backupFile, file_get_contents($file));
     
     $this->filesystem->chmod($file, 0777);
     

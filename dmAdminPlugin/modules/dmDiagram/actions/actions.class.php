@@ -10,24 +10,30 @@ class dmDiagramActions extends dmAdminBaseActions
     
     $this->dicImages = array();
     
-    foreach(array('admin', 'front') as $appName)
+    try
     {
-      $this->dicImages[$appName] = $this->getDiagramImage($appName);
+      foreach(array('admin', 'front') as $appName)
+      {
+        $this->dicImages[$appName] = $this->getDiagramImage($appName);
+      }
+    }
+    catch(dmException $e)
+    {
+      $this->getUser()->logError($e->getMessage());
     }
     
     $doctrineGraphviz = new dmDoctrineGraphviz($this->context->getFilesystem(), $this->context->getConfiguration());
     
-    $this->mldUserImage = $doctrineGraphviz->getMldImage(array(
-      'type' => 'user'
-    ));
-    
-    $this->mldCoreImage = $doctrineGraphviz->getMldImage(array(
-      'type' => 'core'
-    ));
-    
-    $this->mldProjectImage = $doctrineGraphviz->getMldImage(array(
-      'type' => 'project'
-    ));
+    try
+    {
+      $this->mldUserImage = $doctrineGraphviz->getMldImage(array('type' => 'user'));
+      $this->mldCoreImage = $doctrineGraphviz->getMldImage(array('type' => 'core'));
+      $this->mldProjectImage = $doctrineGraphviz->getMldImage(array('type' => 'project'));
+    }
+    catch(dmException $e)
+    {
+      $this->getUser()->logError($e->getMessage());
+    }
   }
   
   protected function loadServiceContainerDumper()

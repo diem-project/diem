@@ -11,4 +11,21 @@ class dmValidatorCssSize extends sfValidatorRegex
 
     $this->setOption('pattern', '/^\d+(%|px|)$/i');
   }
+  
+  /**
+   * @see sfValidatorRegex
+   */
+  protected function doClean($value)
+  {
+    $clean = parent::doClean($value);
+
+    $value = (int) $value;
+    
+    if ($value < 0 || $value > 5000)
+    {
+      throw new sfValidatorError($this, 'Enter a size between 0 and 5000', array('value' => $value));
+    }
+
+    return $clean;
+  }
 }

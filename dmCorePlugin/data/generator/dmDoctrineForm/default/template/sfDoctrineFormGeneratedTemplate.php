@@ -67,6 +67,10 @@ abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->
     $this->setupInheritance();
 
     parent::setup();
+    
+    // Unset automatic fields like 'created_at', 'updated_at', 'position'
+    // override this method in your form to keep them
+    parent::unsetAutoFields();
   }
 
 <?php foreach($this->getMediaRelations() as $mediaRelation): ?>

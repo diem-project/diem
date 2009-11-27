@@ -115,7 +115,7 @@ abstract class PluginDmMedia extends BaseDmMedia
 
     $exists = file_exists($this->getFullPath());
 
-    if (false === $exists && $orDelete)
+    if (false === $exists && $orDelete && $this->exists())
     {
       $this->delete();
     }

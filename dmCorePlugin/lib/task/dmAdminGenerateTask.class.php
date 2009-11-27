@@ -31,7 +31,7 @@ EOF;
    */
   protected function execute($arguments = array(), $options = array())
   {
-    $this->logSection('diem', 'Generate admin for modules');
+    $this->logSection('diem', 'Generate admin modules');
 
     $modules = $this->get('module_manager')->getModules();
 

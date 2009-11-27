@@ -60,11 +60,14 @@ default:
     
   toolBar:
     flavour:              blue          # the toolbar flavour. Diem default values: grey, blue, green, brown, black
-                                        # You can also set a custom flavour and style #dm_tool_bar.flavour_name in your css path
-    
+                                        # You can also set a custom flavour and style #dm_tool_bar.flavour_name in your themeAdmin css path
+  media:
+    default:              false         # default resource to use when using £media with an empty resource.
+                                        # example: /uploads/default.jpg
+ 
 ###### dm internal config ######
 
-  version:                5.0.0_ALPHA1
+  version:                5.0.0_ALPHA2
   
   core:
     asset:                dm/core

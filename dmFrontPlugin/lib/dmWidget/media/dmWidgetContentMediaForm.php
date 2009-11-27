@@ -83,7 +83,12 @@ class dmWidgetContentMediaForm extends dmWidgetPluginForm
     }
     else
     {
-      $this->setDefault('mediaName', dm::getI18n()->__('Drag & Drop a media here'));
+      $this->setDefault('mediaName', $this->__('Drag & Drop a media here'));
+    }
+    
+    if ($media && $media->isImage())
+    {
+      $this->widgetSchema['legend']->setLabel('Alt');
     }
 
     $this->validatorSchema->setPostValidator(new sfValidatorAnd(array(

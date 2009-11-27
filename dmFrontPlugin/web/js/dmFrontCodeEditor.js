@@ -30,10 +30,8 @@
       
       self.$dialog.bind('resize', function()
       {
-				var dWidth = 14;
-				$textarea = $('textarea', self.element).each(function() {
-					dHeight = $(this).hasClass('dm_readonly') ? 95 : 72;
-					$(this).height(self.$dialog.height() - dHeight).width(self.$dialog.width() - dWidth);
+				$('textarea', self.element).each(function() {
+					$(this).height(self.$dialog.height() - 85).width(self.$dialog.width() - 14);
 				});
       });
       
@@ -119,10 +117,16 @@
         },
         error: function(xhr)
         {
+					$.dbg(xhr);
           $panel.unblock();
-					var html = xhr.responseText;
-          var line = html.replace(/\n/g, "").replace(/(.+)on line <i>(\d+)<\/i>(.+)/, '$2');
-          alert('This code contains an error line ' + line + '. You should fix it.');
+					
+					$('<div class="dm_error">').html(xhr.responseText).dialog({
+            title: 'Error in '+file,
+            position: [5, 5],
+						buttons: {
+			        Close: function() { $(this).dialog('close'); }
+			      }
+					});
         }
       });
     },

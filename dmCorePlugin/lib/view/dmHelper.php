@@ -225,7 +225,7 @@ class dmHelper
       'media_tag.source',
       $resource = $this->serviceContainer->getService('media_resource')->initialize($source)
     );
-    
+
     return $this->serviceContainer->getService('media_tag_'.$resource->getMime());
   }
   

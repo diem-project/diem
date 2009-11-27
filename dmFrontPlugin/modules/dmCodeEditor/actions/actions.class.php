@@ -109,7 +109,12 @@ class dmCodeEditorActions extends dmFrontBaseActions
         {
           if($widgetArray['module'] === $module)
           {
+            ob_start();
             $widgets[$widgetArray['id']] = $helper->renderWidgetInner($widgetArray);
+            if( $output = ob_get_clean())
+            {
+              $widgets[$widgetArray['id']] = $output.$widgets[$widgetArray['id']];
+            }
           }
         }
       }

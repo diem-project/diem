@@ -100,6 +100,8 @@ abstract class dmChart extends pChart
       @$this->draw();
 
       $this->render($imageFullPath);
+      
+      $this->serviceContainer->getService('filesystem')->chmod($imageFullPath, 0777);
     }
 
     return $this->serviceContainer->getService('helper')->£media('/cache/'.$image);

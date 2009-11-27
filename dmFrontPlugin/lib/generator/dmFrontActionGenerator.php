@@ -75,7 +75,7 @@ class dmFrontActionGenerator extends dmFrontModuleGenerator
   {
     return new Zend_CodeGenerator_Php_Class(array(
       'name' => $className,
-      'extendedClass' => 'dmFrontModuleActions',
+      'extendedClass' => 'myFrontModuleActions',
       'docBlock' => array(
         'shortDescription' => $this->module->getName().' actions'
       )

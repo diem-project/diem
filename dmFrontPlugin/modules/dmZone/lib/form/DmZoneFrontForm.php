@@ -12,12 +12,12 @@ class DmZoneFrontForm extends DmZoneForm
     unset($this['dm_area_id'], $this['position'], $this['updated_at']);
     
     $this->widgetSchema['css_class']->setAttribute('class', 'dm_zone_css_class');
+
+    $this->validatorSchema['css_class'] = new dmValidatorCssClasses(array('required' => false));
     
     $this->widgetSchema['width']->setAttribute('class', 'dm_zone_width');
 
-    $this->validatorSchema['width'] = new dmValidatorCssSize(array(
-      'required' => false
-    ));
+    $this->validatorSchema['width'] = new dmValidatorCssSize(array('required' => false));
   }
 
   public function render($attributes = array())
@@ -38,10 +38,10 @@ class DmZoneFrontForm extends DmZoneForm
           %s%s
         </div>
       </div>',
-      sprintf('<a class="cancel dm close_dialog dm button fleft">%s</a>', dm::getI18n()->__('Cancel')),
-      sprintf('<input type="submit" class="submit try blue fright" name="try" value="%s" />', dm::getI18n()->__('Try')),
-      sprintf('<a class="delete dm button red fleft" title="%s">%s</a>', dm::getI18n()->__('Delete this zone'), dm::getI18n()->__('Delete')),
-      sprintf('<input type="submit" class="submit and_save green fright" name="and_save" value="%s" />', dm::getI18n()->__('Save and close'))
+      sprintf('<a class="cancel dm close_dialog dm button fleft">%s</a>', $this->__('Cancel')),
+      sprintf('<input type="submit" class="submit try blue fright" name="try" value="%s" />', $this->__('Try')),
+      sprintf('<a class="delete dm button red fleft" title="%s">%s</a>', $this->__('Delete this zone'), $this->__('Delete')),
+      sprintf('<input type="submit" class="submit and_save green fright" name="and_save" value="%s" />', $this->__('Save and close'))
     ).
     $this->close();
   }

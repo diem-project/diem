@@ -4,9 +4,9 @@ echo £('textarea.dm_code'.($isWritable ? '' : '.dm_readonly'), $textareaOptions
 
 echo £('div.file.clearfix',
   £('div.actions.fright',
-    ($isWritable ? £('a.save', __('Save')) : '')
+    ($isWritable ? £('a.save', __('Save').' (Ctrl+S)') : '')
   ).
-  £('span.info', $message)
+  £('span.info'.(!$isWritable ? '.error' : ''), $message)
 );
 
 printf('<input type="hidden" value="%s" class="path" />', $path);

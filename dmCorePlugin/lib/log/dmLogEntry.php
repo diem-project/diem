@@ -15,14 +15,14 @@ abstract class dmLogEntry
 
   public function get($key)
   {
-    if(isset($this->data[$key]))
-    {
-      return $this->data[$key];
-    }
-    
     if(method_exists($this, $method = 'get'.dmString::camelize($key)))
     {
       return $this->$method();
+    }
+  
+    if(isset($this->data[$key]))
+    {
+      return $this->data[$key];
     }
     
     return null;
@@ -36,5 +36,15 @@ abstract class dmLogEntry
   public function toArray()
   {
     return $this->data;
+  }
+  
+  public function getIp()
+  {
+    if (!isset($this->data['ip']))
+    {
+      return null;
+    }
+    
+    return '::1' === $this->data['ip'] ? 'localhost' : $this->data['ip'];
   }
 }

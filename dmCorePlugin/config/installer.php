@@ -16,14 +16,14 @@ if ('/' !== DIRECTORY_SEPARATOR)
 
 $this->logBlock('Diem '.DIEM_VERSION.' installer', 'INFO_LARGE');
 
-$this->logSection('Diem', 'Welcome in the Diem installation wizard. We will now check that your server matches Symfony '.SYMFONY_VERSION.' & Diem 5 requirements.');
+$this->logSection('Diem', 'Welcome into the Diem installation wizard.');
+$this->logSection('Diem', 'We will now check that your server matches Symfony '.SYMFONY_VERSION.' and Diem 5.0 requirements.');
 
 usleep(1000000);
 $this->askConfirmation('Press ENTER');
 
 $serverCheck = new dmServerCheckTask($this->dispatcher, $this->formatter);
 $serverCheck->setCommandApplication($this->commandApplication);
-$serverCheck->setConfiguration($config);
 
 try
 {
@@ -110,18 +110,19 @@ while(!$isDatabaseOk);
 
 $this->logBlock('Your configuration is valid', 'INFO_LARGE');
 
-usleep(2000000);
+usleep(1000000);
 
-//$confirmationMessage = sprintf('Are you ready to create the %s project ? This will erase the %s database'.' (Y/n)',
-//  dmProject::getKey(),
-//  $settings['database']['name']
-//);
-//
-//if (!$this->askConfirmation($confirmationMessage))
-//{
-//  $this->log('Aborting.');
-//  exit;
-//}
+if (!$this->askConfirmation(array(
+  'The installation will remove all data in the '.$settings['database']['name'].' database.',
+  '',
+  'Are you sure you want to proceed? (y/N)'
+), 'QUESTION_LARGE', false)
+)
+{
+  $this->logSection('diem', 'installation aborted');
+
+  exit;
+}
 
 $this->filesystem->mirror(
   dmOs::join(sfConfig::get('dm_core_dir'), 'data/skeleton'),
@@ -161,46 +162,23 @@ $this->runTask('configure:database', array(
   'password' => $db['password']
 ));
 
-//dm::start();
-//require_once(dmProject::rootify('config/dmInstallerProjectConfiguration.class.php'));
-//$configuration = dmInstallerProjectConfiguration::activate(sfConfig::get('sf_root_dir'), $this->dispatcher);
-//$this->filesystem->remove(dmProject::rootify('config/dmInstallerProjectConfiguration.class.php'));
+$this->logBlock('Installing '.$projectKey.'. This may take some time.', 'INFO_LARGE');
 
-//$configuration = ProjectConfiguration::getApplicationConfiguration('admin', 'dev', true, null, $this->dispatcher);
-
-//print_r(get_class($configuration));
-
-//sfConfig::set('sf_debug', true);
-//
-//sfConfig::set('sf_error_reporting', (E_ALL | E_STRICT));
-
-//$task = $this->createTask('doctrine:build');
-//$task->setConfiguration($configuration);
-//$task->run(array(), array('all' => true, 'no-confirmation' => true));
-
-//dmDb::create('DmUser', array(
-//  'is_super_admin' => true,
-//  'username' => 'admin',
-//  'password' => !empty($settings['database']['password']) ? $settings['database']['password'] : 'admin',
-//  'email' => 'admin@'.dmProject::getKey().'.com'
-//))->save();
-
-// fix permission for common directories
-//$fixPerms = new dmProjectPermissionsTask($this->dispatcher, $this->formatter);
-//$fixPerms->setCommandApplication($this->commandApplication);
-//$fixPerms->setConfiguration($config);
-//$fixPerms->run();
-
-// fix permission for common directories
-//$fixPerms = new dmPublishAssetsTask($this->dispatcher, $this->formatter);
-//$fixPerms->setCommandApplication($this->commandApplication);
-//$fixPerms->setConfiguration($config);
-//$fixPerms->run();
-
-$this->logBlock('Everything went fine', 'INFO_LARGE');
-
-$this->logBlock('There is a last thing to do. Please run : php symfony dm:setup', 'INFO_LARGE');
-
-$this->log('');
+try
+{
+  $this->getFilesystem()->execute(sprintf(
+    '%s "%s" %s',
+    sfToolkit::getPhpCli(),
+    sfConfig::get('sf_root_dir').'/symfony',
+    'dm:setup --no-confirmation'
+  ), $out, $err);
+  
+  $this->logBlock('Your project is now ready for web access. See you on admin_dev.php.', 'INFO_LARGE');
+  $this->logBlock('Your login is admin and your password is '.(empty($settings['database']['password']) ? '"admin"' : 'the database password'), 'INFO_LARGE');
+}
+catch(Exception $e)
+{
+  $this->logBlock('There is a last thing to do. Please run : php symfony dm:setup', 'INFO_LARGE');
+}
 
 exit;

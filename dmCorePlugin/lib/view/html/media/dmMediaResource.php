@@ -73,13 +73,12 @@ class dmMediaResource
     }
   }
 
-  public function initialize($source)
+  public function initialize($source, $isDefault = false)
   {
     $this->source = $source;
     
     if (empty($source))
     {
-      throw new dmException('Can not build media from empty resource');
     }
     elseif (is_string($source))
     {
@@ -144,14 +143,28 @@ class dmMediaResource
     {
       if ($source->isNew())
       {
-        throw new dmException('Can not build media from new DmMedia');
       }
-      
-      $this->fromMedia($source);
+      else
+      {
+        $this->fromMedia($source);
+      }
     }
     else
     {
-      throw new dmException('Bad media : '.$source);
+      throw new dmException('Not a valid media source : '.$source);
+    }
+    
+    if (!$this->getMime())
+    {
+      if($isDefault)
+      {
+        $this->pathFromWebDir = '';
+        $this->mime = 'image';
+      }
+      else
+      {
+        $this->initialize(sfConfig::get('dm_media_default'), true);
+      }
     }
     
     return $this;

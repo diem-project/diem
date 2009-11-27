@@ -40,9 +40,9 @@ class dmDoctrineGraphviz
 
     if (!$return)
     {
-      dm::getUser()->logError(sprintf('Diem can not generate the mcd diagram : %s', $this->filesystem->getLastExec('output')));
+      throw new dmException(sprintf('Diem can not generate the mcd diagram : %s', $this->filesystem->getLastExec('output')));
     }
-
+    
     return '/cache/'.$diagramImage;
   }
 

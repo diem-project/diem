@@ -42,6 +42,7 @@ EOF;
    */
   protected function execute($arguments = array(), $options = array())
   {
+    $this->logSection('diem', 'Check file permissions');
     parent::execute();
     
     $this->current = null;

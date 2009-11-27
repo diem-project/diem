@@ -20,7 +20,7 @@ default:
     
   console:                                          # emulate a linux shell
                                                     # commands available
-    commands:             'sf man ll ls pwd cat mkdir rm cp mv touch chmod free df find clear'
+    commands:             'sf man ll ls pwd cat mkdir rm cp mv touch chmod free df find clear php'
     alias:                                          # aliases available
       'll':               'ls -l'
 

@@ -27,7 +27,7 @@ class dmFrontActionTemplateGenerator extends dmFrontModuleGenerator
 
       $code = $this->getActionTemplate($action);
 
-      $fileSuccess &= (file_put_contents($file, $code) && $this->filesystem->chmod($file, 0777));    
+      $fileSuccess = (file_put_contents($file, $code) && $this->filesystem->chmod($file, 0777));    
       
       if(!$fileSuccess)
       {
@@ -57,10 +57,8 @@ class dmFrontActionTemplateGenerator extends dmFrontModuleGenerator
     $pager = $object.'Pager';
     $vars = $this->getVarsComment(array($pager));
     return "<?php
-/*
- * Action for {$this->module->getName()} : {$action->getName()}
- * Vars : {$vars}
- */
+// {$this->module->getName()} : {$action->getName()}
+// Vars : {$vars}
 
 echo £o('div.{$this->module->getUnderscore()}.{$action->getUnderscore()}');
 
@@ -89,35 +87,30 @@ echo £c('div');";
     $object = '$'.$this->module->getKey();
     $vars = $this->getVarsComment(array($object));
     return "<?php
-/*
- * Action for {$this->module->getName()} : {$action->getName()}
- * Vars : {$vars}
- */
+// {$this->module->getName()} : {$action->getName()}
+// Vars : {$vars}
 
 echo £o('div.{$this->module->getUnderscore()}.{$action->getUnderscore()}');
 
   echo \${$this->module->getKey()};
   
-echo £c('div');
-";
+echo £c('div');";
   }
 
   protected function getFormActionTemplate(dmAction $action)
   {
     $vars = $this->getVarsComment(array('form'));
     return "<?php
-/*
- * Action for {$this->module->getName()} : {$action->getName()}
- * Vars : {$vars}
- */
+// {$this->module->getName()} : {$action->getName()}
+// Vars : {$vars}
 
-echo \$form;
-";
+echo \$form;";
   }
 
   protected function getUserActionTemplate(dmAction $action)
   {
     return "<?php
+// {$this->module->getName()} : {$action->getName()}
 ";
   }
 

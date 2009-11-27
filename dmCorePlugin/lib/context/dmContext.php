@@ -30,6 +30,8 @@ class dmContext extends sfContext
    */
   public function initialize(sfApplicationConfiguration $configuration)
   {
+    $this->checkProjectIsSetup();
+    
     parent::initialize($configuration);
 
     $timer = dmDebug::timerOrNull('dmContext::initialize');
@@ -272,8 +274,6 @@ class dmContext extends sfContext
    */
   public function dispatch()
   {
-    $this->checkProjectIsSetup();
-    
     $this->getController()->dispatch();
 
     $this->dispatcher->notify(new sfEvent($this, 'dm.context.end'));
@@ -304,7 +304,14 @@ class dmContext extends sfContext
   {
     if (file_exists(dmOs::join(sfConfig::get('dm_data_dir'), 'lock')))
     {
-      die('Please setup this project with the dm:setup task : "php symfony dm:setup"');
+      if (!dmConfig::isCli())
+      {
+        die('Please setup this project with the dm:setup task : "php symfony dm:setup"');
+      }
+      
+      return false;
     }
+    
+    return true;
   }
 }

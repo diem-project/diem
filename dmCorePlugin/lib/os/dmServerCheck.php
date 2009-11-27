@@ -16,9 +16,16 @@ class dmServerCheck
   
   protected function createChecks()
   {
+    // check graphviz
+    exec('dot -V', $output, $graphvizReturnCode);
+    
     return array(
       'server' => array(
-    new dmServerCheckUnit('unix', DIRECTORY_SEPARATOR == '/', true, self::ERROR)
+    new dmServerCheckUnit('unix', DIRECTORY_SEPARATOR == '/', true, self::ERROR),
+    new dmServerCheckUnit('graphviz installed', 0 === $graphvizReturnCode, true)
+    ),
+       'symfony' => array(
+    new dmServerCheckUnit('version', SYMFONY_VERSION, '1.3.0', self::ERROR)
     ),
       'php config' => array(
     new dmServerCheckUnit('version', phpversion(), '5.2.4', self::ERROR),
@@ -32,22 +39,18 @@ class dmServerCheck
     new dmServerCheckUnit('mbstring', extension_loaded('mbstring'), true),
     new dmServerCheckUnit('utf8_decode()', function_exists('utf8_decode'), true)
     ),
-       'symfony' => array(
-    new dmServerCheckUnit('version', SYMFONY_VERSION, '1.3.0', self::ERROR)
-    ),
        'php extensions' => array(
-    new dmServerCheckUnit('spl', extension_loaded('spl'), true, self::ERROR),
     new dmServerCheckUnit('pdo', extension_loaded('pdo'), true, self::ERROR),
     new dmServerCheckUnit('pdo_mysql', extension_loaded('pdo_mysql'), true, self::ERROR),
     new dmServerCheckUnit('json', extension_loaded('json') ? phpversion('json') : false, '1.0', self::ERROR),
     new dmServerCheckUnit('gd', extension_loaded('gd'), true, self::ERROR),
-    new dmServerCheckUnit('date', extension_loaded('date'), true, self::ERROR),
+//    new dmServerCheckUnit('date', extension_loaded('date'), true, self::ERROR),
     new dmServerCheckUnit('ctype', extension_loaded('ctype'), true, self::ERROR),
     new dmServerCheckUnit('dom', extension_loaded('dom'), true, self::ERROR),
     new dmServerCheckUnit('iconv', extension_loaded('iconv'), true, self::ERROR),
     new dmServerCheckUnit('pcre', extension_loaded('pcre'), true, self::ERROR),
     new dmServerCheckUnit('reflection', extension_loaded('Reflection'), true, self::ERROR),
-    new dmServerCheckUnit('session', extension_loaded('session'), true, self::ERROR),
+//    new dmServerCheckUnit('session', extension_loaded('session'), true, self::ERROR),
     new dmServerCheckUnit('simplexml', extension_loaded('SimpleXML'), true, self::ERROR),
 //    new dmServerCheckUnit('bitset', extension_loaded('bitset'), true),
     new dmServerCheckUnit('apc', function_exists('apc_store') ? phpversion('apc') : false, '3.0'),
@@ -74,12 +77,12 @@ class dmServerCheck
   public function renderContent()
   {
     return
-    sprintf('<h1>Diem %s System Check</h1>', sfConfig::get('dm_version')).
+    sprintf('<h1>Diem %s System Check</h1>', DIEM_VERSION).
     '<div class="clearfix">'.
     sprintf('<div class="half">%s%s%s</div>',
     $this->renderTable('server'),
-    $this->renderTable('php config'),
-    $this->renderTable('symfony')
+    $this->renderTable('symfony'),
+    $this->renderTable('php config')
     ).
     sprintf('<div class="half">%s</div>', $this->renderTable('php extensions')).
     '</div>';
@@ -99,8 +102,9 @@ class dmServerCheck
     $html = '';
     foreach($checks as $check)
     {
-      $html .= sprintf('<tr class="%s"><th>%s</th><td>%s</td><td>%s</td><td>%s</td></tr>',
+      $html .= sprintf('<tr class="%s %s"><th>%s</th><td>%s</td><td>%s</td><td>%s</td></tr>',
       $check->getDiagnostic(),
+      $check->isRequired() ? 'required' : '',
       $check->renderName(),
       $check->renderRequirement(),
       $check->renderState(),
@@ -119,7 +123,7 @@ class dmServerCheck
 <meta name="language" content="en" />
 <style type="text/css">%s</style>
 </head>',
-    sfConfig::get('dm_version'),
+    DIEM_VERSION,
     file_get_contents(dmOs::join(dm::getDir(), 'dmCorePlugin/web/lib/blueprint/screen.css')).
     file_get_contents(dmOs::join(dm::getDir(), 'dmCorePlugin/web/css/serverCheck.css'))
     );

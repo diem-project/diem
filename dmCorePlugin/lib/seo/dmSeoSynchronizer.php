@@ -422,7 +422,9 @@ LIMIT 1')->getStatement();
 
   public static function truncateValueForField($value, $field)
   {
-    return mb_substr($value, 0, self::getFieldMaxLength($field));
+    return function_exists('mb_substr')
+    ? mb_substr($value, 0, self::getFieldMaxLength($field))
+    : substr($value, 0, self::getFieldMaxLength($field));
   }
 
   public static function getFieldMaxLength($field)

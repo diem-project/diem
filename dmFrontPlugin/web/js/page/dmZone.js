@@ -52,7 +52,7 @@ $.widget('ui.dmZone', {
             url:      $.dm.ctrl.getHref('+/dmZone/getAttributes'),
             data:     { zone_id: zone.getId() },
             success:  function(datas) {
-              zone.element.attr('class', 'dm_zone '+ datas[1]).css('width', datas[0]);
+              zone.element.attr('class', 'dm_zone '+ datas[1].replace(/\./g, ' ')).css('width', datas[0]);
             }
           });
         }, 100);
@@ -74,7 +74,7 @@ $.widget('ui.dmZone', {
           }
           $dialog.html(data).trigger('dmAjaxResponse');
           if(!$('ul.error_list', $form).length) {
-            zone.element.attr('class', 'dm_zone '+ $('input.dm_zone_css_class', $form).val()).css('width', $('input.dm_zone_width', $form).val());
+            zone.element.attr('class', 'dm_zone '+ $('input.dm_zone_css_class', $form).val().replace(/\./g, ' ')).css('width', $('input.dm_zone_width', $form).val());
           }
           zone.element.unblock();
         }

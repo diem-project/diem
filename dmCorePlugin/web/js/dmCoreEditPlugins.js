@@ -127,10 +127,12 @@
 				{
 					pos = [pos == 'right' || pos == 'left' ? pos : 'center', pos == 'top' || pos == 'bottom' ? pos : 'middle'];
 				}
-				if (pos.constructor != Array) 
+				
+				if (pos.constructor != Array && pos.constructor != Object) 
 				{
 					pos = ['center', 'middle'];
 				}
+				
 				if (pos[0].constructor == Number) 
 				{
 					pLeft += pos[0];
@@ -139,6 +141,7 @@
 				{
 					pLeft += (wnd.width() - this.uiDialog.outerWidth()) / 2;
 				}
+				
 				if (pos[1].constructor == Number) 
 				{
 					pTop += pos[1];

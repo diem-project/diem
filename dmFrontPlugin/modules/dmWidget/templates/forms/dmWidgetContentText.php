@@ -30,8 +30,20 @@ $form->renderGlobalErrors(),
 
 £('div#'.$baseTabId.'_links',
   £('ul.dm_form_elements',
-    £('li.dm_form_element.clearfix', $form['titleLink']->label('Title')->field('.dm_link_droppable')->error()).
-    £('li.dm_form_element.clearfix', $form['mediaLink']->label('Media')->field('.dm_link_droppable')->error())
+    £('li.dm_form_element.clearfix',
+      $form['titleLink']
+      ->label(__('Title'))
+      ->field('.dm_link_droppable')
+      ->error().
+      £('p.dm_help', __('Transform the text title to a link').'<br />'.__('Drag & Drop a page or enter an url'))
+    ).
+    £('li.dm_form_element.clearfix',
+      $form['mediaLink']
+      ->label('Media')
+      ->field('.dm_link_droppable')
+      ->error().
+      £('p.dm_help', __('Transform the text media to a link').'<br />'.__('Drag & Drop a page or enter an url'))
+    )
   )
 ),
 

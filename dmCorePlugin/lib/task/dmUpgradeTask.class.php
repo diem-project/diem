@@ -7,7 +7,6 @@ class dmUpgradeTask extends dmContextTask
 {
   protected
   $diemVersions = array(
-    '500dev1'
   );
   
   /**
@@ -48,17 +47,4 @@ class dmUpgradeTask extends dmContextTask
     }
   }
   
-  protected function upgradeTo500Dev1()
-  {
-    // rename setting image_quality to image_resize_quality
-    if ($setting = dmDb::table('DmSetting')->findOneByName('image_quality'))
-    {
-      if (!dmDb::query('DmSetting s')->where('s.name = ?', 'image_resize_quality')->exists())
-      {
-        $setting->name = 'image_resize_quality';
-        $setting->save();
-        $this->logBlock('renamed setting image_quality to image_resize_quality', 'INFO');
-      }
-    }
-  }
 }

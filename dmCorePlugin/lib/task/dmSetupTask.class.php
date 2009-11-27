@@ -13,7 +13,8 @@ class dmSetupTask extends dmContextTask
     parent::configure();
 
     $this->addOptions(array(
-      new sfCommandOption('clear-db', null, sfCommandOption::PARAMETER_NONE, 'Drop database ( all data will be lost )')
+      new sfCommandOption('clear-db', null, sfCommandOption::PARAMETER_NONE, 'Drop database ( all data will be lost )'),
+      new sfCommandOption('no-confirmation', null, sfCommandOption::PARAMETER_NONE, 'Whether to force dropping of the database')
     ));
 
     $this->namespace = 'dm';
@@ -34,7 +35,7 @@ EOF;
   protected function execute($arguments = array(), $options = array())
   {
     $this->logSection('diem', 'Setup '.dmProject::getKey());
-
+    
     if (!$this->isProjectLocked())
     {
       $this->runTask('dm:upgrade');
@@ -47,19 +48,16 @@ EOF;
     {
       $this->reloadAutoload();
       
-      if ($ret = $this->runTask('doctrine:drop-db', array(), array()))
-      {
-        return $ret;
-      }
+      $this->runTask('doctrine:drop-db', array(), array('no-confirmation' => dmArray::get($options, 'no-confirmation', false)));
 
-      if ($ret = $this->runTask('doctrine:build-db', array(), array()))
+      if ($ret = $this->runTask('doctrine:build-db'))
       {
         return $ret;
       }
       
-      $this->runTask('doctrine:build-sql', array(), array());
+      $this->runTask('doctrine:build-sql');
       
-      $this->runTask('doctrine:insert-sql', array(), array());
+      $this->runTask('doctrine:insert-sql');
       
       // well, we don't need migration classes anymore...
       sfToolkit::clearDirectory(dmProject::rootify('lib/migration/doctrine'));
@@ -89,7 +87,7 @@ EOF;
 
     $this->runTask('dmAdmin:generate');
     
-    $this->logSection('front', 'generate missing modules');
+    $this->logSection('diem', 'generate front modules');
     $this->context->get('filesystem')->sf('dmFront:generate');
 
     $this->runTask('dm:permissions');

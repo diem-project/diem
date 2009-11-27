@@ -6,55 +6,6 @@ class dmFilesystem extends sfFilesystem
     $dispatcher,
     $lastExec; // array(command, output, return)
 
-  /*
-   * Singleton pattern
-   * @return dmFilesystem $instance
-   */
-//  public static function get()
-//  {
-//    if (self::$instance === null)
-//    {
-//      self::$instance = new self;
-//    }
-//    return self::$instance;
-//  }
-
-  public function whois($ip = null)
-  {
-    $ip = $ip ? $ip : $_SERVER['REMOTE_ADDR'];
-
-    if ($this->exec("whois $ip"))
-    {
-      $array = explode("<br />", $this->getLastExec("output"));
-      $infos = array();
-      foreach($array as $key => $val)
-      {
-        if ($pos = strpos($val, ":"))
-        {
-          $k = substr($val, 0, $pos);
-          $v = trim(substr($val, $pos+1));
-          if (isset($infos[$k]))
-          {
-            $infos[$k][] = $v;
-          }
-          else
-          {
-            $infos[$k] = array($v);
-          }
-        }
-      }
-      foreach($infos as $key => $values)
-      {
-        $infos[$key] = implode("\n", array_unique($values));
-      }
-    }
-    else
-    {
-      $infos = array();
-    }
-    return $infos;
-  }
-
   public function mkdir($path, $mode = 0777)
   {
     if (!is_dir($path))

@@ -69,7 +69,7 @@ class dmFrontComponentGenerator extends dmFrontModuleGenerator
   {
     return new Zend_CodeGenerator_Php_Class(array(
       'name' => $className,
-      'extendedClass' => 'dmFrontModuleComponents',
+      'extendedClass' => 'myFrontModuleComponents',
       'docBlock' => array(
         'shortDescription' => $this->module->getName().' components',
         'longDescription' => 'No redirection nor database manipulation ( insert, update, delete ) here'

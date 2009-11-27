@@ -72,3 +72,8 @@
 .dm_form textarea.markItUpEditor {
   width: 97%;
 }
+
+.dm_form .dm_help {
+  color: #888;
+  margin-left:20%;
+}

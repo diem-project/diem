@@ -13,17 +13,14 @@ class dmZoneActions extends dmFrontBaseActions
     
     $this->form->removeCsrfProtection();
 
-    if ($request->isMethod('post'))
+    if ($request->isMethod('post') && $this->form->bindAndValid($request))
     {
-      if ($this->form->bindAndValid($request))
+      $this->form->updateObject();
+      
+      if ($request->hasParameter('and_save'))
       {
-        $this->form->updateObject();
-
-        if ($request->hasParameter('and_save'))
-        {
-          $this->form->getObject()->save();
-          return $this->renderText('ok');
-        }
+        $this->form->getObject()->save();
+        return $this->renderText('ok');
       }
     }
   }

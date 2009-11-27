@@ -96,9 +96,20 @@ class dmMediaTagImage extends dmMediaTag
 
   public function render()
   {
+    if (!$this->resource->getSource())
+    {
+      $this->context->getLogger()->warning('Skipped empty media rendering');
+      return $this->renderDefault();
+    }
+    
     $tag = '<img'.$this->getHtmlAttributes().' />';
 
     return $tag;
+  }
+  
+  protected function renderDefault()
+  {
+    return '';
   }
   
   public function getRealSize()
