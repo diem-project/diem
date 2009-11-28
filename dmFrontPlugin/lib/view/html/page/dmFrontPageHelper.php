@@ -227,22 +227,25 @@ class dmFrontPageHelper
     return $html;
   }
 
-  public function renderWidgetInner(array $widget, dmWidgetType $widgetType = null)
+  public function renderWidgetInner(array $widget)
   {
     try
     {
-      if (null === $widgetType)
+      $this->serviceContainer->setParameter('widget_renderer.widget', $widget);
+      
+      $renderer = $this->serviceContainer->getService('widget_renderer');
+      
+      $html = $renderer->getHtml();
+    
+      foreach($renderer->getJavascripts() as $javascript)
       {
-        $widgetType = $this->widgetTypeManager->getWidgetType($widget['module'], $widget['action']);
+        $this->serviceContainer->getService('response')->addJavascript($javascript);
       }
       
-      $this->serviceContainer->addParameters(array(
-        'widget_view.class' => $widgetType->getViewClass(),
-        'widget_view.type'  => $widgetType,
-        'widget_view.data'  => $widget
-      ));
-      
-      $html = $this->serviceContainer->getService('widget_view')->render();
+      foreach($renderer->getStylesheets() as $stylesheet)
+      {
+        $this->serviceContainer->getService('response')->addStylesheet($stylesheet);
+      }
     }
     catch(Exception $e)
     {
@@ -268,7 +271,7 @@ class dmFrontPageHelper
 
     return $html;
   }
-
+  
   public function getWidgetContainerClasses(array $widget)
   {
     if(!empty($widget['css_class']))

@@ -7,6 +7,21 @@ class dmWidgetContentTextForm extends dmWidgetContentMediaForm
   {
     parent::configure();
     
+    $this->addRequiredStylesheet(array(
+      'lib.ui-tabs',
+      'lib.markitup',
+      'lib.markitupSet',
+      'lib.ui-resizable'
+    ));
+    $this->addRequiredJavascript(array(
+      'lib.ui-tabs',
+      'core.tabForm',
+      'lib.markitup',
+      'lib.markitupSet',
+      'lib.ui-resizable',
+      'lib.fieldSelection'
+    ));
+    
     $this->widgetSchema['title'] = new sfWidgetFormInputText();
     $this->validatorSchema['title'] = new sfValidatorString(array('required' => false));
     
@@ -31,7 +46,7 @@ class dmWidgetContentTextForm extends dmWidgetContentMediaForm
   {
     return self::$serviceContainer->getService('helper')->renderPartial('dmWidget', 'forms/dmWidgetContentText', array(
       'form' => $this,
-      'baseTabId' => 'dm_widget_text_'.$this->dmWidget->id,
+      'baseTabId' => 'dm_widget_text_'.$this->dmWidget->get('id'),
       'hasMedia' => (boolean) $this->getValueOrDefault('mediaId')
     ));
   }

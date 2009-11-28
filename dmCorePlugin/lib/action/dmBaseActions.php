@@ -38,15 +38,17 @@ abstract class dmBaseActions extends sfActions
     $this->setLayout(false);
     sfConfig::set('sf_web_debug', false);
     
+    $encodedJson = json_encode($json);
+    
     if ($this->request->isMethod('post') && $this->request->isXmlHttpRequest() && !in_array('application/json', $this->request->getAcceptableContentTypes()))
     {
       $this->response->setContentType('text/html');
-      $this->response->setContent('<textarea>'.json_encode($json).'</textarea>');
+      $this->response->setContent('<textarea>'.$encodedJson.'</textarea>');
     }
     else
     {
       $this->response->setContentType('application/json');
-      $this->response->setContent(json_encode($json));
+      $this->response->setContent($encodedJson);
     }
 
     return sfView::NONE;

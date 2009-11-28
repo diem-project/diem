@@ -3,7 +3,7 @@
 /**
  * The current Diem version.
  */
-define('DIEM_VERSION', '5.0.0-ALPHA2');
+define('DIEM_VERSION', '5.0.0-ALPHA3');
 
 class dmBase
 {

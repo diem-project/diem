@@ -36,6 +36,11 @@ class dmWidgetContentMediaView extends dmWidgetPluginView
       {
         $mediaTag->alt($vars['legend']);
       }
+      
+      if ($quality = dmArray::get($vars, 'quality'))
+      {
+        $mediaTag->quality($quality);
+      }
     }
     else
     {

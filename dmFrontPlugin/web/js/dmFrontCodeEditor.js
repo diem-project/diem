@@ -117,16 +117,9 @@
         },
         error: function(xhr)
         {
-					$.dbg(xhr);
           $panel.unblock();
 					
-					$('<div class="dm_error">').html(xhr.responseText).dialog({
-            title: 'Error in '+file,
-            position: [5, 5],
-						buttons: {
-			        Close: function() { $(this).dialog('close'); }
-			      }
-					});
+					$.dm.ctrl.errorDialog('Error in '+file, xhr.responseText);
         }
       });
     },

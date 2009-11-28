@@ -19,6 +19,8 @@ abstract class BasedmInterfaceActions extends dmBaseActions
         sprintf('folder table has no root !')
       );
     }
+    
+    $this->folder->sync();
 
     $this->getUser()->setAttribute('dm_media_browser_folder_id', $this->folder->get('id'));
 

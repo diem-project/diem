@@ -12,13 +12,18 @@
     } 
     catch(e) 
     {
-//			alert(e);
-//      for (var i in arguments) 
-//      {
-//        if (i < 5) 
-//          alert(arguments[i]);
-//      }
     }
+  };
+	
+	$.loadStylesheets = function(stylesheets)
+  {
+    $.each(stylesheets, function()
+    {
+      if (!$('link[rel=stylesheet][href=' + this + ']').length) 
+      {
+        $("head").append('<link rel="stylesheet" href="' + this + '">');
+      }
+    });
   };
   
   $.fn.extend({

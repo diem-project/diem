@@ -5,27 +5,27 @@ parameters:
   log_chart.class:            dmLogChart        # Responsible for rendering the log chart
   log_chart.options:
     name:                     Server            # public name for this chart
-    lifetime:                 3600              # time in seconds to keep a cached version of the chart
+    lifetime:                 1800              # time in seconds to keep a cached version of the chart
 
   week_chart.class:           dmWeekChart       # Responsible for rendering the week chart
   week_chart.options:
     name:                     This Week         # public name for this chart
-    lifetime:                 43200             # time in seconds to keep a cached version of the chart
+    lifetime:                 21600             # time in seconds to keep a cached version of the chart
 
   visit_chart.class:          dmVisitChart      # Responsible for rendering the visit chart
   visit_chart.options:
     name:                     This Year         # public name for this chart
-    lifetime:                 86400             # time in seconds to keep a cached version of the chart
+    lifetime:                 43200             # time in seconds to keep a cached version of the chart
 
   content_chart.class:        dmContentChart    # Responsible for rendering the content chart
   content_chart.options:
     name:                     Activity          # public name for this chart
-    lifetime:                 86400             # time in seconds to keep a cached version of the chart
+    lifetime:                 43200             # time in seconds to keep a cached version of the chart
 
   browser_chart.class:        dmBrowserChart    # Responsible for rendering the browser chart
   browser_chart.options:
     name:                     Browsers          # public name for this chart
-    lifetime:                 86400             # time in seconds to keep a cached version of the chart
+    lifetime:                 43200             # time in seconds to keep a cached version of the chart
 
   gapi.class:                 dmGapi            # Responsible for fetching data from google analytics
 

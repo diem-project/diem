@@ -96,9 +96,9 @@ class dmWidgetTypeManager
 
   public function getWidgetType($moduleOrWidget, $action = null, $orNull = false)
   {
-    if ($moduleOrWidget instanceof DmWidget)
+    if (is_array($moduleOrWidget) || $moduleOrWidget instanceof DmWidget)
     {
-      list($module, $action) = array($moduleOrWidget->get('module'), $moduleOrWidget->get('action'));
+      list($module, $action) = array($moduleOrWidget['module'], $moduleOrWidget['action']);
     }
     else
     {

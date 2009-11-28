@@ -2,11 +2,19 @@
 
 class BasedmCoreActions extends dmBaseActions
 {
-  public function executeW3cValidateHtml()
+  public function executeThumbnail(dmWebRequest $request)
   {
-    $this->doctype = sfConfig::get('dm_w3c_doctype', 'XHTML');
-
-    $this->validator = new dmHtmlValidator($this->context->getCacheManager()->getCache("dm/view/html/validate")->get(session_id()));
+    $tag = $this->getHelper()->£media($request->getParameter('source'));
+  
+    foreach(array('width', 'height', 'method', 'quality') as $key)
+    {
+      if ($request->hasParameter($key))
+      {
+        $tag->set($key, $request->getParameter($key));
+      }
+    }
+    
+    return $this->renderText($tag->render());
   }
 
   public function executeSelectCulture(dmWebRequest $request)

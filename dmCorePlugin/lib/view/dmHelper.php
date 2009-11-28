@@ -225,8 +225,15 @@ class dmHelper
       'media_tag.source',
       $resource = $this->serviceContainer->getService('media_resource')->initialize($source)
     );
+    
+    $serviceName = 'media_tag_'.$resource->getMime();
+    
+    if (!$this->serviceContainer->hasService($serviceName))
+    {
+      throw new dmException('£media can not display '.$source);
+    }
 
-    return $this->serviceContainer->getService('media_tag_'.$resource->getMime());
+    return $this->serviceContainer->getService($serviceName);
   }
   
   public function £table()

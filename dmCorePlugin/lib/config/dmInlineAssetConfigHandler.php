@@ -52,7 +52,7 @@ class dmInlineAssetConfigHandler extends dmInlineConfigHandler
           case 'admin':
             $path = '/'.sfConfig::get('dm_admin_asset').'/js/'.$name.'.js'; break;
           default:
-            throw new dmException('Error parsing assets : '.$package.' is not a valid package');
+            $path = '/'.dmString::str_replace_once('.', '/'.$type.'/', $asset).'.js';
         }
         break;
       case 'css':
@@ -67,7 +67,7 @@ class dmInlineAssetConfigHandler extends dmInlineConfigHandler
           case 'admin':
             $path = '/'.sfConfig::get('dm_admin_asset').'/css/'.$name.'.css'; break;
           default:
-            throw new dmException('Error parsing assets : '.$package.' is not a valid package');
+            $path = '/'.dmString::str_replace_once('.', '/'.$type.'/', $asset).'.css';
         }
         break;
       default:
@@ -78,7 +78,7 @@ class dmInlineAssetConfigHandler extends dmInlineConfigHandler
     {
       throw new dmException("Can not find path for asset $type.$package.$asset");
     }
-
+    
     return $path;
   }
 }

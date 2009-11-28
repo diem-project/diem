@@ -6,6 +6,9 @@ Tools:
     dmMailTemplate:
       name:         Mail template
       credential:   mail_template
+    dmLayout:
+      name:         Layout
+      credentials:  layout
   Translation:
     dmTransUnit:
       name:         Sentence
@@ -49,12 +52,6 @@ Seo:
     dmRedirect:
       name:         Url Redirections
       credentials:  url_redirection
-
-Integration:
-  Layout:
-    dmLayout:
-      name:         Layout
-      credentials:  layout
 
 System:
   Configuration:

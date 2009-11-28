@@ -108,7 +108,6 @@ $.widget('ui.dmZone', {
       forceHelperSize:        false,
       forcePlaceholderSize:   false,
       tolerance:              'pointer',
-      start:                  function(e, ui) { sortEvents = []; },
       receive:                function(e, ui) { sortEvents.receive = $(this).parent(); },
       remove:                 function(e, ui) { sortEvents.remove = true; },
       update:                 function(e, ui) { sortEvents.update = true; },

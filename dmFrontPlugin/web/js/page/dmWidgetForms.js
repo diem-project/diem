@@ -4,9 +4,9 @@ $.fn.extend({
   
   dmWidgetContentMediaForm: function(widget)
   {
-    var self = this, $form = self.find('form:first');
+    var self = this, $form = self.find('form:first'), formName = self.metadata().form_name;
 
-    $form.append('<input type="hidden" name="dm_widget_width" value="'+widget.element.width()+'" />');
+    $form.append('<input type="hidden" name="'+formName+'[widget_width]" value="'+widget.element.width()+'" />');
 		
     $('input.dm_media_receiver', $form).droppable({
       accept:       '#dm_media_bar li.file',
@@ -32,11 +32,6 @@ $.fn.extend({
   {
     var self = this, $form = self.find('form:first'), $tabs = $form.find('div.dm_tabbed_form').dmCoreTabForm({});
 		self.dmWidgetContentMediaForm(widget);
-  },
-  
-  dmWidgetContentLinkForm: function(widget)
-  {
-    
   }
   
 });

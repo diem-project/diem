@@ -9,3 +9,7 @@ refreshStep:
 markdown:
   is_secure:    true
   credential:   admin
+
+thumbnail:
+  is_secure:    true
+  credential:   admin

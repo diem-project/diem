@@ -1,5 +1,5 @@
 # Plugins default values
-# To change your Diem project defaults values, see config.yml
+# To change your Diem project defaults values, see dm/config.yml
 
 all:
   sfImageTransformPlugin:

@@ -84,3 +84,7 @@ ul.ui-tabs-nav > li.dm_error.ui-tabs-selected {
 .dm .ui-state-default, .dm .ui-widget-content .ui-state-default.ui-state-active {
   background: #fff;
 }
+
+div.dm.ui-dialog .dm_error {
+  max-height: 400px;
+}

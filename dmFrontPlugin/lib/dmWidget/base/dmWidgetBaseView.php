@@ -8,7 +8,9 @@ abstract class dmWidgetBaseView
   $widget,
   $requiredVars = array(),
   $isIndexable = true,
-  $vars;
+  $vars,
+  $javascripts = array(),
+  $stylesheets = array();
 
   public function __construct(dmContext $context, dmWidgetType $type, array $data)
   {
@@ -23,6 +25,31 @@ abstract class dmWidgetBaseView
   protected function configure()
   {
 
+  }
+  
+  public function getHelper()
+  {
+    return $this->context->getHelper();
+  }
+  
+  protected function addRequiredJavascript($keys)
+  {
+    $this->javascripts = array_merge($this->javascripts, (array) $keys);
+  }
+  
+  public function getJavascripts()
+  {
+    return $this->javascripts;
+  }
+  
+  protected function addRequiredStylesheet($keys)
+  {
+    $this->stylesheets = array_merge($this->stylesheets, (array) $keys);
+  }
+  
+  public function getStylesheets()
+  {
+    return $this->stylesheets;
   }
 
   public function getRequiredVars()
@@ -217,5 +244,10 @@ abstract class dmWidgetBaseView
     }
     
     return $vars;
+  }
+  
+  protected function __($message, $arguments = array(), $catalogue = null)
+  {
+    return $this->context->getI18n()->__($message, $arguments, $catalogue);
   }
 }

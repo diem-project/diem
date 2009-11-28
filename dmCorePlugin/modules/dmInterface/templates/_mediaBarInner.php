@@ -22,7 +22,7 @@ if ($folder->getNode()->hasParent())
 }
 else
 {
-  echo £("li", £media('dmCore/images/media/up2.png')->size(64, 64));
+  echo £('li', £media('dmCore/images/media/up2.png')->size(64, 64));
 }
 
 if ($folders = $folder->getNode()->getChildren())
@@ -39,7 +39,7 @@ if ($folders = $folder->getNode()->getChildren())
 
 foreach($folder->getMedias() as $f)
 {
-  echo £("li.file#dmm".$f->get('id'),
+  echo £("li.file#dmm".$f->get('id').($f->isImage() ? '.image' : ''),
     ($f->isImage()
     ? £('span.image_background',
         array('style' => sprintf(

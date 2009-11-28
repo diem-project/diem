@@ -204,10 +204,17 @@ EOF;
   {
     if (!$superAdmin = dmDb::query('DmUser u')->where('u.is_super_admin = ?', true)->count())
     {
+      $password = Doctrine_Manager::connection()->getOption('password');
+      
+      if (empty($password))
+      {
+        $password = 'admin';
+      }
+      
       dmDb::create('DmUser', array(
         'is_super_admin' => true,
         'username' => 'admin',
-        'password' => Doctrine_Manager::connection()->getOption('password'),
+        'password' => $password,
         'email' => 'admin@'.dmProject::getKey().'.com'
       ))->save();
     }

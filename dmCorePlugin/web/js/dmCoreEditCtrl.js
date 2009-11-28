@@ -69,13 +69,7 @@
         {
 					if (data.stylesheets)
 					{
-						$.each(data.stylesheets, function()
-						{
-				      if (!$('link[rel=stylesheet][href=' + this + ']').length) 
-				      {
-				        $("head").append('<link rel="stylesheet" href="' + this + '">');
-				      }
-					  });
+						$.loadStylesheets(data.stylesheets);
 					}
 					
           if (data.js)
@@ -125,7 +119,20 @@
       });
       
       return $dialog;
-    }
+    },
+		
+		errorDialog: function(title, body, opt)
+		{
+			opt = $.extend({
+        title:    title,
+        position: [5, 5],
+        buttons: {
+          Close: function() { $(this).dialog('close'); }
+        }
+      }, opt || {});
+          
+      $('<div class="dm_error">').html(body).dialog(opt);
+		}
   });
 	
 })(jQuery);

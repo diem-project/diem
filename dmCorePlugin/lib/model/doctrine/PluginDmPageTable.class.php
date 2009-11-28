@@ -217,6 +217,23 @@ class PluginDmPageTable extends myDoctrineTable
   }
   
   
+  public function findOneBySlug($slug, $culture = null)
+  {
+    return $this->createQuery('p')
+    ->leftJoin('p.Translation t')
+    ->where('t.slug = ?', $slug)
+    ->andWhere('t.lang = ?', $culture ? $culture : dmDoctrineRecord::getDefaultCulture())
+    ->dmCache()
+    ->fetchOne();
+  }
+  
+  public function fetchError404()
+  {
+    $this->checkBasicPages();
+    
+    return $this->findOneByModuleAndActionWithI18n('main', 'error404');
+  }
+  
   public function findOneByIdWithI18n($id, $culture = null)
   {
     return $this->createQuery('p')

@@ -15,6 +15,14 @@ class dmWidgetContentMediaForm extends dmWidgetPluginForm
 
   public function configure()
   {
+    $this->addRequiredStylesheet(array(
+      'lib.ui-tabs'
+    ));
+    $this->addRequiredJavascript(array(
+      'lib.ui-tabs',
+      'core.tabForm'
+    ));
+    
     if($this->getValueOrDefault('mediaId'))
     {
       $media = dmDb::table('DmMedia')->find($this->getDefault('mediaId'));
@@ -65,13 +73,15 @@ class dmWidgetContentMediaForm extends dmWidgetPluginForm
     ));
     if (!$this->getDefault('method'))
     {
-      $this->setDefault('method', sfConfig::get('dm_image_resize', 'center'));
+      $this->setDefault('method', dmConfig::get('image_resize_method', 'center'));
     }
 
     $this->widgetSchema['background'] = new sfWidgetFormInputText(array(), array('size' =>7));
     $this->validatorSchema['background'] = new sfValidatorString(array(
       'required' => false
     ));
+    
+    $this->validatorSchema['widget_width'] = new sfValidatorInteger(array('required' => false));
 
     $this->widgetSchema->setLabel('mediaName', 'Use media');
     $this->widgetSchema->setLabel('file', 'Or upload a file');
@@ -90,6 +100,13 @@ class dmWidgetContentMediaForm extends dmWidgetPluginForm
     {
       $this->widgetSchema['legend']->setLabel('Alt');
     }
+
+    $this->widgetSchema['quality'] = new sfWidgetFormInputText(array(), array('size' => 5));
+    $this->validatorSchema['quality'] = new sfValidatorInteger(array(
+      'required' => false,
+      'min' => 0,
+      'max' => 100
+    ));
 
     $this->validatorSchema->setPostValidator(new sfValidatorAnd(array(
       new sfValidatorCallback(array('callback' => array($this, 'checkMediaSource'))),
@@ -160,32 +177,30 @@ class dmWidgetContentMediaForm extends dmWidgetPluginForm
 //      }
 //    }
 
-      if($media = dmDb::table('DmMedia')->find($values['mediaId']))
+    if($media = dmDb::table('DmMedia')->find($values['mediaId']))
+    {
+      if ($media->isImage())
       {
-        if ($media->isImage())
+        if (empty($values['width']))
         {
-          $widgetWidth = self::$serviceContainer->getService('request')->getParameter('dm_widget_width');
-          if (empty($values['width']))
+          if ($values['widget_width'])
           {
-            if ($widgetWidth)
-            {
-              $values['width'] = $widgetWidth;
-              $values['height'] = (int) ($media->getHeight() * ($widgetWidth / $media->getWidth()));
-            }
-            else
-            {
-              $values['width'] = $media->getWidth();
-            }
+            $values['width'] = $values['widget_width'];
+            $values['height'] = (int) ($media->getHeight() * ($values['widget_width'] / $media->getWidth()));
           }
-          elseif (empty($values['height']))
+          else
           {
-            $values['height'] = (int) ($media->getHeight() * ($values['width'] / $media->getWidth()));
+            $values['width'] = $media->getWidth();
           }
         }
+        elseif (empty($values['height']))
+        {
+          $values['height'] = (int) ($media->getHeight() * ($values['width'] / $media->getWidth()));
+        }
       }
+    }
 
-    unset($values['mediaName']);
-    unset($values['file']);
+    unset($values['mediaName'], $values['file'], $values['widget_width']);
 
     $values['background'] = trim($values['background']);
     

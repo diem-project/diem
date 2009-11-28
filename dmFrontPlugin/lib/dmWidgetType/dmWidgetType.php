@@ -58,6 +58,11 @@ class dmWidgetType
   {
     return $this->getParam('name');
   }
+  
+  public function getPublicName()
+  {
+    return dmString::humanize($this->getName());
+  }
 
   public function getFormClass()
   {

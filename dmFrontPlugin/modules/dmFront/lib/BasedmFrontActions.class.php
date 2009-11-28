@@ -3,25 +3,59 @@
 class BasedmFrontActions extends dmFrontBaseActions
 {
   
-  public function executeToAdmin(dmWebRequest $request)
-  {
-    return $this->redirect($this->context->getHelper()->£link('app:admin')->getHref());
-  }
-
   public function executePage(dmWebRequest $request)
   {
-    $this->forward404Unless($this->page = $this->context->getPage(), 'No current page');
+    $slug = $request->getParameter('slug');
+
+    $this->page = dmDb::table('DmPage')->findOneBySlug($slug);
+    
+    // the page does not exist
+    if (!$this->page)
+    {
+      // if page_not_found_handler suggest a redirection
+      if ($redirectionUrl = $this->context->get('page_not_found_handler')->getRedirection($slug))
+      {
+        return $this->redirect($redirectionUrl, 301);
+      }
+      
+      // else use main.error404 page
+      $this->page = dmDb::table('DmPage')->fetchError404();
+    }
+     
+    return $this->renderPage();
+  }
+  
+  public function executeError404(dmWebRequest $request)
+  {
+    $this->page = dmDb::table('DmPage')->fetchError404();
+    
+    return $this->renderPage();
+  }
+  
+  protected function renderPage()
+  {
+    // share current page
+    $this->context->setPage($this->page);
     
     if ($this->page->isModuleAction('main', 'error404'))
     {
-      $this->response->setStatusCode(404);
+      $this->response->setStatusCode(404); 
     }
+
+    $this->setTemplate('page');
     
     $this->setLayout(dmOs::join(sfConfig::get('dm_front_dir'), 'modules/dmFront/templates/layout'));
 
     $this->helper = $this->context->get('page_helper');
     
-    $this->launchDirectActions($request);
+    $this->launchDirectActions();
+    
+    return sfView::SUCCESS;
+  }
+  
+  public function executeToAdmin(dmWebRequest $request)
+  {
+    return $this->redirect($this->context->getHelper()->£link('app:admin')->getHref());
   }
 
   /*
@@ -30,10 +64,8 @@ class BasedmFrontActions extends dmFrontBaseActions
    * If some sfActions exist for the current widgets module.action,
    * they will be executed to
    */
-  protected function launchDirectActions($request)
+  protected function launchDirectActions()
   {
-    $timerLaunchAction = dmDebug::timerOrNull("dmFrontActions::launchDirectActions");
-  
     $moduleManager = $this->context->getModuleManager();
     
     // Add module action for page
@@ -72,23 +104,9 @@ class BasedmFrontActions extends dmFrontBaseActions
       {
         $actionToRun = 'execute'.ucfirst($action);
         
-        $this->context->getController()->getAction($module, $action)->$actionToRun($request);
-//        try
-//        {
-//          $this->context->getController()->getAction($module, $action)->$actionToRun($request);
-//        }
-//        catch(Exception $e)
-//        {
-//          $this->context->getLogger()->err('dmFront directActions : '.$e->getMessage());
-//          if (sfConfig::get('dm_debug'))
-//          {
-//            throw $e;
-//          }
-//        }
+        $this->context->getController()->getAction($module, $action)->$actionToRun($this->getRequest());
       }
     }
-    
-    $timerLaunchAction && $timerLaunchAction->addTime();
   }
 
   /*

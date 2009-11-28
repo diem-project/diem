@@ -86,6 +86,12 @@ $.widget('ui.dmWidget', {
 							activeTab = $tabbedFormActiveTab.find('>a').attr('href');
 						}
 	        },
+					error: function(xhr)
+					{
+            $dialog.unblock();
+            widget.element.unblock();
+						$.dm.ctrl.errorDialog('Error when updating the widget', xhr.responseText);
+					},
 	        success:  function(data)
 					{
 	          if (data.widget_html)
@@ -97,7 +103,19 @@ $.widget('ui.dmWidget', {
 	            .html(data.widget_html);
 	          }
 						
+	          if (data.stylesheets)
+	          {
+							$.loadStylesheets(data.stylesheets);
+	          }
+	          
+	          if (data.js)
+	          {
+	            $.globalEval(data.js);
+	          }
+						
             widget.element.unblock();
+						
+						$form.trigger('submitSuccess');
 						
             if (data.type == 'close') {
               $dialog.dialog('close');

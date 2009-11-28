@@ -4,7 +4,9 @@ abstract class dmWidgetBaseForm extends dmForm
 {
   protected
     $dmWidget,
-    $firstDefaults = array();
+    $firstDefaults = array(),
+    $stylesheets = array(),
+    $javascripts = array();
 
   /**
    * Constructor.
@@ -42,6 +44,27 @@ abstract class dmWidgetBaseForm extends dmForm
     $this->setDefault('cssClass', $this->dmWidget->cssClass);
   }
 
+  
+  protected function addRequiredJavascript($keys)
+  {
+    $this->javascripts = array_merge($this->javascripts, (array) $keys);
+  }
+  
+  public function getJavascripts()
+  {
+    return $this->javascripts;
+  }
+  
+  protected function addRequiredStylesheet($keys)
+  {
+    $this->stylesheets = array_merge($this->stylesheets, (array) $keys);
+  }
+  
+  public function getStylesheets()
+  {
+    return $this->stylesheets;
+  }
+  
   /*
    * Overload this method to alter form values
    * when form has been validated

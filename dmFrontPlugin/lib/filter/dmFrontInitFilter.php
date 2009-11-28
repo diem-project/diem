@@ -13,85 +13,18 @@ class dmFrontInitFilter extends dmInitFilter
 
     $this->saveApplicationUrl();
     
-    try
+    // ajax calls use dm_cpi to request a page
+    if($pageId = $this->context->getRequest()->getParameter('dm_cpi'))
     {
-      $this->guessPage();
+      if (!$page = dmDb::table('DmPage')->findOneByIdWithI18n($pageId))
+      {
+        throw new dmException(sprintf('There is no page with id %s', $pageId));
+      }
+      
+      $this->context->setPage($page);
     }
-    catch(dmPageNotFoundException $e)
-    {
-      $this->handlePageNotFound();
-    }
-
+    
     $filterChain->execute();
   }
 
-  protected function guessPage()
-  {
-    $culture = $this->context->getUser()->getCulture();
-    
-    if ($this->context->isModuleAction('dmFront', 'page'))
-    {
-      $slug = $this->context->getRequest()->getParameter('slug');
-
-      $timer = dmDebug::timerOrNull('dmFrontInitFilter::fetchPage');
-      $page = dmDb::query('DmPage p, p.Translation t')
-      ->where('t.slug = ?', $slug)
-      ->andWhere('t.lang = ?', $culture)
-      ->fetchOne();
-      $timer && $timer->addTime();
-      
-      if (!$page)
-      {
-        throw new dmPageNotFoundException(sprintf('There is no page with slug %s in %s culture', $slug, $culture));
-      }
-    }
-    elseif($this->context->getRequest()->hasParameter('dm_cpi'))
-    {
-      $page = dmDb::query('DmPage p')
-      ->where('p.id = ?', $this->context->getRequest()->getParameter('dm_cpi'))
-      ->leftJoin('p.Translation t ON p.id = t.id AND t.lang = ?', $culture)
-      ->fetchOne();
-
-      if (!$page)
-      {
-        throw new dmException(sprintf('There is no page with id %s', $this->context->getRequest()->getParameter('dm_cpi')));
-      }
-    }
-    else
-    {
-      $page = null;
-    }
-
-    if ($page)
-    {
-      $this->context->setPage($page);
-    }
-  }
-  
-  protected function handlePageNotFound()
-  {
-    $handler = $this->context->get('page_not_found_handler');
-    
-    $slug = $this->context->getRequest()->getParameter('slug');
-    
-    if ($redirectionUrl = $handler->getRedirection($slug))
-    {
-      return $this->context->getController()->redirect($redirectionUrl, 301);
-    }
-    
-    return $this->forwardTo404Page();
-  }
-  
-  protected function forwardTo404Page()
-  {
-    dmDb::table('DmPage')->checkBasicPages();
-    
-    $page = dmDb::query('DmPage p')
-    ->where('p.module = ? AND p.action = ?', array('main', 'error404'))
-    ->withI18n()
-    ->fetchOne();
-    
-    $this->context->setPage($page);
-  }
-  
 }

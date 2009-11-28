@@ -23,6 +23,9 @@ class dmWidgetActions extends dmFrontBaseActions
       return $this->renderError();
     }
     
+    $js = '';
+    $stylesheets = array();
+    
     $form->removeCsrfProtection();
     
     if ($request->isMethod('post'))
@@ -35,13 +38,29 @@ class dmWidgetActions extends dmFrontBaseActions
         $helper = $this->context->get('page_helper');
         $widgetArray = $widget->toArray();
         
+        $this->context->getServiceContainer()->setParameter('widget_renderer.widget', $widgetArray);
+        
+        $widgetRenderer = $this->context->getServiceContainer()->getService('widget_renderer');
+        
+        // gather widget assets to load asynchronously
+        foreach($widgetRenderer->getStylesheets() as $stylesheet)
+        {
+          $stylesheets[] = $this->context->getHelper()->getStylesheetWebPath($stylesheet);
+        }
+        foreach($widgetRenderer->getJavascripts() as $javascript)
+        {
+          $js .= file_get_contents($this->context->getHelper()->getJavascriptFullPath($javascript)).';';
+        }
+        
         if ($request->hasParameter('and_save'))
         {
           $widget->save();
           return $this->renderJson(array(
             'type' => 'close',
-            'widget_html' => $helper->renderWidgetInner($widgetArray),
-            'widget_classes' => $helper->getWidgetContainerClasses($widgetArray)
+            'widget_html' => $widgetRenderer->getHtml(),
+            'widget_classes' => $helper->getWidgetContainerClasses($widgetArray),
+            'js'   => $js,
+            'stylesheets' => $stylesheets
           ));
         }
 
@@ -51,38 +70,23 @@ class dmWidgetActions extends dmFrontBaseActions
         return $this->renderJson(array(
           'type' => 'form',
           'html' => $this->renderEdit($form, $widgetType),
-          'widget_html' => $helper->renderWidgetInner($widgetArray),
-          'widget_classes' => $helper->getWidgetContainerClasses($widgetArray)
+          'widget_html' => $widgetRenderer->getHtml(),
+          'widget_classes' => $helper->getWidgetContainerClasses($widgetArray),
+          'js'   => $js,
+          'stylesheets' => $stylesheets
         ));
       }
     }
     
     $html = $this->renderEdit($form, $widgetType);
-  
-    $js = '';
-    $stylesheets = array();
-    $helper = $this->context->get('helper');
     
-    if (strpos($html, 'dm_tabbed_form'))
+    foreach($form->getStylesheets() as $stylesheet)
     {
-      $js .=
-      file_get_contents($helper->getJavascriptFullPath('lib.ui-tabs')).
-      dmJsMinifier::transform(file_get_contents($helper->getJavascriptFullPath('core.tabForm')));
-      
-      $stylesheets[] = $helper->getStylesheetWebPath('lib.ui-tabs');
+      $stylesheets[] = $this->context->getHelper()->getStylesheetWebPath($stylesheet);
     }
-    
-    if (strpos($html, 'dm_markdown'))
-    {    
-      $stylesheets[] = $helper->getStylesheetWebPath('lib.markitup');
-      $stylesheets[] = $helper->getStylesheetWebPath('lib.markitupSet');
-      $stylesheets[] = $helper->getStylesheetWebPath('lib.ui-resizable');
-      
-      $js .=
-      file_get_contents($helper->getJavascriptFullPath('lib.ui-resizable')).';'.
-      file_get_contents($helper->getJavascriptFullPath('lib.markitup')).';'.
-      file_get_contents($helper->getJavascriptFullPath('lib.markitupSet')).';'.
-      file_get_contents($helper->getJavascriptFullPath('lib.fieldSelection'));
+    foreach($form->getJavascripts() as $javascript)
+    {
+      $js .= file_get_contents($this->context->getHelper()->getJavascriptFullPath($javascript)).';';
     }
     
     return $this->renderJson(array(
@@ -134,10 +138,15 @@ class dmWidgetActions extends dmFrontBaseActions
       $devActions = '<div class="code_editor_links">'.$devActions.'</div>';
     }
     
-    return '<div class="dm dm_widget_edit {form_class: \''.$widgetType->getFullKey().'Form\'}">'.
-    $form->render('.dm_form.list.little').
-    $devActions.
-    '</div>';
+    return $this->getHelper()->£('div.dm.dm_widget_edit.'.dmString::underscore($widgetType->getFullKey()).'_form',
+    // don't use json_encode here because the whole response will be json encoded
+    array('class' => sprintf(
+      '{ form_class: \'%s\', form_name: \'%s\' }',
+      $widgetType->getFullKey().'Form',
+      $form->getName()
+    )),
+    $form->render('.dm_form.list.little').$devActions
+    );
   }
 
   public function executeGetInner(sfWebRequest $request)
