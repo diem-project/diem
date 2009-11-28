@@ -27,12 +27,12 @@ class dmAdminMenu
 
   public function load()
   {
-    $event = $this->dispatcher->filter(new sfEvent($this, 'dm.admin.filter_menu'), $this->getModuleStructureMenu());
-
-    return $event->getReturnValue();
+    $structure = $this->getModuleStructureMenu();
+    
+    return $this->dispatcher->filter(new sfEvent($this, 'dm.admin.filter_menu'), $structure)->getReturnValue();
   }
   
-  public function getModuleStructureMenu()
+  protected function getModuleStructureMenu()
   {
     $menu = array();
 
