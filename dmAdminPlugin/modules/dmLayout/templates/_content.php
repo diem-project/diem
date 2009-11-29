@@ -18,7 +18,7 @@ foreach($dm_layout->get('Areas') as $area)
   {
     foreach($zone->get('Widgets') as $widget)
     {
-      echo £('li', $widget->get('module').'.'.$widget->get('action'));
+      echo £('li', __($sf_context->get('widget_type_manager')->getWidgetType($widget)->getPublicName()));
     }
   }
   

@@ -325,6 +325,11 @@ abstract class dmDoctrineTable extends Doctrine_Table
   {
     return strpos(dmArray::get($this->getColumnDefinition($columnName), 'extra', ''), 'markdown') !== false;
   }
+  
+  public function isLinkColumn($columnName)
+  {
+    return strpos(dmArray::get($this->getColumnDefinition($columnName), 'extra', ''), 'link') !== false;
+  }
 
   /*
    * Tries to find a column name that could be used to represent a record of this table

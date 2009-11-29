@@ -68,6 +68,14 @@
   -moz-border-radius: 4px;
 }
 
+.droppable_active {
+  background: url(../../core/images/default_bg_yellow.png) repeat-x scroll 50% 50%;
+}
+
+.droppable_hover {
+  background: url(../../core/images/default_bg_green.png) repeat-x scroll 50% 50%;
+}
+
 /*
  * buttons
  */

@@ -69,7 +69,7 @@ class dmAdminGeneratorBuilder
       
       if ($relationModule = $this->module->getManager()->getModuleByModel($relation->getClass()))
       {
-        $label = $module->getPlural();
+        $label = $relationModule->getPlural();
       }
       else
       {
@@ -313,7 +313,7 @@ class dmAdminGeneratorBuilder
       
       if ($relationModule = $this->module->getManager()->getModuleByModel($relation->getClass()))
       {
-        $label = $module->getPlural();
+        $label = $relationModule->getPlural();
       }
       else
       {
@@ -342,6 +342,20 @@ class dmAdminGeneratorBuilder
   protected function getFormFields()
   {
     $fields = array();
+    
+    /*
+     * Add is_link options
+     */
+    foreach($this->getStringFields() as $stringField)
+    {
+      if ($this->table->isLinkColumn($stringField))
+      {
+        $fields[dmString::underscore($stringField)] = array(
+          'is_link' => true,
+          'help'    => 'Drag & drop a page here from the PAGES panel, or write an url'
+        );
+      }
+    }
 
 //    foreach($this->table->getRelationHolder()->getAssociations() as $alias => $relation)
 //    {
@@ -366,6 +380,11 @@ class dmAdminGeneratorBuilder
   protected function getTextFields($fields = null)
   {
     return $this->filterFields($fields, array('clob', 'blob'));
+  }
+  
+  protected function getStringFields($fields = null)
+  {
+    return $this->filterFields($fields, array('string'));
   }
 
   protected function getBooleanFields($fields = null)

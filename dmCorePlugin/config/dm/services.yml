@@ -109,6 +109,10 @@ parameters:
   helper.class:               dmHelper              # Object oriented template helper.
   helper.options:
     use_beaf:                 false                 # whether to use the "before-after" functionality on £ helper
+  
+  widget_type_manager.class:  dmWidgetTypeManager   # Responsible for managing widget types.
+  widget_type_manager.options:
+    config_file:              'config/dm/widget_types.yml' # path to the widget type configuration file, relative to the project directory
  
 services:
 
@@ -275,3 +279,8 @@ services:
     class:                    %cache_manager.class%
     shared:                   true
     arguments:                [ @dispatcher, %cache_manager.options% ]
+
+  widget_type_manager:
+    class:                    %widget_type_manager.class%
+    shared:                   true
+    arguments:                [ @dispatcher, @service_container, %widget_type_manager.options% ]

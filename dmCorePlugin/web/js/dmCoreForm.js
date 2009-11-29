@@ -6,7 +6,7 @@
     {
       var form = this;
 			
-      $('input.dm_link_droppable', form.element).each(function()
+      $('input.dm_link_droppable, .dm_link_droppable input', form.element).each(function()
       {
         var $input = $(this);
 				

@@ -41,10 +41,6 @@ parameters:
   page_helper.edit_class:     dmFrontPageEditHelper
   
   widget_renderer.class:      dmFrontWidgetRenderer # Responsible for rendering widgets
-  
-  widget_type_manager.class:  dmWidgetTypeManager   # Responsible for managing widget types.
-  widget_type_manager.options:
-    config_file:              'config/dm/widget_types.yml' # path to the widget type configuration file, relative to the project directory
     
   helper.class:               dmFrontHelper         # Override the core helper options 
  
@@ -124,8 +120,3 @@ services:
     class:                    %widget_renderer.class%
     shared:                   false
     arguments:                [ @dispatcher, @service_container, %widget_renderer.widget% ]
-
-  widget_type_manager:
-    class:                    %widget_type_manager.class%
-    shared:                   true
-    arguments:                [ @dispatcher, @service_container, %widget_type_manager.options% ]

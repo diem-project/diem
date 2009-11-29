@@ -10,6 +10,12 @@
  */
 class dmModelGeneratorConfigurationField extends sfModelGeneratorConfigurationField
 {
+  
+  public function isLink()
+  {
+    return $this->getConfig('is_link');
+  }
+  
   public function isBig()
   {
     return $this->getConfig('is_big') || $this->isMarkdown();

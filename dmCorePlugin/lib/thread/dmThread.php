@@ -53,6 +53,7 @@ abstract class dmThread extends dmConfigurable
       
       $mm = include($this->configuration->getConfigCache()->checkConfig('config/dm/modules.yml'));
       
+      dmModule::setManager($mm);
       dmDoctrineRecord::setModuleManager($mm);
       dmDoctrineTable::setModuleManager($mm);
       dmDoctrineQuery::setModuleManager($mm);

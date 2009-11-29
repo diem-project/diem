@@ -122,6 +122,8 @@ class dmContext extends sfContext
   {
     // create a new module_manager
     $this->factories['module_manager'] = include($this->getConfigCache()->checkConfig('config/dm/modules.yml'));
+    
+    dmModule::setManager($this->factories['module_manager']);
   }
 
   /*

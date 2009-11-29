@@ -103,8 +103,6 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
     
     $data[] = 'unset($types, $modules, $projectModules, $modelModules);';
 
-    $data[] = 'dmModule::setManager($manager);';
-    
     $data[] = 'return $manager;';
     
     unset($this->config, $this->modules, $this->projectModules);
@@ -234,7 +232,64 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
 
   protected function getExportedModuleOptions($key, $options)
   {
-    return var_export($options, true);
+    if ($options['is_project'] && !empty($options['actions']))
+    {
+      //export actions properly
+      
+      $actionsConfig = $options['actions'];
+      
+      $options['actions'] = '__DM_MODULE_ACTIONS_PLACEHOLDER__';
+      
+      $exported = var_export($options, true);
+      
+      $actions = 'array(';
+
+      foreach($actionsConfig as $actionKey => $actionConfig)
+      {
+        if (is_integer($actionKey))
+        {
+          $actionKey = $actionConfig;
+          $actionConfig = array();
+        }
+        
+        if (empty($actionConfig['name']))
+        {
+          $actionConfig['name'] = dmString::humanize($actionKey);
+        }
+    
+        if (empty($actionConfig['type']))
+        {
+          if (strncmp($actionKey, 'list', 4) === 0)
+          {
+            $actionConfig['type'] = 'list';
+          }
+          elseif (strncmp($actionKey, 'show', 4) === 0)
+          {
+            $actionConfig['type'] = 'show';
+          }
+          elseif (strncmp($actionKey, 'form', 4) === 0)
+          {
+            $actionConfig['type'] = 'form';
+          }
+          else
+          {
+            $actionConfig['type'] = 'simple';
+          }
+        }
+        
+        $actions .= sprintf('\'%s\' => new dmAction(\'%s\', %s), ', $actionKey, $actionKey, var_export($actionConfig, true));
+      }
+
+      $actions .= ')';
+      
+      $exported = str_replace('\'__DM_MODULE_ACTIONS_PLACEHOLDER__\'', $actions, $exported);
+    }
+    else
+    {
+      $exported = var_export($options, true);
+    }
+    
+    return $exported;
   }
   
   protected function getModuleChildrenKeys($key)
@@ -276,7 +331,7 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
           {
             continue;
           }
-          
+    
           $moduleConfig = $this->fixModuleConfig($moduleKey, $moduleConfig, $isInProject);
           
           $this->modules[$moduleKey] = $moduleConfig;
@@ -290,8 +345,6 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
         }
       }
     }
-    
-    unset($config);
   }
   
   protected function fixModuleConfig($moduleKey, $moduleConfig, $isInProject)
@@ -324,11 +377,6 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
     {
       $model = $moduleConfig['model'];
     }
-  
-    if(isset($moduleConfig['views']))
-    {
-      throw new dmException('module views are deprecated');
-    }
     
     $moduleOptions = array(
       'name' =>       (string) trim($moduleConfig['name']),
@@ -337,7 +385,8 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
       'credentials' => isset($moduleConfig['credentials']) ? trim($moduleConfig['credentials']) : null,
       'underscore'  => (string) dmString::underscore($moduleKey),
       'is_project'  => (boolean) dmArray::get($moduleConfig, 'project', $isInProject),
-      'has_admin'  => (boolean) dmArray::get($moduleConfig, 'admin', $model || !$isInProject),
+      'has_admin'   => (boolean) dmArray::get($moduleConfig, 'admin', $model || !$isInProject),
+      'actions'     => dmArray::get($moduleConfig, 'actions', array())
     );
     
     if ($moduleOptions['is_project'])
@@ -346,6 +395,15 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
         'parent_key' => dmArray::get($moduleConfig, 'parent') ? dmString::modulize(trim(dmArray::get($moduleConfig, 'parent'))) : null,
         'has_page'   => (boolean) dmArray::get($moduleConfig, 'page', false)
       ));
+    }
+    
+    // fix non array action filters
+    foreach($moduleOptions['actions'] as $actionKey => $actionConfig)
+    {
+      if(is_array($actionConfig) && array_key_exists('filters', $actionConfig) && !is_array($actionConfig['filters']))
+      {
+        $moduleOptions['actions'][$actionKey]['filters'] = array($actionConfig['filters']);
+      }
     }
     
     return $moduleOptions;
