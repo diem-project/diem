@@ -314,32 +314,86 @@ EOF;
       /*
        * English to $culture
        */
-      $data_file = dmOs::join(sfConfig::get('dm_core_dir'), 'data/i18n', 'en_'.$culture.'.yml');
-      if (is_readable($data_file))
+      $catalogue = dmDb::table('DmCatalogue')->retrieveBySourceTargetSpace('en', $culture, 'dm');
+      $dataFiles = $this->configuration->getConfigPaths('data/dm/i18n/en_'.$culture.'.yml');
+      
+      $table = dmDb::table('DmTransUnit');
+      
+      $existQuery = $table->createQuery('t')
+      ->select('t.id, t.target, t.created_at, t.updated_at')
+      ->where('t.dm_catalogue_id = ? AND t.source = ?');
+      $catalogueId = $catalogue->get('id');
+      
+      $nbAdded = 0;
+      $nbUpdated = 0;
+      
+      foreach($dataFiles as $dataFile)
       {
-        $data = sfYaml::load(file_get_contents($data_file));
-        $catalogue = dmDb::table('DmCatalogue')->retrieveBySourceTargetSpace('en', $culture, 'dm');
+        if (!is_array($data = sfYaml::load(file_get_contents($dataFile))))
+        {
+          continue;
+        }
 
-        $existingTranslations = dmDb::query('DmTransUnit t INDEXBY t.source')
-        ->select('t.source')
-        ->where('t.dm_catalogue_id = ?', $catalogue->id)
-        ->fetchArray();
-
-        $addedTranslations = new Doctrine_Collection(dmDb::table('DmTransUnit'));
+        $addedTranslations = new Doctrine_Collection($table);
+        $line = 0;
         foreach($data as $source => $target)
         {
-          if (!isset($existingTranslations[$source]))
+          ++$line;
+
+          if (!is_string($source) || !is_string($target))
           {
-            $addedTranslations->add(dmDb::create('DmTransUnit', array(
-              'dm_catalogue_id' => $catalogue->get('id'),
-              'source' => $source,
-              'target' => $target
-            )));
+            $this->logSection('dm:data', 'Error line '.$line.' : '.dmProject::unrootify($dataFile));
+          }
+          else
+          {
+            $existing = $existQuery->fetchArray(array($catalogueId, $source));
+
+            if (!empty($existing))
+            {
+              $existing = $existing[0];
+              
+              if ($existing['target'] !== $target)
+              {
+                // don't overwrite user modified translations
+                if ($existing['created_at'] === $existing['updated_at'])
+                {
+                  $table->createQuery()
+                  ->update('DmTransUnit')
+                  ->set('target', '?', array($target))
+                  ->where('id = ?', $existing['id'])
+                  ->execute();
+                  
+                  ++$nbUpdated;
+                }
+              }
+            }
+            else
+            {
+              $addedTranslations->add(dmDb::create('DmTransUnit', array(
+                'dm_catalogue_id' => $catalogue->get('id'),
+                'source' => $source,
+                'target' => $target
+              )));
+              
+              ++$nbAdded;
+            }
           }
         }
+        
         $addedTranslations->save();
       }
+    
+      if ($nbAdded)
+      {
+        $this->logSection('dm:data', sprintf('%s : added %d translation(s)', $culture, $nbAdded));
+      }
+      if ($nbUpdated)
+      {
+        $this->logSection('dm:data', sprintf('%s : updated %d translation(s)', $culture, $nbUpdated));
+      }
     }
+    
+    
   }
 
   protected function loadPermissions()
