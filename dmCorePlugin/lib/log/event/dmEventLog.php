@@ -31,7 +31,7 @@ class dmEventLog extends dmFileLog
   public function connect()
   {
     $dispatcher = $this->serviceContainer->getService('dispatcher');
-    
+
     foreach($this->getConnections() as $event => $method)
     {
       $dispatcher->connect($event, array($this, $method));

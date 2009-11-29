@@ -149,7 +149,7 @@ abstract class dmWebResponse extends sfWebResponse
       $cdnConfig = $this->getCdnConfig();
       $assetAliases = $this->getAssetAliases();
       
-      if($this->cdnConfig[$type]['enabled'] && isset($cdnConfig[$type][$asset]))
+      if($cdnConfig[$type]['enabled'] && isset($cdnConfig[$type][$asset]))
       {
         $path = $cdnConfig[$type][$asset];
       }

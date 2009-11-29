@@ -88,7 +88,7 @@ abstract class dmLogView
   
   public function getHash()
   {
-    return substr(md5(serialize($this->getEntries(array('hydrate' => false)))), -4);
+    return substr(md5(serialize($this->getEntries(array('hydrate' => false)))), -6);
   }
   
   protected function doGetEntries(array $options)

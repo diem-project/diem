@@ -130,8 +130,13 @@
           Close: function() { $(this).dialog('close'); }
         }
       }, opt || {});
+			
+			if ($existing = $('#dm_error_dialog div.dm_error'))
+			{
+				$existing.dialog('close');
+			}
           
-      $('<div class="dm_error">').html(body).dialog(opt);
+      $('<div class="dm_error">').html(body).dialog(opt).parent().attr('id', 'dm_error_dialog');
 		}
   });
 	

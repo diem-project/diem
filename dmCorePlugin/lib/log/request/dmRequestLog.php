@@ -18,9 +18,12 @@ class dmRequestLog extends dmFileLog
   
   public function listenToContextEndEvent(sfEvent $event)
   {
-    $this->log(array(
-      'context' => $this->serviceContainer->getService('context'),
-      'server'  => $_SERVER
-    ));
+    if (!$event->getSubject()->getRequest()->getParameter('dm_nolog'))
+    {
+      $this->log(array(
+        'context' => $event->getSubject(),
+        'server'  => $_SERVER
+      ));
+    }
   }
 }

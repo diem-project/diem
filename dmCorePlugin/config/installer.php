@@ -166,6 +166,7 @@ $this->logBlock('Installing '.$projectKey.'. This may take some time.', 'INFO_LA
 
 try
 {
+  $out = $err = null;
   $this->getFilesystem()->execute(sprintf(
     '%s "%s" %s',
     sfToolkit::getPhpCli(),

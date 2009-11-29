@@ -9,16 +9,18 @@ class dmMediaResource
     $source,
     $type,
     $mime,
-    $pathFromWebDir;
+    $pathFromWebDir,
+    $remotePath;
 
   const
-  MEDIA = 'media',
-  FILE  = 'file',
-
-  IMAGE = 'image',
-  VIDEO = 'video',
-  AUDIO = 'audio',
-  FLASH = 'flash';
+  MEDIA   = 'media',
+  FILE    = 'file',
+  REMOTE  = 'remote',
+  
+  IMAGE   = 'image',
+  VIDEO   = 'video',
+  AUDIO   = 'audio',
+  FLASH   = 'flash';
 
   public function __construct(dmTheme $theme, $culture, array $requestContext)
   {
@@ -59,7 +61,15 @@ class dmMediaResource
   
   public function getWebPath()
   {
-    return $this->requestContext['relative_url_root'].$this->pathFromWebDir;
+    if($this->type === self::REMOTE)
+    {
+      $webPath = $this->remotePath;
+    }
+    else
+    {
+      $webPath = $this->requestContext['relative_url_root'].$this->pathFromWebDir;
+    }
+    return $webPath;
   }
 
   public function getFullPath()
@@ -70,12 +80,14 @@ class dmMediaResource
         return $this->source->getFullPath();
       case self::FILE:
         return dmOs::join(sfConfig::get('sf_web_dir'), $this->getPathFromWebDir());
+      case self::REMOTE:
+        return $this->remotePath;
     }
   }
 
   public function initialize($source, $isDefault = false)
   {
-    $this->source = $source;
+    $this->source   = $source;
     
     if (empty($source))
     {
@@ -93,6 +105,13 @@ class dmMediaResource
         {
           throw new dmException(sprintf('%s is not a valid media resource. The media with id %s does not exist', $source, $mediaId));
         }
+      }
+      elseif (0 === strncmp($source, 'http://', 7))
+      {
+        $this->type = self::REMOTE;
+        $this->remotePath = $source;
+  
+        $this->mime = $this->getSimpleMime(dmOs::getFileMime($source));
       }
       else
       {
@@ -182,6 +201,5 @@ class dmMediaResource
   {
     return substr($mime, 0, strpos($mime, '/'));
   }
-  
   
 }

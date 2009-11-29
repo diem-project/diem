@@ -89,7 +89,7 @@ class dmZendCodeGeneratorPhpMethod extends Zend_CodeGenerator_Php_Method
     }
 
     $output .= $indent . '}' . self::LINE_FEED;
-
+    
     return $output;
   }
 
