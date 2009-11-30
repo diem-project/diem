@@ -161,7 +161,6 @@
 "Title": "Titre"
 "Link": "Lien"
 "Text": "Texte"
-"Gallery": "Galerie"
 "Advanced": "Avancé"
 "Bread crumb": "Fil d'arianne"
 "Search form": "Recherche : form"
@@ -238,7 +237,7 @@
 "Remove this media": "Enlever ce média"
 "Preferences": "Préférences"
 "Mail templates": "Gabarits de courriels"
-"Layouts": "Layouts" # yes we French guys use the english word
+"Layouts": "Layouts"
 "Zone": "Zone"
 "Navigation": "Navigation"
 "Configuration": "Configuration"
