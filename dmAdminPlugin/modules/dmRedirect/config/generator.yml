@@ -12,7 +12,7 @@ generator:
       fields:
         source:
           label:            "Old url"
-          help:             "Ex: /example/url"
+          help:             "e.g. /example/url"
         dest:
           label:            "New url"
           help:             "Use the tree to the left to drag & drop a page here"

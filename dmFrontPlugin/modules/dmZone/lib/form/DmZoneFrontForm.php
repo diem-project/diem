@@ -15,6 +15,8 @@ class DmZoneFrontForm extends DmZoneForm
 
     $this->validatorSchema['css_class'] = new dmValidatorCssClasses(array('required' => false));
     
+    $this->widgetSchema['cssClass']->setLabel('CSS class');
+    
     $this->widgetSchema['width']->setAttribute('class', 'dm_zone_width');
 
     $this->validatorSchema['width'] = new dmValidatorCssSize(array('required' => false));

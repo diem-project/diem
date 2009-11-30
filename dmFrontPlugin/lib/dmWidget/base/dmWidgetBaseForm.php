@@ -41,7 +41,7 @@ abstract class dmWidgetBaseForm extends dmForm
     $this->widgetSchema['cssClass']     = new sfWidgetFormInputText;
     $this->validatorSchema['cssClass']  = new dmValidatorCssClasses(array('required' => false));
     
-    $this->widgetSchema['cssClass']->setLabel('Css class');
+    $this->widgetSchema['cssClass']->setLabel('CSS class');
 
     $this->setDefault('cssClass', $this->dmWidget->cssClass);
   }

@@ -2,7 +2,7 @@
 
 echo £o('div.dm_box.big.seo_validation');
 
-echo £('h1.title', __('Seo improvments'));
+echo £('h1.title', __('Seo improvements'));
 
 echo £o('div.dm_box_inner');
 

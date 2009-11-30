@@ -78,7 +78,7 @@ EOF;
         'group_name' =>'site'
       ),
       'ga_key' => array(
-        'description' => 'The google analytics key without javascript stuff ( Ex: UA-9876614-1 )',
+        'description' => 'The google analytics key without javascript stuff ( e.g. UA-9876614-1 )',
         'group_name' =>'tracking',
         'credentials' => 'google_analytics'
       ),
@@ -93,7 +93,7 @@ EOF;
         'credentials' => 'google_analytics'
       ),
       'gwt_key' => array(
-        'description' => 'The google webmaster tools filename without google and .html ( Ex: a913b555ba9b4f13 )',
+        'description' => 'The google webmaster tools filename without google and .html ( e.g. a913b555ba9b4f13 )',
         'group_name' =>'tracking',
         'credentials' => 'google_webmaster_tools'
       ),
@@ -104,12 +104,12 @@ EOF;
         'credentials' => 'xiti'
       ),
       'gmap_key' => array(
-        'description' => 'The google map key ( Ex: ABQIAAAARcvUUsf4RP8fmjHaFYFYQxRhf7uCiJccoEylUqtC2qy_Rw3WKhSEa96 )',
+        'description' => 'The google map key ( e.g. ABQIAAAARcvUUsf4RP8fmjHaFYFYQxRhf7uCiJccoEylUqtC2qy_Rw3WKhSEa96 )',
         'group_name' =>'external services'
       ),
       'search_stop_words' => array(
         'type' => 'textarea',
-        'description' => 'The words we do not want to search (Ex:  the, a, to )',
+        'description' => 'Words to exclude from searches (e.g. the, a, to )',
         'group_name' =>'search engine',
         'credentials' => 'search_engine'
       ),
@@ -124,36 +124,36 @@ EOF;
         'default_value' => 'center',
         'description' => 'Default method when an image needs to be resized',
         'params' => 'fit=Fit scale=Scale inflate=Inflate top=Top right=Right left=Left bottom=Bottom center=Center',
-        'group_name' => 'IHM',
-        'credentials' => 'ihm_settings'
+        'group_name' => 'interface',
+        'credentials' => 'interface_settings'
       ),
       'image_resize_quality' => array(
         'type' => 'number',
         'default_value' => 95,
         'description' => 'Jpeg default quality when generating thumbnails',
-        'group_name' => 'IHM',
-        'credentials' => 'ihm_settings'
+        'group_name' => 'interface',
+        'credentials' => 'interface_settings'
       ),
       'link_external_blank' => array(
         'type' => 'boolean',
         'default_value' => 0,
         'description' => 'Links to other domain get automatically a _blank target',
-        'group_name' => 'IHM',
-        'credentials' => 'ihm_settings'
+        'group_name' => 'interface',
+        'credentials' => 'interface_settings'
       ),
       'link_current_span' => array(
         'type' => 'boolean',
         'default_value' => 1,
         'description' => 'Links to current page are changed from <a> to <span>',
-        'group_name' => 'IHM',
-        'credentials' => 'ihm_settings'
+        'group_name' => 'interface',
+        'credentials' => 'interface_settings'
       ),
       'link_use_page_title' => array(
         'type' => 'boolean',
         'default_value' => 1,
         'description' => 'Add an automatic title on link based on the target page title',
-        'group_name' => 'IHM',
-        'credentials' => 'ihm_settings'
+        'group_name' => 'interface',
+        'credentials' => 'interface_settings'
       ),
       'title_prefix' => array(
         'default_value' => '',
@@ -448,7 +448,7 @@ EOF;
       'sent_mail' => 'See mails sent by server',
       'mail_template' => 'Configure mail templates',
       'error_log' => 'See error log',
-      'ihm_settings' => 'Manage IHM settings like default image resize method'
+      'interface_settings' => 'Manage interface settings like default image resize method'
     );
 
     $existingPermissions = dmDb::query('DmPermission p INDEXBY p.name')
@@ -528,7 +528,7 @@ EOF;
           'config_panel',
           'translation',
           'layout',
-          'ihm_settings',
+          'interface_settings',
           'site_view',
           'see_chart',
           'see_log'
