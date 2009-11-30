@@ -3,11 +3,11 @@
 class dmI18n extends sfI18N
 {
   protected
-  $useAdminCatalogue = false;
+  $useInternalCatalogue = false;
   
-  public function setUseAdminCatalogue($v)
+  public function setUseInternalCatalogue($v)
   {
-    $this->useAdminCatalogue = (bool) $v;
+    $this->useInternalCatalogue = (bool) $v;
   }
 
   public function translateArray(array $array, $args = array(), $catalogue = 'messages')
@@ -32,6 +32,44 @@ class dmI18n extends sfI18N
   public function __($string, $args = array(), $catalogue = 'messages')
   {
     return $this->getMessageFormat()->formatFast($string, $args, $catalogue);
+  }
+  
+  /**
+   * Gets the translation for the given string, or returns false if untranslated
+   *
+   * @param  string $string     The string to translate
+   * @param  array  $args       An array of arguments for the translation
+   * @param  string $catalogue  The catalogue name
+   *
+   * @return string The translated string or false
+   */
+  public function __orFalse($string, $args = array(), $catalogue = 'messages')
+  {
+    return $this->getMessageFormat()->formatFastOrFalse($string, $args, $catalogue);
+  }
+  
+  protected function handleNotFound($string, $args = array(), $catalogue)
+  {
+    // well we did not find the translation string.
+    
+    $event = new sfEvent($this, 'dm.i18n.not_found', array(
+      'source'    => $string,
+      'args'      => $args,
+      'catalogue' => $catalogue
+    ));
+    
+    $this->configuration->getEventDispatcher()->notifyUntil($event);
+    
+    // event returned a translation !
+    if ($event->isProcessed())
+    {
+      $translated = $event->getReturnValue();
+      
+      return empty($args) ? $translated : $this->replaceArgs($translated, $args);
+    }
+    
+    // format untranslated string
+    return $this->getMessageFormat()->formatFastUntranslated($string, $args);
   }
 
   /**

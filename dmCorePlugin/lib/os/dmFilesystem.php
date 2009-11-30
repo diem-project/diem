@@ -186,12 +186,6 @@ class dmFilesystem extends sfFilesystem
     }
     return $success;
   }
-
-  public function copyRecursive($source, $dest)
-  {
-    $command = "cp -r $source $dest";
-    return $this->exec($command);
-  }
   
   /**
    * Calculates the relative path from one to another directory.

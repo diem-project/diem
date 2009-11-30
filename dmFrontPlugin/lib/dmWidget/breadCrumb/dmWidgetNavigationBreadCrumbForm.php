@@ -15,6 +15,8 @@ class dmWidgetNavigationBreadCrumbForm extends dmWidgetPluginForm
 
     $this->validatorSchema['separator'] = new sfValidatorString(array('max_length' => 255, 'required' => false));
     $this->validatorSchema['includeCurrent']  = new sfValidatorBoolean();
+    
+    $this->widgetSchema['includeCurrent']->setLabel('Include current page');
 
     $this->setDefaults($this->getDefaultsFromLastUpdated(array('separator', 'includeCurrent')));
 

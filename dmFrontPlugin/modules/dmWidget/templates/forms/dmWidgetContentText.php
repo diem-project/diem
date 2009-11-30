@@ -35,14 +35,14 @@ $form->renderGlobalErrors(),
       ->label(__('Title'))
       ->field('.dm_link_droppable')
       ->error().
-      £('p.dm_help', __('Transform the text title to a link').'<br />'.__('Drag & Drop a page or enter an url'))
+      £('p.dm_help', __('Add a link to the text title').'<br />'.__('Drag & Drop a page or enter an url'))
     ).
     £('li.dm_form_element.clearfix',
       $form['mediaLink']
       ->label('Media')
       ->field('.dm_link_droppable')
       ->error().
-      £('p.dm_help', __('Transform the text media to a link').'<br />'.__('Drag & Drop a page or enter an url'))
+      £('p.dm_help', __('Add a link to the text media').'<br />'.__('Drag & Drop a page or enter an url'))
     )
   )
 ),

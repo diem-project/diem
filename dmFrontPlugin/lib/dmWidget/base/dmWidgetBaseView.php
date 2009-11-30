@@ -144,11 +144,10 @@ abstract class dmWidgetBaseView
     if ($this->context->getUser()->can('widget_edit'))
     {
       $html = sprintf(
-        '<div class="%s">%s %s.%s</div>',
+        '<div class="%s">%s %s</div>',
         'dm dm_new_widget',
         $this->context->getI18n()->__('New widget'),
-        $this->widget['module'],
-        $this->widget['action']
+        $this->context->getI18n()->__($this->widgetType->getPublicName())
       );
     }
     else

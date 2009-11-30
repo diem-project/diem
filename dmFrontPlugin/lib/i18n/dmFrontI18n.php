@@ -8,16 +8,17 @@ class dmFrontI18n extends dmI18n
    */
   public function __($string, $args = array(), $catalogue = 'messages')
   {
-//    $timer = dmDebug::timerOrNull('dmI18n::__');
+    $result = $this->__orFalse($string, $args, $catalogue);
 
-    $result = parent::__($string, $args, $catalogue);
-
-    if ($result === $string && $catalogue !== 'dm' && $this->useAdminCatalogue)
+    if ( false === $result && $catalogue !== 'dm' && $this->useInternalCatalogue)
     {
-      $result = parent::__($string, $args, 'dm');
+      $result = $this->__orFalse($string, $args, 'dm');
     }
-
-//    $timer && $timer->addTime();
+    
+    if (false === $result)
+    {
+      $result = $this->handleNotFound($string, $args, $catalogue);
+    }
 
     return $result;
   }

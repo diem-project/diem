@@ -8,17 +8,18 @@ class dmAdminI18n extends dmI18n
    */
   public function __($string, $args = array(), $catalogue = 'messages')
   {
-//    $timer = dmDebug::timer('dmI18n::__');
+    $result = $this->__orFalse($string, $args, 'dm');
 
-    $result = parent::__($string, $args, 'dm');
-
-    if ($result === $string && $catalogue !== 'dm')
+    if (false === $result && $catalogue !== 'dm')
     {
-      $result = parent::__($string, $args, $catalogue);
+      $result = $this->__orFalse($string, $args, $catalogue);
     }
-
-//    $timer->addTime();
-
+    
+    if (false === $result)
+    {
+      $result = $this->handleNotFound($string, $args, $catalogue);
+    }
+    
     return $result;
   }
 

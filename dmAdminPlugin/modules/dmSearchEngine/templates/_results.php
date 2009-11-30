@@ -9,7 +9,7 @@ if (!$pager)
 //include_partial('pager', array('pager' => $pager));
 
 echo £('h2',
-  sprintf('Results %d to %d of %d', $pager->getFirstIndice(), $pager->getLastIndice(), $pager->getNbResults())
+  __('%1% - %2% on %3%', array('%1%' => $pager->getFirstIndice(), '%2%' => $pager->getLastIndice(), '%3%' => $pager->getNbResults()))
 );
 
 echo £o("ol.search_results.clearfix start=".$pager->getFirstIndice());

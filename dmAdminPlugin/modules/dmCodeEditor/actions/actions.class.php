@@ -202,7 +202,11 @@ class dmCodeEditorActions extends dmAdminBaseActions
         
         if($copyDir = $this->getUser()->getAttribute('code_editor_file_copy_cut'))
         {
-          if(!$this->context->getFilesystem()->copyRecursive(dmCodeEditorTools::decodeUrlTreeForCopy($copyDir),dmCodeEditorTools::decodeUrlTreeForCopy($pasteDir)))
+          if(!$this->context->getFilesystem()->mirror(
+            dmCodeEditorTools::decodeUrlTreeForCopy($copyDir),
+            dmCodeEditorTools::decodeUrlTreeForCopy($pasteDir),
+            sfFinder::type('all')
+          ))
           {
             return $this->renderText('[KO] | An error occurred ');
           }

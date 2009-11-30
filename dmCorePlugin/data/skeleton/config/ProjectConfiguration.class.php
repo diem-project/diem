@@ -18,6 +18,10 @@ class ProjectConfiguration extends dmProjectConfiguration
   public function setup()
   {
     parent::setup();
+    
+    $this->enablePlugins(array(
+      // add plugins you want to enable here
+    ));
 
     $this->setWebDirName(##DIEM_WEB_DIR_NAME##);
   }

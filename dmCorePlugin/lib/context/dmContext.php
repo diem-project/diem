@@ -115,7 +115,7 @@ class dmContext extends sfContext
     &&  $this->factories['response']->isHtml()
     );
     
-    $this->factories['i18n']->setUseAdminCatalogue($this->getUser()->can('admin'));
+    $this->factories['i18n']->setUseInternalCatalogue($this->getUser()->can('admin'));
   }
   
   public function reloadModuleManager()

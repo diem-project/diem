@@ -9,7 +9,9 @@ generator:
     with_doctrine_route: false
     config:
       actions: ~
-      fields: {  }
+      fields:
+        klass:
+          label:    Class
       list:
         display:
           - =name

@@ -40,6 +40,8 @@ class dmWidgetContentTextForm extends dmWidgetContentMediaForm
     $this->validatorSchema['titlePosition'] = new sfValidatorChoice(array(
       'choices' => array('outside', 'inside')
     ));
+    
+    $this->widgetSchema['titlePosition']->setLabel('Title position');
   }
   
   protected function renderContent($attributes)

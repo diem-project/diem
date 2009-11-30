@@ -89,7 +89,6 @@ class dmWidgetContentMediaForm extends dmWidgetPluginForm
     if ($media)
     {
       $this->setDefault('mediaName', $media->getRelPath());
-//      $this->setDefault('legend', $media->getLegend());
     }
     else
     {
