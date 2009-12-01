@@ -9,7 +9,8 @@ class dmFrontPageHelper
     $i18n,
     $helper,
     $page,
-    $areas;
+    $areas,
+    $isHtml5;
 
   protected static
   $innerCssClassWidgets = array('dmWidgetContent.title', 'dmWidgetContent.media', 'dmWidgetContent.link');
@@ -27,6 +28,7 @@ class dmFrontPageHelper
   
   public function initialize()
   {
+    $this->isHtml5 = 5 == $this->getDocTypeOption('version', 5);
   }
   
   public function connect()
@@ -152,7 +154,7 @@ class dmFrontPageHelper
   
   protected function getAreaTypeTagName($areaType)
   {
-    if (sfConfig::get('dm_html_doctype_version', 5) == 5)
+    if ($this->isHtml5())
     {
       switch($areaType)
       {
@@ -292,5 +294,15 @@ class dmFrontPageHelper
     }
     
     return array($widgetWrapClass, $widgetInnerClass);
+  }
+  
+  protected function getDocTypeOption($name, $default)
+  {
+    return dmArray::get(sfConfig::get('dm_html_doctype'), $name, $default);
+  }
+  
+  protected function isHtml5()
+  {
+    return $this->isHtml5;
   }
 }
