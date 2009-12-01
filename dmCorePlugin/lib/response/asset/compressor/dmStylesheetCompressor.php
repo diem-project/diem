@@ -19,7 +19,7 @@ class dmStylesheetCompressor extends dmAssetCompressor
       return false;
     }
     
-    return true;
+    return !isset($options['condition']);
   }
   
   protected function processCacheKey($cacheKey)

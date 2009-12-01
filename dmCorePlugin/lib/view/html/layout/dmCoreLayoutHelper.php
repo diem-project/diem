@@ -27,7 +27,6 @@ class dmCoreLayoutHelper
     $this->renderHttpMetas().
     $this->renderMetas().
     $this->renderStylesheets().
-    $this->renderBrowserStylesheets().
     $this->renderFavicon().
     $this->renderIeHtml5Fix();
   }
@@ -118,11 +117,11 @@ class dmCoreLayoutHelper
       $value = htmlentities($value, ENT_COMPAT, 'UTF-8');
       if ('title' === $key)
       {
-        $metasHtml = "\n".'<title>'.$value.'</title>';
+        $metasHtml = '<title>'.$value.'</title>'."\n";
       }
       else
       {
-        $metasHtml .= "\n".'<meta name="'.$key.'" content="'.$value.'" />';
+        $metasHtml .= '<meta name="'.$key.'" content="'.$value.'" />'."\n";
       }
     }
 
@@ -137,7 +136,7 @@ class dmCoreLayoutHelper
     
     foreach($httpMetas as $httpequiv => $value)
     {
-      $html .= '<meta http-equiv="'.$httpequiv.'" content="'.$value.'" />';
+      $html .= '<meta http-equiv="'.$httpequiv.'" content="'.$value.'" />'."\n";
     }
 
     return $html;
@@ -159,34 +158,18 @@ class dmCoreLayoutHelper
     $html = '';
     foreach ($stylesheets as $file => $options)
     {
-      $html .= "\n".'<link rel="stylesheet" type="text/css" media="'.dmArray::get($options, 'media', 'all').'" href="'.$relativeUrlRoot.$file.'" />';
+      $stylesheetTag = '<link rel="stylesheet" type="text/css" media="'.dmArray::get($options, 'media', 'all').'" href="'.$relativeUrlRoot.$file.'" />';
+    
+      if (isset($options['condition']))
+      {
+        $stylesheetTag = sprintf('<!--[if %s]>%s<![endif]-->', $options['condition'], $stylesheetTag);
+      }
+      
+      $html .= $stylesheetTag."\n";
     }
     
     sfConfig::set('symfony.asset.stylesheets_included', true);
   
-    return $html;
-  }
-  
-  public function renderBrowserStylesheets()
-  {
-    $html = '';
-    $theme = $this->serviceContainer->getParameter('user.theme');
-
-    // search in theme_dir/css/browser/ieX.css
-    if (is_dir($theme->getFullPath('css/browser')))
-    {
-      foreach(array(6, 7, 8) as $ieVersion)
-      {
-        if (file_exists($theme->getFullPath('css/browser/msie'.$ieVersion.'.css')))
-        {
-          $html .= "\n".sprintf('<!--[if IE %d]><link href="%s" rel="stylesheet" type="text/css" /><![endif]-->',
-            $ieVersion,
-            $theme->getWebPath('css/browser/msie'.$ieVersion.'.css')
-          );
-        }
-      }
-    }
-
     return $html;
   }
   

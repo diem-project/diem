@@ -94,7 +94,7 @@ class dmDebug
    */
   public static function show()
   {
-    return self::debugger(func_get_args(), 2, array("tag" => "div"));
+    return self::debugger(func_get_args(), 2, array('tag' => 'div'));
   }
   
   /*
