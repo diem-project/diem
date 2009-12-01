@@ -281,7 +281,7 @@
 "Link external blank": "Lien externe en nouvelle fenêtre"
 "Links to other domain get automatically a _blank target": "Les liens vers d'autres domaines obtiennent automatiquement target=_blank"
 "Link current span": "Lien courrant = span"
-"Links to current page are changed from <a> to <span>;": "Les liens vers la page courrante sont transformé de <a> en <span>"
+"Links to current page are changed from <a> to <span>": "Les liens vers la page courrante sont transformé de <a> en <span>"
 "Link use page title": "Liens utilisent le titre de la page"
 "Add an automatic title on link based on the target page title": "Ajouter un title automatique aux liens, basé sur le titre de la page ciblée"
 "Search stop words": "Mots à ne pas chercher"
