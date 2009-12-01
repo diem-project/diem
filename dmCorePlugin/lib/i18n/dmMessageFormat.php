@@ -29,6 +29,9 @@ class dmMessageFormat extends sfMessageFormat
   
   public function formatFastOrFalse($string, array $args = array(), $catalogue)
   {
+    // make sure that objects with __toString() are converted to strings
+    $string = (string) $string;
+    
     $this->loadCatalogue($catalogue);
 
     foreach ($this->messages[$catalogue] as $variant)

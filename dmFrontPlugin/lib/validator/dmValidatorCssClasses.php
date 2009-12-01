@@ -1,7 +1,17 @@
 <?php
 
-class dmValidatorCssClasses extends sfValidatorString
+class dmValidatorCssClasses extends sfValidatorRegex
 {
+  
+  protected function configure($options = array(), $messages = array())
+  {
+    parent::configure($options, $messages);
+
+    $this->setMessage('invalid', 'This CSS class is not valid.');
+
+    $this->setOption('pattern', '/^(\w|\s|\.|$])*$/i');
+  }
+  
   /**
    * @see sfValidatorString
    */

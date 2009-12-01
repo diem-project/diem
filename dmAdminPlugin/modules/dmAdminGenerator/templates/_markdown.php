@@ -37,7 +37,7 @@
   <div class="sf_admin_form_row_inner">
     <label class="fnone"><?php echo __('Preview'); ?></label>
     <div class="markdown_preview markdown">
-      <?php echo markdown($form->getObject()->get($name))?>
+      <?php echo markdown($form->getObject()->get($name)) ?>
     </div>
   </div>
 </div>
