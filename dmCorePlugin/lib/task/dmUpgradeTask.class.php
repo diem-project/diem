@@ -7,6 +7,7 @@ class dmUpgradeTask extends dmContextTask
 {
   protected
   $diemVersions = array(
+    '500ALPHA4'
   );
   
   /**
@@ -45,6 +46,15 @@ class dmUpgradeTask extends dmContextTask
         $this->logBlock('Can not upgrade to version '.$version.' : '.$e->getMessage(), 'ERROR');
       }
     }
+  }
+  
+  protected function upgradeTo500ALPHA4()
+  {
+    dmDb::query()
+    ->update('DmSetting')
+    ->set('group_name', '?', 'Interface')
+    ->where('group_name = ?', 'IHM')
+    ->execute();
   }
   
 }

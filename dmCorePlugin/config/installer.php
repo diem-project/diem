@@ -80,15 +80,29 @@ do
   $defaultDbName = dmString::underscore(str_replace('-', '_', $projectKey));
   
   $settings['database'] = array(
+    'db' => $this->ask('What kind of database will we use ? ( mysql | pgsql )', 'QUESTION', 'mysql'),
     'name' => $this->ask('What is the database name ? ( default : '.$defaultDbName.' )', 'QUESTION', $defaultDbName),
     'host' => $this->ask('What is the database host ? ( default : localhost )', 'QUESTION', 'localhost'),
     'user' => $this->ask('What is the database user ?'),
     'password' => $this->ask('What is the database password ?')
   );
     
-  $settings['database']['dsn'] = sprintf('mysql://%s:%s@%s/%s',
-    $settings['database']['user'], $settings['database']['password'], $settings['database']['host'], $settings['database']['name']
-  );
+  switch($settings['database']['db'])
+  {
+    case "mysql":
+      $settings['database']['dsn'] = sprintf('mysql://%s:%s@%s/%s',
+        $settings['database']['user'], $settings['database']['password'], $settings['database']['host'], $settings['database']['name']
+      );
+    break;
+    case "pgsql":
+      $settings['database']['dsn'] = sprintf('pgsql:host=%s;dbname=%s;user=%s;password=%s',
+      $settings['database']['host'], $settings['database']['name'], $settings['database']['user'], $settings['database']['password']);
+    break;
+    default:
+      $isDatabaseOk = false;
+      $this->logBlock('Diem 5.0 only supports mysql and pgsql', 'ERROR_LARGE');
+      $this->log('');
+  }
   
   try
   {

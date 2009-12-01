@@ -30,7 +30,7 @@ DmPageView:
     action:                 { type: string(127), notnull: true }
     dm_layout_id:           { type: integer }
   indexes:
-    moduleAction:
+    dmPageViewModuleAction:
       fields:               [ module, action ]
       type:                 unique
   relations:
@@ -182,7 +182,7 @@ DmAutoSeo:
     keywords:               { type: string(255), notnull: false }
     strip_words:            { type: string(10000) }
   indexes:
-    moduleAction:
+    dmAutoSeoModuleAction:
       fields:               [ module, action ]
       type:                 unique
 
