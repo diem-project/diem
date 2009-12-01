@@ -31,7 +31,14 @@ class dmCoreLayoutHelper
   
   protected function getDocTypeOption($name, $default)
   {
-    return dmArray::get(sfConfig::get('dm_html_doctype'), $name, $default);
+    $value = dmArray::get(sfConfig::get('dm_html_doctype'), $name, $default);
+    
+    if ('version' === $name && 1 == $value)
+    {
+      $value = '1.0';
+    }
+    
+    return $value;
   }
 
   protected function isHtml5()
