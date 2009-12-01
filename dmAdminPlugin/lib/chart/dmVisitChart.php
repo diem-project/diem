@@ -17,7 +17,7 @@ class dmVisitChart extends dmGaChart
     $dataSet->SetSerieName("Visitors / month", "visitors");
 
     // Prepare the graph area
-    $this->setGraphArea(40, 10, $this->getWidth()-40, $this->getHeight()-20);
+    $this->setGraphArea(80, 10, $this->getWidth()-80, $this->getHeight()-20);
     $this->drawGraphArea(255, 255, 255);
   
     // Draw the pageviews graph
@@ -46,7 +46,7 @@ class dmVisitChart extends dmGaChart
     $this->drawPlotGraph($dataSet->GetData(),$dataSet->GetDataDescription(),3,2,255,255,255);
 
     // Finish the graph
-    $this->drawLegend(45,5,$dataSet->GetDataDescription(),255,255,255);
+    $this->drawLegend(85,5,$dataSet->GetDataDescription(),255,255,255);
   }
 
   protected function getData()
@@ -55,10 +55,10 @@ class dmVisitChart extends dmGaChart
     {
       $report = $this->gapi->getReport(array(
         'dimensions'  => array('month', 'year'),
-        'metrics'     => array('pageviews', 'visitors')
+        'metrics'     => array('pageviews', 'visits')
       ));
       
-  //    dmDebug::kill($report);
+ //    dmDebug::kill($report);
       
       $data = array(
         'dates' => array(),
@@ -70,7 +70,7 @@ class dmVisitChart extends dmGaChart
       {
         $data['dates'][] = $entry->get('month').'/'.$entry->get('year');
         $data['pageviews'][] = $entry->get('pageviews');
-        $data['visitors'][] = $entry->get('visitors');
+        $data['visitors'][] = $entry->get('visits');
       }
       $this->setCache('data', $data);
     }

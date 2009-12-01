@@ -20,6 +20,17 @@ class dmCoreLayoutHelper
   {
     $this->isHtml5 = 5 == $this->getDocTypeOption('version', 5);
   }
+  
+  public function renderHead()
+  {
+    return
+    $this->renderHttpMetas().
+    $this->renderMetas().
+    $this->renderStylesheets().
+    $this->renderBrowserStylesheets().
+    $this->renderFavicon().
+    $this->renderIeHtml5Fix();
+  }
 
   public function renderBodyTag()
   {
@@ -156,6 +167,29 @@ class dmCoreLayoutHelper
     return $html;
   }
   
+  public function renderBrowserStylesheets()
+  {
+    $html = '';
+    $theme = $this->serviceContainer->getParameter('user.theme');
+
+    // search in theme_dir/css/browser/ieX.css
+    if (is_dir($theme->getFullPath('css/browser')))
+    {
+      foreach(array(6, 7, 8) as $ieVersion)
+      {
+        if (file_exists($theme->getFullPath('css/browser/msie'.$ieVersion.'.css')))
+        {
+          $html .= "\n".sprintf('<!--[if IE %d]><link href="%s" rel="stylesheet" type="text/css" /><![endif]-->',
+            $ieVersion,
+            $theme->getWebPath('css/browser/msie'.$ieVersion.'.css')
+          );
+        }
+      }
+    }
+
+    return $html;
+  }
+  
   public function renderJavascripts()
   {
     /*
@@ -178,6 +212,16 @@ class dmCoreLayoutHelper
     }
   
     return $html;
+  }
+
+  public function renderIeHtml5Fix()
+  {
+    if ($this->isHtml5())
+    {
+      return '<!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->';
+    }
+    
+    return '';
   }
   
   protected function getJavascriptConfig()
