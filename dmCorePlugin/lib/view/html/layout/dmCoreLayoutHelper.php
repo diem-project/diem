@@ -18,7 +18,7 @@ class dmCoreLayoutHelper
   
   protected function initialize()
   {
-    $this->isHtml5  = sfConfig::get('dm_html_doctype_version', 5) == 5;
+    $this->isHtml5 = 5 == $this->getDocTypeOption('version', 5);
   }
 
   public function renderBodyTag()
@@ -27,6 +27,11 @@ class dmCoreLayoutHelper
       $this->serviceContainer->getParameter('controller.module'),
       $this->serviceContainer->getParameter('controller.action')
     );
+  }
+  
+  protected function getDocTypeOption($name, $default)
+  {
+    return dmArray::get(sfConfig::get('dm_html_doctype'), $name, $default);
   }
 
   protected function isHtml5()
@@ -44,13 +49,13 @@ class dmCoreLayoutHelper
     {
       $doctype = sprintf(
         '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML %s %s//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-%s.dtd">',
-        sfConfig::get('dm_html_doctype_version', '1.0'),
-        ucfirst(strtolower(sfConfig::get('dm_html_doctype_compliance', 'transitional'))),
-        strtolower(sfConfig::get('dm_html_doctype_compliance', 'transitional'))
+        $this->getDocTypeOption('version', '1.0'),
+        ucfirst(strtolower($this->getDocTypeOption('compliance', 'transitional'))),
+        strtolower($this->getDocTypeOption('compliance', 'transitional'))
       );
     }
     
-    return $doctype;
+    return $doctype."\n";
   }
   
   public function renderHtmlTag()
