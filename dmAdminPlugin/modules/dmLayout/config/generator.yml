@@ -9,7 +9,11 @@ generator:
     with_doctrine_route: false
     config:
       actions: ~
-      fields: {  }
+      fields:
+        css_class:
+          help: "This CSS class is applied to the body tag"
+        content:
+          label: Areas
       list:
         display:
           - =name

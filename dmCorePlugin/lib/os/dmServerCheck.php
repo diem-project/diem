@@ -41,7 +41,8 @@ class dmServerCheck
     ),
        'php extensions' => array(
     new dmServerCheckUnit('pdo', extension_loaded('pdo'), true, self::ERROR),
-    new dmServerCheckUnit('pdo_mysql', extension_loaded('pdo_mysql'), true, self::ERROR),
+    new dmServerCheckUnit('pdo_mysql', extension_loaded('pdo_mysql'), true),
+    new dmServerCheckUnit('pdo_pgsql', extension_loaded('pdo_pgsql'), true),
     new dmServerCheckUnit('json', extension_loaded('json') ? phpversion('json') : false, '1.0', self::ERROR),
     new dmServerCheckUnit('gd', extension_loaded('gd'), true, self::ERROR),
 //    new dmServerCheckUnit('date', extension_loaded('date'), true, self::ERROR),
