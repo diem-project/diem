@@ -44,7 +44,7 @@ class dmFrontInitFilter extends dmInitFilter
       $this->context->getController()->redirect(
         str_replace($absoluteUrlRoot.'/index.php', $absoluteUrlRoot, $request->getUri()),
         0,
-        302
+        301
       );
     }
   }

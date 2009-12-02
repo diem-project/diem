@@ -31,13 +31,12 @@ abstract class dmInitFilter extends dmFilter
   protected function redirectTrailingSlash()
   {
     $uri = $this->getContext()->getRequest()->getUri();
-    $uriLastChar = substr($uri, -1);
     
-    if ($uriLastChar === '/')
+    if ('/' === substr($uri, -1))
     {
-      if ($uri != ($this->getContext()->getRequest()->getAbsoluteUrlRoot().'/'))
+      if ($uri !== ($this->getContext()->getRequest()->getAbsoluteUrlRoot().'/'))
       {
-        $this->context->getController()->redirect(rtrim($uri, '/'), 0, 302);
+        $this->context->getController()->redirect(rtrim($uri, '/'), 0, 301);
       }
     }
   }
