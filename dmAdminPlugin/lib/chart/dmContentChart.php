@@ -72,13 +72,13 @@ class dmContentChart extends dmChart
         $data['modules'][$moduleKey] = array();
       }
       
-      for($monthDelta = 11; $monthDelta >= 0; $monthDelta--)
+      for($weekDelta = 12; $weekDelta >= 0; $weekDelta--)
       {
-        $data['dates'][] = date('m/Y', strtotime($monthDelta.' month ago'));
+        $data['dates'][] = date('d/m/Y', strtotime($weekDelta.' week ago'));
         
         foreach($this->getModules() as $moduleKey => $module)
         {
-          $data['modules'][$moduleKey][] = $this->getNbRecordsForModuleAndMonthDelta($module, $monthDelta);
+          $data['modules'][$moduleKey][] = $this->getNbRecordsForModuleAndWeekDelta($module, $weekDelta);
         }
       }
       
@@ -105,11 +105,11 @@ class dmContentChart extends dmChart
     return $modules;
   }
   
-  protected function getNbRecordsForModuleAndMonthDelta(dmModule $module, $monthDelta)
+  protected function getNbRecordsForModuleAndWeekDelta(dmModule $module, $weekDelta)
   {
     return $module->getTable()->createQuery('r')
-    ->where('r.created_at > ?', date('Y-m-d H:i:s', strtotime(($monthDelta+1).' month ago')))
-    ->andWhere('r.created_at <= ?', date('Y-m-d H:i:s', strtotime($monthDelta.' month ago')))
+    ->where('r.created_at > ?', date('Y-m-d H:i:s', strtotime(($weekDelta+1).' week ago')))
+    ->andWhere('r.created_at <= ?', date('Y-m-d H:i:s', strtotime($weekDelta.' week ago')))
     ->count();
   }
 

@@ -97,7 +97,7 @@ class dmLogChart extends dmChart
 
   protected function getData()
   {
-    if (!$data = $this->getCache('data'))
+    if (true || !$data = $this->getCache('data'))
     {
       $data = array(
         'date' => array(),
@@ -224,7 +224,10 @@ class dmLogChart extends dmChart
           }
         }
         
-        ++$data['events'][$eventType][$nearestTimeIndex];
+        if($timeDelta < ($data['date'][1] - $data['date'][0]))
+        {
+          ++$data['events'][$eventType][$nearestTimeIndex];
+        }
       }
       
       unset($events);

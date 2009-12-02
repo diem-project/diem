@@ -2,7 +2,7 @@
 
 function escape($text)
 {
-  return htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
+  return dmString::escape($text);
 }
 /*
  * @return dmLinkTag a link to $source

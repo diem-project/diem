@@ -30,13 +30,18 @@ foreach($settings as $group => $groupSettings)
   $it = 0;
   foreach($groupSettings as $setting)
   {
+    $settingName = $setting->get('name');
+    
     if (!($it%2))
     {
       echo £c('ul').£o('ul.dm_setting_group.clearfix');
     }
     ++$it;
     
-    echo $form[$setting->get('name')]->renderRow();
+    echo £('li.dm_form_element.clearfix',
+      $form[$settingName]->label()->field()->error().
+      £('div.dm_help_wrap', escape(__($form[$settingName]->getHelp())))
+    );
   }
   echo £c('ul');
   

@@ -4,17 +4,19 @@ class dmFormField extends sfFormField
 {
   protected
   $isRequired,
-  $htmlBuffer = '';
+  $htmlBuffer = null;
 
   public function __toString()
   {
-    if ('' === $this->htmlBuffer)
+    if (null === $this->htmlBuffer)
     {
       return parent::__toString();
     }
     
     $return = $this->htmlBuffer;
+    
     $this->htmlBuffer = '';
+    
     return $return;
   }
 
@@ -36,6 +38,7 @@ class dmFormField extends sfFormField
     $attributes['class'] = dmArray::toHtmlCssClasses($attributes['class']);
     
     $this->htmlBuffer .= parent::render($attributes);
+    
     return $this;
   }
 
@@ -45,6 +48,7 @@ class dmFormField extends sfFormField
       array('class' => 'label'),
       dmString::toArray($attributes)
     );
+    
     $label = null === $label ? $this->parent->getWidget()->getLabel($this->name) : $label;
     
     $this->htmlBuffer .= parent::renderLabel($label, $attributes);
@@ -55,6 +59,7 @@ class dmFormField extends sfFormField
   public function error()
   {
     $this->htmlBuffer .= parent::renderError();
+    
     return $this;
   }
   
@@ -63,4 +68,8 @@ class dmFormField extends sfFormField
     $this->isRequired = (bool) $val;
   }
 
+  public function getHelp()
+  {
+    return $this->parent->getWidget()->getHelp($this->name);
+  }
 }

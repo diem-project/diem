@@ -26,6 +26,11 @@ class dmString extends sfInflector
     ),
     $camelizeCache = array();
 
+  public static function escape($text)
+  {
+    return htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
+  }
+    
   /*
    * Clean dirty strings
    */
