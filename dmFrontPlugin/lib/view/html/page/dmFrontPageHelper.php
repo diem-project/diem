@@ -127,7 +127,7 @@ class dmFrontPageHelper
     
     $html .= $this->helper->£o($tagName, $options);
 
-    $html .= '<div class="dm_zones">';
+    $html .= '<div class="dm_zones clearfix">';
 
     if (!empty($area['Zones']))
     {

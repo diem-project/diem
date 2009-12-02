@@ -107,13 +107,26 @@ $.widget('ui.dmZone', {
       connectWith:            'div.dm_widgets',
       forceHelperSize:        false,
       forcePlaceholderSize:   false,
-      tolerance:              'pointer',
+      tolerance:              'intersect',
       receive:                function(e, ui) { sortEvents.receive = $(this).parent(); },
       remove:                 function(e, ui) { sortEvents.remove = true; },
       update:                 function(e, ui) { sortEvents.update = true; },
       start:                  function(e, ui) {
         ui.item.addClass('dm_dragging');
-        ui.placeholder.addClass(ui.item.attr('class')).css('width', ui.item.css('width')).html(ui.item.html());
+				
+        // adding a widget
+        if (ui.placeholder.is('span')) 
+        {
+          ui.placeholder
+          .addClass('dm dm_widget block')
+          .html('<a class="dm dm_widget_edit"></a><div class="dm_widget_inner">New Widget</div>');
+        }
+        // moving a widget
+        else 
+        {
+          ui.placeholder.addClass(ui.item.attr('class')).css('width', ui.item.css('width')).html(ui.item.html());
+				}
+				
         sortEvents = [];
       },
       stop:                   function(e, ui) {

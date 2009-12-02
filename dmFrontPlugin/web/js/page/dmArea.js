@@ -39,17 +39,37 @@ $.widget('ui.dmArea', {
         revert:                 false,
         scroll:                 true,
         connectWith:            'div.dm_zones',
-        forceHelperSize:        false,
+        forceHelperSize:        true,
         forcePlaceholderSize:   false,
-        tolerance:              'pointer',
-        start:                  function(e, ui) { sortEvents = []; },
+        tolerance:              'intersect',
         receive:                function(e, ui) { sortEvents.receive = $(this).parent(); },
         remove:                 function(e, ui) { sortEvents.remove = true; },
         update:                 function(e, ui) { sortEvents.update = true; },
         start:                  function(e, ui) {
           ui.item.addClass('dm_dragging');
-          ui.placeholder.addClass(ui.item.attr('class')).css('width', ui.item.css('width')).html(ui.item.html());
-          sortEvents = [];
+				  
+					// adding a zone
+					if (ui.placeholder.is('span')) 
+					{
+						ui.placeholder
+						.addClass('dm dm_zone block')
+						.html('<a class="dm dm_zone_edit"/><div class="dm_widgets">New Zone</div>')
+						.css('width', '100%');
+					}
+					// moving a zone
+					else 
+					{
+						ui.placeholder.addClass(ui.item.attr('class'))
+						.css({
+							'width': ui.item.css('width'),
+							'margin': '0'
+						})
+						.html(ui.item.html());
+						
+//						ui.helper.css('width', 'auto');
+					}
+					
+					sortEvents = [];
         },
         stop:                   function(e, ui) {
           if (sortEvents.update && sortEvents.receive && sortEvents.remove) {

@@ -156,15 +156,20 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
   zoneAdd: function()
   {
     var self = this;
+
     $('div.dm_add_menu span.zone_add', self.element).draggable({
       connectToSortable: 'div.dm_zones',
       helper: function()
       {
-        return $('<div class="dm_zone_add_helper"></div>').html($(this).html()).appendTo($('#dm_page'));
+        return $('<div class="dm"><div class="dm_zone_add_helper ui-corner-all">New Zone</div></div>');
       },
-      revert: false,
-      start: function()
+//			helper: 'clone',
+			appendTo: '#dm_page',
+			cursorAt: { left: 30, top: 10 },
+      cursor: 'move',
+      start: function(e, ui)
       {
+        ui.helper.css({width: 'auto', height: 'auto'});
         $('div.dm_add_menu', self.element).dmMenu('close');
       }
     });
@@ -177,11 +182,14 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
       connectToSortable: 'div.dm_widgets',
       helper: function()
       {
-        return $('<div class="dm_widget_add_helper"></div>').html($(this).html()).appendTo($('#dm_page'));
+        return $('<div class="dm"><div class="dm_widget_add_helper ui-corner-all">New '+$(this).text()+'</div></div>');
       },
-      revert: false,
-      start: function()
+      appendTo: '#dm_page',
+      cursorAt: { left: 30, top: 10 },
+			cursor: 'move',
+      start: function(e, ui)
       {
+				ui.helper.css({width: 'auto', height: 'auto'});
         $('div.dm_add_menu', self.element).dmMenu('close');
       }
     });

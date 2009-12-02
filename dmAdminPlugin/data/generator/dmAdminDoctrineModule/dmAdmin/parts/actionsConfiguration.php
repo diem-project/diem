@@ -60,7 +60,7 @@
       if($this->getModule()->getTable()->hasField('is_active'))
       {
         $default['_activate'] = null;
-        $default['_desactivate'] = null;
+        $default['_deactivate'] = null;
       }
     ?>
     return <?php echo $this->asPhp(isset($this->config['list']['batch_actions']) ? $this->config['list']['batch_actions'] : $default) ?>;

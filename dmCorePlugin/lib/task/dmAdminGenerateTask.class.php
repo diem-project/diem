@@ -13,8 +13,7 @@ class dmAdminGenerateTask extends dmContextTask
     parent::configure();
 
     $this->addOptions(array(
-      new sfCommandOption('clear', null, sfCommandOption::PARAMETER_NONE, 'Recreate base classes ( model, form, filter )'),
-      new sfCommandOption('only', null, sfCommandOption::PARAMETER_OPTIONAL, 'Just for this module', false),
+      new sfCommandOption('clear', null, sfCommandOption::PARAMETER_REQUIRED, 'Clear and regenerate a module', null)
     ));
 
     $this->namespace = 'dmAdmin';
@@ -43,10 +42,12 @@ EOF;
     ));
 
     array_walk($existingModules, create_function('&$a', '$a = basename($a);'));
-
+    
+    $moduleToClear = dmArray::get($options, 'clear');
+    
     foreach($modules as $moduleKey => $module)
     {
-      if (dmArray::get($options, 'only') && $moduleKey != dmArray::get($options, 'only'))
+      if ($moduleToClear && $moduleKey !== $moduleToClear)
       {
 //        $this->logSection('diem', "Skipping $module");
         continue;
@@ -72,7 +73,7 @@ EOF;
 
       if (in_array($moduleKey, $existingModules))
       {
-        if (empty($options['clear']) || !$module->isProject())
+        if (!$moduleToClear || !$module->isProject())
         {
 //          $this->logSection('diem', sprintf("Skip existing module %s", $moduleKey));
           continue;

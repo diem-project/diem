@@ -65,6 +65,8 @@ class dmFrontWidgetRenderer
       return;
     }
 
+    $this->isRendered = true;
+
     $widgetType = $this->serviceContainer->get('widget_type_manager')->getWidgetType($this->widget['module'], $this->widget['action']);
     
     $this->serviceContainer->addParameters(array(

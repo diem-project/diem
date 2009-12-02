@@ -65,10 +65,8 @@ $.dm.coreToolBar = {
   
   initMenu : function()
   {
-    $('div.dm_menu', this.element).one('mouseover', function() {
-			$(this).dmMenu({
-	      hoverClass: 'ui-state-active'
-	    });
+    $('div.dm_menu', this.element).disableSelection().dmMenu({
+	    hoverClass: 'ui-state-active'
 	  });
   }
 

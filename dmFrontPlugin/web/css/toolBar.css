@@ -13,7 +13,14 @@ body {
   overflow-y: hidden;
 }
 
-div.dm_zone_add_helper {
+div.dm_zone_add_helper,
+div.dm_widget_add_helper {
+	white-space: nowrap;
+	padding: 5px 10px;
+	font-weight: bold;
+	background: #F4F4F4;
+	border: 1px solid #D3D3D3;
+	text-align: center;
 }
 
 #dm_tool_bar .show_tool_bar_toggle {
