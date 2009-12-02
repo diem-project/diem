@@ -121,6 +121,8 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
       $.ajax({
         url: $.dm.ctrl.getHref('+/dmFront/editToggle') + "?active=" + (active ? 1 : 0)
       });
+			
+			$('#dm_page .ui-sortable').sortable('refresh');
     });
   },
   
