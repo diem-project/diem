@@ -28,19 +28,19 @@ class dmProjectConfiguration extends sfProjectConfiguration
   
   public function configureDoctrine(Doctrine_Manager $manager)
   {
-    Doctrine::debug(sfConfig::get('dm_debug'));
+    Doctrine_Core::debug(sfConfig::get('dm_debug'));
 
     /*
      * Set up doctrine extensions dir
      */
-    Doctrine::setExtensionsPath(sfConfig::get('dm_core_dir').'/lib/doctrine/extension');
+    Doctrine_Core::setExtensionsPath(sfConfig::get('dm_core_dir').'/lib/doctrine/extension');
 
     /*
      * Configure inheritance
      */
-    $manager->setAttribute(Doctrine::ATTR_TABLE_CLASS, 'myDoctrineTable');
-    $manager->setAttribute(Doctrine::ATTR_QUERY_CLASS, 'myDoctrineQuery');
-    $manager->setAttribute(Doctrine::ATTR_COLLECTION_CLASS, 'myDoctrineCollection');
+    $manager->setAttribute(Doctrine_Core::ATTR_TABLE_CLASS, 'myDoctrineTable');
+    $manager->setAttribute(Doctrine_Core::ATTR_QUERY_CLASS, 'myDoctrineQuery');
+    $manager->setAttribute(Doctrine_Core::ATTR_COLLECTION_CLASS, 'myDoctrineCollection');
     
     /*
      * Configure charset
@@ -74,12 +74,12 @@ class dmProjectConfiguration extends sfProjectConfiguration
     {
       $driver = new Doctrine_Cache_Apc(array('prefix' => dmProject::getKey().'/doctrine/'));
       
-      $manager->setAttribute(Doctrine::ATTR_QUERY_CACHE, $driver);
+      $manager->setAttribute(Doctrine_Core::ATTR_QUERY_CACHE, $driver);
       
       if(sfConfig::get('dm_cache_result_enabled'))
       {
-        $manager->setAttribute(Doctrine::ATTR_RESULT_CACHE, $driver);
-        $manager->setAttribute(Doctrine::ATTR_RESULT_CACHE_LIFESPAN, 24 * 60 * 60);
+        $manager->setAttribute(Doctrine_Core::ATTR_RESULT_CACHE, $driver);
+        $manager->setAttribute(Doctrine_Core::ATTR_RESULT_CACHE_LIFESPAN, 24 * 60 * 60);
       }
     }
   }

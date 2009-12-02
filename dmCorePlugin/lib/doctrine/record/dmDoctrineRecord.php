@@ -325,7 +325,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
    * and return the ancestor record for this model
    * @return myDoctrineRecord the ancestor record
    */
-  public function getAncestorRecord($class, $hydrationMode = Doctrine::HYDRATE_RECORD)
+  public function getAncestorRecord($class, $hydrationMode = Doctrine_Core::HYDRATE_RECORD)
   {
     if (get_class($this) == $class)
     {
@@ -402,7 +402,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
    * ForeignKey && Association relation : the first related record
    * @return myDoctrineRecord|null the related record or null if not exist
    */
-  public function getRelatedRecord($class, $hydrationMode = Doctrine::HYDRATE_RECORD)
+  public function getRelatedRecord($class, $hydrationMode = Doctrine_Core::HYDRATE_RECORD)
   {
     if (!$relation = $this->_table->getRelationHolder()->getByClass($class))
     {

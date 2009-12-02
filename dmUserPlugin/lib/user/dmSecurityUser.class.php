@@ -165,13 +165,13 @@ class dmSecurityUser extends sfBasicSecurityUser
       $expiration_age = sfConfig::get('dm_security_remember_key_expiration_age', 15 * 24 * 3600);
 
       // remove old keys
-      Doctrine::getTable('DmRememberKey')->createQuery()
+      Doctrine_Core::getTable('DmRememberKey')->createQuery()
         ->delete()
         ->where('created_at < ?', date('Y-m-d H:i:s', time() - $expiration_age))
         ->execute();
 
       // remove other keys from this user
-      Doctrine::getTable('DmRememberKey')->createQuery()
+      Doctrine_Core::getTable('DmRememberKey')->createQuery()
         ->delete()
         ->where('dm_user_id = ?', $user->getId())
         ->orWhere('ip_address = ?', $_SERVER['REMOTE_ADDR'])

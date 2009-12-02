@@ -55,7 +55,7 @@ EOF;
   {
     $databaseManager = new sfDatabaseManager($this->configuration);
 
-    $user = Doctrine::getTable('DmUser')->retrieveByUsername($arguments['username']);
+    $user = Doctrine_Core::getTable('DmUser')->retrieveByUsername($arguments['username']);
 
     if (!$user)
     {

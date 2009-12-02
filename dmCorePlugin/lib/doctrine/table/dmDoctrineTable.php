@@ -97,7 +97,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
     return $query;
   }
   
-  public function fetchJoinAll($params = array(), $hydrationMode = Doctrine::HYDRATE_RECORD)
+  public function fetchJoinAll($params = array(), $hydrationMode = Doctrine_Core::HYDRATE_RECORD)
   {
     return $this->joinAll()->execute($params, $hydrationMode);
   }

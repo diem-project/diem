@@ -16,7 +16,7 @@ class dmRecordLoremizer
     }
     else
     {
-      if (!Doctrine::isValidModelClass($classOrObject))
+      if (!Doctrine_Core::isValidModelClass($classOrObject))
       {
         throw new dmException(sprintf('%s is not a valid model', $classOrObject));
       }

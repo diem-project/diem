@@ -274,7 +274,7 @@ abstract class dmDoctrineQuery extends Doctrine_Query
    */
   public function fetchRecords($params = array())
   {
-    return $this->execute($params, Doctrine::HYDRATE_RECORD);
+    return $this->execute($params, Doctrine_Core::HYDRATE_RECORD);
   }
 
   /*
@@ -282,19 +282,19 @@ abstract class dmDoctrineQuery extends Doctrine_Query
    * then execute $this->fetchOne()
    * @return myDoctrineRecord|null the fetched record
    */
-  public function fetchRecord($params = array(), $hydrationMode = Doctrine::HYDRATE_RECORD)
+  public function fetchRecord($params = array(), $hydrationMode = Doctrine_Core::HYDRATE_RECORD)
   {
     return $this->limit(1)->fetchOne($params, $hydrationMode);
   }
 
   public function fetchValue($params = array())
   {
-    return $this->execute($params, Doctrine::HYDRATE_SINGLE_SCALAR);
+    return $this->execute($params, Doctrine_Core::HYDRATE_SINGLE_SCALAR);
   }
 
   public function fetchValues($params = array())
   {
-    return $this->execute($params, Doctrine::HYDRATE_SCALAR);
+    return $this->execute($params, Doctrine_Core::HYDRATE_SCALAR);
   }
 
   /*

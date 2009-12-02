@@ -143,7 +143,7 @@ class PluginDmPageTable extends myDoctrineTable
   }
 
   
-  public function findAllForCulture($culture, $hydrationMode = Doctrine::HYDRATE_ARRAY)
+  public function findAllForCulture($culture, $hydrationMode = Doctrine_Core::HYDRATE_ARRAY)
   {
     return $this->createQuery('p')
     ->withI18n($culture, null, 'p')

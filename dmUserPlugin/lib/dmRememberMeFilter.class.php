@@ -43,7 +43,7 @@ class dmRememberMeFilter extends sfFilter
       $cookie = $this->context->getRequest()->getCookie($cookieName)
     )
     {
-      $q = Doctrine::getTable('DmRememberKey')->createQuery('r')
+      $q = Doctrine_Core::getTable('DmRememberKey')->createQuery('r')
             ->innerJoin('r.User u')
             ->where('r.remember_key = ?', $cookie);
 

@@ -26,7 +26,7 @@ abstract class dmRecursivePageList
 
     $treeObject = $pageTable->getTree();
     $treeObject->setBaseQuery($q);
-    $tree = $treeObject->fetchTree(array(), Doctrine::HYDRATE_NONE);
+    $tree = $treeObject->fetchTree(array(), Doctrine_Core::HYDRATE_NONE);
     $treeObject->resetBaseQuery();
 
     return $tree;

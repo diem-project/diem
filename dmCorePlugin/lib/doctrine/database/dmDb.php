@@ -29,7 +29,7 @@ class dmDb
   }
 
   /*
-   * Shortcut for Doctrine::getTable
+   * Shortcut for Doctrine_Core::getTable
    * @return myDoctrineTable the table for this model class name
    */
   public static function table($class)
@@ -41,7 +41,7 @@ class dmDb
       return self::$tables[$class];
     }
 
-    return self::$tables[$class] = Doctrine::getTable($class);
+    return self::$tables[$class] = Doctrine_Core::getTable($class);
   }
 
   /*

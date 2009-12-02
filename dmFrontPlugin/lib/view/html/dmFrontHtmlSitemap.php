@@ -38,7 +38,7 @@ class dmFrontHtmlSitemap
   
   protected function getTree()
   {
-    return $this->getTreeQuery()->execute(array(), Doctrine::HYDRATE_RECORD_HIERARCHY)->get(0);
+    return $this->getTreeQuery()->execute(array(), Doctrine_Core::HYDRATE_RECORD_HIERARCHY)->get(0);
   }
 
   protected function getTreeQuery()

@@ -9,6 +9,6 @@ $config = array(
   'env'       => 'test'   // sf_environment when running tests
 );
 
-$test = new dmAdminFunctionalCoverageTest($config);
+$test = new dmFrontFunctionalCoverageTest($config);
 
 $test->run();

@@ -107,7 +107,7 @@ abstract class PluginDmUser extends BaseDmUser
    */
   public function addGroupByName($name, $con = null)
   {
-    $group = Doctrine::getTable('DmGroup')->findOneByName($name);
+    $group = Doctrine_Core::getTable('DmGroup')->findOneByName($name);
     if (!$group)
     {
       throw new sfException(sprintf('The group "%s" does not exist.', $name));
@@ -129,7 +129,7 @@ abstract class PluginDmUser extends BaseDmUser
    */
   public function addPermissionByName($name, $con = null)
   {
-    $permission = Doctrine::getTable('DmPermission')->findOneByName($name);
+    $permission = Doctrine_Core::getTable('DmPermission')->findOneByName($name);
     if (!$permission)
     {
       throw new sfException(sprintf('The permission "%s" does not exist.', $name));
