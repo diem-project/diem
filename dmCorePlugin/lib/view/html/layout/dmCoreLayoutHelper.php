@@ -117,7 +117,7 @@ class dmCoreLayoutHelper
       $value = htmlentities($value, ENT_COMPAT, 'UTF-8');
       if ('title' === $key)
       {
-        $metasHtml = '<title>'.$value.'</title>'."\n";
+        $metasHtml .= '<title>'.$value.'</title>'."\n";
       }
       else
       {
