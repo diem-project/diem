@@ -10,6 +10,8 @@ class dmFrontInitFilter extends dmInitFilter
   public function execute($filterChain)
   {
     $this->redirectTrailingSlash();
+    
+    $this->redirectNoScriptName();
 
     $this->saveApplicationUrl();
     
@@ -27,4 +29,24 @@ class dmFrontInitFilter extends dmInitFilter
     $filterChain->execute();
   }
 
+  protected function redirectNoScriptName()
+  {
+    if (!sfConfig::get('sf_no_script_name'))
+    {
+      return;
+    }
+    
+    $request = $this->getContext()->getRequest();
+    $absoluteUrlRoot = $request->getAbsoluteUrlRoot();
+  
+    if (0 === strpos($request->getUri(), $absoluteUrlRoot.'/index.php'))
+    {
+      $this->context->getController()->redirect(
+        str_replace($absoluteUrlRoot.'/index.php', $absoluteUrlRoot, $request->getUri()),
+        0,
+        302
+      );
+    }
+  }
+  
 }

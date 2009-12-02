@@ -19,7 +19,7 @@ abstract class dmInitFilter extends dmFilter
     
     $appUrlKey = implode('-', array(sfConfig::get('sf_app'), sfConfig::get('sf_environment')));
     
-    $appUrl    = $this->context->getRequest()->getUriPrefix().$this->context->getRequest()->getScriptName();
+    $appUrl    = $this->getContext()->getRequest()->getUriPrefix().$this->context->getRequest()->getScriptName();
       
     if (!isset($knownBaseUrls[$appUrlKey]) || $knownBaseUrls[$appUrlKey] !== $appUrl)
     {
