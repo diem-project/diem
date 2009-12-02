@@ -80,7 +80,7 @@ do
   $defaultDbName = dmString::underscore(str_replace('-', '_', $projectKey));
   
   $settings['database'] = array(
-    'db' => $this->ask('What kind of database will we use ? ( mysql | pgsql )', 'QUESTION', 'mysql'),
+    'db' => $this->ask('What kind of database will we used ? ( mysql | pgsql )', 'QUESTION', 'mysql'),
     'name' => $this->ask('What is the database name ? ( default : '.$defaultDbName.' )', 'QUESTION', $defaultDbName),
     'host' => $this->ask('What is the database host ? ( default : localhost )', 'QUESTION', 'localhost'),
     'user' => $this->ask('What is the database user ?'),
