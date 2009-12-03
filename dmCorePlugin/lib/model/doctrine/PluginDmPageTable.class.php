@@ -14,6 +14,7 @@ class PluginDmPageTable extends myDoctrineTable
    */
   public function checkBasicPages()
   {
+    // check root page
     if (!$root = $this->getTree()->fetchRoot())
     {
       $root = $this->create(array(
@@ -33,6 +34,7 @@ class PluginDmPageTable extends myDoctrineTable
       }
     }
 
+    // check error404 page
     if (!$this->createQuery('p')->where('p.module = ? AND p.action = ?', array('main', 'error404'))->exists())
     {
       dmDb::create('DmPage', array(
@@ -41,6 +43,18 @@ class PluginDmPageTable extends myDoctrineTable
         'name' => dm::getI18n()->__('Page not found'),
         'title' => dm::getI18n()->__('Page not found'),
         'slug' => 'error404'
+      ))->getNode()->insertAsLastChildOf($root);
+    }
+
+    // check login page
+    if (!$this->createQuery('p')->where('p.module = ? AND p.action = ?', array('main', 'login'))->exists())
+    {
+      dmDb::create('DmPage', array(
+        'module' => 'main',
+        'action' => 'login',
+        'name' => dm::getI18n()->__('Login'),
+        'title' => dm::getI18n()->__('Login'),
+        'slug' => 'login'
       ))->getNode()->insertAsLastChildOf($root);
     }
   }
@@ -232,6 +246,13 @@ class PluginDmPageTable extends myDoctrineTable
     $this->checkBasicPages();
     
     return $this->findOneByModuleAndActionWithI18n('main', 'error404');
+  }
+  
+  public function fetchLogin()
+  {
+    $this->checkBasicPages();
+    
+    return $this->findOneByModuleAndActionWithI18n('main', 'login');
   }
   
   public function findOneByIdWithI18n($id, $culture = null)

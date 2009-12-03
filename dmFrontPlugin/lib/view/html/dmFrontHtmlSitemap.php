@@ -47,9 +47,7 @@ class dmFrontHtmlSitemap
     ->withI18n($this->culture)
     ->where('pTranslation.is_active = ?', true)
     ->andWhere('p.is_secure = ?', false)
-    ->andWhere('p.module != ? OR p.action != ?', array('main', 'error404'))
-    ->andWhere('p.module != ? OR p.action != ?', array('main', 'sitemap'))
-    ->andWhere('p.module != ? OR p.action != ?', array('main', 'search'))
+    ->andWhere('p.module != ? OR ( p.action != ? AND p.action != ? AND p.action != ?)', array('main', 'error404', 'search', 'login'))
     ->orderBy('p.lft');
   }
   

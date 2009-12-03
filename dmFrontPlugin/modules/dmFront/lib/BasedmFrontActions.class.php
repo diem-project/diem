@@ -21,6 +21,17 @@ class BasedmFrontActions extends dmFrontBaseActions
       // else use main.error404 page
       $this->page = dmDb::table('DmPage')->fetchError404();
     }
+    
+    if (
+          // the site is not active and requires the view_site permission to be displayed
+          (!dmConfig::get('site_active') && !$this->getUser()->can('view_site'))
+          // the page is secured and requires authentication to be displayed
+      ||  ($this->page->get('is_secure') && !$this->getUser()->isAuthenticated())
+    )
+    {
+      // use main.login page
+      $this->page = dmDb::table('DmPage')->fetchLogin();
+    }
      
     return $this->renderPage();
   }

@@ -51,7 +51,7 @@ class DmPageFrontEditForm extends DmPageForm
     $this->widgetSchema['dm_layout_id']->setLabel('Layout');
     $this->widgetSchema['description']->setLabel('Desc');
     $this->widgetSchema['is_active']->setLabel('Available');
-    $this->widgetSchema['is_secure']->setLabel('Requires authentification');
+    $this->widgetSchema['is_secure']->setLabel('Requires authentication');
     $this->widgetSchema['is_indexable']->setLabel('Search engine crawlers');
     
     if ($this->object->getNode()->isRoot())
