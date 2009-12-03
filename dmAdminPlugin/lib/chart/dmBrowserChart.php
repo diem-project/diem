@@ -54,22 +54,34 @@ class dmBrowserChart extends dmGaChart
 
   protected function getData()
   {
-    if (!$data = $this->getCache('data'))
+    if (true || !$data = $this->getCache('data'))
     {
       $months = 1;
-      $minPageView = 20*$months;
       
       $startDate = date('Y-m-d', strtotime($months.' month ago'));
-      
-  //    $totalPageviews = $this->serviceContainer->getGapi()->getTotalPageViews();
       
       $report = $this->gapi->getReport(array(
         'dimensions'  => array('browser'),
         'metrics'     => array('pageviews'),
         'sort_metric' => '-pageviews',
-        'filter'      => 'pageviews > '.$minPageView,
         'start_date'  => $startDate
       ));
+      
+      $totalPageviews = 0;
+      foreach($report as $key => $entry)
+      {
+        $totalPageviews += $entry->get('pageviews');
+      }
+      
+      $minPageViews = $totalPageviews / 200;
+      
+      foreach($report as $key => $entry)
+      {
+        if($entry->get('pageviews') < $minPageViews)
+        {
+          unset($report[$key]);
+        }
+      }
       
       $data = array('name' => $this->reportToData($report, array('browser', 'pageviews')));
       
@@ -79,7 +91,7 @@ class dmBrowserChart extends dmGaChart
         'dimensions'  => array('browserVersion'),
         'metrics'     => array('pageviews'),
         'sort_metric' => 'browserVersion',
-        'filter'      => 'browser == Internet Explorer && pageviews > '.$minPageView,
+        'filter'      => 'browser == Internet Explorer',
         'start_date'  => $startDate
       ));
       

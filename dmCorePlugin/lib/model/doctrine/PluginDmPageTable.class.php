@@ -20,7 +20,7 @@ class PluginDmPageTable extends myDoctrineTable
         'module' => 'main',
         'action' => 'root',
         'name' => dm::getI18n()->__('Home'),
-        'title' => dm::getI18n()->__('Home').' | '.dmConfig::get('site_name'),
+        'title' => dm::getI18n()->__('Home'),
         'slug' => ''
       ));
 
@@ -39,8 +39,8 @@ class PluginDmPageTable extends myDoctrineTable
         'module' => 'main',
         'action' => 'error404',
         'name' => dm::getI18n()->__('Page not found'),
-        'title' => dm::getI18n()->__('Page not found').' | '.dmConfig::get('site_name'),
-        'slug' => '-error404'
+        'title' => dm::getI18n()->__('Page not found'),
+        'slug' => 'error404'
       ))->getNode()->insertAsLastChildOf($root);
     }
   }
@@ -55,10 +55,10 @@ class PluginDmPageTable extends myDoctrineTable
     {
       dmDb::create('DmPage', array(
         'name' => dm::getI18n()->__('Search results'),
-        'title' => dm::getI18n()->__('Search results').' | '.dmConfig::get('site_name'),
+        'title' => dm::getI18n()->__('Search results'),
         'module' => 'main',
         'action' => 'search',
-        'slug' => '-search'
+        'slug' => 'search'
       ))->getNode()->insertAsLastChildOf($this->getTree()->fetchRoot());
     }
   }
