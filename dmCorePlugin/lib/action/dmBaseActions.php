@@ -82,6 +82,11 @@ abstract class dmBaseActions extends sfActions
     return $this->context->getHelper();
   }
   
+  protected function getServiceContainer()
+  {
+    return $this->context->getServiceContainer();
+  }
+  
   /*
    * To download a file using its absolute path or raw data
    */

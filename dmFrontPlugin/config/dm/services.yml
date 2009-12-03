@@ -42,7 +42,9 @@ parameters:
   
   widget_renderer.class:      dmFrontWidgetRenderer # Responsible for rendering widgets
     
-  helper.class:               dmFrontHelper         # Override the core helper options 
+  helper.class:               dmFrontHelper         # Override the core helper options
+  
+  zone_form.class:            DmZoneFrontForm       # Form used when displaying a zone edition dialog
  
 services:
 
@@ -120,3 +122,8 @@ services:
     class:                    %widget_renderer.class%
     shared:                   false
     arguments:                [ @dispatcher, @service_container, %widget_renderer.widget% ]
+    
+  zone_form:
+    class:                    %zone_form.class%
+    shared:                   false
+    arguments:                [ %zone_form.object% ]

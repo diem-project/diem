@@ -9,7 +9,8 @@ class dmZoneActions extends dmFrontBaseActions
       $this->zone = dmDb::table('DmZone')->find($request->getParameter('zone_id'))
     );
 
-    $this->form = new DmZoneFrontForm($this->zone);
+    $this->getServiceContainer()->setParameter('zone_form.object', $this->zone);
+    $this->form = $this->context->get('zone_form');
     
     $this->form->removeCsrfProtection();
 
