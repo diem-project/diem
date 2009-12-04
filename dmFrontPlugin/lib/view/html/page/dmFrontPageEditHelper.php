@@ -1,6 +1,6 @@
 <?php
 
-class dmFrontPageEditHelper extends dmFrontPageHelper
+class dmFrontPageEditHelper extends dmFrontPageBaseHelper
 {
   protected
     $user;
@@ -23,13 +23,7 @@ class dmFrontPageEditHelper extends dmFrontPageHelper
 
     $html .= '<div class="dm_widgets">';
 
-    if(!empty($zone['Widgets']))
-    {
-      foreach($zone['Widgets'] as $widget)
-      {
-        $html .= $this->renderWidget($widget);
-      }
-    }
+    $html .= $this->renderZoneInner($zone);
 
     $html .= '</div>';
 

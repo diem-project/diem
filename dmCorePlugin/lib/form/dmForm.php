@@ -25,7 +25,7 @@ class dmForm extends sfFormSymfony
     
     $this->widgetSchema->setFormFormatterName('dmList');
 
-    $this->key = "dm_form_".self::$counter++;
+    $this->key = 'dm_form_'.self::$counter++;
 
     $this->setName(dmString::underscore(get_class($this)));
   }
@@ -64,6 +64,18 @@ class dmForm extends sfFormSymfony
   public function changeToHidden($fieldName)
   {
     $this->widgetSchema[$fieldName] = new sfWidgetFormInputHidden;
+    return $this;
+  }
+  
+  public function changeToDisabled($fieldName)
+  {
+    $this->widgetSchema[$fieldName]->setAttribute('disabled', true);
+    return $this;
+  }
+  
+  public function changeToReadOnly($fieldName)
+  {
+    $this->widgetSchema[$fieldName]->setAttribute('readonly', true);
     return $this;
   }
   

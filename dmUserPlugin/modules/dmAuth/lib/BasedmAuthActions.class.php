@@ -20,13 +20,17 @@ class BasedmAuthActions extends dmBaseActions
   public function executeSignin($request)
   {
     $user = $this->getUser();
+    
     if ($user->isAuthenticated())
     {
       return $this->redirect('@homepage');
     }
 
-    $class = sfConfig::get('dm_security_signin_form', 'DmFormSignin'); 
+    $class = sfConfig::get('dm_security_signin_form', 'DmFormSignin');
     $this->form = new $class();
+
+    $this->form->changeToHidden('remember');
+    $this->form->setDefault('remember', true);
 
     $this->setLayout(dmOs::join(dm::getDir(), 'dmUserPlugin/modules/dmAuth/templates/layout'));
 

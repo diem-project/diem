@@ -1,7 +1,15 @@
 <?php
+/*
+ * Renders a page.
+ * Layout areas and page content area are rendered.
+ * 
+ * Available vars :
+ * - dmFrontPageHelper $helper      ( page_helper service )
+ * - boolean           $isEditMode  ( whether the user is allowed to edit page )
+ */
 
-// open the page div
-echo £o('div#dm_page'.($sf_user->getIsEditMode() ? '.edit' : ''));
+// open the page's div wrapper
+echo £o('div#dm_page'.($isEditMode ? '.edit' : ''));
 
 echo $helper->renderAccessLinks();             // render accessibility links
 
@@ -23,4 +31,4 @@ echo $helper->renderAccessLinks();             // render accessibility links
 
   );                                           // close the layout div
 
-echo £c('div');                                // close the page div
+echo £c('div');                                // close the page's div wrapper

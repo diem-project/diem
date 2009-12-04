@@ -1,10 +1,9 @@
 <?php
 
-class dmFrontPageHelper
+abstract class dmFrontPageBaseHelper
 {
   protected
     $dispatcher,
-    $widgetTypeManager,
     $serviceContainer,
     $i18n,
     $helper,
@@ -15,10 +14,9 @@ class dmFrontPageHelper
   protected static
   $innerCssClassWidgets = array('dmWidgetContent.title', 'dmWidgetContent.media', 'dmWidgetContent.link');
     
-  public function __construct(sfEventDispatcher $dispatcher, dmWidgetTypeManager $widgetTypeManager, sfServiceContainer $serviceContainer, sfI18n $i18n, dmHelper $helper)
+  public function __construct(sfEventDispatcher $dispatcher, sfServiceContainer $serviceContainer, sfI18n $i18n, dmHelper $helper)
   {
     $this->dispatcher        = $dispatcher;
-    $this->widgetTypeManager = $widgetTypeManager;
     $this->serviceContainer  = $serviceContainer;
     $this->i18n              = $i18n;
     $this->helper            = $helper;
@@ -57,14 +55,17 @@ class dmFrontPageHelper
   {
     if (null === $this->areas)
     {
-      if (null === $this->page)
+      if (!$this->page instanceof DmPage)
       {
-        throw new dmException('Can not fetch page area because no page have been set');
+        throw new dmException('Can not fetch page areas because no page have been set');
       }
       
-      $this->areas = dmDb::query('DmArea a INDEXBY a.type, a.Zones z, z.Widgets w')
+      $this->areas = dmDb::query('DmArea a INDEXBY a.type')
+      ->leftJoin('a.Zones z')
+      ->leftJoin('z.Widgets w')
       ->select('a.type, z.width, z.css_class, w.module, w.action, w.value, w.css_class')
-      ->where('a.dm_layout_id = ? OR a.dm_page_view_id = ?', array($this->page->getPageView()->getLayout()->get('id'), $this->page->getPageView()->get('id')))
+      ->where('a.dm_layout_id = ?', $this->page->getPageView()->getLayout()->get('id'))
+      ->orWhere('a.dm_page_view_id = ?', $this->page->getPageView()->get('id'))
       ->orderBy('z.position asc, w.position asc')
       ->fetchArray();
     }
@@ -74,14 +75,14 @@ class dmFrontPageHelper
   
   public function getArea($type)
   {
-    $this->getAreas();
+    $areas = $this->getAreas();
 
-    if (!isset($this->areas[$type]))
+    if (!isset($areas[$type]))
     {
       throw new dmException(sprintf('Page %s with layout %s has no area for type %s', $this->page, $this->page->Layout, $type));
     }
 
-    return $this->areas[$type];
+    return $areas[$type];
   }
 
   public function renderAccessLinks()
@@ -118,7 +119,7 @@ class dmFrontPageHelper
     $html = '';
 
     /*
-     * Add a content id for accessibility purpose ( access links )
+     * Add a content id for accessibility purpose ( access link )
      */
     if ('content' === $type)
     {
@@ -129,13 +130,7 @@ class dmFrontPageHelper
 
     $html .= '<div class="dm_zones clearfix">';
 
-    if (!empty($area['Zones']))
-    {
-      foreach($area['Zones'] as $zone)
-      {
-        $html .= $this->renderZone($zone);
-      }
-    }
+    $html .= $this->renderAreaInner($area);
 
     $html .= '</div>';
 
@@ -152,17 +147,35 @@ class dmFrontPageHelper
     return $html;
   }
   
+  protected function renderAreaInner(array $area)
+  {
+    $html = '';
+    
+    if (!empty($area['Zones']))
+    {
+      foreach($area['Zones'] as $zone)
+      {
+        $html .= $this->renderZone($zone);
+      }
+    }
+    
+    return $html;
+  }
+  
+  /*
+   * get a tag name for a given area, depending on the document type
+   */
   protected function getAreaTypeTagName($areaType)
   {
     if ($this->isHtml5())
     {
       switch($areaType)
       {
-        case 'top':     $tagName = 'header'; break;
-        case 'left':    $tagName = 'aside'; break;
+        case 'top':     $tagName = 'header';  break;
+        case 'left':    $tagName = 'aside';   break;
         case 'content': $tagName = 'section'; break;
-        case 'right':   $tagName = 'aside'; break;
-        case 'bottom':  $tagName = 'footer'; break;
+        case 'right':   $tagName = 'aside';   break;
+        case 'bottom':  $tagName = 'footer';  break;
         default:        $tagName = 'div';
       }
     }
@@ -182,6 +195,19 @@ class dmFrontPageHelper
 
     $html .= '<div class="dm_widgets">';
     
+    $html .= $this->renderZoneInner($zone);
+
+    $html .= '</div>';
+
+    $html .= '</div>';
+
+    return $html;
+  }
+  
+  protected function renderZoneInner(array $zone)
+  {
+    $html = '';
+    
     if(!empty($zone['Widgets']))
     {
       foreach($zone['Widgets'] as $widget)
@@ -189,11 +215,7 @@ class dmFrontPageHelper
         $html .= $this->renderWidget($widget);
       }
     }
-
-    $html .= '</div>';
-
-    $html .= '</div>';
-
+    
     return $html;
   }
 
@@ -251,7 +273,7 @@ class dmFrontPageHelper
     }
     catch(Exception $e)
     {
-      if (sfConfig::get('dm_debug') || sfConfig::get('dm_search_populating'))
+      if (sfConfig::get('dm_debug') || sfConfig::get('dm_search_populating') || 'test' === sfConfig::get('sf_environment'))
       {
         throw $e;
       }
@@ -284,8 +306,16 @@ class dmFrontPageHelper
         $widgetWrappedClasses[$index] = $class.'_wrap';
       }
       
-      $widgetWrapClass  = dmArray::toHtmlCssClasses(array('dm_widget', dmString::underscore($widget['module']), dmString::underscore($widget['action']), implode(' ', $widgetWrappedClasses)));
-      $widgetInnerClass = dmArray::toHtmlCssClasses(array('dm_widget_inner', in_array($widget['module'].'.'.$widget['action'], self::$innerCssClassWidgets) ? '' : $widget['css_class']));
+      $widgetWrapClass  = dmArray::toHtmlCssClasses(array(
+        'dm_widget',
+        dmString::underscore($widget['module']),
+        dmString::underscore($widget['action']), implode(' ', $widgetWrappedClasses)
+      ));
+      
+      $widgetInnerClass = dmArray::toHtmlCssClasses(array(
+        'dm_widget_inner',
+        in_array($widget['module'].'.'.$widget['action'], self::$innerCssClassWidgets) ? '' : $widget['css_class']
+      ));
     }
     else
     {

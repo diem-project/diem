@@ -43,6 +43,18 @@ class BasedmFrontActions extends dmFrontBaseActions
     return $this->renderPage();
   }
   
+  public function executeLogin(dmWebRequest $request)
+  {
+    $this->page = dmDb::table('DmPage')->fetchLogin();
+    
+    return $this->renderPage();
+  }
+  
+  public function executeSecure(dmWebRequest $request)
+  {
+    return $this->executeLogin($request);
+  }
+  
   protected function renderPage()
   {
     // share current page
@@ -52,12 +64,31 @@ class BasedmFrontActions extends dmFrontBaseActions
     {
       $this->response->setStatusCode(404); 
     }
+    elseif($this->page->isModuleAction('main', 'login'))
+    {
+      $this->getResponse()->setStatusCode(401);
+    }
 
-    $this->setTemplate('page');
+    /*
+     * BC : catch exceptions when getting the layout template
+     * because Diem 5.0.0 < ALPHA6 doesn't have this field in database
+     */
+    try
+    {
+      $template = $this->page->getPageView()->getLayout()->get('template');
+    }
+    catch(Exception $e)
+    {
+      $template = 'page';
+    }
+    
+    $this->setTemplate($template);
     
     $this->setLayout(dmOs::join(sfConfig::get('dm_front_dir'), 'modules/dmFront/templates/layout'));
 
     $this->helper = $this->context->get('page_helper');
+    
+    $this->isEditMode = $this->getUser()->getIsEditMode();
     
     $this->launchDirectActions();
     
@@ -120,20 +151,11 @@ class BasedmFrontActions extends dmFrontBaseActions
     }
   }
 
-  /*
-   * When site is not active,
-   * non-authentified users
-   * will be forwarded
-   * to this action
-   */
-  public function executeWait(sfWebRequest $request)
-  {
-
-  }
 
   public function executeEditToggle(sfWebRequest $request)
   {
     $this->getUser()->setIsEditMode($request->getParameter('active'));
+    
     return $this->renderText('ok');
   }
   

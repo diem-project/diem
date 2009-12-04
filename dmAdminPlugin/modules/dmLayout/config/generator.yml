@@ -12,11 +12,14 @@ generator:
       fields:
         css_class:
           help: "This CSS class is applied to the body tag"
+        template:
+          help: "Template to use, located on apps/front/modules/dmFront/templates/%template_name%Success.php"
         content:
           label: Areas
       list:
         display:
           - =name
+          - template
           - css_class
           - _content
           - _duplicate
@@ -32,6 +35,7 @@ generator:
       form:
         display:
           NONE: [name, css_class]
+          Advanced: [template]
         class: DmLayoutAdminForm
         fields: {  }
       edit: ~

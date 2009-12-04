@@ -60,6 +60,35 @@ EOF;
         $this->logBlock('Can NOT create action templates for module '.$module, 'ERROR');
       }
     }
+    
+    $this->generateLayoutTemplates();
+  }
+  
+  protected function generateLayoutTemplates()
+  {
+    $this->logSection('diem', 'generate layout templates');
+    $filesystem = $this->get('filesystem');
+    
+    foreach(dmDb::query('DmLayout l')->fetchRecords() as $layout)
+    {
+      $template = $layout->get('template');
+      $templateFile = dmProject::rootify('apps/front/modules/dmFront/templates/'.$template.'Success.php');
+      
+      if(!file_exists($templateFile))
+      {
+        if ($filesystem->mkdir(dirname($templateFile)))
+        {
+          $filesystem->copy(
+            dmOs::join(sfConfig::get('dm_front_dir'), 'modules/dmFront/templates/pageSuccess.php'),
+            $templateFile
+          );
+        }
+        else
+        {
+          $this->logBlock('Can NOT create layout template '.$template, 'ERROR');
+        }
+      }
+    }
   }
 
 }

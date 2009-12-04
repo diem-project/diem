@@ -48,6 +48,7 @@ DmPageView:
 DmLayout:
   columns:
     name:                   { type: string(255), notnull: true, unique: true }
+    template:               { type: string(255), notnull: true, default: "page" }
     css_class:              { type: string(255) }
 
 DmArea:

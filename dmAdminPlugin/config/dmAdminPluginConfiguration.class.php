@@ -50,12 +50,7 @@ class dmAdminPluginConfiguration extends sfPluginConfiguration
   {
     sfConfig::add(array(
       'sf_csrf_secret' => false,   // csrf is useless because all admin app is secured
-      'sf_login_module' => 'dmAuth',
-      'sf_login_action' => 'signin',
-      'sf_secure_module' => 'dmAuth',
-      'sf_secure_action' => 'secure'
     ));
   }
-
 
 }

@@ -11,24 +11,12 @@ class dmSearchIndex extends dmSearchIndexCommon
   $culture,
   $shortWordLength = 2;
 
-  protected static
-  $defaultFieldBoosts = array(
-    'id'             => 0,
-    'slug'           => 2,
-    'name'           => 2,
-    'title'          => 2,
-    'h1'             => 2,
-    'description'    => 1,
-    'content'        => 1
-  );
-
   public function __construct(sfEventDispatcher $dispatcher, dmFilesystem $filesystem, sfLogger $logger)
   {
     $this->dispatcher = $dispatcher;
     $this->filesystem = $filesystem;
     $this->logger     = $logger;
   }
-  
   
   public function setLogger(sfLogger $logger)
   {
@@ -132,6 +120,8 @@ class dmSearchIndex extends dmSearchIndexCommon
     )));
     
     unset($pages);
+    
+    $this->fixPermissions();
   }
 
   public function optimize()
@@ -141,6 +131,8 @@ class dmSearchIndex extends dmSearchIndexCommon
     
     $this->open();
     $this->index->optimize();
+    
+    $this->fixPermissions();
 
     $this->logger->log($this->getName().' : Index optimized in "' . round(microtime(true) - $start, 2) . '" seconds.');
   }
@@ -256,6 +248,14 @@ class dmSearchIndex extends dmSearchIndexCommon
     }
 
     return $size;
+  }
+
+  public function fixPermissions()
+  {
+    foreach (sfFinder::type('all')->in($this->location) as $item)
+    {
+      $this->filesystem->chmod($item, 0777);
+    }
   }
 
 }

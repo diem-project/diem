@@ -36,9 +36,9 @@ parameters:
 
   layout_helper.class:        dmFrontLayoutHelper   # Responsible for rendering the front layout.
 
-  page_helper.class:          dmFrontPageHelper     # Responsible for rendering the front content.
-  page_helper.view_class:     dmFrontPageHelper
-  page_helper.edit_class:     dmFrontPageEditHelper
+  page_helper.class:          dmFrontPageBaseHelper # Responsible for rendering the front content.
+  page_helper.view_class:     dmFrontPageViewHelper # Simple rendering for normal users
+  page_helper.edit_class:     dmFrontPageEditHelper # Edit rendering for user who can modify the site
   
   widget_renderer.class:      dmFrontWidgetRenderer # Responsible for rendering widgets
     
@@ -116,7 +116,7 @@ services:
   page_helper:
     class:                    %page_helper.class%
     shared:                   true
-    arguments:                [ @dispatcher, @widget_type_manager, @service_container, @i18n, @helper ]
+    arguments:                [ @dispatcher, @service_container, @i18n, @helper ]
     
   widget_renderer:
     class:                    %widget_renderer.class%

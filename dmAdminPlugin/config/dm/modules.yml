@@ -68,15 +68,12 @@ System:
   Security:
     dmUser:
       name:         User
-      model:        DmUser
       credentials:  security_user
     dmPermission:
       name:         Permission
-      model:        DmPermission
       credentials:  security_permission
     dmGroup:
       name:         Group
-      model:        DmGroup
       credentials:  security_group
   Dev:
     dmDiagram:

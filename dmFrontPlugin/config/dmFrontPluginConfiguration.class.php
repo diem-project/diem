@@ -18,11 +18,11 @@ class dmFrontPluginConfiguration extends sfPluginConfiguration
 
   public function initialize()
   {
-    $this->loadConfiguration();
-
     $this->enableModules();
 
     $this->enableHelpers();
+    
+    $this->loadConfiguration();
   }
 
   protected function enableModules()
@@ -45,16 +45,17 @@ class dmFrontPluginConfiguration extends sfPluginConfiguration
   {
     sfConfig::set('sf_standard_helpers', array_unique(array_merge(self::$helpers, sfConfig::get('sf_standard_helpers', array()))));
   }
-
+  
   protected function loadConfiguration()
   {
-    sfConfig::add(array(
-      'sf_login_module' => 'dmAuth',
-      'sf_login_action' => 'signin',
-      'sf_secure_module' => 'dmAuth',
-      'sf_secure_action' => 'secure'
-      ));
+    if ('default' === sfConfig::get('sf_login_module'))
+    {
+      sfConfig::set('sf_login_module', 'dmFront');
+    }
+
+    if ('default' === sfConfig::get('sf_secure_module'))
+    {
+      sfConfig::set('sf_secure_module', 'dmFront');
+    }
   }
-
-
 }

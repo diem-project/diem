@@ -28,14 +28,12 @@ all:
     escaping_strategy:      false
     escaping_method:        ESC_SPECIALCHARS
 
-    # Cache settings
-    lazy_cache_key:         true
-
     # Enable the database manager
     use_database:           true
 
+  .actions:
     secure_module:          dmAuth
-    secureAction:           secure
+    secure_action:          secure
     
     login_module:           dmAuth
     login_action:           login

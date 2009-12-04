@@ -190,6 +190,18 @@ class dmString extends sfInflector
     return strtr($text, self::$accentsReplacements);
   }
 
+  
+  /*
+   * Transform string options to array options
+   * Symfony and jQuery styles are accepted
+   * e.g. "#an_id.a_class.another_class an_option=a_value"
+   * results in array(
+   *    id => an_id
+   *    class => array(a_class, another_class)
+   *    an_option => a_value
+   *  )
+   * @return array options
+   */
   public static function toArray($string, $implodeClasses = false)
   {
     if(is_array($string))
@@ -207,7 +219,7 @@ class dmString extends sfInflector
     // JQUERY STYLE - css expression
     self::retrieveCssFromString($string, $array);
 
-    // DMS STYLE - string opt in name
+    // SYMFONY STYLE - string opt in name
     self::retrieveOptFromString($string, $array);
 
     if ($implodeClasses && isset($array['class']))
@@ -218,15 +230,22 @@ class dmString extends sfInflector
     return $array;
   }
 
-  // retire les attributs css de $string et les met dans le tableau $opt
-  // div#id.class devient div, array('id'=>'id', 'class'=>'class')
+  /*
+   * Transform css options to array options
+   * e.g. "#an_id.a_class.another_class"
+   * results in array(
+   *    id => an_id
+   *    class => array(a_class, another_class)
+   *  )
+   * @return array options
+   */
   public static function retrieveCssFromString(&$string, &$opt)
   {
     if (empty($string))
     {
       return null;
     }
-
+    
     if (strpos($string, '#') !== false)
     {
       // fetch id
@@ -234,7 +253,7 @@ class dmString extends sfInflector
       if (isset($id[1]))
       {
         $opt['id'] = $id[1];
-        $string = str_replace('#'.$id[1], '', $string);
+        $string = self::str_replace_once('#'.$id[1], '', $string);
       }
     }
 
@@ -386,13 +405,19 @@ class dmString extends sfInflector
     return $string;
   }
   
+  
+  /*
+   * replace $search by $replace in $subject, only once
+   */
   public static function str_replace_once($search, $replace, $subject)
   {
     $firstChar = strpos($subject, $search);
+    
     if($firstChar !== false)
     {
       $beforeStr = substr($subject,0,$firstChar);
       $afterStr = substr($subject, $firstChar + strlen($search));
+      
       return $beforeStr.$replace.$afterStr;
     }
     else

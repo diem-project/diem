@@ -30,16 +30,15 @@ all:
     escaping_strategy:      false
     escaping_method:        ESC_SPECIALCHARS
 
-    # Cache settings
-    lazy_cache_key:         true
-
     # Enable the database manager
     use_database:           true
 
-    secure_module:          dmAuth
-    secureAction:           secure
+  .actions:
+  
+    secure_module:          dmFront
+    secure_action:          secure
     
-    login_module:           dmAuth
+    login_module:           dmFront
     login_action:           login
 
     error_404_module:       dmFront   # To be called when a 404 error is raised
