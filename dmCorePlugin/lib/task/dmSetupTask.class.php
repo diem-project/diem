@@ -38,7 +38,8 @@ EOF;
     
     if (!$this->isProjectLocked())
     {
-      $this->runTask('cache:clear');
+      // don't use cache:clear task because it changes current app & environment
+      sfToolkit::clearDirectory(sfConfig::get('sf_cache_dir'));
       
       if (!$options['clear-db'])
       {

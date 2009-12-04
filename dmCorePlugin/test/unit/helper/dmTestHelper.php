@@ -6,17 +6,13 @@ class dmTestHelper
 {
 	protected
 	$context,
-	$dispatcher,
-	$moduleManager,
-	$records = array();
+	$moduleManager;
 
 	public function boot($app = 'admin', $env = 'test', $debug = true)
 	{
-		$this->dispatcher = new sfEventDispatcher();
 		$appConfig = ProjectConfiguration::getApplicationConfiguration($app, $env, $debug, null, $this->dispatcher);
-		$this->context = dmContext::createInstance($appConfig);
 		
-//    $this->context->getDoctrineConfig()->configureCache();
+		$this->context = dmContext::createInstance($appConfig);
 
     $this->initialize();
 
@@ -79,101 +75,10 @@ class dmTestHelper
 	  return $this->moduleManager;
 	}
 
-	protected function prepareRecords()
-	{
-		$this->loremizeDatabase(5);
-
-		$this->records['example'] = dmDb::query('Example e')
-    ->orderBy('RAND()')
-    ->fetchRecord();
-
-    $rubriqueIds = dmDb::query('Rubrique r, r.Infos i')
-    ->select('r.id')
-    ->where('i.id IS NOT NULL')
-    ->fetchValues();
-
-    $this->records['rubrique'] = dmDb::table('Rubrique')->find($rubriqueIds[rand(0, count($rubriqueIds)-1)]);
-
-    $this->records['info'] = $this->records['rubrique']->getRelatedRecord('Info');
-
-    $this->records['domaine'] = $this->records['rubrique']->Domaine;
-
-
-    $docIds = dmDb::query('Doc d, d.Roles r')
-    ->select('d.id')
-    ->where('r.id IS NOT NULL')
-    ->fetchValues();
-
-    $this->records['doc'] = dmDb::table('Doc')->find($docIds[rand(0, count($docIds)-1)]);
-
-    $this->records['role'] = $this->records['doc']->Roles[0];
-
-    $this->records['docCateg'] = $this->records['doc']->DocCateg;
-
-    $this->records['docType'] = $this->records['docCateg']->DocType;
-
-
-
-    $this->records['feature'] = dmDb::query('Feature f')
-    ->orderBy('RAND()')
-    ->fetchRecord();
-
-    $this->records['featureCateg'] = $this->records['feature']->FeatureCateg;
-
-    $this->records['featureType'] = $this->records['featureCateg']->FeatureType;
-	}
-
-	public function get($module)
-	{
-    if (empty($this->records))
-    {
-    	$this->prepareRecords();
-    }
-
-    if (!isset($this->records[$module]))
-    {
-    	throw new dmException(sprintf('dmTestHelper has no %s record', $module));
-    }
-
-    return $this->records[$module];
-	}
 
 	public function getDispatcher()
 	{
-		return $this->dispatcher;
-	}
-
-	public function getObjects($moduleKey, myDoctrineRecord $record = null)
-	{
-		if (!$module = $this->getModule($moduleKey))
-		{
-			return null;
-		}
-
-		if ($table  = $module->getTable())
-		{
-			if (is_null($record))
-			{
-				$record = $table->create();
-			}
-		}
-
-		if ($record && $record->exists() && $module->hasPage())
-		{
-			$page = $record->getDmPage();
-		}
-		else
-		{
-			$page = null;
-		}
-
-		return array(
-      'module'    => $module,
-      'model'     => $module->getModel(),
-		  'table'     => $table,
-		  'record'    => $record,
-		  'page'      => $page
-		);
+		return $this->context->getEventDispatcher();
 	}
 
 	public function getModule($moduleKey)
