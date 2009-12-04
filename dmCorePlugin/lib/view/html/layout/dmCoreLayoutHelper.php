@@ -226,14 +226,23 @@ class dmCoreLayoutHelper
     return '<script type="text/javascript">var dm_configuration = '.json_encode($this->getJavascriptConfig()).';</script>';
   }
 
+  
+  protected function getFavicon()
+  {
+    foreach(array('ico', 'png', 'gif') as $extension)
+    {
+      if (file_exists(sfConfig::get('sf_web_dir').'/favicon.'.$extension))
+      {
+        return 'favicon.'.$extension;
+      }
+    }
+  }
+  
   public function renderFavicon()
   {
-    if (is_readable(sfConfig::get('sf_web_dir').'/favicon.ico'))
-    {
-      $favicon = 'favicon.ico';
-    }
-    
-    if (isset($favicon))
+    $favicon = $this->getFavicon();
+
+    if ($favicon)
     {
       return sprintf('<link rel="shortcut icon" href="%s/%s" type="%s" />',
         dmArray::get($this->serviceContainer->getParameter('request.context'), 'relative_url_root'),
