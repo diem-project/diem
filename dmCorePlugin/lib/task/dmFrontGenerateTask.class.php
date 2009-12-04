@@ -82,6 +82,8 @@ EOF;
             dmOs::join(sfConfig::get('dm_front_dir'), 'modules/dmFront/templates/pageSuccess.php'),
             $templateFile
           );
+          
+          $filesystem->chmod($templateFile, 0777);
         }
         else
         {

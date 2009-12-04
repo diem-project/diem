@@ -38,6 +38,25 @@ EOF;
     
     if (!$this->isProjectLocked())
     {
+      if (!$options['clear-db'] && !$this->isProjectLocked())
+      {
+        $ret = $this->runTask('dm:check-need-migration');
+        
+        if (dmCheckNeedMigrationTask::REQUIRE_MIGRATION_TRUE == $ret)
+        {
+          if (!$this->askConfirmation(array_merge(
+            array('The project requires a doctrine migration'),
+            array('', 'Are you sure you want to continue without runnig migration tasks ? (y/N)')
+          ), 'QUESTION_LARGE', false)
+          )
+          {
+            $this->logSection('diem', 'task aborted');
+      
+            return 1;
+          }
+        }
+      }
+      
       $this->runTask('dm:upgrade');
       $this->runTask('dm:clear-cache');
     }
