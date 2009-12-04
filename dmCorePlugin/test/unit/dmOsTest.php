@@ -1,8 +1,10 @@
 <?php
 
-require_once(dmOs::join(sfConfig::get("sf_root_dir"), 'test/bootstrap/unit.php'));
+require_once(dirname(__FILE__).'/helper/dmTestHelper.php');
+$helper = new dmTestHelper();
+$helper->boot();
 
-$t = new lime_test(4, new lime_output_color());
+$t = new lime_test(4);
 
 $t->ok(
   dmOs::join("home"),

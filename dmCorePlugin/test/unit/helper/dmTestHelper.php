@@ -1,6 +1,6 @@
 <?php
 
-require_once(realpath(dirname(__FILE__).'/../../bootstrap/unit.php'));
+require_once(getcwd().'/test/bootstrap/unit.php');
 
 class dmTestHelper
 {

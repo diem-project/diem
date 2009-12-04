@@ -1,8 +1,12 @@
 <?php
 
-require_once(dmOs::join(sfConfig::get("dm_core_dir"), 'test/bootstrap/unit.php'));
+require_once(dirname(__FILE__).'/helper/dmTestHelper.php');
+$helper = new dmTestHelper();
+$helper->boot();
 
-$t = new lime_test(7, new lime_output_color());
+dmAPCCache::enable(false);
+
+$t = new lime_test(7);
 
 $cache = dmContext::getInstance()->getCacheManager()->getCache("dm/test");
 

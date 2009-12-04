@@ -40,7 +40,7 @@ EOF;
     {
       $this->runTask('cache:clear');
       
-      if (!$options['clear-db'] && !$this->isProjectLocked())
+      if (!$options['clear-db'])
       {
         $ret = $this->runTask('dm:check-need-migration');
         

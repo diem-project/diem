@@ -28,7 +28,7 @@ array('fffxff', null)
 );
 foreach($hexTests as $hexTest)
 {
-  $t->is(dmString::hexColor($hexTest[0]), $hexTest[1], 'dmString::hexColor('.$hexTest[0].') = '.$hexTest[1]);
+  $t->is(dmString::hexColor($hexTest[0]), $hexTest[1], 'dmString::hexColor('.$hexTest[0].') = '.(null === $hexTest[1] ? 'NULL' : $hexTest[1]));
 }
 
 $t->is(dmString::lcfirst('TEST'), 'tEST', 'lcfirst test');
