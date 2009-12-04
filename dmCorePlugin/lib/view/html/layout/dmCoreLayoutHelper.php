@@ -232,18 +232,14 @@ class dmCoreLayoutHelper
     {
       $favicon = 'favicon.ico';
     }
-    elseif (is_readable(sfConfig::get('sf_web_dir').'/images/favicon.png'))
-    {
-      $favicon = 'images/favicon.png';
-    }
-    elseif (is_readable(sfConfig::get('sf_web_dir').'/images/favicon.gif'))
-    {
-      $favicon = 'images/favicon.gif';
-    }
-
+    
     if (isset($favicon))
     {
-      return "\n".'<link rel="shortcut icon" href="'.dmArray::get($this->serviceContainer->getParameter('request.context'), 'relative_url_root').'/'.$favicon.'" />';
+      return sprintf('<link rel="shortcut icon" href="%s/%s" type="%s" />',
+        dmArray::get($this->serviceContainer->getParameter('request.context'), 'relative_url_root'),
+        $favicon,
+        'image/x-icon'
+      )."\n";
     }
 
     return '';
