@@ -36,4 +36,4 @@ all:
     secure_action:          secure
     
     login_module:           dmAuth
-    login_action:           login
+    login_action:           signin
