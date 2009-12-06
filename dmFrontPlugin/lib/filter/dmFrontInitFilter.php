@@ -31,7 +31,7 @@ class dmFrontInitFilter extends dmInitFilter
 
   protected function redirectNoScriptName()
   {
-    if (!sfConfig::get('sf_no_script_name') || 'test' === sfConfig::get('sf_environment'))
+    if (!sfConfig::get('sf_no_script_name') || dmConfig::isCli())
     {
       return;
     }
