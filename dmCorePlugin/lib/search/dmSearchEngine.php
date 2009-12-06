@@ -2,58 +2,45 @@
 
 class dmSearchEngine extends dmSearchIndexGroup
 {
-  protected
-  $user,
-  $serviceContainer;
-  
-  public function __construct(sfEventDispatcher $dispatcher, sfLogger $logger, sfServiceContainer $serviceContainer)
+
+  protected function initialize(array $options)
   {
-    $this->dispatcher       = $dispatcher;
-    $this->logger           = $logger;
-    $this->serviceContainer = $serviceContainer;
-    $this->name             = get_class($this);
+    parent::initialize($options);
+    
+    $this->setName(get_class($this));
+    
+    $this->createIndices();
   }
   
-  public function setLogger(sfLogger $logger)
+  public function setDir($dir)
   {
-    $this->logger = $logger;
-  }
-  
-  protected function configure()
-  {
-    foreach(sfConfig::get('dm_i18n_cultures') as $culture)
+    $this->setOption('dir', $dir);
+    
+    foreach($this->getIndices() as $index)
     {
-      $index = $this->serviceContainer->getService('search_index');
-      $index->setCulture($culture);
-      $index->setLogger($this->logger);
-      $this->addIndex($index->getName(), $index);
+      $index->setOption('dir', $dir.'/'.$index->getName());
     }
   }
   
-  public function insert(DmPage $page)
+  protected function createIndices()
   {
-    $this->setup();
-
-    foreach ($this->getIndices() as $index)
+    $this->indices = array();
+    
+    /*
+     * Create one index per culture
+     */
+    foreach($this->serviceContainer->getService('i18n')->getCultures() as $culture)
     {
-      $index->insert($page);
+      $name = 'dm_page_'.$culture;
+      
+      $this->serviceContainer->mergeParameter('search_index.options', array(
+        'culture' => $culture,
+        'name'    => $name,
+        'dir'     => $this->getOption('dir').'/'.$name
+      ));
+      
+      $this->addIndex($name, $this->serviceContainer->getService('search_index'));
     }
-  }
-
-  public function remove(DmPage $page)
-  {
-    $this->setup();
-
-    foreach ($this->getIndices() as $index)
-    {
-      $index->remove($page);
-    }
-  }
-  
-  public function refresh(DmPage $page)
-  {
-    $this->remove($page);
-    $this->insert($page);
   }
   
   public function search($query)
@@ -63,69 +50,6 @@ class dmSearchEngine extends dmSearchIndexGroup
   
   public function getCurrentIndex()
   {
-    return $this->getIndex('dm_'.$this->serviceContainer->getParameter('user.culture'));
-  }
-  
-  public function populate(dmContext $context)
-  {
-    $this->setup();
-
-    $start = microtime(true);
-
-    $this->logger->log($this->getName().' : Populating group...');
-    
-    $oldCulture = $this->serviceContainer->getParameter('user.culture');
-    
-    foreach ($this->getIndices() as $name => $index)
-    {
-      $this->logger->log($this->getName().' : Populating index "' . $name . '"...');
-
-      $context->getUser()->setCulture($index->getCulture());
-      
-      $index->populate($context);
-    }
-    
-    $context->getUser()->setCulture($oldCulture);
-
-    $this->logger->log($this->getName().' : Group populated in "' . round(microtime(true) - $start, 2) . '" seconds.');
-  
-    $this->logger->log('-----> Search index population successfully completed');
-    
-    return true;
-  }
-  
-  public function optimize()
-  {
-    $this->setup();
-
-    $start = microtime(true);
-
-    $this->logger->log($this->getName().' : Optimizing group...');
-    
-    foreach($this->getIndices() as $index)
-    {
-      $index->optimize();
-    }
-
-    $this->logger->log($this->getName().' : Group optimized in "' . round(microtime(true) - $start, 2) . '" seconds.');
-    
-    return true;
-  }
-  
-  /**
-   * @see xfIndex
-   */
-  public function describe()
-  {
-    $this->setup();
-
-    $response = array();
-
-    foreach ($this->getIndices() as $name => $index)
-    {
-      $response[$index->getCulture()] = $index->describe();
-    }
-
-    return $response;
+    return $this->getIndex('dm_page_'.$this->serviceContainer->getParameter('user.culture'));
   }
 }

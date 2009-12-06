@@ -12,6 +12,18 @@
  */
 abstract class PluginDmWidget extends BaseDmWidget
 {
+  /*
+   * Add the i18n or fallback i18n value to the widget array
+   */
+  public function toArrayWithMappedValue()
+  {
+    $array = $this->toArray(false);
+    
+    $array['value'] = $this->_getI18n('value');
+    
+    return $array;
+  }
+  
   public function getValues()
   {
     return json_decode($this->get('value'), true);

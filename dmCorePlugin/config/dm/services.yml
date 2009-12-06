@@ -15,7 +15,7 @@ parameters:
     applications:             [ admin, front ]      # applications whose cache should be cleared
     environments:             [ prod, dev ]         # environments whose cache should be cleared
     
-    # when a instance of this models is created/updated/deleted, the cache is **NOT** cleared.
+    # when a instance of one of this models is created/updated/deleted, the cache is **NOT** cleared.
     safe_models:              [ DmSentMail, DmError, DmRedirect, DmUser, DmPermission, DmGroup, DmGroupPermission, DmUserPermission, DmUserGroup, DmRememberKey, DmMailTemplate ]
 
   form_field.class:           dmFormField           # Represents a field in a form. Allows chainability in form template helpers.
@@ -49,10 +49,22 @@ parameters:
   table_tag.class:            dmTableTag            # Responsible for rendering HTML tables with the £table helper
 
   search_engine.class:        dmSearchEngine        # Responsible for managing search indices and provide a handfull programming interface.
+  search_engine.options:
+    dir:                      data/dm/index         # where to save indices
 
   search_index.class:         dmSearchIndex         # Responsible for maintaining and querying an index ( for example, the "en" index )
+  search_index.options:
+    culture:                                        # Index culture ( will be set by search_engine when creating index )
+    name:                                           # Index name ( will be set by search_engine when creating index )
   
-  search_page.class:          dmSearchPageDocument  # Responsible for indexing a page
+  search_document.class:      dmSearchPageDocument  # Responsible for indexing a page
+  search_document.source:                           # source where to fetch data to index ( will be set by search_index when creating document )
+  search_document.options:
+    culture:                                        # Document culture ( will be set by search_index when creating document )
+
+  search_hit.class:           dmSearchPageHit       # Single search result
+  search_hit.score:                                 # Hit score in % ( will be set by search_index when creating the hit )
+  search_hit.page_id:                               # Hit page id ( will be set by search_index when creating the hit )
 
   theme.class:                dmTheme               # Responsible for managing a CSS theme
 
@@ -114,6 +126,11 @@ parameters:
   widget_type_manager.options:
     config_file:              'config/dm/widget_types.yml' # path to the widget type configuration file, relative to the project directory
  
+  page_i18n_builder.class:    dmPageI18nBuilder     # Multilingual sites only. When a page is created in a culture,
+                                                    # this service will generate missing page translations for other cultures.
+  page_i18n_builder.options:
+    activate_new_translations: false                # if set to true, the created translations are active and can be accessed by users
+
 services:
 
   mail:
@@ -134,7 +151,7 @@ services:
   seo_synchronizer:
     class:                    %seo_synchronizer.class%
     shared:                   true
-    arguments:                [ @module_manager, %user.culture% ]
+    arguments:                [ @module_manager ]
 
   cache_cleaner:
     class:                    %cache_cleaner.class%
@@ -188,17 +205,22 @@ services:
   search_engine:
     class:                    %search_engine.class%
     shared:                   true
-    arguments:                [ @dispatcher, @logger, @service_container ]
+    arguments:                [ @service_container, %search_engine.options% ]
 
   search_index:
     class:                    %search_index.class%
     shared:                   false
-    arguments:                [ @dispatcher, @filesystem, @logger ]
+    arguments:                [ @service_container, %search_index.options% ]
 
-  search_page:
-    class:                    %search_page.class%
+  search_document:
+    class:                    %search_document.class%
     shared:                   false
-    arguments:                [ @context ]
+    arguments:                [ @context, %search_document.source%, %search_document.options% ]
+    
+  search_hit:
+    class:                    %search_hit.class%
+    shared:                   false
+    arguments:                [ %search_hit.score%, %search_hit.page_id% ]
 
   asset_config:
     class:                    %asset_config.class%
@@ -284,3 +306,8 @@ services:
     class:                    %widget_type_manager.class%
     shared:                   true
     arguments:                [ @dispatcher, @service_container, %widget_type_manager.options% ]
+
+  page_i18n_builder:
+    class:                    %page_i18n_builder.class%
+    shared:                   true
+    arguments:                [ @dispatcher, %page_i18n_builder.options% ]

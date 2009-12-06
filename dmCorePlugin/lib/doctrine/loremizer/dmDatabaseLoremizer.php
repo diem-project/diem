@@ -11,7 +11,7 @@ class dmDatabaseLoremizer
     $this->dispatcher = $dispatcher;
   }
 
-  public function loremize($nbRecordsByTable = 30)
+  public function loremize($nbRecordsByTable = 10)
   {
     $this->nbRecordsByTable = $nbRecordsByTable;
 
@@ -158,14 +158,13 @@ class dmDatabaseLoremizer
     {
       $collection[] = dmRecordLoremizer::loremize($table->getComponentName());
     }
-
+    
     try
     {
       $collection->save();
     }
     catch(Exception $e)
     {
-//      dmDebug::kill($collection);
       throw new dmException('Error while loremizing '.$module.' : '.$e->getMessage());
     }
 

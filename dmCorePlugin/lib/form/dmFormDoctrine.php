@@ -144,8 +144,29 @@ abstract class dmFormDoctrine extends sfFormDoctrine
     $i18nFormClass = $this->getI18nFormClass();
 
     $culture = null === $culture ? dmDoctrineRecord::getDefaultCulture() : $culture;
+    
+    // translation already set, use it
+    if ($this->object->get('Translation')->contains($culture))
+    {
+      $translation = $this->object->get('Translation')->get($culture);
+    }
+    else
+    {
+      $translation = $this->object->get('Translation')->get($culture);
+      
+      // populate new translation with fallback values
+      if (!$translation->exists())
+      {
+        if($fallback = $this->object->getI18nFallBack())
+        {
+          $fallBackData = $fallback->toArray();
+          unset($fallBackData['id'], $fallBackData['lang']);
+          $translation->fromArray($fallBackData);
+        }
+      }
+    }
 
-    $i18nForm = new $i18nFormClass($this->object->get('Translation')->get($culture));
+    $i18nForm = new $i18nFormClass($translation);
     
     unset($i18nForm['id'], $i18nForm['lang']);
 

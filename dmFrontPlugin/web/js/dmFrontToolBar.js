@@ -23,6 +23,13 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
     
     this.codeEditor();
   },
+	
+	initSelectCulture: function()
+	{
+    $('#dm_select_culture').bind('change', function() {
+      location.href = $.dm.ctrl.getHref('+/dmFront/selectCulture')+'?culture='+$(this).val()+'&dm_cpi='+$.dm.ctrl.options.page_id
+    });
+  },
   
   pageEditForm: function()
   {

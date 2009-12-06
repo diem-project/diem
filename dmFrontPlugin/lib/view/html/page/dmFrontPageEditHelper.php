@@ -18,7 +18,7 @@ class dmFrontPageEditHelper extends dmFrontPageBaseHelper
 
     if ($this->user && $this->user->can('zone_edit'))
     {
-      $html .= '<a class="dm dm_zone_edit" title="'.$this->i18n->__('Edit this zone').'"></a>';
+      $html .= '<a class="dm dm_zone_edit" title="'.$this->serviceContainer->get('i18n')->__('Edit this zone').'"></a>';
     }
 
     $html .= '<div class="dm_widgets">';
@@ -48,7 +48,7 @@ class dmFrontPageEditHelper extends dmFrontPageBaseHelper
      */
     if ($this->user && $this->user->can('widget_edit'))
     {
-      $title = $this->i18n->__('Edit this %1%', array('%1%' => $this->i18n->__(dmString::lcfirst($widgetType->getPublicName()))));
+      $title = $this->serviceContainer->getService('i18n')->__('Edit this %1%', array('%1%' => $this->serviceContainer->getService('i18n')->__(dmString::lcfirst($widgetType->getPublicName()))));
       
       $html .= '<a class="dm dm_widget_edit" title="'.$title.'"></a>';
     }

@@ -33,8 +33,6 @@ class dmSearchIndexGroup extends dmSearchIndexCommon
    */
   public function getIndex($name)
   {
-    $this->setup();
-
     if (!isset($this->indices[$name]))
     {
       throw new dmException('Index "' . $name . '" could not be found.');
@@ -43,56 +41,44 @@ class dmSearchIndexGroup extends dmSearchIndexCommon
     return $this->indices[$name];
   }
   
-  protected function configure()
+  public function populate()
   {
-    foreach(sfConfig::get('dm_i18n_cultures') as $culture)
+    $start = microtime(true);
+
+    $this->serviceContainer->getService('logger')->log($this->getName().' : Populating group...');
+    
+    foreach ($this->getIndices() as $name => $index)
     {
-      $index = new dmSearchIndex($culture);
-      $this->addIndex($index->getName(), $index);
+      $this->serviceContainer->getService('logger')->log($this->getName().' : Populating index "' . $name . '"...');
+
+      $index->populate();
     }
-  }
+
+    $this->serviceContainer->getService('logger')->log($this->getName().' : Group populated in "' . round(microtime(true) - $start, 2) . '" seconds.');
   
-  public function insert(DmPage $page)
-  {
-    $this->setup();
-
-    foreach ($this->getIndices() as $index)
-    {
-      $index->insert($page);
-    }
+    $this->serviceContainer->getService('logger')->log('-----> Search index population successfully completed');
+    
+    $this->fixPermissions();
+    
+    return $this;
   }
-
-  public function remove(DmPage $page)
-  {
-    $this->setup();
-
-    foreach ($this->getIndices() as $index)
-    {
-      $index->remove($page);
-    }
-  }
-  
-  public function refresh(DmPage $page)
-  {
-    $this->remove($page);
-    $this->insert($page);
-  }
-
   
   public function optimize()
   {
-    $this->setup();
-
     $start = microtime(true);
 
-    $this->getLogger()->log('Optimizing group...', $this->getName());
+    $this->serviceContainer->getService('logger')->log($this->getName().' : Optimizing group...');
     
-    foreach ($this->getIndices() as $name => $index)
+    foreach($this->getIndices() as $index)
     {
       $index->optimize();
     }
 
-    $this->getLogger()->log('Group optimized in "' . round(microtime(true) - $start, 2) . '" seconds.', $this->getName());
+    $this->serviceContainer->getService('logger')->log($this->getName().' : Group optimized in "' . round(microtime(true) - $start, 2) . '" seconds.');
+    
+    $this->fixPermissions();
+    
+    return $this;
   }
   
   /**
@@ -100,8 +86,6 @@ class dmSearchIndexGroup extends dmSearchIndexCommon
    */
   public function describe()
   {
-    $this->setup();
-
     $response = array();
 
     foreach ($this->getIndices() as $name => $index)
@@ -111,5 +95,4 @@ class dmSearchIndexGroup extends dmSearchIndexCommon
 
     return $response;
   }
-  
 }

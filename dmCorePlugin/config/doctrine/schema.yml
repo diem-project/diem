@@ -4,7 +4,7 @@ DmPage:
   actAs:
     NestedSet:
     I18n:
-      fields:               [slug, name, title, h1, description, keywords, auto_mod, is_active, is_indexable]
+      fields:               [slug, name, title, h1, description, keywords, auto_mod, is_active, is_secure, is_indexable]
   columns:
     module:                 { type: string(127), notnull: true }
     action:                 { type: string(127), notnull: true }
@@ -56,10 +56,6 @@ DmArea:
     dm_layout_id:           { type: integer, notnull: false }
     dm_page_view_id:        { type: integer, notnull: false }
     type:                   { type: enum, notnull: true, values: [content, top, bottom, left, right], default: 'content' }
-  indexes:
-    layoutType:
-      fields:               [ dm_layout_id, type ]
-      type:                 unique
   relations:
     Layout:
       class:                DmLayout
@@ -75,7 +71,7 @@ DmArea:
       onDelete:             CASCADE
 
 DmZone:
-  actAs:                    [Sortable]
+  actAs:                    [ Sortable ]
   columns:
     dm_area_id:             { type: integer, notnull: true }
     css_class:              { type: string(255) }
@@ -94,6 +90,8 @@ DmWidget:
     Timestampable:
       created:
         disabled: true
+    I18n:
+      fields:               [ value ]
   columns:
     dm_zone_id:             { type: integer, notnull: true }
     module:                 { type: string(127), notnull: true }
@@ -114,7 +112,7 @@ DmMediaFolder:
   options:
     symfony:
       filter: false
-  actAs:                    [NestedSet]
+  actAs:                    [ NestedSet ]
   columns:
     rel_path:               { type: string(255), notnull: true, unique: true }
 
@@ -122,7 +120,8 @@ DmMedia:
   options:
     symfony:
       filter: false
-  actAs:                    [Timestampable]
+  actAs:
+    Timestampable:          {}
   columns:
     dm_media_folder_id:     { type: integer, notnull: true }
     file:                   { type: string(255), notnull: true }
@@ -171,7 +170,10 @@ DmSentMail:
 # SEO SCHEMA
 
 DmAutoSeo:
-  actAs:                    [Timestampable]
+  actAs:
+    Timestampable:
+    I18n:
+      fields:               [ slug, name, title, h1, description, keywords, strip_words ]
   columns:
     module:                 { type: string(127), notnull: true }
     action:                 { type: string(127), notnull: true }
@@ -198,7 +200,7 @@ DmRedirect:
 DmSetting:
   actAs:
     I18n:
-      fields:               [description, value, default_value]
+      fields:               [ description, value, default_value ]
   columns:
     name:                   { type: string(127), notnull: true, unique: true }
     description:            { type: string(255) }
@@ -234,7 +236,10 @@ DmTransUnit:
       foreignAlias:         Units
 
 DmMailTemplate:
-  actAs:                    [ Timestampable ]
+  actAs:
+    Timestampable:
+    I18n:
+      fields:               [ description, title, body, from_email, to_email, is_html, is_active ]
   columns:
     name:                   { type: string(255), notnull: true, unique: true }
     description:            { type: string(5000) }

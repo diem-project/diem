@@ -3,7 +3,13 @@
 class dmI18n extends sfI18N
 {
   protected
-  $useInternalCatalogue = false;
+  $useInternalCatalogue = false,
+  $cultures = array();
+  
+  public function setCultures(array $cultures)
+  {
+    $this->cultures = array_unique($cultures);
+  }
   
   public function setUseInternalCatalogue($v)
   {
@@ -118,6 +124,8 @@ class dmI18n extends sfI18N
     }
 
     parent::initialize($configuration, $cache, $options);
+    
+    $this->setCultures((array)sfConfig::get('dm_i18n_cultures'));
 
     if (!$this->cultureExists($this->culture))
     {
@@ -127,7 +135,7 @@ class dmI18n extends sfI18N
 
   public function getCultures()
   {
-    return sfConfig::get('dm_i18n_cultures');
+    return $this->cultures;
   }
 
   public function cultureExists($c)

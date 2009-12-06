@@ -10,7 +10,7 @@ class dmTestHelper
 
 	public function boot($app = 'admin', $env = 'test', $debug = true)
 	{
-		$appConfig = ProjectConfiguration::getApplicationConfiguration($app, $env, $debug, null, $this->dispatcher);
+		$appConfig = ProjectConfiguration::getApplicationConfiguration($app, $env, $debug, null, new sfEventDispatcher());
 		
 		$this->context = dmContext::createInstance($appConfig);
 
@@ -28,7 +28,14 @@ class dmTestHelper
 
     foreach($this->moduleManager->getModulesWithModel() as $module)
     {
-      $module->getTable()->createQuery()->delete()->execute();
+      try
+      {
+        $module->getTable()->createQuery()->delete()->execute();
+      }
+      catch(Exception $e)
+      {
+        $t->diag(sprintf('Can not delete %s records : %s', $module, $e->getMessage()));
+      }
     }
 	}
 
@@ -39,7 +46,7 @@ class dmTestHelper
 			$t->diag('Loremizing database with '.$nb.' records by table');
 		}
     
-		$loremizer = new dmDatabaseLoremizer($this->dispatcher);
+		$loremizer = new dmDatabaseLoremizer($this->getDispatcher());
     $loremizer->loremize($nb);
 	}
 
@@ -49,7 +56,15 @@ class dmTestHelper
 
     $timer = dmDebug::timer('sync pages '.dmString::random(4));
 
-    $this->context->get('page_synchronizer')->execute();
+    try
+    {
+      $this->context->get('page_synchronizer')->execute();
+    }
+    catch(Exception $e)
+    {
+      print_r($e->getTraceAsString());
+      throw $e;
+    }
 
     if ($t) $t->ok(true, sprintf('Pages synchronized in %01.2f s | %d pages', $timer->getElapsedTime(), dmDb::table('DmPage')->count()));
   }
@@ -60,7 +75,15 @@ class dmTestHelper
 
     $timer = dmDebug::timer('pageTreeWatcher update '.dmString::random(4));
 
-    $this->context->get('page_tree_watcher')->update();
+    try
+    {
+      $this->context->get('page_tree_watcher')->update();
+    }
+    catch(Exception $e)
+    {
+      print_r($e->getTraceAsString());
+      throw $e;
+    }
 
     if ($t) $t->ok(true, sprintf('Pages synchronized in %01.2f s | %d pages', $timer->getElapsedTime(), dmDb::table('DmPage')->count()));
   }
@@ -86,4 +109,8 @@ class dmTestHelper
 		return $this->moduleManager->getModuleOrNull($moduleKey);
 	}
 
+	public function get($service)
+	{
+	  return $this->context->get($service);
+	}
 }

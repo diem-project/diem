@@ -18,21 +18,6 @@ abstract class dmCoreUser extends dmSecurityUser implements dmMicroCacheInterfac
     $this->setBrowser($e->getSubject()->get('browser'));
   }
   
-  public function setCulture($culture)
-  {
-    if (!in_array($culture, sfConfig::get('dm_i18n_cultures')))
-    {
-      $culture = dmArray::first(sfConfig::get('dm_i18n_cultures'));
-      
-      if (sfConfig::get('dm_debug'))
-      {
-        throw new dmException(sprintf('%s is not a valid culture defined in dm_i18n_cultures', $culture));
-      }
-    }
-    
-    return parent::setCulture($culture);
-  }
-  
   /*
    * Guess user's browser
    * @return dmBrowser browser object

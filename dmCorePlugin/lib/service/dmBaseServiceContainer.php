@@ -127,6 +127,19 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
     }
     
     $this->getService('user')->connect();
+    
+    /*
+     * Enable page i18n builder for multilingual sites
+     */
+    $cultures = $this->getService('i18n')->getCultures();
+    if (count($cultures) > 1)
+    {
+      $this->mergeParameter('page_i18n_builder.options', array(
+        'cultures' => $cultures
+      ));
+      
+      $this->getService('page_i18n_builder')->connect();
+    }
   }
 
   /**
@@ -179,6 +192,8 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
     $name = strtolower($name);
     
     $this->parameters[$name] = array_merge($this->parameters[$name], $value);
+    
+    return $this;
   }
   
   
@@ -193,6 +208,8 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
     {
       unset($this->shared[$id]);
     }
+    
+    return $this;
   }
   
   /**

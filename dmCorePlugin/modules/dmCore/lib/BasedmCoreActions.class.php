@@ -20,13 +20,13 @@ class BasedmCoreActions extends dmBaseActions
   public function executeSelectCulture(dmWebRequest $request)
   {
     $this->forward404Unless(
-    $culture = $request->getParameter('culture'),
+      $culture = $request->getParameter('culture'),
       'No culture specified'
     );
 
     $this->forward404Unless(
-    $this->context->getI18n()->cultureExists($culture),
-    "Culture $culture does not exist"
+      $this->context->getI18n()->cultureExists($culture),
+      sprintf('The %s culture does not exist', $culture)
     );
 
     $this->getUser()->setCulture($culture);
@@ -87,6 +87,11 @@ class BasedmCoreActions extends dmBaseActions
           
         case 3:
           $this->context->get('page_tree_watcher')->synchronizeSeo();
+          
+          if (count($this->context->getI18n()->getCultures()) > 1)
+          {
+            $this->context->get('page_i18n_builder')->createAllPagesTranslations();
+          }
           
           $data = array(
             'msg'  => $this->context->getI18n()->__('Regenerate interface'),

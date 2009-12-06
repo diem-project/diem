@@ -4,9 +4,7 @@ $.dm.coreToolBar = {
   
   initToolBar: function()
   {
-    $('#dm_select_culture').bind('change', function() {
-      location.href = $.dm.ctrl.getHref('+/dmCore/selectCulture')+'?culture='+$(this).val()
-    });
+		this.initSelectCulture();
 
     $('#dm_select_theme').bind('change', function() {
       location.href = $.dm.ctrl.getHref('+/dmFront/selectTheme')+'?theme='+$(this).val()
@@ -16,6 +14,13 @@ $.dm.coreToolBar = {
 		{
 			this.initRefresh($link);
 		}
+  },
+	
+	initSelectCulture: function()
+	{
+    $('#dm_select_culture').bind('change', function() {
+      location.href = $.dm.ctrl.getHref('+/dmCore/selectCulture')+'?culture='+$(this).val()
+    });
   },
 	
 	initRefresh: function($link)

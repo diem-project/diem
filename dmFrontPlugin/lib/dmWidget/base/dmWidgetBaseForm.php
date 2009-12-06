@@ -31,7 +31,7 @@ abstract class dmWidgetBaseForm extends dmForm
   {
     parent::setup();
     
-    $this->setName($this->name.'_'.$this->dmWidget->id);
+    $this->setName($this->name.'_'.$this->dmWidget->get('id'));
   }
 
   public function configure()
@@ -124,12 +124,13 @@ abstract class dmWidgetBaseForm extends dmForm
     }
 
     $lastWidgetValue = dmDb::query('DmWidget w')
+    ->withI18n(null, null , 'w')
     ->where('w.module = ? AND w.action = ?', array($this->dmWidget->get('module'), $this->dmWidget->get('action')))
     ->orderBy('w.updated_at desc')
     ->limit(1)
-    ->select('w.value')
-    ->fetchValue();
-
+    ->select('w.id, wTranslation.value as value')
+    ->fetchOneArray();
+    
     $defaults = $this->getFirstDefaults();
 
     if (!$lastWidgetValue)
@@ -137,7 +138,7 @@ abstract class dmWidgetBaseForm extends dmForm
       return $defaults;
     }
 
-    $values = (array) json_decode($lastWidgetValue, true);
+    $values = json_decode((string) $lastWidgetValue['value'], true);
 
     foreach($fields as $field)
     {

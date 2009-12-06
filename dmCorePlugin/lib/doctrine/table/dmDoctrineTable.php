@@ -237,7 +237,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
     foreach($columns as $columnName => $column)
     {
       if (!empty($column['autoincrement'])
-      || in_array($columnName, array('created_at', 'updated_at')))
+      || in_array($columnName, array('created_at', 'updated_at', 'id')))
       {
         unset($columns[$columnName]);
       }
@@ -286,7 +286,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
   {
     return array_keys($this->getAllColumns());
   }
-
+  
   public function getHumanColumnNames()
   {
     return array_key($this->getHumanColumns());
@@ -321,6 +321,24 @@ abstract class dmDoctrineTable extends Doctrine_Table
   }
 
 
+  /**
+   * Retrieves a column definition from this table schema.
+   *
+   * @param string $columnName
+   * @return array              column definition; @see $_columns
+   */
+  public function getColumnDefinition($columnName)
+  {
+    $columnDefinition = parent::getColumnDefinition($columnName);
+    
+    if (!$columnDefinition && $this->hasI18n())
+    {
+      $columnDefinition = $this->getI18nTable()->getColumnDefinition($columnName);
+    }
+    
+    return $columnDefinition;
+  }
+  
   public function isMarkdownColumn($columnName)
   {
     return strpos(dmArray::get($this->getColumnDefinition($columnName), 'extra', ''), 'markdown') !== false;
@@ -341,7 +359,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
       return $this->getCache('dm_identifier_column_name');
     }
 
-    if (!$columnName = dmArray::first(array_intersect(sfConfig::get('dm_orm_identifier_fields'), $this->getColumnNames())))
+    if (!$columnName = dmArray::first(array_intersect(sfConfig::get('dm_orm_identifier_fields'), $this->getAllColumnNames())))
     {
       if (!$columnName = dmArray::first($this->getIdentifierColumnNames()))
       {

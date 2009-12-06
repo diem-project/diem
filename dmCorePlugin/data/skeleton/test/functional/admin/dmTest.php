@@ -6,7 +6,7 @@ $config = array(
   'username'  => 'admin', // username to log in
   'validate'  => false,   // perform html validation on each page, based on its doctype
   'debug'     => true,    // use debug mode ( slower, use more memory )
-  'env'       => 'test'   // sf_environment when running tests
+  'env'       => 'prod'   // sf_environment when running tests
 );
 
 $test = new dmAdminFunctionalCoverageTest($config);

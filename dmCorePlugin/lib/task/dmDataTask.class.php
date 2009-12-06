@@ -346,12 +346,10 @@ EOF;
           }
           else
           {
-            $existing = $existQuery->fetchArray(array($catalogueId, $source));
+            $existing = $existQuery->fetchOneArray(array($catalogueId, $source));
 
             if (!empty($existing))
             {
-              $existing = $existing[0];
-              
               if ($existing['target'] !== $target)
               {
                 // don't overwrite user modified translations

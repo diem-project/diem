@@ -22,6 +22,7 @@ class dmLayoutActions extends autoDmLayoutActions
       ->leftJoin('l.Areas a')
       ->leftJoin('a.Zones z')
       ->leftJoin('z.Widgets w')
+      ->leftJoin('w.Translation wTranslation')
       ->fetchOne()
     );
     
@@ -46,7 +47,7 @@ class dmLayoutActions extends autoDmLayoutActions
         
         foreach($zone->get('Widgets') as $widget)
         {
-          $newZone->Widgets[] = $widget->copy(false);
+          $newZone->Widgets[] = $widget->copy(true);
         }
         
         $newArea->Zones[] = $newZone;

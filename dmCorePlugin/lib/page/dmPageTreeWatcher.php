@@ -55,26 +55,13 @@ class dmPageTreeWatcher extends dmConfigurable
       $table = $record->getTable();
     }
     
-    if ($table instanceof dmDoctrineTable && !isset($this->modifiedTables[$table->getComponentName()]) && $table->interactsWithPageTree())
+    if ($table instanceof dmDoctrineTable)
     {
-      $this->addModifiedTable($table);
+      if (!isset($this->modifiedTables[$table->getComponentName()]) && $table->interactsWithPageTree())
+      {
+        $this->addModifiedTable($table);
+      }
     }
-    
-//    if($record->isFieldModified('is_active'))
-//    {
-//      $isActive = $record->get('is_active');
-//      
-//      if ($record instanceof DmPage && ($pageRecord = $record->getRecord()) && $pageRecord->getTable()->hasField('is_active') && $isActive != $pageRecord->get('is_active'))
-//      {
-//        $pageRecord->set('is_active', $record->get('is_active'));
-//        $pageRecord->save();
-//      }
-//      elseif($record->getDmModule()->hasPage() && ($page = $record->getDmPage()) && $isActive != $page->get('is_active'))
-//      {
-//        $page->set('is_active', $record->get('is_active'));
-//        $page->save();
-//      }
-//    }
   }
   
   public function addModifiedTable(dmDoctrineTable $table)
@@ -200,22 +187,24 @@ class dmPageTreeWatcher extends dmConfigurable
     }
   }
   
-  public function synchronizeSeo(array $modules = array())
+  public function synchronizeSeo(array $modules = array(), array $cultures = null)
   {
+    $cultures = null === $cultures ? $this->serviceContainer->get('i18n')->getCultures() : $cultures;
+    
     if ($this->useThread())
     {
-      $threadLauncher = $this->serviceContainer->getService('thread_launcher');
-      
-      $seoSynchronizerSuccess = $threadLauncher->execute('dmSeoSynchronizerThread', array(
-        'class'   => $this->serviceContainer->getParameter('seo_synchronizer.class'),
-        'markdown_class' => $this->serviceContainer->getParameter('markdown.class'),
-        'culture' => $this->serviceContainer->getParameter('user.culture'),
-        'modules' => $modules
+      $this->serviceContainer->getService('thread_launcher')->execute('dmSeoSynchronizerThread', array(
+        'class'     => $this->serviceContainer->getParameter('seo_synchronizer.class'),
+        'cultures'  => $cultures,
+        'modules'   => $modules
       ));
     }
     else
     {
-      $this->serviceContainer->getService('seo_synchronizer')->execute($modules);
+      foreach($cultures as $culture)
+      {
+        $this->serviceContainer->getService('seo_synchronizer')->execute($modules, $culture);
+      }
     }
   }
 }

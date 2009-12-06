@@ -138,6 +138,7 @@ class dmArray
     return $array;
   }
   
+  // transform an array of string to a css classes string
   public static function toHtmlCssClasses(array $classes)
   {
     return implode(' ', array_unique(array_filter(array_map('trim', $classes))));

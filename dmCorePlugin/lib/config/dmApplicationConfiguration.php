@@ -87,7 +87,7 @@ abstract class dmApplicationConfiguration extends sfApplicationConfiguration
     sfConfig::set('sf_default_culture', dmArray::first(sfConfig::get('dm_i18n_cultures')));
 
     /*
-     * Symfony1.3 registers sfAutoloadAgain on dev env. This causes huge performance issues.
+     * Symfony 1.3 registers sfAutoloadAgain on dev env. This causes huge performance issues.
      */
     if ($this->isDebug())
     {

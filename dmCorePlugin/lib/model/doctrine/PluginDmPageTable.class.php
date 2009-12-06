@@ -128,7 +128,7 @@ class PluginDmPageTable extends myDoctrineTable
     }
     
     $pages = $this->createQuery('p')
-    ->select('p.id, p.module, p.action, p.record_id, p.is_secure, p.lft, p.rgt, pTranslation.slug, pTranslation.name, pTranslation.title, pTranslation.is_active')
+    ->select('p.id, p.module, p.action, p.record_id, pTranslation.is_secure, p.lft, p.rgt, pTranslation.slug, pTranslation.name, pTranslation.title, pTranslation.is_active')
     ->where('p.module = ?', $module)
     ->andWhere('p.action = ?', 'show')
     ->andWhereIn('p.record_id', $ids)
@@ -234,7 +234,7 @@ class PluginDmPageTable extends myDoctrineTable
   public function findOneBySlug($slug, $culture = null)
   {
     return $this->createQuery('p')
-    ->leftJoin('p.Translation t')
+    ->innerJoin('p.Translation t')
     ->where('t.slug = ?', $slug)
     ->andWhere('t.lang = ?', $culture ? $culture : dmDoctrineRecord::getDefaultCulture())
     ->dmCache()

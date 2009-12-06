@@ -36,7 +36,7 @@ class dmWidgetActions extends dmFrontBaseActions
         $widget->cssClass = $form->getValue('cssClass');
 
         $helper = $this->context->get('page_helper');
-        $widgetArray = $widget->toArray();
+        $widgetArray = $widget->toArrayWithMappedValue();
         
         $this->context->getServiceContainer()->setParameter('widget_renderer.widget', $widgetArray);
         
@@ -234,7 +234,7 @@ class dmWidgetActions extends dmFrontBaseActions
 
     $helper = $this->context->get('page_helper');
 
-    return $this->renderText($helper->renderWidget($widget->toArray(), true));
+    return $this->renderText($helper->renderWidget($widget->toArrayWithMappedValue(), true));
   }
 
   public function executeMove(sfWebRequest $request)

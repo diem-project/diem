@@ -10,19 +10,18 @@ class dmSeoSynchronizer
   $culture,
   $nodeParentIdStmt;
   
-  public function __construct(dmModuleManager $moduleManager, $culture)
+  public function __construct(dmModuleManager $moduleManager)
   {
     $this->moduleManager  = $moduleManager;
-    $this->culture        = $culture;
   }
   
-  public function setCulture($culture)
+  public function execute(array $onlyModules = array(), $culture)
   {
     $this->culture = $culture;
-  }
-
-  public function execute(array $onlyModules = array())
-  {
+    
+    $recordDefaultCulture = myDoctrineRecord::getDefaultCulture();
+    myDoctrineRecord::setDefaultCulture($this->culture);
+    
     if(empty($onlyModules))
     {
       $onlyModules = $this->moduleManager->getProjectModules();
@@ -38,6 +37,8 @@ class dmSeoSynchronizer
     {
       $this->updateRecursive($module);
     }
+    
+    myDoctrineRecord::setDefaultCulture($recordDefaultCulture);
   }
 
   public function updateRecursive($module)
@@ -52,32 +53,26 @@ class dmSeoSynchronizer
       return;
     }
 
-    $pageTable = dmDb::table('DmPage');
-    $moduleTable = $module->getTable();
-
     /*
      * get autoSeo patterns
      */
-    $patternArray = dmDb::pdo('SELECT a.slug, a.name, a.title, a.h1, a.description, a.keywords
-    FROM dm_auto_seo a
-    WHERE a.module = ? AND a.action = ?', array($module->getKey(), 'show'))->fetchAll(PDO::FETCH_ASSOC);
+    $autoSeoRecord = dmDb::query('DmAutoSeo a')
+    ->withI18n($this->culture, null, 'a')
+    ->where('a.module = ?', $module->getKey())
+    ->andWhere('a.action = ?', 'show')
+    ->fetchRecord();
     
-    if(empty($patternArray))
+    if(!$autoSeoRecord)
     {
-      $patterns = dmDb::table('DmAutoSeo')->createFromModuleAndAction($module, 'show')->saveGet()->toArray();
+      $autoSeoRecord = dmDb::table('DmAutoSeo')
+      ->createFromModuleAndAction($module, 'show', $this->culture)
+      ->saveGet();
     }
-    else
+    
+    $patterns = array();
+    foreach(DmPage::getAutoSeoFields() as $patternField)
     {
-      $patterns = $patternArray[0];
-    }
-
-    $pageAutoSeoFields = DmPage::getAutoSeoFields();
-    foreach($patterns as $field => $pattern)
-    {
-      if (!in_array($field, $pageAutoSeoFields))
-      {
-        unset($patterns[$field]);
-      }
+      $patterns[$patternField] = $autoSeoRecord->get($patternField);
     }
     
     if (isset($patterns['keywords']) && !sfConfig::get('dm_seo_use_keywords'))
@@ -105,7 +100,7 @@ class dmSeoSynchronizer
      * get records
      */
     $records = $module->getTable()->createQuery('r INDEXBY r.id')
-    ->withI18n($this->culture, $module->getModel())
+    ->withI18n($this->culture, $module->getModel(), 'r')
     ->fetchRecords();
     
     /*
@@ -144,7 +139,17 @@ class dmSeoSynchronizer
      */
     if(!empty($modifiedPages))
     {
-      $conn = Doctrine_Manager::connection();
+      /*
+       * Fix bug when no DmPage instance have been loaded yet
+       * ( this can happen when synchronization is run in a thread )
+       * DmPageTranslation class does not exist
+       */
+      if (!class_exists('DmPageTranslation'))
+      {
+        new DmPage;
+      }
+      
+      $conn = Doctrine_Manager::getInstance()->getCurrentConnection();
       try
       {
         $conn->beginTransaction();
@@ -161,10 +166,10 @@ class dmSeoSynchronizer
           }
           else
           {
-            #TODO try to extract query creation from foreach
-            Doctrine_Query::create()->update('DmPageTranslation')
+            myDoctrineQuery::create($conn)->update('DmPageTranslation')
             ->set($modifiedFields)
             ->where('id = ?', $id)
+            ->andWhere('lang = ?', $this->culture)
             ->execute();
           }
         }
@@ -250,6 +255,11 @@ class dmSeoSynchronizer
     
     foreach ($placeholders as $placeholder)
     {
+      if ('culture' === $placeholder)
+      {
+        $replacements[$this->wrap($placeholder)] = $this->culture;
+        continue;
+      }
       /*
        * Extract model and field from 'model.field' or 'model'
        */
@@ -402,7 +412,7 @@ class dmSeoSynchronizer
   {
     if (null === $this->nodeParentIdStmt)
     {
-      $this->nodeParentIdStmt = Doctrine_Manager::connection()->prepare('SELECT p.id
+      $this->nodeParentIdStmt = Doctrine_Manager::getInstance()->getCurrentConnection()->prepare('SELECT p.id
 FROM dm_page p
 WHERE p.lft < ? AND p.rgt > ?
 ORDER BY p.rgt ASC

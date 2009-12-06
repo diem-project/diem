@@ -5,54 +5,63 @@ require_once('Zend/Search/Lucene.php');
 class dmSearchIndex extends dmSearchIndexCommon
 {
   protected
-  $filesystem,
-  $location,
-  $index,
-  $culture,
-  $shortWordLength = 2;
-
-  public function __construct(sfEventDispatcher $dispatcher, dmFilesystem $filesystem, sfLogger $logger)
-  {
-    $this->dispatcher = $dispatcher;
-    $this->filesystem = $filesystem;
-    $this->logger     = $logger;
-  }
+  $luceneIndex;
   
-  public function setLogger(sfLogger $logger)
+  protected function initialize(array $options)
   {
-    $this->logger = $logger;
-  }
-
-  public function setCulture($culture)
-  {
-    $this->culture = $culture;
+    parent::initialize($options);
     
-    $this->name = 'dm_'.$culture;
-
-    $this->location = dmOs::join(sfConfig::get('dm_data_dir'), 'index', $this->name);
-
-    $this->initialize();
+    $this->createLuceneIndex();
   }
   
+  public function getFullPath()
+  {
+    return dmProject::rootify($this->getOption('dir'));
+  }
+
+  protected function createLuceneIndex()
+  {
+    if (file_exists(dmOs::join($this->getFullPath(), 'segments.gen')))
+    {
+      try
+      {
+        $this->luceneIndex = Zend_Search_Lucene::open($this->getFullPath());
+      }
+      catch(Zend_Search_Lucene_Exception $e)
+      {
+        $this->erase();
+      }
+    }
+    else
+    {
+      $this->luceneIndex = Zend_Search_Lucene::create($this->getFullPath());
+    }
+  }
+
   public function getCulture()
   {
-    return $this->culture;
+    return $this->getOption('culture');
+  }
+  
+  public function setCulture($culture)
+  {
+    return $this->setOption('culture', $culture);
   }
 
   public function search($query)
   {
-    $this->open();
-
     if (!$query instanceof Zend_Search_Lucene_Search_Query)
     {
       $query = $this->getLuceneQuery($this->cleanText($query));
     }
 
-    $luceneHits = $this->index->find($query);
+    $luceneHits = $this->luceneIndex->find($query);
     $hits = array();
     foreach($luceneHits as $hit)
     {
-      $hits[] = new dmSearchHit($hit->score, $hit->page_id);
+      $this->serviceContainer->setParameter('search_hit.score', $hit->score);
+      $this->serviceContainer->setParameter('search_hit.page_id', $hit->page_id);
+      $hits[] = $this->serviceContainer->getService('search_hit');
     }
     unset($luceneHits);
 
@@ -79,41 +88,54 @@ class dmSearchIndex extends dmSearchIndexCommon
 //    return new Zend_Search_Lucene_Search_Query_Fuzzy($term, 0.4);
   }
 
-  public function populate(dmContext $context)
+  public function populate()
   {
-    $start = microtime(true);
-    $this->logger->log($this->getName().' : Populating index...');
+    $start  = microtime(true);
+    $logger = $this->serviceContainer->getService('logger');
+    $user   = $this->serviceContainer->getService('user');
+    
+    $logger->log($this->getName().' : Populating index...');
 
     $this->erase();
-    $this->logger->log($this->getName().' : Index erased.');
-
+    $logger->log($this->getName().' : Index erased.');
+    
+    $this->serviceContainer->mergeParameter('search_document.options', array(
+      'culture' => $this->getCulture()
+    ));
+    
     $pages = $this->getPagesQuery()->fetchRecords();
     
     if (!count($pages))
     {
-      $this->logger->log($this->getName().' : No pages to populate the index');
+      $logger->log($this->getName().' : No pages to populate the index');
       return;
     }
+    
+    $oldCulture = $user->getCulture();
+    $user->setCulture($this->getCulture());
 
     $nb = 0;
     $nbMax = count($pages);
     foreach ($pages as $page)
     {
       ++$nb;
-      $this->logger->log($this->getName().' '.$nb.'/'.$nbMax.' : '.$page->get('slug'));
-      $document = $context->get('search_page');
-      $document->populate($page);
-      $this->index->addDocument($document);
-      unset($document);
+      $logger->log($this->getName().' '.$nb.'/'.$nbMax.' : /'.$page->get('slug'));
+      
+      $this->serviceContainer->setParameter('search_document.source', $page);
+      
+      $this->luceneIndex->addDocument($this->serviceContainer->getService('search_document')->populate());
     }
+    
+    $user->setCulture($oldCulture);
 
     $time = microtime(true) - $start;
 
-    $this->logger->log($this->getName().' : Index populated in "' . round($time, 2) . '" seconds.');
+    $logger->log($this->getName().' : Index populated in "' . round($time, 2) . '" seconds.');
 
-    $this->logger->log($this->getName().' : Time per document "' . round($time / count($pages), 3) . '" seconds.');
+    $logger->log($this->getName().' : Time per document "' . round($time / count($pages), 3) . '" seconds.');
 
-    $this->dispatcher->notify(new sfEvent($this, 'dm.search.populated', array(
+    $this->serviceContainer->get('dispatcher')->notify(new sfEvent($this, 'dm.search.populated', array(
+      'culture' => $this->getCulture(),
       'name' => $this->getName(),
       'nb_documents' => count($pages),
       'time' => $time
@@ -127,65 +149,29 @@ class dmSearchIndex extends dmSearchIndexCommon
   public function optimize()
   {
     $start = microtime(true);
-    $this->logger->log($this->getName().' : Optimizing index...');
+    $logger = $this->serviceContainer->getService('logger')->log($this->getName().' : Optimizing index...');
     
-    $this->open();
-    $this->index->optimize();
+    $this->luceneIndex->optimize();
     
     $this->fixPermissions();
 
-    $this->logger->log($this->getName().' : Index optimized in "' . round(microtime(true) - $start, 2) . '" seconds.');
-  }
-
-  protected function open()
-  {
-    if (null === $this->index)
-    {
-      if (file_exists(dmOs::join($this->location, 'segments.gen')))
-      {
-        try
-        {
-          $this->index = Zend_Search_Lucene::open($this->location);
-        }
-        catch(Zend_Search_Lucene_Exception $e)
-        {
-          $this->erase();
-        }
-      }
-      else
-      {
-        $this->index = Zend_Search_Lucene::create($this->location);
-      }
-    }
-  }
-
-  protected function close()
-  {
-    unset($this->index);
-    $this->index = null;
+    $logger = $this->serviceContainer->getService('logger')->log($this->getName().' : Index optimized in "' . round(microtime(true) - $start, 2) . '" seconds.');
   }
 
   protected function erase()
   {
-    $this->filesystem->deleteDirContent($this->location);
-    $this->index = Zend_Search_Lucene::create($this->location);
+    $this->serviceContainer->getService('filesystem')->deleteDirContent($this->getFullPath());
+    
+    $this->createLuceneIndex();
   }
 
-  protected function configure()
-  {
-    if (!$this->culture)
-    {
-      throw new dmException('culture is required');
-    }
-  }
-
-  protected function getPagesQuery()
+  public function getPagesQuery()
   {
     return dmDb::table('DmPage')
     ->createQuery('p')
     ->withI18n($this->getCulture())
     ->where('pTranslation.is_active = ?', true)
-    ->andWhere('p.is_secure = ?', false)
+    ->andWhere('pTranslation.is_secure = ?', false)
     ->andWhere('p.module != ? OR ( p.action != ? AND p.action != ? AND p.action != ?)', array('main', 'error404', 'search', 'login'));
   }
 
@@ -197,21 +183,17 @@ class dmSearchIndex extends dmSearchIndexCommon
     return str_word_count(strtolower(dmConfig::get('search_stop_words')), 1);
   }
 
-
   public function describe()
   {
-    $this->open();
-
     return array(
-      'Documents' => $this->index->numDocs(),
+      'Documents' => $this->luceneIndex->numDocs(),
       'Size'      => dmOs::humanizeSize($this->getByteSize())
     );
   }
-
-  public static function refresh($input)
+  
+  public function getLuceneIndex()
   {
-    $this->remove($input);
-    $this->insert($input);
+    return $this->luceneIndex;
   }
 
   public static function cleanText($text)
@@ -239,7 +221,7 @@ class dmSearchIndex extends dmSearchIndexCommon
   public function getByteSize()
   {
     $size = 0;
-    foreach (new DirectoryIterator($this->location) as $node)
+    foreach (new DirectoryIterator($this->getFullPath()) as $node)
     {
       if (!in_array($node->getFilename(), array('CVS', '.svn', '_svn')))
       {
@@ -249,13 +231,4 @@ class dmSearchIndex extends dmSearchIndexCommon
 
     return $size;
   }
-
-  public function fixPermissions()
-  {
-    foreach (sfFinder::type('all')->in($this->location) as $item)
-    {
-      $this->filesystem->chmod($item, 0777);
-    }
-  }
-
 }

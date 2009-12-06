@@ -37,13 +37,24 @@ class dmRecordLoremizer
   {
     $this->record->clearRelated();
     
-    foreach($this->record->getTable()->getHumanColumns() as $columnName => $column)
+    $table = $this->record->getTable();
+    
+    foreach($table->getHumanColumns() as $columnName => $column)
     {
+      if (!$table->hasColumn($columnName) && $table->hasI18n())
+      {
+        $defaultValue = $table->getI18nTable()->getDefaultValueOf($columnName);
+      }
+      else
+      {
+        $defaultValue = $table->getDefaultValueOf($columnName);
+      }
+      
       /*
        * Non override on existing records
        * pass if columns value is different than its default value
        */
-      if (!$override && (!$this->record->isNew() || $this->record->get($columnName) !== $this->record->getTable()->getDefaultValueOf($columnName)))
+      if (!$override && (!$this->record->isNew() || $this->record->get($columnName) !== $defaultValue))
       {
         continue;
       }
@@ -52,12 +63,12 @@ class dmRecordLoremizer
         $this->record->set($columnName, null);
         continue;
       }
-      if ($columnName == 'slug' && $this->record->getTable()->hasTemplate('Sluggable'))
+      if ($columnName === 'slug' && $table->hasTemplate('Sluggable'))
       {
         continue;
       }
 
-      if ($localRelation = $this->record->getTable()->getRelationHolder()->getLocalByColumnName($columnName))
+      if ($localRelation = $table->getRelationHolder()->getLocalByColumnName($columnName))
       {
         $val = $this->getRandomId($localRelation->getTable());
       }
@@ -69,9 +80,14 @@ class dmRecordLoremizer
       $this->record->set($columnName, $val);
     }
     
+    if ($table->hasI18n())
+    {
+      $this->record->set('lang', sfConfig::get('sf_default_culture'));
+    }
+    
     if ($createAssociations)
     {
-      foreach($this->record->getTable()->getRelationHolder()->getAssociations() as $relation)
+      foreach($table->getRelationHolder()->getAssociations() as $relation)
       {
         if (rand(0, 3))
         {

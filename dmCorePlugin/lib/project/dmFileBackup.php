@@ -33,6 +33,13 @@ class dmFileBackup extends dmConfigurable
     return dmProject::rootify($this->options['dir']);
   }
   
+  public function setDir($dir)
+  {
+    $this->setOption('dir', dmProject::rootify($dir));
+    
+    $this->checkDirIsWritable();
+  }
+  
   public function clear()
   {
     return $this->filesystem->deleteDirContent($this->getDir());

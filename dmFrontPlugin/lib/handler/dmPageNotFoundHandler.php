@@ -101,9 +101,9 @@ class dmPageNotFoundHandler
     {
       $searchIndex = $this->serviceContainer->get('search_engine')->getCurrentIndex();
 
-      $query = Zend_Search_Lucene_Search_QueryParser::parse(
-      str_replace('/', ' ', dmString::unSlugify($slug))
-      );
+      $queryString = str_replace('/', ' ', dmString::unSlugify($slug));
+      
+      $query = Zend_Search_Lucene_Search_QueryParser::parse($queryString);
 
       $results = $searchIndex->search($query);
 

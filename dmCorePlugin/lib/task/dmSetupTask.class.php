@@ -36,7 +36,7 @@ EOF;
   {
     $this->logSection('diem', 'Setup '.dmProject::getKey());
     
-    if (!$this->isProjectLocked())
+    if (!$this->isProjectLocked() && $this->projectHasModels())
     {
       // don't use cache:clear task because it changes current app & environment
       sfToolkit::clearDirectory(sfConfig::get('sf_cache_dir'));
@@ -47,9 +47,10 @@ EOF;
         
         if (dmCheckNeedMigrationTask::REQUIRE_MIGRATION_TRUE == $ret)
         {
-          if (!$this->askConfirmation(array_merge(
-            array('The project requires a doctrine migration'),
-            array('', 'Are you sure you want to continue without runnig migration tasks ? (y/N)')
+          if (!$this->askConfirmation(array(
+            'The project requires a doctrine migration',
+            'If you already performed the migration, you may continue',
+            'Are you sure you want to continue ? (y/N)'
           ), 'QUESTION_LARGE', false)
           )
           {
@@ -59,9 +60,6 @@ EOF;
           }
         }
       }
-      
-      $this->runTask('dm:upgrade');
-      $this->runTask('dm:clear-cache');
     }
     
     $this->runTask('doctrine:build', array(), array('model' => true));
@@ -78,11 +76,15 @@ EOF;
       }
       
       $this->runTask('doctrine:build-sql');
-      
+    
       $this->runTask('doctrine:insert-sql');
       
       // well, we don't need migration classes anymore...
-      sfToolkit::clearDirectory(dmProject::rootify('lib/migration/doctrine'));
+//      sfToolkit::clearDirectory(dmProject::rootify('lib/migration/doctrine'));
+    }
+    else
+    {
+      $this->runTask('dm:upgrade');
     }
     
     $this->reloadAutoload();
@@ -178,5 +180,10 @@ EOF;
   protected function isProjectLocked()
   {
     return file_exists(dmOs::join(sfConfig::get('dm_data_dir'), 'lock'));
+  }
+  
+  protected function projectHasModels()
+  {
+    return 0 !== count(sfYaml::load(file_get_contents(dmProject::rootify('config/doctrine/schema.yml'))));
   }
 }

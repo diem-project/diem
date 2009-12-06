@@ -11,7 +11,7 @@ abstract class dmLinkTag extends dmHtmlTag
     parent::initialize($options);
     
     $this->addAttributeToRemove('text');
-    $this->addEmptyAttributeToRemove('target', 'title');
+    $this->addEmptyAttributeToRemove(array('target', 'title'));
     
     $this->addClass('link');
   }
@@ -111,7 +111,7 @@ abstract class dmLinkTag extends dmHtmlTag
 
     $attributes['href'] = $this->getBaseHref();
 
-    if (isset($attributes['params']))
+    if (array_key_exists('params', $attributes))
     {
       if (!empty($attributes['params']))
       {

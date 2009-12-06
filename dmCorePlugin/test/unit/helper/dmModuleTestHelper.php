@@ -10,6 +10,7 @@ class dmModuleTestHelper extends dmTestHelper
 	  {
 	    return array_keys($path);
 	  }
+	  
 	  return null;
 	}
 
@@ -32,9 +33,4 @@ class dmModuleTestHelper extends dmTestHelper
   {
     return $this->moduleManager->getModule($moduleKey)->getFarthestAncestor();
   }
-
-//  public function getDir($moduleKey)
-//  {
-//    return $this->moduleManager->getModule($moduleKey)->getDir();
-//  }
 }

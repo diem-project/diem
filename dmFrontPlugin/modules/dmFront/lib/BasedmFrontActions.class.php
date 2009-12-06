@@ -69,15 +69,9 @@ class BasedmFrontActions extends dmFrontBaseActions
       $this->getResponse()->setStatusCode(401);
     }
 
-    /*
-     * BC : catch exceptions when getting the layout template
-     * because Diem 5.0.0 < ALPHA6 doesn't have this field in database
-     */
-    try
-    {
-      $template = $this->page->getPageView()->getLayout()->get('template');
-    }
-    catch(Exception $e)
+    $template = $this->page->getPageView()->getLayout()->get('template');
+    
+    if (empty($template))
     {
       $template = 'page';
     }
@@ -93,7 +87,7 @@ class BasedmFrontActions extends dmFrontBaseActions
     {
       $this->setLayout(dmOs::join(sfConfig::get('dm_front_dir'), 'modules/dmFront/templates/layout'));
     }
-
+    
     $this->helper = $this->context->get('page_helper');
     
     $this->isEditMode = $this->getUser()->getIsEditMode();
@@ -183,6 +177,30 @@ class BasedmFrontActions extends dmFrontBaseActions
     );
     
     $this->getUser()->setTheme($theme);
+
+    return $this->redirectBack();
+  }
+  
+  public function executeSelectCulture(dmWebRequest $request)
+  {
+    $this->forward404Unless(
+      $culture = $request->getParameter('culture'),
+      'No culture specified'
+    );
+
+    $this->forward404Unless(
+      $this->context->getI18n()->cultureExists($culture),
+      sprintf('The %s culture does not exist', $culture)
+    );
+
+    $this->getUser()->setCulture($culture);
+    
+    if ($pageId = $request->getParameter('dm_cpi'))
+    {
+      $this->forward404Unless($page = dmDb::table('DmPage')->findOneByIdWithI18n($pageId));
+      
+      return $this->redirect($this->getHelper()->£link($page)->getHref());
+    }
 
     return $this->redirectBack();
   }

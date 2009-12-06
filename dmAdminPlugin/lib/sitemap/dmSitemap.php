@@ -56,7 +56,7 @@ class dmSitemap
   protected function getPages($culture)
   {
     $query = dmDb::query('DmPage p')->withI18n($culture)
-    ->where('p.is_secure = ?', false)
+    ->where('pTranslation.is_secure = ?', false)
     ->addWhere('pTranslation.is_active = ?', true)
     ->addWhere('p.module != ? OR ( p.action != ? AND p.action != ? AND p.action != ?)', array('main', 'error404', 'search', 'login'))
     ->orderBy('p.lft asc');

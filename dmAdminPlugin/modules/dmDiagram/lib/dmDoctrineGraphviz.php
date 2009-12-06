@@ -11,6 +11,9 @@ class dmDoctrineGraphviz
   {
     $this->filesystem = $filesystem;
     $this->configuration = $configuration;
+    
+    // ensure DmSetting is loaded
+    new DmSetting;
   }
 
   
@@ -55,10 +58,10 @@ class dmDoctrineGraphviz
         $tables = array('DmUser', 'DmPermission', 'DmGroup', 'DmGroupPermission', 'DmUserPermission', 'DmUserGroup', 'DmRememberKey');
         break;
       case 'core':
-        $tables = dmProject::getDmModels();
+        $tables = $this->fixModels(dmProject::getDmModels());
         break;
       case 'project':
-        $tables = dmProject::getModels();
+        $tables = $this->fixModels(dmProject::getModels());
         $tables[] = 'DmMedia';
         break;
       default:
@@ -67,17 +70,40 @@ class dmDoctrineGraphviz
     return $tables;
   }
   
+  protected function fixModels($models)
+  {
+    foreach($models as $model)
+    {
+      if (dmDb::table($model)->hasI18n())
+      {
+        new $model;
+        $models[] = dmDb::table($model)->getI18nTable()->getComponentName();
+      }
+    }
+    
+    return $models;
+  }
+  
   protected function getAllTables()
   {
     if(null === $this->tables)
     {
       $this->tables = dmProject::getAllModels();
+      
+      foreach($this->tables as $table)
+      {
+        if (dmDb::table($table)->hasI18n())
+        {
+          new $table;
+          $this->tables[] = dmDb::table($table)->getI18nTable();
+        }
+      }
     }
     
     return $this->tables;
   }
 
-  private function listColumns($table) {
+  protected function listColumns($table) {
     $ret=Array();
     foreach ($table->getColumns() as $name=>$column) {
       if (!@$column['primary']) {

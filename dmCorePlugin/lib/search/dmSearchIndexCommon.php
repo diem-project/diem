@@ -1,39 +1,21 @@
 <?php
 
-abstract class dmSearchIndexCommon
+abstract class dmSearchIndexCommon extends dmConfigurable
 {
   protected
   $dispatcher,
-  $logger,
   $serviceContainer;
 
-  /**
-   * The name of this index.
-   *
-   * @var string
-   */
-  protected $name;
-
-  /**
-   * True if index is setup
-   *
-   * @var bool
-   */
-  protected $setup = false;
-
-  /**
-   * Sets the index name.
-   *
-   * @param string $name
-   */
-  public function setName($name)
+  public function __construct(sfServiceContainer $serviceContainer, array $options = array())
   {
-    $this->name = $name;
+    $this->serviceContainer = $serviceContainer;
+    
+    $this->initialize($options);
   }
   
-  public function getLogger()
+  protected function initialize(array $options)
   {
-    return $this->logger;
+    $this->configure($options);
   }
 
   /**
@@ -43,59 +25,26 @@ abstract class dmSearchIndexCommon
    */
   public function getName()
   {
-    return $this->name;
+    return $this->getOption('name');
+  }
+  
+  public function setName($name)
+  {
+    return $this->setOption('name', $name);
+  }
+  
+  public function getFullPath()
+  {
+    return dmProject::rootify($this->getOption('dir'));
   }
 
-
-  /**
-   * Runs the setup routine to make sure the index is in a workable state.
-   */
-  protected function setup()
+  public function fixPermissions()
   {
-    if (!$this->setup)
+    $this->serviceContainer->getService('filesystem')->chmod($this->getFullPath(), 0777);
+    
+    foreach (sfFinder::type('all')->in($this->getFullPath()) as $item)
     {
-      $this->configure();
-
-      $this->postSetup();
-
-      $this->setup = true;
+      $this->serviceContainer->getService('filesystem')->chmod($item, 0777);
     }
-  }
-
-  /**
-   * A routine that is executed after setting up.
-   */
-  protected function postSetup()
-  {
-    // nothing to do
-  }
-
-  /**
-   * Returns true if index is in a workable state
-   *
-   * @returns bool 
-   */
-  public function isSetup()
-  {
-    return $this->setup;
-  }
-
-  /**
-   * Runs the internal setup procedure.
-   *
-   * This method should be overloaded by search indexes.  This method should
-   * initialize the service registry and setup the backend engine.
-   */
-  protected function configure()
-  {
-    // nothing to do
-  }
-
-  /**
-   * Runs the initial setup procedure to configure meta information, such as a
-   * name.
-   */
-  protected function initialize()
-  {
   }
 }

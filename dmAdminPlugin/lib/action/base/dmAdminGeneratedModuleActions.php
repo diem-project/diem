@@ -269,12 +269,9 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
   
   protected function getSortTableQuery()
   {
-    $query = $this->getDmModule()->getTable()->createQuery('r')->orderBy('r.position asc');
-    
-    if ($this->getDmModule()->getTable()->hasField('is_active'))
-    {
-      $query->whereIsActive(true);
-    }
+    $query = $this->getDmModule()->getTable()->createQuery('r')
+    ->orderBy('r.position asc')
+    ->whereIsActive(true, $this->getDmModule()->getModel());
     
     return $query;
   }

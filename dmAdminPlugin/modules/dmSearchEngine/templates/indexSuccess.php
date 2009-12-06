@@ -12,12 +12,12 @@ echo £('div.search_actions.clearfix',
     $form->open('method=get').
     $form['query']->renderLabel(__('Query')).
     $form['query'].
-    sprintf('<input type="submit" name="%s" />', dm::getI18n()->__('Search')).
+    sprintf('<input type="submit" name="%s" />', __('Search')).
     $form->close()
   ).
   £('div.dm_third',
     £('h2.mb10', __('Index state')).
-    get_partial('state', array('index' => $index))
+    get_partial('state', array('engine' => $engine))
   ).
   £('div.dm_third',
     £('h2.mb10', __('Index maintenance')).

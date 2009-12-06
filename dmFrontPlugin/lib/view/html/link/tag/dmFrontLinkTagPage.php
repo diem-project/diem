@@ -3,12 +3,12 @@
 class dmFrontLinkTagPage extends dmFrontLinkTag
 {
   protected
-  $page,
-  $currentPage;
+  $page,        // the page we link to
+  $currentPage; // the page where the link is displayed
 
   public function __construct(dmFrontLinkResource $resource, DmPage $currentPage = null, array $requestContext, array $options = array())
   {
-    $this->currentPage    = $currentPage;
+    $this->currentPage = $currentPage;
     
     parent::__construct($resource, $requestContext, $options);
   }

@@ -4,6 +4,7 @@ function escape($text)
 {
   return dmString::escape($text);
 }
+
 /*
  * @return dmLinkTag a link to $source
  */

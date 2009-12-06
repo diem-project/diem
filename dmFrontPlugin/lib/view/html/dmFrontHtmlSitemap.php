@@ -46,7 +46,7 @@ class dmFrontHtmlSitemap
     return dmDb::query('DmPage p')
     ->withI18n($this->culture)
     ->where('pTranslation.is_active = ?', true)
-    ->andWhere('p.is_secure = ?', false)
+    ->andWhere('pTranslation.is_secure = ?', false)
     ->andWhere('p.module != ? OR ( p.action != ? AND p.action != ? AND p.action != ?)', array('main', 'error404', 'search', 'login'))
     ->orderBy('p.lft');
   }

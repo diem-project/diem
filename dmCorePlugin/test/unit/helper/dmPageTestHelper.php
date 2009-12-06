@@ -24,7 +24,7 @@ class dmPageTestHelper extends dmTestHelper
 		$t->diag('check basic pages');
 		$this->pageTable->checkBasicPages();
 
-		  $t->is($this->pageTable->count(), 2, 'Two pages');
+		  $t->is($this->pageTable->count(), 3, 'Two pages');
 
 		$root = $this->pageTable->getTree()->fetchRoot();
 
@@ -38,15 +38,19 @@ class dmPageTestHelper extends dmTestHelper
 
 		  $t->is($error404->getNodeParentId(), $root->id, 'error404->getNodeParentId() returns root.id');
 
-		  $t->is($error404->getNodeParentId(), $root->id, 'error404->getNodeParentId() is root.id');
-	}
+    $login = $this->pageTable->findOneByModuleAndAction('main', 'login');
 
+      $t->ok($login instanceof DmPage, 'login exists');
+
+      $t->is($login->getNode()->getParent(), $root, 'login is child of root');
+
+      $t->is($login->getNodeParentId(), $root->id, 'login->getNodeParentId() returns root.id');
+	}
 
 	public function testI18nFetching(lime_test $t)
 	{
 		$nbPages = $this->pageTable->createQuery()->count();
 		$nbMainPages = $this->pageTable->createQuery('p')->where('p.module = ?', 'main')->count();
-    $nbInfoPages = $this->pageTable->createQuery('p')->where('p.module = ?', 'info')->count();
 
 		$t->diag('Fetching all pages with a culture that exists');
 
@@ -60,29 +64,17 @@ class dmPageTestHelper extends dmTestHelper
 
       $t->is(count($pages), $nbMainPages, $nbMainPages.' pages fetched');
 
-    $t->diag('Fetching info pages with a culture that exists');
-
-    $pages = $this->pageTable->createQuery('p')->where('p.module = ?', 'info')->withI18n()->fetchRecords();
-
-      $t->is(count($pages), $nbInfoPages, $nbInfoPages.' pages fetched');
-
 		$t->diag('Fetching all pages with a culture that does not exist');
 
-		$pages = $this->pageTable->createQuery('p')->withI18n('--')->fetchRecords();
+		$pages = $this->pageTable->createQuery('p')->withI18n('__')->fetchRecords();
 
 		  $t->is(count($pages), $nbPages, $nbPages.' pages fetched');
 
     $t->diag('Fetching main pages with a culture that does not exists');
 
-    $pages = $this->pageTable->createQuery('p')->where('p.module = ?', 'main')->withI18n('--')->fetchRecords();
+    $pages = $this->pageTable->createQuery('p')->where('p.module = ?', 'main')->withI18n('__')->fetchRecords();
 
       $t->is(count($pages), $nbMainPages, $nbMainPages.' pages fetched');
-
-    $t->diag('Fetching info pages with a culture that does not exists');
-
-    $pages = $this->pageTable->createQuery('p')->where('p.module = ?', 'info')->withI18n('--')->fetchRecords();
-
-      $t->is(count($pages), $nbInfoPages, $nbInfoPages.' pages fetched');
 	}
 
 	public function testNewPage(lime_test $t)
@@ -101,8 +93,6 @@ class dmPageTestHelper extends dmTestHelper
 		  $t->is($newPage->getNode()->getParent(), $root, 'newPage is child of root');
 
 		  $t->is($newPage->getNodeParentId(), $root->id, 'newPage->getNodeParentId() returns root.id');
-
-		  $t->is($newPage->getNodeParentId(), $root->id, 'newPage->getNodeParentId() is root.id');
 
 		  $t->is($newPage->name, 'Test Page '.$randomKey, 'newPage->name is '.'Test Page '.$randomKey);
 	}
@@ -215,7 +205,7 @@ class dmPageTestHelper extends dmTestHelper
 
     if(count($errors))
     {
-    	$t->diag('AAAAAAAAAAAAAAAAAAAAAAAAAAAAh');
+    	$t->diag('Error !');
     	dmDebug::kill($errors);
     }
       

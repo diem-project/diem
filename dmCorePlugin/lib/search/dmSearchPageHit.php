@@ -1,6 +1,6 @@
 <?php
 
-class dmSearchHit
+class dmSearchPageHit
 {
   protected
   $pageId,
@@ -22,7 +22,7 @@ class dmSearchHit
   {
     if(null === $this->page)
     {
-      $this->page = dmDb::table('DmPage')->find($this->pageId);
+      $this->page = dmDb::table('DmPage')->findOneByIdWithI18n($this->pageId);
     }
     
     return $this->page;

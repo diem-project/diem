@@ -95,7 +95,7 @@ abstract class dmWidgetBaseView
   {
     $this->compiledVars = array_merge(
       array('cssClass' => isset($this->widget['css_class']) ? $this->widget['css_class'] : null),
-      (array) json_decode($this->widget['value'], true),
+      (array) json_decode((string) $this->widget['value'], true),
       dmString::toArray($vars)
     );
   }
@@ -162,12 +162,9 @@ abstract class dmWidgetBaseView
   {
     $this->compileVars($vars);
     
-    if ($this->isIndexable)
+    if ($this->isIndexable && $this->isValid())
     {
-      if ($this->isValid())
-      {
-        $text = $this->doRenderForIndex();
-      }
+      $text = $this->doRenderForIndex();
     }
     else
     {

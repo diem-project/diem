@@ -38,6 +38,8 @@ class dmPageIndexableContentTask extends dmContextTask
      */
     protected function execute($arguments = array(), $options = array())
     {
+      throw new dmException('deprecated');
+      
       $this->withDatabase();
 
       $page = dmDb::table('DmPage')->findOneByIdWithI18n($arguments['id'], $arguments['culture']);

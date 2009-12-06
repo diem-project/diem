@@ -6,8 +6,6 @@
 </style>
 <?php
 
-echo £('h1.title', 'Auto-generated diagrams');
-
 foreach($dicImages as $appName => $image)
 {
   if (!$image) continue;

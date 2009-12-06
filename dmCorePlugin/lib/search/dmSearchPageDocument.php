@@ -3,20 +3,36 @@
 class dmSearchPageDocument extends Zend_Search_Lucene_Document
 {
   protected
-  $context;
+  $context,
+  $source,
+  $options;
   
-  public function __construct(dmContext $context)
+  public function __construct(dmContext $context, $source, array $options = array())
   {
-    $this->context = $context;
+    $this->context  = $context;
+    $this->source   = $source;
+    
+    $this->initialize($options);
   }
   
-  public function populate(DmPage $page)
+  protected function initialize(array $options)
   {
+    $this->options  = $options;
+    
+    if (!$this->source instanceof DmPage)
+    {
+      throw new dmException(sprintf('%s require a source instance of DmPage, %s given', get_class($this), get_class($this->source)));
+    }
+  }
+  
+  public function populate()
+  {
+    $page = $this->source;
     $i18n = $page->getCurrentTranslation();
     
     $this->store('page_id', $page->get('id'));
 
-    $this->index('body', $this->getPageBodyText($page), 1);
+    $this->index('body', $this->getPageBodyText(), 1);
 
     $this->index('slug', dmString::unSlugify($i18n->get('slug')), 3);
 
@@ -32,6 +48,8 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
     {
       $this->index('keywords', $i18n->get('keywords'), 5);
     }
+    
+    return $this;
   }
   
   protected function store($name, $value, $boost = 1)
@@ -51,12 +69,15 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
   /*
    * @todo retrieve html nodes text ( better than Zend_Search_Lucene_Document_Html )
    */
-  protected function getPageBodyText(DmPage $page)
+  protected function getPageBodyText()
   {
-    if (sfConfig::get('sf_app') != 'front')
+    if (sfConfig::get('sf_app') !== 'front')
     {
       throw new dmException('Can only be used in front app ( current : '.sfConfig::get('sf_app').' )');
     }
+    
+    $page     = $this->source;
+    $culture  = $this->options['culture'];
     
     $this->context->setPage($page);
     
@@ -67,8 +88,10 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
     ->where('pv.module = ? AND pv.action = ?', array($page->get('module'), $page->get('action')))
     ->fetchPDO();
     
-    $zones = dmDb::query('DmZone z, z.Widgets w')
-    ->select('z.dm_area_id, w.module, w.action, w.value')
+    $zones = dmDb::query('DmZone z')
+    ->leftJoin('z.Widgets w')
+    ->innerJoin('w.Translation wTranslation WITH wTranslation.lang = ?', $culture)
+    ->select('z.dm_area_id, w.module, w.action, wTranslation.value')
     ->where('z.dm_area_id = ?',$areas[0][0])
     ->fetchArray();
     
@@ -80,6 +103,9 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
     {
       foreach($zone['Widgets'] as $widget)
       {
+        $widget['value'] = isset($widget['Translation'][$culture]) ? $widget['Translation'][$culture] : '';
+        unset($widget['Translation']);
+        
         $widgetType = $this->context->get('widget_type_manager')->getWidgetType($widget['module'], $widget['action']);
 
         $this->context->getServiceContainer()->addParameters(array(

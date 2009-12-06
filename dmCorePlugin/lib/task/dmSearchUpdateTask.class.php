@@ -28,9 +28,9 @@ class dmSearchUpdateTask extends dmContextTask
     
     $this->log('Search engine index update');
     
-    $this->get('search_engine')->setLogger(new sfConsoleLogger($this->dispatcher));
+    $this->get('service_container')->setService('logger', new sfConsoleLogger($this->dispatcher));
     
-    $this->get('search_engine')->populate($this->getContext());
+    $this->get('search_engine')->populate();
     $this->get('search_engine')->optimize();
   }
 }

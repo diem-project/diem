@@ -40,20 +40,23 @@ abstract class PluginDmLayout extends BaseDmLayout
 
   public function save(Doctrine_Connection $conn = null)
   {
-    $return = parent::save($conn);
+    parent::save($conn);
 
+    $this->checkMissingAreas();
+  }
+  
+  protected function checkMissingAreas()
+  {
     foreach(self::getAreaTypes() as $type)
     {
       if (!$this->getArea($type))
       {
-        $this->Areas[] = dmDb::create('DmArea', array(
-          'dm_layout_id' => $this->id,
+        $this->get('Areas')->add(dmDb::create('DmArea', array(
+          'dm_layout_id' => $this->get('id'),
           'type' => $type
-        ))->saveGet();
+        ))->saveGet());
       }
     }
-
-    return $return;
   }
 
 }

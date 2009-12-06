@@ -1,32 +1,37 @@
 <?php
 
-abstract class dmFrontPageBaseHelper
+abstract class dmFrontPageBaseHelper extends dmConfigurable
 {
   protected
     $dispatcher,
     $serviceContainer,
-    $i18n,
     $helper,
     $page,
-    $areas,
-    $isHtml5;
+    $areas;
 
   protected static
   $innerCssClassWidgets = array('dmWidgetContent.title', 'dmWidgetContent.media', 'dmWidgetContent.link');
     
-  public function __construct(sfEventDispatcher $dispatcher, sfServiceContainer $serviceContainer, sfI18n $i18n, dmHelper $helper)
+  public function __construct(sfEventDispatcher $dispatcher, sfServiceContainer $serviceContainer, dmHelper $helper, array $options = array())
   {
     $this->dispatcher        = $dispatcher;
     $this->serviceContainer  = $serviceContainer;
-    $this->i18n              = $i18n;
     $this->helper            = $helper;
     
-    $this->initialize();
+    $this->initialize($options);
   }
   
-  public function initialize()
+  public function getDefaultOptions()
   {
-    $this->isHtml5 = 5 == $this->getDocTypeOption('version', 5);
+    return array(
+      'widget_css_class_pattern'  => '%module%_%action%',
+      'is_html5'                  => $this->getDocTypeOption('version', 5)
+    );
+  }
+  
+  public function initialize(array $options)
+  {
+    $this->configure($options);
   }
   
   public function connect()
@@ -51,7 +56,7 @@ abstract class dmFrontPageBaseHelper
     $this->areas = null;
   }
   
-  public function getAreas()
+  public function getAreas($culture = null)
   {
     if (null === $this->areas)
     {
@@ -60,14 +65,55 @@ abstract class dmFrontPageBaseHelper
         throw new dmException('Can not fetch page areas because no page have been set');
       }
       
+      $culture = null === $culture ? $this->serviceContainer->getParameter('user.culture') : $culture;
+      $fallBackCulture = sfConfig::get('sf_default_culture');
+      
       $this->areas = dmDb::query('DmArea a INDEXBY a.type')
       ->leftJoin('a.Zones z')
       ->leftJoin('z.Widgets w')
-      ->select('a.type, z.width, z.css_class, w.module, w.action, w.value, w.css_class')
+      ->leftJoin('w.Translation wTranslation WITH wTranslation.lang = ? OR wTranslation.lang = ?', array($culture, $fallBackCulture))
+      ->select('a.type, z.width, z.css_class, w.module, w.action, wTranslation.value, w.css_class')
       ->where('a.dm_layout_id = ?', $this->page->getPageView()->getLayout()->get('id'))
       ->orWhere('a.dm_page_view_id = ?', $this->page->getPageView()->get('id'))
       ->orderBy('z.position asc, w.position asc')
       ->fetchArray();
+      
+      /*
+       * WARNING strange code
+       * This code is to simulate widget i18n fallback,
+       * which can not be achived
+       * normally when hydrating with an array
+       */
+      foreach($this->areas as $areaIndex => $area)
+      {
+        foreach($area['Zones'] as $zoneIndex => $zone)
+        {
+          foreach($zone['Widgets'] as $widgetIndex => $widget)
+          {
+            $value = null;
+            
+            // there is a translation for $culture
+            if (isset($widget['Translation'][$culture]))
+            {
+              $value = $widget['Translation'][$culture]['value'];
+            }
+            // there is a default translation for $fallBackCulture
+            elseif (isset($widget['Translation'][$fallBackCulture]))
+            {
+              $value = $widget['Translation'][$fallBackCulture]['value'];
+            }
+            
+            // assign the value to the widget array
+            $this->areas[$areaIndex]['Zones'][$zoneIndex]['Widgets'][$widgetIndex]['value'] = $value;
+            
+            // unset the useless Translation array
+            unset($this->areas[$areaIndex]['Zones'][$zoneIndex]['Widgets'][$widgetIndex]['Translation']);
+          }
+        }
+      }
+      /*
+       * End of strange code
+       */
     }
     
     return $this->areas;
@@ -94,7 +140,7 @@ abstract class dmFrontPageBaseHelper
 
     $html = '<div class="dm_access_links">';
 
-    $html .= '<a href="#content">'.$this->i18n->__('Go to content').'</a>';
+    $html .= '<a href="#content">'.$this->serviceContainer->getService('i18n')->__('Go to content').'</a>';
 
     $html .= '</div>';
 
@@ -298,32 +344,44 @@ abstract class dmFrontPageBaseHelper
   
   public function getWidgetContainerClasses(array $widget)
   {
-    if(!empty($widget['css_class']))
+    // class for the widget div wrapper
+    $widgetWrapClass = trim('dm_widget '.$this->getWidgetCssClassFromPattern($widget));
+    
+    // if no user css_class, or if the user css_class must be applied inside the widget only
+    if(empty($widget['css_class']) || $this->isInnerCssClassWidget($widget))
     {
-      $widgetWrappedClasses = explode(' ', $widget['css_class']);
-      foreach($widgetWrappedClasses as $index => $class)
-      {
-        $widgetWrappedClasses[$index] = $class.'_wrap';
-      }
-      
-      $widgetWrapClass  = dmArray::toHtmlCssClasses(array(
-        'dm_widget',
-        dmString::underscore($widget['module']),
-        dmString::underscore($widget['action']), implode(' ', $widgetWrappedClasses)
-      ));
-      
-      $widgetInnerClass = dmArray::toHtmlCssClasses(array(
-        'dm_widget_inner',
-        in_array($widget['module'].'.'.$widget['action'], self::$innerCssClassWidgets) ? '' : $widget['css_class']
-      ));
+      $widgetInnerClass = 'dm_widget_inner';
     }
     else
     {
-      $widgetWrapClass  = 'dm_widget '.dmString::underscore($widget['module']).' '.dmString::underscore($widget['action']);
-      $widgetInnerClass = 'dm_widget_inner';
+      $widgetInnerClass = 'dm_widget_inner '.$widget['css_class'];
     }
     
     return array($widgetWrapClass, $widgetInnerClass);
+  }
+  
+  /*
+   * Must this widget's user css_class only be applied inside the widget ?
+   * @return bool whether the css_class is applied inside
+   */
+  protected function isInnerCssClassWidget(array $widget)
+  {
+    return in_array($widget['module'].'.'.$widget['action'], self::$innerCssClassWidgets);
+  }
+  
+  protected function getWidgetCssClassFromPattern(array $widget)
+  {
+    $pattern = $this->getOption('widget_css_class_pattern');
+    
+    if (empty($pattern))
+    {
+      return '';
+    }
+    
+    return strtr($pattern, array(
+      '%module%' => dmString::underscore($widget['module']),
+      '%action%' => dmString::underscore($widget['action'])
+    ));
   }
   
   protected function getDocTypeOption($name, $default)
@@ -333,6 +391,6 @@ abstract class dmFrontPageBaseHelper
   
   protected function isHtml5()
   {
-    return $this->isHtml5;
+    return $this->getOption('is_html5');
   }
 }

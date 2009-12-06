@@ -32,6 +32,11 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     }
   }
 
+  public function hasCurrentTranslation()
+  {
+    return $this->get('Translation')->contains(self::getDefaultCulture());
+  }
+
   public function getCurrentTranslation()
   {
     return $this->get('Translation')->get(self::getDefaultCulture());
@@ -43,8 +48,12 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
   public function preSave($event)
   {
     parent::preSave($event);
-
+    
     if ($this->isModified())
+    {
+      $this->notify($this->isNew() ? 'create' : 'update');
+    }
+    elseif($this->getTable()->hasI18n() && $this->hasCurrentTranslation() && $this->getCurrentTranslation()->isModified())
     {
       $this->notify($this->isNew() ? 'create' : 'update');
     }
@@ -537,6 +546,21 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
       'data' => $this->toArray()
     );
   }
+  
+  public function toArrayWithI18n($deep = true, $prefixKey = false)
+  {
+    $array = $this->toArray($deep, $prefixKey);
+    
+    if ($this->getTable()->hasI18n())
+    {
+      foreach($this->getTable()->getI18nTable()->getFieldNames() as $field)
+      {
+        $array[$field] = $this->get($field);
+      }
+    }
+    
+    return $array;
+  }
 
   public function toIndexableString()
   {
@@ -644,7 +668,6 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     /*
      * Add i18n capabilities
      */
-
     if ($fieldName != 'Translation' && $this->_table->hasI18n())
     {
       $i18nTable = $this->_table->getI18nTable();
@@ -757,6 +780,11 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     if ($this->i18nFallback)
     {
       return $this->i18nFallback;
+    }
+    
+    if ($this->isNew())
+    {
+      return null;
     }
 
     return $this->i18nFallback = $this->_table->getI18nTable()->createQuery('t')

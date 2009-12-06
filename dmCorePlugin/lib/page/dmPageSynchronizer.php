@@ -386,7 +386,7 @@ class dmPageSynchronizer
         }
         
         $pageRecord = dmDb::table('DmPage')->find($page['id']);
-        $pageRecord->refresh();
+        $pageRecord->refresh(true);
         $pageRecord->getNode()->moveAsLastChildOf($parentPage);
       }
     }

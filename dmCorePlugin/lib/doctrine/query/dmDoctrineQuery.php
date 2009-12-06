@@ -82,9 +82,24 @@ abstract class dmDoctrineQuery extends Doctrine_Query
   {
     if (null !== $model)
     {
-      if (!dmDb::table($model)->hasField('is_active'))
+      $table = dmDb::table($model);
+      
+      if (!$table->hasField('is_active'))
       {
         return $this;
+      }
+      
+      if($table->hasI18n() && $table->getI18nTable()->hasField('is_active'))
+      {
+        $rootAlias = $this->getRootAlias();
+        $translationAlias = $rootAlias.'Translation';
+        
+        if (!$this->hasAliasDeclaration($translationAlias))
+        {
+          $this->withI18n(null, null, $rootAlias);
+        }
+        
+        return $this->addWhere($translationAlias.'.is_active = ?', (bool) $boolean);
       }
     }
     
@@ -295,6 +310,11 @@ abstract class dmDoctrineQuery extends Doctrine_Query
   public function fetchValues($params = array())
   {
     return $this->execute($params, Doctrine_Core::HYDRATE_SCALAR);
+  }
+
+  public function fetchOneArray($params = array())
+  {
+    return $this->fetchOne($params, Doctrine_Core::HYDRATE_ARRAY);
   }
 
   /*

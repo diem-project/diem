@@ -5,8 +5,8 @@ class dmSearchEngineActions extends dmAdminBaseActions
 
   public function executeIndex(dmWebRequest $request)
   {
-    $this->index = $this->context->get('search_engine');
-
+    $this->engine = $this->context->get('search_engine');
+    
     $this->form = $this->getSearchForm();
 
     if ($this->query = trim($request->getParameter('query')))
@@ -30,11 +30,14 @@ class dmSearchEngineActions extends dmAdminBaseActions
       
       if (sfConfig::get('sf_debug'))
       {
-        $this->getUser()->logError(implode("\n", array(
+        $this->getUser()->logAlert(implode("\n", array(
           $filesystem->getLastExec('command'),
           $filesystem->getLastExec('output'),
-          'Try running php symfony dm:search-update in a console'
+          'return code : '.$filesystem->getLastExec('return')
         )));
+        
+        $dir = $this->context->get('search_engine')->getOption('dir');
+        $this->getUser()->logError('Try running php symfony dm:search-update --env=dev in a terminal,'."\n".' and check permissions in '.$dir);
       }
     }
     else
@@ -49,7 +52,7 @@ class dmSearchEngineActions extends dmAdminBaseActions
   {
     $timeStart = microtime(true);
 
-    $results = $this->index->search($query);
+    $results = $this->engine->search($query);
     
     $this->time = sprintf("%01.2f", (microtime(true) - $timeStart));
     

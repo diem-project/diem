@@ -98,15 +98,6 @@ abstract class PluginDmPage extends BaseDmPage
     ->where('p.module = ? AND p.action = ?', array($this->get('module'), $this->get('action')))
     ->fetchOne();
     
-//    $pageView = dmDb::query('DmPageView p')
-//    ->where('p.module = ? AND p.action = ?', array($this->module, $this->action))
-//    ->fetchRecord();
-
-//    $pageView = dmDb::query('DmPageView p, p.Layout l, p.Area pa, pa.Zones paz, paz.Widgets paw, l.Areas las, las.Zones lasz, lasz.Widgets lasw')
-//    ->where('p.module = ? AND p.action = ?', array($this->module, $this->action))
-//    ->orderBy('paz.position asc, paw.position asc, lasz.position asc, lasw.position asc')
-//    ->fetchRecords();
-
     if(!$pageView)
     {
       $pageView = dmDb::table('DmPageView')->createFromModuleAndAction($this->get('module'), $this->get('action'));
@@ -170,7 +161,7 @@ LIMIT 1')->getStatement();
   {
     if ($this->isModified())
     {
-      if (!$this->isNew() && ($this->isFieldModified('module') || $this->isFieldModified('module')))
+      if (!$this->isNew() && ($this->isFieldModified('module') || $this->isFieldModified('action')))
       {
         if ($pageView = dmDb::table('DmPageView')->findOneByModuleAndAction($this->get('module'), $this->get('action')))
         {
@@ -196,9 +187,14 @@ LIMIT 1')->getStatement();
       }
     }
 
-    return parent::save($conn);
+    parent::save($conn);
+  
+    if (self::$eventDispatcher)
+    {
+      self::$eventDispatcher->notify(new sfEvent($this, 'dm.page.post_save'));
+    }
   }
-
+  
   public function preDelete($event)
   {
     parent::preDelete($event);
@@ -223,21 +219,6 @@ LIMIT 1')->getStatement();
   /*
    * SEO methods
    */
-
-  public function getDmAutoSeo()
-  {
-    if ($this->hasCache('auto_seo'))
-    {
-      return $this->getCache('auto_seo');
-    }
-
-    if (!$autoSeo = dmDb::table('DmAutoSeo')->findOneByModuleAndAction($this->get('module'), $this->get('action')))
-    {
-      $autoSeo = dmDb::table('DmAutoSeo')->createFromModuleAndAction($this->get('module'), $this->get('action'))->saveGet();
-    }
-
-    return $this->setCache('auto_seo', $autoSeo);
-  }
 
   public function getMyAutoSeoFields()
   {
