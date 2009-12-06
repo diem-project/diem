@@ -86,7 +86,12 @@ class DmPageFrontNewForm extends DmPageForm
 
     $this->object->Node->insertAsLastChildOf($parent);
     
-    $this->object->PageView->dmLayoutId = $values['dm_layout_id'];
+    $this->object->PageView->Layout = dmDb::table('DmLayout')->find($values['dm_layout_id']);
+    $this->object->PageView->save();
+        
+    $this->object->initializeManualPage();
+    
+    $this->object->save();
   }
   
   public function checkSlug($validator, $values)

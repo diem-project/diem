@@ -110,10 +110,6 @@ class dmPageActions extends dmFrontBaseActions
       {
         $this->page = $this->form->save();
         
-        $this->page->initializeManualPage();
-        
-        $this->page->save();
-        
         return $this->renderJson(array(
           'type'  => 'redirect',
           'url'   => $this->context->getHelper()->£link($this->page)->getHref()
