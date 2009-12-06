@@ -30,7 +30,7 @@ class dmFrontFunctionalCoverageTest extends dmCoreFunctionalCoverageTest
         $expectedStatusCode = 200;
       }
       
-      $this->testUrl($page->slug, $expectedStatusCode);
+      $this->testUrl('/'.$page->slug, $expectedStatusCode);
     }
   }
   

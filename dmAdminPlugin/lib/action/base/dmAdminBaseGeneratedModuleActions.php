@@ -183,15 +183,21 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
   {
     $searchParts = explode(' ', $search);
     
-    $alias = $query->getRootAlias();
+    $rootAlias = $query->getRootAlias();
+    $translationAlias = $rootAlias.'Translation';
+    $table = $this->getDmModule()->getTable();
+    
+    $query->withI18n();
     
     foreach($searchParts as $searchPart)
     {
       $ors = array();
       $params = array();
       
-      foreach($this->getDmModule()->getTable()->getColumns() as $columnName => $column)
+      foreach($table->getAllColumns() as $columnName => $column)
       {
+        $alias = $table->isI18nColumn($columnName) ? $translationAlias : $rootAlias;
+        
         switch($column['type'])
         {
           case 'blob':

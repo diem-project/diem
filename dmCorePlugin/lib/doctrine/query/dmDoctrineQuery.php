@@ -55,15 +55,31 @@ abstract class dmDoctrineQuery extends Doctrine_Query
         return $this;
       }
     }
+    
+    if (null === $rootAlias)
+    {
+      // refresh query for introspection
+      $this->buildSqlQuery();
+      
+      $rootAlias        = $this->getRootAlias();
+      $translationAlias = $rootAlias.'Translation';
+      
+      // i18n already joined
+      if ($this->hasAliasDeclaration($translationAlias))
+      {
+        return $this;
+      }
+    }
+    else
+    {
+      $translationAlias = $rootAlias.'Translation';
+    }
 
-    $rootAlias    = null === $rootAlias ? $this->getRootAlias() : $rootAlias;
-    $translation  = $rootAlias.'Translation';
-    $culture      = null === $culture ? myDoctrineRecord::getDefaultCulture() : $culture;
+    $culture = null === $culture ? myDoctrineRecord::getDefaultCulture() : $culture;
     
     return $this
-    ->leftJoin($rootAlias.'.Translation '.$translation.' ON '.$rootAlias.'.id = '.$translation.'.id AND '.$translation.'.lang = ?', $culture);
+    ->leftJoin($rootAlias.'.Translation '.$translationAlias.' WITH '.$translationAlias.'.lang = ?', $culture);
   }
-
 
   /*
    * Join media for this columnName or alias
@@ -89,15 +105,12 @@ abstract class dmDoctrineQuery extends Doctrine_Query
         return $this;
       }
       
-      if($table->hasI18n() && $table->getI18nTable()->hasField('is_active'))
+      if($table->isI18nColumn('is_active'))
       {
-        $rootAlias = $this->getRootAlias();
-        $translationAlias = $rootAlias.'Translation';
+        // will join i18n if missing
+        $this->withI18n();
         
-        if (!$this->hasAliasDeclaration($translationAlias))
-        {
-          $this->withI18n(null, null, $rootAlias);
-        }
+        $translationAlias = $this->getRootAlias().'Translation';
         
         return $this->addWhere($translationAlias.'.is_active = ?', (bool) $boolean);
       }
