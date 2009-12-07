@@ -179,6 +179,10 @@ class sfImageCropGD extends sfImageTransformAbstract
     $resource = $image->getAdapter()->getHolder();
     $dest_resource = $image->getAdapter()->getTransparentImage($this->width, $this->height);
 
+    // Preserving transparency for alpha PNGs
+    imagealphablending($dest_resource, false);
+    imagesavealpha($dest_resource, true);
+
     imagecopy($dest_resource, $resource, 0, 0, $this->left, $this->top, $this->width, $this->height);
 
     // Tidy up

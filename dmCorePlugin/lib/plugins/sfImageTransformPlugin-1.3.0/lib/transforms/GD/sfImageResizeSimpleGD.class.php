@@ -112,6 +112,10 @@ class sfImageResizeSimpleGD extends sfImageTransformAbstract
 
     $dest_resource = $image->getAdapter()->getTransparentImage($this->width, $this->height);
 
+    // Preserving transparency for alpha PNGs
+    imagealphablending($dest_resource, false);
+    imagesavealpha($dest_resource, true);
+
     // Finally do our resizing
     imagecopyresampled($dest_resource,$resource,0, 0, 0, 0, $this->width, $this->height,$x, $y);
     imagedestroy($resource);

@@ -54,7 +54,9 @@ The simplest way to use sfImageTransform is to use method chaining. In an action
 
     $response->setContentType($img->getMIMEType());    
 
-    $response->setContent($img->resize(1000,null)->overlay(new sfImage('logo.png'), 'bottom-right')); 
+    $img->resize(1000,null)->overlay(new sfImage('logo.png'), 'bottom-right')
+
+    $response->setContent($img); 
 
     return sfView::NONE;
 
@@ -63,7 +65,7 @@ The simplest way to use sfImageTransform is to use method chaining. In an action
 
 sfImageTransformPlugin supports several different types of thumbnailing:
 
-  * fit - Creates an image of the specified size and fits the thumbnailed inside. This will produce uniform size thumbnails.
+  * fit - Creates an image of the specified size and fits the thumbnailed inside. This will produce uniform size thumbnails. (default)
   * scale - Scales the image to fit inside the specified dimensions.
   * inflate, deflate - simply resizes the image to the specified dimensions, proportions are not preserved.
   * left, right, top, bottom, center - scales the image to specified size and then crops
