@@ -36,6 +36,9 @@ class dmAutoSeoComponents extends dmAdminBaseComponents
       try
       {
         $seoSynchronizer = $this->context->get('seo_synchronizer');
+        
+        $seoSynchronizer->setCulture($this->getUser()->getCulture());
+        
         $this->metas = $seoSynchronizer->compilePatterns(
           $this->rules,
           $seoSynchronizer->getReplacementsForPatterns($this->module, $this->rules, $this->page->getRecord()),

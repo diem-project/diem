@@ -15,9 +15,14 @@ class dmSeoSynchronizer
     $this->moduleManager  = $moduleManager;
   }
   
-  public function execute(array $onlyModules = array(), $culture)
+  public function setCulture($culture)
   {
     $this->culture = $culture;
+  }
+  
+  public function execute(array $onlyModules = array(), $culture)
+  {
+    $this->setCulture($culture);
     
     $recordDefaultCulture = myDoctrineRecord::getDefaultCulture();
     myDoctrineRecord::setDefaultCulture($this->culture);
