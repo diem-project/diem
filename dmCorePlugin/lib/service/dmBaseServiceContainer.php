@@ -212,6 +212,21 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
     return $this;
   }
   
+  
+  /**
+   * Sets a service container parameter.
+   *
+   * @param string $name       The parameter name
+   * @param mixed  $parameters The parameter value
+   * @return dmBaseServiceContainer $this this instance
+   */
+  public function setParameter($name, $value)
+  {
+    parent::setParameter($name, $value);
+    
+    return $this;
+  }
+  
   /**
    * Returns true if the given service is defined.
    *

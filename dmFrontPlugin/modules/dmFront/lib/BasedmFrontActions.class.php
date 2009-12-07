@@ -7,10 +7,21 @@ class BasedmFrontActions extends dmFrontBaseActions
   {
     $slug = $request->getParameter('slug');
 
-    $this->page = dmDb::table('DmPage')->findOneBySlug($slug);
+    // find matching page_route for this slug
+    $pageRoute = $this->context->get('page_routing')->find($slug);
     
+    if ($pageRoute)
+    {
+      $this->page = $pageRoute->getPage();
+      
+      // found a page on another culture
+      if($pageRoute->getCulture() !== $this->getUser()->getCulture())
+      {
+        $this->getUser()->setCulture($pageRoute->getCulture());
+      }
+    }
     // the page does not exist
-    if (!$this->page)
+    else
     {
       // if page_not_found_handler suggest a redirection
       if ($redirectionUrl = $this->context->get('page_not_found_handler')->getRedirection($slug))
