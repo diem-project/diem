@@ -16,6 +16,8 @@ generator:
           - target
           - dm_catalogue_id
           - meta
+          - created_at
+          - updated_at
         sort:
           - id
           - asc
