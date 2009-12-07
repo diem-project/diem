@@ -11,6 +11,11 @@ class dmSearchIndex extends dmSearchIndexCommon
   {
     parent::initialize($options);
     
+    if (!$this->getOption('dir'))
+    {
+      throw new dmSearchIndexException('Can not create an index without dir option');
+    }
+    
     $this->createLuceneIndex();
   }
   
@@ -191,6 +196,10 @@ class dmSearchIndex extends dmSearchIndexCommon
     );
   }
   
+  
+  /*
+   * @return Zend_Search_Lucene_Proxy instance
+   */
   public function getLuceneIndex()
   {
     return $this->luceneIndex;
