@@ -7,7 +7,8 @@ class dmUpgradeTask extends dmContextTask
 {
   protected
   $diemVersions = array(
-    '500ALPHA4'
+    '500ALPHA4',
+    '500ALPHA6'
   );
   
   /**
@@ -48,6 +49,9 @@ class dmUpgradeTask extends dmContextTask
     }
   }
   
+  /*
+   * Rename IHM setting group
+   */
   protected function upgradeTo500ALPHA4()
   {
     dmDb::query()
@@ -55,6 +59,51 @@ class dmUpgradeTask extends dmContextTask
     ->set('group_name', '?', 'Interface')
     ->where('group_name = ?', 'IHM')
     ->execute();
+  }
+  
+  /*
+   * Fix login and secure module/action in admin/front settings.yml
+   */
+  protected function upgradeTo500ALPHA6()
+  {
+    // Admin : Replace login_module: login by signin
+    $settingsFile = dmProject::rootify('apps/admin/config/settings.yml');
+    $settingsText = file_get_contents($settingsFile);
+    $settings = sfYaml::load($settingsText);
+    
+    $loginModule = dmArray::get(dmArray::get($settings['all'], '.settings'), 'login_module', array());
+    $loginAction = dmArray::get(dmArray::get($settings['all'], '.settings'), 'login_action', array());
+    
+    if('dmAuth' == $loginModule && 'login' == $loginAction)
+    {
+      $settingsText = str_replace('login_action:           login', 'login_action:           signin',       $settingsText);
+      file_put_contents($settingsFile, $settingsText);
+    }
+    
+    // Front : Replace login_module: login by signin
+    $settingsFile = dmProject::rootify('apps/front/config/settings.yml');
+    $settingsText = file_get_contents($settingsFile);
+    $settings = sfYaml::load($settingsText);
+    
+    $loginModule = dmArray::get(dmArray::get($settings['all'], '.settings'), 'login_module', array());
+    
+    if('dmAuth' == $loginModule)
+    {
+      $settingsText = str_replace(
+'    secure_module:          dmAuth
+    secureAction:           secure
+    
+    login_module:           dmAuth
+    login_action:           login',
+      
+'    secure_module:          dmFront
+    secure_action:          secure
+    
+    login_module:           dmFront
+    login_action:           login', $settingsText);
+      
+      file_put_contents($settingsFile, $settingsText);
+    }
   }
   
 }
