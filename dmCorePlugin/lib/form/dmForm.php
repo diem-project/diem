@@ -171,9 +171,13 @@ class dmForm extends sfFormSymfony
       $action = self::$serviceContainer->getService('request')->getUri();
     }
 
-    if ($opt['anchor'] && strpos($action, '#') === false)
+    if (array_key_exists('anchor', $opt))
     {
-      $action .= '#'.(is_string($opt['anchor']) ? $opt['anchor'] : $this->getKey());
+      if (!empty($opt['anchor']) && strpos($action, '#') === false)
+      {
+        $action .= '#'.(is_string($opt['anchor']) ? $opt['anchor'] : $this->getKey());
+      }
+      unset($opt['anchor']);
     }
     
     if (!isset($opt['method']))
