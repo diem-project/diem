@@ -223,9 +223,9 @@ class PluginDmPageTable extends myDoctrineTable
   public function findOneByRecord(myDoctrineRecord $record)
   {
     return $this->createQuery('p')
-    ->where('p.module = ? AND p.action = ? AND record_id = ?', array(
-      $record->getDmModule()->getKey(), 'show', $record->get('id')
-    ))
+    ->where('p.module = ?', $record->getDmModule()->getKey())
+    ->andWhere('p.action = ?', 'show')
+    ->andWhere('p.record_id = ?', $record->get('id'))
     ->dmCache()
     ->fetchRecord();
   }
