@@ -16,6 +16,11 @@ abstract class dmCoreUser extends dmSecurityUser implements dmMicroCacheInterfac
   public function listenToContextLoadedEvent(sfEvent $e)
   {
     $this->setBrowser($e->getSubject()->get('browser'));
+    
+    if (!$e->getSubject()->getI18n()->cultureExists($this->getCulture()))
+    {
+      $this->setCulture(sfConfig::get('sf_default_culture'));
+    }
   }
   
   /*
