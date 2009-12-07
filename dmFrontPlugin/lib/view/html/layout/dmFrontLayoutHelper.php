@@ -64,7 +64,7 @@ class dmFrontLayoutHelper extends dmCoreLayoutHelper
     
     $helper = $this->getHelper();
     
-    $cacheKey = sfConfig::get('sf_cache') ? $user->getCredentialsHash() : null;
+    $cacheKey = sfConfig::get('sf_cache') ? $user->getCacheHash() : null;
     
     $html = '';
     

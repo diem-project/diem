@@ -26,7 +26,7 @@ class dmAdminLayoutHelper extends dmCoreLayoutHelper
     
     $helper = $this->serviceContainer->getService('helper');
     
-    $cacheKey = sfConfig::get('sf_cache') ? $user->getCredentialsHash() : null;
+    $cacheKey = sfConfig::get('sf_cache') ? $user->getCacheHash() : null;
     
     $html = '';
     

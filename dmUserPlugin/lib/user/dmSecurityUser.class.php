@@ -125,6 +125,11 @@ class dmSecurityUser extends sfBasicSecurityUser
     return $this->isSuperAdmin;
   }
   
+  public function getCacheHash()
+  {
+    return $this->getCulture().'_'.$this->getCredentialsHash();
+  }
+  
   public function getCredentialsHash()
   {
     return md5($this->isSuperAdmin.implode(',', $this->credentials));

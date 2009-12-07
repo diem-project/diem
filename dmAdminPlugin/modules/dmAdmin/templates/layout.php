@@ -26,7 +26,7 @@ $helper->renderHtmlTag(),
       $sf_content,
 
     '</div>',
-        
+
     $helper->renderEditBars(),
      
     $helper->renderJavascriptConfig(),
