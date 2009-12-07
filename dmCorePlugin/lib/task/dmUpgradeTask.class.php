@@ -71,36 +71,27 @@ class dmUpgradeTask extends dmContextTask
     $settingsText = file_get_contents($settingsFile);
     $settings = sfYaml::load($settingsText);
     
-    $loginModule = dmArray::get(dmArray::get($settings['all'], '.settings'), 'login_module', array());
-    $loginAction = dmArray::get(dmArray::get($settings['all'], '.settings'), 'login_action', array());
+    $loginModule = dmArray::get(dmArray::get($settings['all'], '.settings', array()), 'login_module');
+    $loginAction = dmArray::get(dmArray::get($settings['all'], '.settings', array()), 'login_action');
     
     if('dmAuth' == $loginModule && 'login' == $loginAction)
     {
-      $settingsText = str_replace('login_action:           login', 'login_action:           signin',       $settingsText);
+      $settingsText = preg_replace('/login_action\:(\s*)login/', 'login_action:$1signin', $settingsText);
       file_put_contents($settingsFile, $settingsText);
     }
     
-    // Front : Replace login_module: login by signin
+    // Front : Replace secure_module, secureAction, login_module and login_action
     $settingsFile = dmProject::rootify('apps/front/config/settings.yml');
     $settingsText = file_get_contents($settingsFile);
     $settings = sfYaml::load($settingsText);
     
-    $loginModule = dmArray::get(dmArray::get($settings['all'], '.settings'), 'login_module', array());
+    $loginModule = dmArray::get(dmArray::get($settings['all'], '.settings', array()), 'login_module');
     
     if('dmAuth' == $loginModule)
     {
-      $settingsText = str_replace(
-'    secure_module:          dmAuth
-    secureAction:           secure
-    
-    login_module:           dmAuth
-    login_action:           login',
-      
-'    secure_module:          dmFront
-    secure_action:          secure
-    
-    login_module:           dmFront
-    login_action:           login', $settingsText);
+      $settingsText = preg_replace('/secure_module\:(\s*)dmAuth/', 'secure_module:$1dmFront', $settingsText);
+      $settingsText = preg_replace('/secureAction\:(\s*)secure/', 'secure_action:$1secure', $settingsText);
+      $settingsText = preg_replace('/login_module\:(\s*)dmAuth/', 'login_module:$1dmFront', $settingsText);
       
       file_put_contents($settingsFile, $settingsText);
     }
