@@ -826,6 +826,36 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     self::$moduleManager = $moduleManager;
   }
 
+  
+  /**
+   * Provides access to i18n methods
+   *
+   * @param  string $method    The method name
+   * @param  array  $arguments The method arguments
+   *
+   * @return mixed The returned value of the called method
+   */
+  public function __call($method, $arguments)
+  {
+    try
+    {
+      return parent::__call($method, $arguments);
+    }
+    catch(Exception $parentException)
+    {
+      try
+      {
+        if ($this->getTable()->hasI18n() && ($i18n = $this->getCurrentTranslation()))
+        {
+          return call_user_func_array(array($i18n, $method), $arguments);
+        }
+      }
+      catch (Exception $e) {}
+      
+      throw $parentException;
+    }
+  }
+  
   /*
    * dmMicroCache
    */

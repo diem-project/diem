@@ -24,11 +24,14 @@
 <?php elseif ('_save_and_add' == $name): ?>
   <?php echo $this->addCredentialCondition('[?php echo $helper->linkToSaveAndAdd($form->getObject(), '.$this->asPhp($params).') ?]', $params) ?>
 
-<?php elseif ('_add' == $name): ?>
-  <?php echo $this->addCredentialCondition('[?php if(!$form->getObject()->isNew()): echo $helper->linkToAdd('.$this->asPhp($params).'); endif; ?]', $params) ?>
-
 <?php elseif ('_view_page' == $name): ?>
   <?php if ($this->getModule()->hasPage()) echo $this->addCredentialCondition('[?php if(!$form->getObject()->isNew()): echo $helper->linkToViewPage($form->getObject(), '.$this->asPhp($params).'); endif; ?]', $params) ?>
+
+<?php elseif ('_history' == $name): ?>
+  <?php echo $this->addCredentialCondition('[?php echo $helper->linkToHistory($form->getObject(), '.$this->asPhp($params).') ?]', $params) ?>
+
+<?php elseif ('_add' == $name): ?>
+  <?php echo $this->addCredentialCondition('[?php if(!$form->getObject()->isNew()): echo $helper->linkToAdd('.$this->asPhp($params).'); endif; ?]', $params) ?>
 
 <?php else: ?>
   <li class="sf_admin_action_<?php echo $params['class_suffix'] ?>">

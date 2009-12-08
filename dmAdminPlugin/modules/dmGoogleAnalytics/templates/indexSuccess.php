@@ -5,7 +5,7 @@ echo £o('div.dm_google_analytics.seo_service');
   echo £link('https://www.google.com/analytics/settings/?et=reset&hl='.$sf_user->getCulture())
   ->set('.dm_big_button')
   ->target('blank')
-  ->text('Open Google Analytics page');
+  ->text(__('Open Google Analytics page'));
   
   if(isset($form))
   {
@@ -17,10 +17,10 @@ echo £o('div.dm_google_analytics.seo_service');
     
     echo £('div.dm_box_inner',
       $form->open('.dm_form.list.little').
-      £('li', £('h3', 'Send reports')).
+      £('li', £('h3', __('Send reports'))).
       $form['ga_key']->renderRow().
       £('li.separator', '&nbsp;').
-      £('li', £('h3', 'Receive reports')).
+      £('li', £('h3', __('Receive reports'))).
       $form['ga_email']->renderRow().
       $form['ga_password']->renderRow().
       $form->renderSubmitTag(__('Save')).

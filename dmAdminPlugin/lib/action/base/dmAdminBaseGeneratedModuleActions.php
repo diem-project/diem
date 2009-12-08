@@ -252,6 +252,50 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
     $this->getUser()->setAttribute($this->getDmModule()->getKey().'.search', $search, 'admin_module');
   }
   
+  
+  /*
+   * History methods
+   */
+  
+  public function executeHistory(sfWebRequest $request)
+  {
+    $this->forward404Unless($this->getDmModule()->getTable()->isVersionable());
+    
+    $this->object = $this->getObjectOrForward404($request);
+    
+    if ($this->object->getTable()->hasI18n() && $this->object->getTable()->getI18nTable()->hasTemplate('Versionable'))
+    {
+      $this->revisions = $this->object->getCurrentTranslation()->get('Version');
+    }
+    else
+    {
+      $this->revisions = $this->object->get('Version');
+    }
+    
+    // we want an array, not a doctrine collection
+    $this->revisions = $this->revisions->getData();
+    
+//    dmDebug::kill($this->revisions);
+    
+    if (count($this->revisions) > 1)
+    {
+      usort($this->revisions, create_function('$a, $b',
+        'return $a->get(\'version\') < $b->get(\'version\');'
+      ));
+    }
+  
+    $this->dispatcher->notify(new sfEvent($this, 'admin.edit_object', array('object' => $this->object)));
+  
+    $this->dispatcher->connect('dm.bread_crumb.filter_links', array($this, 'historyListenToBreadCrumbFilterLinksEvent'));
+  }
+  
+  public function historyListenToBreadCrumbFilterLinksEvent(sfEvent $event, array $links)
+  {
+    $links[] = $this->context->getHelper()->£('h1', $this->context->getI18n()->__('Revision history'));
+
+    return $links;
+  }
+  
   /*
    * Sort methods
    */

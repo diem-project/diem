@@ -239,7 +239,10 @@ DmMailTemplate:
   actAs:
     Timestampable:
     I18n:
-      fields:               [ description, title, body, from_email, to_email, is_html, is_active ]
+      fields:               [ title, description, body, from_email, to_email, is_html, is_active ]
+      actAs:
+        Versionable:
+          fields:           [ title, description, body, from_email, to_email, is_html, is_active ]
   columns:
     name:                   { type: string(255), notnull: true, unique: true }
     description:            { type: string(5000) }

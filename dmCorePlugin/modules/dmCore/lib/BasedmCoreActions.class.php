@@ -39,7 +39,7 @@ class BasedmCoreActions extends dmBaseActions
     $this->next = array(
       'type' => 'ajax',
       'url'  => $this->context->getHelper()->£link('+/dmCore/refreshStep?step=1')->getHref(),
-      'msg'  => 'Clear the cache'
+      'msg'  => $this->context->getI18n()->__('Cache clearing')
     );
     
     $this->getUser()->setAttribute('dm_refresh_back_url', $this->getBackUrl());
@@ -69,7 +69,7 @@ class BasedmCoreActions extends dmBaseActions
           }
           
           $data = array(
-            'msg'  => $this->context->getI18n()->__('Synchronize pages'),
+            'msg'  => $this->context->getI18n()->__('Page synchronization'),
             'type' => 'ajax',
             'url'  => $this->context->getHelper()->£link('+/dmCore/refreshStep?step=2')->getHref()
           );
@@ -79,7 +79,7 @@ class BasedmCoreActions extends dmBaseActions
           $this->context->get('page_tree_watcher')->synchronizePages();
           
           $data = array(
-            'msg'  => $this->context->getI18n()->__('Synchronise SEO'),
+            'msg'  => $this->context->getI18n()->__('SEO synchronization'),
             'type' => 'ajax',
             'url'  => $this->context->getHelper()->£link('+/dmCore/refreshStep?step=3')->getHref()
           );
@@ -94,7 +94,7 @@ class BasedmCoreActions extends dmBaseActions
           }
           
           $data = array(
-            'msg'  => $this->context->getI18n()->__('Regenerate interface'),
+            'msg'  => $this->context->getI18n()->__('Interface regeneration'),
             'type' => 'redirect',
             'url'  => $this->getUser()->getAttribute('dm_refresh_back_url')
           );

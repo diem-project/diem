@@ -17,6 +17,7 @@ js:
     chart:            dmAdminChart
     autoSeo:          dmAdminAutoSeo
     gallery:          dmAdminGalleryCtrl
+    history:          dmAdminHistoryCtrl
 
 css:
 
@@ -42,3 +43,4 @@ css:
     moduleSpace:      moduleSpace
     autoSeo:          autoSeo
     gallery:          gallery
+    history:          history

@@ -1,0 +1,31 @@
+body {
+	/*
+	 * as some diffs are longer than other,
+	 * the scroller appears and disapears
+	 * and the tabs move, which is not good
+	 * some we always show the scroller
+	 */
+	overflow-y: scroll;
+}
+
+div.dm_history del {
+  background: #FFAAAA;
+  padding: 0 0.3em;
+}
+
+div.dm_history ins {
+  background: #99FF99;
+  padding: 0 0.3em;
+}
+
+div.dm_history td div {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+div.dm_history.ui-tabs .ui-tabs-nav li.ui-tabs-selected {
+	/*
+	 * usefull when many tabs on many lines
+	 */
+  padding-bottom: 0;
+}

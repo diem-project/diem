@@ -70,3 +70,7 @@ $t->is($page->autoMod, $page->get('auto_mod'), '$page->autoMod');
 
 $page->autoMod = 'changed';
 $t->is($page->autoMod, 'changed', '$page->autoMod changed');
+
+$mailTemplate = new DmMailTemplate;
+
+$t->isa_ok($mailTemplate->Version, 'myDoctrineCollection', 'Access to i18n relations with the record');

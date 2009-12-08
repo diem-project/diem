@@ -3,7 +3,7 @@ parameters:
   page_routing.class:         dmPageRouting         # Responsible for building a page_route from a slug.
   page_routing.options:       []
   
-  page_route.class:           dmPageRoute           # Page and culture for a slug.
+  page_route.class:           dmPageRoute           # Wraps a page and a culture that match a slug
 
   html_sitemap.class:         dmFrontHtmlSitemap    # Responsible for building and rendering an HTML sitemap. Not to be confused with the xml sitemap, the HTML one is intended to be displayed on the site.
 

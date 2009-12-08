@@ -1,5 +1,11 @@
 parameters:
 
+  text_diff.class:            dmTextDiff            # Responsible for generating text diffs
+
+  record_text_diff.class:     dmRecordTextDiff      # Responsible for rendering diffs between two versions of a record
+  record_text_diff.from_version:
+  record_text_diff.to_version:
+
   mail.class:                 dmMail                # Responsible for building an email from a DmMailTemplate and a data array, then pass it to Swift.
 
   thread_launcher.class:      dmThreadLauncher      # Responsible for launching background tasks using an internal shell.
@@ -132,6 +138,16 @@ parameters:
     activate_new_translations: false                # if set to true, the created translations are active and can be accessed by users
 
 services:
+
+  text_diff:
+    class:                    %text_diff.class%
+    shared:                   true
+    arguments:                [ ]
+
+  record_text_diff:
+    class:                    %record_text_diff.class%
+    shared:                   false
+    arguments:                [ @service_container, %record_text_diff.from_version%, %record_text_diff.to_version% ]
 
   mail:
     class:                    %mail.class%

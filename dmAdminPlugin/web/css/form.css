@@ -154,6 +154,9 @@ div.dm_form_action_bar a {
   display: block;
   margin-top: 3px;
 }
+div.dm_form_action_bar a.sf_admin_action {
+  margin-left: 20px;
+}
 
 div.dm_form_action_bar div.dm_form_pagination > a {
   float: left;

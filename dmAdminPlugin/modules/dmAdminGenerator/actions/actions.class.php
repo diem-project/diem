@@ -2,6 +2,25 @@
 
 class dmAdminGeneratorActions extends dmAdminBaseActions
 {
+  
+  public function executeRevert(dmWebRequest $request)
+  {
+    $model    = $request->getParameter('model');
+    $pk       = $request->getParameter('pk');
+    $version  = $request->getParameter('version');
+    
+    $this->forward404Unless($record = dmDb::table($model)->find($pk));
+    
+    $record->revert($version);
+    $record->save();
+    
+    $this->getUser()->logInfo($this->context->getI18n()->__('%1% has been reverted to version %2%', array(
+      '%1%' => $record->__toString(),
+      '%2%' => $version
+    )));
+    
+    return $this->redirectBack();
+  }
 
   public function executeSaveSort(sfWebRequest $request)
   {

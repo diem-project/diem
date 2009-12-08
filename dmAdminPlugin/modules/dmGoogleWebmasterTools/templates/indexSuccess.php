@@ -5,7 +5,7 @@ echo £o('div.dm_google_webmaster_tools.seo_service');
   echo £link('https://www.google.com/webmasters/tools/home?hl='.$sf_user->getCulture())
   ->set('.dm_big_button')
   ->target('blank')
-  ->text('Open Google Webmaster Tools page');
+  ->text(__('Open Google Webmaster Tools page'));
   
   if(isset($form))
   {

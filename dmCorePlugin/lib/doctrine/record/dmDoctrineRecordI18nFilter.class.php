@@ -82,6 +82,14 @@ class dmDoctrineRecordI18nFilter extends Doctrine_Record_Filter
    */
   public function filterGet(Doctrine_Record $record, $name)
   {
+    // fields are mapped directly in the dmDoctrineRecord class
+    // for performance reasons, but relations are mapped here.
+
+    if ($this->getTable()->hasI18n() && $this->getTable()->getI18nTable()->hasRelation($name))
+    {
+      return $record->getCurrentTranslation()->get($name);
+    }
+    
     throw new Doctrine_Record_UnknownPropertyException(sprintf('Unknown record property / related component "%s" on "%s"', $name, get_class($record)));
   }
   
