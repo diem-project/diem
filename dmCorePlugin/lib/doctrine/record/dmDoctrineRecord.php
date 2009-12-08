@@ -69,15 +69,6 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     $this->notify('delete');
   }
 
-  /*
-   * Add page tree watcher registering
-   */
-  //  public function unlinkInDb($alias, $ids = array())
-  //  {
-  //    $this->notify('delete');
-  //
-  //    $return = parent::unlinkInDb($alias, $ids);
-  //  }
 
   public function notify($type = 'update')
   {
@@ -631,6 +622,18 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
 
       if ($hasAccessor || method_exists($this, $accessor))
       {
+        /*
+         * Special case.
+         * For versionable tables, we don't want to use
+         * the getVersion accessor when requesting 'version'.
+         * This is because "Version" is a relation, and "version" is a fieldname.
+         * The case is lost when using getVersion.
+         */
+        if ('version' === $fieldName && $this->getTable()->isVersionable())
+        {
+          return $this->_get($fieldName, $load);
+        }
+        
         $this->hasAccessor($fieldName, $accessor);
         return $this->$accessor($load);
       }
@@ -826,6 +829,30 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     self::$moduleManager = $moduleManager;
   }
 
+  
+  /*
+   * Hack to make Versionable behavior work with I18n tables
+   * it will add a where clause on the current culture
+   * to avoid selecting versions for all cultures.
+   */
+  public function getVersion()
+  {
+    if (!$this->getTable()->hasI18n())
+    {
+      return $this->_get('Version');
+    }
+    
+    return $this
+    ->getTable()
+    ->getI18nTable()
+    ->getTemplate('Versionable')
+    ->getPlugin()
+    ->getTable()
+    ->createQuery('v')
+    ->where('v.id = ?', $this->get('id'))
+    ->andWhere('v.lang = ?', self::getDefaultCulture())
+    ->fetchRecords();
+  }
   
   /**
    * Provides access to i18n methods

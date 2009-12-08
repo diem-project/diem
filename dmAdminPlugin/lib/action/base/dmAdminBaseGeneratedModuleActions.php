@@ -263,14 +263,7 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
     
     $this->object = $this->getObjectOrForward404($request);
     
-    if ($this->object->getTable()->hasI18n() && $this->object->getTable()->getI18nTable()->hasTemplate('Versionable'))
-    {
-      $this->revisions = $this->object->getCurrentTranslation()->get('Version');
-    }
-    else
-    {
-      $this->revisions = $this->object->get('Version');
-    }
+    $this->revisions = $this->object->getVersion();
     
     // we want an array, not a doctrine collection
     $this->revisions = $this->revisions->getData();

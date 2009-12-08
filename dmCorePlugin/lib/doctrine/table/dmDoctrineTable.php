@@ -232,12 +232,17 @@ abstract class dmDoctrineTable extends Doctrine_Table
     {
       return $this->getCache('human_columns');
     }
-
+    
     $columns = $this->getAllColumns();
+    
+    if ($this->isVersionable())
+    {
+      unset($columns['version']);
+    }
+
     foreach($columns as $columnName => $column)
     {
-      if (!empty($column['autoincrement'])
-      || in_array($columnName, array('created_at', 'updated_at', 'id')))
+      if (!empty($column['autoincrement']) || in_array($columnName, array('created_at', 'updated_at', 'id')))
       {
         unset($columns[$columnName]);
       }
