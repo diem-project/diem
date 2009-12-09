@@ -312,6 +312,11 @@ services:
     class:                    %helper.class%
     shared:                   true
     arguments:                [ @dispatcher, @context, %helper.options% ]
+  
+  link_tag_factory:
+    class:                    %link_tag_factory.class%
+    shared:                   true
+    arguments:                [ @service_container ]
       
   cache_manager:
     class:                    %cache_manager.class%

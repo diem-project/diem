@@ -1,17 +1,14 @@
 <?php
 
-class dmAdminLinkTag extends dmLinkTag
+class dmAdminLinkTag extends dmBaseLinkTag
 {
   protected
-  $controller,
-  $scriptNameResolver;
+  $serviceContainer;
   
-  public function __construct($resource, dmScriptNameResolver $scriptNameResolver, array $requestContext, sfWebController $controller)
+  public function __construct($resource, dmAdminBaseServiceContainer $serviceContainer)
   {
-    $this->resource       = empty($resource) ? '@homepage' : $resource;
-    $this->requestContext = $requestContext;
-    $this->controller     = $controller;
-    $this->scriptNameResolver = $scriptNameResolver;
+    $this->resource         = empty($resource) ? '@homepage' : $resource;
+    $this->serviceContainer = $serviceContainer;
     
     $this->initialize();
   }
@@ -37,15 +34,16 @@ class dmAdminLinkTag extends dmLinkTag
           $slug = '';
         }
         
-        $resource = $this->scriptNameResolver->get($app).$slug;
+        $resource = $this->serviceContainer->getService('script_name_resolver')->get($app).$slug;
       }
       elseif ($this->resource{0} === '/')
       {
         $resource = $this->resource;
+        
         /*
          * add relativeUrlRoot to absolute resource
          */
-        if(($relativeUrlRoot = $this->requestContext['relative_url_root']) && (strpos($resource, $relativeUrlRoot) !== 0))
+        if(($relativeUrlRoot = dmArray::get($serviceContainer->getParameter('request.context'), 'relative_url_root')) && (strpos($resource, $relativeUrlRoot) !== 0))
         {
           $resource = $relativeUrlRoot.$resource;
         }
@@ -87,13 +85,13 @@ class dmAdminLinkTag extends dmLinkTag
       }
       elseif($this->resource instanceof DmPage)
       {
-        $resource = $this->scriptNameResolver->get('front').'/'.$this->resource->get('slug');
+        $resource = $this->serviceContainer->getService('script_name_resolver')->get('front').'/'.$this->resource->get('slug');
       }
     }
     
     if(isset($resource))
     {
-      return $this->controller->genUrl($resource);
+      return $this->serviceContainer->getService('controller')->genUrl($resource);
     }
 
     throw new dmException('Can not find href for '. $this->resource);

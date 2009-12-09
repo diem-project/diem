@@ -6,12 +6,12 @@ $helper->boot('front');
 
 if(sfConfig::get('sf_app') == 'front' && class_exists('dmFrontPluginConfiguration', false))
 {
-  $t = new lime_test(20);
+  $t = new lime_test(24);
 }
 else
 {
   $t = new lime_test(1);
-  $t->pass('Work only in standalone test');
+  $t->pass('Works only on front app');
   return;
 }
 
@@ -40,7 +40,7 @@ $testPage = dmDb::create('DmPage', array(
 
 $testPage->Node->insertAsLastChildOf($home);
 
-sfContext::getInstance()->getConfiguration()->loadHelpers(array('Dm'));
+dm::loadHelpers(array('Dm'));
 
 $scriptName = $helper->get('request')->getScriptName();
 $t->diag('Current cli script name = '.$scriptName);
@@ -51,11 +51,14 @@ $t->is(£link()->getHref(), $scriptName, 'root href is '.$scriptName);
 
 $t->is(£link()->getText(), $home->name, 'root link text is '.$home->name);
 
-$expected = dmContext::getInstance()->get('controller')->genUrl('dmAuth/signin');
+$expected = $helper->get('controller')->genUrl('dmAuth/signin');
 $t->is(£link('+/dmAuth/signin')->getHref(), $expected, '+/dmAuth/signin href is '.$expected);
 
 $rootLink = sprintf('<a class="%s" href="%s">%s</a>', 'link dm_current', $scriptName, $home->name);
 $t->is((string)£link(), $rootLink, 'root link is '.$rootLink);
+
+$rootLink = sprintf('<a class="%s" href="%s">%s</a>', 'link dm_current', $scriptName, $home->name);
+$t->is((string)$helper->get('helper')->£link(), $rootLink, 'use the helper service : root link is '.$rootLink);
 
 $hrefWithParam = $scriptName.'?var=val&other=value';
 $t->is((string)£link()->param('var', 'val')->param('other', 'value')->getHref(), $hrefWithParam, $hrefWithParam);
@@ -75,6 +78,9 @@ $t->is((string)£link($absoluteHrefWithParam2)->text('abs link with params'), $l
 
 $testPageLink = sprintf('<a class="%s" href="%s">%s</a>', 'link', $scriptName.'/'.$testPage->slug, $testPage->name);
 $t->is((string)£link($testPage), $testPageLink, 'page link is '.$testPageLink);
+
+$testPageLink = sprintf('<a class="%s" href="%s">%s</a>', 'link', $scriptName.'/'.$testPage->slug, $testPage->name);
+$t->is((string)$helper->get('helper')->£link($testPage), $testPageLink, 'with helper service, page link is '.$testPageLink);
 
 dmContext::getInstance()->setPage($testPage);
 $t->diag($testPage->name.' is the current page');
@@ -102,13 +108,13 @@ $testPage->Node->delete();
 
 //$t->diag('Switch app');
 //
-//$adminUrl = 'http://symfony/admin_test.php';
+//$adminUrl = 'http://symfony/admin.php';
 //$t->is(£link('app:admin')->getHref(), $adminUrl, $adminUrl);
 //
-//$adminUrl2 = 'http://symfony/admin_test.php/main/test';
+//$adminUrl2 = 'http://symfony/admin.php/main/test';
 //$t->is(£link('app:admin/main/test')->getHref(), $adminUrl2, $adminUrl2);
 //
-//$adminUrl3 = 'http://symfony/admin_test.php?var1=val2';
+//$adminUrl3 = 'http://symfony/admin.php?var1=val2';
 //$t->is(£link('app:admin?var1=val2')->getHref(), $adminUrl3, $adminUrl3);
 
 $t->diag('blank');
@@ -125,3 +131,18 @@ $media = dmDb::table('DmMedia')->findOne();
 $mediaLink = sprintf('<a class="link" href="%s">%s</a>', $helper->get('request')->getAbsoluteUrlRoot().'/'.$media->webPath, $media->file);
 $t->is((string)£link($media), $mediaLink, $mediaLink);
 $t->is((string)£link('media:'.$media->id), $mediaLink, $mediaLink);
+
+sfConfig::set('sf_debug', true);
+
+$badSource = dmString::random().'/'.dmString::random();
+$errorText = '[EXCEPTION] '.$badSource.' is not a valid link resource';
+$expr = '_^<a\sclass="link"\stitle="^"*"\shref="\?dm_debug=1">'.preg_quote($errorText, '_').'</a>$_';
+$expr = '_^<a class="link" title="[^"]+" href="\?dm\_debug=1">'.preg_quote($errorText, '_').'</a>$_';
+$errorLink = (string)£link($badSource);
+$t->like($errorLink, $expr, $errorLink);
+
+sfConfig::set('sf_debug', false);
+
+$badSource = dmString::random().'/'.dmString::random();
+$errorLink = '<a class="link"></a>';
+$t->is($errorLink, $errorLink, $errorLink);

@@ -50,7 +50,7 @@ parameters:
   sitemap.options:
     file:                     sitemap.xml       # where to save the file, relative to web directory
     
-  helper.class:               dmAdminHelper     # Override the core helper options
+  link_tag_factory.class:     dmAdminLinkTagFactory # Builds a link_tag service from a source
  
 services:
 
@@ -92,7 +92,7 @@ services:
   link_tag:
     class:                    %link_tag.class%
     shared:                   false
-    arguments:                [ %link_tag.source%, @script_name_resolver, %request.context%, @controller ]
+    arguments:                [ %link_tag.source%, @service_container ]
 
   admin_sort_table_form:
     class:                    %admin_sort_table_form.class%

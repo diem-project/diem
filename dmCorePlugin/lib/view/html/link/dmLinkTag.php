@@ -1,6 +1,6 @@
 <?php
 
-abstract class dmLinkTag extends dmHtmlTag
+abstract class dmBaseLinkTag extends dmHtmlTag
 {
   protected
   $resource,

@@ -1,6 +1,6 @@
 <?php
 
-abstract class dmFrontLinkTag extends dmLinkTag
+abstract class dmFrontLinkTag extends dmBaseLinkTag
 {
   
   public function __construct(dmFrontLinkResource $resource, array $requestContext, array $options = array())

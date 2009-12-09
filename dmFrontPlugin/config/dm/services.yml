@@ -32,6 +32,8 @@ parameters:
   link_tag_error.options:     []
 
   link_resource.class:        dmFrontLinkResource   # Ressource for a link_tag_*.
+    
+  link_tag_factory.class:     dmFrontLinkTagFactory # Builds a link_tag service from a source
 
   asset_config.class:         dmFrontAssetConfig    # Responsible for loading required assets.
 
@@ -51,8 +53,6 @@ parameters:
   
   widget_renderer.class:      dmFrontWidgetRenderer # Responsible for rendering widgets
     
-  helper.class:               dmFrontHelper         # Override the core helper options
-  
   zone_form.class:            DmZoneFrontForm       # Form used when displaying a zone edition dialog
  
 services:

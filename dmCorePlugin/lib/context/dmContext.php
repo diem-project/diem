@@ -191,6 +191,15 @@ class dmContext extends sfContext
 
     $loader = new dmServiceContainerLoaderConfiguration($sc, $this->dispatcher);
     $loader->load(dmConfig::getAll());
+    
+    /*
+     * Allow listeners of dm.service_container.pre_dump event
+     * to modify the loader
+     */
+    $sc = $this->dispatcher->filter(
+      new sfEvent($this, 'dm.service_container.pre_dump'),
+      $sc
+    )->getReturnValue();
 
     $dumper = new sfServiceContainerDumperPhp($sc);
     $baseClass = sfConfig::get('dm_service_container_base_class', 'dm'.ucfirst(sfConfig::get('dm_context_type')).'BaseServiceContainer');

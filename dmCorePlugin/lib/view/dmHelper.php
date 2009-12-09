@@ -216,9 +216,7 @@ class dmHelper
   
   public function £link($source = null)
   {
-    $this->serviceContainer->setParameter('link_tag.source', $source);
-    
-    return $this->serviceContainer->getService('link_tag');
+    return $this->serviceContainer->getService('link_tag_factory')->buildLink($source);
   }
   
   public function £media($source)
