@@ -43,7 +43,7 @@ class dmAdminLinkTag extends dmBaseLinkTag
         /*
          * add relativeUrlRoot to absolute resource
          */
-        if(($relativeUrlRoot = dmArray::get($serviceContainer->getParameter('request.context'), 'relative_url_root')) && (strpos($resource, $relativeUrlRoot) !== 0))
+        if(($relativeUrlRoot = dmArray::get($this->serviceContainer->getParameter('request.context'), 'relative_url_root')) && (strpos($resource, $relativeUrlRoot) !== 0))
         {
           $resource = $relativeUrlRoot.$resource;
         }
