@@ -147,9 +147,9 @@ $this->filesystem->mirror(
 
 $this->replaceTokens(sfConfig::get('sf_config_dir'), array(
   'SYMFONY_CORE_AUTOLOAD' => $symfonyCoreAutoload,
-  'DIEM_CORE_STARTER'  => var_export(dmOs::join(sfConfig::get('dm_core_dir'), 'lib/core/dm.php'), true),
-  'DIEM_WEB_DIR_NAME'  => var_export($settings['web_dir_name'], true),
-  'DIEM_CULTURE'       => var_export($settings['culture'], true)
+  'DIEM_CORE_STARTER'     => var_export(dmOs::join(sfConfig::get('dm_core_dir'), 'lib/core/dm.php'), true),
+  'DIEM_WEB_DIR'          => var_export(dmOs::join(sfConfig::get('sf_root_dir'), $settings['web_dir_name']), true),
+  'DIEM_CULTURE'          => var_export($settings['culture'], true)
 ));
 
 $this->replaceTokens(sfConfig::get('sf_test_dir'), array(

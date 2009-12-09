@@ -21,6 +21,11 @@ class dmProjectConfiguration extends sfProjectConfiguration
     return array('sfDoctrinePlugin');
   }
 
+  
+  /*
+   * @deprecated
+   * Please use $this->setWebDir instead
+   */
   public function setWebDirName($webDirName)
   {
     return $this->setWebDir(sfConfig::get('sf_root_dir').'/'.$webDirName);

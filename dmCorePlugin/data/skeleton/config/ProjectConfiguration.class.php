@@ -23,7 +23,7 @@ class ProjectConfiguration extends dmProjectConfiguration
       // add plugins you want to enable here
     ));
 
-    $this->setWebDirName(##DIEM_WEB_DIR_NAME##);
+    $this->setWebDir(##DIEM_WEB_DIR##);
   }
   
 }
