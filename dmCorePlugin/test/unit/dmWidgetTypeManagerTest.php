@@ -20,8 +20,6 @@ foreach($widgetTypes as $moduleKey => $actions)
   {
     $t->diag('Testing '.$moduleKey.'.'.$actionKey.' widget options, component, form and view');
     
-    $t->ok($widgetType instanceof dmWidgetType, $moduleKey.'.'.$actionKey.' is an instance of dmWidgetType');
-    
     $fullKey = $moduleKey.ucfirst($actionKey);
     $t->is($widgetType->getFullKey(), $fullKey, 'full key is '.$fullKey);
     
