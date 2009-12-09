@@ -151,16 +151,19 @@ class dmPageTreeWatcher extends dmConfigurable
     {
       $useThread = false;
       
-      $apacheMemoryLimit = dmString::convertBytes(ini_get('memory_limit'));
-      if($apacheMemoryLimit < 64 * 1024 * 1024)
+      if (dmConfig::canSystemCall())
       {
-        $filesystem = $this->serviceContainer->getService('filesystem');
-        
-        if ($filesystem->exec('php -r "die(ini_get(\'memory_limit\'));"'))
+        $apacheMemoryLimit = dmString::convertBytes(ini_get('memory_limit'));
+        if($apacheMemoryLimit < 64 * 1024 * 1024)
         {
-          $cliMemoryLimit = dmString::convertBytes($filesystem->getLastExec('output'));
+          $filesystem = $this->serviceContainer->getService('filesystem');
           
-          $useThread = ($cliMemoryLimit >= $apacheMemoryLimit);
+          if ($filesystem->exec('php -r "die(ini_get(\'memory_limit\'));"'))
+          {
+            $cliMemoryLimit = dmString::convertBytes($filesystem->getLastExec('output'));
+            
+            $useThread = ($cliMemoryLimit >= $apacheMemoryLimit);
+          }
         }
       }
 
