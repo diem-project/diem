@@ -103,7 +103,7 @@ class dmFrontLinkResource
         }
         
         $this->type = 'uri';
-        $this->subject = dmContext::getInstance()->get('script_name_resolver')->get($app).$slug;
+        $this->subject = dmContext::hasInstance() ? dmContext::getInstance()->get('script_name_resolver')->get($app).$slug : $slug;
       }
       elseif(
           strncmp($source, "http://", 7)  === 0
@@ -168,6 +168,11 @@ class dmFrontLinkResource
         {
           throw new dmException(sprintf('%s object can not be associated to a page', get_class($source)));
         }
+      }
+      elseif ($source instanceof Exception)
+      {
+        $this->type = 'error';
+        $this->subject = $source;
       }
     }
     elseif(is_array($source))

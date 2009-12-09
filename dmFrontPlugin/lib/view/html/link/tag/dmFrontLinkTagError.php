@@ -21,17 +21,25 @@ class dmFrontLinkTagError extends dmFrontLinkTag
   {
     if (sfConfig::get('sf_debug'))
     {
-      $this
+      return $this
       ->text('[EXCEPTION] '.$this->exception->getMessage())
       ->param('dm_debug', 1)
-      ->title('Click me to see the exception details');
+      ->title('Click me to see the exception details')
+      ->render();
     }
     else
     {
-      
+      return '';
     }
-    
-    return parent::render();
+  }
+  
+  /*
+   * The template writter may expect a dmFrontLinkTagPage instance
+   * so we simulate it
+   */
+  public function __call($method, $arguments)
+  {
+    return $this;
   }
 
 }

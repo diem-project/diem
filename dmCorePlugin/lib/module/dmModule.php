@@ -55,12 +55,12 @@ class dmModule extends dmMicroCache
     return $this->key;
   }
 
-  public function getParam($key)
+  public function getOption($key, $default = null)
   {
     return isset($this->options[$key]) ? $this->options[$key] : null;
   }
 
-  public function setParam($key, $value)
+  public function setOption($key, $value)
   {
     return $this->options[$key] = $value;
   }
