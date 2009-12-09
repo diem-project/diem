@@ -3,8 +3,7 @@
 class dmThreadLauncher extends dmConfigurable
 {
   protected
-  $filesystem,
-  $options;
+  $filesystem;
   
   public function __construct(dmFilesystem $filesystem, array $options = array())
   {
@@ -15,12 +14,7 @@ class dmThreadLauncher extends dmConfigurable
   
   public function execute($threadClass, array $threadOptions = array())
   {
-    $command = sprintf('%s "%s" %s \'%s\'',
-      sfToolkit::getPhpCli(),
-      $this->options['cli_file'],
-      $threadClass,
-      serialize($threadOptions)
-    );
+    $command = $this->getCommand($threadClass, $threadOptions);
     
     if (!$this->filesystem->exec($command))
     {
@@ -35,6 +29,21 @@ class dmThreadLauncher extends dmConfigurable
     }
   }
   
+  public function getCommand($threadClass, array $threadOptions = array())
+  {
+    return sprintf('%s "%s" %s \'%s\'',
+      sfToolkit::getPhpCli(),
+      $this->getCliFileFullPath(),
+      $threadClass,
+      serialize($threadOptions)
+    );
+  }
+  
+  public function getCliFileFullPath()
+  {
+    return dmProject::rootify($this->getOption('cli_file'));
+  }
+  
   public function getLastExec($name = null)
   {
     return $this->filesystem->getLastExec($name);
@@ -43,8 +52,6 @@ class dmThreadLauncher extends dmConfigurable
   protected function initialize($options)
   {
     $this->configure($options);
-    
-    $this->options['cli_file'] = dmProject::rootify($this->options['cli_file']);
     
     $this->checkCliFile();
   }
@@ -61,7 +68,7 @@ class dmThreadLauncher extends dmConfigurable
   
   protected function checkCliFile()
   {
-    $file = $this->options['cli_file'];
+    $file = $this->getCliFileFullPath();
     
     if (!file_exists($file) || file_get_contents($file) != $this->getCliFileContent())
     {
@@ -84,7 +91,7 @@ class dmThreadLauncher extends dmConfigurable
   protected function getCliFileContent()
   {
     return "<?php
-    
+
 require_once('".sfConfig::get('sf_root_dir')."/config/ProjectConfiguration.class.php');
 
 \$configuration = ProjectConfiguration::getApplicationConfiguration('{$this->options['app']}', '{$this->options['env']}', ".($this->options['debug'] ? 'true' : 'false').", '".sfConfig::get('sf_root_dir')."');

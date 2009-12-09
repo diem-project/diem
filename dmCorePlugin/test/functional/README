@@ -1,0 +1,8 @@
+Automatic functionnal tests are available for your project.
+Run
+"php symfony test:functional admin dm"
+and
+"php symfony test:functional front dm"
+
+Learn more about them on
+http://diem-project.org/diem-5-0/doc/en/reference-book/developer-tools#automatic-functional-tests

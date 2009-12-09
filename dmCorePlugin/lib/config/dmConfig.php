@@ -181,4 +181,8 @@ class dmConfig
 //    return !isset($_SERVER['HTTP_HOST']);
   }
 
+  public static function canSystemCall()
+  {
+    return function_exists('exec');
+  }
 }

@@ -116,6 +116,15 @@ class dmBrowser
     return $this->getFullName();
   }
   
+  public function describe()
+  {
+    return array(
+      'name' => $this->getName(),
+      'version' => $this->getVersion(),
+      'is_unknown' => $this->isUnknown()
+    );
+  }
+  
   public function getFullName()
   {
     return $this->getName().' '.$this->getVersion();

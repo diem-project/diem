@@ -125,7 +125,7 @@ class dmMarkdown extends MarkdownExtra_Parser
     $html = trim($html, "\n");
     
     // add the "first_p" css class to the first p
-    $html = dmString::str_replace_once('<p>', '<p class="first_p">', $html);
+    $html = dmString::str_replace_once('<p>', '<p class="dm_first_p">', $html);
     
     return $html;
   }

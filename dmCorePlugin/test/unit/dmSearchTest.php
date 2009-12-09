@@ -1,7 +1,7 @@
 <?php
 
-require_once(dirname(__FILE__).'/helper/dmTestHelper.php');
-$helper = new dmTestHelper();
+require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
+$helper = new dmUnitTestHelper();
 $helper->boot('front');
 
 $t = new lime_test(17 + 3*count($helper->get('i18n')->getCultures()));

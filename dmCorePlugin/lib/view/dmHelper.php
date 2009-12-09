@@ -69,10 +69,11 @@ class dmHelper
 
   public function £c($tagName)
   {
-    if (($pos = strpos($tagName, '.')) !== false)
+    if ($pos = strpos($tagName, '.') !== false)
     {
       $classes = substr($tagName, $pos+1);
       $tagName = substr($tagName, 0, $pos);
+      
       if ($this->options['use_beaf'] && (strpos($classes, 'beafh') !== false || strpos($classes, 'beafv') !== false))
       {
         if (in_array($tagName, array('span', 'a', 'p')))
@@ -83,6 +84,7 @@ class dmHelper
         {
           $beafTag = 'div';
         }
+        
         return '</'.$beafTag.'><'.$beafTag.' class="beafter"></'.$beafTag.'></'.$tagName.'>';
       }
     }

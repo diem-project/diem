@@ -9,7 +9,7 @@ class dmWidgetListView extends dmWidgetProjectModelView
 
     $this->addRequiredVar(array('orderField', 'orderType'));
 
-    foreach($this->dmAction->getParam('filters', array()) as $filter)
+    foreach($this->dmAction->getOption('filters', array()) as $filter)
     {
       if ($filterModule = $this->dmModule->getAncestor($filter))
       {
@@ -50,6 +50,6 @@ class dmWidgetListView extends dmWidgetProjectModelView
 
   protected function allowFilterAutoRecordId(dmModule $filterModule)
   {
-    return $this->context->getPage()->getDmModule()->knows($filterModule);
+    return $this->context->getPage() ? $this->context->getPage()->getDmModule()->knows($filterModule) : false;
   }
 }

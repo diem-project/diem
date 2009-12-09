@@ -28,11 +28,11 @@ class dmWidgetTypeManager
   
   public function getWidgetTypes()
   {
-    $timer = dmDebug::timerOrNull('dmWidgetTypeManager::getWidgetTypes');
-    
     if (null === $this->widgetTypes)
     {
-      $cache = $this->serviceContainer->getService('cache_manager')->getCache('dm/widget/'.sfConfig::get('sf_app'));
+      $cache = $this->serviceContainer
+      ->getService('cache_manager')
+      ->getCache('dm/widget/'.sfConfig::get('sf_app').sfConfig::get('sf_environment'));
       
       $this->widgetTypes = $cache->get('types');
       
@@ -59,7 +59,7 @@ class dmWidgetTypeManager
               'public_name' => dmString::humanize($name),
               'form_class' => dmArray::get($action, 'form_class', $fullKey.'Form'),
               'view_class' => dmArray::get($action, 'view_class', $fullKey.'View'),
-              'use_component' => $controller->componentExists('dmWidget', $fullKey),
+              'use_component' => $controller->componentExists($moduleKey, $fullKey),
               'cache'      => dmArray::get($action, 'cache', false)
             );
 
@@ -94,7 +94,6 @@ class dmWidgetTypeManager
         $cache->set('types', $this->widgetTypes);
       }
     }
-    $timer && $timer->addTime();
         
     return $this->widgetTypes;
   }
@@ -118,8 +117,7 @@ class dmWidgetTypeManager
       {
         return null;
       }
-//      dmDebug::stack();
-//      dmDebug::kill($this->getWidgetTypes());
+
       throw new dmException(sprintf("The %s.%s widget type does not exist", $module, $action));
     }
 

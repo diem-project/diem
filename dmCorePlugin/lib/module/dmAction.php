@@ -1,42 +1,30 @@
 <?php
 
-class dmAction
+class dmAction extends dmConfigurable
 {
-
   protected
-    $key,
-    $params;
+    $key;
 
   public function __construct($key, array $options)
   {
     $this->key = $key;
 
-    $this->params = $options;
+    $this->configure($options);
   }
   
   public function isCachable()
   {
-    return $this->getParam('cache', false);
-  }
-
-  public function getParam($key, $default = null)
-  {
-    return isset($this->params[$key]) ? $this->params[$key] : $default;
-  }
-
-  public function setParam($key, $value)
-  {
-    return $this->params[$key] = $value;
+    return $this->getOption('cache', false);
   }
 
   public function getName()
   {
-    return $this->getParam('name');
+    return $this->getOption('name');
   }
 
   public function getType()
   {
-    return $this->getParam('type');
+    return $this->getOption('type');
   }
 
   public function getKey()

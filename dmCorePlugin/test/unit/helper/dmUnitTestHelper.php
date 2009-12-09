@@ -2,7 +2,7 @@
 
 require_once(getcwd().'/test/bootstrap/unit.php');
 
-class dmTestHelper
+class dmUnitTestHelper
 {
 	protected
 	$context,

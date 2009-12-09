@@ -1,19 +1,17 @@
 <?php
 
-class dmWidgetType
+class dmWidgetType extends dmConfigurable
 {
-
   protected
     $module,
-    $action,
-    $params;
+    $action;
 
-  public function __construct($module, $action, $config = array())
+  public function __construct($module, $action, $options = array())
   {
     $this->module  = $module;
     $this->action  = $action;
 
-    $this->params = $config;
+    $this->configure($options);
   }
 
   public function getModule()
@@ -28,17 +26,17 @@ class dmWidgetType
 
   public function getFullKey()
   {
-    return $this->getParam('full_key');
+    return $this->getOption('full_key');
   }
   
   public function isCachable()
   {
-    return (bool) $this->getParam('cache');
+    return (bool) $this->getOption('cache');
   }
   
   public function isStatic()
   {
-    return 'static' === $this->getParam('cache');
+    return 'static' === $this->getOption('cache');
   }
 
   public function getNewWidget()
@@ -51,27 +49,27 @@ class dmWidgetType
 
   public function useComponent()
   {
-    return $this->getParam('use_component');
+    return $this->getOption('use_component');
   }
 
   public function getName()
   {
-    return $this->getParam('name');
+    return $this->getOption('name');
   }
   
   public function getPublicName()
   {
-    return $this->getParam('public_name');
+    return $this->getOption('public_name');
   }
 
   public function getFormClass()
   {
-    return $this->getParam('form_class');
+    return $this->getOption('form_class');
   }
 
   public function getViewClass()
   {
-    return $this->getParam('view_class');
+    return $this->getOption('view_class');
   }
 
   public function getUnderscore()
@@ -79,15 +77,6 @@ class dmWidgetType
     return dmString::underscore($this->getModule());
   }
 
-  public function getParam($key)
-  {
-    return isset($this->params[$key]) ? $this->params[$key] : null;
-  }
-
-  public function setParam($key, $value)
-  {
-    return $this->params[$key] = $value;
-  }
 
   public function __toString()
   {

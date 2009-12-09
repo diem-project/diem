@@ -1,5 +1,8 @@
 <?php
 
+/*
+ * Provides basic methods for configurable services
+ */
 abstract class dmConfigurable
 {
   protected $options;
@@ -66,9 +69,9 @@ abstract class dmConfigurable
    *
    * @return mixed  The option value
    */
-  public function getOption($name)
+  public function getOption($name, $default = null)
   {
-    return isset($this->options[$name]) ? $this->options[$name] : null;
+    return isset($this->options[$name]) ? $this->options[$name] : $default;
   }
 
   /**

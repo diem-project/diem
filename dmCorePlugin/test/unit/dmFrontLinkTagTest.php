@@ -1,7 +1,7 @@
 <?php
 
-require_once(dirname(__FILE__).'/helper/dmTestHelper.php');
-$helper = new dmTestHelper();
+require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
+$helper = new dmUnitTestHelper();
 $helper->boot('front');
 
 if(sfConfig::get('sf_app') == 'front' && class_exists('dmFrontPluginConfiguration', false))

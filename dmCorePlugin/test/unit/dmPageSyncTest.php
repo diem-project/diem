@@ -1,7 +1,7 @@
 <?php
 
-require_once(dirname(__FILE__).'/helper/dmPageTestHelper.php');
-$helper = new dmPageTestHelper();
+require_once(dirname(__FILE__).'/helper/dmPageUnitTestHelper.php');
+$helper = new dmPageUnitTestHelper();
 $helper->boot();
 
 $showModules = $helper->getModuleManager()->getModulesWithPage();

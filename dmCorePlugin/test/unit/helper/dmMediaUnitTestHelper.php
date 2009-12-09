@@ -1,8 +1,8 @@
 <?php
 
-require_once(dirname(__FILE__).'/dmTestHelper.php');
+require_once(dirname(__FILE__).'/dmUnitTestHelper.php');
 
-class dmMediaTestHelper extends dmTestHelper
+class dmMediaUnitTestHelper extends dmUnitTestHelper
 {
 	protected
 	$folderTable,

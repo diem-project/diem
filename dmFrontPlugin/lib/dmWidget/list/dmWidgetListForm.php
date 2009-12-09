@@ -59,7 +59,7 @@ class dmWidgetListForm extends dmWidgetProjectModelForm
     /*
      * Filters
      */
-    foreach($this->dmAction->getParam('filters', array()) as $filter)
+    foreach($this->dmAction->getOption('filters', array()) as $filter)
     {
       if (!$filterModule = $this->dmModule->getAncestor($filter))
       {
@@ -76,7 +76,7 @@ class dmWidgetListForm extends dmWidgetProjectModelForm
         $this->widgetSchema[$filterName]    = new sfWidgetFormDoctrineChoice(array(
           'model'     => $filterModule->getModel(),
           'add_empty' => $this->allowFilterAutoRecordId($filterModule)
-          ? sprintf('(%s) %s', dm::getI18n()->__('automatic'), $this->getFilterAutoRecord($filterModule)->__toString())
+          ? sprintf('(%s) %s', $this->__('automatic'), $this->getFilterAutoRecord($filterModule)->__toString())
           : false
         ));
 
@@ -85,11 +85,11 @@ class dmWidgetListForm extends dmWidgetProjectModelForm
           'required'  => !$this->allowFilterAutoRecordId($filterModule)
         ));
 
-        $this->widgetSchema[$filterName]->setLabel(dm::getI18n()->__($filterModule->getName()));
+        $this->widgetSchema[$filterName]->setLabel($this->__($filterModule->getName()));
       }
       else
       {
-        throw new dmException('Diem can not find a link between %s and %s modules', $this->dmModule, $filter);
+        throw new dmException(sprintf('Diem can not find a link between %s and %s modules', $this->dmModule, $filter));
       }
     }
 
@@ -103,7 +103,7 @@ class dmWidgetListForm extends dmWidgetProjectModelForm
 
   protected function allowFilterAutoRecordId(dmModule $filterModule)
   {
-    return $this->getPage()->getDmModule()->knows($filterModule);
+    return $this->getPage() ? $this->getPage()->getDmModule()->knows($filterModule) : false;
   }
 
   protected function getFilterAutoRecord(dmModule $filterModule)
@@ -148,9 +148,9 @@ class dmWidgetListForm extends dmWidgetProjectModelForm
   protected function getOrderTypes()
   {
     return array(
-      'asc'  => dm::getI18n()->__('Ascendant'),
-      'desc' => dm::getI18n()->__('Descendant'),
-      'rand' => dm::getI18n()->__('Random')
+      'asc'  => $this->__('Ascendant'),
+      'desc' => $this->__('Descendant'),
+      'rand' => $this->__('Random')
     );
   }
 

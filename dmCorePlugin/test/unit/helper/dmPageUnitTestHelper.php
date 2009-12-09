@@ -1,8 +1,8 @@
 <?php
 
-require_once(dirname(__FILE__).'/dmTestHelper.php');
+require_once(dirname(__FILE__).'/dmUnitTestHelper.php');
 
-class dmPageTestHelper extends dmTestHelper
+class dmPageUnitTestHelper extends dmUnitTestHelper
 {
 	protected
 	$pageTable;

@@ -36,11 +36,11 @@ class dmWidgetShowForm extends dmWidgetProjectModelForm
 
   protected function allowAutoRecordId()
   {
-    return $this->getPage()->getDmModule()->knows($this->dmModule);
+    return $this->getPage() ? $this->getPage()->getDmModule()->knows($this->dmModule) : false;
   }
 
   protected function getAutoRecord()
   {
-    return $this->getPage()->getRecord()->getAncestorRecord($this->dmModule->getModel());
+    return $this->getPage() ? $this->getPage()->getRecord()->getAncestorRecord($this->dmModule->getModel()) : false;
   }
 }

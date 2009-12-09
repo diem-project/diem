@@ -1,7 +1,7 @@
 <?php
 
-require_once(dirname(__FILE__).'/helper/dmTestHelper.php');
-$helper = new dmTestHelper();
+require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
+$helper = new dmUnitTestHelper();
 $helper->boot();
 
 $t = new lime_test(3);

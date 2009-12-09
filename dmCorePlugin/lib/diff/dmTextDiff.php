@@ -8,7 +8,7 @@ class dmTextDiff
 
   public function __construct()
   {
-    $this->loadVendorLib();
+    @$this->loadVendorLib();
   }
   
   public function generateHtml($from, $to)
