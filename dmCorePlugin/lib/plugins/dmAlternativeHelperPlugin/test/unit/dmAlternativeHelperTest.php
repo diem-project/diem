@@ -1,6 +1,6 @@
 <?php
 
-require_once dmOs::join(sfConfig::get('dm_core_dir'), 'test/unit/helper/dmUnitTestHelper.php');
+require_once realpath(dirname(__FILE__).'/../../../../..') . '/test/unit/helper/dmUnitTestHelper.php';
 
 $helper = new dmUnitTestHelper();
 
