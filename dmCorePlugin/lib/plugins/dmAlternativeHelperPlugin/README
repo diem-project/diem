@@ -1,7 +1,7 @@
 dmAlternativeHelperPlugin
 =================
 
-The dmAlternativeHelperPlugin provides all the helper functions (Diem's class-based and symfony's standard function-based helpers) that normally require the pound letter (i.e. , link etc.) but for people without this letter on their keyboards to ease template development.
+The dmAlternativeHelperPlugin provides Diem's helper functions (Diem's class-based and symfony's standard function-based helpers) that normally require the pound sign (i.e. £, £link, £o etc.) but for people without this letter on their keyboards to ease template development.
 
 Available helpers are:
 
@@ -17,4 +17,4 @@ The plugin is fully extensible. Only works with Diem 5.0 installed.
 Documentation
 -------------
 
-Please see to the online documentation : [Diem alternative helper documentation](http://diem-project.org/plugins/dmalternativehelperplugin)
+More documentation might be available in the online documentation: [Diem alternative helper documentation](http://diem-project.org/plugins/dmalternativehelperplugin)
