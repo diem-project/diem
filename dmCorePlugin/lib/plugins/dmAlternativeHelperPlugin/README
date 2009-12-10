@@ -1,7 +1,7 @@
 dmAlternativeHelperPlugin
 =================
 
-The dmAlternativeHelperPlugin provides all the helper functions (class-based and the standard symfony one's) that normally require the pound letter (i.e. , link etc.) but for people without this letter on their keyboards to ease template development.
+The dmAlternativeHelperPlugin provides all the helper functions (Diem's class-based and symfony's standard function-based helpers) that normally require the pound letter (i.e. , link etc.) but for people without this letter on their keyboards to ease template development.
 
 Available helpers are:
 
