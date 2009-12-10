@@ -2,11 +2,6 @@
 
 class dmOs
 {
-  const INTERNET_CHECK_HOST = '216.239.59.104';
-
-  protected static
-  $isInternetAvailable;
-
   /*
    * Builds a path with many path parts
    *
@@ -17,19 +12,14 @@ class dmOs
   {
     $parts = func_get_args();
 
-    /*
-     * Join path parts with $separator
-     */
-    $dirtyPath = implode('/', $parts);
+    $dirtyPath = implode(DIRECTORY_SEPARATOR, $parts);
     
-    if(strpos($dirtyPath, '//') !== false)
+    if(strpos($dirtyPath, DIRECTORY_SEPARATOR.DIRECTORY_SEPARATOR) !== false)
     {
-      $dirtyPath = preg_replace('|(/{2,})|', '/', $dirtyPath);
+      $dirtyPath = preg_replace('|(\\'.DIRECTORY_SEPARATOR.'{2,})|', DIRECTORY_SEPARATOR, $dirtyPath);
     }
 
-    $cleanPath = '/'.trim($dirtyPath, '/');
-    
-    return $cleanPath;
+    return DIRECTORY_SEPARATOR.trim($dirtyPath, DIRECTORY_SEPARATOR);
   }
 
   static function isLocalhost()
@@ -152,31 +142,14 @@ class dmOs
     return $size;
   }
 
-  public static function isInternetAvailable()
-  {
-    if (null === self::$isInternetAvailable)
-    {
-      if($fp = @fsockopen(self::INTERNET_CHECK_HOST, 80, $errno, $errstring))
-      {
-        fclose($fp);
-        self::$isInternetAvailable = true;
-      }
-      else
-      {
-        self::$isInternetAvailable = false;
-      }
-    }
-    
-    return self::$isInternetAvailable;
-  }
   
   public static function getPerformanceInfos()
   {
     return array(
       'usage' => memory_get_usage(true) / (1024*1024),
-      'peak' => memory_get_peak_usage(true) / (1024*1024),
-      'max' => ini_get('memory_limit'),
-      'time' => round(1000*(microtime(true) - dm::getStartTime()))
+      'peak'  => memory_get_peak_usage(true) / (1024*1024),
+      'max'   => ini_get('memory_limit'),
+      'time'  => round(1000*(microtime(true) - dm::getStartTime()))
     );
   }
 

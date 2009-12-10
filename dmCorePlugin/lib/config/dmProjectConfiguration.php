@@ -9,11 +9,13 @@ class dmProjectConfiguration extends sfProjectConfiguration
 
     $this->enablePlugins($this->getDependancePlugins());
 
-    $this->setPluginPath('dmCorePlugin', dm::getDir().'/dmCorePlugin');
+    $this->setPluginPath('dmCorePlugin', dm::getDir().DIRECTORY_SEPARATOR.'dmCorePlugin');
     $this->enablePlugins('dmCorePlugin');
 
-    $this->setPluginPath('dmUserPlugin', dm::getDir().'/dmUserPlugin');
+    $this->setPluginPath('dmUserPlugin', dm::getDir().DIRECTORY_SEPARATOR.'dmUserPlugin');
     $this->enablePlugins('dmUserPlugin');
+    
+    $this->setPluginPath('dmAlternativeHelperPlugin', dm::getDir().str_replace('/', DIRECTORY_SEPARATOR, '/dmCorePlugin/lib/plugins/dmAlternativeHelperPlugin'));
   }
   
   protected function getDependancePlugins()
@@ -28,7 +30,7 @@ class dmProjectConfiguration extends sfProjectConfiguration
    */
   public function setWebDirName($webDirName)
   {
-    return $this->setWebDir(sfConfig::get('sf_root_dir').'/'.$webDirName);
+    return $this->setWebDir(sfConfig::get('sf_root_dir').DIRECTORY_SEPARATOR.$webDirName);
   }
   
   public function configureDoctrine(Doctrine_Manager $manager)
@@ -38,7 +40,7 @@ class dmProjectConfiguration extends sfProjectConfiguration
     /*
      * Set up doctrine extensions dir
      */
-    Doctrine_Core::setExtensionsPath(sfConfig::get('dm_core_dir').'/lib/doctrine/extension');
+    Doctrine_Core::setExtensionsPath(sfConfig::get('dm_core_dir').DIRECTORY_SEPARATOR.'lib'.DIRECTORY_SEPARATOR.'doctrine'.DIRECTORY_SEPARATOR.'extension');
 
     /*
      * Configure inheritance
