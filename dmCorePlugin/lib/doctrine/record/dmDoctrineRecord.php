@@ -109,7 +109,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     
     $qPk->select($qPk->getRootAlias().'.'.$pk)/*->distinct()*/;
     
-    $pks = $qPk->fetchFlat();
+    $pks = array_unique($qPk->fetchFlat());
 
     $recordOffset = array_search($this->getPrimaryKey(), $pks);
 

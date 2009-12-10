@@ -70,8 +70,9 @@ class dmSeoSynchronizer
     if(!$autoSeoRecord)
     {
       $autoSeoRecord = dmDb::table('DmAutoSeo')
-      ->createFromModuleAndAction($module, 'show', $this->culture)
-      ->saveGet();
+      ->createFromModuleAndAction($module->getKey(), 'show', $this->culture);
+      
+      $autoSeoRecord->trySave();
     }
     
     $patterns = array();
