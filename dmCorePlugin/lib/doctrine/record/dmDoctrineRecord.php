@@ -106,13 +106,10 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     }
 
     $qPk = clone $q;
-    //    $qPk->from(get_class($this).' '.$qPk->getRootAlias())->removeDqlQueryPart('join');
-    $qPk->select($qPk->getRootAlias().'.'.$pk)->distinct();
-    $pks = $qPk->fetchPDO();
-    foreach($pks as $key => $attrs)
-    {
-      $pks[$key] = array_shift($attrs);
-    }
+    
+    $qPk->select($qPk->getRootAlias().'.'.$pk)/*->distinct()*/;
+    
+    $pks = $qPk->fetchFlat();
 
     $recordOffset = array_search($this->getPrimaryKey(), $pks);
 
@@ -129,8 +126,6 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     {
       $map[$key] = isset($records[$id]) ? $records[$id] : null;
     }
-
-    //    dmDebug::kill($map);
 
     return $map;
   }
