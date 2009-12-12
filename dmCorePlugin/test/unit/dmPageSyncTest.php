@@ -78,7 +78,7 @@ for($it = 1; $it<=$nbBigIterations; $it++)
 
 	foreach($helper->getModuleManager()->getModulesWithModel() as $module)
 	{
-		foreach($module->getTable()->createQuery()->orderBy('RAND()')->limit(3)->fetchRecords() as $record)
+		foreach($module->getTable()->createQuery()->orderBy('RANDOM()')->limit(3)->fetchRecords() as $record)
 		{
 			$oldRecord = clone $record;
 			try

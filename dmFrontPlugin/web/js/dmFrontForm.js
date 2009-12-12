@@ -8,7 +8,7 @@ $.widget('ui.dmFrontForm', $.extend({}, $.dm.coreForm, {
 		
 		this.form = $('form:first', this.element);
 		
-    this.markitup();
+    this.markdown();
 		
     this.linkDroppable();
     
@@ -25,14 +25,13 @@ $.widget('ui.dmFrontForm', $.extend({}, $.dm.coreForm, {
     });
 	},
   
-  markitup: function()
+  markdown: function()
   {
     var self = this;
     
     $('textarea.dm_markdown', self.form).each(function()
 		{
-      $(this).markItUp(dmMarkitupMarkdown);
-      $(this).resizable({handles: 's'}).parent().css('position', 'relative');
+      $(this).dmMarkdown().resizable({handles: 's'}).parent().css('position', 'relative');
     });
   }
   

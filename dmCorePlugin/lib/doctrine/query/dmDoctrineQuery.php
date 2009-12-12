@@ -78,7 +78,7 @@ abstract class dmDoctrineQuery extends Doctrine_Query
     $culture = null === $culture ? myDoctrineRecord::getDefaultCulture() : $culture;
     
     return $this
-    ->leftJoin($rootAlias.'.Translation '.$translationAlias.' WITH '.$translationAlias.'.lang = ?', $culture);
+    ->leftJoin($rootAlias.'.Translation '.$translationAlias.' ON '.$rootAlias.'.id = '.$translationAlias.'.id AND '.$translationAlias.'.lang = ?', $culture);
   }
 
   /*

@@ -5,6 +5,7 @@
   use_javascript('lib.ui-resizable');
   use_javascript('lib.markitup');
   use_javascript('lib.markitupSet');
+  use_javascript('core.markdown');
   $attributes = array_merge(
     $attributes instanceof sfOutputEscaper ? $attributes->getRawValue() : $attributes,
     array('class' => 'dm_markdown')

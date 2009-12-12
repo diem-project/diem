@@ -43,35 +43,6 @@
 					});
 				}
       });
-      
-      $('textarea.dm_markdown', form.element).each(function()
-      {
-        var $elem = $(this).droppable({
-          accept: '#dm_page_bar li',
-          activeClass:  'droppable_active',
-          hoverClass:   'droppable_hover',
-          //          tolerance:    'touch',
-          drop: function(e, ui)
-          {
-						var selection = $elem.getSelection().text,
-						linkText = selection || ui.draggable.find('>a').text(),
-						type = "page",
-						placeholder = "["+linkText+"]("+type+":"+ui.draggable.attr('id').replace(/dmp/, '')+")",
-						scrollTop = $elem.scrollTop();
-		        
-						if (selection) 
-						{
-							$elem.replaceSelection(placeholder, true);
-						}
-						else
-						{
-							$elem.val($elem.val()+' '+placeholder);
-						}
-						
-		        $elem.scrollTop(scrollTop);
-          }
-        });
-      });
     }
     
   };

@@ -15,11 +15,12 @@ class dmWidgetContentTextForm extends dmWidgetContentMediaForm
     ));
     $this->addRequiredJavascript(array(
       'lib.ui-tabs',
-      'core.tabForm',
       'lib.markitup',
       'lib.markitupSet',
       'lib.ui-resizable',
-      'lib.fieldSelection'
+      'lib.fieldSelection',
+      'core.tabForm',
+      'core.markdown'
     ));
     
     $this->widgetSchema['title'] = new sfWidgetFormInputText();

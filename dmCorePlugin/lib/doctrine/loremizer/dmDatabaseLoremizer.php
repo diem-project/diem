@@ -91,7 +91,7 @@ class dmDatabaseLoremizer
         {
           $refObject->save();
         }
-        catch(Doctrine_Connection_Mysql_Exception $e)
+        catch(Doctrine_Connection_Exception $e)
         {
           // refObject already exists...
         }

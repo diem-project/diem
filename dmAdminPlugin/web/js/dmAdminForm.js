@@ -8,7 +8,7 @@
       this.$ = $("#dm_admin_content");
       
       this.focusFirstInput();
-      this.markitup();
+      this.markdown();
       this.selectObject();
       this.checkBoxList();
       this.linkDroppable();
@@ -35,7 +35,7 @@
       }
     },
     
-    markitup: function()
+    markdown: function()
     {
       var form = this;
       
@@ -43,8 +43,10 @@
       {
         var $editor = $(this);
         var $preview = $editor.closest('div.fieldset_content_inner').find('div.markdown_preview');
-        $editor.markItUp(dmMarkitupMarkdown);
         var value = $editor.val();
+				
+				$editor.dmMarkdown();
+				
         setInterval(function()
         {
           if ($editor.val() != value) 
@@ -63,7 +65,7 @@
               }
             });
           }
-        }, 200);
+        }, 500);
         
         $preview.height($editor.closest('div.markItUpContainer').innerHeight() - 13);
         

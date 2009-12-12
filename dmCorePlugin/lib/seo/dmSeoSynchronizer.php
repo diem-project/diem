@@ -65,14 +65,13 @@ class dmSeoSynchronizer
     ->withI18n($this->culture, null, 'a')
     ->where('a.module = ?', $module->getKey())
     ->andWhere('a.action = ?', 'show')
-    ->fetchRecord();
+    ->fetchOne();
     
     if(!$autoSeoRecord)
     {
       $autoSeoRecord = dmDb::table('DmAutoSeo')
-      ->createFromModuleAndAction($module->getKey(), 'show', $this->culture);
-      
-      $autoSeoRecord->trySave();
+      ->createFromModuleAndAction($module->getKey(), 'show', $this->culture)
+      ->saveGet();
     }
     
     $patterns = array();

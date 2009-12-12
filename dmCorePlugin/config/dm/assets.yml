@@ -7,6 +7,7 @@ js:
     ctrl:             dmCoreCtrl
     editCtrl:         dmCoreEditCtrl
     form:             dmCoreForm
+    markdown:         dmCoreMarkdown
     tabForm:          dmCoreTabForm
     toolBar:          dmCoreToolBar
     pageBar:          dmCorePageBar
@@ -46,7 +47,7 @@ js:
     jmap:             jmap/jquery.jmap.min
     tree-component:   jsTree/source/tree_component.min
     tree-css:         jsTree/source/css
-    fieldSelection:   jquery-fieldselection/jquery-fieldselection.min
+    fieldSelection:   jquery-fieldselection/jquery-fieldselection
 
 css:
 

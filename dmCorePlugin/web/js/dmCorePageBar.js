@@ -6,7 +6,7 @@
     initPageBar: function()
     {
       var pageBar = this, $toggler = $('#dm_page_bar_toggler'), $tree = $('#dm_page_tree');
-      
+
       $toggler.click(function()
       {
         pageBar.open();
@@ -14,7 +14,7 @@
       {
         pageBar.load()
       });
-      
+
       $(window).bind('resize', function()
       {
         winH = $(window).height();
@@ -26,14 +26,14 @@
     load: function()
     {
       var pageBar = this;
-      
+
       if (pageBar.element.hasClass('loaded')) 
       {
         return;
       }
-			
+
       pageBar.element.addClass('loaded').block();
-			
+
       $.ajax({
 				dataType: 'json',
         url: $.dm.ctrl.getHref('+/dmInterface/loadPageTree'),

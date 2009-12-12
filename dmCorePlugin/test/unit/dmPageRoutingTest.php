@@ -34,7 +34,9 @@ $page->Node->insertAsLastChildOf(dmDb::table('DmPage')->getTree()->fetchRoot());
 
 $c1PageSlug = 'c1/'.$pageSlug;
 $c2PageSlug = 'c2/'.$pageSlug;
+$page->Translation['c1']->name = $c1PageSlug;
 $page->Translation['c1']->slug = $c1PageSlug;
+$page->Translation['c2']->name = $c2PageSlug;
 $page->Translation['c2']->slug = $c2PageSlug;
 
 $page->save();

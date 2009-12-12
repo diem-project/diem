@@ -34,14 +34,7 @@ class dmDb
    */
   public static function table($class)
   {
-    $class = dmString::camelize($class);
-
-    if (isset(self::$tables[$class]))
-    {
-      return self::$tables[$class];
-    }
-
-    return self::$tables[$class] = Doctrine_Core::getTable($class);
+    return Doctrine_Core::getTable(dmString::camelize($class));
   }
 
   /*
