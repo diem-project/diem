@@ -4,18 +4,18 @@ require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
 $helper = new dmUnitTestHelper();
 $helper->boot();
 
-$t = new lime_test(46);
+$t = new lime_test(50);
 
 $t->is(
   dmString::slugify(" phrâse avèc dés accënts "),
-  "phrase-avec-des-accents",
-  "phrase-avec-des-accents"
+  $expected = "phrase-avec-des-accents",
+  $expected
 );
 
 $t->is(
   dmString::slugify("fonctionnalité"),
-  "fonctionnalite",
-  "fonctionnalite"
+  $expected = "fonctionnalite",
+  $expected
 );
 
 $hexTests = array(
@@ -33,7 +33,7 @@ foreach($hexTests as $hexTest)
 
 $t->is(dmString::lcfirst('TEST'), 'tEST', 'lcfirst test');
 
-$t->is(dmString::lcfirst('test'), 'test', 'lcfirst test');
+$t->is(dmString::lcfirst('another test'), 'another test', 'lcfirst test');
 
 // ::retrieveOptFromString()
 $t->diag('::retrieveOptFromString()');
@@ -70,22 +70,30 @@ $cssFromStringsTests = array(
   array('', array(), '', array(), 'empty string'),
   array('#an_id', array(), '', array('id' => 'an_id'), 'one id only'),
   array('#an_id', array('id' => 'old'), '', array('id' => 'an_id'), 'id in opts is overrided'),
-  array('.a_class', array(), '', array('class' => 'a_class'), 'one class only'),
-  array('.a_class.another_class', array(), '', array('class' => 'a_class another_class'), 'multiple classes'),
-  array('#an_id.a_class', array(), '', array('id' => 'an_id', 'class' => 'a_class'), 'an id and a class'),
-  array('#an_id.a_class href="/page"', array(), ' href="/page"', array('id' => 'an_id', 'class' => 'a_class'), 'garbage string after'),
-  array('href="/page" a#an_id.a_class', array(), 'href="/page" a', array('id' => 'an_id', 'class' => 'a_class'), 'garbage string before'),
+  array('.a_class', array(), '', array('class' => array('a_class')), 'one class only'),
+  array('.a_class.another_class', array(), '', array('class' => array('a_class', 'another_class')), 'multiple classes'),
+  array('#an_id.a_class', array(), '', array('id' => 'an_id', 'class' => array('a_class')), 'an id and a class'),
+  array('#an_id.a_class href="/page"', array(), ' href="/page"', array('id' => 'an_id', 'class' => array('a_class')), 'garbage string after'),
+/*
+ * this methodsupports mixed CSS and SF styles only if CSS style is before SF style.
+ * the first space indicates end of CSS style and begining of SF style.
+ */
+//  array('href="/page" a#an_id.a_class', array(), 'href="/page" a', array('id' => 'an_id', 'class' => array('a_class')), 'garbage string before'),
+  array('href="/page" a#an_id.a_class', array(), 'href="/page" a#an_id.a_class', array(), 'garbage string before'),
   array('#an_id alt="I am. Are you?"', array(), ' alt="I am. Are you?"', array('id' => 'an_id'), 'dots are not taken into account if not classes'),
-  array('.cls href="#anchor"', array(), ' href="#anchor', array('class' => 'cls'), '# are not taken into account if not ids'),
-  array('.cls href="page#anchor"', array(), ' href="page#anchor', array('class' => 'cls'), '# are not taken into account if not ids, even if they have text before'),
+  array('#an_id.imaclass alt="I am. Are you?"', array(), ' alt="I am. Are you?"', array('id' => 'an_id', 'class' => array('imaclass')), 'dots are not taken into account if not classes'),
+  array('#an_id.imaclass alt="I am. Are you? and.imaclass"', array(), ' alt="I am. Are you? and.imaclass"', array('id' => 'an_id', 'class' => array('imaclass')), 'dots are not taken into account if not classes, and a class with same name exists'),
+  array('.cls href="#anchor"', array(), ' href="#anchor"', array('class' => array('cls')), '# are not taken into account if not ids'),
+  array('.cls href="page#anchor"', array(), ' href="page#anchor"', array('class' => array('cls')), '# are not taken into account if not ids, even if they have text before'),
 );
 
-foreach($cssFromStringsTests as $cssFromStringsTest) {
+foreach($cssFromStringsTests as $cssFromStringsTest)
+{
   list($str, $opts, $expectedStr, $expectedOpts, $msg) = $cssFromStringsTest;
   dmString::retrieveCssFromString($str, $opts);
   $t->comment('  ::retrieveCssFromString() '. $msg);
   $t->is_deeply($str, $expectedStr, '::retrieveCssFromString() ' . $msg . ': testing resulting string');
-  $t->is_deeply($str, $expectedStr, '::retrieveCssFromString() ' . $msg . ': testing resulting opts');
+  $t->is_deeply($opts, $expectedOpts, '::retrieveCssFromString() ' . $msg . ': testing resulting opts');
 }
 
 // ::toArray()
@@ -93,7 +101,7 @@ $t->diag('::toArray()');
 
 $t->is_deeply(dmString::toArray($arr = array('some' => 'array')), $arr, '::toArray() with an array returns the array');
 
-$t->is_deeply(dmString::toArray(''), array(), '::toArray() with an empty string returns the array');
+$t->is_deeply(dmString::toArray(''), array(), '::toArray() with an empty string returns an empty array');
 
 $t->is_deeply(dmString::toArray('#an_id.a_class.another_class'), array(
   'id' => 'an_id',

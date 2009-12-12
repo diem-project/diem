@@ -237,6 +237,7 @@ class dmString extends sfInflector
    *    id => an_id
    *    class => array(a_class, another_class)
    *  )
+   * only expressions before the first space are taken into account
    * @return array options
    */
   public static function retrieveCssFromString(&$string, &$opt)
@@ -246,27 +247,59 @@ class dmString extends sfInflector
       return null;
     }
     
-    if (strpos($string, '#') !== false)
+    $string = trim($string);
+
+    $firstSpacePos = strpos($string, ' ');
+    
+    $firstSharpPos = strpos($string, '#');
+    
+    // if we have a # before the first space
+    if (false !== $firstSharpPos && (false === $firstSpacePos || $firstSharpPos < $firstSpacePos))
     {
       // fetch id
-      preg_match('/#([\w\-_]*)/', $string, $id);
+      preg_match('/#([\w\-]*)/', $string, $id);
       if (isset($id[1]))
       {
         $opt['id'] = $id[1];
         $string = self::str_replace_once('#'.$id[1], '', $string);
+        
+        if (false != $firstSpacePos)
+        {
+          $firstSpacePos = $firstSpacePos - strlen($id[1]) - 1;
+        }
       }
     }
-
-    if (strpos($string, '.') !== false)
+    
+    // while we find dots in the string
+    while(false !== ($firstDotPos = strpos($string, '.')))
     {
-      // fetch classes
-      preg_match_all('/\.([\w\-_]*)/', $string, $classes);
-      if (isset($classes[1]))
+      // if the string contains a space, and the dot is after this space, then it's not a class
+      if (false !== $firstSpacePos && $firstDotPos > $firstSpacePos)
       {
-        $opt['class'] = isset($opt['class']) ? array_merge($opt['class'], $classes[1]) : $classes[1];
-
-        $string = str_replace('.'.implode('.', $classes[1]), '', $string);
+        break;
       }
+      
+      // fetch class
+      preg_match('/\.([\w\-]*)/', $string, $class);
+      
+      if (isset($class[1]))
+      {
+        if (isset($opt['class']))
+        {
+          $opt['class'][] = $class[1];
+        }
+        else
+        {
+          $opt['class'] = array($class[1]);
+        }
+        
+        if (false != $firstSpacePos)
+        {
+          $firstSpacePos = $firstSpacePos - strlen($class[1]) - 1;
+        }
+      }
+      
+      $string = self::str_replace_once('.'.$class[1], '', $string);
     }
   }
 
@@ -415,10 +448,7 @@ class dmString extends sfInflector
     
     if($firstChar !== false)
     {
-      $beforeStr = substr($subject,0,$firstChar);
-      $afterStr = substr($subject, $firstChar + strlen($search));
-      
-      return $beforeStr.$replace.$afterStr;
+      return substr($subject,0,$firstChar).$replace.substr($subject, $firstChar + strlen($search));
     }
     else
     {
