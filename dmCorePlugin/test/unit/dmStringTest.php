@@ -4,7 +4,7 @@ require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
 $helper = new dmUnitTestHelper();
 $helper->boot();
 
-$t = new lime_test(10);
+$t = new lime_test(46);
 
 $t->is(
   dmString::slugify(" phrâse avèc dés accënts "),
@@ -34,3 +34,97 @@ foreach($hexTests as $hexTest)
 $t->is(dmString::lcfirst('TEST'), 'tEST', 'lcfirst test');
 
 $t->is(dmString::lcfirst('test'), 'test', 'lcfirst test');
+
+// ::retrieveOptFromString()
+$t->diag('::retrieveOptFromString()');
+
+// Empty string
+$t->diag('  ::retrieveOptFromString() empty string');
+$string = '';
+$opt = array('aa' => 'bb');
+$originalOpt = $opt;
+$t->is_deeply(dmString::retrieveOptFromString($string, $opt), null, '::retrieveOptFromString() with an empty string returns null');
+$t->is_deeply($opt, $originalOpt, '::retrieveOptFromString() with an empty string does not modify opt');
+$t->is_deeply($string, '', '::retrieveOptFromString() with an empty string does not modify string');
+
+// Non-empty string
+$t->diag('  ::retrieveOptFromString() non-empty string');
+$string = 'x=y';
+$opt = array('aa' => 'bb');
+dmString::retrieveOptFromString($string, $opt);
+
+$t->is_deeply($opt, array('aa' => 'bb', 'x' => 'y'), '::retrieveOptFromString() merges the options');
+$t->is_deeply($string, '', '::retrieveOptFromString() sets the string parameter to an empty string');
+
+// string overwrites opt
+$t->diag('  ::retrieveOptFromString() overwriting');
+$string = 'x=string';
+$opt = array('x' => 'opt');
+dmString::retrieveOptFromString($string, $opt);
+
+$t->is_deeply($opt, array('x' => 'string'), '::retrieveOptFromString() string has the precedence over opt');
+
+// ::retrieveCssFromString()
+$t->diag('::retrieveCssFromString');
+$cssFromStringsTests = array(
+  array('', array(), '', array(), 'empty string'),
+  array('#an_id', array(), '', array('id' => 'an_id'), 'one id only'),
+  array('#an_id', array('id' => 'old'), '', array('id' => 'an_id'), 'id in opts is overrided'),
+  array('.a_class', array(), '', array('class' => 'a_class'), 'one class only'),
+  array('.a_class.another_class', array(), '', array('class' => 'a_class another_class'), 'multiple classes'),
+  array('#an_id.a_class', array(), '', array('id' => 'an_id', 'class' => 'a_class'), 'an id and a class'),
+  array('#an_id.a_class href="/page"', array(), ' href="/page"', array('id' => 'an_id', 'class' => 'a_class'), 'garbage string after'),
+  array('href="/page" a#an_id.a_class', array(), 'href="/page" a', array('id' => 'an_id', 'class' => 'a_class'), 'garbage string before'),
+  array('#an_id alt="I am. Are you?"', array(), ' alt="I am. Are you?"', array('id' => 'an_id'), 'dots are not taken into account if not classes'),
+  array('.cls href="#anchor"', array(), ' href="#anchor', array('class' => 'cls'), '# are not taken into account if not ids'),
+  array('.cls href="page#anchor"', array(), ' href="page#anchor', array('class' => 'cls'), '# are not taken into account if not ids, even if they have text before'),
+);
+
+foreach($cssFromStringsTests as $cssFromStringsTest) {
+  list($str, $opts, $expectedStr, $expectedOpts, $msg) = $cssFromStringsTest;
+  dmString::retrieveCssFromString($str, $opts);
+  $t->comment('  ::retrieveCssFromString() '. $msg);
+  $t->is_deeply($str, $expectedStr, '::retrieveCssFromString() ' . $msg . ': testing resulting string');
+  $t->is_deeply($str, $expectedStr, '::retrieveCssFromString() ' . $msg . ': testing resulting opts');
+}
+
+// ::toArray()
+$t->diag('::toArray()');
+
+$t->is_deeply(dmString::toArray($arr = array('some' => 'array')), $arr, '::toArray() with an array returns the array');
+
+$t->is_deeply(dmString::toArray(''), array(), '::toArray() with an empty string returns the array');
+
+$t->is_deeply(dmString::toArray('#an_id.a_class.another_class'), array(
+  'id' => 'an_id',
+  'class' => array('a_class', 'another_class'),
+), '::toArray() jquery style');
+
+$t->is_deeply(dmString::toArray('an_option=a_value other_option=other_value'), array(
+  'an_option' => 'a_value',
+  'other_option' => 'other_value',
+), '::toArray() symfony style');
+
+$t->is_deeply(dmString::toArray('#an_id.a_class.another_class an_option=a_value other_option=other_value'), array(
+  'id' => 'an_id',
+  'class' => array('a_class', 'another_class'),
+  'an_option' => 'a_value',
+  'other_option' => 'other_value',
+), '::toArray() with jquery AND symfony styles');
+
+$t->is_deeply(dmString::toArray('#jquery id=symfony'), array(
+  'id' => 'symfony',
+), '::toArray() symfony style has precedence over jquery style');
+
+$t->is_deeply(dmString::toArray('#an_id.a_class.another_class href=page#anchor'), array(
+  'id' => 'an_id',
+  'class' => array('a_class', 'another_class'),
+  'href' => 'page#anchor',
+), '::toArray() if a symfony style option contains a #');
+
+$t->is_deeply(dmString::toArray('#an_id.a_class.another_class an_option=a_value other_option=other_value', true), array(
+  'id' => 'an_id',
+  'class' => 'a_class another_class',
+  'an_option' => 'a_value',
+  'other_option' => 'other_value',
+), '::toArray() with implodeClasses = true');
