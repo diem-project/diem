@@ -97,7 +97,7 @@ class dmCodeEditorActions extends dmFrontBaseActions
     /*
      * Find widgets affected by this php file
      */
-    $module = preg_replace('|^/([^/]+)/.+|', '$1', str_replace(sfConfig::get('sf_app_module_dir'), '', $file));
+    $module = preg_replace('|^/([^/]+)/.+|', '$1', str_replace(dmOs::normalize(sfConfig::get('sf_app_module_dir')), '', $file));
 
     $helper = $this->context->get('page_helper');
     $widgets = array();
