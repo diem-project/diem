@@ -4,10 +4,11 @@ require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
 $helper = new dmUnitTestHelper();
 $helper->boot();
 
-$t = new lime_test(4);
+$t = new lime_test(8);
 
 $markdown = $helper->get('markdown');
 
+$t->comment('Basic features');
 $markdownText = 'this is a **markdown** text with *some basic* features';
 
 $html = '<p class="dm_first_p">this is a <strong>markdown</strong> text with <em>some basic</em> features</p>';
@@ -17,6 +18,25 @@ $text = 'this is a markdown text with some basic features';
 $t->is($markdown->toText($markdownText), $text, $markdown->toText($markdownText));
 
 $text = 'this is a markdown text with some basic features';
+$t->is($markdown->brutalToText($markdownText), $text, $markdown->brutalToText($markdownText));
+$t->is($markdown->toHtml($markdownText), $html, $markdown->toHtml($markdownText));
+
+$t->comment('Standart image inclusion');
+$markdownText = 'this is a **markdown** ![image alt text](/uploads/image.png) [with](http://diem-project.org "link title") *advanced* features';
+
+$text = 'this is a markdown  with advanced features';
+$t->is($markdown->toText($markdownText), $text, $markdown->toText($markdownText));
+
+$text = 'this is a markdown image alt text with advanced features';
+$t->is($markdown->brutalToText($markdownText), $text, $markdown->brutalToText($markdownText));
+
+$t->comment('Extendend image inclusion');
+$markdownText = 'this is a **markdown** ![image alt text](media:33 #an_id.a_class 300x200) [with](http://diem-project.org "link title") *advanced* features';
+
+//$text = 'this is a markdown  with advanced features';
+//$t->is($markdown->toText($markdownText), $text, $markdown->toText($markdownText));
+
+$text = 'this is a markdown image alt text with advanced features';
 $t->is($markdown->brutalToText($markdownText), $text, $markdown->brutalToText($markdownText));
 
 $text = <<<EOF

@@ -189,8 +189,8 @@ class dmMarkdown extends MarkdownExtra_Parser
     // remove common formatting
     $text = str_replace(array('-', '*', '#'), '', $text);
     
-    // remove links
-    $text = preg_replace('#\[([^\]]*)\]\([^\)]*\)#um', '$1', $text);
+    // remove links and images
+    $text = preg_replace('#!?\[([^\]]*)\]\([^\)]*\)#um', '$1', $text);
     
     return $text;
   }
