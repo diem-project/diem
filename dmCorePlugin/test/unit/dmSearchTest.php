@@ -63,6 +63,9 @@ $html = '<div>some content<a href="url">a link text  é àî</a>... end</div>';
 $expected = 'some content a link text e ai end';
 $t->is($currentIndex->cleanText($html), $expected, 'cleaned text : '.$expected);
 
+// for now this doesn't work on windows
+if ('/' !== DIRECTORY_SEPARATOR) return;
+
 $t->diag('Populate all indices');
 
 $t->ok($engine->populate(), 'Indices populated');

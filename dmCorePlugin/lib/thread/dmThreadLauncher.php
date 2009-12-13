@@ -31,11 +31,11 @@ class dmThreadLauncher extends dmConfigurable
   
   public function getCommand($threadClass, array $threadOptions = array())
   {
-    return sprintf('%s "%s" %s \'%s\'',
+    return sprintf('%s "%s" %s "%s"',
       sfToolkit::getPhpCli(),
       $this->getCliFileFullPath(),
       $threadClass,
-      serialize($threadOptions)
+      str_replace('"', '\\"', serialize($threadOptions))
     );
   }
   
@@ -82,7 +82,7 @@ class dmThreadLauncher extends dmConfigurable
       chmod($file, 0777);
     }
     
-    if (!is_executable($file))
+    if (!is_executable($file) && '/' === DIRECTORY_SEPARATOR)
     {
       throw new dmException('Can not make '.dmProject::unRootify($file).' executable');
     }
