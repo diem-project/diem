@@ -10,13 +10,13 @@ class dmCacheManager extends dmConfigurable
   {
     $this->dispatcher = $dispatcher;
     
-    $this->configure($options);
-    
-    $this->initialize();
+    $this->initialize($options);
   }
     
-  public function initialize()
+  public function initialize(array $options)
   {
+    $this->configure($options);
+    
     $this->reset();
   }
   

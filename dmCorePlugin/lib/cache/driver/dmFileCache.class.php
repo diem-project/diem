@@ -54,6 +54,9 @@ class dmFileCache extends sfFileCache
 
   public static function clearAll()
   {
-    sfToolkit::clearDirectory(sfConfig::get("sf_cache_dir"));
+    sfToolkit::clearDirectory(sfConfig::get('sf_cache_dir'));
+    
+    // clear web cache dir
+    sfToolkit::clearDirectory(dmOs::join(sfConfig::get('sf_web_dir'), 'cache'));
   }
 }

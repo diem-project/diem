@@ -135,9 +135,8 @@ abstract class dmAssetCompressor extends dmConfigurable
       $cacheWebPath = '/cache/'.$this->type;
       $cacheDirPath = $this->webDir.$cacheWebPath;
       $cacheFilePath = $cacheDirPath.'/'.$this->cacheKey.'.'.$this->type;
-      
-      $this->filesystem->mkdir(sfConfig::get('sf_cache_dir').'/web');
-      $this->filesystem->mkdir(sfConfig::get('sf_cache_dir').'/web/'.$this->type);
+   
+      $this->filesystem->mkdir($cacheDirPath);
   
       if(!file_exists($cacheFilePath))
       {
