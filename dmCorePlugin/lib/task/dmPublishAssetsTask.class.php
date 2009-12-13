@@ -59,8 +59,9 @@ class dmPublishAssetsTask extends sfPluginPublishAssetsTask
     $webCacheDir = sfConfig::get('sf_web_dir').'/cache';
     if (function_exists('is_link') && is_link($webCacheDir))
     {
-      $filesystem->unlink($webCacheDir);
+      unlink($webCacheDir);
     }
+
     // create web cache dir
     $filesystem->mkdir($webCacheDir);
 
