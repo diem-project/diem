@@ -42,10 +42,8 @@ class dmStylesheetCompressor extends dmAssetCompressor
     if (preg_match_all("/url\(\s?[\'|\"]?(.+)[\'|\"]?\s?\)/ix", $content, $urlMatches))
     {
       $urlMatches = array_unique( $urlMatches[1] );
-      $cssPathArray = explode(DIRECTORY_SEPARATOR, $path);
-
-      //aze::trace($path, $content);
-
+      $cssPathArray = explode('/', $path);
+      
       // pop the css file name
       array_pop( $cssPathArray );
       $cssPathCount   = count( $cssPathArray );

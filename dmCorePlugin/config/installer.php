@@ -8,12 +8,6 @@ require_once(sfConfig::get('dm_core_dir').'/lib/os/dmOs.php');
 require_once(sfConfig::get('dm_core_dir').'/lib/project/dmProject.php');
 require_once(sfConfig::get('dm_core_dir').'/lib/task/dmServerCheckTask.class.php');
 
-if (false && '/' !== DIRECTORY_SEPARATOR)
-{
-  $this->logBlock('Sorry, but Diem 5 only run on Unix servers.', 'ERROR_LARGE');
-  exit;
-}
-
 $this->logBlock('Diem '.DIEM_VERSION.' installer', 'INFO_LARGE');
 
 $this->logSection('Diem', 'Welcome into the Diem installation wizard.');
