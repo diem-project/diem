@@ -24,7 +24,7 @@ $t->ok(is_array($fs->getLastExec()), '$fs->getLastExec() returns an array');
 
 $t->is($fs->getLastExec('command'), $badCommand, 'last command is '.$badCommand);
 
-$t->comment($command = 'echo "this a is CLI test"');
+$t->comment($command = 'echo diem-test');
 
 $t->is($fs->exec($command), true, 'Valid exec returns true');
 
@@ -32,8 +32,8 @@ $t->ok(is_array($fs->getLastExec()), '$fs->getLastExec() returns an array');
 
 $t->is($fs->getLastExec('command'), $command, 'last command is '.$command);
 
-$t->is($fs->getLastExec('output'), 'this a is CLI test'."\n", 'Output is "'.$fs->getLastExec('output').'"');
+$t->is($helper->fixLinebreaks($fs->getLastExec('output')), 'diem-test'."\n", 'Output is "'.$fs->getLastExec('output').'"');
 
 $t->comment('Unix command : '.($command = 'whoami'));
 
-$t->is($fs->execute($command), $success = ('/' === DIRECTORY_SEPARATOR), 'Execution : '.$success);
+$t->is($fs->exec($command), $success = ('/' === DIRECTORY_SEPARATOR), 'Execution : '.$success);

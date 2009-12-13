@@ -115,7 +115,7 @@ class dmProject
   
   public static function getRootDir()
   {
-    return sfConfig::get('sf_root_dir');
+    return dmOs::normalize(sfConfig::get('sf_root_dir'));
   }
   
   /*
@@ -150,7 +150,7 @@ class dmProject
   
   public static function isInProject($path)
   {
-    return strpos($path, self::getRootDir().'/') === 0;
+    return strpos(dmOs::normalize($path), self::getRootDir().'/') === 0;
   }
   
   public static function appExists($application)

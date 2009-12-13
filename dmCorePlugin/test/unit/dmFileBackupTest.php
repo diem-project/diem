@@ -8,7 +8,7 @@ $t = new lime_test(10);
 
 sfConfig::set('dm_backup_enabled', true);
 
-$backup = dmContext::getInstance()->get('file_backup');
+$backup = $helper->get('file_backup');
 
 $rootDir = sfConfig::get('sf_root_dir');
 $backupDir = $backup->getDir();

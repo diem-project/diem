@@ -25,8 +25,22 @@ class dmOs
     {
       $cleanPath = '/'.$cleanPath;
     }
+    else
+    {
+      $cleanPath = self::normalize($cleanPath);
+    }
 
     return $cleanPath;
+  }
+  
+  public static function normalize($path)
+  {
+    if ('/' !== DIRECTORY_SEPARATOR)
+    {
+      $path = str_replace(DIRECTORY_SEPARATOR, '/', $path);
+    }
+    
+    return $path;
   }
 
   static function isLocalhost()

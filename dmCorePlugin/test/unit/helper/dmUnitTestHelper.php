@@ -4,23 +4,29 @@ require_once(getcwd().'/test/bootstrap/unit.php');
 
 class dmUnitTestHelper
 {
-	protected
-	$context,
-	$moduleManager;
+  protected
+  $context,
+  $moduleManager;
 
-	public function boot($app = 'admin', $env = 'test', $debug = true)
-	{
-		$appConfig = ProjectConfiguration::getApplicationConfiguration($app, $env, $debug, null, new sfEventDispatcher());
-		
-		$this->context = dmContext::createInstance($appConfig);
+  public function boot($app = 'admin', $env = 'test', $debug = true)
+  {
+    $appConfig = ProjectConfiguration::getApplicationConfiguration($app, $env, $debug, null, new sfEventDispatcher());
+
+    $this->context = dmContext::createInstance($appConfig);
 
     $this->initialize();
 
     return $this;
-	}
+  }
+  
+  // Helper for cross platform testcases that validate output
+  public function fixLinebreaks($content)
+  {
+    return str_replace(array("\r\n", "\n", "\r"), "\n", $content);
+  }
 
-	public function clearDatabase(lime_test $t = null)
-	{
+  public function clearDatabase(lime_test $t = null)
+  {
     if ($t)
     {
       $t->diag('Clearing project database');
@@ -37,18 +43,18 @@ class dmUnitTestHelper
         $t->diag(sprintf('Can not delete %s records : %s', $module, $e->getMessage()));
       }
     }
-	}
+  }
 
-	public function loremizeDatabase($nb = 10, lime_test $t = null)
-	{
-		if ($t)
-		{
-			$t->diag('Loremizing database with '.$nb.' records by table');
-		}
-    
-		$loremizer = new dmDatabaseLoremizer($this->getDispatcher());
+  public function loremizeDatabase($nb = 10, lime_test $t = null)
+  {
+    if ($t)
+    {
+      $t->diag('Loremizing database with '.$nb.' records by table');
+    }
+
+    $loremizer = new dmDatabaseLoremizer($this->getDispatcher());
     $loremizer->loremize($nb);
-	}
+  }
 
   public function syncPages(lime_test $t = null)
   {
@@ -68,7 +74,7 @@ class dmUnitTestHelper
 
     if ($t) $t->ok(true, sprintf('Pages synchronized in %01.2f s | %d pages', $timer->getElapsedTime(), dmDb::table('DmPage')->count()));
   }
-  
+
   public function updatePageTreeWatcher(lime_test $t = null)
   {
     if ($t) $t->diag('Launching update on pageTreeWatcher to restore page structure... this may take some time');
@@ -88,29 +94,29 @@ class dmUnitTestHelper
     if ($t) $t->ok(true, sprintf('Pages synchronized in %01.2f s | %d pages', $timer->getElapsedTime(), dmDb::table('DmPage')->count()));
   }
 
-	public function initialize()
-	{
+  public function initialize()
+  {
     $this->moduleManager = $this->context->getModuleManager();
-	}
-	
-	public function getModuleManager()
-	{
-	  return $this->moduleManager;
-	}
+  }
+
+  public function getModuleManager()
+  {
+    return $this->moduleManager;
+  }
 
 
-	public function getDispatcher()
-	{
-		return $this->context->getEventDispatcher();
-	}
+  public function getDispatcher()
+  {
+    return $this->context->getEventDispatcher();
+  }
 
-	public function getModule($moduleKey)
-	{
-		return $this->moduleManager->getModuleOrNull($moduleKey);
-	}
+  public function getModule($moduleKey)
+  {
+    return $this->moduleManager->getModuleOrNull($moduleKey);
+  }
 
-	public function get($service)
-	{
-	  return $this->context->get($service);
-	}
+  public function get($service)
+  {
+    return $this->context->get($service);
+  }
 }
