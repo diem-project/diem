@@ -37,7 +37,7 @@ class dmPublishAssetsTask extends sfPluginPublishAssetsTask
       
       if (is_readable($dmWrongAssetDir = dmOs::join($projectWebPath, 'dm'.dmString::camelize($plugin).'Plugin')))
       {
-        if (is_dir($dmWrongAssetDir))
+        if (!is_link($dmWrongAssetDir))
         {
           $filesystem->deleteDirContent($dmWrongAssetDir);
         }
@@ -48,18 +48,18 @@ class dmPublishAssetsTask extends sfPluginPublishAssetsTask
       
     if (is_readable($doctrineAssetPath = dmOs::join($projectWebPath, 'sfDoctrinePlugin')))
     {
-      if (is_dir($doctrineAssetPath))
+      if (!is_link($doctrineAssetPath))
       {
         $filesystem->deleteDirContent($doctrineAssetPath);
       }
-        
+      
       $filesystem->remove($doctrineAssetPath);
     }
 
     $webCacheDir = sfConfig::get('sf_web_dir').'/cache';
-    if (function_exists('is_link') && is_link($webCacheDir))
+    if (is_link($webCacheDir))
     {
-      unlink($webCacheDir);
+      $filesystem->remove($webCacheDir);
     }
 
     // create web cache dir

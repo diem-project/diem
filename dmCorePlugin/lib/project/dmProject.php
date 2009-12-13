@@ -106,15 +106,6 @@ class dmProject
         );
       }
     }
-    
-    foreach(array('dm/core', 'dm/admin', 'dm/front', 'cache') as $webSymLink)
-    {
-      $linkFullPath = dmOs::join(sfConfig::get('sf_web_dir'), $webSymLink);
-      if(!is_readable($linkFullPath))
-      {
-        $messages[] = sprintf('%s must be a symlink. Please launch the dm:setup task to fix the problem', dmProject::unRootify($linkFullPath));
-      }
-    }
 
     if(count($messages))
     {
