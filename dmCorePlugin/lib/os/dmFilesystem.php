@@ -95,9 +95,23 @@ class dmFilesystem extends sfFilesystem
 
   public function sf($command)
   {
+    try
+    {
+      $phpCli = sfToolkit::getPhpCli();
+    }
+    catch(sfException $e)
+    {
+      $this->lastExec = array(
+        'command' => $command,
+        'output'  => $e->getMessage()
+      );
+      
+      return false;
+    }
+    
     $sfCommand = sprintf(
       '%s "%s" %s',
-      sfToolkit::getPhpCli(),
+      $phpCli,
       sfConfig::get('sf_root_dir').'/symfony',
       $command
     );

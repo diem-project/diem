@@ -8,7 +8,7 @@ require_once(sfConfig::get('dm_core_dir').'/lib/os/dmOs.php');
 require_once(sfConfig::get('dm_core_dir').'/lib/project/dmProject.php');
 require_once(sfConfig::get('dm_core_dir').'/lib/task/dmServerCheckTask.class.php');
 
-if ('/' !== DIRECTORY_SEPARATOR)
+if (false && '/' !== DIRECTORY_SEPARATOR)
 {
   $this->logBlock('Sorry, but Diem 5 only run on Unix servers.', 'ERROR_LARGE');
   exit;

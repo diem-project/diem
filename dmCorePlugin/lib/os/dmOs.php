@@ -12,14 +12,21 @@ class dmOs
   {
     $parts = func_get_args();
 
-    $dirtyPath = implode(DIRECTORY_SEPARATOR, $parts);
+    $dirtyPath = implode('/', $parts);
     
-    if(strpos($dirtyPath, DIRECTORY_SEPARATOR.DIRECTORY_SEPARATOR) !== false)
+    if(strpos($dirtyPath, '//') !== false)
     {
-      $dirtyPath = preg_replace('|(\\'.DIRECTORY_SEPARATOR.'{2,})|', DIRECTORY_SEPARATOR, $dirtyPath);
+      $dirtyPath = preg_replace('|(/{2,})|', '/', $dirtyPath);
+    }
+    
+    $cleanPath = trim($dirtyPath, '/');
+    
+    if ('/' === DIRECTORY_SEPARATOR)
+    {
+      $cleanPath = '/'.$cleanPath;
     }
 
-    return DIRECTORY_SEPARATOR.trim($dirtyPath, DIRECTORY_SEPARATOR);
+    return $cleanPath;
   }
 
   static function isLocalhost()

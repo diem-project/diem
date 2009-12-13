@@ -21,7 +21,7 @@ class dmServerCheck
     
     return array(
       'server' => array(
-    new dmServerCheckUnit('unix', DIRECTORY_SEPARATOR == '/', true, self::ERROR),
+    new dmServerCheckUnit('unix', DIRECTORY_SEPARATOR == '/', true),
     new dmServerCheckUnit('graphviz installed', 0 === $graphvizReturnCode, true)
     ),
        'symfony' => array(

@@ -113,16 +113,12 @@ EOF;
     
     $this->logSection('diem', 'generate front modules');
     
-    try
-    {
-      $this->context->get('filesystem')->sf('dmFront:generate');
-    }
-    catch(Exception $e)
+    if (!$this->context->get('filesystem')->sf('dmFront:generate'))
     {
       $this->logBlock(array(
-        'Cant\' run dmFront:generate : '.$e->getMessage(), 'ERROR',
+        'Can\'t run dmFront:generate : '.$this->context->get('filesystem')->getLastExec('output'),
         'Please run "php symfony dmFront:generate" manually to generate front templates'
-      ));
+      ), 'ERROR');
     }
     
     $this->runTask('dm:permissions');

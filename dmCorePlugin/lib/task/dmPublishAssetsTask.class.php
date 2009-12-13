@@ -32,25 +32,37 @@ class dmPublishAssetsTask extends sfPluginPublishAssetsTask
 
       if (file_exists($origin))
       {
-        $filesystem->relativeSymlink($origin, $target);
+        $filesystem->relativeSymlink($origin, $target, true);
       }
       
-      if (is_link(dmOs::join($projectWebPath, 'dm'.dmString::camelize($plugin).'Plugin')))
+      if (is_readable($dmWrongAssetDir = dmOs::join($projectWebPath, 'dm'.dmString::camelize($plugin).'Plugin')))
       {
-        $filesystem->remove(dmOs::join($projectWebPath, 'dm'.dmString::camelize($plugin).'Plugin'));
+        if (is_dir($dmWrongAssetDir))
+        {
+          $filesystem->deleteDirContent($dmWrongAssetDir);
+        }
+        
+        $filesystem->remove($dmWrongAssetDir);
       }
     }
       
-    if (is_link(dmOs::join($projectWebPath, 'sfDoctrinePlugin')))
+    if (is_readable($doctrineAssetPath = dmOs::join($projectWebPath, 'sfDoctrinePlugin')))
     {
-      $filesystem->remove(dmOs::join($projectWebPath, 'sfDoctrinePlugin'));
+      if (is_dir($doctrineAssetPath))
+      {
+        $filesystem->deleteDirContent($doctrineAssetPath);
+      }
+        
+      $filesystem->remove($doctrineAssetPath);
     }
 
-    $filesystem->mkdir(sfConfig::get('sf_cache_dir').'/web');
-    $filesystem->relativeSymlink(
-      sfConfig::get('sf_cache_dir').'/web',
-      dmOs::join($projectWebPath, 'cache')
-    );
+    $webCacheDir = sfConfig::get('sf_web_dir').'/cache';
+    if (function_exists('is_link') && is_link($webCacheDir))
+    {
+      $filesystem->unlink($webCacheDir);
+    }
+    // create web cache dir
+    $filesystem->mkdir($webCacheDir);
 
     if (!file_exists(dmOs::join($projectWebPath, 'sf')))
     {
