@@ -4,55 +4,58 @@ require_once(dirname(__FILE__).'/dmUnitTestHelper.php');
 
 class dmMediaUnitTestHelper extends dmUnitTestHelper
 {
-	protected
-	$folderTable,
-	$mediaTable;
+  protected
+  $folderTable,
+  $mediaTable;
 
-	public function initialize()
-	{
+  public function initialize()
+  {
     parent::initialize();
 
     $this->folderTable = dmDb::table('dmMediaFolder');
     $this->mediaTable = dmDb::table('dmMedia');
-	}
+  }
 
-	/*
-	 * 2 tests :
-	 * Verify that each db folder exist in fs
-	 * Verify that each fs folder exist in db
-	 */
-	public function testFolderCorrelations(lime_test $t)
-	{
-		$t->diag('Verify that each db folder exist in fs');
+  /*
+   * 2 tests :
+   * Verify that each db folder exist in fs
+   * Verify that each fs folder exist in db
+   */
+  public function testFolderCorrelations(lime_test $t)
+  {
+    $t->diag('Verify that each db folder exist in fs');
 
-		$errors = 0;
-		foreach($this->folderTable->findAll() as $f)
-		{
-		  if (!is_dir($f->fullPath))
-		  {
-		    $t->diag(sprintf('folder %s does not exist in fs', $f));
-		    $errors++;
-		  }
-		}
-		$t->is($errors, 0, 'Each db folder exist in fs');
+    $errors = 0;
+    foreach($this->folderTable->findAll() as $f)
+    {
+      if (!is_dir($f->fullPath))
+      {
+        $t->diag(sprintf('folder %s does not exist in fs', $f));
+        $errors++;
+      }
+    }
+    $t->is($errors, 0, 'Each db folder exist in fs');
 
-		if ($errors > 0) die;
+    if ($errors > 0) die;
 
-		$t->diag('Verify that each fs folder exist in db');
+    $t->diag('Verify that each fs folder exist in db');
 
-		$errors = 0;
-		foreach(sfFinder::type('dir')->discard(".*")->ignore_version_control()->maxdepth(20)->in($this->folderTable->getTree()->fetchRoot()->fullPath) as $f)
-		{
-			if (strpos($f, '/.')) continue;
-		  $f = str_replace(sfConfig::get('sf_upload_dir').'/', '', $f);
-		  if (!$this->folderTable->createQuery('f')->where('f.rel_path = ?', $f)->exists())
-		  {
-		    $t->diag(sprintf('folder %s does not exist in db', $f));
-		    $errors++;
-		  }
-		}
-		$t->is($errors, 0, 'Each fs folder exist in db');
-	}
+    $errors = 0;
+    foreach(sfFinder::type('dir')->discard(".*")->ignore_version_control()->maxdepth(20)->in($this->folderTable->getTree()->fetchRoot()->fullPath) as $f)
+    {
+      if (strpos($f, '/.')) continue;
+      
+      $f = dmOs::normalize($f);
+      
+      $f = str_replace(dmOs::normalize(sfConfig::get('sf_upload_dir')).'/', '', $f);
+      if (!$this->folderTable->createQuery('f')->where('f.rel_path = ?', $f)->exists())
+      {
+        $t->diag(sprintf('folder %s does not exist in db', $f));
+        $errors++;
+      }
+    }
+    $t->is($errors, 0, 'Each fs folder exist in db');
+  }
 
   public function checkTreeIntegrity(lime_test $t)
   {
@@ -83,7 +86,7 @@ class dmMediaUnitTestHelper extends dmUnitTestHelper
 
     foreach($folders as $folder)
     {
-    	$folder->refresh();
+      $folder->refresh();
       if ($folder->getNode()->isRoot()) continue;
 
       if (!$parent = $folder->getNode()->getParent())

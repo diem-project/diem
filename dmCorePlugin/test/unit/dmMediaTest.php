@@ -26,7 +26,7 @@ $helper->testFolderCorrelations($t);
 
 $t->isa_ok($root, 'DmMediaFolder', 'root is a media folder');
 
-$t->is($root->fullPath, sfConfig::get('sf_upload_dir'), 'root full path is '.$root->fullPath);
+$t->is($root->fullPath, dmOs::normalize(sfConfig::get('sf_upload_dir')), 'root full path is '.$root->fullPath);
 
 $t->diag('add a folder in root');
 

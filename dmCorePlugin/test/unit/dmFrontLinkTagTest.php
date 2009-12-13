@@ -15,6 +15,8 @@ else
   return;
 }
 
+sfConfig::set('sf_no_script_name', false);
+
 dmDb::table('DmPage')->checkBasicPages();
 
 $sc = $helper->get('service_container');
@@ -28,7 +30,7 @@ $t->diag('link current_span is false');
 
 $home = dmDb::table('DmPage')->getTree()->fetchRoot();
 $currentPage = $home;
-dmContext::getInstance()->setPage($currentPage);
+$helper->get('context')->setPage($currentPage);
 $t->diag($home->name.' is the current page');
 
 $testPage = dmDb::create('DmPage', array(
