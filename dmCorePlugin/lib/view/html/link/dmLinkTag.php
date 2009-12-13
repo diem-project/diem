@@ -165,7 +165,7 @@ abstract class dmBaseLinkTag extends dmHtmlTag
 
   protected function buildUrl($base, array $data = array())
   {
-    return $base.'?'.http_build_query($data);
+    return $base.'?'.http_build_query($data, null, '&');
   }
   
 }

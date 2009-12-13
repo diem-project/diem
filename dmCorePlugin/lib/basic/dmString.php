@@ -407,7 +407,7 @@ class dmString extends sfInflector
   {
     if ($pos = strpos($url, '?'))
     {
-      parse_str(substr($url, $pos + 1), $params);
+      parse_str(str_replace('&amp;', '&', substr($url, $pos + 1)), $params);
       return $params;
     }
 
