@@ -96,11 +96,14 @@ class dmDiagramActions extends dmAdminBaseActions
       'node.missing' => array('fillcolor' => '#ffaaaa', 'style' => 'filled', 'shape' => 'record'),
     )));
     
-    $return = $this->context->getFileSystem()->exec(sprintf('dot -Tpng %s > %s', $dotFile, $dependencyDiagramImageFullPath));
+    $filesystem = $this->context->getFileSystem();
+    $return = $filesystem->exec(sprintf('dot -Tpng %s > %s', $dotFile, $dependencyDiagramImageFullPath));
     
     if (!$return)
     {
       $this->getUser()->logError(sprintf('Diem can not generate the %s dependency diagram. Probably graphviz is not installed on the server.', $appName), false);
+    
+      $this->getUser()->logAlert($filesystem->getLastExec('command')."\n".$filesystem->getLastExec('output'), false);
     }
     
     return '/cache/'.$dependencyDiagramImage;

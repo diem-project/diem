@@ -56,17 +56,41 @@ class dmFilesystem extends sfFilesystem
     return $username.":".$permissions;
   }
 
-  public function exec($command)
+//  public function execOld($command)
+//  {
+//    exec($command, $output, $returnCode);
+//    
+//    $this->lastExec = array(
+//      'command' => $command,
+//      'output' => implode("\n", $output),
+//      'return' => $returnCode
+//    );
+//    
+//    return 0 === $returnCode;
+//  }
+  
+  public function exec($command, $stdoutCallback = null, $stderrCallback = null)
   {
-    exec($command, $output, $returnCode);
+    try
+    {
+      list($out, $err) = $this->execute($command, $stdoutCallback, $stderrCallback);
+    }
+    catch(RuntimeException $e)
+    {
+      $this->lastExec = array(
+        'command' => $command,
+        'output'  => $e->getMessage()
+      );
+      
+      return false;
+    }
     
     $this->lastExec = array(
       'command' => $command,
-      'output' => implode("\n", $output),
-      'return' => $returnCode
+      'output'  => $out,
     );
     
-    return 0 === $returnCode;
+    return true;
   }
 
   public function sf($command)
@@ -83,7 +107,7 @@ class dmFilesystem extends sfFilesystem
 
   public function getLastExec($key = null)
   {
-    if ($key === null)
+    if (null === $key)
     {
       return $this->lastExec;
     }

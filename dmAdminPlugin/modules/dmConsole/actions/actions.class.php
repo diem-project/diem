@@ -84,7 +84,7 @@ class dmConsoleActions extends dmAdminBaseActions
       $this->whoami = 'unknown_user';
     }
     
-    $this->pwd = $filesystem->exec('pwd') ? $filesystem->getLastExec('output') : '';
+    $this->pwd = getcwd(); //$filesystem->exec('pwd') ? $filesystem->getLastExec('output') : '';
 
     $this->prompt = $this->whoami.'@'.php_uname('n').':'.'~/'.dmProject::unRootify($this->pwd).'$&nbsp;';
 

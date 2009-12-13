@@ -112,8 +112,19 @@ EOF;
     $this->runTask('dmAdmin:generate');
     
     $this->logSection('diem', 'generate front modules');
-    $this->context->get('filesystem')->sf('dmFront:generate');
-
+    
+    try
+    {
+      $this->context->get('filesystem')->sf('dmFront:generate');
+    }
+    catch(Exception $e)
+    {
+      $this->logBlock(array(
+        'Cant\' run dmFront:generate : '.$e->getMessage(), 'ERROR',
+        'Please run "php symfony dmFront:generate" manually to generate front templates'
+      ));
+    }
+    
     $this->runTask('dm:permissions');
     
     $this->runTask('dm:clear-cache');
