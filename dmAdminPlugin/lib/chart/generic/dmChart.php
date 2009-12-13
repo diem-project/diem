@@ -86,7 +86,7 @@ abstract class dmChart extends pChart
 
     $image = sprintf('%s_%s.png', get_class($this), $cacheKey);
 
-    $imageFullPath = dmOs::join(sfConfig::get('sf_cache_dir'), 'web', $image);
+    $imageFullPath = dmOs::join(sfConfig::get('sf_web_dir'), 'cache', $image);
 
     if (!file_exists($imageFullPath))
     {

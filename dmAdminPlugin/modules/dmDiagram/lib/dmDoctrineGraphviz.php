@@ -28,7 +28,7 @@ class dmDoctrineGraphviz
 
     $diagramImage = sprintf('mld_diagram_%s_%s.png', $options['type'], time());
 
-    $imageFullPath = dmOs::join(sfConfig::get('sf_cache_dir'), 'web', $diagramImage);
+    $imageFullPath = dmOs::join(sfConfig::get('sf_web_dir'), 'cache', $diagramImage);
 
     $dotFile = dmOs::join(sys_get_temp_dir(), dmString::random(12).'.dot');
 

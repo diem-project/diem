@@ -47,7 +47,7 @@ class dmDiagramActions extends dmAdminBaseActions
   {
     $dependencyDiagramImage = sprintf('dependency_diagram_%s_%s.png', $appName, time());
     
-    $dependencyDiagramImageFullPath = dmOs::join(sfConfig::get('sf_cache_dir'), 'web', $dependencyDiagramImage);
+    $dependencyDiagramImageFullPath = dmOs::join(sfConfig::get('sf_web_dir'), 'cache', $dependencyDiagramImage);
     
     $dotFile = dmOs::join(sys_get_temp_dir(), dmString::random(12).'.dot');
     
