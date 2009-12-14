@@ -64,7 +64,8 @@
       [?php
       $loremizeLink = £link('@<?php echo $this->getModule()->getUnderscore() ?>?action=loremize&nb=__DM_NB_RECORDS__')
       ->text('__DM_NB_RECORDS__')
-      ->set('.ml10')
+      ->set('.ml10.dm_js_confirm')
+      ->title(__('Generate %1% random %2%', array('%1%' => '__DM_NB_RECORDS__', '%2%' => __('<?php echo $this->getModule()->getPlural() ?>'))))
       ->render();
       foreach(array(1, 5, 10, 20, 50, 100) as $nbRecords)
       {
