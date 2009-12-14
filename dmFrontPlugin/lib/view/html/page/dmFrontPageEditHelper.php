@@ -36,7 +36,14 @@ class dmFrontPageEditHelper extends dmFrontPageBaseHelper
   {
     list($widgetWrapClass, $widgetInnerClass) = $this->getWidgetContainerClasses($widget);
     
-    $widgetType = $this->serviceContainer->getService('widget_type_manager')->getWidgetType($widget);
+    try
+    {
+      $widgetPublicName = $this->serviceContainer->getService('widget_type_manager')->getWidgetType($widget)->getPublicName();
+    }
+    catch(Exception $e)
+    {
+      $widgetPublicName = $widget['module'].'.'.$widget['action'];
+    }
 
     /*
      * Open widget wrap with wrapped user's classes
@@ -48,7 +55,7 @@ class dmFrontPageEditHelper extends dmFrontPageBaseHelper
      */
     if ($this->user && $this->user->can('widget_edit'))
     {
-      $title = $this->serviceContainer->getService('i18n')->__('Edit this %1%', array('%1%' => $this->serviceContainer->getService('i18n')->__(dmString::lcfirst($widgetType->getPublicName()))));
+      $title = $this->serviceContainer->getService('i18n')->__('Edit this %1%', array('%1%' => $this->serviceContainer->getService('i18n')->__(dmString::lcfirst($widgetPublicName))));
       
       $html .= '<a class="dm dm_widget_edit" title="'.$title.'"></a>';
     }
