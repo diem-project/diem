@@ -130,7 +130,7 @@ abstract class PluginDmPage extends BaseDmPage
 
   public function isModuleAction($module, $action)
   {
-    return $this->module == $module && $this->action == $action;
+    return $this->get('module') == $module && $this->get('action') == $action;
   }
 
   /*

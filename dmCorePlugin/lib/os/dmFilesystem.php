@@ -3,8 +3,7 @@
 class dmFilesystem extends sfFilesystem
 {
   protected
-    $dispatcher,
-    $lastExec; // array(command, output, return)
+  $lastExec; // array(command, output, return)
 
   public function mkdir($path, $mode = 0777)
   {

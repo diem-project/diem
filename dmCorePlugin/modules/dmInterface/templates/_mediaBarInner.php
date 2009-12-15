@@ -39,19 +39,24 @@ if ($folders = $folder->getNode()->getChildren())
 
 foreach($folder->getMedias() as $f)
 {
-  echo £("li.file#dmm".$f->get('id').($f->isImage() ? '.image' : ''),
-    ($f->isImage()
-    ? £('span.image_background',
-        array('style' => sprintf(
-          'background: url(%s) top left no-repeat',
-          £media($f)->size(128, 128)->quality(80)->getSrc()
-        )),
-        £("span.name", media_wrap_text(dmString::truncate($f->get('file'), 40)))
-      )
-    : media_file_image_tag($f).
+  echo £o('li.file#dmm'.$f->get('id').'.'.$f->getMimeGroup());
+  
+  if($f->isImage())
+  {
+    echo £('span.image_background',
+      array('style' => sprintf(
+        'background: url(%s) top left no-repeat',
+        £media($f)->size(128, 128)->quality(80)->getSrc(false)
+      )),
       £("span.name", media_wrap_text(dmString::truncate($f->get('file'), 40)))
-    )
-  );
+    );
+  }
+  else
+  {
+    echo media_file_image_tag($f).
+    £("span.name", media_wrap_text(dmString::truncate($f->get('file'), 40)));
+  }
+  echo £c('li');
 }
 
 echo £c("ul");

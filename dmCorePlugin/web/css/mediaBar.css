@@ -79,12 +79,15 @@ body.mediaBarOpen #sf_admin_content {
 
 #dm_media_browser ul.content > li.file {
   cursor: move;
+  width:128px;
+  height:128px;
 }
 
 #dm_media_browser span.name,
 .dm_media_helper span.name {
   margin-top: 3px;
   display: block;
+  text-align: center;
 }
 
 #dm_media_browser span.ws,

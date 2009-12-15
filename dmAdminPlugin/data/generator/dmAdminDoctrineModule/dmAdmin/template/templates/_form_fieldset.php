@@ -1,4 +1,4 @@
-<fieldset id="sf_fieldset_[?php echo preg_replace('/[^a-z0-9_]+/', '_', dmString::removeAccents(strtolower($fieldset))) ?]">
+<fieldset id="sf_fieldset_[?php echo preg_replace('/[^a-z0-9_]+/', '_', dmString::transliterate(strtolower($fieldset))) ?]">
   [?php if ('NONE' != $fieldset): ?]
     <h2 class="fieldset_title ui-accordion-header ui-helper-reset ui-state-default ui-corner-top">
       <span class="ui-icon ui-icon-triangle-1-e"></span>

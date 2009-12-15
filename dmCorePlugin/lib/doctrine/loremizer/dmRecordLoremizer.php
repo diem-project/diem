@@ -112,6 +112,8 @@ class dmRecordLoremizer
 
   protected function getRandomValue($columnName, $column)
   {
+    $column['name'] = $columnName;
+    
     switch($column['type'])
     {
       case 'string':
@@ -162,6 +164,11 @@ class dmRecordLoremizer
       return dmString::random(rand(4, 30)).'@localhost.com';
     }
     
+    if ($this->record->getTable()->isLinkColumn($column['name']))
+    {
+      return $this->getRandomLink();
+    }
+    
     $val = trim(dmLorem::getLittleLorem(rand(min(4, $column['length']), min(40, $column['length']))));
 
     if (dmArray::get($column, 'unique'))
@@ -178,6 +185,21 @@ class dmRecordLoremizer
     return $val;
   }
 
+  protected function getRandomLink()
+  {
+    if(!rand(0, 1))
+    {
+      return sprintf('http://'.dmString::random().'.com');
+    }
+    
+    $page = dmDb::query('DmPage p')
+    ->orderBy('RANDOM()')
+    ->withI18n()
+    ->fetchOne();
+    
+    return sprintf('page:%d %s', $page->id, $page->name);
+  }
+  
   protected function getRandomId(myDoctrineTable $table)
   {
     try

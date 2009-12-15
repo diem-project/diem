@@ -6,6 +6,8 @@ $helper->boot();
 
 $t = new lime_test(50);
 
+$t->comment('iconv available : '.function_exists('iconv'));
+
 $t->is(
   dmString::slugify(" phrâse avèc dés accënts "),
   $expected = "phrase-avec-des-accents",

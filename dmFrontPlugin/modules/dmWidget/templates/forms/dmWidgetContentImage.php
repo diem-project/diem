@@ -2,7 +2,7 @@
 
 //echo $form->renderGlobalErrors();
 
-echo £o('li.toggle_group');
+echo £o('div.toggle_group');
 
 echo $form['mediaId']->render(array('class' => 'dm_media_id'));
 
@@ -16,13 +16,12 @@ echo £('ul.media_fields'.($hasMedia ? '.none' : ''),
   $form['file']->renderRow()
 );
 
-echo £c('li');
-
+echo £c('div');
 
 if ($hasMedia)
 {
   echo
-  £('ul',
+  £('ul.dm_form_elements',
     $form['legend']->renderRow().
     £('li.dm_form_element.multi_inputs.thumbnail.clearfix',
       $form['width']->renderError().

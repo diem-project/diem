@@ -376,7 +376,7 @@ LIMIT 1')->getStatement();
 
   public static function sanitizeName($name)
   {
-    return trim(preg_replace('/[^\w\._-]+/i', '-', dmString::removeAccents($name)), '-');
+    return dmOs::sanitizeDirName($name);
   }
   
   /*
@@ -384,18 +384,6 @@ LIMIT 1')->getStatement();
    */
   public function save(Doctrine_Connection $conn = null)
   {
-//    if(!$this->isFieldModified('rel_path'))
-//    {
-//      if($parent = $this->getNode()->getParent())
-//      {
-//        $this->setRelPath($parent->getRelPath().'/'.$this->getName());
-//      }
-//      else
-//      {
-//        $this->setRelPath('');
-//      }
-//    }
-
     // physical existence
     if (!$this->dirExists() && !$this->getNode()->isRoot())
     {

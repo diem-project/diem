@@ -15,6 +15,42 @@ abstract class PluginDmLayout extends BaseDmLayout
   protected static
   $areaTypes = array('top', 'bottom', 'left', 'right');
 
+  public function duplicate()
+  {
+    $newLayout = $this->getTable()->create(array(
+      'css_class' => $this->cssClass,
+      'name' => $this->name
+    ));
+    
+    do
+    {
+      $newLayout->set('name', $newLayout->get('name').' copy');
+    }
+    while($this->getTable()->createQuery('l')->where('l.name = ?', $newLayout->get('name'))->exists());
+    
+    foreach($this->get('Areas') as $area)
+    {
+      $newArea = $area->copy(false);
+      
+      foreach($area->get('Zones') as $zone)
+      {
+        $newZone = $zone->copy(false);
+        
+        foreach($zone->get('Widgets') as $widget)
+        {
+          $widget->get('Translation');
+          $newZone->Widgets[] = $widget->copy(true);
+        }
+        
+        $newArea->Zones[] = $newZone;
+      }
+      
+      $newLayout->Areas[] = $newArea;
+    }
+    
+    return $newLayout;
+  }
+  
   public static function getAreaTypes()
   {
     return self::$areaTypes;

@@ -3,21 +3,21 @@
 class dmMediaTagImage extends dmMediaTag
 {
 
-  /*
-   * available methods and filters for thumbnail creation
-   */
   protected static
-  $availableMethods = array('fit', 'scale', 'inflate', 'left', 'right', 'top', 'bottom', 'center'),
-  $availableFilters = array('greyscale'),
   $verifiedThumbDirs = array();
 
   public function initialize(array $options = array())
   {
     parent::initialize($options);
 
-    $this
-    ->set('background', null)
-    ->addAttributeToRemove(array('resize_method', 'resize_quality', 'background', 'filter', 'overlay'));
+    $this->addAttributeToRemove(array('resize_method', 'resize_quality', 'background', 'filter', 'overlay'));
+  }
+  
+  public function getDefaultOptions()
+  {
+    return array_merge(parent::getDefaultOptions(), array(
+      'background' => null
+    ));
   }
   
   public function htmlWidth($v)
@@ -42,11 +42,11 @@ class dmMediaTagImage extends dmMediaTag
 
   public function method($method)
   {
-    if (!in_array($method, self::getAvailableMethods()))
+    if (!in_array($method, $this->getAvailableMethods()))
     {
       throw new dmException(sprintf('%s is not a valid method. These are : %s',
       $method,
-      implode(', ', self::getAvailableMethods())
+      implode(', ', $this->getAvailableMethods())
       ));
     }
 
@@ -83,11 +83,11 @@ class dmMediaTagImage extends dmMediaTag
 
   public function filter($filterName, $filterOptions = array())
   {
-    if (!in_array($filterName, self::getAvailableFilters()))
+    if (!in_array($filterName, $this->getAvailableFilters()))
     {
       throw new dmMediaImageException(sprintf('%s is not a valid filter. These are : %s',
       $filterName,
-      implode(', ', self::$filters)
+      implode(', ', $this->getAvailableFilters())
       ));
     }
     
@@ -249,9 +249,9 @@ class dmMediaTagImage extends dmMediaTag
       $attributes['background'] = trim($attributes['background'], '#');
     }
 
-    if (!in_array($attributes['resize_method'], self::getAvailableMethods()))
+    if (!in_array($attributes['resize_method'], $this->getAvailableMethods()))
     {
-      throw new dmException(sprintf('%s is not a valid resize method. These are : %s', $attributes['resize_method'], implode(', ', self::getAvailableMethods())));
+      throw new dmException(sprintf('%s is not a valid resize method. These are : %s', $attributes['resize_method'], implode(', ', $this->getAvailableMethods())));
     }
 
     if (!$thumbDir = dmArray::get(self::$verifiedThumbDirs, $media->get('dm_media_folder_id')))
@@ -296,12 +296,13 @@ class dmMediaTagImage extends dmMediaTag
     
       if (!empty($overlay))
       {
-        $overlayPath = $overlay['image']->getServerFullPath();
-        $type = dmOs::getFileMime($overlayPath);
+        $type = $this->context->get('mime_type_manager')->getByFilename($overlay['image']->getServerFullPath());
+        
         if ($type != 'image/png')
         {
           throw new dmException('Only png images can be used as overlay.');
         }
+        
         $image->overlay(new sfImage($overlayPath, $type), $overlay['position']);
       }
 
@@ -320,14 +321,14 @@ class dmMediaTagImage extends dmMediaTag
     return $thumbPath;
   }
 
-  public static function getAvailableFilters()
+  public function getAvailableFilters()
   {
-    return self::$availableFilters;
+    return array('greyscale');
   }
 
-  public static function getAvailableMethods()
+  public function getAvailableMethods()
   {
-    return self::$availableMethods;
+    return array('fit', 'scale', 'inflate', 'left', 'right', 'top', 'bottom', 'center');
   }
 
 }

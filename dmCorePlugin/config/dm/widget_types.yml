@@ -18,7 +18,7 @@ dmWidgetContent:
   text:
     cache:              true
 
-  media:
+  image:
     cache:              true
     
 dmWidgetNavigation:

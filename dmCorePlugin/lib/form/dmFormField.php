@@ -44,9 +44,12 @@ class dmFormField extends sfFormField
 
   public function label($label = null, $attributes = array())
   {
-    $attributes = array_merge(
-      array('class' => 'label'),
-      dmString::toArray($attributes)
+    $attributes = dmString::toArray($attributes);
+    
+    $attributes['class'] = dmArray::toHtmlCssClasses(
+      empty($attributes['class'])
+      ? array('label')
+      : array_merge((array) $attributes['class'], array('label'))
     );
     
     $label = null === $label ? $this->parent->getWidget()->getLabel($this->name) : $label;

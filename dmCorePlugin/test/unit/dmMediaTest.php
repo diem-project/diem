@@ -61,7 +61,7 @@ $t->ok($media->exists(), 'media has been saved');
 
 $t->is($media->Folder, $folder, 'media folder is folder');
 
-$t->is($media->mime, 'application/force-download', 'media type is application/force-download');
+$t->is($media->mime, 'application/x-httpd-php', 'media type is application/x-httpd-php');
 
 $t->is($media->size, filesize(__FILE__), 'file size is '.filesize(__FILE__));
 

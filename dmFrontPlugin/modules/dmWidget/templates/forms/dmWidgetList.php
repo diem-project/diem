@@ -2,6 +2,8 @@
 
 echo $form->renderGlobalErrors();
 
+echo £o('ul.dm_form_elements');
+
 echo
 £('li.dm_form_element.multi_inputs.sort.clearfix',
   $form['orderField']->renderLabel(__('Order by')).
@@ -32,3 +34,5 @@ foreach($form as $widgetName => $widget)
 }
 
 echo $form['cssClass']->renderRow();
+
+echo £c('ul');

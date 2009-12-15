@@ -54,7 +54,7 @@
     
     ajaxJsonDialog: function(opt)
     {
-      self = this;
+      var self = this,
       opt = $.extend({
         title: 'Loading'
       }, opt);
@@ -79,9 +79,10 @@
           
           $dialog.html(data.html).trigger('dmAjaxResponse');
         },
-        error: function(data)
+        error: function(xhr)
         {
-          $dialog.unblock().html(data);
+          $dialog.unblock();
+          $.dm.ctrl.errorDialog('Error while opening '+opt.title, xhr.responseText);
         }
       });
       
@@ -112,9 +113,10 @@
           
           $dialog.html(data).trigger('dmAjaxResponse');
         },
-        error: function(data)
+        error: function(xhr)
         {
-          $dialog.unblock().html(data);
+          $dialog.unblock();
+          $.dm.ctrl.errorDialog('Error in '+file, xhr.responseText);
         }
       });
       

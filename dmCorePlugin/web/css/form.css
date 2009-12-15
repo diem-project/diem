@@ -18,6 +18,10 @@
   text-align:right;
 }
 
+.dm_form.list .dm_form_element > label.big {
+  width: auto;
+}
+
 .dm_form.list .dm_form_element > label.fnone {
   float: none;
 }

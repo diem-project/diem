@@ -35,7 +35,7 @@ class Doctrine_Template_Listener_Sortable extends Doctrine_Record_Listener
 
   public function __construct($options = array())
   {
-    $this->_options = array_merge(array('new' => 'last'), $this->_options, $options);
+    $this->_options = array_merge(array('new' => 'first'), $this->_options, $options);
     
     if (!in_array($this->_options['new'], array('first', 'last')))
     {

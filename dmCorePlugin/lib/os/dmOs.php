@@ -88,56 +88,14 @@ class dmOs
     return dmArray::get(pathinfo($file), 'filename');
   }
 
-  public static function getFileMime($file)
+  public static function sanitizeDirName($dirName)
   {
-    $fileExtension = self::getFileExtension($file, false);
-
-    //This will set the Content-Type to the appropriate setting for the file
-    switch(strtolower($fileExtension))
-    {
-      case "pdf": $ctype="application/pdf"; break;
-      case "exe": $ctype="application/octet-stream"; break;
-      case "zip": $ctype="application/zip"; break;
-      case "doc": $ctype="application/msword"; break;
-      case "xls": $ctype="application/vnd.ms-excel"; break;
-      case "ppt": $ctype="application/vnd.ms-powerpoint"; break;
-      case "gif": $ctype="image/gif"; break;
-      case "png": $ctype="image/png"; break;
-      case "bmp": $ctype="image/bmp"; break;
-      case "jpeg":
-      case "jpg": $ctype="image/jpeg"; break;
-      case "mp3": $ctype="audio/mpeg"; break;
-      case "ogg": $ctype="audio/mpeg"; break;
-      case "wav": $ctype="audio/x-wav"; break;
-      case "mpeg":
-      case "mpg":
-      case "mpe": $ctype="video/mpeg"; break;
-      case "mp4": $ctype="video/mpeg"; break;
-      case "flv": $ctype="video/x-flv"; break;
-      case "mov": $ctype="video/quicktime"; break;
-      case "avi": $ctype="video/x-msvideo"; break;
-      case "swf": $ctype="application/x-shockwave-flash"; break;
-      //The following are for extensions that shouldn't be downloaded (sensitive stuff, like php files)
-      case "php":
-      default:
-        $ctype="application/force-download";
-    }
-    return $ctype;
-  }
-
-  public static function sanitizeDirName($file)
-  {
-    return trim(
-      preg_replace('/[^\w\._-]+/i', '-', dmString::removeAccents($file)),
-      '-'
-    );
+    return trim(preg_replace('/[^\w\._-]+/i', '-', dmString::transliterate($dirName)), '-');
   }
 
   public static function sanitizeFileName($file)
   {
-    return trim(
-      preg_replace("|[".preg_quote('\'*"/\[]:;|=,', '|')."]+|i", '-', $file)
-    );
+    return trim(preg_replace("|[".preg_quote('\'*"/\[]:;|=,', '|')."]+|i", '-', $file));
   }
 
   public static function humanizeSize($file)

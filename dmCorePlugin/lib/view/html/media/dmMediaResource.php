@@ -3,6 +3,7 @@
 class dmMediaResource
 {
   protected
+    $mimeTypeResolver,
     $theme,
     $culture,
     $requestContext,
@@ -22,11 +23,12 @@ class dmMediaResource
   AUDIO   = 'audio',
   FLASH   = 'flash';
 
-  public function __construct(dmTheme $theme, $culture, array $requestContext)
+  public function __construct(dmMimeTypeResolver $mimeTypeResolver, dmTheme $theme, $culture, array $requestContext)
   {
-    $this->theme           = $theme;
-    $this->culture         = $culture;
-    $this->requestContext  = $requestContext;
+    $this->mimeTypeResolver = $mimeTypeResolver;
+    $this->theme            = $theme;
+    $this->culture          = $culture;
+    $this->requestContext   = $requestContext;
   }
 
   public function getSource()
@@ -111,7 +113,7 @@ class dmMediaResource
         $this->type = self::REMOTE;
         $this->remotePath = $source;
   
-        $this->mime = $this->getSimpleMime(dmOs::getFileMime($source));
+        $this->mime = $this->mimeTypeResolver->getGroupByFilename($source);
       }
       else
       {
@@ -155,7 +157,7 @@ class dmMediaResource
           }
         }
   
-        $this->mime = $this->getSimpleMime(dmOs::getFileMime($source));
+        $this->mime = $this->mimeTypeResolver->getGroupByFilename($source);
       }
     }
     elseif($source instanceof DmMedia)
@@ -193,7 +195,7 @@ class dmMediaResource
   {
     $this->source         = $media;
     $this->type           = self::MEDIA;
-    $this->pathFromWebDir = $media->getWebPath();
+    $this->pathFromWebDir = '/'.$media->getWebPath();
     $this->mime           = $this->getSimpleMime($media->get('mime'));
   }
 

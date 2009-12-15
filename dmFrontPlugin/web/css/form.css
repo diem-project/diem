@@ -75,5 +75,8 @@
 
 .dm_form .dm_help {
   color: #888;
-  margin-left:20%;
+  margin-left: 20%;
+}
+.dm_form .dm_help.no_margin {
+  margin-left: 0;
 }

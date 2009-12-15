@@ -71,7 +71,7 @@ class dmInlineAssetConfigHandler extends dmInlineConfigHandler
         }
         break;
       default:
-        throw new dmException("$type is not a valid asset type");
+        $path = '/'.dmString::str_replace_once('.', '/', $asset);
     }
     
     if(!isset($path))

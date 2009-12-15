@@ -1,17 +1,23 @@
 <?php
 
-abstract class dmHtmlTag
+abstract class dmHtmlTag extends dmConfigurable
 {
   protected
-  $options = array('class' => array()),
-  $attributesToRemove = array(),
-  $emptyAttributesToRemove = array('class');
+  $attributesToRemove       = array(),
+  $emptyAttributesToRemove  = array('class');
 
   abstract public function render();
 
   protected function initialize(array $options = array())
   {
-    $this->options = array_merge($this->options, $options);
+    $this->configure($options);
+  }
+  
+  public function getDefaultOptions()
+  {
+    return array(
+      'class' => array()
+    );
   }
   
   public function __toString()
@@ -50,7 +56,7 @@ abstract class dmHtmlTag
     }
     elseif (2 === func_num_args())
     {
-      $this->options[$name] = $value;
+      $this->setOption($name, $value);
     }
     /*
      * As value is null,
@@ -60,8 +66,9 @@ abstract class dmHtmlTag
     {
       if ($firstSpacePos = strpos($name, ' '))
       {
-        $stringOpt = substr($name, $firstSpacePos + 1);
-        $name = substr($name, 0, $firstSpacePos);
+        $stringOpt  = substr($name, $firstSpacePos + 1);
+        $name       = substr($name, 0, $firstSpacePos);
+        
         // DMS STYLE - string opt in name
         dmString::retrieveOptFromString($stringOpt, $this->options);
       }
@@ -79,12 +86,13 @@ abstract class dmHtmlTag
    */
   public function get($key, $default = null)
   {
-    return isset($this->options[$key]) ? $this->options[$key] : $default;
+    return $this->getOption($key, $default);
   }
 
   public function addClass($class)
   {
     $this->options['class'][] = $class;
+    
     return $this;
   }
 
@@ -94,12 +102,13 @@ abstract class dmHtmlTag
     {
       unset($this['class'][$class]);
     }
+    
     return $this;
   }
 
   public function hasClass($class)
   {
-    return in_array($class, $this['class']);
+    return in_array($class, $this->getOption('class'));
   }
 
   public function json($data)
@@ -109,7 +118,7 @@ abstract class dmHtmlTag
 
   protected function getHtmlAttributes()
   {
-    return $this->convertAttributesToHtml($this->prepareAttributesForHtml($this->options));
+    return $this->convertAttributesToHtml($this->prepareAttributesForHtml($this->getOptions()));
   }
 
   protected function prepareAttributesForHtml(array $attributes)

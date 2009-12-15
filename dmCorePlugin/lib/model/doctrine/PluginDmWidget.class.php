@@ -33,6 +33,11 @@ abstract class PluginDmWidget extends BaseDmWidget
   {
     $this->set('value', json_encode($v));
   }
+  
+  public function getModuleAction()
+  {
+    return $this->get('module').'.'.$this->get('action');
+  }
 
   public function __toString()
   {

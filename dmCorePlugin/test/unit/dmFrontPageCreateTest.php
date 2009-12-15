@@ -4,7 +4,9 @@ require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
 $helper = new dmUnitTestHelper();
 $helper->boot('front');
 
-$t = new lime_test();
+$t = new lime_test(24);
+
+dmDb::table('DmPage')->checkBasicPages();
 
 // create form
 require_once(dmOs::join(sfConfig::get('dm_front_dir'), 'modules/dmPage/lib/form/DmPageFrontNewForm.php'));
@@ -18,6 +20,8 @@ $layout = dmDb::create('DmLayout', array(
 
 // create parent page
 $parentPage = dmDb::table('DmPage')->find(array_rand($form->getWidgetSchema()->offsetGet('parent_id')->getChoices()));
+
+$t->comment('Choosed parent : '.$parentPage);
 
 // create name and slug
 $pageName = $pageSlug = dmString::random();
@@ -57,7 +61,42 @@ $t->is($page->module, $parentPage->module, 'The page module is the parent page m
 
 $t->is($page->PageView->Layout, $layout, 'The layout has been applied');
 
-$t->is($page->Node->getParent(), $parentPage, 'The page has been inserted in its parent');
+$t->is($page->Node->getParent()->__toString(), $parentPage->__toString(), 'The page has been inserted in its parent');
 
+$t->is($page->getNodeParentId(), $parentPage->id, 'The page node parent id is '.$parentPage->id);
+
+$t->is($page->recordId, 0, 'The page has no record id');
+
+$t->is($page->isSecure, false, 'The page is not secured');
+
+$t->is($page->isActive, true, 'The page is active');
+
+$t->is($page->isIndexable, true, 'The page is indexable');
+
+$t->is($page->lang, $lang = sfConfig::get('sf_default_culture'), 'The page lang is '.$lang);
+
+$t->is($page->autoMod, 'snthdk', 'The page automod is snthdk');
+
+$t->is($page->getIsAutomatic(), false, 'The page is not automatic');
+
+$pageView = $page->PageView;
+$layout = $pageView->Layout;
+
+$t->comment('Delete page');
 $page->delete();
+
+$t->is($page->getNameBackup(), $pageName, 'The deleted page name backup is '.$pageName);
+
+$t->ok(!$page->exists(), 'The page no more exists');
+$t->ok($pageView->exists(), 'The page view still exists');
+$t->ok($layout->exists(), 'The layout still exists');
+
+$t->comment('Delete page view');
+$pageView->delete();
+
+$t->ok(!$pageView->exists(), 'The page view no more exists');
+$t->ok($layout->exists(), 'The layout still exists');
+
+$t->comment('Delete layout');
 $layout->delete();
+$t->ok(!$layout->exists(), 'The layout no more exists');

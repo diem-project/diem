@@ -1,6 +1,6 @@
 <?php
 
-class sfValidatorDmDate extends sfValidatorDate
+class dmValidatorDate extends sfValidatorDate
 {
   /**
    * Configures the current validator.

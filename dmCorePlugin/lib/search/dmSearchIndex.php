@@ -211,7 +211,7 @@ class dmSearchIndex extends dmSearchIndexCommon
     preg_replace('|\s{2,}|', ' ',
     preg_replace('|\W|', ' ',
     strtolower(
-    dmString::removeAccents(
+    dmString::transliterate(
     strip_tags(
     str_replace('<', ' <', $text)
     )

@@ -3,7 +3,7 @@
 /**
  * The current Diem version.
  */
-define('DIEM_VERSION', '5.0.0-ALPHA7');
+define('DIEM_VERSION', '5.0.0-ALPHA8');
 
 class dmBase
 {
@@ -53,9 +53,6 @@ class dmBase
   
   public static function checkServer()
   {
-//    $configuration = ProjectConfiguration::getApplicationConfiguration('admin', 'test', true);
-//    dm::createContext($configuration);
-    
     require_once(realpath(dirname(__FILE__).'/../os/dmServerCheck.php'));
     
     $serverCheck = new dmServerCheck;

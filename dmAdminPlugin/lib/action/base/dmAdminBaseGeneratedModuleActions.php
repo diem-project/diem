@@ -39,6 +39,11 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
     {
       $this->getUser()->logError('An error occured during loremization');
       
+      if (sfConfig::get('sf_debug'))
+      {
+        $this->getUser()->logAlert($e->getMessage());
+      }
+      
       if (sfConfig::get('dm_debug'))
       {
         throw $e;

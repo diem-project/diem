@@ -3,13 +3,12 @@
  */
 class PluginDmLayoutTable extends myDoctrineTable
 {
-
   protected
   $firstLayout;
 
   public function findFirstOrCreate()
   {
-    if (null === $this->firstLayout)
+    if (null === $this->firstLayout || !$this->firstLayout->exists())
     {
       if (!$this->firstLayout = $this->createQuery()->dmCache()->fetchRecord())
       {

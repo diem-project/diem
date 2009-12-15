@@ -97,6 +97,8 @@ class dmUnitTestHelper
   public function initialize()
   {
     $this->moduleManager = $this->context->getModuleManager();
+    
+    dmDb::table('DmPage')->checkBasicPages();
   }
 
   public function getModuleManager()
@@ -118,5 +120,20 @@ class dmUnitTestHelper
   public function get($service)
   {
     return $this->context->get($service);
+  }
+  
+  public function ksort(array $array)
+  {
+    ksort($array);
+    
+    foreach($array as $value)
+    {
+      if(is_array($value))
+      {
+        ksort($value);
+      }
+    }
+    
+    return $array;
   }
 }

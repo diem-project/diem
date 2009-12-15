@@ -34,9 +34,23 @@ abstract class dmMediaTag extends dmHtmlTag
     return $this->width($width)->height($height);
   }
 
-  public function getSrc()
+  public function getSrc($throwException = true)
   {
-    return dmArray::get($this->prepareAttributesForHtml($this->options), 'src');
+    if ($throwException)
+    {
+      return dmArray::get($this->prepareAttributesForHtml($this->options), 'src');
+    }
+    else
+    {
+      try
+      {
+        return dmArray::get($this->prepareAttributesForHtml($this->options), 'src');
+      }
+      catch(Exception $e)
+      {
+        return false;
+      }
+    }
   }
 
   protected function prepareAttributesForHtml(array $attributes)
@@ -53,4 +67,8 @@ abstract class dmMediaTag extends dmHtmlTag
     return !(empty($this->options['width']) && empty($this->options['height']));
   }
 
+  public function quality($val)
+  {
+    // override me
+  }
 }

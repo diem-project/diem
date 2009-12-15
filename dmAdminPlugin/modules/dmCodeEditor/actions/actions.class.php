@@ -112,8 +112,7 @@ class dmCodeEditorActions extends dmAdminBaseActions
       return $this->renderText('[KO] | '.$relPath.' does not exist or is not readable');
     }
     
-    $type = dmOs::getFileMime($this->file);
-    $this->isImage = strpos($type, 'image') === 0;
+    $this->isImage = 'image' === $this->context->get('mime_type_resolver')->getByFilename($this->file);
     $this->code = dmString::unixify(file_get_contents($this->file));
     $this->isWritable = is_writable($this->file) && strpos($this->file, dmProject::rootify('data/backup')) !== 0;
     

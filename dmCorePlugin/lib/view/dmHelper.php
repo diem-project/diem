@@ -230,7 +230,7 @@ class dmHelper
     
     if (!$this->serviceContainer->hasService($serviceName))
     {
-      throw new dmException('£media can not display '.$source);
+      throw new dmException('£media can not display '.$source.' : missing service '.$serviceName);
     }
 
     return $this->serviceContainer->getService($serviceName);
@@ -259,5 +259,10 @@ class dmHelper
   public function getJavascriptFullPath($asset)
   {
     return dmOs::join(sfConfig::get('sf_web_dir'), $this->context->getResponse()->calculateAssetPath('js', $asset));
+  }
+  
+  public function getOtherAssetWebPath($asset)
+  {
+    return $this->context->getRequest()->getRelativeUrlRoot().$this->context->getResponse()->calculateAssetPath('other', $asset);
   }
 }

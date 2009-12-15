@@ -267,7 +267,12 @@ class dmForm extends sfFormSymfony
   
   protected function __($text, $args = array(), $catalogue = null)
   {
-    return self::$serviceContainer->getService('i18n')->__($text, $args, $catalogue);
+    return $this->getI18n()->__($text, $args, $catalogue);
+  }
+  
+  protected function getI18n()
+  {
+    return self::$serviceContainer->getService('i18n');
   }
   
   protected function getHelper()

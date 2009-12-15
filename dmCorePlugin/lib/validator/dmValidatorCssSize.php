@@ -21,9 +21,9 @@ class dmValidatorCssSize extends sfValidatorRegex
 
     $value = (int) $value;
     
-    if ($value < 0 || $value > 5000)
+    if ($value < 0 || $value > 8000)
     {
-      throw new sfValidatorError($this, 'Enter a size between 0 and 5000', array('value' => $value));
+      throw new sfValidatorError($this, 'Enter a size between 0 and 8000', array('value' => $value));
     }
 
     return $clean;

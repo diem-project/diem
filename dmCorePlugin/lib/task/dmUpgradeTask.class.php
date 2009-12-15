@@ -8,7 +8,8 @@ class dmUpgradeTask extends dmContextTask
   protected
   $diemVersions = array(
     '500ALPHA4',
-    '500ALPHA6'
+    '500ALPHA6',
+    'deprecateMediaWidgets'
   );
   
   /**
@@ -97,4 +98,16 @@ class dmUpgradeTask extends dmContextTask
     }
   }
   
+  /*
+   * Change dmWidgetContent.media widgets to dmWidgetContent.image widgets in database
+   */
+  protected function upgradeToDeprecateMediaWidgets()
+  {
+    dmDb::query()
+    ->update('DmWidget')
+    ->set('action', '?', 'image')
+    ->where('module = ?', 'dmWidgetContent')
+    ->andWhere('action = ?', 'media')
+    ->execute();
+  }
 }

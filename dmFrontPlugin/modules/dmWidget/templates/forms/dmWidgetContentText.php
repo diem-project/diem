@@ -21,7 +21,7 @@ $form->renderGlobalErrors(),
 ),
 
 £('div#'.$baseTabId.'_media',
-  $sf_context->get('helper')->renderPartial('dmWidget', 'forms/dmWidgetContentMedia', array(
+  $sf_context->get('helper')->renderPartial('dmWidget', 'forms/dmWidgetContentImage', array(
     'form' => $form,
     'hasMedia' => $hasMedia,
     'skipCssClass' => true

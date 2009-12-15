@@ -110,10 +110,14 @@ abstract class dmBaseActions extends sfActions
         $options['file_name'] = dmProject::getKey().'-'.dmString::random(8);
       }
     }
+    
+    if (!isset($options['type']))
+    {
+      $options['type'] = $this->context->get('mime_type_resolver')->getByFilename($options['file_name']);
+    }
 
     //Gather relevent info about file
     $fileLenght = strlen($data);
-    $fileType = dmArray::get($options, 'type', dmOs::getFileMime($options['file_name']));
 
     //Begin writing headers
     header("Pragma: public");
@@ -123,7 +127,7 @@ abstract class dmBaseActions extends sfActions
     header("Content-Description: File Transfer");
 
     //Use the switch-generated Content-Type
-    header("Content-Type: $fileType");
+    header('Content-Type: '.$options['type']);
 
     //Force the download
     header("Content-Disposition: attachment; filename=\"".$options['file_name']."\";");

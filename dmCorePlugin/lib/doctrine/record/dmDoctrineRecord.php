@@ -109,7 +109,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     
     $qPk->select($qPk->getRootAlias().'.'.$pk)/*->distinct()*/;
     
-    $pks = array_unique($qPk->fetchFlat());
+    $pks = array_values(array_unique($qPk->fetchFlat()));
 
     $recordOffset = array_search($this->getPrimaryKey(), $pks);
 
@@ -117,7 +117,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
       'prev' => 0 == $recordOffset ? null : $pks[$recordOffset-1],
       'next' => count($pks) == ($recordOffset+1) ? null :$pks[$recordOffset+1]
     );
-
+    
     $pks = array_unique(array_filter(array_values($map)));
 
     $records = empty($pks) ? array() : $this->_table->createQuery('q INDEXBY q.'.$pk)->whereIn('q.'.$pk, $pks)->fetchRecords();
@@ -750,7 +750,8 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     else
     {
       $i18n = $this->_table->getI18nTable()->createQuery('t')
-      ->where('t.id = ? AND t.lang = ?', array($this->get('id'), $culture))
+      ->where('t.id = ?', $this->get('id'))
+      ->andWhere('t.lang = ?', $culture)
       ->fetchRecord();
 
       // existing translation fetched
@@ -775,7 +776,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
 
   public function getI18nFallback()
   {
-    if ($this->i18nFallback)
+    if (null !== $this->i18nFallback)
     {
       return $this->i18nFallback;
     }
@@ -784,10 +785,15 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     {
       return null;
     }
-
-    return $this->i18nFallback = $this->_table->getI18nTable()->createQuery('t')
-    ->where('t.id = ? AND t.lang = ?', array($this->get('id'), sfConfig::get('sf_default_culture')))
+    
+    $i18nFallback = $this->_table->getI18nTable()->createQuery('t')
+    ->where('t.id = ?', $this->get('id'))
+    ->andWhere('t.lang = ?', sfConfig::get('sf_default_culture'))
     ->fetchRecord();
+    
+    $this->i18nFallback = $i18nFallback ? $i18nFallback : false;
+
+    return $this->i18nFallback;
   }
 
   /*

@@ -41,8 +41,8 @@ parameters:
   media_tag_image.class:      dmMediaTagImage       # Responsible for rendering <img> tags
   media_tag_image.options:    []                    # Configurable from the graphical configuration panel
   
-  media_tag_flash.class:      dmMediaTagFlash       # Responsible for rendering flash objects
-  media_tag_flash.options:    []
+  media_tag_application.class:   dmMediaTagApplication # Responsible for rendering flash objects
+  media_tag_application.options: []
   
   media_tag_video.class:      dmMediaTagVideo       # Responsible for rendering video
   media_tag_video.options:    []
@@ -91,6 +91,8 @@ parameters:
     meta_cache_class:         dmMetaCache           # class for metacache ( use file cache or apc cache depending on server )
 
   filesystem.class:           dmFilesystem          # Extension of sfFilesystem
+  
+  mime_type_resolver.class:   dmMimeTypeResolver    # Detects mime types from file names
   
   event_log.class:            dmEventLog            # Responsible for logging all notable events
   event_log.options:
@@ -194,10 +196,10 @@ services:
     shared:                   false
     arguments:                [ %media_tag.source%, @context, %media_tag_image.options% ]
 
-  media_tag_flash:
-    class:                    %media_tag_flash.class%
+  media_tag_application:
+    class:                    %media_tag_application.class%
     shared:                   false
-    arguments:                [ %media_tag.source%, @context, %media_tag_flash.options% ]
+    arguments:                [ %media_tag.source%, @context, %media_tag_application.options% ]
 
   media_tag_video:
     class:                    %media_tag_video.class%
@@ -212,7 +214,7 @@ services:
   media_resource:
     class:                    %media_resource.class%
     shared:                   false
-    arguments:                [ %user.theme%, %user.culture%, %request.context% ]
+    arguments:                [ @mime_type_resolver, %user.theme%, %user.culture%, %request.context% ]
     
   table_tag:
     class:                    %table_tag.class%
@@ -272,6 +274,11 @@ services:
     class:                    %filesystem.class%
     shared:                   true
     arguments:                [ @dispatcher ]
+
+  mime_type_resolver:
+    class:                    %mime_type_resolver.class%
+    shared:                   true
+    arguments:                [ @cache_manager ]
       
   event_log:
     class:                    %event_log.class%

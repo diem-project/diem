@@ -89,6 +89,7 @@ ul.ui-tabs-nav > li.dm_error.ui-tabs-selected {
 	border: 3px solid red;
 }
 
-#dm_error_dialog div.ui-dialog_content {
+#dm_error_dialog div.ui-dialog-content {
   max-height: 400px;
+  overflow: auto !important;
 }

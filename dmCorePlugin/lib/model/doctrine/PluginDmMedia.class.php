@@ -155,9 +155,13 @@ abstract class PluginDmMedia extends BaseDmMedia
 
   public function isImage()
   {
-    return strncmp($this->mime, 'image/', 6) === 0;
+    return 'image' === $this->getMimeGroup();
   }
 
+  public function getMimeGroup()
+  {
+    return substr($this->get('mime'), 0, strpos($this->get('mime'), '/'));
+  }
   
   /*
    * @return dmImage
@@ -233,8 +237,9 @@ abstract class PluginDmMedia extends BaseDmMedia
   {
     $this->fromArray(array(
       'size' => filesize($this->getFullPath()),
-      'mime' => dmOs::getFileMime($this->getFullPath())
+      'mime' => self::$serviceContainer->getService('mime_type_resolver')->getByFilename($this->getFullPath())
     ));
+    
     /*
      * Important to set dimensions without reload data
      */

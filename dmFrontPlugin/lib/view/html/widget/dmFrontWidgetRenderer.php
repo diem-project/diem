@@ -6,6 +6,7 @@ class dmFrontWidgetRenderer
   $dispatcher,
   $serviceContainer,
   $widget,
+  $widgetView,
   $isRendered,
   $html,
   $stylesheets,
@@ -65,21 +66,30 @@ class dmFrontWidgetRenderer
       return;
     }
 
-    $this->isRendered = true;
-
-    $widgetType = $this->serviceContainer->get('widget_type_manager')->getWidgetType($this->widget['module'], $this->widget['action']);
-    
-    $this->serviceContainer->addParameters(array(
-      'widget_view.class' => $widgetType->getViewClass(),
-      'widget_view.type'  => $widgetType,
-      'widget_view.data'  => $this->widget
-    ));
-    
-    $widgetView = $this->serviceContainer->getService('widget_view');
+    $widgetView = $this->getWidgetView();
     
     $this->html        = $widgetView->render();
     $this->stylesheets = $widgetView->getStylesheets();
     $this->javascripts = $widgetView->getJavascripts();
+
+    $this->isRendered = true;
   }
   
+  public function getWidgetView()
+  {
+    if (null === $this->widgetView)
+    {
+      $widgetType = $this->serviceContainer->get('widget_type_manager')->getWidgetType($this->widget['module'], $this->widget['action']);
+      
+      $this->serviceContainer->addParameters(array(
+        'widget_view.class' => $widgetType->getViewClass(),
+        'widget_view.type'  => $widgetType,
+        'widget_view.data'  => $this->widget
+      ));
+      
+      $this->widgetView = $this->serviceContainer->getService('widget_view');
+    }
+    
+    return $this->widgetView;
+  }
 }

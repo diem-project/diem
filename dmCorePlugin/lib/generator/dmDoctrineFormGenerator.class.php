@@ -213,9 +213,13 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
         {
           $validatorSubclass = 'Email';
         }
-        else if ($column->getDefinitionKey('regexp'))
+        elseif ($column->getDefinitionKey('regexp'))
         {
           $validatorSubclass = 'Regex';
+        }
+        elseif ($column->getTable()->isLinkColumn($column->getName()))
+        {
+          $validatorClass = 'dmValidatorLinkUrl';
         }
         else
         {
@@ -234,7 +238,7 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
         $validatorSubclass = 'Integer';
         break;
       case 'date':
-        $validatorSubclass = 'DmDate';
+        $validatorClass = 'dmValidatorDate';
         break;
       case 'time':
         $validatorSubclass = 'Time';
@@ -254,7 +258,7 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
       $validatorSubclass = 'DoctrineChoice';
     }
 
-    return sprintf('sfValidator%s', $validatorSubclass);
+    return isset($validatorClass) ? $validatorClass : sprintf('sfValidator%s', $validatorSubclass);
   }
 
 }

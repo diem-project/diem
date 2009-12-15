@@ -2,28 +2,9 @@
 
 class dmString extends sfInflector
 {
-  const PARTS_SEPARATOR = '.';
-  const SEPARATOR = '__DM_SPLIT__';
+  const ENCODING_SEPARATOR = '__DM_SPLIT__';
 
   protected static
-    $accentsReplacements = array(
-      '¥' => 'Y', 'µ' => 'u', 'À' => 'A', 'Á' => 'A',
-      'Â' => 'A', 'Ã' => 'A', 'Ä' => 'A', 'Å' => 'A',
-      'Æ' => 'A', 'Ç' => 'C', 'È' => 'E', 'É' => 'E',
-      'Ê' => 'E', 'Ë' => 'E', 'Ì' => 'I', 'Í' => 'I',
-      'Î' => 'I', 'Ï' => 'I', 'Ð' => 'D', 'Ñ' => 'N',
-      'Ò' => 'O', 'Ó' => 'O', 'Ô' => 'O', 'Õ' => 'O',
-      'Ö' => 'O', 'Ø' => 'O', 'Ù' => 'U', 'Ú' => 'U',
-      'Û' => 'U', 'Ü' => 'U', 'Ý' => 'Y', 'ß' => 's',
-      'à' => 'a', 'á' => 'a', 'â' => 'a', 'ã' => 'a',
-      'ä' => 'a', 'å' => 'a', 'æ' => 'a', 'ç' => 'c',
-      'è' => 'e', 'é' => 'e', 'ê' => 'e', 'ë' => 'e',
-      'ì' => 'i', 'í' => 'i', 'î' => 'i', 'ï' => 'i',
-      'ð' => 'o', 'ñ' => 'n', 'ò' => 'o', 'ó' => 'o',
-      'ô' => 'o', 'õ' => 'o', 'ö' => 'o', 'ø' => 'o',
-      'ù' => 'u', 'ú' => 'u', 'û' => 'u', 'ü' => 'u',
-      'ý' => 'y', 'ÿ' => 'y'
-    ),
     $camelizeCache = array();
 
   public static function escape($text)
@@ -46,24 +27,6 @@ class dmString extends sfInflector
       , '‘'       => '&lsquo;'
       , '’'       => '&rsquo;'
     ));
-  }
-
-  /*
-   * Separate 2 parts if concatenated with self::PARTS_SEPARATOR
-   * part1, part2 => part1, part2
-   * part1.part2, null => part1, part2
-   */
-  public static function separate($part1, $part2 = null)
-  {
-    if(is_array($part1))
-    {
-      return $part1;
-    }
-    if ($part2 === null && strpos($part1, self::PARTS_SEPARATOR))
-    {
-      list($part1, $part2) = explode(self::PARTS_SEPARATOR, $part1);
-    }
-    return array($part1, $part2);
   }
 
   /*
@@ -157,7 +120,7 @@ class dmString extends sfInflector
       $text = str_replace('/', '_s_l_a_s_h_', $text);
     }
     
-    $text = self::removeAccents($text);
+    $text = self::transliterate($text);
     
     $text = str_replace('œ', 'oe', $text);
 
@@ -185,9 +148,35 @@ class dmString extends sfInflector
     return str_replace('-', ' ', $slug);
   }
 
-  public static function removeAccents($text)
+  public static function transliterate($text)
   {
-    return strtr($text, self::$accentsReplacements);
+    if (function_exists('iconv'))
+    {
+      $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+    }
+    else
+    {
+      $text = strtr($text, array(
+        '¥' => 'Y', 'µ' => 'u', 'À' => 'A', 'Á' => 'A',
+        'Â' => 'A', 'Ã' => 'A', 'Ä' => 'A', 'Å' => 'A',
+        'Æ' => 'A', 'Ç' => 'C', 'È' => 'E', 'É' => 'E',
+        'Ê' => 'E', 'Ë' => 'E', 'Ì' => 'I', 'Í' => 'I',
+        'Î' => 'I', 'Ï' => 'I', 'Ð' => 'D', 'Ñ' => 'N',
+        'Ò' => 'O', 'Ó' => 'O', 'Ô' => 'O', 'Õ' => 'O',
+        'Ö' => 'O', 'Ø' => 'O', 'Ù' => 'U', 'Ú' => 'U',
+        'Û' => 'U', 'Ü' => 'U', 'Ý' => 'Y', 'ß' => 's',
+        'à' => 'a', 'á' => 'a', 'â' => 'a', 'ã' => 'a',
+        'ä' => 'a', 'å' => 'a', 'æ' => 'a', 'ç' => 'c',
+        'è' => 'e', 'é' => 'e', 'ê' => 'e', 'ë' => 'e',
+        'ì' => 'i', 'í' => 'i', 'î' => 'i', 'ï' => 'i',
+        'ð' => 'o', 'ñ' => 'n', 'ò' => 'o', 'ó' => 'o',
+        'ô' => 'o', 'õ' => 'o', 'ö' => 'o', 'ø' => 'o',
+        'ù' => 'u', 'ú' => 'u', 'û' => 'u', 'ü' => 'u',
+        'ý' => 'y', 'ÿ' => 'y', 'œ' => 'oe'
+      ));
+    }
+    
+    return $text;
   }
 
   
@@ -334,13 +323,12 @@ class dmString extends sfInflector
   {
     if (empty($text))
     {
-      return '';
+      return $text;
     }
-
 
     if(is_array($text))
     {
-      throw new dmException($text);
+      throw new dmException('Can not truncate an array : '.implode($text));
     }
 
     $text = (string) $text;
@@ -375,7 +363,7 @@ class dmString extends sfInflector
   {
     if (is_array($value))
     {
-      $value = implode(self::SEPARATOR, $value);
+      $value = implode(self::ENCODING_SEPARATOR, $value);
     }
     
     return base64_encode($value);
@@ -385,9 +373,9 @@ class dmString extends sfInflector
   {
     $value = base64_decode($coded_value);
     
-    if (strpos($value, self::SEPARATOR) !==false)
+    if (strpos($value, self::ENCODING_SEPARATOR) !== false)
     {
-      $value = explode(self::SEPARATOR, $value);
+      $value = explode(self::ENCODING_SEPARATOR, $value);
     }
     
     return $value;
@@ -438,7 +426,6 @@ class dmString extends sfInflector
     return $string;
   }
   
-  
   /*
    * replace $search by $replace in $subject, only once
    */
@@ -469,10 +456,12 @@ class dmString extends sfInflector
     } 
     else
     {
-      $value_length = strlen( $value );
-      $qty = substr( $value, 0, $value_length - 1 );
-      $unit = strtolower( substr( $value, $value_length - 1 ) );
-      switch ( $unit ) {
+      $valueLength = strlen( $value );
+      $qty = substr( $value, 0, $valueLength - 1 );
+      $unit = strtolower( substr( $value, $valueLength - 1 ) );
+      
+      switch ( $unit )
+      {
         case 'k':
           $qty *= 1024;
           break;
@@ -483,6 +472,7 @@ class dmString extends sfInflector
           $qty *= 1073741824;
           break;
       }
+      
       return $qty;
     }
   }

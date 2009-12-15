@@ -115,17 +115,6 @@ abstract class dmFormDoctrine extends sfFormDoctrine
     }
   }
 
-
-  /**
-   * Returns true if the current form has some associated i18n objects.
-   *
-   * @return Boolean true if the current form has some associated i18n objects, false otherwise
-   */
-  public function isI18n()
-  {
-    return $this->getObject()->getTable()->hasI18n();
-  }
-  
   protected function mergeI18nForm($culture = null)
   {
     $this->mergeForm($this->createI18nForm());
