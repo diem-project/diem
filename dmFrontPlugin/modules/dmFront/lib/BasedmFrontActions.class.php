@@ -159,7 +159,14 @@ class BasedmFrontActions extends dmFrontBaseActions
       {
         $actionToRun = 'execute'.ucfirst($action);
         
-        $this->context->getController()->getAction($module, $action)->$actionToRun($this->getRequest());
+        try
+        {
+          $this->context->getController()->getAction($module, $action)->$actionToRun($this->getRequest());
+        }
+        catch(sfControllerException $e)
+        {
+          $this->getContext()->getLogger()->warning(sprintf('The %s/%s direct action does not exist', $module, $action));
+        }
       }
     }
   }

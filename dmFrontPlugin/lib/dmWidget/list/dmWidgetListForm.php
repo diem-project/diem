@@ -135,7 +135,7 @@ class dmWidgetListForm extends dmWidgetProjectModelForm
     {
       if (in_array($column['type'], $allowedTypes))
       {
-        $fields[$columnName] = self::$serviceContainer->getService('i18n')->__(dmString::humanize($columnName));
+        $fields[$columnName] = $this->__(dmString::humanize($columnName));
       }
     }
 

@@ -150,9 +150,9 @@ class dmForm extends sfFormSymfony
     $opt = dmString::toArray($opt, true);
 
     $defaults = array(
-      'class' => dmArray::get($opt, 'class'),
-      'id' => $this->getKey(),
-      'anchor' => false
+      'class'   => dmArray::get($opt, 'class'),
+      'id'      => $this->getKey(),
+      'anchor'  => false
     );
 
     if (isset($opt['class']))

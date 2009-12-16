@@ -95,9 +95,25 @@ EOF;
     
     $this->getContext()->reloadModuleManager();
     
-    $this->runTask('doctrine:build-forms', array(), array('generator-class' => 'dmDoctrineFormGenerator'));
+    // better to run it in a different process because model may have been changed
+    if (dmConfig::canSystemCall())
+    {
+      $this->getContext()->getFilesystem()->sf('doctrine:build-forms --generator-class=dmDoctrineFormGenerator');
+    }
+    else
+    {
+      $this->runTask('doctrine:build-forms', array(), array('generator-class' => 'dmDoctrineFormGenerator'));
+    }
     
-    $this->runTask('doctrine:build-filters', array(), array('generator-class' => 'dmDoctrineFormFilterGenerator'));
+    // better to run it in a different process because model may have been changed
+    if (dmConfig::canSystemCall())
+    {
+      $this->getContext()->getFilesystem()->sf('doctrine:build-filters --generator-class=dmDoctrineFormFilterGenerator');
+    }
+    else
+    {
+      $this->runTask('doctrine:build-filters', array(), array('generator-class' => 'dmDoctrineFormFilterGenerator'));
+    }
 
     $this->runTask('dm:data');
 

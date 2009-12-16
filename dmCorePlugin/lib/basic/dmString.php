@@ -7,9 +7,9 @@ class dmString extends sfInflector
   protected static
     $camelizeCache = array();
 
-  public static function escape($text)
+  public static function escape($text, $quoteStyle = ENT_QUOTES)
   {
-    return htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
+    return htmlspecialchars($text, $quoteStyle, 'UTF-8');
   }
     
   /*

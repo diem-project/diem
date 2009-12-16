@@ -19,7 +19,7 @@ class dmMarkdown extends MarkdownExtra_Parser
   
   public function initialize(array $options)
   {
-    $this->options = array_merge($options, $this->getDefaultOptions());
+    $this->options = array_merge($this->getDefaultOptions(), $options);
   }
   
   public function getDefaultOptions()
@@ -27,6 +27,23 @@ class dmMarkdown extends MarkdownExtra_Parser
     return array(
       'auto_header_id' => true
     );
+  }
+  
+  public function getOptions()
+  {
+    return $this->options;
+  }
+  
+  public function setOption($name, $value)
+  {
+    $this->options[$name] = $value;
+
+    return $this;
+  }
+  
+  public function getOption($name, $default = null)
+  {
+    return isset($this->options[$name]) ? $this->options[$name] : $default;
   }
   
   public function reset()
