@@ -106,7 +106,11 @@ class dmWidgetListForm extends dmWidgetProjectModelForm
 
   protected function getFirstDefaults()
   {
-    $defaults = parent::getFirstDefaults();
+    $defaults = array_merge(parent::getFirstDefaults(), array(
+      'orderType'  => 'asc',
+      'maxPerPage' => 5,
+      'maxPerPage' => 0
+    ));
 
     if ($firstOrderField = dmArray::first(array_keys($this->getAvailableOrderFields())))
     {
@@ -147,12 +151,4 @@ class dmWidgetListForm extends dmWidgetProjectModelForm
     );
   }
 
-  protected function getFirstDefaults()
-  {
-    return array_merge(parent::getFirstDefaults(), array(
-      'orderType'  => 'asc',
-      'maxPerPage' => 5,
-      'maxPerPage' => 0
-    ));
-  }
 }
