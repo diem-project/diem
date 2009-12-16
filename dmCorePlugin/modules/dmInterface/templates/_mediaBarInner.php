@@ -45,7 +45,7 @@ foreach($folder->getMedias() as $f)
   {
     echo £('span.image_background',
       array('style' => sprintf(
-        'background: url(%s) top left no-repeat',
+        'background: url("%s") top left no-repeat',
         £media($f)->size(128, 128)->quality(80)->getSrc(false)
       )),
       £("span.name", media_wrap_text(dmString::truncate($f->get('file'), 40)))
