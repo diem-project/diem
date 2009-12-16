@@ -384,8 +384,8 @@
 "%1% has been reverted to version %2%": "%1% wurde zu Version %2% wiederhergestellt"
 "To enable it, provide a google analytics access": "Um es zu aktivieren, geben Sie bitte Ihre Google Analytics Anmeldedaten ein"
 "This chart is currently not available": "Dieses Diagramm ist zurzeit nicht verfügbar"
-"Generate %1% random %2%": "%1% zufällige %2% generieren" # %1%: number of record, %2%: module plural"
+"Generate %1% random %2%": "%1% zufällige %2% generieren" # %1%: number of record, %2%: module plural
 "Options": "Optionen"
 "Drag & Drop an image here": "Hier per Drag'n'Drop ein Bild einfügen"
-"%value%" is not a valid link.": "%value% ist kein gültiger Link."
-"%value% is not a valid directory name": "%value% ist kein gültiger Ordnername"
+"\"%value%\" is not a valid link.": "\"%value%\" ist kein gültiger Link."
+"\"%value%\" is not a valid directory name": "\"%value%\" ist kein gültiger Ordnername"
