@@ -7,7 +7,7 @@ class dmValidatorDirectoryName extends sfValidatorString
   {
     parent::configure($options, $messages);
 
-    $this->setMessage('invalid', 'This is not a valid directory name');
+    $this->setMessage('invalid', '"%value%" is not a valid directory name.');
   }
 
   /**
