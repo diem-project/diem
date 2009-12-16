@@ -42,7 +42,7 @@ abstract class dmWidgetBaseForm extends dmForm
     
     $this->widgetSchema['cssClass']->setLabel('CSS class');
 
-    $this->setDefault('cssClass', $this->dmWidget->cssClass);
+    $this->setDefault('cssClass', $this->dmWidget->get('css_class'));
   }
 
   protected function addRequiredJavascript($keys)

@@ -37,7 +37,7 @@ class DmAdminEditMediaFolderForm extends DmMediaFolderForm
   
   public function checkName($validator, $values)
   {
-    if ($values['name'] !== DmMediaFolder::sanitizeName($values['name']))
+    if ($values['name'] !== dmOs::sanitizeDirName($values['name']))
     {
       // throw an error bound to the password field
       throw new sfValidatorErrorSchema($validator, array('name' => new sfValidatorError($validator, 'Invalid.')));

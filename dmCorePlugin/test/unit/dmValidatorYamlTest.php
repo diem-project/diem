@@ -4,7 +4,7 @@ require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
 $helper = new dmUnitTestHelper();
 $helper->boot();
 
-$t = new lime_test(13);
+$t = new lime_test(14);
 
 $v = new dmValidatorYaml();
 
@@ -32,6 +32,7 @@ foreach (array(
   'a: {b}',
   'a:
 b',
+  'a: "c',
   'a:
   b: error
     c:

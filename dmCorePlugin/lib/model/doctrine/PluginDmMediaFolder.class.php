@@ -186,7 +186,7 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
     }
     else if ($name !== $this->name)
     {
-      $sanitizedName = self::sanitizeName($name);
+      $sanitizedName = dmOs::sanitizeDirName($name);
       
       if($sanitizedName != $name)
       {
@@ -374,11 +374,6 @@ LIMIT 1')->getStatement();
   }
 
 
-  public static function sanitizeName($name)
-  {
-    return dmOs::sanitizeDirName($name);
-  }
-  
   /*
    * Override methods
    */

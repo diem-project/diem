@@ -76,7 +76,7 @@ class dmMediaUnitTestHelper extends dmUnitTestHelper
       $t->diag(sprintf('Root relPath != "" (%s)', $root->relPath));
       $errors++;
     }
-    elseif($root->getNodeParentId() != null)
+    elseif($root->getNodeParentId() !== null)
     {
       $t->diag(sprintf('Root->getNodeParentId() = %d', $root->getNodeParentId()));
       $errors++;
@@ -108,6 +108,11 @@ class dmMediaUnitTestHelper extends dmUnitTestHelper
       if ($folder->lft >= $folder->rgt)
       {
         $t->diag(sprintf('$folder->lft >= $folder->rgt (%d, %d) (folder : %s)', $folder->lft, $folder->rgt, $folder));
+        $errors++;
+      }
+      if (!$folder->lft || !$folder->rgt)
+      {
+        $t->diag(sprintf('!$folder->lft || !$folder->rgt (%d, %d) (folder : %s)', $folder->lft, $folder->rgt, $folder));
         $errors++;
       }
     }

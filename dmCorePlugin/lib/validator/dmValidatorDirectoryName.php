@@ -1,28 +1,23 @@
 <?php
 
-class dmValidatorYaml extends sfValidatorString
+class dmValidatorDirectoryName extends sfValidatorString
 {
-  
+
   protected function configure($options = array(), $messages = array())
   {
     parent::configure($options, $messages);
 
-    $this->setMessage('invalid', 'This is not a valid YAML definition.');
+    $this->setMessage('invalid', 'This is not a valid directory name');
   }
-  
+
   /**
    * @see sfValidatorUrl
    */
   protected function doClean($value)
   {
-    
     $value = parent::doClean($value);
     
-    try
-    {
-      $array = sfYaml::load($value);
-    }
-    catch(InvalidArgumentException $e)
+    if ($value !== dmOs::sanitizeDirName($value))
     {
       throw new sfValidatorError($this, 'invalid', array('value' => $value));
     }

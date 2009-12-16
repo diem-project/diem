@@ -9,7 +9,7 @@ class DmAdminNewMediaFolderForm extends DmMediaFolderForm
     
     $this->widgetSchema['name'] = new sfWidgetFormInputText();
     
-    $this->validatorSchema['name'] = new sfValidatorString();
+    $this->validatorSchema['name'] = new dmValidatorDirectoryName();
     
     $this->widgetSchema['parent_id'] = new sfWidgetFormInputHidden();
     
@@ -17,10 +17,7 @@ class DmAdminNewMediaFolderForm extends DmMediaFolderForm
     
     $this->useFields(array('name'));
     
-    $this->mergePostValidator(new sfValidatorAnd(array(
-      new sfValidatorCallback(array('callback' => array($this, 'checkName'))),
-      new sfValidatorCallback(array('callback' => array($this, 'checkExistsInParent')))
-    )));
+    $this->mergePostValidator(new sfValidatorCallback(array('callback' => array($this, 'checkExistsInParent'))));
   }
   
   protected function doUpdateObject($values)
@@ -33,17 +30,6 @@ class DmAdminNewMediaFolderForm extends DmMediaFolderForm
     }
     
     $this->object->Node->insertAsLastChildOf($values['parent']);
-  }
-  
-  public function checkName($validator, $values)
-  {
-    if ($values['name'] !== DmMediaFolder::sanitizeName($values['name']))
-    {
-      // throw an error bound to the password field
-      throw new sfValidatorErrorSchema($validator, array('name' => new sfValidatorError($validator, 'Invalid.')));
-    }
-    
-    return $values;
   }
   
   public function checkExistsInParent($validator, $values)

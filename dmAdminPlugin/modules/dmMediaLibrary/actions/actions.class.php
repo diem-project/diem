@@ -84,7 +84,7 @@ class dmMediaLibraryActions extends dmAdminBaseActions
         $this->context->getI18n()->__('Folder %1% is not writable', array('%1%' => $parent->getFullPath()))
       );
 
-      return $this->renderPartial('dmAdmin/flash');
+      return $this->renderPartial('dmInterface/flash');
     }
 
     $this->form = new DmMediaForm();
@@ -156,7 +156,7 @@ class dmMediaLibraryActions extends dmAdminBaseActions
     if (!$this->folder->isWritable())
     {
       $this->getUser()->logAlert($this->context->getI18n()->__('Folder %1% is not writable', array('%1%' => $this->folder->getRelPath())));
-      return $this->renderPartial('dmAdmin/flash');
+      return $this->renderPartial('dmInterface/flash');
     }
 
     $this->form = new DmMediaFolderForm($this->folder);
@@ -180,11 +180,11 @@ class dmMediaLibraryActions extends dmAdminBaseActions
         false
       );
 
-      return $this->renderPartial('dmAdmin/flash');
+      return $this->renderPartial('dmInterface/flash');
     }
 
     $this->form = new DmAdminNewMediaFolderForm;
-    $this->form->setDefault('parent_id', $parent->getId());
+    $this->form->setDefault('parent_id', $parent->id);
   }
   
   public function executeCreateFolder(dmWebRequest $request)

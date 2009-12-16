@@ -1,7 +1,15 @@
 <?php
 
 class dmValidatorLinkUrl extends sfValidatorUrl
-{
+{ 
+
+  protected function configure($options = array(), $messages = array())
+  {
+    parent::configure($options, $messages);
+
+    $this->setMessage('invalid', '"%value%" is not a valid link.');
+  }
+  
   /**
    * @see sfValidatorUrl
    */
