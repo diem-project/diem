@@ -2,13 +2,6 @@
 
 class dmWidgetListForm extends dmWidgetProjectModelForm
 {
-  protected
-  $firstDefaults = array(
-    'orderType'  => 'asc',
-    'maxPerPage' => 5,
-    'maxPerPage' => 0
-  );
-
   public function configure()
   {
     parent::configure();
@@ -154,4 +147,12 @@ class dmWidgetListForm extends dmWidgetProjectModelForm
     );
   }
 
+  protected function getFirstDefaults()
+  {
+    return array_merge(parent::getFirstDefaults(), array(
+      'orderType'  => 'asc',
+      'maxPerPage' => 5,
+      'maxPerPage' => 0
+    ));
+  }
 }

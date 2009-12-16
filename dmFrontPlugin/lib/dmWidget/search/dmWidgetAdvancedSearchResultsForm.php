@@ -2,10 +2,6 @@
 
 class dmWidgetAdvancedSearchResultsForm extends dmWidgetPluginForm
 {
-  protected
-  $firstDefaults = array(
-    'maxPerPage' =>10
-  );
 
   public function configure()
   {
@@ -24,4 +20,10 @@ class dmWidgetAdvancedSearchResultsForm extends dmWidgetPluginForm
     ));
   }
 
+  protected function getFirstDefaults()
+  {
+    return array_merge(parent::getFirstDefaults(), array(
+      'maxPerPage' =>10
+    ));
+  }
 }

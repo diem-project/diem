@@ -2,11 +2,6 @@
 
 class dmWidgetNavigationBreadCrumbForm extends dmWidgetPluginForm
 {
-  protected
-  $firstDefaults = array(
-    'separator'      => '>',
-    'includeCurrent' => true
-  );
 
   public function configure()
   {
@@ -23,4 +18,11 @@ class dmWidgetNavigationBreadCrumbForm extends dmWidgetPluginForm
     parent::configure();
   }
 
+  protected function getFirstDefaults()
+  {
+    return array_merge(parent::getFirstDefaults(), array(
+      'separator'      => '>',
+      'includeCurrent' => true
+    ));
+  }
 }

@@ -2,10 +2,6 @@
 
 class dmWidgetShowForm extends dmWidgetProjectModelForm
 {
-  protected
-  $firstDefaults = array(
-    'recordId' => null
-  );
 
   public function configure()
   {
@@ -42,5 +38,12 @@ class dmWidgetShowForm extends dmWidgetProjectModelForm
   protected function getAutoRecord()
   {
     return $this->getPage() ? $this->getPage()->getRecord()->getAncestorRecord($this->dmModule->getModel()) : false;
+  }
+
+  protected function getFirstDefaults()
+  {
+    return array_merge(parent::getFirstDefaults(), array(
+    'recordId' => null
+    ));
   }
 }

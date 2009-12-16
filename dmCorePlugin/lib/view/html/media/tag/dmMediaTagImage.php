@@ -267,6 +267,7 @@ class dmMediaTagImage extends dmMediaTag
     }
 
     $pathInfo = pathinfo($media->get('file'));
+    
     $thumbRelPath = $pathInfo['filename'].'_'.substr(md5(implode('-', array(
       $attributes['width'],
       $attributes['height'],
