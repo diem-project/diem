@@ -61,10 +61,10 @@ class dmDiagramActions extends dmAdminBaseActions
       dmOs::join(dm::getDir(), sprintf('dm%sPlugin/config/dm/services.yml', dmString::camelize($appName)))
     );
     
-    $projectFile = dmOs::join(sfConfig::get('sf_config_dir'), 'dm/servicex.yml');
+    $projectFile = dmOs::join(sfConfig::get('sf_config_dir'), 'dm/services.yml');
     if (file_exists($projectFile)) $configFiles[] = $projectFile;
     
-    $appFile = dmOs::join(sfConfig::get('sf_apps_dir'), $appName, 'config/dm/servicex.yml');
+    $appFile = dmOs::join(sfConfig::get('sf_apps_dir'), $appName, 'config/dm/services.yml');
     if (file_exists($appFile)) $configFiles[] = $appFile;
     
     $sc = new sfServiceContainerBuilder;
@@ -88,7 +88,7 @@ class dmDiagramActions extends dmAdminBaseActions
     $dumper->enableDispatcherLinks($this->withDispatcherLinks);
 
     file_put_contents($dotFile, $dumper->dump(array(
-      'graph' => array('concentrate' => 'false', 'bgcolor' => 'transparent', 'ratio' => 'fill', 'size' => '30,4'),
+      'graph' => array('concentrate' => 'false', 'bgcolor' => 'transparent', 'ratio' => 'fill', 'size' => /*'30,4'*/'25,10'),
       'node'  => array('fontsize' => 20, 'fontname' => 'Arial', 'shape' => 'Mrecord'),
       'edge'  => array('fontsize' => 9, 'fontname' => 'Arial', 'color' => 'grey', 'arrowhead' => 'open', 'arrowsize' => 1),
       'node.instance' => array('fillcolor' => '#ffffff', 'style' => 'filled', 'shape' => 'component'),
@@ -97,7 +97,8 @@ class dmDiagramActions extends dmAdminBaseActions
     )));
     
     $filesystem = $this->context->getFileSystem();
-    $return = $filesystem->exec(sprintf('dot -Tpng %s > %s', $dotFile, $dependencyDiagramImageFullPath));
+    //$return = $filesystem->exec(sprintf('dot -Tpng %s > %s', $dotFile, $dependencyDiagramImageFullPath));
+    $return = $filesystem->exec(sprintf('twopi -Granksep=5 -Tpng %s > %s', $dotFile, $dependencyDiagramImageFullPath));
     
     if (!$return)
     {
