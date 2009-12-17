@@ -4,7 +4,7 @@ require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
 $helper = new dmUnitTestHelper();
 $helper->boot('front');
 
-$t = new lime_test(79);
+$t = new lime_test(85);
 
 $markdown = $helper->get('markdown');
 dm::loadHelpers(array('Dm'));
@@ -95,6 +95,15 @@ $tests = array(
     'link with title, anchor, params, id and classes',
     'link with title, anchor, params, id and classes',
     £link($page)->text('link with title, anchor, params, id and classes')
+    ->title('this is a title')
+    ->anchor('#an_anchor')
+    ->params(array('var1' => 'val1', 'var2' => 'val2'))
+    ->set('#an_id.a_class.another_class')
+  ),
+  '[link with title, reversed anchor, params, id and classes](%source%?var1=val1&var2=val2#an_anchor "this is a title" #an_id.a_class.another_class)' => array(
+    'link with title, reversed anchor, params, id and classes',
+    'link with title, reversed anchor, params, id and classes',
+    £link($page)->text('link with title, reversed anchor, params, id and classes')
     ->title('this is a title')
     ->anchor('#an_anchor')
     ->params(array('var1' => 'val1', 'var2' => 'val2'))

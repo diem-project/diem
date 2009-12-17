@@ -4,7 +4,7 @@ require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
 $helper = new dmUnitTestHelper();
 $helper->boot('admin');
 
-$t = new lime_test(10);
+$t = new lime_test(11);
 
 dm::loadHelpers(array('Dm'));
 
@@ -44,5 +44,7 @@ $t->is(£link($page)->getHref(), $expected = $frontScriptName.'/'.$page->slug, $
 $t->is(£link('page:'.$page->id)->getHref(), $expected = $frontScriptName.'/'.$page->slug, $expected);
 
 $t->is(£link('page:'.$page->id.'?var1=val1&var2=val2')->getHref(), $expected = $frontScriptName.'/'.$page->slug.'?var1=val1&var2=val2', $expected);
+
+$t->is(£link('page:'.$page->id.'?var1=val1&var2=val2#anchor')->getHref(), $expected = $frontScriptName.'/'.$page->slug.'?var1=val1&var2=val2#anchor', $expected);
 
 $page->Node->delete();
