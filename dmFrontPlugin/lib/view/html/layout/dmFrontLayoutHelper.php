@@ -95,21 +95,26 @@ class dmFrontLayoutHelper extends dmCoreLayoutHelper
   
   public function renderGoogleAnalytics()
   {
-    $user = $this->serviceContainer->getService('user');
-    
-    if (dmConfig::get('ga_key') && !$user->can('admin') && !dmOs::isLocalhost())
+    if (($gaKey = dmConfig::get('ga_key')) && !$this->serviceContainer->getService('user')->can('admin') && !dmOs::isLocalhost())
     {
-      return str_replace("\n", ' ', '<script type="text/javascript">
-var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-document.write(unescape("%3Cscript src=\'" + gaJsHost + "google-analytics.com/ga.js\' type=\'text/javascript\'%3E%3C/script%3E"));
-</script>
-<script type="text/javascript">
-try {
-var pageTracker = _gat._getTracker("'.dmConfig::get('ga_key').'");
-pageTracker._trackPageview();
-} catch(err) {}</script>');
+      return $this->getGoogleAnalyticsCode($gaKey);
     }
     
     return '';
+  }
+  
+  protected function getGoogleAnalyticsCode($gaKey)
+  {
+    return "<script type=\"text/javascript\">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', '".$gaKey."']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ga);
+})();
+</script>";
   }
 }
