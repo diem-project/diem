@@ -50,17 +50,14 @@ class dmRecordTextDiff
     
     if ($this->isTextField($field))
     {
-//      if ($this->isMarkdownField($field))
-//      {
-//        $fromValue  = $this->serviceContainer->get('markdown')->toHtml($fromValue);
-//        $toValue    = $this->serviceContainer->get('markdown')->toHtml($toValue);
-//      }
-      
       $diff = $this->generateHtmlDiff($fromValue, $toValue);
     }
     else
     {
-      $diff = false;
+      $diff = $this->generateHtmlDiff(
+        $this->__($fromValue ? 'Yes' : 'No'),
+        $this->__($toValue ? 'Yes' : 'No')
+      );
     }
     
     return $diff;
@@ -73,7 +70,12 @@ class dmRecordTextDiff
   
   protected function isTextField($field)
   {
-    return in_array($this->getFieldType($field), array('string', 'blob', 'clob', 'date', 'time', 'timestamp', 'enum'));
+    return in_array($this->getFieldType($field), array('string', 'blob', 'clob', 'date', 'time', 'timestamp', 'enum', 'integer', 'float'));
+  }
+  
+  protected function isBooleanField($field)
+  {
+    return 'boolean' === $this->getFieldType($field);
   }
   
   protected function isMarkdownField($field)
@@ -84,5 +86,10 @@ class dmRecordTextDiff
   protected function getFieldType($field)
   {
     return dmArray::get($this->table->getColumnDefinition($field), 'type');
+  }
+  
+  protected function __($text, array $args = array(), $catalogue = null)
+  {
+    return $this->serviceContainer->getService('i18n')->__($text, $args, $catalogue);
   }
 }

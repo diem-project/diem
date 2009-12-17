@@ -18,7 +18,7 @@ use_stylesheet('admin.dataTable');
 
 echo £o('div.dm_history.mt10');
 
-echo £o('ul.version_tabss');
+echo £o('ul.version_tabs');
 
 foreach($revisions as $revision)
 {
@@ -72,10 +72,19 @@ foreach($revisions as $index => $revision)
   
   foreach($fields as $field)
   {
+    if ($record->getTable()->isBooleanColumn($field))
+    {
+      $string = __($revision->get($field) ? 'Yes' : 'No');
+    }
+    else
+    {
+      $string = nl2br($revision->get($field));
+    }
+    
     $table->body(
       £('div', __(dmString::humanize($field))),
       £('div', $diffs ? nl2br($diffs[$field]) : '-'),
-      £('div', nl2br($revision->get($field)))
+      £('div', $string)
     );
   }
   

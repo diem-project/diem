@@ -354,6 +354,11 @@ abstract class dmDoctrineTable extends Doctrine_Table
     return strpos(dmArray::get($this->getColumnDefinition($columnName), 'extra', ''), 'markdown') !== false;
   }
   
+  public function isBooleanColumn($columnName)
+  {
+    return 'boolean' === dmArray::get($this->getColumnDefinition($columnName), 'type');
+  }
+  
   public function isI18nColumn($columnName)
   {
     return $this->hasI18n() && $this->getI18nTable()->hasField($columnName);
