@@ -16,12 +16,7 @@ class dmMediaResource
   const
   MEDIA   = 'media',
   FILE    = 'file',
-  REMOTE  = 'remote',
-  
-  IMAGE   = 'image',
-  VIDEO   = 'video',
-  AUDIO   = 'audio',
-  FLASH   = 'flash';
+  REMOTE  = 'remote';
 
   public function __construct(dmMimeTypeResolver $mimeTypeResolver, dmTheme $theme, $culture, array $requestContext)
   {

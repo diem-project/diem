@@ -30,12 +30,6 @@ $t->is($markdown->toText($markdownText), $text, $markdown->toText($markdownText)
 $text = 'this is a markdown image alt text with advanced features';
 $t->is($markdown->brutalToText($markdownText), $text, $markdown->brutalToText($markdownText));
 
-$t->comment('Extendend image inclusion');
-$markdownText = 'this is a **markdown** ![image alt text](media:33 #an_id.a_class 300x200) [with](http://diem-project.org "link title") *advanced* features';
-
-//$text = 'this is a markdown  with advanced features';
-//$t->is($markdown->toText($markdownText), $text, $markdown->toText($markdownText));
-
 $text = 'this is a markdown image alt text with advanced features';
 $t->is($markdown->brutalToText($markdownText), $text, $markdown->brutalToText($markdownText));
 

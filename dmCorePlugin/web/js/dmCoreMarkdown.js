@@ -18,7 +18,7 @@
 		{
 			var self = this;
 			
-			$('#dm_page_bar_toggler').bind('click', function()
+			$('#dm_page_bar_toggler, #dm_media_bar_toggler').bind('click', function()
 			{
 		    self.selection = self.element.getSelection();
 			});
@@ -39,7 +39,7 @@
       var self = this;
 			
 			self.element.droppable({
-        accept: '#dm_page_bar li',
+        accept:       '#dm_page_bar li, #dm_media_bar li.file.image',
         activeClass:  'droppable_active',
         hoverClass:   'droppable_hover',
         //          tolerance:    'touch',
@@ -47,9 +47,18 @@
         {
           var selection = self.getSelection(),
           linkText = selection.text || ui.draggable.find('>a').text(),
-          type = "page",
-          placeholder = "["+linkText+"]("+type+":"+ui.draggable.attr('id').replace(/dmp/, '')+")",
           scrollTop = self.element.scrollTop();
+					
+					if (ui.draggable.hasClass('file'))
+					{
+						var type = "media";
+						var placeholder = "!["+linkText+"]("+type+":"+ui.draggable.attr('id').replace(/dmm/, '')+")"
+					}
+					else
+					{
+            var type = "page";
+            var placeholder = "["+linkText+"]("+type+":"+ui.draggable.attr('id').replace(/dmp/, '')+")"
+					}
           
           if (selection) 
           {

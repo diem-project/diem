@@ -182,6 +182,95 @@ class dmMarkdown extends MarkdownExtra_Parser
     return "\n" . $this->hashBlock($block) . "\n\n";
   }
   
+  public function doImages($text)
+  {
+    #
+    # Turn Markdown image shortcuts into <img> tags.
+    #
+    $text = preg_replace_callback('{
+      (        # wrap whole match in $1
+        !\[
+        ('.$this->nested_brackets_re.')    # alt text = $2
+        \]
+        \s?      # One optional whitespace character
+        \(      # literal paren
+        [ ]*
+        (?:
+          <(\S*)>  # src url = $3
+        |
+          ('.$this->nested_url_parenthesis_re.')  # src url = $4
+        )
+        [ ]*
+        (      # $5
+          (.*?)    # title = $6
+          [ ]*
+        )?      # title is optional
+        \)
+      )
+      }xs',
+      array(&$this, '_doImages_inline_callback'), $text);
+
+    return $text;
+  }
+  
+  public function _doImages_inline_callback($matches)
+  {
+    $alt   = $matches[2];
+    $url   = $matches[3] == '' ? $matches[4] : $matches[3];
+    $attrs = $matches[6];
+
+    $tag = $this->helper->£media($url);
+    
+    if ($alt)
+    {
+      $tag->alt($alt);
+    }
+    
+    if($attrs)
+    {
+      if(strpos($attrs, ' '))
+      {
+        list($css, $size) = explode(' ', $attrs);
+      }
+      elseif(in_array($attrs{0}, array('#', '.')))
+      {
+        list($css, $size) = array($attrs, null);
+      }
+      else
+      {
+        list($css, $size) = array(null, $attrs);
+      }
+      
+      if ($css)
+      {
+        $tag->set($css);
+      }
+      
+      if($size)
+      {
+        if (false !== strpos($size, 'x'))
+        {
+          list($width, $height) = explode('x', $size);
+        }
+        else
+        {
+          $width = $height = $size;
+        }
+        
+        if($width)
+        {
+          $tag->width($width);
+        }
+        if($height)
+        {
+          $tag->height($height);
+        }
+      }
+    }
+    
+    return $this->hashPart($tag->render());
+  }
+  
   protected function cleanText($text)
   {
     return strtr($text, array(

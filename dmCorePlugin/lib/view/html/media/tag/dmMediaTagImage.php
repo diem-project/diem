@@ -107,7 +107,7 @@ class dmMediaTagImage extends dmMediaTag
     return $tag;
   }
   
-  protected function renderDefault()
+  public function renderDefault()
   {
     return '';
   }
@@ -137,14 +137,22 @@ class dmMediaTagImage extends dmMediaTag
   {
     $attributes = parent::prepareAttributesForHtml($attributes);
 
-    if(!isset($attributes['alt']) && sfConfig::get('dm_accessibility_image_empty_alts', true))
-    {
-      $attributes['alt'] = '';
-    }
-
     if ($this->resource->isType(dmMediaResource::MEDIA))
     {
       $attributes = $this->prepareMediaAttributes($attributes);
+    }
+    elseif(!$this->hasSize() && $this->resource->isType(dmMediaResource::FILE))
+    {
+      if (@$infos = getimagesize($this->resource->getFullPath()))
+      {
+        $attributes['width'] = $infos[0];
+        $attributes['height'] = $infos[1];
+      }
+    }
+
+    if(!isset($attributes['alt']) && sfConfig::get('dm_accessibility_image_empty_alts', true))
+    {
+      $attributes['alt'] = '';
     }
   
     if (isset($attributes['html_width']))
@@ -158,6 +166,9 @@ class dmMediaTagImage extends dmMediaTag
       unset($attributes['html_height']);
     }
 
+    // helps unit testing
+    ksort($attributes);
+    
     return $attributes;
   }
 
@@ -211,6 +222,11 @@ class dmMediaTagImage extends dmMediaTag
 
     $attributes['src'] = $this->context->getRequest()->getRelativeUrlRoot()
     .str_replace(dmOs::normalize(sfConfig::get('sf_web_dir')), '', dmOs::normalize($mediaFullPath));
+    
+    if(!isset($attributes['alt']) && $media->get('legend'))
+    {
+      $attributes['alt'] = $media->get('legend');
+    }
 
     return $attributes;
   }
