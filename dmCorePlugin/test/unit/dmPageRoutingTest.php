@@ -86,4 +86,4 @@ $t->is($route->getPage(), $page, 'route page is the good page');
 $t->is($route->getCulture(), 'c2', 'route culture is c2 : '.$route->getCulture());
 
 //clear the mess
-$page->delete();
+$page->Node->delete();

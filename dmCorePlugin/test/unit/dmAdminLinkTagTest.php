@@ -4,16 +4,7 @@ require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
 $helper = new dmUnitTestHelper();
 $helper->boot('admin');
 
-if(sfConfig::get('sf_app') == 'admin' && class_exists('dmAdminPluginConfiguration', false))
-{
-  $t = new lime_test(4);
-}
-else
-{
-  $t = new lime_test(1);
-  $t->pass('Works only on admin app');
-  return;
-}
+$t = new lime_test(10);
 
 dm::loadHelpers(array('Dm'));
 
@@ -29,3 +20,29 @@ $t->is(£link('+/dmAuth/signin')->getHref(), $expected, '+/dmAuth/signin href is
 
 $expected = $helper->get('controller')->genUrl('dmAuth/signin');
 $t->is($helper->get('helper')->£link('+/dmAuth/signin')->getHref(), $expected, 'with helper service, +/dmAuth/signin href is '.$expected);
+
+$frontScriptName = $helper->get('script_name_resolver')->get('front');
+
+$t->is(£link('app:front')->getHref(), $frontScriptName, $frontScriptName);
+
+$t->is(£link('app:front/test')->getHref(), $expected = $frontScriptName.'/test', $expected);
+
+$t->is(£link('app:front/test?var1=val1&var2=val2')->getHref(), $expected = $frontScriptName.'/test?var1=val1&var2=val2', $expected);
+
+$t->comment('Create a test page');
+
+$page = dmDb::create('DmPage', array(
+  'module'  => dmString::random(),
+  'action'  => dmString::random(),
+  'name'    => dmString::random(),
+  'slug'    => dmString::random()
+));
+$page->Node->insertAsFirstChildOf(dmDb::table('DmPage')->getTree()->fetchRoot());
+
+$expected = $helper->get('script_name_resolver')->get('front');
+$t->is(£link($page)->getHref(), $expected = $frontScriptName.'/'.$page->slug, $expected);
+$t->is(£link('page:'.$page->id)->getHref(), $expected = $frontScriptName.'/'.$page->slug, $expected);
+
+$t->is(£link('page:'.$page->id.'?var1=val1&var2=val2')->getHref(), $expected = $frontScriptName.'/'.$page->slug.'?var1=val1&var2=val2', $expected);
+
+$page->Node->delete();

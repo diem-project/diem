@@ -79,69 +79,16 @@ class dmMarkdown extends MarkdownExtra_Parser
 
     // add two spaces before every line end to allow new lines
     $text = str_replace("\n", "  \n", $text);
-
-    $text = $this->replaceInternalLinks($text);
     
     return $text;
   }
   
-  protected function replaceInternalLinks($text)
-  {
-    return preg_replace_callback(
-      '#\[([^\]]*)\]\((page\:[^\)]+)\)#u',
-      array($this, 'replaceInternalLinkCallback'),
-      $text
-    );
-  }
-  
-  protected function replaceInternalLinkCallback(array $matches)
-  {
-    $source = $matches[2];
-      
-    if ($anchorPos = strpos($source, '#'))
-    {
-      $anchor = substr($source, $anchorPos+1);
-      $source = substr($source, 0, $anchorPos);
-    }
-      
-    if ($titlePos = strpos($source, ' '))
-    {
-      $title  = trim(substr($source, $titlePos+1), '"');
-      $source = substr($source, 0, $titlePos);
-    }
-    
-    if ($page = dmDb::table('DmPage')->findOneBySource($source))
-    {
-      $link = $this->helper->£link($page);
-      
-      if (isset($anchor))
-      {
-        $link->anchor($anchor);
-      }
-      if (isset($title))
-      {
-        $link->title($title);
-      }
-    }
-    else
-    {
-      $link = $this->helper->£link('#');
-    }
-    
-    if ($matches[1])
-    {
-      $link->text($matches[1]);
-    }
-    
-    return $link->render();
-  }
-
   protected function postTransform($html)
   {
     // remove first and last line feed
     $html = trim($html, "\n");
     
-    // add the "first_p" css class to the first p
+    // add the "dm_first_p" css class to the first p
     $html = dmString::str_replace_once('<p>', '<p class="dm_first_p">', $html);
     
     return $html;
@@ -182,6 +129,96 @@ class dmMarkdown extends MarkdownExtra_Parser
     return "\n" . $this->hashBlock($block) . "\n\n";
   }
   
+  
+  /*
+   * Link system replacement
+   */
+
+  public function doAnchors($text)
+  {
+    #
+    # Turn Markdown link shortcuts into XHTML <a> tags.
+    #
+    if ($this->in_anchor) return $text;
+    $this->in_anchor = true;
+    
+    #
+    # Next, inline-style links: [link text](url "optional title")
+    #
+    $text = preg_replace_callback('{
+      (        # wrap whole match in $1
+        \[
+        ('.$this->nested_brackets_re.')  # link text = $2
+        \]
+        \(      # literal paren
+        [ ]*
+        (?:
+          <(\S*)>  # href = $3
+        |
+          ('.$this->nested_url_parenthesis_re.')  # href = $4
+        )
+        [ ]*
+        (      # $5
+          ([\'"])  # quote char = $6
+          (.*?)    # Title = $7
+          \6    # matching quote
+          [ ]*  # ignore any spaces/tabs between closing quote and )
+        )?      # title is optional
+        (           # $8
+          (.*?)     # attrs = $9
+          [ ]*
+        )?          # attrs are optional
+        \)
+      )
+      }xs',
+      array(&$this, '_DoAnchors_inline_callback'), $text);
+
+    $this->in_anchor = false;
+    return $text;
+  }
+  
+  public function _doAnchors_inline_callback($matches)
+  {
+    $text   = $this->runSpanGamut($matches[2]);
+    $url    = $matches[3] == '' ? $matches[4] : $matches[3];
+    $title  = $matches[7];
+    $attrs  = $matches[9];
+    
+    if (false !== strpos($url, '#'))
+    {
+      $anchor = preg_replace('{.*\#([\w\d\-\:]+).*}i', '$1', $url);
+      
+      $url    = dmString::str_replace_once('#'.$anchor, '', $url);
+    }
+    else
+    {
+      $anchor = null;
+    }
+    
+    $link = $this->helper->£link($url)->text($text);
+    
+    if ($anchor)
+    {
+      $link->anchor($anchor);
+    }
+    
+    if ($title)
+    {
+      $link->title($title);
+    }
+    
+    if ($attrs)
+    {
+      $link->set($attrs);
+    }
+
+    return $this->hashPart($link->render());
+  }
+  
+  /*
+   * Image system replacement
+   */
+  
   public function doImages($text)
   {
     #
@@ -201,10 +238,10 @@ class dmMarkdown extends MarkdownExtra_Parser
           ('.$this->nested_url_parenthesis_re.')  # src url = $4
         )
         [ ]*
-        (      # $5
-          (.*?)    # title = $6
+        (           # $5
+          (.*?)     # attrs = $6
           [ ]*
-        )?      # title is optional
+        )?          # attrs are optional
         \)
       )
       }xs',

@@ -17,6 +17,32 @@ class dmAdminLinkTag extends dmBaseLinkTag
   {
     if(is_string($this->resource))
     {
+      $resource = $this->resource;
+      /*
+       * If a blank space is found in the source,
+       * remove characters after it
+       * because they are just a comment
+       * ex : page:1?var=val Home
+       */
+      if ($blankSpacePos = strpos($resource, ' '))
+      {
+        $resource = substr($resource, 0, $blankSpacePos);
+      }
+      
+      if (strncmp($resource, 'page:', 5) === 0)
+      {
+        $pageResource = preg_replace('|^(page:\d+).*$|', '$1', $resource);
+        
+        if ($page = dmDb::table('DmPage')->findOneBySource($pageResource))
+        {
+          $this->resource = preg_replace('|^page:\d+(.*)$|', 'app:front/'.$page->slug.'$1', $resource);
+        }
+        else
+        {
+          throw new dmException(sprintf('%s is not a valid link resource', $source));
+        }
+      }
+      
       if (strncmp($this->resource, 'app:', 4) === 0)
       {
         $type = 'uri';

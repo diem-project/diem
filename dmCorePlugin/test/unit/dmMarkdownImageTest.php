@@ -9,8 +9,6 @@ $t = new lime_test(61);
 $markdown = $helper->get('markdown');
 dm::loadHelpers(array('Dm'));
 
-//echo $markdown->toHtml('![image with id, classes and size](%source% #an_id.a_class.another_class 300x200)');die;
-
 $t->comment('Create a test image media');
 
 $mediaFileName = 'test_'.dmString::random().'.jpg';

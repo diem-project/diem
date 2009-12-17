@@ -94,4 +94,4 @@ $i18nBuilder->createAllPagesTranslations();
 /*
  * Clear the mess
  */
-//$randomCreatedPage->delete();
+$randomCreatedPage->Node->delete();

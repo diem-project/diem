@@ -178,6 +178,7 @@ class PluginDmPageTable extends myDoctrineTable
     {
       return $source->getDmPage();
     }
+    
     if (!isset($this->findByStringCache[$source]))
     {
       if(null === $source)
@@ -199,6 +200,10 @@ class PluginDmPageTable extends myDoctrineTable
           $parts = explode('/', $source);
           
           $this->findByStringCache[$source] = $this->findOneByModuleAndActionWithI18n($parts[0], $parts[1]);
+        }
+        else
+        {
+          $this->findByStringCache[$source] = null;
         }
       }
       else

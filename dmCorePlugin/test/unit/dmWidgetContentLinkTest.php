@@ -191,5 +191,5 @@ $t->is($widgetView->renderForIndex(), $expected = 'test text test title', 'rende
  * Clear the mess
  */
 $testPage->PageView->delete();
-$testPage->delete();
+$testPage->Node->delete();
 $widget->delete();

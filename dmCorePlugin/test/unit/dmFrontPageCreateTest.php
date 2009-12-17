@@ -83,7 +83,7 @@ $pageView = $page->PageView;
 $layout = $pageView->Layout;
 
 $t->comment('Delete page');
-$page->delete();
+$page->Node->delete();
 
 $t->is($page->getNameBackup(), $pageName, 'The deleted page name backup is '.$pageName);
 

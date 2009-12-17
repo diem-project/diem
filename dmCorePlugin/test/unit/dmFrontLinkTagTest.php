@@ -121,7 +121,7 @@ $testPage->Node->delete();
 
 $t->diag('blank');
 
-$blankLink = sprintf('<a class="link" target="%s" href="%s">%s</a>', '_blank', 'http://iliaz.com', 'http://iliaz.com');
+$blankLink = sprintf('<a class="link" href="%s" target="%s">%s</a>', 'http://iliaz.com', '_blank', 'http://iliaz.com');
 $t->is((string)£link('http://iliaz.com')->target('blank'), $blankLink, 'blank link is '.$blankLink);
 
 $blankLink = sprintf('<a class="link" href="%s">%s</a>', 'http://iliaz.com', 'http://iliaz.com');
@@ -138,8 +138,7 @@ sfConfig::set('sf_debug', true);
 
 $badSource = dmString::random().'/'.dmString::random();
 $errorText = '[EXCEPTION] '.$badSource.' is not a valid link resource';
-$expr = '_^<a\sclass="link"\stitle="^"*"\shref="\?dm_debug=1">'.preg_quote($errorText, '_').'</a>$_';
-$expr = '_^<a class="link" title="[^"]+" href="\?dm\_debug=1">'.preg_quote($errorText, '_').'</a>$_';
+$expr = '_^<a class="link" href="\?dm\_debug=1" title="[^"]+">'.preg_quote($errorText, '_').'</a>$_';
 $errorLink = (string)£link($badSource);
 $t->like($errorLink, $expr, $errorLink);
 

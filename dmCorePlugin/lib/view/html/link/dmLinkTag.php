@@ -131,6 +131,9 @@ abstract class dmBaseLinkTag extends dmHtmlTag
       unset($attributes['anchor']);
     }
 
+    // makes unit testing easier
+    ksort($attributes);
+    
     return $attributes;
   }
 

@@ -255,7 +255,7 @@ $t->is_deeply($mediaTag->get('class'), array(), 'media tag css_class is empty');
  * Clear the mess
  */
 $testPage->PageView->delete();
-$testPage->delete();
+$testPage->Node->delete();
 $widget->delete();
 $media->delete();
 $media2->delete();
