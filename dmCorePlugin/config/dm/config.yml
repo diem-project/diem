@@ -53,6 +53,9 @@ default:
   media:
     default:              false         # default resource to use when using £media with an empty resource.
                                         # example: /uploads/default.jpg
+  security:
+    remember_cookie_name:               # defaults to "dm_remember_%project_name%"
+    remember_key_expiration_age:        # defaults to 15 days
  
 ###### dm internal config ######
   

@@ -22,6 +22,10 @@ abstract class dmWebResponse extends sfWebResponse
     
     $this->dispatcher->connect('user.change_theme', array($this, 'listenToChangeThemeEvent'));
     
+    $this->dispatcher->connect('user.remember_me', array($this, 'listenToRememberMeEvent'));
+    
+    $this->dispatcher->connect('user.sign_out', array($this, 'listenToSignOutEvent'));
+    
     $this->dispatcher->connect('dm.layout.filter_javascripts', array($this, 'listenToFilterJavascriptsEvent'));
   }
   
@@ -74,6 +78,31 @@ abstract class dmWebResponse extends sfWebResponse
   public function listenToChangeThemeEvent(sfEvent $event)
   {
     $this->setTheme($event['theme']);
+  }
+  
+  /**
+   * Listens to the user.remember_me event.
+   *
+   * @param sfEvent An sfEvent instance
+   */
+  public function listenToRememberMeEvent(sfEvent $event)
+  {
+    $this->setCookie($this->getRememberCookieName(), $event['remember_key'], time() + $event['expiration_age']);
+  }
+  
+  /**
+   * Listens to the user.sign_out event.
+   *
+   * @param sfEvent An sfEvent instance
+   */
+  public function listenToSignOutEvent(sfEvent $event)
+  {
+    $this->setCookie($this->getRememberCookieName(), '', time() - $event['expiration_age']);
+  }
+  
+  public function getRememberCookieName()
+  {
+    return sfConfig::get('dm_security_remember_cookie_name', 'dm_remember_'.dmProject::getKey());
   }
   
   public function setTheme(dmTheme $theme)

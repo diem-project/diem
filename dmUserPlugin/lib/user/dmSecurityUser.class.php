@@ -167,12 +167,12 @@ class dmSecurityUser extends sfBasicSecurityUser
     // remember?
     if ($remember)
     {
-      $expiration_age = sfConfig::get('dm_security_remember_key_expiration_age', 15 * 24 * 3600);
+      $expirationAge = $this->getRememberKeyExpirationAge();
 
       // remove old keys
       Doctrine_Core::getTable('DmRememberKey')->createQuery()
         ->delete()
-        ->where('created_at < ?', date('Y-m-d H:i:s', time() - $expiration_age))
+        ->where('created_at < ?', date('Y-m-d H:i:s', time() - $expirationAge))
         ->execute();
 
       // remove other keys from this user
@@ -183,7 +183,7 @@ class dmSecurityUser extends sfBasicSecurityUser
         ->execute();
 
       // generate new keys
-      $key = $this->generateRandomKey();
+      $key = md5(dmString::random(20));
 
       // save key
       $rk = new DmRememberKey();
@@ -192,50 +192,35 @@ class dmSecurityUser extends sfBasicSecurityUser
       $rk->setIpAddress($_SERVER['REMOTE_ADDR']);
       $rk->save($con);
 
-      // make key as a cookie
-      $remember_cookie = sfConfig::get('dm_security_remember_cookie_name', 'dm_remember_'.dmProject::getKey());
-      
-      if (dmContext::hasInstance() && $response = dmContext::getInstance()->getResponse())
-      {
-        $response->setCookie($remember_cookie, $key, time() + $expiration_age);
-      }
+      $this->dispatcher->notify(new sfEvent($this, 'user.remember_me', array(
+        'remember_key'    => $key,
+        'expiration_age'  => $expirationAge
+      )));
     }
     
     $this->dispatcher->notify(new sfEvent($this, 'user.sign_in'));
   }
-
-  /**
-   * Returns a random generated key.
-   *
-   * @param int $len The key length
-   * @return string
-   */
-  protected function generateRandomKey($len = 20)
+  
+  protected function getRememberKeyExpirationAge()
   {
-    return md5(dmString::random(20));
+    return sfConfig::get('dm_security_remember_key_expiration_age', 15 * 24 * 3600);
   }
-
+  
   /**
    * Signs out the user.
    *
    */
   public function signOut()
   {
-    $this->dispatcher->notify(new sfEvent($this, 'user.sign_out'));
+    $this->dispatcher->notify(new sfEvent($this, 'user.sign_out', array(
+      'expiration_age' => $this->getRememberKeyExpirationAge()
+    )));
     
     $this->setAttribute('user_id', null, 'dmSecurityUser');
     $this->getAttributeHolder()->removeNamespace('dmSecurityUser');
     $this->user = null;
     $this->clearCredentials();
     $this->setAuthenticated(false);
-    $expiration_age = sfConfig::get('dm_security_remember_key_expiration_age', 15 * 24 * 3600);
-    $remember_cookie = sfConfig::get('dm_security_remember_cookie_name', 'dm_remember_'.dmProject::getKey());
-    
-    if (dmContext::hasInstance() && $response = dmContext::getInstance()->getResponse())
-    {
-      $response->setCookie($remember_cookie, '', time() - $expiration_age);
-    }
-    
     $this->isSuperAdmin = false;
   }
 
@@ -254,12 +239,6 @@ class dmSecurityUser extends sfBasicSecurityUser
       {
         // the user does not exist anymore in the database
         $this->signOut();
-        
-        if (dmContext::hasInstance() && $controller = dmContext::getInstance()->get('controller'))
-        {
-          $this->shutdown();
-          $controller->redirect('@homepage');
-        }
 
         throw new sfException('The user does not exist anymore in the database.');
       }
