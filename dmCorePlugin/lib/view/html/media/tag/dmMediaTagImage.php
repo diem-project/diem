@@ -141,7 +141,7 @@ class dmMediaTagImage extends dmMediaTag
     {
       $attributes = $this->prepareMediaAttributes($attributes);
     }
-    elseif(!$this->hasSize() && $this->resource->isType(dmMediaResource::FILE))
+    elseif(!$this->hasSize() && !$this->get('html_width') && !$this->get('html_height') && $this->resource->isType(dmMediaResource::FILE))
     {
       if (@$infos = getimagesize($this->resource->getFullPath()))
       {
