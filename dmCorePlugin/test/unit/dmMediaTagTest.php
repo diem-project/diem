@@ -123,9 +123,9 @@ $media = dmDb::create('DmMedia', array(
   'dm_media_folder_id' => dmDb::table('DmMediaFolder')->checkRoot()->id
 ))->saveGet();
 
-$rur = $helper->get('request')->getRelativeUrlRoot().'/';
-
 $t->ok($media->exists(), 'A test media has been created');
+
+$rur = $helper->get('request')->getRelativeUrlRoot().'/';
 
 $expected = sprintf('<img height="%d" src="%s" width="%d" />', $media->height, $rur.$media->webPath, $media->width);
 $t->is(£media($media)->render(), $expected, $expected);

@@ -141,7 +141,7 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
     }
     else if ($field->isPartial())
     {
-      return sprintf("get_partial('%s', array('type' => 'list', '%s' => \$%s))", $fieldName, $this->getSingularName(), $this->getSingularName());
+      return sprintf("get_partial('%s/%s', array('type' => 'list', '%s' => \$%s))", $this->getModuleName(), $fieldName, $this->getSingularName(), $this->getSingularName());
     }
     else if ('Date' == $field->getType())
     {
