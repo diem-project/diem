@@ -95,7 +95,6 @@ EOF;
     
     $this->getContext()->reloadModuleManager();
     
-    // better to run it in a different process because model may have been changed
     $this->runTask('doctrine:build-forms', array(), array('generator-class' => 'dmDoctrineFormGenerator'));
     
     $this->runTask('doctrine:build-filters', array(), array('generator-class' => 'dmDoctrineFormFilterGenerator'));

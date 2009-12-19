@@ -1,7 +1,5 @@
 <?php
 
-require_once(getcwd().'/test/bootstrap/unit.php');
-
 class dmUnitTestHelper
 {
   protected
@@ -10,9 +8,25 @@ class dmUnitTestHelper
 
   public function boot($app = 'admin', $env = 'test', $debug = true)
   {
-    $appConfig = ProjectConfiguration::getApplicationConfiguration($app, $env, $debug, null, new sfEventDispatcher());
+    $projectRootDir = getcwd();
+    $testRootDir = realpath(dirname(__FILE__).'/../../fixtures');
 
-    $this->context = dmContext::createInstance($appConfig);
+    // configuration
+    require_once $projectRootDir.'/config/ProjectConfiguration.class.php';
+    $configuration = ProjectConfiguration::getApplicationConfiguration($app, $env, $debug, $testRootDir);
+    
+    // autoloader
+    $autoload = sfSimpleAutoload::getInstance(sfConfig::get('sf_cache_dir').'/project_autoload.cache');
+    $autoload->loadConfiguration(sfFinder::type('file')->name('autoload.yml')->in(array(
+      sfConfig::get('sf_symfony_lib_dir').'/config/config',
+      sfConfig::get('sf_config_dir'),
+    )));
+    $autoload->register();
+    
+    // lime
+    include $configuration->getSymfonyLibDir().'/vendor/lime/lime.php';
+
+    $this->context = dmContext::createInstance($configuration);
 
     $this->initialize();
 
