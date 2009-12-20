@@ -41,7 +41,6 @@ abstract class BaseDmTestPost extends myDoctrineRecord
         $this->hasColumn('title', 'string', 255, array(
              'type' => 'string',
              'notnull' => true,
-             'unique' => true,
              'length' => '255',
              ));
         $this->hasColumn('excerpt', 'string', 800, array(

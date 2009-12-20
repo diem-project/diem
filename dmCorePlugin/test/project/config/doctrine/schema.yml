@@ -8,7 +8,7 @@ DmTestPost:
         DmVersionable:
           fields:     ~
   columns:  
-    title:            { type: string(255), notnull: true, unique: true }  
+    title:            { type: string(255), notnull: true }  
     excerpt:          { type: string(800) }  
     body:             { type: clob, extra: markdown }
     url:              { type: string(255), extra: link }
@@ -16,7 +16,7 @@ DmTestPost:
   relations:  
     Image:  
       class:          DmMedia  
-      local:          image_id  
+      local:          image_id
 
 DmTestComment:  
   actAs:

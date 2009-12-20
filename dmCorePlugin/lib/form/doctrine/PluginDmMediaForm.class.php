@@ -24,7 +24,7 @@ abstract class PluginDmMediaForm extends BaseDmMediaForm
     $this->changeToHidden('dm_media_folder_id');
 
     $this->mergePostValidator(new sfValidatorCallback(array('callback' => array($this, 'clearName'))));
-    $this->mergePostValidator(new sfValidatorCallback(array('callback' => array($this, 'checkExistingNameInParent'))));
+    $this->mergePostValidator(new sfValidatorCallback(array('callback' => array($this, 'checkFolder'))));
   }
 
   protected function doUpdateObject($values)
@@ -78,20 +78,13 @@ abstract class PluginDmMediaForm extends BaseDmMediaForm
     return $values;
   }
 
-  public function checkExistingNameInParent($validator, $values)
+  public function checkFolder($validator, $values)
   {
     if (!empty($values['file']))
     {
       if(!$folder = dmDb::table('DmMediaFolder')->find($values['dm_media_folder_id']))
       {
         throw new dmException('media has no folder');
-      }
-
-      $filename = dmOs::sanitizeFileName($values['file']->getOriginalName());
-
-      if($folder->hasFile($filename))
-      {
-        $this->throwFileAlreadyExists($validator, $folder, $filename);
       }
 
       if(!is_writable($folder->fullPath))
@@ -104,13 +97,5 @@ abstract class PluginDmMediaForm extends BaseDmMediaForm
     }
 
     return $values;
-  }
-
-  protected function throwFileAlreadyExists($validator, $folder, $filename)
-  {
-    $error = new sfValidatorError($validator, 'Already exists in this folder');
-
-    // throw an error bound to the file field
-    throw new sfValidatorErrorSchema($validator, array('file' => $error));
   }
 }

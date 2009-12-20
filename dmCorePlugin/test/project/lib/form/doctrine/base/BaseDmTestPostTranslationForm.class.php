@@ -34,10 +34,6 @@ abstract class BaseDmTestPostTranslationForm extends BaseFormDoctrine
       'version' => new sfValidatorInteger(array('required' => false)),
     ));
 
-    $this->validatorSchema->setPostValidator(
-      new sfValidatorDoctrineUnique(array('model' => 'DmTestPostTranslation', 'column' => array('title')))
-    );
-
     $this->widgetSchema->setNameFormat('dm_test_post_translation[%s]');
 
     $this->errorSchema = new sfValidatorErrorSchema($this->validatorSchema);

@@ -3,6 +3,7 @@
 class dmUnitTestHelper
 {
   protected
+  $configuration,
   $context,
   $moduleManager;
 
@@ -12,7 +13,7 @@ class dmUnitTestHelper
 
     // configuration
     require_once $rootDir.'/config/ProjectConfiguration.class.php';
-    $configuration = ProjectConfiguration::getApplicationConfiguration($app, $env, $debug, $rootDir);
+    $this->configuration = ProjectConfiguration::getApplicationConfiguration($app, $env, $debug, $rootDir);
 
     // autoloader
     $autoload = sfSimpleAutoload::getInstance(sfConfig::get('sf_cache_dir').'/project_autoload.cache');
@@ -23,9 +24,9 @@ class dmUnitTestHelper
     $autoload->register();
 
     // lime
-    include $configuration->getSymfonyLibDir().'/vendor/lime/lime.php';
+    include $this->configuration->getSymfonyLibDir().'/vendor/lime/lime.php';
 
-    $this->context = dmContext::createInstance($configuration);
+    $this->context = dmContext::createInstance($this->configuration);
 
     $this->initialize();
 
@@ -41,14 +42,9 @@ class dmUnitTestHelper
     // try/catch needed due to http://bugs.php.net/bug.php?id=33598
     try
     {
-      if ($this->isDiemTestProject())
+      if(method_exists($this->configuration, 'testClean'))
       {
-        sfToolkit::clearDirectory(sfConfig::get('sf_log_dir'));
-        sfToolkit::clearDirectory(dmOs::join(sfConfig::get('sf_web_dir'), 'cache'));
-        sfToolkit::clearDirectory(dmOs::join(sfConfig::get('sf_root_dir'), 'cache'));
-        sfToolkit::clearDirectory(sfConfig::get('sf_upload_dir'));
-        $this->get('filesystem')->remove(sfFinder::type('any')->not_name('*.sqlite')->in(sfConfig::get('sf_data_dir')));
-        copy(dmOs::join(sfConfig::get('sf_data_dir'), 'fresh_db.sqlite'), dmOs::join(sfConfig::get('sf_data_dir'), 'db.sqlite'));
+        $this->configuration->testClean($this->get('filesystem'));
       }
     }
     catch (Exception $e)
@@ -57,7 +53,7 @@ class dmUnitTestHelper
     }
   }
   
-  protected function isDiemTestProject()
+  public function isDiemTestProject()
   {
     return getcwd() === dmOs::join(sfConfig::get('dm_core_dir'), 'test/project');
   }

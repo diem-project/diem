@@ -67,14 +67,18 @@ abstract class dmFormDoctrine extends sfFormDoctrine
     if($values[$formName]['file'])
     {
       $values[$formName]['dm_media_folder_id'] = $this->object->getTable()->getDmMediaFolder()->get('id');
+      
+      $existingMedia = dmDb::query('DmMedia m')
+      ->where('m.dm_media_folder_id = ?', $values[$formName]['dm_media_folder_id'])
+      ->andWhere('m.file = ?', $values[$formName]['file']->getOriginalName())
+      ->fetchRecord();
       /*
        * We have a media with same folder / filename
-       * let's use it
+       * let's reuse the media, and replace the file
        */
-      if ($existingMedia = $this->embeddedForms[$formName]->fileAlreadyExists())
+      if ($existingMedia)
       {
         $values[$formName]['id'] = $existingMedia->get('id');
-        unset($values[$formName]['file']);
         
         $this->embeddedForms[$formName]->setObject($existingMedia);
       }

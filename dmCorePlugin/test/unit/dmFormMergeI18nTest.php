@@ -4,7 +4,7 @@ require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
 $helper = new dmUnitTestHelper();
 $helper->boot();
 
-$t = new lime_test();
+$t = new lime_test(2);
 
 $settingTable = dmDb::table('DmSetting');
 $settingTranslationTable = dmDb::table('DmSettingTranslation');

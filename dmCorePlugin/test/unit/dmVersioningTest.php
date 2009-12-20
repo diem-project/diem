@@ -4,7 +4,7 @@ require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
 $helper = new dmUnitTestHelper();
 $helper->boot();
 
-if($helper->get('module_manager')->hasModule('dmTestPost'))
+if($helper->isDiemTestProject())
 {
   $t = new lime_test(28);
 }

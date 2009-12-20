@@ -34,16 +34,16 @@ class DmMediaForRecordForm extends DmMediaForm
     $this->fileAlreadyExists = null;
   }
   
-  public function checkExistingNameInParent($validator, $values)
+  public function checkFolder($validator, $values)
   {
     if (!empty($values['file']))
     {
       $values['dm_media_folder_id'] = $this->record->getDmMediaFolder()->get('id');
     }
     
-    return parent::checkExistingNameInParent($validator, $values);
+    return parent::checkFolder($validator, $values);
   }
-
+  
   public function configureRequired($required)
   {
     $this->getValidator('file')->setOption('required', $required && $this->getValidator('file')->getOption('required'));
@@ -65,18 +65,6 @@ class DmMediaForRecordForm extends DmMediaForm
   protected function setRecord(dmDoctrineRecord $record)
   {
     $this->record = $record;
-  }
-
-  protected function throwFileAlreadyExists($validator, $folder, $filename)
-  {
-    $this->fileAlreadyExists = dmDb::query('DmMedia m')
-    ->where('m.dm_media_folder_id = ? AND m.file = ?', array($folder->id, $filename))
-    ->fetchRecord();
-  }
-
-  public function fileAlreadyExists()
-  {
-    return $this->fileAlreadyExists;
   }
 
 }

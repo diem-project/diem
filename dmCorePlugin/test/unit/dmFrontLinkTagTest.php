@@ -131,7 +131,7 @@ $t->diag('media links');
 dmDb::table('DmMediaFolder')->checkRoot();
 $t->comment('Create a test image media');
 
-$mediaFileName = 'test_'.dmString::random().'.jpg';
+$mediaFileName = 'test_image_'.dmString::random().'.jpg';
 copy(
   dmOs::join(sfConfig::get('dm_core_dir'), 'data/image/defaultMedia.jpg'),
   dmOs::join(sfConfig::get('sf_upload_dir'), $mediaFileName)
