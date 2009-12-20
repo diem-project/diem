@@ -46,9 +46,6 @@ class dmUnitTestHelper
       sfToolkit::clearDirectory(dmOs::join(sfConfig::get('sf_web_dir'), 'cache'));
       sfToolkit::clearDirectory(dmOs::join(sfConfig::get('sf_root_dir'), 'cache'));
       
-      $this->get('filesystem')->remove(dmOs::join(sfConfig::get('sf_web_dir'), 'dm'));
-      @unlink(dmOs::join(sfConfig::get('sf_web_dir'), 'sf'));
-      
       $this->get('filesystem')->remove(sfFinder::type('any')->not_name('*.sqlite')->in(sfConfig::get('sf_data_dir')));
 
       copy(dmOs::join(sfConfig::get('sf_data_dir'), 'fresh_db.sqlite'), dmOs::join(sfConfig::get('sf_data_dir'), 'db.sqlite'));

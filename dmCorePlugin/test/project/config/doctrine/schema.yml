@@ -1,22 +1,33 @@
-Post:  
-  actAs:              [ Timestampable, Sortable, DmVersionable ]  
+DmTestPost:  
+  actAs:
+    Timestampable:
+    Sortable:
+    I18n:
+      fields:         [ title, excerpt, body, url ]
+      actAs:
+        DmVersionable:
+          fields:     ~
   columns:  
     title:            { type: string(255), notnull: true, unique: true }  
     excerpt:          { type: string(800) }  
-    body:             { type: clob, extra: markdown }  
+    body:             { type: clob, extra: markdown }
+    url:              { type: string(255), extra: link }
     image_id:         { type: integer }  
   relations:  
     Image:  
       class:          DmMedia  
       local:          image_id  
 
-Comment:  
-  actAs:              [ Timestampable, DmVersionable ]  
+DmTestComment:  
+  actAs:
+    Timestampable:
+    DmVersionable:
+      fields:         ~
   columns:  
-    post_id:          { type: integer, notnull: true }  
+    dm_test_post_id:  { type: integer, notnull: true }  
     author:           { type: string(255) }  
     body:             { type: clob }  
   relations:  
-    Post:  
+    DmTestPost:  
       foreignAlias:   Comments  
       onDelete:       CASCADE 

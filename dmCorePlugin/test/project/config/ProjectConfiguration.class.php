@@ -28,6 +28,12 @@ class ProjectConfiguration extends dmProjectConfiguration
     dmDb::table('DmPage')->checkBasicPages();
     
     copy(dmOs::join(sfConfig::get('sf_data_dir'), 'db.sqlite'), dmOs::join(sfConfig::get('sf_data_dir'), 'fresh_db.sqlite'));
+      
+    unlink(dmOs::join(sfConfig::get('sf_web_dir'), 'dm/core'));
+    unlink(dmOs::join(sfConfig::get('sf_web_dir'), 'dm/front'));
+    unlink(dmOs::join(sfConfig::get('sf_web_dir'), 'dm/admin'));
+    rmdir(dmOs::join(sfConfig::get('sf_web_dir'), 'dm'));
+    unlink(dmOs::join(sfConfig::get('sf_web_dir'), 'sf'));
   }
 
   public function setupPlugins()

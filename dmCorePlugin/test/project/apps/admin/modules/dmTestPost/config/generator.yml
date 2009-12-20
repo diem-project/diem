@@ -1,0 +1,44 @@
+generator:
+  class: dmAdminDoctrineGenerator
+  param:
+    model_class: DmTestPost
+    theme: dmAdmin
+    non_verbose_templates: true
+    with_show: false
+    route_prefix: dm_test_post
+    with_doctrine_route: false
+    config:
+      actions: ~
+      fields: {  }
+      list:
+        display:
+          - '=title'
+          - image_id
+          - comments_list
+          - created_at
+          - updated_at
+          - excerpt
+          - body
+          - url
+        sort:
+          - position
+          - asc
+        table_method: getAdminListQuery
+        table_count_method: ~
+      filter:
+        display:
+          - title
+          - image_id
+          - created_at
+          - updated_at
+      form:
+        display:
+          NONE: [title]
+          Image: [image_id_form, image_id_view]
+          Body: [body]
+          Others: [excerpt, url]
+        class: DmTestPostAdminForm
+        fields: {  }
+      edit: ~
+      new: ~
+    sortable: true

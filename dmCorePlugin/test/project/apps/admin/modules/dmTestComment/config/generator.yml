@@ -1,0 +1,40 @@
+generator:
+  class: dmAdminDoctrineGenerator
+  param:
+    model_class: DmTestComment
+    theme: dmAdmin
+    non_verbose_templates: true
+    with_show: false
+    route_prefix: dm_test_comment
+    with_doctrine_route: false
+    config:
+      actions: ~
+      fields: {  }
+      list:
+        display:
+          - '=author'
+          - dm_test_post_id
+          - body
+          - created_at
+          - updated_at
+        sort:
+          - created_at
+          - desc
+        table_method: getAdminListQuery
+        table_count_method: ~
+      filter:
+        display:
+          - author
+          - dm_test_post_id
+          - body
+          - created_at
+          - updated_at
+      form:
+        display:
+          NONE: [author, dm_test_post_id]
+          Body: [body]
+        class: DmTestCommentAdminForm
+        fields: {  }
+      edit: ~
+      new: ~
+    sortable: false

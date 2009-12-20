@@ -9,15 +9,15 @@ Project:
 
   Blog:  
 
-    post:  
+    dmTestPost:
       page:             true  
       actions:  
         list:  
         show:  
 
-    comment:  
-      parent:           post  
+    dmTestComment:  
+      parent:           dmTestPost  
       actions:  
         listByPost:  
-          filters:      post  
+          filters:      dmTestPost  
         form:  

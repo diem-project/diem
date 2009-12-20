@@ -14,7 +14,7 @@
  * @property integer $size
  * @property string $dimensions
  * @property DmMediaFolder $Folder
- * @property Doctrine_Collection $Post
+ * @property Doctrine_Collection $DmTestPost
  * 
  * @method integer             getDmMediaFolderId()    Returns the current record's "dm_media_folder_id" value
  * @method string              getFile()               Returns the current record's "file" value
@@ -25,7 +25,7 @@
  * @method integer             getSize()               Returns the current record's "size" value
  * @method string              getDimensions()         Returns the current record's "dimensions" value
  * @method DmMediaFolder       getFolder()             Returns the current record's "Folder" value
- * @method Doctrine_Collection getPost()               Returns the current record's "Post" collection
+ * @method Doctrine_Collection getDmTestPost()         Returns the current record's "DmTestPost" collection
  * @method DmMedia             setDmMediaFolderId()    Sets the current record's "dm_media_folder_id" value
  * @method DmMedia             setFile()               Sets the current record's "file" value
  * @method DmMedia             setLegend()             Sets the current record's "legend" value
@@ -35,7 +35,7 @@
  * @method DmMedia             setSize()               Sets the current record's "size" value
  * @method DmMedia             setDimensions()         Sets the current record's "dimensions" value
  * @method DmMedia             setFolder()             Sets the current record's "Folder" value
- * @method DmMedia             setPost()               Sets the current record's "Post" collection
+ * @method DmMedia             setDmTestPost()         Sets the current record's "DmTestPost" collection
  * 
  * @package    retest
  * @subpackage model
@@ -105,7 +105,7 @@ abstract class BaseDmMedia extends myDoctrineRecord
              'foreign' => 'id',
              'onDelete' => 'CASCADE'));
 
-        $this->hasMany('Post', array(
+        $this->hasMany('DmTestPost', array(
              'local' => 'id',
              'foreign' => 'image_id'));
 
