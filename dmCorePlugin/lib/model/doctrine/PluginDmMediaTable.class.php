@@ -13,9 +13,9 @@ class PluginDmMediaTable extends myDoctrineTable
     {
       $id = substr($id, 0, $spacePos);
     }
-    
+        
     return $this->createQuery('m')
-    ->where('m.id = ?', $id)
+    ->where('m.id = ?', (int)$id)
     ->leftJoin('m.Folder f')
     ->fetchOne();
   }

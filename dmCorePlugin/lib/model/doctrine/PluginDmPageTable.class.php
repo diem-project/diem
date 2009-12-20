@@ -195,9 +195,10 @@ class PluginDmPageTable extends myDoctrineTable
         {
           $source = substr($source, 0, $spacePos);
         }
+        
         if (strncmp($source, 'page:', 5) === 0)
         {
-          $this->findByStringCache[$source] = $this->findOneByIdWithI18n(substr($source, 5));
+          $this->findByStringCache[$source] = $this->findOneByIdWithI18n((int)substr($source, 5));
         }
         elseif(substr_count($source, '/') === 1)
         {
