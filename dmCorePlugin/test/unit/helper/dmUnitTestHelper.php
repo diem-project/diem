@@ -41,19 +41,25 @@ class dmUnitTestHelper
     // try/catch needed due to http://bugs.php.net/bug.php?id=33598
     try
     {
-      sfToolkit::clearDirectory(sfConfig::get('sf_log_dir'));
-      sfToolkit::clearDirectory(sfConfig::get('sf_upload_dir'));
-      sfToolkit::clearDirectory(dmOs::join(sfConfig::get('sf_web_dir'), 'cache'));
-      sfToolkit::clearDirectory(dmOs::join(sfConfig::get('sf_root_dir'), 'cache'));
-      
-      $this->get('filesystem')->remove(sfFinder::type('any')->not_name('*.sqlite')->in(sfConfig::get('sf_data_dir')));
-
-      copy(dmOs::join(sfConfig::get('sf_data_dir'), 'fresh_db.sqlite'), dmOs::join(sfConfig::get('sf_data_dir'), 'db.sqlite'));
+      if ($this->isDiemTestProject())
+      {
+        sfToolkit::clearDirectory(sfConfig::get('sf_log_dir'));
+        sfToolkit::clearDirectory(dmOs::join(sfConfig::get('sf_web_dir'), 'cache'));
+        sfToolkit::clearDirectory(dmOs::join(sfConfig::get('sf_root_dir'), 'cache'));
+        sfToolkit::clearDirectory(sfConfig::get('sf_upload_dir'));
+        $this->get('filesystem')->remove(sfFinder::type('any')->not_name('*.sqlite')->in(sfConfig::get('sf_data_dir')));
+        copy(dmOs::join(sfConfig::get('sf_data_dir'), 'fresh_db.sqlite'), dmOs::join(sfConfig::get('sf_data_dir'), 'db.sqlite'));
+      }
     }
     catch (Exception $e)
     {
       echo $e.PHP_EOL;
     }
+  }
+  
+  protected function isDiemTestProject()
+  {
+    return getcwd() === dmOs::join(sfConfig::get('dm_core_dir'), 'test/project');
   }
 
   // Helper for cross platform testcases that validate output

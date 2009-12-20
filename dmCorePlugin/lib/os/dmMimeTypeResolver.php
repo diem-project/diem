@@ -21,7 +21,7 @@ class dmMimeTypeResolver
   
   public function getByExtension($extension)
   {
-    $extension  = trim($extension, '.');
+    $extension  = strtolower(trim($extension, '.'));
     $mimeTypes  = $this->getMimeTypes();
     
     if (isset($mimeTypes[$extension]))
