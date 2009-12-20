@@ -1,14 +1,5 @@
 <?php
 
-/*
- * Include Symfony
- */
-require_once ##SYMFONY_CORE_AUTOLOAD##;
-sfCoreAutoload::register();
-
-/*
- * Include Diem
- */
 require_once ##DIEM_CORE_STARTER##;
 dm::start();
 

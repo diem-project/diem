@@ -4,7 +4,7 @@ require_once(dirname(__FILE__).'/helper/dmMediaUnitTestHelper.php');
 $helper = new dmMediaUnitTestHelper();
 $helper->boot();
 
-$t = new lime_test(53);
+$t = new lime_test(55);
 
 $mediaTable  = dmDb::table('DmMedia');
 $folderTable = dmDb::table('DmMediaFolder');
@@ -79,17 +79,21 @@ $t->ok(!file_exists($media->fullPath), 'media has been deleted in filesystem');
 
 $t->diag('create other media');
 
-$filePath .= '_2';
+$filePath = str_replace('.php', '2.php', $filePath);
 copy(__FILE__, $filePath);
 
 $media = $mediaTable->create(array(
   'file' => basename($filePath),
   'author' => 'Thibault D.',
-  'legend' => 'dmMedia test cases',
+  'legend' => 'dmMedia test',
   'dm_media_folder_id' => $folder->id
 ))->saveGet();
 
 $t->ok($media->exists(), 'media has been saved');
+
+$t->is($media->mime, 'application/x-httpd-php', 'mime is application/x-httpd-php');
+
+$t->is($media->mimeGroup, 'application', 'mime group is application');
 
 $t->diag('Delete media in filesystem');
 

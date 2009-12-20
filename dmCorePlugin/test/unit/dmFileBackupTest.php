@@ -13,7 +13,7 @@ $backup = $helper->get('file_backup');
 $rootDir = sfConfig::get('sf_root_dir');
 $backupDir = $backup->getDir();
 
-$t->is($backupDir, dmOs::join(sfConfig::get('sf_root_dir'), 'data/dm/backup/filesystem'), $backupDir);
+$t->is($backupDir, dmOs::join(sfConfig::get('sf_data_dir'), 'dm/backup/filesystem'), $backupDir);
 
 $t->ok(is_dir($backupDir), $backupDir.' exists');
 

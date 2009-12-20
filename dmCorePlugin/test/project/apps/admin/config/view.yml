@@ -1,0 +1,12 @@
+default:
+  http_metas:
+    content-type: text/html
+
+  stylesheets:
+    - markdown
+
+  javascripts:
+    - admin
+
+  has_layout:     true
+  layout:         <?php echo dm::getDir() ?>/dmAdminPlugin/modules/dmAdmin/templates/layout

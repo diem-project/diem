@@ -30,12 +30,12 @@ class dmServerCheckTask extends sfBaseTask
   {
     require_once(realpath(dirname(__FILE__).'/../os/dmServerCheck.php'));
     
-    echo "** WARNING **\n";
-    echo "*  The PHP CLI can use a different php.ini file\n";
-    echo "*  than the one used with your web server.\n";
-    echo "*  If this is the case, please launch this\n";
-    echo "*  utility from your web server : http://mysite.com/dm_check.php\n";
-    echo "** WARNING **\n";
+//    echo "** WARNING **\n";
+//    echo "*  The PHP CLI can use a different php.ini file\n";
+//    echo "*  than the one used with your web server.\n";
+//    echo "*  If this is the case, please launch this\n";
+//    echo "*  utility from your web server : http://mysite.com/dm_check.php\n";
+//    echo "** WARNING **\n";
     
     $this->warnings = array();
     $this->errors = array();

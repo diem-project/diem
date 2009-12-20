@@ -4,7 +4,7 @@ require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
 $helper = new dmUnitTestHelper();
 $helper->boot('front');
 
-$t = new lime_test();
+$t = new lime_test(26);
 
 $wtm = $helper->get('widget_type_manager');
 
@@ -33,6 +33,21 @@ $widget = dmDb::create('DmWidget', array(
 ));
 
 $t->comment('Create a '.$formClass.' instance');
+
+dmDb::table('DmMediaFolder')->checkRoot();
+$t->comment('Create a test image media');
+
+$mediaFileName = 'test_'.dmString::random().'.jpg';
+copy(
+  dmOs::join(sfConfig::get('dm_core_dir'), 'data/image/defaultMedia.jpg'),
+  dmOs::join(sfConfig::get('sf_upload_dir'), $mediaFileName)
+);
+$media = dmDb::create('DmMedia', array(
+  'file' => $mediaFileName,
+  'dm_media_folder_id' => dmDb::table('DmMediaFolder')->checkRoot()->id
+))->saveGet();
+
+$t->ok($media->exists(), 'A test media has been created');
 
 $form = new $formClass($widget);
 $form->removeCsrfProtection();

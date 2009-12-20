@@ -43,11 +43,6 @@ class Doctrine_Template_DmGallery extends Doctrine_Template
     $this->_plugin = new Doctrine_DmGallery($this->_options);
   }
   
-  /*
-   * $this->_plugin->getTable() = ProdDmMedia
-   * $this->_options['mediaClass'] = DmMedia
-   * $this->_table = Prod
-   */
 
   public function setUp()
   {

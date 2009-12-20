@@ -9,6 +9,11 @@ class PluginDmMediaTable extends myDoctrineTable
    */
   public function findOneByIdWithFolder($id)
   {
+    if ($spacePos = strpos($id, ' '))
+    {
+      $id = substr($id, 0, $spacePos);
+    }
+    
     return $this->createQuery('m')
     ->where('m.id = ?', $id)
     ->leftJoin('m.Folder f')

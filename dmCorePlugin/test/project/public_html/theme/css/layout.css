@@ -1,0 +1,39 @@
+.dm_layout {
+  width: 1000px;
+  margin: auto;
+}
+
+.dm_layout_top {
+  background: #aaa;
+}
+
+.dm_content {
+  width: 600px;
+  float: left;
+}
+
+.dm_layout_left {
+  width: 150px;
+  float: left;
+}
+
+.dm_layout_right {
+  width: 250px;
+  float: left;
+}
+
+.dm_layout_bottom {
+  background: #aaa;
+}
+
+.bread_crumb li {
+  display: inline;
+}
+
+/*
+ * Hide accessibility links
+ */
+.dm_access_links {
+  position: absolute;
+  left: -9000px;
+}

@@ -1,9 +1,15 @@
 <?php
 
-/**
- * The current Diem version.
+define('DIEM_VERSION', '5.0.0-ALPHA10');
+
+/*
+ * Include Symfony
  */
-define('DIEM_VERSION', '5.0.0-ALPHA9');
+if (!defined('SYMFONY_VERSION'))
+{
+  require_once realpath(dirname(__FILE__).'/../../..').'/symfony/lib/autoload/sfCoreAutoload.class.php';
+  sfCoreAutoload::register();
+}
 
 class dmBase
 {

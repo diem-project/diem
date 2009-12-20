@@ -4,7 +4,22 @@ require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
 $helper = new dmUnitTestHelper();
 $helper->boot();
 
-$t = new lime_test(35);
+$t = new lime_test(36);
+
+dmDb::table('DmMediaFolder')->checkRoot();
+$t->comment('Create a test image media');
+
+$mediaFileName = 'test_'.dmString::random().'.jpg';
+copy(
+  dmOs::join(sfConfig::get('dm_core_dir'), 'data/image/defaultMedia.jpg'),
+  dmOs::join(sfConfig::get('sf_upload_dir'), $mediaFileName)
+);
+$media = dmDb::create('DmMedia', array(
+  'file' => $mediaFileName,
+  'dm_media_folder_id' => dmDb::table('DmMediaFolder')->checkRoot()->id
+))->saveGet();
+
+$t->ok($media->exists(), 'A test media has been created');
 
 $v = new dmValidatorLinkUrl();
 
@@ -20,12 +35,19 @@ foreach (array(
   'ftp://google.com/foo.tgz', 
   'ftps://google.com/foo.tgz',
   'page:'.dmDb::table('DmPage')->findOne()->id,
-  'media:'.dmDb::table('DmMedia')->findOne()->id,
+  'media:'.$media->id,
   'page:'.dmDb::table('DmPage')->findOne()->id.' some text after',
-  'media:'.dmDb::table('DmMedia')->findOne()->id.' some text after'
+  'media:'.$media->id.' some text after'
 ) as $url)
 {
-  $t->is($v->clean($url), $url, '->clean() checks that the value is a valid URL');
+  try
+  {
+    $t->is($v->clean($url), $url, '->clean() checks that the value is a valid URL');
+  }
+  catch (sfValidatorError $e)
+  {
+    $t->fail('->clean() throws an sfValidatorError: '.$e->getMessage());
+  }
 }
 
 foreach (array(
@@ -65,3 +87,5 @@ catch (sfValidatorError $e)
 {
   $t->pass('->clean() only allows protocols specified in the protocols option');
 }
+
+$media->delete();

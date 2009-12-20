@@ -846,7 +846,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     return $this
     ->getTable()
     ->getI18nTable()
-    ->getTemplate('Versionable')
+    ->getTemplate('DmVersionable')
     ->getPlugin()
     ->getTable()
     ->createQuery('v')

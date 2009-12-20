@@ -8,21 +8,20 @@ class dmUnitTestHelper
 
   public function boot($app = 'admin', $env = 'test', $debug = true)
   {
-    $projectRootDir = getcwd();
-    $testRootDir = realpath(dirname(__FILE__).'/../../fixtures');
+    $rootDir = getcwd();
 
     // configuration
-    require_once $projectRootDir.'/config/ProjectConfiguration.class.php';
-    $configuration = ProjectConfiguration::getApplicationConfiguration($app, $env, $debug, $testRootDir);
-    
+    require_once $rootDir.'/config/ProjectConfiguration.class.php';
+    $configuration = ProjectConfiguration::getApplicationConfiguration($app, $env, $debug, $rootDir);
+
     // autoloader
     $autoload = sfSimpleAutoload::getInstance(sfConfig::get('sf_cache_dir').'/project_autoload.cache');
     $autoload->loadConfiguration(sfFinder::type('file')->name('autoload.yml')->in(array(
-      sfConfig::get('sf_symfony_lib_dir').'/config/config',
-      sfConfig::get('sf_config_dir'),
+    sfConfig::get('sf_symfony_lib_dir').'/config/config',
+    sfConfig::get('sf_config_dir'),
     )));
     $autoload->register();
-    
+
     // lime
     include $configuration->getSymfonyLibDir().'/vendor/lime/lime.php';
 
@@ -30,9 +29,33 @@ class dmUnitTestHelper
 
     $this->initialize();
 
+    register_shutdown_function(array($this, 'cleanup'));
+    
+    $this->cleanup();
+
     return $this;
   }
-  
+
+  function cleanup()
+  {
+    // try/catch needed due to http://bugs.php.net/bug.php?id=33598
+    try
+    {
+      sfToolkit::clearDirectory(sfConfig::get('sf_log_dir'));
+      sfToolkit::clearDirectory(sfConfig::get('sf_upload_dir'));
+      sfToolkit::clearDirectory(dmOs::join(sfConfig::get('sf_web_dir'), 'cache'));
+      sfToolkit::clearDirectory(dmOs::join(sfConfig::get('sf_root_dir'), 'cache'));
+      
+      $this->get('filesystem')->remove(sfFinder::type('any')->not_name('*.sqlite')->in(sfConfig::get('sf_data_dir')));
+
+      copy(dmOs::join(sfConfig::get('sf_data_dir'), 'fresh_db.sqlite'), dmOs::join(sfConfig::get('sf_data_dir'), 'db.sqlite'));
+    }
+    catch (Exception $e)
+    {
+      echo $e.PHP_EOL;
+    }
+  }
+
   // Helper for cross platform testcases that validate output
   public function fixLinebreaks($content)
   {
@@ -111,7 +134,7 @@ class dmUnitTestHelper
   public function initialize()
   {
     $this->moduleManager = $this->context->getModuleManager();
-    
+
     dmDb::table('DmPage')->checkBasicPages();
   }
 
@@ -135,11 +158,11 @@ class dmUnitTestHelper
   {
     return $this->context->get($service);
   }
-  
+
   public function ksort(array $array)
   {
     ksort($array);
-    
+
     foreach($array as $value)
     {
       if(is_array($value))
@@ -147,7 +170,7 @@ class dmUnitTestHelper
         ksort($value);
       }
     }
-    
+
     return $array;
   }
 }

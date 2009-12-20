@@ -309,7 +309,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
   
   public function isVersionable()
   {
-    return $this->hasTemplate('Versionable') || ($this->hasI18n() && $this->getI18nTable()->hasTemplate('Versionable'));
+    return $this->hasTemplate('DmVersionable') || ($this->hasI18n() && $this->getI18nTable()->hasTemplate('DmVersionable'));
   }
 
   public function hasI18n()

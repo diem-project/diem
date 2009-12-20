@@ -17,12 +17,12 @@ class dmServerCheck
   protected function createChecks()
   {
     // check graphviz
-    exec('dot -V', $output, $graphvizReturnCode);
+//    exec('dot -V', $output, $graphvizReturnCode);
     
     return array(
       'server' => array(
-    new dmServerCheckUnit('unix', DIRECTORY_SEPARATOR == '/', true),
-    new dmServerCheckUnit('graphviz installed', 0 === $graphvizReturnCode, true)
+    new dmServerCheckUnit('unix', DIRECTORY_SEPARATOR == '/', true)
+//    new dmServerCheckUnit('graphviz installed', 0 === $graphvizReturnCode, true)
     ),
        'symfony' => array(
     new dmServerCheckUnit('version', SYMFONY_VERSION, '1.3.0', self::ERROR)
@@ -43,6 +43,7 @@ class dmServerCheck
     new dmServerCheckUnit('pdo', extension_loaded('pdo'), true, self::ERROR),
     new dmServerCheckUnit('pdo_mysql', extension_loaded('pdo_mysql'), true),
     new dmServerCheckUnit('pdo_pgsql', extension_loaded('pdo_pgsql'), true),
+    new dmServerCheckUnit('pdo_sqlite', extension_loaded('pdo_sqlite'), true),
     new dmServerCheckUnit('json', extension_loaded('json') ? phpversion('json') : false, '1.0', self::ERROR),
     new dmServerCheckUnit('gd', extension_loaded('gd'), true, self::ERROR),
 //    new dmServerCheckUnit('date', extension_loaded('date'), true, self::ERROR),

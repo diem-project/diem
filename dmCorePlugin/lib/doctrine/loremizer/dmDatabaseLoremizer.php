@@ -79,8 +79,8 @@ class dmDatabaseLoremizer
         foreach($localRelations as $relation)
         {
           $id = dmDb::query($relation->getClass().' t')
-          ->select('t.id')
-          ->orderBy('RANDOM()')
+          ->select('t.id, RANDOM() AS rand')
+          ->orderBy('rand')
           ->limit(1)
           ->fetchValue();
 
@@ -121,9 +121,9 @@ class dmDatabaseLoremizer
       foreach($associationRelations as $alias => $relation)
       {
         $ids = dmDb::query($relation->getClass().' t')
-        ->select('t.id')
+        ->select('t.id, RANDOM() AS rand')
         ->distinct()
-        ->orderBy('RANDOM()')
+        ->orderBy('rand')
         ->limit(rand(0, $this->nbAssociationsByRecord))
         ->fetchValues();
 

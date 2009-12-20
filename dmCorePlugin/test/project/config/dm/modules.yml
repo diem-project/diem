@@ -1,0 +1,23 @@
+Project:  
+
+  Global:  
+
+    main:               # the main module is required, and must not be removed.  
+      actions:  
+        header:  
+        footer:  
+
+  Blog:  
+
+    post:  
+      page:             true  
+      actions:  
+        list:  
+        show:  
+
+    comment:  
+      parent:           post  
+      actions:  
+        listByPost:  
+          filters:      post  
+        form:  

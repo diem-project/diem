@@ -1,0 +1,15 @@
+all:
+
+  theme:                                          # front css themes
+    list:                                         # list of themes
+      theme:
+        name:             Theme                   # theme name
+        path:             theme                   # theme path from web dir
+        enabled:          true                    # theme disponibility from dmThemeManager 
+    default:              theme                   # default theme when user arrive on site
+
+  html:
+    doctype:
+      name:               html                    # Doctype name ( 'html', 'xhtml' )
+      version:            5                       # Doctype xhtml version ( '1.0', '1.1' ) or html version ( '4', '5' )
+      compliance:         transitional            # Doctype xhtml compliance ( 'strict', 'transitional' )

@@ -6,7 +6,7 @@ $helper->boot('front');
 
 if(sfConfig::get('sf_app') == 'front' && class_exists('dmFrontPluginConfiguration', false))
 {
-  $t = new lime_test(24);
+  $t = new lime_test(25);
 }
 else
 {
@@ -128,7 +128,20 @@ $blankLink = sprintf('<a class="link" href="%s">%s</a>', 'http://iliaz.com', 'ht
 $t->is((string)£link('http://iliaz.com')->target('blank')->target(false), $blankLink, 'canceled blank link is '.$blankLink);
 
 $t->diag('media links');
-$media = dmDb::table('DmMedia')->findOne();
+dmDb::table('DmMediaFolder')->checkRoot();
+$t->comment('Create a test image media');
+
+$mediaFileName = 'test_'.dmString::random().'.jpg';
+copy(
+  dmOs::join(sfConfig::get('dm_core_dir'), 'data/image/defaultMedia.jpg'),
+  dmOs::join(sfConfig::get('sf_upload_dir'), $mediaFileName)
+);
+$media = dmDb::create('DmMedia', array(
+  'file' => $mediaFileName,
+  'dm_media_folder_id' => dmDb::table('DmMediaFolder')->checkRoot()->id
+))->saveGet();
+
+$t->ok($media->exists(), 'A test media has been created');
 
 $mediaLink = sprintf('<a class="link" href="%s">%s</a>', $helper->get('request')->getAbsoluteUrlRoot().'/'.$media->webPath, $media->file);
 $t->is((string)£link($media), $mediaLink, $mediaLink);
@@ -147,3 +160,5 @@ sfConfig::set('sf_debug', false);
 $badSource = dmString::random().'/'.dmString::random();
 $errorLink = '<a class="link"></a>';
 $t->is($errorLink, $errorLink, $errorLink);
+
+$media->delete();

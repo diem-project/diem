@@ -92,8 +92,8 @@ class dmRecordLoremizer
         if (rand(0, 3))
         {
           $ids = dmDb::query($relation->getClass().' t')
-          ->select('t.id')
-          ->orderBy('RANDOM()')
+          ->select('t.id, RANDOM() AS rand')
+          ->orderBy('rand')
           ->limit(rand(1, 5))
           ->fetchPDO();
           
@@ -193,7 +193,8 @@ class dmRecordLoremizer
     }
     
     $page = dmDb::query('DmPage p')
-    ->orderBy('RANDOM()')
+    ->select('p.*, RANDOM() AS rand')
+    ->orderBy('rand')
     ->withI18n()
     ->fetchOne();
     
@@ -205,8 +206,8 @@ class dmRecordLoremizer
     try
     {
       $id = dmDb::query($table->getComponentName().' t')
-      ->select('t.id')
-      ->orderBy('RANDOM()')
+      ->select('t.id, RANDOM() AS rand')
+      ->orderBy('rand')
       ->limit(1)
       ->fetchValue();
     }

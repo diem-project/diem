@@ -15,7 +15,7 @@ $threadLauncher = $helper->get('thread_launcher');
 
 $t->is($threadLauncher->getCliFileFullPath(), dmProject::rootify($cliFile), 'cli file is '.dmProject::rootify($cliFile));
 
-$t->ok(file_exists($cliFile), 'cli file has been created');
+$t->ok(file_exists(dmProject::rootify($cliFile)), 'cli file has been created in '.$cliFile);
 
 $threadClass = 'dmThreadTest';
 $proofFileName = dmString::random();

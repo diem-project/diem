@@ -22,7 +22,10 @@ $helper->checkTreeIntegrity($t);
 
 $helper->testFolderCorrelations($t);
 
-$parent = $folderTable->createQuery('f')->orderBy('RANDOM()')->fetchOne();
+$parent = $folderTable->createQuery('f')
+->select('f.*, RANDOM() as rand')
+->orderBy('rand')
+->fetchOne();
 
 require_once(dmOs::join(sfConfig::get('dm_admin_dir'), 'modules/dmMediaLibrary/lib/DmAdminNewMediaFolderForm.php'));
 

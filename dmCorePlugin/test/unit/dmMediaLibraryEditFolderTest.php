@@ -11,9 +11,7 @@ $folderTable = dmDb::table('DmMediaFolder');
 
 $t->diag('Media tests');
 
-$folderTable->checkRoot();
-
-$root = $folderTable->getTree()->fetchRoot();
+$root = $folderTable->checkRoot();
 
 $t->diag('syncing root');
 $root->sync();
@@ -22,7 +20,11 @@ $helper->checkTreeIntegrity($t);
 
 $helper->testFolderCorrelations($t);
 
-$parent = $folderTable->createQuery('f')->orderBy('RANDOM()')->fetchOne();
+$parent = $folderTable->createQuery('f')
+->select('f.*, RANDOM() as rand')
+->orderBy('rand')
+->fetchOne();
+
 $name   = dmString::random();
 $folder = $folderTable->create(array(
   'name' => $name,
@@ -32,7 +34,7 @@ $folder->Node->insertAsFirstChildOf($parent);
 
 $t->is($folder->exists(), true, 'Folder created');
 
-$t->is($folder->Node->getParent(), $parent, 'Folder inserted in its parent');
+$t->is((string)$folder->Node->getParent(), (string)$parent, 'Folder inserted in its parent');
 
 $helper->checkTreeIntegrity($t);
 

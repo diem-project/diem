@@ -189,7 +189,11 @@ class PluginDmPageTable extends myDoctrineTable
       {
         if ($anchorPos = strpos($source, '#'))
         {
-          $source = substr($source, $anchorPos);
+          $source = substr($source, 0, $anchorPos);
+        }
+        if ($spacePos = strpos($source, ' '))
+        {
+          $source = substr($source, 0, $spacePos);
         }
         if (strncmp($source, 'page:', 5) === 0)
         {

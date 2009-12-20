@@ -50,13 +50,13 @@ $projectKey = dmProject::getKey();
 
 $this->logSection($projectKey, 'Please answer a few questions to configure the '.$projectKey.' project'."\n");
 
-$culture = $this->askAndValidate('Choose your site main language ( default: en )', new sfValidatorRegex(
+$culture = $this->askAndValidate(array('', 'Choose your site main language ( default: en )', ''), new sfValidatorRegex(
   array('pattern' => '/^[\w\d-]+$/', 'max_length' => 2, 'min_length' => 2, 'required' => false),
   array('invalid' => 'Language must contain two alphanumeric characters')
 ));
 $settings['culture'] = empty($culture) ? 'en' : $culture;
 
-$webDirName = $this->askAndValidate('Choose a web directory name ( example: web, html, public_html )',
+$webDirName = $this->askAndValidate(array('', 'Choose a web directory name ( example: web, html, public_html )', ''),
 new sfValidatorAnd(array(
   new sfValidatorRegex(
     array('pattern' => '/^[\w\d-]+|$/'),
@@ -73,15 +73,29 @@ do
 {
   $defaultDbName = dmString::underscore(str_replace('-', '_', $projectKey));
   
-  $settings['database'] = array(
-    'db' => $this->ask('What kind of database will we used ? ( mysql | pgsql )', 'QUESTION', 'mysql'),
-    'name' => $this->ask('What is the database name ? ( default : '.$defaultDbName.' )', 'QUESTION', $defaultDbName),
-    'host' => $this->ask('What is the database host ? ( default : localhost )', 'QUESTION', 'localhost'),
-    'user' => $this->ask('What is the database user ?'),
-    'password' => $this->ask('What is the database password ?')
-  );
+  $dbm = $this->askAndValidate(array('', 'What kind of database will we used ? ( mysql | pgsql | sqlite )', ''), new sfValidatorChoice(array(
+    'choices' => array('mysql', 'pgsql', 'sqlite')
+  )));
+  
+  if('sqlite' !== $dbm)
+  {
+    $settings['database'] = array(
+      'name'      => $this->ask(array('', 'What is the database name ? ( default : '.$defaultDbName.' )', ''), 'QUESTION', $defaultDbName),
+      'host'      => $this->ask(array('', 'What is the database host ? ( default : localhost )', 'QUESTION', 'localhost', '')),
+      'user'      => $this->ask(array('', 'What is the database user ?', '')),
+      'password'  => $this->ask(array('', 'What is the database password ?', ''))
+    );
+  }
+  else
+  {
+    $settings['database'] = array(
+      'name'      => $defaultDbName,
+      'user'      => null,
+      'password'  => null
+    );
+  }
     
-  switch($settings['database']['db'])
+  switch($dbm)
   {
     case "mysql":
       $settings['database']['dsn'] = sprintf('mysql://%s:%s@%s/%s',
@@ -92,9 +106,14 @@ do
       $settings['database']['dsn'] = sprintf('pgsql:host=%s;dbname=%s;user=%s;password=%s',
       $settings['database']['host'], $settings['database']['name'], $settings['database']['user'], $settings['database']['password']);
     break;
+    case "sqlite":
+      $dbFile = dmOs::join(sfConfig::get('sf_data_dir'), $defaultDbName.'.sqlite');
+      $settings['database']['dsn'] = sprintf('sqlite:///%s', $dbFile);
+      touch($dbFile);
+    break;
     default:
       $isDatabaseOk = false;
-      $this->logBlock('Diem 5.0 only supports mysql and pgsql', 'ERROR_LARGE');
+      $this->logBlock('Diem 5.0 only supports mysql, pgsql and sqlite', 'ERROR_LARGE');
       $this->log('');
   }
   
@@ -146,10 +165,6 @@ $this->replaceTokens(sfConfig::get('sf_config_dir'), array(
   'DIEM_CULTURE'          => var_export($settings['culture'], true)
 ));
 
-$this->replaceTokens(sfConfig::get('sf_test_dir'), array(
-  'DIEM_PROJECT_PASSWORD' => var_export($settings['database']['password'], true)
-));
-    
 $this->filesystem->remove(array(
   dmProject::rootify('web/css'),
   dmProject::rootify('web/css/main.css'),
@@ -183,7 +198,7 @@ try
   ), $out, $err);
   
   $this->logBlock('Your project is now ready for web access. See you on admin_dev.php.', 'INFO_LARGE');
-  $this->logBlock('Your login is admin and your password is '.(empty($settings['database']['password']) ? '"admin"' : 'the database password'), 'INFO_LARGE');
+  $this->logBlock('Your username is "admin" and your password is '.(empty($settings['database']['password']) ? '"admin"' : 'the database password'), 'INFO_LARGE');
 }
 catch(Exception $e)
 {

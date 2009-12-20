@@ -1,0 +1,40 @@
+prod:
+  .settings:
+    no_script_name:         false
+    cache:                  true
+    logging_enabled:        false
+
+dev:
+  .settings:
+    error_reporting:        <?php echo (E_ALL | E_STRICT)."\n" ?>
+    web_debug:              true
+    cache:                  false
+    no_script_name:         false
+    etag:                   false
+
+test:
+  .settings:
+    error_reporting:        <?php echo ((E_ALL | E_STRICT) ^ E_NOTICE)."\n" ?>
+    error_reporting:        <?php echo (E_ALL | E_STRICT)."\n" ?>
+    cache:                  true
+    web_debug:              false
+    no_script_name:         false
+    etag:                   false
+    logging_enabled:        false
+
+all:
+  .settings:
+
+    # Output escaping settings
+    escaping_strategy:      false
+    escaping_method:        ESC_SPECIALCHARS
+
+    # Enable the database manager
+    use_database:           true
+
+  .actions:
+    secure_module:          dmAuth
+    secure_action:          secure
+    
+    login_module:           dmAuth
+    login_action:           signin

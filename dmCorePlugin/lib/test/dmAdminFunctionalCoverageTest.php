@@ -39,7 +39,11 @@ class dmAdminFunctionalCoverageTest extends dmCoreFunctionalCoverageTest
       
       if ($module->hasModel() && $module->getTable()->hasField('id'))
       {
-        $records = $module->getTable()->createQuery('t')->orderBy('RANDOM()')->limit(1)->select('t.id')->fetchArray();
+        $records = $module->getTable()->createQuery('t')
+        ->select('t.id, RANDOM() AS rand')
+        ->orderBy('rand')
+        ->limit(1)
+        ->fetchArray();
         
         foreach($records as $record)
         {

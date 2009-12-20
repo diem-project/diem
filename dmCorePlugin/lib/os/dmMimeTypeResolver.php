@@ -9,7 +9,9 @@ class dmMimeTypeResolver
   {
     $pathInfo = pathinfo($file);
     
-    return $this->getByExtension($pathInfo['extension']);
+    return isset($pathInfo['extension'])
+    ? $this->getByExtension($pathInfo['extension'])
+    : null;
   }
   
   public function getGroupByFilename($file)

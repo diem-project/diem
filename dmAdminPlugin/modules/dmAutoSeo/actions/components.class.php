@@ -25,9 +25,9 @@ class dmAutoSeoComponents extends dmAdminBaseComponents
     $this->module = $this->autoSeo->getTargetDmModule();
     
     $pageId = dmDb::query('DmPage p')
-    ->select('p.id')
+    ->select('p.id, RANDOM() as rand')
     ->where('p.module = ? AND p.action = ?', array($this->module->getKey(), 'show'))
-    ->orderBy('RANDOM()')
+    ->orderBy('rand')
     ->limit(1)
     ->fetchValue();
     

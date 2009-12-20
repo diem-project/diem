@@ -36,6 +36,8 @@ EOF;
   {
     $this->logSection('diem', 'Setup '.dmProject::getKey());
     
+    $this->dispatcher->notify(new sfEvent($this, 'dm.setup.before', array()));
+    
     if (!$this->isProjectLocked() && $this->projectHasModels())
     {
       // don't use cache:clear task because it changes current app & environment
@@ -78,9 +80,6 @@ EOF;
       $this->runTask('doctrine:build-sql');
     
       $this->runTask('doctrine:insert-sql');
-      
-      // well, we don't need migration classes anymore...
-//      sfToolkit::clearDirectory(dmProject::rootify('lib/migration/doctrine'));
     }
     else
     {
@@ -123,7 +122,15 @@ EOF;
     
     $this->runTask('dm:permissions');
     
+    // fix db file permissions
+    if ('Sqlite' === Doctrine_Manager::connection()->getDriverName())
+    {
+      $this->filesystem->chmod(sfConfig::get('sf_data_dir'), 0777, 000);
+    }
+    
     $this->runTask('dm:clear-cache');
+    
+    $this->dispatcher->notify(new sfEvent($this, 'dm.setup.after', array()));
     
     $this->logBlock('Setup successful', 'INFO_LARGE');
     
@@ -180,7 +187,7 @@ EOF;
       $password = Doctrine_Core::getConnectionByTableName('DmPage')->getOption('password');
       
       $this->logBlock('Your project is now ready for web access. See you on admin_dev.php.', 'INFO_LARGE');
-      $this->logBlock('Your login is admin and your password is '.(empty($password) ? '"admin"' : 'the database password'), 'INFO_LARGE');
+      $this->logBlock('Your username is "admin" and your password is '.(empty($password) ? '"admin"' : 'the database password'), 'INFO_LARGE');
     }
   }
   

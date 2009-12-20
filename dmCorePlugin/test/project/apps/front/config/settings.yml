@@ -1,0 +1,46 @@
+prod:
+  .settings:
+    no_script_name:         false
+    cache:                  true
+    logging_enabled:        false
+
+dev:
+  .settings:
+    error_reporting:        <?php echo (E_ALL | E_STRICT)."\n" ?>
+    web_debug:              true
+    cache:                  false
+    no_script_name:         false
+    etag:                   false
+
+test:
+  .settings:
+    error_reporting:        <?php echo ((E_ALL | E_STRICT) ^ E_NOTICE)."\n" ?>
+    error_reporting:        <?php echo (E_ALL | E_STRICT)."\n" ?>
+    cache:                  true
+    web_debug:              false
+    no_script_name:         true
+    etag:                   false
+    logging_enabled:        false
+
+all:
+  .settings:
+    # Form security secret (CSRF protection)
+    csrf_secret:            c72e74e674ceeec2ed027933f11b9f984e9be22d
+
+    # Output escaping settings
+    escaping_strategy:      false
+    escaping_method:        ESC_SPECIALCHARS
+
+    # Enable the database manager
+    use_database:           true
+
+  .actions:
+  
+    secure_module:          dmFront
+    secure_action:          secure
+    
+    login_module:           dmFront
+    login_action:           login
+
+    error_404_module:       dmFront   # To be called when a 404 error is raised
+    error_404_action:       error404  # Or when the requested URL doesn't match any route

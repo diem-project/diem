@@ -1,0 +1,22 @@
+all:
+
+  i18n:
+    cultures:             [ en, fr ]    # Available cultures
+      
+  cache:
+    apc:                  true          # (RECOMMENDED) Use Apc if available
+    
+  js:
+    compress:             false          # (RECOMMENDED) Performance : Minifies javascripts and put them into a single compressed file
+    cdn:
+      enabled:            <?php echo !sfConfig::get('sf_debug') ?> # (RECOMMENDED) uses google cdn to load jQuery
+      
+  css:
+    compress:             true          # (RECOMMENDED) Performance : Minifies stylesheets and put them into a single compressed file
+    
+  orm:                                  # Doctrine configuration
+                                        # More configuration : please use ProjectConfiguration::configureDoctrine* methods
+    identifier_fields:    [ name, title, subject, author, id ]   # Fields used to represent a record with a string
+    cache_enabled:        true          # (RECOMMENDED) Use doctrine query cache. No side effect, automatic cache invalidation )
+    cache_result_enabled: false         # Use doctrine result cache when query->dmCache() is called
+    cache_result_enabled_default: false # Use doctrine result cache on every query ( performance gain, possible issues )

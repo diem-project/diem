@@ -14,7 +14,7 @@ class dmFrontLinkTagError extends dmFrontLinkTag
 
   protected function getBaseHref()
   {
-    return $this->requestContext['uri'];
+    return dmArray::get($this->requestContext, 'uri');
   }
 
   public function render()

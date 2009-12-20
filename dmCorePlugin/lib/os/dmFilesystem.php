@@ -134,7 +134,7 @@ class dmFilesystem extends sfFilesystem
   {
     if (!dmProject::isInProject($dir))
     {
-      throw new dmException(sprintf('Try to delete %s wich is outside symfony project', $dir));
+      throw new dmException(sprintf('Try to delete %s, which is outside symfony project', $dir));
     }
 
     $success = true;

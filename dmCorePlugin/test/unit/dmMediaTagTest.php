@@ -8,12 +8,13 @@ $t = new lime_test(28);
 
 $user  = $helper->get('user');
 $theme = $user->getTheme();
+$deletables = array();
 
 $user->setCulture('en');
 
 dm::loadHelpers(array('Dm'));
 
-$imageFullPath = $theme->getFullPath('images/testImage.jpg');
+$imageFullPath = $deletables[] = $theme->getFullPath('images/testImage.jpg');
 copy(
 dmOs::join(sfConfig::get('dm_core_dir'), 'data/image/defaultMedia.jpg'),
 $imageFullPath
@@ -21,7 +22,7 @@ $imageFullPath
 
 $t->ok(file_exists($imageFullPath), 'image copied : '.$imageFullPath);
 
-$imageI18nFullPath = $theme->getFullPath('images/en/testImage.jpg');
+$imageI18nFullPath = $deletables[] = $theme->getFullPath('images/en/testImage.jpg');
 $helper->get('filesystem')->mkdir(dirname($imageI18nFullPath));
 copy(
 dmOs::join(sfConfig::get('dm_core_dir'), 'data/image/defaultMedia.jpg'),
@@ -50,7 +51,7 @@ $t->is($tag->getSrc(), $theme->getWebPath('images/en/testImage.jpg'), '$imageI18
 
 $user->setCulture('fr');
 
-$imageI18nFullPath = $theme->getFullPath('images/fr/testImage.jpg');
+$imageI18nFullPath = $deletables[] = $theme->getFullPath('images/fr/testImage.jpg');
 $helper->get('filesystem')->mkdir(dirname($imageI18nFullPath));
 copy(
 dmOs::join(sfConfig::get('dm_core_dir'), 'data/image/defaultMedia.jpg'),
@@ -143,6 +144,11 @@ $expected = sprintf('#<img alt="%s" height="%d" src="[^"]+" width="%d" />#', $me
 $t->like(£media($media)->size(300, 200)->render(), $expected, $expected);
 
 $tag = £media('non_existing');
-$t->is($tag->render(), $tag->renderDefault(), $tag->render());
+$t->is($tag->render(), $tag->renderDefault(), 'non existent tag renders nothing');
 
 $media->delete();
+
+foreach($deletables as $deletable)
+{
+  $helper->get('filesystem')->remove($deletable);
+}
