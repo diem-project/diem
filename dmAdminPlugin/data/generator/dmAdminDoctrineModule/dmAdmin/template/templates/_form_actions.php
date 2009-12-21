@@ -28,7 +28,7 @@
   <?php if ($this->getModule()->hasPage()) echo $this->addCredentialCondition('[?php if(!$form->getObject()->isNew()): echo $helper->linkToViewPage($form->getObject(), '.$this->asPhp($params).'); endif; ?]', $params) ?>
 
 <?php elseif ('_history' == $name): ?>
-  <?php echo $this->addCredentialCondition('[?php echo $helper->linkToHistory($form->getObject(), '.$this->asPhp($params).') ?]', $params) ?>
+  <?php echo $this->addCredentialCondition('[?php if(!$form->getObject()->isNew()): echo $helper->linkToHistory($form->getObject(), '.$this->asPhp($params).'); endif; ?]', $params) ?>
 
 <?php elseif ('_add' == $name): ?>
   <?php echo $this->addCredentialCondition('[?php if(!$form->getObject()->isNew()): echo $helper->linkToAdd('.$this->asPhp($params).'); endif; ?]', $params) ?>
