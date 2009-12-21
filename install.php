@@ -1,5 +1,10 @@
 <?php
 
+if (!defined('STDIN'))
+{
+  die('The installer is designed to be run from the command line.');
+}
+
 if (is_dir(getcwd().'/dmCorePlugin'))
 {
   echo "Please create the project in an empty directory\n";
