@@ -81,7 +81,7 @@ do
   {
     $settings['database'] = array(
       'name'      => $this->ask(array('', 'What is the database name ? ( default : '.$defaultDbName.' )', ''), 'QUESTION', $defaultDbName),
-      'host'      => $this->ask(array('', 'What is the database host ? ( default : localhost )', 'QUESTION', 'localhost', '')),
+      'host'      => $this->ask(array('', 'What is the database host ? ( default : localhost )', ''), 'QUESTION', 'localhost', ''),
       'user'      => $this->ask(array('', 'What is the database user ?', '')),
       'password'  => $this->ask(array('', 'What is the database password ?', ''))
     );
