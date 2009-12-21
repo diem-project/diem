@@ -76,6 +76,7 @@ class dmDatabaseLoremizer
       for($it = $nbExisting; $it < $nbAssociations; $it++)
       {
         $refObject = new $refClass;
+        $existsQuery = $refObject->getTable()->createQuery('r');
         foreach($localRelations as $relation)
         {
           $id = dmDb::query($relation->getClass().' t')
@@ -85,8 +86,14 @@ class dmDatabaseLoremizer
           ->fetchValue();
 
           $refObject->set($relation->getLocalColumnName(), $id);
+          $existsQuery->where('r.'.$relation->getLocalColumnName().' = ?', $id);
         }
 
+        if ($existsQuery->exists())
+        {
+          continue;
+        }
+        
         try
         {
           $refObject->save();

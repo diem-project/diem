@@ -4,7 +4,7 @@ require_once(dirname(__FILE__).'/helper/dmMediaUnitTestHelper.php');
 $helper = new dmMediaUnitTestHelper();
 $helper->boot('admin');
 
-$t = new lime_test(17);
+$t = new lime_test(19);
 
 $mediaTable  = dmDb::table('DmMedia');
 $folderTable = dmDb::table('DmMediaFolder');
@@ -57,7 +57,7 @@ if (!$form->isValid())
 
 $t->is($form->getValue('name'), $name, 'The name is '.$name);
 
-$t->is($form->getValue('rel_path'), $relPath = $parent->relPath.'/'.$name, 'The rel path is '.$relPath);
+$t->is($form->getValue('rel_path'), $relPath = trim($parent->relPath.'/'.$name, '/'), 'The rel path is '.$relPath);
 
 $t->is($form->getObject()->exists(), false, 'The folder does not exist');
 
@@ -68,6 +68,24 @@ $t->is($folder->exists(), true, 'The folder not exists');
 $helper->checkTreeIntegrity($t);
 
 $helper->testFolderCorrelations($t);
+
+$t->comment('Try to create a folder with the same name');
+
+$form = new DmAdminNewMediaFolderForm();
+$form->setDefault('parent_id', $parent->id);
+
+$values = array('parent_id' => $parent->id);
+
+$t->comment('Submit empty form');
+$form->bind($values);
+
+$t->is($form->isValid(), false, 'The form is not valid');
+
+$t->comment('Submit same dir name: '.$folder->name);
+$values['name'] = $folder->name;
+$form->bind($values);
+
+$t->is($form->isValid(), false, 'The form is not valid');
 
 $folder->Node->delete();
 

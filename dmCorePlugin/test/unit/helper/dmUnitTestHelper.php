@@ -42,9 +42,9 @@ class dmUnitTestHelper
     // try/catch needed due to http://bugs.php.net/bug.php?id=33598
     try
     {
-      if(method_exists($this->configuration, 'testClean'))
+      if(method_exists($this->configuration, 'cleanup'))
       {
-        $this->configuration->testClean($this->get('filesystem'));
+        $this->configuration->cleanup($this->get('filesystem'));
       }
     }
     catch (Exception $e)

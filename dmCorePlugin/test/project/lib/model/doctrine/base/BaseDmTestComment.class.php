@@ -8,15 +8,18 @@
  * @property integer $dm_test_post_id
  * @property string $author
  * @property clob $body
+ * @property boolean $is_active
  * @property DmTestPost $DmTestPost
  * 
  * @method integer       getDmTestPostId()    Returns the current record's "dm_test_post_id" value
  * @method string        getAuthor()          Returns the current record's "author" value
  * @method clob          getBody()            Returns the current record's "body" value
+ * @method boolean       getIsActive()        Returns the current record's "is_active" value
  * @method DmTestPost    getDmTestPost()      Returns the current record's "DmTestPost" value
  * @method DmTestComment setDmTestPostId()    Sets the current record's "dm_test_post_id" value
  * @method DmTestComment setAuthor()          Sets the current record's "author" value
  * @method DmTestComment setBody()            Sets the current record's "body" value
+ * @method DmTestComment setIsActive()        Sets the current record's "is_active" value
  * @method DmTestComment setDmTestPost()      Sets the current record's "DmTestPost" value
  * 
  * @package    retest
@@ -39,6 +42,11 @@ abstract class BaseDmTestComment extends myDoctrineRecord
              ));
         $this->hasColumn('body', 'clob', null, array(
              'type' => 'clob',
+             ));
+        $this->hasColumn('is_active', 'boolean', null, array(
+             'type' => 'boolean',
+             'notnull' => true,
+             'default' => true,
              ));
     }
 

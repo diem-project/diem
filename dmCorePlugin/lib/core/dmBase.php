@@ -1,6 +1,6 @@
 <?php
 
-define('DIEM_VERSION', '5.0.0-ALPHA10');
+define('DIEM_VERSION', '5.0.0-BETA1');
 
 /*
  * Include Symfony

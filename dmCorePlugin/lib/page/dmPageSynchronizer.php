@@ -32,8 +32,6 @@ class dmPageSynchronizer
 //    dmDebug::kill(dmOs::getPerformanceInfos());
 
     $this->updateShowPages($onlyModules);
-
-    unset($this->nodeParentIdStmt);
   }
 
   protected function removeShowPages(array $onlyModules)

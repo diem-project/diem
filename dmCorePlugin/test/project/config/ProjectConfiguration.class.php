@@ -24,18 +24,30 @@ class ProjectConfiguration extends dmProjectConfiguration
   
   public function listenToSetupAfterEvent(sfEvent $event)
   {
-    $this->initUploads($event->getSubject()->getFilesystem());
+    $this->cleanupUploads($event->getSubject()->getFilesystem());
     
     dmDb::table('DmMediaFolder')->checkRoot()->sync();
     dmDb::table('DmPage')->checkBasicPages();
     
     copy(dmOs::join(sfConfig::get('sf_data_dir'), 'db.sqlite'), dmOs::join(sfConfig::get('sf_data_dir'), 'fresh_db.sqlite'));
-      
-    unlink(dmOs::join(sfConfig::get('sf_web_dir'), 'dm/core'));
-    unlink(dmOs::join(sfConfig::get('sf_web_dir'), 'dm/front'));
-    unlink(dmOs::join(sfConfig::get('sf_web_dir'), 'dm/admin'));
-    rmdir(dmOs::join(sfConfig::get('sf_web_dir'), 'dm'));
-    unlink(dmOs::join(sfConfig::get('sf_web_dir'), 'sf'));
+    
+    foreach(array('core', 'front', 'admin') as $assetDirName)
+    {
+      if(is_readable($assetDir = dmOs::join(sfConfig::get('sf_web_dir'), 'dm', $assetDirName)))
+      {
+        unlink($assetDir);
+      }
+    }
+    
+    if(is_readable($dmDir = dmOs::join(sfConfig::get('sf_web_dir'), 'dm')))
+    {
+      rmdir($dmDir);
+    }
+    
+    if(is_readable($sfDir = dmOs::join(sfConfig::get('sf_web_dir'), 'sf')))
+    {
+      unlink($sfDir);
+    }
   }
 
   public function setupPlugins()
@@ -44,7 +56,7 @@ class ProjectConfiguration extends dmProjectConfiguration
     $this->pluginConfigurations['dmAlternativeHelperPlugin']->connectTests();
   }
   
-  public function testClean(sfFilesystem $filesystem)
+  public function cleanup(sfFilesystem $filesystem)
   {
     sfToolkit::clearDirectory(sfConfig::get('sf_log_dir'));
     sfToolkit::clearDirectory(dmOs::join(sfConfig::get('sf_web_dir'), 'cache'));
@@ -52,12 +64,12 @@ class ProjectConfiguration extends dmProjectConfiguration
     $filesystem->remove(sfFinder::type('any')->not_name('*.sqlite')->in(sfConfig::get('sf_data_dir')));
     copy(dmOs::join(sfConfig::get('sf_data_dir'), 'fresh_db.sqlite'), dmOs::join(sfConfig::get('sf_data_dir'), 'db.sqlite'));
     
-    $this->initUploads($filesystem);
+    $this->cleanupUploads($filesystem);
   }
   
-  protected function initUploads(sfFilesystem $filesystem)
+  protected function cleanupUploads(sfFilesystem $filesystem)
   {
-    sfToolkit::clearDirectory(sfConfig::get('sf_upload_dir'));
+    @sfToolkit::clearDirectory(sfConfig::get('sf_upload_dir'));
     $filesystem->mirror(
       dmOs::join(sfConfig::get('dm_core_dir'), 'test/fixtures/uploads'),
       sfConfig::get('sf_upload_dir'),

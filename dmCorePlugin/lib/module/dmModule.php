@@ -203,8 +203,10 @@ class dmModule extends dmMicroCache
     $associations = array();
     foreach($this->getTable()->getRelationHolder()->getAssociations() as $key => $relation)
     {
-      $associationModule = self::$manager->getModule($relation->getClass());
-      $associations[$associationModule->getKey()] = $associationModule;
+      if($associationModule = self::$manager->getModuleByModel($relation->getClass()))
+      {
+        $associations[$associationModule->getKey()] = $associationModule;
+      }
     }
 
     return $this->setCache('associations', $associations);
@@ -228,6 +230,7 @@ class dmModule extends dmMicroCache
     {
       return array_key_exists($associationModule->getKey(), $this->getAssociations());
     }
+    
     return false;
   }
 

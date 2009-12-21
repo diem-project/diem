@@ -1,7 +1,8 @@
-DmTestPost:  
+DmTestPost:
   actAs:
     Timestampable:
     Sortable:
+    DmGallery:
     I18n:
       fields:         [ title, excerpt, body, url ]
       actAs:
@@ -12,11 +13,42 @@ DmTestPost:
     excerpt:          { type: string(800) }  
     body:             { type: clob, extra: markdown }
     url:              { type: string(255), extra: link }
-    image_id:         { type: integer }  
+    image_id:         { type: integer }
+    is_active:        { type: boolean, notnull: true, default: true }
   relations:  
     Image:  
       class:          DmMedia  
       local:          image_id
+    Tags:
+      class:          DmTestTag
+      refClass:       DmTestPostTag
+      
+DmTestPostTag:
+  columns:
+    dm_test_post_id:  { type: integer, primary: true }
+    dm_test_tag_id:   { type: integer, primary: true }
+  relations:
+    Post:
+      local:          dm_test_post_id
+      class:          DmTestPost
+      onDelete:       CASCADE
+    Tag:
+      local:          dm_test_tag_id
+      class:          DmTestTag
+      onDelete:       CASCADE
+      
+DmTestTag:
+  actAs:
+    Timestampable:
+    I18n:
+      fields:         [ name, slug ]
+  columns:
+    name:             { type: string(255), notnull: true }
+    slug:             { type: string(255), notnull: true, unique: true }
+  relations:
+    Posts:
+      class:          DmTestPost
+      refClass:       DmTestPostTag
 
 DmTestComment:  
   actAs:
@@ -27,6 +59,7 @@ DmTestComment:
     dm_test_post_id:  { type: integer, notnull: true }  
     author:           { type: string(255) }  
     body:             { type: clob }  
+    is_active:        { type: boolean, notnull: true, default: true }
   relations:  
     DmTestPost:  
       foreignAlias:   Comments  

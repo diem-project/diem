@@ -135,12 +135,7 @@ abstract class PluginDmMedia extends BaseDmMedia
 
   public function getRelPath()
   {
-    if ($this->hasCache('rel_path'))
-    {
-      return $this->getCache('rel_path');
-    }
-
-    return $this->setCache('rel_path', trim($this->get('Folder')->get('rel_path').'/'.$this->get('file'), '/'));
+    return trim($this->get('Folder')->get('rel_path').'/'.$this->get('file'), '/');
   }
 
   public function getWebPath()

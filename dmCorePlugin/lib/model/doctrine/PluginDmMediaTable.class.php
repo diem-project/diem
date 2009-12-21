@@ -24,7 +24,9 @@ class PluginDmMediaTable extends myDoctrineTable
   public function findOneByFileAndDmMediaFolderId($file, $id)
   {
     return dmDb::query('DmMedia m')
-    ->where('file = ? AND dm_media_folder_id = ?', array($file, $id))
-    ->fetchRecord();
+    ->where('file = ?', $file)
+    ->andWhere('dm_media_folder_id = ?', $id)
+    ->leftJoin('m.Folder f')
+    ->fetchOne();
   }
 }

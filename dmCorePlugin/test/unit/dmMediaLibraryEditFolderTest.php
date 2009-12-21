@@ -4,7 +4,7 @@ require_once(dirname(__FILE__).'/helper/dmMediaUnitTestHelper.php');
 $helper = new dmMediaUnitTestHelper();
 $helper->boot('admin');
 
-$t = new lime_test(11);
+$t = new lime_test();
 
 $mediaTable  = dmDb::table('DmMedia');
 $folderTable = dmDb::table('DmMediaFolder');
@@ -42,35 +42,40 @@ $helper->testFolderCorrelations($t);
 
 require_once(dmOs::join(sfConfig::get('dm_admin_dir'), 'modules/dmMediaLibrary/lib/DmAdminEditMediaFolderForm.php'));
 
-$form = new DmAdminEditMediaFolderForm($folder);
-
-$values = $form->getDefaults();
-
-$t->comment('Not completed');
+//$form = new DmAdminEditMediaFolderForm($folder);
+//
+//$values = array(
+//  'id' => $folder->id,
+//  'name' => $folder->name,
+//  'parent_id' => $folder->getNodeParentId()
+//);
+//
+//$t->comment('Rename the folder');
+//
+//$form = new DmAdminEditMediaFolderForm($folder);
+//
+//$t->comment('Submit bad name');
+//
+//$form->bind(array_merge($values, array('name' => '/')));
+//
+//$t->isnt($form->isValid(), 'Form is not valid');
+//
+//$t->comment('Submit same name');
+//
+//$form->bind(array_merge($values));
+//
+//$t->is($form->isValid(), 'Form is valid');
+//
+//$t->comment('Submit good name');
+//
+//$form->bind(array_merge($values, array('name' => dmString::random())));
+//
+//$t->is($form->isValid(), 'Form is valid');
+//
+//$folder = $form->save();
 
 $folder->delete();
 
 $helper->checkTreeIntegrity($t);
 
 $helper->testFolderCorrelations($t);
-
-//$t->comment('Submit empty form');
-//$form->bind($values);
-//
-//$t->is($form->isValid(), true, 'The form is valid');
-//
-//$t->comment('Submit bad dir name');
-//$values['name'] = '/';
-//$form->bind($values);
-//
-//$t->is($form->isValid(), false, 'The form is not valid');
-//
-//$t->comment('Submit good dir name');
-//$values['name'] = $name = dmString::random();
-//$form->bind($values);
-//
-//$t->is($form->isValid(), true, 'The form is valid');
-//if (!$form->isValid())
-//{
-//  $t->comment($form->getErrorSchema()->getMessage());
-//}

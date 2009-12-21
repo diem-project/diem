@@ -39,12 +39,14 @@ class DmAdminNewMediaFolderForm extends DmMediaFolderForm
       throw new dmException('Create folder without parent');
     }
     
-    if(dmDb::table('DmMediaFolder')->findOneByRelPath($values['parent']->relPath.'/'.$values['name']))
+    $relPath = trim($values['parent']->get('rel_path').'/'.$values['name'], '/');
+    
+    if(dmDb::table('DmMediaFolder')->findOneByRelPath($relPath))
     {
       throw new sfValidatorErrorSchema($validator, array('name' => new sfValidatorError($validator, 'Already exists in this folder')));
     }
     
-    $values['rel_path'] = $values['parent']->relPath.'/'.$values['name'];
+    $values['rel_path'] = $relPath;
 
     return $values;
   }

@@ -1,0 +1,41 @@
+generator:
+  class: dmAdminDoctrineGenerator
+  param:
+    model_class: DmTestTag
+    theme: dmAdmin
+    non_verbose_templates: true
+    with_show: false
+    route_prefix: dm_test_tag
+    with_doctrine_route: false
+    config:
+      actions: ~
+      fields:
+        posts_list:
+          label: 'Dm test posts'
+      list:
+        display:
+          - '=name'
+          - posts_list
+          - created_at
+          - updated_at
+          - slug
+        sort:
+          - created_at
+          - desc
+        table_method: getAdminListQuery
+        table_count_method: ~
+      filter:
+        display:
+          - name
+          - created_at
+          - updated_at
+      form:
+        display:
+          NONE: [name]
+          'Dm test posts': [posts_list]
+          Others: [slug]
+        class: DmTestTagAdminForm
+        fields: {  }
+      edit: ~
+      new: ~
+    sortable: false

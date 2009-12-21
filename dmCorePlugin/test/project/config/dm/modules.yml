@@ -9,7 +9,14 @@ Project:
 
   Blog:  
 
+    dmTestTag:
+      page:             true  
+      actions:  
+        list:  
+        show:  
+
     dmTestPost:
+      parent:           dmTestTag 
       page:             true  
       actions:  
         list:  

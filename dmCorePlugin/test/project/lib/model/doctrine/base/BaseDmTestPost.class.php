@@ -10,23 +10,32 @@
  * @property clob $body
  * @property string $url
  * @property integer $image_id
+ * @property boolean $is_active
  * @property DmMedia $Image
+ * @property Doctrine_Collection $Tags
+ * @property Doctrine_Collection $DmTestPostTag
  * @property Doctrine_Collection $Comments
  * 
- * @method string              getTitle()    Returns the current record's "title" value
- * @method string              getExcerpt()  Returns the current record's "excerpt" value
- * @method clob                getBody()     Returns the current record's "body" value
- * @method string              getUrl()      Returns the current record's "url" value
- * @method integer             getImageId()  Returns the current record's "image_id" value
- * @method DmMedia             getImage()    Returns the current record's "Image" value
- * @method Doctrine_Collection getComments() Returns the current record's "Comments" collection
- * @method DmTestPost          setTitle()    Sets the current record's "title" value
- * @method DmTestPost          setExcerpt()  Sets the current record's "excerpt" value
- * @method DmTestPost          setBody()     Sets the current record's "body" value
- * @method DmTestPost          setUrl()      Sets the current record's "url" value
- * @method DmTestPost          setImageId()  Sets the current record's "image_id" value
- * @method DmTestPost          setImage()    Sets the current record's "Image" value
- * @method DmTestPost          setComments() Sets the current record's "Comments" collection
+ * @method string              getTitle()         Returns the current record's "title" value
+ * @method string              getExcerpt()       Returns the current record's "excerpt" value
+ * @method clob                getBody()          Returns the current record's "body" value
+ * @method string              getUrl()           Returns the current record's "url" value
+ * @method integer             getImageId()       Returns the current record's "image_id" value
+ * @method boolean             getIsActive()      Returns the current record's "is_active" value
+ * @method DmMedia             getImage()         Returns the current record's "Image" value
+ * @method Doctrine_Collection getTags()          Returns the current record's "Tags" collection
+ * @method Doctrine_Collection getDmTestPostTag() Returns the current record's "DmTestPostTag" collection
+ * @method Doctrine_Collection getComments()      Returns the current record's "Comments" collection
+ * @method DmTestPost          setTitle()         Sets the current record's "title" value
+ * @method DmTestPost          setExcerpt()       Sets the current record's "excerpt" value
+ * @method DmTestPost          setBody()          Sets the current record's "body" value
+ * @method DmTestPost          setUrl()           Sets the current record's "url" value
+ * @method DmTestPost          setImageId()       Sets the current record's "image_id" value
+ * @method DmTestPost          setIsActive()      Sets the current record's "is_active" value
+ * @method DmTestPost          setImage()         Sets the current record's "Image" value
+ * @method DmTestPost          setTags()          Sets the current record's "Tags" collection
+ * @method DmTestPost          setDmTestPostTag() Sets the current record's "DmTestPostTag" collection
+ * @method DmTestPost          setComments()      Sets the current record's "Comments" collection
  * 
  * @package    retest
  * @subpackage model
@@ -59,6 +68,11 @@ abstract class BaseDmTestPost extends myDoctrineRecord
         $this->hasColumn('image_id', 'integer', null, array(
              'type' => 'integer',
              ));
+        $this->hasColumn('is_active', 'boolean', null, array(
+             'type' => 'boolean',
+             'notnull' => true,
+             'default' => true,
+             ));
     }
 
     public function setUp()
@@ -68,12 +82,22 @@ abstract class BaseDmTestPost extends myDoctrineRecord
              'local' => 'image_id',
              'foreign' => 'id'));
 
+        $this->hasMany('DmTestTag as Tags', array(
+             'refClass' => 'DmTestPostTag',
+             'local' => 'dm_test_post_id',
+             'foreign' => 'dm_test_tag_id'));
+
+        $this->hasMany('DmTestPostTag', array(
+             'local' => 'id',
+             'foreign' => 'dm_test_post_id'));
+
         $this->hasMany('DmTestComment as Comments', array(
              'local' => 'id',
              'foreign' => 'dm_test_post_id'));
 
         $timestampable0 = new Doctrine_Template_Timestampable();
         $sortable0 = new Doctrine_Template_Sortable();
+        $dmgallery0 = new Doctrine_Template_DmGallery();
         $i18n0 = new Doctrine_Template_I18n(array(
              'fields' => 
              array(
@@ -89,6 +113,7 @@ abstract class BaseDmTestPost extends myDoctrineRecord
         $i18n0->addChild($dmversionable1);
         $this->actAs($timestampable0);
         $this->actAs($sortable0);
+        $this->actAs($dmgallery0);
         $this->actAs($i18n0);
     }
 }
