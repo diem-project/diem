@@ -4,7 +4,7 @@ require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
 $helper = new dmUnitTestHelper();
 $helper->boot('admin');
 
-$t = new lime_test(11);
+$t = new lime_test(12);
 
 dm::loadHelpers(array('Dm'));
 
@@ -46,5 +46,11 @@ $t->is(£link('page:'.$page->id)->getHref(), $expected = $frontScriptName.'/'.$p
 $t->is(£link('page:'.$page->id.'?var1=val1&var2=val2')->getHref(), $expected = $frontScriptName.'/'.$page->slug.'?var1=val1&var2=val2', $expected);
 
 $t->is(£link('page:'.$page->id.'?var1=val1&var2=val2#anchor')->getHref(), $expected = $frontScriptName.'/'.$page->slug.'?var1=val1&var2=val2#anchor', $expected);
+
+sfConfig::set('sf_debug', true);
+
+$badSource = 'page:9999999999999';
+$errorLink = (string)£link($badSource);
+$t->is($errorLink, '<a class="link">'.$badSource.' is not a valid link resource</a>', $errorLink);
 
 $page->Node->delete();

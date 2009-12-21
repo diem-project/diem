@@ -12,6 +12,25 @@ class dmAdminLinkTag extends dmBaseLinkTag
     
     $this->initialize();
   }
+  
+  public function render()
+  {
+    try
+    {
+      return parent::render();
+    }
+    catch(Exception $e)
+    {
+      return '<a class="link">'.$e->getMessage().'</a>';
+//      if (sfConfig::get('sf_debug'))
+//      {
+//        return $this
+//        ->text('[EXCEPTION] '.$this->exception->getMessage())
+//        ->param('dm_debug', 1)
+//        ->title('Click me to see the exception details');
+//      }
+    }
+  }
 
   protected function getBaseHref()
   {
@@ -39,7 +58,7 @@ class dmAdminLinkTag extends dmBaseLinkTag
         }
         else
         {
-          throw new dmException(sprintf('%s is not a valid link resource', $source));
+          throw new dmException(sprintf('%s is not a valid link resource', $resource));
         }
       }
       
