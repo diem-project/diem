@@ -185,10 +185,15 @@ $this->runTask('configure:database', array(
   'password' => $db['password']
 ));
 
-$this->logBlock('Installing '.$projectKey.'. This may take some time.', 'INFO_LARGE');
-
 try
 {
+  $this->logBlock('Installing '.$projectKey.'. This may take some time.', 'INFO_LARGE');
+  
+  if ('/' !== DIRECTORY_SEPARATOR)
+  {
+    throw new Exception('Automatic install disabled for windows servers');
+  }
+  
   $out = $err = null;
   $this->getFilesystem()->execute(sprintf(
     '%s "%s" %s',
