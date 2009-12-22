@@ -35,8 +35,17 @@ EOF;
     foreach($this->get('module_manager')->getProjectModules() as $moduleKey => $module)
     {
       $this->log(sprintf("Generate front for module %s", $moduleKey));
+    
+      if ($pluginName = $module->getPluginName())
+      {
+        $moduleDir = dmOs::join($this->configuration->getPluginConfiguration($pluginName)->getRootDir(), 'modules', $moduleKey);
+      }
+      else
+      {
+        $moduleDir = dmOs::join(sfConfig::get('sf_apps_dir'), 'front/modules', $moduleKey);
+      }
 
-      $actionGenerator = new dmFrontActionGenerator($module, $this->dispatcher, $this->get('filesystem'));
+      $actionGenerator = new dmFrontActionGenerator($module, $this->dispatcher, $this->get('filesystem'), $moduleDir);
       $actionGenerator->setFormatter($this->formatter);
       
       if (!$actionGenerator->execute())
@@ -44,7 +53,7 @@ EOF;
         $this->logBlock('Can NOT create actions for module '.$module, 'ERROR');
       }
 
-      $componentGenerator = new dmFrontComponentGenerator($module, $this->dispatcher, $this->get('filesystem'));
+      $componentGenerator = new dmFrontComponentGenerator($module, $this->dispatcher, $this->get('filesystem'), $moduleDir);
       $componentGenerator->setFormatter($this->formatter);
       
       if (!$componentGenerator->execute())
@@ -52,7 +61,7 @@ EOF;
         $this->logBlock('Can NOT create components for module '.$module, 'ERROR');
       }
 
-      $actionTemplateGenerator = new dmFrontActionTemplateGenerator($module, $this->dispatcher, $this->get('filesystem'));
+      $actionTemplateGenerator = new dmFrontActionTemplateGenerator($module, $this->dispatcher, $this->get('filesystem'), $moduleDir);
       $actionTemplateGenerator->setFormatter($this->formatter);
       
       if (!$actionTemplateGenerator->execute())

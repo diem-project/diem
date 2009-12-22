@@ -200,16 +200,10 @@ class dmProjectModule extends dmModule
     return !empty($this->options['children_keys']);
   }
 
-  
-  public function hasDirectAction($action)
-  {
-    return in_array($action, $this->options['direct_actions']);
-  }
-  
   public function getDefaultOptions()
   {
     return array_merge(parent::getDefaultOptions(), array(
-      "auto" => true
+      'auto' => true
     ));
   }
 }

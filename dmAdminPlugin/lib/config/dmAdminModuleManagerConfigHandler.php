@@ -1,0 +1,19 @@
+<?php
+
+require_once(sfConfig::get('dm_core_dir').'/lib/config/dmModuleManagerConfigHandler.php');
+
+class dmAdminModuleManagerConfigHandler extends dmModuleManagerConfigHandler
+{
+  
+  protected function fixModuleConfig($moduleKey, $moduleConfig, $isInProject, $plugin)
+  {
+    $moduleOptions = parent::fixModuleConfig($moduleKey, $moduleConfig, $isInProject, $plugin);
+    
+    $moduleOptions['sf_name'] = dmArray::get($moduleOptions, 'sf_name',
+      $isInProject && $plugin ? $moduleKey.'Admin' : $moduleKey
+    );
+    
+    return $moduleOptions;
+  }
+
+}

@@ -145,7 +145,11 @@ class dmUnitTestHelper
     return $this->moduleManager;
   }
 
-
+  public function getConfiguration()
+  {
+    return $this->configuration;
+  }
+  
   public function getDispatcher()
   {
     return $this->context->getEventDispatcher();

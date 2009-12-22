@@ -5,7 +5,7 @@ class dmFrontActionTemplateGenerator extends dmFrontModuleGenerator
 
   public function execute()
   {
-    $dir = dmOs::join(sfConfig::get('sf_apps_dir'), 'front', 'modules', $this->module->getKey(), 'templates');
+    $dir = dmOs::join($this->moduleDir, 'templates');
 
     if (!$this->filesystem->mkdir($dir))
     {

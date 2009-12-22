@@ -5,34 +5,11 @@ require_once(sfConfig::get('dm_core_dir').'/lib/config/dmModuleManagerConfigHand
 class dmFrontModuleManagerConfigHandler extends dmModuleManagerConfigHandler
 {
   
-  protected function fixModuleConfig($moduleKey, $moduleConfig, $isInProject)
+  protected function fixModuleConfig($moduleKey, $moduleConfig, $isInProject, $plugin)
   {
-    $moduleOptions = parent::fixModuleConfig($moduleKey, $moduleConfig, $isInProject);
+    $moduleOptions = parent::fixModuleConfig($moduleKey, $moduleConfig, $isInProject, $plugin);
     
-    if ($moduleOptions['is_project'])
-    {
-      // cache direct actions
-      $directActions = array();
-        
-      $actionsFile = dmOs::join(sfConfig::get('sf_app_module_dir'), $moduleKey, 'actions/actions.class.php');
-      
-      if (file_exists($actionsFile))
-      {
-        require_once($actionsFile);
-        
-        $actionsClass = $moduleKey.'Actions';
-        
-        foreach(get_class_methods($actionsClass) as $method)
-        {
-          if (preg_match('|^execute[\w\d]+$|', $method) && $directActionMethodName = dmString::modulize(substr($method, 7)))
-          {
-            $directActions[] = $directActionMethodName;
-          }
-        }
-      }
-      
-      $moduleOptions['direct_actions'] = $directActions;
-    }
+    $moduleOptions['sf_name'] = dmArray::get($moduleOptions, 'sf_name', $moduleKey);
     
     return $moduleOptions;
   }

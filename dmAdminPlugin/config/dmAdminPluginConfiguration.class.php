@@ -4,15 +4,15 @@ class dmAdminPluginConfiguration extends sfPluginConfiguration
   protected static
   $dependencies = array(),
   $helpers = array('Dm'),
-  $externalModules = array('dmAuth', 'dmUser', 'dmPermission', 'dmGroup', 'sfPixlr');
+  $externalModules = array('dmAuth', 'dmUser', 'dmPermission', 'dmGroup');
 
   public function configure()
   {
-    sfConfig::set('dm_admin_dir', realpath(dirname(__FILE__)."/.."));
+    sfConfig::set('dm_admin_dir', realpath(dirname(__FILE__).'/..'));
     sfConfig::set('dm_context_type', 'admin');
     
     require_once(sfConfig::get('dm_core_dir').'/lib/config/dmFactoryConfigHandler.php');
-    require_once(sfConfig::get('dm_core_dir').'/lib/config/dmModuleManagerConfigHandler.php');
+    require_once(sfConfig::get('dm_admin_dir').'/lib/config/dmAdminModuleManagerConfigHandler.php');
     require_once(sfConfig::get('dm_admin_dir').'/lib/config/dmAdminRoutingConfigHandler.php');
   }
 
@@ -34,6 +34,10 @@ class dmAdminPluginConfiguration extends sfPluginConfiguration
   {
     $modules = array();
     foreach(glob(dmOs::join(sfConfig::get('dm_admin_dir'), 'modules/*'), GLOB_ONLYDIR) as $dir)
+    {
+      $modules[] = basename($dir);
+    }
+    foreach(glob(dmOs::join(sfConfig::get('sf_plugins_dir'), '*/modules/*'), GLOB_ONLYDIR) as $dir)
     {
       $modules[] = basename($dir);
     }

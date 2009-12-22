@@ -1,0 +1,41 @@
+generator:
+  class: dmAdminDoctrineGenerator
+  param:
+    model_class: DmContact
+    theme: dmAdmin
+    non_verbose_templates: true
+    with_show: false
+    route_prefix: dm_contact
+    with_doctrine_route: false
+    config:
+      actions: ~
+      fields: {  }
+      list:
+        display:
+          - '=name'
+          - email
+          - body
+          - created_at
+          - updated_at
+        sort:
+          - created_at
+          - desc
+        table_method: getAdminListQuery
+        table_count_method: ~
+      filter:
+        display:
+          - name
+          - email
+          - body
+          - created_at
+          - updated_at
+      form:
+        display:
+          NONE: [name]
+          Body: [body]
+          Others: [email]
+        class: DmContactAdminForm
+        fields: {  }
+      edit: ~
+      new: ~
+    sortable: false

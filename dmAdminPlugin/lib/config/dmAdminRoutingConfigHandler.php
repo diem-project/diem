@@ -109,7 +109,7 @@ class dmAdminRoutingConfigHandler extends sfRoutingConfigHandler
         'class' => 'sfRoute',
         'url'   => $baseUrl.'/:action/*',
         'params' => array(
-          'module' => $module->getKey(),
+          'module' => $module->getSfName(),
           'action' => 'index'
         )
       );

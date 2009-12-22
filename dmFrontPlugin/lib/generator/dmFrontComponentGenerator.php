@@ -12,7 +12,7 @@ class dmFrontComponentGenerator extends dmFrontModuleGenerator
     require_once(dmOs::join(sfConfig::get('dm_core_dir'), 'lib/vendor/Zend/CodeGenerator/Php/File.php'));
     require_once(dmOs::join(sfConfig::get('dm_core_dir'), 'lib/vendor/dmZend/CodeGenerator/Php/Class.php'));
     
-    $file = dmOs::join(sfConfig::get('sf_apps_dir'), 'front/modules', $this->module->getKey(), 'actions/components.class.php');
+    $file = dmOs::join($this->moduleDir, 'actions/components.class.php');
 
     if (!$this->filesystem->mkdir(dirname($file)))
     {

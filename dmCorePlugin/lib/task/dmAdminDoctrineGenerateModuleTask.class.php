@@ -2,6 +2,9 @@
 
 class dmAdminDoctrineGenerateModuleTask extends sfDoctrineGenerateModuleTask
 {
+  protected
+  $moduleObject;
+  
   /**
    * @see sfTask
    */
@@ -12,67 +15,30 @@ class dmAdminDoctrineGenerateModuleTask extends sfDoctrineGenerateModuleTask
     $this->aliases = array();
     $this->namespace = 'dmAdmin';
     $this->name = 'generate-module';
-    $this->briefDescription = 'Generates a Diem module';
+    $this->briefDescription = 'Generates a Diem admin module';
   }
-
-  protected function executeGenerate($arguments = array(), $options = array())
-  {
-    // generate module
-    $tmpDir = sfConfig::get('sf_cache_dir').DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.md5(uniqid(rand(), true));
-    $generatorManager = new sfGeneratorManager($this->configuration, $tmpDir);
-    $generatorManager->generate('dmDoctrineGenerator', array(
-      'model_class'           => $arguments['model'],
-      'moduleName'            => $arguments['module'],
-      'theme'                 => $options['theme'],
-      'non_verbose_templates' => $options['non-verbose-templates'],
-      'with_show'             => $options['with-show'],
-      'singular'              => $options['singular'],
-      'plural'                => $options['plural'],
-      'route_prefix'          => $options['route-prefix'],
-      'with_doctrine_route'   => false
-    ));
-
-    $moduleDir = sfConfig::get('sf_app_module_dir').'/'.$arguments['module'];
-
-    // copy our generated module
-    $this->getFilesystem()->mirror($tmpDir.DIRECTORY_SEPARATOR.'auto'.ucfirst($arguments['module']), $moduleDir, sfFinder::type('any'));
-
-    if (!$options['with-show'])
-    {
-      $this->getFilesystem()->remove($moduleDir.'/templates/showSuccess.php');
-    }
-
-    // change module name
-    $finder = sfFinder::type('file')->name('*.php');
-    $this->getFilesystem()->replaceTokens($finder->in($moduleDir), '', '', array('auto'.ucfirst($arguments['module']) => $arguments['module']));
-
-    // customize php and yml files
-    $finder = sfFinder::type('file')->name('*.php', '*.yml');
-    $this->getFilesystem()->replaceTokens($finder->in($moduleDir), '##', '##', $this->constants);
-
-    // create basic test
-    $this->getFilesystem()->copy(sfConfig::get('sf_symfony_lib_dir').DIRECTORY_SEPARATOR.'task'.DIRECTORY_SEPARATOR.'generator'.DIRECTORY_SEPARATOR.'skeleton'.DIRECTORY_SEPARATOR.'module'.DIRECTORY_SEPARATOR.'test'.DIRECTORY_SEPARATOR.'actionsTest.php', sfConfig::get('sf_test_dir').DIRECTORY_SEPARATOR.'functional'.DIRECTORY_SEPARATOR.$arguments['application'].DIRECTORY_SEPARATOR.$arguments['module'].'ActionsTest.php');
-
-    // customize test file
-    $this->getFilesystem()->replaceTokens(sfConfig::get('sf_test_dir').DIRECTORY_SEPARATOR.'functional'.DIRECTORY_SEPARATOR.$arguments['application'].DIRECTORY_SEPARATOR.$arguments['module'].'ActionsTest.php', '##', '##', $this->constants);
-
-    // delete temp files
-    $this->getFilesystem()->remove(sfFinder::type('any')->in($tmpDir));
-  }
+  
 
   protected function executeInit($arguments = array(), $options = array())
   {
-    $moduleObject = dmContext::getInstance()->getModuleManager()->getModule($arguments['module']);
-
-    if ($moduleObject->isProject())
+    if (!dmContext::hasInstance())
     {
-      $moduleDir = sfConfig::get('sf_app_module_dir').'/'.$arguments['module'];
+      dm::createContext($this->configuration);
+    }
+    
+    $moduleObject = dmContext::getInstance()->getModuleManager()->getModule($arguments['module']);
+    
+    $arguments['module'] = $moduleObject->getSfName();
+
+    if ($pluginName = $moduleObject->getPluginName())
+    {
+      $moduleDir = dmOs::join($this->configuration->getPluginConfiguration($pluginName)->getRootDir(), 'modules', $arguments['module']);
     }
     else
     {
-      $moduleDir = dmOs::join(sfConfig::get('dm_admin_dir'), 'modules', $arguments['module']);
+      $moduleDir = dmOs::join(sfConfig::get('sf_apps_dir'), 'admin/modules', $arguments['module']);
     }
-
+    
     // create basic application structure
     $finder = sfFinder::type('any')->discard('.sf');
     $dirs = $this->configuration->getGeneratorSkeletonDirs('dmAdminDoctrineModule', $options['theme']);
@@ -138,14 +104,11 @@ class dmAdminDoctrineGenerateModuleTask extends sfDoctrineGenerateModuleTask
       }
     }
 
-    // create basic test
-//    $this->getFilesystem()->copy(sfConfig::get('sf_symfony_lib_dir').DIRECTORY_SEPARATOR.'task'.DIRECTORY_SEPARATOR.'generator'.DIRECTORY_SEPARATOR.'skeleton'.DIRECTORY_SEPARATOR.'module'.DIRECTORY_SEPARATOR.'test'.DIRECTORY_SEPARATOR.'actionsTest.php', sfConfig::get('sf_test_dir').DIRECTORY_SEPARATOR.'functional'.DIRECTORY_SEPARATOR.$arguments['application'].DIRECTORY_SEPARATOR.$arguments['module'].'ActionsTest.php');
-
-    // customize test file
-//    $this->getFilesystem()->replaceTokens(sfConfig::get('sf_test_dir').DIRECTORY_SEPARATOR.'functional'.DIRECTORY_SEPARATOR.$arguments['application'].DIRECTORY_SEPARATOR.$arguments['module'].'ActionsTest.php', '##', '##', $this->constants);
-
     // customize php and yml files
     $finder = sfFinder::type('file')->name('*.php', '*.yml');
+    
+    $this->constants['MODULE_NAME'] = $arguments['module'];
+    $this->constants['UC_MODULE_NAME'] = ucfirst($arguments['module']);
     $this->constants['CONFIG'] = sprintf(<<<EOF
     model_class:           %s
     theme:                 %s

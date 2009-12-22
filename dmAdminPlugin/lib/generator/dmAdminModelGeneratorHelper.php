@@ -4,14 +4,14 @@ abstract class dmAdminModelGeneratorHelper extends sfModelGeneratorHelper
 {
   protected
   $module;
+  
+  public function __construct(dmModule $module)
+  {
+    $this->module = $module;
+  }
 
   protected function getModule()
   {
-    if (null === $this->module)
-    {
-      $this->module = dmContext::getInstance()->getModuleManager()->getModule($this->getModuleName());
-    }
-    
     return $this->module;
   }
 

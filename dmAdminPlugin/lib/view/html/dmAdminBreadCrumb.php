@@ -44,7 +44,7 @@ class dmAdminBreadCrumb
       return array();
     }
     
-    $module = $this->record ? $this->record->getDmModule() : $this->context->getModuleManager()->getModuleOrNull(
+    $module = $this->record ? $this->record->getDmModule() : $this->context->getModuleManager()->getModuleBySfName(
       $this->context->getRequest()->getParameter('module')
     );
     

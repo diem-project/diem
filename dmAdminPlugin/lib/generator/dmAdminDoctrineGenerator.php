@@ -300,7 +300,7 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
   {
     if ($this->module === null)
     {
-      $this->module = $this->moduleManager->getModuleOrNull($this->getModuleName());
+      $this->module = $this->moduleManager->getModuleBySfName($this->getModuleName());
     }
 
     return $this->module;

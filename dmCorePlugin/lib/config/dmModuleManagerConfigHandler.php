@@ -314,6 +314,8 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
     $this->modules = array();
     $this->projectModules = array();
     
+    $pluginModules = $this->getPluginModules($configFiles);
+    
     foreach($config as $typeName => $typeConfig)
     {
       $this->config[$typeName] = array();
@@ -331,8 +333,10 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
           {
             continue;
           }
+          
+          $plugin = dmArray::get($pluginModules, $moduleKey, false);
     
-          $moduleConfig = $this->fixModuleConfig($moduleKey, $moduleConfig, $isInProject);
+          $moduleConfig = $this->fixModuleConfig($moduleKey, $moduleConfig, $isInProject, $plugin);
           
           $this->modules[$moduleKey] = $moduleConfig;
           
@@ -347,7 +351,37 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
     }
   }
   
-  protected function fixModuleConfig($moduleKey, $moduleConfig, $isInProject)
+  /*
+   * Returns specific modules,
+   * defined in the project and not in a plugin
+   */
+  protected function getPluginModules(array $configFiles)
+  {
+    $pluginModules = array();
+    
+    foreach($configFiles as $configFile)
+    {
+      if (0 === strpos($configFile, sfConfig::get('sf_plugins_dir')) || (0 === strpos($configFile, dm::getDir()) && !dmProject::isInProject($configFile)))
+      {
+        $pluginName = basename(str_replace('/config/dm/modules.yml', '', $configFile));
+        
+        foreach((array)sfYaml::load(file_get_contents($configFile)) as $typeName => $typeConfig)
+        {
+          foreach($typeConfig as $spaceName => $spaceConfig)
+          {
+            foreach($spaceConfig as $moduleKey => $moduleConfig)
+            {
+              $pluginModules[$moduleKey] = $pluginName;
+            }
+          }
+        }
+      }
+    }
+    
+    return $pluginModules;
+  }
+  
+  protected function fixModuleConfig($moduleKey, $moduleConfig, $isInProject, $plugin)
   {
     /*
      * Extract plural from name
@@ -385,6 +419,7 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
       'credentials' => isset($moduleConfig['credentials']) ? trim($moduleConfig['credentials']) : null,
       'underscore'  => (string) dmString::underscore($moduleKey),
       'is_project'  => (boolean) dmArray::get($moduleConfig, 'project', $isInProject),
+      'plugin'      => dmArray::get($moduleConfig, 'plugin', $plugin),
       'has_admin'   => (boolean) dmArray::get($moduleConfig, 'admin', $model || !$isInProject),
       'actions'     => dmArray::get($moduleConfig, 'actions', array())
     );

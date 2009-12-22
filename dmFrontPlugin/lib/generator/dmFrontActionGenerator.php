@@ -12,7 +12,7 @@ class dmFrontActionGenerator extends dmFrontModuleGenerator
     require_once(dmOs::join(sfConfig::get('dm_core_dir'), 'lib/vendor/Zend/CodeGenerator/Php/File.php'));
     require_once(dmOs::join(sfConfig::get('dm_core_dir'), 'lib/vendor/dmZend/CodeGenerator/Php/Class.php'));
     
-    $file = dmOs::join(sfConfig::get('sf_apps_dir'), 'front/modules', $this->module->getKey(), 'actions/actions.class.php');
+    $file = dmOs::join($this->moduleDir, 'actions/actions.class.php');
 
     if (!$this->filesystem->mkdir(dirname($file)))
     {

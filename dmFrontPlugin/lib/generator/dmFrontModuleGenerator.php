@@ -7,13 +7,15 @@ abstract class dmFrontModuleGenerator
   $module,
   $dispatcher,
   $filesystem,
+  $moduleDir,
   $formatter;
 
-  public function __construct(dmProjectModule $module, sfEventDispatcher $dispatcher, dmFilesystem $filesystem)
+  public function __construct(dmProjectModule $module, sfEventDispatcher $dispatcher, dmFilesystem $filesystem, $moduleDir)
   {
     $this->module = $module;
     $this->dispatcher = $dispatcher;
     $this->filesystem = $filesystem;
+    $this->moduleDir = $moduleDir;
   }
   
   public function setFormatter(sfFormatter $formatter)

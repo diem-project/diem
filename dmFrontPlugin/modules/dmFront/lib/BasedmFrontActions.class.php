@@ -153,9 +153,9 @@ class BasedmFrontActions extends dmFrontBaseActions
 
     foreach($moduleActions as $moduleAction)
     {
-      list($module, $action) = explode("/", $moduleAction);
+      list($module, $action) = explode('/', $moduleAction);
 
-      if ($moduleManager->getModule($module)->hasDirectAction($action))
+      if ($this->context->getController()->actionExists($module, $action))
       {
         $actionToRun = 'execute'.ucfirst($action);
         

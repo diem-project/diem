@@ -2,11 +2,10 @@
 
 class dmModule extends dmMicroCache
 {
-
   protected
-    $key,
-    $space,
-    $options;
+  $key,
+  $space,
+  $options;
     
   protected static
   $manager;
@@ -34,6 +33,20 @@ class dmModule extends dmMicroCache
     return $this instanceof dmProjectModule;
   }
 
+  public function isPlugin()
+  {
+    return (bool) $this->options['plugin'];
+  }
+  
+  public function getPluginName()
+  {
+    return $this->options['plugin'];
+  }
+  
+  public function getSfName()
+  {
+    return $this->options['sf_name'];
+  }
 
   public function hasAdmin()
   {
@@ -57,7 +70,7 @@ class dmModule extends dmMicroCache
 
   public function getOption($key, $default = null)
   {
-    return isset($this->options[$key]) ? $this->options[$key] : null;
+    return isset($this->options[$key]) ? $this->options[$key] : $default;
   }
 
   public function setOption($key, $value)
@@ -262,6 +275,7 @@ class dmModule extends dmMicroCache
   {
     return $this->isProject();
   }
+  
   
   /*
    * @return dmModuleManager

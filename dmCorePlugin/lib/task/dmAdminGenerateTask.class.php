@@ -32,16 +32,26 @@ EOF;
   {
     $this->logSection('diem', 'Generate admin modules');
 
-    $modules = $this->get('module_manager')->getModules();
+    $modules = $this->get('module_manager')->getProjectModules();
 
-    $existingModules = sfFinder::type('dir')
-    ->maxdepth(0)
-    ->in(array(
-      dmOs::join(sfConfig::get('sf_apps_dir'), 'admin/modules'),
-      dmOs::join(sfConfig::get('dm_admin_dir'), 'modules')
-    ));
+    $existingModules = array();
 
-    array_walk($existingModules, create_function('&$a', '$a = basename($a);'));
+    foreach($modules as $moduleKey => $module)
+    {
+      if ($pluginName = $module->getPluginName())
+      {
+        $module->setOption('generate_dir', dmOs::join($this->configuration->getPluginConfiguration($pluginName)->getRootDir(), 'modules', $module->getSfName()));
+      }
+      else
+      {
+        $module->setOption('generate_dir', dmOs::join(sfConfig::get('sf_apps_dir'), 'admin/modules', $module->getSfName()));
+      }
+    
+      if(is_dir($module->getOption('generate_dir')))
+      {
+        $existingModules[] = $moduleKey;
+      }
+    }
     
     $moduleToClear = dmArray::get($options, 'clear');
     
@@ -49,61 +59,33 @@ EOF;
     {
       if ($moduleToClear && $moduleKey !== $moduleToClear)
       {
-//        $this->logSection('diem', "Skipping $module");
         continue;
       }
-      else
+      if (!$module->hasModel() || !$module->hasAdmin())
       {
-        if ($module->isProject() && !$module->hasAdmin())
-        {
-  //        $this->logSection('diem', sprintf("Skip module %s wich has no admin", $moduleKey));
-          continue;
-        }
-        if (!$module->isProject())
-        {
-  //        $this->logSection('diem', sprintf("Skip module %s wich is nor internal nor project : probably a plugin one", $moduleKey));
-          continue;
-        }
-        if (!$module->hasModel())
-        {
-  //        $this->logSection('diem', sprintf("Skip module %s wich has no associated model", $moduleKey));
-          continue;
-        }
+        continue;
+      }
+      if (in_array($moduleKey, $existingModules) && !$moduleToClear)
+      {
+        continue;
       }
 
-      if (in_array($moduleKey, $existingModules))
-      {
-        if (!$moduleToClear || !$module->isProject())
-        {
-//          $this->logSection('diem', sprintf("Skip existing module %s", $moduleKey));
-          continue;
-        }
-        else
-        {
-          $this->logSection('diem', sprintf("Remove existing module %s", $moduleKey));
-
-          $moduleDir = sfConfig::get('sf_app_module_dir').'/'.$moduleKey;
-
-          $this->get('filesystem')->unlink(dmOs::join($moduleDir, 'generator.yml'));
-        }
-      }
-
-      $this->logSection('diem', sprintf('Generate admin for module %s', $moduleKey));
-
-      $arguments = array(
-        'application' => 'admin',
-        'route_or_model' => $module->getKey()
-      );
-      $options = array(
-        '--module='.$moduleKey,
-        '--theme='.'dmAdmin',
-        '--singular='.$moduleKey,
-        '--plural='.$moduleKey.'s',
-        '--env='.'dev'
-      );
+      $task = new dmAdminDoctrineGenerateModuleTask($this->dispatcher, $this->formatter);
+      $task->setCommandApplication($this->commandApplication);
+      $task->setConfiguration($this->configuration);
       
-      $task = new dmAdminDoctrineGenerateAdminTask($this->dispatcher, $this->formatter);
-      $task->run($arguments, $options);
+      $this->logSection('diem', sprintf('Generating admin module "%s" for model "%s"', $module->getKey(), $module->getModel()));
+  
+      return $task->run(array('admin', $module->getKey(), $module->getModel()), array(
+        'theme'                 => 'dmAdmin',
+        'env'                   => $options['env'],
+        'route-prefix'          => $module->getUnderscore(),
+        'with-doctrine-route'   => true,
+        'generate-in-cache'     => true,
+        'non-verbose-templates' => true,
+        'singular'              => $moduleKey,
+        'plural'                => $moduleKey.'s'
+      ));
     }
 
     $this->get('cache_manager')->clearAll();

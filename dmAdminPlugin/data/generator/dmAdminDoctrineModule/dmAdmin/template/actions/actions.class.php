@@ -27,7 +27,7 @@ abstract class <?php echo $this->getGeneratedModuleName() ?>Actions extends <?ph
 
     $this->dispatcher->notify(new sfEvent($this, 'admin.pre_execute', array('configuration' => $this->configuration)));
 
-    $this->helper = new <?php echo $this->getModuleName() ?>GeneratorHelper();
+    $this->helper = new <?php echo $this->getModuleName() ?>GeneratorHelper($this->getDmModule());
   }
   
   protected function getDmModule()
@@ -37,7 +37,12 @@ abstract class <?php echo $this->getGeneratedModuleName() ?>Actions extends <?ph
       return $this->dmModule;
     }
     
-    return $this->dmModule = $this->context->getModuleManager()->getModule('<?php echo $this->getModuleName(); ?>');
+    return $this->dmModule = $this->context->getModuleManager()->getModule('<?php echo $this->getModule()->getKey(); ?>');
+  }
+  
+  protected function getSfModule()
+  {
+    return '<?php echo $this->getModuleName(); ?>';
   }
 
 <?php include dirname(__FILE__).'/../../parts/exportAction.php' ?>

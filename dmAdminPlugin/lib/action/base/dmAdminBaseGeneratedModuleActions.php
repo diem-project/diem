@@ -249,12 +249,12 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 
   protected function getSearch()
   {
-    return $this->getUser()->getAppliedSearchOnModule($this->getDmModule()->getKey());
+    return $this->getUser()->getAppliedSearchOnModule($this->getSfModule());
   }
 
   protected function setSearch($search)
   {
-    $this->getUser()->setAttribute($this->getDmModule()->getKey().'.search', $search, 'admin_module');
+    $this->getUser()->setAttribute($this->getSfModule().'.search', $search, 'admin_module');
   }
   
   
@@ -373,14 +373,14 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 
   protected function getSort()
   {
-    if (null !== $sort = $this->getUser()->getAttribute($this->getDmModule()->getKey().'.sort', null, 'admin_module'))
+    if (null !== $sort = $this->getUser()->getAttribute($this->getSfModule().'.sort', null, 'admin_module'))
     {
       return $sort;
     }
 
     $this->setSort($this->configuration->getDefaultSort());
 
-    return $this->getUser()->getAttribute($this->getDmModule()->getKey().'.sort', null, 'admin_module');
+    return $this->getUser()->getAttribute($this->getSfModule().'.sort', null, 'admin_module');
   }
 
   protected function setSort(array $sort)
@@ -390,7 +390,7 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
       $sort[1] = 'asc';
     }
 
-    $this->getUser()->setAttribute($this->getDmModule()->getKey().'.sort', $sort, 'admin_module');
+    $this->getUser()->setAttribute($this->getSfModule().'.sort', $sort, 'admin_module');
   }
 
   protected function isValidSortColumn($column)
@@ -407,7 +407,7 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
     {
       $this->getUser()->setFlash('error', 'You must at least select one item.');
 
-      $this->redirect('@'.$this-getDmModule()->getUnderscore());
+      $this->redirect('@'.$this->getDmModule()->getUnderscore());
     }
     
     foreach($request->getParameterHolder()->getAll() as $key => $value)
@@ -423,7 +423,7 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
     {
       $this->getUser()->setFlash('error', 'You must select an action to execute on the selected items.');
 
-      $this->redirect('@'.$this-getDmModule()->getUnderscore());
+      $this->redirect('@'.$this->etDmModule()->getUnderscore());
     }
 
     if (!method_exists($this, $method = 'execute'.ucfirst($action)))

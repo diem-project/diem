@@ -48,7 +48,6 @@ class dmModuleManager
   {
     return $this->projectModules;
   }
-
   
   public function hasModule($moduleKey)
   {
@@ -124,6 +123,23 @@ class dmModuleManager
     return null;
   }
 
+  public function getModuleBySfName($sfName)
+  {
+    if ($module = $this->getModuleOrNull($sfName))
+    {
+      return $module;
+    }
+    
+    foreach($this->getModules() as $module)
+    {
+      if ($sfName == $module->getSfName())
+      {
+        return $module;
+      }
+    }
+    
+    return null;
+  }
   
   public function keysToModules(array $keys)
   {

@@ -14,12 +14,20 @@ class ProjectConfiguration extends dmProjectConfiguration
     parent::setup();
     
     $this->enablePlugins(array(
-      'dmAlternativeHelperPlugin'
+      'dmAlternativeHelperPlugin',
+      'dmContactPlugin'
     ));
 
     $this->setWebDir(realpath(dirname(__FILE__).'/../public_html'));
     
     $this->dispatcher->connect('dm.setup.after', array($this, 'listenToSetupAfterEvent'));
+  }
+
+  public function setupPlugins()
+  {
+    $this->pluginConfigurations['dmCorePlugin']->connectTests();
+    $this->pluginConfigurations['dmAlternativeHelperPlugin']->connectTests();
+    $this->pluginConfigurations['dmContactPlugin']->connectTests();
   }
   
   public function listenToSetupAfterEvent(sfEvent $event)
@@ -48,12 +56,6 @@ class ProjectConfiguration extends dmProjectConfiguration
     {
       unlink($sfDir);
     }
-  }
-
-  public function setupPlugins()
-  {
-    $this->pluginConfigurations['dmCorePlugin']->connectTests();
-    $this->pluginConfigurations['dmAlternativeHelperPlugin']->connectTests();
   }
   
   public function cleanup(sfFilesystem $filesystem)

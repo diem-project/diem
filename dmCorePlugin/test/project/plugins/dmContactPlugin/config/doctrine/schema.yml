@@ -1,0 +1,6 @@
+DmContact:  
+  actAs:              [ Timestampable ]  
+  columns:  
+    name:             { type: string(255), notnull: true }
+    email:            { type: string(255), notnull: true }
+    body:             { type: clob }
