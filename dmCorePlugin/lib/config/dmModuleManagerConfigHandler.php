@@ -352,8 +352,8 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
   }
   
   /*
-   * Returns specific modules,
-   * defined in the project and not in a plugin
+   * Returns plugins modules,
+   * not defined in the project but in a plugin
    */
   protected function getPluginModules(array $configFiles)
   {
