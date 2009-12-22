@@ -3,7 +3,7 @@
 /*
  * Include Diem
  */
-require_once '/home/thib/data/workspace/diemPlugin/trunk/dmCorePlugin/lib/core/dm.php';
+require_once realpath(dirname(__FILE__).'/../../..').'/lib/core/dm.php';
 dm::start();
 
 class ProjectConfiguration extends dmProjectConfiguration
