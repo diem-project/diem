@@ -108,7 +108,7 @@ do
     break;
     case "sqlite":
       $dbFile = dmOs::join(sfConfig::get('sf_data_dir'), $defaultDbName.'.sqlite');
-      $settings['database']['dsn'] = sprintf('sqlite:///%s', $dbFile);
+      $settings['database']['dsn'] = sprintf('sqlite:%s', $dbFile);
       touch($dbFile);
     break;
     default:
