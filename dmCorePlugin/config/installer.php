@@ -98,12 +98,12 @@ do
   switch($dbm)
   {
     case "mysql":
-      $settings['database']['dsn'] = sprintf('mysql://%s:%s@%s/%s',
-        $settings['database']['user'], $settings['database']['password'], $settings['database']['host'], $settings['database']['name']
+      $settings['database']['dsn'] = sprintf('mysql:host=%s;dbname=%s;',
+       $settings['database']['host'], $settings['database']['name']
       );
     break;
     case "pgsql":
-      $settings['database']['dsn'] = sprintf('pgsql:host=%s;dbname=%s;user=%s;password=%s',
+      $settings['database']['dsn'] = sprintf('pgsql:host=%s;dbname=%s;',
       $settings['database']['host'], $settings['database']['name'], $settings['database']['user'], $settings['database']['password']);
     break;
     case "sqlite":
