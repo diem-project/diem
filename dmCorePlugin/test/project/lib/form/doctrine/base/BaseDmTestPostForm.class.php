@@ -16,7 +16,10 @@ abstract class BaseDmTestPostForm extends BaseFormDoctrine
   {
     $this->setWidgets(array(
       'id'          => new sfWidgetFormInputHidden(),
+      'categ_id'    => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Categ'), 'add_empty' => false)),
       'image_id'    => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Image'), 'add_empty' => true)),
+      'file_id'     => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('File'), 'add_empty' => true)),
+      'created_by'  => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Author'), 'add_empty' => true)),
       'created_at'  => new sfWidgetFormDateTime(),
       'updated_at'  => new sfWidgetFormDateTime(),
       'position'    => new sfWidgetFormInputText(),
@@ -25,7 +28,10 @@ abstract class BaseDmTestPostForm extends BaseFormDoctrine
 
     $this->setValidators(array(
       'id'          => new sfValidatorDoctrineChoice(array('model' => $this->getModelName(), 'column' => 'id', 'required' => false)),
+      'categ_id'    => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Categ'))),
       'image_id'    => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Image'), 'required' => false)),
+      'file_id'     => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('File'), 'required' => false)),
+      'created_by'  => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Author'), 'required' => false)),
       'created_at'  => new sfValidatorDateTime(),
       'updated_at'  => new sfValidatorDateTime(),
       'position'    => new sfValidatorInteger(array('required' => false)),
@@ -37,6 +43,12 @@ abstract class BaseDmTestPostForm extends BaseFormDoctrine
      */
     $this->embedForm('image_id_form', $this->createMediaFormForImageId());
     unset($this['image_id']);
+
+    /*
+     * Embed Media form for file_id
+     */
+    $this->embedForm('file_id_form', $this->createMediaFormForFileId());
+    unset($this['file_id']);
 
     $this->mergeI18nForm();
 
@@ -60,10 +72,18 @@ abstract class BaseDmTestPostForm extends BaseFormDoctrine
   {
     return DmMediaForRecordForm::factory($this->object, 'image_id', 'Image', $this->validatorSchema['image_id']->getOption('required'));
   }
+  /*
+   * Create Media form for file_id
+   */
+  protected function createMediaFormForFileId()
+  {
+    return DmMediaForRecordForm::factory($this->object, 'file_id', 'File', $this->validatorSchema['file_id']->getOption('required'));
+  }
 
   protected function doBind(array $values)
   {
     $values = $this->filterValuesByEmbeddedMediaForm($values, 'image_id');
+    $values = $this->filterValuesByEmbeddedMediaForm($values, 'file_id');
     parent::doBind($values);
   }
   
@@ -71,6 +91,7 @@ abstract class BaseDmTestPostForm extends BaseFormDoctrine
   {
     $values = parent::processValues($values);
     $values = $this->processValuesForEmbeddedMediaForm($values, 'image_id');
+    $values = $this->processValuesForEmbeddedMediaForm($values, 'file_id');
     return $values;
   }
   
@@ -78,6 +99,7 @@ abstract class BaseDmTestPostForm extends BaseFormDoctrine
   {
     parent::doUpdateObject($values);
     $this->doUpdateObjectForEmbeddedMediaForm($values, 'image_id', 'Image');
+    $this->doUpdateObjectForEmbeddedMediaForm($values, 'file_id', 'File');
   }
 
   public function getModelName()

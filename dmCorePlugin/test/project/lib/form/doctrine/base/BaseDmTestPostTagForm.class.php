@@ -15,13 +15,13 @@ abstract class BaseDmTestPostTagForm extends BaseFormDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-      'dm_test_post_id' => new sfWidgetFormInputHidden(),
-      'dm_test_tag_id'  => new sfWidgetFormInputHidden(),
+      'post_id' => new sfWidgetFormInputHidden(),
+      'tag_id'  => new sfWidgetFormInputHidden(),
     ));
 
     $this->setValidators(array(
-      'dm_test_post_id' => new sfValidatorDoctrineChoice(array('model' => $this->getModelName(), 'column' => 'dm_test_post_id', 'required' => false)),
-      'dm_test_tag_id'  => new sfValidatorDoctrineChoice(array('model' => $this->getModelName(), 'column' => 'dm_test_tag_id', 'required' => false)),
+      'post_id' => new sfValidatorDoctrineChoice(array('model' => $this->getModelName(), 'column' => 'post_id', 'required' => false)),
+      'tag_id'  => new sfValidatorDoctrineChoice(array('model' => $this->getModelName(), 'column' => 'tag_id', 'required' => false)),
     ));
 
     $this->widgetSchema->setNameFormat('dm_test_post_tag[%s]');

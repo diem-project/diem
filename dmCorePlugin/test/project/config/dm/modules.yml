@@ -5,21 +5,32 @@ Project:
     main:               # the main module is required, and must not be removed.  
       actions:  
         header:  
-        footer:  
+        footer:
+        
+  Food:
+  
+    dmTestFruit:
+      page:             false
+      actions:  
+        list:  
+        show:  
 
   Blog:  
 
-    dmTestTag:
+    dmTestCateg:
       page:             true  
       actions:  
         list:  
         show:  
 
     dmTestPost:
-      parent:           dmTestTag 
+      parent:           dmTestCateg 
       page:             true  
       actions:  
-        list:  
+        listByCateg:  
+          filters:      dmTestCateg
+        listByTag:  
+          filters:      dmTestTag
         show:  
 
     dmTestComment:  
@@ -28,3 +39,11 @@ Project:
         listByPost:  
           filters:      dmTestPost  
         form:  
+
+    dmTestTag:
+      page:             true  
+      actions:  
+        list:  
+        listByPost:  
+          filters:      dmTestPost
+        show:  

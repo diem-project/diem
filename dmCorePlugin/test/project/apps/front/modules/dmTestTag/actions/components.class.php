@@ -3,6 +3,7 @@
  * Dm test tag components
  * 
  * No redirection nor database manipulation ( insert, update, delete ) here
+ * 
  */
 class dmTestTagComponents extends myFrontModuleComponents
 {
@@ -17,6 +18,12 @@ class dmTestTagComponents extends myFrontModuleComponents
   {
     $query = $this->getShowQuery();
     $this->dmTestTag = $this->getRecord($query);
+  }
+
+  public function executeListByPost()
+  {
+    $query = $this->getListQuery();
+    $this->dmTestTagPager = $this->getPager($query);
   }
 
 

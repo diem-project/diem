@@ -35,8 +35,8 @@ abstract class BaseDmTestPostTagFormFilter extends BaseFormFilterDoctrine
   public function getFields()
   {
     return array(
-      'dm_test_post_id' => 'Number',
-      'dm_test_tag_id'  => 'Number',
+      'post_id' => 'Number',
+      'tag_id'  => 'Number',
     );
   }
 }

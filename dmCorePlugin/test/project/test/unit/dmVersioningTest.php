@@ -10,6 +10,7 @@ $t->comment('Testing DmTestPost');
 
 $model = 'DmTestPost';
 $post = new $model;
+$post->Categ = dmDb::create('DmTestCateg', array('title' => dmString::random()))->saveGet();
 $table = dmDb::table($model);
 
 $t->ok($table->isVersionable(), $model.' is versionable');
@@ -67,7 +68,7 @@ $t->comment('Testing DmTestComment');
 $model = 'DmTestComment';
 $table = dmDb::table($model);
 $comment = $table->create(array(
-  'dm_test_post_id' => $post->id
+  'post_id' => $post->id
 ));
 
 $t->ok($table->isVersionable(), $model.' is versionable');

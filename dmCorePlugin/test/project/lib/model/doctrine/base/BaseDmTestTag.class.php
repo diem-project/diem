@@ -52,7 +52,7 @@ abstract class BaseDmTestTag extends myDoctrineRecord
 
         $this->hasMany('DmTestPostTag', array(
              'local' => 'id',
-             'foreign' => 'dm_test_tag_id'));
+             'foreign' => 'tag_id'));
 
         $timestampable0 = new Doctrine_Template_Timestampable();
         $i18n0 = new Doctrine_Template_I18n(array(

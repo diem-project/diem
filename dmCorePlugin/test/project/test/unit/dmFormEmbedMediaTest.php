@@ -4,6 +4,8 @@ require_once(realpath(dirname(__FILE__).'/../../..').'/unit/helper/dmUnitTestHel
 $helper = new dmUnitTestHelper();
 $helper->boot();
 
+$categ = dmDb::create('DmTestCateg', array('title' => dmString::random()))->saveGet();
+
 $t = new lime_test(40);
 
 $t->comment('Create a post without media');
@@ -15,7 +17,8 @@ $form->bind(array(), array());
 $t->is($form->isValid(), false, 'Empty form is not valid');
 
 $form->bind(array(
-  'title' => dmString::random()
+  'title' => dmString::random(),
+  'categ_id' => $categ->id
 ), array());
 
 $t->is($form->isValid(), true, 'Form with binded title is valid');
@@ -39,6 +42,7 @@ copy($media1Source, $media1FullPath);
 $form->bind(array(
   'id'    => $post->id,
   'title' => $post->title,
+  'categ_id' => $categ->id,
   'image_id_form' => array(
     'dm_media_folder_id' => $post->getDmMediaFolder()->get('id')
   )
@@ -71,6 +75,7 @@ $form = new DmTestPostForm($post);
 $form->bind(array(
   'id'    => $post->id,
   'title' => $post->title,
+  'categ_id' => $categ->id,
   'image_id_form' => array(
     'id' => $post->Image->id,
     'dm_media_folder_id' => $post->Image->Folder->id
@@ -96,6 +101,7 @@ $form = new DmTestPostForm($post);
 $form->bind(array(
   'id'    => $post->id,
   'title' => $post->title,
+  'categ_id' => $categ->id,
   'image_id_form' => array(
     'id' => $post->Image->id,
     'dm_media_folder_id' => $post->Image->Folder->id,
@@ -121,6 +127,7 @@ $form = new DmTestPostForm($post);
 $form->bind(array(
   'id'    => $post->id,
   'title' => $post->title,
+  'categ_id' => $categ->id,
   'image_id_form' => array(
     'dm_media_folder_id' => $post->getDmMediaFolder()->get('id')
   )
@@ -158,6 +165,7 @@ copy($media2Source, $media2FullPath);
 $form->bind(array(
   'id'    => $post->id,
   'title' => $post->title,
+  'categ_id' => $categ->id,
   'image_id_form' => array(
     'id' => $post->Image->id,
     'dm_media_folder_id' => $post->getDmMediaFolder()->get('id')
@@ -200,6 +208,7 @@ copy($media3Source, $media3FullPath);
 $form->bind(array(
   'id'    => $post->id,
   'title' => $post->title,
+  'categ_id' => $categ->id,
   'image_id_form' => array(
     'id' => $post->Image->id,
     'dm_media_folder_id' => $post->getDmMediaFolder()->get('id')
@@ -242,3 +251,4 @@ $post->delete();
 $media1->delete();
 $media2->delete();
 $media3->delete();
+$categ->delete();

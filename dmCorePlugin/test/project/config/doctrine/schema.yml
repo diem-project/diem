@@ -1,3 +1,13 @@
+DmTestCateg:
+  actAs:
+    Timestampable:
+    Sortable:
+    I18n:
+      fields:         [ title, is_active ]
+  columns:  
+    title:            { type: string(255), notnull: true }  
+    is_active:        { type: boolean, notnull: true, default: true }
+
 DmTestPost:
   actAs:
     Timestampable:
@@ -8,32 +18,47 @@ DmTestPost:
       actAs:
         DmVersionable:
           fields:     ~
-  columns:  
+  columns:
+    categ_id:         { type: integer, notnull: true }
     title:            { type: string(255), notnull: true }  
     excerpt:          { type: string(800) }  
     body:             { type: clob, extra: markdown }
     url:              { type: string(255), extra: link }
     image_id:         { type: integer }
+    file_id:          { type: integer }
+    created_by:       { type: integer }
     is_active:        { type: boolean, notnull: true, default: true }
   relations:  
+    Categ:
+      local:          categ_id
+      class:          DmTestCateg
+      onDelete:       CASCADE
     Image:  
       class:          DmMedia  
       local:          image_id
+    File:  
+      class:          DmMedia  
+      local:          file_id
     Tags:
       class:          DmTestTag
       refClass:       DmTestPostTag
+    Author:
+      class:          DmUser
+      local:          created_by
+      foreignAlias:   DmTestPosts
+      onDelete:       SET NULL
       
 DmTestPostTag:
   columns:
-    dm_test_post_id:  { type: integer, primary: true }
-    dm_test_tag_id:   { type: integer, primary: true }
+    post_id:          { type: integer, primary: true }
+    tag_id:           { type: integer, primary: true }
   relations:
     Post:
-      local:          dm_test_post_id
+      local:          post_id
       class:          DmTestPost
       onDelete:       CASCADE
     Tag:
-      local:          dm_test_tag_id
+      local:          tag_id
       class:          DmTestTag
       onDelete:       CASCADE
       
@@ -56,11 +81,17 @@ DmTestComment:
     DmVersionable:
       fields:         ~
   columns:  
-    dm_test_post_id:  { type: integer, notnull: true }  
+    post_id:          { type: integer, notnull: true }  
     author:           { type: string(255) }  
     body:             { type: clob }  
     is_active:        { type: boolean, notnull: true, default: true }
   relations:  
-    DmTestPost:  
+    Post:  
+      class:          DmTestPost
+      local:          post_id
       foreignAlias:   Comments  
-      onDelete:       CASCADE 
+      onDelete:       CASCADE
+
+DmTestFruit:
+  columns:  
+    title:            { type: string(255) }

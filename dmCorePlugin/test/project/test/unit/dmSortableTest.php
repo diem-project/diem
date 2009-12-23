@@ -8,6 +8,7 @@ $t = new lime_test();
 
 $t->comment('Testing DmTestPost');
 
+$helper->loremizeModule('dmTestCateg', 3, $t);
 $helper->loremizeModule('dmTestPost', 10, $t);
 
 $post = dmDb::query('DmTestPost p')->orderBy('p.position ASC')->whereIsActive(true, 'DmTestPost')->fetchOne();
