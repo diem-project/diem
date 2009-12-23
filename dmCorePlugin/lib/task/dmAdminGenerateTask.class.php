@@ -76,7 +76,7 @@ EOF;
       
       $this->logSection('diem', sprintf('Generating admin module "%s" for model "%s"', $module->getKey(), $module->getModel()));
   
-      return $task->run(array('admin', $module->getKey(), $module->getModel()), array(
+      $task->run(array('admin', $module->getKey(), $module->getModel()), array(
         'theme'                 => 'dmAdmin',
         'env'                   => $options['env'],
         'route-prefix'          => $module->getUnderscore(),
