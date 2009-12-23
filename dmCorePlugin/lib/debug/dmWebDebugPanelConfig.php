@@ -2,6 +2,18 @@
 
 class dmWebDebugPanelConfig extends sfWebDebugPanelConfig
 {
+  
+  public function getPanelContent()
+  {
+    $html = parent::getPanelContent();
+    
+    $html .= $this->formatArrayAsHtml('Diem', array(
+      'version' => DIEM_VERSION,
+      'path'    => dm::getDir(),
+    ));
+
+    return $html;
+  }
 
   /**
    * Converts an array to HTML.
