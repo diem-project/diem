@@ -1,0 +1,28 @@
+#!/usr/bin/env php
+<?php
+
+if (!defined('STDIN'))
+{
+  die('The installer is designed to be run from the command line.');
+}
+
+if (is_dir(getcwd().'/dmCorePlugin'))
+{
+  echo "Please create the project in an empty directory\n";
+  return 1;
+}
+
+$projectName = basename(getcwd());
+
+$installer = dirname(__FILE__).'/dmCorePlugin/config/installer.php';
+
+$_SERVER['argv'] = array(
+  $_SERVER['argv'][0],
+  'generate:project',
+  $projectName,
+  '--installer='.$installer
+);
+
+require_once dirname(__FILE__).'/symfony/lib/command/cli.php';
+
+return 0;
