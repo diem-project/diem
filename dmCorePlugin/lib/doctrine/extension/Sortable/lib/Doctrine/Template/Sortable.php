@@ -50,6 +50,7 @@ class Doctrine_Template_Sortable extends Doctrine_Template
     $many = $this->_options['manyListsColumn'];
     
     $q = $this->getInvoker()->getTable()->createQuery($rootAlias)
+    ->whereIsActive()
     ->addWhere($rootAlias.'.position < ?', $this->getInvoker()->get('position'))
     ->orderBy($rootAlias.'.position DESC');
     
@@ -71,6 +72,7 @@ class Doctrine_Template_Sortable extends Doctrine_Template
     $many = $this->_options['manyListsColumn'];
     
     $q = $this->getInvoker()->getTable()->createQuery($rootAlias)
+    ->whereIsActive()
     ->addWhere($rootAlias.'.position > ?', $this->getInvoker()->get('position'))
     ->orderBy($rootAlias.'.position ASC');
     
