@@ -6,7 +6,7 @@ $helper->boot('front');
 
 if(sfConfig::get('sf_app') == 'front' && class_exists('dmFrontPluginConfiguration', false))
 {
-  $t = new lime_test(25);
+  $t = new lime_test(26);
 }
 else
 {
@@ -144,8 +144,9 @@ $media = dmDb::create('DmMedia', array(
 $t->ok($media->exists(), 'A test media has been created');
 
 $mediaLink = sprintf('<a class="link" href="%s">%s</a>', $helper->get('request')->getAbsoluteUrlRoot().'/'.$media->webPath, $media->file);
-$t->is((string)£link($media), $mediaLink, $mediaLink);
-$t->is((string)£link('media:'.$media->id), $mediaLink, $mediaLink);
+$t->is((string)£link($media), $mediaLink, '$media -> '.$mediaLink);
+$t->is((string)£link('media:'.$media->id), $mediaLink, 'media:'.$media->id.' -> '.$mediaLink);
+$t->is((string)£link('/'.$media->webPath)->text($media->file), $expected = str_replace($helper->get('request')->getAbsoluteUrlRoot(), '', $mediaLink), $media->webPath.' -> '.$expected);
 
 sfConfig::set('sf_debug', true);
 

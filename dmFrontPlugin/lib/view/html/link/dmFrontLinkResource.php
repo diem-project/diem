@@ -116,6 +116,13 @@ class dmFrontLinkResource
         $this->type = 'uri';
         $this->subject = $source;
       }
+      elseif(
+          strncmp($source, "/", 1)        === 0
+      )
+      {
+        $this->type = 'uri';
+        $this->subject = $source;
+      }
       elseif(strncmp($source, '+/', 2) === 0)
       {
         $this->type = 'action';
