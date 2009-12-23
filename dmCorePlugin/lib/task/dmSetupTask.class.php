@@ -43,9 +43,17 @@ EOF;
       // don't use cache:clear task because it changes current app & environment
       sfToolkit::clearDirectory(sfConfig::get('sf_cache_dir'));
       
-      if (!$options['clear-db'])
+      if (false && !$options['clear-db'])
       {
-        $ret = $this->runTask('dm:check-need-migration');
+        try
+        {
+          $ret = $this->runTask('dm:check-need-migration');
+        }
+        catch(Exception $e)
+        {
+          $this->logBlock('An error occured when creating migrations: '.$e->getMessage());
+          $ret = dmCheckNeedMigrationTask::REQUIRE_MIGRATION_TRUE;
+        }
         
         if (dmCheckNeedMigrationTask::REQUIRE_MIGRATION_TRUE == $ret)
         {

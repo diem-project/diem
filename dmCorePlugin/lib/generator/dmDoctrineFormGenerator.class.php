@@ -15,13 +15,20 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
   {
     parent::initialize($generatorManager);
     
+    if (!dmContext::hasInstance())
+    {
+      dmContext::createInstance($generatorManager->getConfiguration());
+    }
+    
     $this->moduleManager = dmContext::getInstance()->getModuleManager();
-
+    
     $this->setGeneratorClass('dmDoctrineForm');
   }
 
   public function generate($params = array())
   {
+    $this->generateBaseClasses();
+    
     $this->params = $params;
 
     if (!isset($this->params['model_dir_name']))
@@ -35,30 +42,6 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
     }
 
     $models = $this->loadModels();
-
-    // create the project base class for all forms
-    $file = sfConfig::get('sf_lib_dir').'/form/BaseForm.class.php';
-    if (!file_exists($file))
-    {
-      if (!is_dir($directory = dirname($file)))
-      {
-        mkdir($directory, 0777, true);
-      }
-
-      copy(dmOs::join(sfConfig::get('dm_core_dir'), 'data/skeleton/lib/form/BaseForm.class.php'), $file);
-    }
-
-    // create the project base class for all doctrine forms
-    $file = sfConfig::get('sf_lib_dir').'/form/doctrine/BaseFormDoctrine.class.php';
-    if (!file_exists($file))
-    {
-      if (!is_dir($directory = dirname($file)))
-      {
-        mkdir($directory, 0777, true);
-      }
-
-      copy(dmOs::join(sfConfig::get('dm_core_dir'), 'data/skeleton/lib/form/doctrine/BaseFormDoctrine.class.php'), $file);
-    }
 
     $pluginPaths = $this->generatorManager->getConfiguration()->getAllPluginPaths();
 
@@ -80,6 +63,7 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
       $baseDir = sfConfig::get('sf_lib_dir') . '/form/doctrine';
 
       $isPluginModel = $this->isPluginModel($model);
+      
       if ($isPluginModel)
       {
         $pluginName = $this->getPluginNameForModel($model);
@@ -114,6 +98,33 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
            file_put_contents($classFile, $this->evalTemplate('sfDoctrineFormTemplate.php'));
         }
       }
+    }
+  }
+  
+  protected function generateBaseClasses()
+  {
+    // create the project base class for all forms
+    $file = sfConfig::get('sf_lib_dir').'/form/BaseForm.class.php';
+    if (!file_exists($file))
+    {
+      if (!is_dir($directory = dirname($file)))
+      {
+        mkdir($directory, 0777, true);
+      }
+
+      copy(dmOs::join(sfConfig::get('dm_core_dir'), 'data/skeleton/lib/form/BaseForm.class.php'), $file);
+    }
+
+    // create the project base class for all doctrine forms
+    $file = sfConfig::get('sf_lib_dir').'/form/doctrine/BaseFormDoctrine.class.php';
+    if (!file_exists($file))
+    {
+      if (!is_dir($directory = dirname($file)))
+      {
+        mkdir($directory, 0777, true);
+      }
+
+      copy(dmOs::join(sfConfig::get('dm_core_dir'), 'data/skeleton/lib/form/doctrine/BaseFormDoctrine.class.php'), $file);
     }
   }
 
