@@ -40,19 +40,23 @@ class Doctrine_Template_Sortable extends Doctrine_Template
     $this->addListener(new Doctrine_Template_Listener_Sortable($this->_options));
   }
 
-  public function getPrevious()
+  public function getPrevious($onlyActive = true)
   {
-    return $this->getPreviousQuery()->fetchOne();
+    return $this->getPreviousQuery('r', $onlyActive)->fetchOne();
   }
   
-  public function getPreviousQuery($rootAlias = 'r')
+  public function getPreviousQuery($rootAlias = 'r', $onlyActive = true)
   {
     $many = $this->_options['manyListsColumn'];
     
     $q = $this->getInvoker()->getTable()->createQuery($rootAlias)
-//    ->whereIsActive()
     ->addWhere($rootAlias.'.position < ?', $this->getInvoker()->get('position'))
     ->orderBy($rootAlias.'.position DESC');
+    
+    if ($onlyActive)
+    {
+      $q->whereIsActive(true, $this->getInvoker()->getTable()->getComponentName());
+    }
     
     if (!empty($many))
     {
@@ -62,19 +66,23 @@ class Doctrine_Template_Sortable extends Doctrine_Template
     return $q;
   }
 
-  public function getNext()
+  public function getNext($onlyActive = true)
   {
-    return $this->getNextQuery()->fetchOne();
+    return $this->getNextQuery('r', $onlyActive)->fetchOne();
   }
   
-  public function getNextQuery($rootAlias = 'r')
+  public function getNextQuery($rootAlias = 'r', $onlyActive = true)
   {
     $many = $this->_options['manyListsColumn'];
     
     $q = $this->getInvoker()->getTable()->createQuery($rootAlias)
-//    ->whereIsActive()
     ->addWhere($rootAlias.'.position > ?', $this->getInvoker()->get('position'))
     ->orderBy($rootAlias.'.position ASC');
+    
+    if ($onlyActive)
+    {
+      $q->whereIsActive(true, $this->getInvoker()->getTable()->getComponentName());
+    }
     
     if (!empty($many))
     {

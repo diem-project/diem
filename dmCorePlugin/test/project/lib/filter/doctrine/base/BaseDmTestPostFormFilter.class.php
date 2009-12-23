@@ -14,7 +14,6 @@ abstract class BaseDmTestPostFormFilter extends BaseFormFilterDoctrine
   {
     $this->setWidgets(array(
       'image_id'    => new sfWidgetFormDoctrineChoice(array('model' => 'DmMedia', 'add_empty' => true)),
-      'is_active'   => new sfWidgetFormChoice(array('choices' => array('' => dm::getI18n()->__('yes or no', array(), 'dm'), 1 => dm::getI18n()->__('yes', array(), 'dm'), 0 => dm::getI18n()->__('no', array(), 'dm')))),
       'created_at'  => new sfWidgetFormFilterDate(array('from_date' => new sfWidgetFormInputText(array(), array("class" => "datepicker_me")), 'to_date' => new sfWidgetFormInputText(array(), array("class" => "datepicker_me")), 'with_empty' => false)),
       'updated_at'  => new sfWidgetFormFilterDate(array('from_date' => new sfWidgetFormInputText(array(), array("class" => "datepicker_me")), 'to_date' => new sfWidgetFormInputText(array(), array("class" => "datepicker_me")), 'with_empty' => false)),
       'position'    => new sfWidgetFormFilterInput(),
@@ -24,7 +23,6 @@ abstract class BaseDmTestPostFormFilter extends BaseFormFilterDoctrine
 
     $this->setValidators(array(
       'image_id'    => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Image'), 'column' => 'id')),
-      'is_active'   => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
       'created_at'  => new sfValidatorDateRange(array('required' => false, 'from_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 00:00:00')), 'to_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 23:59:59')))),
       'updated_at'  => new sfValidatorDateRange(array('required' => false, 'from_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 00:00:00')), 'to_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 23:59:59')))),
       'position'    => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
@@ -83,7 +81,6 @@ abstract class BaseDmTestPostFormFilter extends BaseFormFilterDoctrine
     return array(
       'id'          => 'Number',
       'image_id'    => 'ForeignKey',
-      'is_active'   => 'Boolean',
       'created_at'  => 'Date',
       'updated_at'  => 'Date',
       'position'    => 'Number',

@@ -4,7 +4,7 @@ DmTestPost:
     Sortable:
     DmGallery:
     I18n:
-      fields:         [ title, excerpt, body, url ]
+      fields:         [ title, excerpt, body, url, is_active ]
       actAs:
         DmVersionable:
           fields:     ~

@@ -1,19 +1,10 @@
 <?php
 
-require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
+require_once(realpath(dirname(__FILE__).'/../../..').'/unit/helper/dmUnitTestHelper.php');
 $helper = new dmUnitTestHelper();
 $helper->boot();
 
-if($helper->isDiemTestProject())
-{
-  $t = new lime_test(28);
-}
-else
-{
-  $t = new lime_test(1);
-  $t->pass('Can only be run on Diem test project');
-  return 0;
-}
+$t = new lime_test(28);
 
 $t->comment('Testing DmTestPost');
 

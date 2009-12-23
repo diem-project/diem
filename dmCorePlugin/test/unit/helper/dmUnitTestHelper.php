@@ -53,10 +53,6 @@ class dmUnitTestHelper
     }
   }
   
-  public function isDiemTestProject()
-  {
-    return getcwd() === dmOs::join(sfConfig::get('dm_core_dir'), 'test/project');
-  }
 
   // Helper for cross platform testcases that validate output
   public function fixLinebreaks($content)
@@ -88,11 +84,22 @@ class dmUnitTestHelper
   {
     if ($t)
     {
-      $t->diag('Loremizing database with '.$nb.' records by table');
+      $t->comment('Loremizing database with '.$nb.' records by table');
     }
 
     $loremizer = new dmDatabaseLoremizer($this->getDispatcher());
     $loremizer->loremize($nb);
+  }
+  
+  public function loremizeModule($module, $nb = 10, lime_test $t = null)
+  {
+    if ($t)
+    {
+      $t->comment('Loremizing module '.$module.' with '.$nb.' records');
+    }
+
+    $loremizer = new dmModuleLoremizer($this->getDispatcher());
+    $loremizer->loremize($this->getModule($module), $nb);
   }
 
   public function syncPages(lime_test $t = null)

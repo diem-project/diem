@@ -221,7 +221,6 @@ abstract class dmDoctrineTable extends Doctrine_Table
     return false;
   }
 
-
   /*
    * Return columns that a human can fill
    * Will exclude primary key, timestampable fields
