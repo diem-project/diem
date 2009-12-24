@@ -149,3 +149,7 @@ div.dm_gallery_medium a.dm_gallery_link {
   float: left;
   margin: 40px 0 0 10px;
 }
+
+.documentation {
+  font-size: 120%;
+}

@@ -1,0 +1,37 @@
+generator:
+  class: dmAdminDoctrineGenerator
+  param:
+    model_class: DmTestCateg
+    theme: dmAdmin
+    non_verbose_templates: true
+    with_show: false
+    route_prefix: dm_test_categ
+    with_doctrine_route: false
+    config:
+      actions: ~
+      fields: {  }
+      list:
+        display:
+          - '=title'
+          - dm_test_post_list
+          - created_at
+          - updated_at
+          - is_active
+        sort:
+          - position
+          - asc
+        table_method: getAdminListQuery
+        table_count_method: ~
+      filter:
+        display:
+          - title
+          - created_at
+          - updated_at
+      form:
+        display:
+          NONE: [title, is_active]
+        class: DmTestCategAdminForm
+        fields: {  }
+      edit: ~
+      new: ~
+    sortable: true

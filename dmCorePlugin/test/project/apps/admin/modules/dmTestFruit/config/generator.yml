@@ -1,0 +1,31 @@
+generator:
+  class: dmAdminDoctrineGenerator
+  param:
+    model_class: DmTestFruit
+    theme: dmAdmin
+    non_verbose_templates: true
+    with_show: false
+    route_prefix: dm_test_fruit
+    with_doctrine_route: false
+    config:
+      actions: ~
+      fields: {  }
+      list:
+        display:
+          - '=title'
+        sort:
+          - title
+          - asc
+        table_method: getAdminListQuery
+        table_count_method: ~
+      filter:
+        display:
+          - title
+      form:
+        display:
+          NONE: [title]
+        class: DmTestFruitAdminForm
+        fields: {  }
+      edit: ~
+      new: ~
+    sortable: false

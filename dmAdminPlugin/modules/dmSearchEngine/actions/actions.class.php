@@ -18,6 +18,22 @@ class dmSearchEngineActions extends dmAdminBaseActions
     {
       $this->pager = null;
     }
+    
+    if ($this->getUser()->can('system'))
+    {
+      if(dmConfig::canSystemCall())
+      {
+        $this->shellUser = exec('whoami');
+      }
+      else
+      {
+        $this->shellUser = 'root';
+      }
+      
+      $this->phpCli = sfToolkit::getPhpCli();
+      
+      $this->rootDir = sfConfig::get('sf_root_dir');
+    }
   }
 
   public function executeReload()

@@ -390,3 +390,6 @@
 "\"%value%\" is not a valid link.": "\"%value%\" n'est pas un lien valide."
 "\"%value%\" is not a valid directory name.": "\"%value%\" n'est pas un nom de répertoire valide."
 "History": "Historique"
+"Most UNIX and GNU/Linux systems allows for task planning through a mechanism known as cron. The cron checks a configuration file (a crontab) for commands to run at a certain time.": "La plupart des systèmes UNIX et GNU / Linux supportent la planification de tâches à travers un mécanisme connu sous le nom de cron. Le cron vérifie un fichier de configuration (un crontab) pour les commandes à exécuter à un certain temps ou bien à une certaine période."
+"For more information on the crontab configuration file format, type man 5 crontab in a terminal.": "Pour plus d'informations sur le format du fichier de configuration de la crontab, il suffit de taper man 5 crontab dans un terminal de commandes."
+"Open %1% and add the line:": "Ouvrez %1% et ajoutez la ligne :"
