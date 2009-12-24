@@ -21,14 +21,7 @@ class dmSearchEngineActions extends dmAdminBaseActions
     
     if ($this->getUser()->can('system'))
     {
-      if(dmConfig::canSystemCall())
-      {
-        $this->shellUser = exec('whoami');
-      }
-      else
-      {
-        $this->shellUser = 'root';
-      }
+      $this->shellUser = dmConfig::canSystemCall() ? exec('whoami') : 'www-data';
       
       $this->phpCli = sfToolkit::getPhpCli();
       

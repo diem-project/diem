@@ -37,6 +37,17 @@ class dmSitemapActions extends dmAdminBaseActions
       {
         $this->exists =     false;
       }
+    
+      if ($this->getUser()->can('system'))
+      {
+        $this->shellUser = dmConfig::canSystemCall() ? exec('whoami') : 'www-data';
+        
+        $this->phpCli = sfToolkit::getPhpCli();
+        
+        $this->rootDir = sfConfig::get('sf_root_dir');
+        
+        $this->domainName = $this->getRequest()->getHost();
+      }
     }
     else
     {
