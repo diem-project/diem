@@ -310,7 +310,7 @@ class dmSeoSynchronizer
         {
           $usedValue = $usedRecord->get($field);
           
-          $processMarkdown = $usedRecord->getTable()->hasColumn($field) && $usedRecord->getTable()->isMarkdownColumn($field);
+          $processMarkdown = $usedRecord->getTable()->hasField($field) && $usedRecord->getTable()->isMarkdownColumn($field);
         }
         
         unset($usedRecord);
@@ -327,7 +327,7 @@ class dmSeoSynchronizer
       {
         $usedValue = dmMarkdown::brutalToText($usedValue);
       }
-
+      
       $replacements[$this->wrap($placeholder)] = $usedValue;
     }
     

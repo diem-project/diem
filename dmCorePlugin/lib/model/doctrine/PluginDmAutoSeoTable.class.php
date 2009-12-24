@@ -12,6 +12,17 @@ class PluginDmAutoSeoTable extends myDoctrineTable
     ->dmCache()
     ->fetchRecords();
   }
+  
+  public function findOneByModuleAndAction($module, $action, $culture = null)
+  {
+    $culture = null === $culture ? myDoctrineRecord::getDefaultCulture() : $culture;
+    
+    return $this->createQuery('a')
+    ->where('a.module = ?', $module)
+    ->andWhere('a.action = ?', $action)
+    ->withI18n($culture)
+    ->fetchOne();
+  }
 
   /*
    * @return DmAutoSeo created record
@@ -39,7 +50,8 @@ class PluginDmAutoSeoTable extends myDoctrineTable
       'excerpt',
       'resume',
       'description',
-      'body'
+      'body',
+      'text'
     );
     $descriptionColumn = $column;
     

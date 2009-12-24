@@ -127,15 +127,7 @@ class dmUnitTestHelper
 
     $timer = dmDebug::timer('pageTreeWatcher update '.dmString::random(4));
 
-    try
-    {
-      $this->context->get('page_tree_watcher')->update();
-    }
-    catch(Exception $e)
-    {
-      print_r($e->getTraceAsString());
-      throw $e;
-    }
+    $this->context->get('page_tree_watcher')->update();
 
     if ($t) $t->ok(true, sprintf('Pages synchronized in %01.2f s | %d pages', $timer->getElapsedTime(), dmDb::table('DmPage')->count()));
   }
