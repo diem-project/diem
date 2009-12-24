@@ -46,7 +46,7 @@ abstract class BaseDmTestTagFormFilter extends BaseFormFilterDoctrine
     }
 
     $query->leftJoin('r.DmTestPostTag DmTestPostTag')
-          ->andWhereIn('DmTestPostTag.dm_test_post_id', $values);
+          ->andWhereIn('DmTestPostTag.post_id', $values);
   }
 
   public function getModelName()

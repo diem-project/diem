@@ -55,6 +55,11 @@ class dmProjectModule extends dmModule
       $ancestorKey = dmString::modulize($ancestorKey);
     }
     
+    if ($ancestorKey === $this->getKey())
+    {
+      return null;
+    }
+    
     return in_array($ancestorKey, $this->options['path_keys']) ? self::$manager->getModule($ancestorKey) : null;
   }
 
@@ -68,6 +73,11 @@ class dmProjectModule extends dmModule
     if ($ancestorKey instanceof dmModule)
     {
       $ancestorKey = $ancestorKey->getKey();
+    }
+    
+    if ($ancestorKey === $this->getKey())
+    {
+      return false;
     }
     
     return in_array(dmString::modulize($ancestorKey), $this->options['path_keys']);
@@ -115,7 +125,7 @@ class dmProjectModule extends dmModule
     
     foreach(array_reverse($this->getPath()) as $module)
     {
-      if ($module->hasPage())
+      if ($module->hasPage() && !$this->is($module))
       {
         return $module;
       }

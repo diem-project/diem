@@ -37,6 +37,11 @@ abstract class BaseDmTestPostTag extends myDoctrineRecord
              'type' => 'integer',
              'primary' => true,
              ));
+
+        $this->option('symfony', array(
+             'form' => false,
+             'filter' => false,
+             ));
     }
 
     public function setUp()

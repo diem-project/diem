@@ -17,31 +17,46 @@ Project:
 
   Blog:  
 
-    dmTestCateg:
+    dmTestDomain:
       page:             true  
       actions:  
+        list:
+        show:
+
+    dmTestCateg:
+      parent:           dmTestDomain
+      page:             true
+      actions:  
         list:  
+        listByDomain:  
+          filters:      dmTestDomain
         show:  
 
     dmTestPost:
-      parent:           dmTestCateg 
-      page:             true  
-      actions:  
-        listByCateg:  
+      parent:           dmTestCateg
+      page:             true
+      actions:
+        listByDomain:
+          filters:      dmTestDomain
+        listByCateg:
           filters:      dmTestCateg
-        listByTag:  
+        listByTag:
           filters:      dmTestTag
-        show:  
+        show:
 
     dmTestComment:  
       parent:           dmTestPost  
       actions:  
+        listByDomain:  
+          filters:      dmTestDomain
+        listByCateg:  
+          filters:      dmTestCateg
         listByPost:  
           filters:      dmTestPost  
         form:  
 
     dmTestTag:
-      page:             true  
+      page:             true
       actions:  
         list:  
         listByPost:  

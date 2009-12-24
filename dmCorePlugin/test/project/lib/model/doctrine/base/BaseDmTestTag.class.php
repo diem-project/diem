@@ -47,8 +47,8 @@ abstract class BaseDmTestTag extends myDoctrineRecord
         parent::setUp();
         $this->hasMany('DmTestPost as Posts', array(
              'refClass' => 'DmTestPostTag',
-             'local' => 'dm_test_tag_id',
-             'foreign' => 'dm_test_post_id'));
+             'local' => 'tag_id',
+             'foreign' => 'post_id'));
 
         $this->hasMany('DmTestPostTag', array(
              'local' => 'id',

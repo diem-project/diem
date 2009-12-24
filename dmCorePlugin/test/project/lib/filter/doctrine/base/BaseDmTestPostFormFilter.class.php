@@ -58,7 +58,7 @@ abstract class BaseDmTestPostFormFilter extends BaseFormFilterDoctrine
     }
 
     $query->leftJoin('r.DmTestPostTag DmTestPostTag')
-          ->andWhereIn('DmTestPostTag.dm_test_tag_id', $values);
+          ->andWhereIn('DmTestPostTag.tag_id', $values);
   }
 
   public function addMediasListColumnQuery(Doctrine_Query $query, $field, $values)

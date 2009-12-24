@@ -1,3 +1,37 @@
+DmTestDomain:
+  actAs:
+    Timestampable:
+    Sortable:
+    I18n:
+      fields:         [ title, is_active ]
+  columns:  
+    title:            { type: string(255), notnull: true }  
+    is_active:        { type: boolean, notnull: true, default: true }
+  relations:
+    Categs:
+      class:          DmTestCateg
+      refClass:       DmTestDomainCateg
+      local:          domain_id
+      foreign:        categ_id
+      
+DmTestDomainCateg:
+  options:
+    symfony:
+      form:           false
+      filter:         false
+  columns:
+    domain_id:        { type: integer, primary: true }
+    categ_id:         { type: integer, primary: true }
+  relations:
+    Domain:
+      local:          domain_id
+      class:          DmTestDomain
+      onDelete:       CASCADE
+    Categ:
+      local:          categ_id
+      class:          DmTestCateg
+      onDelete:       CASCADE
+
 DmTestCateg:
   actAs:
     Timestampable:
@@ -7,6 +41,12 @@ DmTestCateg:
   columns:  
     title:            { type: string(255), notnull: true }  
     is_active:        { type: boolean, notnull: true, default: true }
+  relations:
+    Domains:
+      class:          DmTestDomain
+      refClass:       DmTestDomainCateg
+      local:          categ_id
+      foreign:        domain_id
 
 DmTestPost:
   actAs:
@@ -42,6 +82,8 @@ DmTestPost:
     Tags:
       class:          DmTestTag
       refClass:       DmTestPostTag
+      local:          post_id
+      foreign:        tag_id
     Author:
       class:          DmUser
       local:          created_by
@@ -49,6 +91,10 @@ DmTestPost:
       onDelete:       SET NULL
       
 DmTestPostTag:
+  options:
+    symfony:
+      form:           false
+      filter:         false
   columns:
     post_id:          { type: integer, primary: true }
     tag_id:           { type: integer, primary: true }
@@ -74,6 +120,8 @@ DmTestTag:
     Posts:
       class:          DmTestPost
       refClass:       DmTestPostTag
+      local:          tag_id
+      foreign:        post_id
 
 DmTestComment:  
   actAs:

@@ -1,13 +1,13 @@
 <?php
 
 /**
- * dmContact admin form
+ * dmTestDomain admin form
  *
  * @package    retest
- * @subpackage dmContact
+ * @subpackage dmTestDomain
  * @author     Your name here
  */
-class DmContactAdminForm extends BaseDmContactForm
+class DmTestDomainAdminForm extends BaseDmTestDomainForm
 {
   public function configure()
   {

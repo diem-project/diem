@@ -121,8 +121,8 @@ abstract class BaseDmTestPost extends myDoctrineRecord
 
         $this->hasMany('DmTestTag as Tags', array(
              'refClass' => 'DmTestPostTag',
-             'local' => 'dm_test_post_id',
-             'foreign' => 'dm_test_tag_id'));
+             'local' => 'post_id',
+             'foreign' => 'tag_id'));
 
         $this->hasOne('DmUser as Author', array(
              'local' => 'created_by',

@@ -453,7 +453,10 @@ LIMIT 1')->getStatement();
       $_parentRecordIds = dmDb::pdo($query, array($parentModule->getKey(), 'show'))->fetchAll(PDO::FETCH_NUM);
       
       $parentRecordIds = array();
-      foreach($_parentRecordIds as $value) $parentRecordIds[$value[1]] = $value[0];
+      foreach($_parentRecordIds as $value)
+      {
+        $parentRecordIds[$value[1]] = $value[0];
+      }
     }
     /*
      * parent records are to far to be prepared.

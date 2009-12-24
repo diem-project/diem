@@ -3,6 +3,7 @@
  * Dm test categ components
  * 
  * No redirection nor database manipulation ( insert, update, delete ) here
+ * 
  */
 class dmTestCategComponents extends myFrontModuleComponents
 {
@@ -17,6 +18,12 @@ class dmTestCategComponents extends myFrontModuleComponents
   {
     $query = $this->getShowQuery();
     $this->dmTestCateg = $this->getRecord($query);
+  }
+
+  public function executeListByDomain()
+  {
+    $query = $this->getListQuery();
+    $this->dmTestCategPager = $this->getPager($query);
   }
 
 
