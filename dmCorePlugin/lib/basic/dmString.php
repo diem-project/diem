@@ -11,16 +11,16 @@ class dmString extends sfInflector
   {
     return htmlspecialchars($text, $quoteStyle, 'UTF-8');
   }
-    
+  
   /*
    * Clean dirty strings
    */
   public static function unixify($text)
   {
     return strtr($text, array(
-        "\r"      => ''      // réparation des sauts de ligne mac/windows
-      , "\t"      => '  '    // tabs -> double espace
-      , "&#8217;" => "'"     // apostrophe micro$oft -> '
+        "\r"      => ''
+      , "\t"      => '  '
+      , "&#8217;" => "'"
       , '“'       => '&lquot;'
       , '”'       => '&rquot;'
       , '®'       => '&reg;'

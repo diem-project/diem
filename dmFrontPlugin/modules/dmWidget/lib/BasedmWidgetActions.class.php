@@ -64,11 +64,25 @@ class BasedmWidgetActions extends dmFrontBaseActions
 
         $form = new $formClass($widget);
         $form->removeCsrfProtection();
+        
+        /* when a file is uploaded with ajax,
+         * do not render witdget html content
+         * because if it contains JSON metadata
+         * it will cause problems
+         */
+        if ($this->request->isMethod('post') && $this->request->isXmlHttpRequest() && !in_array('application/json', $this->request->getAcceptableContentTypes()))
+        {
+          $widgetHtml = '__DM_ASYNC__';
+        }
+        else
+        {
+          $widgetHtml = $widgetRenderer->getHtml();
+        }
 
         return $this->renderJson(array(
           'type' => 'form',
           'html' => $this->renderEdit($form, $widgetType),
-          'widget_html' => $widgetRenderer->getHtml(),
+          'widget_html' => $widgetHtml,
           'widget_classes' => $this->context->get('page_helper')->getWidgetContainerClasses($widgetArray),
           'js'   => $js,
           'stylesheets' => $stylesheets
@@ -159,7 +173,7 @@ class BasedmWidgetActions extends dmFrontBaseActions
 
     $helper = $this->context->get('page_helper');
 
-    $widgetArray = $widget->toArray();
+    $widgetArray = $widget->toArrayWithMappedValue();
     
     return $this->renderJson(array(
       'widget_html' => $helper->renderWidgetInner($widgetArray),

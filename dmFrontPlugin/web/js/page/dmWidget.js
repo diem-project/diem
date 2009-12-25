@@ -86,7 +86,7 @@ $.widget('ui.dmWidget', {
 							activeTab = $tabbedFormActiveTab.find('>a').attr('href');
 						}
 	        },
-					error: function(xhr)
+					error: function(xhr, textStatus, errorThrown)
 					{
             $dialog.unblock();
             widget.element.unblock();
@@ -99,8 +99,16 @@ $.widget('ui.dmWidget', {
               widget.element
 							.attr('class', data.widget_classes[0])
               .find('div.dm_widget_inner')
-							.attr('class', data.widget_classes[1])
-	            .html(data.widget_html);
+							.attr('class', data.widget_classes[1]);
+							
+							if ('__DM_ASYNC__' == data.widget_html)
+							{
+								setTimeout(function() { $dialog.find('form').submit(); }, 100);
+							}
+							else
+							{
+	              widget.element.html(data.widget_html);
+						  }
 	          }
 						
 	          if (data.stylesheets)
