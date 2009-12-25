@@ -263,7 +263,7 @@ EOF;
 
   protected function loadI18nCatalogue()
   {
-    foreach( $this->get('i18n')->getCultures() as $culture)
+    foreach($this->get('i18n')->getCultures() as $culture)
     {
       /*
        * English to $culture

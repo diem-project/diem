@@ -61,7 +61,7 @@ class dmEventLog extends dmFileLog
       'server'  => $_SERVER,
       'action'  => 'update',
       'type'    => 'search',
-      'subject' => sprintf('Search index "%s" updated: %d pages', $event['name'], $event['nb_documents'])
+      'subject' => sprintf('"%s" updated: %d pages', $event['name'], $event['nb_documents'])
     ));
   }
   
