@@ -87,8 +87,7 @@ class dmUnitTestHelper
       $t->comment('Loremizing database with '.$nb.' records by table');
     }
 
-    $loremizer = new dmDatabaseLoremizer($this->getDispatcher());
-    $loremizer->loremize($nb);
+    $this->get('project_loremizer')->execute($nb);
   }
   
   public function loremizeModule($module, $nb = 10, lime_test $t = null)
@@ -98,8 +97,7 @@ class dmUnitTestHelper
       $t->comment('Loremizing module '.$module.' with '.$nb.' records');
     }
 
-    $loremizer = new dmModuleLoremizer($this->getDispatcher());
-    $loremizer->loremize($this->getModule($module), $nb);
+    $this->get('table_loremizer')->execute($this->getModule($module)->getTable(), $nb);
   }
 
   public function syncPages(lime_test $t = null)
@@ -108,15 +106,7 @@ class dmUnitTestHelper
 
     $timer = dmDebug::timer('sync pages '.dmString::random(4));
 
-    try
-    {
-      $this->context->get('page_synchronizer')->execute();
-    }
-    catch(Exception $e)
-    {
-      print_r($e->getTraceAsString());
-      throw $e;
-    }
+    $this->get('page_synchronizer')->execute();
 
     if ($t) $t->ok(true, sprintf('Pages synchronized in %01.2f s | %d pages', $timer->getElapsedTime(), dmDb::table('DmPage')->count()));
   }
@@ -127,7 +117,7 @@ class dmUnitTestHelper
 
     $timer = dmDebug::timer('pageTreeWatcher update '.dmString::random(4));
 
-    $this->context->get('page_tree_watcher')->update();
+    $this->get('page_tree_watcher')->update();
 
     if ($t) $t->ok(true, sprintf('Pages synchronized in %01.2f s | %d pages', $timer->getElapsedTime(), dmDb::table('DmPage')->count()));
   }

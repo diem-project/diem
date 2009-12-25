@@ -201,7 +201,7 @@ abstract class dmDoctrineQuery extends Doctrine_Query
    */
   public function whereDescendant(myDoctrineRecord $descendantRecord, $model)
   {
-    return $this->whereDescendantId(get_class($descendantRecord), $descendantRecord->id, $model);
+    return $this->whereDescendantId(get_class($descendantRecord), $descendantRecord->get('id'), $model);
   }
   
   /*
@@ -223,7 +223,6 @@ abstract class dmDoctrineQuery extends Doctrine_Query
     if(!$descendantModule = $module->getDescendant($descendantRecordModel))
     {
       throw new dmRecordException(sprintf('%s is not an descendant of %s', $descendantRecordModel, $module));
-      return null;
     }
     
     $parent       = $module;
@@ -236,7 +235,6 @@ abstract class dmDoctrineQuery extends Doctrine_Query
         if (!$relation = $parent->getTable()->getRelationHolder()->getByClass($descendant->getModel()))
         {
           throw new dmRecordException(sprintf('%s has no relation for class %s', $parent, $descendant->getModel()));
-          return null;
         }
         
         $this->leftJoin($parentAlias.'.'.$relation['alias'].' '.$descendantKey);

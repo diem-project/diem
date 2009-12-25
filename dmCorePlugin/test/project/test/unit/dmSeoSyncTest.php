@@ -23,7 +23,7 @@ dmDb::table('DmAutoSeo')->createFromModuleAndAction('dmTestCateg', 'show')->from
 dmDb::table('DmAutoSeo')->createFromModuleAndAction('dmTestPost', 'show')->fromArray(array(
   'slug'      => '%dmTestPost%-%dmTestPost.id%',
   'name'      => 'Post : %dmTestPost.title%',
-  'title'     => '%dmTestPost% | %dmTestCateg.title% | %dmTestDomain.title%',
+  'title'     => '%dmTestPost% | %dmTestCateg.title%',
   'h1'        => '%dmTestPost%',
   'description' => '%dmTestPost.body%'
 ))->save();
@@ -46,8 +46,8 @@ foreach(dmDb::table('dmTestPost')->findAll() as $post)
 
 	$page->refresh(true);
 
-  $categ = $post->getRelatedRecord('DmTestCateg');
-  $domain = $categ->getRelatedRecord('DmTestDomain');
+  $categ = $page->getNode()->getParent()->getRecord();
+  $domain = $page->getNode()->getParent()->getNode()->getParent()->getRecord();
 
   $slug = 'dm-test-domains/'.$domain->id.'-'.dmString::slugify($domain->title).'/'.$categ->id.'-'.dmString::slugify($categ->title).'/'.dmString::slugify($post->title).'-'.$post->id;
   $slug = dmSeoSynchronizer::truncateValueForField($slug, 'slug');
@@ -57,7 +57,7 @@ foreach(dmDb::table('dmTestPost')->findAll() as $post)
   $name = dmSeoSynchronizer::truncateValueForField($name, 'name');
     $t->is($page->name, $name, 'name : '.$name);
 
-  $title = ucfirst(trim($post->title).' | '.trim($categ->title).' | '.trim($domain->title));
+  $title = ucfirst(trim($post->title).' | '.trim($categ->title));
   $title = dmSeoSynchronizer::truncateValueForField($title, 'title');
     $t->is($page->title, $title, 'title : '.$title);
 

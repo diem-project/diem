@@ -48,23 +48,19 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
     
     $data = array();
 
-    $data[] = sprintf('$options = %s;', var_export($options, true));
+    $data[] = sprintf('$manager = new %s();', $managerClass);
 
-    $data[] = sprintf('$manager = new %s($options);', $managerClass);
-
-    $data[] = sprintf('$modules = array(); $projectModules = array(); $modelModules = array();');
-
-    $data[] = sprintf('$types = array();');
+    $data[] = sprintf('$modules = $projectModules = $modelModules = $types = array();');
 
     foreach($this->config as $typeName => $typeConfig)
     {
-      $data[] = sprintf('$types[\'%s\'] = new %s;', $typeName, $options['type_class']);
+      $data[] = sprintf('$types[\'%s\'] = new %s();', $typeName, $options['type_class']);
 
       $data[] = sprintf('$typeSpaces = array();');
 
       foreach($typeConfig as $spaceName => $modulesConfig)
       {
-        $data[] = sprintf('$typeSpaces[\'%s\'] = new %s;', $spaceName, $options['space_class']);
+        $data[] = sprintf('$typeSpaces[\'%s\'] = new %s();', $spaceName, $options['space_class']);
 
         $data[] = sprintf('$spaceModules = array();');
 
@@ -232,7 +228,10 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
 
   protected function getExportedModuleOptions($key, $options)
   {
-    if ($options['is_project'] && !empty($options['actions']))
+    $isProject = $options['is_project'];
+    unset($options['is_project']);
+    
+    if ($isProject && !empty($options['actions']))
     {
       //export actions properly
       

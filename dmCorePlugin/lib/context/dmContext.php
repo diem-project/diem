@@ -58,15 +58,12 @@ class dmContext extends sfContext
     dmForm::setServiceContainer($this->serviceContainer);
 
     /*
-     * dmDoctrineRecord needs the event dispatcher to communicate
+     * some classes needs the event dispatcher to communicate
      * and the service container...
      */
-    dmDoctrineRecord::setEventDispatcher($this->dispatcher);
-    dmDoctrineRecord::setServiceContainer($this->serviceContainer);
-
     dmDoctrineQuery::setModuleManager($this->getModuleManager());
-    dmDoctrineTable::setModuleManager($this->getModuleManager());
     dmDoctrineTable::setEventDispatcher($this->dispatcher);
+    dmDoctrineTable::setServiceContainer($this->serviceContainer);
     
     $this->helper = $this->serviceContainer->getService('helper');
 

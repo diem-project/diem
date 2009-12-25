@@ -2,22 +2,11 @@
 
 class dmModuleManager
 {
-
   protected
   $types,
   $modules,
   $projectModules,
   $modelModules;
-  
-  public function __construct(array $options = array())
-  {
-    $this->initialize($options);
-  }
-
-  public function initialize(array $options = array())
-  {
-    $this->options = $options;
-  }
   
   public function load(array $types, array $modules, array $projectModules, array $modelModules)
   {
@@ -72,7 +61,7 @@ class dmModuleManager
       return null;
     }
 
-    throw new dmException(sprintf("The %s module does not exist", $moduleKey));
+    throw new dmException(sprintf('The "%s" module does not exist', $moduleKey));
   }
 
   public function getModuleOrNull($something)

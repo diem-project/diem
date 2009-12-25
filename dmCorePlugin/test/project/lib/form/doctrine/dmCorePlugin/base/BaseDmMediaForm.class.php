@@ -26,7 +26,6 @@ abstract class BaseDmMediaForm extends BaseFormDoctrine
       'dimensions'         => new sfWidgetFormInputText(),
       'created_at'         => new sfWidgetFormDateTime(),
       'updated_at'         => new sfWidgetFormDateTime(),
-      'dm_test_post_list'  => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPost')),
     ));
 
     $this->setValidators(array(
@@ -41,7 +40,6 @@ abstract class BaseDmMediaForm extends BaseFormDoctrine
       'dimensions'         => new sfValidatorString(array('max_length' => 15, 'required' => false)),
       'created_at'         => new sfValidatorDateTime(),
       'updated_at'         => new sfValidatorDateTime(),
-      'dm_test_post_list'  => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPost', 'required' => false)),
     ));
 
     $this->validatorSchema->setPostValidator(
@@ -60,62 +58,6 @@ abstract class BaseDmMediaForm extends BaseFormDoctrine
   public function getModelName()
   {
     return 'DmMedia';
-  }
-
-  public function updateDefaultsFromObject()
-  {
-    parent::updateDefaultsFromObject();
-
-    if (isset($this->widgetSchema['dm_test_post_list']))
-    {
-      $this->setDefault('dm_test_post_list', $this->object->DmTestPost->getPrimaryKeys());
-    }
-
-  }
-
-  protected function doSave($con = null)
-  {
-    $this->saveDmTestPostList($con);
-
-    parent::doSave($con);
-  }
-
-  public function saveDmTestPostList($con = null)
-  {
-    if (!$this->isValid())
-    {
-      throw $this->getErrorSchema();
-    }
-
-    if (!isset($this->widgetSchema['dm_test_post_list']))
-    {
-      // somebody has unset this widget
-      return;
-    }
-
-    if (null === $con)
-    {
-      $con = $this->getConnection();
-    }
-
-    $existing = $this->object->DmTestPost->getPrimaryKeys();
-    $values = $this->getValue('dm_test_post_list');
-    if (!is_array($values))
-    {
-      $values = array();
-    }
-
-    $unlink = array_diff($existing, $values);
-    if (count($unlink))
-    {
-      $this->object->unlink('DmTestPost', array_values($unlink));
-    }
-
-    $link = array_diff($values, $existing);
-    if (count($link))
-    {
-      $this->object->link('DmTestPost', array_values($link));
-    }
   }
 
 }

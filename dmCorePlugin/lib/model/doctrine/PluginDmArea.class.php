@@ -16,12 +16,12 @@ abstract class PluginDmArea extends BaseDmArea
   # TODO more precise permissions
   public function isEditable()
   {
-    if (!self::$serviceContainer)
+    if (!$sc = $this->getServiceContainer())
     {
       return false;
     }
     
-    return self::$serviceContainer->getService('user')->can('zone_add');
+    return $sc->getService('user')->can('zone_add');
   }
 
   public function __toString()

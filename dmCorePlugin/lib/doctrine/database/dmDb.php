@@ -48,7 +48,7 @@ class dmDb
   
   public static function pdo($query, array $values = array(), Doctrine_Connection $conn = null)
   {
-    $conn = null === $conn ? Doctrine_Manager::connection() : $conn;
+    $conn = null === $conn ? Doctrine_Manager::getInstance()->getCurrentConnection() : $conn;
     
     $stmt = $conn->prepare($query)->getStatement();
     $stmt->execute($values);

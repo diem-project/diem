@@ -151,7 +151,7 @@ class dmSeoSynchronizer
        */
       if (!class_exists('DmPageTranslation'))
       {
-        new DmPage;
+        new DmPage();
       }
       
       $conn = Doctrine_Manager::getInstance()->getCurrentConnection();
@@ -217,7 +217,7 @@ class dmSeoSynchronizer
     /*
      * Assign replacements to patterns
      */
-    $values = $this->compilePatterns($patterns, $replacements, $record, $parentSlug);
+    $values = $this->compilePatterns($patterns, $replacements, $parentSlug);
 
     /*
      * Compare obtained seo values with page values
@@ -289,7 +289,7 @@ class dmSeoSynchronizer
       }
       elseif($module->hasAncestor($usedModuleKey))
       {
-        $usedRecord = $record->getAncestorRecord($usedModuleKey);
+        $usedRecord = $record->getAncestorRecord($module->getAncestor($usedModuleKey)->getModel());
       }
       else
       {
@@ -334,7 +334,7 @@ class dmSeoSynchronizer
     return $replacements;
   }
   
-  public function compilePatterns(array $patterns, array $replacements, dmDoctrineRecord $record, $parentSlug)
+  public function compilePatterns(array $patterns, array $replacements, $parentSlug)
   {
     $values = array();
     

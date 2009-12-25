@@ -27,11 +27,9 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
   
   public function executeLoremize(dmWebRequest $request)
   {
-    $loremizer = new dmModuleLoremizer($this->dispatcher);
-    
     try
     {
-      $loremizer->loremize($this->getDmModule(), $request->getParameter('nb', 10));
+      $this->context->get('table_loremizer')->execute($this->getDmModule()->getTable(), $request->getParameter('nb', 10));
       
       $this->getUser()->logInfo('Successfully loremized');
     }

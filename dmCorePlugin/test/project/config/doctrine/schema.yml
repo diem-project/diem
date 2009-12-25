@@ -73,6 +73,7 @@ DmTestPost:
       local:          categ_id
       class:          DmTestCateg
       onDelete:       CASCADE
+      foreignAlias:   Posts
     Image:  
       class:          DmMedia  
       local:          image_id

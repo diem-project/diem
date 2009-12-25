@@ -42,7 +42,6 @@ class dmAutoSeoComponents extends dmAdminBaseComponents
         $this->metas = $seoSynchronizer->compilePatterns(
           $this->rules,
           $seoSynchronizer->getReplacementsForPatterns($this->module, $this->rules, $this->page->getRecord()),
-          $this->page->getRecord(),
           $this->page->getNode()->getParent()->get('slug')
         );
       }

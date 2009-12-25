@@ -139,6 +139,20 @@ parameters:
   page_i18n_builder.options:
     activate_new_translations: false                # if set to true, the created translations are active and can be accessed by users
 
+  project_loremizer.class:    dmProjectLoremizer    # Fills the project with random records
+  project_loremizer.options:
+    nb_records_per_table:     10                    # how many records to create for each table
+
+  table_loremizer.class:      dmTableLoremizer      # Fills a table with random records
+  table_loremizer.options:
+    nb_records:               10                    # how many records to create for this table
+    create_associations:      true                  # create association records
+
+  record_loremizer.class:     dmRecordLoremizer     # Fills the record fields with random values
+  record_loremizer.options:
+    override:                 false                 # replace existing values
+    create_associations:      true                  # create association records
+
 services:
 
   text_diff:
@@ -339,3 +353,18 @@ services:
     class:                    %page_i18n_builder.class%
     shared:                   true
     arguments:                [ @dispatcher, %page_i18n_builder.options% ]
+
+  project_loremizer:
+    class:                    %project_loremizer.class%
+    shared:                   false
+    arguments:                [ @module_manager, @service_container, %project_loremizer.options% ]
+
+  table_loremizer:
+    class:                    %table_loremizer.class%
+    shared:                   false
+    arguments:                [ @service_container, %table_loremizer.options% ]
+
+  record_loremizer:
+    class:                    %record_loremizer.class%
+    shared:                   false
+    arguments:                [ %record_loremizer.options% ]

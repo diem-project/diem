@@ -45,20 +45,28 @@ abstract class PluginDmPage extends BaseDmPage
 
   public function getRecord()
   {
-    if ($this->hasCache('record'))
-    {
-      return $this->getCache('record');
-    }
+//    if ($this->hasCache('record'))
+//    {
+//      return $this->getCache('record');
+//    }
     
     if (($module = $this->getDmModule()) && ($table = $module->getTable()))
     {
-      return $this->setCache('record', $table->find($this->get('record_id')));
+      $record = $table->createQuery('r')
+      ->where('r.id = ?', $this->get('record_id'))
+      ->withI18n(null, $table->getComponentName(), 'r')
+      ->fetchOne();
+    }
+    else
+    {
+      $record = false;
     }
     
-    return $this->setCache('record', false);
+    return $record;
+//    return $this->setCache('record', $record);
   }
 
-  public function setRecord(myDoctrineRecord $record)
+  public function setRecord(dmDoctrineRecord $record)
   {
     if ($record->getDmModule()->getKey() != $this->get('module'))
     {
@@ -75,11 +83,11 @@ abstract class PluginDmPage extends BaseDmPage
       return $this->getCache('dm_module');
     }
     
-    if ($serviceContainer = self::$serviceContainer)
+    if ($serviceContainer = $this->getServiceContainer())
     {
-      $moduleManager = self::$serviceContainer->getService('module_manager');
+      $moduleManager = $serviceContainer->getService('module_manager');
     }
-    elseif(!$moduleManager = self::$moduleManager)
+    else
     {
       throw new dmException('DmPage has no reference to moduleManager');
     }
@@ -189,9 +197,9 @@ LIMIT 1')->getStatement();
 
     parent::save($conn);
   
-    if (self::$eventDispatcher)
+    if ($ed = $this->getEventDispatcher())
     {
-      self::$eventDispatcher->notify(new sfEvent($this, 'dm.page.post_save'));
+      $ed->notify(new sfEvent($this, 'dm.page.post_save'));
     }
   }
   
@@ -300,7 +308,7 @@ LIMIT 1')->getStatement();
   {
     $command = sprintf('dmFront:page-indexable-content %d %s', $this->get('id'), self::getDefaultCulture());
     
-    $filesystem = self::$serviceContainer->getService('filesystem');
+    $filesystem = $this->getServiceContainer()->getService('filesystem');
     
     $filesystem->sf($command);
     

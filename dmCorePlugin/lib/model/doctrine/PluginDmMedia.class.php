@@ -183,7 +183,7 @@ abstract class PluginDmMedia extends BaseDmMedia
 
     $this->clearCache();
 
-    $file->save($this->fullPath);
+    $file->save($this->getFullPath());
 
     $this->refreshFromFile();
 
@@ -232,7 +232,7 @@ abstract class PluginDmMedia extends BaseDmMedia
   {
     $this->fromArray(array(
       'size' => filesize($this->getFullPath()),
-      'mime' => self::$serviceContainer->getService('mime_type_resolver')->getByFilename($this->getFullPath())
+      'mime' => $this->getServiceContainer()->getService('mime_type_resolver')->getByFilename($this->getFullPath())
     ));
     
     /*
@@ -256,8 +256,7 @@ abstract class PluginDmMedia extends BaseDmMedia
 
     if ($this->checkFileExists())
     {
-//      dmDebug::kill('unlink '.$this->fullPath, $this);
-      self::$serviceContainer->getService('filesystem')->unlink($this->getFullPath());
+      $this->getServiceContainer()->getService('filesystem')->unlink($this->getFullPath());
     }
 
     return !$this->checkFileExists();
@@ -275,7 +274,7 @@ abstract class PluginDmMedia extends BaseDmMedia
     ->maxdepth(0)
     ->in(dmOs::join($this->Folder->getFullPath(), '.thumbs'));
 
-    return self::$serviceContainer->getService('filesystem')->unlink($thumbs);
+    return $this->getServiceContainer()->getService('filesystem')->unlink($thumbs);
   }
 
 

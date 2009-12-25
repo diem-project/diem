@@ -8,14 +8,14 @@ $showModules = $helper->getModuleManager()->getModulesWithPage();
 
 $helper->get('page_tree_watcher')->connect();
 
-$nbBigIterations = 1;
+$nbBigIterations = 2;
 
-$t = new lime_test();
+$t = new lime_test(54);
 
 $t->diag('page sync tests');
 
 $helper->clearDatabase($t);
-$helper->loremizeDatabase(3, $t);
+$helper->loremizeDatabase(4, $t);
 
 $pageTable = dmDb::table('DmPage');
 
@@ -31,7 +31,7 @@ $helper->syncPages($t); // 1 test
 
 $helper->checkTreeIntegrity($t); // 2 tests
 
-$t->diag('Randomly add 3 or more records by table, and add associations');
+$t->diag('Randomly add 2 or more records by table, and add associations');
 
 $helper->loremizeDatabase(6, $t);
 
@@ -43,11 +43,11 @@ $pageTreeWatcher = $helper->get('page_tree_watcher');
 
 for($it = 1; $it<=$nbBigIterations; $it++)
 {
-	$t->diag('Randomly delete 3 records by table');
+	$t->diag('Randomly delete 2 records by table');
 
 	foreach($helper->getModuleManager()->getModulesWithPage() as $module)
 	{
-		foreach($module->getTable()->createQuery()->limit(3)->fetchRecords() as $record)
+		foreach($module->getTable()->createQuery()->limit(2)->fetchRecords() as $record)
 		{
 		  try
 		  {
@@ -65,7 +65,7 @@ for($it = 1; $it<=$nbBigIterations; $it++)
 
 	$helper->checkTreeIntegrity($t); // 2 tests
 
-	$t->diag('Randomly add 3 or more records by table');
+	$t->diag('Randomly add 2 or more records by table');
 
 	$helper->loremizeDatabase(6, $t);
 
@@ -74,24 +74,25 @@ for($it = 1; $it<=$nbBigIterations; $it++)
 
 	$helper->checkTreeIntegrity($t); // 2 tests
 
-	$t->diag('Randomly update 3 records by table');
+	$t->diag('Randomly update 2 records by table');
 
+	$recordLoremizer = $helper->get('record_loremizer')
+	->setOption('override', true)
+	->setOption('create_associations', true);
+	
 	foreach($helper->getModuleManager()->getModulesWithModel() as $module)
 	{
-		foreach($module->getTable()->createQuery('r')->select('r.*, RANDOM() as rand')->orderBy('rand')->limit(3)->fetchRecords() as $record)
+	  $records = $module->getTable()->createQuery('r')
+    ->select('r.*')
+    ->withI18n(null, $module->getModel(), 'r')
+	  ->addSelect('RANDOM() as rand')
+	  ->orderBy('rand')
+	  ->limit(2)
+	  ->fetchRecords();
+	  
+		foreach($records as $record)
 		{
-			$oldRecord = clone $record;
-			try
-			{
-		    dmRecordLoremizer::loremize($record, true);
-//        dmDebug::show('modified '.get_class($record).' '.$record->id, $record->getModified(), $record->toArray(), Doctrine_Lib::getRecordStateAsString($record->state()));
-		    $record->save();
-			}
-			catch(Exception $e)
-			{
-				dmDebug::show($oldRecord->id, $oldRecord, $record->id, $record);
-				throw new dmException('Error when loremizing '.$module.' record '.$record->id.' : '.get_class($e).' : '.$e->getMessage());
-			}
+			$recordLoremizer->execute($record)->save();
 		}
 	}
 

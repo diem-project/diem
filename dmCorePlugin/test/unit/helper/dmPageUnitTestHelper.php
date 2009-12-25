@@ -328,15 +328,24 @@ class dmPageUnitTestHelper extends dmUnitTestHelper
     }
     $errors = array();
 
-      /*
-       * Verify that each record -that must have a page- has one
-       */
-      foreach($module->getTable()->findAll() as $record)
-      {
-        $page = $record->getDmPage();
-        $error = null;
+    /*
+     * Verify that each record -that must have a page- has one
+     */
+    foreach($module->getTable()->findAll() as $record)
+    {
+      $page = $record->getDmPage();
+      $error = null;
 
-        if (!$ancestorModel)
+      if (!$ancestorModel)
+      {
+        if (!$page)
+        {
+          $error = sprintf('%s %s has no page', $model, $record);
+        }
+      }
+      else
+      {
+        if ($ancestorRecord = $record->getAncestorRecord($ancestorModel))
         {
           if (!$page)
           {
@@ -345,69 +354,60 @@ class dmPageUnitTestHelper extends dmUnitTestHelper
         }
         else
         {
-          if ($ancestorRecord = $record->getAncestorRecord($ancestorModel))
+          if ($page)
           {
-            if (!$page)
-            {
-              $error = sprintf('%s %s has no page', $model, $record);
-            }
-          }
-          else
-          {
-            if ($page)
-            {
-              $error = sprintf('%s %s has a page, but no ancestor', $model, $record);
-            }
+            $error = sprintf('%s %s has a page, but no ancestor', $model, $record);
           }
         }
-
-        if ($error)
-        {
-          $t->diag($error); $errors[] = $error;
-          continue;
-        }
-
-        if (!$page)
-        {
-          continue;
-        }
-
-        if ($page->record_id != $record->id)
-        {
-          $error = sprintf('%s page has bad record : %s', $page, $record);
-          $t->diag($error); $errors[] = $error;
-        }
-
-        $parentPage = $page->getNode()->getParent();
-
-        if ($parentModule = $module->getNearestAncestorWithPage())
-        {
-          if($parentPage->module != $parentModule->getKey())
-          {
-            $error = sprintf('parent page has bad module : %s', $parentPage->module);
-            $t->diag($error); $errors[] = $error;
-          }
-          if($parentPage->action != 'show')
-          {
-            $error = sprintf('parent page has bad action : %s', $parentPage->action);
-            $t->diag($error); $errors[] = $error;
-          }
-        }
-        else
-        {
-          if($parentPage->module != $module->getKey())
-          {
-            $error = sprintf('parent page has bad module : %s', $parentPage->module);
-            $t->diag($error); $errors[] = $error;
-          }
-          if($parentPage->action != 'list')
-          {
-            $error = sprintf('parent page has bad action : %s', $parentPage->action);
-            $t->diag($error); $errors[] = $error;
-          }
-        }
-
       }
+
+      if ($error)
+      {
+        $t->diag($error); $errors[] = $error;
+        continue;
+      }
+
+      if (!$page)
+      {
+        continue;
+      }
+
+      if ($page->record_id != $record->id)
+      {
+        $error = sprintf('%s page has bad record : %s', $page, $record);
+        $t->diag($error); $errors[] = $error;
+      }
+
+      $parentPage = $page->getNode()->getParent();
+
+      if ($parentModule = $module->getNearestAncestorWithPage())
+      {
+        if($parentPage->module != $parentModule->getKey())
+        {
+          $error = sprintf('parent page has bad module : %s', $parentPage->module);
+          $t->diag($error); $errors[] = $error;
+        }
+        if($parentPage->action != 'show')
+        {
+          $error = sprintf('parent page has bad action : %s', $parentPage->action);
+          $t->diag($error); $errors[] = $error;
+        }
+      }
+      else
+      {
+        if($parentPage->module != $module->getKey())
+        {
+          $error = sprintf('parent page has bad module : %s', $parentPage->module);
+          $t->diag($error); $errors[] = $error;
+        }
+        if($parentPage->action != 'list')
+        {
+          $error = sprintf('parent page has bad action : %s', $parentPage->action);
+          $t->diag($error); $errors[] = $error;
+        }
+      }
+
+    }
     return $errors;
 	}
 

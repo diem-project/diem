@@ -9,18 +9,18 @@
  * @property boolean $is_active
  * @property Doctrine_Collection $Domains
  * @property Doctrine_Collection $DmTestDomainCateg
- * @property Doctrine_Collection $DmTestPost
+ * @property Doctrine_Collection $Posts
  * 
  * @method string              getTitle()             Returns the current record's "title" value
  * @method boolean             getIsActive()          Returns the current record's "is_active" value
  * @method Doctrine_Collection getDomains()           Returns the current record's "Domains" collection
  * @method Doctrine_Collection getDmTestDomainCateg() Returns the current record's "DmTestDomainCateg" collection
- * @method Doctrine_Collection getDmTestPost()        Returns the current record's "DmTestPost" collection
+ * @method Doctrine_Collection getPosts()             Returns the current record's "Posts" collection
  * @method DmTestCateg         setTitle()             Sets the current record's "title" value
  * @method DmTestCateg         setIsActive()          Sets the current record's "is_active" value
  * @method DmTestCateg         setDomains()           Sets the current record's "Domains" collection
  * @method DmTestCateg         setDmTestDomainCateg() Sets the current record's "DmTestDomainCateg" collection
- * @method DmTestCateg         setDmTestPost()        Sets the current record's "DmTestPost" collection
+ * @method DmTestCateg         setPosts()             Sets the current record's "Posts" collection
  * 
  * @package    retest
  * @subpackage model
@@ -56,7 +56,7 @@ abstract class BaseDmTestCateg extends myDoctrineRecord
              'local' => 'id',
              'foreign' => 'categ_id'));
 
-        $this->hasMany('DmTestPost', array(
+        $this->hasMany('DmTestPost as Posts', array(
              'local' => 'id',
              'foreign' => 'categ_id'));
 

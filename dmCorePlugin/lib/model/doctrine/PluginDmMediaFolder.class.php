@@ -150,7 +150,7 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
    */
   public function create()
   {
-    return self::$serviceContainer->getService('filesystem')->mkdir($this->getFullPath());
+    return $this->getServiceContainer()->getService('filesystem')->mkdir($this->getFullPath());
   }
 
   /**
@@ -189,7 +189,7 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
     $oldRelPath = $this->get('rel_path');
     $newRelPath = $this->getNode()->getParent()->get('rel_path').'/'.$name;
 
-    $fs = self::$serviceContainer->getService('filesystem');
+    $fs = $this->getServiceContainer()->getService('filesystem');
 
     $oldFullPath = $this->getFullPath();
     $newFullPath = dmOs::join($this->getNode()->getParent()->getFullPath(), $name);
@@ -249,7 +249,7 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
     $oldRelPath = $this->get('rel_path');
     $newRelPath = $folder->get('rel_path').'/'.$this->name;
 
-    $fs = self::$serviceContainer->getService('filesystem');
+    $fs = $this->getServiceContainer()->getService('filesystem');
 
     $oldFullPath = $this->getFullPath();
     $newFullPath = dmOs::join($folder->getFullPath(), $this->name);
@@ -459,7 +459,7 @@ LIMIT 1')->getStatement();
     // Remove dir itself
     if(!$this->getNode()->isRoot() && $this->dirExists())
     {
-      self::$serviceContainer->getService('filesystem')->deleteDir($this->fullPath);
+      $this->getServiceContainer()->getService('filesystem')->deleteDir($this->fullPath);
     }
 
     return parent::delete($conn);

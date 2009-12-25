@@ -29,7 +29,7 @@ class PluginDmAutoSeoTable extends myDoctrineTable
    */
   public function createFromModuleAndAction($module, $action, $culture = null)
   {
-    $module = self::$moduleManager->getModule($module);
+    $module = $this->getServiceContainer()->getService('module_manager')->getModule($module);
 
     $moduleUnderscore = $module->getUnderscore();
     

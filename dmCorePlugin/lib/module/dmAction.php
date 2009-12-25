@@ -3,13 +3,13 @@
 class dmAction extends dmConfigurable
 {
   protected
-    $key;
+  $key;
 
   public function __construct($key, array $options)
   {
     $this->key = $key;
 
-    $this->configure($options);
+    $this->options = $options;
   }
   
   public function isCachable()

@@ -4,7 +4,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
 {
   protected static
   $eventDispatcher,
-  $moduleManager;
+  $serviceContainer;
   
   /*
    * @return DmMediaFolder the DmMediaFolder used to store this table's record's medias
@@ -40,12 +40,12 @@ abstract class dmDoctrineTable extends Doctrine_Table
      * If table owns project records,
      * it may interact with tree
      */
-    else
+    elseif($sc = $this->getServiceContainer())
     {
       $interacts = false;
       foreach($this->getRelationHolder()->getLocals() as $localRelation)
       {
-        if ($localModule = self::$moduleManager->getModuleByModel($localRelation['class']))
+        if ($localModule = $sc->getService('module_manager')->getModuleByModel($localRelation['class']))
         {
           if ($localModule->interactsWithPageTree())
           {
@@ -360,7 +360,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
   
   public function isI18nColumn($columnName)
   {
-    return $this->hasI18n() && $this->getI18nTable()->hasField($columnName);
+    return !isset($this->_columnNames[$columnName]) && $this->hasI18n() && $this->getI18nTable()->hasField($columnName);
   }
   
   public function isLinkColumn($columnName)
@@ -478,8 +478,13 @@ abstract class dmDoctrineTable extends Doctrine_Table
     {
       return $this->getCache('dm_module');
     }
+    
+    if(!$sc = $this->getServiceContainer())
+    {
+      throw new dmException('No serrvice container available');
+    }
 
-    return $this->setCache('dm_module', self::$moduleManager->getModuleByModel($this->getComponentName()));
+    return $this->setCache('dm_module', $sc->getService('module_manager')->getModuleByModel($this->getComponentName()));
   }
   /*
    * Usefull for generators ( admin, form, filter )
@@ -496,11 +501,6 @@ abstract class dmDoctrineTable extends Doctrine_Table
     return $columns;
   }
 
-  
-  public static function setEventDispatcher(sfEventDispatcher $eventDispatcher)
-  {
-    self::$eventDispatcher = $eventDispatcher;
-  }
   
   /*
    * dmMicroCache
@@ -543,8 +543,24 @@ abstract class dmDoctrineTable extends Doctrine_Table
     return $this;
   }
   
-  public static function setModuleManager(dmModuleManager $moduleManager)
+
+  public static function setEventDispatcher(sfEventDispatcher $eventDispatcher)
   {
-    self::$moduleManager = $moduleManager;
+    self::$eventDispatcher = $eventDispatcher;
+  }
+  
+  public static function setServiceContainer(dmBaseServiceContainer $serviceContainer)
+  {
+    self::$serviceContainer = $serviceContainer;
+  }
+  
+  public function getEventDispatcher()
+  {
+    return self::$eventDispatcher;
+  }
+  
+  public function getServiceContainer()
+  {
+    return self::$serviceContainer;
   }
 }

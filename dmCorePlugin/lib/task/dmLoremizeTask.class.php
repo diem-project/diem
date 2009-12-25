@@ -35,13 +35,11 @@ EOF;
 
     if ($moduleName = $options['module'])
     {
-      $loremizer = new dmModuleLoremizer($this->dispatcher);
-      $loremizer->loremize($this->get('module_manager')->getModule($moduleName), $options['nb']);
+      $this->get('table_loremizer')->execute($this->get('module_manager')->getModule($moduleName)->getTable(), $options['nb']);
     }
     else
     {
-      $loremizer = new dmDatabaseLoremizer($this->dispatcher);
-      $loremizer->loremize($options['nb']);
+      $this->get('project_loremizer')->execute($options['nb']);
     }
     
     $this->logSection('Loremize', 'Database successfully loremized');

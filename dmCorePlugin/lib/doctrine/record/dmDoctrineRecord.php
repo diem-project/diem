@@ -72,26 +72,15 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
 
   public function notify($type = 'update')
   {
-    if (self::$eventDispatcher)
+    if ($ed = $this->getEventDispatcher())
     {
-      self::$eventDispatcher->notify(new sfEvent($this, 'dm.record.modification', array('type' => $type)));
+      $ed->notify(new sfEvent($this, 'dm.record.modification', array('type' => $type)));
     }
   }
 
   public function refresh($deep = false)
   {
-    $return = parent::refresh($deep);
-    $this->clearCache();
-    return $return;
-  }
-
-  /*
-   * Will try to randomly fill empty record field according to their type
-   * It may fail in some case.
-   */
-  public function loremize()
-  {
-    return dmRecordLoremizer::loremize($this);
+    return parent::refresh($deep)->clearCache();
   }
 
 
@@ -320,25 +309,29 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
    * and return the ancestor record for this model
    * @return myDoctrineRecord the ancestor record
    */
-  public function getAncestorRecord($class, $hydrationMode = Doctrine_Core::HYDRATE_RECORD)
+  public function getAncestorRecord($model, $hydrationMode = Doctrine_Core::HYDRATE_RECORD)
   {
-    if (get_class($this) == $class)
+    if (get_class($this) == $model)
     {
       return $this;
     }
 
-    $module = $this->getDmModule();
-    $ancestorKey = dmString::modulize($class);
-
-    if(!$ancestorModule = $module->getAncestor($class))
+    if (!$sc = $this->getServiceContainer())
     {
-      throw new dmRecordException(sprintf('%s is not an ancestor of %s', $ancestorKey, $module));
-      return null;
+      throw new dmException('No service container available');
+    }
+    
+    $ancestorModule = $sc->getService('module_manager')->getModuleByModel($model);
+
+    if(!$ancestorModule || !$this->getDmModule()->hasAncestor($ancestorModule))
+    {
+      throw new dmRecordException(sprintf('%s is not an ancestor of %s', $model, $this->getDmModule()));
     }
 
     return $ancestorModule->getTable()->createQuery($ancestorModule->getKey())
-    ->whereDescendantId($module->getModel(), $this->get('id'), $ancestorModule->getModel())
-    ->fetchRecord();
+    ->whereDescendantId($this->getDmModule()->getModel(), $this->get('id'), $ancestorModule->getModel())
+    ->withI18n(null, $model, $ancestorModule->getKey())
+    ->fetchOne();
   }
 
   /*
@@ -346,49 +339,29 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
    * and return the ancestor record id for this model
    * @return int the ancestor record id
    */
-  public function getAncestorRecordId($class)
+  public function getAncestorRecordId($model)
   {
-    if (get_class($this) == $class)
+    if (get_class($this) == $model)
     {
       return $this->get('id');
     }
 
-    $module = $this->getDmModule();
-    $ancestorKey = dmString::modulize($class);
-
-    if(!$ancestorModule = $module->getAncestor($ancestorKey))
+    if (!$sc = $this->getServiceContainer())
     {
-      throw new dmRecordException(sprintf('%s is not an ancestor of %s', $ancestorKey, $module));
-      return null;
+      throw new dmException('No service container available');
+    }
+    
+    $ancestorModule = $sc->getService('module_manager')->getModuleByModel($model);
+
+    if(!$ancestorModule || !$this->getDmModule()->hasAncestor($ancestorModule))
+    {
+      throw new dmRecordException(sprintf('%s is not an ancestor of %s', $model, $this->getDmModule()));
     }
 
-    $query = dmDb::query($ancestorModule->getModel().' '.$ancestorModule->getKey())
-    ->whereDescendantId($module->getModel(), $this->get('id'), $ancestorModule->getModel())
-    ->select($ancestorModule->getKey().'.id');
-
-    return $query->fetchValue();
-    //
-    //    $ancestorRecord = $this;
-    //    foreach(array_reverse($module->getPath()) as $aModule)
-    //    {
-    //      /*
-    //       * Found ancestor
-    //       */
-    //      if($aModule->getModel() == $ancestorModule->getModel())
-    //      {
-    //        return $ancestorRecord->getRelatedRecordId($aModule->getModel());
-    //      }
-    //
-    //      /*
-    //       * Record ancestor chain terminated.
-    //       */
-    //      if(!$ancestorRecord = $ancestorRecord->getRelatedRecord($aModule->getModel()))
-    //      {
-    //        return null;
-    //      }
-    //    }
-    //
-    //    return null;
+    return $ancestorModule->getTable()->createQuery($ancestorModule->getKey())
+    ->whereDescendantId($this->getDmModule()->getModel(), $this->get('id'), $ancestorModule->getModel())
+    ->select($ancestorModule->getKey().'.id')
+    ->fetchValue();
   }
 
   /*
@@ -402,67 +375,29 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     if (!$relation = $this->_table->getRelationHolder()->getByClass($class))
     {
       throw new dmRecordException(sprintf('%s has no relation for class %s', get_class($this), $class));
-      return null;
     }
 
     if ($relation instanceof Doctrine_Relation_LocalKey)
     {
       return $relation['table']->createQuery('dm_foreign')
-      ->where('dm_foreign.id  = ?', $this->get($relation['local']))
-      ->fetchRecord(array(), $hydrationMode);
+      ->where('dm_foreign.id  = ?', $this->get($relation->getLocal()))
+      ->withI18n(null, $class, 'dm_foreign')
+      ->fetchOne(array(), $hydrationMode);
     }
     elseif($relation instanceof Doctrine_Relation_ForeignKey)
     {
       return $relation['table']->createQuery('dm_foreign')
       ->where('dm_foreign.'.$relation->getForeignColumnName().' = ?', $this->get('id'))
-      ->fetchRecord(array(), $hydrationMode);
+      ->withI18n(null, $class, 'dm_foreign')
+      ->fetchOne(array(), $hydrationMode);
     }
     elseif($relation instanceof Doctrine_Relation_Association)
     {
       return $relation['table']->createQuery('dm_foreign')
       ->leftJoin('dm_foreign.'.$relation['refTable']->getComponentName().' ref_table')
-      ->where('ref_table.'.$relation['local'].' = ?', $this->get('id'))
-      ->fetchRecord(array(), $hydrationMode);
-    }
-    else
-    {
-      throw new dmException('Strange relation...');
-    }
-  }
-
-  /*
-   * Returns one record related id to this one by $alias
-   * LocalKey relation : the related record id
-   * ForeignKey && Association relation : the first related record id
-   * @return int|null the related record id or null if not exist
-   */
-  public function getRelatedRecordId($class)
-  {
-    if (!$relation = $this->_table->getRelationHolder()->getByClass($class))
-    {
-      throw new dmRecordException(sprintf('%s has no relation for class %s', get_class($this), $class));
-      return null;
-    }
-
-    if ($relation instanceof Doctrine_Relation_LocalKey)
-    {
-      return $this->get($relation['local']);
-    }
-    elseif($relation instanceof Doctrine_Relation_ForeignKey)
-    {
-      return $relation['table']->createQuery('dm_foreign')
-      ->select('dm_foreign.id')
-      ->where('dm_foreign.'.$relation->getForeignColumnName().' = ?', $this->get('id'))
-      ->limit(1)
-      ->fetchValue();
-    }
-    elseif($relation instanceof Doctrine_Relation_Association)
-    {
-      return $relation->getAssociationTable()->createQuery('association')
-      ->select('association.'.$relation['dm_foreign'])
-      ->where('association.'.$relation['local'].' = ?', $this->get('id'))
-      ->limit(1)
-      ->fetchValue();
+      ->where('ref_table.'.$relation->getLocal().' = ?', $this->get('id'))
+      ->withI18n(null, $class, 'dm_foreign')
+      ->fetchOne(array(), $hydrationMode);
     }
     else
     {
@@ -492,7 +427,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     }
     catch(Exception $e)
     {
-      self::$serviceContainer->get('logger')->err($e->getMessage());
+      $this->getServiceContainer()->getService('logger')->err($e->getMessage());
 
       if (sfConfig::get('dm_debug'))
       {
@@ -814,22 +749,15 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     return parent::_set($fieldName, $value, $load);
   }
 
-
-  public static function setEventDispatcher(sfEventDispatcher $eventDispatcher)
+  public function getEventDispatcher()
   {
-    self::$eventDispatcher = $eventDispatcher;
+    return $this->getTable()->getEventDispatcher();
   }
-
-  public static function setServiceContainer(dmBaseServiceContainer $serviceContainer)
+  
+  public function getServiceContainer()
   {
-    self::$serviceContainer = $serviceContainer;
+    return $this->getTable()->getServiceContainer();
   }
-
-  public static function setModuleManager(dmModuleManager $moduleManager)
-  {
-    self::$moduleManager = $moduleManager;
-  }
-
   
   /*
    * Hack to make Versionable behavior work with I18n tables

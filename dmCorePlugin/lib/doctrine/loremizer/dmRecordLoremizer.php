@@ -1,116 +1,124 @@
 <?php
 
-/*
- * Will TRY to randomly fill empty record fields.
- * It will fail in many case.
- */
-class dmRecordLoremizer
+class dmRecordLoremizer extends dmConfigurable
 {
-  protected $record;
-
-  public static function loremize($classOrObject, $override = false, $createAssociations = false)
+  protected
+  $record,
+  $table;
+  
+  public function __construct(array $options = array())
   {
-    if ($classOrObject instanceof dmDoctrineRecord)
-    {
-      $object = $classOrObject;
-    }
-    else
-    {
-      if (!Doctrine_Core::isValidModelClass($classOrObject))
-      {
-        throw new dmException(sprintf('%s is not a valid model', $classOrObject));
-      }
-      $object = dmDb::create($classOrObject);
-    }
-
-    $loremizer = new self($object);
-
-    return $loremizer->execute($override, $createAssociations);
+    $this->initialize($options);
   }
-
-  public function __construct(myDoctrineRecord $record)
+  
+  public function getDefaultOptions()
+  {
+    return array(
+      'override' => false,
+      'create_associations' => true
+    );
+  }
+  
+  protected function initialize(array $options)
+  {
+    $this->configure($options);
+  }
+  
+  public function execute(dmDoctrineRecord $record)
   {
     $this->record = $record;
-  }
+    $this->table  = $record->getTable();
 
-  public function execute($override = false, $createAssociations = false)
-  {
-    $this->record->clearRelated();
+//    $this->record->clearRelated();
     
-    $table = $this->record->getTable();
-    
-    foreach($table->getHumanColumns() as $columnName => $column)
+    foreach($this->getLoremizableColumns() as $columnName => $column)
     {
-      if (!$table->hasColumn($columnName) && $table->hasI18n())
-      {
-        $defaultValue = $table->getI18nTable()->getDefaultValueOf($columnName);
-      }
-      else
-      {
-        $defaultValue = $table->getDefaultValueOf($columnName);
-      }
-      
-      /*
-       * Non override on existing records
-       * pass if columns value is different than its default value
-       */
-      if (!$override && (!$this->record->isNew() || $this->record->get($columnName) !== $defaultValue))
-      {
-        continue;
-      }
-      if (!dmArray::get($column, 'notnull') && !dmArray::get($column, 'unique') && !rand(0, 2))
-      {
-        $this->record->set($columnName, null);
-        continue;
-      }
-      if ($columnName === 'slug' && $table->hasTemplate('Sluggable'))
-      {
-        continue;
-      }
-
-      if ($localRelation = $table->getRelationHolder()->getLocalByColumnName($columnName))
-      {
-        $val = $this->getRandomId($localRelation->getTable());
-      }
-      else
-      {
-        $val = $this->getRandomValue($columnName, $column);
-      }
-
-      $this->record->set($columnName, $val);
+      $this->loremizeColumn($columnName, $column);
     }
     
-    if ($table->hasI18n())
+    if ($this->getOption('create_associations'))
     {
-      $this->record->set('lang', sfConfig::get('sf_default_culture'));
-    }
-    
-    if ($createAssociations)
-    {
-      foreach($table->getRelationHolder()->getAssociations() as $relation)
-      {
-        if (rand(0, 3))
-        {
-          $ids = dmDb::query($relation->getClass().' t')
-          ->select('t.id, RANDOM() AS rand')
-          ->orderBy('rand')
-          ->limit(rand(1, 5))
-          ->fetchPDO();
-          
-          foreach($ids as $index => $array)
-          {
-            $ids[$index] = $array[0];
-          }
-          
-          $this->record->link($relation->getAlias(), array_unique($ids));
-        }
-      }
+      $this->loremizeAssociations();
     }
     
     return $this->record;
   }
+  
+  protected function loremizeColumn($columnName, array $column)
+  {
+    if ($this->table->isI18nColumn($columnName))
+    {
+      $defaultValue = $this->table->getI18nTable()->getDefaultValueOf($columnName);
+    }
+    else
+    {
+      $defaultValue = $this->table->getDefaultValueOf($columnName);
+    }
+    
+    /*
+     * Non override on existing records
+     * pass if columns value is different than its default value
+     */
+    if (!$this->getOption('override') && (!$this->record->isNew() || $this->record->get($columnName) !== $defaultValue))
+    {
+      return;
+    }
+    
+    // skip auto-generated slug
+    if ($columnName === 'slug' && $this->table->hasTemplate('Sluggable'))
+    {
+      return;
+    }
+    
+    // skip i18n lang
+    if ($columnName === 'lang' && $this->table->hasI18n())
+    {
+      return;
+    }
+    
+    // if the field can be null, set it to null sometimes
+    if (!dmArray::get($column, 'notnull') && !dmArray::get($column, 'unique') && !rand(0, 2))
+    {
+      $val = null;
+    }
+    // handle local keys
+    elseif ($localRelation = $this->table->getRelationHolder()->getLocalByColumnName($columnName))
+    {
+      $val = $this->getRandomId($localRelation->getTable());
+    }
+    else
+    {
+      $val = $this->getRandomValue($columnName, $column);
+    }
 
-  protected function getRandomValue($columnName, $column)
+    $this->record->set($columnName, $val);
+  }
+  
+  protected function loremizeAssociations()
+  {
+    foreach($this->table->getRelationHolder()->getAssociations() as $relation)
+    {
+      $this->record->clearRelated($relation->getAlias());
+      
+      if (rand(0, 4))
+      {
+        $ids = (array) dmDb::query($relation->getClass().' t')
+        ->select('t.id, RANDOM() AS rand')
+        ->orderBy('rand')
+        ->limit(rand(1, 6))
+        ->fetchFlat();
+        
+        $this->record->link($relation->getAlias(), array_unique($ids));
+      }
+    }
+  }
+  
+  protected function getLoremizableColumns()
+  {
+    return $this->table->getHumanColumns();
+  }
+
+  protected function getRandomValue($columnName, array $column)
   {
     $column['name'] = $columnName;
     
@@ -124,7 +132,7 @@ class dmRecordLoremizer
         break;
       case 'blob':
       case 'clob':
-        if (strpos(dmArray::get($column, 'extra'), 'markdown') !== false)
+        if ($this->table->isMarkdownColumn($columnName))
         {
           $val = dmLorem::getMarkdownLorem(1/*rand(1, 3)*/);
         }
@@ -135,20 +143,20 @@ class dmRecordLoremizer
         break;
       case 'time':
       case 'timestamp':
-        $val = rand(0, time());
+        $val = rand(strtotime('-10 year') , time());
         break;
       case 'date':
-        $val = date("Y-m-d", rand(0, time()));
+        $val = date("Y-m-d", rand(strtotime('-10 year') , time()));
         break;
       case 'enum':
-        $val = dmArray::get($column['values'], array_rand($column['values']));
+        $val = $column['values'][array_rand($column['values'])];
         break;
       case 'integer':
         $val = rand(0,100000);
         break;
       case 'float':
       case 'decimal':
-        $val = rand(0,10000000)/1000;
+        $val = rand(0,1000000)/100;
         break;
       default:
         throw new dmException(sprintf('Diem can not generate random content for %s column', $columnName));
@@ -164,7 +172,7 @@ class dmRecordLoremizer
       return dmString::random(rand(4, 30)).'@localhost.com';
     }
     
-    if ($this->record->getTable()->isLinkColumn($column['name']))
+    if ($this->table->isLinkColumn($column['name']))
     {
       return $this->getRandomLink();
     }
@@ -187,35 +195,35 @@ class dmRecordLoremizer
 
   protected function getRandomLink()
   {
-    if(!rand(0, 1))
+    if(rand(0, 1))
     {
-      return sprintf('http://'.dmString::random().'.com');
+      return sprintf('http://'.dmString::random().'.random.com');
     }
     
-    $page = dmDb::query('DmPage p')
-    ->select('p.*, RANDOM() AS rand')
+    $page = dmDb::query('DmPageTranslation p')
+    ->select('p.id, p.name, p.lang, RANDOM() AS rand')
+    ->where('p.lang = ?', dmDoctrineRecord::getDefaultCulture())
     ->orderBy('rand')
-    ->withI18n()
-    ->fetchOne();
+    ->limit(1)
+    ->fetchPDO();
     
-    return sprintf('page:%d %s', $page->id, $page->name);
+    return sprintf('page:%d %s', $page[0][0], $page[0][1]);
   }
   
-  protected function getRandomId(myDoctrineTable $table)
+  protected function getRandomId(dmDoctrineTable $table)
   {
-    try
+    $id = $table->createQuery('t')
+    ->select('t.id, RANDOM() AS rand')
+    ->orderBy('rand')
+    ->limit(1)
+    ->fetchValue();
+    
+    if (!$id)
     {
-      $id = dmDb::query($table->getComponentName().' t')
-      ->select('t.id, RANDOM() AS rand')
-      ->orderBy('rand')
-      ->limit(1)
-      ->fetchValue();
-    }
-    catch(Exception $e)
-    {
-      throw new dmException(sprintf('Error while getting %s random id for %s : %s', $table->getComponentName(), $this->record, $e));
+      $recordLoremizer = new self($this->getOptions());
+      $id = $recordLoremizer->execute($table->create())->saveGet()->get('id');
     }
 
-    return $id ? $id : null;
+    return $id;
   }
 }
