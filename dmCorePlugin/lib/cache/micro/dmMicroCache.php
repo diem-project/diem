@@ -2,7 +2,7 @@
 
 abstract class dmMicroCache
 {
-  private $cache = array();
+  protected $cache = array();
 
   protected function getCache($key)
   {

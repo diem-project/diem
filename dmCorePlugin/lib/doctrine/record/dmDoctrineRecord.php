@@ -316,12 +316,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
       return $this;
     }
 
-    if (!$sc = $this->getServiceContainer())
-    {
-      throw new dmException('No service container available');
-    }
-    
-    $ancestorModule = $sc->getService('module_manager')->getModuleByModel($model);
+    $ancestorModule = $this->getModuleManager()->getModuleByModel($model);
 
     if(!$ancestorModule || !$this->getDmModule()->hasAncestor($ancestorModule))
     {
@@ -346,12 +341,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
       return $this->get('id');
     }
 
-    if (!$sc = $this->getServiceContainer())
-    {
-      throw new dmException('No service container available');
-    }
-    
-    $ancestorModule = $sc->getService('module_manager')->getModuleByModel($model);
+    $ancestorModule = $this->getModuleManager()->getModuleByModel($model);
 
     if(!$ancestorModule || !$this->getDmModule()->hasAncestor($ancestorModule))
     {
@@ -757,6 +747,11 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
   public function getServiceContainer()
   {
     return $this->getTable()->getServiceContainer();
+  }
+  
+  public function getModuleManager()
+  {
+    return $this->getTable()->getModuleManager();
   }
   
   /*

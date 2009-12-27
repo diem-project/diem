@@ -316,6 +316,23 @@ class dmContext extends sfContext
 
     $this->dispatcher->notify(new sfEvent($this, 'dm.context.change_page', array('page' => $page)));
   }
+  
+  /**
+   * Listens to the template.filter_parameters event.
+   *
+   * @param  sfEvent $event       An sfEvent instance
+   * @param  array   $parameters  An array of template parameters to filter
+   *
+   * @return array   The filtered parameters array
+   */
+  public function filterTemplateParameters(sfEvent $event, $parameters)
+  {
+    $parameters = parent::filterTemplateParameters($event, $parameters);
+    
+    $parameters['dm_page']  = $this->getPage();
+
+    return $parameters;
+  }
 
   protected function checkProjectIsSetup()
   {

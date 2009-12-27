@@ -3,8 +3,9 @@
 abstract class dmDoctrineTable extends Doctrine_Table
 {
   protected static
-  $eventDispatcher,
-  $serviceContainer;
+  $eventDispatcher,   // mandatory
+  $moduleManager,     // mandatory
+  $serviceContainer;  // optional
   
   /*
    * @return DmMediaFolder the DmMediaFolder used to store this table's record's medias
@@ -40,12 +41,12 @@ abstract class dmDoctrineTable extends Doctrine_Table
      * If table owns project records,
      * it may interact with tree
      */
-    elseif($sc = $this->getServiceContainer())
+    else
     {
       $interacts = false;
       foreach($this->getRelationHolder()->getLocals() as $localRelation)
       {
-        if ($localModule = $sc->getService('module_manager')->getModuleByModel($localRelation['class']))
+        if ($localModule = $this->getModuleManager()->getModuleByModel($localRelation['class']))
         {
           if ($localModule->interactsWithPageTree())
           {
@@ -479,12 +480,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
       return $this->getCache('dm_module');
     }
     
-    if(!$sc = $this->getServiceContainer())
-    {
-      throw new dmException('No serrvice container available');
-    }
-
-    return $this->setCache('dm_module', $sc->getService('module_manager')->getModuleByModel($this->getComponentName()));
+    return $this->setCache('dm_module', $this->getModuleManager()->getModuleByModel($this->getComponentName()));
   }
   /*
    * Usefull for generators ( admin, form, filter )
@@ -505,7 +501,6 @@ abstract class dmDoctrineTable extends Doctrine_Table
   /*
    * dmMicroCache
    */
-
   private
   $cache;
 
@@ -552,6 +547,12 @@ abstract class dmDoctrineTable extends Doctrine_Table
   public static function setServiceContainer(dmBaseServiceContainer $serviceContainer)
   {
     self::$serviceContainer = $serviceContainer;
+    self::setModuleManager($serviceContainer->getService('module_manager'));
+  }
+  
+  public static function setModuleManager(dmModuleManager $moduleManager)
+  {
+    self::$moduleManager = $moduleManager;
   }
   
   public function getEventDispatcher()
@@ -563,4 +564,10 @@ abstract class dmDoctrineTable extends Doctrine_Table
   {
     return self::$serviceContainer;
   }
+  
+  public function getModuleManager()
+  {
+    return self::$moduleManager;
+  }
+  
 }

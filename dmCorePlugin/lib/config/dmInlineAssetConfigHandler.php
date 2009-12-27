@@ -16,8 +16,10 @@ class dmInlineAssetConfigHandler extends dmInlineConfigHandler
    */
   protected function getValues($prefix, $category, $keys)
   {
+    $values = array();
+    
     // loop through all key/value pairs
-    foreach ($keys as $key => $value)
+    foreach ((array)$keys as $key => $value)
     {
       $values[$prefix.$this->separator.$category.$this->separator.$key] = self::getPathFromWebDir($prefix, $category.'.'.$value);
     }
