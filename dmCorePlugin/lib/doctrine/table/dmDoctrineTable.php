@@ -524,7 +524,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
     return $this->cache[$cacheKey] = $cacheValue;
   }
 
-  protected function clearCache($cacheKey = null)
+  public function clearCache($cacheKey = null)
   {
     if (null === $cacheKey)
     {

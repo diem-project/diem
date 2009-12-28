@@ -24,7 +24,7 @@ abstract class dmMicroCache
     return $this->cache[$key] = $value;
   }
 
-  protected function clearCache($key = null)
+  public function clearCache($key = null)
   {
     if (null === $key)
     {

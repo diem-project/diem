@@ -4,8 +4,8 @@ class BasedmAdminActions extends dmAdminBaseActions
 {
   public function executeIndex(dmWebRequest $request)
   {
+    $this->homepageManager = $this->getService('homepage_manager');
   }
-  
 
   public function executeModuleType(dmWebRequest $request)
   {

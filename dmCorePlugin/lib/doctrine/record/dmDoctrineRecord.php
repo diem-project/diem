@@ -807,10 +807,15 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     }
   }
   
+  
+  public function setData(array $data)
+  {
+    $this->_data = $data;
+  }
+  
   /*
    * dmMicroCache
    */
-
   private
   $cache;
 
@@ -834,7 +839,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     return $this->cache[$cacheKey] = $cacheValue;
   }
 
-  protected function clearCache($cacheKey = null)
+  public function clearCache($cacheKey = null)
   {
     if (null === $cacheKey)
     {

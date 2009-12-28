@@ -1,5 +1,7 @@
 parameters:
 
+  homepage_manager.class:     dmAdminHomepageManager # Responsible for managing and rendering windows on admin homepage.
+
   bread_crumb.class:          dmAdminBreadCrumb # Responsible for building and rendering the admin automatic breadcrumbs.
 
   log_chart.class:            dmLogChart        # Responsible for rendering the log chart
@@ -53,6 +55,11 @@ parameters:
   link_tag_factory.class:     dmAdminLinkTagFactory # Builds a link_tag service from a source
  
 services:
+
+  homepage_manager:
+    class:                    %homepage_manager.class%
+    shared:                   true
+    arguments:                [ @dispatcher, @helper ]
 
   bread_crumb:
     class:                    %bread_crumb.class%

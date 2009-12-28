@@ -42,10 +42,6 @@ body.full_screen #dm_admin_content {
   margin-right: auto;
 }
 
-.dm_third .dm_box {
-  margin: 0 5px 10px 5px;
-}
-
 div.dm_box_inner {
   margin: 10px;
 }
@@ -152,4 +148,13 @@ div.dm_gallery_medium a.dm_gallery_link {
 
 .documentation {
   font-size: 120%;
+}
+
+div.dm_admin_homepage_column {
+  width: 33.33%;
+  float: left;
+}
+
+div.dm_admin_homepage_column .dm_box {
+  margin: 0 5px 10px 5px;
 }
