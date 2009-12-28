@@ -35,6 +35,11 @@ EOF;
     foreach($this->get('module_manager')->getProjectModules() as $moduleKey => $module)
     {
       $this->log(sprintf("Generate front for module %s", $moduleKey));
+      
+      if(!$module->hasFront())
+      {
+        continue;
+      }
     
       if ($pluginName = $module->getPluginName())
       {

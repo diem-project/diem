@@ -420,6 +420,7 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
       'is_project'  => (boolean) dmArray::get($moduleConfig, 'project', $isInProject),
       'plugin'      => dmArray::get($moduleConfig, 'plugin', $plugin),
       'has_admin'   => (boolean) dmArray::get($moduleConfig, 'admin', $model || !$isInProject),
+      'has_front'   => (boolean) dmArray::get($moduleConfig, 'front', true),
       'actions'     => dmArray::get($moduleConfig, 'actions', array())
     );
     

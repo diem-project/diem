@@ -52,6 +52,11 @@ class dmModule extends dmMicroCache
   {
     return $this->options['has_admin'];
   }
+  
+  public function hasFront()
+  {
+    return $this->options['has_front'];
+  }
 
   public function __toString()
   {

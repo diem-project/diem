@@ -15,14 +15,15 @@ class dmProjectConfiguration extends sfProjectConfiguration
     $this->setPluginPath('dmUserPlugin', dm::getDir().DIRECTORY_SEPARATOR.'dmUserPlugin');
     $this->enablePlugins('dmUserPlugin');
     
-    $this->setPluginPath('dmAlternativeHelperPlugin', dm::getDir().str_replace('/', DIRECTORY_SEPARATOR, '/dmCorePlugin/lib/plugins/dmAlternativeHelperPlugin'));
+    $this->setPluginPath('dmAlternativeHelperPlugin', dm::getDir().'/dmCorePlugin/lib/plugins/dmAlternativeHelperPlugin');
+    
+    $this->setPluginPath('sfWebBrowserPlugin', dm::getDir().'/dmCorePlugin/lib/plugins/sfWebBrowserPlugin');
   }
   
   protected function getDependancePlugins()
   {
-    return array('sfDoctrinePlugin');
+    return array('sfDoctrinePlugin', 'sfWebBrowserPlugin');
   }
-
   
   /*
    * @deprecated
