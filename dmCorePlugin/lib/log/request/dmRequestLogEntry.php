@@ -23,7 +23,7 @@ class dmRequestLogEntry extends dmLogEntry
       'env'           => (string) sfConfig::get('sf_environment'),
       'ip'            => (string) $data['server']['REMOTE_ADDR'],
       'user_id'       => (string) $data['context']->getUser()->getUserId(),
-      'user_agent'    => dmString::truncate($isXhr ? '' : $data['server']['HTTP_USER_AGENT'], 500),
+      'user_agent'    => dmString::truncate($isXhr ? '' : isset($data['server']['HTTP_USER_AGENT']) ? $data['server']['HTTP_USER_AGENT'] : '', 500),
       'xhr'           => (int)    $isXhr,
       'mem'           => (string) memory_get_peak_usage(true),
       'timer'         => (string) sprintf('%.0f', (microtime(true) - dm::getStartTime()) * 1000)
