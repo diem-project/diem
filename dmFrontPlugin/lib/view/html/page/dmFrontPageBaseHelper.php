@@ -25,7 +25,7 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
   {
     return array(
       'widget_css_class_pattern'  => '%module%_%action%',
-      'is_html5'                  => $this->getDocTypeOption('version', 5)
+      'is_html5'                  => 5 == $this->getDocTypeOption('version', 5)
     );
   }
   
