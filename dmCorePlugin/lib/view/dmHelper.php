@@ -1,6 +1,6 @@
 <?php
 
-class dmHelper
+class dmHelper extends dmConfigurable
 {
   protected
   $dispatcher,
@@ -19,13 +19,14 @@ class dmHelper
 
   public function initialize(array $options)
   {
-    $this->options = array_merge($this->getDefaultOptions(), $options);
+    $this->configure($options);
   }
   
   public function getDefaultOptions()
   {
     return array(
-      'use_beaf' => false
+      'use_beaf'        => false,
+      'empty_elements'  => array('br', 'hr', 'img', 'input')
     );
   }
   
@@ -188,7 +189,11 @@ class dmHelper
       $optHtml .= ' '.$key.'="'.htmlentities($val, ENT_COMPAT, 'UTF-8').'"';
     }
 
-    if ($openAndClose)
+    if(in_array($tagName, $this->options['empty_elements']))
+    {
+      $tag = '<'.$tagName.$optHtml.' />';
+    }
+    elseif ($openAndClose)
     {
       if ($isBeaf)
       {

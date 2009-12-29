@@ -4,7 +4,7 @@ require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
 $helper = new dmUnitTestHelper();
 $helper->boot('front');
 
-$t = new lime_test(25);
+$t = new lime_test(29);
 
 dm::loadHelpers(array('Dm', 'I18N'));
 
@@ -23,8 +23,15 @@ $t->is(£o('div', array('id' => 'test_id', 'class' => 'test_class other_class'))
 $openDiv = '<div title="fancy title" class="first_class test_class other_class" id="test_id">';
 $t->is(£o('div.first_class title="fancy title"', array('id' => 'test_id', 'class' => 'test_class other_class')), $openDiv, $openDiv);
 
-$div = '<div></div>';
-$t->is(£('div'), $div, $div);
+$t->is(£('div'), $expected = '<div></div>', $expected);
+
+$t->is(£('br'), $expected = '<br />', $div);
+
+$t->is(£('hr'), $expected = '<hr />', $expected);
+
+$t->is(£('img'), $expected = '<img />', $expected);
+
+$t->is(£('input'), $expected = '<input />', $expected);
 
 $div = '<div id="test_id" class="test_class other_class"></div>';
 $t->is(£('div#test_id.test_class.other_class'), $div, $div);

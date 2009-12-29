@@ -298,8 +298,6 @@ class dmMediaTagImage extends dmMediaTag
 
     if (!file_exists($thumbPath))
     {
-      $this->context->getLogger()->notice('dmMediaTagImage : create thumb for media '.$media);
-
       $image = $media->getImage();
 
       $image->setQuality($attributes['resize_quality']);
