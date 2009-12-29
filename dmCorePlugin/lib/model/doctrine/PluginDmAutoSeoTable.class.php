@@ -7,7 +7,7 @@ class PluginDmAutoSeoTable extends myDoctrineTable
   public function findActives($culture = null)
   {
     return $this->createQuery('a')
-    ->whereIn('a.module', array_keys($this->getServiceContainer()->getService('module_manager')->getModulesWithPage()))
+    ->whereIn('a.module', array_keys($this->getModuleManager()->getModulesWithPage()))
     ->withI18n($culture)
     ->dmCache()
     ->fetchRecords();
@@ -29,7 +29,7 @@ class PluginDmAutoSeoTable extends myDoctrineTable
    */
   public function createFromModuleAndAction($module, $action, $culture = null)
   {
-    $module = $this->getServiceContainer()->getService('module_manager')->getModule($module);
+    $module = $this->getModuleManager()->getModule($module);
 
     $moduleUnderscore = $module->getUnderscore();
     

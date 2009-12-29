@@ -20,7 +20,7 @@ abstract class dmWidgetBaseForm extends dmForm
     {
       throw new dmException(sprintf('%s must be initialized with a DmWidget, not a %s', get_class($this), gettype($widget)));
     }
-
+    
     $this->dmWidget = $widget;
     
     parent::__construct($widget->values, $options, $CSRFSecret);

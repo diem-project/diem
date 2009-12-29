@@ -82,17 +82,8 @@ abstract class PluginDmPage extends BaseDmPage
     {
       return $this->getCache('dm_module');
     }
-    
-    if ($serviceContainer = $this->getServiceContainer())
-    {
-      $moduleManager = $serviceContainer->getService('module_manager');
-    }
-    else
-    {
-      throw new dmException('DmPage has no reference to moduleManager');
-    }
 
-    return $this->setCache('dm_module', $moduleManager->getModuleOrNull($this->get('module')));
+    return $this->setCache('dm_module', $this->getModuleManager()->getModuleOrNull($this->get('module')));
   }
 
   public function getPageView()

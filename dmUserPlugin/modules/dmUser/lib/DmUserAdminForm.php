@@ -11,11 +11,4 @@
 class DmUserAdminForm extends BaseDmUserAdminForm
 {
   
-  public function setup()
-  {
-    parent::setup();
-    
-    $this->useFields(array('username', 'email', 'password', 'password_again', 'is_active', 'is_super_admin', 'groups_list', 'permissions_list'));
-  }
-  
 }

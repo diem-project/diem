@@ -69,8 +69,6 @@ class dmWidgetTypeManager
 
         foreach($this->serviceContainer->getService('module_manager')->getProjectModules() as $moduleKey => $module)
         {
-          $moduleName = $module->getName();
-
           $this->widgetTypes[$moduleKey] = array();
 
           foreach($module->getActions() as $actionKey => $action)
@@ -80,7 +78,7 @@ class dmWidgetTypeManager
             $widgetTypeConfig = array(
               'full_key'   => $moduleKey.ucfirst($actionKey),
               'name'       => $action->getName(),
-              'public_name' => $moduleName.' '.dmString::humanize($action->getName()),
+              'public_name' => $module->getName().' '.dmString::humanize($action->getName()),
               'form_class' => $baseClass.'Form',
               'view_class' => $baseClass.'View',
               'use_component' => $controller->componentExists($moduleKey, $actionKey),

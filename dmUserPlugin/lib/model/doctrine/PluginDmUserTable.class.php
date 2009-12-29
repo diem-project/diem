@@ -24,7 +24,7 @@ abstract class PluginDmUserTable extends myDoctrineTable
   
   public function getAdminListQuery(dmDoctrineQuery $query)
   {
-    return $query;
+    return $this->joinDmMedias($query);
   }
   
   public function getHumanColumns()

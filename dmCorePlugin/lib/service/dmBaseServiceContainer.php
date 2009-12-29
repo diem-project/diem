@@ -132,6 +132,7 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
      * Enable page i18n builder for multilingual sites
      */
     $cultures = $this->getService('i18n')->getCultures();
+    
     if (count($cultures) > 1)
     {
       $this->mergeParameter('page_i18n_builder.options', array(
