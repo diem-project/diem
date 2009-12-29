@@ -1,11 +1,11 @@
 <?php
 
-abstract class dmLog
+abstract class dmLog extends dmConfigurable
 {
-  protected function getDefaultOptions()
+  public function getDefaultOptions()
   {
     return array(
-      'key' => preg_replace('|(\w+)Log|', '$1', get_class($this)),
+      'key' => preg_replace('|^(\w+)Log$|', '$1', get_class($this)),
       'credentials' => 'see_log',
       'name' => get_class($this)
     );
@@ -13,7 +13,7 @@ abstract class dmLog
   
   public function initialize(array $options)
   {
-    $this->options = array_merge($this->getDefaultOptions(), $options);
+    $this->configure($options);
   }
   
   public function getCredentials()

@@ -8,7 +8,7 @@ abstract class dmFileLog extends dmLog
   $serviceContainer,
   $options;
   
-  protected function getDefaultOptions()
+  public function getDefaultOptions()
   {
     return array_merge(parent::getDefaultOptions(), array(
       'rotation'            => true,

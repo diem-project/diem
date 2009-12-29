@@ -2,7 +2,7 @@
 
 class dmRequestLog extends dmFileLog
 {
-  protected function getDefaultOptions()
+  public function getDefaultOptions()
   {
     return array_merge(parent::getDefaultOptions(), array(
       'name'                => 'Requests',
