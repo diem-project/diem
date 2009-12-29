@@ -65,9 +65,10 @@ $.widget('ui.dmArea', {
 							'margin': '0'
 						})
 						.html(ui.item.html());
-						
 //						ui.helper.css('width', 'auto');
 					}
+					
+					$('#dm_page div.dm_zones').addClass('droppable-active');
 					
 					sortEvents = [];
         },
@@ -82,6 +83,8 @@ $.widget('ui.dmArea', {
             $(this).parent().dmArea('sortZones');
           }
           setTimeout(function() { ui.item.removeClass('dm_dragging'); }, 200);
+          
+          $('#dm_page div.dm_zones').removeClass('droppable-active');
         }
       });
     }

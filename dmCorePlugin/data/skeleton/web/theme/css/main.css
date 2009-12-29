@@ -1,12 +1,3 @@
-#dm_page .dm_zone {
-}
-
-
-.dm_access_links {
-  position: absolute;
-  left: -9000px;
-}
-
 .elements .element {
   list-style: disc inside;
   padding: 1em;
