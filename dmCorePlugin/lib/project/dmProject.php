@@ -5,6 +5,7 @@ class dmProject
 
   protected static
     $key,
+    $hash,
     $models,
     $allModels,
     $dmModels;
@@ -20,6 +21,19 @@ class dmProject
     }
     
     return self::$key;
+  }
+
+  /*
+   * Returns project key based on his root dir
+   */
+  public static function getHash()
+  {
+    if (null === self::$hash)
+    {
+      self::$hash = substr(md5(sfConfig::get('sf_root_dir')), -8);
+    }
+    
+    return self::$hash;
   }
 
   public static function getModels()
@@ -116,6 +130,11 @@ class dmProject
   public static function getRootDir()
   {
     return dmOs::normalize(sfConfig::get('sf_root_dir'));
+  }
+  
+  public static function getNormalizedRootDir()
+  {
+    return dmOs::normalize(self::getRootDir());
   }
   
   /*

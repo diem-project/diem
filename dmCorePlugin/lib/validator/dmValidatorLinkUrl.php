@@ -29,6 +29,10 @@ class dmValidatorLinkUrl extends sfValidatorUrl
       {
         return $value;
       }
+      elseif('#' === $value{0})
+      {
+        return $value;
+      }
       
       throw $e;
     }

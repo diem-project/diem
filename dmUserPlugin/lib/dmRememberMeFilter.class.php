@@ -33,7 +33,7 @@ class dmRememberMeFilter extends sfFilter
    */
   public function execute($filterChain)
   {
-    $cookieName = sfConfig::get('dm_security_remember_cookie_name', 'dm_remember_'.dmProject::getKey());
+    $cookieName = sfConfig::get('dm_security_remember_cookie_name', 'dm_remember_'.dmProject::getHash());
 
     if (
       $this->isFirstCall()

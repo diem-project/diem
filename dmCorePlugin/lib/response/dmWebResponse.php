@@ -102,7 +102,7 @@ abstract class dmWebResponse extends sfWebResponse
   
   public function getRememberCookieName()
   {
-    return sfConfig::get('dm_security_remember_cookie_name', 'dm_remember_'.dmProject::getKey());
+    return sfConfig::get('dm_security_remember_cookie_name', 'dm_remember_'.dmProject::getHash());
   }
   
   public function setTheme(dmTheme $theme)

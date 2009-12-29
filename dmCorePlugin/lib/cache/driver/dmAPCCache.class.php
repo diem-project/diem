@@ -21,7 +21,7 @@ class dmAPCCache extends sfAPCCache
     }
     
     $this->initialize(array(
-      'prefix' => sfConfig::get('sf_root_dir').'/'.$name,
+      'prefix' => dmProject::getNormalizedRootDir().'/'.$name,
     ));
   }
 

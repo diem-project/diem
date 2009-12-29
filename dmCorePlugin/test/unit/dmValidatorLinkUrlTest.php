@@ -4,7 +4,7 @@ require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
 $helper = new dmUnitTestHelper();
 $helper->boot();
 
-$t = new lime_test(36);
+$t = new lime_test(38);
 
 dmDb::table('DmMediaFolder')->checkRoot();
 $t->comment('Create a test image media');
@@ -37,7 +37,9 @@ foreach (array(
   'page:'.dmDb::table('DmPage')->findOne()->id,
   'media:'.$media->id,
   'page:'.dmDb::table('DmPage')->findOne()->id.' some text after',
-  'media:'.$media->id.' some text after'
+  'media:'.$media->id.' some text after',
+  '#',
+  '#anchor'
 ) as $url)
 {
   try

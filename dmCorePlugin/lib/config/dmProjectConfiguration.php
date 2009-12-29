@@ -80,7 +80,7 @@ class dmProjectConfiguration extends sfProjectConfiguration
   {
     if(sfConfig::get('dm_orm_cache_enabled', true) && dmAPCCache::isEnabled())
     {
-      $driver = new Doctrine_Cache_Apc(array('prefix' => dmProject::getKey().'/doctrine/'));
+      $driver = new Doctrine_Cache_Apc(array('prefix' => dmProject::getNormalizedRootDir().'/doctrine/'));
       
       $manager->setAttribute(Doctrine_Core::ATTR_QUERY_CACHE, $driver);
       
