@@ -12,6 +12,10 @@ if(!$module = $record->getDmModule())
 $relation         = $module->getTable()->getRelation($alias);
 $foreignModule    = $sf_context->getModuleManager()->getModuleByModel($relation->getClass());
 $foreignRecords   = $record->get($alias);
+$options          = array_merge(array(
+  'new'           => true,
+  'sort'          => true
+), isset($options) ? $options : array());
 /*
  * One to one relations give only one object instead of a collection
  * transform it into an array
@@ -51,26 +55,35 @@ echo £o('div.dm_foreigns');
   
   if($hasRoute)
   {
-    $newLink = £link('@'.$foreignModule->getUnderscore().'?action=new')
-    ->text(__('New'))
-    ->set('.s16.s16_add_little');
+    echo £o('ul.actions');
     
-    if ($relation instanceof Doctrine_Relation_ForeignKey)
+    if($options['new'])
     {
-      $newLink->param('defaults['.$relation->getForeign().']', $record->get('id'));
+      $newLink = £link('@'.$foreignModule->getUnderscore().'?action=new')
+      ->text(__('New'))
+      ->set('.s16.s16_add_little');
+      
+      if ($relation instanceof Doctrine_Relation_ForeignKey)
+      {
+        $newLink->param('defaults['.$relation->getForeign().']', $record->get('id'));
+      }
+      
+      echo £('li', $newLink);
     }
-  
-    echo £('ul.actions',
-      £('li', $newLink).
-      (($foreignModule->getTable()->isSortable() && count($foreignRecords) > 1)
-      ? £('li', £link(array(
+    
+    if($options['sort'] && $foreignModule->getTable()->isSortable() && count($foreignRecords) > 1)
+    {
+      $sortLink = £link(array(
         'sf_route'      => $module->getUnderscore(),
         'id'            => $record->get('id'),
         'action'        => 'sortReferers',
         'refererModule' => $foreignModule->getKey()
-      ))->text(__('Sort'))->set('.s16.s16_right_little'))
-      : '')
-    );
+      ))->text(__('Sort'))->set('.s16.s16_right_little');
+      
+      echo £('li', $sortLink);
+    }
+    
+    echo £c('ul');
   }
 
 echo £c('div');
