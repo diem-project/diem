@@ -107,7 +107,7 @@ $.widget('ui.dmWidget', {
 							}
 							else
 							{
-	              widget.element.html(data.widget_html);
+	              widget.element.find('div.dm_widget_inner').html(data.widget_html);
 						  }
 	          }
 						
