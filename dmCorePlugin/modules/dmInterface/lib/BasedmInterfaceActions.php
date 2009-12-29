@@ -5,19 +5,16 @@ abstract class BasedmInterfaceActions extends dmBaseActions
 
   public function executeLoadMediaFolder(sfWebRequest $request)
   {
+    $this->folder = null;
+    
     if ($request->getParameter('folder_id'))
     {
-      $this->forward404Unless(
-        $this->folder = dmDb::table('DmMediaFolder')->find($request->getParameter('folder_id')),
-        sprintf('%s is not a valid folder_id', $request->getParameter('folder_id'))
-      );
+      $this->folder = dmDb::table('DmMediaFolder')->find($request->getParameter('folder_id'));
     }
-    else
+      
+    if(!$this->folder)
     {
-      $this->forward404Unless(
-        $this->folder = dmDb::table('DmMediaFolder')->getTree()->fetchRoot(),
-        sprintf('folder table has no root !')
-      );
+      $this->forward404Unless($this->folder = dmDb::table('DmMediaFolder')->checkRoot());
     }
     
     $this->folder->sync();
