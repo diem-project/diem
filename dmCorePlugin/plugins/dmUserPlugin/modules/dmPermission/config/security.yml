@@ -1,3 +1,0 @@
-all:
-  credentials:
-    - security_permission
