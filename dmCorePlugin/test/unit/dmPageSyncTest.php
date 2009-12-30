@@ -31,7 +31,7 @@ $helper->syncPages($t); // 1 test
 
 $helper->checkTreeIntegrity($t); // 2 tests
 
-$t->diag('Randomly add 2 or more records by table, and add associations');
+$t->diag('Randomly add 2 records by table, and add associations');
 
 $helper->loremizeDatabase(6, $t);
 
@@ -65,7 +65,7 @@ for($it = 1; $it<=$nbBigIterations; $it++)
 
 	$helper->checkTreeIntegrity($t); // 2 tests
 
-	$t->diag('Randomly add 2 or more records by table');
+	$t->diag('Randomly add 2 records by table');
 
 	$helper->loremizeDatabase(6, $t);
 
