@@ -126,6 +126,8 @@ $.widget('ui.dmZone', {
         {
           ui.placeholder.addClass(ui.item.attr('class')).css('width', ui.item.css('width')).html(ui.item.html());
 				}
+          
+        $('#dm_page div.dm_widgets').addClass('droppable-active');
 				
         sortEvents = [];
       },
@@ -140,6 +142,8 @@ $.widget('ui.dmZone', {
           $(this).parent().dmZone('sortWidgets');
         }
         setTimeout(function() { ui.item.removeClass('dm_dragging'); }, 200);
+          
+        $('#dm_page div.dm_widgets').removeClass('droppable-active');
       }
     });
   },
