@@ -37,6 +37,11 @@ class dmI18n extends sfI18N
    */
   public function __($string, $args = array(), $catalogue = 'messages')
   {
+    if(empty($catalogue))
+    {
+      $catalogue = 'messages';
+    }
+    
     return $this->getMessageFormat()->formatFast($string, $args, $catalogue);
   }
   
@@ -76,6 +81,11 @@ class dmI18n extends sfI18N
     
     // format untranslated string
     return $this->getMessageFormat()->formatFastUntranslated($string, $args);
+  }
+  
+  public function addTranslations($culture, array $translations, $catalogue = 'messages')
+  {
+    return $this->getMessageFormat()->addTranslations($culture, $translations, $catalogue);
   }
 
   /**

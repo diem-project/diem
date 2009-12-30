@@ -8,6 +8,11 @@ class dmAdminI18n extends dmI18n
    */
   public function __($string, $args = array(), $catalogue = 'messages')
   {
+    if(empty($catalogue))
+    {
+      $catalogue = 'messages';
+    }
+    
     $result = $this->__orFalse($string, $args, 'dm');
 
     if (false === $result && $catalogue !== 'dm')
