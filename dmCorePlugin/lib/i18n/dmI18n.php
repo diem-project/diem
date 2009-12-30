@@ -85,7 +85,7 @@ class dmI18n extends sfI18N
   
   public function addTranslations($culture, array $translations, $catalogue = 'messages')
   {
-    return $this->getMessageFormat()->addTranslations($culture, $translations, $catalogue);
+    return $this->getMessageFormat()->addTranslations($culture, $translations, $catalogue, $this->getCulture());
   }
 
   /**

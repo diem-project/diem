@@ -15,7 +15,7 @@ class dmMessageFormat extends sfMessageFormat
    * @param string  $catalogue  get the translation from a particular message catalogue.
    * @return string translated string.
    */
-  public function formatFast($string, array $args = array(), $catalogue)
+  public function formatFast($string, array $args, $catalogue)
   {
     $translated = $this->formatFastOrFalse($string, $args, $catalogue);
     
@@ -27,7 +27,7 @@ class dmMessageFormat extends sfMessageFormat
     return $translated;
   }
   
-  public function formatFastOrFalse($string, array $args = array(), $catalogue)
+  public function formatFastOrFalse($string, array $args, $catalogue)
   {
     // make sure that objects with __toString() are converted to strings
     $string = (string) $string;
@@ -68,13 +68,13 @@ class dmMessageFormat extends sfMessageFormat
     return $this->postscript[0].$this->replaceArgs($string, $args).$this->postscript[1];
   }
   
-  public function addTranslations($culture, array $translations, $catalogue)
+  public function addTranslations($culture, array $translations, $catalogue, $culture)
   {
     $this->loadCatalogue($catalogue);
     
     foreach($translations as $source => $target)
     {
-      $this->messages[$catalogue][$catalogue.$this->culture][$source] = $target;
+      $this->messages[$catalogue][$catalogue.$culture][$source] = $target;
     }
   }
 }
