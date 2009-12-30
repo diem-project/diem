@@ -7,22 +7,22 @@ class dmProjectConfiguration extends sfProjectConfiguration
   {
     parent::setup();
 
-    $this->enablePlugins($this->getDependancePlugins());
+    $this->setDmPluginPaths();
 
-    $this->setPluginPath('dmCorePlugin', dm::getDir().DIRECTORY_SEPARATOR.'dmCorePlugin');
-    $this->enablePlugins('dmCorePlugin');
-
-    $this->setPluginPath('dmUserPlugin', dm::getDir().DIRECTORY_SEPARATOR.'dmUserPlugin');
-    $this->enablePlugins('dmUserPlugin');
-    
-    $this->setPluginPath('dmAlternativeHelperPlugin', dm::getDir().'/dmCorePlugin/lib/plugins/dmAlternativeHelperPlugin');
-    
-    $this->setPluginPath('sfWebBrowserPlugin', dm::getDir().'/dmCorePlugin/lib/plugins/sfWebBrowserPlugin');
+    $this->enablePlugins(array('sfDoctrinePlugin', 'dmCorePlugin', 'dmUserPlugin', 'sfWebBrowserPlugin', 'sfImageTransformPlugin'));
   }
   
-  protected function getDependancePlugins()
+  protected function setDmPluginPaths()
   {
-    return array('sfDoctrinePlugin', 'sfWebBrowserPlugin');
+    foreach(array('dmCorePlugin', 'dmAdminPlugin', 'dmFrontPlugin') as $rootPlugin)
+    {
+      $this->setPluginPath($rootPlugin, dm::getDir().'/'.$rootPlugin);
+    }
+    
+    foreach(array('dmUserPlugin', 'dmAlternativeHelperPlugin', 'sfWebBrowserPlugin', 'sfImageTransformPlugin') as $embeddedPlugin)
+    {
+      $this->setPluginPath($embeddedPlugin, dm::getDir().'/dmCorePlugin/plugins/'.$embeddedPlugin);
+    }
   }
   
   /*
@@ -31,7 +31,7 @@ class dmProjectConfiguration extends sfProjectConfiguration
    */
   public function setWebDirName($webDirName)
   {
-    return $this->setWebDir(sfConfig::get('sf_root_dir').DIRECTORY_SEPARATOR.$webDirName);
+    return $this->setWebDir(sfConfig::get('sf_root_dir').'/'.$webDirName);
   }
   
   public function configureDoctrine(Doctrine_Manager $manager)
@@ -41,7 +41,7 @@ class dmProjectConfiguration extends sfProjectConfiguration
     /*
      * Set up doctrine extensions dir
      */
-    Doctrine_Core::setExtensionsPath(sfConfig::get('dm_core_dir').DIRECTORY_SEPARATOR.'lib'.DIRECTORY_SEPARATOR.'doctrine'.DIRECTORY_SEPARATOR.'extension');
+    Doctrine_Core::setExtensionsPath(sfConfig::get('dm_core_dir').'/lib/doctrine/extension');
 
     /*
      * Configure inheritance

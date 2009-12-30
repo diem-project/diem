@@ -13,8 +13,10 @@ require_once(dm::getDir().'/dmCorePlugin/lib/config/dmApplicationConfiguration.p
 abstract class dmAdminApplicationConfiguration extends dmApplicationConfiguration
 {  
 
-  protected function getDmPlugins()
+  public function setup()
   {
-    return array('dmAdminPlugin');
+    parent::setup();
+    
+    $this->enablePlugins('dmAdminPlugin');
   }
 }

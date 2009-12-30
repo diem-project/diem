@@ -43,7 +43,7 @@ abstract class dmApplicationConfiguration extends sfApplicationConfiguration
       return 4;
     }
     // dmCore embedded plugin configuration
-    elseif (0 === strpos($configPath, sfConfig::get('dm_core_dir').'/lib/plugins'))
+    elseif (0 === strpos($configPath, sfConfig::get('dm_core_dir').'/plugins'))
     {
       return 3;
     }
@@ -52,7 +52,7 @@ abstract class dmApplicationConfiguration extends sfApplicationConfiguration
     {
       return 1;
     }
-    // dmCore configuration
+    // symfony configuration
     elseif (0 === strpos($configPath, sfConfig::get('sf_symfony_lib_dir')))
     {
       return 0;
@@ -66,11 +66,6 @@ abstract class dmApplicationConfiguration extends sfApplicationConfiguration
     return 4;
   }
   
-  /*
-   * Wich dmPlugins are usefull for this application ?
-   * @returns array plugin names
-   */
-  abstract protected function getDmPlugins();
   
   /**
    * @see sfProjectConfiguration
@@ -98,24 +93,5 @@ abstract class dmApplicationConfiguration extends sfApplicationConfiguration
      * Now that we have the project config, we can configure the doctrine cache
      */
     $this->configureDoctrineCache(Doctrine_Manager::getInstance());
-  }
-
-  public function setup()
-  {
-    parent::setup();
-
-    $dmPlugins = $this->getDmPlugins();
-    
-    if (isset($dmPlugins['dmFrontPlugin']) && isset($dmPlugins['dmAdminPlugin']))
-    {
-      throw new Exception('Can not include both dmFrontPlugin and dmAdminPlugin');
-    }
-
-    foreach($dmPlugins as $dmPlugin)
-    {
-      $this->setPluginPath($dmPlugin, dm::getDir().'/'.$dmPlugin);
-    }
-
-    $this->enablePlugins($dmPlugins);
   }
 }
