@@ -8,15 +8,4 @@ class frontConfiguration extends dmFrontApplicationConfiguration
   {
   }
   
-  public function setCacheDir($cacheDir)
-  {
-    $cacheDir = sys_get_temp_dir().'/dm_test_cache';
-    
-    if (!is_dir($cacheDir))
-    {
-      mkdir($cacheDir);
-    }
-    
-    return parent::setCacheDir($cacheDir);
-  }
 }

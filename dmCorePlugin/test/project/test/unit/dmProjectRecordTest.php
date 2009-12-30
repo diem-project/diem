@@ -4,7 +4,7 @@ require_once(realpath(dirname(__FILE__).'/../../..').'/unit/helper/dmUnitTestHel
 $helper = new dmUnitTestHelper();
 $helper->boot();
 
-$t = new lime_test(110);
+$t = new lime_test(90);
 
 $helper->loremizeDatabase(15, $t);
 
@@ -24,8 +24,11 @@ if (!$categ->Domains->count())
 }
 if (!$tag->Posts->count())
 {
-  $tag->Posts[] = dmDb::table('DmTestPost')->findOne();
-  $tag->save();
+  dmDb::table('DmTestPostTag')->create(array(
+    'post_id' => $post->id,
+    'tag_id' => $tag->id
+  ))->save();
+  $tag->refreshRelated('Posts');
   $post->refreshRelated('Tags');
 }
 
@@ -176,61 +179,3 @@ foreach(dmDb::table('DmTestTag')->findAll() as $_tag)
 //$postId = $comment->getRelatedRecord('DmTestPost')->id;
 //  $t->is($comment->getRelatedRecordId('DmTestPost'), $postId, 'DmTestComment has related DmTestPost id');
 
-$t->diag('Ancestor record tests');
-
-  try { $fruit->getAncestorRecord('DmTestPost'); $ok = false; }
-  catch(dmRecordException $e) { $ok = true; }
-  $t->ok($ok, 'Fruit has no ancestor DmTestPost');
-
-  try { $tag->getAncestorRecord('DmTestCateg'); $ok = false; }
-  catch(dmRecordException $e) { $ok = true; }
-  $t->ok($ok, 'DmTestTag has no ancestor DmTestCateg');
-
-  try { $categ->getAncestorRecord('DmTestPost'); $ok = false; }
-  catch(dmRecordException $e) { $ok = true; }
-  $t->ok($ok, 'DmTestCateg has no ancestor DmTestPost');
-
-  $t->isa_ok($categ->getAncestorRecord('DmTestDomain'), 'DmTestDomain', 'DmTestCateg has ancestor DmTestDomain');
-
-  $t->isa_ok($post->getAncestorRecord('DmTestCateg'), 'DmTestCateg', 'DmTestPost has ancestor DmTestCateg');
-
-  $t->isa_ok($post->getAncestorRecord('DmTestDomain'), 'DmTestDomain', 'DmTestPost has ancestor DmTestDomain');
-
-  $t->isa_ok($comment->getAncestorRecord('DmTestPost'), 'DmTestPost', 'DmTestComment has ancestor DmTestPost');
-
-  $t->isa_ok($comment->getAncestorRecord('DmTestCateg'), 'DmTestCateg', 'DmTestComment has ancestor DmTestCateg');
-
-  $t->isa_ok($comment->getAncestorRecord('DmTestDomain'), 'DmTestDomain', 'DmTestComment has ancestor DmTestDomain');
-
-  $t->is($fruit->getAncestorRecord('DmTestFruit'), $fruit, 'DmTestFruit ancestor is itself');
-
-  $t->is($post->getAncestorRecord('DmTestPost'), $post, 'DmTestPost ancestor is itself');
-
-$t->diag('Ancestor record id tests');
-
-  try { $fruit->getAncestorRecordId('DmTestPost'); $ok = false; }
-  catch(dmRecordException $e) { $ok = true; }
-  $t->ok($ok, 'Fruit has no ancestor DmTestPost');
-
-  try { $tag->getAncestorRecordId('DmTestCateg'); $ok = false; }
-  catch(dmRecordException $e) { $ok = true; }
-  $t->ok($ok, 'DmTestTag has no ancestor DmTestCateg');
-
-$domainId = $categ->getAncestorRecord('DmTestDomain')->id;
-  $t->is($categ->getAncestorRecordId('DmTestDomain'), $domainId, 'DmTestCateg has ancestor DmTestDomain id');
-
-$categId = $post->getAncestorRecord('DmTestCateg')->id;
-  $t->is($post->getAncestorRecordId('DmTestCateg'), $categId, 'DmTestPost has related DmTestCateg id');
-
-$domainId = $post->getAncestorRecord('DmTestDomain')->id;
-  $t->is($post->getAncestorRecordId('DmTestDomain'), $domainId, 'DmTestPost has related DmTestDomain id');
-
-$categId = $comment->getAncestorRecord('DmTestCateg')->id;
-  $t->is($comment->getAncestorRecordId('DmTestCateg'), $categId, 'DmTestComment has related DmTestCateg id');
-
-$domainId = $comment->getAncestorRecord('DmTestDomain')->id;
-  $t->is($comment->getAncestorRecordId('DmTestDomain'), $domainId, 'DmTestComment has related DmTestDomain id');
-
-  $t->is($tag->getAncestorRecordId('DmTestTag'), $tag->id, 'DmTestTag has related DmTestTag id');
-
-  $t->is($post->getAncestorRecordId('DmTestPost'), $post->id, 'DmTestPost has related DmTestPost id');
