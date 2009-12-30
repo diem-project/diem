@@ -32,7 +32,7 @@ class BasedmAuthActions extends dmBaseActions
     $this->form->changeToHidden('remember');
     $this->form->setDefault('remember', true);
 
-    $this->setLayout(dmOs::join(dm::getDir(), 'dmUserPlugin/modules/dmAuth/templates/layout'));
+    $this->setLayout(dmOs::join(sfConfig::get('dm_core_dir'), 'plugins/dmUserPlugin/modules/dmAuth/templates/layout'));
 
     if ($request->isMethod('post'))
     {

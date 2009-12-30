@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-require_once(dm::getDir().'/dmUserPlugin/modules/dmAuth/lib/BasedmAuthActions.class.php');
+require_once(sfConfig::get('dm_core_dir').'/plugins/dmUserPlugin/modules/dmAuth/lib/BasedmAuthActions.class.php');
 
 /**
  *
