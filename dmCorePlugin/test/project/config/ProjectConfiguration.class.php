@@ -15,7 +15,8 @@ class ProjectConfiguration extends dmProjectConfiguration
     
     $this->enablePlugins(array(
       'dmAlternativeHelperPlugin',
-      'dmContactPlugin'
+      'dmContactPlugin',
+      'dmFlowPlayerPlugin'
     ));
 
     $this->setWebDir(realpath(dirname(__FILE__).'/../public_html'));
@@ -27,6 +28,7 @@ class ProjectConfiguration extends dmProjectConfiguration
   {
     $this->pluginConfigurations['dmCorePlugin']->connectTests();
     $this->pluginConfigurations['dmAlternativeHelperPlugin']->connectTests();
+    $this->pluginConfigurations['dmFlowPlayerPlugin']->connectTests();
     $this->pluginConfigurations['dmContactPlugin']->connectTests();
   }
   
