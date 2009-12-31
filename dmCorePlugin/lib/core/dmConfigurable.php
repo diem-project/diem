@@ -109,5 +109,26 @@ abstract class dmConfigurable
 
     return $this;
   }
+
+  /**
+   * Gets the option or sets it if $value is not $setIfNot.
+   *
+   * @param string $name      The option name
+   * @param mixed  $value     The value
+   * @param mixed  $setIfNot  Set the option if the value is not
+   *
+   * @return dmConfigurable The current object instance
+   *
+   * @throws InvalidArgumentException when a option is not supported
+   */
+  public function getOrSetOption($name, $value, $setIfNot = null)
+  {
+    if($value === $setIfNot)
+    {
+      return $this->getOption($name);
+    }
+
+    return $this->setOption($name, $value);
+  }
   
 }

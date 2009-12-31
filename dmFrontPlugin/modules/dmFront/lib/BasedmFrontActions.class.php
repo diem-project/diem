@@ -32,19 +32,26 @@ class BasedmFrontActions extends dmFrontBaseActions
       // else use main.error404 page
       $this->page = dmDb::table('DmPage')->fetchError404();
     }
-    
+
+    $this->secure();
+     
+    return $this->renderPage();
+  }
+
+  protected function secure()
+  {
     if (
           // the site is not active and requires the view_site permission to be displayed
           (!dmConfig::get('site_active') && !$this->getUser()->can('view_site'))
           // the page is secured and requires authentication to be displayed
       ||  ($this->page->get('is_secure') && !$this->getUser()->isAuthenticated())
+          // the page is secured and the user has not required credentials
+      ||  ($this->page->get('is_secure') && $this->page->get('credentials') && !$this->getUser()->can($this->page->get('credentials')))
     )
     {
       // use main.login page
       $this->page = dmDb::table('DmPage')->fetchLogin();
     }
-     
-    return $this->renderPage();
   }
   
   public function executeError404(dmWebRequest $request)

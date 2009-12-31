@@ -18,6 +18,7 @@ DmPage:
     auto_mod:               { type: string(6), notnull: true, default: 'snthdk' } # slug, name, title, h1, description, keywords
     is_active:              { type: boolean, notnull: true, default: true }
     is_secure:              { type: boolean, notnull: true, default: false } # requires authentication
+    credentials:            { type: string(255), notnull: false }
     is_indexable:           { type: boolean, notnull: true, default: true }
   indexes:
     recordModuleAction:

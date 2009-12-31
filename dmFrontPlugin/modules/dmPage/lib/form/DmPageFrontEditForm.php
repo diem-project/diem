@@ -9,7 +9,7 @@ class DmPageFrontEditForm extends DmPageForm
   {
     parent::configure();
     
-    $this->useFields(array('id', 'module', 'action', 'slug', 'name', 'title', 'h1', 'description', 'keywords', 'is_active', 'is_secure', 'is_indexable'), false);
+    $this->useFields(array('id', 'module', 'action', 'slug', 'name', 'title', 'h1', 'description', 'keywords', 'is_active', 'is_secure', 'credentials', 'is_indexable'), false);
     
     if(!sfConfig::get('dm_seo_use_keywords'))
     {
@@ -74,6 +74,8 @@ class DmPageFrontEditForm extends DmPageForm
       'h1'        => $this->object->h1,
       'description' => $this->object->description,
       'is_active' => $this->object->is_active,
+      'is_secure' => $this->object->is_secure,
+      'credentials' => $this->object->credentials,
       'is_indexable' => $this->object->is_indexable,
       'parent_id' => $this->object->getNodeParentId()
     ));

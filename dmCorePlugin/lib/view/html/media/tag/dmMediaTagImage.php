@@ -22,12 +22,12 @@ class dmMediaTagImage extends dmMediaTag
   
   public function htmlWidth($v)
   {
-    return $this->set('html_width', strpos($v, '%') ? $v : max(0, (int)$v));
+    return $this->setOption('html_width', strpos($v, '%') ? $v : max(0, (int)$v));
   }
 
   public function htmlHeight($v)
   {
-    return $this->set('html_height', strpos($v, '%') ? $v : max(0, (int)$v));
+    return $this->setOption('html_height', strpos($v, '%') ? $v : max(0, (int)$v));
   }
 
   public function htmlSize($width, $height = null)
@@ -50,17 +50,17 @@ class dmMediaTagImage extends dmMediaTag
       ));
     }
 
-    return $this->set('resize_method', $method);
+    return $this->setOption('resize_method', $method);
   }
 
   public function quality($v)
   {
-    return $this->set('resize_quality', (int) $v);
+    return $this->setOption('resize_quality', (int) $v);
   }
   
   public function overlay(dmMediaTagImage $image, $position = 'center')
   {
-    return $this->set('overlay', array(
+    return $this->setOption('overlay', array(
       'image' => $image,
       'position' => $position
     ));
@@ -73,12 +73,12 @@ class dmMediaTagImage extends dmMediaTag
       throw new dmException(sprintf('%s is not a valid hexadecimal color', $v));
     }
     
-    return $this->set('background', $hexColor);
+    return $this->setOption('background', $hexColor);
   }
 
   public function alt($v)
   {
-    return $this->set('alt', (string)$v);
+    return $this->setOption('alt', (string)$v);
   }
 
   public function filter($filterName, $filterOptions = array())
@@ -91,7 +91,7 @@ class dmMediaTagImage extends dmMediaTag
       ));
     }
     
-    return $this->set('filter', (string) $filterName);
+    return $this->setOption('filter', (string) $filterName);
   }
 
   public function render()

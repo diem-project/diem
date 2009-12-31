@@ -16,12 +16,12 @@ abstract class dmMediaTag extends dmHtmlTag
   
   public function width($v)
   {
-    return $this->set('width', max(0, (int)$v));
+    return $this->setOption('width', max(0, (int)$v));
   }
 
   public function height($v)
   {
-    return $this->set('height', max(0, (int)$v));
+    return $this->setOption('height', max(0, (int)$v));
   }
 
   public function size($width, $height = null)

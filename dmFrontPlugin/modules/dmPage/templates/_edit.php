@@ -32,11 +32,13 @@ echo £('div.dm.dm_page_edit_wrap',
         $form['action']->renderRow()
       )
     ).
-
     £('div#dm_page_edit_publication',
       £('ul.dm_form_elements',
         $form['is_active']->renderRow().
         $form['is_secure']->renderRow().
+        £('li.dm_form_element.credentials.clearfix'.($page->isSecure ? '' : '.none'),
+          $form['credentials']->label()->field()->error()
+        ).
         $form['is_indexable']->renderRow()
       )
     )

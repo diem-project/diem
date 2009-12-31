@@ -62,30 +62,28 @@ class dmSecurityUser extends sfBasicSecurityUser
   {
     if (empty($credentials))
     {
-      $can = true;
+      return true;
     }
     elseif (!$this->getUser())
     {
-      $can = false;
+      return false;
     }
     elseif($this->isSuperAdmin)
     {
-      $can = true;
-    }
-    elseif(is_string($credentials))
-    {
-      $can = in_array($credentials, $this->credentials);
-    }
-    elseif(is_array($credentials))
-    {
-      $can = (bool) count(array_intersect($credentials, $this->credentials));
-    }
-    else
-    {
-      throw new dmException('Bad credentials : '.$credentials);
+      return true;
     }
 
-    return $can;
+    if(is_string($credentials))
+    {
+      $credentials = array_map('trim', explode(',', $credentials));
+    }
+    
+    if(is_array($credentials))
+    {
+      return (bool) count(array_intersect($credentials, $this->credentials));
+    }
+
+    throw new dmException('Bad credentials : '.$credentials);
   }
 
   /**

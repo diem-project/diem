@@ -32,7 +32,7 @@ abstract class dmBaseLinkTag extends dmHtmlTag
    */
   public function text($v)
   {
-    return $this->set('text', (string) $v);
+    return $this->setOption('text', (string) $v);
   }
 
   /*
@@ -41,7 +41,7 @@ abstract class dmBaseLinkTag extends dmHtmlTag
    */
   public function title($v)
   {
-    return $this->set('title', (string) $v);
+    return $this->setOption('title', (string) $v);
   }
 
   /*
@@ -52,7 +52,6 @@ abstract class dmBaseLinkTag extends dmHtmlTag
   {
     return $this->text($v)->title($v);
   }
-
 
   /*
    * Set link target
@@ -65,7 +64,7 @@ abstract class dmBaseLinkTag extends dmHtmlTag
       $v = '_'.$v;
     }
 
-    return $this->set('target', $v);
+    return $this->setOption('target', strtolower($v));
   }
 
   /*
@@ -74,7 +73,7 @@ abstract class dmBaseLinkTag extends dmHtmlTag
    */
   public function anchor($v)
   {
-    return $this->set('anchor', trim((string) $v, '#'));
+    return $this->setOption('anchor', trim((string) $v, '#'));
   }
 
   /*
@@ -97,7 +96,7 @@ abstract class dmBaseLinkTag extends dmHtmlTag
       $params[$key] = $value;
     }
 
-    return $this->set('params', array_merge($this->get('params', array()), $params));
+    return $this->setOption('params', array_merge($this->get('params', array()), $params));
   }
 
   public function render()

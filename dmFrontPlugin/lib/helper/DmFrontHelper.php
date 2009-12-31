@@ -5,15 +5,7 @@
  */
 function dm_current($source = null, $return = '.dm_current')
 {
-  if(($page = dmDb::table('DmPage')->findOneBySource($source)) && ($currentPage = dmContext::getInstance()->getPage()))
-  {
-    if ($currentPage->get('id') === $page->get('id'))
-    {
-      return $return;
-    }
-  }
-
-  return null;
+  return (($page = dmContext::getInstance()->getPage()) && $page->isSource($source)) ? $return : null;
 }
 
 /*
@@ -21,15 +13,7 @@ function dm_current($source = null, $return = '.dm_current')
  */
 function dm_parent($source = null, $return = '.dm_parent')
 {
-  if(($page = dmDb::table('DmPage')->findOneBySource($source)) && ($currentPage = dmContext::getInstance()->getPage()))
-  {
-    if($currentPage->getNode()->isDescendantOf($page))
-    {
-      return $return;
-    }
-  }
-
-  return null;
+  return (($page = dmContext::getInstance()->getPage()) && $page->isDescendantOfSource($source)) ? $return : null;
 }
 
 /*
@@ -37,13 +21,5 @@ function dm_parent($source = null, $return = '.dm_parent')
  */
 function dm_current_or_parent($source = null, $return = '.dm_current_or_parent')
 {
-  if(($page = dmDb::table('DmPage')->findOneBySource($source)) && ($currentPage = dmContext::getInstance()->getPage()))
-  {
-    if($currentPage->get('id') === $page->get('id') || $currentPage->getNode()->isDescendantOf($page))
-    {
-      return $return;
-    }
-  }
-
-  return null;
+  return (($page = dmContext::getInstance()->getPage()) && ($page->isSource($source) || $page->isDescendantOfSource($source))) ? $return : null;
 }

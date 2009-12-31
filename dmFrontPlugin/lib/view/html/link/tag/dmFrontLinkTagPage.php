@@ -24,7 +24,7 @@ class dmFrontLinkTagPage extends dmFrontLinkTag
       throw new dmException(sprintf('%s is not a valid DmPage', $this->page));
     }
     
-    $this->set('tag', 'a');
+    $this->setOption('tag', 'a');
     
     if ($this->options['use_page_title'])
     {
@@ -36,7 +36,7 @@ class dmFrontLinkTagPage extends dmFrontLinkTag
   
   public function currentSpan($bool)
   {
-    return $this->set('current_span', (bool) $bool);
+    return $this->setOption('current_span', (bool) $bool);
   }
   
   protected function getBaseHref()

@@ -56,7 +56,14 @@ abstract class dmHtmlTag extends dmConfigurable
     }
     elseif (2 === func_num_args())
     {
-      $this->setOption($name, $value);
+      if(method_exists($this, $name))
+      {
+        $this->$name($value);
+      }
+      else
+      {
+        $this->setOption($name, $value);
+      }
     }
     /*
      * As value is null,

@@ -46,6 +46,10 @@
 			{
 				$('#dm_page_'+fieldName, self.$form).maxLength(maxLengths[fieldName]);
 			}
+
+      self.$form.find('input#dm_page_front_edit_form_is_secure').bind('click', function() {
+        $(this).parent().parent().find('> li.credentials')[$(this).attr('checked') ? 'show' : 'hide']();
+      });
     }
     
   });
