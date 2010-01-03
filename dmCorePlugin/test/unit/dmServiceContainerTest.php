@@ -7,7 +7,7 @@ $helper->boot('front');
 $isFront = sfConfig::get('dm_context_type') == 'front';
 $sc = $helper->get('service_container');
 
-$t = new lime_test(2 + count(sfConfig::get('dm_i18n_cultures')) + ($isFront ? count(sfConfig::get('dm_theme_list')) : 0));
+$t = new lime_test(5 + count(sfConfig::get('dm_i18n_cultures')) + ($isFront ? count(sfConfig::get('dm_theme_list')) : 0));
 
 $user  = $helper->get('user');
 $theme = $user->getTheme();
@@ -31,3 +31,16 @@ if($isFront)
     $t->is($sc->getParameter('user.theme'), $user->getTheme(), 'theme is synchronized to '.$user->getTheme());
   }
 }
+
+class dmOtherBrowser extends dmBrowser
+{
+
+}
+
+$defaultBrowserClass = $sc->getParameter('browser.class');
+
+$t->isa_ok($sc->get('browser'), $defaultBrowserClass, 'browser service is a '.$defaultBrowserClass);
+
+$t->isa_ok($sc->get('browser', 'dmOtherBrowser'), 'dmOtherBrowser', 'browser service is a dmOtherBrowser');
+
+$t->isa_ok($sc->get('browser'), $defaultBrowserClass, 'browser service is a '.$defaultBrowserClass);

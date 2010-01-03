@@ -173,13 +173,12 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
     $this->setParameter('controller.action', $event['action']);
   }
   
-  
   /*
    * Compatibility with sfContext
    */
-  public function get($name)
+  public function get($name, $class = null)
   {
-    return $this->getService($name);
+    return $this->getService($name, $class);
   }
   
   /**
@@ -252,7 +251,7 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
    *
    * @throw InvalidArgumentException if the service is not defined
    */
-  public function getService($id)
+  public function getService($id, $class = null)
   {
     if (isset($this->services[$id]))
     {
@@ -261,7 +260,20 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
     
     if (!empty($id) && method_exists($this, $method = 'get'.dmString::camelize($id).'Service'))
     {
-      return $this->$method();
+      if (null !== $class)
+      {
+        $defaultClass = $this->getParameter($id.'.class');
+        $this->setParameter($id.'.class', $class);
+      }
+
+      $service = $this->$method();
+
+      if (null !== $class)
+      {
+        $this->setParameter($id.'.class', $defaultClass);
+      }
+
+      return $service;
     }
 
     throw new InvalidArgumentException(sprintf('The service "%s" does not exist.', $id));

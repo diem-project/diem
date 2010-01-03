@@ -5,23 +5,21 @@ class dmCodeEditorActions extends dmFrontBaseActions
 
   public function executeLaunch(dmWebRequest $request)
   {
-    $this->fileMenu = new dmHtmlMenu($this->getFileMenu());
-    
-    $assetAliases = include($this->context->get('config_cache')->checkConfig('config/dm/assets.yml'));
+    $this->fileMenu = $this->getService('front_code_editor_file_menu')->build();
 
     $js =
-    file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), $assetAliases['js.lib.ui-tabs'])).
+    file_get_contents($this->getHelper()->getJavascriptFullPath('lib.ui-tabs')).
     dmJsMinifier::transform(
-    file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), $assetAliases['js.core.codeArea'])).';'.
-    file_get_contents(dmOs::join(sfConfig::get('sf_web_dir'), $assetAliases['js.front.codeEditor']))
+      file_get_contents($this->getHelper()->getJavascriptFullPath('core.codeArea')).
+      file_get_contents($this->getHelper()->getJavascriptFullPath('front.codeEditor'))
     );
     
     return $this->renderJson(array(
       'html' => $this->getPartial('dmCodeEditor/launch'),
       'js' => $js,
       'stylesheets' => array(
-        $this->context->get('helper')->getStylesheetWebPath('lib.ui-tabs'),
-        $this->context->get('helper')->getStylesheetWebPath('front.codeEditor')
+        $this->getHelper()->getStylesheetWebPath('lib.ui-tabs'),
+        $this->getHelper()->getStylesheetWebPath('front.codeEditor')
       )
     ));
   }
@@ -131,88 +129,6 @@ class dmCodeEditorActions extends dmFrontBaseActions
   protected function decodePath($path)
   {
     return str_replace(array('_DOT_', '_SLASH_'), array('.', '/'), $path);
-  }
-
-  protected function getFileMenu()
-  {
-
-    $moduleDirs = sfFinder::type('dir')->maxDepth(0)->in(sfConfig::get('sf_app_module_dir'));
-    natcasesort($moduleDirs);
-
-    $controllers = array();
-    $templates = array();
-    foreach($moduleDirs as $moduleDir)
-    {
-      if(count($found = sfFinder::type('file')->in($moduleDir.'/actions')))
-      {
-        natcasesort($found);
-        $files = array();
-        foreach($found as $path)
-        {
-          $files[] = array(
-            'name' => basename($path),
-            'anchor' => dmProject::unRootify($path)
-          );
-        }
-        $controllers[] = array(
-          'name' => basename($moduleDir),
-          'menu' => $files
-        );
-      }
-
-      if(count($found = sfFinder::type('file')->in($moduleDir.'/templates')))
-      {
-        natcasesort($found);
-        $files = array();
-        foreach($found as $path)
-        {
-          $files[] = array(
-            'name' => str_replace($moduleDir.'/templates/', '', $path),
-            'anchor' => dmProject::unRootify($path)
-          );
-        }
-        $templates[] = array(
-          'name' => basename($moduleDir),
-          'menu' => $files
-        );
-      }
-    }
-
-    $cssDir = $this->getUser()->getTheme()->getFullPath('css');
-    $cssFiles = sfFinder::type('file')->name('*.css')->in($cssDir);
-    natcasesort($cssFiles);
-    $stylesheets = array();
-    foreach($cssFiles as $cssFile)
-    {
-      if (dmProject::isInProject($cssFile))
-      {
-        $stylesheets[] = array(
-          'name' => str_replace($cssDir.'/', '', $cssFile),
-          'anchor' => dmProject::unRootify($cssFile)
-        );
-      }
-    }
-
-    return array(
-    array(
-        'name' => $this->context->getI18n()->__('Controllers'),
-        'menu' => $controllers
-    ),
-    array(
-        'name' => $this->context->getI18n()->__('Templates'),
-        'menu' => $templates
-    ),
-    array(
-        'name' => $this->context->getI18n()->__('Stylesheets'),
-        'menu' => array(
-    array(
-            'name' => $this->getUser()->getTheme()->getName(),
-            'menu' => $stylesheets
-    )
-    )
-    ),
-    );
-
   }
 
 }

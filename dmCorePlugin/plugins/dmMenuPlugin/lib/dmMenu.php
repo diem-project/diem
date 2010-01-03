@@ -1,0 +1,526 @@
+<?php
+
+class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorAggregate
+{
+  protected
+  $serviceContainer,
+  $dispatcher,
+  $helper,
+  $user,
+  $i18n,
+  $name,
+  $label,
+  $link,
+  $level,
+  $num,
+  $parent,
+  $secure,
+  $children     = array(),
+  $credentials  = array();
+
+  public function __construct(dmBaseServiceContainer $serviceContainer, $options = array())
+  {
+    $this->serviceContainer = $serviceContainer;
+
+    $this->dispatcher = $serviceContainer->getService('dispatcher');
+    $this->helper     = $serviceContainer->getService('helper');
+    $this->user       = $serviceContainer->getService('user');
+    $this->i18n       = $serviceContainer->getService('i18n');
+
+    $this->initialize($options);
+  }
+
+  protected function initialize(array $options)
+  {
+    $this->configure($options);
+  }
+
+  public function build()
+  {
+    // override me to build your menu
+  }
+
+  public function getDefaultOptions()
+  {
+    return array(
+      'ul_class'        => null,
+      'li_class'        => null,
+      'show_id'          => false,
+      'path_separator'  => ' > ',
+      'show_children'   => true
+    );
+  }
+
+  /*
+   * Setters
+   */
+
+  public function name($name = null)
+  {
+    $this->name = $name;
+
+    return $this;
+  }
+
+  public function label($label)
+  {
+    $this->label = $label;
+
+    return $this;
+  }
+
+  public function link($link)
+  {
+    if(!$link instanceof dmLinkTag && !empty($link))
+    {
+      $link = $this->helper->£link($link);
+    }
+
+    $this->link = $link;
+
+    return $this;
+  }
+
+  public function secure($bool)
+  {
+    return $this->setOption('secure', $bool);
+  }
+
+  public function credentials($credentials)
+  {
+    return $this->setOption('credentials', $credentials);
+  }
+  
+  public function ulClass($class)
+  {
+    return $this->setOption('ul_class', $class);
+  }
+
+  public function liClass($class)
+  {
+    return $this->setOption('li_class', $class);
+  }
+
+  /*
+   * Display ID html attributes ?
+   */
+  public function showId($bool)
+  {
+    return $this->setOption('show_id', $bool);
+  }
+
+  public function showChildren($bool)
+  {
+    return $this->setOption('show_children', $bool);
+  }
+
+  public function level($level = null)
+  {
+    $this->level = $level;
+
+    return $this;
+  }
+
+  public function parent(dmMenu $parent)
+  {
+    $this->parent = $parent;
+
+    return $this;
+  }
+
+  public function children(array $children = null)
+  {
+    $this->children = $children;
+
+    return $this;
+  }
+
+  public function num($num = null)
+  {
+    $this->num = $num;
+
+    return $this;
+  }
+
+  /*
+   * Getters
+   */
+
+  public function getName()
+  {
+    return $this->name;
+  }
+
+  public function getLabel()
+  {
+    return null === $this->label ? $this->getName() : $this->label;
+  }
+
+  public function getLink()
+  {
+    return $this->link;
+  }
+
+  public function end()
+  {
+    return $this->parent;
+  }
+
+  public function getLevel()
+  {
+    if (null === $this->level)
+    {
+      $this->level = -1;
+      $obj = $this;
+
+      while ($obj = $obj->getParent())
+      {
+      	++$this->level;
+      }
+    }
+
+    return $this->level;
+  }
+
+  public function getRoot()
+  {
+    return $this->parent ? $this->parent->getRoot() : $this;
+  }
+
+  public function getParent(dmMenu $parent = null)
+  {
+    return $this->parent;
+  }
+
+  public function getChildren()
+  {
+    return $this->children;
+  }
+  
+  public function getNum($num = null)
+  {
+    return $this->num;
+  }
+
+  public function getFirstChild()
+  {
+    return current($this->children);
+  }
+
+  public function getLastChild()
+  {
+    return end($this->children);
+  }
+
+  public function getChild($name)
+  {
+    if (!isset($this->children[$name]))
+    {
+      $this->addChild($name);
+    }
+
+    return $this->children[$name];
+  }
+
+  /*
+   * Checks
+   */
+
+  public function checkUserAccess()
+  {
+    if ($this->getOption('secure') && !$this->user->isAuthenticated())
+    {
+      return false;
+    }
+
+    return $this->user->can($this->getOption('credentials'));
+  }
+
+  public function hasChildren()
+  {
+    $children = array();
+
+    if(!empty($this->children))
+    {
+      foreach ($this->children as $child)
+      {
+        if ($child->checkUserAccess())
+        {
+          $children[] = $child;
+        }
+      }
+    }
+
+    return !empty($children);
+  }
+
+  /*
+   * Manipulation
+   */
+
+  public function addChild($child, $link = null, $options = array())
+  {
+    if (!$child instanceof dmMenu)
+    {
+      $child = $this->serviceContainer->getService('menu', get_class($this))->name($child);
+    }
+
+    return $this->children[$child->getName()] = $child
+    ->link($link)
+    ->num($this->count() + 1)
+    ->parent($this);
+  }
+
+  public function removeChild($child)
+  {
+    if($child instanceof dmMenu)
+    {
+      $child = $child->getName();
+    }
+    
+    unset($this->children[$child]);
+
+    return $this;
+  }
+
+  /*
+   * Rendering
+   */
+
+  public function __toString()
+  {
+    try
+    {
+      return (string) $this->render();
+    }
+    catch (Exception $e)
+    {
+      return $e->getMessage();
+    }
+  }
+
+  public function render()
+  {
+    $html = '';
+
+    if ($this->checkUserAccess() && $this->hasChildren())
+    {
+      $html = $this->renderUlOpenTag();
+
+      foreach ($this->children as $child)
+      {
+        $html .= $child->renderChild();
+      }
+
+      $html .= '</ul>';
+    }
+
+    return $html;
+  }
+
+  protected function renderUlOpenTag()
+  {
+    $class  = $this->getOption('ul_class');
+    $id     = $this->getOption('show_id') ? dmString::slugify($this->name.'-menu') : null;
+
+    return '<ul'.($id ? ' id="'.$id.'"' : '').($class ? ' class="'.$class.'"' : '').'>';
+  }
+
+  public function renderChild()
+  {
+    $html = '';
+    
+    if ($this->checkUserAccess())
+    {
+      $html .= $this->renderLiOpenTag();
+
+      $html .= $this->renderChildBody();
+
+      if ($this->hasChildren() && $this->getOption('show_children'))
+      {
+        $html .= $this->render();
+      }
+
+      $html .= '</li>';
+    }
+
+    return $html;
+  }
+
+  protected function renderLiOpenTag()
+  {
+    $classes  = array();
+    $id       = $this->getOption('show_id') ? dmString::slugify($this->getRoot()->getName().'-'.$this->getName()) : null;
+
+    if ($this->isFirst())
+    {
+      $classes[] = 'first';
+    }
+    if ($this->isLast())
+    {
+      $classes[] = 'last';
+    }
+    if ($this->getOption('li_class'))
+    {
+      $classes[] = $this->getOption('li_class');
+    }
+
+    return '<li'.($id ? ' id="'.$id.'"' : '').(!empty($classes) ? ' class="'.implode(' ', $classes).'"' : '').'>';
+  }
+
+  public function renderChildBody()
+  {
+    return $this->link ? $this->renderLink() : $this->renderLabel();
+  }
+
+  public function renderLink()
+  {
+    return $this->link->text($this->i18n->__($this->getLabel()))->render();
+  }
+
+  public function renderLabel()
+  {
+    return $this->i18n->__($this->getLabel());
+  }
+
+  public function getPathAsString()
+  {
+    $children = array();
+    $obj = $this;
+
+    do
+    {
+    	$children[] = $obj->renderLabel();
+    }
+    while ($obj = $obj->getParent());
+
+    return implode($this->getOption('path_separator'), array_reverse($children));
+  }
+
+  public function callRecursively()
+  {
+    $args = func_get_args();
+    $arguments = $args;
+    unset($arguments[0]);
+
+    call_user_func_array(array($this, $args[0]), $arguments);
+
+    foreach ($this->children as $child)
+    {
+      call_user_func_array(array($child, 'callRecursively'), $args);
+    }
+
+    return $this;
+  }
+
+  public function toArray()
+  {
+    $array = array(
+      'name'      => $this->getName(),
+      'level'     => $this->getLevel(),
+      'options'   => $this->getOptions(),
+      'children'  => array()
+    );
+    
+    foreach ($this->children as $key => $child)
+    {
+      $array['children'][$key] = $child->toArray();
+    }
+    
+    return $array;
+  }
+
+  public function fromArray($array)
+  {
+    $this->name($array['name']);
+    
+    if (isset($array['level']))
+    {
+      $this->level($array['level']);
+    }
+    if (isset($array['options']))
+    {
+      $this->setOptions($array['options']);
+    }
+
+    if (isset($array['children']))
+    {
+      foreach ($array['children'] as $name => $child)
+      {
+        $this->addChild($name)->fromArray($child);
+      }
+    }
+
+    return $this;
+  }
+
+  public function isFirst()
+  {
+    return 1 === $this->num;
+  }
+
+  public function isLast()
+  {
+    return $this->parent && ($this->parent->count() === $this->num);
+  }
+
+  /*
+   * Interfaces implementations
+   */
+
+  public function count()
+  {
+    return count($this->children);
+  }
+
+  public function getIterator()
+  {
+    return new ArrayObject($this->children);
+  }
+
+  public function current()
+  {
+    return current($this->children);
+  }
+
+  public function next()
+  {
+    return next($this->children);
+  }
+
+  public function key()
+  {
+    return key($this->children);
+  }
+
+  public function valid()
+  {
+    return false !== $this->current();
+  }
+
+  public function rewind()
+  {
+    return reset($this->children);
+  }
+
+  public function offsetExists($name)
+  {
+    return isset($this->children[$name]);
+  }
+
+  public function offsetGet($name)
+  {
+    return $this->getChild($name);
+  }
+
+  public function offsetSet($name, $value)
+  {
+    return $this->addChild($name)->setLabel($value);
+  }
+
+  public function offsetUnset($name)
+  {
+    return $this->removeChild($name);
+  }
+
+}

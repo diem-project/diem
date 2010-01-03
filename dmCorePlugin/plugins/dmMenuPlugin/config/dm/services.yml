@@ -1,0 +1,11 @@
+parameters:
+
+ menu.class:            dmMenu
+ menu.options:          []
+
+services:
+
+  menu:
+    class:              %menu.class%
+    shared:             false
+    arguments:          [ @service_container, %menu.options% ]

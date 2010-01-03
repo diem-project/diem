@@ -12,7 +12,7 @@ echo £o('ul.tabs');
   
 echo £c('ul');
 
-echo '<div id="dm_code_editor_file_open">'.$fileMenu->render('level0_ul_class=clearfix level0_li_class=type').'</div>';
+echo '<div id="dm_code_editor_file_open">'.$fileMenu->render().'</div>';
 
 echo £c('div');
 

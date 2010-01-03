@@ -13,13 +13,7 @@ echo £o('div#dm_tool_bar.clearfix.'.sfConfig::get('dm_toolBar_flavour', 'blue')
   
 //  echo £link('dmCodeEditor/index')->textTitle(__('Code Editor'))->set('.widget16.s16block.s16_code_editor');
 
-  echo £o("div.dm_menu.widget16"),
-    $menu->render(array(
-      'level0_ul_class' => 'ui-helper-reset',
-      'level0_li_class' => 'ui-corner-top ui-state-default',
-      'level1_ul_class' => 'ui-widget ui-widget-content'
-    )),
-  £c('div');
+  echo £('div.dm_menu.widget16', $menu->render());
 
   if (isset($cultureSelect))
   {

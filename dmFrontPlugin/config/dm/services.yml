@@ -54,6 +54,10 @@ parameters:
   widget_renderer.class:      dmFrontWidgetRenderer # Responsible for rendering widgets
     
   zone_form.class:            DmZoneFrontForm       # Form used when displaying a zone edition dialog
+
+  front_add_menu.class:       dmFrontAddMenu        # Responsible for building and rendering the front add menu
+
+  front_code_editor_file_menu.class: dmFrontCodeEditorFileMenu # Responsible for building and rendering the front code editor file menu
  
 services:
 
@@ -146,3 +150,13 @@ services:
     class:                    %zone_form.class%
     shared:                   false
     arguments:                [ %zone_form.object% ]
+
+  front_add_menu:
+    class:                    %front_add_menu.class%
+    shared:                   true
+    arguments:                [ @service_container, %menu.options% ]
+
+  front_code_editor_file_menu:
+    class:                    %front_code_editor_file_menu.class%
+    shared:                   true
+    arguments:                [ @service_container, %menu.options% ]

@@ -149,9 +149,9 @@ class dmUnitTestHelper
     return $this->moduleManager->getModuleOrNull($moduleKey);
   }
 
-  public function get($service)
+  public function get($service, $class = null)
   {
-    return $this->context->get($service);
+    return $this->context->get($service, $class);
   }
 
   public function ksort(array $array)

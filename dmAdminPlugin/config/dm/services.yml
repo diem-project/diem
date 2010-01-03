@@ -114,7 +114,7 @@ services:
   admin_menu:
     class:                    %admin_menu.class%
     shared:                   true
-    arguments:                [ @dispatcher, @user, @i18n, @routing, @module_manager ]
+    arguments:                [ @service_container, %menu.options% ]
 
   sitemap:
     class:                    %sitemap.class%

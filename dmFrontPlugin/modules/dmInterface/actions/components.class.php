@@ -29,7 +29,7 @@ class dmInterfaceComponents extends BasedmInterfaceComponents
     
     if ($this->getUser()->can('widget_add'))
     {
-      $this->addMenu = new dmHtmlMenu($this->addMenu());
+      $this->addMenu = $this->getService('front_add_menu')->build();
     }
   }
 

@@ -80,7 +80,7 @@ class dmContext extends sfContext
    *
    * @return object The object associated with the given name
    */
-  public function get($name)
+  public function get($name, $class = null)
   {
     if (isset($this->factories[$name]))
     {
@@ -89,7 +89,7 @@ class dmContext extends sfContext
 
     if($this->serviceContainer->hasService($name))
     {
-      return $this->serviceContainer->getService($name);
+      return $this->serviceContainer->getService($name, $class);
     }
 
     throw new sfException(sprintf('The "%s" object does not exist in the current context.', $name));

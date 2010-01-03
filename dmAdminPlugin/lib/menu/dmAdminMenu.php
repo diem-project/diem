@@ -1,105 +1,63 @@
 <?php
 
-class dmAdminMenu
+class dmAdminMenu extends dmMenu
 {
 
-  protected
-  $dispatcher,
-  $user,
-  $i18n,
-  $routing,
-  $moduleManager;
-
-  public function __construct(sfEventDispatcher $dispatcher, dmCoreUser $user, dmI18n $i18n, sfPatternRouting $routing, dmModuleManager $moduleManager)
+  public function build()
   {
-    $this->dispatcher = $dispatcher;
-    $this->user = $user;
-    $this->i18n = $i18n;
-    $this->routing = $routing;
-    $this->moduleManager = $moduleManager;
+    $this
+    ->name('Admin menu')
+    ->ulClass('ui-helper-reset level0')
+    ->addModules();
     
-    $this->initialize();
+    $this->dispatcher->notify(new sfEvent($this, 'dm.admin.menu', array()));
+
+    return $this;
   }
   
-  public function initialize()
+  protected function addModules()
   {
-  }
-
-  public function load()
-  {
-    $structure = $this->getModuleStructureMenu();
-    
-    return $this->dispatcher->filter(new sfEvent($this, 'dm.admin.filter_menu'), $structure)->getReturnValue();
-  }
-  
-  protected function getModuleStructureMenu()
-  {
-    $menu = array();
-
-    foreach($this->moduleManager->getTypes() as $typeName => $type)
+    foreach($this->serviceContainer->getService('module_manager')->getTypes() as $typeName => $type)
     {
-      if ($type->isProject() && !$this->user->can('content'))
-      {
-        continue;
-      }
+      $typeMenu = $this->addChild($type->getPublicName())
+      ->ulClass('ui-widget ui-widget-content level1')
+      ->liClass('ui-corner-top ui-state-default');
 
-      if ($type->hasSpaces() && $typeMenu = $this->getTypeMenu($type))
+      if ($type->isProject())
       {
-        $menu[$typeName] = $typeMenu;
-      }
-    }
-    
-    return $menu;
-  }
-
-  public function getTypeMenu(dmModuleType $type)
-  {
-    $spaceMenu = array();
-    foreach($type->getSpaces() as $spaceName => $space)
-    {
-      if ($space->hasModules() && $sm = $this->getSpaceMenu($space))
-      {
-        $spaceMenu[$spaceName] = $sm;
-      }
-    }
-    
-    if(empty($spaceMenu))
-    {
-      return null;
-    }
-    
-    return array(
-      'name' => $this->i18n->__($type->getPublicName()),
-      'menu' => $spaceMenu
-    );
-  }
-  
-  public function getSpaceMenu(dmModuleSpace $space)
-  {
-    $moduleMenu = array();
-    foreach($space->getModules() as $moduleKey => $module)
-    {
-      if (!$this->user->canAccessToModule($module))
-      {
-        continue;
+        $typeMenu->credentials('content');
       }
       
-      $moduleMenu[$moduleKey] = array(
-        'name' => $this->i18n->__($module->getPlural()),
-        'link' => $this->routing->generate($module->getUnderscore())
-      );
+      foreach($type->getSpaces() as $spaceName => $space)
+      {
+        $spaceMenu = $typeMenu->addChild($space->getPublicName())
+        ->ulClass('level2');
+        
+        foreach($space->getModules() as $moduleKey => $module)
+        {
+          if ($this->user->canAccessToModule($module))
+          {
+            $spaceMenu->addChild($module->getPlural())->link('@'.$module->getUnderscore());
+          }
+        }
+
+        if(!$spaceMenu->hasChildren())
+        {
+          $typeMenu->removeChild($spaceMenu);
+        }
+      }
+
+      if(!$typeMenu->hasChildren())
+      {
+        $this->removeChild($typeMenu);
+      }
     }
-    
-    if(empty($moduleMenu))
-    {
-      return null;
-    }
-    
-    return array(
-      'name' => $this->i18n->__($space->getName()),
-//      'link' => $this->routing->generate('dm_module_space', array('moduleTypeName' => $space->getType()->getSlug(), 'moduleSpaceName' => $space->getSlug())),
-      'menu' => $moduleMenu
-    );
+
+    return $this;
   }
 
+  public function renderLabel()
+  {
+    return '<a>'.parent::renderLabel().'</a>';
+  }
 }

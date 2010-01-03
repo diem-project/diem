@@ -47,14 +47,7 @@ echo £o('div#dm_tool_bar.dm.clearfix.'.sfConfig::get('dm_toolBar_flavour', 'blu
 
   if(isset($addMenu))
   {
-    echo £o('div.dm_menu.widget16.dm_add_menu'),
-    $addMenu->render(array(
-      'level0_ul_class' => 'ui-helper-reset',
-      'level0_li_class' => 'ui-corner-bottom ui-state-default',
-      'level1_ul_class' => 'ui-widget ui-widget-content',
-      'level2_ul_class' => 'clearfix'
-    )),
-    £c('div');
+    echo £('div.dm_menu.widget16.dm_add_menu', $addMenu->render());
   }
   
   if (sfConfig::get('sf_web_debug'))

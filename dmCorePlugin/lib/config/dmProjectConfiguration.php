@@ -9,7 +9,7 @@ class dmProjectConfiguration extends sfProjectConfiguration
 
     $this->setDmPluginPaths();
 
-    $this->enablePlugins(array('sfDoctrinePlugin', 'dmCorePlugin', 'dmUserPlugin', 'sfWebBrowserPlugin', 'sfImageTransformPlugin'));
+    $this->enablePlugins(array('sfDoctrinePlugin', 'dmCorePlugin', 'dmMenuPlugin', 'dmUserPlugin', 'sfWebBrowserPlugin', 'sfImageTransformPlugin'));
   }
   
   protected function setDmPluginPaths()
@@ -19,7 +19,7 @@ class dmProjectConfiguration extends sfProjectConfiguration
       $this->setPluginPath($rootPlugin, dm::getDir().'/'.$rootPlugin);
     }
     
-    foreach(array('dmUserPlugin', 'dmAlternativeHelperPlugin', 'sfWebBrowserPlugin', 'sfImageTransformPlugin') as $embeddedPlugin)
+    foreach(array('dmUserPlugin', 'dmMenuPlugin', 'dmAlternativeHelperPlugin', 'sfWebBrowserPlugin', 'sfImageTransformPlugin') as $embeddedPlugin)
     {
       $this->setPluginPath($embeddedPlugin, dm::getDir().'/dmCorePlugin/plugins/'.$embeddedPlugin);
     }

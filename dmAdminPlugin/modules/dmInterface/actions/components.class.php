@@ -7,7 +7,7 @@ class dmInterfaceComponents extends BasedmInterfaceComponents
 
   public function executeToolBar()
   {
-    $this->menu = new dmHtmlMenu($this->context->get('admin_menu')->load());
+    $this->menu = $this->context->get('admin_menu')->build();
 
     if ($this->context->getI18n()->hasManyCultures())
     {
