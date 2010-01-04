@@ -119,7 +119,7 @@ class dmFrontDoctrinePager extends dmDoctrinePager
       }
       if($options['last'])
       {
-        $html .= $helper->£("li.page.first", $helper->£link($options['uri'])->param('page', $this->getLastPage())->text($options['last']));
+        $html .= $helper->£("li.page.last", $helper->£link($options['uri'])->param('page', $this->getLastPage())->text($options['last']));
       }
     }
 
