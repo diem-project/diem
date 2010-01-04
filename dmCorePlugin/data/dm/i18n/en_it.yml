@@ -235,7 +235,7 @@
 "Preferences": "Preferenze"
 "Mail templates": "Template mail"
 "Layouts": "Layout"
-"Zone": "Zone"
+"Zone": "Zona"
 "Navigation": "Navigazione"
 "Configuration": "Configurazione"
 "Chart": "Grafici"
@@ -395,3 +395,4 @@
 "Most UNIX and GNU/Linux systems allows for task planning through a mechanism known as cron. The cron checks a configuration file (a crontab) for commands to run at a certain time.": "Molti dei sistemi UNIX e GNU/Linux supportano la pianificazione delle operazioni di sistema attraverso il servizio cron. Il servizio cron controlla il file di configurazione (crontab) per eseguire i programmi indicati periodicamente."
 "For more information on the crontab configuration file format, type man 5 crontab in a terminal.": "Per ottenere maggiori informazioni sulla configurazione del file di crontab digita man 5 crontab in una shell."
 "Open %1% and add the line:": "Apri %1% e aggiungi la linea:"
+"Image": "Immagine"
