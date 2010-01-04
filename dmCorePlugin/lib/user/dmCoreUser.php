@@ -31,7 +31,7 @@ abstract class dmCoreUser extends dmSecurityUser implements dmMicroCacheInterfac
   {
     if (!$this->isBrowserConfigured)
     {
-      $this->browser->configureFromUserAgent($_SERVER['HTTP_USER_AGENT']);
+      $this->browser->configureFromUserAgent(dmArray::get($_SERVER, 'HTTP_USER_AGENT'));
       $this->isBrowserConfigured = true;
     }
     

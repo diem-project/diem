@@ -32,6 +32,9 @@ $user->signin($userRecord);
 
 $t->is($user->isAuthenticated(), true, 'User is authenticated');
 
+$t->diag('grant '.$randomCredential.' credential');
+$user->addCredential($randomCredential);
+
 $t->is($user->can($randomCredential), true, 'Now user can '.$randomCredential);
 
 $user->signout();
