@@ -10,7 +10,7 @@ class dmAdminMenu extends dmMenu
     ->ulClass('ui-helper-reset level0')
     ->addModules();
     
-    $this->dispatcher->notify(new sfEvent($this, 'dm.admin.menu', array()));
+    $this->serviceContainer->getService('dispatcher')->notify(new sfEvent($this, 'dm.admin.menu', array()));
 
     return $this;
   }

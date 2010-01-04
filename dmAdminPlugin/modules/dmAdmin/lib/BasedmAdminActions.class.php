@@ -10,15 +10,11 @@ class BasedmAdminActions extends dmAdminBaseActions
   public function executeModuleType(dmWebRequest $request)
   {
     $this->forward404Unless(
-      $this->type = $this->getModuleTypeBySlug($request->getParameter('moduleTypeName')),
+      $type = $this->getModuleTypeBySlug($request->getParameter('moduleTypeName')),
       sprintf('%s is not a module type', $request->getParameter('moduleTypeName'))
     );
-
-    $this->spaces = $this->type->getSpaces();
     
-    $this->menu = $this->context->get('admin_menu');
-    
-    $this->moduleManager = $this->context->get('module_manager');
+    $this->menu = $this->context->get('admin_module_type_menu')->build($type);
     
     $this->context->getEventDispatcher()->connect('dm.bread_crumb.filter_links', array($this, 'listenToBreadCrumbFilterLinksEvent'));
   }
@@ -44,10 +40,8 @@ class BasedmAdminActions extends dmAdminBaseActions
       isset($this->space),
       sprintf('%s is not a module space in %s type', $request->getParameter('moduleTypeName'), $request->getParameter('moduleTypeName'))
     );
-    
-    $this->menu = $this->context->get('admin_menu');
-    
-    $this->moduleManager = $this->context->get('module_manager');
+
+    $this->menu = $this->context->get('admin_module_space_menu')->build($this->space);
     
     $this->context->getEventDispatcher()->connect('dm.bread_crumb.filter_links', array($this, 'listenToBreadCrumbFilterLinksEvent'));
   }
@@ -63,7 +57,7 @@ class BasedmAdminActions extends dmAdminBaseActions
     }
     else
     {
-      $links[] = $this->context->getHelper()->£('h1', $this->context->getI18n()->__($this->type->getPublicName()));
+      $links[] = $this->context->getHelper()->£('h1', $this->context->getI18n()->__($this->getModuleTypeBySlug($this->context->getRequest()->getParameter('moduleTypeName'))->getPublicName()));
     }
     
     return $links;

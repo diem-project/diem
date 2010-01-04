@@ -4,7 +4,6 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
 {
   protected
   $serviceContainer,
-  $dispatcher,
   $helper,
   $user,
   $i18n,
@@ -15,14 +14,13 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
   $num,
   $parent,
   $secure,
-  $children     = array(),
-  $credentials  = array();
+  $credentials  = array(),
+  $children     = array();
 
   public function __construct(dmBaseServiceContainer $serviceContainer, $options = array())
   {
     $this->serviceContainer = $serviceContainer;
 
-    $this->dispatcher = $serviceContainer->getService('dispatcher');
     $this->helper     = $serviceContainer->getService('helper');
     $this->user       = $serviceContainer->getService('user');
     $this->i18n       = $serviceContainer->getService('i18n');
@@ -35,19 +33,14 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
     $this->configure($options);
   }
 
-  public function build()
-  {
-    // override me to build your menu
-  }
-
   public function getDefaultOptions()
   {
     return array(
       'ul_class'        => null,
       'li_class'        => null,
-      'show_id'          => false,
-      'path_separator'  => ' > ',
-      'show_children'   => true
+      'show_id'         => false,
+      'show_children'   => true,
+      'translate'       => $this->i18n->hasManyCultures()
     );
   }
 
@@ -170,13 +163,7 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
   {
     if (null === $this->level)
     {
-      $this->level = -1;
-      $obj = $this;
-
-      while ($obj = $obj->getParent())
-      {
-      	++$this->level;
-      }
+      $this->level = $this->parent ? 0 : $this->parent->getLevel() + 1;
     }
 
     return $this->level;
@@ -228,7 +215,12 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
 
   public function checkUserAccess()
   {
-    if ($this->getOption('secure') && !$this->user->isAuthenticated())
+    if(empty($this->options['secure']) && empty($this->options['credentials']))
+    {
+      return true;
+    }
+
+    if (!empty($this->options['secure']) && !$this->user->isAuthenticated())
     {
       return false;
     }
@@ -238,20 +230,14 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
 
   public function hasChildren()
   {
-    $children = array();
+    $nbChildren = 0;
 
-    if(!empty($this->children))
+    foreach ($this->children as $child)
     {
-      foreach ($this->children as $child)
-      {
-        if ($child->checkUserAccess())
-        {
-          $children[] = $child;
-        }
-      }
+      $nbChildren += (int) $child->checkUserAccess();
     }
 
-    return !empty($children);
+    return 0 !== $nbChildren;
   }
 
   /*
@@ -375,26 +361,17 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
 
   public function renderLink()
   {
-    return $this->link->text($this->i18n->__($this->getLabel()))->render();
+    return $this->link->text($this->translate($this->getLabel()))->render();
   }
 
   public function renderLabel()
   {
-    return $this->i18n->__($this->getLabel());
+    return $this->translate($this->getLabel());
   }
 
-  public function getPathAsString()
+  protected function translate($text)
   {
-    $children = array();
-    $obj = $this;
-
-    do
-    {
-    	$children[] = $obj->renderLabel();
-    }
-    while ($obj = $obj->getParent());
-
-    return implode($this->getOption('path_separator'), array_reverse($children));
+    return $this->getOption('translate') ? $this->i18n->__($text) : $text;
   }
 
   public function callRecursively()
@@ -428,6 +405,11 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
     }
     
     return $array;
+  }
+
+  public function debug()
+  {
+    return $this->toArray();
   }
 
   public function fromArray($array)

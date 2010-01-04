@@ -2,7 +2,7 @@ default:
 
   i18n:
     catalogue:            dm
-    form:                 merge                     # Can be merge or embed 
+    form:                 merge                     # Can be merge or embed
     
   html:
     doctype:

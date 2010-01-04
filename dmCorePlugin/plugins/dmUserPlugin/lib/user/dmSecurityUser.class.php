@@ -64,7 +64,7 @@ class dmSecurityUser extends sfBasicSecurityUser
     {
       return true;
     }
-    elseif (!$this->getUser())
+    elseif (!$this->isAuthenticated())
     {
       return false;
     }

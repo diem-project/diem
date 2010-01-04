@@ -23,6 +23,7 @@ generator:
           - asc
         table_method: getAdminListQuery
         table_count_method: ~
+        loremize: false
       filter:
         display:
           - id

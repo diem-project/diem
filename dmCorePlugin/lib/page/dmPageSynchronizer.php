@@ -73,6 +73,7 @@ class dmPageSynchronizer
           $module->getTable()->getTableName(),
           implode(',', $showPageRecordIds)
         );
+
         $records = array_flip(dmDb::pdo($query)->fetchAll(PDO::FETCH_COLUMN));
       }
       else
