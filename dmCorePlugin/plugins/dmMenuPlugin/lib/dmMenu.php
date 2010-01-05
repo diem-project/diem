@@ -163,7 +163,7 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
   {
     if (null === $this->level)
     {
-      $this->level = $this->parent ? 0 : $this->parent->getLevel() + 1;
+      $this->level = $this->parent ? $this->parent->getLevel() + 1 : -1;
     }
 
     return $this->level;
@@ -388,6 +388,20 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
     }
 
     return $this;
+  }
+  
+  public function getPathAsString($separator = ' > ')
+  {
+    $children = array();
+    $obj = $this;
+
+    do
+    {
+    	$children[] = $this->translate($obj->getLabel());
+    }
+    while ($obj = $obj->getParent());
+
+    return implode($separator, array_reverse($children));
   }
 
   public function toArray()

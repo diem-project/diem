@@ -76,8 +76,8 @@ $t->is($menu['Root 4']->toArray(), array(
     'ul_class' => NULL,
     'li_class' => NULL,
     'show_id' => false,
-    'path_separator' => ' > ',
     'show_children' => true,
+    'translate' => true
   ),
   'children' => array(
     'Test' => array(
@@ -87,8 +87,8 @@ $t->is($menu['Root 4']->toArray(), array(
         'ul_class' => NULL,
         'li_class' => NULL,
         'show_id' => false,
-        'path_separator' => ' > ',
         'show_children' => true,
+        'translate' => true
       ),
       'children' => array()
     )
@@ -123,7 +123,7 @@ class dmMyMenu extends dmMenu
 
 $menu = $helper->get('menu', 'dmMyMenu')->name('My menu');
 
-$t->isa_ok($menu, dmMyMenu, 'Got a dmMyMenu instance');
+$t->isa_ok($menu, 'dmMyMenu', 'Got a dmMyMenu instance');
 
 $menu->addChild('Home', '@homepage')->end()
 ->addChild('Sites')->ulClass('my_ul_class')
@@ -142,3 +142,8 @@ $html = £('ul',
 );
 
 $t->is($menu->render(), $html, $html);
+
+$t->comment('Test getRoot');
+
+$t->is($menu['Home']->getRoot(), $menu, 'Home root is $menu');
+$t->is($menu['Sites']['Diem']->getRoot(), $menu, 'Diem root is menu');
