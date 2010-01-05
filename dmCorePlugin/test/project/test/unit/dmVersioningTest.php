@@ -11,6 +11,7 @@ $t->comment('Testing DmTestPost');
 $model = 'DmTestPost';
 $post = new $model;
 $post->Categ = dmDb::create('DmTestCateg', array('title' => dmString::random()))->saveGet();
+$post->userId = dmDb::table('DmUser')->findOne()->id;
 $table = dmDb::table($model);
 
 $t->ok($table->isVersionable(), $model.' is versionable');

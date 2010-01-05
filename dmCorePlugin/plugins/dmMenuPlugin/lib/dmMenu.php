@@ -40,7 +40,7 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
       'li_class'        => null,
       'show_id'         => false,
       'show_children'   => true,
-      'translate'       => $this->i18n->hasManyCultures()
+      'translate'       => true
     );
   }
 

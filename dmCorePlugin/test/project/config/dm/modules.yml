@@ -61,4 +61,17 @@ Project:
         list:  
         listByPost:  
           filters:      dmTestPost
-        show:  
+        show:
+
+  Author:
+
+    author:
+      model:            DmUser
+      front:            false
+
+    dmUser:
+      name:             Author
+      page:             true
+      actions:
+        list:           { cache: true }
+        show:           { cache: true }

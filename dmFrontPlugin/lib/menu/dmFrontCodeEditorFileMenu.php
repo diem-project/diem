@@ -10,7 +10,7 @@ class dmFrontCodeEditorFileMenu extends dmMenu
     ->ulClass('clearfix level0')
     ->addFiles();
 
-    $this->dispatcher->notify(new sfEvent($this, 'dm.front.code_editor_file_menu', array()));
+    $this->serviceContainer->get('dispatcher')->notify(new sfEvent($this, 'dm.front.code_editor_file_menu', array()));
 
     return $this;
   }

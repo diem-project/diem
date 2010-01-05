@@ -17,6 +17,7 @@
  * @property string $auto_mod
  * @property boolean $is_active
  * @property boolean $is_secure
+ * @property string $credentials
  * @property boolean $is_indexable
  * 
  * @method string  getModule()       Returns the current record's "module" value
@@ -31,6 +32,7 @@
  * @method string  getAutoMod()      Returns the current record's "auto_mod" value
  * @method boolean getIsActive()     Returns the current record's "is_active" value
  * @method boolean getIsSecure()     Returns the current record's "is_secure" value
+ * @method string  getCredentials()  Returns the current record's "credentials" value
  * @method boolean getIsIndexable()  Returns the current record's "is_indexable" value
  * @method DmPage  setModule()       Sets the current record's "module" value
  * @method DmPage  setAction()       Sets the current record's "action" value
@@ -44,6 +46,7 @@
  * @method DmPage  setAutoMod()      Sets the current record's "auto_mod" value
  * @method DmPage  setIsActive()     Sets the current record's "is_active" value
  * @method DmPage  setIsSecure()     Sets the current record's "is_secure" value
+ * @method DmPage  setCredentials()  Sets the current record's "credentials" value
  * @method DmPage  setIsIndexable()  Sets the current record's "is_indexable" value
  * 
  * @package    retest
@@ -117,6 +120,11 @@ abstract class BaseDmPage extends myDoctrineRecord
              'type' => 'boolean',
              'notnull' => true,
              'default' => false,
+             ));
+        $this->hasColumn('credentials', 'string', 255, array(
+             'type' => 'string',
+             'notnull' => false,
+             'length' => '255',
              ));
         $this->hasColumn('is_indexable', 'boolean', null, array(
              'type' => 'boolean',

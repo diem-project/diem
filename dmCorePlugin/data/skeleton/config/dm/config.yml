@@ -9,7 +9,7 @@ all:
   js:
     compress:             true          # (RECOMMENDED) Performance : Minifies javascripts and put them into a single compressed file
     cdn:
-      enabled:            <?php echo !sfConfig::get('sf_debug') ?> # (RECOMMENDED) uses google cdn to load jQuery
+      enabled:            false         # (RECOMMENDED) uses google cdn to load jQuery
       
   css:
     compress:             true          # (RECOMMENDED) Performance : Minifies stylesheets and put them into a single compressed file

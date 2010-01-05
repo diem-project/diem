@@ -23,6 +23,10 @@ class dmSecurityUser extends sfBasicSecurityUser
       $this->getAttributeHolder()->removeNamespace('dmSecurityUser');
       $this->user = null;
     }
+    elseif($user = $this->getUser())
+    {
+      $this->isSuperAdmin = $user->get('is_super_admin');
+    }
   }
 
   /**
@@ -157,6 +161,7 @@ class dmSecurityUser extends sfBasicSecurityUser
     $this->setAuthenticated(true);
     $this->clearCredentials();
     $this->addCredentials($user->getAllPermissionNames());
+    $this->isSuperAdmin = $user->get('is_super_admin');
 
     // save last login
     $user->set('last_login', date('Y-m-d H:i:s'));
@@ -240,8 +245,6 @@ class dmSecurityUser extends sfBasicSecurityUser
 
         throw new sfException('The user does not exist anymore in the database.');
       }
-      
-      $this->isSuperAdmin = $this->user->get('is_super_admin');
     }
 
     return $this->user;

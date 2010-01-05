@@ -1,0 +1,65 @@
+generator:
+  class: dmAdminDoctrineGenerator
+  param:
+    model_class: DmUser
+    theme: dmAdmin
+    non_verbose_templates: true
+    with_show: false
+    route_prefix: author
+    with_doctrine_route: false
+    config:
+      actions: ~
+      fields:
+        groups_list:
+          label: Groups
+        permissions_list:
+          label: Permissions
+        is_active:
+          label: Active
+        is_super_admin:
+          label: 'Super admin'
+      list:
+        display:
+          - '=id'
+          - dm_test_posts_list
+          - groups_list
+          - permissions_list
+          - username
+          - email
+          - algorithm
+          - salt
+          - password
+          - is_active
+          - is_super_admin
+          - last_login
+          - created_at
+          - updated_at
+        sort:
+          - created_at
+          - desc
+        table_method: getAdminListQuery
+        table_count_method: ~
+      filter:
+        display:
+          - id
+          - is_active
+          - is_super_admin
+          - username
+          - email
+          - algorithm
+          - salt
+          - password
+          - last_login
+          - created_at
+          - updated_at
+      form:
+        display:
+          NONE: [is_active, is_super_admin]
+          Groups: [groups_list]
+          Permissions: [permissions_list]
+          Others: [username, email, algorithm, salt, password, last_login]
+        class: DmUserAdminForm
+        fields: {  }
+      edit: ~
+      new: ~
+    sortable: false

@@ -1,3 +1,15 @@
+DmTestUser:
+  columns:
+    name:                   { type: string(255), notnull: false }
+    description:            { type: clob, extra: markdown }
+    media_id:               { type: integer, notnull: false }
+    is_visible:             { type: boolean, notnull: true, default: false }
+  relations:
+    Media:
+      class:                DmMedia
+      local:                media_id
+      onDelete:             SET NULL
+
 DmTestDomain:
   actAs:
     Timestampable:
@@ -60,6 +72,7 @@ DmTestPost:
           fields:     ~
   columns:
     categ_id:         { type: integer, notnull: true }
+    user_id:          { type: integer, notnull: true }
     title:            { type: string(255), notnull: true }  
     excerpt:          { type: string(800) }  
     body:             { type: clob, extra: markdown }
@@ -74,6 +87,11 @@ DmTestPost:
       class:          DmTestCateg
       onDelete:       CASCADE
       foreignAlias:   Posts
+    Author:
+      class:          DmUser
+      local:          user_id
+      foreignAlias:   Posts
+      onDelete:       CASCADE
     Image:  
       class:          DmMedia  
       local:          image_id

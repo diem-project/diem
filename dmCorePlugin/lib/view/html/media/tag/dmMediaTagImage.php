@@ -311,7 +311,8 @@ class dmMediaTagImage extends dmMediaTag
     
       if (!empty($overlay))
       {
-        $type = $this->context->get('mime_type_manager')->getByFilename($overlay['image']->getServerFullPath());
+        $overlayPath = $overlay['image']->getServerFullPath();
+        $type = $this->context->get('mime_type_resolver')->getByFilename($overlayPath);
         
         if ($type != 'image/png')
         {

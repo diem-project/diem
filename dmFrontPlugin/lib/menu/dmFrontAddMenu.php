@@ -14,7 +14,7 @@ class dmFrontAddMenu extends dmMenu
     ->addZones()
     ->addWidgets();
     
-    $this->dispatcher->notify(new sfEvent($this, 'dm.front.add_menu', array()));
+    $this->serviceContainer->getService('dispatcher')->notify(new sfEvent($this, 'dm.front.add_menu', array()));
 
     return $this;
   }

@@ -5,6 +5,7 @@ $helper = new dmUnitTestHelper();
 $helper->boot();
 
 $categ = dmDb::create('DmTestCateg', array('title' => dmString::random()))->saveGet();
+$user = dmDb::table('DmUser')->findOne();
 
 $t = new lime_test(40);
 
@@ -18,7 +19,8 @@ $t->is($form->isValid(), false, 'Empty form is not valid');
 
 $form->bind(array(
   'title' => dmString::random(),
-  'categ_id' => $categ->id
+  'categ_id' => $categ->id,
+  'user_id' => $user->id
 ), array());
 
 $t->is($form->isValid(), true, 'Form with binded title is valid');
@@ -43,6 +45,7 @@ $form->bind(array(
   'id'    => $post->id,
   'title' => $post->title,
   'categ_id' => $categ->id,
+  'user_id' => $user->id,
   'image_id_form' => array(
     'dm_media_folder_id' => $post->getDmMediaFolder()->get('id')
   )
@@ -76,6 +79,7 @@ $form->bind(array(
   'id'    => $post->id,
   'title' => $post->title,
   'categ_id' => $categ->id,
+  'user_id' => $user->id,
   'image_id_form' => array(
     'id' => $post->Image->id,
     'dm_media_folder_id' => $post->Image->Folder->id
@@ -102,6 +106,7 @@ $form->bind(array(
   'id'    => $post->id,
   'title' => $post->title,
   'categ_id' => $categ->id,
+  'user_id' => $user->id,
   'image_id_form' => array(
     'id' => $post->Image->id,
     'dm_media_folder_id' => $post->Image->Folder->id,
@@ -128,6 +133,7 @@ $form->bind(array(
   'id'    => $post->id,
   'title' => $post->title,
   'categ_id' => $categ->id,
+  'user_id' => $user->id,
   'image_id_form' => array(
     'dm_media_folder_id' => $post->getDmMediaFolder()->get('id')
   )
@@ -166,6 +172,7 @@ $form->bind(array(
   'id'    => $post->id,
   'title' => $post->title,
   'categ_id' => $categ->id,
+  'user_id' => $user->id,
   'image_id_form' => array(
     'id' => $post->Image->id,
     'dm_media_folder_id' => $post->getDmMediaFolder()->get('id')
@@ -209,6 +216,7 @@ $form->bind(array(
   'id'    => $post->id,
   'title' => $post->title,
   'categ_id' => $categ->id,
+  'user_id' => $user->id,
   'image_id_form' => array(
     'id' => $post->Image->id,
     'dm_media_folder_id' => $post->getDmMediaFolder()->get('id')

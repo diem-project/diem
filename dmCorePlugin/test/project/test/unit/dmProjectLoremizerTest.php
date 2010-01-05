@@ -4,7 +4,7 @@ require_once(realpath(dirname(__FILE__).'/../../..').'/unit/helper/dmUnitTestHel
 $helper = new dmUnitTestHelper();
 $helper->boot();
 
-$t = new lime_test(45);
+$t = new lime_test(50);
 
 $loremizer = $helper->get('project_loremizer');
 

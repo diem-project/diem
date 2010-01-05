@@ -14,6 +14,7 @@ abstract class BaseDmTestPostFormFilter extends BaseFormFilterDoctrine
   {
     $this->setWidgets(array(
       'categ_id'    => new sfWidgetFormDoctrineChoice(array('model' => 'DmTestCateg', 'add_empty' => true)),
+      'user_id'     => new sfWidgetFormFilterInput(),
       'image_id'    => new sfWidgetFormDoctrineChoice(array('model' => 'DmMedia', 'add_empty' => true)),
       'file_id'     => new sfWidgetFormDoctrineChoice(array('model' => 'DmMedia', 'add_empty' => true)),
       'created_by'  => new sfWidgetFormDoctrineChoice(array('model' => 'DmUser', 'add_empty' => true)),
@@ -26,6 +27,7 @@ abstract class BaseDmTestPostFormFilter extends BaseFormFilterDoctrine
 
     $this->setValidators(array(
       'categ_id'    => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Categ'), 'column' => 'id')),
+      'user_id'     => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
       'image_id'    => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Image'), 'column' => 'id')),
       'file_id'     => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('File'), 'column' => 'id')),
       'created_by'  => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Author'), 'column' => 'id')),
@@ -87,6 +89,7 @@ abstract class BaseDmTestPostFormFilter extends BaseFormFilterDoctrine
     return array(
       'id'          => 'Number',
       'categ_id'    => 'ForeignKey',
+      'user_id'     => 'Number',
       'image_id'    => 'ForeignKey',
       'file_id'     => 'ForeignKey',
       'created_by'  => 'ForeignKey',

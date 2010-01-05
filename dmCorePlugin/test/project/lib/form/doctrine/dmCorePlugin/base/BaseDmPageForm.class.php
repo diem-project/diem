@@ -15,30 +15,39 @@ abstract class BaseDmPageForm extends BaseFormDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-      'id'        => new sfWidgetFormInputHidden(),
-      'module'    => new sfWidgetFormInputText(),
-      'action'    => new sfWidgetFormInputText(),
-      'record_id' => new sfWidgetFormInputText(),
-      'lft'       => new sfWidgetFormInputText(),
-      'rgt'       => new sfWidgetFormInputText(),
-      'level'     => new sfWidgetFormInputText(),
+      'id'          => new sfWidgetFormInputHidden(),
+      'module'      => new sfWidgetFormInputText(),
+      'action'      => new sfWidgetFormInputText(),
+      'record_id'   => new sfWidgetFormInputText(),
+      'credentials' => new sfWidgetFormInputText(),
+      'lft'         => new sfWidgetFormInputText(),
+      'rgt'         => new sfWidgetFormInputText(),
+      'level'       => new sfWidgetFormInputText(),
     ));
 
     $this->setValidators(array(
-      'id'        => new sfValidatorDoctrineChoice(array('model' => $this->getModelName(), 'column' => 'id', 'required' => false)),
-      'module'    => new sfValidatorString(array('max_length' => 127)),
-      'action'    => new sfValidatorString(array('max_length' => 127)),
-      'record_id' => new sfValidatorInteger(array('required' => false)),
-      'lft'       => new sfValidatorInteger(array('required' => false)),
-      'rgt'       => new sfValidatorInteger(array('required' => false)),
-      'level'     => new sfValidatorInteger(array('required' => false)),
+      'id'          => new sfValidatorDoctrineChoice(array('model' => $this->getModelName(), 'column' => 'id', 'required' => false)),
+      'module'      => new sfValidatorString(array('max_length' => 127)),
+      'action'      => new sfValidatorString(array('max_length' => 127)),
+      'record_id'   => new sfValidatorInteger(array('required' => false)),
+      'credentials' => new sfValidatorString(array('max_length' => 255, 'required' => false)),
+      'lft'         => new sfValidatorInteger(array('required' => false)),
+      'rgt'         => new sfValidatorInteger(array('required' => false)),
+      'level'       => new sfValidatorInteger(array('required' => false)),
     ));
 
     $this->validatorSchema->setPostValidator(
       new sfValidatorDoctrineUnique(array('model' => 'DmPage', 'column' => array('module', 'action', 'record_id')))
     );
 
-    $this->mergeI18nForm();
+		if('embed' == sfConfig::get('dm_i18n_form'))
+    {
+      $this->embedI18n(sfConfig::get('dm_i18n_cultures'));
+    }
+    else
+    {
+      $this->mergeI18nForm();
+		}
 
     $this->widgetSchema->setNameFormat('dm_page[%s]');
 

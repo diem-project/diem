@@ -17,6 +17,7 @@ abstract class BaseDmTestPostForm extends BaseFormDoctrine
     $this->setWidgets(array(
       'id'          => new sfWidgetFormInputHidden(),
       'categ_id'    => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Categ'), 'add_empty' => false)),
+      'user_id'     => new sfWidgetFormInputText(),
       'image_id'    => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Image'), 'add_empty' => true)),
       'file_id'     => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('File'), 'add_empty' => true)),
       'created_by'  => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Author'), 'add_empty' => true)),
@@ -29,6 +30,7 @@ abstract class BaseDmTestPostForm extends BaseFormDoctrine
     $this->setValidators(array(
       'id'          => new sfValidatorDoctrineChoice(array('model' => $this->getModelName(), 'column' => 'id', 'required' => false)),
       'categ_id'    => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Categ'))),
+      'user_id'     => new sfValidatorInteger(),
       'image_id'    => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Image'), 'required' => false)),
       'file_id'     => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('File'), 'required' => false)),
       'created_by'  => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Author'), 'required' => false)),
@@ -50,7 +52,14 @@ abstract class BaseDmTestPostForm extends BaseFormDoctrine
     $this->embedForm('file_id_form', $this->createMediaFormForFileId());
     unset($this['file_id']);
 
-    $this->mergeI18nForm();
+		if('embed' == sfConfig::get('dm_i18n_form'))
+    {
+      $this->embedI18n(sfConfig::get('dm_i18n_cultures'));
+    }
+    else
+    {
+      $this->mergeI18nForm();
+		}
 
     $this->widgetSchema->setNameFormat('dm_test_post[%s]');
 
