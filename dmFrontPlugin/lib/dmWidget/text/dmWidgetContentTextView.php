@@ -42,8 +42,9 @@ class dmWidgetContentTextView extends dmWidgetContentImageView
     {
       return $cache;
     }
-    
-    extract($this->getViewVars());
+
+    $viewVars = $this->getViewVars();
+    extract($viewVars);
     
     $helper = $this->context->getHelper();
     

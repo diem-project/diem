@@ -1,10 +1,8 @@
 <?php
 
-if (!file_exists($config = realpath(dirname(__FILE__).'/../../../..') .'/config/ProjectConfiguration.class.php'))
-{
-  $config = getcwd().'/config/ProjectConfiguration.class.php';
-}
+$config = getcwd().'/config/ProjectConfiguration.class.php';
 
+require_once $config;
 require_once(dm::getDir().'/dmCorePlugin/test/unit/helper/dmUnitTestHelper.php');
 
 $helper = new dmUnitTestHelper();
