@@ -14,6 +14,11 @@ class dmThreadLauncher extends dmConfigurable
   
   public function execute($threadClass, array $threadOptions = array())
   {
+    if( !isset($threadOptions['culture']))
+    {
+      $threadOptions['culture'] = dmDoctrineRecord::getDefaultCulture();
+    }
+    
     $command = $this->getCommand($threadClass, $threadOptions);
     
     if (!$this->filesystem->exec($command))

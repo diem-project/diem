@@ -20,8 +20,12 @@ abstract class dmThread extends dmConfigurable
     $this->configure($options);
     
     sfConfig::set('sf_logging_enabled', false);
-    
-    dmConfig::setCulture(dmArray::get($this->options, 'culture', sfConfig::get('sf_default_culture')));
+
+    $culture = $this->getOption('culture');
+
+    sfConfig::set('sf_default_culture', $culture);
+    dmDoctrineRecord::setDefaultCulture($culture);
+    dmConfig::setCulture($culture);
   }
   
   public function execute()
