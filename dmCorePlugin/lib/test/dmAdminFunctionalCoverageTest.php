@@ -42,7 +42,7 @@ class dmAdminFunctionalCoverageTest extends dmCoreFunctionalCoverageTest
         $records = $module->getTable()->createQuery('t')
         ->select('t.id, RANDOM() AS rand')
         ->orderBy('rand')
-        ->limit(1)
+        ->limit(2)
         ->fetchArray();
         
         foreach($records as $record)
@@ -51,11 +51,22 @@ class dmAdminFunctionalCoverageTest extends dmCoreFunctionalCoverageTest
         }
       }
     }
+
+    foreach($this->context->getModuleManager()->getTypes() as $type)
+    {
+      $urls[] = $this->context->getController()->genUrl($routing->getModuleTypeUrl($type));
+
+      foreach($type->getSpaces() as $space)
+      {
+        $urls[] = $this->context->getController()->genUrl($routing->getModuleSpaceUrl($space));
+      }
+    }
+
+    $uriPrefixLength = strlen(dmArray::get(dmArray::get($routing->getOptions(), 'context'), 'prefix'));
     
-    $uriPrefixLength = strlen($this->context->getRequest()->getUriPrefix());
     foreach($urls as $index => $url)
     {
-      $urls[$index] = '/'.substr($url, $uriPrefixLength);
+      $urls[$index] = substr($url, $uriPrefixLength);
     }
     
     return $urls;

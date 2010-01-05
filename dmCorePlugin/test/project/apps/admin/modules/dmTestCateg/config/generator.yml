@@ -9,11 +9,14 @@ generator:
     with_doctrine_route: false
     config:
       actions: ~
-      fields: {  }
+      fields:
+        domains_list:
+          label: 'Dm test domains'
       list:
         display:
           - '=title'
-          - dm_test_post_list
+          - posts_list
+          - domains_list
           - created_at
           - updated_at
           - is_active
@@ -30,6 +33,7 @@ generator:
       form:
         display:
           NONE: [title, is_active]
+          'Dm test domains': [domains_list]
         class: DmTestCategAdminForm
         fields: {  }
       edit: ~

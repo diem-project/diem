@@ -9,17 +9,27 @@ generator:
     with_doctrine_route: false
     config:
       actions: ~
-      fields: {  }
+      fields:
+        tags_list:
+          label: 'Dm test tags'
+        dm_gallery: Gallery
       list:
         display:
           - '=title'
+          - categ_id
+          - created_by
           - image_id
+          - file_id
+          - dm_gallery
           - comments_list
+          - tags_list
+          - user_id
           - created_at
           - updated_at
           - excerpt
           - body
           - url
+          - is_active
         sort:
           - position
           - asc
@@ -28,15 +38,22 @@ generator:
       filter:
         display:
           - title
+          - categ_id
+          - user_id
           - image_id
+          - file_id
+          - created_by
           - created_at
           - updated_at
       form:
         display:
-          NONE: [title]
+          NONE: [title, is_active, categ_id, created_by]
           Image: [image_id_form, image_id_view]
+          File: [file_id_form, file_id_view]
           Body: [body]
-          Others: [excerpt, url]
+          'Dm test tags': [tags_list]
+          Gallery: [dm_gallery]
+          Others: [user_id, excerpt, url]
         class: DmTestPostAdminForm
         fields: {  }
       edit: ~

@@ -1,4 +1,5 @@
 <?php
+
 require_once realpath(dirname(__FILE__).'/../../../config/ProjectConfiguration.class.php');
 
 $config = array(
@@ -6,8 +7,10 @@ $config = array(
   'username'  => 'admin', // username to log in
   'validate'  => false,   // perform html validation on each page, based on its doctype
   'debug'     => true,   // use debug mode ( slower, use more memory )
-  'env'       => 'prod'   // sf_environment when running tests
+  'env'       => 'test'   // sf_environment when running tests
 );
+
+ProjectConfiguration::getApplicationConfiguration('admin', $config['env'], $config['debug']);
 
 $test = new dmAdminFunctionalCoverageTest($config);
 
