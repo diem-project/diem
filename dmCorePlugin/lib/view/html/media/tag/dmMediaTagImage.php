@@ -98,7 +98,11 @@ class dmMediaTagImage extends dmMediaTag
   {
     if (!$this->resource->getSource())
     {
-      $this->context->getLogger()->warning('Skipped empty media rendering');
+      if(sfConfig::get('sf_logging_enabled'))
+      {
+        $this->context->getLogger()->warning('Skipped empty media rendering');
+      }
+      
       return $this->renderDefault();
     }
     
