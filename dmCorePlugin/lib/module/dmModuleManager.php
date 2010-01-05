@@ -72,7 +72,7 @@ class dmModuleManager
   public function getModulesWithPage()
   {
     $modulesWithPage = array();
-    
+
     foreach($this->projectModules as $key => $module)
     {
       if ($module->hasPage())

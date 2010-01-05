@@ -129,7 +129,7 @@ $menu->addChild('Home', '@homepage')->end()
 ->addChild('Symfony', 'http://symfony-project.org')->end();
 
 $html = £('ul',
-  £('li.first', £link('@homepage')->text('Home')).
+  £('li.first', £link('@homepage')->text($helper->get('i18n')->__('Home'))).
   £('li.last',
     'Sites'.
     £('ul.my_ul_class',

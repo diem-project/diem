@@ -199,6 +199,11 @@ class dmRecordLoremizer extends dmConfigurable
     {
       return sprintf('http://'.dmString::random().'.random.com');
     }
+
+    if(!class_exists('DmPageTranslation', false))
+    {
+      new DmPage();
+    }
     
     $page = dmDb::query('DmPageTranslation p')
     ->select('p.id, p.name, p.lang, RANDOM() AS rand')
