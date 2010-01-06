@@ -8,7 +8,7 @@ require_once(dm::getDir().'/dmCorePlugin/test/unit/helper/dmUnitTestHelper.php')
 $helper = new dmUnitTestHelper();
 $helper->boot();
 
-$t = new lime_test();
+$t = new lime_test(40);
 
 dm::loadHelpers(array('Dm', 'I18N'));
 
@@ -146,4 +146,6 @@ $t->comment('Test getRoot');
 $t->is($menu['Home']->getRoot(), $menu, 'Home root is $menu');
 $t->is($menu['Sites']['Diem']->getRoot(), $menu, 'Diem root is menu');
 
-$sitemap = $helper->get('sitemap_menu');
+$sitemap = $helper->get('sitemap_menu')->build();
+
+$t->isa_ok($sitemap, 'dmSitemapMenu', 'Got a dmSitemapMenu');

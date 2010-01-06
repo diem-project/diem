@@ -59,7 +59,7 @@ class dmWidgetTypeManager
               'public_name' => dmString::humanize($name),
               'form_class' => dmArray::get($action, 'form_class', $fullKey.'Form'),
               'view_class' => dmArray::get($action, 'view_class', $fullKey.'View'),
-              'use_component' => 'front' === sfConfig::get('sf_app') ? $controller->componentExists($moduleKey, $fullKey) : false,
+              'use_component' => $this->componentExists($moduleKey, $fullKey),
               'cache'      => dmArray::get($action, 'cache', false)
             );
 
@@ -81,7 +81,7 @@ class dmWidgetTypeManager
               'public_name' => $module->getName().' '.dmString::humanize($action->getName()),
               'form_class' => $baseClass.'Form',
               'view_class' => $baseClass.'View',
-              'use_component' => 'front' === sfConfig::get('sf_app') ? $controller->componentExists($moduleKey, $actionKey) : false,
+              'use_component' => $this->componentExists($moduleKey, $actionKey),
               'cache'      => $action->isCachable()
             );
             
@@ -94,6 +94,23 @@ class dmWidgetTypeManager
     }
         
     return $this->widgetTypes;
+  }
+
+  protected function componentExists($module, $action)
+  {
+    if ('front' !== sfConfig::get('sf_app'))
+    {
+      return false;
+    }
+
+    try
+    {
+      return $this->serviceContainer->getService('controller')->componentExists($module, $action);
+    }
+    catch(sfConfigurationException $e)
+    {
+      return false;
+    }
   }
 
   public function getWidgetType($moduleOrWidget, $action = null, $orNull = false)
