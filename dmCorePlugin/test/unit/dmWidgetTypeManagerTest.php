@@ -22,8 +22,16 @@ foreach($widgetTypes as $moduleKey => $actions)
     
     $fullKey = $moduleKey.ucfirst($actionKey);
     $t->is($widgetType->getFullKey(), $fullKey, 'full key is '.$fullKey);
+
+    try
+    {
+      $useComponent = $helper->get('controller')->componentExists($moduleKey, $actionKey);
+    }
+    catch(sfConfigurationException $e)
+    {
+      $useComponent = false;
+    }
     
-    $useComponent = $helper->get('controller')->componentExists($moduleKey, $actionKey);
     $t->is($widgetType->useComponent(), $useComponent, $useComponent ? $fullKey.' uses a component' : $fullKey.' uses no component');
     
     $widget = dmDb::create('DmWidget', array(
