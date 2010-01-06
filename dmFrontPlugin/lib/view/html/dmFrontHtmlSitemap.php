@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * Deprecated
+ * Use dmSitemapMenu instead
+ */
 class dmFrontHtmlSitemap
 {
   protected

@@ -145,3 +145,5 @@ $t->comment('Test getRoot');
 
 $t->is($menu['Home']->getRoot(), $menu, 'Home root is $menu');
 $t->is($menu['Sites']['Diem']->getRoot(), $menu, 'Diem root is menu');
+
+$sitemap = $helper->get('sitemap_menu');

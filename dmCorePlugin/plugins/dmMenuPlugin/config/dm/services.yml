@@ -3,9 +3,16 @@ parameters:
  menu.class:            dmMenu
  menu.options:          []
 
+ sitemap_menu.class:    dmSitemapMenu
+
 services:
 
   menu:
     class:              %menu.class%
+    shared:             false
+    arguments:          [ @service_container, %menu.options% ]
+
+  sitemap_menu:
+    class:              %sitemap_menu.class%
     shared:             false
     arguments:          [ @service_container, %menu.options% ]

@@ -64,11 +64,6 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
 
   public function link($link)
   {
-    if(!$link instanceof dmLinkTag && !empty($link))
-    {
-      $link = $this->helper->£link($link);
-    }
-
     $this->link = $link;
 
     return $this;
@@ -76,7 +71,12 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
 
   public function secure($bool)
   {
-    return $this->setOption('secure', $bool);
+    return $this->setOption('secure', (bool) $bool);
+  }
+
+  public function translate($bool)
+  {
+    return $this->setOption('translate', (bool) $bool);
   }
 
   public function credentials($credentials)
@@ -151,6 +151,11 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
 
   public function getLink()
   {
+    if(!$this->link instanceof dmBaseLinkTag && !empty($this->link))
+    {
+      $this->link = $this->helper->£link($this->link);
+    }
+    
     return $this->link;
   }
 
@@ -356,20 +361,20 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
 
   public function renderChildBody()
   {
-    return $this->link ? $this->renderLink() : $this->renderLabel();
+    return $this->getLink() ? $this->renderLink() : $this->renderLabel();
   }
 
   public function renderLink()
   {
-    return $this->link->text($this->translate($this->getLabel()))->render();
+    return $this->getLink()->text($this->__($this->getLabel()))->render();
   }
 
   public function renderLabel()
   {
-    return $this->translate($this->getLabel());
+    return $this->__($this->getLabel());
   }
 
-  protected function translate($text)
+  protected function __($text)
   {
     return $this->getOption('translate') ? $this->i18n->__($text) : $text;
   }
@@ -397,7 +402,7 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
 
     do
     {
-    	$children[] = $this->translate($obj->getLabel());
+    	$children[] = $this->__($obj->getLabel());
     }
     while ($obj = $obj->getParent());
 
