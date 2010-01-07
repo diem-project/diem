@@ -57,14 +57,14 @@ abstract class dmMediaTag extends dmHtmlTag
   {
     $src = $this->getSrc($throwException);
 
-    $uriPrefix = $context->getRequest()->getUriPrefix();
+    $uriPrefix = $this->context->getRequest()->getUriPrefix();
 
-    if (strpos($href, $uriPrefix) !== 0)
+    if (strpos($src, $uriPrefix) !== 0)
     {
-      $href = $uriPrefix.$href;
+      $src = $uriPrefix.$src;
     }
 
-    return $href;
+    return $src;
   }
 
   protected function prepareAttributesForHtml(array $attributes)
