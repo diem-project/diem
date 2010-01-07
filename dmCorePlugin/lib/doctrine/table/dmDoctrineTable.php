@@ -366,7 +366,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
   
   public function isLinkColumn($columnName)
   {
-    return strpos(dmArray::get($this->getColumnDefinition($columnName), 'extra', ''), 'link') !== false;
+    return false !== strpos(dmArray::get($this->getColumnDefinition($columnName), 'extra', ''), 'link');
   }
 
   /*

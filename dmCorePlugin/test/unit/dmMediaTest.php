@@ -4,12 +4,10 @@ require_once(dirname(__FILE__).'/helper/dmMediaUnitTestHelper.php');
 $helper = new dmMediaUnitTestHelper();
 $helper->boot();
 
-$t = new lime_test(55);
+$t = new lime_test(58);
 
 $mediaTable  = dmDb::table('DmMedia');
 $folderTable = dmDb::table('DmMediaFolder');
-
-//$folderTable->createQuery()->delete()->execute();
 
 $t->diag('Media tests');
 
@@ -58,6 +56,12 @@ $media = $mediaTable->create(array(
 ))->saveGet();
 
 $t->ok($media->exists(), 'media has been saved');
+
+$t->is($media->fullPath, $folder->fullPath.'/'.$media->file, 'Media full path is '.$media->fullPath);
+
+$t->is($media->relPath, $folder->relPath.'/'.$media->file, 'Media rel path is '.$media->relPath);
+
+$t->is($media->webPath, 'uploads/'.$media->relPath, 'Media web path is '.$media->webPath);
 
 $t->is($media->Folder, $folder, 'media folder is folder');
 

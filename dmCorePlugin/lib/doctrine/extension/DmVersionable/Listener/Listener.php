@@ -30,4 +30,21 @@ class dmDoctrineAuditLogListener extends Doctrine_AuditLog_Listener
       }
     }
   }
+  
+    /**
+     * Pre update event hook for inserting new version record
+     * This will only insert a version record if the auditLog is enabled
+     *
+     * @param  Doctrine_Event $event
+     * @return void
+     */
+    public function preUpdate(Doctrine_Event $event)
+    {
+      $disabled = $event->getInvoker()->hasMappedValue('disable_versioning') ? $event->getInvoker()->get('disable_versioning') : false;
+      
+      if (!$disabled)
+      {
+        parent::preUpdate($event);
+      }
+    }
 }

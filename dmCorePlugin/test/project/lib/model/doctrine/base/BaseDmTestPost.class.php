@@ -13,6 +13,7 @@
  * @property string $url
  * @property integer $image_id
  * @property integer $file_id
+ * @property date $date
  * @property integer $created_by
  * @property boolean $is_active
  * @property DmTestCateg $Categ
@@ -31,6 +32,7 @@
  * @method string              getUrl()           Returns the current record's "url" value
  * @method integer             getImageId()       Returns the current record's "image_id" value
  * @method integer             getFileId()        Returns the current record's "file_id" value
+ * @method date                getDate()          Returns the current record's "date" value
  * @method integer             getCreatedBy()     Returns the current record's "created_by" value
  * @method boolean             getIsActive()      Returns the current record's "is_active" value
  * @method DmTestCateg         getCateg()         Returns the current record's "Categ" value
@@ -48,6 +50,7 @@
  * @method DmTestPost          setUrl()           Sets the current record's "url" value
  * @method DmTestPost          setImageId()       Sets the current record's "image_id" value
  * @method DmTestPost          setFileId()        Sets the current record's "file_id" value
+ * @method DmTestPost          setDate()          Sets the current record's "date" value
  * @method DmTestPost          setCreatedBy()     Sets the current record's "created_by" value
  * @method DmTestPost          setIsActive()      Sets the current record's "is_active" value
  * @method DmTestPost          setCateg()         Sets the current record's "Categ" value
@@ -99,6 +102,10 @@ abstract class BaseDmTestPost extends myDoctrineRecord
              ));
         $this->hasColumn('file_id', 'integer', null, array(
              'type' => 'integer',
+             ));
+        $this->hasColumn('date', 'date', null, array(
+             'type' => 'date',
+             'notnull' => true,
              ));
         $this->hasColumn('created_by', 'integer', null, array(
              'type' => 'integer',

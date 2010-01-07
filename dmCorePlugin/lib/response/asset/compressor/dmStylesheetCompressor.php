@@ -14,7 +14,7 @@ class dmStylesheetCompressor extends dmAssetCompressor
   
   protected function isCachable($stylesheet, array $options = array())
   {
-    if($this->options['protect_user_assets'] && strncmp($stylesheet, '/dm/', 4) !== 0)
+    if($this->options['protect_user_assets'] && strncmp($stylesheet, '/dm', 3) !== 0)
     {
       return false;
     }

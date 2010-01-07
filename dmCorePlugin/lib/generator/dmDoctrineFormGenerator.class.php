@@ -202,6 +202,11 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
     {
       $widgetSubclass = 'DoctrineChoice';
     }
+    
+    $widgetSubclass = $this->getGeneratorManager()->getConfiguration()->getEventDispatcher()->filter(
+      new sfEvent($this, 'dm.form_generator.widget_subclass', array('column' => $column)),
+      $widgetSubclass
+    )->getReturnValue();
 
     return sprintf('sfWidgetForm%s', $widgetSubclass);
   }

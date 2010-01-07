@@ -79,6 +79,7 @@ DmTestPost:
     url:              { type: string(255), extra: link }
     image_id:         { type: integer }
     file_id:          { type: integer }
+    date:             { type: date, notnull: true }
     created_by:       { type: integer }
     is_active:        { type: boolean, notnull: true, default: true }
   relations:  

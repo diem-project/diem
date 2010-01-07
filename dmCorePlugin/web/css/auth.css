@@ -70,3 +70,12 @@ div.dm_auth a.login {
   float: none;
   width: 100px;
 }
+
+.generator_link {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin: 5px;
+  color: #aaa;
+  text-decoration: none;
+}

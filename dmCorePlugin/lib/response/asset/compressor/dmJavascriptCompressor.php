@@ -14,17 +14,25 @@ class dmJavascriptCompressor extends dmAssetCompressor
   
   protected function processAssetContent($content, $path)
   {
-    if ($this->options['minify'] && !strpos($path, '.min.') && !strpos($path, '.pack.'))
+    if ($this->isMinifiable($path))
     {
       $content = dmJsMinifier::transform($content);
     }
     
-    return $content.";";
+    return $content.';';
+  }
+
+  protected function isMinifiable($path)
+  {
+    return $this->options['minify'] && $this->dispatcher->filter(
+      new sfEvent($this, 'dm.javascript_compressor.minifiable', array('path' => $path)),
+      !strpos($path, '.min.') && !strpos($path, '.pack.')
+    )->getReturnValue();
   }
   
   protected function isCachable($javascript, array $options = array())
   {
-    if($this->options['protect_user_assets'] && strncmp($javascript, '/dm/', 4) !== 0)
+    if($this->options['protect_user_assets'] && strncmp($javascript, '/dm', 3) !== 0)
     {
       return false;
     }

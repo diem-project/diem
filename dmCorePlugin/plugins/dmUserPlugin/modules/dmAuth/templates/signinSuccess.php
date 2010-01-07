@@ -20,5 +20,7 @@ echo £('div.message',
 
 echo £c('div');
 
+echo £link('http://diem-project.org/')->text('Diem CMF CMS for symfony')->set('.generator_link');
+
 ?>
 <script type="text/javascript">document.getElementById('signin_username').focus();</script>

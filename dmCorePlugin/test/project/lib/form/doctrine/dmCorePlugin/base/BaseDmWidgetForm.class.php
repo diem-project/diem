@@ -34,7 +34,14 @@ abstract class BaseDmWidgetForm extends BaseFormDoctrine
       'updated_at' => new sfValidatorDateTime(),
     ));
 
-    $this->mergeI18nForm();
+		if('embed' == sfConfig::get('dm_i18n_form'))
+    {
+      $this->embedI18n(sfConfig::get('dm_i18n_cultures'));
+    }
+    else
+    {
+      $this->mergeI18nForm();
+		}
 
     $this->widgetSchema->setNameFormat('dm_widget[%s]');
 

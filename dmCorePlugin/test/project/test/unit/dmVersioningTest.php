@@ -4,7 +4,7 @@ require_once(realpath(dirname(__FILE__).'/../../..').'/unit/helper/dmUnitTestHel
 $helper = new dmUnitTestHelper();
 $helper->boot();
 
-$t = new lime_test(28);
+$t = new lime_test(32);
 
 $t->comment('Testing DmTestPost');
 
@@ -12,6 +12,7 @@ $model = 'DmTestPost';
 $post = new $model;
 $post->Categ = dmDb::create('DmTestCateg', array('title' => dmString::random()))->saveGet();
 $post->userId = dmDb::table('DmUser')->findOne()->id;
+$post->setDateTimeObject('date', new DateTime());
 $table = dmDb::table($model);
 
 $t->ok($table->isVersionable(), $model.' is versionable');
@@ -106,6 +107,24 @@ $comment->save();
 
 $t->is($comment->version, 4, 'saved record, version is 4');
 $t->is($comment->author, 'jethro', 'saved record, author is jethro');
+
+$t->comment('Disable versioning');
+
+$comment->mapValue('disable_versioning', true);
+$comment->author = 'jimmy';
+$comment->save();
+
+$t->is($comment->version, 4, 'saved record, version is 4');
+$t->is($comment->author, 'jimmy', 'saved record, author is jimmy');
+
+$t->comment('Enable versioning');
+
+$comment->mapValue('disable_versioning', false);
+$comment->author = 'crimson';
+$comment->save();
+
+$t->is($comment->version, 5, 'saved record, version is 4');
+$t->is($comment->author, 'crimson', 'saved record, author is crimson');
 
 $comment->delete();
 

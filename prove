@@ -10,7 +10,7 @@ chdir(dirname(__FILE__).'/dmCorePlugin/test/project');
 
 $_SERVER['argv'] = array(
   $_SERVER['argv'][0],
-  'test:unit'
+  'test:all'
 );
 
 require_once dirname(__FILE__).'/symfony/lib/command/cli.php';

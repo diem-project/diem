@@ -141,7 +141,7 @@ abstract class dmAssetCompressor extends dmConfigurable
       if(!file_exists($cacheFilePath))
       {
         $cacheContent = '';
-        
+
         foreach($this->cachedAssets as $webPath => $options)
         {
           $cacheContent .= $this->processAssetContent(file_get_contents($this->webDir.$webPath), $webPath);
