@@ -214,7 +214,7 @@ class dmCoreLayoutHelper
     return array_merge($this->serviceContainer->getService('response')->getJavascriptConfig(), array(
       'relative_url_root'  => $requestContext['relative_url_root'],
       'dm_core_asset_root' => $requestContext['relative_url_root'].'/'.sfConfig::get('dm_core_asset').'/',
-      'script_name'        => sfConfig::get('sf_no_script_name') ? '/' : $requestContext['script_name'].'/',
+      'script_name'        => sfConfig::get('sf_no_script_name') ? $requestContext['relative_url_root'].'/' : $requestContext['script_name'].'/',
       'debug'              => sfConfig::get('sf_debug') ? true : false,
       'culture'            => $this->serviceContainer->getParameter('user.culture'),
       'module'             => $this->serviceContainer->getParameter('controller.module')
