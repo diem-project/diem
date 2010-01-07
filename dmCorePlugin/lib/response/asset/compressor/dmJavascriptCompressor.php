@@ -29,14 +29,12 @@ class dmJavascriptCompressor extends dmAssetCompressor
       !strpos($path, '.min.') && !strpos($path, '.pack.')
     )->getReturnValue();
   }
-  
-  protected function isCachable($javascript, array $options = array())
+
+  protected function isCachable($path, array $options = array())
   {
-    if($this->options['protect_user_assets'] && strncmp($javascript, '/dm', 3) !== 0)
-    {
-      return false;
-    }
-    
-    return true;
+    return $this->options['minify'] && $this->dispatcher->filter(
+      new sfEvent($this, 'dm.javascript_compressor.cachable', array('path' => $path, 'options' => $options)),
+      !($this->options['protect_user_assets'] && strncmp($path, '/dm', 3) !== 0)
+    )->getReturnValue();
   }
 }
