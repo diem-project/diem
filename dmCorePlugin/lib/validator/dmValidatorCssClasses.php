@@ -9,7 +9,7 @@ class dmValidatorCssClasses extends sfValidatorRegex
 
     $this->setMessage('invalid', 'This CSS class is not valid.');
 
-    $this->setOption('pattern', '/^(\w|\s|\.|$])*$/i');
+    $this->setOption('pattern', '/^(\w|\d|\-|\s|\.|$])*$/i');
   }
   
   /**
