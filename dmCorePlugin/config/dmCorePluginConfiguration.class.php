@@ -33,7 +33,7 @@ class dmCorePluginConfiguration extends sfPluginConfiguration
     sfConfig::add(array(
       'sf_i18n'             => true,
       'sf_charset'          => 'utf-8',
-      'sf_upload_dir_name'  => str_replace(sfConfig::get('sf_web_dir').'/', '', sfConfig::get('sf_upload_dir')),
+      'sf_upload_dir_name'  => str_replace(dmOs::normalize(sfConfig::get('sf_web_dir').'/'), '', dmOs::normalize(sfConfig::get('sf_upload_dir'))),
       'dm_data_dir'         => dmOs::join(sfConfig::get('sf_data_dir'), 'dm'),
       'dm_cache_dir'        => dmOs::join(sfConfig::get('sf_cache_dir'), 'dm')
     ));
