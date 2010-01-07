@@ -6,9 +6,9 @@
 class dmServiceContainerLoaderConfiguration implements sfServiceContainerLoaderInterface
 {
   protected
-    $container,
-    $dispatcher,
-    $config;
+  $container,
+  $dispatcher,
+  $config;
 
   /**
    * Constructor.
