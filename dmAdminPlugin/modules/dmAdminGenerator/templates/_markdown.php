@@ -6,9 +6,12 @@
   use_javascript('lib.markitup');
   use_javascript('lib.markitupSet');
   use_javascript('core.markdown');
+  
+  $uniqueCode = dmString::random();
+
   $attributes = array_merge(
     $attributes instanceof sfOutputEscaper ? $attributes->getRawValue() : $attributes,
-    array('class' => 'dm_markdown')
+    array('class' => 'dm_markdown '.json_encode(array('code' => $uniqueCode)))
   );
 ?>
 
@@ -37,7 +40,7 @@
 <div class="markdown_preview_wrap sf_admin_form_row">
   <div class="sf_admin_form_row_inner">
     <label class="fnone"><?php echo __('Preview'); ?></label>
-    <div class="markdown_preview markdown">
+    <div class="markdown_preview markdown" id="dm_markdown_preview_<?php echo $uniqueCode ?>">
       <?php echo markdown($form->getObject()->get($name)) ?>
     </div>
   </div>

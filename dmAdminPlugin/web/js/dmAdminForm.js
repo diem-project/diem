@@ -42,7 +42,7 @@
       $('textarea.dm_markdown', form.element).each(function()
       {
         var $editor = $(this);
-        var $preview = $editor.closest('div.fieldset_content_inner').find('div.markdown_preview');
+        var $preview = $('#dm_markdown_preview_'+$editor.metadata().code);
         var value = $editor.val();
 				
 				$editor.dmMarkdown();
