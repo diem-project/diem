@@ -53,6 +53,20 @@ abstract class dmMediaTag extends dmHtmlTag
     }
   }
 
+  public function getAbsoluteSrc($throwException = true)
+  {
+    $src = $this->getSrc($throwException);
+
+    $uriPrefix = $context->getRequest()->getUriPrefix();
+
+    if (strpos($href, $uriPrefix) !== 0)
+    {
+      $href = $uriPrefix.$href;
+    }
+
+    return $href;
+  }
+
   protected function prepareAttributesForHtml(array $attributes)
   {
     $attributes = parent::prepareAttributesForHtml($attributes);
