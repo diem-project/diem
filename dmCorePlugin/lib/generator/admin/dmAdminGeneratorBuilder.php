@@ -26,8 +26,6 @@ class dmAdminGeneratorBuilder
 
     $yaml['generator']['param']['config'] = $this->getConfig();
 
-    $yaml['generator']['param']['sortable'] = $this->table->isSortable();
-
     $transformed = sfYaml::dump($yaml, 6, 0);
 
     $transformed = preg_replace("|('~')|um", "~", $transformed);
@@ -108,7 +106,8 @@ class dmAdminGeneratorBuilder
       'display' => $this->getListDisplay(),
       'sort'    => $this->getListSort(),
       'table_method' => 'getAdminListQuery',
-      'table_count_method' => '~'
+      'table_count_method' => '~',
+      'sortable' => $this->table->isSortable()
     );
   }
 

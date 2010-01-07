@@ -4,7 +4,7 @@
 
 [?php // LIENS  ?]
 
-[?php include_partial('<?php echo $this->getModuleName() ?>/list_actions', array('helper' => $helper)) ?]
+[?php include_partial('<?php echo $this->getModuleName() ?>/list_actions', array('helper' => $helper, 'configuration' => $configuration)) ?]
 
 [?php //PAGINATION ?]
 

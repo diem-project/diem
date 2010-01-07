@@ -36,7 +36,7 @@
     [?php include_partial('<?php echo $this->getModuleName() ?>/list_header', array('pager' => $pager)) ?]
   </div>
 
-  [?php $dmListActionBar = get_partial('<?php echo $this->getModuleName() ?>/list_action_bar', array('pager' => $pager, 'helper' => $helper, 'class' => 'dm_pagination_top')); ?]
+  [?php $dmListActionBar = get_partial('<?php echo $this->getModuleName() ?>/list_action_bar', array('pager' => $pager, 'helper' => $helper, 'class' => 'dm_pagination_top', 'configuration' => $configuration)); ?]
   
   <div id="sf_admin_content" [?php if (!$pager->getNbResults()) echo 'class="no_results"'; ?]>
     

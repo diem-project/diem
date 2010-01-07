@@ -59,6 +59,12 @@ abstract class Base<?php echo ucfirst($this->getModule()->getSfName()) ?>Generat
 <?php unset($this->config['list']['table_count_method']) ?>
   }
 
+  public function getSortable()
+  {
+    return <?php echo false !== dmArray::get($this->config['list'], 'sortable') ? 'true' : 'false' ?>;
+<?php unset($this->config['list']['sortable']) ?>
+  }
+
   public function getLoremize()
   {
     return <?php echo dmArray::get($this->config['list'], 'loremize', true) ? 'true' : 'false' ?>;
