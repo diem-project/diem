@@ -5,7 +5,7 @@ Tools:
       credentials:  config_panel
     dmMailTemplate:
       name:         Mail template
-      credential:   mail_template
+      credentials:  mail_template
     dmLayout:
       name:         Layout
       credentials:  layout
