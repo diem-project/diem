@@ -28,8 +28,8 @@ file_delete
 file_add
 file_edit
 folder_move
-bandaid
-trophy
+copy
+cut
 folder_closed
 folder_open
 file

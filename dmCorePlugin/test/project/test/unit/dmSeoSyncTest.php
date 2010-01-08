@@ -32,7 +32,15 @@ $t->diag('seo construction');
 
 $timer = dmDebug::timer('update seo');
 
-$helper->updatePageTreeWatcher($t);
+try
+{
+  $helper->updatePageTreeWatcher($t);
+}
+catch(PDOException $e)
+{
+  $t->skip('Not supported on this server', 52);
+  return;
+}
 
 $t->ok(true, sprintf('Seo updated in %01.2f s', $timer->getElapsedTime()));
 

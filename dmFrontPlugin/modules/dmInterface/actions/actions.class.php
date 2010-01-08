@@ -5,7 +5,7 @@ include_once(dmOs::join(sfConfig::get('dm_core_dir'), 'modules/dmInterface/lib/B
 class dmInterfaceActions extends BasedmInterfaceActions
 {
 
-  public function executeLoadPageTree(sfWebRequest $request)
+  public function executeLoadPageTree(dmWebRequest $request)
   {
     $tree = new dmFrontRecursivePageList;
 
@@ -18,6 +18,11 @@ class dmInterfaceActions extends BasedmInterfaceActions
       'html' => $tree->render(),
       'js' => $js
     ));
+  }
+
+  public function executeReloadAddMenu(dmWebRequest $request)
+  {
+    return $this->renderText($this->getService('front_add_menu')->build()->render());
   }
 
 }

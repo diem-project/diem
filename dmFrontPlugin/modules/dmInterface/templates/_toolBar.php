@@ -47,7 +47,9 @@ echo £o('div#dm_tool_bar.dm.clearfix.'.sfConfig::get('dm_toolBar_flavour', 'blu
 
   if(isset($addMenu))
   {
-    echo £('div.dm_menu.widget16.dm_add_menu', $addMenu->render());
+    echo £('div.dm_menu.widget16.dm_add_menu', array('json' =>array(
+      'reload_url' => £link('+/dmInterface/reloadAddMenu')->getHref()
+    )), $addMenu->render());
   }
   
   if (sfConfig::get('sf_web_debug'))

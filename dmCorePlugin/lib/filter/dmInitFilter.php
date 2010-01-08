@@ -19,7 +19,7 @@ abstract class dmInitFilter extends dmFilter
     
     $appUrlKey = implode('-', array(sfConfig::get('sf_app'), sfConfig::get('sf_environment')));
     
-    $appUrl    = $this->getContext()->getRequest()->getUriPrefix().$this->context->getRequest()->getScriptName();
+    $appUrl    = $this->request->getUriPrefix().$this->context->getRequest()->getScriptName();
       
     if (!isset($knownBaseUrls[$appUrlKey]) || $knownBaseUrls[$appUrlKey] !== $appUrl)
     {
@@ -30,11 +30,11 @@ abstract class dmInitFilter extends dmFilter
 
   protected function redirectTrailingSlash()
   {
-    $uri = $this->getContext()->getRequest()->getUri();
+    $uri = $this->request->getUri();
     
     if ('/' === substr($uri, -1))
     {
-      if ($uri !== ($this->getContext()->getRequest()->getAbsoluteUrlRoot().'/'))
+      if ($uri !== ($this->request->getAbsoluteUrlRoot().'/'))
       {
         $this->context->getController()->redirect(rtrim($uri, '/'), 0, 301);
       }

@@ -3,15 +3,15 @@
 class dmMediaResource
 {
   protected
-    $mimeTypeResolver,
-    $theme,
-    $culture,
-    $requestContext,
-    $source,
-    $type,
-    $mime,
-    $pathFromWebDir,
-    $remotePath;
+  $mimeTypeResolver,
+  $theme,
+  $culture,
+  $requestContext,
+  $source,
+  $type,
+  $mime,
+  $pathFromWebDir,
+  $remotePath;
 
   const
   MEDIA   = 'media',

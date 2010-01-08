@@ -58,6 +58,8 @@ parameters:
   front_add_menu.class:       dmFrontAddMenu        # Responsible for building and rendering the front add menu
 
   front_code_editor_file_menu.class: dmFrontCodeEditorFileMenu # Responsible for building and rendering the front code editor file menu
+
+  front_clipboard.class:      dmFrontUserClipboard  # Responsible for storing copyied and cutted zones and widgets
  
 services:
 
@@ -160,3 +162,8 @@ services:
     class:                    %front_code_editor_file_menu.class%
     shared:                   true
     arguments:                [ @service_container, %menu.options% ]
+
+  front_clipboard:
+    class:                    %front_clipboard.class%
+    shared:                   true
+    arguments:                [ @user ]

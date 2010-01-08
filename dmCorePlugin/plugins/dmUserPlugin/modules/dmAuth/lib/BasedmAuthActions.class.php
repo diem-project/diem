@@ -17,7 +17,7 @@
  */
 class BasedmAuthActions extends dmBaseActions
 {
-  public function executeSignin($request)
+  public function executeSignin(dmWebRequest $request)
   {
     $user = $this->getUser();
     
@@ -26,13 +26,21 @@ class BasedmAuthActions extends dmBaseActions
       return $this->redirect('@homepage');
     }
 
+    $this->setLayout(dmOs::join(sfConfig::get('dm_core_dir'), 'plugins/dmUserPlugin/modules/dmAuth/templates/layout'));
+
+    if($request->getParameter('skip_browser_detection'))
+    {
+      $this->getService('browser_check')->markAsChecked();
+    }
+    elseif(!$this->getService('browser_check')->check())
+    {
+      return 'Browser';
+    }
+
     $class = sfConfig::get('dm_security_signin_form', 'DmFormSignin');
     $this->form = new $class();
 
-    $this->form->changeToHidden('remember');
-    $this->form->setDefault('remember', true);
-
-    $this->setLayout(dmOs::join(sfConfig::get('dm_core_dir'), 'plugins/dmUserPlugin/modules/dmAuth/templates/layout'));
+    $this->form->changeToHidden('remember')->setDefault('remember', true);
 
     if ($request->isMethod('post'))
     {
@@ -106,4 +114,5 @@ class BasedmAuthActions extends dmBaseActions
   {
     throw new sfException('This method is not yet implemented.');
   }
+
 }

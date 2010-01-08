@@ -2,6 +2,14 @@
 
 class dmJavascriptCompressor extends dmAssetCompressor
 {
+
+  public function getDefaultOptions()
+  {
+    return array_merge(parent::getDefaultOptions(), array(
+      'black_list'          => array()
+    ));
+  }
+
   public function connect()
   {
     $this->dispatcher->connect('dm.layout.filter_javascripts', array($this, 'listenToFilterAssetsEvent'));
@@ -24,9 +32,9 @@ class dmJavascriptCompressor extends dmAssetCompressor
 
   protected function isMinifiable($path)
   {
-    return $this->options['minify'] && $this->dispatcher->filter(
+    return $this->getOption('minify') && $this->dispatcher->filter(
       new sfEvent($this, 'dm.javascript_compressor.minifiable', array('path' => $path)),
-      !strpos($path, '.min.') && !strpos($path, '.pack.')
+      !in_array(basename($path), $this->getOption('black_list')) && !strpos($path, '.min.') && !strpos($path, '.pack.')
     )->getReturnValue();
   }
 

@@ -3,3 +3,6 @@ moduleTypeSuccess:
 
 moduleSpaceSuccess:
   stylesheets:  [ admin.moduleSpace ]
+
+browserSuccess:
+  stylesheets:  [ browser ]

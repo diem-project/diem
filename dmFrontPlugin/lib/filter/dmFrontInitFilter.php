@@ -16,7 +16,7 @@ class dmFrontInitFilter extends dmInitFilter
     $this->saveApplicationUrl();
     
     // ajax calls use dm_cpi to request a page
-    if($pageId = $this->context->getRequest()->getParameter('dm_cpi'))
+    if($pageId = $this->request->getParameter('dm_cpi'))
     {
       if (!$page = dmDb::table('DmPage')->findOneByIdWithI18n($pageId))
       {
@@ -36,13 +36,12 @@ class dmFrontInitFilter extends dmInitFilter
       return;
     }
     
-    $request = $this->getContext()->getRequest();
-    $absoluteUrlRoot = $request->getAbsoluteUrlRoot();
+    $absoluteUrlRoot = $this->request->getAbsoluteUrlRoot();
   
-    if (0 === strpos($request->getUri(), $absoluteUrlRoot.'/index.php'))
+    if (0 === strpos($this->request->getUri(), $absoluteUrlRoot.'/index.php'))
     {
       $this->context->getController()->redirect(
-        str_replace($absoluteUrlRoot.'/index.php', $absoluteUrlRoot, $request->getUri()),
+        str_replace($absoluteUrlRoot.'/index.php', $absoluteUrlRoot, $this->request->getUri()),
         0,
         301
       );

@@ -1,0 +1,11 @@
+parameters:
+
+  browser_check.class:        dmBrowserCheck        # Responsible for checking if user browser
+                                                    # is supported by admin & front edition
+
+services:
+
+  browser_check:
+    class:                    %browser_check.class%
+    shared:                   false
+    arguments:                [ @user ]

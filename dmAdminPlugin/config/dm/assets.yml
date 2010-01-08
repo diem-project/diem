@@ -16,6 +16,7 @@ js:
     configPanel:      dmAdminConfigPanel
     chart:            dmAdminChart
     autoSeo:          dmAdminAutoSeo
+    manualSeo:        dmAdminManualSeo
     gallery:          dmAdminGalleryCtrl
     history:          dmAdminHistoryCtrl
 
@@ -42,5 +43,6 @@ css:
     seoService:       seoService
     moduleSpace:      moduleSpace
     autoSeo:          autoSeo
+    manualSeo:        manualSeo
     gallery:          gallery
     history:          history

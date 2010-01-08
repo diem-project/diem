@@ -39,11 +39,14 @@ Seo:
       credentials:  use_google_webmaster_tools
   Sitemap:
     dmSitemap:
-      name:         Generate sitemap
+      name:         Manage XML sitemap
       credentials:  sitemap
   Metas:
     dmAutoSeo:
-      name:         Automatic Page
+      name:         Automatic|Automatic
+      credentials:  automatic_metas
+    dmManualSeo:
+      name:         Manual|Manual
       credentials:  automatic_metas
 #    dmSeoValidation:
 #      name:         Seo Validation

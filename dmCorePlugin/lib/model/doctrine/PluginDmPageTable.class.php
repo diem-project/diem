@@ -37,7 +37,7 @@ class PluginDmPageTable extends myDoctrineTable
     // check error404 page
     if (!$this->createQuery('p')->where('p.module = ? AND p.action = ?', array('main', 'error404'))->exists())
     {
-      dmDb::create('DmPage', array(
+      $this->create(array(
         'module' => 'main',
         'action' => 'error404',
         'name' => dm::getI18n()->__('Page not found'),
@@ -49,7 +49,7 @@ class PluginDmPageTable extends myDoctrineTable
     // check login page
     if (!$this->createQuery('p')->where('p.module = ? AND p.action = ?', array('main', 'login'))->exists())
     {
-      dmDb::create('DmPage', array(
+      $this->create(array(
         'module' => 'main',
         'action' => 'login',
         'name' => dm::getI18n()->__('Login'),
@@ -67,7 +67,7 @@ class PluginDmPageTable extends myDoctrineTable
   {
     if (!$this->createQuery('p')->where('p.module = ? AND p.action = ?', array('main', 'search'))->exists())
     {
-      dmDb::create('DmPage', array(
+      $this->create(array(
         'name' => dm::getI18n()->__('Search results'),
         'title' => dm::getI18n()->__('Search results'),
         'module' => 'main',
@@ -110,8 +110,6 @@ class PluginDmPageTable extends myDoctrineTable
   
   public function prepareRecordPageCache($module, array $ids, $culture = null)
   {
-    $timer = dmDebug::timerOrNull('DmPageTable::prepareRecordPageCache');
-    
     if(!empty($this->recordPageCache[$module]))
     {
       foreach($ids as $index => $id)
@@ -142,8 +140,6 @@ class PluginDmPageTable extends myDoctrineTable
     }
     
     unset($pages);
-    
-    $timer && $timer->addTime();
   }
   
   /*
@@ -167,7 +163,6 @@ class PluginDmPageTable extends myDoctrineTable
   /*
    * Performance finder shortcuts
    */
-  
   public function findOneBySource($source)
   {
     if ($source instanceof DmPage)

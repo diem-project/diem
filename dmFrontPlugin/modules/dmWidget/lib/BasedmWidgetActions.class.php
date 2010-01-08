@@ -3,7 +3,14 @@
 class BasedmWidgetActions extends dmFrontBaseActions
 {
 
-  public function executeEdit(sfWebRequest $request)
+  public function executeCopy(dmWebRequest $request)
+  {
+    $this->forward404Unless($widget = dmDb::table('DmWidget')->find($request->getParameter('id')));
+
+    $this->getService('front_clipboard')->setWidget($widget);
+  }
+
+  public function executeEdit(dmWebRequest $request)
   {
     $this->forward404Unless($widget = dmDb::table('DmWidget')->find($request->getParameter('widget_id')));
   
@@ -114,15 +121,17 @@ class BasedmWidgetActions extends dmFrontBaseActions
     return $this->renderJson(array(
       'type' => 'error',
       'html' => sprintf('<p class="s16 s16_error">%s</p><div class="clearfix mt30"><a class="dm cancel close_dialog button mr10">%s</a><a class="dm delete button red" title="%s">%s</a></div>',
-      $this->context->getI18n()->__('The widget can not be rendered because its type does not exist anymore.'),
-      $this->context->getI18n()->__('Cancel'),
-      $this->context->getI18n()->__('Delete this widget'),
-      $this->context->getI18n()->__('Delete')
+      $this->getService('i18n')->__('The widget can not be rendered because its type does not exist anymore.'),
+      $this->getService('i18n')->__('Cancel'),
+      $this->getService('i18n')->__('Delete this widget'),
+      $this->getService('i18n')->__('Delete')
     )));
   }
 
   protected function renderEdit(dmWidgetBaseForm $form, dmWidgetType $widgetType)
   {
+    $helper = $this->getHelper();
+
     $devActions= '';
     if ($this->getUser()->can('code_editor') && $form instanceof dmWidgetProjectForm)
     {
@@ -131,7 +140,7 @@ class BasedmWidgetActions extends dmFrontBaseActions
         $templateDir = dmOs::join(sfConfig::get('sf_app_module_dir'), $form->getDmModule()->getKey(), 'templates', '_'.$form->getDmAction()->getKey().'.php');
         if (file_exists($templateDir))
         {
-          $devActions .= '<a href="#'.dmProject::unRootify($templateDir).'" class="code_editor s16 s16_code_editor block">'.$this->context->getI18n()->__('Edit template code').'</a>';
+          $devActions .= '<a href="#'.dmProject::unRootify($templateDir).'" class="code_editor s16 s16_code_editor block">'.$this->getService('i18n')->__('Edit template code').'</a>';
         }
       }
       
@@ -140,7 +149,7 @@ class BasedmWidgetActions extends dmFrontBaseActions
         $componentDir = dmOs::join(sfConfig::get('sf_app_module_dir'), $form->getDmModule()->getKey(), 'actions/components.class.php');
         if (file_exists($componentDir))
         {
-          $devActions .= '<a href="#'.dmProject::unRootify($componentDir).'" class="code_editor s16 s16_code_editor block">'.$this->context->getI18n()->__('Edit component code').'</a>';
+          $devActions .= '<a href="#'.dmProject::unRootify($componentDir).'" class="code_editor s16 s16_code_editor block">'.$this->getService('i18n')->__('Edit component code').'</a>';
         }
       }
     }
@@ -149,15 +158,30 @@ class BasedmWidgetActions extends dmFrontBaseActions
     {
       $devActions = '<div class="code_editor_links">'.$devActions.'</div>';
     }
+
+    $copyActions = '';
+    if (false && $this->getUser()->can('widget_add'))
+    {
+      $copyActions = $helper->£('div.dm_cut_copy_actions',
+        $helper->£link('+/dmWidget/cut')
+        ->param('id', $form->getDmWidget()->get('id'))
+        ->text($this->getService('i18n')->__('Cut'))
+        ->set('.s16.s16_cut.dm_widget_cut').
+        $helper->£link('+/dmWidget/copy')
+        ->param('id', $form->getDmWidget()->get('id'))
+        ->text($this->getService('i18n')->__('Copy'))
+        ->set('.s16.s16_copy.dm_widget_copy')
+      );
+    }
     
-    return $this->getHelper()->£('div.dm.dm_widget_edit.'.dmString::underscore($widgetType->getFullKey()).'_form',
+    return $helper->£('div.dm.dm_widget_edit.'.dmString::underscore($widgetType->getFullKey()).'_form',
     // don't use json_encode here because the whole response will be json encoded
     array('class' => sprintf(
       '{ form_class: \'%s\', form_name: \'%s\' }',
       $widgetType->getFullKey().'Form',
       $form->getName()
     )),
-    $form->render('.dm_form.list.little').$devActions
+    $form->render('.dm_form.list.little').$devActions.$copyActions
     );
   }
 

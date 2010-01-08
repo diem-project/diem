@@ -1,2 +1,5 @@
 signinSuccess:
   stylesheets:  [ core.auth ]
+
+signinBrowser:
+  stylesheets:  [ core.auth ]

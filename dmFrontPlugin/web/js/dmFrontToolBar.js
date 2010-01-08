@@ -38,10 +38,10 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
       if (!$('body > div.dm_page_edit_dialog').length) 
       {
         $dialog = $.dm.ctrl.ajaxJsonDialog({
-          title: $(this).attr('title'),
-          class: 'dm_page_edit_dialog',
-          url: $(this).attr('href'),
-          width: 400
+          title:    $(this).attr('title'),
+          'class':  'dm_page_edit_dialog',
+          url:      $(this).attr('href'),
+          width:    400
         }).bind('dmAjaxResponse', function()
         {
           $dialog.dmFrontPageEditForm().prepare();
@@ -58,9 +58,9 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
       if (!$('body > div.dm_page_add_dialog').length) 
       {
         $dialog = $.dm.ctrl.ajaxJsonDialog({
-          title: $(this).attr('title'),
-          class: 'dm_page_add_dialog',
-          url: $(this).attr('href')
+          title:    $(this).attr('title'),
+          'class':  'dm_page_add_dialog',
+          url:      $(this).attr('href')
         }).bind('dmAjaxResponse', function()
         {
           $dialog.dmFrontPageAddForm().prepare();
@@ -96,11 +96,11 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
 		{
 			var $link = $('a.code_editor', this.element);
       $dialog = $.dm.ctrl.ajaxJsonDialog({
-        title: $link.attr('title'),
-        class: 'dm_code_editor_dialog',
-        width: 500,
-        height: 300,
-        url: $link.attr('href')
+        title:    $link.attr('title'),
+        'class':  'dm_code_editor_dialog',
+        width:    500,
+        height:   300,
+        url:      $link.attr('href')
       }).bind('dmAjaxResponse', function()
       {
         $dialog.dmFrontCodeEditor({
@@ -202,12 +202,24 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
         $('div.dm_add_menu', self.element).dmMenu('close');
       }
     });
+  },
+
+  reloadAddMenu: function()
+  {
+    var self = this, $addMenu = self.element.find('div.dm_add_menu').block();
+    
+    $.ajax({
+      url:      $addMenu.metadata().reload_url,
+      success:  function(html) {
+        $addMenu.html(html).unblock();
+      }
+    })
   }
   
 }));
 
 $.extend($.ui.dmFrontToolBar, {
-  getter: "openCodeEditor"
+  getter: "openCodeEditor reloadAddMenu"
 });
   
 })(jQuery);

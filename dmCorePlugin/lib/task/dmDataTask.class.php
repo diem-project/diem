@@ -430,6 +430,7 @@ EOF;
       "export_table" => "Export table contents",
       "sitemap" => "Regenerate sitemap",
       "automatic_metas" => "Configure automatic pages metas",
+      "manual_metas" => "Configure manually pages metas",
       "static_metas" => "Configure static pages metas",
       'url_redirection' => 'Configure url redirections',
       "use_google_analytics" => "Use google analytics",

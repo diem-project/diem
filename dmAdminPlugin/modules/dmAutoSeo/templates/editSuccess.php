@@ -1,5 +1,7 @@
 <?php
 
+echo £o('div.dm_auto_seo_manager.ui-tabs.ui-widget.ui-widget-content.ui-corner-all.mt10');
+
 include_partial('dmAutoSeo/tabs', array('autoSeos' => $autoSeos, 'current' => $autoSeo));
 
 echo £o('div.dm_auto_seo.clearfix');

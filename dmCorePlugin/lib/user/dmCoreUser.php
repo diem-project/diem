@@ -2,7 +2,6 @@
 
 abstract class dmCoreUser extends dmSecurityUser implements dmMicroCacheInterface
 {
-
   protected
   $browser,
   $isBrowserConfigured,

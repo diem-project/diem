@@ -4,11 +4,6 @@
 
 #dm_page.edit .dm_widget .dm_widget_inner {
   border: 2px groove #D3D3D3;
-  /*
-  margin: 1px;
-  margin-top: 0;
-  padding: 0px;
-  */
   -moz-border-radius: 0 4px 4px 4px;
 }
 
@@ -56,4 +51,11 @@ div.dm_widget_edit div.code_editor_links {
 div.dm_widget_edit div.code_editor_links > a {
   float: left;
   margin-right: 10px;
+}
+
+div.dm_widget_edit_dialog_wrap div.dm_cut_copy_actions a {
+  display: block;
+  height: 16px;
+  float: left;
+  margin-left: 10px;
 }

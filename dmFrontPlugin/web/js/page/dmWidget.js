@@ -11,9 +11,9 @@ $.widget('ui.dmWidget', {
 
   openEditDialog: function()
   {
-    var widget = this, activeTab = null, dialog_class = widget.element.attr('id')+'_edit_dialog';
+    var widget = this, activeTab = null, dialog_class = 'dm_widget_edit_dialog_wrap '+widget.element.attr('id')+'_edit_dialog';
 		
-	  if ($('div.'+dialog_class).length)
+	  if ($('body > div.'+dialog_class).length)
 		{
 			return;
 		}
@@ -43,6 +43,24 @@ $.widget('ui.dmWidget', {
 			var $form = $('div.dm_widget_edit', $dialog);
 			if ($form.length)
 			{
+        /*
+         *Move cut & copy actions to the title
+         */
+        if ($cutCopy = $form.find('div.dm_cut_copy_actions').orNot())
+        {
+          $dialog.parent().find('div.ui-dialog-titlebar').append($cutCopy);
+          $cutCopy.find('a').click(function() {
+            $.ajax({
+              url:      $(this).attr('href'),
+              success:  function()
+              {
+                $('#dm_tool_bar').dmFrontToolBar('reloadAddMenu');
+              }
+            });
+
+            return false;
+          });
+        }
 				/*
 				 * Apply generic front form abilities
 				 */

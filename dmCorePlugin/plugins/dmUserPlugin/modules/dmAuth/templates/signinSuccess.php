@@ -14,7 +14,7 @@ echo £('div.message',
         $form['password']->error()->label(__('Password'))->field()
       )
     ).
-    $form->submit(__('Login'), 'button blue fright mt10').
+    $form->submit(__('Login'), '.mt10').
   '</form>'
 );
 
