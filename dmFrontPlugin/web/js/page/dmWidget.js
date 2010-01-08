@@ -23,8 +23,8 @@ $.widget('ui.dmWidget', {
       data:         { widget_id: widget.getId() },
       title:        $('a.dm_widget_edit', widget.element).attr('title'),
       width:        370,
-			class:        dialog_class,
-      beforeclose:  function() {
+			'class':      dialog_class,
+      beforeClose:  function() {
         if (widget.deleted) return;
         $.ajax({
 					dataType: 'json',
@@ -136,14 +136,14 @@ $.widget('ui.dmWidget', {
 			}
       $('a.delete', $dialog).click(function() {
         if (confirm($(this).attr('title')+" ?")) {
+          widget._delete();
           $dialog.dialog('close');
-          widget.delete();
         }
       });
     });
   },
   
-  delete: function()
+  _delete: function()
   {
     var widget = this;
     this.deleted = true;
@@ -167,6 +167,7 @@ $.widget('ui.dmWidget', {
         return false;
       }
       widget.openEditDialog();
+      return true;
     });
   },
   

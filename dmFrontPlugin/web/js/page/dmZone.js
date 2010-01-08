@@ -43,8 +43,8 @@ $.widget('ui.dmZone', {
       url:      $.dm.ctrl.getHref('+/dmZone/edit'),
       data:     { zone_id: zone.getId() },
       title:    $('#dm_zone_'+zone.getId()+' > a.dm_zone_edit').attr('title'),
-			class:    dialog_class,
-      beforeclose:  function() {
+			'class':  dialog_class,
+      beforeClose:  function() {
         if (zone.deleted) return;
         setTimeout(function() {
           $.ajax({
@@ -81,7 +81,7 @@ $.widget('ui.dmZone', {
       });
       $('a.delete', $form).click(function() {
         if (confirm($(this).attr('title')+" ?")) {
-          zone.delete();
+          zone._delete();
           $dialog.dialog('close');
         }
       });
@@ -154,7 +154,7 @@ $.widget('ui.dmZone', {
       url:      $.dm.ctrl.getHref('+/dmWidget/move')
       +"?moved_dm_widget="+$widget.dmWidget('getId')
       +"&to_dm_zone="+this.getId()
-      +"&"+$('div.dm_widgets', this.element).sortable('serialize'),
+      +"&"+$('div.dm_widgets', this.element).sortable('serialize')
     });
   },
   
@@ -186,11 +186,11 @@ $.widget('ui.dmZone', {
   sortWidgets: function()
   {
     $.ajax({
-      url:      $.dm.ctrl.getHref('+/dmWidget/sort')+"?dm_zone="+this.getId()+"&"+$('div.dm_widgets', this.element).sortable('serialize'),
+      url:      $.dm.ctrl.getHref('+/dmWidget/sort')+"?dm_zone="+this.getId()+"&"+$('div.dm_widgets', this.element).sortable('serialize')
     });
   },
   
-  delete: function()
+  _delete: function()
   {
     var zone = this;
     

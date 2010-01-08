@@ -35,7 +35,7 @@
         resizable: false
 		  }, options || {});
       
-      opt.dialogClass = opt.class ? opt.class + " dm" : "dm";
+      opt.dialogClass = opt['class'] ? opt['class'] + " dm" : "dm";
 			
       var $dialog = $('<div>').dialog(opt).bind('dialogclose', function()
       {
