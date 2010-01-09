@@ -5,7 +5,7 @@ include_once(dmOs::join(sfConfig::get('dm_core_dir'), 'modules/dmInterface/lib/B
 class dmInterfaceActions extends BasedmInterfaceActions
 {
 
-  public function executeLoadPageTree(sfWebRequest $request)
+  public function executeLoadPageTree(dmWebRequest $request)
   {
     $tree = new dmAdminRecursivePageList();
 

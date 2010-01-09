@@ -3,7 +3,7 @@
 abstract class BasedmInterfaceActions extends dmBaseActions
 {
 
-  public function executeLoadMediaFolder(sfWebRequest $request)
+  public function executeLoadMediaFolder(dmWebRequest $request)
   {
     $this->folder = null;
     
