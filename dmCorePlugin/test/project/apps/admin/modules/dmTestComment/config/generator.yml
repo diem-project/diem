@@ -9,12 +9,15 @@ generator:
     with_doctrine_route: false
     config:
       actions: ~
-      fields: {  }
+      fields:
+        is_active:
+          label: Active
       list:
         display:
           - '=author'
-          - dm_test_post_id
+          - post_id
           - body
+          - is_active
           - created_at
           - updated_at
         sort:
@@ -22,16 +25,18 @@ generator:
           - desc
         table_method: getAdminListQuery
         table_count_method: ~
+        sortable: false
       filter:
         display:
           - author
-          - dm_test_post_id
+          - is_active
+          - post_id
           - body
           - created_at
           - updated_at
       form:
         display:
-          NONE: [author, dm_test_post_id]
+          NONE: [author, is_active, post_id]
           Body: [body]
         class: DmTestCommentAdminForm
         fields: {  }

@@ -36,7 +36,7 @@ EOF;
   {
     $this->logSection('diem', 'Setup '.dmProject::getKey());
     
-    $this->dispatcher->notify(new sfEvent($this, 'dm.setup.before', array()));
+    $this->dispatcher->notify(new sfEvent($this, 'dm.setup.before', array('clear-db' => $options['clear-db'])));
     
     if (!$this->isProjectLocked() && $this->projectHasModels())
     {
@@ -138,7 +138,7 @@ EOF;
     
     $this->runTask('dm:clear-cache');
     
-    $this->dispatcher->notify(new sfEvent($this, 'dm.setup.after', array()));
+    $this->dispatcher->notify(new sfEvent($this, 'dm.setup.after', array('clear-db' => $options['clear-db'])));
     
     $this->logBlock('Setup successful', 'INFO_LARGE');
     

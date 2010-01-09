@@ -4,11 +4,13 @@ require_once(realpath(dirname(__FILE__).'/../../..').'/unit/helper/dmUnitTestHel
 $helper = new dmUnitTestHelper();
 $helper->boot();
 
-$t = new lime_test(50);
+$t = new lime_test(60);
+
+$helper->clearDatabase($t);
 
 $loremizer = $helper->get('project_loremizer');
 
-foreach(array(5, 10, 15, 20, 20) as $nb)
+foreach(array(0, 5, 10, 15, 20, 20) as $nb)
 {
   $t->comment('Loremizing database with '.$nb.' records per table');
   
@@ -30,6 +32,6 @@ foreach(array(5, 10, 15, 20, 20) as $nb)
 
   foreach(array('DmTestDomainCateg', 'DmTestPostTag') as $associationTable)
   {
-    $t->is($nb*2, $count = dmDb::query($associationTable.' r')->count(), $associationTable.' association table has '.$count.' records');
+    $t->is($count = dmDb::query($associationTable.' r')->count(), $nb*2, $associationTable.' association table has '.$count.' records');
   }
 }

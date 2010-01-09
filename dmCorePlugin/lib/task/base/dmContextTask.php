@@ -15,7 +15,7 @@ abstract class dmContextTask extends dmBaseTask
     return $this->getContext()->get($service);
   }
 
-  protected function getContext()
+  public function getContext()
   {
     if (null === $this->context)
     {

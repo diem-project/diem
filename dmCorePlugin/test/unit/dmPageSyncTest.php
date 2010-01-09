@@ -44,8 +44,6 @@ $helper->syncPages($t); // 1 test
 
 $helper->checkTreeIntegrity($t); // 2 tests
 
-$pageTreeWatcher = $helper->get('page_tree_watcher');
-
 for($it = 1; $it<=$nbBigIterations; $it++)
 {
 	$t->diag('Randomly delete 2 records by table');

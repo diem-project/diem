@@ -69,14 +69,24 @@ class dmUnitTestHelper
 
     foreach($this->moduleManager->getModulesWithModel() as $module)
     {
-      try
-      {
-        $module->getTable()->createQuery()->delete()->execute();
-      }
-      catch(Exception $e)
-      {
-        $t->diag(sprintf('Can not delete %s records : %s', $module, $e->getMessage()));
-      }
+      $this->clearModule($module);
+    }
+  }
+
+  public function clearModule(dmModule $module)
+  {
+    try
+    {
+      $module->getTable()->createQuery()->delete()->execute();
+    }
+    catch(Exception $e)
+    {
+      $t->diag(sprintf('Can not delete %s records : %s', $module, $e->getMessage()));
+    }
+
+    foreach($module->getTable()->getRelationHolder()->getAssociations() as $alias => $association)
+    {
+      $association['refTable']->createQuery()->delete()->execute();
     }
   }
 

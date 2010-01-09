@@ -22,7 +22,7 @@ class dmFormManager implements ArrayAccess
   {
     $formClass = $name.'Form';
       
-    if (!class_exists($formClass))
+    if (!class_exists($formClass = $name.'Form') && !class_exists($formClass = $name))
     {
       throw new InvalidArgumentException(sprintf('The form manager has no "%s" form.', $formClass));
     }

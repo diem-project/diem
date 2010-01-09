@@ -6,6 +6,8 @@ $helper->boot();
 
 $t = new lime_test(36);
 
+$helper->clearDatabase($t);
+
 $loremizer = $helper->get('record_loremizer');
 
 $t->is(dmDb::table('DmTestPost')->count(), 0, 'No post exist');

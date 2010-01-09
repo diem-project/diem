@@ -6,6 +6,7 @@ Project:
       actions:  
         header:  
         footer:
+        loginForm:
         
   Food:
   

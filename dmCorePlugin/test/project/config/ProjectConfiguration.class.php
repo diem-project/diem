@@ -20,7 +20,8 @@ class ProjectConfiguration extends dmProjectConfiguration
     ));
 
     $this->setWebDir(realpath(dirname(__FILE__).'/../public_html'));
-    
+
+    $this->dispatcher->disconnect('dm.setup.after', array($this, 'listenToSetupAfterEvent'));
     $this->dispatcher->connect('dm.setup.after', array($this, 'listenToSetupAfterEvent'));
   }
 
@@ -39,6 +40,12 @@ class ProjectConfiguration extends dmProjectConfiguration
     
     dmDb::table('DmMediaFolder')->checkRoot()->sync();
     dmDb::table('DmPage')->checkBasicPages();
+
+    if(!sfConfig::get('dm_test_project_built') && $event['clear-db'])
+    {
+      $builder = new dmTestProjectBuilder($event->getSubject()->getContext());
+      $builder->execute();
+    }
     
     copy(dmOs::join(sfConfig::get('sf_data_dir'), 'db.sqlite'), dmOs::join(sfConfig::get('sf_data_dir'), 'fresh_db.sqlite'));
     
@@ -59,6 +66,8 @@ class ProjectConfiguration extends dmProjectConfiguration
     {
       unlink($sfDir);
     }
+    
+    sfConfig::set('dm_test_project_built', true);
   }
   
   public function cleanup(sfFilesystem $filesystem)

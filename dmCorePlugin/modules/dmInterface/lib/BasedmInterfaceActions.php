@@ -24,6 +24,6 @@ abstract class BasedmInterfaceActions extends dmBaseActions
     return $this->renderPartial('mediaBarInner');
   }
 
-  abstract public function executeLoadPageTree(sfWebRequest $request);
+  abstract public function executeLoadPageTree(dmWebRequest $request);
 
 }

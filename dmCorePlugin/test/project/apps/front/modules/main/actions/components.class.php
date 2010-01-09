@@ -3,6 +3,7 @@
  * Main components
  * 
  * No redirection nor database manipulation ( insert, update, delete ) here
+ * 
  */
 class mainComponents extends myFrontModuleComponents
 {
@@ -15,6 +16,11 @@ class mainComponents extends myFrontModuleComponents
   public function executeFooter()
   {
     // Your code here
+  }
+
+  public function executeLoginForm()
+  {
+    $this->form = $this->forms['dmFormSignin'];
   }
 
 

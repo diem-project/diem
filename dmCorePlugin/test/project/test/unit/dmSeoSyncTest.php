@@ -12,15 +12,15 @@ $t = new lime_test(2 + $nbLoremizeRecords*5);
 
 $helper->loremizeDatabase($nbLoremizeRecords, $t);
 
-dmDb::table('DmAutoSeo')->createFromModuleAndAction('dmTestDomain', 'show')->fromArray(array(
+dmDb::table('DmAutoSeo')->findOneByModuleAndAction('dmTestDomain', 'show')->merge(array(
   'slug' => '%dmTestDomain.id%-%dmTestDomain%'
 ))->save();
 
-dmDb::table('DmAutoSeo')->createFromModuleAndAction('dmTestCateg', 'show')->fromArray(array(
+dmDb::table('DmAutoSeo')->findOneByModuleAndAction('dmTestCateg', 'show')->merge(array(
   'slug' => '%dmTestCateg.id%-%dmTestCateg%'
 ))->save();
 
-dmDb::table('DmAutoSeo')->createFromModuleAndAction('dmTestPost', 'show')->fromArray(array(
+dmDb::table('DmAutoSeo')->findOneByModuleAndAction('dmTestPost', 'show')->merge(array(
   'slug'      => '%dmTestPost%-%dmTestPost.id%',
   'name'      => 'Post : %dmTestPost.title%',
   'title'     => '%dmTestPost% | %dmTestCateg.title%',
