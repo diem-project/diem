@@ -4,7 +4,7 @@ require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
 $helper = new dmUnitTestHelper();
 $helper->boot();
 
-$t = new lime_test(28);
+$t = new lime_test(32);
 
 $user  = $helper->get('user');
 $theme = $user->getTheme();
@@ -142,6 +142,16 @@ $t->comment('With default alt');
 $media->legend = 'The default alt';
 $expected = sprintf('#<img alt="%s" height="%d" src="[^"]+" width="%d" />#', $media->legend, 200, 300);
 $t->like(£media($media)->size(300, 200)->render(), $expected, $expected);
+
+$t->comment('With remote media');
+$url = 'http://www.symfony-project.org/images/symfony_logo.gif';
+$t->is((string)£media($url), $expected = '<img src="'.$url.'" />', $expected);
+$t->is((string)£media($url)->size(30, 20), $expected = '<img height="20" src="'.$url.'" width="30" />', $expected);
+
+$t->comment('With remote media, url with parameter');
+$url = 'http://www.symfony-project.org/images/symfony_logo.gif?param=value';
+$t->is((string)£media($url), $expected = '<img src="'.$url.'" />', $expected);
+$t->is((string)£media($url)->size(30, 20), $expected = '<img height="20" src="'.$url.'" width="30" />', $expected);
 
 $tag = £media('non_existing');
 $t->is($tag->render(), $tag->renderDefault(), 'non existent tag renders nothing');

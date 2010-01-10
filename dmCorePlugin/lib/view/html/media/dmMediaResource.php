@@ -94,6 +94,7 @@ class dmMediaResource
       if (strncmp($source, 'media:', 6) === 0)
       {
         $mediaId = preg_replace('|^media:(\d+).*|', '$1', $source);
+        
         if ($media = dmDb::table('DmMedia')->findOneByIdWithFolder($mediaId))
         {
           $this->fromMedia($media);
@@ -108,7 +109,7 @@ class dmMediaResource
         $this->type = self::REMOTE;
         $this->remotePath = $source;
   
-        $this->mime = $this->mimeTypeResolver->getGroupByFilename($source);
+        $this->mime = 'image'; //$this->mimeTypeResolver->getGroupByFilename(dmString::getBaseFromUrl($source));
       }
       else
       {
