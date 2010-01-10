@@ -388,3 +388,201 @@ Jan 09 21:08:46 symfony [info] dm_page_en : Index optimized in "0.4" seconds.
 Jan 09 21:08:46 symfony [info] dm_page_fr : Optimizing index...
 Jan 09 21:08:47 symfony [info] dm_page_fr : Index optimized in "0.38" seconds.
 Jan 09 21:08:47 symfony [info] dmSearchEngine : Group optimized in "0.78" seconds.
+Jan 10 10:58:51 symfony [info] dmSearchEngine : Populating group...
+Jan 10 10:58:51 symfony [info] dmSearchEngine : Populating index "dm_page_en"...
+Jan 10 10:58:51 symfony [info] dm_page_en : Populating index...
+Jan 10 10:58:51 symfony [info] dm_page_en : Index erased.
+Jan 10 10:58:52 symfony [info] dm_page_en 1/43 : /
+Jan 10 10:58:52 symfony [info] dm_page_en 2/43 : /dm-test-domains
+Jan 10 10:58:52 symfony [info] dm_page_en 3/43 : /dm-test-tags
+Jan 10 10:58:52 symfony [info] dm_page_en 4/43 : /dm-test-domains/sed-eu-augue-curabi
+Jan 10 10:58:52 symfony [info] dm_page_en 5/43 : /dm-test-domains/aliq
+Jan 10 10:58:52 symfony [info] dm_page_en 6/43 : /dm-test-domains/cumsan-nunc-sapien-euismod-nisl-i
+Jan 10 10:58:52 symfony [info] dm_page_en 7/43 : /dm-test-domains/mi-pe
+Jan 10 10:58:52 symfony [info] dm_page_en 8/43 : /dm-test-domains/n-consequat-nam-viverra-dolor-non-s
+Jan 10 10:58:52 symfony [info] dm_page_en 9/43 : /dm-test-domains/ncid
+Jan 10 10:58:52 symfony [info] dm_page_en 10/43 : /dm-test-domains/tor-maecen
+Jan 10 10:58:52 symfony [info] dm_page_en 11/43 : /dm-test-domains/tis-nisl-nec
+Jan 10 10:58:52 symfony [info] dm_page_en 12/43 : /dm-test-domains/faucibus-orci-luctus-et
+Jan 10 10:58:52 symfony [info] dm_page_en 13/43 : /dm-test-domains/nare-risus-donec-lorem-mi-elem
+Jan 10 10:58:52 symfony [info] dm_page_en 14/43 : /dm-test-domains/sed-eu-augue-curabi/lementum-in-fe
+Jan 10 10:58:52 symfony [info] dm_page_en 15/43 : /dm-test-domains/cumsan-nunc-sapien-euismod-nisl-i/odales-sapien-metus-dictum-felis-a
+Jan 10 10:58:52 symfony [info] dm_page_en 16/43 : /dm-test-domains/aliq/donec-ut-ligul
+Jan 10 10:58:52 symfony [info] dm_page_en 17/43 : /dm-test-domains/sed-eu-augue-curabi/um-at-blandit-eu-erat-viva
+Jan 10 10:58:52 symfony [info] dm_page_en 18/43 : /dm-test-domains/cumsan-nunc-sapien-euismod-nisl-i/llis-lacus-eget-sodales-pu
+Jan 10 10:58:52 symfony [info] dm_page_en 19/43 : /dm-test-domains/tor-maecen/molestie-magna-eti
+Jan 10 10:58:52 symfony [info] dm_page_en 20/43 : /dm-test-domains/n-consequat-nam-viverra-dolor-non-s/sed
+Jan 10 10:58:52 symfony [info] dm_page_en 21/43 : /dm-test-domains/faucibus-orci-luctus-et/s-eu-tellus-ut-sempe
+Jan 10 10:58:52 symfony [info] dm_page_en 22/43 : /dm-test-domains/sed-eu-augue-curabi/t-vehicula-class
+Jan 10 10:58:52 symfony [info] dm_page_en 23/43 : /dm-test-domains/tor-maecen/s-dol
+Jan 10 10:58:52 symfony [info] dm_page_en 24/43 : /dm-test-domains/aliq/donec-ut-ligul/nec-et-libero-duis-feugiat-pr
+Jan 10 10:58:52 symfony [info] dm_page_en 25/43 : /dm-test-domains/sed-eu-augue-curabi/um-at-blandit-eu-erat-viva/bendum-velit-vivamus-pellentesqu
+Jan 10 10:58:52 symfony [info] dm_page_en 26/43 : /dm-test-domains/cumsan-nunc-sapien-euismod-nisl-i/llis-lacus-eget-sodales-pu/turpis-quis
+Jan 10 10:58:52 symfony [info] dm_page_en 27/43 : /dm-test-domains/sed-eu-augue-curabi/um-at-blandit-eu-erat-viva/eros-adipisc
+Jan 10 10:58:52 symfony [info] dm_page_en 28/43 : /dm-test-domains/sed-eu-augue-curabi/um-at-blandit-eu-erat-viva/erat-luctus-eu-fermen
+Jan 10 10:58:52 symfony [info] dm_page_en 29/43 : /dm-test-domains/cumsan-nunc-sapien-euismod-nisl-i/llis-lacus-eget-sodales-pu/lamcorper-tellus-non-ligu
+Jan 10 10:58:52 symfony [info] dm_page_en 30/43 : /dm-test-domains/tor-maecen/s-dol/sagittis-magna-sed-nisi-suspendi
+Jan 10 10:58:52 symfony [info] dm_page_en 31/43 : /dm-test-domains/sed-eu-augue-curabi/um-at-blandit-eu-erat-viva/lla-commodo-ips
+Jan 10 10:58:52 symfony [info] dm_page_en 32/43 : /dm-test-domains/tor-maecen/s-dol/scelerisque-nulla-massa-porta-nunc-sed
+Jan 10 10:58:52 symfony [info] dm_page_en 33/43 : /dm-test-domains/cumsan-nunc-sapien-euismod-nisl-i/odales-sapien-metus-dictum-felis-a/s-cursus-proin-tempor-magna-at-purus-i
+Jan 10 10:58:52 symfony [info] dm_page_en 34/43 : /dm-test-tags/um-scelerisque-nulla
+Jan 10 10:58:52 symfony [info] dm_page_en 35/43 : /dm-test-tags/rdum-viverra-praesent-convallis
+Jan 10 10:58:52 symfony [info] dm_page_en 36/43 : /dm-test-tags/ec-et-libero-dui
+Jan 10 10:58:52 symfony [info] dm_page_en 37/43 : /dm-test-tags/de-vestibulum-tellus
+Jan 10 10:58:53 symfony [info] dm_page_en 38/43 : /dm-test-tags/cenas-eget-arcu
+Jan 10 10:58:53 symfony [info] dm_page_en 39/43 : /dm-test-tags/r-elit-sed-nulla-vivamus-i
+Jan 10 10:58:53 symfony [info] dm_page_en 40/43 : /dm-test-tags/te-in-consequat-nam-viverra-do
+Jan 10 10:58:53 symfony [info] dm_page_en 41/43 : /dm-test-tags/re-cubilia-curae-phasellus-bibendum-lig
+Jan 10 10:58:53 symfony [info] dm_page_en 42/43 : /dm-test-tags/enim-et
+Jan 10 10:58:53 symfony [info] dm_page_en 43/43 : /dm-test-tags/ingilla-mi-eu
+Jan 10 10:58:53 symfony [info] dm_page_en : Index populated in "1.3" seconds.
+Jan 10 10:58:53 symfony [info] dm_page_en : Time per document "0.03" seconds.
+Jan 10 10:58:53 symfony [info] dmSearchEngine : Populating index "dm_page_fr"...
+Jan 10 10:58:53 symfony [info] dm_page_fr : Populating index...
+Jan 10 10:58:53 symfony [info] dm_page_fr : Index erased.
+Jan 10 10:58:53 symfony [info] dm_page_fr 1/40 : /dm-test-domains/sed-eu-augue-curabi
+Jan 10 10:58:53 symfony [info] dm_page_fr 2/40 : /dm-test-domains/aliq
+Jan 10 10:58:53 symfony [info] dm_page_fr 3/40 : /dm-test-domains/cumsan-nunc-sapien-euismod-nisl-i
+Jan 10 10:58:53 symfony [info] dm_page_fr 4/40 : /dm-test-domains/mi-pe
+Jan 10 10:58:53 symfony [info] dm_page_fr 5/40 : /dm-test-domains/n-consequat-nam-viverra-dolor-non-s
+Jan 10 10:58:53 symfony [info] dm_page_fr 6/40 : /dm-test-domains/ncid
+Jan 10 10:58:53 symfony [info] dm_page_fr 7/40 : /dm-test-domains/tor-maecen
+Jan 10 10:58:53 symfony [info] dm_page_fr 8/40 : /dm-test-domains/tis-nisl-nec
+Jan 10 10:58:53 symfony [info] dm_page_fr 9/40 : /dm-test-domains/faucibus-orci-luctus-et
+Jan 10 10:58:53 symfony [info] dm_page_fr 10/40 : /dm-test-domains/nare-risus-donec-lorem-mi-elem
+Jan 10 10:58:53 symfony [info] dm_page_fr 11/40 : /dm-test-domains/sed-eu-augue-curabi/lementum-in-fe
+Jan 10 10:58:53 symfony [info] dm_page_fr 12/40 : /dm-test-domains/cumsan-nunc-sapien-euismod-nisl-i/odales-sapien-metus-dictum-felis-a
+Jan 10 10:58:53 symfony [info] dm_page_fr 13/40 : /dm-test-domains/aliq/donec-ut-ligul
+Jan 10 10:58:53 symfony [info] dm_page_fr 14/40 : /dm-test-domains/sed-eu-augue-curabi/um-at-blandit-eu-erat-viva
+Jan 10 10:58:53 symfony [info] dm_page_fr 15/40 : /dm-test-domains/cumsan-nunc-sapien-euismod-nisl-i/llis-lacus-eget-sodales-pu
+Jan 10 10:58:53 symfony [info] dm_page_fr 16/40 : /dm-test-domains/tor-maecen/molestie-magna-eti
+Jan 10 10:58:53 symfony [info] dm_page_fr 17/40 : /dm-test-domains/n-consequat-nam-viverra-dolor-non-s/sed
+Jan 10 10:58:53 symfony [info] dm_page_fr 18/40 : /dm-test-domains/faucibus-orci-luctus-et/s-eu-tellus-ut-sempe
+Jan 10 10:58:53 symfony [info] dm_page_fr 19/40 : /dm-test-domains/sed-eu-augue-curabi/t-vehicula-class
+Jan 10 10:58:53 symfony [info] dm_page_fr 20/40 : /dm-test-domains/tor-maecen/s-dol
+Jan 10 10:58:53 symfony [info] dm_page_fr 21/40 : /dm-test-domains/aliq/donec-ut-ligul/nec-et-libero-duis-feugiat-pr
+Jan 10 10:58:53 symfony [info] dm_page_fr 22/40 : /dm-test-domains/sed-eu-augue-curabi/um-at-blandit-eu-erat-viva/bendum-velit-vivamus-pellentesqu
+Jan 10 10:58:53 symfony [info] dm_page_fr 23/40 : /dm-test-domains/cumsan-nunc-sapien-euismod-nisl-i/llis-lacus-eget-sodales-pu/turpis-quis
+Jan 10 10:58:53 symfony [info] dm_page_fr 24/40 : /dm-test-domains/sed-eu-augue-curabi/um-at-blandit-eu-erat-viva/eros-adipisc
+Jan 10 10:58:53 symfony [info] dm_page_fr 25/40 : /dm-test-domains/sed-eu-augue-curabi/um-at-blandit-eu-erat-viva/erat-luctus-eu-fermen
+Jan 10 10:58:53 symfony [info] dm_page_fr 26/40 : /dm-test-domains/cumsan-nunc-sapien-euismod-nisl-i/llis-lacus-eget-sodales-pu/lamcorper-tellus-non-ligu
+Jan 10 10:58:53 symfony [info] dm_page_fr 27/40 : /dm-test-domains/tor-maecen/s-dol/sagittis-magna-sed-nisi-suspendi
+Jan 10 10:58:53 symfony [info] dm_page_fr 28/40 : /dm-test-domains/sed-eu-augue-curabi/um-at-blandit-eu-erat-viva/lla-commodo-ips
+Jan 10 10:58:54 symfony [info] dm_page_fr 29/40 : /dm-test-domains/tor-maecen/s-dol/scelerisque-nulla-massa-porta-nunc-sed
+Jan 10 10:58:54 symfony [info] dm_page_fr 30/40 : /dm-test-domains/cumsan-nunc-sapien-euismod-nisl-i/odales-sapien-metus-dictum-felis-a/s-cursus-proin-tempor-magna-at-purus-i
+Jan 10 10:58:54 symfony [info] dm_page_fr 31/40 : /dm-test-tags/um-scelerisque-nulla
+Jan 10 10:58:54 symfony [info] dm_page_fr 32/40 : /dm-test-tags/rdum-viverra-praesent-convallis
+Jan 10 10:58:54 symfony [info] dm_page_fr 33/40 : /dm-test-tags/ec-et-libero-dui
+Jan 10 10:58:54 symfony [info] dm_page_fr 34/40 : /dm-test-tags/de-vestibulum-tellus
+Jan 10 10:58:54 symfony [info] dm_page_fr 35/40 : /dm-test-tags/cenas-eget-arcu
+Jan 10 10:58:54 symfony [info] dm_page_fr 36/40 : /dm-test-tags/r-elit-sed-nulla-vivamus-i
+Jan 10 10:58:54 symfony [info] dm_page_fr 37/40 : /dm-test-tags/te-in-consequat-nam-viverra-do
+Jan 10 10:58:54 symfony [info] dm_page_fr 38/40 : /dm-test-tags/re-cubilia-curae-phasellus-bibendum-lig
+Jan 10 10:58:54 symfony [info] dm_page_fr 39/40 : /dm-test-tags/enim-et
+Jan 10 10:58:54 symfony [info] dm_page_fr 40/40 : /dm-test-tags/ingilla-mi-eu
+Jan 10 10:58:54 symfony [info] dm_page_fr : Index populated in "1.2" seconds.
+Jan 10 10:58:54 symfony [info] dm_page_fr : Time per document "0.03" seconds.
+Jan 10 10:58:54 symfony [info] dmSearchEngine : Group populated in "2.5" seconds.
+Jan 10 10:58:54 symfony [info] -----> Search index population successfully completed
+Jan 10 10:58:54 symfony [info] dmSearchEngine : Optimizing group...
+Jan 10 10:58:54 symfony [info] dm_page_en : Optimizing index...
+Jan 10 10:58:54 symfony [info] dm_page_en : Index optimized in "0.46" seconds.
+Jan 10 10:58:54 symfony [info] dm_page_fr : Optimizing index...
+Jan 10 10:58:55 symfony [info] dm_page_fr : Index optimized in "0.41" seconds.
+Jan 10 10:58:55 symfony [info] dmSearchEngine : Group optimized in "0.87" seconds.
+Jan 10 14:54:36 symfony [info] dmSearchEngine : Populating group...
+Jan 10 14:54:36 symfony [info] dmSearchEngine : Populating index "dm_page_en"...
+Jan 10 14:54:36 symfony [info] dm_page_en : Populating index...
+Jan 10 14:54:36 symfony [info] dm_page_en : Index erased.
+Jan 10 14:54:37 symfony [info] dm_page_en 1/40 : /
+Jan 10 14:54:37 symfony [info] dm_page_en 2/40 : /dm-test-domains
+Jan 10 14:54:37 symfony [info] dm_page_en 3/40 : /dm-test-tags
+Jan 10 14:54:37 symfony [info] dm_page_en 4/40 : /dm-test-domains/met-mi-in-scelerisque-cursus-arcu
+Jan 10 14:54:37 symfony [info] dm_page_en 5/40 : /dm-test-domains/us-tincidunt-ligula-sit-amet-felis
+Jan 10 14:54:37 symfony [info] dm_page_en 6/40 : /dm-test-domains/nec-imperdiet-quis
+Jan 10 14:54:37 symfony [info] dm_page_en 7/40 : /dm-test-domains/varius
+Jan 10 14:54:37 symfony [info] dm_page_en 8/40 : /dm-test-domains/integer-risus-neque-in
+Jan 10 14:54:37 symfony [info] dm_page_en 9/40 : /dm-test-domains/accumsan-id-phare
+Jan 10 14:54:37 symfony [info] dm_page_en 10/40 : /dm-test-domains/gnissim-magna-integer-mau
+Jan 10 14:54:37 symfony [info] dm_page_en 11/40 : /dm-test-domains/sed-sagitt
+Jan 10 14:54:37 symfony [info] dm_page_en 12/40 : /dm-test-domains/cipit-iac
+Jan 10 14:54:37 symfony [info] dm_page_en 13/40 : /dm-test-domains/s-praesent-pretium-ultrices-est
+Jan 10 14:54:37 symfony [info] dm_page_en 14/40 : /dm-test-domains/cipit-iac/consequat-eu-lacus-curabitur-bi
+Jan 10 14:54:37 symfony [info] dm_page_en 15/40 : /dm-test-domains/gnissim-magna-integer-mau/apien-interdum-viverra-praesent
+Jan 10 14:54:37 symfony [info] dm_page_en 16/40 : /dm-test-domains/gnissim-magna-integer-mau/la-rhoncus-mauri
+Jan 10 14:54:37 symfony [info] dm_page_en 17/40 : /dm-test-domains/cipit-iac/tibulum-a
+Jan 10 14:54:37 symfony [info] dm_page_en 18/40 : /dm-test-domains/nec-imperdiet-quis/rdum-e
+Jan 10 14:54:37 symfony [info] dm_page_en 19/40 : /dm-test-domains/sed-sagitt/vestibulum-an
+Jan 10 14:54:37 symfony [info] dm_page_en 20/40 : /dm-test-domains/varius/ula-rhoncus-mauris-ultricies-euismod
+Jan 10 14:54:37 symfony [info] dm_page_en 21/40 : /dm-test-domains/sed-sagitt/vestib
+Jan 10 14:54:37 symfony [info] dm_page_en 22/40 : /dm-test-domains/integer-risus-neque-in/n-imperdiet-nibh-sed-ferment
+Jan 10 14:54:37 symfony [info] dm_page_en 23/40 : /dm-test-domains/sed-sagitt/vestib/assa-phasellus-hendrerit
+Jan 10 14:54:37 symfony [info] dm_page_en 24/40 : /dm-test-domains/nec-imperdiet-quis/rdum-e/dunt-quis-scelerisque-et-sapien
+Jan 10 14:54:37 symfony [info] dm_page_en 25/40 : /dm-test-domains/cipit-iac/consequat-eu-lacus-curabitur-bi/onvallis-nec
+Jan 10 14:54:37 symfony [info] dm_page_en 26/40 : /dm-test-domains/gnissim-magna-integer-mau/la-rhoncus-mauri/at-luctu
+Jan 10 14:54:37 symfony [info] dm_page_en 27/40 : /dm-test-domains/integer-risus-neque-in/n-imperdiet-nibh-sed-ferment/t-ligula-sed-porttitor-dolor-n
+Jan 10 14:54:37 symfony [info] dm_page_en 28/40 : /dm-test-domains/gnissim-magna-integer-mau/la-rhoncus-mauri/itor-imperdiet-elit-cras-pretium-purus
+Jan 10 14:54:37 symfony [info] dm_page_en 29/40 : /dm-test-domains/gnissim-magna-integer-mau/la-rhoncus-mauri/quis-turpis-non-erat-dapibus-co
+Jan 10 14:54:37 symfony [info] dm_page_en 30/40 : /dm-test-domains/integer-risus-neque-in/n-imperdiet-nibh-sed-ferment/quat-ut-feugiat
+Jan 10 14:54:37 symfony [info] dm_page_en 31/40 : /dm-test-tags/lentesque-adipi
+Jan 10 14:54:37 symfony [info] dm_page_en 32/40 : /dm-test-tags/ulum-ante-ipsum-primis-in-fa
+Jan 10 14:54:37 symfony [info] dm_page_en 33/40 : /dm-test-tags/im-in-diam-pur
+Jan 10 14:54:37 symfony [info] dm_page_en 34/40 : /dm-test-tags/um-conse
+Jan 10 14:54:37 symfony [info] dm_page_en 35/40 : /dm-test-tags/se-nec-massa-m
+Jan 10 14:54:37 symfony [info] dm_page_en 36/40 : /dm-test-tags/udin-tincidu
+Jan 10 14:54:37 symfony [info] dm_page_en 37/40 : /dm-test-tags/ctor-et-congue-tristique-mi-al
+Jan 10 14:54:37 symfony [info] dm_page_en 38/40 : /dm-test-tags/t-dui-maecenas-egestas-sodales
+Jan 10 14:54:37 symfony [info] dm_page_en 39/40 : /dm-test-tags/t-lorem-neque-malesuada-tellus
+Jan 10 14:54:37 symfony [info] dm_page_en 40/40 : /dm-test-tags/faucibus-orci-luctus-et-ultrices-pos
+Jan 10 14:54:38 symfony [info] dm_page_en : Index populated in "1.13" seconds.
+Jan 10 14:54:38 symfony [info] dm_page_en : Time per document "0.028" seconds.
+Jan 10 14:54:38 symfony [info] dmSearchEngine : Populating index "dm_page_fr"...
+Jan 10 14:54:38 symfony [info] dm_page_fr : Populating index...
+Jan 10 14:54:38 symfony [info] dm_page_fr : Index erased.
+Jan 10 14:54:38 symfony [info] dm_page_fr 1/37 : /dm-test-domains/met-mi-in-scelerisque-cursus-arcu
+Jan 10 14:54:38 symfony [info] dm_page_fr 2/37 : /dm-test-domains/us-tincidunt-ligula-sit-amet-felis
+Jan 10 14:54:38 symfony [info] dm_page_fr 3/37 : /dm-test-domains/nec-imperdiet-quis
+Jan 10 14:54:38 symfony [info] dm_page_fr 4/37 : /dm-test-domains/varius
+Jan 10 14:54:38 symfony [info] dm_page_fr 5/37 : /dm-test-domains/integer-risus-neque-in
+Jan 10 14:54:38 symfony [info] dm_page_fr 6/37 : /dm-test-domains/accumsan-id-phare
+Jan 10 14:54:38 symfony [info] dm_page_fr 7/37 : /dm-test-domains/gnissim-magna-integer-mau
+Jan 10 14:54:38 symfony [info] dm_page_fr 8/37 : /dm-test-domains/sed-sagitt
+Jan 10 14:54:38 symfony [info] dm_page_fr 9/37 : /dm-test-domains/cipit-iac
+Jan 10 14:54:38 symfony [info] dm_page_fr 10/37 : /dm-test-domains/s-praesent-pretium-ultrices-est
+Jan 10 14:54:38 symfony [info] dm_page_fr 11/37 : /dm-test-domains/cipit-iac/consequat-eu-lacus-curabitur-bi
+Jan 10 14:54:38 symfony [info] dm_page_fr 12/37 : /dm-test-domains/gnissim-magna-integer-mau/apien-interdum-viverra-praesent
+Jan 10 14:54:38 symfony [info] dm_page_fr 13/37 : /dm-test-domains/gnissim-magna-integer-mau/la-rhoncus-mauri
+Jan 10 14:54:38 symfony [info] dm_page_fr 14/37 : /dm-test-domains/cipit-iac/tibulum-a
+Jan 10 14:54:38 symfony [info] dm_page_fr 15/37 : /dm-test-domains/nec-imperdiet-quis/rdum-e
+Jan 10 14:54:38 symfony [info] dm_page_fr 16/37 : /dm-test-domains/sed-sagitt/vestibulum-an
+Jan 10 14:54:38 symfony [info] dm_page_fr 17/37 : /dm-test-domains/varius/ula-rhoncus-mauris-ultricies-euismod
+Jan 10 14:54:38 symfony [info] dm_page_fr 18/37 : /dm-test-domains/sed-sagitt/vestib
+Jan 10 14:54:38 symfony [info] dm_page_fr 19/37 : /dm-test-domains/integer-risus-neque-in/n-imperdiet-nibh-sed-ferment
+Jan 10 14:54:38 symfony [info] dm_page_fr 20/37 : /dm-test-domains/sed-sagitt/vestib/assa-phasellus-hendrerit
+Jan 10 14:54:38 symfony [info] dm_page_fr 21/37 : /dm-test-domains/nec-imperdiet-quis/rdum-e/dunt-quis-scelerisque-et-sapien
+Jan 10 14:54:38 symfony [info] dm_page_fr 22/37 : /dm-test-domains/cipit-iac/consequat-eu-lacus-curabitur-bi/onvallis-nec
+Jan 10 14:54:38 symfony [info] dm_page_fr 23/37 : /dm-test-domains/gnissim-magna-integer-mau/la-rhoncus-mauri/at-luctu
+Jan 10 14:54:38 symfony [info] dm_page_fr 24/37 : /dm-test-domains/integer-risus-neque-in/n-imperdiet-nibh-sed-ferment/t-ligula-sed-porttitor-dolor-n
+Jan 10 14:54:38 symfony [info] dm_page_fr 25/37 : /dm-test-domains/gnissim-magna-integer-mau/la-rhoncus-mauri/itor-imperdiet-elit-cras-pretium-purus
+Jan 10 14:54:38 symfony [info] dm_page_fr 26/37 : /dm-test-domains/gnissim-magna-integer-mau/la-rhoncus-mauri/quis-turpis-non-erat-dapibus-co
+Jan 10 14:54:38 symfony [info] dm_page_fr 27/37 : /dm-test-domains/integer-risus-neque-in/n-imperdiet-nibh-sed-ferment/quat-ut-feugiat
+Jan 10 14:54:38 symfony [info] dm_page_fr 28/37 : /dm-test-tags/lentesque-adipi
+Jan 10 14:54:38 symfony [info] dm_page_fr 29/37 : /dm-test-tags/ulum-ante-ipsum-primis-in-fa
+Jan 10 14:54:38 symfony [info] dm_page_fr 30/37 : /dm-test-tags/im-in-diam-pur
+Jan 10 14:54:38 symfony [info] dm_page_fr 31/37 : /dm-test-tags/um-conse
+Jan 10 14:54:38 symfony [info] dm_page_fr 32/37 : /dm-test-tags/se-nec-massa-m
+Jan 10 14:54:38 symfony [info] dm_page_fr 33/37 : /dm-test-tags/udin-tincidu
+Jan 10 14:54:38 symfony [info] dm_page_fr 34/37 : /dm-test-tags/ctor-et-congue-tristique-mi-al
+Jan 10 14:54:38 symfony [info] dm_page_fr 35/37 : /dm-test-tags/t-dui-maecenas-egestas-sodales
+Jan 10 14:54:39 symfony [info] dm_page_fr 36/37 : /dm-test-tags/t-lorem-neque-malesuada-tellus
+Jan 10 14:54:39 symfony [info] dm_page_fr 37/37 : /dm-test-tags/faucibus-orci-luctus-et-ultrices-pos
+Jan 10 14:54:39 symfony [info] dm_page_fr : Index populated in "0.99" seconds.
+Jan 10 14:54:39 symfony [info] dm_page_fr : Time per document "0.027" seconds.
+Jan 10 14:54:39 symfony [info] dmSearchEngine : Group populated in "2.12" seconds.
+Jan 10 14:54:39 symfony [info] -----> Search index population successfully completed
+Jan 10 14:54:39 symfony [info] dmSearchEngine : Optimizing group...
+Jan 10 14:54:39 symfony [info] dm_page_en : Optimizing index...
+Jan 10 14:54:39 symfony [info] dm_page_en : Index optimized in "0.36" seconds.
+Jan 10 14:54:39 symfony [info] dm_page_fr : Optimizing index...
+Jan 10 14:54:39 symfony [info] dm_page_fr : Index optimized in "0.41" seconds.
+Jan 10 14:54:39 symfony [info] dmSearchEngine : Group optimized in "0.77" seconds.

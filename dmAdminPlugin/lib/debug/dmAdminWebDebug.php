@@ -15,6 +15,7 @@ class dmAdminWebDebug extends dmWebDebug
     if (sfConfig::get('sf_logging_enabled'))
     {
       $this->setPanel('config', new dmWebDebugPanelConfig($this));
+      $this->setPanel('view', new sfWebDebugPanelView($this));
     }
     
     $this->setPanel('logs', new sfWebDebugPanelLogs($this));

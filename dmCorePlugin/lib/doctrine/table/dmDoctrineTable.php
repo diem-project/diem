@@ -142,7 +142,15 @@ abstract class dmDoctrineTable extends Doctrine_Table
             continue;
           }
         }
-        $query->leftJoin(sprintf('%s.%s %s', $rootAlias, $relation->getAlias(), dmString::lcfirst($relation->getAlias())));
+
+        $joinAlias = dmString::lcfirst($relation->getAlias());
+        $query->leftJoin(sprintf('%s.%s %s', $rootAlias, $relation->getAlias(), $joinAlias));
+
+        if($relation->getTable()->hasRelation('Translation'))
+        {
+          $joinI18nAlias = $joinAlias.'Translation';
+          $query->leftJoin(sprintf('%s.%s %s WITH %s.lang = ?', $joinAlias, 'Translation', $joinI18nAlias, $joinI18nAlias), dmDoctrineRecord::getDefaultCulture());
+        }
       }
     }
     
@@ -330,7 +338,6 @@ abstract class dmDoctrineTable extends Doctrine_Table
     );
   }
 
-
   /**
    * Retrieves a column definition from this table schema.
    *
@@ -446,7 +453,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
    *
    * @return Boolean true if the reordering took place, false if a database problem prevented it
    **/
-  public function doSort($order)
+  public function doSort(array $order)
   {
     if (!$this->hasField('position'))
     {

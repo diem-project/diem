@@ -67,7 +67,7 @@ class dmFunctionalTestHelper
     ? '/login'
     : '/+/dmAuth/signin?skip_browser_detection=1';
 
-    return $this->browser->
+    $this->browser->
       get($url)->
       click('input[type="submit"]',
         array('signin' => array('username' => $username, 'password' => $password)),
@@ -79,6 +79,8 @@ class dmFunctionalTestHelper
     ;
 
     $this->browser->with('user')->begin()->isAuthenticated()->end();
+
+    return $this;
   }
 
   public function logout()

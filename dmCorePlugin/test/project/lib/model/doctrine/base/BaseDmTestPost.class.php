@@ -21,6 +21,7 @@
  * @property DmMedia $Image
  * @property DmMedia $File
  * @property Doctrine_Collection $Tags
+ * @property DmUser $CreatedBy
  * @property Doctrine_Collection $DmTestPostTag
  * @property Doctrine_Collection $Comments
  * 
@@ -40,6 +41,7 @@
  * @method DmMedia             getImage()         Returns the current record's "Image" value
  * @method DmMedia             getFile()          Returns the current record's "File" value
  * @method Doctrine_Collection getTags()          Returns the current record's "Tags" collection
+ * @method DmUser              getCreatedBy()     Returns the current record's "CreatedBy" value
  * @method Doctrine_Collection getDmTestPostTag() Returns the current record's "DmTestPostTag" collection
  * @method Doctrine_Collection getComments()      Returns the current record's "Comments" collection
  * @method DmTestPost          setCategId()       Sets the current record's "categ_id" value
@@ -58,6 +60,7 @@
  * @method DmTestPost          setImage()         Sets the current record's "Image" value
  * @method DmTestPost          setFile()          Sets the current record's "File" value
  * @method DmTestPost          setTags()          Sets the current record's "Tags" collection
+ * @method DmTestPost          setCreatedBy()     Sets the current record's "CreatedBy" value
  * @method DmTestPost          setDmTestPostTag() Sets the current record's "DmTestPostTag" collection
  * @method DmTestPost          setComments()      Sets the current record's "Comments" collection
  * 
@@ -126,9 +129,9 @@ abstract class BaseDmTestPost extends myDoctrineRecord
              'onDelete' => 'CASCADE'));
 
         $this->hasOne('DmUser as Author', array(
-             'local' => 'created_by',
+             'local' => 'user_id',
              'foreign' => 'id',
-             'onDelete' => 'SET NULL'));
+             'onDelete' => 'CASCADE'));
 
         $this->hasOne('DmMedia as Image', array(
              'local' => 'image_id',
@@ -142,6 +145,11 @@ abstract class BaseDmTestPost extends myDoctrineRecord
              'refClass' => 'DmTestPostTag',
              'local' => 'post_id',
              'foreign' => 'tag_id'));
+
+        $this->hasOne('DmUser as CreatedBy', array(
+             'local' => 'created_by',
+             'foreign' => 'id',
+             'onDelete' => 'SET NULL'));
 
         $this->hasMany('DmTestPostTag', array(
              'local' => 'id',

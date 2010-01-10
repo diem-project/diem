@@ -18,7 +18,7 @@ echo £o('div.dm_sort.dm_box.big');
 
   echo £o('div.dm_box_inner');
 
-    echo $form->open();
+    echo $form->renderFormTag($sf_request->getUri());
   
     echo £('div.fleft', £link('@'.$form->getModule()->getUnderscore())->text('&laquo; '.__('Back to list')));
   

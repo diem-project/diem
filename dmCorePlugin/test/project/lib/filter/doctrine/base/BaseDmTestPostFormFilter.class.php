@@ -14,7 +14,7 @@ abstract class BaseDmTestPostFormFilter extends BaseFormFilterDoctrine
   {
     $this->setWidgets(array(
       'categ_id'    => new sfWidgetFormDoctrineChoice(array('model' => 'DmTestCateg', 'add_empty' => true)),
-      'user_id'     => new sfWidgetFormFilterInput(),
+      'user_id'     => new sfWidgetFormDoctrineChoice(array('model' => 'DmUser', 'add_empty' => true)),
       'image_id'    => new sfWidgetFormDoctrineChoice(array('model' => 'DmMedia', 'add_empty' => true)),
       'file_id'     => new sfWidgetFormDoctrineChoice(array('model' => 'DmMedia', 'add_empty' => true)),
       'date'        => new sfWidgetFormFilterDate(array('from_date' => new sfWidgetFormInputText(array(), array("class" => "datepicker_me")), 'to_date' => new sfWidgetFormInputText(array(), array("class" => "datepicker_me")), 'with_empty' => false)),
@@ -28,11 +28,11 @@ abstract class BaseDmTestPostFormFilter extends BaseFormFilterDoctrine
 
     $this->setValidators(array(
       'categ_id'    => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Categ'), 'column' => 'id')),
-      'user_id'     => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
+      'user_id'     => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Author'), 'column' => 'id')),
       'image_id'    => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Image'), 'column' => 'id')),
       'file_id'     => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('File'), 'column' => 'id')),
       'date'        => new sfValidatorDateRange(array('required' => false, 'from_date' => new sfValidatorDate(array('required' => false)), 'to_date' => new sfValidatorDateTime(array('required' => false)))),
-      'created_by'  => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Author'), 'column' => 'id')),
+      'created_by'  => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('CreatedBy'), 'column' => 'id')),
       'created_at'  => new sfValidatorDateRange(array('required' => false, 'from_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 00:00:00')), 'to_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 23:59:59')))),
       'updated_at'  => new sfValidatorDateRange(array('required' => false, 'from_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 00:00:00')), 'to_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 23:59:59')))),
       'position'    => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
@@ -91,7 +91,7 @@ abstract class BaseDmTestPostFormFilter extends BaseFormFilterDoctrine
     return array(
       'id'          => 'Number',
       'categ_id'    => 'ForeignKey',
-      'user_id'     => 'Number',
+      'user_id'     => 'ForeignKey',
       'image_id'    => 'ForeignKey',
       'file_id'     => 'ForeignKey',
       'date'        => 'Date',

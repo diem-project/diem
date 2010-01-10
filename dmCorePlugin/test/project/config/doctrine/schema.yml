@@ -104,7 +104,7 @@ DmTestPost:
       refClass:       DmTestPostTag
       local:          post_id
       foreign:        tag_id
-    Author:
+    CreatedBy:
       class:          DmUser
       local:          created_by
       foreignAlias:   DmTestPosts

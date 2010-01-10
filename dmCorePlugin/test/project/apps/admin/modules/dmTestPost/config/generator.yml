@@ -17,13 +17,14 @@ generator:
         display:
           - '=title'
           - categ_id
-          - created_by
+          - user_id
           - image_id
           - file_id
+          - created_by
           - dm_gallery
           - comments_list
           - tags_list
-          - user_id
+          - date
           - created_at
           - updated_at
           - excerpt
@@ -35,6 +36,7 @@ generator:
           - asc
         table_method: getAdminListQuery
         table_count_method: ~
+        sortable: true
       filter:
         display:
           - title
@@ -42,18 +44,19 @@ generator:
           - user_id
           - image_id
           - file_id
+          - date
           - created_by
           - created_at
           - updated_at
       form:
         display:
-          NONE: [title, is_active, categ_id, created_by]
+          NONE: [title, is_active, categ_id, user_id, created_by]
           Image: [image_id_form, image_id_view]
           File: [file_id_form, file_id_view]
           Body: [body]
           'Dm test tags': [tags_list]
           Gallery: [dm_gallery]
-          Others: [user_id, excerpt, url]
+          Others: [date, excerpt, url]
         class: DmTestPostAdminForm
         fields: {  }
       edit: ~

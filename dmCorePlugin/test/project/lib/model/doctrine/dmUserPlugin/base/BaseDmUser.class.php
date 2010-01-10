@@ -18,6 +18,7 @@
  * @property Doctrine_Collection $DmUserPermission
  * @property Doctrine_Collection $DmUserGroup
  * @property DmRememberKey $RememberKeys
+ * @property Doctrine_Collection $Posts
  * @property Doctrine_Collection $DmTestPosts
  * 
  * @method string              getUsername()         Returns the current record's "username" value
@@ -33,6 +34,7 @@
  * @method Doctrine_Collection getDmUserPermission() Returns the current record's "DmUserPermission" collection
  * @method Doctrine_Collection getDmUserGroup()      Returns the current record's "DmUserGroup" collection
  * @method DmRememberKey       getRememberKeys()     Returns the current record's "RememberKeys" value
+ * @method Doctrine_Collection getPosts()            Returns the current record's "Posts" collection
  * @method Doctrine_Collection getDmTestPosts()      Returns the current record's "DmTestPosts" collection
  * @method DmUser              setUsername()         Sets the current record's "username" value
  * @method DmUser              setEmail()            Sets the current record's "email" value
@@ -47,6 +49,7 @@
  * @method DmUser              setDmUserPermission() Sets the current record's "DmUserPermission" collection
  * @method DmUser              setDmUserGroup()      Sets the current record's "DmUserGroup" collection
  * @method DmUser              setRememberKeys()     Sets the current record's "RememberKeys" value
+ * @method DmUser              setPosts()            Sets the current record's "Posts" collection
  * @method DmUser              setDmTestPosts()      Sets the current record's "DmTestPosts" collection
  * 
  * @package    retest
@@ -130,6 +133,10 @@ abstract class BaseDmUser extends myDoctrineRecord
         $this->hasOne('DmRememberKey as RememberKeys', array(
              'local' => 'id',
              'foreign' => 'dm_user_id'));
+
+        $this->hasMany('DmTestPost as Posts', array(
+             'local' => 'id',
+             'foreign' => 'user_id'));
 
         $this->hasMany('DmTestPost as DmTestPosts', array(
              'local' => 'id',

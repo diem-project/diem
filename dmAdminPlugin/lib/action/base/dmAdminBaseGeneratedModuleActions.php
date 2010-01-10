@@ -54,6 +54,7 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
   /*
    * When sorting by a localKey column ( ex: categ_id ),
    * try to sort with foreign's table identifier column ( ex: categ.name )
+   * Also try to sort with the translation table if any
    */
   protected function tryToSortWithForeignColumn(Doctrine_Query $query, array $sort)
   {
@@ -68,18 +69,36 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
           {
             if (!$joinAlias = $query->getJoinAliasForRelationAlias($relation->getAlias()))
             {
-              $query->leftJoin(sprintf(sprintf('%s.%s %s', $query->getRootAlias(), $relation->getAlias(), $relation->getAlias())));
+              $query->leftJoin(sprintf('%s.%s %s', $query->getRootAlias(), $relation->getAlias(), $relation->getAlias()));
               $joinAlias = $relation->getAlias();
+
+              if($foreignTable->isI18nColumn($foreignColumn))
+              {
+                $query->leftJoin(sprintf('%s.%s %s', $joinAlias, 'Translation', $joinAlias.'Translation'));
+              }
             }
-            
-            $query->addOrderBy(sprintf('%s.%s %s', $joinAlias, $foreignColumn, $sort[1]));
+
+            if($foreignTable->isI18nColumn($foreignColumn))
+            {
+              $query->addOrderBy(sprintf('%s.%s %s', $joinAlias.'Translation', $foreignColumn, $sort[1]));
+            }
+            else
+            {
+              $query->addOrderBy(sprintf('%s.%s %s', $joinAlias, $foreignColumn, $sort[1]));
+            }
             // Success, skip default sorting by local column
             return;
           }
         }
       }
     }
-    
+    elseif($this->getDmModule()->getTable()->isI18nColumn($sort[0]))
+    {
+      $query->addOrderBy(sprintf('%s.%s %s', $query->getJoinAliasForRelationAlias('Translation'), $sort[0], $sort[1]));
+      // Success, skip default sorting by local column
+      return;
+    }
+
     $query->addOrderBy($sort[0] . ' ' . $sort[1]);
   }
   
@@ -127,18 +146,23 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
     {
       throw new dmException(sprintf('Table %s has no field named %s', $table->getComponentName(), $field));
     }
+
+    $query = $table->createQuery('r')->whereIn($pk, $ids);
     
-    foreach($table->createQuery()->whereIn($pk, $ids)->andWhere($field.' = ?', 1-$value)->fetchRecords() as $record)
+    if($table->isI18nColumn($field))
     {
-      $record->notify();
+      $query->withI18n()->andWhere('rTranslation.'.$field.' = ?', 1-$value);
+    }
+    else
+    {
+      $query->andWhere($field.' = ?', 1-$value);
     }
     
-    $count = $table->createQuery()
-      ->update($table->getComponentName())
-      ->whereIn($pk, $ids)
-      ->andWhere($field.' = ?', 1-$value)
-      ->set($field, $value)
-      ->execute();
+    foreach($query->fetchRecords() as $record)
+    {
+      $record->set($field, $value);
+      $record->save();
+    }
       
     $this->getUser()->logInfo('The selected items have been modified successfully');
   }
@@ -393,7 +417,7 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 
   protected function isValidSortColumn($column)
   {
-    return $this->getDmModule()->getTable()->hasColumn($column);
+    return $this->getDmModule()->getTable()->hasField($column);
   }
   
   /*
@@ -481,14 +505,14 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 
   protected function executeBatchActivate(sfWebRequest $request)
   {
-    $this->batchToggleBoolean($request->getParameter('ids'), 'is_active', true);
+    $this->batchToggleBoolean((array) $request->getParameter('ids'), 'is_active', true);
       
     $this->redirect('@'.$this->getDmModule()->getUnderscore());
   }
 
   protected function executeBatchDeactivate(sfWebRequest $request)
   {
-    $this->batchToggleBoolean($request->getParameter('ids'), 'is_active', false);
+    $this->batchToggleBoolean((array) $request->getParameter('ids'), 'is_active', false);
       
     $this->redirect('@'.$this->getDmModule()->getUnderscore());
   }
