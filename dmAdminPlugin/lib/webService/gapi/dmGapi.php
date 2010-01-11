@@ -12,8 +12,6 @@ class dmGapi extends gapi
   public function __construct(dmCacheManager $cacheManager)
   {
     $this->cacheManager = $cacheManager;
-
-    $this->cacheManager = false;
   }
 
   /**

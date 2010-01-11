@@ -33,9 +33,10 @@ class dmFunctionalTestHelper
 
   protected function initialize()
   {
-    $this->browser = new sfTestFunctional(new dmTestBrowser());
+    $this->browser = $this->context->get('test_functional');
     $this->browser->initialize();
 
+    $this->browser->info('Running dm:publish-assets');
     $task = new dmPublishAssetsTask($this->configuration->getEventDispatcher(), new sfFormatter());
     $task->run();
   }

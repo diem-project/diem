@@ -154,6 +154,10 @@ parameters:
     override:                 false                 # replace existing values
     create_associations:      true                  # create association records
 
+  test_functional.class:      dmTestFunctional      # Replaces sfTestFunctional
+
+  sf_browser.class:           dmSfBrowser           # Replaces sfBrowser
+
 services:
 
   text_diff:
@@ -369,3 +373,13 @@ services:
     class:                    %record_loremizer.class%
     shared:                   false
     arguments:                [ %record_loremizer.options% ]
+
+  test_functional:
+    class:                    %test_functional.class%
+    shared:                   false
+    arguments:                [ @sf_browser ]
+
+  sf_browser:
+    class:                    %sf_browser.class%
+    shared:                   false
+    arguments:                []

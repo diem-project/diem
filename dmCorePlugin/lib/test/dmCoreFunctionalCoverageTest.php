@@ -65,7 +65,7 @@ abstract class dmCoreFunctionalCoverageTest
 
   protected function initBrowser()
   {
-    $this->browser = new sfTestFunctional(new dmTestBrowser());
+    $this->browser = $this->context->get('test_functional');
     
     if($this->options['debug'])
     {
