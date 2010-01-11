@@ -6,10 +6,11 @@ $helper->boot('front');
 
 $b = $helper->getBrowser();
 
-$b->get('/')
+$b->get('/index.php')
 ->checks(array(
   'code' => 200,
   'module_action' => 'dmFront/page',
-  'h1' => 'Home'
+  'h1' => 'Project'
 ))
-->has('.dm_widget_navigation_bread_crumb');
+->has('.dm_widget_navigation_bread_crumb')
+->has('body.global_layout');

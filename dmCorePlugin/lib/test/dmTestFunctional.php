@@ -13,6 +13,8 @@ class dmTestFunctional extends sfTestFunctional
       
       $this->$method($expected);
     }
+
+    return $this;
   }
 
   public function getDefaultChecks()
@@ -76,5 +78,14 @@ class dmTestFunctional extends sfTestFunctional
     ->begin()
     ->checkElement('h1', $h1)
     ->end();
+  }
+
+  public function redirect()
+  {
+    return $this
+    ->with('response')->begin()
+    ->isRedirected()
+    ->end()
+    ->followRedirect();
   }
 }
