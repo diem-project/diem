@@ -79,17 +79,12 @@ EOF;
       ),
       'ga_key' => array(
         'description' => 'The google analytics key without javascript stuff ( e.g. UA-9876614-1 )',
-        'group_name' =>'tracking',
-        'credentials' => 'google_analytics'
-      ),
-      'ga_email' => array(
-        'description' => 'Required to display google analytics data into Diem',
         'group_name' => 'tracking',
         'credentials' => 'google_analytics'
       ),
-      'ga_password' => array(
-        'description' => 'Required to display google analytics data into Diem',
-        'group_name' => 'tracking',
+      'ga_token' => array(
+        'description' => 'Auth token gor Google Analytics, computed from password',
+        'group_name' => 'internal',
         'credentials' => 'google_analytics'
       ),
       'gwt_key' => array(
@@ -185,7 +180,7 @@ EOF;
       if (!isset($existingSettings[$name]))
       {
         $setting = new DmSetting;
-        $setting->name = $name;
+        $setting->set('name', $name);
         $setting->fromArray($config);
 
         $setting->save();

@@ -8,10 +8,15 @@ class dmGapi extends gapi
   $cacheManager,
   $reportId,
   $defaultReportOptions;
-  
+
+  public function __construct(dmCacheManager $cacheManager)
+  {
+    $this->cacheManager = $cacheManager;
+
+    $this->cacheManager = false;
+  }
+
   /**
-   * Constructor function for all new gapi instances
-   * 
    * Set up authenticate with Google and get auth_token
    *
    * @param String $email
@@ -19,14 +24,27 @@ class dmGapi extends gapi
    * @param String $token
    * @return gapi
    */
-  public function __construct($email, $password, $token=null)
+  public function authenticate($email, $password, $token = null)
   {
     if (!($email && $password) && !$token)
     {
-      throw new dmException('No google analytics account configured');
+      throw new dmGapiException('No google analytics account configured');
     }
-    
-    parent::__construct($email, $password, $token);
+
+    $this->reportId = null;
+
+    if($token !== null)
+    {
+      $this->auth_token = $token;
+    }
+    else
+    {
+      $this->authenticateUser($email, $password);
+    }
+
+    $this->getReportId();
+
+    return $this;
   }
   
   public function getTotalPageViews()
@@ -92,7 +110,7 @@ class dmGapi extends gapi
     
     if (!$gaKey = dmConfig::get('ga_key'))
     {
-      throw new dmException('You must configure a ga_key in the configuration panel');
+      throw new dmGapiException('You must configure a ga_key in the configuration panel');
     }
     
     foreach($this->requestAccountData() as $account)
@@ -103,7 +121,7 @@ class dmGapi extends gapi
       }
     }
     
-    throw new dmException('Current report not found for ga key : '.$gaKey);
+    throw new dmGapiException('Current report not found for ga key : '.$gaKey);
   }
   
   public function setCacheManager(dmCacheManager $cacheManager)
@@ -128,9 +146,16 @@ class dmGapi extends gapi
         return $this->cacheManager->getCache('gapi/request')->get($cacheKey);
       }
     }
-    
-    $result = parent::requestAccountData($start_index, $max_results);
 
+    try
+    {
+      $result = parent::requestAccountData($start_index, $max_results);
+    }
+    catch(Exception $e)
+    {
+      throw new dmGapiException($e->getMessage());
+    }
+    
     if ($this->cacheManager)
     {
       $this->cacheManager->getCache('gapi/request')->set($cacheKey, $result);
@@ -192,7 +217,7 @@ class dmGapi extends gapi
     }
     catch(Exception $e)
     {
-      throw new dmException('GAPI: Failed to authenticate with email '.$email.'. Please configure email and password in the admin configuration panel');
+      throw new dmGapiException('GAPI: Failed to authenticate with email '.$email.'. Please configure email and password in the admin configuration panel');
     }
   }
   

@@ -98,7 +98,7 @@ services:
   gapi:
     class:                    %gapi.class%
     shared:                   true
-    arguments:                [ %gapi.email%, %gapi.password%, %gapi.auth_token% ]
+    arguments:                [ @cache_manager ]
 
   link_tag:
     class:                    %link_tag.class%

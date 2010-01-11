@@ -18,11 +18,16 @@ echo £o('div.dm_google_analytics.seo_service');
     echo £('div.dm_box_inner',
       $form->open('.dm_form.list.little').
       £('li', £('h3', __('Send reports'))).
-      $form['ga_key']->renderRow().
+      $form['key']->renderRow().
       £('li.separator', '&nbsp;').
       £('li', £('h3', __('Receive reports'))).
-      $form['ga_email']->renderRow().
-      $form['ga_password']->renderRow().
+      £('div.mb10 style="text-align: center"',
+        ($gapiConnected
+        ? £('span.s16.s16_tick', __('Connected'))
+        : £('span.s16.s16_cross', __('Not connected')))
+      ).
+      $form['email']->renderRow().
+      $form['password']->renderRow().
       $form->renderSubmitTag(__('Save')).
       $form->close()
     );

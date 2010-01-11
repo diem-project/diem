@@ -110,12 +110,12 @@ abstract class dmChart extends pChart
   protected function getDefaultOptions()
   {
     return array(
-      'width' => 500,
-      'height' => 300,
-      'name' => get_class($this),
-      'key' => preg_replace('|(\w+)Chart|', '$1', get_class($this)),
+      'width'       => 500,
+      'height'      => 300,
+      'name'        => get_class($this),
+      'key'         => preg_replace('|(\w+)Chart|', '$1', get_class($this)),
       'credentials' => 'see_chart',
-      'lifetime' => 60 * 60 * 24
+      'lifetime'    => 60 * 60 * 24
     );
   }
 

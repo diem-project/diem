@@ -34,7 +34,7 @@ class gapi
   const interface_name = 'GAPI-1.3';
   const dev_mode = false;
   
-  private $auth_token = null;
+  protected $auth_token = null;
   private $account_entries = array();
   private $account_root_parameters = array();
   private $report_aggregate_metrics = array();

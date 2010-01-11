@@ -73,13 +73,16 @@ class dmConfig
     $setting->set('value', $value);
 
     $setting->save();
+
+    self::$config[$name] = $value;
     
     self::$dispatcher->notify(new sfEvent(null, 'dm.config.updated', array(
-      'setting'  => $setting,
-      'culture' => self::$culture
+      'setting'   => $setting,
+      'culture'   => self::$culture
     )));
 
-    return self::$config[$name] = $value;
+    // reassign setting value as it may have changed
+    return self::$config[$name] = $setting->get('value');
   }
 
   /**

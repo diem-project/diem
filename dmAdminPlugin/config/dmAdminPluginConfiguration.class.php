@@ -56,5 +56,4 @@ class dmAdminPluginConfiguration extends sfPluginConfiguration
       'sf_csrf_secret' => false,   // csrf is useless because all admin app is secured
     ));
   }
-
 }
