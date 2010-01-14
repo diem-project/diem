@@ -4,7 +4,7 @@ require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
 $helper = new dmUnitTestHelper();
 $helper->boot('front');
 
-$t = new lime_test(9);
+$t = new lime_test(14);
 
 $forms = $helper->get('form_manager');
 
@@ -47,3 +47,13 @@ $t->is($got, $expected, $got);
 $got = (string)$form['username']->field();
 $expected = '<input type="text" name="first_dmUser_form[username]" class="required" id="first_dmUser_form_username" />';
 $t->is($got, $expected, $got);
+
+$t->is(substr_count((string)$form, 'first_dmUser_form[_csrf_token]'), 1, 'CRSF protection outputed once');
+
+$t->is(substr_count($form->open().$form->render().$form->close(), 'first_dmUser_form[_csrf_token]'), 1, 'CRSF protection outputed once');
+
+$t->is(substr_count($form->open().$form['username'].$form->renderHiddenFields().$form->close(), 'first_dmUser_form[_csrf_token]'), 1, 'CRSF protection outputed once');
+
+$t->is(substr_count($form->open().$form['username'].$form['password'].$form->renderHiddenFields().$form->close(), 'first_dmUser_form[_csrf_token]'), 1, 'CRSF protection outputed once');
+
+$t->is(substr_count($form->open().$form['username']->label()->error()->field().$form['password']->label()->error()->field().$form->renderHiddenFields().$form->close(), 'first_dmUser_form[_csrf_token]'), 1, 'CRSF protection outputed once');

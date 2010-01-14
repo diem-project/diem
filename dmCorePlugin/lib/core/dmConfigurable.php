@@ -130,5 +130,10 @@ abstract class dmConfigurable
 
     return $this->setOption($name, $value);
   }
+
+  public function mergeOption($name, array $value)
+  {
+    return $this->setOption($name, array_merge($this->getOption($name, array()), $value));
+  }
   
 }

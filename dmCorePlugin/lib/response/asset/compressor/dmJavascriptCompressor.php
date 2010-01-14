@@ -10,6 +10,11 @@ class dmJavascriptCompressor extends dmAssetCompressor
     ));
   }
 
+  public function addToBlackList($fileName)
+  {
+    $this->mergeOption('black_list', (array) $fileName);
+  }
+
   public function connect()
   {
     $this->dispatcher->connect('dm.layout.filter_javascripts', array($this, 'listenToFilterAssetsEvent'));
@@ -42,7 +47,7 @@ class dmJavascriptCompressor extends dmAssetCompressor
   {
     return $this->options['minify'] && $this->dispatcher->filter(
       new sfEvent($this, 'dm.javascript_compressor.cachable', array('path' => $path, 'options' => $options)),
-      !($this->options['protect_user_assets'] && strncmp($path, '/dm', 3) !== 0)
+      !in_array(basename($path), $this->getOption('black_list')) && !($this->options['protect_user_assets'] && strncmp($path, '/dm', 3) !== 0)
     )->getReturnValue();
   }
 }

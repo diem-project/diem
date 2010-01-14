@@ -268,9 +268,7 @@ class BasedmWidgetActions extends dmFrontBaseActions
       'values' => $form->getDefaults()
     ))->saveGet();
 
-    $helper = $this->context->get('page_helper');
-
-    return $this->renderText($helper->renderWidget($widget->toArrayWithMappedValue(), true));
+    return $this->renderText($this->context->get('page_helper')->renderWidget($widget->toArrayWithMappedValue(), true));
   }
 
   public function executeMove(sfWebRequest $request)

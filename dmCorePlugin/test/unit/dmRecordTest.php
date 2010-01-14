@@ -4,7 +4,7 @@ require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
 $helper = new dmUnitTestHelper();
 $helper->boot();
 
-$t = new lime_test();
+$t = new lime_test(26);
 
 $t->diag('default culture tests');
 
@@ -71,6 +71,32 @@ $t->is($page->autoMod, $page->get('auto_mod'), '$page->autoMod');
 $page->autoMod = 'changed';
 $t->is($page->autoMod, 'changed', '$page->autoMod changed');
 
-//$mailTemplate = new DmMailTemplate;
-//
-//$t->isa_ok($mailTemplate->Version, 'myDoctrineCollection', 'Access to i18n relations with the record');
+try
+{
+  $page->testWeirdAttribute;
+  $t->fail('page->testWeirdAttribute does not exist');
+}
+catch(Doctrine_Record_UnknownPropertyException $e)
+{
+  $t->pass('page->testWeirdAttribute does not exist');
+}
+
+try
+{
+  $page->testWeirdMethod();
+  $t->fail('page->testWeirdMethod() does not exist');
+}
+catch(Doctrine_Record_UnknownPropertyException $e)
+{
+  $t->pass('page->testWeirdMethod() does not exist');
+}
+
+try
+{
+  $page->getTestWeirdMethod();
+  $t->fail('page->getTestWeirdMethod() does not exist');
+}
+catch(Doctrine_Record_UnknownPropertyException $e)
+{
+  $t->pass('page->getTestWeirdMethod() does not exist');
+}

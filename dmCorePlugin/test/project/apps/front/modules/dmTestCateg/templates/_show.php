@@ -4,6 +4,6 @@
 
 echo £o('div.dm_test_categ.show');
 
-  echo $dmTestCateg;
+  echo £('h1', $dmTestCateg);
   
 echo £c('div');

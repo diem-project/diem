@@ -28,7 +28,14 @@ abstract class dmFormDoctrine extends sfFormDoctrine
   
   protected function getAutoFieldsToUnset()
   {
-    return array('created_at', 'updated_at', 'position');
+    $fields = array('created_at', 'updated_at', 'position', 'is_active');
+
+    if ($this->getObject()->getTable()->isVersionable())
+    {
+      $fields[] = 'version';
+    }
+
+    return $fields;
   }
 
   protected function filterValuesByEmbeddedMediaForm(array $values, $local)

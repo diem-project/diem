@@ -591,7 +591,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     /*
      * Add i18n capabilities
      */
-    if ($fieldName != 'Translation' && $this->_table->hasI18n())
+    if ($fieldName != 'Translation' && $this->_table->hasI18n() && array_key_exists('id', $this->_data))
     {
       $i18nTable = $this->_table->getI18nTable();
 

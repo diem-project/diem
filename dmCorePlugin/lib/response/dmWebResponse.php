@@ -215,7 +215,7 @@ abstract class dmWebResponse extends sfWebResponse
   {
     if(!$this->isHtmlForHuman)
     {
-      return;
+      return $this;
     }
     
     $this->validatePosition($position);
@@ -223,6 +223,8 @@ abstract class dmWebResponse extends sfWebResponse
     $file = $this->calculateAssetPath('js', $asset);
 
     $this->javascripts[$position][$file] = $options;
+
+    return $this;
   }
 
   /**
@@ -236,7 +238,7 @@ abstract class dmWebResponse extends sfWebResponse
   {
     if(!$this->isHtmlForHuman)
     {
-      return;
+      return $this;
     }
     
     $this->validatePosition($position);
@@ -244,16 +246,22 @@ abstract class dmWebResponse extends sfWebResponse
     $file = $this->calculateAssetPath('css', $asset);
 
     $this->stylesheets[$position][$file] = $options;
+
+    return $this;
   }
 
   public function clearStylesheets()
   {
     $this->stylesheets = array_combine($this->positions, array_fill(0, count($this->positions), array()));
+
+    return $this;
   }
 
   public function clearJavascripts()
   {
     $this->javascripts = array_combine($this->positions, array_fill(0, count($this->positions), array()));
+
+    return $this;
   }
   
   /*

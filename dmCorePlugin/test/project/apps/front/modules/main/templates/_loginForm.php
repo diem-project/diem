@@ -13,6 +13,6 @@ echo £('ul',
 
 );
 
-echo $form->submit('Login');
+echo $form->renderHiddenFields().$form->submit('Login');
 
 echo $form->close();

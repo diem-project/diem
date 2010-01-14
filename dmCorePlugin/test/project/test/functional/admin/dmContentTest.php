@@ -20,7 +20,7 @@ $browser->info('Posts list')
 ->checkElement('#breadCrumb')
 ->checkElement('#dm_module_search_input')
 ->checkElement('.sf_admin_list_td_title a.link')
-->checkElement('.dm_pagination_status', '1 - 10 on 10')
+->checkElement('.dm_pagination_status', '1 - 10 on 20')
 ->end();
 
 $browser->info('Loremize 20 posts')

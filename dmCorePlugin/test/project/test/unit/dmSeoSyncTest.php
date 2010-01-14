@@ -8,7 +8,7 @@ $nbLoremizeRecords = 10;
 $helper->get('page_tree_watcher')->connect();
 $markdown = $helper->get('markdown');
 
-$t = new lime_test(2 + $nbLoremizeRecords*5);
+$t = new lime_test(2 + $nbLoremizeRecords*10);
 
 $helper->loremizeDatabase($nbLoremizeRecords, $t);
 

@@ -43,8 +43,7 @@ class ProjectConfiguration extends dmProjectConfiguration
 
     if(!sfConfig::get('dm_test_project_built') && $event['clear-db'])
     {
-      $builder = new dmTestProjectBuilder($event->getSubject()->getContext());
-      $builder->execute();
+      $event->getSubject()->getContext()->get('filesystem')->sf('my:project-builder');
     }
     
     copy(dmOs::join(sfConfig::get('sf_data_dir'), 'db.sqlite'), dmOs::join(sfConfig::get('sf_data_dir'), 'fresh_db.sqlite'));

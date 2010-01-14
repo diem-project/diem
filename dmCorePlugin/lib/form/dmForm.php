@@ -187,7 +187,7 @@ class dmForm extends sfFormSymfony
 
     if (isset($opt['action'])) unset($opt['action']);
     
-    return $this->renderFormTag($action, $opt).$this->renderHiddenFields();
+    return $this->renderFormTag($action, $opt)/*.$this->renderHiddenFields()*/;
   }
   
   public function close()
@@ -272,11 +272,16 @@ class dmForm extends sfFormSymfony
   
   protected function getI18n()
   {
-    return self::$serviceContainer->getService('i18n');
+    return $this->getService('i18n');
   }
   
   protected function getHelper()
   {
-    return self::$serviceContainer->getService('helper');
+    return $this->getService('helper');
+  }
+
+  protected function getService($serviceName, $serviceClass = null)
+  {
+    return self::$serviceContainer->getService($serviceName, $serviceClass);
   }
 }

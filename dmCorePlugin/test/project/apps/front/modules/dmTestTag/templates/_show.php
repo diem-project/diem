@@ -4,6 +4,6 @@
 
 echo £o('div.dm_test_tag.show');
 
-  echo $dmTestTag;
+  echo £('h1', $dmTestTag);
   
 echo £c('div');

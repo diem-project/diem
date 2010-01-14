@@ -243,6 +243,7 @@ class dmSecurityUser extends sfBasicSecurityUser
         // the user does not exist anymore in the database
         $this->signOut();
 
+        return null;
         throw new sfException('The user does not exist anymore in the database.');
       }
     }

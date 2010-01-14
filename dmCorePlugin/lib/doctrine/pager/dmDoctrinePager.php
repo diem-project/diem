@@ -3,7 +3,7 @@
 class dmDoctrinePager extends sfDoctrinePager
 {
   protected
-  $cache;
+  $resultsCache;
   
   /**
    * Get all the results for the pager instance
@@ -14,12 +14,12 @@ class dmDoctrinePager extends sfDoctrinePager
    */
   public function getResults($hydrationMode = null)
   {
-    if (null === $this->cache)
+    if (null === $this->resultsCache)
     {
-      $this->cache = parent::getResults($hydrationMode)->getData();
+      $this->resultsCache = parent::getResults($hydrationMode)->getData();
     }
     
-    return $this->cache;
+    return $this->resultsCache;
   }
   
   public function serialize()

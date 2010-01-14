@@ -47,7 +47,7 @@ class dmWidgetContentTextForm extends dmWidgetContentImageForm
   
   protected function renderContent($attributes)
   {
-    return self::$serviceContainer->getService('helper')->renderPartial('dmWidget', 'forms/dmWidgetContentText', array(
+    return $this->getHelper()->renderPartial('dmWidget', 'forms/dmWidgetContentText', array(
       'form' => $this,
       'baseTabId' => 'dm_widget_text_'.$this->dmWidget->get('id'),
       'hasMedia' => (boolean) $this->getValueOrDefault('mediaId')

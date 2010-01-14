@@ -28,6 +28,8 @@ class dmWidgetNavigationBreadCrumbView extends dmWidgetPluginView
 
     $ancestors = $this->context->getPage()->getNode()->getAncestors();
 
+    $ancestors = $ancestors ? $ancestors : array();
+
     $treeObject->resetBaseQuery();
     
     if ($includeCurrent)

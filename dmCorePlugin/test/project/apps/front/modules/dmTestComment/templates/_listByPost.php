@@ -12,7 +12,9 @@ echo £o('div.dm_test_comment.list_by_post');
   {
     echo £o('li.element');
     
-      echo $dmTestComment;
+      echo
+      £('p.author', $dmTestComment->author).
+      £('p.body', $dmTestComment->body);
       
     echo £c('li');
   }
