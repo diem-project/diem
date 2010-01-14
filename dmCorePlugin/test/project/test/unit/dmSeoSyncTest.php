@@ -7,8 +7,9 @@ $helper->boot();
 $nbLoremizeRecords = 10;
 $helper->get('page_tree_watcher')->connect();
 $markdown = $helper->get('markdown');
+$nbTests = 2 + $nbLoremizeRecords*10;
 
-$t = new lime_test(2 + $nbLoremizeRecords*10);
+$t = new lime_test($nbTests);
 
 $helper->loremizeDatabase($nbLoremizeRecords, $t);
 
@@ -38,7 +39,7 @@ try
 }
 catch(Exception $e)
 {
-  $t->skip('Not supported on this server', 52);
+  $t->skip('Not supported on this server', $nbTests);
   return;
 }
 
