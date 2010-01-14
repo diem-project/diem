@@ -23,5 +23,9 @@ class mainComponents extends myFrontModuleComponents
     $this->form = $this->forms['dmFormSignin'];
   }
 
+  public function executeSitemap()
+  {
+    $this->menu = $this->getService('sitemap_menu')->build();
+  }
 
 }

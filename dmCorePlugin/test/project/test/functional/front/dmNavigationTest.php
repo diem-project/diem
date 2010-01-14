@@ -51,4 +51,7 @@ $b->get('/index.php')
 ->checks(array('method' => 'get'))
 ->has('.dm_test_comment.list_by_post li.element:last .author', 'Author 2')
 ->has('.dm_test_comment.list_by_post li.element:last .body', 'Comment 2')
+->get('/sitemap')
+->checks()
+->has('.main_sitemap .link:first', 'Home')
 ;

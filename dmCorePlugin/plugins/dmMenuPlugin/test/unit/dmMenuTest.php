@@ -6,9 +6,9 @@ require_once $config;
 require_once(dm::getDir().'/dmCorePlugin/test/unit/helper/dmUnitTestHelper.php');
 
 $helper = new dmUnitTestHelper();
-$helper->boot();
+$helper->boot('front');
 
-$t = new lime_test(40);
+$t = new lime_test(42);
 
 dm::loadHelpers(array('Dm', 'I18N'));
 
@@ -149,3 +149,7 @@ $t->is($menu['Sites']['Diem']->getRoot(), $menu, 'Diem root is menu');
 $sitemap = $helper->get('sitemap_menu')->build();
 
 $t->isa_ok($sitemap, 'dmSitemapMenu', 'Got a dmSitemapMenu');
+
+$t->is($sitemap->getFirstChild()->renderLink(), (string)£link(), 'Sitemap first child is Home');
+
+$t->like((string)$sitemap, '|^'.preg_quote('<ul><li class="first last"><a class="link" href="', '|').'.*|', 'Sitemap html is valid');

@@ -12,8 +12,6 @@ class myTestProjectBuilder
 
   public function execute()
   {
-    $this->clearWidgets();
-
     $this->loremize();
 
     $this->addRecords();
@@ -30,6 +28,8 @@ class myTestProjectBuilder
     $this->addBreadCrumb();
 
     $this->addNavigation();
+
+    $this->addSitemap();
 
     $this->addH1();
   }
@@ -68,11 +68,6 @@ class myTestProjectBuilder
     ))->save();
   }
 
-  protected function clearWidgets()
-  {
-    dmDb::query('DmWidget w')->delete()->execute();
-  }
-
   protected function changeHomeLayout()
   {
     $globalLayout = dmDb::table('DmLayout')->findOneByName('Global');
@@ -82,6 +77,23 @@ class myTestProjectBuilder
     $root = dmDb::table('DmPage')->getTree()->fetchRoot();
     $root->PageView->Layout = $globalLayout;
     $root->PageView->save();
+  }
+
+  protected function addSitemap()
+  {
+    $page = dmDb::table('DmPage')->create(array(
+      'module' => 'main',
+      'action' => 'sitemap',
+      'name' => 'Sitemap',
+      'slug' => 'sitemap'
+    ));
+    $page->Node->insertAsLastChildOf(dmDb::table('DmPage')->getTree()->fetchRoot());
+    
+    $this->createWidget(
+      'main/sitemap',
+      array(),
+      $page->PageView->Area->Zones[0]
+    )->save();
   }
 
   protected function addNavigation()
@@ -256,13 +268,6 @@ class myTestProjectBuilder
 
   protected function loremize()
   {
-    foreach($this->context->getModuleManager()->getModulesWithModel() as $module)
-    {
-      if('DmUser' == $module->getModel()) continue;
-      
-      $module->getTable()->createQuery()->delete()->execute();
-    }
-    
     $this->context->get('project_loremizer')->execute(5);
 
     foreach(array('DmTestDomain' => 9, 'DmTestCateg' => 9, 'DmTestPost' => 19, 'DmTestTag' => 39, 'DmTestComment' => 39) as $model => $nb)
