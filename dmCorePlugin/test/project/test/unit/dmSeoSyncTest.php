@@ -36,7 +36,7 @@ try
 {
   $helper->updatePageTreeWatcher($t);
 }
-catch(PDOException $e)
+catch(Exception $e)
 {
   $t->skip('Not supported on this server', 52);
   return;
