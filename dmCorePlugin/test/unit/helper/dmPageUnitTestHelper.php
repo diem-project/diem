@@ -221,9 +221,9 @@ class dmPageUnitTestHelper extends dmUnitTestHelper
       $t->diag('Tree has no root !');
       $errors++;
     }
-    elseif($root->getModuleAction() != 'main.root')
+    elseif($root->getModuleAction() != 'main/root')
     {
-      $t->diag(sprintf('Root page module.action != root.root (%s)', $root->getModuleAction()));
+      $t->diag(sprintf('Root page module.action != main/root (%s)', $root->getModuleAction()));
       $errors++;
     }
     elseif($root->getNodeParentId() != null)

@@ -36,11 +36,11 @@ abstract class PluginDmWidget extends BaseDmWidget
   
   public function getModuleAction()
   {
-    return $this->get('module').'.'.$this->get('action');
+    return $this->get('module').'/'.$this->get('action');
   }
 
   public function __toString()
   {
-    return $this->get('module').'.'.$this->get('action');
+    return $this->getModuleAction();
   }
 }

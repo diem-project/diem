@@ -102,17 +102,17 @@ function dm_test_this_layout(DmLayout $layout, lime_test $t)
   
   $t->is($layout->Areas[3]->Zones[0]->Widgets->count(), 0, 'Layout->Areas[3]->Zones[0] has 0 Widgets');
   
-  $t->is($layout->Areas[0]->Zones[0]->Widgets[0]->getModuleAction(), 'dmWidgetContent.title', 'found first widget');
+  $t->is($layout->Areas[0]->Zones[0]->Widgets[0]->getModuleAction(), 'dmWidgetContent/title', 'found first widget');
   
   $t->ok($layout->Areas[0]->Zones[0]->Widgets[0]->getCurrentTranslation()->exists(), 'first widget has a current translation');
   
   $t->is($layout->Areas[0]->Zones[0]->Widgets[0]->value, 'widget value 1', 'first widget value is "widget value 1"');
   
-  $t->is($layout->Areas[0]->Zones[0]->Widgets[1]->getModuleAction(), 'dmWidgetContent.link', 'found second widget');
+  $t->is($layout->Areas[0]->Zones[0]->Widgets[1]->getModuleAction(), 'dmWidgetContent/link', 'found second widget');
   
   $t->is($layout->Areas[0]->Zones[0]->Widgets[1]->value, 'widget value 2', 'second widget value is "widget value 2"');
   
-  $t->is($layout->Areas[0]->Zones[1]->Widgets[0]->getModuleAction(), 'dmWidgetContent.image', 'found third widget');
+  $t->is($layout->Areas[0]->Zones[1]->Widgets[0]->getModuleAction(), 'dmWidgetContent/image', 'found third widget');
   
   $t->is($layout->Areas[0]->Zones[1]->Widgets[0]->value, 'widget value 3', 'third widget value is "widget value 3"');
 }

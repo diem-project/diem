@@ -14,11 +14,32 @@ class dmWidgetNavigationBreadCrumbView extends dmWidgetPluginView
   {
     $vars = parent::filterViewVars($vars);
 
-    $vars['pages'] = $this->getPages($vars['includeCurrent']);
+    $vars['links'] = $this->getLinks($vars['includeCurrent']);
     
-    $vars['nbPages'] = count($vars['pages']);
+    $vars['nbLinks'] = count($vars['links']);
 
     return $vars;
+  }
+
+  protected function getLinks($includeCurrent = true)
+  {
+    $pages = $this->getPages($includeCurrent);
+    $links = array();
+    $helper = $this->getHelper();
+    
+    foreach($pages as $key => $page)
+    {
+      $links[$key] = $helper->£link($page);
+    }
+
+    /*
+     * Allow listeners of dm.bread_crumb.filter_links event
+     * to filter and modify the links list
+     */
+    return $this->context->getEventDispatcher()->filter(
+      new sfEvent($this, 'dm.bread_crumb.filter_links', array('page' => $this->context->getPage())),
+      $links
+    )->getReturnValue();
   }
   
   protected function getPages($includeCurrent = true)
@@ -40,14 +61,17 @@ class dmWidgetNavigationBreadCrumbView extends dmWidgetPluginView
     $pages = array();
     foreach($ancestors as $page)
     {
-      $pages[$page->get('module').'.'.$page->get('action')] = $page;
+      $pages[$page->get('module').'/'.$page->get('action')] = $page;
     }
     
     /*
      * Allow listeners of dm.bread_crumb.filter_pages event
      * to filter and modify the pages list
      */
-    return $this->context->getEventDispatcher()->filter(new sfEvent($this, 'dm.bread_crumb.filter_pages'), $pages)->getReturnValue();
+    return $this->context->getEventDispatcher()->filter(
+      new sfEvent($this, 'dm.bread_crumb.filter_pages', array('page' => $this->context->getPage())),
+      $pages
+    )->getReturnValue();
   }
 
   protected function doRender()
@@ -58,21 +82,27 @@ class dmWidgetNavigationBreadCrumbView extends dmWidgetPluginView
     }
     
     $vars = $this->getViewVars();
+    $helper = $this->getHelper();
     
     $html = '<ol>';
 
     $it = 0;
-    foreach($vars['pages'] as $page)
+    foreach($vars['links'] as $link)
     {
-      $html .= $this->context->getHelper()->£('li', $this->context->getHelper()->£link($page)->render());
+      $html .= $helper->£('li', $link);
     
-      if ($vars['separator'] && (++$it < $vars['nbPages']))
+      if ($vars['separator'] && (++$it < $vars['nbLinks']))
       {
-        $html .= '<li class="bread_crumb_separator">'.$vars['separator'].'</li>';
+        $html .= $helper->£('li.bread_crumb_separator', $vars['separator']);
       }
     }
     
     $html .= '</ol>';
+
+    if ($this->isCachable())
+    {
+      $this->setCache($html);
+    }
     
     return $html;
   }
