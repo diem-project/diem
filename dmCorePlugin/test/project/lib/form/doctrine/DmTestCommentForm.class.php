@@ -12,5 +12,6 @@ class DmTestCommentForm extends BaseDmTestCommentForm
 {
   public function configure()
   {
+    $this->validatorSchema['body']->setOption('required', true);
   }
 }
