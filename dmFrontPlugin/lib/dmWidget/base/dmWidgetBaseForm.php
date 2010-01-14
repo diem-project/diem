@@ -3,9 +3,9 @@
 abstract class dmWidgetBaseForm extends dmForm
 {
   protected
-    $dmWidget,
-    $stylesheets = array(),
-    $javascripts = array();
+  $dmWidget,
+  $stylesheets = array(),
+  $javascripts = array();
 
   /**
    * Constructor.
@@ -43,6 +43,11 @@ abstract class dmWidgetBaseForm extends dmForm
     $this->widgetSchema['cssClass']->setLabel('CSS class');
 
     $this->setDefault('cssClass', $this->dmWidget->get('css_class'));
+  }
+
+  public function getDmWidget()
+  {
+    return $this->dmWidget;
   }
 
   protected function addRequiredJavascript($keys)
@@ -96,17 +101,15 @@ abstract class dmWidgetBaseForm extends dmForm
 
   protected function renderActions()
   {
-    $i18n = dm::getI18n();
-    
     return sprintf(
       '<div class="actions">
         <div class="actions_part clearfix">%s%s</div>
         <div class="actions_part clearfix">%s%s</div>
       </div>',
-      sprintf('<a class="dm cancel close_dialog button fleft">%s</a>', $i18n->__('Cancel')),
-      sprintf('<input type="submit" class="submit try blue fright" name="try" value="%s" />', $i18n->__('Try')),
-      sprintf('<a class="dm delete button red fleft" title="%s">%s</a>', $i18n->__('Delete this widget'), $i18n->__('Delete')),
-      sprintf('<input type="submit" class="submit and_save green fright" name="and_save" value="%s" />', $i18n->__('Save and close'))
+      sprintf('<a class="dm cancel close_dialog button fleft">%s</a>', $this->__('Cancel')),
+      sprintf('<input type="submit" class="submit try blue fright" name="try" value="%s" />', $this->__('Try')),
+      sprintf('<a class="dm delete button red fleft" title="%s">%s</a>', $this->__('Delete this widget'), $this->__('Delete')),
+      sprintf('<input type="submit" class="submit and_save green fright" name="and_save" value="%s" />', $this->__('Save and close'))
     );
   }
 
