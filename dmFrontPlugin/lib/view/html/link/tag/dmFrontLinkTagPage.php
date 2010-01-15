@@ -3,12 +3,14 @@
 class dmFrontLinkTagPage extends dmFrontLinkTag
 {
   protected
+  $user,
   $page,        // the page we link to
   $currentPage; // the page where the link is displayed
 
-  public function __construct(dmFrontLinkResource $resource, DmPage $currentPage = null, array $requestContext, array $options = array())
+  public function __construct(dmFrontLinkResource $resource, array $requestContext, DmPage $currentPage = null, dmCoreUser $user = null, array $options = array())
   {
     $this->currentPage = $currentPage;
+    $this->user = $user;
     
     parent::__construct($resource, $requestContext, $options);
   }
@@ -91,7 +93,13 @@ class dmFrontLinkTagPage extends dmFrontLinkTag
 
     if (!sfConfig::get('dm_search_populating'))
     {
-      if($this->currentPage)
+      // inactive page
+      if($this->user && !$this->page->_getI18n('is_active') && !$this->user->can('site_view'))
+      {
+        $attributes['tag'] = 'span';
+      }
+      // current page
+      elseif($this->currentPage)
       {
         if ($this->currentPage->get('id') === $this->page->get('id'))
         {

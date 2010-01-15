@@ -420,7 +420,7 @@ EOF;
       "page_bar_front" => "See page bar in front",
       "media_bar_front" => "See media bar in front",
       "tool_bar_front" => "See toolbar in front",
-      "site_view" => "See website even if is not public",
+      "site_view" => "See non-public website and inactive pages",
       "loremize" => "Create automatic random content",
       "export_table" => "Export table contents",
       "sitemap" => "Regenerate sitemap",

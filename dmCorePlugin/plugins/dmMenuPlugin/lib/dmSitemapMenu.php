@@ -30,7 +30,7 @@ class dmSitemapMenu extends dmMenu
     ->withI18n()
     ->where('pTranslation.is_active = ?', true)
     ->andWhere('p.module != ? OR ( p.action != ? AND p.action != ? AND p.action != ?)', array('main', 'error404', 'search', 'login'))
-    ->select('p.*, pTranslation.slug, pTranslation.name, pTranslation.title, pTranslation.is_secure')
+    ->select('p.*, pTranslation.slug, pTranslation.name, pTranslation.title, pTranslation.is_secure, pTranslation.is_active')
     ->orderBy('p.lft ASC')
     ;
   }

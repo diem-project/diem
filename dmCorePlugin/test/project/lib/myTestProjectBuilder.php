@@ -32,6 +32,66 @@ class myTestProjectBuilder
     $this->addSitemap();
 
     $this->addH1();
+
+    $this->addManualPages();
+  }
+
+  /*
+   * root
+   *   page1
+   *     page11
+   *       page111
+   *     page12
+   *   page2
+   *     page21
+   */
+  protected function addManualPages()
+  {
+    $table = dmDb::table('DmPage');
+
+    $page1 = $table->create(array(
+      'module' => 'main',
+      'action' => 'page1',
+      'name'   => 'Page 1',
+      'slug'   => 'page1'
+    ));
+    $page11 = $table->create(array(
+      'module' => 'main',
+      'action' => 'page11',
+      'name'   => 'Page 11',
+      'slug'   => 'page11'
+    ));
+    $page111 = $table->create(array(
+      'module' => 'main',
+      'action' => 'page111',
+      'name'   => 'Page 111',
+      'slug'   => 'page111'
+    ));
+    $page12 = $table->create(array(
+      'module' => 'main',
+      'action' => 'page12',
+      'name'   => 'Page 12',
+      'slug'   => 'page12'
+    ));
+    $page2 = $table->create(array(
+      'module' => 'main',
+      'action' => 'page2',
+      'name'   => 'Page 2',
+      'slug'   => 'page2'
+    ));
+    $page21 = $table->create(array(
+      'module' => 'main',
+      'action' => 'page21',
+      'name'   => 'Page 21',
+      'slug'   => 'page21'
+    ));
+
+    $page1->Node->insertAsFirstChildOf($table->getTree()->fetchRoot());
+    $page11->Node->insertAsFirstChildOf($page1);
+    $page111->Node->insertAsFirstChildOf($page11);
+    $page12->Node->insertAsFirstChildOf($page1);
+    $page2->Node->insertAsFirstChildOf($table->getTree()->fetchRoot());
+    $page21->Node->insertAsFirstChildOf($page2);
   }
 
   protected function addRecords()

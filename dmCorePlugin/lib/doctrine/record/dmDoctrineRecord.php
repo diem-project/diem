@@ -666,7 +666,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     {
       $i18n = $translation->get($culture);
     }
-    // record is new so we use ( or create ) the fallback culture
+    // record is new so we use (or create) the fallback culture
     elseif($this->isNew())
     {
       $i18n = $translation->get(sfConfig::get('sf_default_culture'));
