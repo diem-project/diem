@@ -96,6 +96,7 @@ class dmFrontLinkTagPage extends dmFrontLinkTag
       // inactive page
       if($this->user && !$this->page->_getI18n('is_active') && !$this->user->can('site_view'))
       {
+        $attributes['class'][] = 'dm_inactive';
         $attributes['tag'] = 'span';
       }
       // current page
