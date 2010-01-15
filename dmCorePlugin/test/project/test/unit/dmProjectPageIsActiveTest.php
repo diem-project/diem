@@ -19,4 +19,4 @@ $t->like($link = £link($page11)->render(), '|<a class="link" href=".+">Page 11<
 $page11->isActive = false;
 $page11->save();
 
-$t->is($link = £link($page11)->render(), '<span class="link">Page 11</span>', 'Link to inactive page: '.$link);
+$t->is($link = £link($page11)->render(), '<span class="link dm_inactive">Page 11</span>', 'Link to inactive page: '.$link);
