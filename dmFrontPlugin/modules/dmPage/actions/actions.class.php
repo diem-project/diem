@@ -61,7 +61,7 @@ class dmPageActions extends dmFrontBaseActions
         
         return $this->renderJson(array(
           'type'  => 'redirect',
-          'url'   => $this->context->getHelper()->£link($this->page)->getHref()
+          'url'   => $this->getHelper()->£link($this->page)->getHref()
         ));
       }
       
@@ -70,10 +70,10 @@ class dmPageActions extends dmFrontBaseActions
     else
     {
       $js =
-      file_get_contents($this->context->get('helper')->getJavascriptFullPath('lib.ui-tabs')).
+      file_get_contents($this->getHelper()->getJavascriptFullPath('lib.ui-tabs')).
       dmJsMinifier::transform(
-      file_get_contents($this->context->get('helper')->getJavascriptFullPath('core.tabForm')).';'.
-      file_get_contents($this->context->get('helper')->getJavascriptFullPath('front.pageEditForm'))
+      file_get_contents($this->getHelper()->getJavascriptFullPath('core.tabForm')).';'.
+      file_get_contents($this->getHelper()->getJavascriptFullPath('front.pageEditForm'))
       );
     }
     
@@ -87,8 +87,8 @@ class dmPageActions extends dmFrontBaseActions
       'js'   => $js,
       'html' => $this->getPartial('dmPage/edit'),
       'stylesheets' => array(
-        $this->context->get('helper')->getStylesheetWebPath('lib.ui-tabs'),
-        $this->context->get('helper')->getStylesheetWebPath('front.pageEditForm')
+        $this->getHelper()->getStylesheetWebPath('lib.ui-tabs'),
+        $this->getHelper()->getStylesheetWebPath('front.pageEditForm')
       )
     ));
   }
@@ -112,7 +112,7 @@ class dmPageActions extends dmFrontBaseActions
         
         return $this->renderJson(array(
           'type'  => 'redirect',
-          'url'   => $this->context->getHelper()->£link($this->page)->getHref()
+          'url'   => $this->getHelper()->£link($this->page)->getHref()
         ));
       }
       
@@ -123,11 +123,11 @@ class dmPageActions extends dmFrontBaseActions
       $this->form->setDefaults(array(
         'parent_id' => $this->page->id,
         'layout_id' => $this->page->PageView->dmLayoutId,
-        'slug' => $this->page->slug ? $this->page->slug.'/?' : '?'
+        'slug'      => $this->page->slug ? $this->page->slug.'/?' : '?'
       ));
       
       $js = dmJsMinifier::transform(
-        file_get_contents($this->context->get('helper')->getJavascriptFullPath('front.pageAddForm'))
+        file_get_contents($this->getHelper()->getJavascriptFullPath('front.pageAddForm'))
       );
     }
     

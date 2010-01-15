@@ -33,7 +33,7 @@ class dmFunctionalTestHelper
 
   protected function initialize()
   {
-    $this->browser = $this->context->get('test_functional');
+    $this->browser = $this->context->get('test_functional', 'front' == sfConfig::get('sf_app') ? 'dmFrontTestFunctional' : null);
     $this->browser->initialize();
 
     $this->browser->info('Running dm:publish-assets');
