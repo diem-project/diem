@@ -15,7 +15,6 @@ abstract class dmBaseActions extends sfActions
     return $this->forward(sfConfig::get('sf_secure_module'), sfConfig::get('sf_secure_action'));
   }
 
-  
   /**
    * Appends the given json to the response content and bypasses the built-in view system.
    *
@@ -52,7 +51,27 @@ abstract class dmBaseActions extends sfActions
     }
 
     return sfView::NONE;
-  }  
+  }
+
+  protected function renderAsync(array $parts)
+  {
+    $html = dmArray::get($parts, 'html');
+
+    foreach(dmArray::get($parts, 'css', array()) as $css)
+    {
+      $html .= '<link rel="stylesheet" type="text/css" href="'.$this->getHelper()->getStylesheetWebPath($css).'"/>';
+    }
+
+    foreach(dmArray::get($parts, 'js', array()) as $js)
+    {
+      $html .= '<script type="text/javascript" src="'.$this->getHelper()->getJavascriptWebPath($js).'"></script>';
+    }
+
+    $this->response->setContentType('text/html');
+    $this->response->setContent($html);
+
+    return sfView::NONE;
+  }
   
   protected function redirectBack()
   {    

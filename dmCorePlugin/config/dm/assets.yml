@@ -17,24 +17,26 @@ js:
     
   lib:
     symfony_debug:    symfony/debug
-    jquery:           jquery/jquery-1.3.2.min
-    ui-core:          jquery-ui/js/minified/ui.core.min
-    ui-position:      jquery-ui/js/minified/ui.position.min
-    ui-draggable:     jquery-ui/js/minified/ui.draggable.min
-    ui-datepicker:    jquery-ui/js/minified/ui.datepicker.min
-    ui-droppable:     jquery-ui/js/minified/ui.droppable.min
-    ui-sortable:      jquery-ui/js/minified/ui.sortable.min
-    ui-resizable:     jquery-ui/js/minified/ui.resizable.min
-    ui-tabs:          jquery-ui/js/minified/ui.tabs.min
-    ui-dialog:        jquery-ui/js/minified/ui.dialog.min
-    ui-accordion:     jquery-ui/js/minified/ui.accordion.min
-    ui-i18n:          jquery-ui/js/minified/i18n/ui.datepicker-%culture%.min
+    jquery:           jquery/jquery-1.4
+    ui-core:          jquery-ui/js/minified/jquery.ui.core.min
+    ui-widget:        jquery-ui/js/minified/jquery.ui.widget.min
+    ui-mouse:         jquery-ui/js/minified/jquery.ui.mouse.min
+    ui-position:      jquery-ui/js/minified/jquery.ui.position.min
+    ui-draggable:     jquery-ui/js/minified/jquery.ui.draggable.min
+    ui-datepicker:    jquery-ui/js/minified/jquery.ui.datepicker.min
+    ui-droppable:     jquery-ui/js/minified/jquery.ui.droppable.min
+    ui-sortable:      jquery-ui/js/minified/jquery.ui.sortable.min
+    ui-resizable:     jquery-ui/js/minified/jquery.ui.resizable.min
+    ui-tabs:          jquery-ui/js/minified/jquery.ui.tabs.min
+    ui-dialog:        jquery-ui/js/minified/jquery.ui.dialog.min
+    ui-accordion:     jquery-ui/js/minified/jquery.ui.accordion.min
+    ui-i18n:          jquery-ui/js/minified/i18n/jquery.ui.datepicker-%culture%.min
     metadata:         metadata/jquery.metadata.min
     jqtransform:      jqtransform/jquery.jqtransform.min
     form:             form/jquery.form.hack
     jsTree:           jsTree/source/tree_component.min
     jsTreeCss:        jsTree/source/css
-    blockUI:          blockUI/jquery.blockUI.min
+    blockUI:          blockUI/jquery.blockUI-2.31.min
     jgrowl:           jgrowl/jquery.jgrowl_minimized
     ajaxqueue:        ajaxqueue/jquery.ajaxQueue
     cookie:           cookie/jquery.cookie.min

@@ -2,427 +2,422 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>
-      http://localhost/
+      http://www.my-domain.com/
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/page2
+      http://www.my-domain.com/page2
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/page21
+      http://www.my-domain.com/page21
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/page1
+      http://www.my-domain.com/page1
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/page12
+      http://www.my-domain.com/page12
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/page11
+      http://www.my-domain.com/page11
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/page111
+      http://www.my-domain.com/page111
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-domains
+      http://www.my-domain.com/dm-test-domains
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-domains/ere-cubilia-curae-etiam-tortor-tellus
+      http://www.my-domain.com/dm-test-domains/orbi-at-dui-sed-el
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-domains/a-dolor-aliquam-bibendum-mi
+      http://www.my-domain.com/dm-test-domains/orbi-at-dui-sed-el/oncus-mauris-a-sapie
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-domains/aucibus-maecenas-fringilla
+      http://www.my-domain.com/dm-test-domains/orbi-at-dui-sed-el/oncus-mauris-a-sapie/mus-pellentesque-lao
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-domains/aucibus-maecenas-fringilla/ris-risus-er
+      http://www.my-domain.com/dm-test-domains/sapien
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-domains/aucibus-maecenas-fringilla/ris-risus-er/ncus-erat-ut-tellus-cras-elit
+      http://www.my-domain.com/dm-test-domains/sapien/us-donec-rhoncus-feugiat-arcu
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-domains/t-congue
+      http://www.my-domain.com/dm-test-domains/sapien/us-donec-rhoncus-feugiat-arcu/aptent-taciti-socio
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-domains/t-congue/met-euismod-id
+      http://www.my-domain.com/dm-test-domains/s-integer-nec-risus-vivamus-sce
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-domains/t-congue/met-euismod-id/iaculis-v
+      http://www.my-domain.com/dm-test-domains/ma
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-domains/t-congue/llus-et-scelerisque-erat-orci-a-nis
+      http://www.my-domain.com/dm-test-domains/ltrices-p
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-domains/t-congue/llus-et-scelerisque-erat-orci-a-nis/tibulum-nibh-justo
+      http://www.my-domain.com/dm-test-domains/nec-porta-pulvinar-neque-nam-in-augue
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-domains/t-congue/llus-et-scelerisque-erat-orci-a-nis/lam-dolor-purus-i
+      http://www.my-domain.com/dm-test-domains/nec-porta-pulvinar-neque-nam-in-augue/conubia-no
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-domains/t-congue/llus-et-scelerisque-erat-orci-a-nis/curabitur-iaculis-sed-augue-sed-sagi
+      http://www.my-domain.com/dm-test-domains/nec-porta-pulvinar-neque-nam-in-augue/conubia-no/ada-eget-tincidunt-quis-s
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-domains/terdum-et-ipsum-aenean-tristique
+      http://www.my-domain.com/dm-test-domains/nec-porta-pulvinar-neque-nam-in-augue/conubia-no/ligula-quis-neque-iac
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-domains/la-aliqu
+      http://www.my-domain.com/dm-test-domains/nec-porta-pulvinar-neque-nam-in-augue/conubia-no/m-mi-pellentesque-et-consequat-ut-fe
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-domains/la-aliqu/is-diam-nullam-sapie
+      http://www.my-domain.com/dm-test-domains/ut-ullamcorper
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-domains/la-aliqu/is-diam-nullam-sapie/tur-quam-vel-laoreet
+      http://www.my-domain.com/dm-test-domains/ut-ullamcorper/ulum-l
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-domains/la-aliqu/is-diam-nullam-sapie/bibendum-molest
+      http://www.my-domain.com/dm-test-domains/ut-ullamcorper/ulum-l/lutpat-quisque-laoreet-ni
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-domains/um-nibh-justo-euismod-a-eleif
+      http://www.my-domain.com/dm-test-domains/lobortis-vel-ma
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-domains/ttis-n
+      http://www.my-domain.com/dm-test-domains/lobortis-vel-ma/giat-pre
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-domains/rius-magna
+      http://www.my-domain.com/dm-test-domains/lobortis-vel-ma/giat-pre/e-erat-orci-a-nisl-i
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-domains/rius-magna/sum-primis-in-faucibus-orci-luctus-et-u
+      http://www.my-domain.com/dm-test-domains/lobortis-vel-ma/giat-pre/ante-vel-convallis-dolor
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-domains/rius-magna/sum-primis-in-faucibus-orci-luctus-et-u/bitur-iaculis-se
+      http://www.my-domain.com/dm-test-domains/lobortis-vel-ma/giat-pre/phasellus-tristiqu
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-domains/rius-magna/sum-primis-in-faucibus-orci-luctus-et-u/ique-ac-bl
+      http://www.my-domain.com/dm-test-domains/lobortis-vel-ma/giat-pre/t-erat-condimentum-dapibus
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-domains/rius-magna/sum-primis-in-faucibus-orci-luctus-et-u/sque-et-sapien-vestibul
+      http://www.my-domain.com/dm-test-domains/lobortis-vel-ma/giat-pre/nec-justo-enim-ullamcorpe
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-domains/rius-magna/sum-primis-in-faucibus-orci-luctus-et-u/entum
+      http://www.my-domain.com/dm-test-domains/ut-ligula-quis-neque-iacu
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-domains/rius-magna/sum-primis-in-faucibus-orci-luctus-et-u/donec-pellente
+      http://www.my-domain.com/dm-test-domains/domain-1
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-domains/domain-1
+      http://www.my-domain.com/dm-test-domains/domain-1/categ-1
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-domains/domain-1/categ-1
+      http://www.my-domain.com/dm-test-domains/domain-1/categ-1/post-1
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-domains/domain-1/categ-1/post-1
+      http://www.my-domain.com/dm-test-tags
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-tags
+      http://www.my-domain.com/dm-test-tags/leo-vestibulum-ante-ipsum-primis-in-fau
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-tags/nec-massa-morbi-scelerisq
+      http://www.my-domain.com/dm-test-tags/a-ipsum-nec-sapien-maece
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-tags/ia-in-elementum-non-nisl-pr
+      http://www.my-domain.com/dm-test-tags/ae-nunc-maecenas-at-ligula-se
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-tags/t-egestas-at-facilisis-ut-ullam
+      http://www.my-domain.com/dm-test-tags/s-vestibu
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-tags/sed-sagit
+      http://www.my-domain.com/dm-test-tags/pellentesque-convallis-elit
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-tags/um-fermentum-at-malesuada-a-ligula-d
+      http://www.my-domain.com/dm-test-tags/massa-ph
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-tags/a-et
+      http://www.my-domain.com/dm-test-tags/endiss
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-tags/mauris-risus-erat-luctus-eu-f
+      http://www.my-domain.com/dm-test-tags/rta-ligula-lobortis-risus-nullam-non-p
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-tags/tincidunt-sem-nisi-accumsan-ma
+      http://www.my-domain.com/dm-test-tags/rutrum-vene
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-tags/sl-purus-sollicitudi
+      http://www.my-domain.com/dm-test-tags/avida-al
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-tags/od-sit-amet
+      http://www.my-domain.com/dm-test-tags/arius-integer-nec-r
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-tags/venena
+      http://www.my-domain.com/dm-test-tags/us
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-tags/m-suspendisse-volutpat-c
+      http://www.my-domain.com/dm-test-tags/hendre
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-tags/la-turpis-fau
+      http://www.my-domain.com/dm-test-tags/a-curae-p
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-tags/lus-luctus-et-euismod-s
+      http://www.my-domain.com/dm-test-tags/r-d
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-tags/e-in-et-ante-in
+      http://www.my-domain.com/dm-test-tags/verra-praesent-convallis-lobortis
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-tags/ros-adipiscing-vitae
+      http://www.my-domain.com/dm-test-tags/c-lorem-tellus-c
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-tags/r-quam-vel-laoreet-lobortis-n
+      http://www.my-domain.com/dm-test-tags/i-tincidunt-quam-a-soll
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-tags/amet-felis-proin-pharetra-diam-et
+      http://www.my-domain.com/dm-test-tags/lis-gravida-ut-a
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-tags/aenean-elementum-morbi-vitae-an
+      http://www.my-domain.com/dm-test-tags/felis-vita
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-tags/et-sapien-in-libero-iaculis-fermen
+      http://www.my-domain.com/dm-test-tags/curabitur-sit-am
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-tags/ium-consectetur-urna-sed-sagittis
+      http://www.my-domain.com/dm-test-tags/tra-non-lobortis-vitae-quam
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-tags/nulla-tristique-venena
+      http://www.my-domain.com/dm-test-tags/ntum-morbi-sit-amet-lectus-iaculis-me
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-tags/aliquam-rutrum-erat-mollis-mi-se
+      http://www.my-domain.com/dm-test-tags/s-eleifend-gravid
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-tags/m-rhoncus-erat-ut-tellus-cr
+      http://www.my-domain.com/dm-test-tags/fames-ac-turpis-egestas
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-tags/ipit-sod
+      http://www.my-domain.com/dm-test-tags/us-vivamus-libero-sem-cursus-vel
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-tags/euismo
+      http://www.my-domain.com/dm-test-tags/ortor-maec
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-tags/us-vivamus-libero-s
+      http://www.my-domain.com/dm-test-tags/ec-gr
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-tags/acus-vesti
+      http://www.my-domain.com/dm-test-tags/ligula-metus-malesu
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-tags/t-felis-vitae-odio-fermentum-sod
+      http://www.my-domain.com/dm-test-tags/terdum-nisi-at-suscipit-sodales-sapien
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-tags/smod-nulla-leo-convallis-lacus-eget
+      http://www.my-domain.com/dm-test-tags/in-scelerisque-cu
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-tags/ortis-nulla-massa-ultrices-sem
+      http://www.my-domain.com/dm-test-tags/r-est-morbi-at-dui-sed
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-tags/gue-nibh-et-justo-pellentesq
+      http://www.my-domain.com/dm-test-tags/tum
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-tags/iquam-egestas-tellus-a-dolor
+      http://www.my-domain.com/dm-test-tags/t-erat-vulputate-vel
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-tags/s-in-faucibus-orci-luctus-et-ultri
+      http://www.my-domain.com/dm-test-tags/neque
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-tags/uere-porta-tempor-cursus-at-dui-ma
+      http://www.my-domain.com/dm-test-tags/etiam-et-nulla-con
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-tags/fusce-non-orci-sit-amet-en
+      http://www.my-domain.com/dm-test-tags/psum-primis-in-faucibus-orci-luctus
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-tags/sed-sagittis-nisl-nec-lacus-nulla-e
+      http://www.my-domain.com/dm-test-tags/a-orci
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-tags/e-ultricies-nec-im
+      http://www.my-domain.com/dm-test-tags/t-lobortis-fe
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-tags/re-mattis-odio
+      http://www.my-domain.com/dm-test-tags/tag-1
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/dm-test-tags/tag-1
+      http://www.my-domain.com/authors
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/authors
+      http://www.my-domain.com/authors/admin
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/authors/admin
+      http://www.my-domain.com/authors/ligula-nec-faucibus-egf05v
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/authors/i-semper-varius-integer-nec-risusrsyof
+      http://www.my-domain.com/authors/nulla-facilisi-maecenrvpvzjme39
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/authors/acinia-lorem-in-pellentesquepb17z
+      http://www.my-domain.com/authors/s-convallis-imperdiet-metus-nunc-sitwija
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/authors/aliquam-lectls652lh0k
+      http://www.my-domain.com/authors/ante-ipsum-primis-in-faucibus-orci-lcpq9xh
     </loc>
   </url>
   <url>
     <loc>
-      http://localhost/authors/hicula-at-arcu-morbigc64wb
-    </loc>
-  </url>
-  <url>
-    <loc>
-      http://localhost/sitemap
+      http://www.my-domain.com/sitemap
     </loc>
   </url>
 </urlset>

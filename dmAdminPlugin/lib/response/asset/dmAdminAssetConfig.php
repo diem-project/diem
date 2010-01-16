@@ -34,6 +34,8 @@ class dmAdminAssetConfig extends dmAssetConfig
       'lib.metadata',
       'lib.cookie',
       'lib.ui-core',
+      'lib.ui-widget',
+      'lib.ui-mouse',
       'lib.ui-draggable',
       'lib.ui-droppable',
       'lib.fieldSelection',

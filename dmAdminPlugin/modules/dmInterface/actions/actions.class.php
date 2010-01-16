@@ -9,14 +9,9 @@ class dmInterfaceActions extends BasedmInterfaceActions
   {
     $tree = new dmAdminRecursivePageList();
 
-    $js =
-      file_get_contents($this->context->get('helper')->getJavascriptFullPath('lib.tree-component')).
-      file_get_contents($this->context->get('helper')->getJavascriptFullPath('lib.tree-css'))
-    ;
-
-    return $this->renderJson(array(
-      'html' => $tree->render(),
-      'js' => $js
+    return $this->renderAsync(array(
+      'html'  => $tree->render(),
+      'js'    => array('lib.tree-component', 'lib.tree-css')
     ));
   }
 

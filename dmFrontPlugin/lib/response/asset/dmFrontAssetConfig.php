@@ -46,6 +46,8 @@ class dmFrontAssetConfig extends dmAssetConfig
         'lib.metadata',
         'lib.cookie',
         'lib.ui-core',
+        'lib.ui-widget',
+        'lib.ui-mouse',
         'lib.ui-position',
         'lib.ui-draggable',
         'lib.ui-droppable',
