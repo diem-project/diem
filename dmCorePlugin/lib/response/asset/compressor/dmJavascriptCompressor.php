@@ -29,7 +29,17 @@ class dmJavascriptCompressor extends dmAssetCompressor
   {
     if ($this->isMinifiable($path))
     {
-      $content = dmJsMinifier::transform($content);
+      try
+      {
+        $content = dmJsMinifier::transform($content);
+      }
+      catch(JsMinEnhException $e)
+      {
+        $this->dispatcher->notify(new sfEvent($this, 'application.log', array(
+          'priority' => sfLogger::ERR,
+          sprintf('Javascript compression failed for %s: %s', $path, $e->getMessage())
+        )));
+      }
     }
     
     return $content.';';
