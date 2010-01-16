@@ -19,6 +19,7 @@ js:
     manualSeo:        dmAdminManualSeo
     gallery:          dmAdminGalleryCtrl
     history:          dmAdminHistoryCtrl
+    sitemap:          dmAdminSitemap
 
 css:
 

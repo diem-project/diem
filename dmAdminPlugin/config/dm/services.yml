@@ -52,9 +52,8 @@ parameters:
 
   admin_module_space_menu.class: dmAdminModuleSpaceMenu # Responsible for building and rendering the module space menu
     
-  sitemap.class:              dmSitemap         # Responsible for generating and saving an automatic sitemap.xml
-  sitemap.options:
-    file:                     sitemap.xml       # where to save the file, relative to web directory
+  xml_sitemap_generator.class:    dmXmlSitemapGenerator  # Responsible for generating and saving automatic sitemap.xml
+  xml_sitemap_generator.options:  []
     
   link_tag_factory.class:     dmAdminLinkTagFactory # Builds a link_tag service from a source
  
@@ -130,7 +129,7 @@ services:
     shared:                   false
     arguments:                [ @service_container, %menu.options% ]
 
-  sitemap:
-    class:                    %sitemap.class%
+  xml_sitemap_generator:
+    class:                    %xml_sitemap_generator.class%
     shared:                   false
-    arguments:                [ @dispatcher, @filesystem, %sitemap.options% ]
+    arguments:                [ @dispatcher, @filesystem, @i18n, %xml_sitemap_generator.options% ]

@@ -1,39 +1,55 @@
-<?php use_helper('Date');
+<?php
+use_helper('Date');
+use_stylesheet('lib.ui-tabs');
+use_javascript('lib.ui-tabs');
+use_javascript('admin.sitemap');
 
-$form = sprintf('%s%s%s',
-  sprintf('<form action="%s">', £link('@dm_sitemap?action=generate')->getHref()),
+echo £o('div.dm_sitemap.mt10');
+
+echo sprintf('%s%s%s',
+  sprintf('<form style="text-align: center" method="post" class="dm_sitemap_generate_form" action="%s">', £link('@dm_sitemap?action=generate')->getHref()),
   sprintf('<input type="submit" value="%s" />', __('Generate sitemap')),
   '</form>'
 );
 
-echo £o('div.dm_box.big.sitemap');
+echo £o('div.dm_sitemap_tabs.mt10');
 
-echo £('h1.title', __('Generate sitemap'));
-
-echo £o('div.dm_box_inner');
-
-if ($exists)
+echo £o('ul');
+foreach($sitemap->getFiles() as $file)
 {
-  echo £('div.clearfix.mb10',
-    definition_list(array(
-      'Position' => £link($webPath),
-      'Urls' => $nbLinks,
-      'Size' => $size,
-      'Updated at' => format_date($updatedAt)
-    ), '.clearfix.dm_little_dl.fleft.mr20').
-    $form
-  );
-  
-  echo £('pre', array('style' => 'background: #fff; padding: 10px; border: 1px solid #ddd; max-height: 350px; overflow-y: auto;'), htmlentities($xml, ENT_QUOTES, 'UTF-8'));
+  echo £('li', £('a href=#dm_sitemap_'.dmString::slugify(basename($file)), basename($file)));
 }
-else
-{
-  echo £('p', __('There is currently no sitemap'));
-  
-  echo $form;
-}
+echo £c('ul');
 
-echo £c('div');
+foreach($sitemap->getFiles() as $file)
+{
+  echo £o('div#dm_sitemap_'.dmString::slugify(basename($file)));
+
+  if (file_exists($file))
+  {
+    echo £('div.clearfix.mb10',
+      definition_list(array(
+        'Position' => £link($sitemap->getWebPath($file)),
+        'Urls' => $sitemap->countUrls($file),
+        'Size' => $sitemap->getFileSize($file),
+        'Updated at' => format_date($sitemap->getUpdatedAt($file))
+      ), '.clearfix.dm_little_dl.fleft.mr20')
+    );
+
+    echo £('pre', array('style' => 'background: #fff; padding: 10px; border: 1px solid #ddd; max-height: 350px; overflow-y: auto;'), htmlentities(file_get_contents($file), ENT_QUOTES, 'UTF-8'));
+  }
+  else
+  {
+    echo sprintf('<input type="submit" class="dm_sitemap_generate" value="%s" />', __('Generate sitemap'));
+  }
+
+  if(!is_writable($file))
+  {
+    echo £('p.error', __('File %1% is not writable', array('%1%' => dmProject::unrootify($file))));
+  }
+
+  echo £c('div');
+}
 
 echo £c('div');
 
@@ -62,3 +78,5 @@ if (isset($phpCli))
   
   echo £c('div');
 }
+
+echo £c('div');

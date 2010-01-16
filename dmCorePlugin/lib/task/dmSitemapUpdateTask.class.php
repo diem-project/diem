@@ -10,7 +10,7 @@ class dmSitemapUpdateTask extends dmContextTask
     parent::configure();
     
     $this->addArguments(array(
-      new sfCommandArgument('domain', sfCommandArgument::REQUIRED, 'The domain name'),
+      new sfCommandArgument('domain', sfCommandArgument::REQUIRED, 'The domain name (ie. http://www.my-domain.com)'),
     ));
     
     $this->namespace = 'dm';
@@ -26,13 +26,18 @@ class dmSitemapUpdateTask extends dmContextTask
   protected function execute($arguments = array(), $options = array())
   {
     $this->withDatabase();
+
+    if(0 !== strpos($arguments['domain'], 'http://'))
+    {
+      $arguments['domain'] = 'http://'.$arguments['domain'];
+    }
     
     $this->log('Sitemap update');
     
-    $sitemap = $this->get('sitemap');
-    $sitemap->setBaseUrl('http://'.$arguments['domain']);
-    
-    $sitemap->generate($this->get('user')->getCulture());
+    $this
+    ->get('xml_sitemap_generator')
+    ->setOption('domain', trim($arguments['domain'], '/'))
+    ->execute();
     
     $this->log('The sitemap has been successfully generated');
   }

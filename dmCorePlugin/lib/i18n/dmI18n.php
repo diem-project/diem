@@ -135,7 +135,7 @@ class dmI18n extends sfI18N
 
     parent::initialize($configuration, $cache, $options);
     
-    $this->setCultures((array)sfConfig::get('dm_i18n_cultures'));
+    $this->setCultures((array) sfConfig::get('dm_i18n_cultures'));
 
     if (!$this->cultureExists($this->culture))
     {
