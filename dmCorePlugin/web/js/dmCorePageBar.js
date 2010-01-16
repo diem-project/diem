@@ -10,7 +10,8 @@
       $toggler.click(function()
       {
         pageBar.open();
-      }).one('mouseover', function()
+      })
+      .one('mouseover', function()
       {
         pageBar.load()
       });
@@ -35,12 +36,10 @@
       pageBar.element.addClass('loaded').block();
 
       $.ajax({
-				dataType: 'json',
         url: $.dm.ctrl.getHref('+/dmInterface/loadPageTree'),
-        success: function(data)
+        success: function(html)
         {
-          $.globalEval(data.js);
-          $('#dm_page_tree').hide().html(data.html);
+          $('#dm_page_tree').hide().html(html);
           pageBar.refresh();
           pageBar.element.unblock();
           setTimeout(function()
