@@ -2,7 +2,6 @@
 
 class dmContext extends sfContext
 {
-
   protected
   $serviceContainer,
   $dmConfiguration,
@@ -259,7 +258,6 @@ class dmContext extends sfContext
   {
     return $this->helper;
   }
-  
 
   /*
    * @return dmModuleManager

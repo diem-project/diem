@@ -130,9 +130,12 @@ abstract class dmWidgetBaseView
         'lifeTime' => 86400,
         'clientLifeTime' => 86400,
         'contextual' => !$this->isStatic(),
-        'vary' => array()
+        'vary' => array($this->widget['id'])
       ));
     }
+
+    // add dm_widget to the component/partial vars
+    $vars['dm_widget'] = $this->widget;
     
     return $this->doRenderPartial($vars);
   }

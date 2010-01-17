@@ -4,6 +4,46 @@ class dmDoctrinePager extends sfDoctrinePager
 {
   protected
   $resultsCache;
+
+  /**
+   * @see sfPager
+   */
+  public function setMaxPerPage($maxPerPage)
+  {
+    parent::setMaxPerPage($maxPerPage);
+
+    return $this;
+  }
+
+  /**
+   * @see sfPager
+   */
+  public function setQuery($query)
+  {
+    parent::setQuery($query);
+
+    return $this;
+  }
+
+  /**
+   * @see sfPager
+   */
+  public function setPage($page)
+  {
+    parent::setPage($page);
+
+    return $this;
+  }
+
+  /**
+   * @see sfPager
+   */
+  public function init()
+  {
+    parent::init();
+
+    return $this;
+  }
   
   /**
    * Get all the results for the pager instance

@@ -11,8 +11,6 @@ parameters:
 
   form_manager.class:         dmFormManager         # Responsible for creating and managing front forms.
 
-  doctrine_pager.class:       dmFrontDoctrinePager  # Responsible for paginating the front doctrine collections, and rendering the pagination links.
-
   link_tag_record.class:      dmFrontLinkTagRecord  # Responsible for rendering a link tag to a record with the £link helper. Configurable from the graphical configuration panel.
   link_tag_record.options:    []
   
@@ -60,7 +58,9 @@ parameters:
   front_code_editor_file_menu.class: dmFrontCodeEditorFileMenu # Responsible for building and rendering the front code editor file menu
 
   front_clipboard.class:      dmFrontUserClipboard  # Responsible for storing copyied and cutted zones and widgets
- 
+
+  front_pager_view.class:     dmFrontPagerView      # Responsible for rendering a sfPager with pagination links
+
 services:
 
   page_routing:
@@ -86,13 +86,6 @@ services:
     class:                    %form_manager.class%
     arguments:                [ @service_container ]
     shared:                   true
-
-  doctrine_pager:
-    class:                    %doctrine_pager.class%
-    shared:                   false
-    arguments:                [ %doctrine_pager.model%, %doctrine_pager.max_per_page% ]
-    calls:
-      - [ setContext, [ @context ] ]
 
   link_tag_record:
     class:                    %link_tag_record.class%
@@ -167,3 +160,8 @@ services:
     class:                    %front_clipboard.class%
     shared:                   true
     arguments:                [ @user ]
+
+  front_pager_view:
+    class:                    %front_pager_view.class%
+    shared:                   false
+    arguments:                [ @context ]

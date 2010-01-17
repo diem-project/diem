@@ -123,19 +123,19 @@ class dmFrontModuleComponents extends myFrontBaseComponents
    */
   protected function getPager(myDoctrineQuery $query, $page = null)
   {
-    $pager = $this->context->getServiceContainer()->getDoctrinePager($this->getDmModule()->getModel(), $this->maxPerPage);
-
-    $pager->setQuery($query);
-
-    $pager->setPage(null === $page ? $this->request->getParameter('page', 1) : $page);
-
-    $pager->configureNavigation(array(
-      'top'     => $this->navTop,
-      'bottom'  => $this->navBottom
-    ));
-
-    $pager->init();
+    $doctrinePager = $this->getServiceContainer()
+    ->setParameter('doctrine_pager.model', $this->getDmModule()->getModel())
+    ->getService('doctrine_pager')
+    ->setMaxPerPage($this->maxPerPage)
+    ->setQuery($query)
+    ->setPage(null === $page ? $this->request->getParameter('page', 1) : $page)
+    ->init();
     
+    $pager = $this->getService('front_pager_view')
+    ->setPager($doctrinePager)
+    ->setOption('navigation_top', $this->navTop)
+    ->setOption('navigation_bottom', $this->navBottom);
+
     try
     {
       $this->preloadPages($pager->getResults());

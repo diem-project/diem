@@ -68,15 +68,4 @@ abstract class dmFrontBaseServiceContainer extends dmBaseServiceContainer
       $this->setParameter('page_helper.class', $this->getParameter('page_helper.view_class'));
     }
   }
-  
-  /*
-   * return @dmFrontDoctrinePager
-   */
-  public function getDoctrinePager($model, $maxPerPage)
-  {
-    $this->setParameter('doctrine_pager.model', $model);
-    $this->setParameter('doctrine_pager.max_per_page', $maxPerPage);
-    
-    return $this->getService('doctrine_pager');
-  }
 }

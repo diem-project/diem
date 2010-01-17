@@ -14,9 +14,9 @@ class dmFrontInitFilter extends dmInitFilter
     $this->redirectNoScriptName();
 
     $this->saveApplicationUrl();
-    
-    // ajax calls use dm_cpi to request a page
-    if($pageId = $this->request->getParameter('dm_cpi'))
+
+    // ajax calls use dm_cpi or page_id request parameter to set a page
+    if($pageId = $this->request->getParameter('dm_cpi', $this->request->getParameter('page_id')))
     {
       if (!$page = dmDb::table('DmPage')->findOneByIdWithI18n($pageId))
       {

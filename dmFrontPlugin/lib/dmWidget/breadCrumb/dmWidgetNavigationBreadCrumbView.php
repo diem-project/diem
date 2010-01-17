@@ -47,15 +47,20 @@ class dmWidgetNavigationBreadCrumbView extends dmWidgetPluginView
     $treeObject = dmDb::table('DmPage')->getTree();
     $treeObject->setBaseQuery(dmDb::table('DmPage')->createQuery('p')->withI18n());
 
-    $ancestors = $this->context->getPage()->getNode()->getAncestors();
+    if(!$currentPage = $this->context->getPage())
+    {
+      throw new dmException('No current page');
+    }
+
+    $ancestors = $currentPage->getNode()->getAncestors();
 
     $ancestors = $ancestors ? $ancestors : array();
 
     $treeObject->resetBaseQuery();
-    
+
     if ($includeCurrent)
     {
-      $ancestors[] = $this->context->getPage();
+      $ancestors[] = $currentPage;
     }
 
     $pages = array();
@@ -63,7 +68,7 @@ class dmWidgetNavigationBreadCrumbView extends dmWidgetPluginView
     {
       $pages[$page->get('module').'/'.$page->get('action')] = $page;
     }
-    
+
     /*
      * Allow listeners of dm.bread_crumb.filter_pages event
      * to filter and modify the pages list

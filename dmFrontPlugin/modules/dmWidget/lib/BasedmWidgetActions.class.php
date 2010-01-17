@@ -3,6 +3,22 @@
 class BasedmWidgetActions extends dmFrontBaseActions
 {
 
+  /*
+   * Quickly render a widget from Ajax
+   * £link('+/dmWidget/render')->param('widget_id', $widgetId)->param('page_id', $pageId)
+   */
+  public function executeRender(dmWebRequest $request)
+  {
+    $this->forward404Unless(
+      $widget = dmDb::table('DmWidget')->find($request->getParameter('widget_id')),
+      'No widget found'
+    );
+
+    return $this->renderText(
+      $this->getService('page_helper')->renderWidgetInner($widget->toArrayWithMappedValue())
+    );
+  }
+
   public function executeCopy(dmWebRequest $request)
   {
     $this->forward404Unless($widget = dmDb::table('DmWidget')->find($request->getParameter('id')));

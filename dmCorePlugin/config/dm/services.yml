@@ -158,6 +158,8 @@ parameters:
 
   sf_browser.class:           dmSfBrowser           # Replaces sfBrowser
 
+  doctrine_pager.class:       dmDoctrinePager       # Responsible for paginating the doctrine collections
+
 services:
 
   text_diff:
@@ -383,3 +385,8 @@ services:
     class:                    %sf_browser.class%
     shared:                   false
     arguments:                []
+
+  doctrine_pager:
+    class:                    %doctrine_pager.class%
+    shared:                   false
+    arguments:                [ %doctrine_pager.model% ]

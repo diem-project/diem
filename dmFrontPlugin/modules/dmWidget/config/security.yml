@@ -16,3 +16,6 @@ move:
   
 delete:
   credentials:  widget_delete
+
+render:
+  is_secure:    false
