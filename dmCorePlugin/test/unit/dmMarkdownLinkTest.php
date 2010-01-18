@@ -4,7 +4,7 @@ require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
 $helper = new dmUnitTestHelper();
 $helper->boot('front');
 
-$t = new lime_test(85);
+$t = new lime_test(88);
 
 $markdown = $helper->get('markdown');
 dm::loadHelpers(array('Dm'));
@@ -108,7 +108,7 @@ $tests = array(
     ->anchor('#an_anchor')
     ->params(array('var1' => 'val1', 'var2' => 'val2'))
     ->set('#an_id.a_class.another_class')
-  ),
+  )
 );
 
 $absoluteUrlRoot = $helper->get('request')->getAbsoluteUrlRoot();
@@ -133,3 +133,8 @@ foreach($tests as $code => $results)
 }
 
 $page->Node->delete();
+
+$source = '[link to email](mailto:test@mail.com)';
+$t->is($result = $markdown->toText($source), 'link to email', $result);
+$t->is($result = $markdown->brutalToText($source), 'link to email', $result);
+$t->is($result = $markdown->toHtml($source), '<p class="dm_first_p">'.£link('mailto:test@mail.com')->text('link to email')->render().'</p>', $result);

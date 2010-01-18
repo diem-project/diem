@@ -136,7 +136,14 @@ class dmAdminLinkTag extends dmBaseLinkTag
     
     if(isset($resource))
     {
-      return $this->serviceContainer->getService('controller')->genUrl($resource);
+      if (strncmp($resource, '#', 1) === 0 || strncmp($resource, 'mailto:', 7)  === 0)
+      {
+        return $resource;
+      }
+      else
+      {
+        return $this->serviceContainer->getService('controller')->genUrl($resource);
+      }
     }
 
     throw new dmException('Can not find href for '. $this->resource);

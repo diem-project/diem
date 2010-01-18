@@ -4,7 +4,7 @@ require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
 $helper = new dmUnitTestHelper();
 $helper->boot('admin');
 
-$t = new lime_test(12);
+$t = new lime_test(13);
 
 dm::loadHelpers(array('Dm'));
 
@@ -54,3 +54,5 @@ $errorLink = (string)£link($badSource);
 $t->is($errorLink, '<a class="link">'.$badSource.' is not a valid link resource</a>', $errorLink);
 
 $page->Node->delete();
+
+$t->is((string)£link('mailto:test@mail.com')->text('email'), $html = '<a class="link" href="mailto:test@mail.com">email</a>', 'mailto: '.$html);

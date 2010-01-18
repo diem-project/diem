@@ -106,19 +106,17 @@ class dmFrontLinkResource
         $this->subject = dmContext::hasInstance() ? dmContext::getInstance()->get('script_name_resolver')->get($app).$slug : $slug;
       }
       elseif(
-          strncmp($source, "http://", 7)  === 0
-      ||  strncmp($source, "ftp://", 6)   === 0
-      ||  strncmp($source, "mailto:", 7)  === 0
-      ||  strncmp($source, "@", 1)        === 0
-      ||  strncmp($source, "#", 1)        === 0
+          strncmp($source, 'http://', 7)  === 0
+      ||  strncmp($source, 'ftp://', 6)   === 0
+      ||  strncmp($source, 'mailto:', 7)  === 0
+      ||  strncmp($source, '@', 1)        === 0
+      ||  strncmp($source, '#', 1)        === 0
       )
       {
         $this->type = 'uri';
         $this->subject = $source;
       }
-      elseif(
-          strncmp($source, "/", 1)        === 0
-      )
+      elseif(strncmp($source, '/', 1) === 0)
       {
         $this->type = 'uri';
         $this->subject = $source;

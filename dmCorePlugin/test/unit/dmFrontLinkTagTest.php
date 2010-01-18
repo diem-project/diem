@@ -6,7 +6,7 @@ $helper->boot('front');
 
 if(sfConfig::get('sf_app') == 'front' && class_exists('dmFrontPluginConfiguration', false))
 {
-  $t = new lime_test(26);
+  $t = new lime_test(27);
 }
 else
 {
@@ -163,3 +163,5 @@ $errorLink = '<a class="link"></a>';
 $t->is($errorLink, $errorLink, $errorLink);
 
 $media->delete();
+
+$t->is((string)£link('mailto:test@mail.com')->text('email'), $html = '<a class="link" href="mailto:test@mail.com">email</a>', 'mailto: '.$html);

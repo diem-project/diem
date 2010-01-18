@@ -22,7 +22,7 @@ class dmFrontLinkTagUri extends dmFrontLinkTag
 
   protected function getBaseHref()
   {
-    if (strncmp($this->uri, '#', 1) === 0)
+    if (strncmp($this->uri, '#', 1) === 0 || strncmp($this->uri, 'mailto:', 7)  === 0)
     {
       return $this->uri;
     }
