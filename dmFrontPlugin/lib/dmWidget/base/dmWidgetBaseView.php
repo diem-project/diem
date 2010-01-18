@@ -32,7 +32,7 @@ abstract class dmWidgetBaseView
     return $this->context->getHelper();
   }
   
-  protected function addRequiredJavascript($keys)
+  protected function addJavascript($keys)
   {
     $this->javascripts = array_merge($this->javascripts, (array) $keys);
   }
@@ -42,7 +42,7 @@ abstract class dmWidgetBaseView
     return $this->javascripts;
   }
   
-  protected function addRequiredStylesheet($keys)
+  protected function addStylesheet($keys)
   {
     $this->stylesheets = array_merge($this->stylesheets, (array) $keys);
   }

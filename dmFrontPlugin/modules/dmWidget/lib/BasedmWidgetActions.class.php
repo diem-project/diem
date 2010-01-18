@@ -30,106 +30,45 @@ class BasedmWidgetActions extends dmFrontBaseActions
   {
     $this->forward404Unless($widget = dmDb::table('DmWidget')->find($request->getParameter('widget_id')));
   
-    if (!$widgetType = $this->context->get('widget_type_manager')->getWidgetTypeOrNull($widget))
-    {
-      return $this->renderError();
-    }
-    
-    $formClass = $widgetType->getFormClass();
-    
     try
     {
+      $widgetType = $this->getService('widget_type_manager')->getWidgetType($widget);
+      $formClass = $widgetType->getFormClass();
       $form = new $formClass($widget);
     }
-    catch(dmException $e)
+    catch(Exception $e)
     {
       return $this->renderError();
     }
     
-    $js = '';
-    $stylesheets = array();
-    
-    $form->removeCsrfProtection();
-    
-    if ($request->isMethod('post'))
+    if ($request->isMethod('post') && $form->bindAndValid($request))
     {
-      if ($form->bindAndValid($request))
+      $form->updateWidget();
+
+      if ($request->hasParameter('and_save'))
       {
-        $form->updateWidget();
-
-        $widgetArray = $widget->toArrayWithMappedValue();
-        
-        $this->context->getServiceContainer()->setParameter('widget_renderer.widget', $widgetArray);
-        
-        $widgetRenderer = $this->context->getServiceContainer()->getService('widget_renderer');
-        
-        // gather widget assets to load asynchronously
-        foreach($widgetRenderer->getStylesheets() as $stylesheet)
-        {
-          $stylesheets[] = $this->context->getHelper()->getStylesheetWebPath($stylesheet);
-        }
-        foreach($widgetRenderer->getJavascripts() as $javascript)
-        {
-          $js .= file_get_contents($this->context->getHelper()->getJavascriptFullPath($javascript)).';';
-        }
-        
-        if ($request->hasParameter('and_save'))
-        {
-          $widget->save();
-          return $this->renderJson(array(
-            'type' => 'close',
-            'widget_html' => $widgetRenderer->getHtml(),
-            'widget_classes' => $this->context->get('page_helper')->getWidgetContainerClasses($widgetArray),
-            'js'   => $js,
-            'stylesheets' => $stylesheets
-          ));
-        }
-
-        $form = new $formClass($widget);
-        $form->removeCsrfProtection();
-        
-        /* when a file is uploaded with ajax,
-         * do not render witdget html content
-         * because if it contains JSON metadata
-         * it will cause problems
-         */
-        if ($this->request->isMethod('post') && $this->request->isXmlHttpRequest() && !in_array('application/json', $this->request->getAcceptableContentTypes()))
-        {
-          $widgetHtml = '__DM_ASYNC__';
-        }
-        else
-        {
-          $widgetHtml = $widgetRenderer->getHtml();
-        }
-
-        return $this->renderJson(array(
-          'type' => 'form',
-          'html' => $this->renderEdit($form, $widgetType),
-          'widget_html' => $widgetHtml,
-          'widget_classes' => $this->context->get('page_helper')->getWidgetContainerClasses($widgetArray),
-          'js'   => $js,
-          'stylesheets' => $stylesheets
-        ));
+        $widget->save();
+        return $this->renderText('saved');
       }
+
+      $widgetArray = $widget->toArrayWithMappedValue();
+
+      $widgetRenderer = $this->getServiceContainer()
+      ->setParameter('widget_renderer.widget', $widgetArray)
+      ->getService('widget_renderer');
+
+      return $this->renderAsync(array(
+        'html'  => $this->renderEdit(new $formClass($widget), $widgetType).dmString::ENCODING_SEPARATOR.$this->getService('page_helper')->renderWidget($widgetArray),
+        'js'    => $widgetRenderer->getJavascripts(),
+        'css'   => $widgetRenderer->getStylesheets()
+      ));
     }
     
-    $html = $this->renderEdit($form, $widgetType);
-    
-    foreach($form->getStylesheets() as $stylesheet)
-    {
-      $stylesheets[] = $this->context->getHelper()->getStylesheetWebPath($stylesheet);
-    }
-    foreach($form->getJavascripts() as $javascript)
-    {
-      $js .= file_get_contents($this->context->getHelper()->getJavascriptFullPath($javascript)).';';
-    }
-    
-    return $this->renderJson(array(
-      'type' => 'form',
-      'html' => $html,
-      'js'   => $js,
-      'stylesheets' => $stylesheets
-    ));
+    return $this->renderAsync(array(
+      'html'  => $this->renderEdit($form, $widgetType),
+      'js'    => $form->getJavascripts(),
+      'css'   => $form->getStylesheets()
+    ), true);
   }
   
   protected function renderError()
@@ -191,17 +130,12 @@ class BasedmWidgetActions extends dmFrontBaseActions
     }
     
     return $helper->£('div.dm.dm_widget_edit.'.dmString::underscore($widgetType->getFullKey()).'_form',
-    // don't use json_encode here because the whole response will be json encoded
-    array('class' => sprintf(
-      '{ form_class: \'%s\', form_name: \'%s\' }',
-      $widgetType->getFullKey().'Form',
-      $form->getName()
-    )),
+    array('json' => array('form_class' => $widgetType->getFullKey().'Form', 'form_name' => $form->getName())),
     $form->render('.dm_form.list.little').$devActions.$copyActions
     );
   }
 
-  public function executeGetInner(sfWebRequest $request)
+  public function executeGetFull(sfWebRequest $request)
   {
     $this->forwardSecureUnless(
       $this->getUser()->can('widget_edit')
@@ -211,14 +145,17 @@ class BasedmWidgetActions extends dmFrontBaseActions
       $widget = dmDb::table('DmWidget')->find($request->getParameter('widget_id'))
     );
 
-    $helper = $this->context->get('page_helper');
-
     $widgetArray = $widget->toArrayWithMappedValue();
-    
-    return $this->renderJson(array(
-      'widget_html' => $helper->renderWidgetInner($widgetArray),
-      'widget_classes' => $helper->getWidgetContainerClasses($widgetArray)
-    ));
+
+    $widgetRenderer = $this->getServiceContainer()
+    ->setParameter('widget_renderer.widget', $widgetArray)
+    ->getService('widget_renderer');
+
+    return $this->renderAsync(array(
+      'html'  => $this->getService('page_helper')->renderWidget($widgetArray),
+      'css'   => $widgetRenderer->getStylesheets(),
+      'js'    => $widgetRenderer->getJavascripts()
+    ), true);
   }
 
   public function executeDelete(sfWebRequest $request)
@@ -270,7 +207,7 @@ class BasedmWidgetActions extends dmFrontBaseActions
       'Can not find widget action'
     );
 
-    $widgetType = $this->context->get('widget_type_manager')->getWidgetType($widgetModule, $widgetAction);
+    $widgetType = $this->getService('widget_type_manager')->getWidgetType($widgetModule, $widgetAction);
 
     $formClass = $widgetType->getFormClass();
     $form = new $formClass($widgetType->getNewWidget());
@@ -284,7 +221,7 @@ class BasedmWidgetActions extends dmFrontBaseActions
       'values' => $form->getDefaults()
     ))->saveGet();
 
-    return $this->renderText($this->context->get('page_helper')->renderWidget($widget->toArrayWithMappedValue(), true));
+    return $this->renderText($this->getService('page_helper')->renderWidget($widget->toArrayWithMappedValue(), true));
   }
 
   public function executeMove(sfWebRequest $request)

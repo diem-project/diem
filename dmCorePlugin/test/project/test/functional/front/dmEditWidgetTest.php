@@ -23,7 +23,6 @@ $b
   'tag' => 'h1',
   'cssClass' => 'test_title_class'
 ))
-->testResponseContent('{"type":"close","widget_html":"<h1 class=\"test_title_class\">Title 1<\/h1>","widget_classes":["dm_widget dm_widget_content_title","dm_widget_inner"],"js":"","stylesheets":[]}')
 ->get('/index.php')
 ->checks()
 ->has('.test_title_class', 'Title 1')
@@ -35,7 +34,6 @@ $b
   'tag' => 'h1',
   'cssClass' => 'test_title_class'
 ))
-->testResponseContent('{"type":"close","widget_html":"<h1 class=\"test_title_class\">Title 1 modified<\/h1>","widget_classes":["dm_widget dm_widget_content_title","dm_widget_inner"],"js":"","stylesheets":[]}')
 ->get('/index.php')
 ->checks()
 ->has('.test_title_class', 'Title 1 modified')

@@ -53,22 +53,45 @@ abstract class dmBaseActions extends sfActions
     return sfView::NONE;
   }
 
-  protected function renderAsync(array $parts)
+  protected function renderAsync(array $parts, $encodeAssets = false)
   {
-    $html = dmArray::get($parts, 'html');
-
-    foreach(dmArray::get($parts, 'css', array()) as $css)
+    $parts = array_merge(array('html' => '', 'css' => array(), 'js' => array()), $parts);
+    
+    // translate asset aliases to web paths
+    foreach($parts['css'] as $index => $asset)
     {
-      $html .= '<link rel="stylesheet" type="text/css" href="'.$this->getHelper()->getStylesheetWebPath($css).'"/>';
+      $parts['css'][$index] = $this->getHelper()->getStylesheetWebPath($asset);
+    }
+    foreach($parts['js'] as $index => $asset)
+    {
+      $parts['js'][$index] = $this->getHelper()->getJavascriptWebPath($asset);
     }
 
-    foreach(dmArray::get($parts, 'js', array()) as $js)
+    if(!empty($parts['css']) || !empty($parts['js']))
     {
-      $html .= '<script type="text/javascript" src="'.$this->getHelper()->getJavascriptWebPath($js).'"></script>';
+      if ($encodeAssets)
+      {
+        $parts['html'] .= $this->getHelper()->£('div.dm_encoded_assets.none', json_encode(array(
+          'css' => $parts['css'],
+          'js'  => $parts['js']
+        )));
+      }
+      else
+      {
+        foreach($parts['css'] as $css)
+        {
+          $parts['html'] .= '<link rel="stylesheet" type="text/css" href="'.$css.'"/>';
+        }
+
+        foreach($parts['js'] as $js)
+        {
+          $parts['html'] .= '<script type="text/javascript" src="'.$js.'"></script>';
+        }
+      }
     }
 
     $this->response->setContentType('text/html');
-    $this->response->setContent($html);
+    $this->response->setContent($parts['html']);
 
     return sfView::NONE;
   }

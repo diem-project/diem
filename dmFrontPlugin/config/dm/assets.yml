@@ -15,6 +15,7 @@ js:
     widgetForms:      page/dmWidgetForms
     pageEditForm:     dmFrontPageEditForm
     pageAddForm:      dmFrontPageAddForm
+    ajaxPager:        dmFrontAjaxPager
 
 css:
 

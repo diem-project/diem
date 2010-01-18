@@ -63,15 +63,6 @@ class dmFrontTestFunctional extends dmTestFunctional
     ->get(sprintf('/index.php/+/dmWidget/edit?widget_id=%d&dm_cpi=%d', $widget->id, $this->getPage()->id))
     ->checks(array('module_action' => 'dmWidget/edit', 'method' => 'get'));
 
-    $response = $this->getResponse();
-    $this->test()->is($response->getContentType(), 'application/json', 'Edit widget return json');
-    $this->test()->ok($html = dmArray::get(json_decode($response->getContent(), true), 'html'), 'json contains html');
-
-    $response->setContentType('text/html');
-    $response->setContent($html);
-
-    $this->browser->setResponse($response);
-
     return $this;
   }
 

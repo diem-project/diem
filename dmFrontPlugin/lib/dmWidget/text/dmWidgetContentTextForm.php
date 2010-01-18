@@ -7,22 +7,6 @@ class dmWidgetContentTextForm extends dmWidgetContentImageForm
   {
     parent::configure();
     
-    $this->addRequiredStylesheet(array(
-      'lib.ui-tabs',
-      'lib.markitup',
-      'lib.markitupSet',
-      'lib.ui-resizable'
-    ));
-    $this->addRequiredJavascript(array(
-      'lib.ui-tabs',
-      'lib.markitup',
-      'lib.markitupSet',
-      'lib.ui-resizable',
-      'lib.fieldSelection',
-      'core.tabForm',
-      'core.markdown'
-    ));
-    
     $this->widgetSchema['title'] = new sfWidgetFormInputText();
     $this->validatorSchema['title'] = new sfValidatorString(array('required' => false));
     
@@ -43,6 +27,29 @@ class dmWidgetContentTextForm extends dmWidgetContentImageForm
     ));
     
     $this->widgetSchema['titlePosition']->setLabel('Title position');
+  }
+
+  public function getStylesheets()
+  {
+    return array(
+      'lib.ui-tabs',
+      'lib.markitup',
+      'lib.markitupSet',
+      'lib.ui-resizable'
+    );
+  }
+
+  public function getJavascripts()
+  {
+    return array(
+      'lib.ui-tabs',
+      'lib.markitup',
+      'lib.markitupSet',
+      'lib.ui-resizable',
+      'lib.fieldSelection',
+      'core.tabForm',
+      'core.markdown'
+    );
   }
   
   protected function renderContent($attributes)

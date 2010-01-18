@@ -22,8 +22,9 @@ abstract class dmWidgetBaseForm extends dmForm
     }
     
     $this->dmWidget = $widget;
-    
-    parent::__construct($widget->values, $options, $CSRFSecret);
+
+    // disable CSRF protection
+    parent::__construct($widget->values, $options, false);
   }
   
   public function setup()
@@ -48,26 +49,6 @@ abstract class dmWidgetBaseForm extends dmForm
   public function getDmWidget()
   {
     return $this->dmWidget;
-  }
-
-  protected function addRequiredJavascript($keys)
-  {
-    $this->javascripts = array_merge($this->javascripts, (array) $keys);
-  }
-  
-  public function getJavascripts()
-  {
-    return $this->javascripts;
-  }
-  
-  protected function addRequiredStylesheet($keys)
-  {
-    $this->stylesheets = array_merge($this->stylesheets, (array) $keys);
-  }
-  
-  public function getStylesheets()
-  {
-    return $this->stylesheets;
   }
   
   /*

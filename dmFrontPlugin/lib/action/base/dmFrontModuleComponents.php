@@ -2,7 +2,6 @@
 
 class dmFrontModuleComponents extends myFrontBaseComponents
 {
-
   protected
   $dmModule;
   
@@ -134,7 +133,8 @@ class dmFrontModuleComponents extends myFrontBaseComponents
     $pager = $this->getService('front_pager_view')
     ->setPager($doctrinePager)
     ->setOption('navigation_top', $this->navTop)
-    ->setOption('navigation_bottom', $this->navBottom);
+    ->setOption('navigation_bottom', $this->navBottom)
+    ->setOption('widget_id', $this->dm_widget ? $this->dm_widget['id'] : null);
 
     try
     {

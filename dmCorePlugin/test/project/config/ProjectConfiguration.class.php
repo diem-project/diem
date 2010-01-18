@@ -71,10 +71,9 @@ class ProjectConfiguration extends dmProjectConfiguration
   
   public function cleanup(sfFilesystem $filesystem)
   {
-//    sfToolkit::clearDirectory(sfConfig::get('sf_log_dir'));
+    sfToolkit::clearDirectory(sfConfig::get('sf_log_dir'));
     sfToolkit::clearDirectory(dmOs::join(sfConfig::get('sf_web_dir'), 'cache'));
     sfToolkit::clearDirectory(dmOs::join(sfConfig::get('sf_root_dir'), 'cache'));
-    sfToolkit::clearDirectory(dmOs::join(sfConfig::get('sf_root_dir'), 'log'));
     $filesystem->remove(sfFinder::type('any')->not_name('*.sqlite')->in(sfConfig::get('sf_data_dir')));
     $filesystem->remove(sfFinder::type('file')->name('sitemap*')->in(sfConfig::get('sf_web_dir')));
     copy(dmOs::join(sfConfig::get('sf_data_dir'), 'fresh_db.sqlite'), dmOs::join(sfConfig::get('sf_data_dir'), 'db.sqlite'));
