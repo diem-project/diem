@@ -27,6 +27,20 @@ class dmFrontInitFilter extends dmInitFilter
     }
     
     $filterChain->execute();
+
+    $this->replaceH1();
+  }
+
+  protected function replaceH1()
+  {
+    if (($page = $this->context->getPage()) && ($h1 = $page->_getI18n('h1')))
+    {
+      $this->context->getResponse()->setContent(preg_replace(
+        '|<h1(.*)>.*</h1>|iuU',
+        '<h1$1>'.$h1.'</h1>',
+        $this->context->getResponse()->getContent()
+      ));
+    }
   }
 
   protected function redirectNoScriptName()

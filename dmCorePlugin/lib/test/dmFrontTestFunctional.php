@@ -53,7 +53,7 @@ class dmFrontTestFunctional extends dmTestFunctional
     ->click('Save')
     ->checks(array('module_action' => 'dmPage/edit', 'method' => 'post'))
     ->testResponseContent('|^'.preg_quote('{"type":"redirect","url":"', '|').'|', 'like')
-    ->get('/'.$this->getPage()->slug);
+    ->get('/'.($this->getPage()->slug ? $this->getPage()->slug : 'index.php'));
   }
 
   public function editWidget(DmWidget $widget)
