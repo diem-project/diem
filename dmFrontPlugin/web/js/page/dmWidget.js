@@ -18,25 +18,18 @@ $.widget('ui.dmWidget', {
 			return;
 		}
 		
-    var $dialog = $.dm.ctrl.ajaxJsonDialog({
+    var $dialog = $.dm.ctrl.ajaxDialog({
       url:          $.dm.ctrl.getHref('+/dmWidget/edit'),
       data:         { widget_id: widget.getId() },
       title:        $('a.dm_widget_edit', widget.element).attr('title'),
       width:        370,
 			'class':      dialog_class,
-      beforeClose:  function() {
-        if (widget.deleted) return;
-        $.ajax({
-					dataType: 'json',
-          url:      $.dm.ctrl.getHref('+/dmWidget/getInner'),
-          data:     { widget_id: widget.getId() },
-          success:  function(data) {
-            widget.element.attr('class', data.widget_classes[0])
-						.find('div.dm_widget_inner')
-						.attr('class', data.widget_classes[1])
-						.html(data.widget_html);
-          }
-        });
+      beforeClose:  function()
+      {
+        if (!widget.deleted)
+        {
+          widget.reload();
+        }
       }
     }).bind('dmAjaxResponse', function() {
       $dialog.prepare();
@@ -95,10 +88,8 @@ $.widget('ui.dmWidget', {
 				 * ( usefull when uploading files )
 				 */
 	      $form.find('form').dmAjaxForm({
-					dataType: 'json',
 	        beforeSubmit: function(data) {
 	          $dialog.block();
-	          widget.element.block();
 						if ($tabbedFormActiveTab = $form.find('ul.ui-tabs-nav > li.ui-tabs-selected:first').orNot())
 						{
 							activeTab = $tabbedFormActiveTab.find('>a').attr('href');
@@ -110,48 +101,27 @@ $.widget('ui.dmWidget', {
             widget.element.unblock();
 						$.dm.ctrl.errorDialog('Error when updating the widget', xhr.responseText);
 					},
-	        success:  function(data)
+	        success: function(data)
 					{
-	          if (data.widget_html)
-						{
-              widget.element
-							.attr('class', data.widget_classes[0])
-              .find('div.dm_widget_inner')
-							.attr('class', data.widget_classes[1]);
-							
-							if ('__DM_ASYNC__' == data.widget_html)
-							{
-								setTimeout(function() { $dialog.find('form').submit(); }, 100);
-							}
-							else
-							{
-	              widget.element.find('div.dm_widget_inner').html(data.widget_html);
-						  }
-	          }
-						
-	          if (data.stylesheets)
-	          {
-							$.loadStylesheets(data.stylesheets);
-	          }
-	          
-	          if (data.js)
-	          {
-	            $.globalEval(data.js);
-	          }
-						
-            widget.element.unblock();
-						
-						$form.trigger('submitSuccess');
-						
-            if (data.type == 'close') {
+            if('saved' == data)
+            {
               $dialog.dialog('close');
               return;
             }
-						
-	          $dialog.html(data.html).trigger('dmAjaxResponse');
+            
+            parts = data.split(/\_\_DM\_SPLIT\_\_/);
+
+            // update widget content
+            widget.replace(parts[1]);
+            
+            $form.trigger('submitSuccess');
+
+            // update dialog content
+	          $dialog.html(parts[0]).trigger('dmAjaxResponse');
 	        }
 	      });
 			}
+      
       $('a.delete', $dialog).click(function() {
         if (confirm($(this).attr('title')+" ?")) {
           widget._delete();
@@ -163,15 +133,43 @@ $.widget('ui.dmWidget', {
   
   _delete: function()
   {
-    var widget = this;
-    this.deleted = true;
+    var self = this;
+    self.deleted = true;
     
     $.ajax({
       url:      $.dm.ctrl.getHref('+/dmWidget/delete'),
-      data:     { widget_id: this.getId() }
+      data:     { widget_id: self.getId() }
     });
     
-    this.element.slideUp(500, function() { widget.destroy(); widget.element.remove(); });
+    self.element.slideUp(500, function() { self.destroy(); self.element.remove(); });
+  },
+
+  reload: function()
+  {
+    var self = this;
+
+    self.element.block();
+    
+    $.ajax({
+      url:      $.dm.ctrl.getHref('+/dmWidget/getFull'),
+      data:     { widget_id: self.getId() },
+      success:  function(html)
+      {
+        self.replace(html);
+      }
+    });
+  },
+
+  replace: function(html)
+  {
+    this.element
+    .attr('class', $('>div:first', '<div>'+html+'</div>').attr('class'))
+    .find('>div.dm_widget_inner')
+    .html($('>div.dm_widget_inner', html).html())
+    .attr('class', $('>div.dm_widget_inner', html).attr('class'))
+    .end()
+    .unblock()
+    .trigger('dmWidgetLaunch');
   },
   
   initialize: function()

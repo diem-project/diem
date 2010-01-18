@@ -5,21 +5,17 @@
   
     init: function()
     {
-      this.launchControllers($('#dm_page'));
+      var $page = $('#dm_page').dmPage();
+
+      this.launchControllers($page);
+
+      $page.find('div.dm_widget').trigger('dmWidgetLaunch');
 			
       this.bars();
       
       this.liveEvents();
       
-      this.page();
-      
       this.hotkeys();
-      
-      this.test();
-    },
-    
-    test: function()
-    {
     },
     
     hotkeys: function()
@@ -36,11 +32,6 @@
           return false;
         }
       });
-    },
-    
-    page: function()
-    {
-      $('#dm_page').dmPage();
     },
     
     bars: function()

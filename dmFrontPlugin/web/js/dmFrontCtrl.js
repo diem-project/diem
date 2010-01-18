@@ -5,7 +5,11 @@
   
     init: function()
     {
-      this.launchControllers($('#dm_page'));
+      var $page = $('#dm_page');
+      
+      this.launchControllers($page);
+
+      $page.find('div.dm_widget').trigger('dmWidgetLaunch');
     }
   
   });
