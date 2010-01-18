@@ -1,7 +1,12 @@
 (function($)
 {
 
-  jQuery.fn.extend({
+  $.extend({
+    dmLoadedJavascripts: new Array(),
+    dmLoadedStylesheets: new Array()
+  });
+
+  $.fn.extend({
   
     maxLength: function(max)
     {
@@ -54,6 +59,57 @@
       return this.ajaxForm($.extend({
         data: $.dm.defaults.ajaxData
       }, options));
+    },
+
+    // Detects javascripts and stylesheet inclusions and append them to the document
+    dmExtractEncodedAssets: function()
+    {
+      if($encodedAssetsDiv = this.find('div.dm_encoded_assets').orNot())
+      {
+        json = $encodedAssetsDiv.html();
+        $encodedAssetsDiv.remove();
+
+        // Try to use the native JSON parser first
+        if ( window.JSON && window.JSON.parse )
+        {
+          data = window.JSON.parse( json );
+        }
+        else
+        {
+          data = (new Function("return " + json))();
+        }
+
+        for (i in data.css)
+        {
+          if (-1 == $.inArray(data.css[i], $.dmLoadedStylesheets))
+          {
+            $('head').append('<link rel="stylesheet" href="' + data.css[i] + '" />');
+            $.dmLoadedStylesheets.push(data.css[i]);
+          }
+        }
+
+        for (var i in data.js)
+        {
+          if (-1 == $.inArray(data.js[i], $.dmLoadedJavascripts))
+          {
+            ajaxDefaultData = $.ajaxSettings.data;
+            $.ajaxSettings.data = null;
+            
+            $.ajax({
+              url:      data.js[i],
+              dataType: 'script',
+              cache:    true,
+              async:    false
+            });
+
+            $.ajaxSettings.data = ajaxDefaultData;
+
+            $.dmLoadedJavascripts.push(data.js[i]);
+          }
+        }
+      }
+
+      return this;
     }
   });
   

@@ -8,12 +8,10 @@ $.dm = {
 			dm_xhr:  1
     }
   },
-  base : {
-    
-  }
+  base : {}
 };
 
-// configuration de jQuery
+// jQuery
 $.ajaxSetup({
   global :  false,
   timeout : false,
@@ -22,12 +20,13 @@ $.ajaxSetup({
   data:     $.dm.defaults.ajaxData
 });
 
-//Configuration de jQuery UI
+// jQuery UI
 if ($.datepicker)
 {
-  $.datepicker.regional[dm_configuration.culture];
+  $.datepicker.setDefaults($.datepicker.regional[dm_configuration.culture]);
 }
 
+// jQuery plugins
 if ($.blockUI)
 {
 	$.blockUI.defaults = $.extend($.blockUI.defaults, {

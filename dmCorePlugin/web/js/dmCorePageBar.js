@@ -36,8 +36,8 @@
       pageBar.element.addClass('loaded').block();
 
       $.ajax({
-        url: $.dm.ctrl.getHref('+/dmInterface/loadPageTree'),
-        success: function(html)
+        url:      $.dm.ctrl.getHref('+/dmInterface/loadPageTree'),
+        success:  function(html)
         {
           $('#dm_page_tree').hide().html(html);
           pageBar.refresh();

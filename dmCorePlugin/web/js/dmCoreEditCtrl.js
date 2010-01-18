@@ -111,7 +111,7 @@
             data = parts[0];
           }
           
-          $dialog.html(data).trigger('dmAjaxResponse');
+          $dialog.html(data).dmExtractEncodedAssets().trigger('dmAjaxResponse');
         },
         error: function(xhr)
         {
