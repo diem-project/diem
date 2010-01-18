@@ -8,7 +8,7 @@ require_once(dm::getDir().'/dmCorePlugin/test/unit/helper/dmUnitTestHelper.php')
 $helper = new dmUnitTestHelper();
 $helper->boot('front');
 
-$t = new lime_test(42);
+$t = new lime_test(44);
 
 dm::loadHelpers(array('Dm', 'I18N'));
 
@@ -63,6 +63,13 @@ $t->is($user->isAuthenticated(), true, 'Test isAuthenticated()');
 $t->is($menu['Test']['With Route']->checkUserAccess($user), true, 'Test checkUserAccess()');
 $t->is((string) $menu['Test'], '<ul id="test-menu"><li id="test-menu-with-route" class="first last"><a class="link" href="http://www.google.com" target="_blank">With Route</a></li></ul>', 'Test authentication');
 
+$t->comment('test notAuthenticated');
+$menu['Test']['With Route']->secure(false)->notAuthenticated(true);
+$t->is($menu['Test']['With Route']->checkUserAccess($user), false, 'Test checkUserAccess()');
+$user->setAuthenticated(false);
+$t->is($menu['Test']['With Route']->checkUserAccess($user), true, 'Test checkUserAccess()');
+
+$t->comment('misc tests');
 $t->is($menu->getLevel(), -1, 'Test getLevel()');
 $t->is($menu['Test']['With Route']->getParent()->getLabel(), $menu['Test']->getLabel(), 'Test getLabel()');
 

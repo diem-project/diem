@@ -36,11 +36,11 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
   public function getDefaultOptions()
   {
     return array(
-      'ul_class'        => null,
-      'li_class'        => null,
-      'show_id'         => false,
-      'show_children'   => true,
-      'translate'       => true
+      'ul_class'          => null,
+      'li_class'          => null,
+      'show_id'           => false,
+      'show_children'     => true,
+      'translate'         => true
     );
   }
 
@@ -72,6 +72,11 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
   public function secure($bool)
   {
     return $this->setOption('secure', (bool) $bool);
+  }
+
+  public function notAuthenticated($bool)
+  {
+    return $this->setOption('not_authenticated', (bool) $bool);
   }
 
   public function translate($bool)
@@ -220,6 +225,11 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
 
   public function checkUserAccess()
   {
+    if (!empty($this->options['not_authenticated']) && $this->user->isAuthenticated())
+    {
+      return false;
+    }
+
     if(empty($this->options['secure']) && empty($this->options['credentials']))
     {
       return true;
