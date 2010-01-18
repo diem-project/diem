@@ -136,7 +136,7 @@ class dmAdminLinkTag extends dmBaseLinkTag
     
     if(isset($resource))
     {
-      if (strncmp($resource, '#', 1) === 0 || strncmp($resource, 'mailto:', 7)  === 0)
+      if (is_string($resource) && (strncmp($resource, '#', 1) === 0 || strncmp($resource, 'mailto:', 7)  === 0))
       {
         return $resource;
       }
