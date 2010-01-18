@@ -12,7 +12,7 @@ $pager = $helper->get('service_container')
 ->setPage(1)
 ->init();
 
-$t = new lime_test(15);
+$t = new lime_test(16);
 
 $t->isa_ok($pager, 'dmDoctrinePager', 'Got a dmDoctrinePager instance');
 
@@ -86,3 +86,8 @@ $t->like($navigation = $pager->renderNavigationTop(), '|^'.$pattern.'$|', 'navig
 $t->comment('With 100 records per page');
 $pager->setPage(1)->setMaxPerPage(100);
 $t->is($navigation = $pager->renderNavigationTop(), '', 'navigation top: '.$navigation);
+
+$t->comment('With nb_links = 0');
+$pager->setPage(1)->setMaxPerPage(5)->setOption('nb_links', 0);
+$pattern = '<div class="pager"><ul class="clearfix"><li class="page next">.+</li></ul></div>';
+$t->like($navigation = $pager->renderNavigationTop(), '|^'.$pattern.'$|', 'navigation top: '.$navigation);
