@@ -134,7 +134,7 @@ class dmFrontPagerView extends dmConfigurable implements Iterator, Countable
   {
     $html = '';
     
-    if (1 !== $this->pager->getPage())
+    if ($this->pager->getPage() !== $this->pager->getFirstPage())
     {
       if($first = $this->getOption('first'))
       {
@@ -174,7 +174,7 @@ class dmFrontPagerView extends dmConfigurable implements Iterator, Countable
   {
     $html = '';
     
-    if ($this->pager->getPage() != $this->getCurrentMaxLink())
+    if ($this->pager->getPage() != $this->pager->getLastPage())
     {
       if($next = $this->getOption('next'))
       {
