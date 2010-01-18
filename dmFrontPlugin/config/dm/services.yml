@@ -60,6 +60,7 @@ parameters:
   front_clipboard.class:      dmFrontUserClipboard  # Responsible for storing copyied and cutted zones and widgets
 
   front_pager_view.class:     dmFrontPagerView      # Responsible for rendering a sfPager with pagination links
+  front_pager_view.options:   []
 
 services:
 
@@ -164,4 +165,4 @@ services:
   front_pager_view:
     class:                    %front_pager_view.class%
     shared:                   false
-    arguments:                [ @context ]
+    arguments:                [ @context, %front_pager_view.options% ]
