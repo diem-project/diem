@@ -83,7 +83,7 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
 	
 	openCodeEditor: function(callback)
 	{
-		var callback = callback || null;
+		callback = callback || null;
 		
 		if ($dialog = $('body > div.dm_code_editor_dialog').orNot()) 
     {
@@ -95,7 +95,8 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
 		else
 		{
 			var $link = $('a.code_editor', this.element);
-      $dialog = $.dm.ctrl.ajaxJsonDialog({
+      
+      $dialog = $.dm.ctrl.ajaxDialog({
         title:    $link.attr('title'),
         'class':  'dm_code_editor_dialog',
         width:    500,

@@ -37,7 +37,7 @@
       
       self.element.find('div#dm_code_editor_file_open ul.level2 a').click(function(e)
       {
-        var path = $(this).attr('href').replace(/#/, ''), url = $.dm.ctrl.getHref('+/dmCodeEditor/file') + '?file=' + path, package = $(this).parent().parent().parent().find('>a').text(), html = '<span title="' + path + '">' + package + '<br />' + $(this).text() + '</span>';
+        var path = $(this).attr('href').replace(/#/, ''), url = $.dm.ctrl.getHref('+/dmCodeEditor/file') + '?file=' + path, html = '<span title="' + path + '">' + $(this).parent().parent().parent().find('>a').text() + '<br />' + $(this).text() + '</span>';
         
         self.$tabs.tabs('add', url, html);
         return false;
@@ -63,14 +63,17 @@
       
       // resize textarea
       self.$dialog.trigger('resize');
-      
-      $panel.find('textarea').dmCodeArea({
-        save: function()
-        {
-          $panel.find('a.save').trigger('click');
-          return false;
-        }
-      });
+
+      setTimeout(function()
+      {
+        $panel.find('textarea').dmCodeArea({
+          save: function()
+          {
+            $panel.find('a.save').trigger('click');
+            return false;
+          }
+        });
+      }, 50);
       
       $panel.find('a.close').click(function()
       {
@@ -122,6 +125,8 @@
 					$.dm.ctrl.errorDialog('Error in '+file, xhr.responseText);
         }
       });
+
+      return true;
     },
     
     updateCss: function(path)
@@ -138,7 +143,7 @@
       for (var id in widgets) 
       {
         $('#dm_widget_' + id + ' div.dm_widget_inner').html(widgets[id]);
-      };
+      }
     }
     
   });
