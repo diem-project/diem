@@ -9,10 +9,10 @@ class dmZoneActions extends dmFrontBaseActions
       $this->zone = dmDb::table('DmZone')->find($request->getParameter('zone_id'))
     );
 
-    $this->getServiceContainer()->setParameter('zone_form.object', $this->zone);
-    $this->form = $this->context->get('zone_form');
-    
-    $this->form->removeCsrfProtection();
+    $this->form = $this->getServiceContainer()
+    ->setParameter('zone_form.object', $this->zone)
+    ->getService('zone_form')
+    ->removeCsrfProtection();
 
     if ($request->isMethod('post') && $this->form->bindAndValid($request))
     {
@@ -76,9 +76,7 @@ class dmZoneActions extends dmFrontBaseActions
 
     $zone = dmDb::create('DmZone')->fromArray(array('dm_area_id' => $toArea->id))->saveGet();
 
-    $helper = $this->context->get('page_helper');
-
-    return $this->renderText($helper->renderZone($zone->toArray(), true));
+    return $this->renderText($this->getService('page_helper')->renderZone($zone->toArray(), true));
   }
 
   public function executeMove(sfWebRequest $request)

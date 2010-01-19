@@ -52,7 +52,7 @@ $.widget('ui.dmZone', {
             url:      $.dm.ctrl.getHref('+/dmZone/getAttributes'),
             data:     { zone_id: zone.getId() },
             success:  function(datas) {
-              zone.element.attr('class', 'dm_zone '+ datas[1].replace(/\./g, ' ')).css('width', datas[0]);
+              zone.element.attr('class', 'dm_zone '+ (datas[1] || "").replace(/\./g, ' ')).css('width', datas[0]);
             }
           });
         }, 100);
