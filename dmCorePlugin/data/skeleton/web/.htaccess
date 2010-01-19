@@ -18,14 +18,14 @@ Options +FollowSymLinks +ExecCGI
 <IfModule mod_rewrite.c>
 
   # SEND GZIPPED CONTENT TO COMPATIBLE BROWSERS
-  RemoveType .gz
-  RemoveOutputFilter .css .js
-  AddEncoding x-gzip .gz
-  AddType "text/css;charset=utf-8" .css
-  AddType "text/javascript;charset=utf-8" .js
-  RewriteCond %{HTTP:Accept-Encoding} gzip
-  RewriteCond %{REQUEST_FILENAME}.gz -f
-  RewriteRule ^(.*)$ $1.gz [L,QSA]
+  # RemoveType .gz
+  # RemoveOutputFilter .css .js
+  # AddEncoding x-gzip .gz
+  # AddType "text/css;charset=utf-8" .css
+  # AddType "text/javascript;charset=utf-8" .js
+  # RewriteCond %{HTTP:Accept-Encoding} gzip
+  # RewriteCond %{REQUEST_FILENAME}.gz -f
+  # RewriteRule ^(.*)$ $1.gz [L,QSA]
   # END GZIPPED CONTENT
 
   RewriteEngine On

@@ -77,13 +77,13 @@ parameters:
   stylesheet_compressor.class: dmStylesheetCompressor # Responsible for minifying, merging and compressing stylesheets
   stylesheet_compressor.options:
     minify:                   true                  # whether to minify code
-    gz_compression:           true                  # whether to compress with gzip
+    gz_compression:           false                 # whether to compress with gzip
 
   javascript_compressor.class: dmJavascriptCompressor # Responsible for minifying, merging and compressing javascripts
   javascript_compressor.options:
     minify:                   true                  # whether to minify code
     black_list:               []                    # List of filenames not to minify
-    gz_compression:           true                  # whether to compress with gzip
+    gz_compression:           false                 # whether to compress with gzip
 
   auth_layout_helper.class:   dmAuthLayoutHelper    # Responsible for rendering the authentication page layout
 
