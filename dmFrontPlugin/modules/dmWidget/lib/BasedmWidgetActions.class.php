@@ -61,7 +61,7 @@ class BasedmWidgetActions extends dmFrontBaseActions
         'html'  => $this->renderEdit(new $formClass($widget), $widgetType).dmString::ENCODING_SEPARATOR.$this->getService('page_helper')->renderWidget($widgetArray),
         'js'    => $widgetRenderer->getJavascripts(),
         'css'   => $widgetRenderer->getStylesheets()
-      ));
+      ), true);
     }
     
     return $this->renderAsync(array(

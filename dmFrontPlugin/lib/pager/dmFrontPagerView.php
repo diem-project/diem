@@ -51,6 +51,8 @@ class dmFrontPagerView extends dmConfigurable implements Iterator, Countable
   public function setBaseHref($baseHref)
   {
     $this->baseHref = $baseHref;
+
+    return $this;
   }
 
   public function getBaseHref()
