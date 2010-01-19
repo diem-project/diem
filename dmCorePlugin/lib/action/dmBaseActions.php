@@ -113,7 +113,6 @@ abstract class dmBaseActions extends sfActions
     return $backUrl;
   }
   
-  
   protected function getRouting()
   {
     return $this->context->getRouting();
@@ -160,7 +159,7 @@ abstract class dmBaseActions extends sfActions
     
     if (!isset($options['type']))
     {
-      $options['type'] = $this->context->get('mime_type_resolver')->getByFilename($options['file_name']);
+      $options['type'] = $this->getService('mime_type_resolver')->getByFilename($options['file_name']);
     }
 
     //Gather relevent info about file
@@ -180,6 +179,7 @@ abstract class dmBaseActions extends sfActions
     header("Content-Disposition: attachment; filename=\"".$options['file_name']."\";");
     header("Content-Transfer-Encoding: binary");
     header("Content-Length: ".$fileLenght);
+    
     print $data;
     exit;
   }

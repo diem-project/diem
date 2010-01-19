@@ -47,7 +47,6 @@ class dmForm extends sfFormSymfony
   {
     return $this->key;
   }
-
   
   public function removeCsrfProtection()
   {

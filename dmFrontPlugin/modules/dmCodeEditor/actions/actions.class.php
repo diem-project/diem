@@ -7,21 +7,11 @@ class dmCodeEditorActions extends dmFrontBaseActions
   {
     $this->fileMenu = $this->getService('front_code_editor_file_menu')->build();
 
-    $js =
-    file_get_contents($this->getHelper()->getJavascriptFullPath('lib.ui-tabs')).
-    dmJsMinifier::transform(
-      file_get_contents($this->getHelper()->getJavascriptFullPath('core.codeArea')).
-      file_get_contents($this->getHelper()->getJavascriptFullPath('front.codeEditor'))
-    );
-    
-    return $this->renderJson(array(
-      'html' => $this->getPartial('dmCodeEditor/launch'),
-      'js' => $js,
-      'stylesheets' => array(
-        $this->getHelper()->getStylesheetWebPath('lib.ui-tabs'),
-        $this->getHelper()->getStylesheetWebPath('front.codeEditor')
-      )
-    ));
+    return $this->renderAsync(array(
+      'html'  => $this->getPartial('dmCodeEditor/launch'),
+      'js'    => array('lib.ui-tabs', 'core.codeArea', 'front.codeEditor'),
+      'css'   => array('lib.ui-tabs', 'front.codeEditor')
+    ), true);
   }
 
   public function executeFile(dmWebRequest $request)
@@ -58,7 +48,7 @@ class dmCodeEditorActions extends dmFrontBaseActions
 
     try
     {
-      @$this->context->get('file_backup')->save($file);
+      @$this->getService('file_backup')->save($file);
     }
     catch(dmException $e)
     {
@@ -74,7 +64,7 @@ class dmCodeEditorActions extends dmFrontBaseActions
     {
       $return = array(
         'type' => 'css',
-        'path' => $this->context->get('helper')->getStylesheetWebPath(dmOs::getFileWithoutExtension($file))
+        'path' => $this->getHelper()->getStylesheetWebPath(dmOs::getFileWithoutExtension($file))
       );
     }
     else
@@ -97,9 +87,9 @@ class dmCodeEditorActions extends dmFrontBaseActions
      */
     $module = preg_replace('|^/([^/]+)/.+|', '$1', str_replace(dmOs::normalize(sfConfig::get('sf_app_module_dir')), '', $file));
 
-    $helper = $this->context->get('page_helper');
     $widgets = array();
-    foreach($helper->getAreas() as $areaArray)
+    
+    foreach($this->getService('page_helper')->getAreas() as $areaArray)
     {
       foreach($areaArray['Zones'] as $zoneArray)
       {
@@ -108,7 +98,10 @@ class dmCodeEditorActions extends dmFrontBaseActions
           if($widgetArray['module'] === $module)
           {
             ob_start();
-            $widgets[$widgetArray['id']] = $helper->renderWidgetInner($widgetArray);
+
+            $widgets[$widgetArray['id']] = $this->getService('page_helper')->renderWidgetInner($widgetArray);
+
+            // include debugging output
             if( $output = ob_get_clean())
             {
               $widgets[$widgetArray['id']] = $output.$widgets[$widgetArray['id']];

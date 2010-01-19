@@ -58,7 +58,7 @@ class BasedmWidgetActions extends dmFrontBaseActions
         $widgetRenderer = $this->getServiceContainer()
         ->setParameter('widget_renderer.widget', $widgetArray)
         ->getService('widget_renderer');
-        $js = $widgetRenderer->getJavascripts();
+        $js  = $widgetRenderer->getJavascripts();
         $css = $widgetRenderer->getStylesheets();
       }
       catch(Exception $e)
@@ -159,7 +159,7 @@ class BasedmWidgetActions extends dmFrontBaseActions
       $widgetRenderer = $this->getServiceContainer()
       ->setParameter('widget_renderer.widget', $widgetArray)
       ->getService('widget_renderer');
-      $js = $widgetRenderer->getJavascripts();
+      $js  = $widgetRenderer->getJavascripts();
       $css = $widgetRenderer->getStylesheets();
     }
     catch(Exception $e)
