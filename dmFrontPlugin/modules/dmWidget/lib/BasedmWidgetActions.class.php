@@ -53,14 +53,23 @@ class BasedmWidgetActions extends dmFrontBaseActions
 
       $widgetArray = $widget->toArrayWithMappedValue();
 
-      $widgetRenderer = $this->getServiceContainer()
-      ->setParameter('widget_renderer.widget', $widgetArray)
-      ->getService('widget_renderer');
+      try
+      {
+        $widgetRenderer = $this->getServiceContainer()
+        ->setParameter('widget_renderer.widget', $widgetArray)
+        ->getService('widget_renderer');
+        $js = $widgetRenderer->getJavascripts();
+        $css = $widgetRenderer->getStylesheets();
+      }
+      catch(Exception $e)
+      {
+        $js = $css = array();
+      }
 
       return $this->renderAsync(array(
         'html'  => $this->renderEdit(new $formClass($widget), $widgetType).dmString::ENCODING_SEPARATOR.$this->getService('page_helper')->renderWidget($widgetArray),
-        'js'    => $widgetRenderer->getJavascripts(),
-        'css'   => $widgetRenderer->getStylesheets()
+        'js'    => $js,
+        'css'   => $css
       ), true);
     }
     
@@ -73,14 +82,12 @@ class BasedmWidgetActions extends dmFrontBaseActions
   
   protected function renderError()
   {
-    return $this->renderJson(array(
-      'type' => 'error',
-      'html' => sprintf('<p class="s16 s16_error">%s</p><div class="clearfix mt30"><a class="dm cancel close_dialog button mr10">%s</a><a class="dm delete button red" title="%s">%s</a></div>',
+    return $this->renderText(sprintf('<p class="s16 s16_error">%s</p><div class="clearfix mt30"><a class="dm cancel close_dialog button mr10">%s</a><a class="dm delete button red" title="%s">%s</a></div>',
       $this->getService('i18n')->__('The widget can not be rendered because its type does not exist anymore.'),
       $this->getService('i18n')->__('Cancel'),
       $this->getService('i18n')->__('Delete this widget'),
       $this->getService('i18n')->__('Delete')
-    )));
+    ));
   }
 
   protected function renderEdit(dmWidgetBaseForm $form, dmWidgetType $widgetType)
@@ -147,14 +154,23 @@ class BasedmWidgetActions extends dmFrontBaseActions
 
     $widgetArray = $widget->toArrayWithMappedValue();
 
-    $widgetRenderer = $this->getServiceContainer()
-    ->setParameter('widget_renderer.widget', $widgetArray)
-    ->getService('widget_renderer');
+    try
+    {
+      $widgetRenderer = $this->getServiceContainer()
+      ->setParameter('widget_renderer.widget', $widgetArray)
+      ->getService('widget_renderer');
+      $js = $widgetRenderer->getJavascripts();
+      $css = $widgetRenderer->getStylesheets();
+    }
+    catch(Exception $e)
+    {
+      $js = $css = array();
+    }
 
     return $this->renderAsync(array(
       'html'  => $this->getService('page_helper')->renderWidget($widgetArray),
-      'css'   => $widgetRenderer->getStylesheets(),
-      'js'    => $widgetRenderer->getJavascripts()
+      'css'   => $js,
+      'js'    => $css
     ), true);
   }
 
