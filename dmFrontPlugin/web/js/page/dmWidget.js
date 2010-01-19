@@ -11,9 +11,9 @@ $.widget('ui.dmWidget', {
 
   openEditDialog: function()
   {
-    var widget = this, activeTab = null, dialog_class = 'dm_widget_edit_dialog_wrap '+widget.element.attr('id')+'_edit_dialog';
+    var widget = this, activeTab = null, dialogClass = 'dm_widget_edit_dialog_wrap '+widget.element.attr('id')+'_edit_dialog';
 		
-	  if ($('body > div.'+dialog_class).length)
+	  if ($('body > div.'+dialogClass).length)
 		{
 			return;
 		}
@@ -23,7 +23,7 @@ $.widget('ui.dmWidget', {
       data:         { widget_id: widget.getId() },
       title:        $('a.dm_widget_edit', widget.element).attr('title'),
       width:        370,
-			'class':      dialog_class,
+			'class':      dialogClass,
       beforeClose:  function()
       {
         if (!widget.deleted)
@@ -162,6 +162,11 @@ $.widget('ui.dmWidget', {
 
   replace: function(html)
   {
+    if($encodedAssets = $('>div.dm_encoded_assets', '<div>'+html+'</div>'))
+    {
+      this.element.append($encodedAssets).dmExtractEncodedAssets();
+    }
+    
     this.element
     .attr('class', $('>div:first', '<div>'+html+'</div>').attr('class'))
     .find('>div.dm_widget_inner')
