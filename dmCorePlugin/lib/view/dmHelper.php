@@ -238,7 +238,19 @@ class dmHelper extends dmConfigurable
       throw new dmException('£media can not display '.$source.' : missing service '.$serviceName);
     }
 
-    return $this->serviceContainer->getService($serviceName);
+    $media = $this->serviceContainer->getService($serviceName);
+
+    foreach($media->getStylesheets() as $stylesheet)
+    {
+      $this->context->getResponse()->addStylesheet($stylesheet);
+    }
+
+    foreach($media->getJavascripts() as $javascript)
+    {
+      $this->context->getResponse()->addJavascript($javascript);
+    }
+
+    return $media;
   }
   
   public function £table()

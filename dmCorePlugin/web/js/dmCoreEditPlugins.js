@@ -1,10 +1,7 @@
 (function($)
 {
-
-  $.extend({
-    dmLoadedJavascripts: new Array(),
-    dmLoadedStylesheets: new Array()
-  });
+  $.dm.loadedJavascripts = new Array();
+  $.dm.loadedStylesheets = new Array();
 
   $.fn.extend({
   
@@ -81,16 +78,16 @@
 
         for (i in data.css)
         {
-          if (-1 == $.inArray(data.css[i], $.dmLoadedStylesheets))
+          if (-1 == $.inArray(data.css[i], $.dm.loadedStylesheets))
           {
             $('head').append('<link rel="stylesheet" href="' + data.css[i] + '" />');
-            $.dmLoadedStylesheets.push(data.css[i]);
+            $.dm.loadedStylesheets.push(data.css[i]);
           }
         }
 
         for (var i in data.js)
         {
-          if (-1 == $.inArray(data.js[i], $.dmLoadedJavascripts))
+          if (-1 == $.inArray(data.js[i], $.dm.loadedJavascripts))
           {
             ajaxDefaultData = $.ajaxSettings.data;
             $.ajaxSettings.data = null;
@@ -104,7 +101,7 @@
 
             $.ajaxSettings.data = ajaxDefaultData;
 
-            $.dmLoadedJavascripts.push(data.js[i]);
+            $.dm.loadedJavascripts.push(data.js[i]);
           }
         }
       }

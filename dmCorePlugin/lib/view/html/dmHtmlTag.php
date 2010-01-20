@@ -167,10 +167,6 @@ abstract class dmHtmlTag extends dmConfigurable
     {
       if (null !== $value)
       {
-//        if(is_array($value))
-//        {
-//          dmDebug::kill($attributes, $key, $value);
-//        }
         $htmlAttributesString .= ' '.$key.'="'.htmlspecialchars($value, ENT_COMPAT, 'UTF-8').'"';
       }
     }
@@ -193,6 +189,25 @@ abstract class dmHtmlTag extends dmConfigurable
       (array) $attribute
     );
   }
+  
+  protected function addJavascript($keys)
+  {
+    $this->javascripts = array_merge($this->javascripts, (array) $keys);
+  }
 
+  public function getJavascripts()
+  {
+    return $this->javascripts;
+  }
+
+  protected function addStylesheet($keys)
+  {
+    $this->stylesheets = array_merge($this->stylesheets, (array) $keys);
+  }
+
+  public function getStylesheets()
+  {
+    return $this->stylesheets;
+  }
 
 }

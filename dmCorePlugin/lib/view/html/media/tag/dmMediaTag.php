@@ -4,7 +4,9 @@ abstract class dmMediaTag extends dmHtmlTag
 {
   protected
   $resource,
-  $context;
+  $context,
+  $stylesheets = array(),
+  $javascripts = array();
 
   public function __construct(dmMediaResource $resource, dmContext $context, array $options = array())
   {
@@ -84,5 +86,25 @@ abstract class dmMediaTag extends dmHtmlTag
   public function quality($val)
   {
     // override me
+  }
+
+  protected function addJavascript($keys)
+  {
+    $this->javascripts = array_merge($this->javascripts, (array) $keys);
+  }
+
+  public function getJavascripts()
+  {
+    return $this->javascripts;
+  }
+
+  protected function addStylesheet($keys)
+  {
+    $this->stylesheets = array_merge($this->stylesheets, (array) $keys);
+  }
+
+  public function getStylesheets()
+  {
+    return $this->stylesheets;
   }
 }
