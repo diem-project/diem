@@ -14,6 +14,8 @@ class dmAdminInitFilter extends dmInitFilter
     
     $this->saveApplicationUrl();
 
+    $this->loadAssetConfig();
+
     $filterChain->execute();
     
     $response = $this->context->getResponse();

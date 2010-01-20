@@ -2,6 +2,14 @@
 
 abstract class dmInitFilter extends dmFilter
 {
+
+  protected function loadAssetConfig()
+  {
+    if ($this->context->getResponse()->isHtmlForHuman())
+    {
+      $this->context->getResponse()->setAssetConfig($this->context->get('asset_config'));
+    }
+  }
   
   protected function checkFilesystemPermissions()
   {

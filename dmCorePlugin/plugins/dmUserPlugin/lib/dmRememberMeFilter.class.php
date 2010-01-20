@@ -24,7 +24,7 @@
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @version    SVN: $Id: sfGuardRememberMeFilter.class.php 23170 2009-10-18 17:30:33Z FabianLange $
  */
-class dmRememberMeFilter extends sfFilter
+class dmRememberMeFilter extends dmFilter
 {
   /**
    * Executes the filter chain.
@@ -40,7 +40,7 @@ class dmRememberMeFilter extends sfFilter
       &&
       $this->context->getUser()->isAnonymous()
       &&
-      $cookie = $this->context->getRequest()->getCookie($cookieName)
+      $cookie = $this->request->getCookie($cookieName)
     )
     {
       $q = Doctrine_Core::getTable('DmRememberKey')->createQuery('r')

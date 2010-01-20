@@ -15,6 +15,8 @@ class dmFrontInitFilter extends dmInitFilter
 
     $this->saveApplicationUrl();
 
+    $this->loadAssetConfig();
+
     // ajax calls use dm_cpi or page_id request parameter to set a page
     if($pageId = $this->request->getParameter('dm_cpi', $this->request->getParameter('page_id')))
     {

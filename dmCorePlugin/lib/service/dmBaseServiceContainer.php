@@ -52,12 +52,8 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
   
   protected function configureResponse()
   {
-    $response = $this->getService('response');
-    
-    if ($response->isHtmlForHuman())
+    if ($this->getService('response')->isHtmlForHuman())
     {
-      $response->setAssetConfig($this->getService('asset_config'));
-      
       $userCanCodeEditor = $this->getService('user')->can('code_editor');
       
       $this->getService('stylesheet_compressor')->setOption('protect_user_assets', $userCanCodeEditor);
@@ -195,8 +191,7 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
     
     return $this;
   }
-  
-  
+
   public function reload($id)
   {
     if (!$this->hasService($id))
@@ -211,7 +206,6 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
     
     return $this;
   }
-  
   
   /**
    * Sets a service container parameter.
