@@ -121,10 +121,29 @@ abstract class dmBaseLinkTag extends dmHtmlTag
 
   /*
    * Whether to display current links with span tag
+   * @return dmLinkTag $this
    */
   public function currentSpan($bool)
   {
     return $this->setOption('current_span', (bool) $bool);
+  }
+
+  /*
+   * Sets the current css class
+   * @return dmLinkTag $this
+   */
+  public function currentClass($class)
+  {
+    return $this->setOption('current_class', (string) $class);
+  }
+
+  /*
+   * Sets the parent css class
+   * @return dmLinkTag $this
+   */
+  public function parentClass($class)
+  {
+    return $this->setOption('parent_class', (string) $class);
   }
 
   public function render()
