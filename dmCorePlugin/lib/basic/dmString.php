@@ -152,6 +152,11 @@ class dmString extends sfInflector
     {
       return $text;
     }
+
+    if(!sfConfig::get('dm_string_transliteration'))
+    {
+      sfConfig::set('dm_string_transliteration', include(dmOs::join(sfConfig::get('dm_core_dir'), 'data/dm/transliteration/default.php')));
+    }
     
     $text = strtr($text, sfConfig::get('dm_string_transliteration'));
 
