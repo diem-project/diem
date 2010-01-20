@@ -9,7 +9,8 @@ class dmUpgradeTask extends dmContextTask
   $diemVersions = array(
     '500ALPHA4',
     '500ALPHA6',
-    'deprecateMediaWidgets'
+    'deprecateMediaWidgets',
+    'addGaToken'
   );
   
   /**
@@ -109,5 +110,24 @@ class dmUpgradeTask extends dmContextTask
     ->where('module = ?', 'dmWidgetContent')
     ->andWhere('action = ?', 'media')
     ->execute();
+  }
+
+  /*
+   * Add ga_token setting if missing
+   */
+  protected function upgradeToAddGaToken()
+  {
+    if(!dmConfig::has('ga_token'))
+    {
+      $setting = new DmSetting;
+      $setting->set('name', 'ga_token');
+      $setting->fromArray(array(
+        'description' => 'Auth token gor Google Analytics, computed from password',
+        'group_name'  => 'internal',
+        'credentials' => 'google_analytics'
+      ));
+
+      $setting->save();
+    }
   }
 }
