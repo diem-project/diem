@@ -33,12 +33,17 @@ class dmFrontLinkTagPage extends dmFrontLinkTag
       $this->title($this->page->_getI18n('title'));
     }
     
-    $this->addAttributeToRemove(array('current_span', 'use_page_title'));
+    $this->addAttributeToRemove(array('use_page_title'));
   }
-  
-  public function currentSpan($bool)
+
+  public function isCurrent()
   {
-    return $this->setOption('current_span', (bool) $bool);
+    return $this->currentPage && $this->currentPage->get('id') === $this->page->get('id');
+  }
+
+  public function isParent()
+  {
+    return $this->currentPage && $this->currentPage->getNode()->isDescendantOf($this->page);
   }
   
   protected function getBaseHref()
@@ -99,22 +104,21 @@ class dmFrontLinkTagPage extends dmFrontLinkTag
         $attributes['class'][] = 'dm_inactive';
         $attributes['tag'] = 'span';
       }
+
       // current page
-      elseif($this->currentPage)
+      if($this->isCurrent())
       {
-        if ($this->currentPage->get('id') === $this->page->get('id'))
-        {
-          $attributes['class'][] = 'dm_current';
+        $attributes['class'][] = $attributes['current_class'];
           
-          if($attributes['current_span'])
-          {
-            $attributes['tag'] = 'span';
-          }
-        }
-        elseif($this->currentPage->getNode()->isDescendantOf($this->page))
+        if($attributes['current_span'])
         {
-          $attributes['class'][] = 'dm_parent';
+          $attributes['tag'] = 'span';
         }
+      }
+      // parent page
+      elseif($this->isParent())
+      {
+        $attributes['class'][] = $attributes['parent_class'];
       }
     }
     

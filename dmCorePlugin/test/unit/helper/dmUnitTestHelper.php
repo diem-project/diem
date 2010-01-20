@@ -159,6 +159,11 @@ class dmUnitTestHelper
     return $this->context->getServiceContainer();
   }
 
+  public function getContext()
+  {
+    return $this->context;
+  }
+
   public function getModule($moduleKey)
   {
     return $this->moduleManager->getModuleOrNull($moduleKey);

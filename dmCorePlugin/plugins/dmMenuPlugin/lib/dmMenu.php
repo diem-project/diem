@@ -352,6 +352,7 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
   {
     $classes  = array();
     $id       = $this->getOption('show_id') ? dmString::slugify($this->getRoot()->getName().'-'.$this->getName()) : null;
+    $link     = $this->getLink();
 
     if ($this->isFirst())
     {
@@ -364,6 +365,14 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
     if ($this->getOption('li_class'))
     {
       $classes[] = $this->getOption('li_class');
+    }
+    if($link && $link->isCurrent())
+    {
+      $classes[] = $link->getOption('current_class');
+    }
+    elseif($link && $link->isParent())
+    {
+      $classes[] = $link->getOption('parent_class');
     }
 
     return '<li'.($id ? ' id="'.$id.'"' : '').(!empty($classes) ? ' class="'.implode(' ', $classes).'"' : '').'>';

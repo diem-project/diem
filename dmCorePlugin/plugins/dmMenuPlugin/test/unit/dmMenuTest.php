@@ -8,7 +8,7 @@ require_once(dm::getDir().'/dmCorePlugin/test/unit/helper/dmUnitTestHelper.php')
 $helper = new dmUnitTestHelper();
 $helper->boot('front');
 
-$t = new lime_test(44);
+$t = new lime_test(46);
 
 dm::loadHelpers(array('Dm', 'I18N'));
 
@@ -160,3 +160,21 @@ $t->isa_ok($sitemap, 'dmSitemapMenu', 'Got a dmSitemapMenu');
 $t->is($sitemap->getFirstChild()->renderLink(), (string)£link(), 'Sitemap first child is Home');
 
 $t->like((string)$sitemap, '|^'.preg_quote('<ul><li class="first last"><a class="link" href="', '|').'.*|', 'Sitemap html is valid');
+
+$t->comment('Test current page');
+
+$homePage = dmDb::table('DmPage')->getTree()->fetchRoot();
+
+$helper->getContext()->setPage($homePage);
+
+$menu = $helper->get('menu')->addChild('Home', '@homepage')->end();
+$html = £('ul', £('li.first.last.dm_current', £link()->text($helper->get('i18n')->__('Home'))));
+
+$t->is($menu->render(), $html, 'Current li has the dm_current class');
+
+$helper->getContext()->setPage(dmDb::table('DmPage')->findOneByModuleAndAction('main', 'login'));
+
+$menu = $helper->get('menu')->addChild('Home', '@homepage')->end();
+$html = £('ul', £('li.first.last.dm_parent', £link()->text($helper->get('i18n')->__('Home'))));
+
+$t->is($menu->render(), $html, 'Parent li has the dm_parent class');

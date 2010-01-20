@@ -10,10 +10,30 @@ abstract class dmBaseLinkTag extends dmHtmlTag
   {
     parent::initialize($options);
     
-    $this->addAttributeToRemove('text');
+    $this->addAttributeToRemove(array('text', 'current_class', 'parent_class', 'current_span'));
+    
     $this->addEmptyAttributeToRemove(array('target', 'title'));
     
     $this->addClass('link');
+  }
+
+  public function getDefaultOptions()
+  {
+    return array_merge(parent::getDefaultOptions(), array(
+      'current_class' => 'dm_current',
+      'parent_class'  => 'dm_parent',
+      'current_span'  => false
+    ));
+  }
+
+  public function isCurrent()
+  {
+    return false;
+  }
+
+  public function isParent()
+  {
+    return false;
   }
   
   /*
@@ -97,6 +117,14 @@ abstract class dmBaseLinkTag extends dmHtmlTag
     }
 
     return $this->setOption('params', array_merge($this->get('params', array()), $params));
+  }
+
+  /*
+   * Whether to display current links with span tag
+   */
+  public function currentSpan($bool)
+  {
+    return $this->setOption('current_span', (bool) $bool);
   }
 
   public function render()

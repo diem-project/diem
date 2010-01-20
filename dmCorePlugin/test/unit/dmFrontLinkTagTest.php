@@ -4,16 +4,7 @@ require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
 $helper = new dmUnitTestHelper();
 $helper->boot('front');
 
-if(sfConfig::get('sf_app') == 'front' && class_exists('dmFrontPluginConfiguration', false))
-{
-  $t = new lime_test();
-}
-else
-{
-  $t = new lime_test(1);
-  $t->pass('Works only on front app');
-  return;
-}
+$t = new lime_test(35);
 
 sfConfig::set('sf_no_script_name', false);
 
@@ -29,8 +20,7 @@ $sc->mergeParameter('link_tag_record.options', array(
 $t->diag('link current_span is false');
 
 $home = dmDb::table('DmPage')->getTree()->fetchRoot();
-$currentPage = $home;
-$helper->get('context')->setPage($currentPage);
+$helper->get('context')->setPage($home);
 $t->diag($home->name.' is the current page');
 
 $testPage = dmDb::create('DmPage', array(
@@ -48,6 +38,8 @@ $scriptName = $helper->get('request')->getScriptName();
 $t->diag('Current cli script name = '.$scriptName);
 
 $t->like(£link()->render(), '|<a class="link dm_current|', '£link() has class dm_current');
+
+$t->like(£link()->set('current_class', 'my_current')->render(), '|<a class="link my_current|', '£link() has class my_current');
 
 $t->is((string)£link($home), (string)£link(), '£link($home) is £link()');
 
@@ -91,7 +83,16 @@ $testPageLink = sprintf('<a class="%s" href="%s">%s</a>', 'link', $scriptName.'/
 $t->is((string)$helper->get('helper')->£link($testPage), $testPageLink, 'with helper service, page link is '.$testPageLink);
 
 $helper->get('context')->setPage($testPage);
+
 $t->diag($testPage->name.' is the current page');
+
+$t->like(£link($testPage)->render(), '|<a class="link dm_current|', '£link($testPage) has class dm_current');
+
+$t->like(£link($testPage)->set('current_class', 'my_current')->render(), '|<a class="link my_current|', '£link($testPage) has class my_current');
+
+$t->like(£link()->render(), '|<a class="link dm_parent|', '£link() has class dm_parent');
+
+$t->like(£link()->set('parent_class', 'my_parent')->render(), '|<a class="link my_parent|', '£link() has class my_parent');
 
 $testPageLink = sprintf('<a class="%s" href="%s">%s</a>', 'link dm_current', $scriptName.'/'.$testPage->slug, $testPage->name);
 $t->is((string)£link($testPage), $testPageLink, 'page link is '.$testPageLink);
