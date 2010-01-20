@@ -148,10 +148,15 @@ class dmUnitTestHelper
   {
     return $this->configuration;
   }
-  
+
   public function getDispatcher()
   {
     return $this->context->getEventDispatcher();
+  }
+
+  public function getServiceContainer()
+  {
+    return $this->context->getServiceContainer();
   }
 
   public function getModule($moduleKey)

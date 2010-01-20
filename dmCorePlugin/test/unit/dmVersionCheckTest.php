@@ -4,7 +4,7 @@ require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
 $helper = new dmUnitTestHelper();
 $helper->boot('admin');
 
-$t = new lime_test();
+$t = new lime_test(20);
 
 $t->comment('Weird version numbers will be shown during this test.');
 $t->comment('Diem real version number is '.DIEM_VERSION);

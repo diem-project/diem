@@ -163,6 +163,10 @@ parameters:
   doctrine_pager.class:       dmDoctrinePager       # Responsible for paginating the doctrine collections
 
   web_browser.class:          dmWebBrowser          # Basic HTTP client, overrides sfWebBrowser
+  web_browser.options:
+    default_headers:          []
+    adapter_class:
+    adapter_options:          []
 
 services:
 
@@ -403,4 +407,4 @@ services:
   web_browser:
     class:                    %web_browser.class%
     shared:                   true
-    arguments:                []
+    arguments:                [ %web_browser.options% ]

@@ -2,10 +2,21 @@
 
 class dmWebBrowser extends sfWebBrowser
 {
-  
-  public function __construct($defaultHeaders = array(), $adapterClass = null, $adapterOptions = array())
+
+  public function getDefaultOptions()
   {
-    parent::__construct($defaultHeaders, $adapterClass, $adapterOptions);
+    return array(
+      'default_headers' => array(),
+      'adapter_class'   => null,
+      'adapter_options' => array()
+    );
+  }
+  
+  public function __construct(array $options)
+  {
+    $options = array_merge($this->getDefaultOptions(), $options);
+    
+    parent::__construct($options['default_headers'], $options['adapter_class'], $options['adapter_options']);
 
     $this->setUserAgent(sprintf('%s (%s) Diem/%s (%s)',
       dmConfig::get('site_name'),

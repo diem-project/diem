@@ -192,6 +192,9 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
     return $this;
   }
 
+  /*
+   * Will recreate a new shared service
+   */
   public function reload($id)
   {
     if (!$this->hasService($id))
@@ -204,7 +207,7 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
       unset($this->shared[$id]);
     }
     
-    return $this;
+    return $this->getService($id);
   }
   
   /**

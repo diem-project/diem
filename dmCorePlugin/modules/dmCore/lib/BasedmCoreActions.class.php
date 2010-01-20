@@ -25,7 +25,7 @@ class BasedmCoreActions extends dmBaseActions
     );
 
     $this->forward404Unless(
-      $this->context->getI18n()->cultureExists($culture),
+      $this->getService('i18n')->cultureExists($culture),
       sprintf('The %s culture does not exist', $culture)
     );
 
@@ -38,9 +38,11 @@ class BasedmCoreActions extends dmBaseActions
   {
     $this->next = array(
       'type' => 'ajax',
-      'url'  => $this->context->getHelper()->£link('+/dmCore/refreshStep?step=1')->getHref(),
-      'msg'  => $this->context->getI18n()->__('Cache clearing')
+      'url'  => $this->getHelper()->£link('+/dmCore/refreshStep?step=1')->getHref(),
+      'msg'  => $this->getService('i18n')->__('Cache clearing')
     );
+
+    $this->setLayout(false);
     
     $this->getUser()->setAttribute('dm_refresh_back_url', $this->getBackUrl());
   }
@@ -49,11 +51,13 @@ class BasedmCoreActions extends dmBaseActions
   {
     if ($request->hasParameter('dm_use_thread'))
     {
-      $this->context->getServiceContainer()->mergeParameter('page_tree_watcher.options', array('use_thread' => $request->getParameter('use_thread')));
-      $this->context->getServiceContainer()->reload('page_tree_watcher');
+      $this->context->getServiceContainer()
+      ->mergeParameter('page_tree_watcher.options', array('use_thread' => $request->getParameter('use_thread')))
+      ->reload('page_tree_watcher');
     }
     
     $this->step = $request->getParameter('step');
+    
     try
     {
       switch($this->step)
@@ -69,9 +73,9 @@ class BasedmCoreActions extends dmBaseActions
           }
           
           $data = array(
-            'msg'  => $this->context->getI18n()->__('Page synchronization'),
+            'msg'  => $this->getService('i18n')->__('Page synchronization'),
             'type' => 'ajax',
-            'url'  => $this->context->getHelper()->£link('+/dmCore/refreshStep?step=2')->getHref()
+            'url'  => $this->getHelper()->£link('+/dmCore/refreshStep')->param('step', 2)->getHref()
           );
           break;
           
@@ -79,22 +83,22 @@ class BasedmCoreActions extends dmBaseActions
           $this->context->get('page_tree_watcher')->synchronizePages();
           
           $data = array(
-            'msg'  => $this->context->getI18n()->__('SEO synchronization'),
+            'msg'  => $this->getService('i18n')->__('SEO synchronization'),
             'type' => 'ajax',
-            'url'  => $this->context->getHelper()->£link('+/dmCore/refreshStep?step=3')->getHref()
+            'url'  => $this->getHelper()->£link('+/dmCore/refreshStep')->param('step', 3)->getHref()
           );
           break;
           
         case 3:
           $this->context->get('page_tree_watcher')->synchronizeSeo();
           
-          if (count($this->context->getI18n()->getCultures()) > 1)
+          if (count($this->getService('i18n')->getCultures()) > 1)
           {
             $this->context->get('page_i18n_builder')->createAllPagesTranslations();
           }
           
           $data = array(
-            'msg'  => $this->context->getI18n()->__('Interface regeneration'),
+            'msg'  => $this->getService('i18n')->__('Interface regeneration'),
             'type' => 'redirect',
             'url'  => $this->getUser()->getAttribute('dm_refresh_back_url')
           );
@@ -107,10 +111,10 @@ class BasedmCoreActions extends dmBaseActions
     }
     catch(Exception $e)
     {
-      $this->getUser()->logError($this->context->getI18n()->__('Something went wrong when updating project'));
+      $this->getUser()->logError($this->getService('i18n')->__('Something went wrong when updating project'));
       
       $data = array(
-        'msg'  => $this->context->getI18n()->__('Something went wrong when updating project'),
+        'msg'  => $this->getService('i18n')->__('Something went wrong when updating project'),
         'type' => 'redirect',
         'url'  => $this->getUser()->getAttribute('dm_refresh_back_url')
       );
@@ -128,12 +132,7 @@ class BasedmCoreActions extends dmBaseActions
       }
     }
     
-    if ($this->getRequest()->isXmlHttpRequest())
-    {
-      return $this->renderJson($data);
-    }
-    
-    $this->data = $data;
+    return $this->renderJson($data);
   }
   
   public function executeMarkdown(dmWebRequest $request)

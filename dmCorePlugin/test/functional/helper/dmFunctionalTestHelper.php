@@ -79,20 +79,23 @@ class dmFunctionalTestHelper
       end()
     ;
 
-    $this->browser->with('user')->begin()->isAuthenticated()->end();
-
-    return $this;
+    return $this->browser->with('user')->begin()->isAuthenticated()->end();
   }
 
   public function logout()
   {
-    return $this->browser->
+    $this->browser->
       get('/+/dmAuth/signout')->
       with('response')->begin()->
         followRedirect()->
       end()
     ;
 
-    $this->browser->with('user')->begin()->isAuthenticated(false)->end();
+    return $this->browser->with('user')->begin()->isAuthenticated(false)->end();
+  }
+
+  public function getService($name)
+  {
+    return $this->context->get($name);
   }
 }

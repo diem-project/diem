@@ -6,22 +6,28 @@ $helper->boot('admin');
 
 $browser = $helper->getBrowser();
 
+$helper->logout();
+
+$browser->info('Posts list')
+->get('/content?skip_browser_detection=1')
+->checks(array(
+  'module_action' => 'dmAdmin/moduleType',
+  'code' => 401
+))
+->has('input.submit');
+
 $helper->login();
 
 $browser->info('Posts list')
 ->get('/content/blog/dm-test-posts/index')
-->with('request')->begin()
-->isParameter('module', 'dmTestPost')
-->isParameter('action', 'index')
-->end()
-->with('response')->begin()
-->isStatusCode(200)
-->checkElement('h1', 'Dm test posts')
-->checkElement('#breadCrumb')
-->checkElement('#dm_module_search_input')
-->checkElement('.sf_admin_list_td_title a.link')
-->checkElement('.dm_pagination_status', '1 - 10 on 20')
-->end();
+->checks(array(
+  'module_action' => 'dmTestPost/index'
+))
+->has('h1', 'Dm test posts')
+->has('#breadCrumb')
+->has('#dm_module_search_input')
+->has('.sf_admin_list_td_title a.link')
+->has('.dm_pagination_status', '1 - 10 on 20');
 
 $browser->info('Loremize 20 posts')
 ->click('.dm_loremize a:contains(20)')
