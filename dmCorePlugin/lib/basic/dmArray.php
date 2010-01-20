@@ -49,8 +49,7 @@ class dmArray
     }
   }
 
-
-  // retourne la première valeur d'un tableau
+  // get first value of an array
   public static function first($array)
   {
     if(!is_array($array))
@@ -69,7 +68,7 @@ class dmArray
     return $a;
   }
 
-  // retourne la dernière valeur d'un tableau
+  // get last value of an array
   public static function last($array)
   {
     if(!is_array($array))
@@ -88,13 +87,13 @@ class dmArray
     return $a;
   }
 
-  // retourne la première clé d'un tableau
+  // get first key of an array
   public static function firstKey($array)
   {
     return self::firstEntryIn(array_keys($array));
   }
 
-  // retourne les premières valeurs d'un tableau
+  // get first valueS of an array
   public static function firsts($array, $nb)
   {
     if(!is_array($array))
