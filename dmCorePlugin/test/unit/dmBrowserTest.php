@@ -4,7 +4,7 @@ require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
 $helper = new dmUnitTestHelper();
 $helper->boot();
 
-$t = new lime_test(16);
+$t = new lime_test(17);
 $browser = $helper->get('browser');
 
 $namorokaUbuntu = 'Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2pre) Gecko/20100116 Ubuntu/9.10 (karmic) Namoroka/3.6pre';
@@ -24,6 +24,7 @@ $ie7Windows = 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0; Trident/4.0; G
 $ie6Windows = 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0; DigExt)';
 $feedFetcherGoogle = 'Feedfetcher-Google; (+http://www.google.com/feedfetcher.html; 2 subscribers; feed-id=6924676383167400434)';
 $iphone = 'Mozilla/5.0 (iPhone; U; CPU iPhone OS 3_1_2 like Mac OS X; de-de) AppleWebKit/528.18 (KHTML, like Gecko) Mobile/7D11';
+$yahooBot = 'Mozilla/5.0 (compatible; Yahoo! Slurp; http://help.yahoo.com/help/us/ysearch/slurp)';
 
 $tests = array(
   $namorokaUbuntu => array('name' => 'firefox', 'version' => '3.6', 'is_unknown' => false),
@@ -31,7 +32,8 @@ $tests = array(
   $chromeMac => array('name' => 'chrome', 'version' => '4.0', 'is_unknown' => false),
   $safariMac => array('name' => 'safari', 'version' => '4.0', 'is_unknown' => false),
   $googleBot => array('name' => 'googlebot', 'version' => '2.1', 'is_unknown' => false),
-  $msnBot => array('name' => null, 'version' => null, 'is_unknown' => true),
+  $msnBot => array('name' => 'msnbot', 'version' => '2.0', 'is_unknown' => false),
+  $yahooBot => array('name' => 'yahoobot', 'version' => null, 'is_unknown' => false),
   $operaWindows => array('name' => 'opera', 'version' => '9.80', 'is_unknown' => false),
   $firefoxLinux => array('name' => 'firefox', 'version' => '3.0', 'is_unknown' => false),
   $firefoxWindows => array('name' => 'firefox', 'version' => '3.5', 'is_unknown' => false),

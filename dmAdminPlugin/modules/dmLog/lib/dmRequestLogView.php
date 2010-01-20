@@ -26,12 +26,27 @@ class dmRequestLogView extends dmLogView
   protected function renderBrowser(dmRequestLogEntry $entry)
   {
     $browser = $entry->get('browser');
+
     return sprintf('<div class="clearfix"><div class="browser browser_block %s fleft"></div><strong class="mr10">%s %s</strong><span class="light">%s</span>',
-      $browser->getName(),
+      $this->getBrowserIcon($browser),
       ucfirst($browser->getName()),
       $browser->getVersion(),
       str_replace('Linux', '<strong>Linux</strong>', $entry->get('user_agent'))
     );
+  }
+
+  protected function getBrowserIcon($browser)
+  {
+    if(in_array($browser->getName(), array('googlebot', 'yahoobot', 'msnbot')))
+    {
+      $icon = $browser. 'browser_bot';
+    }
+    else
+    {
+      $icon = $browser;
+    }
+
+    return $icon;
   }
   
   protected function renderLocation(dmRequestLogEntry $entry)

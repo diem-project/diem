@@ -15,7 +15,7 @@ class dmRequestLogViewLittle extends dmRequestLogView
   {
     $browser = $entry->get('browser');
     return sprintf('<div class="browser %s">%s<br />%s %s</div>',
-      $browser->getName(),
+      $this->getBrowserIcon($browser),
       ($username = $entry->get('username'))
       ? '<strong class="mr5">'.$username.'</strong>'
       : $entry->get('ip'),

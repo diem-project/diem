@@ -20,6 +20,8 @@ class dmBrowserDetection
 
     $this->fixIphone();
 
+    $this->fixYahoo();
+
     return array('name' => $this->name, 'version' => $this->version);
   }
 
@@ -76,6 +78,14 @@ class dmBrowserDetection
     }
   }
 
+  protected function fixYahoo()
+  {
+    if (null === $this->name && strpos($this->userAgent, 'yahoo! slurp'))
+    {
+      $this->name = 'yahoobot';
+    }
+  }
+
   protected function getAliases()
   {
     return array(
@@ -89,6 +99,6 @@ class dmBrowserDetection
 
   protected function getKnownBrowsers()
   {
-    return array('msie', 'firefox', 'safari', 'webkit', 'opera', 'netscape', 'konqueror', 'gecko', 'chrome', 'googlebot', 'iphone');
+    return array('msie', 'firefox', 'safari', 'webkit', 'opera', 'netscape', 'konqueror', 'gecko', 'chrome', 'googlebot', 'iphone', 'msnbot');
   }
 }
