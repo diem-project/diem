@@ -61,6 +61,11 @@ class dmFrontLinkResource
        */
       $this->params = dmString::getDataFromUrl($source);
       $source = dmString::getBaseFromUrl($source);
+
+      if ('@homepage' === $source)
+      {
+        $source = 'main/root';
+      }
       
       if (strncmp($source, 'page:', 5) === 0)
       {

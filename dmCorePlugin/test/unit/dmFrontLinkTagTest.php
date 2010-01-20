@@ -6,7 +6,7 @@ $helper->boot('front');
 
 if(sfConfig::get('sf_app') == 'front' && class_exists('dmFrontPluginConfiguration', false))
 {
-  $t = new lime_test(27);
+  $t = new lime_test();
 }
 else
 {
@@ -47,7 +47,13 @@ dm::loadHelpers(array('Dm'));
 $scriptName = $helper->get('request')->getScriptName();
 $t->diag('Current cli script name = '.$scriptName);
 
-$t->is((string)£link(), (string)£link($home), '£link($home) is £link()');
+$t->like(£link()->render(), '|<a class="link dm_current|', '£link() has class dm_current');
+
+$t->is((string)£link($home), (string)£link(), '£link($home) is £link()');
+
+$t->is((string)£link('@homepage'), (string)£link($home), '£link("@homepage") is £link()');
+
+$t->is((string)£link('main/root'), (string)£link($home), '£link("main/root") is £link()');
 
 $t->is(£link()->getHref(), $scriptName, 'root href is '.$scriptName);
 
