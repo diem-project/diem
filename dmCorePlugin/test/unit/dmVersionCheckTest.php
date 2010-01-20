@@ -30,6 +30,18 @@ $t->is(dm::getVersion(), '5.0.0-BETA1', 'Diem version is 5.0.0-BETA1');
 
 $t->ok($versionCheck->shouldCheck(), 'versionCheck should check');
 
+$t->comment('disable version check');
+
+$versionCheck->setOption('enabled', false);
+
+$t->ok(!$versionCheck->shouldCheck(), 'versionCheck should not check');
+
+$t->comment('enable version check');
+
+$versionCheck->setOption('enabled', true);
+
+$t->ok($versionCheck->shouldCheck(), 'versionCheck should check');
+
 $t->is($versionCheck->getLatestServerVersionForBranch('5.0'), '5.0.4', 'Latest version for 5.0 is 5.0.4');
 
 $t->is($versionCheck->getLatestServerVersionForBranch('5.1'), '5.1.0-BETA2', 'Latest version for 5.1 is 5.1.0-BETA2');
