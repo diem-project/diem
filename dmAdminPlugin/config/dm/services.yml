@@ -56,6 +56,11 @@ parameters:
   xml_sitemap_generator.options:  []
     
   link_tag_factory.class:     dmAdminLinkTagFactory # Builds a link_tag service from a source
+
+  diem_version_check.class:   dmDiemVersionCheck # Responsible for checking if a new version is available
+  diem_version_check.options:
+    enabled:                  true
+    url:                      http://diem-project.org/service/current-version
  
 services:
 
@@ -133,3 +138,8 @@ services:
     class:                    %xml_sitemap_generator.class%
     shared:                   false
     arguments:                [ @dispatcher, @filesystem, @i18n, %xml_sitemap_generator.options% ]
+
+  diem_version_check:
+    class:                    %diem_version_check.class%
+    shared:                   false
+    arguments:                [ @service_container, %diem_version_check.options% ]

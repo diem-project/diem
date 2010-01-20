@@ -7,11 +7,11 @@ class dmWebBrowser extends sfWebBrowser
   {
     parent::__construct($defaultHeaders, $adapterClass, $adapterOptions);
 
-    $this->setUserAgent(sprintf('%s (%s) powered by Diem/%s (%s)'),
+    $this->setUserAgent(sprintf('%s (%s) Diem/%s (%s)',
       dmConfig::get('site_name'),
-      dmArray::get($_SERVER, 'HTTP_HOST'),
+      dmArray::get($_SERVER, 'HTTP_HOST', '?'),
       DIEM_VERSION,
       'http://diem-project.org'
-    );
+    ));
   }
 }

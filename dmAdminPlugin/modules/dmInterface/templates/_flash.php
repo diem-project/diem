@@ -12,7 +12,7 @@ foreach(array('info', 'notice', 'alert', 'error') as $log_type)
       $html .= £o("ul.flashs.".$class.'s');
       foreach($messages as $message)
       {
-        $html .= £("li.flash.ui-corner-all.".$class,
+        $html .= £('li.flash.ui-corner-all.'.$class,
           £('span.icon.fleft.mr5.s16block.s16_'.$class).
           nl2br(__($message, array(), 'admin'))
         );

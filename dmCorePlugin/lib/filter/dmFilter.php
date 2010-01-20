@@ -19,4 +19,9 @@ abstract class dmFilter extends sfFilter
 
     return parent::initialize($context, $parameters);
   }
+
+  public function getService($name, $class = null)
+  {
+    return $this->context->get($name, $class);
+  }
 }

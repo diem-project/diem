@@ -1,4 +1,4 @@
-body{font:12px arial,helvetica,verdana,sans-serif;*font-size:small;*font:x-small;}select,input,button,textarea{font:99% arial,helvetica,clean,sans-serif;}table{font-size:inherit;font:100%;}pre,code,kbd,samp,tt{font-family:monospace;*font-size:108%;line-height:100%;}
+body{font:12px arial,helvetica,verdana,sans-serif;*font-size:small;*font:x-small;}select,input,button,textarea{font:99% arial,helvetica,clean,sans-serif;}table{font-size:inherit;font:100%;}pre,code{font-family:monospace;font-size:108%;line-height:100%;}
 h1{
   font-size:138.5%;
   height: 2em;
@@ -157,4 +157,14 @@ div.dm_admin_homepage_column {
 
 div.dm_admin_homepage_column .dm_box {
   margin: 0 5px 10px 5px;
+}
+
+div.dm_version_check_upgrade {
+  cursor: pointer;
+  border: 1px solid;
+  padding: 5px;
+  margin: 5px 0;
+  color: #333;
+  background: #DFE9B8 url(../images/flash/green.gif) repeat-x top left;
+  border-color: #CAD3A6;
 }

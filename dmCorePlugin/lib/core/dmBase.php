@@ -28,6 +28,8 @@ class dmBase
     
     self::resetStartTime();
 
+    self::$version = DIEM_VERSION;
+
     self::$dir = null === $dir ? realpath(dirname(__FILE__).'/../../..') : $dir;
 
     require_once(self::$dir.'/dmCorePlugin/lib/config/dmProjectConfiguration.php');
@@ -66,6 +68,40 @@ class dmBase
     print $serverCheck->render();
     
     exit;
+  }
+
+  public static function setVersion($version)
+  {
+    self::$version = $version;
+  }
+
+  public static function getVersion()
+  {
+    return self::$version;
+  }
+
+  public static function getVersionMajor()
+  {
+    $parts = explode('.', self::getVersion());
+    return $parts[0];
+  }
+
+  public static function getVersionMinor()
+  {
+    $parts = explode('.', self::getVersion());
+    return $parts[1];
+  }
+
+  public static function getVersionMaintenance()
+  {
+    $parts = explode('.', self::getVersion());
+    return $parts[2];
+  }
+
+  public static function getVersionBranch()
+  {
+    $parts = explode('.', self::getVersion());
+    return $parts[0].'.'.$parts[1];
   }
   
   /*
@@ -121,7 +157,6 @@ class dmBase
   {
     return dmContext::getInstance()->getHelper();
   }
-
 
   /*
    * Gadgets

@@ -45,7 +45,10 @@ class dmDb
   {
     return self::table($class)->create($values);
   }
-  
+
+  /*
+   * @return PDOStatement
+   */
   public static function pdo($query, array $values = array(), Doctrine_Connection $conn = null)
   {
     $conn = null === $conn ? Doctrine_Manager::getInstance()->getCurrentConnection() : $conn;

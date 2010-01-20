@@ -30,6 +30,22 @@
       this.liveEvents();
 			
 			this.autoLoading();
+
+      this.checkVersion();
+    },
+
+    checkVersion: function()
+    {
+      if($versionCheck = $('#dm_async_version_check').orNot())
+      {
+        $.ajax({
+          url:      $.dm.ctrl.getHref('+/dmAdmin/versionCheck'),
+          success:  function(html)
+          {
+            $versionCheck.html(html).click(function() { $versionCheck.remove(); });
+          }
+        });
+      }
     },
 		
 		autoLoading: function()

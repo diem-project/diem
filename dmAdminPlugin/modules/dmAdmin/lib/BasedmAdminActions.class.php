@@ -5,6 +5,18 @@ class BasedmAdminActions extends dmAdminBaseActions
   public function executeIndex(dmWebRequest $request)
   {
     $this->homepageManager = $this->getService('homepage_manager');
+
+    $this->checkVersion = $this->getUser()->can('system') && $this->getService('diem_version_check')->shouldCheck();
+  }
+
+  public function executeVersionCheck()
+  {
+    $this->versionCheck = $this->getService('diem_version_check');
+
+    if($this->versionCheck->isUpToDate())
+    {
+      return $this->renderText('');
+    }
   }
 
   public function executeModuleType(dmWebRequest $request)

@@ -181,7 +181,6 @@ class dmConfig
   public static function isCli()
   {
     return defined('STDIN');
-//    return !isset($_SERVER['HTTP_HOST']);
   }
 
   public static function canSystemCall()
