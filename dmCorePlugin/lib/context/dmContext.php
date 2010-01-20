@@ -4,7 +4,6 @@ class dmContext extends sfContext
 {
   protected
   $serviceContainer,
-  $dmConfiguration,
   $page,
   $helper;
 
@@ -33,8 +32,6 @@ class dmContext extends sfContext
     
     parent::initialize($configuration);
 
-    $timer = dmDebug::timerOrNull('dmContext::initialize');
-
     sfConfig::set('dm_debug', $this->getRequest()->getParameter('dm_debug', false));
 
     // load the service container instance
@@ -61,15 +58,12 @@ class dmContext extends sfContext
      * and the service container...
      */
     dmDoctrineQuery::setModuleManager($this->getModuleManager());
-    dmDoctrineTable::setEventDispatcher($this->dispatcher);
     dmDoctrineTable::setServiceContainer($this->serviceContainer);
     
     $this->helper = $this->serviceContainer->getService('helper');
 
     // notify that context is ready
     $this->dispatcher->notify(new sfEvent($this, 'dm.context.loaded'));
-
-    $timer && $timer->addTime();
   }
 
   /**
@@ -94,7 +88,6 @@ class dmContext extends sfContext
     throw new sfException(sprintf('The "%s" object does not exist in the current context.', $name));
   }
 
-
   /**
    * Loads the symfony factories.
    */
@@ -114,8 +107,7 @@ class dmContext extends sfContext
     /*
      * Configure i18n
      */
-    $this->factories['i18n']
-    ->setUseInternalCatalogue($this->getUser()->can('admin'));
+    $this->factories['i18n']->setUseInternalCatalogue($this->getUser()->can('admin'));
   }
   
   public function reloadModuleManager()
@@ -157,8 +149,7 @@ class dmContext extends sfContext
 
   public function configureServiceContainer(dmBaseServiceContainer $serviceContainer)
   {
-    $serviceContainer->configure(
-    array(
+    $serviceContainer->configure(array(
       'context'           => $this,
       'doctrine_manager'  => Doctrine_Manager::getInstance()
     ));
@@ -334,7 +325,7 @@ class dmContext extends sfContext
 
   protected function checkProjectIsSetup()
   {
-    if (file_exists(dmOs::join(sfConfig::get('dm_data_dir'), 'lock')))
+    if (file_exists(sfConfig::get('dm_data_dir').'/lock'))
     {
       if (!dmConfig::isCli())
       {

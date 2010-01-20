@@ -555,6 +555,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
   {
     self::$serviceContainer = $serviceContainer;
     self::setModuleManager($serviceContainer->getService('module_manager'));
+    self::setEventDispatcher($serviceContainer->getService('dispatcher'));
   }
   
   public static function setModuleManager(dmModuleManager $moduleManager)
