@@ -1,6 +1,5 @@
 all:
   is_secure:    true
-  credentials:  front_edit
 
 new:
   credentials:  widget_add
