@@ -2,10 +2,11 @@
 /cache/*
 /log/*
 /data/*
-/web/*_dev.php
+/web/*dev.php
 /web/uploads/*
 /web/dm
 /web/cache
+/web/sitemap*.xml
 /lib/migration
 /config/databases.yml
 
