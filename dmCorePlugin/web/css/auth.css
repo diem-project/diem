@@ -91,6 +91,14 @@ div.dm_auth .dm_suggested_browsers a {
   margin: 0 20px;
   font-size: 1.2em;
 }
+div.dm_auth .dm_suggested_browsers a.not_ready {
+  opacity: 0.3;
+}
+div.dm_auth .dm_suggested_browsers a em {
+  display: block;
+  font-size: 12px;
+  color: #000;
+}
 div.dm_auth .dm_suggested_browsers img {
   display: block;
 }
