@@ -36,6 +36,11 @@ class dmFrontLinkTagPage extends dmFrontLinkTag
     $this->addAttributeToRemove(array('use_page_title'));
   }
 
+  public function getPage()
+  {
+    return $this->page;
+  }
+
   public function isCurrent()
   {
     return $this->currentPage && $this->currentPage->get('id') === $this->page->get('id');
