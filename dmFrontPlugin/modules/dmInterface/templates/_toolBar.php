@@ -38,7 +38,7 @@ echo £o('div#dm_tool_bar.dm.clearfix.'.sfConfig::get('dm_toolBar_flavour', 'blu
     echo £link('+/dmPage/new')->set('a.page_add_form.widget24.s24block.s24_page_add')->textTitle(__('Add new page'));
   }
 
-  if ($sf_user->can('zone_add widget_add'))
+  if ($sf_user->can('zone_add, widget_add'))
   {
     echo £('a.edit_toggle.widget24.s24block.s24_view_'.($sf_user->getIsEditMode() ? 'on' : 'off'), array('title' => __('Show page structure')),
       __('Add')

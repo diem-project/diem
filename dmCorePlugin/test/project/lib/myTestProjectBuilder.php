@@ -34,6 +34,24 @@ class myTestProjectBuilder
     $this->addH1();
 
     $this->addManualPages();
+
+    $this->addUsers();
+  }
+
+  protected function addUsers()
+  {
+    $writer = dmDb::table('DmUser')->create(array(
+      'username' => 'writer',
+      'email'    => 'writer.org',
+      'is_active' => true,
+      'is_super_admin' => false
+    ));
+
+    $writer->setPassword('writer');
+
+    $writer->addGroupByName('writer');
+
+    $writer->save();
   }
 
   /*

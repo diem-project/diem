@@ -56,8 +56,5 @@ abstract class BaseDmUserPermission extends myDoctrineRecord
              'local' => 'dm_permission_id',
              'foreign' => 'id',
              'onDelete' => 'CASCADE'));
-
-        $timestampable0 = new Doctrine_Template_Timestampable();
-        $this->actAs($timestampable0);
     }
 }

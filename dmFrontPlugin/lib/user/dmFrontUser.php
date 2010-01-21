@@ -63,7 +63,7 @@ class dmFrontUser extends dmCoreUser
 
   public function getIsEditMode()
   {
-    return $this->can('zone_add widget_add') && $this->getAttribute('dm_front_edit');
+    return $this->can('zone_add, widget_add') && $this->getAttribute('dm_front_edit');
   }
 
   public function setIsEditMode($value)

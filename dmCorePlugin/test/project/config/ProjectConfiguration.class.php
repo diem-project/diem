@@ -32,6 +32,7 @@ class ProjectConfiguration extends dmProjectConfiguration
     $this->pluginConfigurations['dmAlternativeHelperPlugin']->connectTests();
     $this->pluginConfigurations['dmFlowPlayerPlugin']->connectTests();
     $this->pluginConfigurations['dmContactPlugin']->connectTests();
+    $this->pluginConfigurations['dmUserPlugin']->connectTests();
   }
   
   public function listenToSetupAfterEvent(sfEvent $event)

@@ -1,6 +1,6 @@
 <?php
 
-abstract class dmWebResponse extends sfWebResponse
+class dmWebResponse extends sfWebResponse
 {
   protected
   $isHtmlForHuman = true,

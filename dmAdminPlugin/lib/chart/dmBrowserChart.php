@@ -54,7 +54,7 @@ class dmBrowserChart extends dmGaChart
 
   protected function getData()
   {
-    if (true || !$data = $this->getCache('data'))
+    if (!$data = $this->getCache('data'))
     {
       $months = 1;
       

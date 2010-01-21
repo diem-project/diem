@@ -97,7 +97,7 @@ class dmLogChart extends dmChart
 
   protected function getData()
   {
-    if (true || !$data = $this->getCache('data'))
+    if (!$data = $this->getCache('data'))
     {
       $data = array(
         'date' => array(),
