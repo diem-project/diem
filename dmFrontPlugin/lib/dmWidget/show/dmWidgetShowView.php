@@ -22,7 +22,7 @@ class dmWidgetShowView extends dmWidgetProjectModelView
   {
     $query = $this->dmModule->getTable()->createQuery('r');
 
-    if ($this->compiledVars['recordId'])
+    if (!empty($this->compiledVars['recordId']))
     {
       $query->addWhere('r.id = ?', $this->compiledVars['recordId']);
     }

@@ -59,5 +59,56 @@ abstract class dmContextTask extends dmBaseTask
       }
     }
   }
+
+  protected function exec($command)
+  {
+    if(!$this->context->get('filesystem')->exec($command, array($this, 'logOutput'), array($this, 'logErrors')))
+    {
+      throw new dmException(implode(', ', $this->context->get('filesystem')->getLastExec()));
+    }
+  }
+
+  public function logOutput($output)
+  {
+    if (false !== $pos = strpos($output, "\n"))
+    {
+      $this->outputBuffer .= substr($output, 0, $pos);
+      $this->log($this->outputBuffer);
+      $this->outputBuffer = substr($output, $pos + 1);
+    }
+    else
+    {
+      $this->outputBuffer .= $output;
+    }
+  }
+
+  public function logErrors($output)
+  {
+    if (false !== $pos = strpos($output, "\n"))
+    {
+      $this->errorBuffer .= substr($output, 0, $pos);
+      $this->log($this->formatter->format($this->errorBuffer, 'ERROR'));
+      $this->errorBuffer = substr($output, $pos + 1);
+    }
+    else
+    {
+      $this->errorBuffer .= $output;
+    }
+  }
+
+  protected function clearBuffers()
+  {
+    if ($this->outputBuffer)
+    {
+      $this->log($this->outputBuffer);
+      $this->outputBuffer = '';
+    }
+
+    if ($this->errorBuffer)
+    {
+      $this->log($this->formatter->format($this->errorBuffer, 'ERROR'));
+      $this->errorBuffer = '';
+    }
+  }
   
 }

@@ -243,6 +243,7 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
    * with a set*Service() method, the former has always precedence.
    *
    * @param  string $id The service identifier
+   * @param  string $class Alternative class to use
    *
    * @return object The associated service
    *
