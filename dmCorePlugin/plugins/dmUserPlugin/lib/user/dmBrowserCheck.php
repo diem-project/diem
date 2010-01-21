@@ -37,15 +37,15 @@ class dmBrowserCheck
     switch($browser->getName())
     {
       case 'firefox':
-        $isModern = version_compare(3, $browser->getVersion()); break;
-      case 'safari':
-        $isModern = version_compare(4, $browser->getVersion()); break;
-      case 'chrome':
-        $isModern = version_compare(3, $browser->getVersion()); break;
+        $isSupported = version_compare(3, $browser->getVersion()); break;
+//      case 'safari':
+//        $isSupported = version_compare(4, $browser->getVersion()); break;
+//      case 'chrome':
+//        $isSupported = version_compare(3, $browser->getVersion()); break;
       default:
-         $isModern = false;
+         $isSupported = false;
     }
 
-    return $isModern;
+    return $isSupported;
   }
 }
