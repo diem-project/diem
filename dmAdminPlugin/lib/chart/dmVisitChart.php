@@ -23,7 +23,7 @@ class dmVisitChart extends dmGaChart
     // Draw the pageviews graph
     $dataSet->AddSerie("pageviews");  
     $dataSet->SetYAxisName("Pages");
-    $this->drawScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_NORMAL, self::$colors['grey2'][0], self::$colors['grey2'][1], self::$colors['grey2'][2],TRUE,0,0, false, 3);
+    $this->drawScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_START0, self::$colors['grey2'][0], self::$colors['grey2'][1], self::$colors['grey2'][2],TRUE,0,0, false, 3);
     $this->drawGrid(4,TRUE, self::$colors['grey1'][0], self::$colors['grey1'][1], self::$colors['grey1'][2]);
     $this->setShadowProperties(3,3,0,0,0,30,4);
     $this->drawCubicCurve($dataSet->GetData(),$dataSet->GetDataDescription());
@@ -38,7 +38,7 @@ class dmVisitChart extends dmGaChart
     $dataSet->RemoveAllSeries();
     $dataSet->AddSerie("visitors");
     $dataSet->SetYAxisName("Visitors");
-    $this->drawRightScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_NORMAL, self::$colors['grey2'][0], self::$colors['grey2'][1], self::$colors['grey2'][2],TRUE,0,0, false, 3);
+    $this->drawRightScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_START0, self::$colors['grey2'][0], self::$colors['grey2'][1], self::$colors['grey2'][2],TRUE,0,0, false, 3);
     $this->setShadowProperties(3,3,0,0,0,30,4);
     $this->drawCubicCurve($dataSet->GetData(),$dataSet->GetDataDescription());
     $this->clearShadow();

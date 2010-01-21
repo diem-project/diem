@@ -29,11 +29,10 @@ class dmWeekChart extends dmGaChart
     $dataSet->AddSerie("bounces"); 
     $dataSet->SetYAxisName("visitors");
     $this->setLineStyle(1, 6);
-    $this->drawScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_NORMAL, self::$colors['grey2'][0], self::$colors['grey2'][1], self::$colors['grey2'][2],TRUE,0,0, false, 1);
+    $this->drawScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_START0, self::$colors['grey2'][0], self::$colors['grey2'][1], self::$colors['grey2'][2],TRUE,0,0, false, 1);
     $this->drawGrid(4,TRUE, self::$colors['grey1'][0], self::$colors['grey1'][1], self::$colors['grey1'][2]);
     $this->drawLineGraph($dataSet->GetData(),$dataSet->GetDataDescription());
     $this->drawPlotGraph($dataSet->GetData(),$dataSet->GetDataDescription(),3,2,255,255,255);
-    
     
     $this->drawArea($dataSet->GetData(),"visitors","bounces",self::$colors['blue'][0], self::$colors['blue'][1], self::$colors['blue'][2], 50);
   
@@ -61,7 +60,7 @@ class dmWeekChart extends dmGaChart
     $dataSet->AddSerie("pageviews");
     $this->setLineStyle(1, 6);
     $this->setLineStyle(1, 1);
-    $this->drawRightScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_NORMAL, self::$colors['grey2'][0], self::$colors['grey2'][1], self::$colors['grey2'][2],TRUE,0,0, false, 1);
+    $this->drawRightScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_START0, self::$colors['grey2'][0], self::$colors['grey2'][1], self::$colors['grey2'][2],TRUE,0,0, false, 1);
 //    $this->drawCubicCurve($dataSet->GetData(),$dataSet->GetDataDescription(), .1);
 //    $this->drawPlotGraph($dataSet->GetData(),$dataSet->GetDataDescription(),3,2,255,255,255);
     $this->drawBarGraph($dataSet->GetData(),$dataSet->GetDataDescription(),false, 30); 

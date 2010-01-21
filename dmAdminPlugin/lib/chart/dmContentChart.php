@@ -27,7 +27,7 @@ class dmContentChart extends dmChart
     // Prepare the graph area
     $this->setGraphArea(40, 0, $this->getWidth(), $this->getHeight()-20);
     
-    $this->drawScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_ADDALL,self::$colors['grey2'][0], self::$colors['grey2'][1], self::$colors['grey2'][2],TRUE,0,2,TRUE, 3);
+    $this->drawScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_ADDALLSTART0,self::$colors['grey2'][0], self::$colors['grey2'][1], self::$colors['grey2'][2],TRUE,0,2,TRUE, 3);
     $this->drawGrid(4,TRUE,self::$colors['grey1'][0], self::$colors['grey1'][1], self::$colors['grey1'][2],50);
   
     // Draw the 0 line

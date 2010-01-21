@@ -52,7 +52,7 @@ class dmLogChart extends dmChart
     $dataSet->removeAllSeries();
     $dataSet->AddSerie("nbReq");
     $dataSet->AddSerie("nbErr");
-    $this->drawRightScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_NORMAL, self::$colors['grey2'][0], self::$colors['grey2'][1], self::$colors['grey2'][2],TRUE,0,0, false, 10);
+    $this->drawRightScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_START0, self::$colors['grey2'][0], self::$colors['grey2'][1], self::$colors['grey2'][2],TRUE,0,0, false, 10);
     $this->drawGrid(4,TRUE, self::$colors['grey1'][0], self::$colors['grey1'][1], self::$colors['grey1'][2]);
     $this->drawFilledCubicCurve($dataSet->GetData(),$dataSet->GetDataDescription(), 0.2, 10);
 //    $this->drawFilledLineGraph($dataSet->GetData(),$dataSet->GetDataDescription(), 0.2, 10);
@@ -63,7 +63,7 @@ class dmLogChart extends dmChart
     {
       $dataSet->addSerie($eventType);
     }
-    $this->drawScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_NORMAL, 0, 0, 0,false);
+    $this->drawScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_START0, 0, 0, 0,false);
     $this->drawStackedBarGraph($dataSet->GetData(), $dataSet->GetDataDescription(), 30, false);
     $this->writeValuesOptions($dataSet->GetData(), $dataSet->GetDataDescription(), 'clear cache', array(
       '>' => 0
@@ -74,7 +74,7 @@ class dmLogChart extends dmChart
     $dataSet->AddSerie("mem");
     $maxMem = 64; //(int) ini_get('memory_limit')
     $this->setFixedScale(0, $maxMem);
-    $this->drawScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_NORMAL, 0, 0, 0,false,0,0, false, 10);
+    $this->drawScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_START0, 0, 0, 0,false,0,0, false, 10);
     $this->drawFilledCubicCurve($dataSet->GetData(),$dataSet->GetDataDescription(), 0.2, 20);
 //    $this->drawFilledLineGraph($dataSet->GetData(),$dataSet->GetDataDescription(), 10);
     
@@ -82,7 +82,7 @@ class dmLogChart extends dmChart
     $dataSet->removeAllSeries();
     $dataSet->AddSerie("time");
     $dataSet->SetYAxisName("Latency in s");
-    $this->drawScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_NORMAL, self::$colors['grey2'][0], self::$colors['grey2'][1], self::$colors['grey2'][2],TRUE,0,0, false, 10);
+    $this->drawScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_START0, self::$colors['grey2'][0], self::$colors['grey2'][1], self::$colors['grey2'][2],TRUE,0,0, false, 10);
     $this->drawFilledCubicCurve($dataSet->GetData(),$dataSet->GetDataDescription(), 0.2, 30);
     
     // Add labels
@@ -191,6 +191,11 @@ class dmLogChart extends dmChart
         if ("" != $data['mem'][$index])
         {
           $data['mem'][$index] = $value / (1024*1024);
+        }
+
+        if($data['time'][$index] > 5000)
+        {
+          $data['time'][$index] = 5000;
         }
       }
       
