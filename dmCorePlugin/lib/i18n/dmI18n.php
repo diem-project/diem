@@ -142,20 +142,20 @@ class dmI18n extends sfI18N
       $this->culture = sfConfig::get('sf_default_culture');
     }
 
-    $this->loadTransliterationStrings();
+    $this->loadTransliterationStrings($this->getCultures());
   }
 
-  protected function loadTransliterationStrings()
+  public function loadTransliterationStrings(array $cultures)
   {
     $filePattern = dmOs::join(sfConfig::get('dm_core_dir'), 'data/dm/transliteration/%s.php');
     
     $transliterationMap = include(sprintf($filePattern, 'default'));
 
-    foreach($this->getCultures() as $culture)
+    foreach($cultures as $culture)
     {
       if(file_exists(sprintf($filePattern, $culture)))
       {
-        $transliterationMap = array_merge($transliterationMap, include(sprintf($filePattern, $this->getCulture())));
+        $transliterationMap = array_merge($transliterationMap, include(sprintf($filePattern, $culture)));
       }
     }
 

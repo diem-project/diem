@@ -6,6 +6,8 @@ $helper->boot();
 
 $t = new lime_test(21);
 
+$helper->get('i18n')->loadTransliterationStrings(array('en', 'ru'));
+
 $tests = array(
   'en' => array(
     'test' => 'test',
@@ -17,7 +19,7 @@ $tests = array(
     'Ï' => 'I',
     'Ð' => 'D',
     'œÐú' => 'oeDu',
-    'ж'=>'ж',
+    'ж'=>'zh',
   ),
   'ru' => array(
     'test' => 'test',
