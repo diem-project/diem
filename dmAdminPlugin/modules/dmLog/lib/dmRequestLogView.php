@@ -39,11 +39,11 @@ class dmRequestLogView extends dmLogView
   {
     if(in_array($browser->getName(), array('googlebot', 'yahoobot', 'msnbot')))
     {
-      $icon = $browser. 'browser_bot';
+      $icon = $browser->getName(). ' browser_bot';
     }
     else
     {
-      $icon = $browser;
+      $icon = $browser->getName();
     }
 
     return $icon;
