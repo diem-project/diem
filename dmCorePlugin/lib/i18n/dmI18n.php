@@ -141,18 +141,7 @@ class dmI18n extends sfI18N
     {
       $this->culture = sfConfig::get('sf_default_culture');
     }
-  }
 
-  /**
-   * Listens to the user.change_culture event.
-   *
-   * @param sfEvent $event  An sfEvent instance
-   *
-   */
-  public function listenToChangeCultureEvent(sfEvent $event)
-  {
-    parent::listenToChangeCultureEvent($event);
-    
     $this->loadTransliterationStrings();
   }
 
@@ -162,9 +151,12 @@ class dmI18n extends sfI18N
     
     $transliterationMap = include(sprintf($filePattern, 'default'));
 
-    if(file_exists(sprintf($filePattern, $this->getCulture())))
+    foreach($this->getCultures() as $culture)
     {
-      $transliterationMap = array_merge($transliterationMap, include(sprintf($filePattern, $this->getCulture())));
+      if(file_exists(sprintf($filePattern, $culture)))
+      {
+        $transliterationMap = array_merge($transliterationMap, include(sprintf($filePattern, $this->getCulture())));
+      }
     }
 
     sfConfig::set('dm_string_transliteration', $transliterationMap);
