@@ -436,6 +436,8 @@ EOF;
       "search_engine" => "Manage internal search engine",
       "see_log" => "See the logs",
       'see_chart' => 'See the charts',
+      'see_diagrams' => 'See the developer diagrams',
+      'see_server' => 'See the server infos',
       "config_panel" => "Use the configuration panel",
       "translation" => "Use the translation interface",
       "layout" => "Use the layout interface",

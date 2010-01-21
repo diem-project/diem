@@ -84,7 +84,7 @@ System:
   Dev:
     dmDiagram:
       name:         See diagrams
-      credentials:  system
+      credentials:  see_diagrams
     dmCodeEditor:
       name:         Code Editor
       credentials:  code_editor
@@ -93,4 +93,4 @@ System:
       credentials:  system
     dmServer:
       name:         Server
-      credentials:  system
+      credentials:  see_server
