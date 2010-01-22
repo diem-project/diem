@@ -1,0 +1,58 @@
+AUTHORS
+=======
+
+Thibault Duplessis
+------------------
+Lead developper
+
+Daniel Lohse
+------------
+German translation, dmAlternativeHelperPlugin
+
+Stéphane Girault
+----------------
+PostGreSQL support, hudson installation
+
+Benjamin Rösch
+--------------
+Spanish translation
+
+Marco Barberis
+--------------
+Italian translation
+
+Matthieu Bontemps
+-----------------
+Unit tests
+
+Vasiliy Ivanov
+--------------
+Russian translation
+
+Bojan Jankuloski
+----------------
+Macedonian translation
+
+COPYRIGHTS
+==========
+
+symfony
+-------
+
+Url:        http://www.symfony-project.com/
+Copyright:  Fabien Potencier
+License:    MIT - see licenses/LICENSE.symfony
+
+Zend Framework
+--------------
+
+Url:        http://framework.zend.com/
+Copyright:  Zend Technologies USA, Inc.
+License:    new BSD license - see licenses/LICENSE.zf
+
+jQuery
+------
+
+Url:        http://jquery.com/
+Copyright:  John Resig
+License:    MIT - see licenses/LICENSE.jquery
