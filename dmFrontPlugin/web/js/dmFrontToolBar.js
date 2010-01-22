@@ -113,24 +113,38 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
   
   editToggle: function()
   {
+    var self = this;
+
     $('a.edit_toggle', this.element).click(function()
     {
-      if (active = !$(this).hasClass('s24_view_on')) 
-      {
-        $(this).addClass('s24_view_on').removeClass('s24_view_off');
-        $('#dm_page').addClass('edit');
-      }
-      else 
-      {
-        $(this).addClass('s24_view_off').removeClass('s24_view_on');
-        $('#dm_page').removeClass('edit');
-      }
-      
-      $.ajax({
-        url: $.dm.ctrl.getHref('+/dmFront/editToggle') + "?active=" + (active ? 1 : 0)
-      });
-			
-			$('#dm_page .ui-sortable').sortable('refresh');
+      self.activateEdit(!$(this).hasClass('s24_view_on'));
+    });
+  },
+
+  activateEdit: function(activate)
+  {
+    var self = this, $toggle = $('a.edit_toggle', this.element);
+
+    if($toggle.hasClass('s24_view_on') == activate)
+    {
+      return;
+    }
+
+    if (activate)
+    {
+      $toggle.addClass('s24_view_on').removeClass('s24_view_off');
+      $('#dm_page').addClass('edit');
+
+      setTimeout(function() { $('#dm_page .ui-sortable').sortable('refresh'); }, 200);
+    }
+    else
+    {
+      $toggle.addClass('s24_view_off').removeClass('s24_view_on');
+      $('#dm_page').removeClass('edit');
+    }
+
+    $.ajax({
+      url: $.dm.ctrl.getHref('+/dmFront/editToggle') + "?active=" + (activate ? 1 : 0)
     });
   },
   
@@ -181,6 +195,7 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
       {
         ui.helper.css({width: 'auto', height: 'auto'});
         $('div.dm_add_menu', self.element).dmMenu('close');
+        self.activateEdit(true);
       }
     });
   },
@@ -201,6 +216,7 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
       {
 				ui.helper.css({width: 'auto', height: 'auto'});
         $('div.dm_add_menu', self.element).dmMenu('close');
+        self.activateEdit(true);
       }
     });
   },
