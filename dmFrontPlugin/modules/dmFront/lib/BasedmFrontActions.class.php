@@ -8,7 +8,7 @@ class BasedmFrontActions extends dmFrontBaseActions
     $slug = $request->getParameter('slug');
 
     // find matching page_route for this slug
-    $pageRoute = $this->context->get('page_routing')->find($slug);
+    $pageRoute = $this->getService('page_routing')->find($slug);
     
     if ($pageRoute)
     {
@@ -24,7 +24,7 @@ class BasedmFrontActions extends dmFrontBaseActions
     else
     {
       // if page_not_found_handler suggest a redirection
-      if ($redirectionUrl = $this->context->get('page_not_found_handler')->getRedirection($slug))
+      if ($redirectionUrl = $this->getService('page_not_found_handler')->getRedirection($slug))
       {
         return $this->redirect($redirectionUrl, 301);
       }
@@ -106,7 +106,7 @@ class BasedmFrontActions extends dmFrontBaseActions
       $this->setLayout(dmOs::join(sfConfig::get('dm_front_dir'), 'modules/dmFront/templates/layout'));
     }
     
-    $this->helper = $this->context->get('page_helper');
+    $this->helper = $this->getService('page_helper');
     
     $this->isEditMode = $this->getUser()->getIsEditMode();
     
@@ -117,7 +117,7 @@ class BasedmFrontActions extends dmFrontBaseActions
   
   public function executeToAdmin(dmWebRequest $request)
   {
-    return $this->redirect($this->context->getHelper()->£link('app:admin')->getHref());
+    return $this->redirect($this->getHelper()->£link('app:admin')->getHref());
   }
 
   /*
@@ -130,12 +130,12 @@ class BasedmFrontActions extends dmFrontBaseActions
   {
     $moduleManager = $this->context->getModuleManager();
     
-    // Add module action for page
     $moduleActions = array();
-    
+
+    // Add module action for page
     if($moduleManager->hasModule($this->page->get('module')))
     {
-      $moduleActions[] = $this->page->get('module').'/'.$this->page->get('action').'Page';
+      $moduleActions[] = $this->page->getModuleAction().'Page';
     }
     
     // Find module/action for page widgets ( including layout )
@@ -189,13 +189,14 @@ class BasedmFrontActions extends dmFrontBaseActions
   public function executeShowToolBarToggle(sfWebRequest $request)
   {
     $this->getUser()->setShowToolBar($request->getParameter('active'));
+    
     return $this->renderText('ok');
   }
 
   public function executeSelectTheme(sfWebRequest $request)
   {
     $this->forward404Unless(
-      $theme = $this->context->get('theme_manager')->getTheme($request->getParameter('theme')),
+      $theme = $this->getService('theme_manager')->getTheme($request->getParameter('theme')),
       sprintf('%s is not a valid theme.',
         $request->getParameter('theme')
       )

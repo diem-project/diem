@@ -13,16 +13,6 @@ body {
   overflow-y: hidden;
 }
 
-div.dm_zone_add_helper,
-div.dm_widget_add_helper {
-	white-space: nowrap;
-	padding: 5px 10px;
-	font-weight: bold;
-	background: #F4F4F4;
-	border: 1px solid #D3D3D3;
-	text-align: center;
-}
-
 #dm_tool_bar .show_tool_bar_toggle {
   float: left;
   margin-top: 13px;
@@ -122,7 +112,9 @@ div.dm_widget_add_helper {
   list-style: none;
 }
 
-#dm_tool_bar ul.level2 li span.move {
+#dm_tool_bar ul.level2 span.move,
+div.dm_zone_add_helper,
+div.dm_widget_add_helper {
   cursor: move;
   display:block;
   padding: 3px 5px;
@@ -131,10 +123,18 @@ div.dm_widget_add_helper {
   background: url(../../core/images/default_bg.png) repeat-x scroll 50% 50%;
   border: 1px solid #D3D3D3;
   -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
   text-align: center;
 }
 
-#dm_tool_bar ul.level2 li span.move:hover {
+div.dm_zone_add_helper,
+div.dm_widget_add_helper {
+	white-space: nowrap;
+	padding: 5px 0;
+	font-weight: bold;
+}
+
+#dm_tool_bar ul.level2 span.move:hover {
   color: #444;
   background: url(../../core/images/default_bg_blue.png) repeat-x scroll 50% 50%;
 }

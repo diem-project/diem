@@ -27,11 +27,6 @@ abstract class dmWidgetBaseView
 
   }
   
-  public function getHelper()
-  {
-    return $this->context->getHelper();
-  }
-  
   protected function addJavascript($keys)
   {
     $this->javascripts = array_merge($this->javascripts, (array) $keys);
@@ -123,14 +118,14 @@ abstract class dmWidgetBaseView
   
   protected function renderPartial(array $vars)
   {
-    if ($this->isCachable() && $this->context->getViewCacheManager())
+    if ($this->isCachable() && $this->getService('view_cache_manager'))
     {
       $this->context->getViewCacheManager()->addCache($this->widget['module'], '_'.$this->widget['action'], array(
-        'withLayout' => false,
-        'lifeTime' => 86400,
-        'clientLifeTime' => 86400,
-        'contextual' => !$this->isStatic(),
-        'vary' => array($this->widget['id'])
+        'withLayout'      => false,
+        'lifeTime'        => 86400,
+        'clientLifeTime'  => 86400,
+        'contextual'      => !$this->isStatic(),
+        'vary'            => array($this->widget['id'])
       ));
     }
 
@@ -149,8 +144,8 @@ abstract class dmWidgetBaseView
       $html = sprintf(
         '<div class="%s">%s %s</div>',
         'dm dm_new_widget',
-        $this->context->getI18n()->__('New widget'),
-        $this->context->getI18n()->__($this->widgetType->getPublicName())
+        $this->__('New widget'),
+        $this->__($this->widgetType->getPublicName())
       );
     }
     else
@@ -222,12 +217,12 @@ abstract class dmWidgetBaseView
   
   public function getCache()
   {
-    return $this->context->getCacheManager()->getCache($this->getCacheName())->get($this->generateCacheKey());
+    return $this->getService('cache_manager')->getCache($this->getCacheName())->get($this->generateCacheKey());
   }
   
   public function setCache($html)
   {
-    return $this->context->getCacheManager()->getCache($this->getCacheName())->set($this->generateCacheKey(), $html, 86400);
+    return $this->getService('cache_manager')->getCache($this->getCacheName())->set($this->generateCacheKey(), $html, 86400);
   }
   
   protected function getCacheName()
@@ -248,6 +243,11 @@ abstract class dmWidgetBaseView
     }
     
     return $vars;
+  }
+
+  protected function getHelper()
+  {
+    return $this->context->getHelper();
   }
 
   protected function getService($name, $class = null)

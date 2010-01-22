@@ -20,7 +20,7 @@ class dmPageActions extends dmFrontBaseActions
       'Can not delete record page. Please delete record instead.'
     );
     
-    $redirectUrl = $this->context->getHelper()->£link($page->getNode()->getParent())->getHref();
+    $redirectUrl = $this->getHelper()->£link($page->getNode()->getParent())->getHref();
     
     $page->getNode()->delete();
     
@@ -29,10 +29,7 @@ class dmPageActions extends dmFrontBaseActions
   
   public function executeEdit(dmWebRequest $request)
   {
-    $this->forward404Unless(
-      $this->page = $this->context->getPage(),
-      'no current DmPage'
-    );
+    $this->forward404Unless($this->page = $this->context->getPage(), 'no current DmPage');
     
     $this->form = new DmPageFrontEditForm($this->page);
     
@@ -43,38 +40,19 @@ class dmPageActions extends dmFrontBaseActions
       $this->form->changeToDisabled('is_secure')->setDefault('is_secure', false);
     }
     
-    if ($request->isMethod('post'))
+    if ($request->isMethod('post') && $this->form->bindAndValid($request))
     {
-      if ($this->form->bindAndValid($request))
-      {
-        $this->form->updateObject();
-        $this->page = $this->form->getObject();
-        
-        $this->page->updateAutoModFromModified();
-        
-        $this->page->save();
-        
-        /*
-         * dmPageView.dmLayoutId may be modified
-         */
-        $this->page->getPageView()->save();
-        
-        return $this->renderJson(array(
-          'type'  => 'redirect',
-          'url'   => $this->getHelper()->£link($this->page)->getHref()
-        ));
-      }
-      
-      $js = false;
-    }
-    else
-    {
-      $js =
-      file_get_contents($this->getHelper()->getJavascriptFullPath('lib.ui-tabs')).
-      dmJsMinifier::transform(
-      file_get_contents($this->getHelper()->getJavascriptFullPath('core.tabForm')).';'.
-      file_get_contents($this->getHelper()->getJavascriptFullPath('front.pageEditForm'))
-      );
+      $this->page = $this->form
+      ->updateObject()
+      ->updateAutoModFromModified()
+      ->saveGet();
+
+      /*
+       * dmPageView.dmLayoutId may be modified
+       */
+      $this->page->getPageView()->save();
+
+      return $this->renderText($this->getHelper()->£link($this->page)->getAbsoluteHref());
     }
     
     $this->deletePageLink =
@@ -82,15 +60,11 @@ class dmPageActions extends dmFrontBaseActions
     &&  !$this->page->getNode()->isRoot()
     &&  (!$this->page->hasRecord() || !$this->page->getRecord());
     
-    return $this->renderJson(array(
-      'type' => 'form',
-      'js'   => $js,
-      'html' => $this->getPartial('dmPage/edit'),
-      'stylesheets' => array(
-        $this->getHelper()->getStylesheetWebPath('lib.ui-tabs'),
-        $this->getHelper()->getStylesheetWebPath('front.pageEditForm')
-      )
-    ));
+    return $this->renderAsync(array(
+      'html'  => $this->getPartial('dmPage/edit'),
+      'js'    => array('lib.ui-tabs', 'core.tabForm', 'front.pageEditForm'),
+      'css'   => array('lib.ui-tabs', 'front.pageEditForm')
+    ), true);
   }
   
   public function executeNew(dmWebRequest $request)
@@ -104,32 +78,18 @@ class dmPageActions extends dmFrontBaseActions
     
     $this->form->removeCsrfProtection();
     
-    if ($request->isMethod('post'))
+    if ($request->isMethod('post') && $this->form->bindAndValid($request))
     {
-      if ($this->form->bindAndValid($request))
-      {
-        $this->page = $this->form->save();
-        
-        return $this->renderJson(array(
-          'type'  => 'redirect',
-          'url'   => $this->getHelper()->£link($this->page)->getHref()
-        ));
-      }
-      
-      $js = false;
+      $newPage = $this->form->save();
+
+      return $this->renderText($this->getHelper()->£link($newPage)->getAbsoluteHref());
     }
-    else
-    {
-      $this->form->setDefaults(array(
-        'parent_id' => $this->page->id,
-        'layout_id' => $this->page->PageView->dmLayoutId,
-        'slug'      => $this->page->slug ? $this->page->slug.'/?' : '?'
-      ));
-      
-      $js = dmJsMinifier::transform(
-        file_get_contents($this->getHelper()->getJavascriptFullPath('front.pageAddForm'))
-      );
-    }
+    
+    $this->form->setDefaults(array(
+      'parent_id'     => $this->page->id,
+      'dm_layout_id'  => $this->page->PageView->dmLayoutId,
+      'slug'          => $this->page->slug ? $this->page->slug.'/?' : '?'
+    ));
     
     $_parentSlugs = dmDb::query('DmPage p')
     ->where('p.record_id = 0')
@@ -145,11 +105,10 @@ class dmPageActions extends dmFrontBaseActions
     
     $this->parentSlugsJson = json_encode($parentSlugs);
     
-    return $this->renderJson(array(
-      'type' => 'form',
-      'js'   => $js,
+    return $this->renderAsync(array(
+      'js'   => array('front.pageAddForm'),
       'html' => $this->getPartial('dmPage/new')
-    ));
+    ), true);
   }
   
 }

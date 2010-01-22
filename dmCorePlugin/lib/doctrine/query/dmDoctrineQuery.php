@@ -273,19 +273,24 @@ abstract class dmDoctrineQuery extends Doctrine_Query
     return $this
     ->addOrderBy("$me.position asc");
   }
-
   
   /*
    * returns join alias for a given relation alias, if joined
    * ex: "Elem e, e.Categ my_categ"
    * alias for joined relation Categ = my_categ
+   * getJoinAliasForRelationAlias('Elem', 'Categ') ->my_categ
    */
-  public function getJoinAliasForRelationAlias($relationAlias)
+  public function getJoinAliasForRelationAlias($model, $relationAlias)
   {
     $this->buildSqlQuery();
+    
     foreach ($this->getQueryComponents() as $joinAlias => $queryComponent)
     {
-      if (isset($queryComponent['relation']) && $queryComponent['relation']['alias'] == $relationAlias)
+      if (
+         isset($queryComponent['relation'])
+      && $relationAlias == $queryComponent['relation']['alias']
+      && $model == $queryComponent['relation']['localTable']->getComponentName()
+      )
       {
         return $joinAlias;
       }

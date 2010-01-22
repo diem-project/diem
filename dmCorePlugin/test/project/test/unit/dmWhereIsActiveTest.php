@@ -8,7 +8,7 @@ $t = new lime_test();
 
 $t->comment('Testing DmTestPost');
 
-dmDb::create('DmTestCateg', array('title' => dmString::random()))->save();
+dmDb::create('DmTestCateg', array('name' => dmString::random()))->save();
 $helper->loremizeModule('dmTestPost', 10, $t);
 
 foreach(dmDb::query('DmTestPost p')->whereIsActive(true, 'DmTestPost')->fetchRecords() as $post)

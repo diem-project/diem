@@ -10,7 +10,7 @@ $t->comment('Testing DmTestPost');
 
 $model = 'DmTestPost';
 $post = new $model;
-$post->Categ = dmDb::create('DmTestCateg', array('title' => dmString::random()))->saveGet();
+$post->Categ = dmDb::create('DmTestCateg', array('name' => dmString::random()))->saveGet();
 $post->userId = dmDb::table('DmUser')->findOne()->id;
 $post->setDateTimeObject('date', new DateTime());
 $table = dmDb::table($model);

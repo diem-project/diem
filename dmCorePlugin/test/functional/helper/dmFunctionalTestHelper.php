@@ -22,11 +22,11 @@ class dmFunctionalTestHelper
     // remove all cache
     sfToolkit::clearDirectory(sfConfig::get('sf_app_cache_dir'));
 
+    $this->cleanup();
+
     $this->initialize();
 
     register_shutdown_function(array($this, 'cleanup'));
-
-    $this->cleanup();
 
     return $this;
 	}
@@ -55,6 +55,8 @@ class dmFunctionalTestHelper
       {
         $this->configuration->cleanup($this->context->get('filesystem'));
       }
+
+//      $this->context->get('filesystem')->
     }
     catch (Exception $e)
     {

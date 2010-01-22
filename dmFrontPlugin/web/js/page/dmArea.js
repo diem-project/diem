@@ -53,7 +53,7 @@ $.widget('ui.dmArea', {
 					{
 						ui.placeholder
 						.addClass('dm dm_zone block')
-						.html('<a class="dm dm_zone_edit"/><div class="dm_widgets">New Zone</div>')
+						.html('<a class="dm dm_zone_edit"/><div class="dm_widgets"></div>')
 						.css('width', '100%');
 					}
 					// moving a zone
@@ -96,7 +96,7 @@ $.widget('ui.dmArea', {
       url:      $.dm.ctrl.getHref('+/dmZone/move')
       +"?moved_dm_zone="+$zone.dmZone('getId')
       +"&to_dm_area="+this.getId()
-      +"&"+$('div.dm_zones', this.element).sortable('serialize'),
+      +"&"+$('div.dm_zones', this.element).sortable('serialize')
     });
   },
   
@@ -116,7 +116,7 @@ $.widget('ui.dmArea', {
   sortZones: function()
   {
     $.ajax({
-      url:      $.dm.ctrl.getHref('+/dmZone/sort')+"?dm_area="+this.getId()+"&"+$('div.dm_zones', this.element).sortable('serialize'),
+      url: $.dm.ctrl.getHref('+/dmZone/sort')+"?dm_area="+this.getId()+"&"+$('div.dm_zones', this.element).sortable('serialize')
     });
   },
   

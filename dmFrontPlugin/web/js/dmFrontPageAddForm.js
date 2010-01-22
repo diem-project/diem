@@ -21,25 +21,34 @@
       self.$parent = $('select#dm_page_front_new_form_parent_id', self.element);
       
       self.$slug = $('input#dm_page_front_new_form_slug', self.element).attr('disabled', self.autoSlug);
+
+      var json = $('div.parent_slugs', self.element).text();
       
-      self.parentSlugs = window["eval"]("(" + $('div.parent_slugs', self.element).text() + ")");
+      // Try to use the native JSON parser first
+      if ( window.JSON && window.JSON.parse )
+      {
+        self.parentSlugs = window.JSON.parse( json );
+      }
+      else
+      {
+        self.parentSlugs = (new Function("return " + json))();
+      }
       
       self.$form = $('form', self.element).dmAjaxForm({
-				dataType: 'json',
         beforeSubmit: function(data)
         {
           self.element.block();
         },
-        success: function(data)
+        success: function(html)
         {
-          if (data.type == 'redirect')
+          if (html.substr(0, 7) == 'http://')
           {
             self.element.dialog('close');
             $('body').block();
-            location.href = data.url;
+            location.href = html;
             return;
           }
-          self.element.html(data.html);
+          self.element.html(html);
           self.form();
         }
       });

@@ -19,8 +19,8 @@ echo £('div.form',
           %s
         </div>
       </div>',
-      sprintf('<a class="cancel dm close_dialog dm button fleft">%s</a>', dm::getI18n()->__('Cancel')),
-      sprintf('<input type="submit" class="submit and_save green fright" name="and_save" value="%s" />', dm::getI18n()->__('Save'))
+      sprintf('<a class="cancel dm close_dialog dm button fleft">%s</a>', __('Cancel')),
+      sprintf('<input type="submit" class="submit and_save green fright" name="and_save" value="%s" />', __('Save'))
     ).
   
   $form->close()

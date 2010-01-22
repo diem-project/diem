@@ -12,7 +12,7 @@ class dmInterfaceActions extends BasedmInterfaceActions
     return $this->renderAsync(array(
       'html'  => $tree->render(),
       'js'    => array('lib.tree-component', 'lib.tree-css')
-    ));
+    ), false);
   }
 
 }

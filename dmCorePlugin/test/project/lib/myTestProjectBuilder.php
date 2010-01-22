@@ -118,7 +118,7 @@ class myTestProjectBuilder
       'title' => 'Domain 1',
       'Categs' => array(
         array(
-          'title' => 'Categ 1',
+          'name' => 'Categ 1',
           'Posts' => array(
             array(
               'title' => 'Post 1',

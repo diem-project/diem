@@ -30,10 +30,11 @@ if ($.datepicker)
 if ($.blockUI)
 {
 	$.blockUI.defaults = $.extend($.blockUI.defaults, {
-    css:      {},
-    message:  ' ',
-		fadeIn:   0,
-		fadeOut:  0
+    css:        {},
+    overlayCSS: {},
+    message:    ' ',
+		fadeIn:     0,
+		fadeOut:    0
 	});
 }
 

@@ -8,7 +8,7 @@
   height:         48px;
   top:            40%;
   left:           35%;
-  color:          #000;
+  color:          #ddd;
   border:         3px solid #aaa;
   background:     #fff url(../images/48/loader.gif) 10px 10px no-repeat;
   cursor:         wait;
@@ -36,32 +36,21 @@
   cursor:         wait;
   padding:        10px;
   -moz-border-radius: 8px;
+  -webkit-border-radius: 8px;
   -moz-box-shadow: 5px 5px 10px #444;
+  -webkit-box-shadow: 5px 5px 10px #444;
 }
 
 .blockUI.blockOverlay {
   background:     #444;
   opacity:        0.2;
   -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
   cursor:         wait;
-}
-
-div.jGrowl div.jGrowl-notification, div.jGrowl div.jGrowl-closer {
-  margin-top:15px;
 }
 
 #ui-datepicker-div {
   z-index: 1010;
-}
-
-.loader {
-  background: #fff url(../images/48/loader.gif) center center no-repeat;
-}
-
-.loader48,
-.ui-dialog .loader48 {
-  background: #fff url(../images/48/loader.gif) center center no-repeat;
-  min-height: 100px;
 }
 
 ul.ui-tabs-nav > li.dm_error {

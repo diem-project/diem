@@ -5,7 +5,7 @@
   
     liveEvents: function()
     {
-      $('.dm_js_confirm').live('click', function(e)
+      $('a.dm_js_confirm, input.dm_js_confirm').live('click', function(e)
       {
         e.stopPropagation();
         if (!confirm(($(this).attr('title') || 'Are you sure') + ' ?')) 
@@ -104,13 +104,6 @@
         {},
         success: function(data)
         {
-          if (data.match(/\_\_DM\_SPLIT\_\_/)) 
-          {
-            var parts = data.split(/\_\_DM\_SPLIT\_\_/);
-            $.globalEval(parts[1]);
-            data = parts[0];
-          }
-          
           $dialog.html(data).dmExtractEncodedAssets().trigger('dmAjaxResponse');
         },
         error: function(xhr)

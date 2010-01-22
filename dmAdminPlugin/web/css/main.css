@@ -37,6 +37,7 @@ body.full_screen #dm_admin_content {
 .dm_box {
   border: 1px solid #D3D3D3;
   -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
   background: #FBFBFB;
   margin-left: auto;
   margin-right: auto;

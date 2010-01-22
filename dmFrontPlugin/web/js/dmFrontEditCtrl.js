@@ -14,24 +14,6 @@
       this.bars();
       
       this.liveEvents();
-      
-      this.hotkeys();
-    },
-    
-    hotkeys: function()
-    {
-      $("#dm_page").click(function(e)
-      {
-        if (e.ctrlKey) 
-        {
-          e.stopPropagation();
-          if ($widget = $('#dm_page').dmPage('getWidgetByPos', e.pageX, e.pageY)) 
-          {
-            $widget.dmWidget('openEditDialog');
-          }
-          return false;
-        }
-      });
     },
     
     bars: function()

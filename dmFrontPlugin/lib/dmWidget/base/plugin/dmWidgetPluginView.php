@@ -9,11 +9,11 @@ abstract class dmWidgetPluginView extends dmWidgetBaseView
     
     if ($this->widgetType->useComponent())
     {
-      $html = $this->context->get('helper')->renderComponent($module, $action, $vars);
+      $html = $this->getHelper()->renderComponent($module, $action, $vars);
     }
     else
     {
-      $html = $this->context->get('helper')->renderPartial($module, $action, $vars);
+      $html = $this->getHelper()->renderPartial($module, $action, $vars);
     }
     
     return $html;

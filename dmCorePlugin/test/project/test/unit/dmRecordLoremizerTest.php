@@ -71,8 +71,8 @@ for($it=0; $it<50; $it++)
 $t->is(dmDb::table('DmTestCateg')->count(), 50, '50 categs exist');
 
 $categ = dmDb::query('DmTestCateg c')->withI18n()->fetchOne();
-$nbCategsByTitle = dmDb::query('DmTestCateg c')->withI18n()->where('cTranslation.title = ?', $categ->title)->count();
+$nbCategsByName = dmDb::query('DmTestCateg c')->withI18n()->where('cTranslation.name = ?', $categ->name)->count();
 
-$t->is($nbCategsByTitle, 1, 'Each categ title is unique');
+$t->is($nbCategsByName, 1, 'Each categ name is unique');
 
 $t->ok($count = dmDb::table('DmTestDomainCateg')->count(), 'Some domain-categ relations have been created: '.$count);

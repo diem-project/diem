@@ -88,8 +88,6 @@ class DmPageFrontNewForm extends DmPageForm
     
     $this->object->PageView->Layout = dmDb::table('DmLayout')->find($values['dm_layout_id']);
     $this->object->PageView->save();
-        
-    $this->object->initializeManualPage();
     
     $this->object->save();
   }

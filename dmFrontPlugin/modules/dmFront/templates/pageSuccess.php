@@ -1,34 +1,34 @@
 <?php
 /*
- * Renders a page.
+ * Render a page.
  * Layout areas and page content area are rendered.
  * 
  * Available vars :
  * - dmFrontPageHelper $helper      ( page_helper service )
  * - boolean           $isEditMode  ( whether the user is allowed to edit page )
  */
+?>
 
-// open the page's div wrapper
-echo £o('div#dm_page'.($isEditMode ? '.edit' : ''));
+<div id="dm_page" class="<?php $isEditMode && print 'edit' ?>">
 
-echo $helper->renderAccessLinks();             // render accessibility links
+  <?php echo $helper->renderAccessLinks() ?>
 
-  echo £('div.dm_layout',                      // open the layout div
+  <div class="layout">
 
-    $helper->renderArea('top', '.clearfix').   // render TOP Area
+    <?php echo $helper->renderArea('top', '.clearfix') ?>
 
-    £('div.dm_layout_center.clearfix',         // open the layout_center div
+    <div class="dm_layout_center clearfix">
 
-      $helper->renderArea('left').             // render LEFT Area
+      <?php echo $helper->renderArea('left') ?>
 
-      $helper->renderArea('content').          // render page content Area
+      <?php echo $helper->renderArea('content') ?>
 
-      $helper->renderArea('right')             // render right Area
+      <?php echo $helper->renderArea('right') ?>
 
-    ).                                         // close the layout_center div
+    </div>
 
-    $helper->renderArea('bottom', '.clearfix') // render the BOTTOM Area
+    <?php echo $helper->renderArea('bottom', '.clearfix') ?>
 
-  );                                           // close the layout div
+  </div>
 
-echo £c('div');                                // close the page's div wrapper
+</div>

@@ -9,19 +9,29 @@ class dmProjectConfiguration extends sfProjectConfiguration
 
     $this->setDmPluginPaths();
 
-    $this->enablePlugins(array('sfDoctrinePlugin', 'dmCorePlugin', 'dmMenuPlugin', 'dmUserPlugin', 'sfWebBrowserPlugin', 'sfImageTransformPlugin'));
+    $this->enablePlugins(array(
+      'sfDoctrinePlugin',
+      'dmCorePlugin',
+      'dmUserPlugin',
+      'dmMenuPlugin',
+      'sfWebBrowserPlugin',
+      'sfImageTransformPlugin',
+      'sfFeed2Plugin'
+    ));
   }
   
   protected function setDmPluginPaths()
   {
+    $baseDir = dm::getDir();
+    
     foreach(array('dmCorePlugin', 'dmAdminPlugin', 'dmFrontPlugin') as $rootPlugin)
     {
-      $this->setPluginPath($rootPlugin, dm::getDir().'/'.$rootPlugin);
+      $this->setPluginPath($rootPlugin, $baseDir.'/'.$rootPlugin);
     }
     
-    foreach(array('dmUserPlugin', 'dmMenuPlugin', 'dmAlternativeHelperPlugin', 'sfWebBrowserPlugin', 'sfImageTransformPlugin') as $embeddedPlugin)
+    foreach(array('dmUserPlugin', 'dmMenuPlugin', 'dmAlternativeHelperPlugin', 'sfWebBrowserPlugin', 'sfImageTransformPlugin', 'sfFeed2Plugin') as $embeddedPlugin)
     {
-      $this->setPluginPath($embeddedPlugin, dm::getDir().'/dmCorePlugin/plugins/'.$embeddedPlugin);
+      $this->setPluginPath($embeddedPlugin, $baseDir.'/dmCorePlugin/plugins/'.$embeddedPlugin);
     }
   }
   
@@ -41,7 +51,7 @@ class dmProjectConfiguration extends sfProjectConfiguration
     /*
      * Set up doctrine extensions dir
      */
-    Doctrine_Core::setExtensionsPath(sfConfig::get('dm_core_dir').'/lib/doctrine/extension');
+    //Doctrine_Core::setExtensionsPath(sfConfig::get('dm_core_dir').'/lib/doctrine/extension');
 
     /*
      * Configure inheritance

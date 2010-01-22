@@ -6,25 +6,21 @@ div.dm_data table {
   width: 100%;
 }
 
-div.dm_data table th,
-div.dm_data table td {
+div.dm_data th,
+div.dm_data td {
   padding: 5px;
 }
 
-div.dm_data table th {
+div.dm_data th {
   font-weight: bold;
 }
 
-div.dm_data table td {
+div.dm_data td {
   border-top: 1px dotted #ddd;
   max-width: 600px;
 }
 
-div.dm_data table tr.even {
-  background: #fff;
-}
-
-div.dm_data table tr.odd {
+div.dm_data tr.odd {
   background: #F0F4FC;
 }
 

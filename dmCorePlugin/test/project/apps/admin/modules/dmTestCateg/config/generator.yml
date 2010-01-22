@@ -14,7 +14,7 @@ generator:
           label: 'Dm test domains'
       list:
         display:
-          - '=title'
+          - '=name'
           - posts_list
           - domains_list
           - created_at
@@ -27,12 +27,12 @@ generator:
         table_count_method: ~
       filter:
         display:
-          - title
+          - name
           - created_at
           - updated_at
       form:
         display:
-          NONE: [title, is_active]
+          NONE: [name, is_active]
           'Dm test domains': [domains_list]
         class: DmTestCategAdminForm
         fields: {  }

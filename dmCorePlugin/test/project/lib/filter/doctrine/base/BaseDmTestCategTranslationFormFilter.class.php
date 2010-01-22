@@ -13,12 +13,12 @@ abstract class BaseDmTestCategTranslationFormFilter extends BaseFormFilterDoctri
   public function setup()
   {
     $this->setWidgets(array(
-      'title'     => new sfWidgetFormFilterInput(),
+      'name'      => new sfWidgetFormFilterInput(),
       'is_active' => new sfWidgetFormChoice(array('choices' => array('' => dm::getI18n()->__('yes or no', array(), 'dm'), 1 => dm::getI18n()->__('yes', array(), 'dm'), 0 => dm::getI18n()->__('no', array(), 'dm')))),
     ));
 
     $this->setValidators(array(
-      'title'     => new sfValidatorPass(array('required' => false)),
+      'name'      => new sfValidatorPass(array('required' => false)),
       'is_active' => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
     ));
 
@@ -40,7 +40,7 @@ abstract class BaseDmTestCategTranslationFormFilter extends BaseFormFilterDoctri
   {
     return array(
       'id'        => 'Number',
-      'title'     => 'Text',
+      'name'      => 'Text',
       'is_active' => 'Boolean',
       'lang'      => 'Text',
     );

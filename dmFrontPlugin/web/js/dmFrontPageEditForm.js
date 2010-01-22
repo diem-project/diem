@@ -17,21 +17,20 @@
       self.$tabs = self.element.find('div.dm_page_edit').dmCoreTabForm({});
 
       self.$form = $('form', self.element).dmAjaxForm({
-				dataType: 'json',
         beforeSubmit: function(data)
         {
           self.element.block();
         },
-        success: function(data)
+        success: function(html)
         {
-          if (data.type == 'redirect')
+          if (html.substr(0, 7) == 'http://')
           {
             self.element.dialog('close');
             $('body').block();
-            location.href = data.url;
+            location.href = html;
             return;
           }
-          self.element.html(data.html);
+          self.element.html(html);
           self.form();
         }
       });

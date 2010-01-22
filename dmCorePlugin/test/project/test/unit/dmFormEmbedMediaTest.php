@@ -4,7 +4,7 @@ require_once(realpath(dirname(__FILE__).'/../../..').'/unit/helper/dmUnitTestHel
 $helper = new dmUnitTestHelper();
 $helper->boot();
 
-$categ = dmDb::create('DmTestCateg', array('title' => dmString::random()))->saveGet();
+$categ = dmDb::create('DmTestCateg', array('name' => dmString::random()))->saveGet();
 $user = dmDb::table('DmUser')->findOne();
 
 $t = new lime_test(40);

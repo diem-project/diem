@@ -270,12 +270,14 @@ LIMIT 1')->getStatement();
    * the letter 'd' will be removed from auto_mod
    * but if new description is empty,
    * the letter 'd' will be added to auto_mod
+   *
+   * @return DmPage $this
    */
   public function updateAutoModFromModified()
   {
     if (!$this->getIsAutomatic())
     {
-      return;
+      return $this;
     }
     
     $modifiedFields = $this->get('Translation')->get(self::getDefaultCulture())->getModified();
@@ -296,15 +298,6 @@ LIMIT 1')->getStatement();
     }
     
     return $this;
-  }
-  
-  /*
-   * Called when a manual page has been created by an administrator.
-   * Overload this method to add default content to the page
-   * @return null
-   */
-  public function initializeManualPage()
-  {
   }
   
   /*

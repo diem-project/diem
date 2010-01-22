@@ -13,7 +13,7 @@ article, aside, dialog, figure, footer, header, hgroup, menu, nav, section { dis
 .clearfix {display:block;}
 /* End hide from IE Mac */
 
-/* CLASSES GENERIQUES */
+/* GENERIC CLASSES */
 
 .fleft{float: left;}
 .fright{float: right;}
@@ -107,7 +107,7 @@ article, aside, dialog, figure, footer, header, hgroup, menu, nav, section { dis
 .ml4p { margin-left: 4% !important; }
 .mr4p { margin-right: 4% !important;}
 
-/* FIN DES CLASSES GENERIQUES */
+/* END GENERIC CLASSES */
 
 .dm_quarter {
   width: 25%;

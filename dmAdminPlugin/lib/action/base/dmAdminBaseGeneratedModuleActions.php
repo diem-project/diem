@@ -67,7 +67,7 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
         {
           if (($foreignColumn = $foreignTable->getIdentifierColumnName()) != 'id')
           {
-            if (!$joinAlias = $query->getJoinAliasForRelationAlias($relation->getAlias()))
+            if (!$joinAlias = $query->getJoinAliasForRelationAlias($this->getDmModule()->getModel(), $relation->getAlias()))
             {
               $query->leftJoin(sprintf('%s.%s %s', $query->getRootAlias(), $relation->getAlias(), $relation->getAlias()));
               $joinAlias = $relation->getAlias();
@@ -94,7 +94,7 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
     }
     elseif($this->getDmModule()->getTable()->isI18nColumn($sort[0]))
     {
-      $query->addOrderBy(sprintf('%s.%s %s', $query->getJoinAliasForRelationAlias('Translation'), $sort[0], $sort[1]));
+      $query->addOrderBy(sprintf('%s.%s %s', $query->getJoinAliasForRelationAlias($this->getDmModule()->getModel(), 'Translation'), $sort[0], $sort[1]));
       // Success, skip default sorting by local column
       return;
     }

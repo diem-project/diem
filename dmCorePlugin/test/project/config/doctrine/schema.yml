@@ -49,9 +49,9 @@ DmTestCateg:
     Timestampable:
     Sortable:
     I18n:
-      fields:         [ title, is_active ]
+      fields:         [ name, is_active ]
   columns:  
-    title:            { type: string(255), notnull: true }  
+    name:             { type: string(255), notnull: true }
     is_active:        { type: boolean, notnull: true, default: true }
   relations:
     Domains:

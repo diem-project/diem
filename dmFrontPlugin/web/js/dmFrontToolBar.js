@@ -37,7 +37,7 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
     {
       if (!$('body > div.dm_page_edit_dialog').length) 
       {
-        $dialog = $.dm.ctrl.ajaxJsonDialog({
+        $dialog = $.dm.ctrl.ajaxDialog({
           title:    $(this).attr('title'),
           'class':  'dm_page_edit_dialog',
           url:      $(this).attr('href'),
@@ -57,10 +57,11 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
     {
       if (!$('body > div.dm_page_add_dialog').length) 
       {
-        $dialog = $.dm.ctrl.ajaxJsonDialog({
+        $dialog = $.dm.ctrl.ajaxDialog({
           title:    $(this).attr('title'),
           'class':  'dm_page_add_dialog',
-          url:      $(this).attr('href')
+          url:      $(this).attr('href'),
+          width:    400
         }).bind('dmAjaxResponse', function()
         {
           $dialog.dmFrontPageAddForm().prepare();
@@ -143,9 +144,12 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
       $('#dm_page').removeClass('edit');
     }
 
-    $.ajax({
-      url: $.dm.ctrl.getHref('+/dmFront/editToggle') + "?active=" + (activate ? 1 : 0)
-    });
+    setTimeout(function()
+    {
+      $.ajax({
+        url: $.dm.ctrl.getHref('+/dmFront/editToggle') + "?active=" + (activate ? 1 : 0)
+      });
+    }, 500);
   },
   
   showToolBarToggle: function()
@@ -193,7 +197,6 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
       cursor: 'move',
       start: function(e, ui)
       {
-        ui.helper.css({width: 'auto', height: 'auto'});
         $('div.dm_add_menu', self.element).dmMenu('close');
         self.activateEdit(true);
       }
@@ -214,7 +217,6 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
 			cursor: 'move',
       start: function(e, ui)
       {
-				ui.helper.css({width: 'auto', height: 'auto'});
         $('div.dm_add_menu', self.element).dmMenu('close');
         self.activateEdit(true);
       }
