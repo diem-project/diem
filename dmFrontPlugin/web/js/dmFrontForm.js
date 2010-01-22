@@ -14,16 +14,6 @@ $.widget('ui.dmFrontForm', $.extend({}, $.dm.coreForm, {
     
 		this.hotKeys();
   },
-	
-	hotKeys: function()
-	{
-		var self = this;
-		
-    self.element.bindKey('Ctrl+s', function() {
-      self.form.submit();
-      return false;
-    });
-	},
   
   markdown: function()
   {
