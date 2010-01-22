@@ -23,21 +23,10 @@ class dmFrontTestFunctional extends dmTestFunctional
 
   public function editPage()
   {
-    $this
+    return $this
     ->info('Edit the current page: '.$this->getPage())
     ->get('/+/dmPage/edit?dm_cpi='.$this->getPage()->id)
     ->checks(array('module_action' => 'dmPage/edit', 'method' => 'get'));
-
-    $response = $this->getResponse();
-    $this->test()->is($response->getContentType(), 'application/json', 'Edit page return json');
-    $this->test()->ok($html = dmArray::get(json_decode($response->getContent(), true), 'html'), 'json contains html');
-
-    $response->setContentType('text/html');
-    $response->setContent($html);
-
-    $this->browser->setResponse($response);
-
-    return $this;
   }
 
   public function updatePage(array $data = array())
@@ -52,7 +41,7 @@ class dmFrontTestFunctional extends dmTestFunctional
     ->info('Save the page')
     ->click('Save')
     ->checks(array('module_action' => 'dmPage/edit', 'method' => 'post'))
-    ->testResponseContent('|^'.preg_quote('{"type":"redirect","url":"', '|').'|', 'like')
+    ->testResponseContent('|^http://|', 'like')
     ->get('/'.($this->getPage()->slug ? $this->getPage()->slug : 'index.php'));
   }
 

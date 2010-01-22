@@ -79,6 +79,11 @@ class ProjectConfiguration extends dmProjectConfiguration
     $filesystem->remove(sfFinder::type('file')->name('sitemap*')->in(sfConfig::get('sf_web_dir')));
     copy(dmOs::join(sfConfig::get('sf_data_dir'), 'fresh_db.sqlite'), dmOs::join(sfConfig::get('sf_data_dir'), 'db.sqlite'));
     $this->cleanupUploads($filesystem);
+
+    foreach(array('core', 'front', 'admin') as $dmAssetDir)
+    {
+      unlink(sfConfig::get('sf_web_dir').'/dm/'.$dmAssetDir);
+    }
   }
   
   protected function cleanupUploads(sfFilesystem $filesystem)
