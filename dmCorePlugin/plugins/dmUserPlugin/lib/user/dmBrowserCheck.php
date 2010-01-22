@@ -38,10 +38,10 @@ class dmBrowserCheck
     {
       case 'firefox':
         $isSupported = version_compare(3, $browser->getVersion()); break;
-      case 'safari':
-        $isSupported = version_compare(4, $browser->getVersion()); break;
-//      case 'chrome':
-//        $isSupported = version_compare(3, $browser->getVersion()); break;
+//      case 'safari':
+//        $isSupported = version_compare(4, $browser->getVersion()); break;
+      case 'chrome':
+        $isSupported = version_compare(3, $browser->getVersion()); break;
       default:
          $isSupported = false;
     }
