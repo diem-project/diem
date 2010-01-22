@@ -24,6 +24,11 @@ class dmZoneActions extends dmFrontBaseActions
         return $this->renderText('ok');
       }
     }
+    
+    return $this->renderAsync(array(
+      'html'  => $this->getPartial('dmZone/edit'),
+      'js'    => array('lib.hotkeys')
+    ), true);
   }
 
   public function executeGetAttributes(sfWebRequest $request)

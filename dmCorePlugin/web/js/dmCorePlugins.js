@@ -37,6 +37,11 @@
     },
     bindKey: function(key, fn)
     {
+      if( !window.hotkeys)
+      {
+        return this;
+      }
+      
       return this.bind('keydown', key, function(e)
       {
         e.stopPropagation();
@@ -45,6 +50,11 @@
     },
     unbindKey: function(key)
     {
+      if( !window.hotkeys)
+      {
+        return this;
+      }
+      
       return this.unbind('keydown', key);
     }
   });

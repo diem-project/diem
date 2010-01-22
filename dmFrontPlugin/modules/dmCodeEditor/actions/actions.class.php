@@ -9,7 +9,7 @@ class dmCodeEditorActions extends dmFrontBaseActions
 
     return $this->renderAsync(array(
       'html'  => $this->getPartial('dmCodeEditor/launch'),
-      'js'    => array('lib.ui-tabs', 'core.codeArea', 'front.codeEditor'),
+      'js'    => array('lib.ui-tabs', 'lib.hotkeys', 'core.codeArea', 'front.codeEditor'),
       'css'   => array('lib.ui-tabs', 'front.codeEditor')
     ), true);
   }

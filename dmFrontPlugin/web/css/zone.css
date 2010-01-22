@@ -38,6 +38,7 @@
   opacity: 0.5;
 }
 
-.dm_zone_helper {
-  
+#dm_page.edit .dm_zones.droppable-active {
+  background: url(../images/area_droppable.png) top left no-repeat;
+  min-height: 100px;
 }

@@ -75,7 +75,7 @@ class BasedmWidgetActions extends dmFrontBaseActions
     
     return $this->renderAsync(array(
       'html'  => $this->renderEdit($form, $widgetType),
-      'js'    => $form->getJavascripts(),
+      'js'    => array_merge(array('lib.hotkeys'), $form->getJavascripts()),
       'css'   => $form->getStylesheets()
     ), true);
   }

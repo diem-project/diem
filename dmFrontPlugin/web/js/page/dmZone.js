@@ -68,17 +68,18 @@ $.widget('ui.dmZone', {
           $dialog.block();
           zone.element.block();
         },
-        success:  function(data) {
-          if (data == 'ok') {
+        success:  function(html) {
+          if (html == 'ok') {
             $dialog.dialog('close');
           }
-          $dialog.html(data).trigger('dmAjaxResponse');
+          $dialog.html(html).trigger('dmAjaxResponse');
           if(!$('ul.error_list', $form).length) {
             zone.element.attr('class', 'dm_zone '+ $('input.dm_zone_css_class', $form).val().replace(/\./g, ' ')).css('width', $('input.dm_zone_width', $form).val());
           }
           zone.element.unblock();
         }
       });
+      
       $('a.delete', $form).click(function() {
         if (confirm($(this).attr('title')+" ?")) {
           zone._delete();
