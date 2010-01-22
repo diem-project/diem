@@ -11,8 +11,6 @@ $.widget('ui.dmFrontForm', $.extend({}, $.dm.coreForm, {
     this.markdown();
 		
     this.linkDroppable();
-    
-		this.hotKeys();
   },
   
   markdown: function()
