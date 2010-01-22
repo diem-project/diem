@@ -1,6 +1,6 @@
 /* Dialog
 ----------------------------------*/
-.dm.ui-dialog { position: relative; padding: .2em; width: 300px; background: #fff; -moz-box-shadow: 0 0 10px #000; }
+.dm.ui-dialog { position: relative; padding: .2em; width: 300px; background: #fff; -moz-box-shadow: 0 0 10px #000; -webkit-box-shadow: 0 0 10px #000; }
 .dm.ui-dialog .ui-dialog-titlebar { padding: 3px 3px 1px 12px; position: relative;  }
 .dm.ui-dialog .ui-dialog-title { float: left; margin: .1em 0 .2em; } 
 .dm.ui-dialog .ui-dialog-titlebar-close { position: absolute; right: .3em; top: 50%; width: 19px; margin: -10px 0 0 0; padding: 1px; height: 18px; }
