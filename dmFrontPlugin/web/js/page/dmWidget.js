@@ -112,7 +112,10 @@ $.widget('ui.dmWidget', {
             parts = data.split(/\_\_DM\_SPLIT\_\_/);
 
             // update widget content
-            widget.replace(parts[1]);
+            if(parts[1])
+            {
+              widget.replace(parts[1]);
+            }
             
             $form.trigger('submitSuccess');
 
