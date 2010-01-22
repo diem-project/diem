@@ -36,6 +36,9 @@ class dmFrontLinkTagPage extends dmFrontLinkTag
     $this->addAttributeToRemove(array('use_page_title'));
   }
 
+  /*
+   * @return DmPage the page we are linking to
+   */
   public function getPage()
   {
     return $this->page;

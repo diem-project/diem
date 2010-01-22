@@ -249,6 +249,11 @@ abstract class dmWidgetBaseView
     
     return $vars;
   }
+
+  protected function getService($name, $class = null)
+  {
+    return $this->context->get($name, $class);
+  }
   
   protected function __($message, $arguments = array(), $catalogue = null)
   {
