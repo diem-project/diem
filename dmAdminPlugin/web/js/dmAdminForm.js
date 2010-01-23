@@ -55,7 +55,7 @@
             $.ajax({
               type: "POST",
               mode: "abort",
-              url: $.dm.ctrl.getHref('+/dmCore/markdown'),
+              url: $.dm.ctrl.getHref('+/dmCore/markdown')+"?dm_nolog=1",
               data: {
                 text: value
               },
