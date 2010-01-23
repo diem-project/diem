@@ -114,12 +114,9 @@ abstract class dmFileLog extends dmLog
       
       $encodedLines = explode("\n", $data);
       
-      // first line is corrupted. remove it from encodedLine and decrement filePosition to catch it next time
-      if (!is_array($this->decode($encodedLines[0])))
-      {
-        $filePosition += $strlenFunction($encodedLines[0]);
-        unset($encodedLines[0]);
-      }
+      // first line is nearly always corrupted. remove it from encodedLine and decrement filePosition to catch it next time
+      $filePosition += $strlenFunction($encodedLines[0]);
+      unset($encodedLines[0]);
       
       foreach(array_reverse($encodedLines) as $encodedLine)
       {
