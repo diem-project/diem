@@ -2,6 +2,17 @@
 
 class dmEventLog extends dmFileLog
 {
+  protected
+  $fields = array(
+    'time',
+    'ip',
+    'session_id',
+    'user_id',
+    'action',
+    'type',
+    'subject'
+  );
+
   public function getDefaultOptions()
   {
     return array_merge(parent::getDefaultOptions(), array(

@@ -12,7 +12,7 @@ abstract class dmFileLog extends dmLog
   {
     return array_merge(parent::getDefaultOptions(), array(
       'rotation'            => true,
-      'max_size_megabytes'  => 3,
+      'max_size_kilobytes'  => 2,
       'buffer_size'         => 1024 * 16
     ));
   }
@@ -46,12 +46,7 @@ abstract class dmFileLog extends dmLog
       
       $entry->configure($data);
       
-      $data = $this->encode($entry->toArray());
-  
-      if (0 !== filesize($this->options['file']))
-      {
-        $data = "\n".$data;
-      }
+      $data = "\n".$this->encode($entry->toArray());
       
       if($fp = fopen($this->options['file'], 'a'))
       {
@@ -63,18 +58,13 @@ abstract class dmFileLog extends dmLog
         throw new dmException(sprintf('Can not log in %s', $this->options['file']));
       }
       
-      if (dmArray::get($this->options, 'rotation', true))
+      if ($this->options['rotation']/* && !$_SERVER['REQUEST_TIME']%10*/)
       {
         $this->checkRotation();
       }
     }
     catch(Exception $e)
     {
-      $this->dispatcher->notify(new sfEvent($this, 'application.log', array(
-        'Can not log this request : '.$e->getMessage(),
-        sfLogger::ERR
-      )));
-      
       if (sfConfig::get('dm_debug'))
       {
         throw $e;
@@ -84,17 +74,12 @@ abstract class dmFileLog extends dmLog
   
   protected function checkRotation()
   {
-    if (rand(0, 20))
-    {
-      return;
-    }
-
-    $maxSize = dmArray::get($this->options, 'max_size_megabytes', 4) * 1024 * 1024;
+    $maxSize = $this->options['max_size_kilobytes'] * 1024 * 1024;
     
     if (filesize($this->options['file']) > $maxSize)
     {
-      $logs = file($this->options['file']);
-      file_put_contents($this->options['file'], implode("\n", array_slice($logs, round(count($logs)/4))));
+      $logs = file($this->options['file'], FILE_IGNORE_NEW_LINES);
+      file_put_contents($this->options['file'], implode("\n", array_slice($logs, round(count($logs)/2))));
       unset($logs);
     }
   }
@@ -104,7 +89,6 @@ abstract class dmFileLog extends dmLog
     $this->checkFile();
     
     $options = array_merge(array(
-      'fix_log' => true,
       'hydrate' => true,
       'keys'    => null,
       'filter'  => null
@@ -139,44 +123,39 @@ abstract class dmFileLog extends dmLog
       
       foreach(array_reverse($encodedLines) as $encodedLine)
       {
-        $data = $this->decode($encodedLine);
-        
-        if (!empty($data) && is_array($data))
+        if(empty($encodedLine))
         {
-          if (!is_array($data)) dmDebug::kill($data);
-          if ($filter && !call_user_func($filter, $data))
-          {
-            continue;
-          }
-          
-          if ($options['hydrate'])
-          {
-            $entries[] = $this->buildEntry($data);
-          }
-          elseif($options['keys'])
-          {
-            $entry = array();
-            foreach($options['keys'] as $key)
-            {
-              $entry[$key] = $data[$key];
-            }
-            $entries[] = $entry;
-          }
-          else
-          {
-            $entries[] = $data;
-          }
-          
-          if ($max && (++$nb == $max))
-          {
-            break 2;
-          }
+          continue;
         }
-        elseif($options['fix_log'])
+        
+        $data = $this->restoreKeys($this->decode($encodedLine));
+        
+        if ($filter && !call_user_func($filter, $data))
         {
-          $this->fixLog();
-          $options['fix_log'] = false;
-          return $this->getEntries($max, $options);
+          continue;
+        }
+
+        if ($options['hydrate'])
+        {
+          $entries[] = $this->buildEntry($data);
+        }
+        elseif($options['keys'])
+        {
+          $entry = array();
+          foreach($options['keys'] as $key)
+          {
+            $entry[$key] = $data[$key];
+          }
+          $entries[] = $entry;
+        }
+        else
+        {
+          $entries[] = $data;
+        }
+
+        if ($max && (++$nb == $max))
+        {
+          break 2;
         }
       }
       
@@ -188,16 +167,7 @@ abstract class dmFileLog extends dmLog
   
   protected function fixLog()
   {
-    $lines = file($this->options['file'], FILE_IGNORE_NEW_LINES);
-    // remove empty lines
-    $lines = array_filter($lines);
-    
-    // separate collapsed lines
-    $lines = str_replace('"}{"', "\"}\n{\"", $lines);
-    
-    file_put_contents($this->options['file'], implode("\n", $lines));
-    
-    unset($lines);
+    $this->clear();
     
     $this->dispatcher->notify(new sfEvent($this, 'application.log', array(
       $this->getKey().' log has been fixed',
@@ -214,12 +184,17 @@ abstract class dmFileLog extends dmLog
   
   protected function encode(array $array)
   {
-    return json_encode($array);
+    return implode('|', str_replace('|', ' ', $array));
   }
   
   protected function decode($string)
   {
-    return json_decode($string, true);
+    return explode('|', $string);
+  }
+
+  protected function restoreKeys(array $arrayEntry)
+  {
+    return array_combine($this->fields, $arrayEntry);
   }
   
   protected function checkFile()

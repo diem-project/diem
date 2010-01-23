@@ -80,10 +80,6 @@ class dmProjectConfiguration extends sfProjectConfiguration
       'baseTableClassName'    => 'myDoctrineTable',
       'suffix'                => '.class.php'
     ));
-    
-    $this->dispatcher->disconnect('debug.web.load_panels', array('sfWebDebugPanelDoctrine', 'listenToAddPanelEvent'));
-    
-    $this->dispatcher->connect('debug.web.load_panels', array('dmWebDebugPanelDoctrine', 'listenToAddPanelEvent'));
   }
   
   protected function configureDoctrineCache(Doctrine_Manager $manager)

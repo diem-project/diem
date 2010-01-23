@@ -49,25 +49,20 @@ class ProjectConfiguration extends dmProjectConfiguration
     
     copy(dmOs::join(sfConfig::get('sf_data_dir'), 'db.sqlite'), dmOs::join(sfConfig::get('sf_data_dir'), 'fresh_db.sqlite'));
     
-    foreach(array('core', 'front', 'admin') as $assetDirName)
-    {
-      if(is_readable($assetDir = dmOs::join(sfConfig::get('sf_web_dir'), 'dm', $assetDirName)))
-      {
-        unlink($assetDir);
-      }
-    }
-    
-    if(is_readable($dmDir = dmOs::join(sfConfig::get('sf_web_dir'), 'dm')))
-    {
-      rmdir($dmDir);
-    }
-    
-    if(is_readable($sfDir = dmOs::join(sfConfig::get('sf_web_dir'), 'sf')))
-    {
-      unlink($sfDir);
-    }
+    $this->removeWebSymlinks();
     
     sfConfig::set('dm_test_project_built', true);
+  }
+
+  protected function removeWebSymlinks()
+  {
+    @unlink(dmOs::join(sfConfig::get('sf_web_dir'), 'sf'));
+    @unlink(dmOs::join(sfConfig::get('sf_web_dir'), 'dmFlowPlayerPlugin'));
+    
+    foreach(array('core', 'front', 'admin') as $dmAssetDir)
+    {
+      @unlink(sfConfig::get('sf_web_dir').'/dm/'.$dmAssetDir);
+    }
   }
   
   public function cleanup(sfFilesystem $filesystem)
@@ -79,11 +74,7 @@ class ProjectConfiguration extends dmProjectConfiguration
     $filesystem->remove(sfFinder::type('file')->name('sitemap*')->in(sfConfig::get('sf_web_dir')));
     copy(dmOs::join(sfConfig::get('sf_data_dir'), 'fresh_db.sqlite'), dmOs::join(sfConfig::get('sf_data_dir'), 'db.sqlite'));
     $this->cleanupUploads($filesystem);
-
-    foreach(array('core', 'front', 'admin') as $dmAssetDir)
-    {
-      unlink(sfConfig::get('sf_web_dir').'/dm/'.$dmAssetDir);
-    }
+    $this->removeWebSymlinks();
   }
   
   protected function cleanupUploads(sfFilesystem $filesystem)

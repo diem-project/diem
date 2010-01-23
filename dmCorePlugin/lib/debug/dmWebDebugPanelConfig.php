@@ -35,8 +35,6 @@ class dmWebDebugPanelConfig extends sfWebDebugPanelConfig
   
   protected function dumpConfig(array $array)
   {
-    $timer = dmDebug::timerOrNull('dmWebDebugPanelConfig::dumpConfig');
-    
     if (sfConfig::get('dm_web_debug_config_fast_dump', true))
     {
       // generate html with fast print_r function
@@ -59,8 +57,6 @@ class dmWebDebugPanelConfig extends sfWebDebugPanelConfig
     {
       $dumped = sfYaml::dump($array);
     }
-    
-    $timer && $timer->addTime();
     
     return $dumped;
   }

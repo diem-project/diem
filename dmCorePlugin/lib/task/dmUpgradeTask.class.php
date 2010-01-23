@@ -10,7 +10,8 @@ class dmUpgradeTask extends dmContextTask
     '500ALPHA4',
     '500ALPHA6',
     'deprecateMediaWidgets',
-    'addGaToken'
+    'addGaToken',
+    'clearLogs'
   );
   
   /**
@@ -128,6 +129,23 @@ class dmUpgradeTask extends dmContextTask
       ));
 
       $setting->save();
+    }
+  }
+
+  /*
+   * Clear old school formatted logs
+   */
+  protected function upgradeToClearLogs()
+  {
+    foreach(array('request', 'event') as $logName)
+    {
+      $file = sfConfig::get('sf_data_dir').'/dm/log/'.$logName.'.log';
+
+      if(false !== strpos(file_get_contents($file), '{"time":'))
+      {
+        $this->logSection('upgrade', 'Cleared old school formatted log '.$logName);
+        file_put_contents($file, '');
+      }
     }
   }
 }

@@ -2,6 +2,21 @@
 
 class dmRequestLog extends dmFileLog
 {
+  protected
+  $fields = array(
+    'time',
+    'uri',
+    'code',
+    'app',
+    'env',
+    'ip',
+    'user_id',
+    'user_agent',
+    'xhr',
+    'mem',
+    'timer'
+  );
+  
   public function getDefaultOptions()
   {
     return array_merge(parent::getDefaultOptions(), array(

@@ -101,7 +101,7 @@ parameters:
     file:                     'data/dm/log/event.log' # where to save the log file, relative to project root directory
     entry_service_name:       event_log_entry       # service name for an entry of this log
     rotation:                 true                  # enable rotation on the log file ( strongly recommended )
-    max_size_megabytes:       1                     # max size for the log file before rotating
+    max_size_kilobytes:       1024                  # max size for the log file before rotating
     ignore_models:            []                    # models not to log
     ignore_internal_actions:  true                  # whether to ignore Diem internal actions
   
@@ -113,7 +113,7 @@ parameters:
     file:                     'data/dm/log/request.log' # where to save the log file, relative to project root directory
     entry_service_name:       request_log_entry     # service name for an entry of this log
     rotation:                 true                  # enable rotation on the log file ( strongly recommended )
-    max_size_megabytes:       3                     # max size for the log file before rotating
+    max_size_kilobytes:       1024                  # max size for the log file before rotating
   
   request_log_entry.class:    dmRequestLogEntry     # An entry of the event log
 

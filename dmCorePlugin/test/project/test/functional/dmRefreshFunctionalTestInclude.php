@@ -26,7 +26,7 @@ $browser->get('/+/dmCore/refresh')
  * On some old version of sqlite
  * This test will not work as expected
  */
-if('Sqlite' == Doctrine_Manager::getInstance()->getCurrentConnection()->getDriverName())
+if('front' == sfConfig::get('sf_app') && 'Sqlite' == Doctrine_Manager::getInstance()->getCurrentConnection()->getDriverName())
 {
   return;
 }

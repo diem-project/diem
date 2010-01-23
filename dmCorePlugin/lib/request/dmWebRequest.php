@@ -35,11 +35,6 @@ class dmWebRequest extends sfWebRequest
   {
     return $this->getParameter('dm_flash');
   }
-
-  public function useTidy()
-  {
-    return dmHtml::isEnabled() && !$this->getParameter('dm_tidy_disable');
-  }
   
   /**
    * Returns the request context used.
