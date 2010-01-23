@@ -1,6 +1,6 @@
 (function($)
 {
-
+$(function() {
   $.dm.codeEditor = {
   
     init: function()
@@ -491,7 +491,7 @@
                 $.tree_reference('dm_code_editor_tree').refresh();
               }
             }
-          },
+          }
         }
       });
     },
@@ -554,6 +554,6 @@
     
   };
   
-  $.dm.ctrl.add($.dm.codeEditor);
-  
+  $.dm.codeEditor.init();
+});
 })(jQuery);

@@ -7,8 +7,6 @@
     {
       this.$ = $("#dm_admin_content");
       
-      this.launchControllers(this.$);
-      
       this.fullHeight();
       
       this.bars();

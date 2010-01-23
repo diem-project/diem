@@ -1,48 +1,44 @@
 (function($) {
   
-$.dm.console = {
+var
+$console = $("#dm_console"),
+$command = $("#dm_command"),
+$lines = $console.find(".dm_content_command"),
+$wait = $console.find(".dm_console_wait");
 
-  init : function()
+scroll();
+
+$lines.bind("click", function()
+{
+  $command.focus();
+}).trigger("click");
+
+$("#dm_command_wrap form").ajaxForm({
+  beforeSubmit: function(data)
   {
-    this.$ = $("#dm_console");
+    if ($("#dm_command").val() == "") return false;
+
+    if($("#dm_command").val() == "clear")
+    {
+      $lines.html('<li>&nbsp;</li>');
+      $("#dm_command").val("");
+      return false;
+    }
     
-    var $command = $("#dm_command"),
-  		$lines = $(".dm_content_command",  this.$),
-  		$wait = $(".dm_console_wait")
-  		self = this;
-		
-		this.scroll();
-		
-		$lines.bind("click", function()
-		{
-		  $command.focus();
-		}).trigger("click");
-		
-		$("#dm_command_wrap form").ajaxForm({
-			beforeSubmit: function(data) {
-        if ($("#dm_command").val() == "") return false;
-        
-        if($("#dm_command").val() == "clear")
-        {
-          $lines.html('<li>&nbsp;</li>');
-          $("#dm_command").val("");
-          return false;
-        }
-				$("#dm_command").val("Loading...");
-      },
-      success: function(data) {
-        $lines.append(data);
-        $.dm.console.scroll();
-				$("#dm_command").val("");
-      }
-		});
+    $("#dm_command").val("Loading...");
+    return true;
   },
-  scroll : function()
+  success: function(data)
   {
-    this.$[0].scrollTop = 16*$("li", this.$).length;
+    $lines.append(data);
+    scroll();
+    $("#dm_command").val("");
   }
-};
+});
 
-$.dm.ctrl.add($.dm.console);
+function scroll()
+{
+  $console[0].scrollTop = 16*$console.find("li").length;
+}
 
 })(jQuery);
