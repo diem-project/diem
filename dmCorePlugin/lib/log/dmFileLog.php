@@ -58,7 +58,7 @@ abstract class dmFileLog extends dmLog
         throw new dmException(sprintf('Can not log in %s', $this->options['file']));
       }
       
-      if ($this->options['rotation']/* && !$_SERVER['REQUEST_TIME']%10*/)
+      if ($this->options['rotation'] && !$_SERVER['REQUEST_TIME']%10)
       {
         $this->checkRotation();
       }
