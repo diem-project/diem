@@ -430,7 +430,6 @@ abstract class dmDoctrineTable extends Doctrine_Table
     return null;
   }
 
-
   /*
    * @return dmTableRelationHolder the table relation holder
    */
@@ -504,7 +503,6 @@ abstract class dmDoctrineTable extends Doctrine_Table
     return $columns;
   }
 
-  
   /*
    * dmMicroCache
    */
@@ -571,6 +569,16 @@ abstract class dmDoctrineTable extends Doctrine_Table
   public function getServiceContainer()
   {
     return self::$serviceContainer;
+  }
+
+  public function getService($name, $class = null)
+  {
+    if($sc = $this->getServiceContainer())
+    {
+      return $sc->getService($name, $class);
+    }
+
+    return null;
   }
   
   public function getModuleManager()
