@@ -9,7 +9,7 @@ echo £('div.message',
   £('p.dm_browser_suggestion.mt10', "We suggest that you use one of these browsers:").
   £('div.dm_suggested_browsers.clearfix',
     £link('http://www.mozilla.com/firefox/')->text(£media('dmCore/images/64/firefox.png')->size(64, 64).'Firefox').
-    £link('http://www.google.com/chrome')->text(£media('dmCore/images/64/chrome.png')->size(64, 64).'Chrome <em>not yet</em>')->set('.not_ready').
+    £link('http://www.google.com/chrome')->text(£media('dmCore/images/64/chrome.png')->size(64, 64).'Chrome').
     £link('http://www.apple.com/safari/')->text(£media('dmCore/images/64/safari.png')->size(64, 64).'Safari <em>not yet</em>')->set('.not_ready')
   ).
   £('div.dm_skip_browser_detection',
