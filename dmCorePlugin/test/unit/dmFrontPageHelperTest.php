@@ -34,10 +34,10 @@ $t->is($pageHelper->getWidgetContainerClasses($widget), $expected,'widgetContain
 
 $pageHelper->setOption('widget_css_class_pattern', '%module%_%action%');
 
-$expected = array('dm_widget dm_widget_content_title', 'dm_widget_inner');
+$expected = array('dm_widget content_title', 'dm_widget_inner');
 $t->is($pageHelper->getWidgetContainerClasses($widget), $expected,'widgetContainerClasses for title : '.implode(', ', $expected));
 
 $pageHelper->setOption('widget_css_class_pattern', 'module_%module% action_%action%');
 
-$expected = array('dm_widget module_dm_widget_content action_title', 'dm_widget_inner');
+$expected = array('dm_widget module_content action_title', 'dm_widget_inner');
 $t->is($pageHelper->getWidgetContainerClasses($widget), $expected,'widgetContainerClasses for title : '.implode(', ', $expected));
