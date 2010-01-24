@@ -87,11 +87,6 @@ class dmWidgetListForm extends dmWidgetProjectModelForm
     }
 
     $this->setDefaults($this->getDefaultsFromLastUpdated(array('maxPerPage', 'navTop', 'navBottom', 'view', 'orderField', 'orderType')));
-  
-    if(!$this->getDefault('orderField') && $this->dmModule->getTable()->isSortable())
-    {
-      $this->setDefault('orderField', 'position');
-    }
   }
 
   protected function allowFilterAutoRecordId(dmModule $filterModule)
@@ -111,10 +106,10 @@ class dmWidgetListForm extends dmWidgetProjectModelForm
       'maxPerPage' => 5,
       'maxPerPage' => 0
     ));
-
-    if ($firstOrderField = dmArray::first(array_keys($this->getAvailableOrderFields())))
+    
+    if(!$this->getDefault('orderField') && $this->dmModule->getTable()->isSortable())
     {
-      $defaults['orderField'] = $firstOrderField;
+      $defaults['orderField'] = 'position';
     }
 
     return $defaults;

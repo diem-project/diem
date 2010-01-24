@@ -30,6 +30,10 @@
   text-decoration: none;
 }
 
+.dm label {
+  display: inline;
+}
+
 .dm input,
 .dm input.submit,
 .dm input:focus,
@@ -40,7 +44,7 @@
   border: 1px solid #D4D4D4;
   color: #000;
   background: #fff;
-  display: inherit;
+  display: inline;
   height: inherit;
   padding: 2px;
   margin: 0;

@@ -1,4 +1,4 @@
-.breadCrumb li {
+.breadCrumb li, .pager li {
   display: inline;
 }
 
