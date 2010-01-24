@@ -137,7 +137,7 @@ catch(Exception $e)
   $t->fail('Copy failed : '.$e->getMessage());
 }
 
-$t->ok(file_exists(dmOs::join($destFullPath, 'html/link/dmLinkTag.php')), dmOs::join($destFullPath, 'html/link/dmLinkTag.php').' exists');
+$t->ok(file_exists(dmOs::join($destFullPath, 'html/link/dmBaseLinkTag.php')), dmOs::join($destFullPath, 'html/link/dmBaseLinkTag.php').' exists');
 
 $t->diag('Sync root');
 
@@ -153,7 +153,7 @@ $t->isa_ok($linkFolder, 'DmMediaFolder', $destRelPath.'/html/link/ is a DmMediaF
 
 try
 {
-	$deepMedia = $mediaTable->findOneByFileAndDmMediaFolderId('dmLinkTag.php', $linkFolder->id);
+	$deepMedia = $mediaTable->findOneByFileAndDmMediaFolderId('dmBaseLinkTag.php', $linkFolder->id);
 
 	$t->isa_ok($deepMedia, 'DmMedia', 'deep media found in db');
 }
