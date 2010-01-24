@@ -30,6 +30,10 @@
   text-decoration: none;
 }
 
+.dm li {
+  list-style: none !important;
+}
+
 .dm label {
   display: inline;
 }
