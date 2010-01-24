@@ -12,7 +12,7 @@ $b->get('/index.php')
   'module_action' => 'dmFront/page',
   'h1' => 'Home H1'
 ))
-->has('.dm_widget_navigation_bread_crumb')
+->has('.navigation_bread_crumb')
 ->has('body.global_layout')
 ->has('h1:eq(0)')
 ->has('h1:eq(1)', false)
