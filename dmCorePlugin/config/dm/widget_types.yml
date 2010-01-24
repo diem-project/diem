@@ -33,6 +33,8 @@ dmWidgetSearch:
     
   form:
     cache:              false
+    public_name:        Search form
     
   results:
     cache:              false
+    public_name:        Search results

@@ -8,22 +8,23 @@ foreach($dm_layout->get('Areas') as $area)
   {
     continue;
   }
-  
-  echo £o('li.mb5');
-  echo £('strong', $area->get('type').':');
-  
-  echo £o('ul.ml10');
-  
+
+  $widgets = array();
   foreach($area->get('Zones') as $zone)
   {
     foreach($zone->get('Widgets') as $widget)
     {
-      echo £('li', __($sf_context->get('widget_type_manager')->getWidgetType($widget)->getPublicName()));
+      $widgets[] = __($sf_context->get('widget_type_manager')->getWidgetType($widget)->getPublicName());
     }
   }
-  
-  echo £c('ul');
-  echo £c('li');
+
+  if(!empty($widgets))
+  {
+    echo £('li.mb5',
+      £('strong', $area->type.': ').
+      implode(' | ', $widgets)
+    );
+  }
 }
 
 echo £c('li');

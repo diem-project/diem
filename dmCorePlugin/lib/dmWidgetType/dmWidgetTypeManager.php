@@ -1,12 +1,10 @@
 <?php
 
-class dmWidgetTypeManager
+class dmWidgetTypeManager extends dmConfigurable
 {
-
   protected
   $dispatcher,
   $serviceContainer,
-  $options,
   $widgetTypes;
 
   public function __construct(sfEventDispatcher $dispatcher, dmBaseServiceContainer $serviceContainer, array $options = array())
@@ -16,12 +14,17 @@ class dmWidgetTypeManager
 
     $this->initialize($options);
   }
+
+  public function getDefaultOptions()
+  {
+    return array(
+      'config_file' => 'config/dm/widget_types.yml'
+    );
+  }
   
   public function initialize(array $options = array())
   {
-    $this->options = array_merge(array(
-      'config_file' => 'config/dm/widget_types.yml'
-    ), $options);
+    $this->configure($options);
     
     $this->widgetTypes = null;
   }
@@ -38,7 +41,8 @@ class dmWidgetTypeManager
       
       if (empty($this->widgetTypes))
       {
-        $internalConfig = include($this->serviceContainer->getService('config_cache')->checkConfig($this->options['config_file']));
+        $internalConfigFile = $this->serviceContainer->getService('config_cache')->checkConfig($this->getOption('config_file'));
+        $internalConfig = include($internalConfigFile);
 
         $this->widgetTypes = array();
         
@@ -56,7 +60,7 @@ class dmWidgetTypeManager
             $widgetTypeConfig = array(
               'full_key'   => $moduleKey.ucfirst($actionKey),
               'name'       => $name,
-              'public_name' => dmString::humanize($name),
+              'public_name' => dmArray::get($action, 'public_name', dmString::humanize($name)),
               'form_class' => dmArray::get($action, 'form_class', $fullKey.'Form'),
               'view_class' => dmArray::get($action, 'view_class', $fullKey.'View'),
               'use_component' => $this->componentExists($moduleKey, $fullKey),
