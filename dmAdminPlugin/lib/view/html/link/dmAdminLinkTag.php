@@ -5,12 +5,12 @@ class dmAdminLinkTag extends dmBaseLinkTag
   protected
   $serviceContainer;
   
-  public function __construct($resource, dmAdminBaseServiceContainer $serviceContainer)
+  public function __construct($resource, dmAdminBaseServiceContainer $serviceContainer, array $options)
   {
     $this->resource         = empty($resource) ? '@homepage' : $resource;
     $this->serviceContainer = $serviceContainer;
     
-    $this->initialize();
+    $this->initialize($options);
   }
   
   public function render()

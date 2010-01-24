@@ -62,7 +62,6 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
     }
   }
   
-  
   public function connect()
   {
     $dispatcher = $this->getService('dispatcher');

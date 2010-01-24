@@ -96,8 +96,8 @@ class dmFrontLinkTagPage extends dmFrontLinkTag
     {
       unset($preparedAttributes['title']);
     }
-    
-    return '<'.$tagName.$this->convertAttributesToHtml($preparedAttributes).'>'.$text.'</'.$tagName.'>';
+
+    return $this->doRender($tagName, $this->convertAttributesToHtml($preparedAttributes), $text);
   }
   
   protected function prepareAttributesForHtml(array $attributes)

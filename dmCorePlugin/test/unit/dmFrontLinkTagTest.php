@@ -4,7 +4,7 @@ require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
 $helper = new dmUnitTestHelper();
 $helper->boot('front');
 
-$t = new lime_test(35);
+$t = new lime_test(39);
 
 sfConfig::set('sf_no_script_name', false);
 
@@ -128,11 +128,11 @@ $testPage->Node->delete();
 
 $t->diag('blank');
 
-$blankLink = sprintf('<a class="link" href="%s" target="%s">%s</a>', 'http://iliaz.com', '_blank', 'http://iliaz.com');
-$t->is((string)£link('http://iliaz.com')->target('blank'), $blankLink, 'blank link is '.$blankLink);
+$blankLink = sprintf('<a class="link" href="%s" target="%s">%s</a>', 'http://diem-project.org', '_blank', 'http://diem-project.org');
+$t->is((string)£link('http://diem-project.org')->target('blank'), $blankLink, 'blank link is '.$blankLink);
 
-$blankLink = sprintf('<a class="link" href="%s">%s</a>', 'http://iliaz.com', 'http://iliaz.com');
-$t->is((string)£link('http://iliaz.com')->target('blank')->target(false), $blankLink, 'canceled blank link is '.$blankLink);
+$blankLink = sprintf('<a class="link" href="%s">%s</a>', 'http://diem-project.org', 'http://diem-project.org');
+$t->is((string)£link('http://diem-project.org')->target('blank')->target(false), $blankLink, 'canceled blank link is '.$blankLink);
 
 $t->diag('media links');
 dmDb::table('DmMediaFolder')->checkRoot();
@@ -172,3 +172,30 @@ $t->is($errorLink, $errorLink, $errorLink);
 $media->delete();
 
 $t->is((string)£link('mailto:test@mail.com')->text('email'), $html = '<a class="link" href="mailto:test@mail.com">email</a>', 'mailto: '.$html);
+
+$t->comment('Test use_beaf');
+$helper->getServiceContainer()->mergeParameter('link_tag_uri.options', array('use_beaf' => true));
+
+$expected = sprintf(
+  '<a class="link beafh" href="%s"><span class="beafore"></span><span class="beafin">%s</span><span class="beafter"></span></span></a>',
+  'http://diem-project.org', 'http://diem-project.org'
+);
+$t->is((string)£link('http://diem-project.org')->set('.beafh'), $expected, 'beafh link is '.$expected);
+
+$expected = sprintf(
+  '<a class="link beafv" href="%s"><span class="beafore"></span><span class="beafin">%s</span><span class="beafter"></span></span></a>',
+  'http://diem-project.org', 'http://diem-project.org'
+);
+$t->is((string)£link('http://diem-project.org')->set('.beafv'), $expected, 'beafh link is '.$expected);
+
+$expected = sprintf(
+  '<a class="link beafh myclass" href="%s"><span class="beafore"></span><span class="beafin">%s</span><span class="beafter"></span></span></a>',
+  'http://diem-project.org', 'http://diem-project.org'
+);
+$t->is((string)£link('http://diem-project.org')->set('.beafh.myclass'), $expected, 'beafh link is '.$expected);
+
+$expected = sprintf(
+  '<a class="link beafv myclass" href="%s"><span class="beafore"></span><span class="beafin">%s</span><span class="beafter"></span></span></a>',
+  'http://diem-project.org', 'http://diem-project.org'
+);
+$t->is((string)£link('http://diem-project.org')->set('.beafv.myclass'), $expected, 'beafh link is '.$expected);

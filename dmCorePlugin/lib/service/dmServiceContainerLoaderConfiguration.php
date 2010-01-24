@@ -46,6 +46,8 @@ class dmServiceContainerLoaderConfiguration implements sfServiceContainerLoaderI
     )));
     
     unset($this->config);
+
+    $this->propagateBeaf();
   }
   
   protected function add($service, $key, $configKey)
@@ -56,6 +58,28 @@ class dmServiceContainerLoaderConfiguration implements sfServiceContainerLoaderI
         $service.'.options',
         array_merge($this->container->getParameter($service.'.options'), array($key => $this->config[$configKey]))
       );
+    }
+  }
+
+  /*
+   * Propagate the helper use_beaf option to all link services
+   */
+  protected function propagateBeaf()
+  {
+    if(dmArray::get($this->container->getParameter('helper.options'), 'use_beaf'))
+    {
+      foreach($this->container->getServiceIds() as $service)
+      {
+        if (0 === strncmp($service, 'link_tag', 8) && $this->container->hasParameter($service.'.options'))
+        {
+          $this->container->setParameter(
+            $service.'.options',
+            array_merge($this->container->getParameter($service.'.options'), array(
+              'use_beaf' => true
+            )
+          ));
+        }
+      }
     }
   }
 }

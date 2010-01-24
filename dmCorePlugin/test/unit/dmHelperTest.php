@@ -4,7 +4,7 @@ require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
 $helper = new dmUnitTestHelper();
 $helper->boot('front');
 
-$t = new lime_test(29);
+$t = new lime_test(35);
 
 dm::loadHelpers(array('Dm', 'I18N'));
 
@@ -89,3 +89,24 @@ $t->is(£table()->head('Header 1', 'Header 2')->body('Value 1', 'Value 2')->body
 
 $ctrlFullPath = dmOs::join(sfConfig::get('sf_web_dir'), 'dm/core/js/dmCoreCtrl.js');
 $t->is($helper->get('helper')->getJavascriptFullPath('core.ctrl'), $ctrlFullPath, 'core ctrl is in '.$ctrlFullPath);
+
+$t->comment('Test use_beaf');
+$helper->get('helper')->setOption('use_beaf', true);
+
+$expected = '<div class="beafh clearfix"><div class="beafore"></div><div class="beafin">test</div><div class="beafter"></div></div>';
+$t->is($helper->get('helper')->£('div.beafh', 'test'), $expected, $expected);
+
+$expected = '<div class="beafv clearfix"><div class="beafore"></div><div class="beafin">test</div><div class="beafter"></div></div>';
+$t->is($helper->get('helper')->£('div.beafv', 'test'), $expected, $expected);
+
+$expected = '<div class="beafh myclass clearfix"><div class="beafore"></div><div class="beafin">test</div><div class="beafter"></div></div>';
+$t->is($helper->get('helper')->£('div.beafh.myclass', 'test'), $expected, $expected);
+
+$expected = '<div class="beafv myclass clearfix"><div class="beafore"></div><div class="beafin">test</div><div class="beafter"></div></div>';
+$t->is($helper->get('helper')->£('div.beafv.myclass', 'test'), $expected, $expected);
+
+$expected = '<p class="beafh clearfix"><span class="beafore"></span><span class="beafin">test</span><span class="beafter"></span></p>';
+$t->is($helper->get('helper')->£('p.beafh', 'test'), $expected, $expected);
+
+$expected = '<p class="beafv clearfix"><span class="beafore"></span><span class="beafin">test</span><span class="beafter"></span></p>';
+$t->is($helper->get('helper')->£('p.beafv', 'test'), $expected, $expected);

@@ -10,7 +10,7 @@ abstract class dmBaseLinkTag extends dmHtmlTag
   {
     parent::initialize($options);
     
-    $this->addAttributeToRemove(array('text', 'current_class', 'parent_class', 'current_span'));
+    $this->addAttributeToRemove(array('text', 'current_class', 'parent_class', 'current_span', 'use_beaf'));
     
     $this->addEmptyAttributeToRemove(array('target', 'title'));
     
@@ -22,7 +22,8 @@ abstract class dmBaseLinkTag extends dmHtmlTag
     return array_merge(parent::getDefaultOptions(), array(
       'current_class' => 'dm_current',
       'parent_class'  => 'dm_parent',
-      'current_span'  => false
+      'current_span'  => false,
+      'use_beaf'      => false
     ));
   }
 
@@ -148,7 +149,27 @@ abstract class dmBaseLinkTag extends dmHtmlTag
 
   public function render()
   {
-    return '<a'.$this->getHtmlAttributes().'>'.$this->renderText().'</a>';
+    return $this->doRender('a', $this->getHtmlAttributes(), $this->renderText());
+  }
+
+  protected function doRender($tag, $htmlAttributes, $text)
+  {
+    if($this->options['use_beaf'])
+    {
+      return $this->doRenderBeaf($tag, $htmlAttributes, $text);
+    }
+    
+    return '<'.$tag.$htmlAttributes.'>'.$text.'</'.$tag.'>';
+  }
+
+  protected function doRenderBeaf($tag, $htmlAttributes, $text)
+  {
+    if(in_array('beafh', $this->options['class']) || in_array('beafv', $this->options['class']))
+    {
+      return '<'.$tag.$htmlAttributes.'><span class="beafore"></span><span class="beafin">'.$text.'</span><span class="beafter"></span></span></a>';
+    }
+
+    return '<'.$tag.$htmlAttributes.'>'.$text.'</'.$tag.'>';
   }
 
   protected function prepareAttributesForHtml(array $attributes)

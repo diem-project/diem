@@ -91,7 +91,7 @@ services:
   link_tag_record:
     class:                    %link_tag_record.class%
     shared:                   false
-    arguments:                [ %link_tag.resource%, %request.context%, %context.page%, @user, %link_tag_page.options% ]
+    arguments:                [ %link_tag.resource%, %request.context%, %context.page%, @user, %link_tag_record.options% ]
 
   link_tag_page:
     class:                    %link_tag_page.class%
