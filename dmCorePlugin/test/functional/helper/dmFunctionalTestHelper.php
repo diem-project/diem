@@ -5,7 +5,13 @@ class dmFunctionalTestHelper
   protected
   $configuration,
   $context,
-  $browser;
+  $browser,
+  $contextClass;
+
+  public function __construct($contextClass = 'dmContext')
+  {
+    $this->contextClass = $contextClass;
+  }
 
 	public function boot($app = 'admin', $env = 'test', $debug = true)
 	{
@@ -15,7 +21,7 @@ class dmFunctionalTestHelper
     require_once $rootDir.'/config/ProjectConfiguration.class.php';
 		$this->configuration = ProjectConfiguration::getApplicationConfiguration($app, $env, $debug, $rootDir);
 		
-		$this->context = dmContext::createInstance($this->configuration);
+		$this->context = dmContext::createInstance($this->configuration, null, $this->contextClass);
 
     sfConfig::set('sf_logging_enabled', false);
 
@@ -35,10 +41,6 @@ class dmFunctionalTestHelper
   {
     $this->browser = $this->context->get('test_functional', 'front' == sfConfig::get('sf_app') ? 'dmFrontTestFunctional' : null);
     $this->browser->initialize();
-
-    $this->browser->info('Running dm:publish-assets');
-    $task = new dmPublishAssetsTask($this->configuration->getEventDispatcher(), new sfFormatter());
-    $task->run();
   }
 
   public function getBrowser()

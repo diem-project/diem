@@ -220,17 +220,6 @@ EOF;
     if (!dmDb::table('DmLayout')->count())
     {
       dmDb::create('DmLayout', array('name' => 'Global'))->saveGet()->refresh(true);
-      dmDb::create('DmLayout', array('name' => 'Home'))->saveGet()->refresh(true);
-      
-      dmDb::create('DmWidget', array(
-        'dm_zone_id' => dmDb::table('DmLayout')->findOneByName('Home')->getArea('top')->Zones[0]->id,
-        'module' => 'dmWidgetContent',
-        'action' => 'title',
-        'values' => array(
-          'text' => dmConfig::get('site_name'),
-          'tag'  => 'h1'
-        )
-      ))->save();
       
       dmDb::create('DmWidget', array(
         'dm_zone_id' => dmDb::table('DmLayout')->findOneByName('Global')->getArea('top')->Zones[0]->id,

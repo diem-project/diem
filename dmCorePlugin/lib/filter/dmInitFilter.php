@@ -18,7 +18,7 @@ abstract class dmInitFilter extends dmFilter
   
   protected function saveApplicationUrl()
   {
-    if(sfConfig::get('sf_environment') === 'test')
+    if(dmConfig::isCli())
     {
       return;
     }
@@ -38,6 +38,11 @@ abstract class dmInitFilter extends dmFilter
 
   protected function redirectTrailingSlash()
   {
+    if(dmConfig::isCli())
+    {
+      return;
+    }
+    
     $uri = $this->request->getUri();
     
     if ('/' === substr($uri, -1))

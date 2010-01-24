@@ -22,6 +22,7 @@ generator:
           - template
           - css_class
           - _content
+          - nb_pages
           - _duplicate
         sort:
           - name

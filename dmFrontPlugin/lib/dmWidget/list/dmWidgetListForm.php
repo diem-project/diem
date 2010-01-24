@@ -4,8 +4,6 @@ class dmWidgetListForm extends dmWidgetProjectModelForm
 {
   public function configure()
   {
-    parent::configure();
-
     /*
      * Max per page
      */
@@ -72,6 +70,7 @@ class dmWidgetListForm extends dmWidgetProjectModelForm
           ? sprintf('(%s) %s', $this->__('automatic'), $this->getFilterAutoRecord($filterModule)->__toString())
           : false
         ));
+        $this->widgetSchema[$filterName]->setLabel($filterModule->getName());
 
         $this->validatorSchema[$filterName] = new sfValidatorDoctrineChoice(array(
           'model'     => $filterModule->getModel(),
@@ -87,6 +86,8 @@ class dmWidgetListForm extends dmWidgetProjectModelForm
     }
 
     $this->setDefaults($this->getDefaultsFromLastUpdated(array('maxPerPage', 'navTop', 'navBottom', 'view', 'orderField', 'orderType')));
+  
+    parent::configure();
   }
 
   protected function allowFilterAutoRecordId(dmModule $filterModule)

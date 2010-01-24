@@ -8,7 +8,7 @@ $browser = $helper->getBrowser();
 
 $helper->logout();
 
-$browser->get('/')->followRedirect()
+$browser->get('/')
 ->with('response')->begin()
 ->isStatusCode(200)
 ->checkElement('#dm_page_bar', false)
@@ -25,7 +25,7 @@ $browser->get('/')->followRedirect()
 
 $helper->login();
 
-$browser->get('/')->followRedirect()
+$browser->get('/')
 ->with('response')->begin()
 ->isStatusCode(200)
 ->checkElement('#dm_page_bar')

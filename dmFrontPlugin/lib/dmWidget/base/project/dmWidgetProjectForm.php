@@ -6,9 +6,9 @@ abstract class dmWidgetProjectForm extends dmWidgetBaseForm
   $dmModule,
   $dmAction;
 
-  public function configure()
+  public function setup()
   {
-    parent::configure();
+    parent::setup();
 
     if (!$this->dmModule = self::$serviceContainer->getService('module_manager')->getModule($this->dmWidget->get('module')))
     {

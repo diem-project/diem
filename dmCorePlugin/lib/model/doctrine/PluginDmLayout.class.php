@@ -15,6 +15,24 @@ abstract class PluginDmLayout extends BaseDmLayout
   protected static
   $areaTypes = array('top', 'bottom', 'left', 'right');
 
+  /*
+   * How many pages use this layout?
+   */
+  public function getNbPages()
+  {
+    $nb = 0;
+    
+    foreach($this->PageViews as $pageView)
+    {
+      $nb += dmDb::query('DmPage p')
+      ->where('p.module = ?', $pageView->module)
+      ->andWhere('p.action = ?', $pageView->action)
+      ->count();
+    }
+
+    return $nb;
+  }
+
   public function duplicate()
   {
     $newLayout = $this->getTable()->create(array(

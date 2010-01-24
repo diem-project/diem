@@ -1,5 +1,7 @@
 <?php
 
+require_once dirname(__FILE__).'/dmCoreFunctionalCoverageTest.php';
+
 class dmAdminFunctionalCoverageTest extends dmCoreFunctionalCoverageTest
 {
   

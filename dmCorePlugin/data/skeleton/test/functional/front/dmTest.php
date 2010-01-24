@@ -1,5 +1,6 @@
 <?php
 require_once realpath(dirname(__FILE__).'/../../../config/ProjectConfiguration.class.php');
+require_once dm::getDir().'/dmCorePlugin/lib/test/dmFrontFunctionalCoverageTest.php';
 
 $config = array(
   'login'     => false,   // whether to log a user or not at the beginning of the tests

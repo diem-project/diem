@@ -6,7 +6,7 @@ $helper->boot('front');
 
 $b = $helper->getBrowser();
 
-$b->get('/index.php')
+$b->get('/')
 ->checks(array(
   'code' => 200,
   'module_action' => 'dmFront/page',

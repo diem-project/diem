@@ -5,8 +5,6 @@ class dmWidgetShowForm extends dmWidgetProjectModelForm
 
   public function configure()
   {
-    parent::configure();
-
     /*
      * Record id
      */
@@ -16,6 +14,7 @@ class dmWidgetShowForm extends dmWidgetProjectModelForm
       ? sprintf('(%s) %s', dm::getI18n()->__('automatic'), $this->getAutoRecord()->__toString())
       : false
     ));
+    $this->widgetSchema['recordId']->setLabel($this->getDmModule()->getName());
 
     $this->validatorSchema['recordId']  = new sfValidatorDoctrineChoice(array(
       'model'     => $this->dmModule->getModel(),
@@ -28,6 +27,8 @@ class dmWidgetShowForm extends dmWidgetProjectModelForm
     {
       $this->setDefault('recordId', dmArray::first(array_keys($this->widgetSchema['recordId']->getChoices())));
     }
+    
+    parent::configure();
   }
 
   protected function allowAutoRecordId()

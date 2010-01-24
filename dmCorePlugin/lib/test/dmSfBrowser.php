@@ -3,13 +3,12 @@
 class dmSfBrowser extends sfBrowser
 {
 
-
   /**
-   * Returns the current application context.
-   *
-   * @param  bool $forceReload  true to force context reload, false otherwise
-   *
-   * @return sfContext
+   * Diem override:
+   * sfContext is hardcoded in symfony unit tests.
+   * Replace it with dmContext.
+   * 
+   * @see sfBrowser
    */
   public function getContext($forceReload = false)
   {
@@ -45,26 +44,5 @@ class dmSfBrowser extends sfBrowser
     }
 
     return $this->context;
-  }
-
-  public function setResponse(sfWebResponse $response)
-  {
-    // for HTML/XML content, create a DOM and sfDomCssSelector objects for the response content
-    $this->dom = null;
-    $this->domCssSelector = null;
-    if (preg_match('/(x|ht)ml/i', $response->getContentType(), $matches))
-    {
-      $this->dom = new DomDocument('1.0', $response->getCharset());
-      $this->dom->validateOnParse = true;
-      if ('x' == $matches[1])
-      {
-        @$this->dom->loadXML($response->getContent());
-      }
-      else
-      {
-        @$this->dom->loadHTML($response->getContent());
-      }
-      $this->domCssSelector = new sfDomCssSelector($this->dom);
-    }
   }
 }

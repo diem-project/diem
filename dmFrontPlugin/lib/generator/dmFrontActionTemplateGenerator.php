@@ -56,53 +56,39 @@ class dmFrontActionTemplateGenerator extends dmFrontModuleGenerator
     $object = '$'.$this->module->getKey();
     $pager = $object.'Pager';
     $vars = $this->getVarsComment(array($pager));
-    return "<?php
-// {$this->module->getName()} : {$action->getName()}
-// Vars : {$vars}
+    return "<?php // Vars: {$vars}
 
-echo £o('div.{$this->module->getUnderscore()}.{$action->getUnderscore()}');
+echo {$pager}->renderNavigationTop();
 
- echo {$pager}->renderNavigationTop();
+echo £o('ul.elements');
 
-  echo £o('ul.elements');
+foreach ({$pager} as \${$this->module->getKey()})
+{
+  echo £o('li.element');
 
-  foreach ({$pager} as \${$this->module->getKey()})
-  {
-    echo £o('li.element');
-    
-      echo ".($this->module->hasPage() ? "£link(\${$this->module->getKey()});" : "\${$this->module->getKey()};")."
-      
-    echo £c('li');
-  }
+    echo ".($this->module->hasPage() ? "£link(\${$this->module->getKey()});" : "\${$this->module->getKey()};")."
 
-  echo £c('ul');
+  echo £c('li');
+}
 
- echo {$pager}->renderNavigationBottom();
+echo £c('ul');
 
-echo £c('div');";
+echo {$pager}->renderNavigationBottom();";
   }
 
   protected function getShowActionTemplate(dmAction $action)
   {
     $object = '$'.$this->module->getKey();
     $vars = $this->getVarsComment(array($object));
-    return "<?php
-// {$this->module->getName()} : {$action->getName()}
-// Vars : {$vars}
+    return "<?php // Vars: {$vars}
 
-echo £o('div.{$this->module->getUnderscore()}.{$action->getUnderscore()}');
-
-  echo \${$this->module->getKey()};
-  
-echo £c('div');";
+echo \${$this->module->getKey()};";
   }
 
   protected function getFormActionTemplate(dmAction $action)
   {
     $vars = $this->getVarsComment(array('form'));
-    return "<?php
-// {$this->module->getName()} : {$action->getName()}
-// Vars : {$vars}
+    return "<?php // Vars: {$vars}
 
 echo \$form;";
   }
@@ -110,7 +96,6 @@ echo \$form;";
   protected function getUserActionTemplate(dmAction $action)
   {
     return "<?php
-// {$this->module->getName()} : {$action->getName()}
 ";
   }
 
