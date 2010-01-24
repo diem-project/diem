@@ -1,7 +1,11 @@
 .dm .ui-widget-header {
   background: url(../images/default_bg.png) center center repeat-x;
   border-color: #bbb;
-}  
+}
+
+.dm_menu .ui-widget a, .dm_menu .ui-widget span {
+  font-family: Verdana,Arial,sans-serif;
+}
 
 .blockUI.blockMsg.blockElement {
   width:          48px;
