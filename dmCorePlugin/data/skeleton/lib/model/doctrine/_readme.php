@@ -1,3 +1,5 @@
+<?php return ?>
+
 What's this file ?!
 
 ## PROBLEM
