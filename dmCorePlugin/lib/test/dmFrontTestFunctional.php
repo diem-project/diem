@@ -77,7 +77,7 @@ class dmFrontTestFunctional extends dmTestFunctional
     ->info('Add a '.$moduleAction.' widget')
     ->get(sprintf('/index.php/+/dmWidget/add?to_dm_zone=%d&mod='.$module.'&act='.$action.'&dm_cpi=%d', $zone->id, $this->getPage()->id))
     ->checks(array('module_action' => 'dmWidget/add', 'method' => 'get'))
-    ->has('.dm_widget.'.dmString::underscore($module).'.'.dmString::underscore($action));
+    ->has('.dm_widget.'.str_replace('dm_widget_', '', dmString::underscore($module)).'.'.dmString::underscore($action));
 
     $zone->refreshRelated('Widgets');
 
