@@ -10,7 +10,7 @@ abstract class dmBaseLinkTag extends dmHtmlTag
   {
     parent::initialize($options);
     
-    $this->addAttributeToRemove(array('text', 'current_class', 'parent_class', 'current_span', 'use_beaf'));
+    $this->addAttributeToRemove(array('text', 'anchor', 'current_class', 'parent_class', 'current_span', 'use_beaf'));
     
     $this->addEmptyAttributeToRemove(array('target', 'title'));
     
@@ -194,8 +194,6 @@ abstract class dmBaseLinkTag extends dmHtmlTag
     if (isset($attributes['anchor']))
     {
       $attributes['href'] .= '#'.$attributes['anchor'];
-      
-      unset($attributes['anchor']);
     }
 
     // makes unit testing easier

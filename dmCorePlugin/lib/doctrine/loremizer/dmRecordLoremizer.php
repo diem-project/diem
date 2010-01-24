@@ -77,7 +77,7 @@ class dmRecordLoremizer extends dmConfigurable
     }
     
     // if the field can be null, set it to null sometimes
-    if (!dmArray::get($column, 'notnull') && !dmArray::get($column, 'unique') && !rand(0, 2))
+    if (!dmArray::get($column, 'notnull') && !dmArray::get($column, 'unique') && !rand(0, 3))
     {
       $val = null;
     }
@@ -176,8 +176,9 @@ class dmRecordLoremizer extends dmConfigurable
     {
       return $this->getRandomLink();
     }
-    
-    $val = trim(dmLorem::getLittleLorem(rand(min(4, $column['length']), min(40, $column['length']))));
+
+    $nbCarac = rand(min(4, $column['length']), max(40, $column['length']));
+    $val = trim(dmLorem::getLittleLorem($nbCarac));
 
     if (dmArray::get($column, 'unique'))
     {

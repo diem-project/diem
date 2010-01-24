@@ -114,7 +114,7 @@ class dmFrontLinkTagPage extends dmFrontLinkTag
       }
 
       // current page
-      if($this->isCurrent())
+      if($this->isCurrent() && empty($attributes['anchor']))
       {
         $attributes['class'][] = $attributes['current_class'];
           

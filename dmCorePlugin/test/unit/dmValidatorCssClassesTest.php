@@ -4,7 +4,7 @@ require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
 $helper = new dmUnitTestHelper();
 $helper->boot();
 
-$t = new lime_test(24);
+$t = new lime_test(38);
 
 $v = new dmValidatorCssClasses();
 
@@ -16,7 +16,7 @@ foreach (array(
   'qieurgfbqoiuzbfvoqiuzZFZGPSOZDNZKFjflzkh986875OoihzyfvbxoquyfvxqozufyxqzUEFV',
   '9',
   '_',
-  'bla rebla',
+  ' bla rebla  ',
   '- _ 8',
   '.class',
   '.a b.c.d'
@@ -24,7 +24,7 @@ foreach (array(
 {
   try
   {
-    $t->comment($classes.' -> '.$v->clean($classes));
+    $t->comment('"'.$classes.'" -> "'.$v->clean($classes).'"');
     $t->pass('->clean() checks that the value is a valid css class name');
   }
   catch (sfValidatorError $e)
@@ -40,7 +40,14 @@ foreach (array(
   'a^',
   'a#',
   'é',
-  '-{'
+  '-{',
+  '#myid.a b.c.d',
+  '.a b#myid.c.d',
+  '.a b#myid.c.d#myid',
+  '.a b#myid.c.d  #myid',
+  '#my_id',
+  '#my-id',
+  ' #my-id  '
 ) as $nonClass)
 {
   try

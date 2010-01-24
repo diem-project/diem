@@ -38,11 +38,11 @@ abstract class dmWidgetBaseForm extends dmForm
   {
     parent::configure();
 
-    $this->widgetSchema['cssClass']     = new sfWidgetFormInputText;
+    $this->widgetSchema['cssClass']     = new sfWidgetFormInputText();
     $this->validatorSchema['cssClass']  = new dmValidatorCssClasses(array('required' => false));
-    
-    $this->widgetSchema['cssClass']->setLabel('CSS class');
 
+    $this->widgetSchema['cssClass']->setLabel('CSS class');
+    
     $this->setDefault('cssClass', $this->dmWidget->get('css_class'));
   }
 

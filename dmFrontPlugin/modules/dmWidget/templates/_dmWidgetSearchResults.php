@@ -18,19 +18,19 @@ echo £('h1', __('Results %1% to %2% of %3%', array(
   '%3%' => $pager->getNbResults()
 )));
 
-echo £o('ol.search_results.clearfix start='.$pager->getFirstIndice());
+echo £o('ol.search_results start='.$pager->getFirstIndice());
 
 foreach($pager as $result)
 {
   $page = $result->getPage();
   
-  echo £('li.search_result.ml20.mb5',
+  echo £('li.search_result',
   
-    £('span.score.mr10', ceil(100*$result->getScore()).'%').
+    £('span.score', ceil(100*$result->getScore()).'%').
     
     £link($page)->text(
-      £('strong', $page->name).
-      ($page->description ? £('span.ml10', $page->description) : '')
+      £('span.page_name', $page->name).
+      ($page->description ? £('span.page_description', $page->description) : '')
     )
   );
 }
