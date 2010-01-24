@@ -131,7 +131,7 @@
 				$existing.dialog('close');
 			}
           
-      $('<div class="dm_error">').html(body).dialog(opt).parent().attr('id', 'dm_error_dialog');
+      $('<div class="dm_error">').html(body).dialog(opt).parent().attr('id', 'dm_error_dialog').addClass('dm');
 		}
   });
 	

@@ -237,8 +237,6 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
   
 }));
 
-$.extend($.ui.dmFrontToolBar, {
-  getter: "openCodeEditor reloadAddMenu"
-});
+$.ui.dmFrontToolBar.getter = "openCodeEditor reloadAddMenu";
   
 })(jQuery);

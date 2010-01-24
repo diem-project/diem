@@ -205,8 +205,6 @@ $.widget('ui.dmWidget', {
 
 });
 
-$.extend($.ui.dmWidget, {
-  getter: "getId openEditDialog"
-});
+$.ui.dmWidget.getter = "getId openEditDialog";
 
 })(jQuery);

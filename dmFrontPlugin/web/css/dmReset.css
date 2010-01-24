@@ -1,8 +1,3 @@
-.dm {
-  font-family: arial, helvetica, verdana, sans-serif;
-  font-size: 12px;
-}
-
 .dm a, a.dm {
   cursor: pointer;
 }
@@ -17,24 +12,47 @@
 .dm a,
 .dm a:link,
 .dm a:hover,
-.dm a:visited {
+.dm a:visited,
+.dm label {
   margin: 0;
   border: none;
   padding: 0;
   background-color: transparent;
   text-decoration: none;
-  font-weight: normal;
   color: inherit;
   line-height: normal;
   text-align: left;
+  font: inherit;
+  font-weight: normal;
+  font-family: arial, helvetica, verdana, sans-serif;
+  font-size: 12px;
+  font-style: normal;
+  text-decoration: none;
 }
 
 .dm input,
+.dm input.submit,
 .dm input:focus,
 .dm select,
 .dm select:focus,
 .dm textarea,
 .dm textarea:focus {
+  border: 1px solid #D4D4D4;
+  color: #000;
+  background: #fff;
+  display: inherit;
+  height: inherit;
+  padding: 2px;
+  margin: 0;
+  font: inherit;
+  font-weight: normal;
+  font-style: normal;
+  font-family: arial, helvetica, verdana, sans-serif;
+  font-size: 11px;
+}
+
+.dm input[readonly] {
+  background: #eee;
 }
 
 .dm ul,

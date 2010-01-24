@@ -111,6 +111,10 @@
   });
   
   $.widget('ui.dmMenu', {
+
+    options: {
+      hoverClass: 'hover'
+    },
   
     _init: function()
     {
@@ -159,12 +163,7 @@
     
   });
   
-  $.extend($.ui.dmMenu, {
-    defaults: {
-      hoverClass: 'hover'
-    },
-    getter: 'close'
-  });
+  $.ui.dmMenu.getter = 'close';
 	
 	/*
 	 * Make ui dialogs fixed

@@ -20,6 +20,7 @@ js:
     gallery:          dmAdminGalleryCtrl
     history:          dmAdminHistoryCtrl
     sitemap:          dmAdminSitemap
+    diagram:          dmAdminDiagram
 
 css:
 

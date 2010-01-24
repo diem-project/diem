@@ -3,7 +3,7 @@
 echo
 $form->open('action=main/search method=get'),
 
-$form['query']->label(__('Query'))->field()->error(),
+$form['query']->label(__('Query'))->field('.query')->error(),
 
 $form->submit(__('Search')),
 

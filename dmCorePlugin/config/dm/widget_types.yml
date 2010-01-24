@@ -29,10 +29,10 @@ dmWidgetNavigation:
   menu:
     cache:              true
     
-dmWidgetAdvanced:
+dmWidgetSearch:
     
-  searchForm:
+  form:
     cache:              false
     
-  searchResults:
+  results:
     cache:              false

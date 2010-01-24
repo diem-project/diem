@@ -132,8 +132,6 @@ $.widget('ui.dmArea', {
 
 });
 
-$.extend($.ui.dmArea, {
-  getter: "highlight getZones getId initialize moveZone addZone sortZones"
-});
+$.ui.dmArea.getter = "highlight getZones getId initialize moveZone addZone sortZones";
 
 })(jQuery);

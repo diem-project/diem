@@ -2,12 +2,14 @@ div.ui-dialog.dm.dm_code_editor_dialog .ui-dialog-content {
   overflow-y: auto;
 }
 
-.dm_code_editor textarea {
+.dm .dm_code_editor textarea,
+.dm .dm_code_editor textarea:focus {
   width: 100%;
   height: 200px;
-  border: 0;
+  border: none;
   border-bottom: 1px solid #D3D3D3;
-  margin-top: 0;
+  margin: 0;
+  padding: 0;
 }
 .dm_code_editor textarea.dm_readonly {
   background-color: #eee;

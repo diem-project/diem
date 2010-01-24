@@ -8,7 +8,6 @@
 /web/cache
 /web/sitemap*.xml
 /lib/migration
-/config/databases.yml
 
 # SCM files
 .arch-params

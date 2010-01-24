@@ -2,6 +2,11 @@
 {
 
   $.widget('ui.dmCoreTabForm', {
+
+    options: {
+      tabs: {} // options for tabs
+    },
+    
     _init: function()
     {
       this.launchTabs();
@@ -35,12 +40,6 @@
       }
     }
     
-  });
-  
-  $.extend($.ui.dmCoreTabForm, {
-    defaults: {
-      tabs: {} // options for tabs
-    }
-  });
+  })
   
 })(jQuery);

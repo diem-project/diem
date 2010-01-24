@@ -30,9 +30,9 @@
       
       self.$dialog.bind('resize', function()
       {
-				$('textarea', self.element).each(function() {
-					$(this).height(self.$dialog.height() - 85).width(self.$dialog.width() - 14);
-				});
+        $('textarea', self.element).each(function() {
+          $(this).height(self.$dialog.height() - 80).width(self.$dialog.width() - 38);
+        });
       });
       
       self.element.find('div#dm_code_editor_file_open ul.level2 a').click(function(e)
@@ -78,9 +78,9 @@
       $panel.find('a.close').click(function()
       {
         self.$tabs.tabs('remove', self.$tabs.tabs('option', 'selected'));
-      });
-      
-      $panel.find('a.save').click(function()
+      })
+      .end()
+      .find('a.save').click(function()
       {
         self.save($panel);
       });
@@ -121,8 +121,8 @@
         error: function(xhr)
         {
           $panel.unblock();
-					
-					$.dm.ctrl.errorDialog('Error in '+file, xhr.responseText);
+
+          $.dm.ctrl.errorDialog('Error in '+file, xhr.responseText);
         }
       });
 

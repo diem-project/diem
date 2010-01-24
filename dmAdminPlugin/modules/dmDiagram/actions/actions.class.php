@@ -12,7 +12,7 @@ class dmDiagramActions extends dmAdminBaseActions
     
     try
     {
-      foreach(array('admin', 'front') as $appName)
+      foreach(array('admin'/*, 'front'*/) as $appName)
       {
         $this->dicImages[$appName] = $this->getDiagramImage($appName);
       }
@@ -26,9 +26,9 @@ class dmDiagramActions extends dmAdminBaseActions
     
     try
     {
-      $this->mldUserImage = $doctrineGraphviz->getMldImage(array('type' => 'user'));
-      $this->mldCoreImage = $doctrineGraphviz->getMldImage(array('type' => 'core'));
-      $this->mldProjectImage = $doctrineGraphviz->getMldImage(array('type' => 'project'));
+//      $this->mldUserImage = $doctrineGraphviz->getMldImage(array('type' => 'user'));
+//      $this->mldCoreImage = $doctrineGraphviz->getMldImage(array('type' => 'core'));
+//      $this->mldProjectImage = $doctrineGraphviz->getMldImage(array('type' => 'project'));
     }
     catch(dmException $e)
     {
@@ -88,7 +88,16 @@ class dmDiagramActions extends dmAdminBaseActions
     $dumper->enableDispatcherLinks($this->withDispatcherLinks);
 
     file_put_contents($dotFile, $dumper->dump(array(
-      'graph' => array('concentrate' => 'false', 'bgcolor' => 'transparent', 'ratio' => 'fill', 'size' => /*'30,4'*/'25,10'),
+      'graph' => array(
+        'overlap' => 'false',
+        'splines' => 'true',
+        'epsilon' => '1.5',
+        'maxiter' => '30000',
+        'concentrate' => 'false',
+        'bgcolor' => 'transparent',
+        'ratio' => 'fill',
+        'size' => '10,4'
+      ),
       'node'  => array('fontsize' => 20, 'fontname' => 'Arial', 'shape' => 'Mrecord'),
       'edge'  => array('fontsize' => 9, 'fontname' => 'Arial', 'color' => 'grey', 'arrowhead' => 'open', 'arrowsize' => 1),
       'node.instance' => array('fillcolor' => '#ffffff', 'style' => 'filled', 'shape' => 'component'),
@@ -98,7 +107,9 @@ class dmDiagramActions extends dmAdminBaseActions
     
     $filesystem = $this->context->getFileSystem();
     //$return = $filesystem->exec(sprintf('dot -Tpng %s > %s', $dotFile, $dependencyDiagramImageFullPath));
-    $return = $filesystem->exec(sprintf('twopi -Granksep=5 -Tpng %s > %s', $dotFile, $dependencyDiagramImageFullPath));
+    //$return = $filesystem->exec(sprintf('twopi -Granksep=5 -Tpng %s > %s', $dotFile, $dependencyDiagramImageFullPath));
+
+    $return = $filesystem->exec(sprintf('neato -Tpng %s > %s', $dotFile, $dependencyDiagramImageFullPath));
     
     if (!$return)
     {

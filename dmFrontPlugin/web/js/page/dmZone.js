@@ -217,8 +217,6 @@ $.widget('ui.dmZone', {
 
 });
 
-$.extend($.ui.dmZone, {
-  getter: "getWidgets getId"
-});
+$.ui.dmZone.getter = "getWidgets getId";
 
 })(jQuery);

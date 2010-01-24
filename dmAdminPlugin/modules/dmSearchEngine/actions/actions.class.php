@@ -5,13 +5,13 @@ class dmSearchEngineActions extends dmAdminBaseActions
 
   public function executeIndex(dmWebRequest $request)
   {
-    $this->engine = $this->context->get('search_engine');
+    $this->engine = $this->getService('search_engine');
     
     $this->form = $this->getSearchForm();
 
     if ($this->query = trim($request->getParameter('query')))
     {
-      $this->form->bind($request->getParameterHolder()->getAll());
+      $this->form->bind(array('query' => $this->query));
       $this->pager = $this->getSearchPager($this->query);
     }
     else
@@ -70,7 +70,6 @@ class dmSearchEngineActions extends dmAdminBaseActions
       $pager = new dmSearchPager($results, 20);
       $pager->setPage($this->getRequestParameter('page', 1));
       $pager->init();
-//      $pager->setUrlFormat($form->getUrlFormat());
     }
     else
     {
@@ -83,11 +82,11 @@ class dmSearchEngineActions extends dmAdminBaseActions
   protected function getSearchForm()
   {
     $form = new dmForm();
-    $form->setName('search');
-    $form->setWidgets(array('query' => new sfWidgetFormInputText()));
-    $form->setValidators(array('query' => new sfValidatorString()));
-
-    return $form;
+    
+    return $form
+    ->setName('search')
+    ->setWidgets(array('query' => new sfWidgetFormInputText()))
+    ->setValidators(array('query' => new sfValidatorString()));
   }
 
 }

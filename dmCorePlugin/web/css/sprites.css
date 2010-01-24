@@ -1,8 +1,8 @@
 .s16, .s16block, .s16right,
 .dm .s16, .dm .s16block, .dm .s16right {
-  background-color: transparent;
-  background-image: url(../images/16/sprite.png);
-  background-repeat: no-repeat;
+  background-color: transparent !important;
+  background-image: url(../images/16/sprite.png) !important;
+  background-repeat: no-repeat !important;
   height: 16px;
 }
 .s16,
@@ -12,8 +12,8 @@
 .s16block,
 .dm .s16block {
   width: 16px;
-  display: block;
-  font-size: 0;
+  display: block !important;
+  font-size: 0 !important;
 }
 
 .s16block.s16_none,
@@ -23,9 +23,9 @@
 
 .s24, .s24block, .s24right,
 .dm .s24, .dm .s24block, .dm .s24right {
-  background-color: transparent;
-  background-image: url(../images/24/sprite.png);
-  background-repeat: no-repeat;
+  background-color: transparent !important;
+  background-image: url(../images/24/sprite.png) !important;
+  background-repeat: no-repeat !important;
   height: 24px;
 }
 .s24,
@@ -35,6 +35,6 @@
 .s24block,
 .dm .s24block {
   width: 24px;
-  display: block;
-  font-size: 0;
+  display: block !important;
+  font-size: 0 !important;
 }

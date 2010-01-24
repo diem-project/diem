@@ -379,7 +379,7 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
     }
     
     return strtr($pattern, array(
-      '%module%' => dmString::underscore($widget['module']),
+      '%module%' => str_replace('dm_widget_', '', dmString::underscore($widget['module'])),
       '%action%' => dmString::underscore($widget['action'])
     ));
   }

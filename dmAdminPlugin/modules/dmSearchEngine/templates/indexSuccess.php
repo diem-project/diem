@@ -10,9 +10,8 @@ echo £('div.search_actions.clearfix',
   £('div.dm_third',
     £('h2.mb10', __('Search')).
     $form->open('method=get').
-    $form['query']->renderLabel(__('Query')).
-    $form['query'].
-    sprintf('<input type="submit" name="%s" />', __('Search')).
+    $form['query']->label()->field()->error().
+    $form->submit(__('Search')).
     $form->close()
   ).
   £('div.dm_third',

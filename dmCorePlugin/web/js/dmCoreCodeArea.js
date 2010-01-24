@@ -3,6 +3,13 @@
 
   $.widget('ui.dmCodeArea', 
   {
+    options: {
+      lines: true,
+      tab: true,
+      save: null,
+      esc: null
+    },
+    
     _init: function()
     {
       var self = this;
@@ -40,15 +47,6 @@
       }
     }
     
-  });
-  
-  $.extend($.ui.dmCodeArea, {
-    defaults: {
-      lines: true,
-      tab: true,
-      save: null,
-      esc: null
-    }
   });
   
   $.fn.tabby = function(options)
@@ -220,6 +218,6 @@
       var ne = es + modifier;
       o.setSelectionRange(ns, ne);
     }
-  };
+  }
   
 })(jQuery);

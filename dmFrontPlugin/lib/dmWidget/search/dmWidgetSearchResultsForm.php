@@ -1,6 +1,6 @@
 <?php
 
-class dmWidgetAdvancedSearchResultsForm extends dmWidgetPluginForm
+class dmWidgetSearchResultsForm extends dmWidgetPluginForm
 {
 
   public function configure()

@@ -1,6 +1,6 @@
 <?php
 
-class dmWidgetAdvancedSearchResultsView extends dmWidgetPluginView
+class dmWidgetSearchResultsView extends dmWidgetPluginView
 {
   protected
   $isIndexable = false;

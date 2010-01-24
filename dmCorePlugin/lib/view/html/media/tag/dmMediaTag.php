@@ -69,6 +69,16 @@ abstract class dmMediaTag extends dmHtmlTag
     return $src;
   }
 
+  public function getWidth()
+  {
+    return dmArray::get($this->prepareAttributesForHtml($this->options), 'width');
+  }
+
+  public function getHeight()
+  {
+    return dmArray::get($this->prepareAttributesForHtml($this->options), 'width');
+  }
+
   protected function prepareAttributesForHtml(array $attributes)
   {
     $attributes = parent::prepareAttributesForHtml($attributes);
