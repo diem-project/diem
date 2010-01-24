@@ -16,7 +16,8 @@ class dmProjectConfiguration extends sfProjectConfiguration
       'dmMenuPlugin',
       'sfWebBrowserPlugin',
       'sfImageTransformPlugin',
-      'sfFeed2Plugin'
+      'sfFeed2Plugin',
+      'sfFormExtraPlugin'
     ));
   }
   
@@ -29,7 +30,7 @@ class dmProjectConfiguration extends sfProjectConfiguration
       $this->setPluginPath($rootPlugin, $baseDir.'/'.$rootPlugin);
     }
     
-    foreach(array('dmUserPlugin', 'dmMenuPlugin', 'dmAlternativeHelperPlugin', 'sfWebBrowserPlugin', 'sfImageTransformPlugin', 'sfFeed2Plugin') as $embeddedPlugin)
+    foreach(array('dmUserPlugin', 'dmMenuPlugin', 'dmAlternativeHelperPlugin', 'sfWebBrowserPlugin', 'sfImageTransformPlugin', 'sfFeed2Plugin', 'sfFormExtraPlugin') as $embeddedPlugin)
     {
       $this->setPluginPath($embeddedPlugin, $baseDir.'/dmCorePlugin/plugins/'.$embeddedPlugin);
     }
