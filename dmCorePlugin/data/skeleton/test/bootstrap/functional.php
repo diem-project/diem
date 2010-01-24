@@ -16,4 +16,3 @@ dm::createContext($configuration);
 
 // remove all cache
 sfToolkit::clearDirectory(sfConfig::get('sf_app_cache_dir'));
-
