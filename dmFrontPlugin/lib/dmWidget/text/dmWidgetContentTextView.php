@@ -46,32 +46,32 @@ class dmWidgetContentTextView extends dmWidgetContentImageView
     $viewVars = $this->getViewVars();
     extract($viewVars);
     
-    $helper = $this->context->getHelper();
+    $helper = $this->getHelper();
     
     $html = $helper->£o('div.dm_text.text_'.$style.'.clearfix');
 
     if ($title && $titlePosition == 'outside')
     {
-      $html .= $helper->£('h2.text_title.outside', $titleLink ? $this->context->getHelper()->£link($titleLink)->text($title) : $title);
+      $html .= $helper->£('h2.text_title.outside', $titleLink ? $helper->£link($titleLink)->text($title) : $title);
     }
 
     $html .= $helper->£o('div.text_content');
   
       if ($media && $mediaPosition != 'bottom')
       {
-        $html .= $helper->£('div.text_image'.$mediaClass, $mediaLink ? $this->context->getHelper()->£link($mediaLink)->text($mediaTag) : $mediaTag);
+        $html .= $helper->£('div.text_image'.$mediaClass, $mediaLink ? $helper->£link($mediaLink)->text($mediaTag) : $mediaTag);
       }
     
       if ($title && $titlePosition == 'inside')
       {
-        $html .= $helper->£('h2.text_title.inside', $titleLink ? $this->context->getHelper()->£link($titleLink)->text($title) : $title);
+        $html .= $helper->£('h2.text_title.inside', $titleLink ? $helper->£link($titleLink)->text($title) : $title);
       }
     
       $html .= $helper->£('div.markdown.text_markdown', $this->context->get('markdown')->toHtml($text));
     
       if ($media && $mediaPosition == 'bottom')
       {
-        $html .= $helper->£('div.text_image'.$mediaClass, $mediaLink ? $this->context->getHelper()->£link($mediaLink)->text($mediaTag) : $mediaTag);
+        $html .= $helper->£('div.text_image'.$mediaClass, $mediaLink ? $helper->£link($mediaLink)->text($mediaTag) : $mediaTag);
       }
   
     $html .= $helper->£c('div');
@@ -88,6 +88,12 @@ class dmWidgetContentTextView extends dmWidgetContentImageView
   
   protected function doRenderForIndex()
   {
-    return implode(' ', array($this->compiledVars['title'], $this->compiledVars['text'], $this->compiledVars['legend']));
+    $text = implode(' ', array(
+      $this->compiledVars['title'],
+      $this->compiledVars['text'],
+      $this->compiledVars['legend']
+    ));
+
+    return $text;
   }
 }

@@ -103,7 +103,7 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
     {
       foreach($zone['Widgets'] as $widget)
       {
-        $widget['value'] = isset($widget['Translation'][$culture]) ? $widget['Translation'][$culture] : '';
+        $widget['value'] = isset($widget['Translation'][$culture]['value']) ? $widget['Translation'][$culture]['value'] : '';
         unset($widget['Translation']);
         
         $widgetType = $this->context->get('widget_type_manager')->getWidgetType($widget['module'], $widget['action']);
@@ -114,13 +114,13 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
           'widget_view.data'  => $widget
         ));
         
-        $html .= $this->context->get('widget_view')->renderForIndex();
+        $text .= $this->context->get('widget_view')->renderForIndex();
       }
     }
     
     sfConfig::set('dm_search_populating', false);
     
-    $indexableText = dmSearchIndex::cleanText($html);
+    $indexableText = dmSearchIndex::cleanText($text);
     
     unset($areas, $html, $helper);
     

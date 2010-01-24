@@ -213,7 +213,7 @@ class dmSearchIndex extends dmSearchIndexCommon
     strtolower(
     dmString::transliterate(
     strip_tags(
-    str_replace('<', ' <', $text)
+    str_replace(array("\n", '<'), array(' ', ' <'), $text)
     )
     )
     )
