@@ -37,13 +37,21 @@ class PluginDmPageTable extends myDoctrineTable
     // check error404 page
     if (!$this->createQuery('p')->where('p.module = ? AND p.action = ?', array('main', 'error404'))->exists())
     {
-      $this->create(array(
+      $page404 = $this->create(array(
         'module' => 'main',
         'action' => 'error404',
         'name' => dm::getI18n()->__('Page not found'),
         'title' => dm::getI18n()->__('Page not found'),
         'slug' => 'error404'
-      ))->getNode()->insertAsLastChildOf($root);
+      ));
+
+      $page404->getNode()->insertAsLastChildOf($root);
+
+      dmDb::table('DmWidget')->createInZone(
+        $page404->PageView->Area->Zones[0],
+        'dmWidgetContent/title',
+        array('text' => 'Page not found', 'tag' => 'h1')
+      )->save();
     }
 
     // check login page

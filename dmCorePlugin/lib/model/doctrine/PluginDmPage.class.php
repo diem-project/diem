@@ -204,9 +204,9 @@ LIMIT 1')->getStatement();
 
     parent::save($conn);
   
-    if ($ed = $this->getEventDispatcher())
+    if ($dispatcher = $this->getEventDispatcher())
     {
-      $ed->notify(new sfEvent($this, 'dm.page.post_save'));
+      $dispatcher->notify(new sfEvent($this, 'dm.page.post_save'));
     }
   }
   
