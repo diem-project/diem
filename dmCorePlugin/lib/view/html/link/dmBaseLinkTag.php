@@ -44,7 +44,9 @@ abstract class dmBaseLinkTag extends dmHtmlTag
   
   public function getHrefPrefix()
   {
-    return sfConfig::get('sf_no_script_name') ? $this->requestContext['prefix'] : $this->requestContext['script_name'];
+    return sfConfig::get('sf_no_script_name')
+    ? $this->requestContext['prefix']
+    : $this->requestContext['script_name'];
   }
   
   /*

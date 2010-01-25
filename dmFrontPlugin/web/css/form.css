@@ -46,11 +46,11 @@
 .dm_form.list .dm_form_element > input,
 .dm_form.list .dm_form_element > .input,
 .dm_form.list .dm_form_element > textarea {
-  width: 72%;
+  width: 71%;
 }
 
 .dm_form.list .dm_form_element > select {
-  width: 74%;
+  width: 73%;
 }
 
 .dm_form .actions {
