@@ -3,7 +3,8 @@
 class dmSeoSynchronizer
 {
   protected static
-  $truncateCache;
+  $truncateCache,
+  $moduleIsActivatable = array();
   
   protected
   $moduleManager,
@@ -20,7 +21,7 @@ class dmSeoSynchronizer
     $this->culture = $culture;
   }
   
-  public function execute(array $onlyModules = array(), $culture)
+  public function execute(array $onlyModules, $culture)
   {
     $this->setCulture($culture);
     
@@ -89,7 +90,7 @@ class dmSeoSynchronizer
      * get pages
      */
     $pdoPages = dmDb::pdo('
-    SELECT p.id, p.lft, p.rgt, p.record_id, t.auto_mod, t.slug, t.name, t.title, t.h1, t.description, t.keywords, t.id as exist
+    SELECT p.id, p.lft, p.rgt, p.record_id, t.auto_mod, t.slug, t.name, t.title, t.h1, t.description, t.keywords, t.is_active, t.id as exist
     FROM dm_page p LEFT JOIN dm_page_translation t ON (t.id = p.id AND t.lang = ?)
     WHERE p.module = ? AND p.action = ?', array($this->culture, $module->getKey(), 'show')
     )->fetchAll(PDO::FETCH_ASSOC);
@@ -136,8 +137,9 @@ class dmSeoSynchronizer
         $modifiedPages[$page['id']] = $modifiedFields;
       }
     }
-    
-    $records->free(true);
+
+    // disable freeing records because it makes tests using records after synchronisation fail.
+    //$records->free(true);
 
     /*
      * Save modifications
@@ -231,7 +233,34 @@ class dmSeoSynchronizer
       }
     }
 
+    $modifiedFields = $this->updatePageIsActive($page, $module, $record, $modifiedFields);
+
     return $modifiedFields;
+  }
+
+  protected function updatePageIsActive(array $page, dmProjectModule $module, dmDoctrineRecord $record, array $modifiedFields)
+  {
+    if ($this->shouldUpdatePageIsActiveForModule($module))
+    {
+      $recordIsActive = $record->get('is_active');
+
+      if ($page['is_active'] !== $recordIsActive)
+      {
+        $modifiedFields['is_active'] = $recordIsActive;
+      }
+    }
+
+    return $modifiedFields;
+  }
+
+  protected function shouldUpdatePageIsActiveForModule(dmProjectModule $module)
+  {
+    if(!isset(self::$moduleIsActivatable[$module->getKey()]))
+    {
+      self::$moduleIsActivatable[$module->getKey()] = $module->getTable()->hasField('is_active');
+    }
+
+    return self::$moduleIsActivatable[$module->getKey()];
   }
 
   public function validatePattern(dmProjectModule $module, $field, $pattern, dmDoctrineRecord $record = null)

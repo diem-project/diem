@@ -63,11 +63,11 @@ class BasedmCoreActions extends dmBaseActions
       switch($this->step)
       {
         case 1:
-          @$this->context->get('cache_manager')->clearAll();
+          @$this->getService('cache_manager')->clearAll();
        
           if ($this->getUser()->can('system'))
           {
-            @$this->context->get('filesystem')->sf('dmFront:generate');
+            @$this->getService('filesystem')->sf('dmFront:generate');
       
             @dmFileCache::clearAll();
           }
@@ -80,7 +80,7 @@ class BasedmCoreActions extends dmBaseActions
           break;
           
         case 2:
-          $this->context->get('page_tree_watcher')->synchronizePages();
+          $this->getService('page_tree_watcher')->synchronizePages();
           
           $data = array(
             'msg'  => $this->getService('i18n')->__('SEO synchronization'),
@@ -90,11 +90,11 @@ class BasedmCoreActions extends dmBaseActions
           break;
           
         case 3:
-          $this->context->get('page_tree_watcher')->synchronizeSeo();
+          $this->getService('page_tree_watcher')->synchronizeSeo();
           
           if (count($this->getService('i18n')->getCultures()) > 1)
           {
-            $this->context->get('page_i18n_builder')->createAllPagesTranslations();
+            $this->getService('page_i18n_builder')->createAllPagesTranslations();
           }
           
           $data = array(
@@ -137,7 +137,7 @@ class BasedmCoreActions extends dmBaseActions
   
   public function executeMarkdown(dmWebRequest $request)
   {
-    return $this->renderText($this->context->get('markdown')->toHtml($request->getParameter('text')));
+    return $this->renderText($this->getService('markdown')->toHtml($request->getParameter('text')));
   }
   
 }

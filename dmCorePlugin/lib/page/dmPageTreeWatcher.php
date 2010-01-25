@@ -76,7 +76,17 @@ class dmPageTreeWatcher extends dmConfigurable
 
   public function listenToControllerRedirectionEvent(sfEvent $event)
   {
-    $this->update();
+    try
+    {
+      $this->update();
+    }
+    catch(Exception $e)
+    {
+      if (sfConfig::get('sf_debug'))
+      {
+        throw $e;
+      }
+    }
   }
 
   public function update()
@@ -85,21 +95,9 @@ class dmPageTreeWatcher extends dmConfigurable
     
     if(!empty($modifiedModules))
     {
-      try
-      {
-        $this->synchronizePages($modifiedModules);
-      
-        $this->synchronizeSeo($modifiedModules);
-      }
-      catch(Exception $e)
-      {
-        $this->serviceContainer->get('user')->logError('Something went wrong when updating project');
-        
-        if (sfConfig::get('sf_debug'))
-        {
-          throw $e;
-        }
-      }
+      $this->synchronizePages($modifiedModules);
+
+      $this->synchronizeSeo($modifiedModules);
     }
 
     $this->initialize();
