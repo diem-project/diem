@@ -23,6 +23,12 @@ class dmFrontComponentGenerator extends dmFrontModuleGenerator
     
     if (file_exists($file))
     {
+      if($this->shouldSkip($file))
+      {
+        $this->log('skip '.dmProject::unrootify($file));
+        return true;
+      }
+      
       include_once($file);
       $this->class = dmZendCodeGeneratorPhpClass::fromReflection(new Zend_Reflection_Class($className));
       
@@ -63,6 +69,13 @@ class dmFrontComponentGenerator extends dmFrontModuleGenerator
     }
 
     return $return;
+  }
+
+  protected function shouldSkip($file)
+  {
+    $code = file_get_contents($file);
+
+    return false !== strpos($code, 'require_once');
   }
   
   protected function buildClass($className)

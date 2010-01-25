@@ -110,6 +110,7 @@ dl.dm_little_dl dd {
   border: 1px solid #D3D3D3;
   color: #444;
   -moz-border-radius: 40px;
+  -webkit-border-radius: 40px;
   color: #046BCA;
 }
 

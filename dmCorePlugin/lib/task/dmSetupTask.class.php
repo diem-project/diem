@@ -123,7 +123,7 @@ EOF;
     if (!$this->context->get('filesystem')->sf('dmFront:generate'))
     {
       $this->logBlock(array(
-        'Can\'t run dmFront:generate : '.$this->context->get('filesystem')->getLastExec('output'),
+        'Can\'t run dmFront:generate: '.$this->context->get('filesystem')->getLastExec('output'),
         'Please run "php symfony dmFront:generate" manually to generate front templates'
       ), 'ERROR');
     }

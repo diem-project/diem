@@ -22,14 +22,24 @@ abstract class dmFrontModuleGenerator
   {
     $this->formatter = $formatter;
   }
-  
+
+  protected function log($message)
+  {
+    if ($this->formatter)
+    {
+      $message = $this->formatter->format(get_class($this).' '.$message);
+    }
+
+    $this->dispatcher->notify(new sfEvent($this, 'command.log', array($message)));
+  }
+
   protected function logError($message)
   {
     if ($this->formatter)
     {
       $message = $this->formatter->format(get_class($this).' '.$message, 'ERROR');
     }
-    
+
     $this->dispatcher->notify(new sfEvent($this, 'command.log', array($message)));
   }
 

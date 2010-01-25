@@ -7,11 +7,11 @@ class dmFrontActionGenerator extends dmFrontModuleGenerator
   $indentation = '  ';
 
   public function execute()
-  {
+  { 
     require_once(dmOs::join(sfConfig::get('dm_core_dir'), 'lib/vendor/Zend/Reflection/File.php'));
     require_once(dmOs::join(sfConfig::get('dm_core_dir'), 'lib/vendor/Zend/CodeGenerator/Php/File.php'));
     require_once(dmOs::join(sfConfig::get('dm_core_dir'), 'lib/vendor/dmZend/CodeGenerator/Php/Class.php'));
-    
+
     $file = dmOs::join($this->moduleDir, 'actions/actions.class.php');
 
     if (!$this->filesystem->mkdir(dirname($file)))
@@ -23,6 +23,12 @@ class dmFrontActionGenerator extends dmFrontModuleGenerator
     
     if (file_exists($file))
     {
+      if($this->shouldSkip($file))
+      {
+        $this->log('skip '.dmProject::unrootify($file));
+        return true;
+      }
+      
       include_once($file);
       $this->class = dmZendCodeGeneratorPhpClass::fromReflection(new Zend_Reflection_Class($className));
       
@@ -69,6 +75,13 @@ class dmFrontActionGenerator extends dmFrontModuleGenerator
     }
     
     return $return;
+  }
+
+  protected function shouldSkip($file)
+  {
+    $code = file_get_contents($file);
+
+    return false !== strpos($code, 'require_once');
   }
   
   protected function buildClass($className)
