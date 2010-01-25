@@ -14,7 +14,15 @@ foreach($dm_layout->get('Areas') as $area)
   {
     foreach($zone->get('Widgets') as $widget)
     {
-      $widgets[] = __($sf_context->get('widget_type_manager')->getWidgetType($widget)->getPublicName());
+      try
+      {
+        $widgetType = $sf_context->get('widget_type_manager')->getWidgetType($widget);
+        $widgets[] = __($widgetType->getPublicName());
+      }
+      catch(dmException $e)
+      {
+        $widgets[] = $e->getMessage();
+      }
     }
   }
 
