@@ -22,17 +22,7 @@
       
       self.$slug = $('input#dm_page_front_new_form_slug', self.element).attr('disabled', self.autoSlug);
 
-      var json = $('div.parent_slugs', self.element).text();
-      
-      // Try to use the native JSON parser first
-      if ( window.JSON && window.JSON.parse )
-      {
-        self.parentSlugs = window.JSON.parse( json );
-      }
-      else
-      {
-        self.parentSlugs = (new Function("return " + json))();
-      }
+      self.parentSlugs = $.parseJSON($('div.parent_slugs', self.element).text());
       
       self.$form = $('form', self.element).dmAjaxForm({
         beforeSubmit: function(data)

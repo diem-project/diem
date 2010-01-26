@@ -63,18 +63,9 @@
     {
       if($encodedAssetsDiv = this.find('div.dm_encoded_assets').orNot())
       {
-        json = $encodedAssetsDiv.html();
-        $encodedAssetsDiv.remove();
+        data = jQuery.parseJSON($encodedAssetsDiv.html());
 
-        // Try to use the native JSON parser first
-        if ( window.JSON && window.JSON.parse )
-        {
-          data = window.JSON.parse( json );
-        }
-        else
-        {
-          data = (new Function("return " + json))();
-        }
+        $encodedAssetsDiv.remove();
 
         for (i in data.css)
         {
