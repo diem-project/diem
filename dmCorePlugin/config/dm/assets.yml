@@ -17,7 +17,7 @@ js:
     
   lib:
     symfony_debug:    symfony/debug
-    jquery:           jquery/jquery-1.4.min
+    jquery:           jquery/jquery-1.4.1.min
     ui-core:          jquery-ui/js/minified/jquery.ui.core.min
     ui-widget:        jquery-ui/js/minified/jquery.ui.widget.min
     ui-mouse:         jquery-ui/js/minified/jquery.ui.mouse.min
