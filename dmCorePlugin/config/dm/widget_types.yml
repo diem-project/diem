@@ -26,8 +26,8 @@ dmWidgetNavigation:
   breadCrumb:
     cache:              true
 
-#  menu:
-#    cache:              true
+  menu:
+    cache:              true
     
 dmWidgetSearch:
     

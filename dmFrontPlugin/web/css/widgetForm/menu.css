@@ -9,56 +9,42 @@ div.dm_widget_navigation_menu_form .dm_help.no_margin {
 }
 
 div.dm_widget_navigation_menu_form li.item_element {
-  padding: 3px;
+  padding: 5px;
   border-bottom: 1px solid #D3D3D3;
-  height: 40px;
   position: relative;
-}
-
-div.dm_widget_navigation_menu_form li.item_element .delete_item_element {
-	width: 9px;
-	height: 8px;
-	position: absolute;
-	top: 3px;
-	cursor: pointer;
+  cursor: move;
 }
 
 div.dm_widget_navigation_menu_form li.item_element:hover {
   background: #F0F4FC;
 }
 
-div.dm_widget_navigation_menu_form li.item_element img {
-  position: absolute;
-  top: 3px;
-  left: 0;
-  cursor: move;
+div.dm_widget_navigation_menu_form a.item_text {
+  font-weight: bold;
+  cursor: pointer;
 }
 
-div.dm_widget_navigation_menu_form li.item_element .wrap {
-  margin: 2px 0 2px 110px;
+div.dm_widget_navigation_menu_form ul.item_form {
+  display: none;
 }
 
-div.dm_widget_navigation_menu_form li.item_element label {
+div.dm_widget_navigation_menu_form ul.item_form li {
+  margin: 2px 0;
+}
+
+div.dm_widget_navigation_menu_form ul.item_form li label {
   float: left;
-  width: 15%;
+  width: 25%;
+  margin-top: 1px;
 }
 
-div.dm_widget_navigation_menu_form li.item_element input {
+div.dm_widget_navigation_menu_form ul.item_form li input {
   border: 1px solid #FFF;
   background: none;
-  width: 78%
+  width: 70%
 }
 
-div.dm_widget_navigation_menu_form li.item_element input:hover,
-div.dm_widget_navigation_menu_form li.item_element input:active {
+div.dm_widget_navigation_menu_form ul.item_form li input:hover,
+div.dm_widget_navigation_menu_form ul.item_form li input:active {
   background: #FFF;
-}
-
-
-div.dm_widget_navigation_menu_form li.item_element input.droppable_active {
-  background: url(../../../dm/core/images/default_bg_yellow.png) repeat-x scroll 50% 50%;
-}
-
-div.dm_widget_navigation_menu_form li.item_element input.droppable_hover {
-  background: url(../../../dm/core/images/default_bg_green.png) repeat-x scroll 50% 50%;
 }

@@ -12,7 +12,7 @@ $.fn.extend({
 
 		$items = $form.find('.items_list'),
 
-	  deleteMessage = $items.metadata().delete_message,
+    metadata = $items.metadata(),
 
     createItemElement = function(item)
     {
@@ -23,26 +23,42 @@ $.fn.extend({
 			}, item);
 
 			var $li = $('<li class="item_element">')
-      .html(' \
-<input class="id" type="hidden" name="'+formName+'[link][]" value="'+item.link+'" /> \
-<input class="position" type="hidden" name="'+formName+'[item_position][]" value="'+item.position+'" /> \
-<div class="item_text">'+item.text+'</div> \
-<img src="'+$.dm.ctrl.options.dm_core_asset_root+'images/cross-small.png" class="delete_item_element" title="'+deleteMessage+'" />'
-      )
-      .block();
+      .html('\
+<a class="item_text" title="'+metadata.click_message+'">'+item.text+'</a> \
+<ul class="item_form"> \
+<li class="clearfix"><label>'+metadata.text_message+':</label><input class="text" type="text" name="'+formName+'[text][]" value="'+item.text+'" /></li> \
+<li class="clearfix"><label>'+metadata.link_message+':</label><input class="link" type="text" name="'+formName+'[link][]" value="'+item.link+'" /></li> \
+<li class="clearfix"><a class="remove">'+metadata.delete_message+' '+item.text+'</li> \
+</ul>'
+      );
 
       $items.append($li);
+
+      $li.find('a.item_text').click(function()
+      {
+        if (!$li.hasClass('dm_dragging'))
+        {
+          $li.find('ul.item_form').toggle(200);
+        }
+      })
+      .end()
+      .find('a.remove').click(function() {
+        if (confirm($(this).text()+' ?'))
+        {
+          $li.remove();
+        }
+      });
 
       self.dmFrontForm('linkDroppable');
       
       if ($items.hasClass('ui-sortable'))
       {
-        $items.sortable('refresh').trigger('resort');
+        $items.sortable('refresh');
       }
     };
 
 		$.each($items.metadata().items, function() {
-			createMediaElement(this);
+			createItemElement(this);
 		});
 
 		$items.droppable({
@@ -52,7 +68,10 @@ $.fn.extend({
       tolerance:    'touch',
       drop:         function(event, ui)
 			{
-				createItemElement({link: 'page:'+ui.draggable.attr('id').replace(/dmp/, '')});
+        createItemElement({
+          link: 'page:'+ui.draggable.attr('id').replace(/dmp/, ''),
+          text: ui.draggable.find('>a').text()
+        });
 
 				$items.attr('scrollTop', 999999);
       }
@@ -64,11 +83,13 @@ $.fn.extend({
       tolerance:              'pointer',
       stop:                   function(e, ui) {
 				$(this).trigger('resort');
+      },
+      start:                  function(e, ui) {
+        ui.item.addClass('dm_dragging');
+      },
+      stop:                   function(e, ui) {
+        setTimeout(function() { ui.item.removeClass('dm_dragging'); }, 200);
       }
-		}).bind('resort', function() {
-      $('li.item_element', $items).each(function(index) {
-        $('input.position', $(this)).val(index);
-      });
 		});
   }
 });

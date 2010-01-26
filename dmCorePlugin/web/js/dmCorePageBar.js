@@ -39,7 +39,7 @@
         url:      $.dm.ctrl.getHref('+/dmInterface/loadPageTree'),
         success:  function(html)
         {
-          $('#dm_page_tree').hide().html(html);
+          $('#dm_page_tree').hide().html(html).dmExtractEncodedAssets();
           pageBar.refresh();
           pageBar.element.unblock();
           setTimeout(function()

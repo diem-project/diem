@@ -9,14 +9,34 @@ class dmWidgetNavigationMenuView extends dmWidgetPluginView
   {
     parent::configure();
     
-    $this->addRequiredVar('elements');
+    $this->addRequiredVar(array('items', 'ulClass', 'liClass'));
+  }
+
+  protected function filterViewVars(array $vars = array())
+  {
+    $vars = parent::filterViewVars($vars);
+
+    $vars['menu'] = $this->getService('menu')
+    ->ulClass($vars['ulClass']);
+
+    foreach($vars['items'] as $index => $item)
+    {
+      $vars['menu']
+      ->addChild($index.'-'.dmString::slugify($item['text']), $item['link'])
+      ->label($item['text'])
+      ->liClass($vars['liClass']);
+    }
+
+    unset($vars['items'], $vars['liClass']);
+
+    return $vars;
   }
   
   protected function doRender()
   {
     $vars = $this->getViewVars();
     
-    return '[menu]';
+    return $vars['menu']->render();
   }
 
 }

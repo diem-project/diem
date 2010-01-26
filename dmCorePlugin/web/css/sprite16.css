@@ -4,7 +4,7 @@
 .s16_clear{background-position:0 -48px;}
 .s16_layer{background-position:0 -64px;}
 .s16_alert{background-position:0 -80px;}
-.s16_error{background-position:0 -96px;}
+.s16_error{background-position:0 -96px !important;}
 .s16_first{background-position:0 -112px;}
 .s16_previous{background-position:0 -128px;}
 .s16_next{background-position:0 -144px;}
