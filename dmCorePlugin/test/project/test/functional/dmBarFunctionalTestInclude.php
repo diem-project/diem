@@ -5,7 +5,6 @@ $browser->get('/+/dmInterface/loadPageTree')
   'moduleAction' => 'dmInterface/loadPageTree',
 ))
 ->has('li:first li li', 'Page 21')
-->has('script')
 ->get('/+/dmInterface/loadMediaFolder')
 ->checks(array(
   'moduleAction' => 'dmInterface/loadMediaFolder',
