@@ -28,3 +28,7 @@ h4 {
   font-size: 1.2em;
   font-weight: bold;
 }
+
+.breadCrumb li, .pager li {
+  display: inline;
+}

@@ -12,7 +12,8 @@ js:
     area:             page/dmArea
     zone:             page/dmZone
     widget:           page/dmWidget
-    widgetForms:      page/dmWidgetForms
+    widgetForms:      widgetForm/dmWidgetForms
+    widgetMenuForm:   widgetForm/dmWidgetNavigationMenuForm
     pageEditForm:     dmFrontPageEditForm
     pageAddForm:      dmFrontPageAddForm
     ajaxPager:        dmFrontAjaxPager
@@ -30,3 +31,4 @@ css:
     widget:           widget
     codeEditor:       codeEditor
     pageEditForm:     pageEditForm
+    widgetMenuForm:   widgetForm/menu

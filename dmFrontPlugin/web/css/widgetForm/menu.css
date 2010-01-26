@@ -1,0 +1,64 @@
+div.dm_widget_navigation_menu_form .items_list {
+  min-height: 100px;
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+div.dm_widget_navigation_menu_form .dm_help.no_margin {
+  margin-left: 0;
+}
+
+div.dm_widget_navigation_menu_form li.item_element {
+  padding: 3px;
+  border-bottom: 1px solid #D3D3D3;
+  height: 40px;
+  position: relative;
+}
+
+div.dm_widget_navigation_menu_form li.item_element .delete_item_element {
+	width: 9px;
+	height: 8px;
+	position: absolute;
+	top: 3px;
+	cursor: pointer;
+}
+
+div.dm_widget_navigation_menu_form li.item_element:hover {
+  background: #F0F4FC;
+}
+
+div.dm_widget_navigation_menu_form li.item_element img {
+  position: absolute;
+  top: 3px;
+  left: 0;
+  cursor: move;
+}
+
+div.dm_widget_navigation_menu_form li.item_element .wrap {
+  margin: 2px 0 2px 110px;
+}
+
+div.dm_widget_navigation_menu_form li.item_element label {
+  float: left;
+  width: 15%;
+}
+
+div.dm_widget_navigation_menu_form li.item_element input {
+  border: 1px solid #FFF;
+  background: none;
+  width: 78%
+}
+
+div.dm_widget_navigation_menu_form li.item_element input:hover,
+div.dm_widget_navigation_menu_form li.item_element input:active {
+  background: #FFF;
+}
+
+
+div.dm_widget_navigation_menu_form li.item_element input.droppable_active {
+  background: url(../../../dm/core/images/default_bg_yellow.png) repeat-x scroll 50% 50%;
+}
+
+div.dm_widget_navigation_menu_form li.item_element input.droppable_hover {
+  background: url(../../../dm/core/images/default_bg_green.png) repeat-x scroll 50% 50%;
+}

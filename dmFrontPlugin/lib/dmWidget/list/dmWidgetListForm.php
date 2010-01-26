@@ -118,7 +118,7 @@ class dmWidgetListForm extends dmWidgetProjectModelForm
 
   protected function renderContent($attributes)
   {
-    return self::$serviceContainer->getService('helper')->renderPartial('dmWidget', 'forms/dmWidgetList', array('form' => $this));
+    return $this->getHelper()->renderPartial('dmWidget', 'forms/dmWidgetList', array('form' => $this));
   }
 
   protected function getAvailableOrderFields()

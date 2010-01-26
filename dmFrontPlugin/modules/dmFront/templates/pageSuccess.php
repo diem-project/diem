@@ -11,8 +11,6 @@
 
 <div id="dm_page" class="<?php $isEditMode && print 'edit' ?>">
 
-  <?php echo $helper->renderAccessLinks() ?>
-
   <div class="layout">
 
     <?php echo $helper->renderArea('top', '.clearfix') ?>

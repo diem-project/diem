@@ -1,9 +1,0 @@
-.breadCrumb li, .pager li {
-  display: inline;
-}
-
-/* Hide accessibility links */
-.dm_access_links {
-  position: absolute;
-  left: -9000px;
-}
