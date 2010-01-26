@@ -42,9 +42,9 @@ class BasedmFrontActions extends dmFrontBaseActions
   {
     if (
           // the site is not active and requires the view_site permission to be displayed
-          (!dmConfig::get('site_active') && !$this->getUser()->can('view_site'))
+          (!dmConfig::get('site_active') && !$this->getUser()->can('site_view'))
           // the page is not active and requires the view_site permission to be displayed
-      ||  (!$this->page->get('is_active') && !$this->getUser()->can('view_site'))
+      ||  (!$this->page->get('is_active') && !$this->getUser()->can('site_view'))
           // the page is secured and requires authentication to be displayed
       ||  ($this->page->get('is_secure') && !$this->getUser()->isAuthenticated())
           // the page is secured and the user has not required credentials
