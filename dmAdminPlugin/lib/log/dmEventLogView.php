@@ -19,7 +19,7 @@ class dmEventLogView extends dmLogView
     return sprintf('%s%s<br /><span class=light>%s</span>',
       ($username = $entry->get('username')) ? sprintf('<strong class="mr10">%s</strong>', $username) : '',
       $entry->get('ip'),
-      $entry->get('session_id')
+      $this->renderIp($entry->get('session_id'))
     );
   }
   

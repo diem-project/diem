@@ -22,17 +22,6 @@ class dmRequestLogView extends dmLogView
       $this->renderIp($entry->get('ip'))
     );
   }
-
-  protected function renderIp($ip)
-  {
-    if ($this->getOption('show_ip'))
-    {
-      return $ip;
-    }
-
-    $ipParts = explode('.', $ip);
-    return 4 === count($ipParts) ? $ipParts[0].'.'.$ipParts[1].'.xx.xx' : $ip;
-  }
   
   protected function renderBrowser(dmRequestLogEntry $entry)
   {
