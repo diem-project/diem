@@ -751,7 +751,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
 
   public function getService($name, $class = null)
   {
-    return $this->getTable()->getService($class, $name);
+    return $this->getTable()->getService($name, $class);
   }
   
   public function getModuleManager()
