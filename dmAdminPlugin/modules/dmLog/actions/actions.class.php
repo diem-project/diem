@@ -37,13 +37,11 @@ class dmLogActions extends dmAdminBaseActions
       $this->log = $this->context->get($request->getParameter('name').'_log')
     );
     
-    $nbEntries = 200;
-    
-    $logViewClass = get_class($this->log).'View';
-    require_once(dmOs::join(sfConfig::get('dm_admin_dir'), 'modules/dmLog/lib/'.$logViewClass.'.php'));
-    
-    $this->logView = new $logViewClass($this->log, $this->context->getI18n(), $this->getUser(), $this->context->getHelper());
-    $this->logView->setMax($nbEntries);
+    $this->logView = $this->getServiceContainer()
+    ->setParameter('log_view.class', get_class($this->log).'View')
+    ->setParameter('log_view.log', $this->log)
+    ->getService('log_view')
+    ->setMax(200);
   }
   
   public function executeClear(dmWebRequest $request)
@@ -71,9 +69,11 @@ class dmLogActions extends dmAdminBaseActions
     {
       $log = $this->context->get($logKey.'_log');
       
-      $viewClass = get_class($log).'ViewLittle';
-      $view = new $viewClass($log, $this->context->getI18n(), $this->getUser(), $this->context->getHelper());
-      $view->setMax($nbEntries[$logKey]);
+      $view = $this->getServiceContainer()
+      ->setParameter('log_view.class', get_class($log).'ViewLittle')
+      ->setParameter('log_view.log', $log)
+      ->getService('log_view')
+      ->setMax($nbEntries[$logKey]);
       
       $hash = $view->getHash();
       

@@ -62,6 +62,9 @@ parameters:
   diem_version_check.options:
     enabled:                  true
     url:                      http://diem-project.org/service/current-version
+
+  log_view.class:                                 # Renders a diem log
+  log_view.log:                                   # The log to render
  
 services:
 
@@ -144,3 +147,8 @@ services:
     class:                    %diem_version_check.class%
     shared:                   false
     arguments:                [ @service_container, %diem_version_check.options% ]
+
+  log_view:
+    class:                    %log_view.class%
+    shared:                   false
+    arguments:                [ %log_view.log%, @i18n, @user, @helper ]

@@ -13,6 +13,9 @@ div.markItUpContainer  {
   -moz-border-radius: 4px;
 }
 textarea.markItUpEditor,
+textarea.markItUpEditor:active,
+.dm textarea.markItUpEditor,
+.dm textarea.markItUpEditor:active,
 .sf_admin_form_row_inner textarea.markItUpEditor {
   font:12px 'Courier New', Courier, monospace;
   border:3px solid #3C769D;
