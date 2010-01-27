@@ -11,10 +11,11 @@ $.widget('ui.dmWidget', {
 
   openEditDialog: function()
   {
-    var widget = this, activeTab = null, dialogClass = 'dm_widget_edit_dialog_wrap '+widget.element.attr('id')+'_edit_dialog';
-		
+    var widget = this, activeTab = null, dialogClass = widget.element.attr('id')+'_edit_dialog';
+
 	  if ($('body > div.'+dialogClass).length)
 		{
+      $('body > div.'+dialogClass).find('div.ui-dialog-content').dialog('moveToTop');
 			return;
 		}
 		
@@ -23,7 +24,7 @@ $.widget('ui.dmWidget', {
       data:         { widget_id: widget.getId() },
       title:        $('a.dm_widget_edit', widget.element).attr('title'),
       width:        370,
-			'class':      dialogClass,
+			'class':      'dm_widget_edit_dialog_wrap '+dialogClass,
       beforeClose:  function()
       {
         if (!widget.deleted)
