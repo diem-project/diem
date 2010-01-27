@@ -1,6 +1,6 @@
 <?php
 
-abstract class dmLogView
+abstract class dmLogView extends dmConfigurable
 {
   protected
   $log,
@@ -11,13 +11,28 @@ abstract class dmLogView
   $maxEntries = 10,
   $entries;
   
-  public function __construct(dmLog $log, dmI18n $i18n, dmCoreUser $user, dmHelper $helper)
+  public function __construct(dmLog $log, dmI18n $i18n, dmCoreUser $user, dmHelper $helper, array $options = array())
   {
     $this->log = $log;
     $this->i18n = $i18n;
     $this->user = $user;
     $this->helper = $helper;
-    $this->dateFormat = new sfDateFormat($user->getCulture());
+
+    $this->initialize($options);
+  }
+
+  public function getDefaultOptions()
+  {
+    return array(
+      'show_ip' => true
+    );
+  }
+
+  protected function initialize(array $options)
+  {
+    $this->configure($options);
+
+    $this->dateFormat = new sfDateFormat($this->user->getCulture());
   }
   
   public function setMax($max)
@@ -47,17 +62,6 @@ abstract class dmLogView
   public function renderHead()
   {
     $html = '<table>';
-    
-//    $html .= '<thead><tr>';
-//    
-//    foreach($this->rows as $name => $method)
-//    {
-//      $html .= '<th>'.$this->i18n->__(dmString::humanize($name)).'</th>';
-//    }
-//    
-//    $html .= '</tr>';
-    
-//    $html .= '</thead>';
     
     return $html;
   }

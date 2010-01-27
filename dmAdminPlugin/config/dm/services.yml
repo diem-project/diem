@@ -65,6 +65,8 @@ parameters:
 
   log_view.class:                                 # Renders a diem log
   log_view.log:                                   # The log to render
+  log_view.options:
+    show_ip:                  true                # whether to show users IP
  
 services:
 
@@ -151,4 +153,4 @@ services:
   log_view:
     class:                    %log_view.class%
     shared:                   false
-    arguments:                [ %log_view.log%, @i18n, @user, @helper ]
+    arguments:                [ %log_view.log%, @i18n, @user, @helper, %log_view.options% ]

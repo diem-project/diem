@@ -6,7 +6,6 @@ class dmRequestLogViewLittle extends dmRequestLogView
 {
   protected
   $rows = array(
-//    'time'     => 'renderTime',
     'user'     => 'renderUserAndBrowser',
     'location' => 'renderLocation',
   );
@@ -18,7 +17,7 @@ class dmRequestLogViewLittle extends dmRequestLogView
       $this->getBrowserIcon($browser),
       ($username = $entry->get('username'))
       ? '<strong class="mr5">'.$username.'</strong>'
-      : $entry->get('ip'),
+      : $this->renderIp($entry->get('ip')),
       ucfirst($browser->getName()),
       $browser->getVersion()
     );
