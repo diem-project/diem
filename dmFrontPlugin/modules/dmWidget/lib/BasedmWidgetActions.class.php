@@ -38,6 +38,11 @@ class BasedmWidgetActions extends dmFrontBaseActions
     }
     catch(Exception $e)
     {
+      if(sfConfig::get('dm_debug'))
+      {
+        throw $e;
+      }
+      
       return $this->renderError();
     }
     

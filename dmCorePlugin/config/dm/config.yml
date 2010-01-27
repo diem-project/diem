@@ -11,12 +11,6 @@ default:
     cdn:                                # use cdn to load libraries
       enabled:            false         # Will use cdn to load javascript libraries faster
       lib.jquery:         'http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js'
-    api:                                # external apis
-      gmap:                             # google maps api http://code.google.com/apis/maps/
-                                        # to configure the api key, go to the settings panel in the admin application.
-        version:          3             # api version
-        sensor:           false         # use a sensor to determine a user's location
-        url:              http://maps.google.com/maps?file=api&v=%version%&sensor=%sensor%&key=%key%
     
   css:
     compress:             true          # (RECOMMENDED) Performance : Minifies stylesheets and put them into a single compressed file

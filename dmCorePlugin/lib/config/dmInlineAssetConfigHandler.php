@@ -21,7 +21,14 @@ class dmInlineAssetConfigHandler extends dmInlineConfigHandler
     // loop through all key/value pairs
     foreach ((array)$keys as $key => $value)
     {
-      $values[$prefix.$this->separator.$category.$this->separator.$key] = self::getPathFromWebDir($prefix, $category.'.'.$value);
+      if (0 === strncmp($value, 'http://', 7))
+      {
+        $values[$prefix.$this->separator.$category.$this->separator.$key] = $value;
+      }
+      else
+      {
+        $values[$prefix.$this->separator.$category.$this->separator.$key] = self::getPathFromWebDir($prefix, $category.'.'.$value);
+      }
     }
 
     return $values;
