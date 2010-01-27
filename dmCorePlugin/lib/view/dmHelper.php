@@ -3,14 +3,11 @@
 class dmHelper extends dmConfigurable
 {
   protected
-  $dispatcher,
   $context,
-  $serviceContainer,
-  $options;
+  $serviceContainer;
   
-  public function __construct(sfEventDispatcher $dispatcher, dmContext $context, array $options = array())
+  public function __construct(dmContext $context, array $options = array())
   {
-    $this->dispatcher       = $dispatcher;
     $this->context          = $context;
     $this->serviceContainer = $context->getServiceContainer();
     

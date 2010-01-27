@@ -352,7 +352,7 @@ services:
   helper:
     class:                    %helper.class%
     shared:                   true
-    arguments:                [ @dispatcher, @context, %helper.options% ]
+    arguments:                [ @context, %helper.options% ]
   
   link_tag_factory:
     class:                    %link_tag_factory.class%

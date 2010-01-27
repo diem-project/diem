@@ -98,10 +98,6 @@ EOF;
         'group_name' => 'tracking',
         'credentials' => 'xiti'
       ),
-      'gmap_key' => array(
-        'description' => 'The google map key ( e.g. ABQIAAAARcvUUsf4RP8fmjHaFYFYQxRhf7uCiJccoEylUqtC2qy_Rw3WKhSEa96 )',
-        'group_name' =>'external services'
-      ),
       'search_stop_words' => array(
         'type' => 'textarea',
         'description' => 'Words to exclude from searches (e.g. the, a, to )',
