@@ -23,8 +23,6 @@ class dmWebResponse extends sfWebResponse
     $this->dispatcher->connect('user.remember_me', array($this, 'listenToRememberMeEvent'));
     
     $this->dispatcher->connect('user.sign_out', array($this, 'listenToSignOutEvent'));
-    
-    $this->dispatcher->connect('dm.layout.filter_javascripts', array($this, 'listenToFilterJavascriptsEvent'));
   }
 
   /**
