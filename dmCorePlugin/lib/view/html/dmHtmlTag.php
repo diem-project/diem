@@ -123,6 +123,11 @@ abstract class dmHtmlTag extends dmConfigurable
     return $this->addClass(str_replace('"', "'", json_encode($data)));
   }
 
+  public function style($style)
+  {
+    return $this->setOption('style', (string) $style);
+  }
+
   protected function getHtmlAttributes()
   {
     return $this->convertAttributesToHtml($this->prepareAttributesForHtml($this->getOptions()));
@@ -180,6 +185,8 @@ abstract class dmHtmlTag extends dmConfigurable
       $this->attributesToRemove,
       (array) $attribute
     );
+
+    return $this;
   }
   
   protected function addEmptyAttributeToRemove($attribute)
@@ -188,11 +195,15 @@ abstract class dmHtmlTag extends dmConfigurable
       $this->emptyAttributesToRemove,
       (array) $attribute
     );
+
+    return $this;
   }
   
   protected function addJavascript($keys)
   {
     $this->javascripts = array_merge($this->javascripts, (array) $keys);
+
+    return $this;
   }
 
   public function getJavascripts()
@@ -203,6 +214,8 @@ abstract class dmHtmlTag extends dmConfigurable
   protected function addStylesheet($keys)
   {
     $this->stylesheets = array_merge($this->stylesheets, (array) $keys);
+
+    return $this;
   }
 
   public function getStylesheets()
