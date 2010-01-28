@@ -30,6 +30,8 @@ abstract class dmWidgetBaseView
   protected function addJavascript($keys)
   {
     $this->javascripts = array_merge($this->javascripts, (array) $keys);
+
+    return $this;
   }
   
   public function getJavascripts()
@@ -40,6 +42,8 @@ abstract class dmWidgetBaseView
   protected function addStylesheet($keys)
   {
     $this->stylesheets = array_merge($this->stylesheets, (array) $keys);
+
+    return $this;
   }
   
   public function getStylesheets()
