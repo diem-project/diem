@@ -217,7 +217,8 @@ class dmCoreLayoutHelper
       'script_name'        => sfConfig::get('sf_no_script_name') ? trim($requestContext['relative_url_root'], '/').'/' : $requestContext['script_name'].'/',
       'debug'              => sfConfig::get('sf_debug') ? true : false,
       'culture'            => $this->serviceContainer->getParameter('user.culture'),
-      'module'             => $this->serviceContainer->getParameter('controller.module')
+      'module'             => $this->serviceContainer->getParameter('controller.module'),
+      'action'             => $this->serviceContainer->getParameter('controller.action')
     ));
   }
   

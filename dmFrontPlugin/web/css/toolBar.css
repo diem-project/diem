@@ -80,6 +80,7 @@ body {
   overflow: auto;
   background: #fff;
   -moz-box-shadow: 4px -4px 4px #888;
+  -webkit-box-shadow: 4px -4px 4px #888;
 }
 
 #dm_tool_bar ul.level0 > li.ui-state-active ul.level1 {

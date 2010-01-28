@@ -168,6 +168,27 @@ DmSentMail:
     header:                 { type: string(60000) }
     description:            { type: string(60000) }
 
+DmLock:
+  columns:
+    user_id:                { type: integer, notnull: true }
+    user_name:              { type: string(255), notnull: true }
+    module:                 { type: string(127), notnull: true }
+    action:                 { type: string(127), notnull: true }
+    record_id:              { type: integer, unsigned: true, notnull: true, default: 0 }
+    time:                   { type: integer, notnull: true }
+    app:                    { type: string(127), notnull: true }
+    url:                    { type: string(255), notnull: true }
+    culture:                { type: string(15), notnull: true }
+  indexes:
+    dmLockIndex:
+      fields:               [ user_id, module, action, record_id ]
+      type:                 unique
+  relations:
+    User:
+      class:                DmUser
+      local:                user_id
+      onDelete:             CASCADE
+
 # SEO SCHEMA
 
 DmAutoSeo:

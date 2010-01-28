@@ -49,10 +49,12 @@ class dmAdminAssetConfig extends dmAssetConfig
       'core.toolBar',
       'core.pageBar',
       'core.mediaBar',
+      'core.ping',
       'admin.ctrl',
       'admin.toolBar',
       'admin.pageBar',
-      'admin.mediaBar'
+      'admin.mediaBar',
+      'admin.ping'
     );
   }
 }

@@ -21,6 +21,7 @@ body.mediaBarOpen #sf_admin_content {
   overflow: hidden;
   font-size: 11px;
   -moz-box-shadow: -3px 0 4px #888;
+  -webkit-box-shadow: -3px 0 4px #888;
 }
 
 #dm_media_bar_toggler {

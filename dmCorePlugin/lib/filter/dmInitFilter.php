@@ -3,11 +3,29 @@
 abstract class dmInitFilter extends dmFilter
 {
 
+  protected function updateLock()
+  {
+    if(class_exists('DmLock') && $this->user->can('admin') && $this->response->isHtmlForHuman())
+    {
+      dmDb::table('DmLock')->update(array(
+        'user_id'   => $this->user->getUserId(),
+        'user_name' => $this->user->getUser()->get('username'),
+        'time'      => $_SERVER['REQUEST_TIME'],
+        'app'       => sfConfig::get('sf_app'),
+        'module'    => $this->request->getParameter('module'),
+        'action'    => $this->request->getParameter('action'),
+        'record_id' => $this->request->getParameter('pk', 0),
+        'culture'   => $this->user->getCulture(),
+        'url'       => str_replace($this->request->getAbsoluteUrlRoot(), '', $this->request->getUri())
+      ));
+    }
+  }
+
   protected function loadAssetConfig()
   {
-    if ($this->context->getResponse()->isHtmlForHuman())
+    if ($this->response->isHtmlForHuman())
     {
-      $this->context->getResponse()->setAssetConfig($this->context->get('asset_config'));
+      $this->response->setAssetConfig($this->context->get('asset_config'));
     }
   }
   
@@ -27,7 +45,7 @@ abstract class dmInitFilter extends dmFilter
     
     $appUrlKey = implode('-', array(sfConfig::get('sf_app'), sfConfig::get('sf_environment')));
     
-    $appUrl    = $this->request->getUriPrefix().$this->context->getRequest()->getScriptName();
+    $appUrl    = $this->request->getUriPrefix().$this->request->getScriptName();
       
     if (!isset($knownBaseUrls[$appUrlKey]) || $knownBaseUrls[$appUrlKey] !== $appUrl)
     {

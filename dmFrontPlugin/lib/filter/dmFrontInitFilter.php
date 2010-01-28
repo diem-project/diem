@@ -37,10 +37,10 @@ class dmFrontInitFilter extends dmInitFilter
   {
     if (($page = $this->context->getPage()) && ($h1 = $page->_getI18n('h1')))
     {
-      $this->context->getResponse()->setContent(preg_replace(
+      $this->response->setContent(preg_replace(
         '|<h1(.*)>.*</h1>|iuU',
         '<h1$1>'.$h1.'</h1>',
-        $this->context->getResponse()->getContent()
+        $this->response->getContent()
       ));
     }
   }

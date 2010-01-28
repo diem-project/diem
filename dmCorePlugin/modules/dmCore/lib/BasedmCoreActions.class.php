@@ -2,6 +2,42 @@
 
 class BasedmCoreActions extends dmBaseActions
 {
+  
+  public function executePing(dmWebRequest $request)
+  {
+    $recordId = $this->request->getParameter('record_id', 0);
+    
+    $data = array(
+      'user_id'   => $this->getUser()->getUserId(),
+      'time'      => $_SERVER['REQUEST_TIME'],
+      'app'       => sfConfig::get('sf_app'),
+      'module'    => $this->request->getParameter('sf_module'),
+      'action'    => $this->request->getParameter('sf_action'),
+      'record_id' => $recordId,
+      'culture'   => $this->getUser()->getCulture()
+    );
+    
+    dmDb::table('DmLock')->ping($data);
+
+    $users = dmDb::table('DmLock')->getUserNames();
+    $locks = $recordId ? dmDb::table('DmLock')->getLocks($data) : array();
+
+    if(!empty($locks))
+    {
+      foreach($locks as $index => $lock)
+      {
+        $locks[$index] = $this->getService('i18n')->__('%user% is browsing this page, you should not modify it now.', array(
+          '%user%' => '<strong>'.$lock.'</strong>'
+          ));
+      }
+    }
+
+    return $this->renderJson(array(
+      'users' => implode('|', $users),
+      'locks' => implode('|', $locks)
+    ));
+  }
+  
   public function executeThumbnail(dmWebRequest $request)
   {
     $tag = $this->getHelper()->£media($request->getParameter('source'));

@@ -48,5 +48,13 @@ class dmAdminLayoutHelper extends dmCoreLayoutHelper
     return $html;
   }
 
+  protected function getJavascriptConfig()
+  {
+    $config = parent::getJavascriptConfig();
+    
+    $config['record_id'] = $this->serviceContainer->getService('request')->getParameter('pk', 0);
+
+    return $config;
+  }
 
 }

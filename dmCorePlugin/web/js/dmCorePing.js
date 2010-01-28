@@ -1,0 +1,52 @@
+(function($)
+{
+
+  $.dm.corePing = {
+
+    options: {},
+
+    initCore: function(options)
+    {
+      var self = $.dm.ping;
+
+      self.options = $.extend({
+        delay:    3000,
+        url:      $.dm.ctrl.getHref('+/dmCore/ping')
+      }, options || {});
+
+      self.ping();
+    },
+
+    ping: function()
+    {
+      var self = $.dm.ping;
+
+      $.ajax({
+        dataType: 'json',
+        url:      self.options.url,
+        data:     self.getPingData(),
+        success:  self.pong,
+        error:    self.pong
+      });
+    },
+
+    getPingData: function()
+    {
+      var self = $.dm.ping;
+
+      return {
+        sf_module:  self.options.module,
+        sf_action:  self.options.action,
+        record_id:  self.options.record_id
+      };
+    },
+
+    pong: function(data)
+    {
+      var self = $.dm.ping;
+
+      setTimeout(self.ping, self.options.delay);
+    }
+  };
+  
+})(jQuery);

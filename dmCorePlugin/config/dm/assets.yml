@@ -14,6 +14,7 @@ js:
     mediaBar:         dmCoreMediaBar
     auth:             dmCoreAuth
     codeArea:         dmCoreCodeArea
+    ping:             dmCorePing
     
   lib:
     symfony_debug:    symfony/debug

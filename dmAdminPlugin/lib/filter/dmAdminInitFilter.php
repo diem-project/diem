@@ -16,20 +16,20 @@ class dmAdminInitFilter extends dmInitFilter
 
     $this->loadAssetConfig();
 
+    $this->updateLock();
+
     $filterChain->execute();
-    
-    $response = $this->context->getResponse();
 
     // If response has no title, generate one with the H1
-    if ($response->isHtmlForHuman() && !$response->getTitle())
+    if ($this->response->isHtmlForHuman() && !$this->response->getTitle())
     {
-      preg_match('|<h1[^>]*>(.*)</h1>|iuUx', $response->getContent(), $matches);
+      preg_match('|<h1[^>]*>(.*)</h1>|iuUx', $this->response->getContent(), $matches);
         
       if (isset($matches[1]))
       {
         $title = 'Admin : '.strip_tags($matches[1]).' - '.dmConfig::get('site_name');
       
-        $response->setContent(str_replace('<title></title>', '<title>'.$title.'</title>', $response->getContent()));
+        $this->response->setContent(str_replace('<title></title>', '<title>'.$title.'</title>', $this->response->getContent()));
       }
     }
   }

@@ -30,6 +30,8 @@
 			this.autoLoading();
 
       this.checkVersion();
+
+      this.launchPing();
     },
 
     checkVersion: function()

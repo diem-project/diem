@@ -13,3 +13,7 @@ markdown:
 thumbnail:
   is_secure:    true
   credential:   admin
+
+ping:
+  is_secure:    true
+  credential:   admin

@@ -1,6 +1,7 @@
 #dm_tool_bar {
   top: 0;
   -moz-box-shadow: 0 4px 4px #888;
+  -webkit-box-shadow: 0 4px 4px #888;
 }
 
 #dm_media_bar {
@@ -65,6 +66,7 @@
   overflow: auto;
   background: #fff;
   -moz-box-shadow: 4px 4px 4px #888;
+  -webkit-box-shadow: 4px 4px 4px #888;
 }
 
 #dm_tool_bar ul.level0 > li.ui-state-active ul.level1 {
@@ -132,4 +134,20 @@
   bottom: 0;
   background: url(../../core/images/monitor_bar_bg.png) bottom left no-repeat;
   width: 100%;
+}
+
+#dm_tool_bar div.dm_active_users {
+  margin-left: 5px;
+}
+
+#dm_tool_bar div.dm_active_users span {
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  background: #FFFFFF;
+  color: #000000;
+  float: left;
+  margin-top: 5px;
+  margin-left: 5px;
+  opacity: 0.7;
+  padding: 2px 5px;
 }

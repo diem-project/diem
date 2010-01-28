@@ -50,6 +50,7 @@ default:
   security:
     remember_cookie_name:               # defaults to "dm_remember_%project_name%"
     remember_key_expiration_age:        # defaults to 15 days
+    active_user_timeout:  10            # time in seconds to consider a user is no more active
  
 ###### dm internal config ######
   

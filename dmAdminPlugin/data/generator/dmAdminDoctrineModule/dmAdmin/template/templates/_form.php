@@ -3,6 +3,8 @@
 
 <div class="sf_admin_form">
 
+  <div class="dm_active_locks"></div>
+
   [?php $formActions = get_partial('<?php echo $this->getModuleName() ?>/form_action_bar', array('<?php echo $this->getSingularName() ?>' => $<?php echo $this->getSingularName() ?>, 'form' => $form, 'configuration' => $configuration, 'helper' => $helper, 'nearRecords' => $nearRecords)); ?]
 
   [?php echo $form->renderFormTag(url_for(

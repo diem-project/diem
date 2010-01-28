@@ -2,6 +2,11 @@
 {
 
   $.dm.coreEditCtrl = $.extend($.dm.coreCtrl, {
+
+    launchPing: function()
+    {
+      $.dm.ping.init(this.options);
+    },
   
     liveEvents: function()
     {
@@ -12,6 +17,8 @@
         {
           return false;
         }
+        
+        return true;
       });
 			
       $('div.ui-dialog a.close_dialog').live('click', function()

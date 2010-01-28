@@ -4,15 +4,11 @@ echo £o('div#dm_tool_bar.clearfix.'.sfConfig::get('dm_toolBar_flavour', 'blue')
 
   echo £link('dmAuth/signout')->textTitle($sf_user->getUsername().' : '.__('Logout'))->set('.widget16.s16block.s16_signout');
 
-//  echo £link()->textTitle(__('Home'))->set('.widget16.s16block.s16_home');
-
   if ($sf_user->can('clear_cache'))
   {
     echo £link('dmCore/refresh')->textTitle(__('Update project'))->set('.dm_refresh_link.widget16.s16block.s16_clear');
   }
   
-//  echo £link('dmCodeEditor/index')->textTitle(__('Code Editor'))->set('.widget16.s16block.s16_code_editor');
-
   echo £('div.dm_menu.widget16', $menu->render());
 
   if (isset($cultureSelect))
@@ -30,6 +26,8 @@ echo £o('div#dm_tool_bar.clearfix.'.sfConfig::get('dm_toolBar_flavour', 'blue')
   }
 
   echo £link('app:front')->textTitle(__('Go to site'))->set('.widget16.ml10');
+
+  echo £('div.dm_active_users');
   
   if (sfConfig::get('sf_web_debug'))
   {

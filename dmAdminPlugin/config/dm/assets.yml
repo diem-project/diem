@@ -21,6 +21,7 @@ js:
     history:          dmAdminHistoryCtrl
     sitemap:          dmAdminSitemap
     diagram:          dmAdminDiagram
+    ping:             dmAdminPing
 
 css:
 

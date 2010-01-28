@@ -3,7 +3,9 @@
 abstract class dmFilter extends sfFilter
 {
   protected
-  $request;
+  $request,
+  $response,
+  $user;
 
   /**
    * Initializes this Filter.
@@ -16,6 +18,8 @@ abstract class dmFilter extends sfFilter
   public function initialize($context, $parameters = array())
   {
     $this->request = $context->getRequest();
+    $this->response = $context->getResponse();
+    $this->user = $context->getUser();
 
     return parent::initialize($context, $parameters);
   }
