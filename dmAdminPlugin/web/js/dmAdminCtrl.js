@@ -19,11 +19,10 @@
       {
         $form.dmAdminForm(this.options);
       }
-      else 
-        if ($("body").hasClass('list')) 
-        {
-          this.listPage();
-        }
+      else if ($("body").hasClass('list')) 
+      {
+        this.listPage();
+      }
       
       this.liveEvents();
 			
@@ -31,7 +30,10 @@
 
       this.checkVersion();
 
-      this.launchPing();
+      if(this.options.authenticated)
+      {
+        this.launchPing();
+      }
     },
 
     checkVersion: function()

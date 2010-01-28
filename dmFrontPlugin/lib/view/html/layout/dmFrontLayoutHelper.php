@@ -55,7 +55,7 @@ class dmFrontLayoutHelper extends dmCoreLayoutHelper
   
   public function renderEditBars()
   {
-    $user = $this->serviceContainer->getService('user');
+    $user = $this->getService('user');
     
     if (!$user->can('admin'))
     {
@@ -95,7 +95,7 @@ class dmFrontLayoutHelper extends dmCoreLayoutHelper
   
   public function renderGoogleAnalytics()
   {
-    if (($gaKey = dmConfig::get('ga_key')) && !$this->serviceContainer->getService('user')->can('admin') && !dmOs::isLocalhost())
+    if (($gaKey = dmConfig::get('ga_key')) && !$this->getService('user')->can('admin') && !dmOs::isLocalhost())
     {
       return $this->getGoogleAnalyticsCode($gaKey);
     }

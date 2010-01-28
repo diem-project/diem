@@ -27,7 +27,7 @@ echo £o('div#dm_tool_bar.clearfix.'.sfConfig::get('dm_toolBar_flavour', 'blue')
 
   echo £link('app:front')->textTitle(__('Go to site'))->set('.widget16.ml10');
 
-  echo £('div.dm_active_users');
+  echo £('div.dm_active_users', £('span', $sf_user->getUser()->get('username')));
   
   if (sfConfig::get('sf_web_debug'))
   {

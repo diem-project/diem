@@ -95,7 +95,7 @@ class dmCoreLayoutHelper
   protected function getMetas()
   {
     return array(
-      'title'       => $this->serviceContainer->getService('response')->getTitle(),
+      'title'       => $this->getService('response')->getTitle(),
       'language'    => $this->serviceContainer->getParameter('user.culture'),
     );
   }
@@ -130,7 +130,7 @@ class dmCoreLayoutHelper
   
   public function renderHttpMetas()
   {
-    $httpMetas = $this->serviceContainer->getService('response')->getHttpMetas();
+    $httpMetas = $this->getService('response')->getHttpMetas();
     
     $html = '';
     
@@ -150,7 +150,7 @@ class dmCoreLayoutHelper
      */
     $stylesheets = $this->dispatcher->filter(
       new sfEvent($this, 'dm.layout.filter_stylesheets'),
-      $this->serviceContainer->getService('response')->getStylesheets()
+      $this->getService('response')->getStylesheets()
     )->getReturnValue();
     
     $relativeUrlRoot = dmArray::get($this->serviceContainer->getParameter('request.context'), 'relative_url_root');
@@ -181,7 +181,7 @@ class dmCoreLayoutHelper
      */
     $javascripts = $this->dispatcher->filter(
       new sfEvent($this, 'dm.layout.filter_javascripts'),
-      $this->serviceContainer->getService('response')->getJavascripts()
+      $this->getService('response')->getJavascripts()
     )->getReturnValue();
     
     sfConfig::set('symfony.asset.javascripts_included', true);
@@ -211,14 +211,15 @@ class dmCoreLayoutHelper
   {
     $requestContext = $this->serviceContainer->getParameter('request.context');
     
-    return array_merge($this->serviceContainer->getService('response')->getJavascriptConfig(), array(
+    return array_merge($this->getService('response')->getJavascriptConfig(), array(
       'relative_url_root'  => $requestContext['relative_url_root'],
       'dm_core_asset_root' => $requestContext['relative_url_root'].'/'.sfConfig::get('dm_core_asset').'/',
       'script_name'        => sfConfig::get('sf_no_script_name') ? trim($requestContext['relative_url_root'], '/').'/' : $requestContext['script_name'].'/',
       'debug'              => sfConfig::get('sf_debug') ? true : false,
       'culture'            => $this->serviceContainer->getParameter('user.culture'),
       'module'             => $this->serviceContainer->getParameter('controller.module'),
-      'action'             => $this->serviceContainer->getParameter('controller.action')
+      'action'             => $this->serviceContainer->getParameter('controller.action'),
+      'authenticated'      => $this->getService('user')->isAuthenticated()
     ));
   }
   
@@ -258,5 +259,10 @@ class dmCoreLayoutHelper
   protected function getHelper()
   {
     return $this->serviceContainer->getService('helper');
+  }
+
+  protected function getService($name, $class = null)
+  {
+    return $this->serviceContainer->getService($name, $class);
   }
 }

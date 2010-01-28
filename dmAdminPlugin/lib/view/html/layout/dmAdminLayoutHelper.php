@@ -17,14 +17,14 @@ class dmAdminLayoutHelper extends dmCoreLayoutHelper
   
   public function renderEditBars()
   {
-    $user = $this->serviceContainer->getService('user');
+    $user = $this->getService('user');
     
     if (!$user->can('admin'))
     {
       return '';
     }
     
-    $helper = $this->serviceContainer->getService('helper');
+    $helper = $this->getService('helper');
     
     $cacheKey = sfConfig::get('sf_cache') ? $user->getCacheHash() : null;
     
@@ -52,7 +52,7 @@ class dmAdminLayoutHelper extends dmCoreLayoutHelper
   {
     $config = parent::getJavascriptConfig();
     
-    $config['record_id'] = $this->serviceContainer->getService('request')->getParameter('pk', 0);
+    $config['record_id'] = $this->getService('request')->getParameter('pk', 0);
 
     return $config;
   }
