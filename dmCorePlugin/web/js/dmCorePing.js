@@ -14,7 +14,7 @@
         url:      $.dm.ctrl.getHref('+/dmCore/ping')
       }, options || {});
 
-      self.ping();
+      setTimeout(self.ping, 500);
     },
 
     ping: function()

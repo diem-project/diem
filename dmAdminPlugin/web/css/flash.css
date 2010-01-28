@@ -19,13 +19,13 @@ div.dm_active_locks span {
   border-color: #CAD3A6;
 }
 
-#flash li.alert,
-div.dm_active_locks span {
+#flash li.alert {
   background: #F8F2B7 url(../images/flash/yellow.gif) repeat-x top left;
   border-color: #DBD6A1;
 }
 
-#flash li.error {
+#flash li.error,
+div.dm_active_locks span {
   background: #F6DCD9 url(../images/flash/red.gif) repeat-x top left;
   border-color: #D7BBB8;
   color: #DD0000;
