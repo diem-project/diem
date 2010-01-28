@@ -96,10 +96,12 @@ class dmFrontComponentGenerator extends dmFrontModuleGenerator
     {
       case 'list': 
         $body = "\$query = \$this->getListQuery();
+
 \$this->{$this->module->getKey()}Pager = \$this->getPager(\$query);";
         break;
       case 'show':
         $body = "\$query = \$this->getShowQuery();
+
 \$this->{$this->module->getKey()} = \$this->getRecord(\$query);";
         break;
       case 'form':
