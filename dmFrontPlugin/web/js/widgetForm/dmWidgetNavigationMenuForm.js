@@ -34,7 +34,9 @@ $.fn.extend({
 
       $items.append($li);
 
-      $li.find('a.item_text').click(function()
+      var $itemText = $li.find('a.item_text');
+
+      $itemText.click(function()
       {
         if (!$li.hasClass('dm_dragging'))
         {
@@ -47,7 +49,12 @@ $.fn.extend({
         {
           $li.remove();
         }
-      });
+      })
+      .end()
+      .find('input.text').bind('keyup', function() {
+        $itemText.text($(this).val());
+      })
+      ;
 
       self.dmFrontForm('linkDroppable');
       
