@@ -51,6 +51,9 @@ class dmFrontModuleComponents extends myFrontBaseComponents
   {
     $query = $this->getTable()->createQuery($rootAlias);
 
+    /*
+     * Join i18n table if any
+     */
     if ($this->getTable()->hasI18n())
     {
       $query->withI18n($this->getUser()->getCulture(), null, $rootAlias);

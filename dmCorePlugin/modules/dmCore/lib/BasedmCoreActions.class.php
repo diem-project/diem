@@ -39,7 +39,7 @@ class BasedmCoreActions extends dmBaseActions
     $this->next = array(
       'type' => 'ajax',
       'url'  => $this->getHelper()->£link('+/dmCore/refreshStep?step=1')->getHref(),
-      'msg'  => $this->getService('i18n')->__('Cache clearing')
+      'msg'  => $this->getService('i18n')->__('Code generation')
     );
 
     $this->setLayout(false);

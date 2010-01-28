@@ -29,6 +29,6 @@ h4 {
   font-weight: bold;
 }
 
-.breadCrumb li, .pager li {
+.navigation_bread_crumb li, .pager li {
   display: inline;
 }
