@@ -104,7 +104,7 @@ class BasedmWidgetActions extends dmFrontBaseActions
     {
       if ($this->getUser()->can('code_editor_view'))
       {
-        $templateDir = dmOs::join(sfConfig::get('sf_app_module_dir'), $form->getDmModule()->getKey(), 'templates', '_'.$form->getDmAction()->getKey().'.php');
+        $templateDir = dmOs::join(sfConfig::get('sf_app_module_dir'), $form->getDmModule()->getKey(), 'templates', '_'.$form->getDmComponent()->getKey().'.php');
         if (file_exists($templateDir))
         {
           $devActions .= '<a href="#'.dmProject::unRootify($templateDir).'" class="code_editor s16 s16_code_editor block">'.$this->getService('i18n')->__('Edit template code').'</a>';
@@ -289,7 +289,7 @@ class BasedmWidgetActions extends dmFrontBaseActions
         throw $e;
       }
 
-      $this->getUser()->logError($this->context->getI18()->__('A problem occured when sorting the items'));
+      $this->getUser()->logError($this->getService('i18n')->__('A problem occured when sorting the items'));
     }
   }
 }
