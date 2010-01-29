@@ -9,7 +9,7 @@ class dmWidgetListView extends dmWidgetProjectModelView
 
     $this->addRequiredVar(array('orderField', 'orderType'));
 
-    foreach($this->dmAction->getOption('filters', array()) as $filter)
+    foreach($this->dmComponent->getOption('filters', array()) as $filter)
     {
       if ($filterModule = $this->dmModule->getAncestor($filter))
       {

@@ -139,46 +139,28 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
         $this->throwModulizeException($key);
       }
 
-      foreach(dmArray::get($module, 'actions', array()) as $actionKey => $action)
+      foreach(dmArray::get($module, 'components', array()) as $componentKey => $component)
       {
-        if (is_numeric($actionKey))
+        if (is_numeric($componentKey))
         {
-          $actionKey = $action;
+          $componentKey = $component;
         }
         
-        if ($actionKey != dmString::modulize($actionKey))
+        if ($componentKey != dmString::modulize($componentKey))
         {
-          $this->throwModulizeException($actionKey);
+          $this->throwModulizeException($componentKey);
         }
       }
       
-      if (!$module['model'])
+      if($parentKey = dmArray::get($module, 'parent_key'))
       {
-//        if (dmArray::get($module, 'has_page'))
-//        {
-//          $this->throwException('module %s has a page, but no model', $key);
-//        }
-//        if (dmArray::get($module, 'parent_key'))
-//        {
-//          $this->throwException('module %s has a parent, but no model', $key);
-//        }
-      }
-      else
-      {
-//        if(!Doctrine_Core::isValidModelClass($module['model']))
-//        {
-//          $this->throwException('module %s has a model that do not exist : %s', $key, $module['model']);
-//        }
-        if($parentKey = dmArray::get($module, 'parent_key'))
+        if ($parentKey == $key)
         {
-          if ($parentKey == $key)
-          {
-            $this->throwException('module %s is it\'s own parent...');
-          }
-          if (!isset($this->modules[$parentKey]))
-          {
-            $this->throwException('module %s has a parent that do not exist : %s', $key, $parentKey);
-          }
+          $this->throwException('module %s is it\'s own parent...');
+        }
+        if (!isset($this->modules[$parentKey]))
+        {
+          $this->throwException('module %s has a parent that do not exist : %s', $key, $parentKey);
         }
       }
     }
@@ -231,57 +213,57 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
     $isProject = $options['is_project'];
     unset($options['is_project']);
     
-    if ($isProject && !empty($options['actions']))
+    if ($isProject && !empty($options['components']))
     {
       //export actions properly
       
-      $actionsConfig = $options['actions'];
+      $componentsConfig = $options['components'];
       
-      $options['actions'] = '__DM_MODULE_ACTIONS_PLACEHOLDER__';
+      $options['components'] = '__DM_MODULE_COMPONENTS_PLACEHOLDER__';
       
       $exported = var_export($options, true);
       
-      $actions = 'array(';
+      $components = 'array(';
 
-      foreach($actionsConfig as $actionKey => $actionConfig)
+      foreach($componentsConfig as $componentKey => $componentConfig)
       {
-        if (is_integer($actionKey))
+        if (is_integer($componentKey))
         {
-          $actionKey = $actionConfig;
-          $actionConfig = array();
+          $componentKey = $componentConfig;
+          $componentConfig = array();
         }
         
-        if (empty($actionConfig['name']))
+        if (empty($componentConfig['name']))
         {
-          $actionConfig['name'] = dmString::humanize($actionKey);
+          $componentConfig['name'] = dmString::humanize($componentKey);
         }
     
-        if (empty($actionConfig['type']))
+        if (empty($componentConfig['type']))
         {
-          if (strncmp($actionKey, 'list', 4) === 0)
+          if (strncmp($componentKey, 'list', 4) === 0)
           {
-            $actionConfig['type'] = 'list';
+            $componentConfig['type'] = 'list';
           }
-          elseif (strncmp($actionKey, 'show', 4) === 0)
+          elseif (strncmp($componentKey, 'show', 4) === 0)
           {
-            $actionConfig['type'] = 'show';
+            $componentConfig['type'] = 'show';
           }
-          elseif (strncmp($actionKey, 'form', 4) === 0)
+          elseif (strncmp($componentKey, 'form', 4) === 0)
           {
-            $actionConfig['type'] = 'form';
+            $componentConfig['type'] = 'form';
           }
           else
           {
-            $actionConfig['type'] = 'simple';
+            $componentConfig['type'] = 'simple';
           }
         }
         
-        $actions .= sprintf('\'%s\' => new dmAction(\'%s\', %s), ', $actionKey, $actionKey, var_export($actionConfig, true));
+        $components .= sprintf('\'%s\' => new dmModuleComponent(\'%s\', %s), ', $componentKey, $componentKey, var_export($componentConfig, true));
       }
 
-      $actions .= ')';
+      $components .= ')';
       
-      $exported = str_replace('\'__DM_MODULE_ACTIONS_PLACEHOLDER__\'', $actions, $exported);
+      $exported = str_replace('\'__DM_MODULE_COMPONENTS_PLACEHOLDER__\'', $components, $exported);
     }
     else
     {
@@ -410,6 +392,13 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
     {
       $model = $moduleConfig['model'];
     }
+
+    // BC "actions" deprecated keyword becomes "components"
+    if(isset($moduleConfig['actions']))
+    {
+      $moduleConfig['components'] = $moduleConfig['actions'];
+      unset($moduleConfig['actions']);
+    }
     
     $moduleOptions = array(
       'name' =>       (string) trim($moduleConfig['name']),
@@ -421,7 +410,7 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
       'plugin'      => dmArray::get($moduleConfig, 'plugin', $plugin),
       'has_admin'   => (boolean) dmArray::get($moduleConfig, 'admin', $model || !$isInProject),
       'has_front'   => (boolean) dmArray::get($moduleConfig, 'front', true),
-      'actions'     => dmArray::get($moduleConfig, 'actions', array())
+      'components'  => dmArray::get($moduleConfig, 'components', array())
     );
     
     if ($moduleOptions['is_project'])
@@ -433,11 +422,11 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
     }
     
     // fix non array action filters
-    foreach($moduleOptions['actions'] as $actionKey => $actionConfig)
+    foreach($moduleOptions['components'] as $componentKey => $componentConfig)
     {
-      if(is_array($actionConfig) && array_key_exists('filters', $actionConfig) && !is_array($actionConfig['filters']))
+      if(is_array($componentConfig) && array_key_exists('filters', $componentConfig) && !is_array($componentConfig['filters']))
       {
-        $moduleOptions['actions'][$actionKey]['filters'] = array($actionConfig['filters']);
+        $moduleOptions['components'][$componentKey]['filters'] = array($componentConfig['filters']);
       }
     }
     

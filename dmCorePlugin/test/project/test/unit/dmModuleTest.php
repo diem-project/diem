@@ -6,7 +6,7 @@ $helper->boot();
 
 $moduleManager = $helper->get('module_manager');
 
-$t = new lime_test(60);
+$t = new lime_test(75);
 
 $t->comment('Is module test');
 
@@ -42,6 +42,25 @@ foreach(array(
 ) as $moduleKey => $isProject)
 {
   $t->is($moduleManager->getModule($moduleKey)->isProject(), $isProject, $moduleKey.'->isProject() : '.$isProject);
+}
+
+$t->comment('Module components tests');
+
+foreach(array(
+  'main' => 'header footer loginForm sitemap',
+  'dmTestCateg' => 'list listByDomain show',
+  'dmTestPost' => 'listByDomain listByCateg listByTag show',
+  'dmTestComment' => 'listByDomain listByCateg listByPost form'
+) as $moduleKey => $componentKeys)
+{
+  $module = $helper->getModule($moduleKey);
+
+  foreach(explode(' ', $componentKeys) as $componentKey)
+  {
+    $component = $module->getComponent($componentKey);
+
+    $t->isa_ok($component, 'dmModuleComponent', $moduleKey.'/'.$componentKey.' is a dmModuleComponent');
+  }
 }
 
 $t->diag('Ancestor tests');

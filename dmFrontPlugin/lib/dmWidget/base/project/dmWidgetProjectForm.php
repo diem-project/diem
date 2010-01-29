@@ -4,7 +4,7 @@ abstract class dmWidgetProjectForm extends dmWidgetBaseForm
 {
   protected
   $dmModule,
-  $dmAction;
+  $dmComponent;
 
   public function setup()
   {
@@ -15,7 +15,7 @@ abstract class dmWidgetProjectForm extends dmWidgetBaseForm
       throw new dmException('the module "%s" does not exist', $this->dmWidget->get('module'));
     }
 
-    if(!$this->dmAction = $this->dmModule->getAction($this->dmWidget->get('action')))
+    if(!$this->dmComponent = $this->dmModule->getComponent($this->dmWidget->get('action')))
     {
       throw new dmException(sprintf('the action "%s" does not exist for module "%s"', $this->dmWidget->get('action'), $this->dmModule));
     }
@@ -26,13 +26,13 @@ abstract class dmWidgetProjectForm extends dmWidgetBaseForm
     return $this->dmModule;
   }
 
-  public function getDmAction()
+  public function getDmComponent()
   {
-    return $this->dmAction;
+    return $this->dmComponent;
   }
   
   public function getPage()
   {
-    return self::$serviceContainer->getParameter('context.page');
+    return $this->getServiceContainer()->getParameter('context.page');
   }
 }

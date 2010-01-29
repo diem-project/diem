@@ -50,7 +50,7 @@ class dmWidgetListForm extends dmWidgetProjectModelForm
     /*
      * Filters
      */
-    foreach($this->dmAction->getOption('filters', array()) as $filter)
+    foreach($this->dmComponent->getOption('filters', array()) as $filter)
     {
       if (!$filterModule = $this->dmModule->getAncestor($filter))
       {

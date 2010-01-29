@@ -129,29 +129,9 @@ class dmModule extends dmMicroCache
     return $this->setCache('table', $this->hasModel() ? dmDb::table($this->options['model']) : false);
   }
 
-  public function getForeigns()
-  {
-    throw new dmException('deprecated?');
-    if ($this->hasCache('foreigns'))
-    {
-      return $this->getCache('foreigns');
-    }
-
-    $foreigns = array();
-    foreach($this->getTable()->getRelationHolder()->getForeigns() as $relation)
-    {
-      if ($foreignModule = self::$manager->getModuleOrNull($relation->getClass()))
-      {
-        $foreigns[$foreignModule->getKey()] = $foreignModule;
-      }
-    }
-
-    return $this->setCache('foreigns', $foreigns);
-  }
-
   public function getForeign($foreignModuleKey)
   {
-    if ($foreignModule = self::$manager->getModuleOrNull($foreignModuleKey))
+    if ($foreignModule = $this->getManager()->getModuleOrNull($foreignModuleKey))
     {
       if ($this->hasForeign($foreignModule))
       {
@@ -163,7 +143,7 @@ class dmModule extends dmMicroCache
 
   public function hasForeign($something)
   {
-    if ($foreignModule = self::$manager->getModuleOrNull($something))
+    if ($foreignModule = $this->getManager()->getModuleOrNull($something))
     {
       return array_key_exists($foreignModule->getKey(), $this->getForeigns());
     }
@@ -180,7 +160,7 @@ class dmModule extends dmMicroCache
     $locals = array();
     foreach($this->getTable()->getRelationHolder()->getLocals() as $relation)
     {
-      if($localModule = self::$manager->getModuleByModel($relation->getClass()))
+      if($localModule = $this->getManager()->getModuleByModel($relation->getClass()))
       {
         $locals[$localModule->getKey()] = $localModule;
       }
@@ -191,7 +171,7 @@ class dmModule extends dmMicroCache
 
   public function getLocal($localModuleKey)
   {
-    if ($localModule = self::$manager->getModuleOrNull($localModuleKey))
+    if ($localModule = $this->getManager()->getModuleOrNull($localModuleKey))
     {
       if ($this->hasLocal($localModule))
       {
@@ -203,7 +183,7 @@ class dmModule extends dmMicroCache
 
   public function hasLocal($something)
   {
-    if ($localModule = self::$manager->getModuleOrNull($something))
+    if ($localModule = $this->getManager()->getModuleOrNull($something))
     {
       return array_key_exists($localModule->getKey(), $this->getLocals());
     }
@@ -221,7 +201,7 @@ class dmModule extends dmMicroCache
     $associations = array();
     foreach($this->getTable()->getRelationHolder()->getAssociations() as $key => $relation)
     {
-      if($associationModule = self::$manager->getModuleByModel($relation->getClass()))
+      if($associationModule = $this->getManager()->getModuleByModel($relation->getClass()))
       {
         $associations[$associationModule->getKey()] = $associationModule;
       }
@@ -232,7 +212,7 @@ class dmModule extends dmMicroCache
 
   public function getAssociation($associationModuleKey)
   {
-    if ($associationModule = self::$manager->getModuleOrNull($associationModuleKey))
+    if ($associationModule = $this->getManager()->getModuleOrNull($associationModuleKey))
     {
       if ($this->hasAssociation($associationModule))
       {
@@ -244,7 +224,7 @@ class dmModule extends dmMicroCache
 
   public function hasAssociation($something)
   {
-    if ($associationModule = self::$manager->getModule($something))
+    if ($associationModule = $this->getManager()->getModule($something))
     {
       return array_key_exists($associationModule->getKey(), $this->getAssociations());
     }
@@ -280,7 +260,6 @@ class dmModule extends dmMicroCache
   {
     return $this->isProject();
   }
-  
   
   /*
    * @return dmModuleManager

@@ -75,28 +75,27 @@ class dmWidgetTypeManager extends dmConfigurable
         {
           $this->widgetTypes[$moduleKey] = array();
 
-          foreach($module->getActions() as $actionKey => $action)
+          foreach($module->getComponents() as $componentKey => $component)
           {
-            $baseClass = 'dmWidget'.dmString::camelize($action->getType());
+            $baseClass = 'dmWidget'.dmString::camelize($component->getType());
 
             $widgetTypeConfig = array(
-              'full_key'   => $moduleKey.ucfirst($actionKey),
-              'name'       => $action->getName(),
-              'public_name' => $module->getName().' '.dmString::humanize($action->getName()),
+              'full_key'   => $moduleKey.ucfirst($componentKey),
+              'name'       => $component->getName(),
+              'public_name' => $module->getName().' '.dmString::humanize($component->getName()),
               'form_class' => $baseClass.'Form',
               'view_class' => $baseClass.'View',
-              'use_component' => $this->componentExists($moduleKey, $actionKey),
-              'cache'      => $action->isCachable()
+              'use_component' => $this->componentExists($moduleKey, $componentKey),
+              'cache'      => $component->isCachable()
             );
             
-            $this->widgetTypes[$moduleKey][$actionKey] = new dmWidgetType($moduleKey, $actionKey, $widgetTypeConfig);
+            $this->widgetTypes[$moduleKey][$componentKey] = new dmWidgetType($moduleKey, $componentKey, $widgetTypeConfig);
           }
         }
       
         $cache->set('types', $this->widgetTypes);
       }
     }
-        
     return $this->widgetTypes;
   }
 

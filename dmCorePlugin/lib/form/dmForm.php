@@ -281,6 +281,11 @@ class dmForm extends sfFormSymfony
 
   protected function getService($serviceName, $serviceClass = null)
   {
-    return self::$serviceContainer->getService($serviceName, $serviceClass);
+    return $this->getServiceContainer()->getService($serviceName, $serviceClass);
+  }
+
+  protected function getServiceContainer()
+  {
+    return self::$serviceContainer;
   }
 }

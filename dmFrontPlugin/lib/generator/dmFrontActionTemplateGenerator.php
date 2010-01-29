@@ -40,7 +40,7 @@ class dmFrontActionTemplateGenerator extends dmFrontModuleGenerator
     return $success;
   }
 
-  protected function getActionTemplate(dmAction $action)
+  protected function getActionTemplate(dmModuleComponent $action)
   {
     switch($action->getType())
     {
@@ -51,7 +51,7 @@ class dmFrontActionTemplateGenerator extends dmFrontModuleGenerator
     }
   }
 
-  protected function getListActionTemplate(dmAction $action)
+  protected function getListActionTemplate(dmModuleComponent $action)
   {
     $object = '$'.$this->module->getKey();
     $pager = $object.'Pager';
@@ -76,7 +76,7 @@ echo £c('ul');
 echo {$pager}->renderNavigationBottom();";
   }
 
-  protected function getShowActionTemplate(dmAction $action)
+  protected function getShowActionTemplate(dmModuleComponent $action)
   {
     $object = '$'.$this->module->getKey();
     $vars = $this->getVarsComment(array($object));
@@ -85,7 +85,7 @@ echo {$pager}->renderNavigationBottom();";
 echo \${$this->module->getKey()};";
   }
 
-  protected function getFormActionTemplate(dmAction $action)
+  protected function getFormActionTemplate(dmModuleComponent $action)
   {
     $vars = $this->getVarsComment(array('form'));
     return "<?php // Vars: {$vars}
@@ -93,7 +93,7 @@ echo \${$this->module->getKey()};";
 echo \$form;";
   }
 
-  protected function getUserActionTemplate(dmAction $action)
+  protected function getUserActionTemplate(dmModuleComponent $action)
   {
     return "<?php
 ";

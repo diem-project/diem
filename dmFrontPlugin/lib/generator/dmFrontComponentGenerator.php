@@ -90,9 +90,9 @@ class dmFrontComponentGenerator extends dmFrontModuleGenerator
     ));
   }
   
-  protected function buildActionMethod($methodName, dmAction $action)
+  protected function buildActionMethod($methodName, dmModuleComponent $component)
   {
-    switch($action->getType())
+    switch($component->getType())
     {
       case 'list': 
         $body = "\$query = \$this->getListQuery();

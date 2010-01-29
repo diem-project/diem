@@ -1,6 +1,6 @@
 <?php
 
-class dmAction extends dmConfigurable
+class dmModuleComponent extends dmConfigurable
 {
   protected
   $key;

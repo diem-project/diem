@@ -3,7 +3,7 @@ Project:
   Global:  
 
     main:               # the main module is required, and must not be removed.  
-      actions:  
+      components:
         header:  
         footer:
         loginForm:
@@ -13,7 +13,7 @@ Project:
   
     dmTestFruit:
       page:             false
-      actions:  
+      components:
         list:  
         show:  
 
@@ -21,14 +21,14 @@ Project:
 
     dmTestDomain:
       page:             true  
-      actions:  
+      components:
         list:
         show:
 
     dmTestCateg:
       parent:           dmTestDomain
       page:             true
-      actions:  
+      components:
         list:  
         listByDomain:  
           filters:      dmTestDomain
@@ -37,7 +37,7 @@ Project:
     dmTestPost:
       parent:           dmTestCateg
       page:             true
-      actions:
+      actions: # use the deprecated but supported "actions" keyword instead of "components"
         listByDomain:
           filters:      dmTestDomain
         listByCateg:
@@ -48,7 +48,7 @@ Project:
 
     dmTestComment:  
       parent:           dmTestPost  
-      actions:  
+      components:
         listByDomain:  
           filters:      dmTestDomain
         listByCateg:  
@@ -59,7 +59,7 @@ Project:
 
     dmTestTag:
       page:             true
-      actions:  
+      components:
         list:  
         listByPost:  
           filters:      dmTestPost
@@ -74,6 +74,6 @@ Project:
     dmUser:
       name:             Author
       page:             true
-      actions:
+      components:
         list:           { cache: true }
         show:           { cache: true }

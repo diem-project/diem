@@ -4,7 +4,7 @@ abstract class dmWidgetProjectView extends dmWidgetBaseView
 {
   protected
   $dmModule,
-  $dmAction;
+  $dmComponent;
 
   protected function configure()
   {
@@ -15,7 +15,7 @@ abstract class dmWidgetProjectView extends dmWidgetBaseView
       throw new dmException('the module "%s" does not exist', $this->dmWidget->get('module'));
     }
 
-    if (!$this->dmAction = $this->dmModule->getAction($this->widget['action']))
+    if (!$this->dmComponent = $this->dmModule->getComponent($this->widget['action']))
     {
       throw new dmException(sprintf('the action "%s" does not exist for module "%s"', $this->widget['action'], $this->dmModule));
     }

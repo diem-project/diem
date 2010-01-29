@@ -9,24 +9,24 @@ class dmProjectModule extends dmModule
 
   // ACCESSEURS
 
-  public function getActions()
+  public function getComponents()
   {
-    return $this->options['actions'];
+    return $this->options['components'];
   }
 
-  public function getAction($actionKey)
+  public function getComponent($componentKey)
   {
-    return isset($this->options['actions'][$actionKey]) ? $this->options['actions'][$actionKey] : null;
+    return isset($this->options['components'][$componentKey]) ? $this->options['components'][$componentKey] : null;
   }
 
-  public function hasAction($actionKey)
+  public function hasComponent($componentKey)
   {
-    return isset($this->options['actions'][$actionKey]);
+    return isset($this->options['components'][$componentKey]);
   }
 
   public function getParent()
   {
-    return self::$manager->getModule($this->getParentKey());
+    return $this->getManager()->getModule($this->getParentKey());
   }
   
   public function getParentKey()
@@ -60,7 +60,7 @@ class dmProjectModule extends dmModule
       return null;
     }
     
-    return in_array($ancestorKey, $this->options['path_keys']) ? self::$manager->getModule($ancestorKey) : null;
+    return in_array($ancestorKey, $this->options['path_keys']) ? $this->getManager()->getModule($ancestorKey) : null;
   }
 
   public function hasAncestor($ancestorKey)
@@ -95,7 +95,7 @@ class dmProjectModule extends dmModule
       return null;
     }
 
-    return self::$manager->getModule($this->options['path_keys'][0]);
+    return $this->getManager()->getModule($this->options['path_keys'][0]);
   }
 
   public function getFarthestAncestorWithPage()
@@ -138,7 +138,7 @@ class dmProjectModule extends dmModule
   {
     if($this->hasDescendant($descendantKey))
     {
-      return self::$manager->getModule($descendantKey);
+      return $this->getManager()->getModule($descendantKey);
     }
     
     return null;
@@ -146,7 +146,7 @@ class dmProjectModule extends dmModule
   
   public function hasDescendant($descendantKey)
   {
-    return self::$manager->getModule($descendantKey)->hasAncestor($this->key);
+    return $this->getManager()->getModule($descendantKey)->hasAncestor($this->key);
   }
 
   /*
@@ -155,7 +155,7 @@ class dmProjectModule extends dmModule
    */
   public function getPath($includeMe = false)
   {
-    $path = self::$manager->keysToModules($this->options['path_keys']);
+    $path = $this->getManager()->keysToModules($this->options['path_keys']);
 
     if ($includeMe)
     {
@@ -171,7 +171,7 @@ class dmProjectModule extends dmModule
    */
   public function getPathFrom($fromModule, $includeMe = false)
   {
-    $fromModule = self::$manager->getModule($fromModule);
+    $fromModule = $this->getManager()->getModule($fromModule);
     
     $path = $this->getPath($includeMe);
     
@@ -202,7 +202,7 @@ class dmProjectModule extends dmModule
 
   public function getChildren()
   {
-    return self::$manager->keysToModules($this->options['children_keys']);
+    return $this->getManager()->keysToModules($this->options['children_keys']);
   }
 
   public function hasChildren()

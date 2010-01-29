@@ -95,7 +95,7 @@ class dmFrontActionGenerator extends dmFrontModuleGenerator
     ));
   }
   
-  protected function buildFormMethod($methodName, dmAction $action)
+  protected function buildFormMethod($methodName, dmModuleComponent $component)
   {
     $body = "\$form = \$this->forms['{$this->module->getModel()}'];
     
