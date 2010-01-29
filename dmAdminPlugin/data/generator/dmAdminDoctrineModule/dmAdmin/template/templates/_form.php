@@ -37,4 +37,6 @@
 
   </form>
 
+  <div class="dm_active_locks"></div>
+
 </div>
