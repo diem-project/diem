@@ -44,13 +44,13 @@ class dmFrontComponentGenerator extends dmFrontModuleGenerator
     
     $this->class->setIndentation($this->indentation);
     
-    foreach($this->module->getActions() as $action)
+    foreach($this->module->getComponents() as $component)
     {
-      $methodName = 'execute'.dmString::camelize($action->getKey());
+      $methodName = 'execute'.dmString::camelize($component->getKey());
       
       if (!$this->class->getMethod($methodName))
       {
-        $this->class->setMethod($this->buildActionMethod($methodName, $action));
+        $this->class->setMethod($this->buildActionMethod($methodName, $component));
       }
     }
 
@@ -116,9 +116,6 @@ class dmFrontComponentGenerator extends dmFrontModuleGenerator
       'name'        => $methodName,
       'visibility'  => 'public',
       'body'        => $body
-//      'docblock'    => new Zend_CodeGenerator_Php_Docblock(array(
-//        'shortDescription' => $action->getName()
-//      ))
     ));
   }
 }

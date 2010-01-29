@@ -46,15 +46,15 @@ class dmFrontActionGenerator extends dmFrontModuleGenerator
     
     if ($this->module->hasModel())
     {
-      foreach($this->module->getActions() as $action)
+      foreach($this->module->getComponents() as $component)
       {
-        if ($action->getType() == 'form')
+        if ($component->getType() == 'form')
         {
-          $methodName = 'execute'.dmString::camelize($action->getKey()).'Widget';
+          $methodName = 'execute'.dmString::camelize($component->getKey()).'Widget';
           
           if (!$this->class->getMethod($methodName))
           {
-            $this->class->setMethod($this->buildFormMethod($methodName, $action));
+            $this->class->setMethod($this->buildFormMethod($methodName, $component));
           }
         }
       }

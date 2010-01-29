@@ -14,9 +14,9 @@ class dmFrontActionTemplateGenerator extends dmFrontModuleGenerator
 
     $success = true;
 
-    foreach($this->module->getActions() as $action)
+    foreach($this->module->getComponents() as $component)
     {
-      $file = dmOs::join($dir, '_'.$action->getKey().'.php');
+      $file = dmOs::join($dir, '_'.$component->getKey().'.php');
 
       if(file_exists($file))
       {
@@ -25,7 +25,7 @@ class dmFrontActionTemplateGenerator extends dmFrontModuleGenerator
 
       touch($file);
 
-      $code = $this->getActionTemplate($action);
+      $code = $this->getActionTemplate($component);
 
       $fileSuccess = (file_put_contents($file, $code) && $this->filesystem->chmod($file, 0777));    
       
@@ -40,14 +40,14 @@ class dmFrontActionTemplateGenerator extends dmFrontModuleGenerator
     return $success;
   }
 
-  protected function getActionTemplate(dmModuleComponent $action)
+  protected function getActionTemplate(dmModuleComponent $component)
   {
-    switch($action->getType())
+    switch($component->getType())
     {
-      case 'list': return $this->getListActionTemplate($action); break;
-      case 'show': return $this->getShowActionTemplate($action); break;
-      case 'form': return $this->getFormActionTemplate($action); break;
-      default:     return $this->getUserActionTemplate($action); break;
+      case 'list': return $this->getListActionTemplate($component); break;
+      case 'show': return $this->getShowActionTemplate($component); break;
+      case 'form': return $this->getFormActionTemplate($component); break;
+      default:     return $this->getUserActionTemplate($component); break;
     }
   }
 
