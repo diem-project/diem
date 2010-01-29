@@ -33,13 +33,11 @@ if ($hasMedia)
       $form['method']->label(null, array('class' => 'ml10 mr10 fnone'))->field('.dm_media_method')->error()
     ).
     £('li.dm_form_element.multi_inputs.background.clearfix.none',
-      $form['width']->renderError().
+      $form['background']->renderError().
       $form['background']->label()->field()->error()
     ).
-    £('li.dm_form_element.quality.clearfix',
-      $form['quality']->label(__('JPG quality'))->field()->error().
-      £('p.dm_help', __('Leave empty to use default quality'))
-    )
+    $form['quality']->renderRow().
+    (isset($skipLink) ? '' : $form['link']->renderRow(array('class' => 'dm_link_droppable')))
   );
 }
 

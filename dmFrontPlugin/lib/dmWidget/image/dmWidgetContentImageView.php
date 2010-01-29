@@ -42,4 +42,34 @@ class dmWidgetContentImageView extends dmWidgetContentBaseMediaView
     return $vars;
   }
   
+  protected function doRender()
+  {
+    if ($this->isCachable() && $cache = $this->getCache())
+    {
+      return $cache;
+    }
+
+    $vars = $this->getViewVars();
+
+    if (!$vars['mediaTag'])
+    {
+      $html = '';
+    }
+    else
+    {
+      $html = $vars['mediaTag']->render();
+    }
+
+    if($link = dmArray::get($vars, 'link'))
+    {
+      $html = $this->getHelper()->£link($link)->text($html);
+    }
+
+    if ($this->isCachable())
+    {
+      $this->setCache($html);
+    }
+
+    return $html;
+  }
 }

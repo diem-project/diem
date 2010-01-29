@@ -23,7 +23,7 @@ class dmWidgetContentImageForm extends dmWidgetContentBaseMediaForm
       'required' => false
     ));
 
-    $this->widgetSchema['background'] = new sfWidgetFormInputText(array(), array('size' =>7));
+    $this->widgetSchema['background'] = new sfWidgetFormInputText(array(), array('size' => 7));
     $this->validatorSchema['background'] = new sfValidatorString(array(
       'required' => false
     ));
@@ -34,6 +34,12 @@ class dmWidgetContentImageForm extends dmWidgetContentBaseMediaForm
       'min' => 0,
       'max' => 100
     ));
+    $this->widgetSchema['quality']->setLabel('JPG quality');
+    $this->widgetSchema->setHelp('quality', 'Leave empty to use default quality');
+
+    $this->widgetSchema['link'] = new sfWidgetFormInputText();
+    $this->validatorSchema['link'] = new dmValidatorLinkUrl(array('required' => false));
+    $this->widgetSchema->setHelp('link', 'Drag & Drop a page or enter an url');
 
     $this->mergePostValidator(
       new sfValidatorCallback(array('callback' => array($this, 'checkBackground')))

@@ -24,7 +24,8 @@ $form->renderGlobalErrors(),
   $sf_context->get('helper')->renderPartial('dmWidget', 'forms/dmWidgetContentImage', array(
     'form' => $form,
     'hasMedia' => $hasMedia,
-    'skipCssClass' => true
+    'skipCssClass' => true,
+    'skipLink' => true
   ))
 ),
 

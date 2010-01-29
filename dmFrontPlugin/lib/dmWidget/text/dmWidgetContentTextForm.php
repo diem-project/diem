@@ -11,13 +11,13 @@ class dmWidgetContentTextForm extends dmWidgetContentImageForm
     $this->validatorSchema['title'] = new sfValidatorString(array('required' => false));
     
     $this->widgetSchema['titleLink'] = new sfWidgetFormInputText();
-    $this->validatorSchema['titleLink'] = new sfValidatorString(array('required' => false));
+    $this->validatorSchema['titleLink'] = new dmValidatorLinkUrl(array('required' => false));
 
     $this->widgetSchema['text'] = new sfWidgetFormTextarea();
     $this->validatorSchema['text'] = new sfValidatorString(array('required' => false));
     
     $this->widgetSchema['mediaLink'] = new sfWidgetFormInputText();
-    $this->validatorSchema['mediaLink'] = new sfValidatorString(array('required' => false));
+    $this->validatorSchema['mediaLink'] = new dmValidatorLinkUrl(array('required' => false));
     
     $this->widgetSchema['titlePosition'] = new sfWidgetFormChoice(array(
       'choices' => array('outside' => 'Outside', 'inside' => 'Inside')
