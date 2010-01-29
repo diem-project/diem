@@ -5,7 +5,7 @@ abstract class dmInitFilter extends dmFilter
 
   protected function updateLock()
   {
-    if(class_exists('DmLock') && $this->user->can('admin') && $this->response->isHtmlForHuman())
+    if(sfConfig::get('dm_locks_enabled') && $this->user->can('admin') && $this->response->isHtmlForHuman())
     {
       dmDb::table('DmLock')->update(array(
         'user_id'   => $this->user->getUserId(),

@@ -82,7 +82,7 @@ class PluginDmLockTable extends myDoctrineTable
   {
     dmDb::pdo(
       sprintf('DELETE FROM %s WHERE time < ?', $this->getTableName()),
-      array($_SERVER['REQUEST_TIME'] - sfConfig::get('dm_security_active_user_timeout', 10))
+      array($_SERVER['REQUEST_TIME'] - sfConfig::get('dm_locks_timeout', 10))
     );
   }
 

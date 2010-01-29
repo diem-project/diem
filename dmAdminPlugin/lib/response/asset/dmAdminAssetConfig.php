@@ -49,12 +49,12 @@ class dmAdminAssetConfig extends dmAssetConfig
       'core.toolBar',
       'core.pageBar',
       'core.mediaBar',
-      'core.ping',
+      sfConfig::get('dm_locks_enabled') ? 'core.ping' : null,
       'admin.ctrl',
       'admin.toolBar',
       'admin.pageBar',
       'admin.mediaBar',
-      'admin.ping'
+      sfConfig::get('dm_locks_enabled') ? 'admin.ping' : null
     );
   }
 }

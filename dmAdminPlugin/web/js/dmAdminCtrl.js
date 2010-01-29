@@ -30,7 +30,7 @@
 
       this.checkVersion();
 
-      if(this.options.authenticated)
+      if($.dm.ping && this.options.authenticated)
       {
         this.launchPing();
       }
