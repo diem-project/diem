@@ -77,7 +77,7 @@ class dmRecordLoremizer extends dmConfigurable
     }
     
     // if the field can be null, set it to null sometimes
-    if (!dmArray::get($column, 'notnull') && !dmArray::get($column, 'unique') && !rand(0, 3))
+    if (!dmArray::get($column, 'notnull') && !dmArray::get($column, 'unique') && !mt_rand(0, 3))
     {
       $val = null;
     }
@@ -100,12 +100,12 @@ class dmRecordLoremizer extends dmConfigurable
     {
       $this->record->clearRelated($relation->getAlias());
       
-      if (rand(0, 4))
+      if (mt_rand(0, 4))
       {
         $ids = (array) dmDb::query($relation->getClass().' t')
         ->select('t.id, RANDOM() AS rand')
         ->orderBy('rand')
-        ->limit(rand(1, 6))
+        ->limit(mt_rand(1, 6))
         ->fetchFlat();
         
         $this->record->link($relation->getAlias(), array_unique($ids));
@@ -128,13 +128,13 @@ class dmRecordLoremizer extends dmConfigurable
         $val = $this->getStringValForColumn($column);
         break;
       case 'boolean':
-        $val = (bool)rand(0,1);
+        $val = (bool)mt_rand(0,1);
         break;
       case 'blob':
       case 'clob':
         if ($this->table->isMarkdownColumn($columnName))
         {
-          $val = dmLorem::getMarkdownLorem(1/*rand(1, 3)*/);
+          $val = dmLorem::getMarkdownLorem(1/*mt_rand(1, 3)*/);
         }
         else
         {
@@ -143,20 +143,20 @@ class dmRecordLoremizer extends dmConfigurable
         break;
       case 'time':
       case 'timestamp':
-        $val = rand(strtotime('-10 year') , time());
+        $val = mt_rand(strtotime('-10 year') , time());
         break;
       case 'date':
-        $val = date("Y-m-d", rand(strtotime('-10 year') , time()));
+        $val = date("Y-m-d", mt_rand(strtotime('-10 year') , time()));
         break;
       case 'enum':
-        $val = $column['values'][array_rand($column['values'])];
+        $val = $column['values'][array_mt_rand($column['values'])];
         break;
       case 'integer':
-        $val = rand(0,100000);
+        $val = mt_rand(0,100000);
         break;
       case 'float':
       case 'decimal':
-        $val = rand(0,1000000)/100;
+        $val = mt_rand(0,1000000)/100;
         break;
       default:
         throw new dmException(sprintf('Diem can not generate random content for %s column', $columnName));
@@ -169,7 +169,7 @@ class dmRecordLoremizer extends dmConfigurable
   {
     if (dmArray::get($column, 'email'))
     {
-      return dmString::random(rand(4, 30)).'@localhost.com';
+      return dmString::random(mt_rand(4, 30)).'@localhost.com';
     }
     
     if ($this->table->isLinkColumn($column['name']))
@@ -177,12 +177,12 @@ class dmRecordLoremizer extends dmConfigurable
       return $this->getRandomLink();
     }
 
-    $nbCarac = rand(min(4, $column['length']), max(40, $column['length']));
+    $nbCarac = mt_rand(min(4, $column['length']), max(40, $column['length']));
     $val = trim(dmLorem::getLittleLorem($nbCarac));
 
     if (dmArray::get($column, 'unique'))
     {
-      $rlen = rand(4, 10);
+      $rlen = mt_rand(4, 10);
       $val = substr($val.dmString::random($rlen), 0, $column['length']);
     }
 
@@ -196,7 +196,7 @@ class dmRecordLoremizer extends dmConfigurable
 
   protected function getRandomLink()
   {
-    if(rand(0, 1))
+    if(mt_rand(0, 1))
     {
       return sprintf('http://'.dmString::random().'.random.com');
     }

@@ -95,7 +95,7 @@
     
     listPage: function()
     {
-      self = this;
+      var self = this;
       
       if ($searchInput = $('#dm_module_search_input').orNot()) 
       {

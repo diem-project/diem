@@ -84,7 +84,8 @@ $expected = array(
   'height'      => '',
   'method'      => dmConfig::get('image_resize_method'),
   'background'  => 'FFFFFF',
-  'quality'     => NULL
+  'quality'     => NULL,
+  'link'        => ''
 );
 ksort($expected);
 $widgetValues = $widget->values;
@@ -109,7 +110,8 @@ $form->bind(array_merge($form->getDefaults(), array(
   'height' => 200,
   'cssClass' => 'test css_class',
   'method' => 'fit',
-  'quality' => 50
+  'quality' => 50,
+  'link' => 'http://diem-project.org'
 )), array());
 $t->is($form->isValid(), true, 'The form is valid');
 if (!$form->isValid())
@@ -129,7 +131,8 @@ $t->is_deeply($widget->values, array(
   'height'      => '200',
   'method'      => 'fit',
   'background'  => 'FFFFFF',
-  'quality'     => 50
+  'quality'     => 50,
+  'link' => 'http://diem-project.org'
 ), 'Widget values are correct');
 
 $t->comment('Recreate the form from the saved widget');
@@ -173,7 +176,8 @@ $t->is_deeply($widget->values, array(
   'height'      => '200',
   'method'      => 'fit',
   'background'  => 'FFFFFF',
-  'quality'     => 50
+  'quality'     => 50,
+  'link'        => 'http://diem-project.org'
 ), 'Widget values are correct');
 
 $t->comment('Now display the widget');
@@ -196,7 +200,8 @@ $expected = array(
     'legend'      => 'test legend',
     'method'      => 'fit',
     'background'  => 'FFFFFF',
-    'quality'     => 50
+    'quality'     => 50,
+    'link'        => 'http://diem-project.org'
   )),
   'updated_at' => $widget->updatedAt
 );

@@ -17,13 +17,13 @@
     {
       var self = $.dm.ping;
 
-      if(data.users != self.users)
+      if(data && data.users != self.users)
       {
         self.renderUsers(data.users.split('|'));
         self.users = data.users;
       }
 
-      if(data.locks != self.locks)
+      if(data && data.locks != self.locks)
       {
         self.renderLocks(data.locks.split('|'));
         self.locks = data.locks;
