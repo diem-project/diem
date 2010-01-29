@@ -103,8 +103,8 @@ dl.dm_little_dl dd {
   background-image: url(../../core/images/default_bg.png);
 }
 
-.dm_big_button {
-  padding: 20px;
+.dm_big_button,
+.dm_medium_button {
   background: url(../../core/images/default_bg.png) center left repeat-x;
   font-size: 13px;
   border: 1px solid #D3D3D3;
@@ -113,8 +113,16 @@ dl.dm_little_dl dd {
   -webkit-border-radius: 40px;
   color: #046BCA;
 }
+.dm_big_button {
+  padding: 20px;
+}
 
-.dm_big_button:hover {
+.dm_medium_button {
+  padding: 5px 20px;
+}
+
+.dm_big_button:hover,
+.dm_medium_button:hover{
   text-decoration: none;
   background: url(../../core/images/default_bg_green.png) center left repeat-x;
 }

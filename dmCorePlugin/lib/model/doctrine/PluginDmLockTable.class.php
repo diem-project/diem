@@ -70,12 +70,10 @@ class PluginDmLockTable extends myDoctrineTable
   {
     $lock = $this->findOneByData($data);
 
-    if(!$lock)
+    if($lock = $this->findOneByData($data))
     {
-      throw new dmException('No lock for '.implode(', ', $data));
+      $lock->merge($data)->save();
     }
-    
-    $lock->merge($data)->save();
 
     $this->removeOldLocks();
   }

@@ -10,7 +10,7 @@ echo £('div.search_actions.clearfix',
   £('div.dm_third',
     £('h2.mb10', __('Search')).
     $form->open('method=get').
-    $form['query']->label()->field()->error().
+    $form['query']->label(null, '.mr10')->field()->error().
     $form->submit(__('Search')).
     $form->close()
   ).
@@ -20,7 +20,7 @@ echo £('div.search_actions.clearfix',
   ).
   £('div.dm_third',
     £('h2.mb10', __('Index maintenance')).
-    £link('dmSearchEngine/reload')->text(__('Reload index'))
+    £link('dmSearchEngine/reload')->text(__('Reload index'))->set('.dm_medium_button')
   )
 );
 

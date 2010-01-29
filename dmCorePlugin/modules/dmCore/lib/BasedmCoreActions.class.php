@@ -20,16 +20,24 @@ class BasedmCoreActions extends dmBaseActions
     dmDb::table('DmLock')->ping($data);
 
     $users = dmDb::table('DmLock')->getUserNames();
-    $locks = $recordId ? dmDb::table('DmLock')->getLocks($data) : array();
 
-    if(!empty($locks))
+    if($recordId && count($users) > 1)
     {
-      foreach($locks as $index => $lock)
+      $locks = $recordId ? dmDb::table('DmLock')->getLocks($data) : array();
+
+      if(!empty($locks))
       {
-        $locks[$index] = $this->getService('i18n')->__('%user% is browsing this page, you should not modify it now.', array(
-          '%user%' => '<strong>'.$lock.'</strong>'
-          ));
+        foreach($locks as $index => $lock)
+        {
+          $locks[$index] = $this->getService('i18n')->__('%user% is browsing this page, you should not modify it now.', array(
+            '%user%' => '<strong>'.$lock.'</strong>'
+            ));
+        }
       }
+    }
+    else
+    {
+      $locks = array();
     }
 
     return $this->renderJson(array(

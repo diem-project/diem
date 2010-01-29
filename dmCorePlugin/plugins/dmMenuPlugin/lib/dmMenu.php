@@ -201,12 +201,12 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
 
   public function getFirstChild()
   {
-    return current($this->children);
+    return dmArray::first($this->children);
   }
 
   public function getLastChild()
   {
-    return end($this->children);
+    return dmArray::last($this->children);
   }
 
   public function getChild($name)
