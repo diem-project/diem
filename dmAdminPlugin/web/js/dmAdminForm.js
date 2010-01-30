@@ -27,11 +27,16 @@
     {
       if ($save = $('li.sf_admin_action_save:first input', this.$).orNot()) 
       {
-        this.$.bindKey('Ctrl+s', function()
+        var self = this;
+
+        setTimeout(function()
         {
-          $save.trigger('click');
-          return false;
-        });
+          self.$.bindKey('Ctrl+s', function()
+          {
+            $save.trigger('click');
+            return false;
+          });
+        }, 1000);
       }
     },
     
@@ -46,6 +51,39 @@
         var value = $editor.val();
 				
 				$editor.dmMarkdown();
+
+        var $container = $editor.closest('div.markItUpContainer');
+
+        var resize = function()
+        {
+          $preview.height($container.innerHeight() - 13);
+
+          $editor.resizable({
+            alsoResize: $preview,
+            handles: 's'
+          }).width($container.width()-6);
+        };
+
+        $container.find('div.markItUpHeader ul').append(
+          $('<li class="markitup_full_screen"><a title="Full Screen">Full Screen</a></li>')
+          .click(function() {
+            $container.toggleClass('dm_markdown_full_screen');
+
+            if($container.hasClass('dm_markdown_full_screen'))
+            {
+              $editor
+              .data('old_height', $editor.height())
+              .resizable('destroy').height($(window).height()-90);
+              resize();
+              window.scrollTo(0, Math.round($container.offset().top) - 40);
+            }
+            else
+            {
+              $editor.resizable('destroy').height($editor.data('old_height'));
+              resize();
+            }
+          })
+        );
 				
         setInterval(function()
         {
@@ -66,13 +104,8 @@
             });
           }
         }, 500);
-        
-        $preview.height($editor.closest('div.markItUpContainer').innerHeight() - 13);
-        
-        $editor.resizable({
-          alsoResize: $preview,
-          handles: 's'
-        });
+
+        resize();
       });
     },
     
