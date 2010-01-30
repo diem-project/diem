@@ -136,7 +136,7 @@ do
           $this->log('');
           $this->log('The database you specified does not exist, Diem will now try to create it...');
           
-          $dbh = new PDO('mysql:host=' . $settings['database']['host'], $settings['database']['user'], $settings['database']['password']);
+          $dbh = new PDO($dbm . ':host=' . $settings['database']['host'], $settings['database']['user'], $settings['database']['password']);
 
           if ('mysql' == $dbm)
           {
