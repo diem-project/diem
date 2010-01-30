@@ -52,30 +52,31 @@ $projectKey = dmProject::getKey();
 
 $this->logSection($projectKey, 'Please answer a few questions to configure the '.$projectKey.' project'."\n");
 
-$culture = $this->askAndValidate(array('', 'Choose your site main language ( default: en )', ''), new sfValidatorRegex(
+$culture = $this->askAndValidate(array('', 'Choose your site\'s main language ( default: en )', ''), new sfValidatorRegex(
   array('pattern' => '/^[\w\d-]+$/', 'max_length' => 2, 'min_length' => 2, 'required' => false),
   array('invalid' => 'Language must contain two alphanumeric characters')
 ));
 $settings['culture'] = empty($culture) ? 'en' : $culture;
 
-$webDirName = $this->askAndValidate(array('', 'Choose a web directory name ( example: web, html, public_html;  default: web )', ''),
+$webDirName = $this->askAndValidate(array('', 'Choose a web directory name ( examples: web, html, public_html;  default: web )', ''),
 new sfValidatorAnd(array(
   new sfValidatorRegex(
-    array('pattern' => '/^[\w\d-]+|$/'),
+    array('pattern' => '/^[\w\d-]+|$/', 'required' => false),
     array('invalid' => 'Web directory name must contain only alphanumeric characters')
   ),
   new sfValidatorRegex(
-    array('pattern' => '/^(apps|lib|config|data|cache|log|plugins|test)$/', 'must_match' => false),
+    array('pattern' => '/^(apps|lib|config|data|cache|log|plugins|test)$/', 'must_match' => false, 'required' => false),
     array('invalid' => 'This directory name is already used by symfony')
   )
-)));
+)), array('required' => false));
 $settings['web_dir_name'] = empty($webDirName) ? 'web' : $webDirName;
 
 do
 {
   $defaultDbName = dmString::underscore(str_replace('-', '_', $projectKey));
+  $isDatabaseOk  = false; 
   
-  $dbm = $this->askAndValidate(array('', 'What kind of database will be used ? ( mysql | pgsql | sqlite )', ''), new sfValidatorChoice(array(
+  $dbm = $this->askAndValidate(array('', 'What kind of database will be used? ( mysql | pgsql | sqlite )', ''), new sfValidatorChoice(array(
     'choices' => array('mysql', 'pgsql', 'sqlite')
   )));
   
@@ -128,9 +129,43 @@ do
     }
     catch (PDOException $e)
     {
-      $isDatabaseOk = false;
-      $this->logBlock('The database configuration looks wrong. PDO says : '.$e->getMessage(), 'ERROR_LARGE');
-      $this->log('');
+      if (in_array($dbm, array('mysql', 'pgsql')) && false !== strpos($e->getMessage(), 'Unknown database'))
+      {
+        try 
+        {
+          $this->log('');
+          $this->log('The database you specified does not exist, Diem will now try to create it...');
+          
+          $dbh = new PDO('mysql:host=' . $settings['database']['host'], $settings['database']['user'], $settings['database']['password']);
+
+          if ('mysql' == $dbm)
+          {
+            $dbh->query(sprintf('CREATE DATABASE `%s` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;', $settings['database']['name']));
+          }
+          else
+          {
+            $dbh->query(sprintf("CREATE DATABASE %s WITH ENCODING 'UNICODE';", $settings['database']['name']));
+          }
+          
+          // verify that we can connect to the database
+          $dbh = new PDO($settings['database']['dsn'], $settings['database']['user'], $settings['database']['password']);
+          
+          $this->log(sprintf('Database %s successfully created.', $settings['database']['name']));
+          $this->log('');
+        } 
+        catch (PDOException $x) 
+        {
+          $isDatabaseOk = false;
+          $this->logBlock('Could not automatically create the database. PDO says : '.$x->getMessage(), 'ERROR_LARGE');
+          $this->log('');
+        }
+      }
+      else 
+      {
+        $isDatabaseOk = false;
+        $this->logBlock('The database configuration looks wrong. PDO says : '.$e->getMessage(), 'ERROR_LARGE');
+        $this->log('');
+      }
     }
   }
 }
@@ -192,12 +227,12 @@ $this->runTask('configure:database', array(
 
 try
 {
-  $this->logBlock('Installing '.$projectKey.'. This may take some time.', 'INFO_LARGE');
-  
   if ('/' !== DIRECTORY_SEPARATOR)
   {
     throw new Exception('Automatic install disabled for windows servers');
   }
+  
+  $this->logBlock('Installing '.$projectKey.'. This may take some time.', 'INFO_LARGE');
   
   $out = $err = null;
   $this->getFilesystem()->execute(sprintf(
