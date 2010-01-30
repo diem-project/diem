@@ -1,5 +1,7 @@
 <?php
 
+/** @var sfGenerateProjectTask This file runs in the context of sfGenerateProjectTask::execute() */ $this;
+
 sfConfig::set('dm_core_dir', realpath(dirname(__FILE__).'/..'));
 
 require_once(sfConfig::get('dm_core_dir').'/lib/core/dm.php');
@@ -10,11 +12,11 @@ require_once(sfConfig::get('dm_core_dir').'/lib/task/dmServerCheckTask.class.php
 
 $this->logBlock('Diem '.DIEM_VERSION.' installer', 'INFO_LARGE');
 
-$this->logSection('Diem', 'Welcome into the Diem installation wizard.');
-$this->logSection('Diem', 'We will now check that your server matches Symfony '.SYMFONY_VERSION.' and Diem 5.0 requirements.');
+$this->logSection('Diem', 'Welcome to the the Diem installation wizard.');
+$this->logSection('Diem', 'We will now check if your server matches Symfony '.SYMFONY_VERSION.' and Diem 5.0 requirements.');
 
 usleep(1000000);
-$this->askConfirmation('Press ENTER');
+$this->askConfirmation('Press ENTER to start.');
 
 $serverCheck = new dmServerCheckTask($this->dispatcher, $this->formatter);
 $serverCheck->setCommandApplication($this->commandApplication);
@@ -39,7 +41,7 @@ $settings = array();
 
 if ('Doctrine' != $this->options['orm'])
 {
-  throw new Exception('Sorry, Diem '.DIEM_VERSION.' only support the Doctrine orm');
+  throw new Exception('We are sorry, but Diem '.DIEM_VERSION.' supports only Doctrine for ORM.');
 }
   
 $projectKey = dmProject::getKey();
@@ -56,7 +58,7 @@ $culture = $this->askAndValidate(array('', 'Choose your site main language ( def
 ));
 $settings['culture'] = empty($culture) ? 'en' : $culture;
 
-$webDirName = $this->askAndValidate(array('', 'Choose a web directory name ( example: web, html, public_html )', ''),
+$webDirName = $this->askAndValidate(array('', 'Choose a web directory name ( example: web, html, public_html;  default: web )', ''),
 new sfValidatorAnd(array(
   new sfValidatorRegex(
     array('pattern' => '/^[\w\d-]+|$/'),
@@ -64,7 +66,7 @@ new sfValidatorAnd(array(
   ),
   new sfValidatorRegex(
     array('pattern' => '/^(apps|lib|config|data|cache|log|plugins|test)$/', 'must_match' => false),
-    array('invalid' => 'This directory is already used')
+    array('invalid' => 'This directory name is already used by symfony')
   )
 )));
 $settings['web_dir_name'] = empty($webDirName) ? 'web' : $webDirName;
@@ -73,7 +75,7 @@ do
 {
   $defaultDbName = dmString::underscore(str_replace('-', '_', $projectKey));
   
-  $dbm = $this->askAndValidate(array('', 'What kind of database will we used ? ( mysql | pgsql | sqlite )', ''), new sfValidatorChoice(array(
+  $dbm = $this->askAndValidate(array('', 'What kind of database will be used ? ( mysql | pgsql | sqlite )', ''), new sfValidatorChoice(array(
     'choices' => array('mysql', 'pgsql', 'sqlite')
   )));
   
@@ -99,12 +101,11 @@ do
   {
     case "mysql":
       $settings['database']['dsn'] = sprintf('mysql:host=%s;dbname=%s;',
-       $settings['database']['host'], $settings['database']['name']
-      );
+        $settings['database']['host'], $settings['database']['name']);
     break;
     case "pgsql":
       $settings['database']['dsn'] = sprintf('pgsql:host=%s;dbname=%s;',
-      $settings['database']['host'], $settings['database']['name'], $settings['database']['user'], $settings['database']['password']);
+        $settings['database']['host'], $settings['database']['name'], $settings['database']['user'], $settings['database']['password']);
     break;
     case "sqlite":
       $dbFile = dmOs::join(sfConfig::get('sf_data_dir'), $defaultDbName.'.sqlite');
@@ -117,16 +118,20 @@ do
       $this->log('');
   }
   
-  try
+  if (isset($settings['database']['dsn']))
   {
-    $dbh = new PDO($settings['database']['dsn'], $settings['database']['user'], $settings['database']['password']);
-    $isDatabaseOk = true;
-  }
-  catch (PDOException $e)
-  {
-    $isDatabaseOk = false;
-    $this->logBlock('The database configuration looks wrong. PDO says : '.$e->getMessage(), 'ERROR_LARGE');
-    $this->log('');
+    // we try to connect only if the user chose a valid database
+    try
+    {
+      $dbh = new PDO($settings['database']['dsn'], $settings['database']['user'], $settings['database']['password']);
+      $isDatabaseOk = true;
+    }
+    catch (PDOException $e)
+    {
+      $isDatabaseOk = false;
+      $this->logBlock('The database configuration looks wrong. PDO says : '.$e->getMessage(), 'ERROR_LARGE');
+      $this->log('');
+    }
   }
 }
 while(!$isDatabaseOk);
@@ -202,12 +207,12 @@ try
     'dm:setup --no-confirmation'
   ), $out, $err);
   
-  $this->logBlock('Your project is now ready for web access. See you on admin_dev.php.', 'INFO_LARGE');
+  $this->logBlock('Your project is now ready to be accessed by the web. Try it out on admin_dev.php.', 'INFO_LARGE');
   $this->logBlock('Your username is "admin" and your password is '.(empty($settings['database']['password']) ? '"admin"' : 'the database password'), 'INFO_LARGE');
 }
 catch(Exception $e)
 {
-  $this->logBlock('There is a last thing to do. Please run : php symfony dm:setup', 'INFO_LARGE');
+  $this->logBlock('There is one last thing you need to do.  Please run "php symfony dm:setup"', 'INFO_LARGE');
 }
 
 exit;
