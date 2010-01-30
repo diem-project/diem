@@ -66,6 +66,7 @@ class dmMediaResource
     {
       $webPath = $this->requestContext['relative_url_root'].$this->pathFromWebDir;
     }
+    
     return $webPath;
   }
 

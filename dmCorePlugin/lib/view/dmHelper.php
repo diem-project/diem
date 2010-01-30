@@ -223,10 +223,24 @@ class dmHelper extends dmConfigurable
   
   public function £media($source)
   {
-    $this->serviceContainer->setParameter(
-      'media_tag.source',
-      $resource = $this->serviceContainer->getService('media_resource')->initialize($source)
-    );
+    try
+    {
+      $this->serviceContainer->setParameter(
+        'media_tag.source',
+        $resource = $this->serviceContainer->getService('media_resource')->initialize($source)
+      );
+    }
+    catch(Exception $e)
+    {
+      $this->context->getLogger()->err($e->getMessage());
+
+      if (sfConfig::get('dm_debug'))
+      {
+        throw $e;
+      }
+
+      return $this->£media(null);
+    }
     
     $serviceName = 'media_tag_'.$resource->getMime();
     
