@@ -1,9 +1,9 @@
 <?php
 
-echo £('div.blockUIWrap', £('div.dm_refresh_show.dm', array('json' => $next),
+echo _tag('div.blockUIWrap', _tag('div.dm_refresh_show.dm', array('json' => $next),
 
-  £('p.title', __('Updating project')).
+  _tag('p.title', __('Updating project')).
   
-  £('ul.dm_steps')
+  _tag('ul.dm_steps')
 
 ));

@@ -5,7 +5,7 @@ class BasedmWidgetActions extends dmFrontBaseActions
 
   /*
    * Quickly render a widget from Ajax
-   * £link('+/dmWidget/render')->param('widget_id', $widgetId)->param('page_id', $pageId)
+   * _link('+/dmWidget/render')->param('widget_id', $widgetId)->param('page_id', $pageId)
    */
   public function executeRender(dmWebRequest $request)
   {
@@ -21,9 +21,33 @@ class BasedmWidgetActions extends dmFrontBaseActions
 
   public function executeCopy(dmWebRequest $request)
   {
+    return $this->clipboard($request, 'copy');
+  }
+
+  public function executeCut(dmWebRequest $request)
+  {
+    return $this->clipboard($request, 'cut');
+  }
+
+  protected function clipboard(dmWebRequest $request, $method)
+  {
     $this->forward404Unless($widget = dmDb::table('DmWidget')->find($request->getParameter('id')));
 
-    $this->getService('front_clipboard')->setWidget($widget);
+    $this->getService('front_clipboard')->$method($widget);
+
+    return $this->renderText('ok');
+  }
+
+  public function executePaste(dmWebRequest $request)
+  {
+    $this->forward404Unless(
+      $toZone = dmDb::table('DmZone')->find($request->getParameter('to_dm_zone')),
+      'Can not find to zone'
+    );
+
+    $widget = $this->getService('front_clipboard')->paste($toZone);
+
+    return $this->renderText($this->getService('page_helper')->renderWidget($widget->toArrayWithMappedValue(), true));
   }
 
   public function executeEdit(dmWebRequest $request)
@@ -72,14 +96,14 @@ class BasedmWidgetActions extends dmFrontBaseActions
       }
 
       return $this->renderAsync(array(
-        'html'  => $this->renderEdit(new $formClass($widget), $widgetType).dmString::ENCODING_SEPARATOR.$this->getService('page_helper')->renderWidget($widgetArray),
+        'html'  => $this->renderEdit(new $formClass($widget), $widgetType, false).dmString::ENCODING_SEPARATOR.$this->getService('page_helper')->renderWidget($widgetArray),
         'js'    => $js,
         'css'   => $css
       ), true);
     }
     
     return $this->renderAsync(array(
-      'html'  => $this->renderEdit($form, $widgetType),
+      'html'  => $this->renderEdit($form, $widgetType, $request->isMethod('get')),
       'js'    => array_merge(array('lib.hotkeys'), $form->getJavascripts()),
       'css'   => $form->getStylesheets()
     ), true);
@@ -88,14 +112,14 @@ class BasedmWidgetActions extends dmFrontBaseActions
   protected function renderError()
   {
     return $this->renderText(sprintf('<p class="s16 s16_error">%s</p><div class="clearfix mt30"><a class="dm cancel close_dialog button mr10">%s</a><a class="dm delete button red" title="%s">%s</a></div>',
-      $this->getService('i18n')->__('The widget can not be rendered because its type does not exist anymore.'),
-      $this->getService('i18n')->__('Cancel'),
-      $this->getService('i18n')->__('Delete this widget'),
-      $this->getService('i18n')->__('Delete')
+      $this->getI18n()->__('The widget can not be rendered because its type does not exist anymore.'),
+      $this->getI18n()->__('Cancel'),
+      $this->getI18n()->__('Delete this widget'),
+      $this->getI18n()->__('Delete')
     ));
   }
 
-  protected function renderEdit(dmWidgetBaseForm $form, dmWidgetType $widgetType)
+  protected function renderEdit(dmWidgetBaseForm $form, dmWidgetType $widgetType, $withCopyActions = true)
   {
     $helper = $this->getHelper();
 
@@ -107,7 +131,7 @@ class BasedmWidgetActions extends dmFrontBaseActions
         $templateDir = dmOs::join(sfConfig::get('sf_app_module_dir'), $form->getDmModule()->getKey(), 'templates', '_'.$form->getDmComponent()->getKey().'.php');
         if (file_exists($templateDir))
         {
-          $devActions .= '<a href="#'.dmProject::unRootify($templateDir).'" class="code_editor s16 s16_code_editor block">'.$this->getService('i18n')->__('Edit template code').'</a>';
+          $devActions .= '<a href="#'.dmProject::unRootify($templateDir).'" class="code_editor s16 s16_code_editor block">'.$this->getI18n()->__('Edit template code').'</a>';
         }
       }
       
@@ -116,7 +140,7 @@ class BasedmWidgetActions extends dmFrontBaseActions
         $componentDir = dmOs::join(sfConfig::get('sf_app_module_dir'), $form->getDmModule()->getKey(), 'actions/components.class.php');
         if (file_exists($componentDir))
         {
-          $devActions .= '<a href="#'.dmProject::unRootify($componentDir).'" class="code_editor s16 s16_code_editor block">'.$this->getService('i18n')->__('Edit component code').'</a>';
+          $devActions .= '<a href="#'.dmProject::unRootify($componentDir).'" class="code_editor s16 s16_code_editor block">'.$this->getI18n()->__('Edit component code').'</a>';
         }
       }
     }
@@ -127,21 +151,21 @@ class BasedmWidgetActions extends dmFrontBaseActions
     }
 
     $copyActions = '';
-    if (false && $this->getUser()->can('widget_add'))
+    if ($withCopyActions && $this->getUser()->can('widget_add'))
     {
-      $copyActions = $helper->£('div.dm_cut_copy_actions',
-        $helper->£link('+/dmWidget/cut')
+      $copyActions = $helper->tag('div.dm_cut_copy_actions.none',
+        $helper->link('+/dmWidget/cut')
         ->param('id', $form->getDmWidget()->get('id'))
-        ->text($this->getService('i18n')->__('Cut'))
+        ->text($this->getI18n()->__('Cut'))
         ->set('.s16.s16_cut.dm_widget_cut').
-        $helper->£link('+/dmWidget/copy')
+        $helper->link('+/dmWidget/copy')
         ->param('id', $form->getDmWidget()->get('id'))
-        ->text($this->getService('i18n')->__('Copy'))
+        ->text($this->getI18n()->__('Copy'))
         ->set('.s16.s16_copy.dm_widget_copy')
       );
     }
     
-    return $helper->£('div.dm.dm_widget_edit.'.dmString::underscore($widgetType->getFullKey()).'_form',
+    return $helper->tag('div.dm.dm_widget_edit.'.dmString::underscore($widgetType->getFullKey()).'_form',
     array('json' => array('form_class' => $widgetType->getFullKey().'Form', 'form_name' => $form->getName())),
     $form->render('.dm_form.list.little').$devActions.$copyActions
     );
@@ -289,7 +313,7 @@ class BasedmWidgetActions extends dmFrontBaseActions
         throw $e;
       }
 
-      $this->getUser()->logError($this->getService('i18n')->__('A problem occured when sorting the items'));
+      $this->getUser()->logError($this->getI18n()->__('A problem occured when sorting the items'));
     }
   }
 }

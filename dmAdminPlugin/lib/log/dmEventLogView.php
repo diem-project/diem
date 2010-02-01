@@ -32,7 +32,7 @@ class dmEventLogView extends dmLogView
   protected function renderSubject(dmEventLogEntry $entry)
   {
     return 'exception' === $entry->get('type')
-    ? $this->helper->£link('@dm_error')->param('search', $entry->get('subject'))->text($entry->get('subject'))
+    ? $this->helper->link('@dm_error')->param('search', $entry->get('subject'))->text($entry->get('subject'))
     : $this->i18n->__($entry->get('subject'));
   }
   

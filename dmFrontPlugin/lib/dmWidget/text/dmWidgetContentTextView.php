@@ -48,35 +48,35 @@ class dmWidgetContentTextView extends dmWidgetContentImageView
     
     $helper = $this->getHelper();
     
-    $html = $helper->£o('div.dm_text.text_'.$style.'.clearfix');
+    $html = $helper->open('div.dm_text.text_'.$style.'.clearfix');
 
     if ($title && $titlePosition == 'outside')
     {
-      $html .= $helper->£('h2.text_title.outside', $titleLink ? $helper->£link($titleLink)->text($title) : $title);
+      $html .= $helper->tag('h2.text_title.outside', $titleLink ? $helper->link($titleLink)->text($title) : $title);
     }
 
-    $html .= $helper->£o('div.text_content');
+    $html .= $helper->open('div.text_content');
   
       if ($media && $mediaPosition != 'bottom')
       {
-        $html .= $helper->£('div.text_image'.$mediaClass, $mediaLink ? $helper->£link($mediaLink)->text($mediaTag) : $mediaTag);
+        $html .= $helper->tag('div.text_image'.$mediaClass, $mediaLink ? $helper->link($mediaLink)->text($mediaTag) : $mediaTag);
       }
     
       if ($title && $titlePosition == 'inside')
       {
-        $html .= $helper->£('h2.text_title.inside', $titleLink ? $helper->£link($titleLink)->text($title) : $title);
+        $html .= $helper->tag('h2.text_title.inside', $titleLink ? $helper->link($titleLink)->text($title) : $title);
       }
     
-      $html .= $helper->£('div.markdown.text_markdown', $this->context->get('markdown')->toHtml($text));
+      $html .= $helper->tag('div.markdown.text_markdown', $this->context->get('markdown')->toHtml($text));
     
       if ($media && $mediaPosition == 'bottom')
       {
-        $html .= $helper->£('div.text_image'.$mediaClass, $mediaLink ? $helper->£link($mediaLink)->text($mediaTag) : $mediaTag);
+        $html .= $helper->tag('div.text_image'.$mediaClass, $mediaLink ? $helper->link($mediaLink)->text($mediaTag) : $mediaTag);
       }
   
-    $html .= $helper->£c('div');
+    $html .= $helper->close('div');
     
-    $html .= $helper->£c('div');
+    $html .= $helper->close('div');
     
     if ($this->isCachable())
     {

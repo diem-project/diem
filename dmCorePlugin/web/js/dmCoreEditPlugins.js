@@ -153,11 +153,9 @@
     }
     
   });
-  
-  $.ui.dmMenu.getter = 'close';
 	
 	/*
-	 * Make ui dialogs fixed
+	 * Make ui dialogs position: fixed
 	 */
 	$(function() {
 		if ($.ui.dialog) 

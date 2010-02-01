@@ -306,6 +306,7 @@ class dmPageUnitTestHelper extends dmUnitTestHelper
             $error = sprintf('%s page has a no list page', $moduleKey, $model);
           }
         }
+        
         if ($error)
         {
           $t->diag($error); $errors[] = $error;

@@ -9,20 +9,20 @@ foreach(array('info', 'notice', 'alert', 'error') as $log_type)
     if (count($messages = (array) $sf_user->getFlash($prefix.$log_type)))
     {
       $class = $log_type === 'notice' ? 'info' : $log_type;
-      $html .= £o("ul.flashs.".$class.'s');
+      $html .= _open("ul.flashs.".$class.'s');
       foreach($messages as $message)
       {
-        $html .= £('li.flash.ui-corner-all.'.$class,
-          £('span.icon.fleft.mr5.s16block.s16_'.$class).
+        $html .= _tag('li.flash.ui-corner-all.'.$class,
+          _tag('span.icon.fleft.mr5.s16block.s16_'.$class).
           nl2br(__($message, array(), 'admin'))
         );
       }
-      $html .= £c("ul");
+      $html .= _close("ul");
     }
   }
 }
 
 if ($html)
 {
-  echo £('div#flash', array('title' => __('Close')), $html);
+  echo _tag('div#flash', array('title' => __('Close')), $html);
 }

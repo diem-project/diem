@@ -2,25 +2,25 @@
 // Dm test comment : List by post
 // Vars : $dmTestCommentPager
 
-echo £o('div.dm_test_comment.list_by_post');
+echo _open('div.dm_test_comment.list_by_post');
 
  echo $dmTestCommentPager->renderNavigationTop();
 
-  echo £o('ul.elements');
+  echo _open('ul.elements');
 
   foreach ($dmTestCommentPager as $dmTestComment)
   {
-    echo £o('li.element');
+    echo _open('li.element');
     
       echo
-      £('p.author', $dmTestComment->author).
-      £('p.body', $dmTestComment->body);
+      _tag('p.author', $dmTestComment->author).
+      _tag('p.body', $dmTestComment->body);
       
-    echo £c('li');
+    echo _close('li');
   }
 
-  echo £c('ul');
+  echo _close('ul');
 
  echo $dmTestCommentPager->renderNavigationBottom();
 
-echo £c('div');
+echo _close('div');

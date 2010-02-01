@@ -32,34 +32,34 @@ $hasRoute = $sf_context->getRouting()->hasRouteName($foreignModule->getUnderscor
  * End of the infamous controller
  */
 
-echo £o('div.dm_foreigns');
+echo _open('div.dm_foreigns');
 
   if ($nbforeignRecords)
   {
-    echo £o('ul.list');
+    echo _open('ul.list');
 
     foreach($foreignRecords as $foreignRecord)
     {
-      echo £('li',
+      echo _tag('li',
         $hasRoute
-        ? £link($foreignRecord)
+        ? _link($foreignRecord)
         ->text($foreignRecord->__toString())
         ->title(__('Open'))
         ->set('.associated_record.s16right.s16_arrow_up_right_medium')
-        : £('span.associated_record', $foreignRecord->__toString())
+        : _tag('span.associated_record', $foreignRecord->__toString())
       );
     }
 
-    echo £c('ul');
+    echo _close('ul');
   }
   
   if($hasRoute)
   {
-    echo £o('ul.actions');
+    echo _open('ul.actions');
     
     if($options['new'])
     {
-      $newLink = £link('@'.$foreignModule->getUnderscore().'?action=new')
+      $newLink = _link('@'.$foreignModule->getUnderscore().'?action=new')
       ->text(__('New'))
       ->set('.s16.s16_add_little');
       
@@ -68,22 +68,22 @@ echo £o('div.dm_foreigns');
         $newLink->param('defaults['.$relation->getForeign().']', $record->get('id'));
       }
       
-      echo £('li', $newLink);
+      echo _tag('li', $newLink);
     }
     
     if($options['sort'] && $foreignModule->getTable()->isSortable() && count($foreignRecords) > 1)
     {
-      $sortLink = £link(array(
+      $sortLink = _link(array(
         'sf_route'      => $module->getUnderscore(),
         'id'            => $record->get('id'),
         'action'        => 'sortReferers',
         'refererModule' => $foreignModule->getKey()
       ))->text(__('Sort'))->set('.s16.s16_right_little');
       
-      echo £('li', $sortLink);
+      echo _tag('li', $sortLink);
     }
     
-    echo £c('ul');
+    echo _close('ul');
   }
 
-echo £c('div');
+echo _close('div');

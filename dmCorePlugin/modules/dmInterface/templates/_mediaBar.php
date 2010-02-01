@@ -2,11 +2,11 @@
 
 $folderId = $sf_user->getAttribute('dm_media_browser_folder_id', 0);
 
-echo £o('div#dm_media_bar.dm');
+echo _open('div#dm_media_bar.dm');
 
-  echo £o('div#dm_media_bar_inner');
+  echo _open('div#dm_media_bar_inner');
 
-    echo £('p.title', __('Media library'));
+    echo _tag('p.title', __('Media library'));
 
     echo '<div id="dm_media_browser" class="{ folder_id: '.$folderId.' }">';
 
@@ -14,8 +14,8 @@ echo £o('div#dm_media_bar.dm');
 
     echo '</div>';
 
-  echo £c('div');
+  echo _close('div');
 
-echo £c('div');
+echo _close('div');
 
 echo '<div id="dm_media_bar_toggler" class="dm"></div>';

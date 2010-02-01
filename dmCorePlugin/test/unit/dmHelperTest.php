@@ -9,19 +9,19 @@ $t = new lime_test(35);
 dm::loadHelpers(array('Dm', 'I18N'));
 
 $openDiv = '<div>';
-$t->is(£o('div'), $openDiv, $openDiv);
+$t->is(_open('div'), $openDiv, $openDiv);
 
 $openDiv = '<div class="test_class">';
-$t->is(£o('div.test_class'), $openDiv, $openDiv);
+$t->is(_open('div.test_class'), $openDiv, $openDiv);
 
 $openDiv = '<div id="test_id" class="test_class other_class">';
-$t->is(£o('div#test_id.test_class.other_class'), $openDiv, $openDiv);
+$t->is(_open('div#test_id.test_class.other_class'), $openDiv, $openDiv);
 
 $openDiv = '<div class="test_class other_class" id="test_id">';
-$t->is(£o('div', array('id' => 'test_id', 'class' => 'test_class other_class')), $openDiv, $openDiv);
+$t->is(_open('div', array('id' => 'test_id', 'class' => 'test_class other_class')), $openDiv, $openDiv);
 
 $openDiv = '<div title="fancy title" class="first_class test_class other_class" id="test_id">';
-$t->is(£o('div.first_class title="fancy title"', array('id' => 'test_id', 'class' => 'test_class other_class')), $openDiv, $openDiv);
+$t->is(_open('div.first_class title="fancy title"', array('id' => 'test_id', 'class' => 'test_class other_class')), $openDiv, $openDiv);
 
 $t->is(£('div'), $expected = '<div></div>', $expected);
 
@@ -94,19 +94,19 @@ $t->comment('Test use_beaf');
 $helper->get('helper')->setOption('use_beaf', true);
 
 $expected = '<div class="beafh clearfix"><div class="beafore"></div><div class="beafin">test</div><div class="beafter"></div></div>';
-$t->is($helper->get('helper')->£('div.beafh', 'test'), $expected, $expected);
+$t->is($helper->get('helper')->tag('div.beafh', 'test'), $expected, $expected);
 
 $expected = '<div class="beafv clearfix"><div class="beafore"></div><div class="beafin">test</div><div class="beafter"></div></div>';
-$t->is($helper->get('helper')->£('div.beafv', 'test'), $expected, $expected);
+$t->is($helper->get('helper')->tag('div.beafv', 'test'), $expected, $expected);
 
 $expected = '<div class="beafh myclass clearfix"><div class="beafore"></div><div class="beafin">test</div><div class="beafter"></div></div>';
-$t->is($helper->get('helper')->£('div.beafh.myclass', 'test'), $expected, $expected);
+$t->is($helper->get('helper')->tag('div.beafh.myclass', 'test'), $expected, $expected);
 
 $expected = '<div class="beafv myclass clearfix"><div class="beafore"></div><div class="beafin">test</div><div class="beafter"></div></div>';
-$t->is($helper->get('helper')->£('div.beafv.myclass', 'test'), $expected, $expected);
+$t->is($helper->get('helper')->tag('div.beafv.myclass', 'test'), $expected, $expected);
 
 $expected = '<p class="beafh clearfix"><span class="beafore"></span><span class="beafin">test</span><span class="beafter"></span></p>';
-$t->is($helper->get('helper')->£('p.beafh', 'test'), $expected, $expected);
+$t->is($helper->get('helper')->tag('p.beafh', 'test'), $expected, $expected);
 
 $expected = '<p class="beafv clearfix"><span class="beafore"></span><span class="beafin">test</span><span class="beafter"></span></p>';
-$t->is($helper->get('helper')->£('p.beafv', 'test'), $expected, $expected);
+$t->is($helper->get('helper')->tag('p.beafv', 'test'), $expected, $expected);

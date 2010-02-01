@@ -8,25 +8,64 @@ function escape($text)
 /*
  * @return dmLinkTag a link to $source
  */
+function _link($source = null)
+{
+  return sfContext::getInstance()->getHelper()->link($source);
+}
 function £link($source = null)
 {
-  return sfContext::getInstance()->getHelper()->£link($source);
+  return _link($source);
 }
 
 /*
  * @return dmMediaTag
  */
+function _media($source)
+{
+  return sfContext::getInstance()->getHelper()->media($source);
+}
 function £media($source)
 {
-  return sfContext::getInstance()->getHelper()->£media($source);
+  return _media($source);
 }
 
 /*
  * @return dmTableTag
  */
+function _table()
+{
+  return sfContext::getInstance()->getHelper()->table();
+}
 function £table()
 {
-  return sfContext::getInstance()->getHelper()->£table();
+  return _table();
+}
+
+function _open($name, array $opt = array())
+{
+  return sfContext::getInstance()->getHelper()->open($name, $opt);
+}
+function £o($name, array $opt = array())
+{
+  return _open($name, $opt);
+}
+
+function _close($name)
+{
+  return sfContext::getInstance()->getHelper()->close($name);
+}
+function £c($name)
+{
+  return _close($name);
+}
+
+function _tag($name, $opt = array(), $content = false, $openAndClose = true)
+{
+  return sfContext::getInstance()->getHelper()->tag($name, $opt, $content, $openAndClose);
+}
+function £($name, $opt = array(), $content = false, $openAndClose = true)
+{
+  return _tag($name, $opt, $content, $openAndClose);
 }
 
 function dm_datetime($datetime)
@@ -36,7 +75,7 @@ function dm_datetime($datetime)
 
 function definition_list($array, $opt = array())
 {
-  $html = £o('dl', dmString::toArray($opt, true));
+  $html = _open('dl', dmString::toArray($opt, true));
 
   foreach($array as $key => $value)
   {
@@ -58,34 +97,12 @@ function plural($word, $nb, $showNb = true, $pluralSpec = false)
 
 function markdown($markdown, $opt = array())
 {
-  return £('div.markdown', dmString::toArray($opt), sfContext::getInstance()->get('markdown')->toHtml($markdown));
+  return _tag('div.markdown', dmString::toArray($opt), sfContext::getInstance()->get('markdown')->toHtml($markdown));
 }
 
 function unMarkdown($markdown)
 {
   return sfContext::getInstance()->get('markdown')->toText($markdown);
-}
-
-/*
- * a, class='tagada ergrg' id=zegf, contenu
- * a class=tagada id=truc, contenu
- * a, contenu
- * a, array(), contenu
- * a#truc.tagada, contenu
- */
-function £o($name, array $opt = array())
-{
-  return sfContext::getInstance()->getHelper()->£o($name, $opt);
-}
-
-function £c($name)
-{
-  return sfContext::getInstance()->getHelper()->£c($name);
-}
-
-function £($name, $opt = array(), $content = false, $openAndClose = true)
-{
-  return sfContext::getInstance()->getHelper()->£($name, $opt, $content, $openAndClose);
 }
 
 function toggle($text = 'odd')

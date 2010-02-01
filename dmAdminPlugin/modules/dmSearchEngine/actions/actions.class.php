@@ -35,7 +35,7 @@ class dmSearchEngineActions extends dmAdminBaseActions
     
     if (!$filesystem->sf('dm:search-update'))
     {
-      $this->getUser()->logError($this->context->getI18n()->__('Something went wrong when updating the search index'));
+      $this->getUser()->logError($this->getI18n()->__('Something went wrong when updating the search index'));
       
       if (sfConfig::get('sf_debug'))
       {
@@ -51,7 +51,7 @@ class dmSearchEngineActions extends dmAdminBaseActions
     }
     else
     {
-      $this->getUser()->logInfo($this->context->getI18n()->__('The search index has been updated'));
+      $this->getUser()->logInfo($this->getI18n()->__('The search index has been updated'));
     }
 
     return $this->redirect('dmSearchEngine/index');

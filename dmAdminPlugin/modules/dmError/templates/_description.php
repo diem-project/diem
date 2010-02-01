@@ -1,3 +1,3 @@
 <?php
 
-echo £('pre', $dmError->description);
+echo _tag('pre', $dmError->description);

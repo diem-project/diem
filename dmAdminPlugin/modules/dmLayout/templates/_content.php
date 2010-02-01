@@ -1,6 +1,6 @@
 <?php
 
-echo £o('ul');
+echo _open('ul');
 
 foreach($dm_layout->get('Areas') as $area)
 {
@@ -28,11 +28,11 @@ foreach($dm_layout->get('Areas') as $area)
 
   if(!empty($widgets))
   {
-    echo £('li.mb5',
-      £('strong', $area->type.': ').
+    echo _tag('li.mb5',
+      _tag('strong', $area->type.': ').
       implode(' | ', $widgets)
     );
   }
 }
 
-echo £c('li');
+echo _close('li');

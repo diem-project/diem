@@ -16,6 +16,8 @@ parameters:
 
   seo_synchronizer.class:     dmSeoSynchronizer     # Responsible for updating pages metas when the site content changes.
 
+  media_synchronizer.class:   dmMediaSynchronizer   # Responsible for updating media library when the filesystem changes
+
   cache_cleaner.class:        dmCacheCleaner        # Responsible for clearing the cache automatically when the site content changes.
   cache_cleaner.options:
     applications:             [ admin, front ]      # applications whose cache should be cleared
@@ -167,6 +169,9 @@ parameters:
     default_headers:          []
     adapter_class:
     adapter_options:          []
+
+  menu.class:                 dmMenu                # Build an render menus
+  menu.options:               []
 
 services:
 
@@ -408,3 +413,13 @@ services:
     class:                    %web_browser.class%
     shared:                   true
     arguments:                [ %web_browser.options% ]
+
+  menu:
+    class:                    %menu.class%
+    shared:                   false
+    arguments:                [ @service_container, %menu.options% ]
+
+  media_synchronizer:
+    class:                    %media_synchronizer.class%
+    shared:                   true
+    arguments:                [ @filesystem ]

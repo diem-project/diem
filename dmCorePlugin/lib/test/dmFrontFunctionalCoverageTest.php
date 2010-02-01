@@ -23,7 +23,7 @@ class dmFrontFunctionalCoverageTest extends dmCoreFunctionalCoverageTest
       {
         $expectedStatusCode = 404;
       }
-      elseif($page->isModuleAction('main', 'login'))
+      elseif($page->isModuleAction('main', 'login') || (!$page->get('is_active') && !$this->browser->getContext()->getUser()->isAuthenticated()))
       {
         $expectedStatusCode = 401;
       }

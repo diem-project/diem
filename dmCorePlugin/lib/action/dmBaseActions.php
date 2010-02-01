@@ -71,7 +71,7 @@ abstract class dmBaseActions extends sfActions
     {
       if ($encodeAssets)
       {
-        $parts['html'] .= $this->getHelper()->£('div.dm_encoded_assets.none', json_encode(array(
+        $parts['html'] .= $this->getHelper()->tag('div.dm_encoded_assets.none', json_encode(array(
           'css' => $parts['css'],
           'js'  => $parts['js']
         )));
@@ -121,6 +121,11 @@ abstract class dmBaseActions extends sfActions
   protected function getHelper()
   {
     return $this->context->getHelper();
+  }
+
+  protected function getI18n()
+  {
+    return $this->context->getI18n();
   }
   
   protected function getServiceContainer()

@@ -12,7 +12,6 @@ div.dm_widget_navigation_menu_form li.item_element {
   padding: 5px;
   border-bottom: 1px solid #D3D3D3;
   position: relative;
-  cursor: move;
 }
 
 div.dm_widget_navigation_menu_form li.item_element:hover {
@@ -22,6 +21,8 @@ div.dm_widget_navigation_menu_form li.item_element:hover {
 div.dm_widget_navigation_menu_form a.item_text {
   font-weight: bold;
   cursor: pointer;
+  display: block;
+  height: 16px;
 }
 
 div.dm_widget_navigation_menu_form ul.item_form {
@@ -38,13 +39,25 @@ div.dm_widget_navigation_menu_form ul.item_form li label {
   margin-top: 1px;
 }
 
-div.dm_widget_navigation_menu_form ul.item_form li input {
+div.dm_widget_navigation_menu_form ul.item_form li input,
+div.dm_widget_navigation_menu_form ul.item_form li select {
   border: 1px solid #FFF;
   background: none;
+}
+
+div.dm_widget_navigation_menu_form ul.item_form li input {
   width: 70%
 }
 
 div.dm_widget_navigation_menu_form ul.item_form li input:hover,
-div.dm_widget_navigation_menu_form ul.item_form li input:active {
+div.dm_widget_navigation_menu_form ul.item_form li input:active,
+div.dm_widget_navigation_menu_form ul.item_form li select:hover,
+div.dm_widget_navigation_menu_form ul.item_form li select:active {
   background: #FFF;
+}
+
+div.dm_widget_navigation_menu_form a.external_link {
+  color: #046BCA;
+  text-decoration: none;
+  cursor: pointer;
 }

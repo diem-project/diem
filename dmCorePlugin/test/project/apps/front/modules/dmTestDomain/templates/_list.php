@@ -2,23 +2,23 @@
 // Dm test domain : List
 // Vars : $dmTestDomainPager
 
-echo £o('div.dm_test_domain.list');
+echo _open('div.dm_test_domain.list');
 
  echo $dmTestDomainPager->renderNavigationTop();
 
-  echo £o('ul.elements');
+  echo _open('ul.elements');
 
   foreach ($dmTestDomainPager as $dmTestDomain)
   {
-    echo £o('li.element');
+    echo _open('li.element');
     
-      echo £link($dmTestDomain);
+      echo _link($dmTestDomain);
       
-    echo £c('li');
+    echo _close('li');
   }
 
-  echo £c('ul');
+  echo _close('ul');
 
  echo $dmTestDomainPager->renderNavigationBottom();
 
-echo £c('div');
+echo _close('div');

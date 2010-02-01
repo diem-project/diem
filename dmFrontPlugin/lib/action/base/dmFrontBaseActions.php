@@ -70,11 +70,11 @@ class dmFrontBaseActions extends dmBaseActions
     {
       if ($page = $this->getPage())
       {
-        $refererUrl = $this->getHelper()->£link($page)->getAbsoluteHref();
+        $refererUrl = $this->getHelper()->link($page)->getAbsoluteHref();
       }
       else
       {
-        $refererUrl = $this->getHelper()->£link()->getAbsoluteHref();
+        $refererUrl = $this->getHelper()->link()->getAbsoluteHref();
       }
     }
     

@@ -112,9 +112,10 @@ $.widget('ui.dmZone', {
       receive:                function(e, ui) { sortEvents.receive = $(this).parent(); },
       remove:                 function(e, ui) { sortEvents.remove = true; },
       update:                 function(e, ui) { sortEvents.update = true; },
-      start:                  function(e, ui) {
+      start:                  function(e, ui)
+      {
         ui.item.addClass('dm_dragging');
-				
+
         // adding a widget
         if (ui.placeholder.is('span')) 
         {
@@ -127,19 +128,23 @@ $.widget('ui.dmZone', {
         {
           ui.placeholder.addClass(ui.item.attr('class')).css('width', ui.item.css('width')).html(ui.item.html());
 				}
-          
+
         $('#dm_page div.dm_widgets').addClass('droppable-active');
-				
+
         sortEvents = [];
       },
-      stop:                   function(e, ui) {
-        if (sortEvents.update && sortEvents.receive && sortEvents.remove) {
+      stop:                   function(e, ui)
+      {
+        if (sortEvents.update && sortEvents.receive && sortEvents.remove)
+        {
           sortEvents.receive.dmZone('moveWidget', ui.item);
         }
-        else if (sortEvents.update && sortEvents.receive) {
-          $(this).parent().dmZone('addWidget', ui.item);
+        else if (sortEvents.update && sortEvents.receive)
+        {
+          $(this).parent().dmZone(ui.item.hasClass('widget_paste') ? 'pasteWidget' : 'addWidget', ui.item);
         }
-        else if (sortEvents.update) {
+        else if (sortEvents.update)
+        {
           $(this).parent().dmZone('sortWidgets');
         }
         setTimeout(function() { ui.item.removeClass('dm_dragging'); }, 200);
@@ -158,10 +163,11 @@ $.widget('ui.dmZone', {
       +"&"+$('div.dm_widgets', this.element).sortable('serialize')
     });
   },
-  
+
   addWidget: function($widget)
   {
     var zone = this, mod_act = $widget.attr('id').replace(/dmwa\_/, '').split(/-/);
+
     $.ajax({
       url:      $.dm.ctrl.getHref('+/dmWidget/add')+"?to_dm_zone="+zone.getId(),
       data: {
@@ -180,6 +186,32 @@ $.widget('ui.dmZone', {
         zone.initialize();
         zone.sortWidgets();
         $newWidget.dmWidget('openEditDialog');
+      }
+    });
+  },
+
+  pasteWidget: function($widget)
+  {
+    var zone = this, id = $widget.attr('id').replace(/dmwp\_/, '');
+
+    // if widget was cutted then pasted on the same page,
+    // remove the cutted widget
+    if($widget.hasClass('dm_cut') && ($cutted = $('#dm_widget_'+id)))
+    {
+      $cutted.remove();
+    }
+    
+    $.ajax({
+      url:      $.dm.ctrl.getHref('+/dmWidget/paste')+"?to_dm_zone="+zone.getId(),
+      data: {
+        id:     id
+			},
+      success:  function(widgetHtml)
+      {
+        $('div.dm_widgets', zone.element).find('span.widget_paste').replaceWith(widgetHtml);
+        zone.initialize();
+        zone.sortWidgets();
+        $('#dm_tool_bar').dmFrontToolBar('reloadAddMenu');
       }
     });
   },
@@ -216,7 +248,5 @@ $.widget('ui.dmZone', {
   }
 
 });
-
-$.ui.dmZone.getter = "getWidgets getId";
 
 })(jQuery);

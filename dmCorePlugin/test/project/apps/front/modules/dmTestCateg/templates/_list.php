@@ -2,23 +2,23 @@
 // Dm test categ : List
 // Vars : $dmTestCategPager
 
-echo £o('div.dm_test_categ.list');
+echo _open('div.dm_test_categ.list');
 
  echo $dmTestCategPager->renderNavigationTop();
 
-  echo £o('ul.elements');
+  echo _open('ul.elements');
 
   foreach ($dmTestCategPager as $dmTestCateg)
   {
-    echo £o('li.element');
+    echo _open('li.element');
     
-      echo £link($dmTestCateg);
+      echo _link($dmTestCateg);
       
-    echo £c('li');
+    echo _close('li');
   }
 
-  echo £c('ul');
+  echo _close('ul');
 
  echo $dmTestCategPager->renderNavigationBottom();
 
-echo £c('div');
+echo _close('div');

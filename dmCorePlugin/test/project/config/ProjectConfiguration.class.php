@@ -28,7 +28,6 @@ class ProjectConfiguration extends dmProjectConfiguration
   public function setupPlugins()
   {
     $this->pluginConfigurations['dmCorePlugin']->connectTests();
-    $this->pluginConfigurations['dmMenuPlugin']->connectTests();
     $this->pluginConfigurations['dmAlternativeHelperPlugin']->connectTests();
     $this->pluginConfigurations['dmFlowPlayerPlugin']->connectTests();
     $this->pluginConfigurations['dmContactPlugin']->connectTests();

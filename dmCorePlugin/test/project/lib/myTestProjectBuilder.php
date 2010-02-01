@@ -104,12 +104,12 @@ class myTestProjectBuilder
       'slug'   => 'page21'
     ));
 
-    $page1->Node->insertAsFirstChildOf($table->getTree()->fetchRoot());
-    $page11->Node->insertAsFirstChildOf($page1);
-    $page111->Node->insertAsFirstChildOf($page11);
-    $page12->Node->insertAsFirstChildOf($page1);
-    $page2->Node->insertAsFirstChildOf($table->getTree()->fetchRoot());
-    $page21->Node->insertAsFirstChildOf($page2);
+    assert($page1->Node->insertAsFirstChildOf($table->getTree()->fetchRoot()));
+    assert($page12->Node->insertAsFirstChildOf($page1));
+    assert($page11->Node->insertAsFirstChildOf($page1));
+    assert($page111->Node->insertAsFirstChildOf($page11));
+    assert($page2->Node->insertAsFirstChildOf($table->getTree()->fetchRoot()));
+    assert($page21->Node->insertAsFirstChildOf($page2));
   }
 
   protected function addRecords()

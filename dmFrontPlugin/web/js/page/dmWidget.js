@@ -54,12 +54,19 @@ $.widget('ui.dmWidget', {
       if ($cutCopy = $form.find('div.dm_cut_copy_actions').orNot())
       {
         $dialog.parent().find('div.ui-dialog-titlebar').append($cutCopy);
-        $cutCopy.find('a').click(function() {
+        $cutCopy.show().find('a').click(function()
+        {
+          var $a = $(this), text = $(this).text();
+          $a.text('...');
+          
           $.ajax({
             url:      $(this).attr('href'),
             success:  function()
             {
-              $('#dm_tool_bar').dmFrontToolBar('reloadAddMenu');
+              $('#dm_tool_bar').dmFrontToolBar('reloadAddMenu', function()
+              {
+                $a.text(text);
+              });
             }
           });
 
@@ -205,7 +212,5 @@ $.widget('ui.dmWidget', {
   }
 
 });
-
-$.ui.dmWidget.getter = "getId openEditDialog";
 
 })(jQuery);

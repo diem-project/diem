@@ -121,10 +121,10 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
             throw $e;
           }
           
-          $this->getUser()->logError($this->context->getI18n()->__('A problem occured when sorting the items'), true);
+          $this->getUser()->logError($this->getI18n()->__('A problem occured when sorting the items'), true);
         }
 
-        $this->getUser()->logInfo($this->context->getI18n()->__('The items have been sorted successfully'), true);
+        $this->getUser()->logInfo($this->getI18n()->__('The items have been sorted successfully'), true);
         
         return $this->redirect($this->getRequest()->getUri());
       }
@@ -311,7 +311,7 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
   
   public function historyListenToBreadCrumbFilterLinksEvent(sfEvent $event, array $links)
   {
-    $links[] = $this->context->getHelper()->£('h1', $this->context->getI18n()->__('Revision history'));
+    $links[] = $this->context->getHelper()->tag('h1', $this->getI18n()->__('Revision history'));
 
     return $links;
   }

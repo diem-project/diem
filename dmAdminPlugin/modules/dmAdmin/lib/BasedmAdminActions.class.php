@@ -62,14 +62,14 @@ class BasedmAdminActions extends dmAdminBaseActions
   {
     if (isset($this->space))
     {
-      $links[] = $this->context->getHelper()->£link($this->context->getRouting()->getModuleTypeUrl($this->type))
-      ->text($this->context->getI18n()->__($this->type->getPublicName()));
+      $links[] = $this->context->getHelper()->link($this->context->getRouting()->getModuleTypeUrl($this->type))
+      ->text($this->getI18n()->__($this->type->getPublicName()));
       
-      $links[] = $this->context->getHelper()->£('h1', $this->context->getI18n()->__($this->space->getPublicName()));
+      $links[] = $this->context->getHelper()->tag('h1', $this->getI18n()->__($this->space->getPublicName()));
     }
     else
     {
-      $links[] = $this->context->getHelper()->£('h1', $this->context->getI18n()->__($this->getModuleTypeBySlug($this->context->getRequest()->getParameter('moduleTypeName'))->getPublicName()));
+      $links[] = $this->context->getHelper()->tag('h1', $this->getI18n()->__($this->getModuleTypeBySlug($this->context->getRequest()->getParameter('moduleTypeName'))->getPublicName()));
     }
     
     return $links;

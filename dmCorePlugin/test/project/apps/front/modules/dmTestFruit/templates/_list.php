@@ -2,23 +2,23 @@
 // Dm test fruit : List
 // Vars : $dmTestFruitPager
 
-echo £o('div.dm_test_fruit.list');
+echo _open('div.dm_test_fruit.list');
 
  echo $dmTestFruitPager->renderNavigationTop();
 
-  echo £o('ul.elements');
+  echo _open('ul.elements');
 
   foreach ($dmTestFruitPager as $dmTestFruit)
   {
-    echo £o('li.element');
+    echo _open('li.element');
     
       echo $dmTestFruit;
       
-    echo £c('li');
+    echo _close('li');
   }
 
-  echo £c('ul');
+  echo _close('ul');
 
  echo $dmTestFruitPager->renderNavigationBottom();
 
-echo £c('div');
+echo _close('div');

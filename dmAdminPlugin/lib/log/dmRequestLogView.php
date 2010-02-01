@@ -67,7 +67,7 @@ class dmRequestLogView extends dmLogView
     $uri = ltrim($entry->get('uri'), '/');
     $text = $uri ? $uri : $entry->get('app').' home';
     
-    return $this->helper->£link('app:'.$entry->get('app').'/'.$uri)->text($text);
+    return $this->helper->link('app:'.$entry->get('app').'/'.$uri)->text($text);
   }
   
   protected function renderTime(dmRequestLogEntry $entry)

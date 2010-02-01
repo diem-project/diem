@@ -1,16 +1,16 @@
 <?php
 
-echo £o('div.dm.dm_auth');
+echo _open('div.dm.dm_auth');
 
-echo £('h1.site_name', dmConfig::get('site_name'));
+echo _tag('h1.site_name', dmConfig::get('site_name'));
 
-echo £('div.message',
+echo _tag('div.message',
   $form->open('.dm_form.list.little.clearfix action=+/dmAuth/signin').
-    £('ul',
-      £('li.dm_form_element.clearfix',
+    _tag('ul',
+      _tag('li.dm_form_element.clearfix',
         $form['username']->error()->label(__('Username'))->field()
       ).
-      £('li.dm_form_element.clearfix',
+      _tag('li.dm_form_element.clearfix',
         $form['password']->error()->label(__('Password'))->field()
       )
     ).
@@ -18,9 +18,9 @@ echo £('div.message',
   '</form>'
 );
 
-echo £c('div');
+echo _close('div');
 
-echo £link('http://diem-project.org/')->text('Diem CMF CMS for symfony')->set('.generator_link');
+echo _link('http://diem-project.org/')->text('Diem CMF CMS for symfony')->set('.generator_link');
 
 ?>
 <script type="text/javascript">document.getElementById('signin_username').focus();</script>

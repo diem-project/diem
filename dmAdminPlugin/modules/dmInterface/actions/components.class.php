@@ -9,11 +9,11 @@ class dmInterfaceComponents extends BasedmInterfaceComponents
   {
     $this->menu = $this->context->get('admin_menu')->build();
 
-    if ($this->context->getI18n()->hasManyCultures())
+    if ($this->getI18n()->hasManyCultures())
     {
       $cultures = array();
 
-      foreach($this->context->getI18n()->getCultures() as $key)
+      foreach($this->getI18n()->getCultures() as $key)
       {
         $cultures[$key] = sfCultureInfo::getInstance($key)->getLanguage($key);
       }

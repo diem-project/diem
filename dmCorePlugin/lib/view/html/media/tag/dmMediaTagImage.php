@@ -278,7 +278,7 @@ class dmMediaTagImage extends dmMediaTag
     {
       $thumbDir = dmOs::join($media->get('Folder')->getFullPath(), '.thumbs');
       
-      if(!$this->context->getFilesystem()->mkdir($thumbDir))
+      if(!@$this->context->getFilesystem()->mkdir($thumbDir))
       {
         throw new dmException('Thumbnails can not be created in '.$media->get('Folder')->getFullPath());
       }

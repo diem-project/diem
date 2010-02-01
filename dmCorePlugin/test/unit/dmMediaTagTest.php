@@ -131,12 +131,12 @@ $rur = $helper->get('request')->getRelativeUrlRoot().'/';
 $expected = sprintf('<img height="%d" src="%s" width="%d" />', $media->height, $rur.$media->webPath, $media->width);
 $t->is(£media($media)->render(), $expected, $expected);
 $t->is(£media('media:'.$media->id)->render(), $expected, $expected);
-$t->is($helper->get('helper')->£media('media:'.$media->id)->render(), $expected, $expected);
+$t->is($helper->get('helper')->media('media:'.$media->id)->render(), $expected, $expected);
 
 $expected = sprintf('#<img height="%d" src="[^"]+" width="%d" />#', 200, 300);
 $t->like(£media($media)->size(300, 200)->render(), $expected, $expected);
 $t->like(£media('media:'.$media->id)->size(300, 200)->render(), $expected, $expected);
-$t->like($helper->get('helper')->£media('media:'.$media->id)->size(300, 200)->render(), $expected, $expected);
+$t->like($helper->get('helper')->media('media:'.$media->id)->size(300, 200)->render(), $expected, $expected);
 
 $t->comment('With default alt');
 $media->legend = 'The default alt';

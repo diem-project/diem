@@ -15,6 +15,7 @@
  * @property timestamp $last_login
  * @property Doctrine_Collection $Groups
  * @property Doctrine_Collection $Permissions
+ * @property Doctrine_Collection $DmLock
  * @property Doctrine_Collection $DmUserPermission
  * @property Doctrine_Collection $DmUserGroup
  * @property DmRememberKey $RememberKeys
@@ -31,6 +32,7 @@
  * @method timestamp           getLastLogin()        Returns the current record's "last_login" value
  * @method Doctrine_Collection getGroups()           Returns the current record's "Groups" collection
  * @method Doctrine_Collection getPermissions()      Returns the current record's "Permissions" collection
+ * @method Doctrine_Collection getDmLock()           Returns the current record's "DmLock" collection
  * @method Doctrine_Collection getDmUserPermission() Returns the current record's "DmUserPermission" collection
  * @method Doctrine_Collection getDmUserGroup()      Returns the current record's "DmUserGroup" collection
  * @method DmRememberKey       getRememberKeys()     Returns the current record's "RememberKeys" value
@@ -46,6 +48,7 @@
  * @method DmUser              setLastLogin()        Sets the current record's "last_login" value
  * @method DmUser              setGroups()           Sets the current record's "Groups" collection
  * @method DmUser              setPermissions()      Sets the current record's "Permissions" collection
+ * @method DmUser              setDmLock()           Sets the current record's "DmLock" collection
  * @method DmUser              setDmUserPermission() Sets the current record's "DmUserPermission" collection
  * @method DmUser              setDmUserGroup()      Sets the current record's "DmUserGroup" collection
  * @method DmUser              setRememberKeys()     Sets the current record's "RememberKeys" value
@@ -121,6 +124,10 @@ abstract class BaseDmUser extends myDoctrineRecord
              'refClass' => 'DmUserPermission',
              'local' => 'dm_user_id',
              'foreign' => 'dm_permission_id'));
+
+        $this->hasMany('DmLock', array(
+             'local' => 'id',
+             'foreign' => 'user_id'));
 
         $this->hasMany('DmUserPermission', array(
              'local' => 'id',

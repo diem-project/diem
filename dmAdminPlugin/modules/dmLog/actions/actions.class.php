@@ -51,7 +51,7 @@ class dmLogActions extends dmAdminBaseActions
     );
     
     $this->log->clear();
-    $this->getUser()->logInfo($this->context->getI18n()->__('Log cleared'));
+    $this->getUser()->logInfo($this->getI18n()->__('Log cleared'));
     
     return $this->redirect('dmLog/index');
   }

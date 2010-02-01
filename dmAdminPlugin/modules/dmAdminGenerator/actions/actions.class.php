@@ -14,7 +14,7 @@ class dmAdminGeneratorActions extends dmAdminBaseActions
     $record->revert($version);
     $record->save();
     
-    $this->getUser()->logInfo($this->context->getI18n()->__('%1% has been reverted to version %2%', array(
+    $this->getUser()->logInfo($this->getI18n()->__('%1% has been reverted to version %2%', array(
       '%1%' => $record->__toString(),
       '%2%' => $version
     )));
@@ -48,10 +48,10 @@ class dmAdminGeneratorActions extends dmAdminBaseActions
       {
         throw $e;
       }
-      $this->getUser()->logError($this->context->getI18n()->__('A problem occured when sorting the items'), true);
+      $this->getUser()->logError($this->getI18n()->__('A problem occured when sorting the items'), true);
     }
 
-    $this->getUser()->logInfo($this->context->getI18n()->__('The items have been sorted successfully'), true);
+    $this->getUser()->logInfo($this->getI18n()->__('The items have been sorted successfully'), true);
 
     return $this->redirectBack();
   }

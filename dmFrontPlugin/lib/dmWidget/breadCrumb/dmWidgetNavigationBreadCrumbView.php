@@ -29,7 +29,7 @@ class dmWidgetNavigationBreadCrumbView extends dmWidgetPluginView
     
     foreach($pages as $key => $page)
     {
-      $links[$key] = $helper->£link($page);
+      $links[$key] = $helper->link($page);
     }
 
     /*
@@ -94,11 +94,11 @@ class dmWidgetNavigationBreadCrumbView extends dmWidgetPluginView
     $it = 0;
     foreach($vars['links'] as $link)
     {
-      $html .= $helper->£('li', $link);
+      $html .= $helper->tag('li', $link);
     
       if ($vars['separator'] && (++$it < $vars['nbLinks']))
       {
-        $html .= $helper->£('li.bread_crumb_separator', $vars['separator']);
+        $html .= $helper->tag('li.bread_crumb_separator', $vars['separator']);
       }
     }
     

@@ -80,41 +80,41 @@ class dmAdminBreadCrumb
   
   public function renderHomeLink(array $options = array())
   {
-    return $this->helper->£link()
-    ->text(£('span.s16block.s16_home_gray', '&nbsp;'))
+    return $this->helper->link()
+    ->text(_tag('span.s16block.s16_home_gray', '&nbsp;'))
     ->title($this->i18n->__('Home'))->set('.home');
   }
   
   public function renderModuleTypeLink(array $options = array())
   {
-    return $this->helper->£link($this->context->getRouting()->getModuleTypeUrl($options['type']))
+    return $this->helper->link($this->context->getRouting()->getModuleTypeUrl($options['type']))
     ->text($this->i18n->__($options['type']->getPublicName()));
   }
   
   public function renderModuleSpaceLink(array $options = array())
   {
-    return $this->helper->£link($this->context->getRouting()->getModuleSpaceUrl($options['space']))
+    return $this->helper->link($this->context->getRouting()->getModuleSpaceUrl($options['space']))
     ->text($this->i18n->__($options['space']->getPublicName()));
   }
   
   public function renderModuleLink(array $options = array())
   {
     return dmArray::get($options, 'last')
-    ? $this->helper->£('h1', $this->i18n->__($options['module']->getPlural()))
-    : $this->helper->£link('@'.$options['module']->getUnderscore())
+    ? $this->helper->tag('h1', $this->i18n->__($options['module']->getPlural()))
+    : $this->helper->link('@'.$options['module']->getUnderscore())
     ->text($this->i18n->__($options['module']->getPlural()));
   }
   
   public function renderActionLink(array $options = array())
   {
-    return $this->helper->£('h1', __($options['action']));
+    return $this->helper->tag('h1', __($options['action']));
   }
   
   public function renderObjectLink(array $options = array())
   {
     return dmArray::get($options, 'last')
-    ? $this->helper->£('h1', $options['object']->__toString())
-    : $this->helper->£link($options['object']);
+    ? $this->helper->tag('h1', $options['object']->__toString())
+    : $this->helper->link($options['object']);
   }
   
   public function renderRawLink($html)
@@ -164,15 +164,15 @@ class dmAdminBreadCrumb
     else
     {
       $html =
-      $this->helper->£o('div#breadCrumb.mt10.clearfix').
-      $this->helper->£('ol', '<li>'.implode('</li><li class="sep">&gt;</li><li>', $links).'</li>');
+      $this->helper->open('div#breadCrumb.mt10.clearfix').
+      $this->helper->tag('ol', '<li>'.implode('</li><li class="sep">&gt;</li><li>', $links).'</li>');
       
       if ($miniSearchForm = dmArray::get($this->context->getResponse()->getSlots(), 'dm.mini_search_form'))
       {
-        $html .= $this->helper->£('div.dm_mini_search_form', $miniSearchForm);
+        $html .= $this->helper->tag('div.dm_mini_search_form', $miniSearchForm);
       }
       
-      $html .= $this->helper->£c('div');
+      $html .= $this->helper->close('div');
     }
     
     $t && $t->addTime();

@@ -2,8 +2,8 @@
 // Dm test domain : Show
 // Vars : $dmTestDomain
 
-echo £o('div.dm_test_domain.show');
+echo _open('div.dm_test_domain.show');
 
-  echo £('h1', $dmTestDomain);
+  echo _tag('h1', $dmTestDomain);
   
-echo £c('div');
+echo _close('div');

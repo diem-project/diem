@@ -163,11 +163,11 @@ class dmForm extends sfFormSymfony
 
     if ($action = dmArray::get($opt, 'action'))
     {
-      $action = self::$serviceContainer->getService('helper')->£link($action)->getHref();
+      $action = $this->getHelper()->link($action)->getHref();
     }
     else
     {
-      $action = self::$serviceContainer->getService('request')->getUri();
+      $action = $this->getService('request')->getUri();
     }
 
     if (array_key_exists('anchor', $opt))

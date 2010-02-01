@@ -3,13 +3,13 @@
 
 echo $form->open();
 
-echo £('ul',
+echo _tag('ul',
 
-  £('li', $form['username']->label()->field()->error()).
+  _tag('li', $form['username']->label()->field()->error()).
 
-  £('li', $form['password']->label()->field()->error()).
+  _tag('li', $form['password']->label()->field()->error()).
 
-  £('li', $form['remember']->label()->field()->error())
+  _tag('li', $form['remember']->label()->field()->error())
 
 );
 

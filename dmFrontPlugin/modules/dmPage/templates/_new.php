@@ -1,12 +1,12 @@
 <?php
 
-echo £o('div.dm.dm_page_add');
+echo _open('div.dm.dm_page_add');
 
-echo £('div.form',
+echo _tag('div.form',
 
   $form->open('.dm_form.list.little').
 
-  £('ul.dm_form_elements',
+  _tag('ul.dm_form_elements',
     $form['parent_id']->renderRow().
     $form['name']->renderRow().
     $form['slug']->renderRow().
@@ -26,6 +26,6 @@ echo £('div.form',
   $form->close()
 );
 
-echo £('div.parent_slugs.none', $parentSlugsJson);
+echo _tag('div.parent_slugs.none', $parentSlugsJson);
 
-echo £c('div');
+echo _close('div');

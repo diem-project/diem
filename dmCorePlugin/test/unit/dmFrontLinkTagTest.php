@@ -58,7 +58,7 @@ $rootLink = sprintf('<a class="%s" href="%s">%s</a>', 'link dm_current', $script
 $t->is((string)£link(), $rootLink, 'root link is '.$rootLink);
 
 $rootLink = sprintf('<a class="%s" href="%s">%s</a>', 'link dm_current', $scriptName, $home->name);
-$t->is((string)$helper->get('helper')->£link(), $rootLink, 'use the helper service : root link is '.$rootLink);
+$t->is((string)$helper->get('helper')->link(), $rootLink, 'use the helper service : root link is '.$rootLink);
 
 $hrefWithParam = $scriptName.'?var=val&other=value';
 $t->is((string)£link()->param('var', 'val')->param('other', 'value')->getHref(), $hrefWithParam, $hrefWithParam);
@@ -80,7 +80,7 @@ $testPageLink = sprintf('<a class="%s" href="%s">%s</a>', 'link', $scriptName.'/
 $t->is((string)£link($testPage), $testPageLink, 'page link is '.$testPageLink);
 
 $testPageLink = sprintf('<a class="%s" href="%s">%s</a>', 'link', $scriptName.'/'.$testPage->slug, $testPage->name);
-$t->is((string)$helper->get('helper')->£link($testPage), $testPageLink, 'with helper service, page link is '.$testPageLink);
+$t->is((string)$helper->get('helper')->link($testPage), $testPageLink, 'with helper service, page link is '.$testPageLink);
 
 $helper->get('context')->setPage($testPage);
 

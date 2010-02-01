@@ -24,10 +24,11 @@ class dmWidgetNavigationMenuView extends dmWidgetPluginView
       $vars['menu']
       ->addChild($index.'-'.dmString::slugify($item['text']), $item['link'])
       ->label($item['text'])
-      ->liClass($vars['liClass']);
+      ->liClass($vars['liClass'])
+      ->addRecursiveChildren(dmArray::get($item, 'depth', 0));
     }
 
-    unset($vars['items'], $vars['liClass']);
+    unset($vars['items'], $vars['ulClass'], $vars['liClass']);
 
     return $vars;
   }

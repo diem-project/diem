@@ -1,22 +1,22 @@
 <?php
 
-echo £o('div.dm_box.little.mt20');
+echo _open('div.dm_box.little.mt20');
 
-  echo £('h1.title', 'Launch services');
+  echo _tag('h1.title', 'Launch services');
 
-  echo £o('div.dm_box_inner');
+  echo _open('div.dm_box_inner');
 
-  echo £o('ul.services');
+  echo _open('ul.services');
 
   foreach($services as $service)
   {
-    echo £('li',
-      £link('dmService/launch?name='.$service)->text($service)->set('.service')->param('redirect', 0)
+    echo _tag('li',
+      _link('dmService/launch?name='.$service)->text($service)->set('.service')->param('redirect', 0)
     );
   }
 
-  echo £c('ul');
+  echo _close('ul');
 
-  echo £c('div');
+  echo _close('div');
 
-echo £c('div');
+echo _close('div');

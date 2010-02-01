@@ -43,7 +43,7 @@ class dmFrontPagerView extends dmConfigurable implements Iterator, Countable
   protected function initBaseHref()
   {
     $this->setBaseHref(($page = $this->context->getPage())
-    ? $this->helper->£link($page)->getAbsoluteHref()
+    ? $this->helper->link($page)->getAbsoluteHref()
     : preg_replace('|/page/([0-9]+)|', '?page=$1', $this->context->getRequest()->getUri())
     );
   }
@@ -124,12 +124,12 @@ class dmFrontPagerView extends dmConfigurable implements Iterator, Countable
   protected function openPager()
   {
     return
-    $this->helper->£o('div', array('class' => dmArray::toHtmlCssClasses(array(
+    $this->helper->open('div', array('class' => dmArray::toHtmlCssClasses(array(
       'pager',
       $this->getOption('class'),
       $this->getOption('ajax') ? 'dm_pager_ajax_links' : null
     )))).
-    $this->helper->£o('ul.clearfix');
+    $this->helper->open('ul.clearfix');
   }
 
   protected function renderFirstAndPreviousLinks()
@@ -140,12 +140,12 @@ class dmFrontPagerView extends dmConfigurable implements Iterator, Countable
     {
       if($first = $this->getOption('first'))
       {
-        $html .= $this->helper->£('li.page.first', $this->renderLink($this->getFirstPage(), $first));
+        $html .= $this->helper->tag('li.page.first', $this->renderLink($this->getFirstPage(), $first));
       }
 
       if($prev = $this->getOption('prev'))
       {
-        $html .= $this->helper->£('li.page.prev', $this->renderLink($this->getPreviousPage(), $prev));
+        $html .= $this->helper->tag('li.page.prev', $this->renderLink($this->getPreviousPage(), $prev));
       }
     }
 
@@ -161,15 +161,15 @@ class dmFrontPagerView extends dmConfigurable implements Iterator, Countable
       // current page
       if($page === $this->pager->getPage())
       {
-        $links[] = $this->helper->£('li.page.'.$this->getOption('current_class'), $this->helper->£('span.link', $page));
+        $links[] = $this->helper->tag('li.page.'.$this->getOption('current_class'), $this->helper->tag('span.link', $page));
       }
       else
       {
-        $links[] = $this->helper->£('li.page', $this->renderLink($page, $page));
+        $links[] = $this->helper->tag('li.page', $this->renderLink($page, $page));
       }
     }
 
-    return join($this->getOption('separator') ? $this->helper->£('li.separator', $this->getOption('separator')) : '', $links);
+    return join($this->getOption('separator') ? $this->helper->tag('li.separator', $this->getOption('separator')) : '', $links);
   }
 
   protected function renderNextAndLastLinks()
@@ -180,11 +180,11 @@ class dmFrontPagerView extends dmConfigurable implements Iterator, Countable
     {
       if($next = $this->getOption('next'))
       {
-        $html .= $this->helper->£('li.page.next', $this->renderLink($this->getNextPage(), $next));
+        $html .= $this->helper->tag('li.page.next', $this->renderLink($this->getNextPage(), $next));
       }
       if($last = $this->getOption('last'))
       {
-        $html .= $this->helper->£('li.page.last', $this->renderLink($this->getLastPage(), $last));
+        $html .= $this->helper->tag('li.page.last', $this->renderLink($this->getLastPage(), $last));
       }
     }
 
@@ -198,11 +198,11 @@ class dmFrontPagerView extends dmConfigurable implements Iterator, Countable
 
   protected function renderLink($page, $text)
   {
-    $link = $this->helper->£link($this->getBaseHref())->param('page', $page)->text($text);
+    $link = $this->helper->link($this->getBaseHref())->param('page', $page)->text($text);
 
     if($this->getOption('ajax'))
     {
-      $link->json(array('href' => $this->helper->£link('+/dmWidget/render')
+      $link->json(array('href' => $this->helper->link('+/dmWidget/render')
       ->param('page', $page)
       ->param('widget_id', $this->getOption('widget_id'))
       ->param('page_id', ($page = $this->context->getPage()) ? $page->id : null)

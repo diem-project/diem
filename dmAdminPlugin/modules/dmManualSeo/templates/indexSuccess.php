@@ -1,4 +1,4 @@
 <?php
 
-$table = £table();
+$table = _table();
 

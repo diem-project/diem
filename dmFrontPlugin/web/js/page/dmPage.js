@@ -34,6 +34,4 @@ $.widget('ui.dmPage', {
 
 });
 
-$.ui.dmPage.getter = "getAreas getWidgetByPos";
-
 })(jQuery);

@@ -29,7 +29,7 @@ class BasedmCoreActions extends dmBaseActions
       {
         foreach($locks as $index => $lock)
         {
-          $locks[$index] = $this->getService('i18n')->__('%user% is browsing this page, you should not modify it now.', array(
+          $locks[$index] = $this->getI18n()->__('%user% is browsing this page, you should not modify it now.', array(
             '%user%' => '<strong>'.$lock.'</strong>'
             ));
         }
@@ -48,7 +48,7 @@ class BasedmCoreActions extends dmBaseActions
   
   public function executeThumbnail(dmWebRequest $request)
   {
-    $tag = $this->getHelper()->£media($request->getParameter('source'));
+    $tag = $this->getHelper()->media($request->getParameter('source'));
   
     foreach(array('width', 'height', 'method', 'quality') as $key)
     {
@@ -69,7 +69,7 @@ class BasedmCoreActions extends dmBaseActions
     );
 
     $this->forward404Unless(
-      $this->getService('i18n')->cultureExists($culture),
+      $this->getI18n()->cultureExists($culture),
       sprintf('The %s culture does not exist', $culture)
     );
 
@@ -82,8 +82,8 @@ class BasedmCoreActions extends dmBaseActions
   {
     $this->next = array(
       'type' => 'ajax',
-      'url'  => $this->getHelper()->£link('+/dmCore/refreshStep?step=1')->getHref(),
-      'msg'  => $this->getService('i18n')->__('Code generation')
+      'url'  => $this->getHelper()->link('+/dmCore/refreshStep?step=1')->getHref(),
+      'msg'  => $this->getI18n()->__('Code generation')
     );
 
     $this->setLayout(false);
@@ -117,9 +117,9 @@ class BasedmCoreActions extends dmBaseActions
           }
           
           $data = array(
-            'msg'  => $this->getService('i18n')->__('Page synchronization'),
+            'msg'  => $this->getI18n()->__('Page synchronization'),
             'type' => 'ajax',
-            'url'  => $this->getHelper()->£link('+/dmCore/refreshStep')->param('step', 2)->getHref()
+            'url'  => $this->getHelper()->link('+/dmCore/refreshStep')->param('step', 2)->getHref()
           );
           break;
           
@@ -127,22 +127,22 @@ class BasedmCoreActions extends dmBaseActions
           $this->getService('page_tree_watcher')->synchronizePages();
           
           $data = array(
-            'msg'  => $this->getService('i18n')->__('SEO synchronization'),
+            'msg'  => $this->getI18n()->__('SEO synchronization'),
             'type' => 'ajax',
-            'url'  => $this->getHelper()->£link('+/dmCore/refreshStep')->param('step', 3)->getHref()
+            'url'  => $this->getHelper()->link('+/dmCore/refreshStep')->param('step', 3)->getHref()
           );
           break;
           
         case 3:
           $this->getService('page_tree_watcher')->synchronizeSeo();
           
-          if (count($this->getService('i18n')->getCultures()) > 1)
+          if (count($this->getI18n()->getCultures()) > 1)
           {
             $this->getService('page_i18n_builder')->createAllPagesTranslations();
           }
           
           $data = array(
-            'msg'  => $this->getService('i18n')->__('Interface regeneration'),
+            'msg'  => $this->getI18n()->__('Interface regeneration'),
             'type' => 'redirect',
             'url'  => $this->getUser()->getAttribute('dm_refresh_back_url')
           );
@@ -155,10 +155,10 @@ class BasedmCoreActions extends dmBaseActions
     }
     catch(Exception $e)
     {
-      $this->getUser()->logError($this->getService('i18n')->__('Something went wrong when updating project'));
+      $this->getUser()->logError($this->getI18n()->__('Something went wrong when updating project'));
       
       $data = array(
-        'msg'  => $this->getService('i18n')->__('Something went wrong when updating project'),
+        'msg'  => $this->getI18n()->__('Something went wrong when updating project'),
         'type' => 'redirect',
         'url'  => $this->getUser()->getAttribute('dm_refresh_back_url')
       );

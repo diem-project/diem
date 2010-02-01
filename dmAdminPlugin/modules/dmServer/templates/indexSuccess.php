@@ -6,6 +6,6 @@
 </style>
 <?php
 
-echo £('iframe.mt10 src='.$sf_request->getAbsoluteUrlRoot().'/dm_check.php');
+echo _tag('iframe.mt10 src='.$sf_request->getAbsoluteUrlRoot().'/dm_check.php');
 
-echo £('iframe.mt20 src='.£link('dmServer/phpinfo')->getHref());
+echo _tag('iframe.mt20 src='._link('dmServer/phpinfo')->getHref());

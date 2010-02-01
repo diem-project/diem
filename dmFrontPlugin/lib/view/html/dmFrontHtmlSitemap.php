@@ -23,7 +23,7 @@ class dmFrontHtmlSitemap
 
   protected function renderPage(DmPage $page)
   {
-    $html = $this->helper->£link($page);
+    $html = $this->helper->link($page);
     
     if (count($children = $page->get('__children')))
     {
@@ -63,7 +63,7 @@ class dmFrontHtmlSitemap
     }
     catch(Exception $e)
     {
-      return $this->helper->£link($e);
+      return $this->helper->link($e);
     }
   }
 }

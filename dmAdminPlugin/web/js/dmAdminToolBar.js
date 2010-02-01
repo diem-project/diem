@@ -6,7 +6,9 @@ $.widget('ui.dmAdminToolBar', $.extend({}, $.dm.coreToolBar, {
   {
     this.initToolBar();
     
-    this.initMenu();
+    $('div.dm_menu', this.element).disableSelection().dmMenu({
+	    hoverClass: 'ui-state-active'
+	  });
   }
 
 }));

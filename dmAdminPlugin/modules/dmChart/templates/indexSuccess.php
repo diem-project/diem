@@ -1,18 +1,18 @@
 <?php
 
-echo £o('div.dm_charts.mt10', array('json' => array(
+echo _open('div.dm_charts.mt10', array('json' => array(
   'selected' => $selectedIndex
 )));
 
-echo £o('ul');
+echo _open('ul');
 foreach($charts as $chartKey => $chart)
 {
-  echo £('li',
-    £link('@dm_chart?action=show&name='.$chartKey)
+  echo _tag('li',
+    _link('@dm_chart?action=show&name='.$chartKey)
     ->text(__($chart->getName()))
     ->set('.dm_chart_link')
   );
 }
-echo £c('ul');
+echo _close('ul');
 
-echo £c('div');
+echo _close('div');

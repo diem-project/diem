@@ -9,7 +9,7 @@ class PluginDmPageTable extends myDoctrineTable
   
   /*
    * Check that basic pages exist
-   * ( root page, 404 page )
+   * ( main/root, main/error404, main/login )
    * and, if they don't, will create them
    */
   public function checkBasicPages()
@@ -20,8 +20,8 @@ class PluginDmPageTable extends myDoctrineTable
       $root = $this->create(array(
         'module' => 'main',
         'action' => 'root',
-        'name' => dm::getI18n()->__('Home'),
-        'title' => dm::getI18n()->__('Home'),
+        'name' => $this->getService('i18n')->__('Home'),
+        'title' => $this->getService('i18n')->__('Home'),
         'slug' => ''
       ));
 
@@ -40,8 +40,8 @@ class PluginDmPageTable extends myDoctrineTable
       $page404 = $this->create(array(
         'module' => 'main',
         'action' => 'error404',
-        'name' => dm::getI18n()->__('Page not found'),
-        'title' => dm::getI18n()->__('Page not found'),
+        'name' => $this->getService('i18n')->__('Page not found'),
+        'title' => $this->getService('i18n')->__('Page not found'),
         'slug' => 'error404'
       ));
 
@@ -60,8 +60,8 @@ class PluginDmPageTable extends myDoctrineTable
       $this->create(array(
         'module' => 'main',
         'action' => 'login',
-        'name' => dm::getI18n()->__('Login'),
-        'title' => dm::getI18n()->__('Login'),
+        'name' => $this->getService('i18n')->__('Login'),
+        'title' => $this->getService('i18n')->__('Login'),
         'slug' => 'login'
       ))->getNode()->insertAsLastChildOf($root);
     }
@@ -69,22 +69,21 @@ class PluginDmPageTable extends myDoctrineTable
   
   /*
    * Check that search page exist
-   * and, if doesn't, will create them
+   * and, if doesn't, will create it
    */
   public function checkSearchPage()
   {
     if (!$this->createQuery('p')->where('p.module = ? AND p.action = ?', array('main', 'search'))->exists())
     {
       $this->create(array(
-        'name' => dm::getI18n()->__('Search results'),
-        'title' => dm::getI18n()->__('Search results'),
+        'name' => $this->getService('i18n')->__('Search results'),
+        'title' => $this->getService('i18n')->__('Search results'),
         'module' => 'main',
         'action' => 'search',
         'slug' => 'search'
       ))->getNode()->insertAsLastChildOf($this->getTree()->fetchRoot());
     }
   }
-
   
   public function preloadPagesForRecords($records)
   {

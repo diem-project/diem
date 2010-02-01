@@ -7,27 +7,27 @@ if (!$object || !$object->id)
 
 use_helper('Date', 'DmMedia');
 
-echo £o('div.dm_media_file');
+echo _open('div.dm_media_file');
 
-echo £('h3.title.none', $object->getFile());
+echo _tag('h3.title.none', $object->getFile());
 
-echo £o('div.clearfix');
+echo _open('div.clearfix');
 
-  echo £('div.view',
-   £link($object->getFullWebPath())->text(
+  echo _tag('div.view',
+   _link($object->getFullWebPath())->text(
     $object->isImage()
-    ? £media($object)->size(250, 150)
-    : £media('dmCore/images/media/unknown.png')->size(64, 64)
+    ? _media($object)->size(250, 150)
+    : _media('dmCore/images/media/unknown.png')->size(64, 64)
     )
   );
 
-  echo £('div.content',
+  echo _tag('div.content',
 
-    £('div.infos',
+    _tag('div.infos',
       definition_list(media_file_infos($object), '.clearfix.dm_little_dl')
     )
   );
 
-echo £c('div');
+echo _close('div');
 
-echo £c('div');
+echo _close('div');

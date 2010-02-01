@@ -23,7 +23,7 @@ abstract class PluginDmAutoSeoForm extends BaseDmAutoSeoForm
     
     $this->widgetSchema->setHelps(array(
       'slug' => 'The page url, without domain name. Must be unique. If the slug does not start with a /, the parent\'s page slug will be added.',
-      'title' => 'The page title, without '.self::$serviceContainer->getService('helper')->£link('@dm_config_panel')->anchor('dm_setting_group_seo')->text('prefix & suffix').'. Should be unique.',
+      'title' => 'The page title, without '.self::$serviceContainer->getService('helper')->link('@dm_config_panel')->anchor('dm_setting_group_seo')->text('prefix & suffix').'. Should be unique.',
       'name' => 'The page name is used by links to this page. Should be unique.',
       'h1' => 'Assign first header here or let it blank to let the webdesigner choose it. Should be unique.',
       'description' => 'The page description meta, frequently displayed in search engines result page.',

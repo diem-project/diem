@@ -2,23 +2,23 @@
 // Auteur : List
 // Vars : $auteurPager
 
-echo £o('div.auteur.list');
+echo _open('div.auteur.list');
 
  echo $auteurPager->renderNavigationTop();
 
-  echo £o('ul.elements');
+  echo _open('ul.elements');
 
   foreach ($auteurPager as $auteur)
   {
-    echo £o('li.element');
+    echo _open('li.element');
     
-      echo £link($auteur);
+      echo _link($auteur);
       
-    echo £c('li');
+    echo _close('li');
   }
 
-  echo £c('ul');
+  echo _close('ul');
 
  echo $auteurPager->renderNavigationBottom();
 
-echo £c('div');
+echo _close('div');

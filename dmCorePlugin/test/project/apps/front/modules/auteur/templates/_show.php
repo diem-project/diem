@@ -2,8 +2,8 @@
 // Auteur : Show
 // Vars : $auteur
 
-echo £o('div.auteur.show');
+echo _open('div.auteur.show');
 
   echo $auteur;
   
-echo £c('div');
+echo _close('div');

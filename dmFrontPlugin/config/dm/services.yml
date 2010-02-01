@@ -62,6 +62,8 @@ parameters:
   front_pager_view.class:     dmFrontPagerView      # Responsible for rendering a sfPager with pagination links
   front_pager_view.options:   []
 
+  sitemap_menu.class:         dmSitemapMenu         # Automate HTML sitemaps with dmMenu
+
 services:
 
   page_routing:
@@ -166,3 +168,8 @@ services:
     class:                    %front_pager_view.class%
     shared:                   false
     arguments:                [ @context, %front_pager_view.options% ]
+
+  sitemap_menu:
+    class:              %sitemap_menu.class%
+    shared:             false
+    arguments:          [ @service_container, %menu.options% ]

@@ -7,21 +7,21 @@ if (!$object || $object->isNew())
 
 use_helper('I18N', 'Date', 'DmAdminMedia');
 
-echo £o('div.dm_media_file');
+echo _open('div.dm_media_file');
 
-echo £('h3.title.none', $object->getFile());
+echo _tag('h3.title.none', $object->getFile());
 
-echo £o('div.clearfix');
+echo _open('div.clearfix');
 
-  echo £('div.view',
+  echo _tag('div.view',
     $object->isImage()
-    ? £media($object)->size(200, 200)
+    ? _media($object)->size(200, 200)
     : media_file_image_tag($object)
   );
 
-  echo £('div.content',
+  echo _tag('div.content',
 
-    £('div.infos',
+    _tag('div.infos',
       definition_list(array(
         __('Size') => dmOs::humanizeSize($object->getSize()),
         __('Type') => $object->getType(),
@@ -32,6 +32,6 @@ echo £o('div.clearfix');
     )
   );
 
-echo £c('div');
+echo _close('div');
 
-echo £c('div');
+echo _close('div');

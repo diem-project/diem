@@ -20,7 +20,7 @@ class dmPageActions extends dmFrontBaseActions
       'Can not delete record page. Please delete record instead.'
     );
     
-    $redirectUrl = $this->getHelper()->£link($page->getNode()->getParent())->getHref();
+    $redirectUrl = $this->getHelper()->link($page->getNode()->getParent())->getHref();
     
     $page->getNode()->delete();
     
@@ -52,7 +52,7 @@ class dmPageActions extends dmFrontBaseActions
        */
       $this->page->getPageView()->save();
 
-      return $this->renderText($this->getHelper()->£link($this->page)->getAbsoluteHref());
+      return $this->renderText($this->getHelper()->link($this->page)->getAbsoluteHref());
     }
     
     $this->deletePageLink =
@@ -82,7 +82,7 @@ class dmPageActions extends dmFrontBaseActions
     {
       $newPage = $this->form->save();
 
-      return $this->renderText($this->getHelper()->£link($newPage)->getAbsoluteHref());
+      return $this->renderText($this->getHelper()->link($newPage)->getAbsoluteHref());
     }
     
     $this->form->setDefaults(array(

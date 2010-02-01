@@ -15,7 +15,7 @@
     [?php
       if (count($appliedFilters))
       {
-        echo £o('div.s16.s16_magnifier.dm_active_search');
+        echo _open('div.s16.s16_magnifier.dm_active_search');
         //echo __('Search').' : ';
         $appliedFiltersHtml = array();
         foreach($appliedFilters as $appliedFilter)
@@ -27,7 +27,7 @@
         }
         echo implode(', ', $appliedFiltersHtml);
         echo link_to(__('Back to list'), '<?php echo $this->getUrlForAction('list') ?>', array('action' => 'filter'), array('query_string' => '_reset', 'method' => 'post', 'class' => 'ml10 reset'));
-        echo £c('div');
+        echo _close('div');
       }
     ?]
   </div>
@@ -62,7 +62,7 @@
       <div class="dm_loremize">
       <p class="dm_sort s16 s16_edit fleft">Loremize :</p>
       [?php
-      $loremizeLink = £link('@<?php echo $this->getModule()->getUnderscore() ?>?action=loremize&nb=__DM_NB_RECORDS__')
+      $loremizeLink = _link('@<?php echo $this->getModule()->getUnderscore() ?>?action=loremize&nb=__DM_NB_RECORDS__')
       ->text('__DM_NB_RECORDS__')
       ->set('.ml10.dm_js_confirm')
       ->title(__('Generate %1% random %2%', array('%1%' => '__DM_NB_RECORDS__', '%2%' => __('<?php echo $this->getModule()->getPlural() ?>'))))

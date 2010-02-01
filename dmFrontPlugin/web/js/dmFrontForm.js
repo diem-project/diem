@@ -37,6 +37,4 @@ $.widget('ui.dmFrontForm', $.extend({}, $.dm.coreForm, {
   
 }));
 
-$.ui.dmFrontForm.getter = "linkDroppable";
-
 })(jQuery);

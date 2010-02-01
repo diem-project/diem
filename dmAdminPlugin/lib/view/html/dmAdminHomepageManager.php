@@ -68,26 +68,26 @@ class dmAdminHomepageManager
   
   public function render()
   {
-    $html = $this->helper->£o('div.dm_admin_homepage_columns.clearfix');
+    $html = $this->helper->open('div.dm_admin_homepage_columns.clearfix');
 
     foreach($this->getWindows() as $column => $windows)
     {
       $html .= $this->renderColumn($windows);
     }
     
-    return $html.$this->helper->£c('div');
+    return $html.$this->helper->close('div');
   }
   
   protected function renderColumn(array $windows)
   {
-    $html = $this->helper->£o('div.dm_admin_homepage_column');
+    $html = $this->helper->open('div.dm_admin_homepage_column');
     
     foreach($windows as $window)
     {
       $html .= $this->renderWindow($window);
     }
     
-    return $html.$this->helper->£c('div');
+    return $html.$this->helper->close('div');
   }
   
   protected function renderWindow($window)

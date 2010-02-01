@@ -4,7 +4,7 @@ require_once(dirname(__FILE__).'/helper/dmMediaUnitTestHelper.php');
 $helper = new dmMediaUnitTestHelper();
 $helper->boot();
 
-$t = new lime_test(119);
+$t = new lime_test(120);
 
 $table = dmDb::table('DmMediaFolder');
 $root = $table->checkRoot();
@@ -361,6 +361,13 @@ $t->ok(is_dir($parent->fullPath.'/f1/f2b'), 'new f2 dir exists');
 
 $t->ok($f2->dirExists(), $f2->name.' dir exists');
 $t->ok($f2->isWritable(), $f2->name.' isWritable');
+
+$t->comment('Add a .thumbs folder in f2');
+
+mkdir($f2->fullPath.'/.thumbs');
+$f2->sync();
+
+$t->is(dmDb::query('DmMediaFolder f')->where('f.rel_path LIKE ?', '%.thumbs')->count(), 0, 'No folder .thumbs where created');
 
 $helper->get('filesystem')->sf('doctrine:dql "from DmMediaFolder folder" --table');
 $t->comment($helper->get('filesystem')->getLastExec('output'));

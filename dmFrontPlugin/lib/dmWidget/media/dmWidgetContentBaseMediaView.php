@@ -26,7 +26,7 @@ abstract class dmWidgetContentBaseMediaView extends dmWidgetPluginView
         throw new dmException('No DmMedia found for media id : '.$vars['mediaId']);
       }
       
-      $mediaTag = $this->context->getHelper()->£media($media);
+      $mediaTag = $this->context->getHelper()->media($media);
   
       if (!empty($vars['width']) || !empty($vars['height']))
       {

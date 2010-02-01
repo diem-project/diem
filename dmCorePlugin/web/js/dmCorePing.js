@@ -14,7 +14,12 @@
         url:      $.dm.ctrl.getHref('+/dmCore/ping')
       }, options || {});
 
-      setTimeout(self.ping, 500);
+      setTimeout(self.ping, 200+self.random());
+    },
+
+    random: function(max)
+    {
+      return Math.round(Math.random()*(max||500));
     },
 
     ping: function()
@@ -45,7 +50,7 @@
     {
       var self = $.dm.ping;
 
-      setTimeout(self.ping, self.options.delay);
+      setTimeout(self.ping, self.options.delay+self.random());
     }
   };
   

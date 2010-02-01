@@ -7,19 +7,15 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
   {
     this.initToolBar();
     
-    this.initMenu();
-    
     this.editToggle();
     
     this.showToolBarToggle();
+
+    this.reloadAddMenu();
     
     this.pageEditForm();
     
     this.pageAddForm();
-    
-    this.zoneAdd();
-    
-    this.widgetAdd();
     
     this.codeEditor();
   },
@@ -180,63 +176,76 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
 			}, 100);
     });
   },
-  
-  zoneAdd: function()
-  {
-    var self = this;
 
-    $('div.dm_add_menu span.zone_add', self.element).draggable({
-      connectToSortable: 'div.dm_zones',
-      helper: function()
-      {
-        return $('<div class="dm"><div class="dm_zone_add_helper ui-corner-all">New Zone</div></div>');
-      },
-//			helper: 'clone',
-			appendTo: '#dm_page',
-			cursorAt: { left: 30, top: 10 },
-      cursor: 'move',
-      start: function(e, ui)
-      {
-        $('div.dm_add_menu', self.element).dmMenu('close');
-        self.activateEdit(true);
-      }
-    });
-  },
-  
-  widgetAdd: function()
+  reloadAddMenu: function(callback)
   {
-    var self = this;
-    $('div.dm_add_menu span.widget_add', self.element).draggable({
-      connectToSortable: 'div.dm_widgets',
-      helper: function()
-      {
-        return $('<div class="dm"><div class="dm_widget_add_helper ui-corner-all">New '+$(this).text()+'</div></div>');
-      },
-      appendTo: '#dm_page',
-      cursorAt: { left: 30, top: 10 },
-			cursor: 'move',
-      start: function(e, ui)
-      {
-        $('div.dm_add_menu', self.element).dmMenu('close');
-        self.activateEdit(true);
-      }
-    });
-  },
+    var self = this, $menu = self.element.find('div.dm_add_menu');
 
-  reloadAddMenu: function()
-  {
-    var self = this, $addMenu = self.element.find('div.dm_add_menu').block();
+    if(!$menu.length)
+    {
+      return;
+    }
     
     $.ajax({
-      url:      $addMenu.metadata().reload_url,
-      success:  function(html) {
-        $addMenu.html(html).unblock();
+      url:      $menu.metadata().reload_url,
+      success:  function(html)
+      {
+        $menu.html(html);
+        
+        var dragStart = function()
+        {
+          $menu.dmMenu('close');
+          self.activateEdit(true);
+        };
+
+        $menu.disableSelection().dmMenu({
+          hoverClass: 'ui-state-active'
+        });
+
+        // add widget
+        $menu.find('span.widget_add').draggable({
+          connectToSortable: 'div.dm_widgets',
+          helper: function()
+          {
+            return $('<div class="dm"><div class="dm_widget_add_helper ui-corner-all">New '+$(this).text()+'</div></div>');
+          },
+          appendTo: '#dm_page',
+          cursorAt: { left: 30, top: 10 },
+          cursor: 'move',
+          start: dragStart
+        });
+
+        // add zone
+        $menu.find('span.zone_add').draggable({
+          connectToSortable: 'div.dm_zones',
+          helper: function()
+          {
+            return $('<div class="dm"><div class="dm_zone_add_helper ui-corner-all">New Zone</div></div>');
+          },
+          appendTo: '#dm_page',
+          cursorAt: { left: 30, top: 10 },
+          cursor: 'move',
+          start: dragStart
+        });
+
+        // add from clipboard
+        $menu.find('span.widget_paste').draggable({
+          connectToSortable: 'div.dm_widgets',
+          helper: function()
+          {
+            return $('<div class="dm"><div class="dm_widget_add_helper ui-corner-all">Paste '+$(this).text()+'</div></div>');
+          },
+          appendTo: '#dm_page',
+          cursorAt: { left: 30, top: 10 },
+          cursor: 'move',
+          start: dragStart
+        });
+
+        callback && $.isFunction(callback) && callback();
       }
     })
   }
   
 }));
-
-$.ui.dmFrontToolBar.getter = "openCodeEditor reloadAddMenu";
   
 })(jQuery);

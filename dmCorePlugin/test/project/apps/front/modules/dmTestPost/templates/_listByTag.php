@@ -2,23 +2,23 @@
 // Dm test post : List by tag
 // Vars : $dmTestPostPager
 
-echo £o('div.dm_test_post.list_by_tag');
+echo _open('div.dm_test_post.list_by_tag');
 
  echo $dmTestPostPager->renderNavigationTop();
 
-  echo £o('ul.elements');
+  echo _open('ul.elements');
 
   foreach ($dmTestPostPager as $dmTestPost)
   {
-    echo £o('li.element');
+    echo _open('li.element');
     
-      echo £link($dmTestPost);
+      echo _link($dmTestPost);
       
-    echo £c('li');
+    echo _close('li');
   }
 
-  echo £c('ul');
+  echo _close('ul');
 
  echo $dmTestPostPager->renderNavigationBottom();
 
-echo £c('div');
+echo _close('div');

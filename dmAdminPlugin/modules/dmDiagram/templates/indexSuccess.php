@@ -15,19 +15,19 @@ foreach($dicImages as $appName => $image)
 
   if($jQueryMap)
   {
-    echo £('div.dm_box.big.diagram',
-      £('div.title',
-      £('h2', dmString::camelize($appName).' : Dependency Injection Container'.£link($image)->text('Download'))).
-      £('div.dm_box_inner',
+    echo _tag('div.dm_box.big.diagram',
+      _tag('div.title',
+      _tag('h2', dmString::camelize($appName).' : Dependency Injection Container'._link($image)->text('Download'))).
+      _tag('div.dm_box_inner',
         ($withDispatcherLinks
-        ? £('p.s16.s16_info', £link('+/dmDiagram/index?with_dispatcher_links=0')->text('Hide dispatcher dependencies'))
-        : £('p.s16.s16_info', 'As nearly all modules have a reference to dispatcher, these dependencies are hidden. '.£link('+/dmDiagram/index?with_dispatcher_links=1')->text('Click here to see them'))
+        ? _tag('p.s16.s16_info', _link('+/dmDiagram/index?with_dispatcher_links=0')->text('Hide dispatcher dependencies'))
+        : _tag('p.s16.s16_info', 'As nearly all modules have a reference to dispatcher, these dependencies are hidden. '._link('+/dmDiagram/index?with_dispatcher_links=1')->text('Click here to see them'))
         ).
-        £('div.viewport',
-          £('div.toplevel height=300px').
-          £('div', array('width' => £media($image)->getWidth(), 'height' => £media($image)->getHeight()),
-            £media($image).
-            £('div.mapcontent')
+        _tag('div.viewport',
+          _tag('div.toplevel height=300px').
+          _tag('div', array('width' => _media($image)->getWidth(), 'height' => _media($image)->getHeight()),
+            _media($image).
+            _tag('div.mapcontent')
           )
         )
       )
@@ -35,27 +35,27 @@ foreach($dicImages as $appName => $image)
   }
   else
   {
-    echo £media($image);
+    echo _media($image);
   }
 }
 
 if (!empty($mldProjectImage))
 {
-  echo £('div.dm_box.big.diagram', £('div.title', £('h2', 'Project Database')).£('div.dm_box_inner',
-    £('div.full_width_image', £link($mldProjectImage)->text(£media($mldProjectImage)))
+  echo _tag('div.dm_box.big.diagram', _tag('div.title', _tag('h2', 'Project Database'))._tag('div.dm_box_inner',
+    _tag('div.full_width_image', _link($mldProjectImage)->text(_media($mldProjectImage)))
   ));
 }
 
 if (!empty($mldUserImage))
 {
-  echo £('div.dm_box.big.diagram', £('div.title', £('h2', 'Diem User Database')).£('div.dm_box_inner',
-    £('div.full_width_image', £link($mldUserImage)->text(£media($mldUserImage)))
+  echo _tag('div.dm_box.big.diagram', _tag('div.title', _tag('h2', 'Diem User Database'))._tag('div.dm_box_inner',
+    _tag('div.full_width_image', _link($mldUserImage)->text(_media($mldUserImage)))
   ));
 }
 
 if (!empty($mldCoreImage))
 {
-  echo £('div.dm_box.big.diagram', £('div.title', £('h2', 'Diem Core Database')).£('div.dm_box_inner',
-    £('div.full_width_image', £link($mldCoreImage)->text(£media($mldCoreImage)))
+  echo _tag('div.dm_box.big.diagram', _tag('div.title', _tag('h2', 'Diem Core Database'))._tag('div.dm_box_inner',
+    _tag('div.full_width_image', _link($mldCoreImage)->text(_media($mldCoreImage)))
   ));
 }

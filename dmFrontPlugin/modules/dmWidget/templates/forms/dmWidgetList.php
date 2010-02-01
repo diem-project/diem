@@ -2,19 +2,19 @@
 
 echo $form->renderGlobalErrors();
 
-echo £o('ul.dm_form_elements');
+echo _open('ul.dm_form_elements');
 
 echo
-£('li.dm_form_element.multi_inputs.sort.clearfix',
+_tag('li.dm_form_element.multi_inputs.sort.clearfix',
   $form['orderField']->renderLabel(__('Order by')).
   $form['orderField']->render().
   $form['orderType']->render(array('class' => 'ml10'))
 ).
-£('li.dm_form_element.multi_inputs.pagination.clearfix',
+_tag('li.dm_form_element.multi_inputs.pagination.clearfix',
   $form['maxPerPage']->renderError().
   $form['maxPerPage']->renderLabel(__('Per page')).
   $form['maxPerPage']->render(array('class' => 'fleft')).
-  £('div.checkbox_list',
+  _tag('div.checkbox_list',
     $form['navTop']->render(array('class' => 'ml10 fnone')).
     $form['navTop']->renderLabel('Top', array('class' => 'ml10 fnone')).
     $form['navBottom']->render(array('class' => 'ml10 fnone')).
@@ -35,4 +35,4 @@ foreach($form as $widgetName => $widget)
 
 echo $form['cssClass']->renderRow();
 
-echo £c('ul');
+echo _close('ul');

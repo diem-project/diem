@@ -7,12 +7,13 @@ class dmWidgetNavigationMenuForm extends dmWidgetPluginForm
   {
     $this->validatorSchema['link'] = new sfValidatorPass();
     $this->validatorSchema['text'] = new sfValidatorPass();
+    $this->validatorSchema['depth'] = new sfValidatorPass();
 
     if (!$this->getDefault('items'))
     {
       $this->setDefault('items', array());
     }
-    
+
     parent::configure();
 
     $this->widgetSchema['ulClass']      = new sfWidgetFormInputText();
@@ -58,15 +59,16 @@ class dmWidgetNavigationMenuForm extends dmWidgetPluginForm
 
     $values['items'] = array();
 
-    foreach($values['link'] as $index => $link)
+    foreach(dmArray::get($values, 'link', array()) as $index => $link)
     {
       $values['items'][] = array(
-        'link'  => $values['link'][$index],
-        'text'  => $values['text'][$index]
+        'link'    => $values['link'][$index],
+        'text'    => $values['text'][$index],
+        'depth'   => $values['depth'][$index]
       );
     }
 
-    unset($values['link'], $values['text']);
+    unset($values['link'], $values['text'], $values['depth']);
 
     return $values;
   }

@@ -2,17 +2,17 @@
 // Dm test post : Show
 // Vars : $dmTestPost
 
-echo £o('div.dm_test_post.show');
+echo _open('div.dm_test_post.show');
 
   echo
-  £('h1', $dmTestPost),
-  £('p.user', $dmTestPost->Author).
-  £('p.excerpt', $dmTestPost->excerpt).
-  £('div.body', markdown($dmTestPost->body)).
-  £('p.url', £link($dmTestPost->url)).
-  £('p.categ', £link($dmTestPost->Categ)).
-  £('p.image', £media($dmTestPost->Image)->size(200, 200)).
-  £('p.file', £link($dmTestPost->File)).
-  £('p.date', $dmTestPost->date);
+  _tag('h1', $dmTestPost),
+  _tag('p.user', $dmTestPost->Author).
+  _tag('p.excerpt', $dmTestPost->excerpt).
+  _tag('div.body', markdown($dmTestPost->body)).
+  _tag('p.url', _link($dmTestPost->url)).
+  _tag('p.categ', _link($dmTestPost->Categ)).
+  _tag('p.image', _media($dmTestPost->Image)->size(200, 200)).
+  _tag('p.file', _link($dmTestPost->File)).
+  _tag('p.date', $dmTestPost->date);
   
-echo £c('div');
+echo _close('div');

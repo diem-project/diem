@@ -6,28 +6,28 @@ use_stylesheet('admin.gallery');
 use_javascript('lib.ui-sortable');
 use_javascript('admin.gallery');
 
-echo £o('div.dm_gallery_big', array('json' => $galleryOptions));
+echo _open('div.dm_gallery_big', array('json' => $galleryOptions));
 
-echo £('div.dm_gallery_actions.clearfix',
-  £link($record)->set('.s16.s16_arrow_left.back').
-  £('a.open_form.dm_big_button', £('span.s16.s16_add', __('Add')))
+echo _tag('div.dm_gallery_actions.clearfix',
+  _link($record)->set('.s16.s16_arrow_left.back').
+  _tag('a.open_form.dm_big_button', _tag('span.s16.s16_add', __('Add')))
 );
 
 echo $form->render('.dm_add_media.dm_form.list.little.ui-corner-all'.($form->isBound() ? '' : '.none').' action="+/dmMedia/gallery?model='.get_class($record).'&pk='.$record->getPrimaryKey().'"');
 
-echo £o('ul.list.clearfix');
+echo _open('ul.list.clearfix');
 
 foreach($medias as $media)
 {
-  echo £('li#dm_sort_'.$media->get('dm_gallery_rel_id').'.element',
-    £media($media)->size(160, 160).
-    £link('+/dmMedia/galleryDelete?model='.get_class($record).'&pk='.$record->getPrimaryKey().'&rel_id='.$media->get('dm_gallery_rel_id'))
-    ->text(£('span.s16block.s16_delete'))
+  echo _tag('li#dm_sort_'.$media->get('dm_gallery_rel_id').'.element',
+    _media($media)->size(160, 160).
+    _link('+/dmMedia/galleryDelete?model='.get_class($record).'&pk='.$record->getPrimaryKey().'&rel_id='.$media->get('dm_gallery_rel_id'))
+    ->text(_tag('span.s16block.s16_delete'))
     ->title(__('Remove this media'))
     ->set('.delete.dm_js_confirm')
   );
 }
 
-echo £c('ul');
+echo _close('ul');
 
-echo £c('div');
+echo _close('div');

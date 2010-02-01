@@ -15,8 +15,8 @@ class dmAdminModuleTypeMenu extends dmMenu
       ->ulClass('dm_modules dm_box_inner pl10 pr10')
       ->liClass('dm_module_space dm_module_type_show dm_box fleft mr20 mb20')
       ->label(
-        $this->helper->£('h2.title',
-          $this->helper->£link($this->serviceContainer->getService('routing')->getModuleSpaceUrl($space))
+        $this->helper->tag('h2.title',
+          $this->helper->link($this->serviceContainer->getService('routing')->getModuleSpaceUrl($space))
           ->text($this->i18n->__($space->getPublicName()))
           ->set('.center')
         )
@@ -42,9 +42,9 @@ class dmAdminModuleTypeMenu extends dmMenu
 
           $spaceMenu->addChild($module->getName())
           ->label(
-            $this->helper->£('li.dm_module',
-              $this->helper->£link('@'.$module->getUnderscore())->text($this->i18n->__($module->getName())).
-              $this->helper->£('p.infos', $nbRecordsText)
+            $this->helper->tag('li.dm_module',
+              $this->helper->link('@'.$module->getUnderscore())->text($this->i18n->__($module->getName())).
+              $this->helper->tag('p.infos', $nbRecordsText)
             )
           );
         }

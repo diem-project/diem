@@ -1,8 +1,8 @@
 <?php
 
-//echo £o('div.dm_box.big');
+//echo _open('div.dm_box.big');
 //
-//echo £('h1.title', __('Edit image').' '.$file->getFile());
+//echo _tag('h1.title', __('Edit image').' '.$file->getFile());
 
 
 //dmDebug::show(urldecode(pixlr_express_post_url($absoluteWebUrl, $target, $options)));
@@ -16,9 +16,9 @@ echo sprintf(
   __('Loading...')
 );
 
-//echo £('div.dm_box_inner', sprintf(
+//echo _tag('div.dm_box_inner', sprintf(
 //  '<form class="pixlr_form" action="%s"></form>',
 //  pixlr_post_url($absoluteServerUrl, $target, $options)
 //));
 
-//echo £c('div');
+//echo _close('div');

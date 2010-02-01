@@ -2,23 +2,23 @@
 // Dm test comment : List by categ
 // Vars : $dmTestCommentPager
 
-echo £o('div.dm_test_comment.list_by_categ');
+echo _open('div.dm_test_comment.list_by_categ');
 
  echo $dmTestCommentPager->renderNavigationTop();
 
-  echo £o('ul.elements');
+  echo _open('ul.elements');
 
   foreach ($dmTestCommentPager as $dmTestComment)
   {
-    echo £o('li.element');
+    echo _open('li.element');
     
       echo $dmTestComment;
       
-    echo £c('li');
+    echo _close('li');
   }
 
-  echo £c('ul');
+  echo _close('ul');
 
  echo $dmTestCommentPager->renderNavigationBottom();
 
-echo £c('div');
+echo _close('div');

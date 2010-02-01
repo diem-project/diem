@@ -32,7 +32,7 @@
 
       if($.dm.ping && this.options.authenticated)
       {
-        this.launchPing();
+        $.dm.ping.init(this.options);
       }
     },
 

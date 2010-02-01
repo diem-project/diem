@@ -2,7 +2,7 @@
 
 if (!count($revisions))
 {
-  echo £('h2.mt40.text_align_center', __('No revision for %1% with culture "%2%"', array(
+  echo _tag('h2.mt40.text_align_center', __('No revision for %1% with culture "%2%"', array(
     '%1%' => $record,
     '%2%' => $sf_user->getCulture()
   )));
@@ -16,33 +16,33 @@ use_javascript('admin.history');
 use_stylesheet('admin.history');
 use_stylesheet('admin.dataTable');
 
-echo £o('div.dm_history.mt10');
+echo _open('div.dm_history.mt10');
 
-echo £o('ul.version_tabs');
+echo _open('ul.version_tabs');
 
 foreach($revisions as $revision)
 {
-  echo £('li.version_tab', £('a href=#revision_'.$revision->version, $revision->version));
+  echo _tag('li.version_tab', _tag('a href=#revision_'.$revision->version, $revision->version));
 }
 
-echo £c('ul');
+echo _close('ul');
 
 $fields = array_diff($revisions[0]->getTable()->getFieldNames(), array('id', 'version', 'lang'));
 
-$table = £table();
+$table = _table();
 $table->head(__('Field'), __('Difference'), __('Value'));
 
 $nbRevisions = count($revisions);
 
 foreach($revisions as $index => $revision)
 {
-  echo £o('div.revision.dm_data#revision_'.$revision->version);
+  echo _open('div.revision.dm_data#revision_'.$revision->version);
   
   $revertText = __('Revert to revision %1%', array('%1%' => $revision->version));
-  echo £('ul.actions',
-    £('li',
+  echo _tag('ul.actions',
+    _tag('li',
       $index !== 0
-      ? £link('+/dmAdminGenerator/revert')
+      ? _link('+/dmAdminGenerator/revert')
       ->text($revertText)
       ->title($revertText)
       ->set('.s16.s16_arrow_curve_180.dm_js_confirm')
@@ -51,7 +51,7 @@ foreach($revisions as $index => $revision)
         'pk'      => $record->getPrimaryKey(),
         'version' => $revision->version
       ))
-      : £('span.s16.s16_arrow_curve_180', $revertText)
+      : _tag('span.s16.s16_arrow_curve_180', $revertText)
     )
   );
   
@@ -82,15 +82,15 @@ foreach($revisions as $index => $revision)
     }
     
     $table->body(
-      £('div', __(dmString::humanize($field))),
-      £('div', $diffs ? nl2br($diffs[$field]) : '-'),
-      £('div', $string)
+      _tag('div', __(dmString::humanize($field))),
+      _tag('div', $diffs ? nl2br($diffs[$field]) : '-'),
+      _tag('div', $string)
     );
   }
   
   echo $table;
   
-  echo £c('div');
+  echo _close('div');
 }
 
-echo £c('div');
+echo _close('div');

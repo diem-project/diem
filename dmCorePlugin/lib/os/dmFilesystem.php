@@ -41,6 +41,27 @@ class dmFilesystem extends sfFilesystem
     return sfFinder::type($type);
   }
 
+  public function findFilesInDir($dir)
+  {
+    $files = array();
+
+    $resource = opendir($dir);
+    while (false !== $entryname = readdir($resource))
+    {
+      if ($entryname == '.' || $entryname == '..') continue;
+
+      $currentEntry = $dir.DIRECTORY_SEPARATOR.$entryname;
+      
+      if (is_file($currentEntry))
+      {
+        $files[] = $currentEntry;
+      }
+    }
+    closedir($resource);
+    
+    return $files;
+  }
+
   public function getFileInfos($file)
   {
     if (!file_exists($file))

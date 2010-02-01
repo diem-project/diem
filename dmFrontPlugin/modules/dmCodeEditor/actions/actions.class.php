@@ -25,7 +25,7 @@ class dmCodeEditorActions extends dmFrontBaseActions
     $this->path = dmProject::unRootify($this->file);
     $this->isWritable = is_writable($this->file);
 
-    $this->message = $this->isWritable ? '' : $this->context->getI18n()->__('This file is not writable');
+    $this->message = $this->isWritable ? '' : $this->getI18n()->__('This file is not writable');
     
     $this->textareaOptions = array(
       'spellcheck' => 'false'
@@ -75,7 +75,7 @@ class dmCodeEditorActions extends dmFrontBaseActions
       );
     }
 
-    $return['message'] = $this->context->getI18n()->__('Your modifications have been saved');
+    $return['message'] = $this->getI18n()->__('Your modifications have been saved');
     
     return $this->renderJson($return);
   }

@@ -1,27 +1,27 @@
 <?php
 
-echo £o('div.dm_variables');
+echo _open('div.dm_variables');
 
-echo £('div.dm_info.ui-corner-all',
-  £('span.s16block.s16_help.fleft.mr5').' Open a tab to see the variables you can use here.'
+echo _tag('div.dm_info.ui-corner-all',
+  _tag('span.s16block.s16_help.fleft.mr5').' Open a tab to see the variables you can use here.'
 );
 
-echo £o('ul.dm_modules.dm_accordion.mt10');
+echo _open('ul.dm_modules.dm_accordion.mt10');
 
 foreach($modules as $module)
 {
-  echo £o('li.dm_module');
+  echo _open('li.dm_module');
   
-  echo £('h3.dm_module_name', £('a href=#', $module->getName()));
+  echo _tag('h3.dm_module_name', _tag('a href=#', $module->getName()));
   
-  echo £o('ul.dm_variables');
+  echo _open('ul.dm_variables');
   
   foreach($module->getTable()->getSeoColumns() as $variable)
   {
-    echo £('li.dm_variable', $seoSynchronizer->wrap($module->getKey().'.'.$variable));
+    echo _tag('li.dm_variable', $seoSynchronizer->wrap($module->getKey().'.'.$variable));
   }
   
-  echo £c('ul'), £c('li');
+  echo _close('ul'), _close('li');
 }
 
-echo £c('ul'), £c('div');
+echo _close('ul'), _close('div');

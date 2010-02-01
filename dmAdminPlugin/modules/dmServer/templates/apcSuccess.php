@@ -8,4 +8,4 @@
 </style>
 <?php
 
-echo £('iframe.mt10 src='.£link('dmServer/includeApc')->getHref());
+echo _tag('iframe.mt10 src='._link('dmServer/includeApc')->getHref());

@@ -12,22 +12,48 @@ class dmFrontUserClipboard
 
   public function getWidget()
   {
-    return ($id = $this->load('widget_id')) ? dmDb::table('DmWidget')->findOneByIdWithI18n($this->load('widget_id')) : null;
+    return ($data = $this->load('widget')) ? dmDb::table('DmWidget')->findOneByIdWithI18n($data['id']) : null;
   }
 
-  public function setWidget(DmWidget $widget)
+  public function getMethod()
   {
-    $this->save('widget_id', $widget->id);
+    return ($data = $this->load('widget')) ? $data['method'] : null;
   }
 
-  public function getZone()
+  public function copy(DmWidget $widget)
   {
-    return ($id = $this->load('zone_id')) ? dmDb::table('DmZone')->findOneById($id) : null;
+    $this->save('widget', array('method' => 'copy', 'id' => $widget->id));
   }
 
-  public function setZone(DmZone $zone)
+  public function cut(DmWidget $widget)
   {
-    $this->save('zone_id', $zone->id);
+    $this->save('widget', array('method' => 'cut', 'id' => $widget->id));
+  }
+
+  public function paste(DmZone $zone)
+  {
+    if(!$widget = $this->getWidget())
+    {
+      return;
+    }
+
+    if('cut' == $this->getMethod())
+    {
+      $widget->set('dm_zone_id', $zone->get('id'));
+
+      // cutted then pasted widget becomes copied widget
+      $this->save('widget', array('method' => 'copy', 'id' => $widget->id));
+    }
+    else
+    {
+      $widget->get('Translation');
+      $widget = $widget->copy(true);
+      $widget->set('dm_zone_id', $zone->get('id'));
+    }
+
+    $widget->save();
+    
+    return $widget;
   }
 
   protected function load($name)

@@ -60,18 +60,18 @@ class dmFrontActionTemplateGenerator extends dmFrontModuleGenerator
 
 echo {$pager}->renderNavigationTop();
 
-echo £o('ul.elements');
+echo _open('ul.elements');
 
 foreach ({$pager} as \${$this->module->getKey()})
 {
-  echo £o('li.element');
+  echo _open('li.element');
 
-    echo ".($this->module->hasPage() ? "£link(\${$this->module->getKey()});" : "\${$this->module->getKey()};")."
+    echo ".($this->module->hasPage() ? "_link(\${$this->module->getKey()});" : "\${$this->module->getKey()};")."
 
-  echo £c('li');
+  echo _close('li');
 }
 
-echo £c('ul');
+echo _close('ul');
 
 echo {$pager}->renderNavigationBottom();";
   }

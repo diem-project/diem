@@ -66,14 +66,7 @@ $.dm.coreToolBar = {
 		{
 			location.href = data.url;
 		}
-	},
-  
-  initMenu : function()
-  {
-    $('div.dm_menu', this.element).disableSelection().dmMenu({
-	    hoverClass: 'ui-state-active'
-	  });
-  }
+	}
 
 };
 

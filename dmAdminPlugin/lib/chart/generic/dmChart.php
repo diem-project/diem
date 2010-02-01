@@ -104,7 +104,7 @@ abstract class dmChart extends pChart
       $this->serviceContainer->getService('filesystem')->chmod($imageFullPath, 0777);
     }
 
-    return $this->serviceContainer->getService('helper')->£media('/cache/'.$image);
+    return $this->serviceContainer->getService('helper')->media('/cache/'.$image);
   }
 
   protected function getDefaultOptions()

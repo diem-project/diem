@@ -2,29 +2,27 @@
 {
 
   $.dm.coreEditCtrl = $.extend($.dm.coreCtrl, {
-
-    launchPing: function()
-    {
-      $.dm.ping.init(this.options);
-    },
   
     liveEvents: function()
     {
-      $('a.dm_js_confirm, input.dm_js_confirm').live('click', function(e)
+      setTimeout(function()
       {
-        e.stopPropagation();
-        if (!confirm(($(this).attr('title') || 'Are you sure') + ' ?')) 
+        $('a.dm_js_confirm, input.dm_js_confirm').live('click', function(e)
         {
-          return false;
-        }
-        
-        return true;
-      });
-			
-      $('div.ui-dialog a.close_dialog').live('click', function()
-      {
-        $(this).closest('div.ui-dialog-content').dialog('close');
-      });
+          e.stopPropagation();
+          if (!confirm(($(this).attr('title') || 'Are you sure') + ' ?'))
+          {
+            return false;
+          }
+
+          return true;
+        });
+
+        $('body > div.ui-dialog a.close_dialog').live('click', function()
+        {
+          $(this).closest('div.ui-dialog-content').dialog('close');
+        });
+      }, 500);
     },
     
     dialog: function(options)
@@ -59,43 +57,6 @@
       return $dialog;
     },
     
-    ajaxJsonDialog: function(opt)
-    {
-      var self = this,
-      opt = $.extend({
-        title: 'Loading'
-      }, opt);
-      
-      var $dialog = this.dialog(opt).block();
-      
-      $.ajax({
-        url: opt.url,
-        data: opt.data || {},
-				dataType: 'json',
-        success: function(data)
-        {
-					if (data.stylesheets)
-					{
-						$.loadStylesheets(data.stylesheets);
-					}
-					
-          if (data.js)
-          {
-            $.globalEval(data.js);
-          }
-          
-          $dialog.html(data.html).trigger('dmAjaxResponse');
-        },
-        error: function(xhr)
-        {
-          $dialog.unblock();
-          $.dm.ctrl.errorDialog('Error while opening '+opt.title, xhr.responseText);
-        }
-      });
-      
-      return $dialog;
-    },
-    
     ajaxDialog: function(opt)
     {
       self = this;
@@ -107,8 +68,7 @@
       
       $.ajax({
         url: opt.url,
-        data: opt.data ||
-        {},
+        data: opt.data || {},
         success: function(data)
         {
           $dialog.html(data).dmExtractEncodedAssets().trigger('dmAjaxResponse');

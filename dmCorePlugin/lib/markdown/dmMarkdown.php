@@ -195,7 +195,7 @@ class dmMarkdown extends MarkdownExtra_Parser
       $anchor = null;
     }
     
-    $link = $this->helper->£link($url)->text($text);
+    $link = $this->helper->link($url)->text($text);
     
     if ($anchor)
     {
@@ -256,7 +256,7 @@ class dmMarkdown extends MarkdownExtra_Parser
     $url   = $matches[3] == '' ? $matches[4] : $matches[3];
     $attrs = $matches[6];
 
-    $tag = $this->helper->£media($url);
+    $tag = $this->helper->media($url);
     
     if ($alt)
     {

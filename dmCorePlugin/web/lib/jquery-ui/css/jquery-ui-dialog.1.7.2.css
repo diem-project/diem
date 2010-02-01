@@ -5,7 +5,6 @@
 .dm.ui-dialog .ui-dialog-title { float: left; margin: .1em 0 .2em; } 
 .dm.ui-dialog .ui-dialog-titlebar-close { position: absolute; right: .3em; top: 50%; width: 19px; margin: -10px 0 0 0; padding: 1px; height: 18px; }
 .dm.ui-dialog .ui-dialog-titlebar-close span { display: block; margin: 1px; }
-.dm.ui-dialog .ui-dialog-titlebar-close:hover, .dm.ui-dialog .ui-dialog-titlebar-close:focus { padding: 0; }
 .dm.ui-dialog .ui-dialog-content { border: 0; overflow: hidden; padding: 5px; background: none; zoom: 1; }
 .dm.ui-dialog .ui-dialog-buttonpane { text-align: left; border-width: 1px 0 0 0; background: transparent; }
 .dm.ui-dialog .ui-dialog-buttonpane button { float: right; margin: .5em .4em .5em 0; cursor: pointer; padding: .2em .6em .3em .6em; line-height: 1.4em; width:auto; overflow:visible; }

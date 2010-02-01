@@ -24,7 +24,7 @@ class dmMediaActions extends dmAdminBaseActions
       return $this->redirectBack();
     }
     
-    $this->context->get('bread_crumb')->setRecord($this->record);
+    $this->getService('bread_crumb')->setRecord($this->record);
     $this->context->getEventDispatcher()->connect('dm.bread_crumb.filter_links', array($this, 'listenToBreadCrumbFilterLinksEvent'));
     
     $this->galleryOptions = array(
@@ -66,7 +66,7 @@ class dmMediaActions extends dmAdminBaseActions
     
     $relObject->delete();
     
-    $this->getUser()->logInfo($this->context->getI18n()->__('The item was deleted successfully.'));
+    $this->getUser()->logInfo($this->getI18n()->__('The item was deleted successfully.'));
     
     return $this->redirectBack();
   }
@@ -96,7 +96,7 @@ class dmMediaActions extends dmAdminBaseActions
   
   public function listenToBreadCrumbFilterLinksEvent(sfEvent $event, array $links)
   {
-    $links[] = $this->context->getHelper()->£('h1', $this->context->getI18n()->__('Gallery'));
+    $links[] = $this->getHelper()->tag('h1', $this->getI18n()->__('Gallery'));
     
     return $links;
   }

@@ -1,20 +1,20 @@
 <?php
 
-echo £('div.dm.dm_page_edit_wrap',
+echo _tag('div.dm.dm_page_edit_wrap',
 
   $form->open('.dm_form.list.little').
   $form['id'].
 
-  £('div.dm.dm_page_edit.dm_tabbed_form',
+  _tag('div.dm.dm_page_edit.dm_tabbed_form',
 
-    £('ul.tabs',
-      £('li', £link('#dm_page_edit_seo')->text(__('Seo'))).
-      £('li', £link('#dm_page_edit_integration')->text(__('Integration'))).
-      £('li', £link('#dm_page_edit_publication')->text(__('Publication')))
+    _tag('ul.tabs',
+      _tag('li', _link('#dm_page_edit_seo')->text(__('Seo'))).
+      _tag('li', _link('#dm_page_edit_integration')->text(__('Integration'))).
+      _tag('li', _link('#dm_page_edit_publication')->text(__('Publication')))
     ).
 
-    £('div#dm_page_edit_seo',
-      £('ul.dm_form_elements',
+    _tag('div#dm_page_edit_seo',
+      _tag('ul.dm_form_elements',
         $form['slug']->renderRow().
         $form['name']->renderRow().
         $form['title']->renderRow().
@@ -24,19 +24,19 @@ echo £('div.dm.dm_page_edit_wrap',
       )
     ).
 
-    £('div#dm_page_edit_integration',
-      £('ul.dm_form_elements',
+    _tag('div#dm_page_edit_integration',
+      _tag('ul.dm_form_elements',
         (isset($form['parent_id']) ? $form['parent_id']->renderRow() : '').
         $form['dm_layout_id']->renderRow().
         $form['module']->renderRow().
         $form['action']->renderRow()
       )
     ).
-    £('div#dm_page_edit_publication',
-      £('ul.dm_form_elements',
+    _tag('div#dm_page_edit_publication',
+      _tag('ul.dm_form_elements',
         $form['is_active']->renderRow().
         $form['is_secure']->renderRow().
-        £('li.dm_form_element.credentials.clearfix'.($page->isSecure ? '' : '.none'),
+        _tag('li.dm_form_element.credentials.clearfix'.($page->isSecure ? '' : '.none'),
           $form['credentials']->label()->field()->error()
         ).
         $form['is_indexable']->renderRow()
@@ -47,7 +47,7 @@ echo £('div.dm.dm_page_edit_wrap',
   sprintf(
     '<div class="actions clearfix">%s%s%s</div>',
     sprintf('<a class="cancel dm close_dialog button fleft">%s</a>', __('Cancel')),
-    $deletePageLink ? £link('+/dmPage/delete')->param('id', $page->get('id'))->set('.dm.delete.button.red.ml10.left.dm_js_confirm')->text(__('Delete'))->title(__('Delete this page')) : '',
+    $deletePageLink ? _link('+/dmPage/delete')->param('id', $page->get('id'))->set('.dm.delete.button.red.ml10.left.dm_js_confirm')->text(__('Delete'))->title(__('Delete this page')) : '',
     sprintf('<input type="submit" class="submit and_save green fright" name="and_save" value="%s" />', __('Save'))
   ).
   

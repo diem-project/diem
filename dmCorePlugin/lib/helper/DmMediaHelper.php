@@ -8,7 +8,7 @@ function media_file_referers_link(DmMedia $media)
   {
     foreach($foreignRelation->fetchRelatedFor($media) as $foreign)
     {
-      $html .= sprintf('<li class="referer">%s</li>', £link($foreign));
+      $html .= sprintf('<li class="referer">%s</li>', _link($foreign));
     }
   }
 
@@ -41,16 +41,16 @@ function media_display_recursive_folders($folders)
   {
     $folder = DmsMediaFolderPeer::retrieveByPk($folder_id);
 
-    $html .= £o("li rel='$folder_id'");
+    $html .= _open("li rel='$folder_id'");
 
-    $html .= £("span.text", $folder->getNom());
+    $html .= _tag("span.text", $folder->getNom());
 
     if (is_array($children))
     {
-      $html .= £("ul", media_display_recursive_folders($children));
+      $html .= _tag("ul", media_display_recursive_folders($children));
     }
 
-    $html .= £c("li");
+    $html .= _close("li");
   }
 
   return $html;
@@ -65,11 +65,11 @@ function media_file_image_tag($file, $options = array())
 
   if ($file->isImage())
   {
-    $image = £media($file)->size($options['width'], $options['height']);
+    $image = _media($file)->size($options['width'], $options['height']);
   }
   else
   {
-    $image = £media('dmCore/images/media/unknown.png')->size($options['width'], $options['height']);
+    $image = _media('dmCore/images/media/unknown.png')->size($options['width'], $options['height']);
   }
 
   return $image;

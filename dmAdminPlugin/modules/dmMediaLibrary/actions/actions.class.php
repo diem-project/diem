@@ -12,7 +12,7 @@ class dmMediaLibraryActions extends dmAdminBaseActions
 
     if (!$this->file->isWritable())
     {
-      $this->getUser()->logAlert($this->context->getI18n()->__('This file is not writable'), false);
+      $this->getUser()->logAlert($this->getI18n()->__('This file is not writable'), false);
     }
 
     $this->form = new DmMediaForm($this->file);
@@ -20,7 +20,7 @@ class dmMediaLibraryActions extends dmAdminBaseActions
 
   public function executeIndex(sfWebRequest $request)
   {
-    $this->redirect('@dm_media_library_path');
+    return $this->redirect('@dm_media_library_path');
   }
 
   public function executePath(sfWebRequest $request)
@@ -35,15 +35,17 @@ class dmMediaLibraryActions extends dmAdminBaseActions
 
       dmDb::table('DmMediaFolder')->checkRoot();
 
-      $this->redirect('@dm_media_library_path');
+      return $this->redirect('@dm_media_library_path');
     }
 
     if (!$this->folder->isWritable())
     {
-      $this->getUser()->logAlert($this->context->getI18n()->__('This folder is not writable'), false);
+      $this->getUser()->logAlert($this->getI18n()->__('This folder is not writable'), false);
     }
 
+    $t = dmDebug::timerOrNull('media synchronisation');
     $this->folder->sync();
+    $t && $t->addTime();
 
     $this->files = $this->folder->Medias;
 
@@ -62,11 +64,11 @@ class dmMediaLibraryActions extends dmAdminBaseActions
     {
       foreach($ancestors as $parent)
       {
-        $links[] = $this->context->getHelper()->£link($this->getRouting()->getMediaUrl($parent))->text($parent->get('name'));
+        $links[] = $this->getHelper()->link($this->getRouting()->getMediaUrl($parent))->text($parent->get('name'));
       }
     }
     
-    $links[] = $this->context->getHelper()->£('h1', $this->folder->get('name'));
+    $links[] = $this->getHelper()->tag('h1', $this->folder->get('name'));
     
     return $links;
   }
@@ -81,7 +83,7 @@ class dmMediaLibraryActions extends dmAdminBaseActions
     if  (!$parent->isWritable())
     {
       $this->getUser()->logAlert(
-        $this->context->getI18n()->__('Folder %1% is not writable', array('%1%' => $parent->getFullPath()))
+        $this->getI18n()->__('Folder %1% is not writable', array('%1%' => $parent->getFullPath()))
       );
 
       return $this->renderPartial('dmInterface/flash');
@@ -129,7 +131,7 @@ class dmMediaLibraryActions extends dmAdminBaseActions
 
     if (!$this->file->isWritable())
     {
-      $this->getUser()->logAlert($this->context->getI18n()->__('File %1% is not writable', array('%1%' => $this->file->getRelPath())));
+      $this->getUser()->logAlert($this->getI18n()->__('File %1% is not writable', array('%1%' => $this->file->getRelPath())));
     }
     else
     {
@@ -155,7 +157,7 @@ class dmMediaLibraryActions extends dmAdminBaseActions
 
     if (!$this->folder->isWritable())
     {
-      $this->getUser()->logAlert($this->context->getI18n()->__('Folder %1% is not writable', array('%1%' => $this->folder->getRelPath())));
+      $this->getUser()->logAlert($this->getI18n()->__('Folder %1% is not writable', array('%1%' => $this->folder->getRelPath())));
       return $this->renderPartial('dmInterface/flash');
     }
 
@@ -176,7 +178,7 @@ class dmMediaLibraryActions extends dmAdminBaseActions
     if  (!$parent->isWritable())
     {
       $this->getUser()->logAlert(
-        $this->context->getI18n()->__('Folder %1% is not writable', array('%1%' => $parent->getFullPath())),
+        $this->getI18n()->__('Folder %1% is not writable', array('%1%' => $parent->getFullPath())),
         false
       );
 
@@ -250,7 +252,7 @@ class dmMediaLibraryActions extends dmAdminBaseActions
 
     if (!$this->folder->isWritable())
     {
-      $this->getUser()->logAlert($this->context->getI18n()->__('Folder %1% is not writable', array('%1%' => $this->folder->getRelPath())));
+      $this->getUser()->logAlert($this->getI18n()->__('Folder %1% is not writable', array('%1%' => $this->folder->getRelPath())));
     }
     else
     {

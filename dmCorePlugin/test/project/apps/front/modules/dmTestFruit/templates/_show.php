@@ -2,8 +2,8 @@
 // Dm test fruit : Show
 // Vars : $dmTestFruit
 
-echo £o('div.dm_test_fruit.show');
+echo _open('div.dm_test_fruit.show');
 
   echo $dmTestFruit;
   
-echo £c('div');
+echo _close('div');

@@ -172,7 +172,7 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
       $html .= '<div id="dm_content">';
     }
     
-    $html .= $this->helper->£o($tagName, $options);
+    $html .= $this->helper->open($tagName, $options);
 
     $html .= '<div class="dm_zones clearfix">';
 
@@ -325,7 +325,7 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
       }
       elseif (sfConfig::get('sf_debug'))
       {
-        $html = $this->helper->£link($this->page)
+        $html = $this->helper->link($this->page)
         ->currentSpan(false)
         ->param('dm_debug', 1)
         ->text(sprintf('[%s/%s] : %s', $widget['module'], $widget['action'], $e->getMessage()))

@@ -119,7 +119,7 @@ class BasedmFrontActions extends dmFrontBaseActions
   
   public function executeToAdmin(dmWebRequest $request)
   {
-    return $this->redirect($this->getHelper()->£link('app:admin')->getHref());
+    return $this->redirect($this->getHelper()->link('app:admin')->getHref());
   }
 
   /*
@@ -217,7 +217,7 @@ class BasedmFrontActions extends dmFrontBaseActions
     );
 
     $this->forward404Unless(
-      $this->context->getI18n()->cultureExists($culture),
+      $this->getI18n()->cultureExists($culture),
       sprintf('The %s culture does not exist', $culture)
     );
 
@@ -227,7 +227,7 @@ class BasedmFrontActions extends dmFrontBaseActions
     {
       $this->forward404Unless($page = dmDb::table('DmPage')->findOneByIdWithI18n($pageId));
       
-      return $this->redirect($this->getHelper()->£link($page)->getHref());
+      return $this->redirect($this->getHelper()->link($page)->getHref());
     }
 
     return $this->redirectBack();

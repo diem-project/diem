@@ -9,15 +9,15 @@
  */
 
 // open the page's div wrapper
-echo £o('div#dm_page'.($isEditMode ? '.edit' : ''));
+echo _open('div#dm_page'.($isEditMode ? '.edit' : ''));
 
 echo $helper->renderAccessLinks();             // render accessibility links
 
-  echo £('div.dm_layout',                      // open the layout div
+  echo _tag('div.dm_layout',                      // open the layout div
 
     $helper->renderArea('top', '.clearfix').   // render TOP Area
 
-    £('div.dm_layout_center.clearfix',         // open the layout_center div
+    _tag('div.dm_layout_center.clearfix',         // open the layout_center div
 
       $helper->renderArea('left').             // render LEFT Area
 
@@ -31,4 +31,4 @@ echo $helper->renderAccessLinks();             // render accessibility links
 
   );                                           // close the layout div
 
-echo £c('div');                                // close the page's div wrapper
+echo _close('div');                                // close the page's div wrapper

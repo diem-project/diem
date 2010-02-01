@@ -9,10 +9,10 @@
 
 <?php
 
-echo £('div.dm_box.little.secure.mt20', £('div.title', £('h2', 'You don\'t have the required permission to access this page.')).£('div.dm_box_inner',
-  £('ul.choices',
-    £('li', £link('dmAuth/signout')->text(__('Logout'))).
-    £('li', £link('@homepage')->text(__('Back to admin homepage'))).
-    £('li', £link('app:front')->text(__('Back to front homepage')))
+echo _tag('div.dm_box.little.secure.mt20', _tag('div.title', _tag('h2', 'You don\'t have the required permission to access this page.'))._tag('div.dm_box_inner',
+  _tag('ul.choices',
+    _tag('li', _link('dmAuth/signout')->text(__('Logout'))).
+    _tag('li', _link('@homepage')->text(__('Back to admin homepage'))).
+    _tag('li', _link('app:front')->text(__('Back to front homepage')))
   )
 ));

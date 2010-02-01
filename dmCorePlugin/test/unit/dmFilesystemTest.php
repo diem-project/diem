@@ -4,7 +4,7 @@ require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
 $helper = new dmUnitTestHelper();
 $helper->boot();
 
-$t = new lime_test(11);
+$t = new lime_test(15);
 
 $fs = $helper->get('filesystem');
 
@@ -37,3 +37,18 @@ $t->is($helper->fixLinebreaks($fs->getLastExec('output')), 'diem-test'."\n", 'Ou
 $t->comment('Unix command : '.($command = 'whoami'));
 
 $t->is($fs->exec($command), $success = ('/' === DIRECTORY_SEPARATOR), 'Execution : '.$success);
+
+$t->comment('Test ->getFilesInDir()');
+
+$fs->mirror(dirname(__FILE__), sfConfig::get('sf_cache_dir'), sfFinder::type('file'));
+mkdir(sfConfig::get('sf_cache_dir').'/test_dir');
+$fullFind = $fs->find('file')->maxdepth(0)->in(sfConfig::get('sf_cache_dir'));
+$fastFind = $fs->findFilesInDir(sfConfig::get('sf_cache_dir'));
+
+$t->ok(count($fullFind) > 50, 'sfFinder finds '.count($fullFind).' files');
+
+$t->ok(in_array($file = sfConfig::get('sf_cache_dir').'/'.basename(__FILE__), $fullFind), 'sfFinder found '.$file);
+
+$t->is(count($fastFind), count($fullFind), '->findFilesInDir finds '.count($fullFind).' files');
+
+$t->is_deeply($fastFind, $fullFind, '->findFilesInDir() works like sfFinder');
