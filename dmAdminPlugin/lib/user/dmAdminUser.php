@@ -88,7 +88,7 @@ class dmAdminUser extends dmCoreUser
     
     return $this->availableModules[$module->getKey()] =
     $module->hasAdmin()
-    && ($module->isProject() || in_array($moduleKey, sfConfig::get('sf_enabled_modules')))
+    //&& ($module->isProject() || in_array($moduleKey, sfConfig::get('sf_enabled_modules')))
     && (!$module->getOption('credentials') || $this->can($module->getOption('credentials')));
   }
   
