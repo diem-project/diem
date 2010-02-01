@@ -51,21 +51,17 @@ class dmHelper extends dmConfigurable
     
     return get_component($moduleName, $componentName, $vars);
   }
-  
-  
-  /*
-   * a, class='tagada ergrg' id=zegf, contenu
-   * a class=tagada id=truc, contenu
-   * a, contenu
-   * a, array(), contenu
-   * a#truc.tagada, contenu
-   */
+
+  public function open($tagName, array $opt = array())
+  {
+    return $this->tag($tagName, $opt, false, false);
+  }
   public function £o($tagName, array $opt = array())
   {
-    return $this->£($tagName, $opt, false, false);
+    return $this->open($tagName, $opt);
   }
 
-  public function £c($tagName)
+  public function close($tagName)
   {
     if ($pos = strpos($tagName, '.') !== false)
     {
@@ -89,8 +85,12 @@ class dmHelper extends dmConfigurable
     
     return '</'.$tagName.'>';
   }
+  public function £c($tagName)
+  {
+    return $this->close($tagName);
+  }
 
-  public function £($tagName, $opt = array(), $content = false, $openAndClose = true)
+  public function tag($tagName, $opt = array(), $content = false, $openAndClose = true)
   {
     if (!($tagName = trim($tagName)))
     {
@@ -215,13 +215,21 @@ class dmHelper extends dmConfigurable
 
     return $tag;
   }
+  public function £($tagName, $opt = array(), $content = false, $openAndClose = true)
+  {
+    return $this->tag($tagName, $opt, $content, $openAndClose);
+  }
   
-  public function £link($source = null)
+  public function link($source = null)
   {
     return $this->serviceContainer->getService('link_tag_factory')->buildLink($source);
   }
+  public function £link($source = null)
+  {
+    return $this->link($source);
+  }
   
-  public function £media($source)
+  public function media($source)
   {
     try
     {
@@ -239,14 +247,14 @@ class dmHelper extends dmConfigurable
         throw $e;
       }
 
-      return $this->£media(null);
+      return $this->media(null);
     }
     
     $serviceName = 'media_tag_'.$resource->getMime();
     
     if (!$this->serviceContainer->hasService($serviceName))
     {
-      throw new dmException('£media can not display '.$source.' : missing service '.$serviceName);
+      throw new dmException('helper->media can not display '.$source.' : missing service '.$serviceName);
     }
 
     $media = $this->serviceContainer->getService($serviceName);
@@ -263,10 +271,18 @@ class dmHelper extends dmConfigurable
 
     return $media;
   }
+  public function £media($source)
+  {
+    return $this->media($source);
+  }
   
-  public function £table()
+  public function table()
   {
     return $this->serviceContainer->get('table_tag');
+  }
+  public function £table()
+  {
+    return $this->table();
   }
   
   public function getStylesheetWebPath($asset)
