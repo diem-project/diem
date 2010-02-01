@@ -46,7 +46,7 @@ foreach($widgetTypes as $moduleKey => $actions)
       $form = new $formClass($widget);
       
       $html = $form->render();
-      $t->like($html, '_^<form\s(.|\n)*</form>$_', 'Successfully obtained and rendered a '.$formClass.' instance');
+      $t->like($html, '_</form>$_', 'Successfully obtained and rendered a '.$formClass.' instance');
     }
     catch(Exception $e)
     {
