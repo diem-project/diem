@@ -7,7 +7,6 @@ default:
     - layout
     - main
     - markdown
-    - navigation
 
   javascripts:
     - front
