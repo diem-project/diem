@@ -57,6 +57,7 @@ class ProjectConfiguration extends dmProjectConfiguration
   {
     @unlink(dmOs::join(sfConfig::get('sf_web_dir'), 'sf'));
     @unlink(dmOs::join(sfConfig::get('sf_web_dir'), 'dmFlowPlayerPlugin'));
+    @unlink(dmOs::join(sfConfig::get('sf_web_dir'), 'sfFormExtraPlugin'));
     
     foreach(array('core', 'front', 'admin') as $dmAssetDir)
     {
