@@ -20,13 +20,24 @@ class PluginDmMediaTable extends myDoctrineTable
     ->fetchOne();
   }
 
-
   public function findOneByFileAndDmMediaFolderId($file, $id)
   {
-    return dmDb::query('DmMedia m')
-    ->where('file = ?', $file)
-    ->andWhere('dm_media_folder_id = ?', $id)
+    return $this->createQuery('m')
+    ->where('m.file = ?', $file)
+    ->andWhere('m.dm_media_folder_id = ?', $id)
     ->leftJoin('m.Folder f')
+    ->fetchOne();
+  }
+
+  public function findOneByRelPath($relPath)
+  {
+    $dirName = dirname($relPath);
+    $fileName = basename($relPath);
+
+    return $this->createQuery('m')
+    ->innerJoin('m.Folder f')
+    ->where('m.file = ?', $fileName)
+    ->andWhere('f.rel_path = ?', $dirName)
     ->fetchOne();
   }
 }

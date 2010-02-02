@@ -223,6 +223,11 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
    */
   public function move(DmMediaFolder $folder)
   {
+    if($folder->id == $this->nodeParentId)
+    {
+      return $this;
+    }
+
     if($folder->getNode()->isDescendantOfOrEqualTo($this))
     {
       throw new dmException('Can not move to a descendant');
@@ -276,6 +281,8 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
         $folder->save();
       }
     }
+
+    return $this;
   }
 
   public function sync($depth = 99)

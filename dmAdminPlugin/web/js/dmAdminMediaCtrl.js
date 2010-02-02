@@ -20,9 +20,10 @@ $library.find('ul.content li.file a.link').bind('click', function()
         $formWrap.block();
       },
       success:  function(data) {
-        if (data.substr(0, 4) == '[OK]')
+        if (!data.match(/</))
         {
-          location.href = data.split('|')[1];
+          $library.block();
+          location.href = data;
         }
         else
         {
@@ -46,12 +47,13 @@ $library.find("div.control a.dialog_me").bind('click', function()
   {
     $dialog.prepare();
     $("form", $dialog).dmAjaxForm({
-      beforeSubmit: function() {
+      beforeSubmit: function()
+      {
         $dialog.block();
       },
       success:  function(data)
       {
-        if (!data.match(/<form/))
+        if (!data.match(/</))
         {
           $library.block();
           location.href = data;

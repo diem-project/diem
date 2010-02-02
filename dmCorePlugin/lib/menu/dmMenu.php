@@ -269,7 +269,7 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
    * Manipulation
    */
 
-  public function addChild($child, $link = null, $options = array())
+  public function addChild($child, $link = null)
   {
     if (!$child instanceof dmMenu)
     {

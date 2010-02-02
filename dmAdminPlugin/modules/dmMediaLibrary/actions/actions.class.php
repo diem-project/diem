@@ -5,6 +5,8 @@ class dmMediaLibraryActions extends dmAdminBaseActions
 
   public function executeFile(sfWebRequest $request)
   {
+    $this->setLayout(false);
+    
     $this->forward404Unless(
       $this->file = dmDb::table('DmMedia')->find($request->getParameter('media_id')),
       'media not found'
@@ -43,9 +45,7 @@ class dmMediaLibraryActions extends dmAdminBaseActions
       $this->getUser()->logAlert($this->getI18n()->__('This folder is not writable'), false);
     }
 
-    $t = dmDebug::timerOrNull('media synchronisation');
     $this->folder->sync();
-    $t && $t->addTime();
 
     $this->files = $this->folder->Medias;
 
@@ -54,6 +54,8 @@ class dmMediaLibraryActions extends dmAdminBaseActions
     {
       $this->metadata['open_media'] = $this->getUser()->getFlash('dm_media_open');
     }
+
+    $this->controlMenu = $this->getService('menu', 'dmMediaLibraryControlMenu')->build($this->folder);
   }
   
   public function listenToBreadCrumbFilterLinksEvent(sfEvent $event, array $links)
@@ -89,10 +91,10 @@ class dmMediaLibraryActions extends dmAdminBaseActions
       return $this->renderPartial('dmInterface/flash');
     }
 
-    $this->form = new DmMediaForm();
-    $this->form->setDefault('dm_media_folder_id', $parent->getId());
+    $form = new DmMediaForm();
+    $form->setDefault('dm_media_folder_id', $parent->getId());
 
-    $this->setTemplate('editFile');
+    return $this->renderText($form->render('.dm_form.list.little action=dmMediaLibrary/saveFile'));
   }
 
   public function executeSaveFile(sfWebRequest $request)
@@ -106,20 +108,20 @@ class dmMediaLibraryActions extends dmAdminBaseActions
       $media = null;
     }
     
-    $this->form = new DmMediaForm($media);
+    $form = new DmMediaForm($media);
 
-    if ($this->form->bindAndValid($request))
+    if ($form->bindAndValid($request))
     {
-      $object = $this->form->save();
+      $object = $form->save();
 
-      if($this->form->getValue('file'))
+      if($form->getValue('file'))
       {
         $this->getUser()->setFlash('dm_media_open', $object->id, false);
         return $this->renderText($this->getRouting()->getMediaUrl($object->Folder));
       }
     }
 
-    $this->setTemplate('editFile');
+    return $this->renderText($form->render('.dm_form.list.little action=dmMediaLibrary/saveFile'));
   }
 
   public function executeDeleteFile(sfWebRequest $request)
@@ -139,7 +141,6 @@ class dmMediaLibraryActions extends dmAdminBaseActions
     }
 
     return $this->redirect($this->getRouting()->getMediaUrl($this->file->Folder));
-
   }
 
   public function executeRenameFolder(sfWebRequest $request)
@@ -165,6 +166,29 @@ class dmMediaLibraryActions extends dmAdminBaseActions
     return $this->renderText($form->render('.dm_form.list.little action="dmMediaLibrary/renameFolder?id='.$folder->id.'"'));
   }
 
+  public function executeMoveFolder(sfWebRequest $request)
+  {
+    $this->forward404Unless(
+      $folder = dmDb::table('DmMediaFolder')->find($request->getParameter('id')),
+      'can not find folder'
+    );
+
+    if (!$folder->isWritable())
+    {
+      $this->getUser()->logAlert($this->getI18n()->__('Folder %1% is not writable', array('%1%' => $folder->getRelPath())));
+      return $this->renderPartial('dmInterface/flash');
+    }
+
+    $form = new DmAdminMoveMediaFolderForm($folder);
+
+    if ($request->isMethod('post') && $form->bindAndValid($request))
+    {
+      return $this->renderText($this->getRouting()->getMediaUrl($form->save()));
+    }
+
+    return $this->renderText($form->render('.dm_form.list.little action="dmMediaLibrary/moveFolder?id='.$folder->id.'"'));
+  }
+
   public function executeNewFolder(sfWebRequest $request)
   {
     $this->forward404Unless(
@@ -182,64 +206,28 @@ class dmMediaLibraryActions extends dmAdminBaseActions
       return $this->renderPartial('dmInterface/flash');
     }
 
-    $this->form = new DmAdminNewMediaFolderForm;
-    $this->form->setDefault('parent_id', $parent->id);
+    $form = new DmAdminNewMediaFolderForm;
+    $form->setDefault('parent_id', $parent->id);
+
+    return $this->renderText($form->render('.dm_form.list.little action=dmMediaLibrary/createFolder'));
   }
   
   public function executeCreateFolder(dmWebRequest $request)
   {
-    $this->form = new DmAdminNewMediaFolderForm;
+    $form = new DmAdminNewMediaFolderForm;
     
-    if ($this->form->bindAndValid($request))
+    if ($form->bindAndValid($request))
     {
-      $this->form->save();
-
-      return $this->renderText($this->getRouting()->getMediaUrl($this->form->getObject()));
+      return $this->renderText($this->getRouting()->getMediaUrl($form->save()));
     }
     
-    $this->setTemplate('newFolder');
-  }
-
-  public function executeSaveFolder(sfWebRequest $request)
-  {
-    $this->form = new DmAdminMediaFolderForm(
-      dmDb::table('DmMediaFolder')->find(dmArray::get($request->getParameter('dm_media_folder'), 'id')),
-      'can not find folder'
-    );
-
-    if ($this->form->bindAndValid($request))
-    {
-      $oldName = $this->form->getObject()->getName();
-
-      $object = $this->form->updateObject();
-
-      $this->forward404Unless(
-        $parent = dmDb::table('DmMediaFolder')->find($this->form->getValue('parent_id')),
-        sprintf('There is no parent %d', $this->form->getValue('parent_id'))
-      );
-
-      if ($object->isNew())
-      {
-        $object->getNode()->insertAsLastChildOf($parent);
-      }
-      else
-      {
-        $object->setName($oldName);
-        $object->rename($this->form->getValue('name'));
-      }
-
-      $object->save();
-
-      return $this->renderText($this->getRouting()->getMediaUrl($object));
-    }
-
-    $this->setTemplate('editFolder');
+    return $this->renderText($form->render('.dm_form.list.little action=dmMediaLibrary/createFolder'));
   }
 
   public function executeDeleteFolder(sfWebRequest $request)
   {
     $this->forward404Unless(
-      $this->folder = dmDb::table('DmMediaFolder')->find($request->getParameter('folder_id'))
+      $this->folder = dmDb::table('DmMediaFolder')->find($request->getParameter('id'))
     );
 
     if(!$parent = $this->folder->getNode()->getParent())

@@ -10,9 +10,7 @@ echo _open('div.right.dm_box');
 
 echo _tag('h2.title', __('Menu'));
 
-echo _tag('div.control_wrap.dm_box_inner',
-  get_partial('dmMediaLibrary/control', array('folder' => $folder))
-);
+echo _tag('div.control_wrap.dm_box_inner', _tag('div.control', $controlMenu->render()));
 
 echo _close('div'); // right
 
@@ -22,11 +20,14 @@ echo _open('ul.content.clearfix');
 
 if ($folder->isRoot())
 {
-  echo _tag('li', _tag('a.root', _media('dmAdmin/images/media/up2.png')->size(64, 64)));
+  echo _tag('li.parent_folder', _tag('a.root', _media('dmAdmin/images/media/up2.png')->size(64, 64)));
 }
 else
 {
-  echo _tag('li', (_link($sf_context->getRouting()->getMediaUrl($folder->getNode()->getParent()))->text(_media('dmAdmin/images/media/up.png')->size(64, 64))));
+  echo _tag('li.parent_folder',
+    _link($sf_context->getRouting()->getMediaUrl($folder->getNode()->getParent()))
+    ->text(_media('dmAdmin/images/media/up.png')->size(64, 64)->alt(__('Back to the parent folder')))
+  );
 }
 
 if ($children = $folder->getNode()->getChildren())
