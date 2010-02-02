@@ -149,6 +149,7 @@ do
           
           // verify that we can connect to the database
           $dbh = new PDO($settings['database']['dsn'], $settings['database']['user'], $settings['database']['password']);
+          $isDatabaseOk = true; 
           
           $this->log(sprintf('Database %s successfully created.', $settings['database']['name']));
           $this->log('');
