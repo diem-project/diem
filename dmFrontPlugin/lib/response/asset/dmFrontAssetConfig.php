@@ -60,7 +60,6 @@ class dmFrontAssetConfig extends dmAssetConfig
         'core.editPlugins',
         'core.ctrl',
         'core.editCtrl',
-        'core.form',
         'core.toolBar',
         'core.pageBar',
         'core.mediaBar',

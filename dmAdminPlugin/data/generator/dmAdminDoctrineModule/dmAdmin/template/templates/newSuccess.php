@@ -1,7 +1,6 @@
 [?php
   use_helper('Date');
   use_stylesheet('admin.form');
-  use_javascript('core.form');
   use_javascript('admin.form');
 
   slot('dm.mini_search_form');

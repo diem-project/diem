@@ -6,7 +6,6 @@ js:
     editPlugins:      dmCoreEditPlugins
     ctrl:             dmCoreCtrl
     editCtrl:         dmCoreEditCtrl
-    form:             dmCoreForm
     markdown:         dmCoreMarkdown
     tabForm:          dmCoreTabForm
     toolBar:          dmCoreToolBar

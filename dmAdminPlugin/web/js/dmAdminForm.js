@@ -1,7 +1,7 @@
 (function($)
 {
 
-  $.widget('ui.dmAdminForm', $.extend({}, $.dm.coreForm, {
+  $.widget('ui.dmAdminForm', {
   
     _init: function()
     {
@@ -11,8 +11,13 @@
       this.markdown();
       this.selectObject();
       this.checkBoxList();
-      this.linkDroppable();
+      this.droppableInput();
       this.hotKeys();
+    },
+
+    droppableInput: function()
+    {
+      $('input.dm_link_droppable, .dm_link_droppable input', this.element).dmDroppableInput();
     },
     
     focusFirstInput: function()
@@ -148,6 +153,6 @@
       });
     }
     
-  }));
+  });
   
 })(jQuery);

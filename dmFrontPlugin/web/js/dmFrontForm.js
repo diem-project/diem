@@ -1,6 +1,6 @@
 (function($) {
   
-$.widget('ui.dmFrontForm', $.extend({}, $.dm.coreForm, {
+$.widget('ui.dmFrontForm', {
 
   _init : function()
 	{
@@ -9,10 +9,13 @@ $.widget('ui.dmFrontForm', $.extend({}, $.dm.coreForm, {
 		this.form = $('form:first', this.element);
 		
     this.markdown();
-		
-    this.linkDroppable();
-
+    this.droppableInput();
 		this.hotKeys();
+  },
+
+  droppableInput: function()
+  {
+    $('input.dm_link_droppable, .dm_link_droppable input', this.element).dmDroppableInput();
   },
 
 	hotKeys: function()
@@ -35,6 +38,6 @@ $.widget('ui.dmFrontForm', $.extend({}, $.dm.coreForm, {
     });
   }
   
-}));
+});
 
 })(jQuery);
