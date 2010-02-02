@@ -42,7 +42,8 @@
       return {
         sf_module:  self.options.module,
         sf_action:  self.options.action,
-        record_id:  self.options.record_id
+        record_id:  self.options.record_id,
+        dm_nolog:   1
       };
     },
 
