@@ -128,7 +128,14 @@ class dmRecordLoremizer extends dmConfigurable
         $val = $this->getStringValForColumn($column);
         break;
       case 'boolean':
-        $val = (bool)mt_rand(0,1);
+        if('is_active' === $columnName)
+        {
+          $val = (bool)mt_rand(0, 2);
+        }
+        else
+        {
+          $val = (bool)mt_rand(0, 1);
+        }
         break;
       case 'blob':
       case 'clob':
