@@ -7,11 +7,9 @@ echo _tag('h1.title.none', $file->file);
 echo _open('div.clearfix');
 
   echo _tag('div.view',
-    _link($file->getWebPath())->text(
-    ($file->isImage()
-    ? _media($file)->size(300, 300)
-    : media_file_image_tag($file)
-    ))
+    _link('/'.$file->getWebPath())
+    ->text($file->isImage() ? _media($file)->size(300, 300) : media_file_image_tag($file))
+    ->target('blank')
   );
 
   echo _tag('div.content',
@@ -22,8 +20,7 @@ echo _open('div.clearfix');
         __('Type') => $file->mime,
         __('Created at') => format_datetime($file->createdAt),
         __('Updated at') => format_datetime($file->updatedAt),
-        __('Url') => $file->getFullWebPath(),
-        __('Referers') => media_file_referers_link($file)
+        __('Url') => $file->getFullWebPath()
       ), '.clearfix')
     ).
 

@@ -49,10 +49,12 @@ $library.find("div.control a.dialog_me").bind('click', function()
       beforeSubmit: function() {
         $dialog.block();
       },
-      success:  function(data) {
-        if (data.substr(0, 4) == '[OK]')
+      success:  function(data)
+      {
+        if (!data.match(/<form/))
         {
-          location.href = data.split('|')[1];
+          $library.block();
+          location.href = data;
         }
         else
         {

@@ -39,7 +39,7 @@
 ----------------------------------*/
 .dm .ui-state-default, .dm .ui-widget-content .ui-state-default { border: 1px solid #d3d3d3; background: #e6e6e6 50% 50% repeat-x; font-weight: normal; color: #555555; outline: none; }
 .dm .ui-state-default a, .dm .ui-state-default a:link, .dm .ui-state-default a:visited { color: #555555; text-decoration: none; outline: none; }
-.dm .ui-state-hover, .dm .ui-widget-content .ui-state-hover, .dm .ui-state-focus, .dm .ui-widget-content .ui-state-focus { border: 1px solid #999999; background: #dadada url(images/ui-bg_glass_75_dadada_1x400.png) 50% 50% repeat-x; font-weight: normal; color: #212121; outline: none; }
+.dm .ui-state-hover, .dm .ui-widget-content .ui-state-hover, .dm .ui-state-focus, .dm .ui-widget-content .ui-state-focus { background: #dadada url(images/ui-bg_glass_75_dadada_1x400.png) 50% 50% repeat-x; font-weight: normal; color: #212121; outline: none; }
 .dm .ui-state-hover a, .dm .ui-state-hover a:hover { color: #212121; text-decoration: none; outline: none; }
 .dm .ui-state-active, .dm .ui-widget-content .ui-state-active { border: 1px solid #aaaaaa; background: #ffffff; font-weight: normal; color: #212121; outline: none; }
 .dm .ui-state-active a, .dm .ui-state-active a:link, .dm .ui-state-active a:visited { color: #212121; outline: none; text-decoration: none; }

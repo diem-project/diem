@@ -1,20 +1,5 @@
 <?php
 
-function media_file_referers_link(DmMedia $media)
-{
-  $html = '<ul class="referers">';
-
-  foreach(dmDb::table('DmMedia')->getRelationHolder()->getForeigns() as $foreignRelation)
-  {
-    foreach($foreignRelation->fetchRelatedFor($media) as $foreign)
-    {
-      $html .= sprintf('<li class="referer">%s</li>', _link($foreign));
-    }
-  }
-
-  return $html.'</ul>';
-}
-
 function media_file_infos(DmMedia $object)
 {
   $infos = array(
@@ -31,29 +16,6 @@ function media_file_infos(DmMedia $object)
     ), $infos);
   }
   return $infos;
-}
-
-function media_display_recursive_folders($folders)
-{
-  $html = "";
-
-  foreach($folders as $folder_id => $children)
-  {
-    $folder = DmsMediaFolderPeer::retrieveByPk($folder_id);
-
-    $html .= _open("li rel='$folder_id'");
-
-    $html .= _tag("span.text", $folder->getNom());
-
-    if (is_array($children))
-    {
-      $html .= _tag("ul", media_display_recursive_folders($children));
-    }
-
-    $html .= _close("li");
-  }
-
-  return $html;
 }
 
 function media_file_image_tag($file, $options = array())

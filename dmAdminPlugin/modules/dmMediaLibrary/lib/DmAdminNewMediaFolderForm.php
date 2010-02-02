@@ -34,6 +34,11 @@ class DmAdminNewMediaFolderForm extends DmMediaFolderForm
   
   public function checkExistsInParent($validator, $values)
   {
+    if(!$values['name'])
+    {
+      return $values;
+    }
+    
     if (!$values['parent'] = dmDb::table('DmMediaFolder')->find($values['parent_id']))
     {
       throw new dmException('Create folder without parent');

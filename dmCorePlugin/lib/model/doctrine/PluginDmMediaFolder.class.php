@@ -162,7 +162,7 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
   {
     if ($name === $this->name)
     {
-      return;
+      return $this;
     }
     
     if ($this->getNode()->isRoot())
@@ -212,6 +212,8 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
         $folder->save();
       }
     }
+
+    return $this;
   }
 
   /**

@@ -15,7 +15,7 @@ echo _tag("div.control",
     _tag("li.hr", _tag("p", "&nbsp;")).
 
     (!$folder->isRoot()
-    ? _tag("li", _link("dmMediaLibrary/renameFolder?folder_id=".$folder->getId())->text(__("Rename this folder"))->set('.rename_folder.dialog_me.s16.s16_folder_edit'))
+    ? _tag("li", _link("dmMediaLibrary/renameFolder?id=".$folder->getId())->text(__("Rename this folder"))->set('.rename_folder.dialog_me.s16.s16_folder_edit'))
     : "").
     (!$folder->isRoot()
     ? _tag("li", _link("dmMediaLibrary/moveFolder?folder_id=".$folder->getId())->text(__("Move this folder"))->set('.move_folder.dialog_me.s16.s16_folder_move'))

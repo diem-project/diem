@@ -115,7 +115,7 @@ class dmMediaLibraryActions extends dmAdminBaseActions
       if($this->form->getValue('file'))
       {
         $this->getUser()->setFlash('dm_media_open', $object->id, false);
-        return $this->renderText('[OK]|'.$this->getRouting()->getMediaUrl($object->Folder));
+        return $this->renderText($this->getRouting()->getMediaUrl($object->Folder));
       }
     }
 
@@ -142,30 +142,27 @@ class dmMediaLibraryActions extends dmAdminBaseActions
 
   }
 
-
   public function executeRenameFolder(sfWebRequest $request)
   {
     $this->forward404Unless(
-      $this->folder = dmDb::table('DmMediaFolder')->find($request->getParameter('folder_id')),
+      $folder = dmDb::table('DmMediaFolder')->find($request->getParameter('id')),
       'can not find folder'
     );
 
-    if(!$parent = $this->folder->getNode()->getParent())
+    if (!$folder->isWritable())
     {
-      throw new dmException(sprintf('Can not rename folder %s wich has no parent', $this->folder));
-    }
-
-    if (!$this->folder->isWritable())
-    {
-      $this->getUser()->logAlert($this->getI18n()->__('Folder %1% is not writable', array('%1%' => $this->folder->getRelPath())));
+      $this->getUser()->logAlert($this->getI18n()->__('Folder %1% is not writable', array('%1%' => $folder->getRelPath())));
       return $this->renderPartial('dmInterface/flash');
     }
 
-    $this->form = new DmMediaFolderForm($this->folder);
-    $this->form->setDefault('parent_id', $parent->getId());
-    $this->form->setDefault('id', $this->folder->getId());
+    $form = new DmAdminRenameMediaFolderForm($folder);
 
-    $this->setTemplate('editFolder');
+    if ($request->isMethod('post') && $form->bindAndValid($request))
+    {
+      return $this->renderText($this->getRouting()->getMediaUrl($form->save()));
+    }
+
+    return $this->renderText($form->render('.dm_form.list.little action="dmMediaLibrary/renameFolder?id='.$folder->id.'"'));
   }
 
   public function executeNewFolder(sfWebRequest $request)
@@ -197,7 +194,7 @@ class dmMediaLibraryActions extends dmAdminBaseActions
     {
       $this->form->save();
 
-      return $this->renderText('[OK]|'.$this->getRouting()->getMediaUrl($this->form->getObject()));
+      return $this->renderText($this->getRouting()->getMediaUrl($this->form->getObject()));
     }
     
     $this->setTemplate('newFolder');
@@ -233,7 +230,7 @@ class dmMediaLibraryActions extends dmAdminBaseActions
 
       $object->save();
 
-      return $this->renderText('[OK]|'.$this->getRouting()->getMediaUrl($object));
+      return $this->renderText($this->getRouting()->getMediaUrl($object));
     }
 
     $this->setTemplate('editFolder');
