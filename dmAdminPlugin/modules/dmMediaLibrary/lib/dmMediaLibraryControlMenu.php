@@ -17,7 +17,7 @@ class dmMediaLibraryControlMenu extends dmMenu
     }
 
     $this->serviceContainer->getService('dispatcher')->notify(
-      new sfEvent($this, 'dm.media_library.control_menu', array())
+      new sfEvent($this, 'dm.media_library.control_menu', array('folder' => $folder))
     );
 
     return $this;
@@ -63,7 +63,7 @@ class dmMediaLibraryControlMenu extends dmMenu
   {
     return $this->addChild(
       $this->i18n->__('Add a file here'),
-      $this->helper->link('dmMediaLibrary/newFile?folder_id='.$this->folder->id)
+      $this->helper->link('dmMediaLibrary/saveFile?folder_id='.$this->folder->id)
       ->set('.new_file.dialog_me.s16.s16_file_add.mb20')
     )->end();
   }
