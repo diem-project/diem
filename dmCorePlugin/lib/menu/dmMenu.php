@@ -594,4 +594,21 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
     return $this->removeChild($name);
   }
 
+  /*
+   * Service getters
+   */
+  public function getI18n()
+  {
+    return $this->i18n;
+  }
+
+  public function getHelper()
+  {
+    return $this->helper;
+  }
+
+  public function getUser()
+  {
+    return $this->user;
+  }
 }
