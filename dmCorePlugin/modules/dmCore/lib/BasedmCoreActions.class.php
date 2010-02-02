@@ -2,11 +2,11 @@
 
 class BasedmCoreActions extends dmBaseActions
 {
-  
+
   public function executePing(dmWebRequest $request)
   {
     $recordId = $this->request->getParameter('record_id', 0);
-    
+
     $data = array(
       'user_id'   => $this->getUser()->getUserId(),
       'time'      => $_SERVER['REQUEST_TIME'],
@@ -16,23 +16,18 @@ class BasedmCoreActions extends dmBaseActions
       'record_id' => $recordId,
       'culture'   => $this->getUser()->getCulture()
     );
-    
+
     dmDb::table('DmLock')->ping($data);
 
     $users = dmDb::table('DmLock')->getUserNames();
 
-    if($recordId && count($users) > 1)
+    if($recordId && count($users) > 1 && count($locks = dmDb::table('DmLock')->getLocks($data)))
     {
-      $locks = $recordId ? dmDb::table('DmLock')->getLocks($data) : array();
-
-      if(!empty($locks))
+      foreach($locks as $index => $lock)
       {
-        foreach($locks as $index => $lock)
-        {
-          $locks[$index] = $this->getI18n()->__('%user% is browsing this page, you should not modify it now.', array(
-            '%user%' => '<strong>'.$lock.'</strong>'
-            ));
-        }
+        $locks[$index] = $this->getI18n()->__('%user% is browsing this page, you should not modify it now.', array(
+          '%user%' => '<strong>'.$lock.'</strong>'
+        ));
       }
     }
     else
@@ -45,11 +40,11 @@ class BasedmCoreActions extends dmBaseActions
       'locks' => implode('|', $locks)
     ));
   }
-  
+
   public function executeThumbnail(dmWebRequest $request)
   {
     $tag = $this->getHelper()->media($request->getParameter('source'));
-  
+
     foreach(array('width', 'height', 'method', 'quality') as $key)
     {
       if ($request->hasParameter($key))
@@ -57,7 +52,7 @@ class BasedmCoreActions extends dmBaseActions
         $tag->set($key, $request->getParameter($key));
       }
     }
-    
+
     return $this->renderText($tag->render());
   }
 
@@ -87,10 +82,10 @@ class BasedmCoreActions extends dmBaseActions
     );
 
     $this->setLayout(false);
-    
+
     $this->getUser()->setAttribute('dm_refresh_back_url', $this->getBackUrl());
   }
-  
+
   public function executeRefreshStep(dmWebRequest $request)
   {
     if ($request->hasParameter('dm_use_thread'))
@@ -99,54 +94,54 @@ class BasedmCoreActions extends dmBaseActions
       ->mergeParameter('page_tree_watcher.options', array('use_thread' => $request->getParameter('use_thread')))
       ->reload('page_tree_watcher');
     }
-    
+
     $this->step = $request->getParameter('step');
-    
+
     try
     {
       switch($this->step)
       {
         case 1:
           @$this->getService('cache_manager')->clearAll();
-       
+
           if ($this->getUser()->can('system'))
           {
             @$this->getService('filesystem')->sf('dmFront:generate');
-      
+
             @dmFileCache::clearAll();
           }
-          
+
           $data = array(
             'msg'  => $this->getI18n()->__('Page synchronization'),
             'type' => 'ajax',
             'url'  => $this->getHelper()->link('+/dmCore/refreshStep')->param('step', 2)->getHref()
           );
           break;
-          
+
         case 2:
           $this->getService('page_tree_watcher')->synchronizePages();
-          
+
           $data = array(
             'msg'  => $this->getI18n()->__('SEO synchronization'),
             'type' => 'ajax',
             'url'  => $this->getHelper()->link('+/dmCore/refreshStep')->param('step', 3)->getHref()
           );
           break;
-          
+
         case 3:
           $this->getService('page_tree_watcher')->synchronizeSeo();
-          
+
           if (count($this->getI18n()->getCultures()) > 1)
           {
             $this->getService('page_i18n_builder')->createAllPagesTranslations();
           }
-          
+
           $data = array(
             'msg'  => $this->getI18n()->__('Interface regeneration'),
             'type' => 'redirect',
             'url'  => $this->getUser()->getAttribute('dm_refresh_back_url')
           );
-          
+
           $this->context->getEventDispatcher()->notify(new sfEvent($this, 'dm.refresh', array()));
           $this->getUser()->getAttributeHolder()->remove('dm_refresh_back_url');
           $this->getUser()->logInfo('Project successfully updated');
@@ -156,13 +151,13 @@ class BasedmCoreActions extends dmBaseActions
     catch(Exception $e)
     {
       $this->getUser()->logError($this->getI18n()->__('Something went wrong when updating project'));
-      
+
       $data = array(
         'msg'  => $this->getI18n()->__('Something went wrong when updating project'),
         'type' => 'redirect',
         'url'  => $this->getUser()->getAttribute('dm_refresh_back_url')
       );
-    
+
       if (sfConfig::get('sf_debug'))
       {
         if ($request->isXmlHttpRequest())
@@ -175,13 +170,13 @@ class BasedmCoreActions extends dmBaseActions
         }
       }
     }
-    
+
     return $this->renderJson($data);
   }
-  
+
   public function executeMarkdown(dmWebRequest $request)
   {
     return $this->renderText($this->getService('markdown')->toHtml($request->getParameter('text')));
   }
-  
+
 }

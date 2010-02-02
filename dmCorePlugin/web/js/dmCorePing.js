@@ -10,7 +10,7 @@
       var self = $.dm.ping;
 
       self.options = $.extend({
-        delay:    3000,
+        delay:    4000,
         url:      $.dm.ctrl.getHref('+/dmCore/ping')
       }, options || {});
 

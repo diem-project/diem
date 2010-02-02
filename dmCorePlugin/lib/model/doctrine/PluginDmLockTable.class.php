@@ -11,10 +11,10 @@ class PluginDmLockTable extends myDoctrineTable
   {
     $locks = dmDb::pdo(
       sprintf(
-        'SELECT DISTINCT a.user_name FROM %s a WHERE a.user_id != ? AND a.module = ? AND a.action = ? AND a.record_id = ? ORDER BY a.user_name ASC',
+        'SELECT DISTINCT a.user_name FROM %s a WHERE a.user_id != ? AND a.module = ? AND a.action = ? AND a.record_id = ? AND a.time > ? ORDER BY a.user_name ASC',
         $this->getTableName()
       ),
-      array($data['user_id'], $data['module'], $data['action'], $data['record_id'])
+      array($data['user_id'], $data['module'], $data['action'], $data['record_id'], $_SERVER['REQUEST_TIME'] - sfConfig::get('dm_locks_timeout', 10))
     )->fetchAll(PDO::FETCH_NUM);
 
     return $this->toUsernames($locks);
@@ -26,8 +26,8 @@ class PluginDmLockTable extends myDoctrineTable
   public function getUserNames()
   {
     $locks = dmDb::pdo(
-      sprintf('SELECT DISTINCT a.user_name FROM %s a ORDER BY a.user_name ASC', $this->getTableName()),
-      array()
+      sprintf('SELECT DISTINCT a.user_name FROM %s a WHERE a.time > ? ORDER BY a.user_name ASC', $this->getTableName()),
+      array($_SERVER['REQUEST_TIME'] - sfConfig::get('dm_locks_timeout', 10))
     )->fetchAll(PDO::FETCH_NUM);
 
     return $this->toUsernames($locks);
@@ -82,7 +82,7 @@ class PluginDmLockTable extends myDoctrineTable
   {
     dmDb::pdo(
       sprintf('DELETE FROM %s WHERE time < ?', $this->getTableName()),
-      array($_SERVER['REQUEST_TIME'] - sfConfig::get('dm_locks_timeout', 10))
+      array($_SERVER['REQUEST_TIME'] - 10*sfConfig::get('dm_locks_timeout', 10))
     );
   }
 
