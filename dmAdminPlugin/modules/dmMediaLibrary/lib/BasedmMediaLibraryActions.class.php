@@ -17,7 +17,7 @@ class BasedmMediaLibraryActions extends dmAdminBaseActions
       $this->getUser()->logAlert($this->getI18n()->__('This file is not writable'), false);
     }
 
-    $this->form = new DmMediaForm($this->file);
+    $this->form = new DmAdminMediaForm($this->file);
   }
 
   public function executeIndex(sfWebRequest $request)
@@ -75,53 +75,45 @@ class BasedmMediaLibraryActions extends dmAdminBaseActions
     return $links;
   }
 
-  public function executeNewFile(sfWebRequest $request)
+  public function executeSaveFile(dmWebRequest $request)
   {
-    $this->forward404Unless(
-      $parent = dmDb::table('DmMediaFolder')->find($request->getParameter('folder_id')),
-      sprintf('There is no parent %d', $request->getParameter('folder_id'))
-    );
-
-    if  (!$parent->isWritable())
-    {
-      $this->getUser()->logAlert(
-        $this->getI18n()->__('Folder %1% is not writable', array('%1%' => $parent->getFullPath()))
-      );
-
-      return $this->renderPartial('dmInterface/flash');
-    }
-
-    $form = new DmMediaForm();
-    $form->setDefault('dm_media_folder_id', $parent->getId());
-
-    return $this->renderText($form->render('.dm_form.list.little action=dmMediaLibrary/saveFile'));
-  }
-
-  public function executeSaveFile(sfWebRequest $request)
-  {
-    if ($mediaId = dmArray::get($request->getParameter('dm_media_form'), 'id'))
+    // modify existing media
+    if ($mediaId = dmArray::get($request->getParameter('dm_admin_media_form'), 'id'))
     {
       $this->forward404Unless($media = dmDb::table('DmMedia')->find($mediaId));
+      $form = new DmAdminMediaForm($media);
     }
+    // create new media
     else
     {
       $media = null;
-    }
 
-    $form = new DmMediaForm($media);
+      $this->forward404Unless($folder = dmDb::table('DmMediaFolder')->find($request->getParameter('folder_id')));
 
-    if ($form->bindAndValid($request))
-    {
-      $object = $form->save();
-
-      if($form->getValue('file'))
+      if(!$folder->isWritable())
       {
-        $this->getUser()->setFlash('dm_media_open', $object->id, false);
-        return $this->renderText($this->getRouting()->getMediaUrl($object->Folder));
+        $this->getUser()->logAlert($this->getI18n()->__('Folder %1% is not writable', array('%1%' => $folder->fullPath)));
+      }
+      
+      $form = new DmAdminMediaForm();
+      $form->setDefault('dm_media_folder_id', $folder->id);
+    }
+    
+    if ($request->isMethod('post') && $form->bindAndValid($request))
+    {
+      $redirect = $form->getValue('file') || $media->dm_media_folder_id != $form->getValue('dm_media_folder_id');
+
+      $media = $form->save();
+
+      if($redirect)
+      {
+        $this->getUser()->setFlash('dm_media_open', $media->id, false);
+        return $this->renderText($this->getRouting()->getMediaUrl(dmDb::table('DmMediaFolder')->find($media->dm_media_folder_id)));
       }
     }
 
-    return $this->renderText($form->render('.dm_form.list.little action=dmMediaLibrary/saveFile'));
+    $action = $media ? 'dmMediaLibrary/saveFile' : 'dmMediaLibrary/saveFile?folder_id='.$folder->id;
+    return $this->renderText($form->render('.dm_form.list.little action="'.$action.'"'));
   }
 
   public function executeDeleteFile(sfWebRequest $request)

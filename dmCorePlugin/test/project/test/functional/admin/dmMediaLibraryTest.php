@@ -83,9 +83,10 @@ $b
 ))
 ->has('h1', false)
 ->has('form', true)
+->has('error_list', false)
 
-->info('Change legend, author and icense')
-->click('input.submit', array('dm_media_form' => array(
+->info('Change legend, author and license')
+->click('input.submit', array('dm_admin_media_form' => array(
   'author' => 'new author',
   'legend' => 'new legend',
   'license' => 'new license',
@@ -98,7 +99,8 @@ $b
   'method' => 'post'
 ))
 ->has('h1', false)
-->has('form', true);
+->has('form', true)
+->has('error_list', false);
 
 $media = dmDb::table('DmMedia')->findOneByRelPath('images/default.jpg');
 
@@ -106,6 +108,38 @@ $b->test()->isa_ok($media, 'DmMedia', 'images/default.jpg is a DmMedia');
 $b->test()->is($media->legend, 'new legend', 'media legend is '.$media->legend);
 $b->test()->is($media->author, 'new author', 'media author is '.$media->author);
 $b->test()->is($media->license, 'new license', 'media license is '.$media->license);
+
+$deeperFolder = dmDb::table('DmMediaFolder')->findOneByRelPath('images/deeper');
+
+$b->info('Move the file')
+->click('input.submit', array('dm_admin_media_form' => array(
+  'author' => 'new author',
+  'legend' => 'new legend',
+  'license' => 'new license',
+  'dm_media_folder_id' => $deeperFolder->id,
+  'id' => 2
+)))
+->checks(array(
+  'code' => 200,
+  'moduleAction' => 'dmMediaLibrary/saveFile',
+  'method' => 'post'
+))
+->has('form', false)
+->testResponseContent('/index.php/tools/media/media/path/images/deeper');
+
+$deeperFolder->refresh(true);
+$deeperFolder->refreshRelated('Medias');
+
+$b->test()->is($media->relPath, 'images/deeper/default.jpg', 'media relPath is '.$media->relPath);
+
+$b->info('Follow ajax redirection')
+->get('/tools/media/media/path/images/deeper')
+->checks(array(
+  'code' => 200,
+  'moduleAction' => 'dmMediaLibrary/path',
+  'h1' => 'deeper'
+))
+->has('.dm_media_library ul.content li.file:first a span', 'default . jpg');
 
 $b->info('Add a folder')
 ->get('/tools/media/media')
@@ -293,9 +327,9 @@ $b->info('Move test folder')
 ->click('div.control a.new_file')
 ->checks(array(
   'code' => 200,
-  'moduleAction' => 'dmMediaLibrary/newFile'
+  'moduleAction' => 'dmMediaLibrary/saveFile'
 ))
-->has('form input#dm_media_form_file')
+->has('form input#dm_admin_media_form_file')
 
 ->info('Submit unchanged form')
 ->click('input.submit')

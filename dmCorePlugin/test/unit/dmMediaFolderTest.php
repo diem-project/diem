@@ -4,7 +4,7 @@ require_once(dirname(__FILE__).'/helper/dmMediaUnitTestHelper.php');
 $helper = new dmMediaUnitTestHelper();
 $helper->boot();
 
-$t = new lime_test(120);
+$t = new lime_test(122);
 
 $table = dmDb::table('DmMediaFolder');
 $root = $table->checkRoot();
@@ -115,6 +115,8 @@ foreach(array($grandParent, $parent, $f1, $f2) as $folder)
   $t->is($folder->getNodeParentId(), $folder->isRoot() ? null : $folder->Node->getParent()->id, $folder->name.' node parent id is '.$folder->getNodeParentId());
 }
 
+$t->ok(!$f2->hasFile('test.jpg'), 'f2 has no file test.jpg');
+
 $t->comment('Add a file in f2');
 copy(
   dmOs::join(sfConfig::get('dm_core_dir'), 'data/image/defaultMedia.jpg'),
@@ -126,6 +128,8 @@ $media = dmDb::table('DmMedia')->findOneByFileAndDmMediaFolderId('test.jpg', $f2
 
 $t->ok($media->exists(), 'media exists');
 $t->is($media->Folder, $f2, 'media folder is f2');
+
+$t->ok($f2->hasFile('test.jpg'), 'f2 has file test.jpg');
 
 $t->is($f2->nbElements, 2, 'f2 has 2 element');
 

@@ -227,6 +227,41 @@ abstract class PluginDmMedia extends BaseDmMedia
     return $toMedia;
   }
 
+  public function move(DmMediaFolder $folder)
+  {
+    if($folder->id == $this->dm_media_folder_id)
+    {
+      return $this;
+    }
+
+    if(!$this->isWritable())
+    {
+      throw new dmException(sprintf('The file %s is not writable.', dmProject::unRootify($this->fullPath)));
+    }
+
+    if(!$folder->isWritable())
+    {
+      throw new dmException(sprintf('The folder %s is not writable.', dmProject::unRootify($folder->fullPath)));
+    }
+
+    if($folder->hasSubFolder($this->file))
+    {
+      throw new dmException(sprintf('The selected folder already contains a folder named "%s".', $this->name));
+    }
+
+    if($folder->hasFile($this->file))
+    {
+      throw new dmException(sprintf('The selected folder already contains a file named "%s".', $this->name));
+    }
+
+    rename($this->fullPath, $folder->fullPath.'/'.$this->file);
+
+    $this->dm_media_folder_id = $folder->id;
+    $this->Folder = $folder;
+    $this->save();
+
+    return $this;
+  }
 
   public function refreshFromFile()
   {

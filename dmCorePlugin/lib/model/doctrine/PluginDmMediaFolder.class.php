@@ -122,6 +122,20 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
     ->exists();
   }
 
+  /**
+   * Checks if a file already exists in this folder
+   *
+   * @param string $name A file name
+   * @return bool
+   */
+  public function hasFile($name)
+  {
+    return dmDb::query('DmMedia m')
+    ->where('m.dm_media_folder_id = ?', $this->id)
+    ->andWhere('m.file = ?', $name)
+    ->exists();
+  }
+
   /*
    * Shortcut to ->getNode()->isRoot()
    */
@@ -150,7 +164,7 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
    */
   public function create()
   {
-    return $this->getServiceContainer()->getService('filesystem')->mkdir($this->getFullPath());
+    return $this->getService('filesystem')->mkdir($this->getFullPath());
   }
 
   /**
@@ -189,7 +203,7 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
     $oldRelPath = $this->get('rel_path');
     $newRelPath = $this->getNode()->getParent()->get('rel_path').'/'.$name;
 
-    $fs = $this->getServiceContainer()->getService('filesystem');
+    $fs = $this->getService('filesystem');
 
     $oldFullPath = $this->getFullPath();
     $newFullPath = dmOs::join($this->getNode()->getParent()->getFullPath(), $name);
@@ -256,7 +270,7 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
     $oldRelPath = $this->get('rel_path');
     $newRelPath = $folder->get('rel_path').'/'.$this->name;
 
-    $fs = $this->getServiceContainer()->getService('filesystem');
+    $fs = $this->getService('filesystem');
 
     $oldFullPath = $this->getFullPath();
     $newFullPath = dmOs::join($folder->getFullPath(), $this->name);
@@ -345,7 +359,7 @@ LIMIT 1')->getStatement();
     // Remove dir itself
     if(!$this->getNode()->isRoot() && $this->dirExists())
     {
-      $this->getServiceContainer()->getService('filesystem')->deleteDir($this->fullPath);
+      $this->getService('filesystem')->deleteDir($this->fullPath);
     }
 
     return parent::delete($conn);

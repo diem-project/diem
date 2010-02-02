@@ -39,6 +39,12 @@ abstract class PluginDmMediaForm extends BaseDmMediaForm
     }
     
     unset($values['file']);
+
+    if($this->object->exists() && $values['dm_media_folder_id'] != $this->object->dm_media_folder_id)
+    {
+      $moveToFolderId = $values['dm_media_folder_id'];
+      $values['dm_media_folder_id'] = $this->object->dm_media_folder_id;
+    }
     
     parent::doUpdateObject($values);
 
@@ -58,6 +64,11 @@ abstract class PluginDmMediaForm extends BaseDmMediaForm
           throw new dmException(sprintf('Can not replace file for media %s', $object));
         }
       }
+    }
+
+    if(isset($moveToFolderId))
+    {
+      $this->object->move(dmDb::table('DmMediaFolder')->find($moveToFolderId));
     }
   }
 
