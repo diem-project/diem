@@ -97,29 +97,44 @@
     {
       var self = this;
       
-      if ($searchInput = $('#dm_module_search_input').orNot()) 
+      if ($searchInput = $('#dm_module_search_input').orNot())
       {
         $searchInput.focus();
       }
       
-      $('input.sf_admin_list_batch_checkbox', self.$).each(function()
+      self.$.find('input.sf_admin_list_batch_checkbox').each(function()
       {
         $(this).click(function()
         {
-          $('input.sf_admin_batch_checkbox, input.sf_admin_list_batch_checkbox', self.$).attr('checked', $(this).attr('checked'));
+          self.$.find('input.sf_admin_batch_checkbox, input.sf_admin_list_batch_checkbox').attr('checked', $(this).attr('checked'));
         });
       });
       
-      $('input.sf_admin_batch_checkbox, input.sf_admin_list_batch_checkbox', self.$).change(function()
+      self.$.find('input.sf_admin_batch_checkbox, input.sf_admin_list_batch_checkbox').change(function()
       {
-        $('div.sf_admin_actions > input', self.$).attr('disabled', !$('input.sf_admin_batch_checkbox:checked', self.$).length);
+        self.$.find('div.sf_admin_actions > input').attr('disabled', !self.$.find('input.sf_admin_batch_checkbox:checked').length);
       });
       
-      $('select.dm_max_per_page', self.$).each(function()
+      self.$.find('select.dm_max_per_page').each(function()
       {
         $(this).change(function()
         {
           location.href = self.getHref('+/dmAdminGenerator/changeMaxPerPage') + "?dm_module=" + self.options.module + "&max_per_page=" + $(this).val()
+        });
+      });
+
+      // toggle booleans
+      self.$.find('td.sf_admin_boolean span').click(function() {
+        $(this).toggleClass('s16_tick s16_cross');
+        $.ajax({
+          url:      self.$.find('tbody').metadata().toggle_url,
+          data:     {
+            field:  $(this).metadata().field,
+            pk:     $(this).parent().parent().metadata().pk
+          },
+          success:  function(data) {
+            $(this).toggleClass('s16_tick', '1' == data).toggleClass('s16_cross', '0' == data);
+          }
         });
       });
     },

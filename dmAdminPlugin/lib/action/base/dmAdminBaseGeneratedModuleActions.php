@@ -516,4 +516,17 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
       
     $this->redirect('@'.$this->getDmModule()->getUnderscore());
   }
+
+  public function executeToggleBoolean(dmWebRequest $request)
+  {
+    $this->forward404Unless(
+      $this->getDmModule()->getTable()->hasField($field = $request->getParameter('field'))
+      && ($record = $this->getDmModule()->getTable()->find($request->getParameter('pk')))
+    );
+
+    $record->set($field, !$record->get($field));
+    $record->save();
+
+    return $this->renderText($record->$field ? '1' : '0');
+  }
 }

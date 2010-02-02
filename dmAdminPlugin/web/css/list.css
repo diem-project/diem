@@ -124,6 +124,10 @@ div.sf_admin_list td {
   color: #222;
 }
 
+div.sf_admin_list td.sf_admin_boolean span {
+  cursor: pointer;
+}
+
 .dm_list_action_bar .sf_admin_actions {
 }
 

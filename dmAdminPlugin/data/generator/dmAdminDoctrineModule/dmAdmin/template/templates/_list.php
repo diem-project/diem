@@ -19,9 +19,9 @@
           [?php include_partial('<?php echo $this->getModuleName() ?>/list_th_<?php echo $this->configuration->getValue('list.layout') ?>', array('sort' => $sort)) ?]
         </tr>
       </tfoot>
-      <tbody>
+      <tbody class='{toggle_url: "[?php echo £link('@'.$helper->getUrlForAction('toggleBoolean'))->getHref() ?]"}'>
         [?php foreach ($pager->getResults() as $i => $<?php echo $this->getSingularName() ?>): $odd = fmod(++$i, 2) ? 'odd' : 'even' ?]
-          <tr class="sf_admin_row [?php echo $odd ?]">
+          <tr class="sf_admin_row [?php echo $odd ?] {pk: [?php echo $<?php echo $this->getSingularName() ?>->getPrimaryKey() ?]}">
 <?php if ($this->configuration->getValue('list.batch_actions')): ?>
             <td>
               <input type="checkbox" name="ids[]" value="[?php echo $<?php echo $this->getSingularName() ?>->getPrimaryKey() ?]" class="sf_admin_batch_checkbox" />

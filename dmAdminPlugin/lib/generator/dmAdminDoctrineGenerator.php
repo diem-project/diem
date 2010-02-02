@@ -37,14 +37,6 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
 
       if ($localRelation = $this->table->getRelationHolder()->getLocalByColumnName($name))
       {
-//        if ($module = $this->moduleManager->getModuleByModel($localRelation->getClass()))
-//        {
-//          $label = $module->getName();
-//        }
-//        else
-//        {
-//          $label = dmString::humanize($localRelation->getAlias());
-//        }
         $label = dmString::humanize($localRelation->getAlias());
       }
       else
@@ -149,7 +141,7 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
     }
     else if ('Boolean' == $field->getType())
     {
-      $html = "sprintf('<span class=\"s16block s16_%s\"></span>', ".$html." ? 'tick' : 'cross');";
+      $html = "sprintf('<span class=\"s16block s16_%s {field: \'%s\'}\"></span>', ".$html." ? 'tick' : 'cross', '".$fieldName."')";
     }
     /*
      * Local Relation
