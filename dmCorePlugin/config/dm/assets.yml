@@ -49,8 +49,6 @@ js:
     tree-component:   jsTree/source/tree_component.min
     tree-css:         jsTree/source/css
     fieldSelection:   jquery-fieldselection/jquery-fieldselection
-    map:              map/jquery.map
-    mousewheel:       mousewheel/jquery.mousewheel
 
 css:
 

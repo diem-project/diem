@@ -12,7 +12,7 @@ class dmDiagramActions extends dmAdminBaseActions
     
     try
     {
-      foreach(array('admin'/*, 'front'*/) as $appName)
+      foreach(array('admin', 'front') as $appName)
       {
         $this->dicImages[$appName] = $this->getDiagramImage($appName);
       }
@@ -96,7 +96,7 @@ class dmDiagramActions extends dmAdminBaseActions
         'concentrate' => 'false',
         'bgcolor' => 'transparent',
         'ratio' => 'fill',
-        'size' => '10,4'
+        'size' => '20,8'
       ),
       'node'  => array('fontsize' => 20, 'fontname' => 'Arial', 'shape' => 'Mrecord'),
       'edge'  => array('fontsize' => 9, 'fontname' => 'Arial', 'color' => 'grey', 'arrowhead' => 'open', 'arrowsize' => 1),
