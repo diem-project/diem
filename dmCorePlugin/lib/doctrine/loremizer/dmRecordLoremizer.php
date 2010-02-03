@@ -159,6 +159,7 @@ class dmRecordLoremizer extends dmConfigurable
         $val = $column['values'][array_rand($column['values'])];
         break;
       case 'integer':
+      case 'int':
         $val = mt_rand(0, pow(10, $column['length']) - 1);
         break;
       case 'float':

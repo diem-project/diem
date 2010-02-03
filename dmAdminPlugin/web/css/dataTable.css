@@ -18,6 +18,7 @@ div.dm_data th {
 div.dm_data td {
   border-top: 1px dotted #ddd;
   max-width: 600px;
+  overflow: hidden;
 }
 
 div.dm_data tr.odd {
