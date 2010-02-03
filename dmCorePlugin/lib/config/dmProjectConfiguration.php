@@ -47,12 +47,7 @@ class dmProjectConfiguration extends sfProjectConfiguration
   public function configureDoctrine(Doctrine_Manager $manager)
   {
     Doctrine_Core::debug(sfConfig::get('dm_debug'));
-
-    /*
-     * Set up doctrine extensions dir
-     */
-    //Doctrine_Core::setExtensionsPath(sfConfig::get('dm_core_dir').'/lib/doctrine/extension');
-
+    
     /*
      * Configure inheritance
      */

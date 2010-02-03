@@ -4,11 +4,11 @@ class dmProject
 {
 
   protected static
-    $key,
-    $hash,
-    $models,
-    $allModels,
-    $dmModels;
+  $key,
+  $hash,
+  $models,
+  $allModels,
+  $dmModels;
 
   /*
    * Returns project key based on his dir_name
@@ -55,8 +55,8 @@ class dmProject
     if (null === self::$allModels)
     {
       $baseModels = sfFinder::type('file')
-      ->name("Base*.class.php")
-      ->in(dmOs::join(sfConfig::get("sf_lib_dir"), "model/doctrine"));
+      ->name('/^Base\w+.class.php$/i')
+      ->in(dmOs::join(sfConfig::get('sf_lib_dir'), 'model/doctrine'));
 
       self::$allModels = array();
       foreach($baseModels as $baseModel)
@@ -73,7 +73,7 @@ class dmProject
     if (null === self::$dmModels)
     {
       $baseModels = sfFinder::type('file')
-      ->name("Base*.class.php")
+      ->name('/Base\w+.class.php/i')
       ->maxDepth(0)
       ->in(dmOs::join(sfConfig::get("sf_lib_dir"), "model/doctrine/dmCorePlugin/base"));
 

@@ -506,7 +506,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
   /*
    * dmMicroCache
    */
-  private
+  protected
   $cache;
 
   protected function getCache($cacheKey)
