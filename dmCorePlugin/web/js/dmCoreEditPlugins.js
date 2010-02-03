@@ -5,7 +5,7 @@
 
   $.fn.extend({
 
-    dmDroppableInput: function()
+    dmDroppableInput: function(callback)
     {
       var $input = this;
       
@@ -39,6 +39,8 @@
             {
               $input.val('page:' + ui.draggable.attr('id').replace(/dmp/, '') + ' ' + ui.draggable.find('>a').text());
             }
+            
+            callback && $.isFunction(callback) && callback.apply($input);
           }
         });
       }
