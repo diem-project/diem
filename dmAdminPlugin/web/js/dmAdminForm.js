@@ -59,6 +59,14 @@
 
         var $container = $editor.closest('div.markItUpContainer');
 
+        $editor.bind('scroll', function()
+        {
+          if($editor.scrollTop()+$editor.height() == $editor[0].scrollHeight)
+          {
+            $preview.scrollTop($preview[0].scrollHeight - $preview.height());
+          }
+        });
+
         var resize = function()
         {
           $preview.height($container.innerHeight() - 13);
