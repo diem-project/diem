@@ -821,7 +821,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
   /*
    * dmMicroCache
    */
-  private
+  protected
   $cache;
 
   protected function getCache($cacheKey)

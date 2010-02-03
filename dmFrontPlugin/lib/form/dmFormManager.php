@@ -46,7 +46,7 @@ class dmFormManager implements ArrayAccess
       return $form;
     }
     
-    foreach( $form->getWidgetSchema()->getFields() as $widgetKey => $widget)
+    foreach($form->getWidgetSchema()->getFields() as $widgetKey => $widget)
     {
       $widgetModel = $widget->getOption('model');
       

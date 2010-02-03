@@ -58,16 +58,18 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
    */
   protected function tryToSortWithForeignColumn(Doctrine_Query $query, array $sort)
   {
-    if('integer' === dmArray::get($this->getDmModule()->getTable()->getColumnDefinition($sort[0]), 'type'))
+    $table = $this->getDmModule()->getTable();
+    
+    if('integer' === dmArray::get($table->getColumnDefinition($sort[0]), 'type'))
     {
       // If the sort column is a local key, try to sort with foreign table
-      if ($relation = $this->getDmModule()->getTable()->getRelationHolder()->getLocalByColumnName($sort[0]))
+      if ($relation = $table->getRelationHolder()->getLocalByColumnName($sort[0]))
       {
         if ($relation instanceof Doctrine_Relation_LocalKey && ($foreignTable = $relation->getTable()) instanceof dmDoctrineTable)
         {
           if (($foreignColumn = $foreignTable->getIdentifierColumnName()) != 'id')
           {
-            if (!$joinAlias = $query->getJoinAliasForRelationAlias($this->getDmModule()->getModel(), $relation->getAlias()))
+            if (!$joinAlias = $query->getJoinAliasForRelationAlias($table->getComponentName(), $relation->getAlias()))
             {
               $query->leftJoin(sprintf('%s.%s %s', $query->getRootAlias(), $relation->getAlias(), $relation->getAlias()));
               $joinAlias = $relation->getAlias();
@@ -92,14 +94,17 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
         }
       }
     }
-    elseif($this->getDmModule()->getTable()->isI18nColumn($sort[0]))
+    elseif($table->isI18nColumn($sort[0]))
     {
-      $query->addOrderBy(sprintf('%s.%s %s', $query->getJoinAliasForRelationAlias($this->getDmModule()->getModel(), 'Translation'), $sort[0], $sort[1]));
+      $query->addOrderBy(sprintf('%s.%s %s', $query->getJoinAliasForRelationAlias($table->getComponentName(), 'Translation'), $sort[0], $sort[1]));
       // Success, skip default sorting by local column
       return;
     }
 
-    $query->addOrderBy($sort[0] . ' ' . $sort[1]);
+    if($table->hasField($sort[0]))
+    {
+      $query->addOrderBy($sort[0] . ' ' . $sort[1]);
+    }
   }
   
   protected function processSortForm($form)
@@ -382,7 +387,6 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
   /*
    * List elements sorting
    */
-  
   protected function addSortQuery($query)
   {
     if (array(null, null) == ($sort = $this->getSort()))

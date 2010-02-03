@@ -99,7 +99,12 @@ abstract class PluginDmPage extends BaseDmPage
       return $this->getCache('dm_module');
     }
 
-    return $this->setCache('dm_module', $this->getModuleManager()->getModuleOrNull($this->get('module')));
+    if(!$moduleManager = $this->getModuleManager())
+    {
+      return null;
+    }
+
+    return $this->setCache('dm_module', $moduleManager->getModuleOrNull($this->get('module')));
   }
 
   public function getPageView()
@@ -193,7 +198,7 @@ LIMIT 1')->getStatement();
       
       $this->getPageView();
 
-      if ($this->getIsAutomatic() && !($this->getRecord() instanceof dmDoctrineRecord))
+      if ($this->getDmModule() && $this->getIsAutomatic() && !($this->getRecord() instanceof dmDoctrineRecord))
       {
         throw new dmException(sprintf(
           '%s automatic page can not be saved because it has no object for record_id = %s',
