@@ -49,6 +49,7 @@ js:
     tree-component:   jsTree/source/tree_component.min
     tree-css:         jsTree/source/css
     fieldSelection:   jquery-fieldselection/jquery-fieldselection
+    panView:          panview/jquery-plugin-panview.min
 
 css:
 

@@ -1,15 +1,10 @@
 (function($)
 {
 
-$('div.viewport').each(function() {
+$('#dm_admin_content img.panview').each(function() {
 
-  $(this)
-  .find('div.toplevel').width($(this).width()).end()
-  .mapbox({
-    mousewheel: true,
-    layerSplit: 20
-  })
-  .mapbox("zoomTo", 1);
+  var $img = $(this);
+  $img.panView($img.parent().width(), $img.parent().height());
 
 });
   

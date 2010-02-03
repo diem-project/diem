@@ -12,7 +12,7 @@ class dmDiagramActions extends dmAdminBaseActions
     
     try
     {
-      foreach(array('admin', 'front') as $appName)
+      foreach(array('front', 'admin') as $appName)
       {
         $this->dicImages[$appName] = $this->getDiagramImage($appName);
       }
@@ -26,14 +26,16 @@ class dmDiagramActions extends dmAdminBaseActions
     
     try
     {
-//      $this->mldUserImage = $doctrineGraphviz->getMldImage(array('type' => 'user'));
-//      $this->mldCoreImage = $doctrineGraphviz->getMldImage(array('type' => 'core'));
-//      $this->mldProjectImage = $doctrineGraphviz->getMldImage(array('type' => 'project'));
+      $this->mldUserImage = $doctrineGraphviz->getMldImage(array('type' => 'user'));
+      $this->mldCoreImage = $doctrineGraphviz->getMldImage(array('type' => 'core'));
+      $this->mldProjectImage = $doctrineGraphviz->getMldImage(array('type' => 'project'));
     }
     catch(dmException $e)
     {
       $this->getUser()->logError($e->getMessage());
     }
+
+    $this->getUser()->logInfo('Hold down your mouse button to move the images');
   }
   
   protected function loadServiceContainerDumper()
@@ -91,12 +93,12 @@ class dmDiagramActions extends dmAdminBaseActions
       'graph' => array(
         'overlap' => 'false',
         'splines' => 'true',
-        'epsilon' => '1.5',
+        'epsilon' => '0.5',
         'maxiter' => '30000',
         'concentrate' => 'false',
         'bgcolor' => 'transparent',
         'ratio' => 'fill',
-        'size' => '20,8'
+        'size' => '25,12'
       ),
       'node'  => array('fontsize' => 20, 'fontname' => 'Arial', 'shape' => 'Mrecord'),
       'edge'  => array('fontsize' => 9, 'fontname' => 'Arial', 'color' => 'grey', 'arrowhead' => 'open', 'arrowsize' => 1),
