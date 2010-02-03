@@ -65,6 +65,20 @@ class dmFormField extends sfFormField
     
     return $this;
   }
+
+  public function help($help = null)
+  {
+    if (null === $this->parent)
+    {
+      throw new LogicException(sprintf('Unable to render the help for "%s".', $this->name));
+    }
+    
+    $help = null === $help ? $this->parent->getWidget()->getHelp($this->name) : $help;
+
+    $this->htmlBuffer .= $this->parent->getWidget()->getFormFormatter()->formatHelp($help);
+
+    return $this;
+  }
   
   public function setIsRequired($val)
   {

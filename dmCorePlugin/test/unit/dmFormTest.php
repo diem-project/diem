@@ -4,7 +4,7 @@ require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
 $helper = new dmUnitTestHelper();
 $helper->boot('front');
 
-$t = new lime_test(17);
+$t = new lime_test(18);
 
 $forms = $helper->get('form_manager');
 
@@ -48,6 +48,10 @@ $t->is($got, $expected, $got);
 
 $got = (string)$form['username']->help();
 $expected = '<div class="dm_help_wrap">username help</div>';
+$t->is($got, $expected, $got);
+
+$got = (string)$form['username']->help('another help');
+$expected = '<div class="dm_help_wrap">another help</div>';
 $t->is($got, $expected, $got);
 
 $got = (string)$form['username']->error();
