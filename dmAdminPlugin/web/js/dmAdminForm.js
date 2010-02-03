@@ -61,7 +61,11 @@
 
         $editor.bind('scroll', function()
         {
-          if($editor.scrollTop()+$editor.height() == $editor[0].scrollHeight)
+          if($editor.scrollTop() == 0)
+          {
+            $preview.scrollTop(0);
+          }
+          else if($editor.scrollTop()+$editor.height() == $editor[0].scrollHeight)
           {
             $preview.scrollTop($preview[0].scrollHeight - $preview.height());
           }
