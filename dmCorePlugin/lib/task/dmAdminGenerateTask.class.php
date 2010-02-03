@@ -32,7 +32,7 @@ EOF;
   {
     $this->logSection('diem', 'Generate admin modules');
 
-    $modules = $this->get('module_manager')->getProjectModules();
+    $modules = $this->get('module_manager')->getModules();
 
     $existingModules = array();
 
@@ -59,16 +59,21 @@ EOF;
     {
       if ($moduleToClear && $moduleKey !== $moduleToClear)
       {
+//        $this->log('Skip '.$moduleKey);
         continue;
       }
       if (!$module->hasModel() || !$module->hasAdmin())
       {
+//        $this->log('Skip module without model nor admin '.$moduleKey);
         continue;
       }
       if (in_array($moduleKey, $existingModules) && !$moduleToClear)
       {
+//        $this->log('Skip existing module '.$moduleKey);
         continue;
       }
+
+      $this->log('Generate module '.$moduleKey.' in '.dmProject::unRootify($module->getOption('generate_dir')));
 
       $task = new dmAdminDoctrineGenerateModuleTask($this->dispatcher, $this->formatter);
       $task->setCommandApplication($this->commandApplication);
