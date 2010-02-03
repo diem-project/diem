@@ -182,6 +182,11 @@ class dmWebResponse extends sfWebResponse
     {
       return $this;
     }
+
+    if(in_array($asset, sfConfig::get('dm_js_head_inclusion')))
+    {
+      $options['head_inclusion'] = true;
+    }
     
     $this->validatePosition($position);
 
@@ -227,6 +232,27 @@ class dmWebResponse extends sfWebResponse
     $this->javascripts = array_combine($this->positions, array_fill(0, count($this->positions), array()));
 
     return $this;
+  }
+
+  public function getHeadJavascripts()
+  {
+    $headInclusion = sfConfig::get('dm_js_head_inclusion');
+    
+    if(empty($headInclusion))
+    {
+      return array();
+    }
+    
+    $javascripts = array();
+    foreach($this->getJavascripts() as $webPath => $options)
+    {
+      if (isset($options['head_inclusion']))
+      {
+        $javascripts[$webPath] = $options;
+      }
+    }
+
+    return $javascripts;
   }
   
   /*

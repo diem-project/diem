@@ -10,6 +10,20 @@ class dmJavascriptCompressor extends dmAssetCompressor
     ));
   }
 
+  public function preProcess()
+  {
+    parent::preProcess();
+
+    // remove head included javascripts from compression
+    foreach($this->assets as $webPath => $options)
+    {
+      if (isset($options['head_inclusion']))
+      {
+        unset($this->assets[$webPath]);
+      }
+    }
+  }
+
   public function addToBlackList($fileName)
   {
     $this->mergeOption('black_list', (array) $fileName);

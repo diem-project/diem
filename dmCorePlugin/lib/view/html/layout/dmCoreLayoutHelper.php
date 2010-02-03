@@ -28,7 +28,8 @@ class dmCoreLayoutHelper
     $this->renderMetas().
     $this->renderStylesheets().
     $this->renderFavicon().
-    $this->renderIeHtml5Fix();
+    $this->renderIeHtml5Fix().
+    $this->renderHeadJavascripts();
   }
 
   public function renderBodyTag()
@@ -172,6 +173,29 @@ class dmCoreLayoutHelper
   
     return $html;
   }
+
+  /*
+   * JavaScript libs declared in dm_js_head_inclusion
+   * are declared in the <head> section
+   */
+  public function renderHeadJavascripts()
+  {
+    $javascripts = $this->serviceContainer->getService('response')->getHeadJavascripts();
+    if(empty($javascripts))
+    {
+      return '';
+    }
+
+    $relativeUrlRoot = dmArray::get($this->serviceContainer->getParameter('request.context'), 'relative_url_root');
+    
+    $html = '';
+    foreach($javascripts as $file => $options)
+    {
+      $html .= '<script type="text/javascript" src="'.($file{0} === '/' ? $relativeUrlRoot.$file : $file).'"></script>';
+    }
+
+    return $html;
+  }
   
   public function renderJavascripts()
   {
@@ -181,7 +205,7 @@ class dmCoreLayoutHelper
      */
     $javascripts = $this->dispatcher->filter(
       new sfEvent($this, 'dm.layout.filter_javascripts'),
-      $this->getService('response')->getJavascripts()
+      $this->serviceContainer->getService('response')->getJavascripts()
     )->getReturnValue();
     
     sfConfig::set('symfony.asset.javascripts_included', true);
