@@ -7,6 +7,6 @@ class dmChartComponents extends dmAdminBaseComponents
   {
     $this->chartKey = $this->name;
     
-    $this->chart = $this->context->get($this->name.'_chart');
+    $this->options = $this->getServiceContainer()->getParameter($this->name.'_chart.options');
   }
 }

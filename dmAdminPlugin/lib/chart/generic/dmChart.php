@@ -20,7 +20,7 @@ abstract class dmChart extends pChart
   $available = true,
   $credentials;
 
-  function dmChart(dmBaseServiceContainer $serviceContainer, array $options = array())
+  function __construct(dmBaseServiceContainer $serviceContainer, array $options = array())
   {
     $this->serviceContainer = $serviceContainer;
 
@@ -107,7 +107,7 @@ abstract class dmChart extends pChart
     return $this->serviceContainer->getService('helper')->media('/cache/'.$image);
   }
 
-  protected function getDefaultOptions()
+  public function getDefaultOptions()
   {
     return array(
       'width'       => 500,

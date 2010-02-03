@@ -4,9 +4,7 @@ class dmLogChart extends dmChart
 {
   protected
   $eventsFilter = array(
-    'clear cache',
-//    'update sitemap',
-//    'update search'
+    'clear cache'
   );
 
   protected function configure()
