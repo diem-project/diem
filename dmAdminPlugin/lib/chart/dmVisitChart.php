@@ -2,6 +2,7 @@
 
 class dmVisitChart extends dmGaChart
 {
+
   protected function draw()
   {
     $this->choosePalette('diem');
@@ -23,7 +24,7 @@ class dmVisitChart extends dmGaChart
     // Draw the pageviews graph
     $dataSet->AddSerie("pageviews");  
     $dataSet->SetYAxisName("Pages");
-    $this->drawScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_START0, self::$colors['grey2'][0], self::$colors['grey2'][1], self::$colors['grey2'][2],TRUE,0,0, false, 3);
+    $this->drawScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_START0, self::$colors['grey2'][0], self::$colors['grey2'][1], self::$colors['grey2'][2],TRUE,0,0, false, 2);
     $this->drawGrid(4,TRUE, self::$colors['grey1'][0], self::$colors['grey1'][1], self::$colors['grey1'][2]);
     $this->setShadowProperties(3,3,0,0,0,30,4);
     $this->drawCubicCurve($dataSet->GetData(),$dataSet->GetDataDescription());
@@ -33,12 +34,12 @@ class dmVisitChart extends dmGaChart
     
     // Clear the scale
     $this->clearScale();
-  
+
     // Draw the 2nd graph
     $dataSet->RemoveAllSeries();
     $dataSet->AddSerie("visitors");
     $dataSet->SetYAxisName("Visitors");
-    $this->drawRightScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_START0, self::$colors['grey2'][0], self::$colors['grey2'][1], self::$colors['grey2'][2],TRUE,0,0, false, 3);
+    $this->drawRightScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_START0, self::$colors['grey2'][0], self::$colors['grey2'][1], self::$colors['grey2'][2],TRUE,0,0, false, 2);
     $this->setShadowProperties(3,3,0,0,0,30,4);
     $this->drawCubicCurve($dataSet->GetData(),$dataSet->GetDataDescription());
     $this->clearShadow();
@@ -51,14 +52,18 @@ class dmVisitChart extends dmGaChart
 
   protected function getData()
   {
-    if (!$data = $this->getCache('data'))
+    if (!$this->options['use_cache'] || !$data = $this->getCache('data'))
     {
+      $to = mktime(0, 0, 0, date('m'), 0, date('Y'));
+      $from = strtotime('-12 month', $to);
+
       $report = $this->gapi->getReport(array(
-        'dimensions'  => array('month', 'year'),
-        'metrics'     => array('pageviews', 'visits')
+        'dimensions'      => array('year', 'month'),
+        'metrics'         => array('pageviews', 'visits'),
+        'sort_metric'     => 'year,ga:month',
+        'start_date'      => date('Y-m-d', $from),
+        'end_date'        => date('Y-m-d', $to)
       ));
-      
- //    dmDebug::kill($report);
       
       $data = array(
         'dates' => array(),
@@ -68,10 +73,11 @@ class dmVisitChart extends dmGaChart
   
       foreach($report as $entry)
       {
-        $data['dates'][] = $entry->get('month').'/'.$entry->get('year');
+        $data['dates'][] = $entry->get('month').'/'.substr($entry->get('year'), -2);
         $data['pageviews'][] = $entry->get('pageviews');
         $data['visitors'][] = $entry->get('visits');
       }
+      
       $this->setCache('data', $data);
     }
     

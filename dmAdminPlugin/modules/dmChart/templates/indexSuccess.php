@@ -5,11 +5,11 @@ echo _open('div.dm_charts.mt10', array('json' => array(
 )));
 
 echo _open('ul');
-foreach($charts as $chartKey => $chart)
+foreach($charts as $chartKey => $options)
 {
   echo _tag('li',
     _link('@dm_chart?action=show&name='.$chartKey)
-    ->text(__($chart->getName()))
+    ->text(__($options['name']))
     ->set('.dm_chart_link')
   );
 }

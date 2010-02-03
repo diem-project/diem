@@ -2,27 +2,6 @@
 
 class dmChartActions extends dmAdminBaseActions
 {
-  protected function getCharts()
-  {
-    $charts = array();
-    
-    $sc = $this->context->getServiceContainer();
-    
-    foreach($sc->getServiceIds() as $serviceId)
-    {
-      if (substr($serviceId, -6) === '_chart')
-      {
-        $chart = $sc->getService($serviceId);
-        
-        if ($chart instanceof dmChart)
-        {
-          $charts[substr($serviceId, 0, strlen($serviceId)-6)] = $chart;
-        }
-      }
-    }
-    
-    return $charts;
-  }
   
   public function executeImage(dmWebRequest $request)
   {
@@ -50,7 +29,20 @@ class dmChartActions extends dmAdminBaseActions
   
   public function executeIndex(dmWebRequest $request)
   {
-    $this->charts = $this->getCharts();
+    $this->charts = array();
+
+    foreach($this->getServiceContainer()->getServiceIds() as $serviceId)
+    {
+      if (substr($serviceId, -6) === '_chart')
+      {
+        $reflection = new ReflectionClass($this->getServiceContainer()->getParameter($serviceId.'.class'));
+        
+        if ($reflection->isSubClassOf('dmChart'))
+        {
+          $this->charts[substr($serviceId, 0, strlen($serviceId)-6)] = $this->getServiceContainer()->getParameter($serviceId.'.options');
+        }
+      }
+    }
     
     $this->selectedIndex = array_search($request->getParameter('name'), array_keys($this->charts));
   }

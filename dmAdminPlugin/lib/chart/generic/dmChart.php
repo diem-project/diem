@@ -16,9 +16,7 @@ abstract class dmChart extends pChart
   $serviceContainer,
   $cacheKey = '',
   $data,
-  $name,
-  $available = true,
-  $credentials;
+  $available = true;
 
   function __construct(dmBaseServiceContainer $serviceContainer, array $options = array())
   {
@@ -28,7 +26,7 @@ abstract class dmChart extends pChart
 
     parent::pChart($this->getWidth(), $this->getHeight());
 
-    $this->setup();
+    $this->initialize($options);
   }
   
   public function isAvailable()
@@ -36,8 +34,10 @@ abstract class dmChart extends pChart
     return $this->available;
   }
 
-  protected function setup()
+  protected function initialize(array $options)
   {
+    $this->configure($options);
+    
     $this->addToCacheKey($this->options);
 
     $this->setFontProperties("Fonts/tahoma.ttf", 10);
@@ -47,13 +47,11 @@ abstract class dmChart extends pChart
       $reflection = new ReflectionClass(get_class($this));
       $this->addToCacheKey(filemtime($reflection->getFilename()));
     }
-
-    $this->configure();
   }
 
-  protected function configure()
+  protected function configure(array $options)
   {
-    // override me
+    $this->options = array_merge($this->getDefaultOptions(), $options);
   }
 
   protected function getCache($name)
@@ -88,7 +86,7 @@ abstract class dmChart extends pChart
 
     $imageFullPath = dmOs::join(sfConfig::get('sf_web_dir'), 'cache', $image);
 
-    if (!file_exists($imageFullPath))
+    if (!$this->options['use_cache'] || !file_exists($imageFullPath))
     {
       if (!$this->serviceContainer->getService('filesystem')->mkdir(dirname($imageFullPath)))
       {
@@ -115,7 +113,8 @@ abstract class dmChart extends pChart
       'name'        => get_class($this),
       'key'         => preg_replace('|(\w+)Chart|', '$1', get_class($this)),
       'credentials' => 'see_chart',
-      'lifetime'    => 60 * 60 * 24
+      'lifetime'    => 60 * 60 * 24,
+      'use_cache'   => true
     );
   }
 

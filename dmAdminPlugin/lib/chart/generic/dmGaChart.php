@@ -5,7 +5,7 @@ abstract class dmGaChart extends dmChart
   protected
   $gapi;
   
-  protected function setup()
+  protected function initialize(array $options)
   {
     try
     {
@@ -21,7 +21,7 @@ abstract class dmGaChart extends dmChart
       }
     }
     
-    parent::setup();
+    parent::initialize($options);
   }
   
   protected function reportToData($report, array $keys)

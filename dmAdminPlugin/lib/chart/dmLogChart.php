@@ -6,11 +6,6 @@ class dmLogChart extends dmChart
   $eventsFilter = array(
     'clear cache'
   );
-
-  protected function configure()
-  {
-//    $this->options['lifetime'] = 1;
-  }
   
   protected function draw()
   {
