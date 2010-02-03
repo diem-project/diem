@@ -35,8 +35,17 @@ class dmTableLoremizer extends dmConfigurable
     }
     
     $collection = new myDoctrineCollection($table);
+
+    if(method_exists($table, 'getRecordLoremizerClass'))
+    {
+      $recordLoremizerClass = $table->getRecordLoremizerClass();
+    }
+    else
+    {
+      $recordLoremizerClass = null;
+    }
     
-    $loremizer = $this->serviceContainer->getService('record_loremizer')
+    $loremizer = $this->serviceContainer->getService('record_loremizer', $recordLoremizerClass)
     ->setOption('create_associations', false);
     
     for($it = $table->count(); $it < $this->getOption('nb_records'); $it++)
@@ -57,11 +66,11 @@ class dmTableLoremizer extends dmConfigurable
   
   public function executeAssociations(dmDoctrineTable $table)
   {
-    $nbAssociations = $this->getOption('nb_records') * 2;
-    
     foreach($table->getRelationHolder()->getAssociations() as $association)
     {
       $refTable     = $association->getAssociationTable();
+
+      $nbAssociations = $this->getOption('nb_records') * min(2, $association->getTable()->count());
       
       try
       {
@@ -77,8 +86,16 @@ class dmTableLoremizer extends dmConfigurable
 
       $collection = new myDoctrineCollection($refTable);
 
+      $iterations = 0;
+
       while(count($createdPairs) < $nbAssociations)
       {
+        // avoid infinite loop
+        if(++$iterations > 1000)
+        {
+          break;
+        }
+        
         $vals = array();
         
         foreach($refTable->getRelationHolder()->getLocals() as $relationAlias => $relation)

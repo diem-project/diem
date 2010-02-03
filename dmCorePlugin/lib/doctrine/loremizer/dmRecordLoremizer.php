@@ -141,7 +141,7 @@ class dmRecordLoremizer extends dmConfigurable
       case 'clob':
         if ($this->table->isMarkdownColumn($columnName))
         {
-          $val = dmLorem::getMarkdownLorem(1/*mt_rand(1, 3)*/);
+          $val = dmLorem::getMarkdownLorem(1);
         }
         else
         {
