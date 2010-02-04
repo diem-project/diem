@@ -119,6 +119,7 @@
       {
         $(this).change(function()
         {
+          self.$.block();
           location.href = self.getHref('+/dmAdminGenerator/changeMaxPerPage') + "?dm_module=" + self.options.module + "&max_per_page=" + $(this).val()
         });
       });
