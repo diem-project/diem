@@ -38,7 +38,7 @@ class dmRememberMeFilter extends dmFilter
     if (
       $this->isFirstCall()
       &&
-      $this->context->getUser()->isAnonymous()
+      $this->user->isAnonymous()
       &&
       $cookie = $this->request->getCookie($cookieName)
     )
@@ -49,7 +49,7 @@ class dmRememberMeFilter extends dmFilter
 
       if ($q->count())
       {
-        $this->context->getUser()->signIn($q->fetchOne()->get('User'));
+        $this->user->signIn($q->fetchOne()->get('User'));
       }
     }
 
