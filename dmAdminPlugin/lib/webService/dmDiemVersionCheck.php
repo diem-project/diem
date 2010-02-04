@@ -63,6 +63,6 @@ class dmDiemVersionCheck extends dmConfigurable
 
   protected function fixVersionName($version)
   {
-    return strtr($version, array('-ALPHA' => '.1.', '-BETA' => '.2.', '-RC' => '.3.'));
+    return strtr($version, array('-ALPHA' => '.1.', '-BETA' => '.2.', '_BETA' => '.2.', '-RC' => '.3.', '_RC' => '.3.'));
   }
 }
