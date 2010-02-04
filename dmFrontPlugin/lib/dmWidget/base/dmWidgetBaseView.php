@@ -124,7 +124,9 @@ abstract class dmWidgetBaseView
   {
     if ($this->isCachable() && $this->context->getViewCacheManager())
     {
-      $this->context->getViewCacheManager()->addCache($this->widget['module'], '_'.$this->widget['action'], array(
+      list($partialModule, $partialAction) = $this->getPartialModuleAction();
+
+      $this->context->getViewCacheManager()->addCache($partialModule, '_'.$partialAction, array(
         'withLayout'      => false,
         'lifeTime'        => 86400,
         'clientLifeTime'  => 86400,
@@ -139,7 +141,23 @@ abstract class dmWidgetBaseView
     return $this->doRenderPartial($vars);
   }
   
-  abstract protected function doRenderPartial(array $vars);
+  protected function doRenderPartial(array $vars)
+  {
+    list($partialModule, $partialAction) = $this->getPartialModuleAction();
+
+    if ($this->widgetType->useComponent())
+    {
+      $html = $this->getHelper()->renderComponent($partialModule, $partialAction, $vars);
+    }
+    else
+    {
+      $html = $this->getHelper()->renderPartial($partialModule, $partialAction, $vars);
+    }
+
+    return $html;
+  }
+
+  abstract protected function getPartialModuleAction();
 
   public function renderDefault()
   {

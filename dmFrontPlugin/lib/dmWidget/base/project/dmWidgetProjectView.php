@@ -10,7 +10,7 @@ abstract class dmWidgetProjectView extends dmWidgetBaseView
   {
     parent::configure();
   
-    if (!$this->dmModule = $this->context->get('module_manager')->getModule($this->widget['module']))
+    if (!$this->dmModule = $this->getService('module_manager')->getModule($this->widget['module']))
     {
       throw new dmException('the module "%s" does not exist', $this->dmWidget->get('module'));
     }
@@ -21,20 +21,8 @@ abstract class dmWidgetProjectView extends dmWidgetBaseView
     }
   }
 
-  protected function doRenderPartial(array $vars)
+  protected function getPartialModuleAction()
   {
-    $module = $this->widget['module'];
-    $action = $this->widget['action'];
-
-    if ($this->widgetType->useComponent())
-    {
-      $html = $this->context->get('helper')->renderComponent($module, $action, $vars);
-    }
-    else
-    {
-      $html = $this->context->get('helper')->renderPartial($module, $action, $vars);
-    }
-
-    return $html;
+    return array($this->widget['module'], $this->widget['action']);
   }
 }

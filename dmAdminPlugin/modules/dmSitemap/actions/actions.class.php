@@ -5,7 +5,7 @@ class dmSitemapActions extends dmAdminBaseActions
   
   public function executeIndex(dmWebRequest $request)
   {
-    $this->sitemap = $this->context->get('xml_sitemap_generator')
+    $this->sitemap = $this->getService('xml_sitemap_generator')
     ->setOption('domain', $this->getRequest()->getAbsoluteUrlRoot());
      
     if ($this->getUser()->can('system'))
@@ -22,7 +22,7 @@ class dmSitemapActions extends dmAdminBaseActions
   
   public function executeGenerate(dmWebRequest $request)
   {
-    $this->sitemap = $this->context->get('xml_sitemap_generator')
+    $this->sitemap = $this->getService('xml_sitemap_generator')
     ->setOption('domain', $this->getRequest()->getAbsoluteUrlRoot());
     
     try

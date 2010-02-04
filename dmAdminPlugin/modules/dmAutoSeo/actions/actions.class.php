@@ -24,7 +24,7 @@ class dmAutoSeoActions extends dmAdminBaseActions
     
     if ($request->isMethod('post'))
     {
-      $this->form->setSeoSynchronizer($this->context->get('seo_synchronizer'));
+      $this->form->setSeoSynchronizer($this->getService('seo_synchronizer'));
       
       if ($this->form->bindAndValid($request))
       {

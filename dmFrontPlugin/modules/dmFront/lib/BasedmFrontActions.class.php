@@ -164,13 +164,13 @@ class BasedmFrontActions extends dmFrontBaseActions
     {
       list($module, $action) = explode('/', $moduleAction);
 
-      if ($this->context->getController()->actionExists($module, $action))
+      if ($this->getController()->actionExists($module, $action))
       {
         $actionToRun = 'execute'.ucfirst($action);
         
         try
         {
-          $this->context->getController()->getAction($module, $action)->$actionToRun($this->getRequest());
+          $this->getController()->getAction($module, $action)->$actionToRun($this->getRequest());
         }
         catch(sfControllerException $e)
         {

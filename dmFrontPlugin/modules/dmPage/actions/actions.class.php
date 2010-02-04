@@ -29,7 +29,7 @@ class dmPageActions extends dmFrontBaseActions
   
   public function executeEdit(dmWebRequest $request)
   {
-    $this->forward404Unless($this->page = $this->context->getPage(), 'no current DmPage');
+    $this->forward404Unless($this->page = $this->getPage(), 'no current DmPage');
     
     $this->form = new DmPageFrontEditForm($this->page);
     
@@ -70,7 +70,7 @@ class dmPageActions extends dmFrontBaseActions
   public function executeNew(dmWebRequest $request)
   {
     $this->forward404Unless(
-      $this->page = $this->context->getPage(),
+      $this->page = $this->getPage(),
       'no current DmPage'
     );
     

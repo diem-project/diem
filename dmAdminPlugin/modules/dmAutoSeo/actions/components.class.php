@@ -17,7 +17,7 @@ class dmAutoSeoComponents extends dmAdminBaseComponents
       }
     }
     
-    $this->seoSynchronizer = $this->context->get('seo_synchronizer');
+    $this->seoSynchronizer = $this->getService('seo_synchronizer');
   }
   
   public function executePreview()
@@ -35,7 +35,7 @@ class dmAutoSeoComponents extends dmAdminBaseComponents
     {
       try
       {
-        $seoSynchronizer = $this->context->get('seo_synchronizer');
+        $seoSynchronizer = $this->getService('seo_synchronizer');
         
         $seoSynchronizer->setCulture($this->getUser()->getCulture());
         

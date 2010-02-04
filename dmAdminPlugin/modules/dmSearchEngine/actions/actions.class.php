@@ -45,7 +45,7 @@ class dmSearchEngineActions extends dmAdminBaseActions
           'return code : '.$filesystem->getLastExec('return')
         )));
         
-        $dir = $this->context->get('search_engine')->getOption('dir');
+        $dir = $this->getService('search_engine')->getOption('dir');
         $this->getUser()->logError('Try running php symfony dm:search-update --env=dev in a terminal,'."\n".' and check permissions in '.$dir);
       }
     }

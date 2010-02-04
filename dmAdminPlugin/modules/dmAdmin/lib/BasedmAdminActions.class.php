@@ -26,7 +26,7 @@ class BasedmAdminActions extends dmAdminBaseActions
       sprintf('%s is not a module type', $request->getParameter('moduleTypeName'))
     );
     
-    $this->menu = $this->context->get('admin_module_type_menu')->build($type);
+    $this->menu = $this->getService('admin_module_type_menu')->build($type);
     
     $this->context->getEventDispatcher()->connect('dm.bread_crumb.filter_links', array($this, 'listenToBreadCrumbFilterLinksEvent'));
   }
@@ -53,7 +53,7 @@ class BasedmAdminActions extends dmAdminBaseActions
       sprintf('%s is not a module space in %s type', $request->getParameter('moduleTypeName'), $request->getParameter('moduleTypeName'))
     );
 
-    $this->menu = $this->context->get('admin_module_space_menu')->build($this->space);
+    $this->menu = $this->getService('admin_module_space_menu')->build($this->space);
     
     $this->context->getEventDispatcher()->connect('dm.bread_crumb.filter_links', array($this, 'listenToBreadCrumbFilterLinksEvent'));
   }
@@ -62,14 +62,14 @@ class BasedmAdminActions extends dmAdminBaseActions
   {
     if (isset($this->space))
     {
-      $links[] = $this->context->getHelper()->link($this->context->getRouting()->getModuleTypeUrl($this->type))
+      $links[] = $this->getHelper()->link($this->context->getRouting()->getModuleTypeUrl($this->type))
       ->text($this->getI18n()->__($this->type->getPublicName()));
       
-      $links[] = $this->context->getHelper()->tag('h1', $this->getI18n()->__($this->space->getPublicName()));
+      $links[] = $this->getHelper()->tag('h1', $this->getI18n()->__($this->space->getPublicName()));
     }
     else
     {
-      $links[] = $this->context->getHelper()->tag('h1', $this->getI18n()->__($this->getModuleTypeBySlug($this->context->getRequest()->getParameter('moduleTypeName'))->getPublicName()));
+      $links[] = $this->getHelper()->tag('h1', $this->getI18n()->__($this->getModuleTypeBySlug($this->getRequest()->getParameter('moduleTypeName'))->getPublicName()));
     }
     
     return $links;

@@ -112,7 +112,7 @@ class dmCodeEditorActions extends dmAdminBaseActions
       return $this->renderText('[KO] | '.$relPath.' does not exist or is not readable');
     }
     
-    $this->isImage = 'image' === $this->context->get('mime_type_resolver')->getByFilename($this->file);
+    $this->isImage = 'image' === $this->getService('mime_type_resolver')->getByFilename($this->file);
     $this->code = dmString::unixify(file_get_contents($this->file));
     $this->isWritable = is_writable($this->file) && strpos($this->file, dmProject::rootify('data/backup')) !== 0;
     
@@ -142,7 +142,7 @@ class dmCodeEditorActions extends dmAdminBaseActions
     
     try
     {
-      $this->context->get('file_backup')->save($file);
+      $this->getService('file_backup')->save($file);
     }
     catch(dmException $e)
     {

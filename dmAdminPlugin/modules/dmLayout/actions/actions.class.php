@@ -24,6 +24,6 @@ class dmLayoutActions extends autoDmLayoutActions
     
     $duplicatedLayout = $layout->duplicate()->saveGet();
     
-    return $this->redirect($this->context->getHelper()->link($duplicatedLayout)->getHref());
+    return $this->redirect($this->getHelper()->link($duplicatedLayout)->getHref());
   }
 }

@@ -6,7 +6,7 @@ class dmLogActions extends dmAdminBaseActions
   {
     $logs = array();
     
-    $sc = $this->context->getServiceContainer();
+    $sc = $this->getServiceContainer();
     
     foreach($sc->getServiceIds() as $serviceId)
     {
@@ -34,7 +34,7 @@ class dmLogActions extends dmAdminBaseActions
   public function executeShow(dmWebRequest $request)
   {
     $this->forward404Unless(
-      $this->log = $this->context->get($request->getParameter('name').'_log')
+      $this->log = $this->getService($request->getParameter('name').'_log')
     );
     
     $this->logView = $this->getServiceContainer()
@@ -47,7 +47,7 @@ class dmLogActions extends dmAdminBaseActions
   public function executeClear(dmWebRequest $request)
   {
     $this->forward404Unless(
-      $this->log = $this->context->get($request->getParameter('name').'_log')
+      $this->log = $this->getService($request->getParameter('name').'_log')
     );
     
     $this->log->clear();
@@ -67,7 +67,7 @@ class dmLogActions extends dmAdminBaseActions
     
     foreach(array('request', 'event') as $logKey)
     {
-      $log = $this->context->get($logKey.'_log');
+      $log = $this->getService($logKey.'_log');
       
       $view = $this->getServiceContainer()
       ->setParameter('log_view.class', get_class($log).'ViewLittle')

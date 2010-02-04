@@ -61,7 +61,7 @@ class BasedmAuthActions extends dmBaseActions
         {
           try
           {
-            $signinUrl = $this->context->get('script_name_resolver')->get('front');
+            $signinUrl = $this->getService('script_name_resolver')->get('front');
           }
           catch(dmException $e)
           {

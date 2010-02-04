@@ -29,7 +29,7 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
   {
     try
     {
-      $this->context->get('table_loremizer')->execute($this->getDmModule()->getTable(), $request->getParameter('nb', 10));
+      $this->getService('table_loremizer')->execute($this->getDmModule()->getTable(), $request->getParameter('nb', 10));
       
       $this->getUser()->logInfo('Successfully loremized');
     }
@@ -316,7 +316,7 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
   
   public function historyListenToBreadCrumbFilterLinksEvent(sfEvent $event, array $links)
   {
-    $links[] = $this->context->getHelper()->tag('h1', $this->getI18n()->__('Revision history'));
+    $links[] = $this->getHelper()->tag('h1', $this->getI18n()->__('Revision history'));
 
     return $links;
   }
@@ -337,7 +337,7 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
       )
     ));
     
-    $this->form = $this->context->get('admin_sort_table_form');
+    $this->form = $this->getService('admin_sort_table_form');
     
     $this->processSortForm($this->form);
   }
@@ -363,7 +363,7 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
     
     $this->forward404Unless($refererModule->getTable()->isSortable());
     
-    $this->context->getServiceContainer()->addParameters(array(
+    $this->getServiceContainer()->addParameters(array(
       'admin_sort_form.defaults'  => array(),
       'admin_sort_form.options'   => array(
         'module'        => $refererModule,
@@ -372,7 +372,7 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
       )
     ));
     
-    $this->form = $this->context->get('admin_sort_referers_form');
+    $this->form = $this->getService('admin_sort_referers_form');
     
     $this->processSortForm($this->form);
   }

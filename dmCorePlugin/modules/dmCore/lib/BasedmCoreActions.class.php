@@ -90,7 +90,7 @@ class BasedmCoreActions extends dmBaseActions
   {
     if ($request->hasParameter('dm_use_thread'))
     {
-      $this->context->getServiceContainer()
+      $this->getServiceContainer()
       ->mergeParameter('page_tree_watcher.options', array('use_thread' => $request->getParameter('use_thread')))
       ->reload('page_tree_watcher');
     }

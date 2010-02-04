@@ -15,7 +15,7 @@ class dmChartActions extends dmAdminBaseActions
     if ($this->image)
     {
       return $this->renderText(
-        $this->context->getHelper()->link('@dm_chart?name='.$chartKey)
+        $this->getHelper()->link('@dm_chart?name='.$chartKey)
         ->text($this->image->htmlWidth('100%'))
         ->title($this->getI18n()->__('Expanded view'))
         ->set('.block')
@@ -59,9 +59,9 @@ class dmChartActions extends dmAdminBaseActions
 
   protected function tryToGetChartImage($serviceName, array $options = array())
   {
-    $this->context->getServiceContainer()->mergeParameter($serviceName.'.options', $options);
+    $this->getServiceContainer()->mergeParameter($serviceName.'.options', $options);
     
-    $this->chart = $this->context->get($serviceName);
+    $this->chart = $this->getService($serviceName);
     
     if (!$this->chart->isAvailable())
     {

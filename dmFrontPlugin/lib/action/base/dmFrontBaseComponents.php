@@ -18,7 +18,7 @@ class dmFrontBaseComponents extends dmBaseComponents
   {
     parent::initialize($context, $moduleName, $actionName);
     
-    $this->forms = $context->get('form_manager');
+    $this->forms = $this->getService('form_manager');
   }
   
   /*

@@ -7,7 +7,7 @@ class dmLogComponents extends dmAdminBaseComponents
   {
     $this->logKey = $this->name;
     
-    $this->log = $this->context->get($this->name.'_log');
+    $this->log = $this->getService($this->name.'_log');
     
     $this->logView = $this->getServiceContainer()
     ->setParameter('log_view.class', get_class($this->log).'ViewLittle')

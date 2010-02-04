@@ -67,7 +67,7 @@ class dmWidgetContentTextView extends dmWidgetContentImageView
         $html .= $helper->tag('h2.text_title.inside', $titleLink ? $helper->link($titleLink)->text($title) : $title);
       }
     
-      $html .= $helper->tag('div.markdown.text_markdown', $this->context->get('markdown')->toHtml($text));
+      $html .= $helper->tag('div.markdown.text_markdown', $this->getService('markdown')->toHtml($text));
     
       if ($media && $mediaPosition == 'bottom')
       {

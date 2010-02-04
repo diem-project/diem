@@ -9,9 +9,9 @@ class dmWidgetSearchFormView extends dmWidgetPluginView
   {
     $vars = parent::filterViewVars($vars);
     
-    $vars['form'] = new mySearchForm;
+    $vars['form'] = new mySearchForm();
     
-    if ($searchRequestParameter = $this->context->getRequest()->getParameter($vars['form']->getName()))
+    if ($searchRequestParameter = $this->getService('request')->getParameter($vars['form']->getName()))
     {
       $vars['form']->setDefault('query', dmArray::get($searchRequestParameter, 'query'));
     }
