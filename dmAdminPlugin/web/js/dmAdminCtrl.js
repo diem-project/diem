@@ -112,7 +112,11 @@
       
       self.$.find('input.sf_admin_batch_checkbox, input.sf_admin_list_batch_checkbox').change(function()
       {
-        self.$.find('div.sf_admin_actions > input').attr('disabled', !self.$.find('input.sf_admin_batch_checkbox:checked').length);
+        // google chrome requires setTimeout
+        setTimeout(function()
+        {
+          self.$.find('div.sf_admin_actions > input').attr('disabled', !self.$.find('input.sf_admin_batch_checkbox:checked').length);
+        }, 50);
       });
       
       self.$.find('select.dm_max_per_page').each(function()

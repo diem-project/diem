@@ -4,7 +4,7 @@
   {
     if ($previousRecord = $nearRecords['prev'])
     {
-      echo _link($helper->getRouteArrayForAction('edit', $previousRecord))->textTitle($previousRecord)->set('.previous.s16block.s16_previous');
+      echo _link($helper->getRouteArrayForAction('edit', $previousRecord))->text('')->title($previousRecord)->set('.previous.s16block.s16_previous');
     }
     else
     {
@@ -13,7 +13,7 @@
 
     if ($nextRecord = $nearRecords['next'])
     {
-      echo _link($helper->getRouteArrayForAction('edit', $nextRecord))->textTitle($nextRecord)->set('.next.s16block.s16_next');
+      echo _link($helper->getRouteArrayForAction('edit', $nextRecord))->text('')->title($nextRecord)->set('.next.s16block.s16_next');
     }
     else
     {

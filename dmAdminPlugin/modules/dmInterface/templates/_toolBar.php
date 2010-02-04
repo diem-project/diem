@@ -2,11 +2,11 @@
 
 echo _open('div#dm_tool_bar.clearfix.'.sfConfig::get('dm_toolBar_flavour', 'blue'));
 
-  echo _link('dmAuth/signout')->textTitle($sf_user->getUsername().' : '.__('Logout'))->set('.widget16.s16block.s16_signout');
+  echo _link('dmAuth/signout')->text('')->title($sf_user->getUsername().' : '.__('Logout'))->set('.widget16.s16block.s16_signout');
 
   if ($sf_user->can('clear_cache'))
   {
-    echo _link('dmCore/refresh')->textTitle(__('Update project'))->set('.dm_refresh_link.widget16.s16block.s16_clear');
+    echo _link('dmCore/refresh')->text('')->title(__('Update project'))->set('.dm_refresh_link.widget16.s16block.s16_clear');
   }
 
   echo _tag('div.dm_menu.widget16', $menu->render());
@@ -25,7 +25,7 @@ echo _open('div#dm_tool_bar.clearfix.'.sfConfig::get('dm_toolBar_flavour', 'blue
     ->text(sprintf('<span style="height: %dpx;"></span>', round($apcLoad['percent'] * 0.21)));
   }
 
-  echo _link('app:front')->textTitle(__('Go to site'))->set('.widget16.ml10');
+  echo _link('app:front')->text(__('Go to site'))->set('.widget16.ml10');
 
   if(sfConfig::get('dm_locks_enabled'))
   {

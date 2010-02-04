@@ -130,7 +130,8 @@ div.sf_admin_list td.sf_admin_boolean span {
   cursor: pointer;
 }
 
-.dm_list_action_bar .sf_admin_actions {
+.dm_list_action_bar .sf_admin_actions input {
+  margin-right: 5px;
 }
 
 div.dm_list_global_actions {

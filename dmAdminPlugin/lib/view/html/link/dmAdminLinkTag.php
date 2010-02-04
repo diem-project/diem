@@ -22,13 +22,6 @@ class dmAdminLinkTag extends dmBaseLinkTag
     catch(Exception $e)
     {
       return '<a class="link">'.$e->getMessage().'</a>';
-//      if (sfConfig::get('sf_debug'))
-//      {
-//        return $this
-//        ->text('[EXCEPTION] '.$this->exception->getMessage())
-//        ->param('dm_debug', 1)
-//        ->title('Click me to see the exception details');
-//      }
     }
   }
 
@@ -151,7 +144,7 @@ class dmAdminLinkTag extends dmBaseLinkTag
 
   protected function renderText()
   {
-    if (empty($this->options['text']))
+    if (!isset($this->options['text']))
     {
       if(is_object($this->resource))
       {
