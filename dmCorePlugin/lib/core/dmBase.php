@@ -1,6 +1,6 @@
 <?php
 
-define('DIEM_VERSION', '5.0.0-RC1');
+define('DIEM_VERSION', '5.0.0-RC1_DEV');
 
 /*
  * Include Symfony
