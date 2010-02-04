@@ -213,7 +213,7 @@
 "Unselect all": "Снять выделение"
 "Configuration panel": "Панель настройки"
 "This is not a valid hexadecimal color": "Значение не является шестнадцатеричным цветом"
-"%1% - %2% on %3%": " %1% - %2% из %3%"
+"%1% - %2% of %3%": " %1% - %2% из %3%"
 "Display": "Отображать (Display)"
 "User logged in": "Пользователь вошел в систему"
 "User logged out": "Пользователь вышел из системы"

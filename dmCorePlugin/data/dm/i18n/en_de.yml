@@ -212,7 +212,7 @@
 "Unselect all": "Alle abwählen"
 "Configuration panel": "Konfigurationspanel"
 "This is not a valid hexadecimal color": "Dies ist keine richtige hexadezimale Farbe"
-"%1% - %2% on %3%": "%1% - %2% am %3%"
+"%1% - %2% of %3%": "%1% - %2% von %3%"
 "Display": "Anzeige"
 "User logged in": "Benutzer meldete sich an"
 "User logged out": "Benutzer meldete sich ab"

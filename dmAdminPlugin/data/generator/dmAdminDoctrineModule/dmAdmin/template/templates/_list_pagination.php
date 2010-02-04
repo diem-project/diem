@@ -17,7 +17,7 @@
     <div class="disabled"><span class="s16block s16_previous"></span></div>
 [?php endif; ?]
   
-  [?php echo _tag('div.dm_pagination_status.fleft', preg_replace('|(\d+)|', '<strong>$1</strong>', __('%1% - %2% on %3%',
+  [?php echo _tag('div.dm_pagination_status.fleft', preg_replace('|(\d+)|', '<strong>$1</strong>', __('%1% - %2% of %3%',
     array(
       '%1%' => $pager->getNbResults() ? $pager->getFirstIndice() : 0,
       '%2%' => $pager->getLastIndice(),

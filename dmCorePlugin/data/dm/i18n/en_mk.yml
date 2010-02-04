@@ -211,7 +211,7 @@
 "Unselect all": "Alle abwählen"
 "Configuration panel": "Конфигуративна табла"
 "This is not a valid hexadecimal color": "Ова не е правилна хексадецимална боја"
-"%1% - %2% on %3%": "%1% - %2% на %3%"
+"%1% - %2% of %3%": "%1% - %2% на %3%"
 "Display": "Прикажи"
 "User logged in": "Корисникот е најавен"
 "User logged out": "Корисникот е одјавен"
