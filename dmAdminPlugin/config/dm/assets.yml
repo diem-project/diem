@@ -34,7 +34,6 @@ css:
     list:             list
     form:             form
     verticalBar:      verticalBar
-    generator:        generator
     media:            media
     console:          console
     codeEditor:       codeEditor

@@ -67,6 +67,7 @@ div.dm_box_inner.m5 {
   height: 24px;
   line-height: 24px;
   -moz-border-radius: 4px 4px 0 0;
+  -webkit-border-radius: 4px 4px 0 0;
   text-align: center;
   font-weight: normal;
   background:#E6E6E6 url(../../core/images/default_bg.png) repeat-x scroll 50% 50%;

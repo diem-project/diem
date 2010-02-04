@@ -34,6 +34,7 @@ div.dm_media_library ul.content span.image_background {
 
 div.dm_media_library ul.content a:hover {
   -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
   background-color: #ffffaa;
   border-color: #ffdd44;
   background: #ffffaa url(../images/media/bg_hover.png) center left repeat-x;

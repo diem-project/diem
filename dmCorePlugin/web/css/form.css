@@ -57,6 +57,7 @@
   background: url(../../core/images/default_bg.png) repeat-x scroll 50% 50%;
   border: 1px solid #D3D3D3;
   -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
 }
 .dm_form .toggle_group .toggler{
   display: block;
@@ -71,6 +72,7 @@
   background: url(../../core/images/default_bg_green.png) repeat-x scroll 50% 50%;
   border: 1px solid #D3D3D3;
   -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
 }
 
 .droppable_active {

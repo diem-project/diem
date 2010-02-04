@@ -9,6 +9,7 @@
   border: 1px solid #D3D3D3;
   padding: 10px;
   -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
 }
 .sf_admin_form form ul.dm_form_elements li.dm_form_element {
   margin: 5px;
@@ -134,6 +135,7 @@ div.dm_form_action_bar {
   background:#E6E6E6 url(../../core/images/default_bg.png) repeat-x scroll 50% 50%;
   border:1px solid #D3D3D3;
   -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
 }
 
 div.dm_form_action_bar_top {

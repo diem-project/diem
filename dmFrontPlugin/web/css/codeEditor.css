@@ -51,6 +51,7 @@ div.ui-dialog.dm.dm_code_editor_dialog .ui-dialog-content {
   padding: 3px;
   border: none;
   -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
   margin-bottom: 2px;
 }
 
@@ -70,6 +71,7 @@ div.ui-dialog.dm.dm_code_editor_dialog .ui-dialog-content {
   background: #eeeeff;
   overflow: hidden;
   -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
 }
 
 #dm_code_editor_file_open .type:first-child {

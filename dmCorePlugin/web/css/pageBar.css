@@ -33,7 +33,9 @@ body.pageBarOpen #sf_admin_content {
   background: url(../images/bar_togglers.png) top left no-repeat;
   cursor: pointer;
   -moz-border-radius: 0 8px 8px 0;
+  -webkit-border-radius: 0 8px 8px 0;
   -moz-box-shadow: 2px 0 5px #888;
+  -webkit-box-shadow: 2px 0 5px #888;
 }
 
 #dm_page_bar_toggler:hover {

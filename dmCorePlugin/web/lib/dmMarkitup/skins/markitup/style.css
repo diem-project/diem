@@ -11,6 +11,7 @@ div.markItUpContainer  {
   padding:5px 5px 2px 5px;
   font:11px Verdana, Arial, Helvetica, sans-serif;
   -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
 }
 textarea.markItUpEditor,
 textarea.markItUpEditor:active,
@@ -66,6 +67,7 @@ div.markItUpHeader ul a {
   background-position: 0 -28px;
   overflow-y: auto;
   -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
 }
 
 div.markItUpContainer div.ui-resizable-s {

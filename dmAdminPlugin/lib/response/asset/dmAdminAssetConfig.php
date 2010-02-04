@@ -21,7 +21,6 @@ class dmAdminAssetConfig extends dmAssetConfig
       'admin.layout',
       'admin.bars',
       'admin.flash',
-      'admin.generator',
       'admin.breadCrumb'
     );
   }

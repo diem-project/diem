@@ -5,6 +5,7 @@
 .dm_sort li {
   list-style: none;
   -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
   height: 24px;
   line-height: 24px;
   font-weight: normal;
@@ -29,6 +30,7 @@
 
 .dm_sort li.ui-state-highlight {
   -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
   height: 24px;
 }
 

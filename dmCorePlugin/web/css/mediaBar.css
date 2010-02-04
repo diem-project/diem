@@ -34,7 +34,9 @@ body.mediaBarOpen #sf_admin_content {
   background-position: 0 -100px;
   cursor: pointer;
   -moz-border-radius: 8px 0 0 8px;
+  -webkit-border-radius: 8px 0 0 8px;
   -moz-box-shadow: -2px 0 5px #888;
+  -webkit-box-shadow: -2px 0 5px #888;
 }
 
 #dm_media_bar.open {
