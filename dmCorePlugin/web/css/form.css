@@ -34,6 +34,7 @@
 }
 
 .dm_form.list .dm_form_element.multi_inputs > input,
+.dm_form.list .dm_form_element > input[type=checkbox],
 .dm_form.list .dm_form_element.multi_inputs > select {
   width: auto;
 }

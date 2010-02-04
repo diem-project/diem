@@ -51,6 +51,11 @@
   width: 71%;
 }
 
+.dm_form.list .dm_form_element > input[type=checkbox]
+{
+  width: auto;
+}
+
 .dm_form.list .dm_form_element > select {
   width: 73%;
 }

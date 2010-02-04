@@ -8,6 +8,7 @@
   margin-top: 0;
   padding: 0px;
   -moz-border-radius: 0 4px 4px 4px;
+  -webkit-border-radius: 0 4px 4px 4px;
 }
 
 #dm_page.edit .dm_zone:hover .dm_widgets {

@@ -5,6 +5,7 @@
 #dm_page.edit .dm_widget .dm_widget_inner {
   border: 2px groove #D3D3D3;
   -moz-border-radius: 0 4px 4px 4px;
+  -webkit-border-radius: 0 4px 4px 4px;
 }
 
 #dm_page.edit .dm_widget:hover > .dm_widget_inner {
