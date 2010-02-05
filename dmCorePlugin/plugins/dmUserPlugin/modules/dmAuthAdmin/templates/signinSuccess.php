@@ -5,7 +5,7 @@ echo _open('div.dm.dm_auth');
 echo _tag('h1.site_name', dmConfig::get('site_name'));
 
 echo _tag('div.message',
-  $form->open('.dm_form.list.little.clearfix action=+/dmAuth/signin').
+  $form->open('.dm_form.list.little.clearfix action=+/dmAuthAdmin/signin').
     _tag('ul',
       _tag('li.dm_form_element.clearfix',
         $form['username']->error()->label(__('Username'))->field()

@@ -8,6 +8,6 @@
  * @author     Fabien Potencier
  * @version    SVN: $Id: sfGuardUserGeneratorConfiguration.class.php 23319 2009-10-25 12:22:23Z Kris.Wallsmith $
  */
-class dmUserGeneratorConfiguration extends BasedmUserGeneratorConfiguration
+class dmUserAdminGeneratorConfiguration extends BasedmUserAdminGeneratorConfiguration
 {
 }

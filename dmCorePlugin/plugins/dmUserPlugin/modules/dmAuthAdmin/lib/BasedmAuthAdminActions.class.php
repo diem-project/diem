@@ -15,7 +15,7 @@
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @version    SVN: $Id: BasesfGuardAuthActions.class.php 23319 2009-10-25 12:22:23Z Kris.Wallsmith $
  */
-class BasedmAuthActions extends dmBaseActions
+class BasedmAuthAdminActions extends dmBaseActions
 {
   public function executeSignin(dmWebRequest $request)
   {
@@ -26,7 +26,7 @@ class BasedmAuthActions extends dmBaseActions
       return $this->redirect('@homepage');
     }
 
-    $this->setLayout(dmOs::join(sfConfig::get('dm_core_dir'), 'plugins/dmUserPlugin/modules/dmAuth/templates/layout'));
+    $this->setLayout(realpath(dirname(__FILE__).'/..').'/templates/layout');
 
     if($request->getParameter('skip_browser_detection'))
     {

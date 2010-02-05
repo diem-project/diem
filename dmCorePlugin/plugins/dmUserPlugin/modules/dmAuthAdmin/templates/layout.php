@@ -1,6 +1,6 @@
 <?php
 
-$helper = $sf_context->get('auth_layout_helper');
+$helper = $sf_context->get('layout_helper');
 
 echo 
 $helper->renderDoctype(),
@@ -10,7 +10,7 @@ $helper->renderHtmlTag(),
     $helper->renderHead(),
   "\n</head>\n",
   
-  $helper->renderBodyTag('bg_2'),
+  $helper->renderBodyTag('.dm.bg_2'),
 
     $sf_content,
 

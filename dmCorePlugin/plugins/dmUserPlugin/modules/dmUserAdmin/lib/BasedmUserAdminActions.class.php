@@ -15,7 +15,7 @@
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @version    SVN: $Id: BasedmUserActions.class.php 23319 2009-10-25 12:22:23Z Kris.Wallsmith $
  */
-class BasedmUserActions extends autodmUserActions
+class BasedmUserAdminActions extends autodmUserAdminActions
 {
   public function validateEdit()
   {

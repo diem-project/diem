@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-require_once(sfConfig::get('dm_core_dir').'/plugins/dmUserPlugin/modules/dmAuth/lib/BasedmAuthActions.class.php');
+require_once dirname(__FILE__).'/../lib/BasedmAuthAdminActions.class.php';
 
 /**
  *
@@ -17,6 +17,6 @@ require_once(sfConfig::get('dm_core_dir').'/plugins/dmUserPlugin/modules/dmAuth/
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @version    SVN: $Id: actions.class.php 23319 2009-10-25 12:22:23Z Kris.Wallsmith $
  */
-class dmAuthActions extends BasedmAuthActions
+class dmAuthAdminActions extends BasedmAuthAdminActions
 {
 }
