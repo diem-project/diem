@@ -5,7 +5,7 @@ class dmFrontPluginConfiguration extends sfPluginConfiguration
   protected static
   $dependencies = array(),
   $helpers = array('Dm', 'DmFront'),
-  $externalModules = array('dmAuth');
+  $externalModules = array('dmAuthAdmin');
 
   public function configure()
   {

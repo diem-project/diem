@@ -15,11 +15,11 @@ $expected = $helper->get('controller')->genUrl('@homepage');
 $t->is(_link()->getHref(), $expected, 'empty source is '.$expected);
 $t->is(_link()->getHref('@homepage'), $expected, 'homepage href is '.$expected);
 
-$expected = $helper->get('controller')->genUrl('dmAuth/signin');
-$t->is(_link('+/dmAuth/signin')->getHref(), $expected, '+/dmAuth/signin href is '.$expected);
+$expected = $helper->get('controller')->genUrl('dmAuthAdmin/signin');
+$t->is(_link('+/dmAuthAdmin/signin')->getHref(), $expected, '+/dmAuthAdmin/signin href is '.$expected);
 
-$expected = $helper->get('controller')->genUrl('dmAuth/signin');
-$t->is($helper->get('helper')->link('+/dmAuth/signin')->getHref(), $expected, 'with helper service, +/dmAuth/signin href is '.$expected);
+$expected = $helper->get('controller')->genUrl('dmAuthAdmin/signin');
+$t->is($helper->get('helper')->link('+/dmAuthAdmin/signin')->getHref(), $expected, 'with helper service, +/dmAuthAdmin/signin href is '.$expected);
 
 $frontScriptName = $helper->get('script_name_resolver')->get('front');
 

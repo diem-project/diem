@@ -75,7 +75,7 @@ class dmFrontLinkTagPage extends dmFrontLinkTag
       return $this->options['text'];
     }
 
-    return $this->page->_getI18n('name');
+    return dmString::escape($this->page->_getI18n('name'));
   }
   
   public function render()

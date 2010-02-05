@@ -15,17 +15,17 @@
 }
 
 .dm_sort li.object {
-  background: url(../../core/images/default_bg.png) repeat-x scroll 50% 50%;
+  background: url(../../dmCorePlugin/images/default_bg.png) repeat-x scroll 50% 50%;
   border:1px solid #D3D3D3;
   color:#666666;
 }
 
 .dm_sort li.object:hover {
-  background: url(../../core/images/default_bg_blue.png) repeat-x scroll 50% 50%;
+  background: url(../../dmCorePlugin/images/default_bg_blue.png) repeat-x scroll 50% 50%;
 }
 
 .dm_sort li.object.active {
-  background: url(../../core/images/default_bg_yellow.png) repeat-x scroll 50% 50%;
+  background: url(../../dmCorePlugin/images/default_bg_yellow.png) repeat-x scroll 50% 50%;
 }
 
 .dm_sort li.ui-state-highlight {

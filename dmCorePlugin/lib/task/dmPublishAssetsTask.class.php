@@ -22,30 +22,13 @@ class dmPublishAssetsTask extends sfPluginPublishAssetsTask
     $projectWebPath = sfConfig::get('sf_web_dir');
     $filesystem = new dmFilesystem($this->dispatcher, $this->formatter);
 
-    $filesystem->mkdir($projectWebPath.'/dm');
-
-    foreach(array('core', 'admin', 'front') as $plugin)
+    foreach (array('dmAdminPlugin', 'dmFrontPlugin') as $plugin)
     {
-      $pluginDir = dmOs::join(dm::getDir(), 'dm'.dmString::camelize($plugin).'Plugin');
-      $origin = dmOs::join($pluginDir, 'web');
-      $target = dmOs::join($projectWebPath, sfConfig::get('dm_'.$plugin.'_asset', 'dm/'.$plugin));
-
-      if (file_exists($origin))
-      {
-        $filesystem->relativeSymlink($origin, $target, true);
-      }
-      
-      if (is_readable($dmWrongAssetDir = dmOs::join($projectWebPath, 'dm'.dmString::camelize($plugin).'Plugin')))
-      {
-        if (!is_link($dmWrongAssetDir))
-        {
-          $filesystem->deleteDirContent($dmWrongAssetDir);
-        }
-        
-        $filesystem->remove($dmWrongAssetDir);
-      }
+      $this->logSection('plugin', 'Configuring plugin - '.$plugin);
+      $this->installPluginAssets($plugin, dm::getDir().'/'.$plugin);
     }
-      
+
+    // remove useless doctrine assets
     if (is_readable($doctrineAssetPath = dmOs::join($projectWebPath, 'sfDoctrinePlugin')))
     {
       if (!is_link($doctrineAssetPath))
@@ -56,6 +39,7 @@ class dmPublishAssetsTask extends sfPluginPublishAssetsTask
       $filesystem->remove($doctrineAssetPath);
     }
 
+    // remove web cache dir
     $webCacheDir = sfConfig::get('sf_web_dir').'/cache';
     if (is_link($webCacheDir))
     {

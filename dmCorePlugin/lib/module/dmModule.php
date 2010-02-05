@@ -42,6 +42,11 @@ class dmModule extends dmMicroCache
   {
     return $this->options['plugin'];
   }
+
+  public function isOverridden()
+  {
+    return (bool) $this->options['overridden'];
+  }
   
   public function getSfName()
   {

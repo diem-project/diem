@@ -19,7 +19,7 @@
       $(window).bind('resize', function()
       {
         winH = $(window).height();
-        $toggler.css('top', $(window).height() / 2 - 50);
+        $toggler.css('top', winH / 2 - 65);
         $tree.height(winH - 50);
       }).trigger('resize');
     },

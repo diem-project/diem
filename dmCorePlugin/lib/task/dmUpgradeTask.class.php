@@ -7,11 +7,9 @@ class dmUpgradeTask extends dmContextTask
 {
   protected
   $diemVersions = array(
-    '500ALPHA4',
-    '500ALPHA6',
-    'deprecateMediaWidgets',
     'addGaToken',
-    'clearLogs'
+    'clearLogs',
+    'adminAuthModule'
   );
   
   /**
@@ -51,67 +49,6 @@ class dmUpgradeTask extends dmContextTask
       }
     }
   }
-  
-  /*
-   * Rename IHM setting group
-   */
-  protected function upgradeTo500ALPHA4()
-  {
-    dmDb::query()
-    ->update('DmSetting')
-    ->set('group_name', '?', 'Interface')
-    ->where('group_name = ?', 'IHM')
-    ->execute();
-  }
-  
-  /*
-   * Fix login and secure module/action in admin/front settings.yml
-   */
-  protected function upgradeTo500ALPHA6()
-  {
-    // Admin : Replace login_module: login by signin
-    $settingsFile = dmProject::rootify('apps/admin/config/settings.yml');
-    $settingsText = file_get_contents($settingsFile);
-    $settings = sfYaml::load($settingsText);
-    
-    $loginModule = dmArray::get(dmArray::get($settings['all'], '.settings', array()), 'login_module');
-    $loginAction = dmArray::get(dmArray::get($settings['all'], '.settings', array()), 'login_action');
-    
-    if('dmAuth' == $loginModule && 'login' == $loginAction)
-    {
-      $settingsText = preg_replace('/login_action\:(\s*)login/', 'login_action:$1signin', $settingsText);
-      file_put_contents($settingsFile, $settingsText);
-    }
-    
-    // Front : Replace secure_module, secureAction, login_module and login_action
-    $settingsFile = dmProject::rootify('apps/front/config/settings.yml');
-    $settingsText = file_get_contents($settingsFile);
-    $settings = sfYaml::load($settingsText);
-    
-    $loginModule = dmArray::get(dmArray::get($settings['all'], '.settings', array()), 'login_module');
-    
-    if('dmAuth' == $loginModule)
-    {
-      $settingsText = preg_replace('/secure_module\:(\s*)dmAuth/', 'secure_module:$1dmFront', $settingsText);
-      $settingsText = preg_replace('/secureAction\:(\s*)secure/', 'secure_action:$1secure', $settingsText);
-      $settingsText = preg_replace('/login_module\:(\s*)dmAuth/', 'login_module:$1dmFront', $settingsText);
-      
-      file_put_contents($settingsFile, $settingsText);
-    }
-  }
-  
-  /*
-   * Change dmWidgetContent.media widgets to dmWidgetContent.image widgets in database
-   */
-  protected function upgradeToDeprecateMediaWidgets()
-  {
-    dmDb::query()
-    ->update('DmWidget')
-    ->set('action', '?', 'image')
-    ->where('module = ?', 'dmWidgetContent')
-    ->andWhere('action = ?', 'media')
-    ->execute();
-  }
 
   /*
    * Add ga_token setting if missing
@@ -145,6 +82,34 @@ class dmUpgradeTask extends dmContextTask
       {
         $this->logSection('upgrade', 'Cleared old school formatted log '.$logName);
         file_put_contents($file, '');
+      }
+    }
+  }
+
+  /*
+   * Fix login and secure module in admin settings.yml
+   */
+  protected function upgradeToAdminAuthModule()
+  {
+    // Admin : Replace login and secure module: dmAuth -> dmAuthAdmin
+    $settingsFile = dmProject::rootify('apps/admin/config/settings.yml');
+    $settingsText = file_get_contents($settingsFile);
+    $settings = sfYaml::load($settingsText);
+
+    foreach(array('.settings', '.actions') as $space)
+    {
+      $loginModule  = dmArray::get(dmArray::get($settings['all'], $space, array()), 'login_module');
+      $secureModule = dmArray::get(dmArray::get($settings['all'], $space, array()), 'secure_module');
+
+      if('dmAuth' == $loginModule)
+      {
+        $settingsText = preg_replace('/login_module\:(\s*)dmAuth/', 'login_module:$1dmAuthAdmin', $settingsText);
+        file_put_contents($settingsFile, $settingsText);
+      }
+      if('dmAuth' == $secureModule)
+      {
+        $settingsText = preg_replace('/secure_module\:(\s*)dmAuth/', 'secure_module:$1dmAuthAdmin', $settingsText);
+        file_put_contents($settingsFile, $settingsText);
       }
     }
   }
