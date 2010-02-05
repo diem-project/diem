@@ -1,0 +1,15 @@
+System:
+
+  Security:
+
+    dmUser:
+      name:         User
+      credentials:  security_user
+
+    dmPermission:
+      name:         Permission
+      credentials:  security_permission
+
+    dmGroup:
+      name:         Group
+      credentials:  security_group
