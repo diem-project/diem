@@ -55,13 +55,11 @@ class ProjectConfiguration extends dmProjectConfiguration
 
   protected function removeWebSymlinks()
   {
-    @unlink(dmOs::join(sfConfig::get('sf_web_dir'), 'sf'));
-    @unlink(dmOs::join(sfConfig::get('sf_web_dir'), 'dmFlowPlayerPlugin'));
-    @unlink(dmOs::join(sfConfig::get('sf_web_dir'), 'sfFormExtraPlugin'));
-    
-    foreach(array('core', 'front', 'admin') as $dmAssetDir)
+    foreach(array(
+      'dmFlowPlayerPlugin', 'sfFormExtraPlugin', 'dmCorePlugin', 'dmAdminPlugin', 'dmFrontPlugin', 'dmUserPlugin', 'sf'
+    ) as $symlink)
     {
-      @unlink(sfConfig::get('sf_web_dir').'/dm/'.$dmAssetDir);
+      @unlink(dmOs::join(sfConfig::get('sf_web_dir'), $symlink));
     }
   }
   

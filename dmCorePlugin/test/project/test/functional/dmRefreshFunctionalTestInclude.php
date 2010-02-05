@@ -23,10 +23,11 @@ $browser->get('/+/dmCore/refresh')
 ));
 
 /*
- * On some old version of sqlite
+ * With some old version of sqlite, like on continuous integration server
  * This test will not work as expected
  */
-if('Sqlite' == Doctrine_Manager::getInstance()->getCurrentConnection()->getDriverName())
+
+if(strpos(getcwd(), 'hudson'))
 {
   return;
 }
