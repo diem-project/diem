@@ -4,7 +4,7 @@ require_once(realpath(dirname(__FILE__).'/../../..').'/unit/helper/dmUnitTestHel
 $helper = new dmUnitTestHelper();
 $helper->boot();
 
-$t = new lime_test(66);
+$t = new lime_test(60);
 
 $helper->clearDatabase($t);
 
