@@ -5,7 +5,7 @@ class dmDb
   protected static
   $tables;
 
-  /*
+  /**
    * Shortcut for myDoctrineQuery::create
    *
    * @return myDoctrineQuery the query with filled from
@@ -28,7 +28,7 @@ class dmDb
     return $query;
   }
 
-  /*
+  /**
    * Shortcut for Doctrine_Core::getTable
    * @return myDoctrineTable the table for this model class name
    */
@@ -37,7 +37,7 @@ class dmDb
     return Doctrine_Core::getTable(dmString::camelize($class));
   }
 
-  /*
+  /**
    * Create, populate and return a new record
    * @return myDoctrineRecord the new, hydrated, non-saved record
    */
@@ -46,7 +46,7 @@ class dmDb
     return self::table($class)->create($values);
   }
 
-  /*
+  /**
    * @return PDOStatement
    */
   public static function pdo($query, array $values = array(), Doctrine_Connection $conn = null)

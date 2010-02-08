@@ -2,17 +2,16 @@
 
 class dmAdminLayoutHelper extends dmCoreLayoutHelper
 {
-  
-  public function renderBodyTag($class = null)
+
+  public function renderBodyTag($options = array())
   {
-    $actionName = $this->serviceContainer->getParameter('controller.action');
-    
-    return sprintf('<body class="dm%s%s%s%s">',
-      $actionName == 'index' ? ' list' : '',
-      in_array($actionName, array('edit', 'new', 'update', 'create')) ? ' form' : '',
-      sfConfig::get('dm_admin_full_screen') ? ' full_screen' : '',
-      $class ? ' '.$class : ''
-    );
+    $options = dmString::toArray($options);
+
+    $options['class'] = array_merge(dmArray::get($options, 'class', array()), array(
+      $this->serviceContainer->getParameter('controller.module').'_'.$this->serviceContainer->getParameter('controller.action')
+    ));
+
+    return parent::renderBodyTag($options);
   }
   
   public function renderEditBars()

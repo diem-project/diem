@@ -87,7 +87,7 @@ $t->is(£table()->head('Header 1', 'Header 2')->render(), $table, $table);
 $table = '<table><thead><tr><th>Header 1</th><th>Header 2</th></tr></thead><tbody><tr class="even"><td>Value 1</td><td>Value 2</td></tr><tr class="odd"><td>Value 3</td><td>Value 4</td></tr></tbody></table>';
 $t->is(£table()->head('Header 1', 'Header 2')->body('Value 1', 'Value 2')->body('Value 3', 'Value 4')->render(), $table, $table);
 
-$ctrlFullPath = dmOs::join(sfConfig::get('sf_web_dir'), 'dm/core/js/dmCoreCtrl.js');
+$ctrlFullPath = dmOs::join(sfConfig::get('sf_web_dir'), 'dmCorePlugin/js/dmCoreCtrl.js');
 $t->is($helper->get('helper')->getJavascriptFullPath('core.ctrl'), $ctrlFullPath, 'core ctrl is in '.$ctrlFullPath);
 
 $t->comment('Test use_beaf');

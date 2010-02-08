@@ -32,12 +32,9 @@ class dmCoreLayoutHelper
     $this->renderHeadJavascripts();
   }
 
-  public function renderBodyTag()
+  public function renderBodyTag($options = array())
   {
-    return sprintf('<body class="%s_%s">',
-      $this->serviceContainer->getParameter('controller.module'),
-      $this->serviceContainer->getParameter('controller.action')
-    );
+    return $this->getHelper()->open('body', dmString::toArray($options));
   }
   
   protected function getDocTypeOption($name, $default)
@@ -174,7 +171,7 @@ class dmCoreLayoutHelper
     return $html;
   }
 
-  /*
+  /**
    * JavaScript libs declared in dm_js_head_inclusion
    * are declared in the <head> section
    */

@@ -150,10 +150,8 @@ class dmRecordLoremizer extends dmConfigurable
         break;
       case 'time':
       case 'timestamp':
-        $val = mt_rand(strtotime('-10 year') , time());
-        break;
       case 'date':
-        $val = date("Y-m-d", mt_rand(strtotime('-10 year') , time()));
+        $val = date("Y-m-d H:i:s", mt_rand(strtotime('-10 year') , time()));
         break;
       case 'enum':
         $val = $column['values'][array_rand($column['values'])];

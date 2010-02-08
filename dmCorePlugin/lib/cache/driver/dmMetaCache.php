@@ -27,7 +27,7 @@ class dmMetaCache extends sfCache
     return $this->cache->get($key, $default);
   }
 
-  /*
+  /**
    * will not unserialize result
    */
   public function _get($key, $default = null)
@@ -45,7 +45,7 @@ class dmMetaCache extends sfCache
     return $this->cache->set($key, $data, $lifetime);
   }
 
-  /*
+  /**
    * will not serialize result
    */
   public function _set($key, $data, $lifetime = null)

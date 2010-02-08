@@ -167,38 +167,44 @@ class dmSecurityUser extends sfBasicSecurityUser
     $user->set('last_login', date('Y-m-d H:i:s'));
     $user->save($con);
 
-    // remember?
     if ($remember)
     {
-      $expirationAge = $this->getRememberKeyExpirationAge();
+      try
+      {
+        $expirationAge = $this->getRememberKeyExpirationAge();
 
-      // remove old keys
-      Doctrine_Core::getTable('DmRememberKey')->createQuery()
-        ->delete()
-        ->where('created_at < ?', date('Y-m-d H:i:s', time() - $expirationAge))
-        ->execute();
+        // remove old keys
+        Doctrine_Core::getTable('DmRememberKey')->createQuery()
+          ->delete()
+          ->where('created_at < ?', date('Y-m-d H:i:s', time() - $expirationAge))
+          ->execute();
 
-      // remove other keys from this user
-      Doctrine_Core::getTable('DmRememberKey')->createQuery()
-        ->delete()
-        ->where('dm_user_id = ?', $user->getId())
-        ->orWhere('ip_address = ?', $_SERVER['REMOTE_ADDR'])
-        ->execute();
+        // remove other keys from this user
+        Doctrine_Core::getTable('DmRememberKey')->createQuery()
+          ->delete()
+          ->where('dm_user_id = ?', $user->getId())
+          ->orWhere('ip_address = ?', $_SERVER['REMOTE_ADDR'])
+          ->execute();
 
-      // generate new keys
-      $key = md5(dmString::random(20));
+        // generate new keys
+        $key = md5(dmString::random(20));
 
-      // save key
-      $rk = new DmRememberKey();
-      $rk->setRememberKey($key);
-      $rk->setUser($user);
-      $rk->setIpAddress($_SERVER['REMOTE_ADDR']);
-      $rk->save($con);
+        // save key
+        $rk = new DmRememberKey();
+        $rk->setRememberKey($key);
+        $rk->setUser($user);
+        $rk->setIpAddress($_SERVER['REMOTE_ADDR']);
+        $rk->save($con);
 
-      $this->dispatcher->notify(new sfEvent($this, 'user.remember_me', array(
-        'remember_key'    => $key,
-        'expiration_age'  => $expirationAge
-      )));
+        $this->dispatcher->notify(new sfEvent($this, 'user.remember_me', array(
+          'remember_key'    => $key,
+          'expiration_age'  => $expirationAge
+        )));
+      }
+      catch(Exception $e)
+      {
+        
+      }
     }
     
     $this->dispatcher->notify(new sfEvent($this, 'user.sign_in'));
@@ -244,7 +250,6 @@ class dmSecurityUser extends sfBasicSecurityUser
         $this->signOut();
 
         return null;
-        throw new sfException('The user does not exist anymore in the database.');
       }
     }
 

@@ -4,12 +4,12 @@
 
 .dm_form input.droppable_active,
 .dm_form textarea.droppable_active {
-  background: url(../../core/images/default_bg_yellow.png) repeat-x scroll 50% 50%;
+  background: url(../../dmCorePlugin/images/default_bg_yellow.png) repeat-x scroll 50% 50%;
 }
 
 .dm_form input.droppable_hover,
 .dm_form textarea.droppable_hover {
-  background: url(../../core/images/default_bg_green.png) repeat-x scroll 50% 50%;
+  background: url(../../dmCorePlugin/images/default_bg_green.png) repeat-x scroll 50% 50%;
 }
 
 .dm_form .radio_list,

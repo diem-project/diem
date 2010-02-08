@@ -18,7 +18,8 @@ $user->setCulture('en');
 
 $t->diag('Clearing settings translations for cultures c1 and c2');
 
-$form = new DmFormSignin;
+
+$form = new DmSigninAdminForm;
 
 $t->is($i18n->__('Username'), $expected = 'Username', 'en: '.$expected);
 $t->is((string)$form['username']->label(), $expected = '<label class="label" for="signin_username">Username</label>', 'en: '.$expected);

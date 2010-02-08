@@ -40,9 +40,9 @@ parameters:
   link_tag.options:           []
 
   theme.options:                                # Override the core theme options
-    key:                      diem_admin
-    path:                     themeAdmin
+    dir:                      themeAdmin
     name:                     "Admin Theme"
+    enabled:                  true
 
   asset_config.class:         dmAdminAssetConfig # Responsible for loading required assets
 

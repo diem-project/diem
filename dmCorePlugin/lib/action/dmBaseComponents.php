@@ -3,22 +3,22 @@
 class dmBaseComponents extends sfComponents
 {
 
-  protected function getHelper()
+  public function getHelper()
   {
     return $this->context->getHelper();
   }
 
-  protected function getI18n()
+  public function getI18n()
   {
     return $this->context->getI18n();
   }
   
-  protected function getServiceContainer()
+  public function getServiceContainer()
   {
     return $this->context->getServiceContainer();
   }
   
-  protected function getService($serviceName, $class = null)
+  public function getService($serviceName, $class = null)
   {
     return $this->getServiceContainer()->getService($serviceName, $class);
   }

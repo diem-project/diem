@@ -35,7 +35,7 @@ class dmPageActions extends dmFrontBaseActions
     
     $this->form->removeCsrfProtection();
     
-    if ($this->page->isModuleAction('main', 'login'))
+    if ($this->page->isModuleAction('main', 'signin'))
     {
       $this->form->changeToDisabled('is_secure')->setDefault('is_secure', false);
     }

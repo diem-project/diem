@@ -1,12 +1,17 @@
 all:
 
-  theme:                                          # front css themes
-    list:                                         # list of themes
-      theme:
-        name:             Theme                   # theme name
-        path:             theme                   # theme path from web dir
-        enabled:          true                    # theme disponibility from dmThemeManager 
-    default:              theme                   # default theme when user arrive on site
+  theming:
+    themes:                                       # list of themes
+      "First Theme":
+        dir:              theme                   # theme path from web dir
+        enabled:          false                   # theme disponibility from dmThemeManager
+      "Fancy Theme":
+        # testing BC compatibility path=dir
+        path:             fancyTheme
+        # testing enabled defaults to true
+      "Another Theme":
+        dir:              anotherTheme
+        enabled:          true
 
   html:
     doctype:

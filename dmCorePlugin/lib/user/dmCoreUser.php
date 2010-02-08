@@ -22,7 +22,7 @@ abstract class dmCoreUser extends dmSecurityUser implements dmMicroCacheInterfac
     }
   }
   
-  /*
+  /**
    * Guess user's browser
    * @return dmBrowser browser object
    */
@@ -42,7 +42,7 @@ abstract class dmCoreUser extends dmSecurityUser implements dmMicroCacheInterfac
     $this->browser = $browser;
   }
 
-  /*
+  /**
    * Adds a value to a flash array
    */
   public function addFlash($name, $value, $persist = true)
@@ -53,7 +53,7 @@ abstract class dmCoreUser extends dmSecurityUser implements dmMicroCacheInterfac
     )), $persist);
   }
   
-  /*
+  /**
    * Log methods
    */
   public function logInfo($message, $persist = true)
@@ -71,7 +71,7 @@ abstract class dmCoreUser extends dmSecurityUser implements dmMicroCacheInterfac
     return $this->addFlash('dm_log_error', $message, $persist);
   }
   
-  /*
+  /**
    * Cache methods
    */
   public function getCache($cacheKey)

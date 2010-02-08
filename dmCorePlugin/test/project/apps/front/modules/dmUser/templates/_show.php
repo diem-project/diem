@@ -1,9 +1,5 @@
-<?php
-// Author : Show
-// Vars : $dmUser
+<?php // Vars: $article
 
-echo _open('div.dm_user.show');
+echo £('h1', $dmUser->username);
 
-  echo $dmUser;
-  
-echo _close('div');
+echo £('span.email', $dmUser->email);

@@ -8,7 +8,7 @@ class dmException extends sfException
     return parent::__construct(strip_tags($message));
   }
 
-  /*
+  /**
    * Builds an exception
    *
    * @param $something Any PHP type

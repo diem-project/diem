@@ -96,6 +96,7 @@ class dmWidgetTypeManager extends dmConfigurable
         $cache->set('types', $this->widgetTypes);
       }
     }
+    
     return $this->widgetTypes;
   }
 

@@ -45,7 +45,7 @@ class dmFileBackup extends dmConfigurable
     return $this->filesystem->deleteDirContent($this->getDir());
   }
   
-  /*
+  /**
    * Backup a file
    * return boolean success
    */

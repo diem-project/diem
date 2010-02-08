@@ -124,7 +124,7 @@
   border: 1px solid #999;
   border-top: 1px solid #ccc;
   border-left: 1px solid #ccc;
-  background: url(../../core/images/monitor_bar_bg.png) bottom left no-repeat;
+  background: url(../../dmCorePlugin/images/monitor_bar_bg.png) bottom left no-repeat;
   background-position: -21px 0;
 }
 
@@ -132,7 +132,7 @@
   display: block;
   position: absolute;
   bottom: 0;
-  background: url(../../core/images/monitor_bar_bg.png) bottom left no-repeat;
+  background: url(../../dmCorePlugin/images/monitor_bar_bg.png) bottom left no-repeat;
   width: 100%;
 }
 

@@ -149,7 +149,7 @@ class dmProjectModule extends dmModule
     return $this->getManager()->getModule($descendantKey)->hasAncestor($this->key);
   }
 
-  /*
+  /**
    * get all the ancestor modules, from farthest to nearest
    * @return array an array of moduleKey => dmModule
    */
@@ -165,7 +165,7 @@ class dmProjectModule extends dmModule
     return $path;
   }
   
-  /*
+  /**
    * get ancestor modules, from farthest to nearest, starting to $fromModule
    * @return array an array of moduleKey => dmModule
    */

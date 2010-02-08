@@ -14,6 +14,8 @@ class dmTestFunctional extends sfTestFunctional
       $this->$method($expected);
     }
 
+    $this->test()->unlike($this->getResponse()->getContent(), '/\[EXCEPTION\]/', 'Response contains no [Exception]');
+
     return $this;
   }
 
@@ -109,5 +111,16 @@ class dmTestFunctional extends sfTestFunctional
     $this->test()->$method($this->getResponse()->getContent(), $content, 'response content '.$method.' '.$content);
 
     return $this;
+  }
+
+  public function debug()
+  {
+    return $this->with('response')->debug();
+  }
+
+  public function isAuthenticated($value)
+  {
+    $this->getContext();
+    return $this->with('user')->begin()->isAuthenticated($value)->end();
   }
 }

@@ -29,14 +29,14 @@ class dmFrontUser extends dmCoreUser
       return $this->getCache('theme');
     }
     
-    $themeKey = $this->getAttribute('dm_theme');
+    $themeName = $this->getAttribute('dm_theme');
     
-    if (!$this->themeManager->themeKeyExists($themeKey))
+    if (!$this->themeManager->themeNameExists($themeName))
     {
-      $themeKey = $this->themeManager->getDefaultThemeKey();
+      $themeName = $this->themeManager->getDefaultThemeName();
     }
 
-    return $this->setTheme($themeKey);
+    return $this->setTheme($themeName);
   }
 
   public function setTheme($theme)
@@ -51,9 +51,9 @@ class dmFrontUser extends dmCoreUser
       throw new dmException(sprintf('%s is not a valid dmTheme', $theme));
     }
     
-    if ($theme->getKey() != $this->getAttribute('dm_theme'))
+    if ($theme->getName() != $this->getAttribute('dm_theme'))
     {
-      $this->setAttribute('dm_theme', $theme->getKey());
+      $this->setAttribute('dm_theme', $theme->getName());
     }
 
     $this->dispatcher->notify(new sfEvent($this, 'user.change_theme', array('theme' => $theme)));

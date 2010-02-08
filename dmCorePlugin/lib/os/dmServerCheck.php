@@ -193,7 +193,7 @@ class dmServerCheckUnit
   public function renderDiagnostic()
   {
     $diagnostic = $this->getDiagnostic();
-    return sprintf('<img src="%sdm/core/images/24/%s.png" alt="%s" />', $this->getBaseUri(), $diagnostic, strtoupper($diagnostic));
+    return sprintf('<img src="%sdmCorePlugin/images/24/%s.png" alt="%s" />', $this->getBaseUri(), $diagnostic, strtoupper($diagnostic));
   }
 
   public function getDiagnostic()

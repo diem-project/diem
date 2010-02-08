@@ -460,7 +460,7 @@ LIMIT 1')->getStatement();
     return $result[0];
   }
 
-  /*
+  /**
    * Static methods
    */
 

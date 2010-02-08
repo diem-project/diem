@@ -25,7 +25,7 @@ $browser->click('Or continue at your own peril')
 ->checkElement('form.dm_form')
 ->end()
 ->with('request')->begin()
-->isParameter('module', 'dmAuth')
+->isParameter('module', 'dmUserAdmin')
 ->isParameter('action', 'signin')
 ->end()
 ;

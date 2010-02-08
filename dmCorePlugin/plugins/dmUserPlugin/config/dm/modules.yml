@@ -1,0 +1,18 @@
+System:
+
+  Security:
+
+    dmUser:
+      name:         User
+      credentials:  security_user
+      components:
+        signin:
+        form:       { name: "Register" }
+
+    dmPermission:
+      name:         Permission
+      credentials:  security_permission
+
+    dmGroup:
+      name:         Group
+      credentials:  security_group

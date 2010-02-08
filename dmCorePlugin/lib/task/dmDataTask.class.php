@@ -360,7 +360,6 @@ EOF;
       }
     }
     
-    
   }
 
   protected function loadPermissions()

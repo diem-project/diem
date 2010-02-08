@@ -40,6 +40,11 @@ EOF;
     {
       if ($pluginName = $module->getPluginName())
       {
+        if($module->isOverridden())
+        {
+          continue;
+        }
+        
         $module->setOption('generate_dir', dmOs::join($this->configuration->getPluginConfiguration($pluginName)->getRootDir(), 'modules', $module->getSfName()));
       }
       else
@@ -64,7 +69,7 @@ EOF;
       }
       if (!$module->hasModel() || !$module->hasAdmin())
       {
-//        $this->log('Skip module without model nor admin '.$moduleKey);
+//        $this->log('Skip module without model or no admin '.$moduleKey);
         continue;
       }
       if (in_array($moduleKey, $existingModules) && !$moduleToClear)
@@ -73,13 +78,11 @@ EOF;
         continue;
       }
 
-      $this->log('Generate module '.$moduleKey.' in '.dmProject::unRootify($module->getOption('generate_dir')));
+//      $this->log('Will generate '.$moduleKey.' admin module');
 
       $task = new dmAdminDoctrineGenerateModuleTask($this->dispatcher, $this->formatter);
       $task->setCommandApplication($this->commandApplication);
       $task->setConfiguration($this->configuration);
-      
-      $this->logSection('diem', sprintf('Generating admin module "%s" for model "%s"', $module->getKey(), $module->getModel()));
   
       $task->run(array('admin', $module->getKey(), $module->getModel()), array(
         'theme'                 => 'dmAdmin',
@@ -89,7 +92,8 @@ EOF;
         'generate-in-cache'     => true,
         'non-verbose-templates' => true,
         'singular'              => $moduleKey,
-        'plural'                => $moduleKey.'s'
+        'plural'                => $moduleKey.'s',
+        'from-admin-generate'   => 'true'
       ));
     }
 

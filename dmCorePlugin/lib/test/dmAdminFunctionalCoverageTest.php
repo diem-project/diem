@@ -20,6 +20,12 @@ class dmAdminFunctionalCoverageTest extends dmCoreFunctionalCoverageTest
     foreach($this->getUrls() as $url)
     {
       $this->testUrl($url);
+
+      if($this->willRunOutOfMemory())
+      {
+        $this->browser->info('Stop before memory limit is reached');
+        break;
+      }
     }
   }
   

@@ -36,7 +36,7 @@ class PluginDmMediaFolderTable extends myDoctrineTable
     return $record;
   }
 
-  /*
+  /**
    * Performance shortcuts
    */
 

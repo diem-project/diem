@@ -61,14 +61,15 @@ $settings['culture'] = empty($culture) ? 'en' : $culture;
 $webDirName = $this->askAndValidate(array('', 'Choose a web directory name ( examples: web, html, public_html;  default: web )', ''),
 new sfValidatorAnd(array(
   new sfValidatorRegex(
-    array('pattern' => '/^[\w\d-]+|$/', 'required' => false),
+    array('pattern' => '/^[\w\d-]+$/', 'required' => false),
     array('invalid' => 'Web directory name must contain only alphanumeric characters')
   ),
   new sfValidatorRegex(
     array('pattern' => '/^(apps|lib|config|data|cache|log|plugins|test)$/', 'must_match' => false, 'required' => false),
     array('invalid' => 'This directory name is already used by symfony')
   )
-)), array('required' => false));
+), array('required' => false)), 
+array('required' => false));
 $settings['web_dir_name'] = empty($webDirName) ? 'web' : $webDirName;
 
 do

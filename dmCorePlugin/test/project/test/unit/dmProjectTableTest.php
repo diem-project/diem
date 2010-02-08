@@ -4,7 +4,7 @@ require_once(realpath(dirname(__FILE__).'/../../..').'/unit/helper/dmUnitTestHel
 $helper = new dmUnitTestHelper();
 $helper->boot();
 
-$t = new lime_test(22);
+$t = new lime_test(23);
 
 $table = dmDb::table('DmTestPost');
 
@@ -25,7 +25,8 @@ $t->diag('Table interaction with page tree');
 
 foreach(array(
   'dmPage' => false,
-  'dmUser' => false,
+  'dmUser' => true,
+  'dmPermission' => false,
   'dmWidget' => false,
   'dmTransUnit' => false,
   'dmTestComment' => true,

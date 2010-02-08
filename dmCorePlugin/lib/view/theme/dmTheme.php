@@ -5,8 +5,7 @@ class dmTheme
   protected
     $dispatcher,
     $filesystem,
-    $key,
-    $path,
+    $dir,
     $name,
     $enabled,
     $requestContext;
@@ -22,15 +21,14 @@ class dmTheme
 
   public function initialize(array $options)
   {
-    if(!isset($options['key']) || !isset($options['path']))
+    if(!isset($options['dir']))
     {
-      throw new dmException('You must provide both key and path');
+      throw new dmException('You must provide a theme dir for '.$options['name']);
     }
     
-    $this->key      = $options['key'];
-    $this->path     = trim($options['path'], '/');
-    $this->name     = dmArray::get($options, 'name', dmString::humanize($options['key']));
-    $this->enabled  = dmArray::get($options, 'enabled', true);
+    $this->dir      = trim($options['dir'], '/');
+    $this->name     = $options['name'];
+    $this->enabled  = $options['enabled'];
     
     $this->connect();
   }
@@ -52,7 +50,7 @@ class dmTheme
       {
         $message = sprintf(
           'Theme %s can not be created. Please check %s permissions',
-          $this->path,
+          $this->dir,
           $this->getBasePath()
         );
         
@@ -60,7 +58,7 @@ class dmTheme
         
         $event->getSubject()->getUser()->logError($message);
         
-        if (sfConfig::get('sf_debug'))
+        if (sfConfig::get('dm_debug'))
         {
           throw $e;
         }
@@ -96,11 +94,6 @@ class dmTheme
     $this->dispatcher->notify(new sfEvent($this, 'dm.theme.created', array()));
   }
 
-  public function getKey()
-  {
-    return $this->key;
-  }
-
   public function getName()
   {
     return $this->name;
@@ -121,7 +114,7 @@ class dmTheme
     return $this->getBasePath().$this->getPath($path);
   }
 
-  /*
+  /**
    * public path
    * example : /theme/css/style.css or /public_html/theme/css/style.css if no virtual host
    */
@@ -130,7 +123,7 @@ class dmTheme
     return $this->requestContext['relative_url_root'].$this->getPath($path);
   }
   
-  /*
+  /**
    * full public path
    * example : http://mysite.com/theme/css/style.css or http://localhost/mysite/public_html/theme/css/style.css if no virtual host
    */
@@ -139,13 +132,13 @@ class dmTheme
     return $this->requestContext['absolute_url_root'].$this->getPath($path);
   }
   
-  /*
+  /**
    * path from web dir
    * example : /theme/css/style.css
    */
   public function getPath($path = '')
   {
-    return '/'.$this->path.'/'.trim($path, '/');
+    return '/'.$this->dir.'/'.trim($path, '/');
   }
 
   public function getFullPaths()

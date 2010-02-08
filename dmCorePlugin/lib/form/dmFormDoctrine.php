@@ -10,7 +10,7 @@
  */
 abstract class dmFormDoctrine extends sfFormDoctrine
 {
-  /*
+  /**
    * Unset automatic fields like 'created_at', 'updated_at', 'position'
    */
   protected function unsetAutoFields($autoFields = null)
@@ -131,7 +131,7 @@ abstract class dmFormDoctrine extends sfFormDoctrine
     $this->mergeForm($this->createI18nForm());
   }
   
-  /*
+  /**
    * Create current i18n form
    */
   protected function createI18nForm($culture = null)

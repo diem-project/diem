@@ -1,12 +1,10 @@
 all:
 
-  theme:                                          # front css themes
-    list:                                         # list of themes
-      theme:
-        name:             Theme                   # theme name
-        path:             theme                   # theme path from web dir
-        enabled:          true                    # theme disponibility from dmThemeManager 
-    default:              theme                   # default theme when user arrive on site
+  theming:                                        # front css themes
+    themes:                                       # list of themes
+      "Default":
+        dir:              theme                   # relative to web dir
+        enabled:          true                    # theme disponibility
 
   html:
     doctype:

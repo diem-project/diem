@@ -6,7 +6,7 @@ $helper->boot();
 
 $moduleManager = $helper->get('module_manager');
 
-$t = new lime_test(75);
+$t = new lime_test(83);
 
 $t->comment('Is module test');
 
@@ -47,7 +47,8 @@ foreach(array(
 $t->comment('Module components tests');
 
 foreach(array(
-  'main' => 'header footer loginForm sitemap',
+  'main' => 'header footer sitemap',
+  'dmUser' => 'signin form list show',
   'dmTestCateg' => 'list listByDomain show',
   'dmTestPost' => 'listByDomain listByCateg listByTag show',
   'dmTestComment' => 'listByDomain listByCateg listByPost form'
@@ -78,7 +79,9 @@ foreach(array(
   'dmTestCateg dmTestDomain' => true,
   'dmTestTag dmTestTag' => false,
   'dmTestTag dmTestDomain' => false,
-  'dmTestTag dmTestComment' => false
+  'dmTestTag dmTestComment' => false,
+  'dmTestTag dmUser' => false,
+  'dmUser dmTestTag' => false
 ) as $modules => $hasAncestor)
 {
   $modules = explode(' ', $modules);
@@ -114,6 +117,7 @@ $t->diag('Path tests');
 foreach(array(
   'dmTestFruit' => array(),
   'dmTestTag' => array(),
+  'dmUser' => array(),
   'dmTestDomain' => array(),
   'dmTestCateg' => array('dmTestDomain'),
   'dmTestPost' => array('dmTestDomain', 'dmTestCateg'),
@@ -128,6 +132,7 @@ $t->diag('Path tests including module');
 foreach(array(
   'dmTestFruit' => array('dmTestFruit'),
   'dmTestTag' => array('dmTestTag'),
+  'dmUser' => array('dmUser'),
   'dmTestDomain' => array('dmTestDomain'),
   'dmTestCateg' => array('dmTestDomain', 'dmTestCateg'),
   'dmTestPost' => array('dmTestDomain', 'dmTestCateg', 'dmTestPost'),
@@ -143,6 +148,7 @@ foreach(array(
   'dmTestFruit' => null,
   'dmTestTag' => null,
   'dmTestDomain' => null,
+  'dmUser' => null,
   'dmTestCateg' => 'dmTestDomain',
   'dmTestPost' => 'dmTestDomain',
   'dmTestComment' => 'dmTestDomain'
