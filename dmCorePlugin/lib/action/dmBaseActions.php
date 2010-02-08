@@ -113,27 +113,27 @@ abstract class dmBaseActions extends sfActions
     return $backUrl;
   }
   
-  protected function getRouting()
+  public function getRouting()
   {
     return $this->context->getRouting();
   }
   
-  protected function getHelper()
+  public function getHelper()
   {
     return $this->context->getHelper();
   }
 
-  protected function getI18n()
+  public function getI18n()
   {
     return $this->context->getI18n();
   }
   
-  protected function getServiceContainer()
+  public function getServiceContainer()
   {
     return $this->context->getServiceContainer();
   }
   
-  protected function getService($serviceName, $class = null)
+  public function getService($serviceName, $class = null)
   {
     return $this->getServiceContainer()->getService($serviceName, $class);
   }
@@ -191,5 +191,25 @@ abstract class dmBaseActions extends sfActions
     print $data;
     exit;
   }
+  
+  /**
+   * Calls methods defined via sfEventDispatcher.
+   *
+   * @param string $method The method name
+   * @param array  $arguments The method arguments
+   *
+   * @return mixed The returned value of the called method
+   *
+   * @throws sfException If called method is undefined
+   */
+  public function __call($method, $arguments)
+  {
+    $event = $this->dispatcher->notifyUntil(new sfEvent($this, 'action.method_not_found', array('method' => $method, 'arguments' => $arguments)));
+    if (!$event->isProcessed())
+    {
+      throw new sfException(sprintf('Call to undefined method %s::%s.', get_class($this), $method));
+    }
 
+    return $event->getReturnValue();
+  }
 }
