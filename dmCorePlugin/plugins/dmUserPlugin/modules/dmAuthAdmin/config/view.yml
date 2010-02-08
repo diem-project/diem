@@ -1,7 +1,0 @@
-signinSuccess:
-
-  stylesheets:  [ dmUserPlugin.adminAuth ]
-
-signinBrowser:
-
-  stylesheets:  [ dmUserPlugin.adminAuth ]
