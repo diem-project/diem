@@ -172,7 +172,7 @@ $html = _tag('ul', _tag('li.first.last.dm_current', _link()->text($helper->get('
 
 $t->is($menu->render(), $html, 'Current li has the dm_current class');
 
-$helper->getContext()->setPage(dmDb::table('DmPage')->findOneByModuleAndAction('main', 'login'));
+$helper->getContext()->setPage(dmDb::table('DmPage')->findOneByModuleAndAction('main', 'signin'));
 
 $menu = $helper->get('menu')->addChild('Home', '@homepage')->end();
 $html = _tag('ul', _tag('li.first.last.dm_parent', _link()->text($helper->get('i18n')->__('Home'))));
