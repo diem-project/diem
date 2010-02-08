@@ -127,9 +127,9 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
       $this->throwException('No main module');
     }
     
-    if (!isset($this->config['Project']))
+    if (!isset($this->config['Content']))
     {
-      $this->throwException('No Project module type');
+      $this->throwException('No Content module type');
     }
     
     foreach($this->modules as $key => $module)
@@ -298,7 +298,6 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
     foreach($config as $typeName => $typeConfig)
     {
       $this->config[$typeName] = array();
-      $isInProject = $typeName === 'Project';
       
       foreach($typeConfig as $spaceName => $spaceConfig)
       {
@@ -306,7 +305,7 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
         
         foreach((array) $spaceConfig as $moduleKey => $moduleConfig)
         {
-          $moduleConfig = $this->fixModuleConfig($moduleKey, $moduleConfig, $isInProject);
+          $moduleConfig = $this->fixModuleConfig($moduleKey, $moduleConfig, $typeName === 'Content');
 
           $this->modules[$moduleKey] = $moduleConfig;
           
@@ -321,7 +320,7 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
     }
   }
   
-  protected function fixModuleConfig($moduleKey, $moduleConfig, $isInProject)
+  protected function fixModuleConfig($moduleKey, $moduleConfig, $isInContent)
   {
     /*
      * Extract plural from name
@@ -365,10 +364,10 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
       'model' =>      $model,
       'credentials' => isset($moduleConfig['credentials']) ? trim($moduleConfig['credentials']) : null,
       'underscore'  => (string) dmString::underscore($moduleKey),
-      'is_project'  => (boolean) $isInProject || dmArray::get($moduleConfig, 'page', false) || dmArray::get($moduleConfig, 'project', false),
+      'is_project'  => (boolean) $isInContent || dmArray::get($moduleConfig, 'page', false) || count(dmArray::get($moduleConfig, 'components', array())),
       'plugin'      => $moduleConfig['plugin'],
       'overridden'  => dmArray::get($moduleConfig, 'overridden', false),
-      'has_admin'   => (boolean) dmArray::get($moduleConfig, 'admin', $model || !$isInProject),
+      'has_admin'   => (boolean) dmArray::get($moduleConfig, 'admin', $model || !$isInContent),
       'has_front'   => (boolean) dmArray::get($moduleConfig, 'front', true),
       'components'  => dmArray::get($moduleConfig, 'components', array())
     );
@@ -456,6 +455,13 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
     foreach ($configFiles as $configFile)
     {
       $values = self::parseYaml($configFile);
+
+      // BC 5.0_BETA6 "Content" was named "Project"
+      if(isset($values['Project']) && !isset($values['Content']))
+      {
+        $values['Content'] = $values['Project'];
+        unset($values['Project']);
+      }
 
       $pluginName = self::isProjectConfigFile($configFile) ? false : basename(str_replace('/config/dm/modules.yml', '', $configFile));
 
