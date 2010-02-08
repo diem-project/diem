@@ -29,35 +29,6 @@ $t->is_deeply(
 );
 
 
-$t->diag('firstKey');
-
-$t->is_deeply(
-  dmArray::firstKey('alpha'),
-  'alpha',
-  'first parameter is not an array'
-);
-
-$t->is_deeply(
-  dmArray::firstKey(array()),
-  null,
-  'empty source array'
-);
-
-$array = array(1 => 'alpha');
-$t->is_deeply(
-  dmArray::firstKey($array),
-  1,
-  'first value int'
-);
-
-$array = array('alpha' => 'beta');
-$t->is_deeply(
-  dmArray::firstKey($array),
-  'alpha',
-  'first value string'
-);
-
-
 $t->diag('firsts');
 
 $t->is_deeply(

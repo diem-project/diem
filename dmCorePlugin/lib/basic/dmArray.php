@@ -111,28 +111,6 @@ class dmArray
   }
 
   /**
-   * get first key of an array
-   *
-   * @param array $array source array
-   *
-   * @return int|string the first key
-   */
-  public static function firstKey($array)
-  {
-    if(!is_array($array))
-    {
-      return $array;
-    }
-
-    if(empty($array))
-    {
-      return null;
-    }
-
-    return self::first(array_keys($array));
-  }
-
-  /**
    * get first n values of an array
    *
    * @param array $array source array
