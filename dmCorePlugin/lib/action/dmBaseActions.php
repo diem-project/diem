@@ -138,8 +138,11 @@ abstract class dmBaseActions extends sfActions
     return $this->getServiceContainer()->getService($serviceName, $class);
   }
   
-  /*
+  /**
    * To download a file using its absolute path or raw data
+   *
+   * @param mixed $pathOrData path to file or raw data
+   * @param array $options    optional information file_name and type
    */
   protected function download($pathOrData, array $options = array())
   {

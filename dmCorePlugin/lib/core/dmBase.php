@@ -50,7 +50,7 @@ class dmBase
     return self::$startTime;
   }
   
-  /*
+  /**
    * All context creations are made here.
    * You can replace here the dmContext class by your own.
    */
@@ -104,7 +104,7 @@ class dmBase
     return $parts[0].'.'.$parts[1];
   }
   
-  /*
+  /**
    * Symfony common objects accessors
    */
 
@@ -113,7 +113,7 @@ class dmBase
     return dmContext::getInstance()->getRouting();
   }
 
-  /*
+  /**
    * @return dmWebRequest
    */
   public static function getRequest()
@@ -158,11 +158,11 @@ class dmBase
     return dmContext::getInstance()->getHelper();
   }
 
-  /*
+  /**
    * Gadgets
    */
 
-  /*
+  /**
    * Diem code size
    * returns array(files, lines, characters)
    */

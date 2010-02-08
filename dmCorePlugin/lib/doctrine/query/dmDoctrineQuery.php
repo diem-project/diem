@@ -41,7 +41,7 @@ abstract class dmDoctrineQuery extends Doctrine_Query
     return $this;
   }
 
-  /*
+  /**
    * Join translation results if they exist
    * if $model is specified, will verify that it has I18n
    * return @myDoctrineQuery $this
@@ -81,7 +81,7 @@ abstract class dmDoctrineQuery extends Doctrine_Query
     ->leftJoin($rootAlias.'.Translation '.$translationAlias.' ON '.$rootAlias.'.id = '.$translationAlias.'.id AND '.$translationAlias.'.lang = ?', $culture);
   }
 
-  /*
+  /**
    * Join media for this columnName or alias
    * return @dmDoctrineQuery $this
    */
@@ -118,7 +118,7 @@ abstract class dmDoctrineQuery extends Doctrine_Query
     return $this->addWhere($this->getRootAlias().'.is_active = ?', (bool) $boolean);
   }
   
-  /*
+  /**
    * Will restrict results to $model records
    * associated with $ancestor record
    */
@@ -127,7 +127,7 @@ abstract class dmDoctrineQuery extends Doctrine_Query
     return $this->whereAncestorId(get_class($ancestorRecord), $ancestorRecord->get('id'), $model);
   }
 
-  /*
+  /**
    * Will restrict results to $model records
    * associated with $ancestorModel->$ancestorId record
    */
@@ -194,7 +194,7 @@ abstract class dmDoctrineQuery extends Doctrine_Query
     return $this;
   }
   
-  /*
+  /**
    * Will restrict results to $model records
    * associated with $descendant record
    */
@@ -203,7 +203,7 @@ abstract class dmDoctrineQuery extends Doctrine_Query
     return $this->whereDescendantId(get_class($descendantRecord), $descendantRecord->get('id'), $model);
   }
   
-  /*
+  /**
    * Will restrict results to $model records
    * associated with $descendantModel->$descendantId record
    */
@@ -253,7 +253,7 @@ abstract class dmDoctrineQuery extends Doctrine_Query
     return $this;
   }
 
-  /*
+  /**
    * Add asc order by position field
    * if $model is specified, will verify that it has I18n
    * @return myDoctrineQuery $this
@@ -274,7 +274,7 @@ abstract class dmDoctrineQuery extends Doctrine_Query
     ->addOrderBy("$me.position asc");
   }
   
-  /*
+  /**
    * returns join alias for a given relation alias, if joined
    * ex: "Elem e, e.Categ my_categ"
    * alias for joined relation Categ = my_categ
@@ -299,7 +299,7 @@ abstract class dmDoctrineQuery extends Doctrine_Query
     return null;
   }
   
-  /*
+  /**
    * @return myDoctrineCollection|null the fetched collection
    */
   public function fetchRecords($params = array())
@@ -307,7 +307,7 @@ abstract class dmDoctrineQuery extends Doctrine_Query
     return $this->execute($params, Doctrine_Core::HYDRATE_RECORD);
   }
 
-  /*
+  /**
    * Add limit(1) to the query,
    * then execute $this->fetchOne()
    * @return myDoctrineRecord|null the fetched record
@@ -332,7 +332,7 @@ abstract class dmDoctrineQuery extends Doctrine_Query
     return $this->fetchOne($params, Doctrine_Core::HYDRATE_ARRAY);
   }
 
-  /*
+  /**
    * fetch brutal PDO array with numeric keys
    * @return array PDO result
    */
@@ -341,7 +341,7 @@ abstract class dmDoctrineQuery extends Doctrine_Query
     return $this->execute($params, DOCTRINE::HYDRATE_NONE);
   }
 
-  /*
+  /**
    * fetch brutal flat array with numeric keys
    * @return array PDO result
    */

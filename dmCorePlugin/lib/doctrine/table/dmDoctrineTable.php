@@ -7,7 +7,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
   $moduleManager,     // mandatory
   $serviceContainer;  // optional
   
-  /*
+  /**
    * @return DmMediaFolder the DmMediaFolder used to store this table's record's medias
    */
   public function getDmMediaFolder()
@@ -19,7 +19,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
     
     return $this->setCache('dm_media_folder', dmDb::table('DmMediaFolder')->findOneByRelPathOrCreate($this->getDmModule()->getUnderscore()));
   }
-  /*
+  /**
    * @return bool if this table's records interact with page tree
    * so if a record is saved or deleted, page tree must be updated
    */
@@ -60,7 +60,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
     return $this->setCache('interacts_with_page_tree', $interacts);
   }
 
-  /*
+  /**
    * @return myDoctrineRecord the first record in the table
    */
   public function findOne()
@@ -68,7 +68,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
     return $this->createQuery()->fetchRecord();
   }
 
-  /*
+  /**
    * Will join all record available medias
    * @return myDoctrineQuery
    */
@@ -82,7 +82,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
     return $query;
   }
 
-  /*
+  /**
    * Will join all localKey relations
    * @return myDoctrineQuery
    */
@@ -103,7 +103,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
     return $this->joinAll()->execute($params, $hydrationMode);
   }
 
-  /*
+  /**
    * Will join all relations
    * @return myDoctrineQuery
    */
@@ -157,7 +157,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
     return $query;
   }
   
-  /*
+  /**
    * Will join named relations
    */
   public function joinRelations(array $aliases)
@@ -191,7 +191,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
     return $query;
   }
 
-  /*
+  /**
    * @return dmDoctrine query
    * the default admin list query
    */
@@ -200,7 +200,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
     return $this->joinAll($query);
   }
 
-  /*
+  /**
    * add i18n columns if needed
    */
   public function getAllColumns()
@@ -230,7 +230,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
     return false;
   }
 
-  /*
+  /**
    * Return columns that a human can fill
    * Will exclude primary key, timestampable fields
    */
@@ -376,7 +376,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
     return false !== strpos(dmArray::get($this->getColumnDefinition($columnName), 'extra', ''), 'link');
   }
 
-  /*
+  /**
    * Tries to find a column name that could be used to represent a record of this table
    */
   public function getIdentifierColumnName()
@@ -417,7 +417,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
     return $this->setCache('dm_primary_keys', $primaryKeys);
   }
 
-  /*
+  /**
    * Will return pk column name if table has only one pk, or null
    */
   public function getPrimaryKey()
@@ -430,7 +430,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
     return null;
   }
 
-  /*
+  /**
    * @return dmTableRelationHolder the table relation holder
    */
   public function getRelationHolder()
@@ -476,7 +476,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
     unset($records, $modifiedRecords);
   }
 
-  /*
+  /**
    * return dmModule this record module
    */
   public function getDmModule()
@@ -488,7 +488,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
     
     return $this->setCache('dm_module', $this->getModuleManager()->getModuleByModel($this->getComponentName()));
   }
-  /*
+  /**
    * Usefull for generators ( admin, form, filter )
    */
   public function getSfDoctrineColumns()
@@ -503,7 +503,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
     return $columns;
   }
 
-  /*
+  /**
    * dmMicroCache
    */
   protected

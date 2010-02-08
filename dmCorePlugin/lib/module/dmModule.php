@@ -266,7 +266,7 @@ class dmModule extends dmMicroCache
     return $this->isProject();
   }
   
-  /*
+  /**
    * @return dmModuleManager
    */
   public function getManager()

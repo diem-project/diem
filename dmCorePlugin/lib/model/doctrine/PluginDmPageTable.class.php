@@ -7,7 +7,7 @@ class PluginDmPageTable extends myDoctrineTable
   $recordPageCache = array(),
   $findByStringCache = array();
   
-  /*
+  /**
    * Check that basic pages exist
    * ( main/root, main/error404, main/login )
    * and, if they don't, will create them
@@ -67,7 +67,7 @@ class PluginDmPageTable extends myDoctrineTable
     }
   }
   
-  /*
+  /**
    * Check that search page exist
    * and, if doesn't, will create it
    */
@@ -149,7 +149,7 @@ class PluginDmPageTable extends myDoctrineTable
     unset($pages);
   }
   
-  /*
+  /**
    * Queries
    */
 
@@ -167,7 +167,7 @@ class PluginDmPageTable extends myDoctrineTable
     ->execute(array(), $hydrationMode);
   }
   
-  /*
+  /**
    * Performance finder shortcuts
    */
   public function findOneBySource($source)

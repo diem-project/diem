@@ -214,7 +214,7 @@ class dmForm extends sfFormSymfony
     return $return;
   }
 
-  /*
+  /**
    * Usefull for debugging : will throw the error exception
    */
   public function throwError()

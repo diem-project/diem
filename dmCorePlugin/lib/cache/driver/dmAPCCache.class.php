@@ -47,7 +47,7 @@ class dmAPCCache extends sfAPCCache
     return $data;
   }
 
-  /*
+  /**
    * will not unserialize result
    */
   public function _get($key, $default = null)

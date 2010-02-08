@@ -18,7 +18,7 @@ class dmFileCache extends sfFileCache
     return parent::set($key, serialize($data), $lifetime);
   }
 
-  /*
+  /**
    * will not serialize result
    */
   public function _set($key, $data, $lifetime = null)
@@ -38,7 +38,7 @@ class dmFileCache extends sfFileCache
     return $data;
   }
 
-  /*
+  /**
    * will not unserialize result
    */
   public function _get($key, $default = null)

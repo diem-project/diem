@@ -12,7 +12,7 @@ class PluginDmPageViewTable extends myDoctrineTable
     ->fetchRecord();
   }
 
-  /*
+  /**
    * @return DmPageView created record
    */
   public function createFromModuleAndAction($module, $action)

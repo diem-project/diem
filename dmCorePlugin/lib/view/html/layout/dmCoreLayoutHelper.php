@@ -171,7 +171,7 @@ class dmCoreLayoutHelper
     return $html;
   }
 
-  /*
+  /**
    * JavaScript libs declared in dm_js_head_inclusion
    * are declared in the <head> section
    */

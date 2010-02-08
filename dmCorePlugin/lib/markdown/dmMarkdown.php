@@ -130,7 +130,7 @@ class dmMarkdown extends MarkdownExtra_Parser
   }
   
   
-  /*
+  /**
    * Link system replacement
    */
 
@@ -215,7 +215,7 @@ class dmMarkdown extends MarkdownExtra_Parser
     return $this->hashPart($link->render());
   }
   
-  /*
+  /**
    * Image system replacement
    */
   
@@ -323,7 +323,7 @@ class dmMarkdown extends MarkdownExtra_Parser
   }
   
   
-  /*
+  /**
    * Very fast function to translate markdown text to pure text without formatting
    * This function is less efficient than toText
    */

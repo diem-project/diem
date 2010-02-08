@@ -50,7 +50,7 @@ class dmUpgradeTask extends dmContextTask
     }
   }
 
-  /*
+  /**
    * Add ga_token setting if missing
    */
   protected function upgradeToAddGaToken()
@@ -69,7 +69,7 @@ class dmUpgradeTask extends dmContextTask
     }
   }
 
-  /*
+  /**
    * Clear old school formatted logs
    */
   protected function upgradeToClearLogs()
@@ -86,7 +86,7 @@ class dmUpgradeTask extends dmContextTask
     }
   }
 
-  /*
+  /**
    * Fix login and secure module in admin settings.yml
    */
   protected function upgradeToAdminAuthModule()

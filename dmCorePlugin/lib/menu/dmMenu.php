@@ -44,7 +44,7 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
     );
   }
 
-  /*
+  /**
    * Setters
    */
 
@@ -99,7 +99,7 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
     return $this->setOption('li_class', $class);
   }
 
-  /*
+  /**
    * Display ID html attributes ?
    */
   public function showId($bool)
@@ -140,7 +140,7 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
     return $this;
   }
 
-  /*
+  /**
    * Getters
    */
 
@@ -224,7 +224,7 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
     return $this->children[$name];
   }
 
-  /*
+  /**
    * Checks
    */
 
@@ -265,7 +265,7 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
     return isset($this->children[$name]);
   }
 
-  /*
+  /**
    * Manipulation
    */
 
@@ -305,7 +305,7 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
     return $this;
   }
 
-  /*
+  /**
    * Recursively add children based on the page structure
    */
   public function addRecursiveChildren($depth = 1)
@@ -335,7 +335,7 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
     return $this;
   }
 
-  /*
+  /**
    * Rendering
    */
 
@@ -535,7 +535,7 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
     return $this->parent && ($this->parent->count() === $this->num);
   }
 
-  /*
+  /**
    * Interfaces implementations
    */
 
@@ -594,7 +594,7 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
     return $this->removeChild($name);
   }
 
-  /*
+  /**
    * Service getters
    */
   public function getI18n()

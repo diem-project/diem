@@ -12,7 +12,7 @@ class dmString extends sfInflector
     return htmlspecialchars($text, $quoteStyle, 'UTF-8');
   }
   
-  /*
+  /**
    * Clean dirty strings
    */
   public static function unixify($text)
@@ -29,7 +29,7 @@ class dmString extends sfInflector
     ));
   }
 
-  /*
+  /**
    * Adds a final 's'
    */
   public static function pluralize($word)
@@ -49,7 +49,7 @@ class dmString extends sfInflector
     }
   }
 
-  /*
+  /**
    * Returns a module formatted string
    * ModuleName => moduleName
    * module_name => moduleName
@@ -64,7 +64,7 @@ class dmString extends sfInflector
     return $model;
   }
 
-  /*
+  /**
    * Returns a camelized string from a lower case and underscored string by
    * upper-casing each letter preceded by an underscore.
    * modelName => ModelName
@@ -109,7 +109,7 @@ class dmString extends sfInflector
     return parent::humanize(self::underscore($text));
   }
 
-  /*
+  /**
    * Transform any text into a valid slug
    * @return string slug
    */
@@ -137,7 +137,7 @@ class dmString extends sfInflector
     return $text;
   }
   
-  /*
+  /**
    * Transform a slug into a human readable text with blank spaces
    * @return string text
    */
@@ -168,7 +168,7 @@ class dmString extends sfInflector
     return $text;
   }
   
-  /*
+  /**
    * Transform string options to array options
    * Symfony and jQuery styles are accepted
    * e.g. "#an_id.a_class.another_class an_option=a_value"
@@ -207,7 +207,7 @@ class dmString extends sfInflector
     return $array;
   }
 
-  /*
+  /**
    * Transform css options to array options
    * e.g. "#an_id.a_class.another_class"
    * results in array(
@@ -292,7 +292,7 @@ class dmString extends sfInflector
     $string = '';
   }
 
-  /*
+  /**
    * Returns a random string
    */
   public static function random($length = 8)
@@ -390,7 +390,7 @@ class dmString extends sfInflector
     return array();
   }
   
-  /*
+  /**
    * Returns a valid hex color uppercased without first #,
    * or null if not possible
    */
@@ -414,7 +414,7 @@ class dmString extends sfInflector
     return $string;
   }
   
-  /*
+  /**
    * replace $search by $replace in $subject, only once
    */
   public static function str_replace_once($search, $replace, $subject)

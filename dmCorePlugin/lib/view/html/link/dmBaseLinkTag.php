@@ -37,7 +37,7 @@ abstract class dmBaseLinkTag extends dmHtmlTag
     return false;
   }
   
-  /*
+  /**
    * @return string baseHref the href without query string
    */
   abstract protected function getBaseHref();
@@ -49,7 +49,7 @@ abstract class dmBaseLinkTag extends dmHtmlTag
     : $this->requestContext['script_name'];
   }
   
-  /*
+  /**
    * Set text
    * @return dmLinkTag $this
    */
@@ -58,7 +58,7 @@ abstract class dmBaseLinkTag extends dmHtmlTag
     return $this->setOption('text', (string) $v);
   }
 
-  /*
+  /**
    * Set title
    * @return dmLinkTag $this
    */
@@ -67,7 +67,7 @@ abstract class dmBaseLinkTag extends dmHtmlTag
     return $this->setOption('title', (string) $v);
   }
 
-  /*
+  /**
    * Set text and title
    * @return dmLinkTag $this
    */
@@ -76,7 +76,7 @@ abstract class dmBaseLinkTag extends dmHtmlTag
     return $this->text($v)->title($v);
   }
 
-  /*
+  /**
    * Set link target
    * @return dmLinkTag $this
    */
@@ -90,7 +90,7 @@ abstract class dmBaseLinkTag extends dmHtmlTag
     return $this->setOption('target', strtolower($v));
   }
 
-  /*
+  /**
    * Add an anchor
    * @return dmLinkTag $this
    */
@@ -99,7 +99,7 @@ abstract class dmBaseLinkTag extends dmHtmlTag
     return $this->setOption('anchor', trim((string) $v, '#'));
   }
 
-  /*
+  /**
    * Add a request parameter
    * @return dmLinkTag $this
    */
@@ -108,7 +108,7 @@ abstract class dmBaseLinkTag extends dmHtmlTag
     return $this->params(array($key => $value));
   }
 
-  /*
+  /**
    * Add request parameters
    * @return dmLinkTag $this
    */
@@ -122,7 +122,7 @@ abstract class dmBaseLinkTag extends dmHtmlTag
     return $this->setOption('params', array_merge($this->get('params', array()), $params));
   }
 
-  /*
+  /**
    * Whether to display current links with span tag
    * @return dmLinkTag $this
    */
@@ -131,7 +131,7 @@ abstract class dmBaseLinkTag extends dmHtmlTag
     return $this->setOption('current_span', (bool) $bool);
   }
 
-  /*
+  /**
    * Sets the current css class
    * @return dmLinkTag $this
    */
@@ -140,7 +140,7 @@ abstract class dmBaseLinkTag extends dmHtmlTag
     return $this->setOption('current_class', (string) $class);
   }
 
-  /*
+  /**
    * Sets the parent css class
    * @return dmLinkTag $this
    */

@@ -10,7 +10,7 @@ abstract class PluginDmMedia extends BaseDmMedia
     return $this->checkFileExists() ? substr(md5(filemtime($this->getFullPath())), -5) : null;
   }
 
-  /*
+  /**
    * Store a copy of the file in backup folder
    */
   public function backup()
@@ -148,7 +148,7 @@ abstract class PluginDmMedia extends BaseDmMedia
     return substr($this->get('mime'), 0, strpos($this->get('mime'), '/'));
   }
   
-  /*
+  /**
    * @return dmImage
    */
   public function getImage()
@@ -190,7 +190,7 @@ abstract class PluginDmMedia extends BaseDmMedia
     return $this->create($file);
   }
 
-  /*
+  /**
    * @return DmMedia the new media with $toMedia values
    */
   public function copyTo(DmMedia $toMedia)

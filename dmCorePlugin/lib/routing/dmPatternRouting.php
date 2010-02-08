@@ -17,7 +17,7 @@ class dmPatternRouting extends sfPatternRouting
     parent::initialize($dispatcher, $cache, $options);
   }
 
-  /*
+  /**
    * Disable cache when the request contain a "_" paremeter
    * This parameter is set randomly by jQuery to avoid browser cache
    * Cache it quickly leads to thousands cache entries

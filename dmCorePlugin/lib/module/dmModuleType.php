@@ -14,7 +14,7 @@ class dmModuleType
     $this->slug   = null;
   }
 
-  /*
+  /**
    * Bouh
    */
   public function isProject()

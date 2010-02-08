@@ -121,7 +121,7 @@ class dmTheme
     return $this->getBasePath().$this->getPath($path);
   }
 
-  /*
+  /**
    * public path
    * example : /theme/css/style.css or /public_html/theme/css/style.css if no virtual host
    */
@@ -130,7 +130,7 @@ class dmTheme
     return $this->requestContext['relative_url_root'].$this->getPath($path);
   }
   
-  /*
+  /**
    * full public path
    * example : http://mysite.com/theme/css/style.css or http://localhost/mysite/public_html/theme/css/style.css if no virtual host
    */
@@ -139,7 +139,7 @@ class dmTheme
     return $this->requestContext['absolute_url_root'].$this->getPath($path);
   }
   
-  /*
+  /**
    * path from web dir
    * example : /theme/css/style.css
    */

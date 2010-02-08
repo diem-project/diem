@@ -141,7 +141,7 @@ class dmModuleManager
     
     return $modules;
   }
-  /*
+  /**
    * Remove modules wich are child of another modified module
    * Keep only rooter modified modules
    * @return array of dmModule

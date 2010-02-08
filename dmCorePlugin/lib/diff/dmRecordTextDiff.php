@@ -25,7 +25,7 @@ class dmRecordTextDiff
     $this->table            = $fromVersion->getTable();
   }
   
-  /*
+  /**
    * @return array Diffs for each field
    */
   public function getHtmlDiffs(array $fields)
@@ -40,7 +40,7 @@ class dmRecordTextDiff
     return $diffs;
   }
   
-  /*
+  /**
    * @return string Diff for one field
    */
   public function getHtmlDiff($field)

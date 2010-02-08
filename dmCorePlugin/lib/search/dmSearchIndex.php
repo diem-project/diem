@@ -180,7 +180,7 @@ class dmSearchIndex extends dmSearchIndexCommon
     ->andWhere('p.module != ? OR ( p.action != ? AND p.action != ? AND p.action != ?)', array('main', 'error404', 'search', 'login'));
   }
 
-  /*
+  /**
    * @return array of words we do not want to index ( like "the", "a", to"... )
    */
   public function getStopWords()
@@ -197,7 +197,7 @@ class dmSearchIndex extends dmSearchIndexCommon
   }
   
   
-  /*
+  /**
    * @return Zend_Search_Lucene_Proxy instance
    */
   public function getLuceneIndex()

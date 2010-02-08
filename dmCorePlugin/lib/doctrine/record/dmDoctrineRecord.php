@@ -42,7 +42,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     return $this->get('Translation')->get(self::getDefaultCulture());
   }
 
-  /*
+  /**
    * Add page tree watcher registering
    */
   public function preSave($event)
@@ -59,7 +59,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     }
   }
 
-  /*
+  /**
    * Add page tree watcher registering
    */
   public function postDelete($event)
@@ -119,7 +119,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     return $map;
   }
 
-  /*
+  /**
    * Tries to return the nearest records in table
    */
   public function getNearRecords(dmDoctrineQuery $q, $nb = 11)
@@ -169,7 +169,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     return $rPk->fetchRecords();
   }
 
-  /*
+  /**
    * Tries to return the previous record in table
    */
   public function getPreviousRecord(Doctrine_Collection $nearRecords)
@@ -191,7 +191,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     return $nearRecords[$myOffset-1];
   }
 
-  /*
+  /**
    * Tries to return the next record in table
    */
   public function getNextRecord(Doctrine_Collection $nearRecords)
@@ -213,7 +213,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     return $nearRecords[$myOffset+1];
   }
 
-  /*
+  /**
    * add fluent interface to @see parent::fromArray
    * @return myDoctrineRecord $this ( fluent interface )
    */
@@ -223,7 +223,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     return $this;
   }
 
-  /*
+  /**
    * @return DmMediaFolder the DmMediaFolder used to store this record's medias
    */
   public function getDmMediaFolder()
@@ -231,7 +231,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     return $this->_table->getDmMediaFolder();
   }
 
-  /*
+  /**
    * @return DmMedia the associated media for this columnName or null
    */
   public function getDmMediaByColumnName($columnName)
@@ -260,7 +260,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     //    return $relation->fetchRelatedFor($this);
   }
 
-  /*
+  /**
    * sets a DmMedia record associated to this columnName
    * @return DmMedia the newly associated media for this columnName
    */
@@ -283,7 +283,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     ->set($columnName, $media ? $media->get('id') : null);
   }
 
-  /*
+  /**
    * @return dmModule this record module
    */
   public function getDmModule()
@@ -291,7 +291,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     return $this->_table->getDmModule();
   }
 
-  /*
+  /**
    * @return dmPage this record page
    */
   public function getDmPage()
@@ -304,7 +304,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     return dmDb::table('DmPage')->findOneByRecordWithI18n($this);
   }
 
-  /*
+  /**
    * Will find in module ancestors the requested model
    * and return the ancestor record for this model
    * @return myDoctrineRecord the ancestor record
@@ -329,7 +329,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     ->fetchOne();
   }
 
-  /*
+  /**
    * Will find in module ancestors the requested model
    * and return the ancestor record id for this model
    * @return int the ancestor record id
@@ -354,7 +354,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     ->fetchValue();
   }
 
-  /*
+  /**
    * Returns one record related to this one by $alias
    * LocalKey relation : the related record
    * ForeignKey && Association relation : the first related record
@@ -395,7 +395,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     }
   }
 
-  /*
+  /**
    * Return null if this record is new
    * @return dmDoctrineRecord | null
    */
@@ -435,7 +435,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     return $string;
   }
 
-  /*
+  /**
    * Shortcut to __toString method
    * used by admin generator
    */
@@ -444,7 +444,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     return $this->__toString();
   }
 
-  /*
+  /**
    * Return array representation of this record
    *
    * @return array An array representation of the record.
@@ -562,7 +562,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     return $this->_get($fieldName, $load);
   }
 
-  /*
+  /**
    * Pure overload without parent::_get
    */
   public function _get($fieldName, $load = true)
@@ -721,7 +721,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     return $this->i18nFallback;
   }
 
-  /*
+  /**
    * Allow to set values by modulized fieldName
    * ex : _get('cssClass') returns _get('css_class')
    */
@@ -759,7 +759,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     return $this->getTable()->getModuleManager();
   }
   
-  /*
+  /**
    * Hack to make Versionable behavior work with I18n tables
    * it will add a where clause on the current culture
    * to avoid selecting versions for all cultures.
@@ -818,7 +818,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     $this->_data = $data;
   }
   
-  /*
+  /**
    * dmMicroCache
    */
   protected
