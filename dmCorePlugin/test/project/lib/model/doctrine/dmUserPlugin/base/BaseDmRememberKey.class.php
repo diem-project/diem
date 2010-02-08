@@ -55,5 +55,13 @@ abstract class BaseDmRememberKey extends myDoctrineRecord
              'local' => 'dm_user_id',
              'foreign' => 'id',
              'onDelete' => 'CASCADE'));
+
+        $timestampable0 = new Doctrine_Template_Timestampable(array(
+             'updated' => 
+             array(
+              'disabled' => true,
+             ),
+             ));
+        $this->actAs($timestampable0);
     }
 }

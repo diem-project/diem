@@ -6,7 +6,6 @@ Project:
       components:
         header:  
         footer:
-        loginForm:
         sitemap:
         
   Food:
@@ -67,13 +66,9 @@ Project:
 
   Author:
 
-    author:
-      model:            DmUser
-      front:            false
-
     dmUser:
       name:             Author
       page:             true
       components:
-        list:           { cache: true }
-        show:           { cache: true }
+        list:
+        show:

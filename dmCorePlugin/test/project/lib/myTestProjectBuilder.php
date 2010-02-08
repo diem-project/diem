@@ -23,7 +23,7 @@ class myTestProjectBuilder
 
     $this->changeHomeLayout();
     
-    $this->addLoginForm();
+    $this->addSigninForm();
 
     $this->addBreadCrumb();
 
@@ -342,6 +342,28 @@ class myTestProjectBuilder
       array(),
       $page->PageView->Area->Zones[0]
     )->save();
+
+    // user list
+    $this->createWidget(
+      'dmUser/list',
+      array(
+        'orderField'  => 'created_at',
+        'orderType'   => 'asc',
+        'maxPerPage'  => 0,
+        'navTop'      => true,
+        'navBottom'   => true
+      ),
+      dmDb::table('DmPage')->findOneByModuleAndAction('dmUser', 'list')->PageView->Area->Zones[0]
+    )->save();
+
+    $this->context->setPage($page = dmDb::table('DmPage')->findOneByModuleAndAction('dmUser', 'show'));
+
+    // user show
+    $this->createWidget(
+      'dmUser/show',
+      array(),
+      $page->PageView->Area->Zones[0]
+    )->save();
   }
 
   protected function loremize()
@@ -371,7 +393,7 @@ class myTestProjectBuilder
     $this->createWidget(
       'dmWidgetNavigation/breadCrumb',
       array('includeCurrent' => true),
-      dmDb::table('DmPage')->findOneByModuleAndAction('main', 'login')->PageView->Layout->getArea('top')->Zones[0]
+      dmDb::table('DmPage')->findOneByModuleAndAction('main', 'signin')->PageView->Layout->getArea('top')->Zones[0]
     )->save();
   }
 
@@ -380,7 +402,7 @@ class myTestProjectBuilder
     $this->createWidget(
       'dmWidgetContent/link',
       array('href' => 'page:1'),
-      dmDb::table('DmPage')->findOneByModuleAndAction('main', 'login')->PageView->Layout->getArea('top')->Zones[0]
+      dmDb::table('DmPage')->findOneByModuleAndAction('main', 'signin')->PageView->Layout->getArea('top')->Zones[0]
     )->save();
 
     $this->createWidget(
@@ -390,12 +412,18 @@ class myTestProjectBuilder
     )->save();
   }
 
-  protected function addLoginForm()
+  protected function addSigninForm()
   {
     $this->createWidget(
-      'main/loginForm',
+      'dmUser/signin',
       array(),
-      dmDb::table('DmPage')->findOneByModuleAndAction('main', 'login')->PageView->Area->Zones[0]
+      dmDb::table('DmPage')->findOneByModuleAndAction('main', 'signin')->PageView->Area->Zones[0]
+    )->save();
+ 
+    $this->createWidget(
+      'dmUser/form',
+      array(),
+      dmDb::table('DmPage')->findOneByModuleAndAction('main', 'signin')->PageView->Area->Zones[0]
     )->save();
   }
 
