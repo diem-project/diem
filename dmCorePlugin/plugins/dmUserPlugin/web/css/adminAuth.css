@@ -107,6 +107,23 @@ div.dm_auth .dm_suggested_browsers img {
   text-align: right;
 }
 
+div.dm_auth ul.choices {
+  text-align: left;
+  width: 260px;
+  margin: 20px auto 0 auto;
+  padding: 10px;
+  background: url(../images/alpha_white_bg_light.png) repeat;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border: 1px outset #fff;
+}
+
+div.dm_auth ul.choices li {
+  list-style: disc inside;
+  color: #aaa;
+  margin: 0.5em 0;
+}
+
 .generator_link {
   position: absolute;
   bottom: 0;

@@ -1,6 +1,6 @@
 <?php
 
-class DmFormSignin extends BaseDmFormSignin
+class DmSigninFrontForm extends DmSigninBaseForm
 {
   /**
    * @see sfForm

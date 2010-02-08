@@ -28,7 +28,7 @@ class BaseDmUserAdminForm extends BaseDmUserForm
     }
     
     $this->widgetSchema['password'] = new sfWidgetFormInputPassword();
-    $this->validatorSchema['password']->setOption('required', false);
+    $this->validatorSchema['password']->setOption('required', $this->object->isNew());
     $this->widgetSchema['password_again'] = new sfWidgetFormInputPassword();
     $this->validatorSchema['password_again'] = clone $this->validatorSchema['password'];
 
@@ -38,11 +38,8 @@ class BaseDmUserAdminForm extends BaseDmUserForm
       $this->validatorSchema['username'],
       new sfValidatorRegex(array('pattern' => '/^[\w\d\-\s@\.]+$/')),
     ));
-    
-    $this->validatorSchema['email'] = new sfValidatorAnd(array(
-      $this->validatorSchema['email'],
-      new sfValidatorEmail(),
-    ));
+
+    $this->changeToEmail('email');
 
     $this->mergePostValidator(new sfValidatorSchemaCompare('password', sfValidatorSchemaCompare::EQUAL, 'password_again', array(), array('invalid' => 'The two passwords must be the same.')));
   }

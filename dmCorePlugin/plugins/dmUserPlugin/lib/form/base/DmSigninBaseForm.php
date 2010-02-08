@@ -1,6 +1,6 @@
 <?php
 
-class BaseDmFormSignin extends BaseForm
+class DmSigninBaseForm extends BaseForm
 {
   /**
    * @see sfForm
@@ -20,7 +20,7 @@ class BaseDmFormSignin extends BaseForm
       'password' => new sfValidatorString(),
       'remember' => new sfValidatorBoolean(),
     ));
-    
+
     $this->setName('signin');
 
     $this->validatorSchema->setPostValidator(new dmValidatorUser());

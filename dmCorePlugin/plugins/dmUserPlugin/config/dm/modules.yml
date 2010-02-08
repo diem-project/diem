@@ -5,6 +5,9 @@ System:
     dmUser:
       name:         User
       credentials:  security_user
+      components:
+        signin:
+        form:       { name: "Register" }
 
     dmPermission:
       name:         Permission
