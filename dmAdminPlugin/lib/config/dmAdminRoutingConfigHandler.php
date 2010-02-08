@@ -121,6 +121,24 @@ class dmAdminRoutingConfigHandler extends sfRoutingConfigHandler
       'class' => 'sfRoute',
       'url'   => '/+/:module/:action/*'
     );
+
+    $config['signin'] = array(
+      'class' => 'sfRoute',
+      'url'   => '/security/signin',
+      'params' => array(
+        'module' => 'dmUserAdmin',
+        'action' => 'signin'
+      )
+    );
+
+    $config['signout'] = array(
+      'class' => 'sfRoute',
+      'url'   => '/security/signout',
+      'params' => array(
+        'module' => 'dmUserAdmin',
+        'action' => 'signout'
+      )
+    );
     
     $config['dm_module_type'] = array(
       'class' => 'sfRoute',

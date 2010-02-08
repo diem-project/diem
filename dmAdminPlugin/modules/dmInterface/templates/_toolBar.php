@@ -2,7 +2,7 @@
 
 echo _open('div#dm_tool_bar.clearfix.'.sfConfig::get('dm_toolBar_flavour', 'blue'));
 
-  echo _link('dmAuthAdmin/signout')->text('')->title($sf_user->getUsername().' : '.__('Logout'))->set('.widget16.s16block.s16_signout');
+  echo _link('@signout')->text('')->title($sf_user->getUsername().' : '.__('Logout'))->set('.widget16.s16block.s16_signout');
 
   if ($sf_user->can('clear_cache'))
   {
