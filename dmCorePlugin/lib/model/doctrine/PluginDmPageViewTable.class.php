@@ -17,7 +17,7 @@ class PluginDmPageViewTable extends myDoctrineTable
    */
   public function createFromModuleAndAction($module, $action)
   {
-    $pageView = dmDb::create('DmPageView', array(
+    return dmDb::create('DmPageView', array(
       'module' => $module,
       'action' => $action,
       'dm_layout_id' => dmDb::table('DmLayout')->findFirstOrCreate()

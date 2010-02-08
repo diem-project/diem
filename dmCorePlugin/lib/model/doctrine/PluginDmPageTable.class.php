@@ -9,7 +9,7 @@ class PluginDmPageTable extends myDoctrineTable
   
   /**
    * Check that basic pages exist
-   * ( main/root, main/error404, main/login )
+   * ( main/root, main/error404, main/signin )
    * and, if they don't, will create them
    */
   public function checkBasicPages()
@@ -54,15 +54,15 @@ class PluginDmPageTable extends myDoctrineTable
       )->save();
     }
 
-    // check login page
-    if (!$this->createQuery('p')->where('p.module = ? AND p.action = ?', array('main', 'login'))->exists())
+    // check signin page
+    if (!$this->createQuery('p')->where('p.module = ? AND p.action = ?', array('main', 'signin'))->exists())
     {
       $this->create(array(
         'module' => 'main',
-        'action' => 'login',
-        'name' => $this->getService('i18n')->__('Login'),
-        'title' => $this->getService('i18n')->__('Login'),
-        'slug' => 'login'
+        'action' => 'signin',
+        'name' => $this->getService('i18n')->__('Signin'),
+        'title' => $this->getService('i18n')->__('Signin'),
+        'slug' => 'signin'
       ))->getNode()->insertAsLastChildOf($root);
     }
   }
@@ -260,11 +260,11 @@ class PluginDmPageTable extends myDoctrineTable
     return $this->findOneByModuleAndActionWithI18n('main', 'error404');
   }
   
-  public function fetchLogin()
+  public function fetchSignin()
   {
     $this->checkBasicPages();
     
-    return $this->findOneByModuleAndActionWithI18n('main', 'login');
+    return $this->findOneByModuleAndActionWithI18n('main', 'signin');
   }
   
   public function findOneByIdWithI18n($id, $culture = null)
