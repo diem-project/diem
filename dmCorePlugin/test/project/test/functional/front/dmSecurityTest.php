@@ -194,7 +194,6 @@ $b
 ->checks()
 ->has('.dm_user_list li a', 'admin')
 ->click('.dm_user_list li a')
-->checks()
 ->isPageModuleAction('dmUser/show')
 ->has('h1', 'admin')
 ->has('span.email', 'admin@project.com')
