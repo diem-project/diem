@@ -110,4 +110,15 @@ class dmTestFunctional extends sfTestFunctional
 
     return $this;
   }
+
+  public function debug()
+  {
+    return $this->with('response')->debug();
+  }
+
+  public function isAuthenticated($value)
+  {
+    $this->getContext();
+    return $this->with('user')->begin()->isAuthenticated($value)->end();
+  }
 }
