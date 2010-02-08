@@ -177,8 +177,7 @@ $b
 ->has('.dm_signin_form input.submit', false)
 ->info('Trigger page synchronisation');
 
-$helper->getService('page_tree_watcher')->synchronizePages();
-$helper->getService('page_tree_watcher')->synchronizeSeo();
+$helper->getService('filesystem')->sf('dm:sync-pages');
 
 $b->info('Go to secured page with credentials')
 ->get('page12')
