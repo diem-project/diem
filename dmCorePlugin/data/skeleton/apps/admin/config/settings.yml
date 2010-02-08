@@ -32,8 +32,8 @@ all:
     use_database:           true
 
   .actions:
-    secure_module:          dmAuthAdmin
+    secure_module:          dmUserAdmin
     secure_action:          secure
     
-    login_module:           dmAuthAdmin
+    login_module:           dmUserAdmin
     login_action:           signin

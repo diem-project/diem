@@ -35,11 +35,11 @@ all:
 
   .actions:
   
-    secure_module:          dmFront
+    secure_module:          dmUser
     secure_action:          secure
     
-    login_module:           dmFront
-    login_action:           login
+    login_module:           dmUser
+    login_action:           signin
 
     error_404_module:       dmFront   # To be called when a 404 error is raised
     error_404_action:       error404  # Or when the requested URL doesn't match any route
