@@ -119,7 +119,7 @@ class dmXmlSitemapGenerator extends dmConfigurable
     return dmDb::query('DmPage p')->withI18n($culture)
     ->where('pTranslation.is_secure = ?', false)
     ->addWhere('pTranslation.is_active = ?', true)
-    ->addWhere('p.module != ? OR ( p.action != ? AND p.action != ? AND p.action != ?)', array('main', 'error404', 'search', 'login'))
+    ->addWhere('p.module != ? OR ( p.action != ? AND p.action != ? AND p.action != ?)', array('main', 'error404', 'search', 'signin'))
     ->orderBy('p.lft asc')
     ->fetchRecords();
   }
