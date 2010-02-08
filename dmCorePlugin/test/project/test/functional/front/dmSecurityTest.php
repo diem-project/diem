@@ -175,7 +175,12 @@ $b
 ->isPageModuleAction('main/page11')
 ->isAuthenticated(true)
 ->has('.dm_signin_form input.submit', false)
-->info('Go to secured page with credentials')
+->info('Trigger page synchronisation');
+
+$helper->getService('page_tree_watcher')->synchronizePages();
+$helper->getService('page_tree_watcher')->synchronizeSeo();
+
+$b->info('Go to secured page with credentials')
 ->get('page12')
 ->isPageModuleAction('main/signin')
 ->checks(array(
@@ -189,7 +194,17 @@ $b
 ->has('.dm_signin_form input.submit')
 ->get('/authors')
 ->isPageModuleAction('dmUser/list')
-->has('.dm_user_list li', 'admin')
+->checks()
+->has('.dm_user_list li a', 'admin')
+->click('.dm_user_list li a')
+->checks()
+->isPageModuleAction('dmUser/show')
+->has('h1', 'admin')
+->has('span.email', 'admin@project.com')
+->back()
+->click('Jannis')
+->checks()
 ->get('/authors/jannis')
 ->isPageModuleAction('dmUser/show')
-->has('h1', 'Jannis');
+->has('h1', 'Jannis')
+->has('span.email', 'jannis@nomail.com');

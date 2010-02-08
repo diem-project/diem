@@ -14,6 +14,8 @@ class dmTestFunctional extends sfTestFunctional
       $this->$method($expected);
     }
 
+    $this->test()->unlike($this->getResponse()->getContent(), '/\[EXCEPTION\]/', 'Response contains no [Exception]');
+
     return $this;
   }
 
