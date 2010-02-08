@@ -1,9 +1,3 @@
-<?php
-// Author : Show
-// Vars : $dmUser
+<?php // Vars: $dmUser
 
-echo _open('div.dm_user.show');
-
-  echo $dmUser;
-  
-echo _close('div');
+echo $dmUser;

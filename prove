@@ -3,7 +3,12 @@
 
 if (!defined('STDIN'))
 {
-  die('This tool is designed to be run from the command line.');
+  die('This tool is designed to be run from the command line.'."\n");
+}
+
+if(!extension_loaded('pdo_sqlite'))
+{
+  die('You need the pdo_sqlite PHP extension to run the tests'."\n");
 }
 
 chdir(dirname(__FILE__).'/dmCorePlugin/test/project');

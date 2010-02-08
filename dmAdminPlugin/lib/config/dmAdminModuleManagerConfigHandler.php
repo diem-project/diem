@@ -5,12 +5,12 @@ require_once(sfConfig::get('dm_core_dir').'/lib/config/dmModuleManagerConfigHand
 class dmAdminModuleManagerConfigHandler extends dmModuleManagerConfigHandler
 {
   
-  protected function fixModuleConfig($moduleKey, $moduleConfig, $isInProject, $plugin)
+  protected function fixModuleConfig($moduleKey, $moduleConfig, $isInProject)
   {
-    $moduleOptions = parent::fixModuleConfig($moduleKey, $moduleConfig, $isInProject, $plugin);
+    $moduleOptions = parent::fixModuleConfig($moduleKey, $moduleConfig, $isInProject);
     
     $moduleOptions['sf_name'] = dmArray::get($moduleOptions, 'sf_name',
-      $isInProject && $plugin ? $moduleKey.'Admin' : $moduleKey
+      ($moduleOptions['plugin'] && 'dmAdminPlugin' !== $moduleOptions['plugin']) ? $moduleKey.'Admin' : $moduleKey
     );
     
     return $moduleOptions;

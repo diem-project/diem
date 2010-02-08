@@ -122,7 +122,7 @@ div.dm_widget_add_helper {
   padding: 3px 5px;
   width: 134px;
   color: #666;
-  background: url(../../core/images/default_bg.png) repeat-x scroll 50% 50%;
+  background: url(../../dmCorePlugin/images/default_bg.png) repeat-x scroll 50% 50%;
   border: 1px solid #D3D3D3;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
@@ -138,7 +138,7 @@ div.dm_widget_add_helper {
 
 #dm_tool_bar ul.level2 span.move:hover {
   color: #444;
-  background: url(../../core/images/default_bg_blue.png) repeat-x scroll 50% 50%;
+  background: url(../../dmCorePlugin/images/default_bg_blue.png) repeat-x scroll 50% 50%;
 }
 
 #dm_tool_bar ul.level2 > li a {

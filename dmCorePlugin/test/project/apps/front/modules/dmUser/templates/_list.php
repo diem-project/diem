@@ -1,24 +1,18 @@
-<?php
-// Author : List
-// Vars : $dmUserPager
+<?php // Vars: $dmUserPager
 
-echo _open('div.dm_user.list');
+echo $dmUserPager->renderNavigationTop();
 
- echo $dmUserPager->renderNavigationTop();
+echo _open('ul.elements');
 
-  echo _open('ul.elements');
+foreach ($dmUserPager as $dmUser)
+{
+  echo _open('li.element');
 
-  foreach ($dmUserPager as $dmUser)
-  {
-    echo _open('li.element');
-    
-      echo _link($dmUser);
-      
-    echo _close('li');
-  }
+    echo _link($dmUser);
 
-  echo _close('ul');
+  echo _close('li');
+}
 
- echo $dmUserPager->renderNavigationBottom();
+echo _close('ul');
 
-echo _close('div');
+echo $dmUserPager->renderNavigationBottom();

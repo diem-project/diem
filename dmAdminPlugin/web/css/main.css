@@ -30,10 +30,6 @@ a:hover {
   padding-top: 1px;
 }
 
-body.full_screen #dm_admin_content {
-  margin: 0;
-}
-
 .dm_box {
   border: 1px solid #D3D3D3;
   -moz-border-radius: 4px;
@@ -70,7 +66,7 @@ div.dm_box_inner.m5 {
   -webkit-border-radius: 4px 4px 0 0;
   text-align: center;
   font-weight: normal;
-  background:#E6E6E6 url(../../core/images/default_bg.png) repeat-x scroll 50% 50%;
+  background:#E6E6E6 url(../../dmCorePlugin/images/default_bg.png) repeat-x scroll 50% 50%;
   border-bottom :1px solid #D3D3D3;
   color:#444;
 }
@@ -101,12 +97,12 @@ dl.dm_little_dl dd {
 }
 
 .dm .ui-state-default, .dm .ui-widget-content .ui-state-default {
-  background-image: url(../../core/images/default_bg.png);
+  background-image: url(../../dmCorePlugin/images/default_bg.png);
 }
 
 .dm_big_button,
 .dm_medium_button {
-  background: url(../../core/images/default_bg.png) center left repeat-x;
+  background: url(../../dmCorePlugin/images/default_bg.png) center left repeat-x;
   font-size: 13px;
   border: 1px solid #D3D3D3;
   color: #444;
@@ -125,7 +121,7 @@ dl.dm_little_dl dd {
 .dm_big_button:hover,
 .dm_medium_button:hover{
   text-decoration: none;
-  background: url(../../core/images/default_bg_green.png) center left repeat-x;
+  background: url(../../dmCorePlugin/images/default_bg_green.png) center left repeat-x;
 }
 
 a.associated_record {

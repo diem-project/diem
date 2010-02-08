@@ -5,7 +5,7 @@
 /* embedded form */
 .sf_admin_form form ul.dm_form_elements {
   clear: both;
-  background: url(../../core/images/default_bg.png) center left repeat-x;
+  background: url(../../dmCorePlugin/images/default_bg.png) center left repeat-x;
   border: 1px solid #D3D3D3;
   padding: 10px;
   -moz-border-radius: 4px;
@@ -32,7 +32,7 @@
 
 .sf_admin_form fieldset .fieldset_title {
   height: 24px;
-  background: url(../../core/images/default_bg.png) center left repeat-x;
+  background: url(../../dmCorePlugin/images/default_bg.png) center left repeat-x;
 }
 
 .sf_admin_form fieldset .fieldset_title > span.fieldset_name {
@@ -132,7 +132,7 @@ div.control span.unselect_all {
 
 div.dm_form_action_bar {
   padding: 5px;
-  background:#E6E6E6 url(../../core/images/default_bg.png) repeat-x scroll 50% 50%;
+  background:#E6E6E6 url(../../dmCorePlugin/images/default_bg.png) repeat-x scroll 50% 50%;
   border:1px solid #D3D3D3;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;

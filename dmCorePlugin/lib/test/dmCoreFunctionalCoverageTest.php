@@ -183,4 +183,9 @@ abstract class dmCoreFunctionalCoverageTest
     $this->browser->info(sprintf('Max time : %01.3f ms on %s', $this->stats['maxTime']['value'], $this->stats['maxTime']['url']));
 //    $this->browser->info(sprintf('Max memory : %01.3f Ko on %s', $this->stats['maxMem']['value'], $this->stats['maxMem']['url']));
   }
+
+  protected function willRunOutOfMemory()
+  {
+    return (dmString::convertBytes(ini_get('memory_limit')) - memory_get_usage()) < (5 * 1024 * 1024);
+  }
 }

@@ -33,6 +33,12 @@ class dmFrontFunctionalCoverageTest extends dmCoreFunctionalCoverageTest
       }
       
       $this->testUrl('/'.$page->slug, $expectedStatusCode);
+
+      if($this->willRunOutOfMemory())
+      {
+        $this->browser->info('Stop before memory limit is reached');
+        break;
+      }
     }
   }
   

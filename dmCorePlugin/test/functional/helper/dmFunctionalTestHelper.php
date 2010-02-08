@@ -70,7 +70,7 @@ class dmFunctionalTestHelper
   {
     $url = ('front' === sfConfig::get('sf_app'))
     ? '/login'
-    : '/+/dmAuth/signin?skip_browser_detection=1';
+    : '/+/dmAuthAdmin/signin?skip_browser_detection=1';
 
     $this->browser->
       get($url)->
@@ -89,7 +89,7 @@ class dmFunctionalTestHelper
   public function logout()
   {
     $this->browser->
-      get('/+/dmAuth/signout')->
+      get('/+/dmAuthAdmin/signout')->
       with('response')->begin()->
         followRedirect()->
       end()

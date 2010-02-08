@@ -9,7 +9,7 @@
   end_slot();
 ?]
 
-<div id="sf_admin_container" class='{baseUrl: "[?php echo url_for('<?php echo $this->getUrlForAction('list') ?>') ?]"}'>
+<div id="sf_admin_container" class='{baseUrl: "[?php echo url_for1('<?php echo $this->getUrlForAction('list') ?>') ?]"}'>
 
   <div id="list_header" class="clearfix">
     [?php

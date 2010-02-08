@@ -5,7 +5,7 @@
   
     _init: function()
     {
-      this.initPageBar(this);
+      this.initPageBar();
     },
     
     getTreeOptions: function()

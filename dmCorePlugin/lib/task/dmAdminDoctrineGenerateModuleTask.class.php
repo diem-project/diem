@@ -12,32 +12,53 @@ class dmAdminDoctrineGenerateModuleTask extends sfDoctrineGenerateModuleTask
   {
     parent::configure();
 
+    $this->addOptions(array(
+      new sfCommandOption('from-admin-generate', null, sfCommandOption::PARAMETER_REQUIRED, '', false)
+    ));
+
     $this->aliases = array();
     $this->namespace = 'dmAdmin';
     $this->name = 'generate-module';
     $this->briefDescription = 'Generates a Diem admin module';
   }
-  
+
+  /**
+   * @see sfTask
+   */
+  protected function execute($arguments = array(), $options = array())
+  {
+    if (!$options['from-admin-generate'])
+    {
+      throw new dmException('Please use dmAdmin:generate instead.');
+    }
+  }
 
   protected function executeInit($arguments = array(), $options = array())
   {
-    if (!dmContext::hasInstance())
-    {
-      dm::createContext($this->configuration);
-    }
-    
     $moduleObject = dmContext::getInstance()->getModuleManager()->getModule($arguments['module']);
     
     $arguments['module'] = $moduleObject->getSfName();
 
     if ($pluginName = $moduleObject->getPluginName())
     {
-      $moduleDir = dmOs::join($this->configuration->getPluginConfiguration($pluginName)->getRootDir(), 'modules', $arguments['module']);
+      if($moduleObject->isOverridden())
+      {
+        return;
+      }
+
+      $moduleDir = dmOs::join($this->configuration->getPluginConfiguration($pluginName)->getRootDir(), 'modules', $moduleObject->getSfName());
     }
     else
     {
-      $moduleDir = dmOs::join(sfConfig::get('sf_apps_dir'), 'admin/modules', $arguments['module']);
+      $moduleDir = dmOs::join(sfConfig::get('sf_apps_dir'), 'admin/modules', $moduleObject->getSfName());
     }
+
+    if(!$moduleDir)
+    {
+      throw new dmException('No generate dir');
+    }
+
+    $this->logSection('diem', sprintf('Generating admin module "%s" for model "%s" in %s', $moduleObject->getKey(), $moduleObject->getModel(), $moduleDir));
     
     // create basic application structure
     $finder = sfFinder::type('any')->discard('.sf');

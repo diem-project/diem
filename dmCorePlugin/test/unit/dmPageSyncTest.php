@@ -34,7 +34,10 @@ $helper->checkTreeIntegrity($t); // 2 tests
 /*
  * Stop here because of sqlite bug
  */
-return;
+if ('Sqlite' === Doctrine_Manager::connection()->getDriverName())
+{
+  return;
+}
 
 $t->diag('Randomly add 2 records by table, and add associations');
 

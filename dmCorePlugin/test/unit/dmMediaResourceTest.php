@@ -68,5 +68,5 @@ $t->is($res->getPathFromWebDir(), $theme->getPath('images/fr/testImage.jpg'), '%
 $t->diag('Plugin medias');
 
 $res = $sc->getService('media_resource')->initialize('dmCore/images/media/folder.png');
-$expected = '/dm/core/images/media/folder.png';
+$expected = '/dmCorePlugin/images/media/folder.png';
 $t->is($res->getPathFromWebDir(), $expected, 'dmCore/images/media/folder.png : '.$expected);
