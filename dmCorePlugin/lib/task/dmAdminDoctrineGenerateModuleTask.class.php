@@ -31,6 +31,8 @@ class dmAdminDoctrineGenerateModuleTask extends sfDoctrineGenerateModuleTask
     {
       throw new dmException('Please use dmAdmin:generate instead.');
     }
+
+    return parent::execute($arguments, $options);
   }
 
   protected function executeInit($arguments = array(), $options = array())

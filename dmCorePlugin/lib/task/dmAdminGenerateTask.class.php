@@ -69,7 +69,7 @@ EOF;
       }
       if (!$module->hasModel() || !$module->hasAdmin())
       {
-//        $this->log('Skip module without model nor admin '.$moduleKey);
+//        $this->log('Skip module without model or no admin '.$moduleKey);
         continue;
       }
       if (in_array($moduleKey, $existingModules) && !$moduleToClear)
@@ -77,6 +77,8 @@ EOF;
 //        $this->log('Skip existing module '.$moduleKey);
         continue;
       }
+
+//      $this->log('Will generate '.$moduleKey.' admin module');
 
       $task = new dmAdminDoctrineGenerateModuleTask($this->dispatcher, $this->formatter);
       $task->setCommandApplication($this->commandApplication);
