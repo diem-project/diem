@@ -169,6 +169,10 @@ DmSentMail:
     description:            { type: string(60000) }
 
 DmLock:
+  options:
+    symfony:
+      form:   false
+      filter: false
   columns:
     user_id:                { type: integer, notnull: true }
     user_name:              { type: string(255), notnull: true }
