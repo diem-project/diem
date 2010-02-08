@@ -57,13 +57,21 @@ class PluginDmPageTable extends myDoctrineTable
     // check signin page
     if (!$this->createQuery('p')->where('p.module = ? AND p.action = ?', array('main', 'signin'))->exists())
     {
-      $this->create(array(
+      $signinPage = $this->create(array(
         'module' => 'main',
         'action' => 'signin',
         'name' => $this->getService('i18n')->__('Signin'),
         'title' => $this->getService('i18n')->__('Signin'),
         'slug' => 'signin'
-      ))->getNode()->insertAsLastChildOf($root);
+      ));
+      
+      $signinPage->getNode()->insertAsLastChildOf($root);
+
+      dmDb::table('DmWidget')->create(array(
+        'module' => 'dmUser',
+        'action' => 'signin',
+        'dm_zone_id' => $signinPage->PageView->Area->Zones[0]->id
+      ));
     }
   }
   
