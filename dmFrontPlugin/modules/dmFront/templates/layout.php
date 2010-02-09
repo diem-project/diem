@@ -1,5 +1,5 @@
 <?php
-
+/** @var dmCoreLayoutHelper */
 $helper = $sf_context->get('layout_helper');
 
 echo 
