@@ -24,7 +24,6 @@ class Doctrine_Template_DmGallery extends Doctrine_Template
     $this->_plugin = new Doctrine_DmGallery($this->_options);
   }
   
-
   public function setUp()
   {
     $this->_plugin->initialize($this->_table);

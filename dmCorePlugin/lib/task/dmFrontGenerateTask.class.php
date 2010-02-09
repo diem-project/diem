@@ -50,7 +50,6 @@ EOF;
           // overridden front module exists in plugin, don't create it in project
           if(is_dir($moduleDir))
           {
-            dmDebug::kill($moduleDir);
             continue;
           }
           // overridden front module don't exists in plugin, create it in project
