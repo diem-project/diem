@@ -1,0 +1,23 @@
+#!/bin/bash
+
+baseRep=`pwd`
+
+#Go through each plugin of the core
+for i in dmCorePlugin/plugins/*; do
+  
+  #Check if the core plugin is a git repository
+  if [ -d $i/.git ]; then
+
+    echo "$i is a Git repo"
+    rep=$i
+    cd $rep
+    
+    #Update to the last revision and merge it to master branch
+    git remote update
+    git merge origin/master
+    
+    #Go back
+    cd $baseRep
+  fi
+  
+done
