@@ -111,12 +111,12 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
   
   protected function sortModuleTypes()
   {
-    // We generally want writer modules first
-    if($projectModules = dmArray::get($this->config, 'Project'))
+    // We generally want content modules first
+    if($projectModules = dmArray::get($this->config, 'Content'))
     {
-      unset($this->config['Project']);
+      unset($this->config['Content']);
       
-      $this->config = array_merge(array('Project' => $projectModules), $this->config);
+      $this->config = array_merge(array('Content' => $projectModules), $this->config);
     }
   }
   
