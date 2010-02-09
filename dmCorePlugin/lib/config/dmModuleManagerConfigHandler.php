@@ -514,8 +514,19 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
 
   protected static function isProjectConfigFile($configFile)
   {
-    return
-        0 === strpos($configFile, sfConfig::get('sf_root_dir'))
-    &&  0 !== strpos($configFile, sfConfig::get('sf_plugins_dir'));
+    // Diem embedded in project
+    if(0 === strpos(dm::getDir(), sfConfig::get('sf_root_dir')))
+    {
+      return
+          0 === strpos($configFile, sfConfig::get('sf_root_dir'))
+      &&  0 !== strpos($configFile, sfConfig::get('sf_plugins_dir'))
+      &&  0 !== strpos($configFile, dm::getDir());
+    }
+    else
+    {
+      return
+          0 === strpos($configFile, sfConfig::get('sf_root_dir'))
+      &&  0 !== strpos($configFile, sfConfig::get('sf_plugins_dir'));
+    }
   }
 }
