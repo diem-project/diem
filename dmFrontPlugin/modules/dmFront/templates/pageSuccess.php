@@ -9,7 +9,7 @@
  */
 ?>
 
-<div id="dm_page" <?php $isEditMode && print 'class="edit"' ?>>
+<div id="dm_page"<?php $isEditMode && print ' class="edit"' ?>>
 
   <div class="layout">
 
