@@ -3,7 +3,7 @@
 baseRep=`pwd`
 
 #Go through each plugin of the core
-for i in dmCorePlugin/plugins/*; do
+for i in ../plugins/* ../../symfony; do
   
   #Check if the core plugin is a git repository
   if [ -d $i/.git ]; then
