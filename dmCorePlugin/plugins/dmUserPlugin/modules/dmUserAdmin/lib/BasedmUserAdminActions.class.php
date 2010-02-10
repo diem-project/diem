@@ -110,4 +110,17 @@ class BasedmUserAdminActions extends autodmUserAdminActions
 
     return true;
   }
+
+  public function executeDelete(sfWebRequest $request)
+  {
+    try
+    {
+      return parent::executeDelete($request);
+    }
+    catch(dmRecordException $e)
+    {
+      $this->getUser()->logError($e->getMessage());
+      $this->redirectBack();
+    }
+  }
 }
