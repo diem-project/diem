@@ -72,6 +72,8 @@ class dmContext extends sfContext
    * @param  string $name  The name of the object to retrieve
    *
    * @return object The object associated with the given name
+   *
+   * @throws Exception if object does not exist in the current context
    */
   public function get($name, $class = null)
   {
@@ -118,7 +120,7 @@ class dmContext extends sfContext
     dmModule::setManager($this->factories['module_manager']);
   }
 
-  /*
+  /**
    * Loads the diem services
    */
   protected function loadServiceContainer()
@@ -205,7 +207,7 @@ class dmContext extends sfContext
     unset($dumper, $loader, $sc);
   }
 
-  /*
+  /**
    * Load the required classes to load a service container from yml configuration
    */
   public function loadServiceContainerExtraStuff()
@@ -218,7 +220,7 @@ class dmContext extends sfContext
     }
   }
 
-  /*
+  /**
    * @return sfServiceContainer
    */
   public function getServiceContainer()
@@ -226,7 +228,7 @@ class dmContext extends sfContext
     return $this->serviceContainer;
   }
 
-  /*
+  /**
    * @return dmCacheManager
    */
   public function getCacheManager()
@@ -234,7 +236,7 @@ class dmContext extends sfContext
     return $this->serviceContainer->getService('cache_manager');
   }
 
-  /*
+  /**
    * @return dmFilesystem
    */
   public function getFilesystem()
@@ -242,7 +244,7 @@ class dmContext extends sfContext
     return $this->serviceContainer->getService('filesystem');
   }
 
-  /*
+  /**
    * @return dmHelper
    */
   public function getHelper()
@@ -250,7 +252,7 @@ class dmContext extends sfContext
     return $this->helper;
   }
 
-  /*
+  /**
    * @return dmModuleManager
    */
   public function getModuleManager()
@@ -291,7 +293,7 @@ class dmContext extends sfContext
     return $this->getModuleName() === $module && $this->getActionName() === $action;
   }
 
-  /*
+  /**
    * @return DmPage the current page object
    */
   public function getPage()

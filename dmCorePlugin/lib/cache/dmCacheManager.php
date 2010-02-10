@@ -39,7 +39,7 @@ class dmCacheManager extends dmConfigurable
     return $this->caches[$cacheName];
   }
   
-  /*
+  /**
    * remove all cache instances created
    * does NOT clear caches content
    */

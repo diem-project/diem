@@ -150,12 +150,14 @@ class dmAdminLinkTag extends dmBaseLinkTag
       {
         if($this->resource instanceof DmPage)
         {
-          $text = $this->resource->get('name');
+          $text = $this->resource->_getI18n('name');
         }
         else
         {
           $text = (string) $this->resource;
         }
+
+        $text = dmString::escape($text);
       }
       else
       {

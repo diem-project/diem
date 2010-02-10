@@ -3,7 +3,7 @@
 
   $.dm.coreMediaBar = {
   
-    initMediaBar: function(_self)
+    initMediaBar: function()
     {
       var mediaBar = this, $toggler = $('#dm_media_bar_toggler'), $browser = $('#dm_media_browser');
       
@@ -14,11 +14,11 @@
       {
         mediaBar.load();
       });
-      
+
       $(window).bind('resize', function()
       {
-        var winH = $(window).height();
-        $toggler.css('top', winH / 2 - 50);
+        winH = $(window).height();
+        $toggler.css('top', winH / 2 - 65);
         $browser.height(winH - 70);
       }).trigger('resize');
     },

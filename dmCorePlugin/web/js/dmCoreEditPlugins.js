@@ -127,7 +127,7 @@
             $.ajax({
               url:      data.js[i],
               dataType: 'script',
-              cache:    true,
+              cache:    !$.dm.ctrl.options.debug,
               async:    false
             });
 

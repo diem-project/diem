@@ -102,10 +102,7 @@ $.widget('ui.dmWidget', {
           });
         });
       });
-      /*
-       * Tell the server the form is submitted with an xhr request
-       * ( usefull when uploading files )
-       */
+      
       $form.find('form').dmAjaxForm({
         beforeSubmit: function(data) {
           $dialog.block();

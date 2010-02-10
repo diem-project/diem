@@ -62,8 +62,8 @@ default:
 ###### dm internal config ######
   
   core:
-    asset:                dm/core
+    asset:                dmCorePlugin
   admin:
-    asset:                dm/admin
+    asset:                dmAdminPlugin
   front:
-    asset:                dm/front
+    asset:                dmFrontPlugin

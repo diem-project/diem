@@ -5,7 +5,7 @@ function escape($text)
   return dmString::escape($text);
 }
 
-/*
+/**
  * @return dmLinkTag a link to $source
  */
 function _link($source = null)
@@ -17,7 +17,7 @@ function £link($source = null)
   return _link($source);
 }
 
-/*
+/**
  * @return dmMediaTag
  */
 function _media($source)
@@ -29,7 +29,7 @@ function £media($source)
   return _media($source);
 }
 
-/*
+/**
  * @return dmTableTag
  */
 function _table()

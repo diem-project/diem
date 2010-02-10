@@ -168,7 +168,7 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
     $this->setParameter('controller.action', $event['action']);
   }
   
-  /*
+  /**
    * Compatibility with sfContext
    */
   public function get($name, $class = null)
@@ -191,7 +191,7 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
     return $this;
   }
 
-  /*
+  /**
    * Will recreate a new shared service
    */
   public function reload($id)

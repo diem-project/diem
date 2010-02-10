@@ -87,8 +87,6 @@ parameters:
     black_list:               []                    # List of filenames not to minify
     gz_compression:           false                 # whether to compress with gzip
 
-  auth_layout_helper.class:   dmAuthLayoutHelper    # Responsible for rendering the authentication page layout
-
   cache_manager.class:        dmCacheManager        # Responsible for managing cache
   cache_manager.options:
     meta_cache_class:         dmMetaCache           # class for metacache ( use file cache or apc cache depending on server )
@@ -296,11 +294,6 @@ services:
 
   layout_helper:
     class:                    %layout_helper.class%
-    shared:                   false
-    arguments:                [ @dispatcher, @service_container ]
-
-  auth_layout_helper:
-    class:                    %auth_layout_helper.class%
     shared:                   false
     arguments:                [ @dispatcher, @service_container ]
 

@@ -18,7 +18,7 @@ abstract class PluginDmPage extends BaseDmPage
   protected static
   $autoSeoFields = array('slug', 'name', 'title', 'h1', 'description', 'keywords');
 
-  /*
+  /**
    * Is this page source referring to me ?
    */
   public function isSource($source)
@@ -26,7 +26,7 @@ abstract class PluginDmPage extends BaseDmPage
     return ($page = $this->getTable()->findOneBySource($source)) && $page->get('id') === $this->get('id');
   }
 
-  /*
+  /**
    * Is this this page source referring to a parent of mine ?
    */
   public function isDescendantOfSource($source)
@@ -34,7 +34,7 @@ abstract class PluginDmPage extends BaseDmPage
     return ($page = $this->getTable()->findOneBySource($source)) && $this->getNode()->isDescendantOf($page);
   }
 
-  /*
+  /**
    * An automatic page represents an myDoctrineRecord object ( article, product... )
    * It will be created, updated and deleted according to its object
    * Automatic pages with the same module will share the same DmPageView & DmAutoSeo
@@ -153,7 +153,7 @@ abstract class PluginDmPage extends BaseDmPage
     return $this->get('module') == $module && $this->get('action') == $action;
   }
 
-  /*
+  /**
    * Same as getNode()->getParent()->id
    * but will not hydrate full parent
    */
@@ -236,7 +236,7 @@ LIMIT 1')->getStatement();
     );
   }
 
-  /*
+  /**
    * SEO methods
    */
 
@@ -260,7 +260,7 @@ LIMIT 1')->getStatement();
     return self::$autoSeoFields;
   }
 
-  /*
+  /**
    * @return boolean true if the field must be setted automatically
    */
   public function isSeoAuto($seoField)
@@ -268,7 +268,7 @@ LIMIT 1')->getStatement();
     return strpos($this->get('auto_mod'), $seoField{0}) !== false;
   }
   
-  /*
+  /**
    * Update auto_mod field according to modified fields
    * when fieds are updated manualy
    * if description has been changed,
@@ -305,7 +305,7 @@ LIMIT 1')->getStatement();
     return $this;
   }
   
-  /*
+  /**
    * Get html produced by widgets in this page
    * usefull for search engine indexation
    */

@@ -12,7 +12,7 @@ $helper->renderHtmlTag(),
     $helper->renderHead(),
   "\n</head>\n",
   
-  $helper->renderBodyTag(),
+  $helper->renderBodyTag('.dm'),
 
     sprintf('<div id="dm_admin_content" class="module_%s action_%s">',
       $sf_request->getParameter('module'),

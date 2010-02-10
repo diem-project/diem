@@ -17,14 +17,16 @@ class dmFrontLayoutHelper extends dmCoreLayoutHelper
     $this->page = $page;
   }
   
-  public function renderBodyTag()
+  public function renderBodyTag($options = array())
   {
-    $bodyClass = dmArray::toHtmlCssClasses(array(
+    $options = dmString::toArray($options);
+
+    $options['class'] = dmArray::toHtmlCssClasses(array_merge(dmArray::get($options, 'class', array()), array(
       'page_'.$this->page->get('module').'_'.$this->page->get('action'),
       $this->page->getPageView()->getLayout()->get('css_class')
-    ));
+    )));
     
-    return '<body class="'.$bodyClass.'">';
+    return parent::renderBodyTag($options);
   }
 
   protected function getMetas()

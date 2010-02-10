@@ -41,20 +41,20 @@ class Doctrine_DmGallery extends Doctrine_Record_Generator
       'local'    => 'dm_media_id',
       'foreign'  => 'id',
       'onDelete' => 'CASCADE'
-      )), Doctrine_Relation::ONE);
+    )), Doctrine_Relation::ONE);
 
-      $this->_table->bind(array($this->getOption('table')->getComponentName(), array(
+    $this->_table->bind(array($this->getOption('table')->getComponentName(), array(
       'local'    => 'dm_record_id',
       'foreign'  => 'id',
       'onDelete' => 'CASCADE'
-      )), Doctrine_Relation::ONE);
+    )), Doctrine_Relation::ONE);
 
-      $this->getOption('table')->bind(array($this->_options['mediaClass'] . ' as ' . $this->_options['mediaAlias'], array(
+    $this->getOption('table')->bind(array($this->_options['mediaClass'] . ' as ' . $this->_options['mediaAlias'], array(
       'local'    => 'dm_record_id',
       'foreign'  => 'dm_media_id',
       'refClass' => $this->_table->getComponentName(),
       'orderBy'  => 'position ASC'
-      )), Doctrine_Relation::MANY);
+    )), Doctrine_Relation::MANY);
 
 //      parent::buildRelation();
   }

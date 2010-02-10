@@ -4,7 +4,7 @@
 class PluginDmLockTable extends myDoctrineTable
 {
 
-  /*
+  /**
    * @return array usernames of current active users on the same page
    */
   public function getLocks(array $data)
@@ -20,7 +20,7 @@ class PluginDmLockTable extends myDoctrineTable
     return $this->toUsernames($locks);
   }
 
-  /*
+  /**
    * @return array usernames of current active users
    */
   public function getUserNames()
@@ -44,7 +44,7 @@ class PluginDmLockTable extends myDoctrineTable
     return $usernames;
   }
 
-  /*
+  /**
    * When a user displays a page
    */
   public function update(array $data)
@@ -63,7 +63,7 @@ class PluginDmLockTable extends myDoctrineTable
     $this->removeOldLocks();
   }
 
-  /*
+  /**
    * When receiving an ajax ping
    */
   public function ping(array $data)

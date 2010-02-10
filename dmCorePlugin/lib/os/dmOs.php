@@ -2,7 +2,7 @@
 
 class dmOs
 {
-  /*
+  /**
    * Builds a path with many path parts
    *
    * dmOs("/home/user/", "/dir", "sub_dir", "file.ext")

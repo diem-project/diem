@@ -34,7 +34,7 @@ div.dm_gallery_big ul.list li.ui-state-highlight {
 
 div.dm_gallery_big form.dm_add_media {
    width: 40%;    border: 1px solid #D3D3D3  
-  background: url(../../core/images/default_bg) center left repeat-  ;
+  background: url(../../dmCorePlugin/images/default_bg) center left repeat-  ;
   padding: 10  x;
   margin-bottom: 10px;
 }

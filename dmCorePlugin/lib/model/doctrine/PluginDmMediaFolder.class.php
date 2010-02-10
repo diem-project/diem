@@ -3,7 +3,7 @@
 abstract class PluginDmMediaFolder extends BaseDmMediaFolder
 {
 
-  /*
+  /**
    * Getter methods
    */
   public function getName()
@@ -88,7 +88,7 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
     return $this->setCache('medias', $medias);
   }
 
-  /*
+  /**
    * Check methods
    */
 
@@ -136,7 +136,7 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
     ->exists();
   }
 
-  /*
+  /**
    * Shortcut to ->getNode()->isRoot()
    */
   public function isRoot()
@@ -144,7 +144,7 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
     return $this->getNode()->isRoot();
   }
 
-  /*
+  /**
    * Setter methods
    */
 
@@ -153,7 +153,7 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
     return $this->_set('rel_path', trim($v, '/'));
   }
 
-  /*
+  /**
    * Manipulation methods
    */
 
@@ -304,7 +304,7 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
     return $this->getService('media_synchronizer')->execute($this, $depth);
   }
 
-  /*
+  /**
    * Same as getNode()->getParent()->id
    * but will not hydrate full parent
    */
@@ -328,7 +328,7 @@ LIMIT 1')->getStatement();
     return $result[0];
   }
 
-  /*
+  /**
    * Common methods
    */
 
@@ -337,7 +337,7 @@ LIMIT 1')->getStatement();
     return $this->get('rel_path').' ('.$this->get('id').')';
   }
 
-  /*
+  /**
    * Override methods
    */
   public function save(Doctrine_Connection $conn = null)

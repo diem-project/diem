@@ -7,7 +7,7 @@ $helper->boot('front');
 $isFront = sfConfig::get('dm_context_type') == 'front';
 $sc = $helper->get('service_container');
 
-$t = new lime_test(5 + count(sfConfig::get('dm_i18n_cultures')) + ($isFront ? count(sfConfig::get('dm_theme_list')) : 0));
+$t = new lime_test();
 
 $user  = $helper->get('user');
 $theme = $user->getTheme();

@@ -4,7 +4,7 @@ echo _open('div#dm_tool_bar.dm.clearfix.'.sfConfig::get('dm_toolBar_flavour', 'b
 
   echo _tag('a.show_tool_bar_toggle.s16block.s16_chevron_'.($sf_user->getShowToolBar() ? 'down' : 'up'), '+');
 
-  echo _link('+/dmAuth/signout')->text('')->title($sf_user->getUsername().' : '.__('Logout'))->set('.widget16.s16block.s16_signout');
+  echo _link('@signout')->text('')->title($sf_user->getUsername().' : '.__('Logout'))->set('.widget16.s16block.s16_signout');
   
   echo _link('app:admin')->text('')->title(__('Administration'))->set('.widget16.s16block.s16_home');
   
@@ -25,7 +25,7 @@ echo _open('div#dm_tool_bar.dm.clearfix.'.sfConfig::get('dm_toolBar_flavour', 'b
   
   if (isset($themeSelect))
   {
-    echo _tag('div.widget16.mt3', $themeSelect->render('dm_select_theme', $sf_user->getTheme()->getKey()));
+    echo _tag('div.widget16.mt3', $themeSelect->render('dm_select_theme', $sf_user->getTheme()->getName()));
   }
   
   if ($sf_user->can('page_edit'))

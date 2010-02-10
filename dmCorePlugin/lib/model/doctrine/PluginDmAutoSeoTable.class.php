@@ -24,7 +24,7 @@ class PluginDmAutoSeoTable extends myDoctrineTable
     ->fetchOne();
   }
 
-  /*
+  /**
    * @return DmAutoSeo created record
    */
   public function createFromModuleAndAction($module, $action, $culture = null)

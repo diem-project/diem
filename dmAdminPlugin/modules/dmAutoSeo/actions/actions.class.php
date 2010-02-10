@@ -19,7 +19,12 @@ class dmAutoSeoActions extends dmAdminBaseActions
   public function executeEdit(dmWebRequest $request)
   {
     $this->forward404Unless($this->autoSeo = dmDb::table('DmAutoSeo')->find($request->getParameter('pk')));
-    
+
+    if(!$this->autoSeo->getTargetDmModule() instanceof dmProjectModule)
+    {
+      throw new dmException($this->autoSeo->getTargetDmModule().' is not a project module');
+    }
+
     $this->form = new DmAutoSeoForm($this->autoSeo);
     
     if ($request->isMethod('post'))

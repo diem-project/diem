@@ -44,6 +44,20 @@ EOF;
       if ($pluginName = $module->getPluginName())
       {
         $moduleDir = dmOs::join($this->configuration->getPluginConfiguration($pluginName)->getRootDir(), 'modules', $moduleKey);
+        
+        if($module->isOverridden())
+        {
+          // overridden front module exists in plugin, don't create it in project
+          if(is_dir($moduleDir))
+          {
+            continue;
+          }
+          // overridden front module don't exists in plugin, create it in project
+          else
+          {
+            $moduleDir = dmOs::join(sfConfig::get('sf_apps_dir'), 'front/modules', $moduleKey);
+          }
+        }
       }
       else
       {

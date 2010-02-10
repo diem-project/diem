@@ -10,7 +10,7 @@ class dmProject
   $allModels,
   $dmModels;
 
-  /*
+  /**
    * Returns project key based on his dir_name
    */
   public static function getKey()
@@ -23,7 +23,7 @@ class dmProject
     return self::$key;
   }
 
-  /*
+  /**
    * Returns project key based on his root dir
    */
   public static function getHash()
@@ -137,7 +137,7 @@ class dmProject
     return dmOs::normalize(self::getRootDir());
   }
   
-  /*
+  /**
    * remove sfConfig::get('sf_root_dir') from path
    */
   public static function unRootify($path)
@@ -150,7 +150,7 @@ class dmProject
     return trim($path, '/');
   }
   
-  /*
+  /**
    * add sfConfig::get('sf_root_dir') to path
    */
   public static function rootify($path)

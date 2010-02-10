@@ -35,7 +35,7 @@ class dmDiagramActions extends dmAdminBaseActions
       $this->getUser()->logError($e->getMessage());
     }
 
-    $this->getUser()->logInfo('Hold down your mouse button to move the images');
+    $this->getUser()->logInfo('Hold down your mouse button to move the images', false);
   }
   
   protected function loadServiceContainerDumper()

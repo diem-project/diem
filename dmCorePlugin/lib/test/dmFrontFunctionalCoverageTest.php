@@ -23,8 +23,9 @@ class dmFrontFunctionalCoverageTest extends dmCoreFunctionalCoverageTest
       {
         $expectedStatusCode = 404;
       }
-      elseif($page->isModuleAction('main', 'login') || (!$page->get('is_active') && !$this->browser->getContext()->getUser()->isAuthenticated()))
+      elseif(($page->get('is_secure') || !$page->get('is_active')) && !$this->browser->getContext()->getUser()->isAuthenticated())
       {
+        var_dump($page->Translation['en']->data);
         $expectedStatusCode = 401;
       }
       else
@@ -33,6 +34,12 @@ class dmFrontFunctionalCoverageTest extends dmCoreFunctionalCoverageTest
       }
       
       $this->testUrl('/'.$page->slug, $expectedStatusCode);
+
+      if($this->willRunOutOfMemory())
+      {
+        $this->browser->info('Stop before memory limit is reached');
+        break;
+      }
     }
   }
   

@@ -2,14 +2,14 @@
 
 [?php if ($pager->getPage() > 1): ?]
 [?php if ($pager->getPage() > 2): ?]
-  <a title="[?php echo __('First page'); ?]" href="[?php echo url_for('<?php echo $this->getUrlForAction('list') ?>') ?]?page=1">
+  <a title="[?php echo __('First page'); ?]" href="[?php echo url_for1('<?php echo $this->getUrlForAction('list') ?>') ?]?page=1">
     <span class="s16block s16_first">&lt;&lt;</span>
   </a>
 [?php else: ?]
     <div class="disabled"><span class="s16block s16_first"></span></div>
 [?php endif; ?]
   
-  <a title="[?php echo __('Previous page'); ?]" href="[?php echo url_for('<?php echo $this->getUrlForAction('list') ?>') ?]?page=[?php echo ($pager->getPage() - 1) ?]">
+  <a title="[?php echo __('Previous page'); ?]" href="[?php echo url_for1('<?php echo $this->getUrlForAction('list') ?>') ?]?page=[?php echo ($pager->getPage() - 1) ?]">
     <span class="s16block s16_previous">&lt;</span>
   </a>
 [?php else: ?]
@@ -26,12 +26,12 @@
   ?]
 
 [?php if ($pager->getPage() < $pager->getLastPage()): ?]
-  <a title="[?php echo __('Next page'); ?]" href="[?php echo url_for('<?php echo $this->getUrlForAction('list') ?>') ?]?page=[?php echo ($pager->getPage() + 1) ?]">
+  <a title="[?php echo __('Next page'); ?]" href="[?php echo url_for1('<?php echo $this->getUrlForAction('list') ?>') ?]?page=[?php echo ($pager->getPage() + 1) ?]">
     <span class="s16block s16_next">&nbsp;</span>
   </a>
 
 [?php if ($pager->getPage() < ($pager->getLastPage()-1)): ?]
-  <a title="[?php echo __('Last page'); ?]" href="[?php echo url_for('<?php echo $this->getUrlForAction('list') ?>') ?]?page=[?php echo $pager->getLastPage() ?]">
+  <a title="[?php echo __('Last page'); ?]" href="[?php echo url_for1('<?php echo $this->getUrlForAction('list') ?>') ?]?page=[?php echo $pager->getLastPage() ?]">
     <span class="s16block s16_last">&nbsp;</span>
   </a>
 [?php else: ?]

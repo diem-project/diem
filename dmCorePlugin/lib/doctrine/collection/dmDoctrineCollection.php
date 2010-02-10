@@ -34,7 +34,7 @@ abstract class dmDoctrineCollection extends Doctrine_Collection
     return parent::processDiff();
   }
 
-  /*
+  /**
    * Return array representation of this collection
    *
    * @return array An array representation of the collection
