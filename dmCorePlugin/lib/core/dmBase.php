@@ -49,6 +49,18 @@ class dmBase
   {
     return self::$startTime;
   }
+
+  /**
+   * Loads the Swift mailer
+   */
+  public static function enableMailer()
+  {
+    if(!class_exists('Swift_Message'))
+    {
+      Swift::registerAutoload();
+      sfMailer::initialize();
+    }
+  }
   
   /**
    * All context creations are made here.
@@ -153,7 +165,7 @@ class dmBase
     return dmContext::getInstance()->getConfiguration()->loadHelpers($helpers);
   }
   
-  public function getHelper()
+  public static function getHelper()
   {
     return dmContext::getInstance()->getHelper();
   }

@@ -8,7 +8,7 @@ default:
 
   js:
     compress:             true          # (RECOMMENDED) Performance : Minifies javascripts and put them into a single compressed file
-    cdn:                                # use cdn to load libraries
+    cdn:
       enabled:            false         # Will use cdn to load javascript libraries
       lib.jquery:         'http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js'
     head_inclusion:       [ ]           # If you want some libraries to be included in the <head> section,
@@ -35,7 +35,7 @@ default:
                                         # More configuration : please use ProjectConfiguration::configureDoctrine method
     identifier_fields:    [ name, title, slug, subject, id ] # Fields used to represent a record with a string
     cache_enabled:        true          # (RECOMMENDED) Use doctrine query cache. No side effect, automatic cache invalidation )
-    cache_result_enabled: true          # (RECOMMENDED) Use doctrine result cache where query->dmCache() is called
+    cache_result_enabled: false         # Use doctrine result cache where query->dmCache() is called
     cache_result_enabled_default: false # Use doctrine result cache on every query ( performance gain, possible issues )
     
   backup:                               # keep a copy of files modified by Dm code editors
@@ -58,6 +58,10 @@ default:
   locks:                                # whether to enable real time resource locks
     enabled:              <?php echo sfConfig::get('sf_debug') ? "false\n" : "true\n"; ?>
     timeout:              10            # time in seconds to consider a user is no more active on the page
+
+  performance:
+    enable_mailer:        true          # Set to false to disable Swift loading: significant performance boost.
+                                        # If set to false, you can enable the mailer on demand with dm::enableMailer()
  
 ###### dm internal config ######
   
