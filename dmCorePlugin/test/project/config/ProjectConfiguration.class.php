@@ -16,7 +16,8 @@ class ProjectConfiguration extends dmProjectConfiguration
     $this->enablePlugins(array(
       'dmAlternativeHelperPlugin',
       'dmContactPlugin',
-      'dmFlowPlayerPlugin'
+      'dmFlowPlayerPlugin',
+      'dmTagPlugin'
     ));
 
     $this->setWebDir(realpath(dirname(__FILE__).'/../public_html'));

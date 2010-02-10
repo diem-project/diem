@@ -16,6 +16,7 @@ DmTestDomain:
     Sortable:
     I18n:
       fields:         [ title, is_active ]
+    DmTaggable:
   columns:  
     title:            { type: string(255), notnull: true }  
     is_active:        { type: boolean, notnull: true, default: true }
@@ -161,5 +162,7 @@ DmTestComment:
       onDelete:       CASCADE
 
 DmTestFruit:
+  actAs:
+    DmTaggable:
   columns:  
     title:            { type: string(255) }

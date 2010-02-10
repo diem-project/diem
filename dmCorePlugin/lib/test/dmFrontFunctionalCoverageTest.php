@@ -25,7 +25,6 @@ class dmFrontFunctionalCoverageTest extends dmCoreFunctionalCoverageTest
       }
       elseif(($page->get('is_secure') || !$page->get('is_active')) && !$this->browser->getContext()->getUser()->isAuthenticated())
       {
-        var_dump($page->Translation['en']->data);
         $expectedStatusCode = 401;
       }
       else

@@ -26,7 +26,7 @@ abstract class BaseDmSettingForm extends BaseFormDoctrine
     $this->setValidators(array(
       'id'          => new sfValidatorDoctrineChoice(array('model' => $this->getModelName(), 'column' => 'id', 'required' => false)),
       'name'        => new sfValidatorString(array('max_length' => 127)),
-      'type'        => new sfValidatorChoice(array('choices' => array('text' => 'text', 'boolean' => 'boolean', 'select' => 'select', 'textarea' => 'textarea', 'number' => 'number'), 'required' => false)),
+      'type'        => new sfValidatorChoice(array('choices' => array(0 => 'text', 1 => 'boolean', 2 => 'select', 3 => 'textarea', 4 => 'number'), 'required' => false)),
       'params'      => new sfValidatorString(array('max_length' => 60000, 'required' => false)),
       'group_name'  => new sfValidatorString(array('max_length' => 255, 'required' => false)),
       'credentials' => new sfValidatorString(array('max_length' => 255, 'required' => false)),

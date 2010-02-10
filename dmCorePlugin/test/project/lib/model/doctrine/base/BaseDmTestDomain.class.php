@@ -62,8 +62,10 @@ abstract class BaseDmTestDomain extends myDoctrineRecord
               1 => 'is_active',
              ),
              ));
+        $dmtaggable0 = new Doctrine_Template_DmTaggable();
         $this->actAs($timestampable0);
         $this->actAs($sortable0);
         $this->actAs($i18n0);
+        $this->actAs($dmtaggable0);
     }
 }

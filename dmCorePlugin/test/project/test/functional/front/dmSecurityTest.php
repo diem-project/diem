@@ -196,8 +196,7 @@ $b
 ->checks()
 ->isPageModuleAction('dmUser/show')
 ->has('h1', 'admin')
-->has('span.email', 'admin@project.com')
-->back();
+->has('span.email', 'admin@project.com');
 
 
 /*
@@ -210,9 +209,12 @@ if(strpos(getcwd(), 'hudson'))
   return;
 }
 
+$b->info('Synchronise pages...');
 $helper->getService('filesystem')->sf('dm:sync-pages');
 
-$b->click('Jannis')
+$b
+->back()
+->click('Jannis')
 ->checks()
 ->get('/authors/jannis')
 ->isPageModuleAction('dmUser/show')

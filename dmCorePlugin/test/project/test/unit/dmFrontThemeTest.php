@@ -4,7 +4,7 @@ require_once(realpath(dirname(__FILE__).'/../../..').'/unit/helper/dmModuleUnitT
 $helper = new dmModuleUnitTestHelper();
 $helper->boot('front');
 
-$t = new lime_test();
+$t = new lime_test(21);
 
 $manager = $helper->get('theme_manager');
 

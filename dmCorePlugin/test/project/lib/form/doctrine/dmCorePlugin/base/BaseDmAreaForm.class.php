@@ -25,7 +25,7 @@ abstract class BaseDmAreaForm extends BaseFormDoctrine
       'id'              => new sfValidatorDoctrineChoice(array('model' => $this->getModelName(), 'column' => 'id', 'required' => false)),
       'dm_layout_id'    => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Layout'), 'required' => false)),
       'dm_page_view_id' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('PageView'), 'required' => false)),
-      'type'            => new sfValidatorChoice(array('choices' => array('content' => 'content', 'top' => 'top', 'bottom' => 'bottom', 'left' => 'left', 'right' => 'right'), 'required' => false)),
+      'type'            => new sfValidatorChoice(array('choices' => array(0 => 'content', 1 => 'top', 2 => 'bottom', 3 => 'left', 4 => 'right'), 'required' => false)),
     ));
 
     $this->widgetSchema->setNameFormat('dm_area[%s]');
