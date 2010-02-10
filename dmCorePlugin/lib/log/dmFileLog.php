@@ -6,7 +6,8 @@ abstract class dmFileLog extends dmLog
   $dispatcher,
   $filesystem,
   $serviceContainer,
-  $options;
+  $options,
+  $nbFields;
   
   public function getDefaultOptions()
   {
@@ -34,6 +35,8 @@ abstract class dmFileLog extends dmLog
     {
       $this->options['file'] = dmProject::rootify($this->options['file']);
     }
+
+    $this->nbFields = count($this->fields);
   }
   
   public function log(array $data)
@@ -125,7 +128,10 @@ abstract class dmFileLog extends dmLog
           continue;
         }
         
-        $data = $this->restoreKeys($this->decode($encodedLine));
+        if(!($data = $this->restoreKeys($this->decode($encodedLine))))
+        {
+          continue;
+        }
         
         if ($filter && !call_user_func($filter, $data))
         {
@@ -181,7 +187,7 @@ abstract class dmFileLog extends dmLog
   
   protected function encode(array $array)
   {
-    return implode('|', str_replace('|', ' ', $array));
+    return implode('|', str_replace(array('|', "\n"), ' ', $array));
   }
   
   protected function decode($string)
@@ -191,6 +197,11 @@ abstract class dmFileLog extends dmLog
 
   protected function restoreKeys(array $arrayEntry)
   {
+    if($this->nbFields !== count($arrayEntry))
+    {
+      return false;
+    }
+
     return array_combine($this->fields, $arrayEntry);
   }
   
