@@ -1,4 +1,5 @@
 [?php
+
   $required = ($validator = $form->getValidatorSchema()->offsetGet($name)) ? $validator->getOption('required') : false;
   $divClass = dmArray::toHtmlCssClasses(array(
     $class,
@@ -6,6 +7,12 @@
     $field->getConfig('is_link') ? 'dm_link_droppable' : '',
     $required ? 'required' : ''
   ));
+
+  if('empty_' === $name)
+  {
+    echo '<div class="'.$divClass.'"></div>';
+    return;
+  }
 ?]
 [?php if ($field->isPartial()): ?]
   <div class="[?php echo $divClass ?]">[?php include_partial('<?php echo $this->getModuleName() ?>/'.$name, array('<?php echo $this->getModule()->getKey() ?>' => $form->getObject(), 'form' => $form, 'attributes' => $attributes instanceof sfOutputEscaper ? $attributes->getRawValue() : $attributes)) ?]</div>
