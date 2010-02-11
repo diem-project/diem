@@ -103,7 +103,8 @@ parameters:
     rotation:                 true                  # enable rotation on the log file ( strongly recommended )
     max_size_kilobytes:       1024                  # max size for the log file before rotating
     ignore_models:            []                    # models not to log
-    ignore_internal_actions:  true                  # whether to ignore Diem internal actions
+    ignore_internal_actions:  true                  # wether to ignore Diem internal actions
+    enabled:                  true                  # wether to log events or not
   
   event_log_entry.class:      dmEventLogEntry       # An entry of the event log
   
@@ -114,6 +115,7 @@ parameters:
     entry_service_name:       request_log_entry     # service name for an entry of this log
     rotation:                 true                  # enable rotation on the log file ( strongly recommended )
     max_size_kilobytes:       1024                  # max size for the log file before rotating
+    enabled:                  true                  # wether to log requests or not
   
   request_log_entry.class:    dmRequestLogEntry     # An entry of the event log
 

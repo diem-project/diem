@@ -9,15 +9,6 @@ abstract class dmFileLog extends dmLog
   $options,
   $nbFields;
   
-  public function getDefaultOptions()
-  {
-    return array_merge(parent::getDefaultOptions(), array(
-      'rotation'            => true,
-      'max_size_kilobytes'  => 2,
-      'buffer_size'         => 1024 * 16
-    ));
-  }
-  
   public function __construct(sfEventDispatcher $dispatcher, dmFileSystem $filesystem, sfServiceContainer $serviceContainer, array $options = array())
   {
     $this->dispatcher = $dispatcher;
@@ -25,6 +16,16 @@ abstract class dmFileLog extends dmLog
     $this->serviceContainer = $serviceContainer;
     
     $this->initialize($options);
+  }
+
+  public function getDefaultOptions()
+  {
+    return array_merge(parent::getDefaultOptions(), array(
+      'rotation'            => true,
+      'max_size_kilobytes'  => 2,
+      'buffer_size'         => 1024 * 16,
+      'enabled'             => true
+    ));
   }
   
   public function initialize(array $options)
@@ -41,6 +42,11 @@ abstract class dmFileLog extends dmLog
   
   public function log(array $data)
   {
+    if(!$this->getOption('enabled'))
+    {
+      return;
+    }
+    
     try
     {
       $this->checkFile();
