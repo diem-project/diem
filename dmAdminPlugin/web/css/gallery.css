@@ -33,19 +33,22 @@ div.dm_gallery_big ul.list li.ui-state-highlight {
 }
 
 div.dm_gallery_big form.dm_add_media {
-   width: 40%;    border: 1px solid #D3D3D3  
-  background: url(../../dmCorePlugin/images/default_bg) center left repeat-  ;
-  padding: 10  x;
+  width: 40%;
+  border: 1px solid #D3D3D3;
+  background: url(../../dmCorePlugin/images/default_bg) center left repeat-x;
+  padding: 10px;
   margin-bottom: 10px;
 }
 
+div.dm_gallery_big div.dm_gallery_actions {
+  margin: 10px 0;
+}
+
 div.dm_gallery_big div.dm_gallery_actions  a {
-  float: left;
-  display:block;
-  width: 100px;
   margin: 10px 0;
   text-align: center;
   padding: 5px;
+  margin-right: 10px;
 }
 
 div.dm_gallery_big div.dm_gallery_actions a.back {
