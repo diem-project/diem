@@ -24,7 +24,7 @@ class dmDebug
     return sfTimerManager::getTimer('[Diem] '.$name);
   }
   
-  /*
+  /**
    * @return sfTimer if logging is enabled or null if logging is disabled
    */
   public static function timerOrNull($name)
@@ -37,7 +37,7 @@ class dmDebug
     return null;
   }
 
-  /*
+  /**
    * How many time elapsed since request ?
    */
   public static function getTimeFromStart()
@@ -45,7 +45,7 @@ class dmDebug
     return sprintf('%.0f', (microtime(true) - dm::getStartTime()) * 1000);
   }
 
-  /*
+  /**
    * Builds an string
    *
    * @param $something Any PHP type
@@ -81,7 +81,7 @@ class dmDebug
   }
 
 
-  /*
+  /**
    * Logs all parameters with symfony logger
    */
   public static function log()
@@ -89,7 +89,7 @@ class dmDebug
     dmContext::getInstance()->getLogger()->err(self::formatAsString(func_get_args()));
   }
 
-  /*
+  /**
    * Shows all parameter in the page with a <div>
    */
   public static function show()
@@ -97,7 +97,7 @@ class dmDebug
     return self::debugger(func_get_args(), 2, array('tag' => 'div'));
   }
   
-  /*
+  /**
    * Shows all parameter in the page with a <pre>
    */
   public static function showPre()
@@ -105,7 +105,7 @@ class dmDebug
     return self::debugger(func_get_args(), 2, array("tag" => "pre"));
   }
 
-  /*
+  /**
    * Shows all parameter in the page with a <div>
    */
   public static function traceShow()
@@ -113,7 +113,7 @@ class dmDebug
     return self::debugger(func_get_args(), 2, array("tag" => "div"));
   }
 
-  /*
+  /**
    * Shows all parameter in the page with a <pre>, even if debugging is disabled
    */
   public static function traceForce()
@@ -166,7 +166,7 @@ class dmDebug
     echo $result;
   }
 
-  /*
+  /**
    * Displays a debug backtrace improved with javascript
    */
   public static function stack($msg = "")

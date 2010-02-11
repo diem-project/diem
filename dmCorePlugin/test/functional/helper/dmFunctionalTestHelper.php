@@ -68,32 +68,60 @@ class dmFunctionalTestHelper
   
   public function login($username = 'admin', $password = 'admin')
   {
-    $url = ('front' === sfConfig::get('sf_app'))
-    ? '/login'
-    : '/+/dmAuth/signin?skip_browser_detection=1';
+    return 'front' === sfConfig::get('sf_app')
+    ? $this->frontLogin($username, $password)
+    : $this->adminLogin($username, $password);
+  }
 
-    $this->browser->
-      get($url)->
-      click('input[type="submit"]',
-        array('signin' => array('username' => $username, 'password' => $password)),
-        array('method' => 'post', '_with_csrf' => true)
-      )->
-      with('response')->begin()->
-        followRedirect()->
-      end()
-    ;
+  protected function adminLogin($username, $password)
+  {
+    $this->browser->get('/security/signin?skip_browser_detection=1')
+    ->checks(array(
+      'code' => 401,
+      'moduleAction' => 'dmUserAdmin/signin'
+    ))
+    ->click('input[type="submit"]',
+      array('signin' => array('username' => $username, 'password' => $password)),
+      array('method' => 'post', '_with_csrf' => true)
+    )
+    ->checks(array(
+      'code' => 302,
+      'moduleAction' => 'dmUserAdmin/signin'
+    ))
+    ->redirect();
 
-    return $this->browser->with('user')->begin()->isAuthenticated()->end();
+    return $this->browser->with('user')->begin()->isAuthenticated(true)->end();
+  }
+
+  protected function frontLogin($username, $password)
+  {
+    $this->browser->get('/signin')
+    ->checks(array(
+      'code' => 200,
+      'moduleAction' => 'dmFront/page'
+    ))
+    ->isPageModuleAction('main/signin')
+    ->click('Signin',
+      array('signin' => array('username' => $username, 'password' => $password)),
+      array('method' => 'post', '_with_csrf' => true)
+    )
+    ->checks(array(
+      'code' => 302,
+      'moduleAction' => 'dmFront/page'
+    ))
+    ->redirect();
+
+    return $this->browser->with('user')->begin()->isAuthenticated(true)->end();
   }
 
   public function logout()
   {
-    $this->browser->
-      get('/+/dmAuth/signout')->
-      with('response')->begin()->
-        followRedirect()->
-      end()
-    ;
+    $this->browser->get('/security/signout')
+    ->checks(array(
+      'code' => 302,
+      'moduleAction' => 'front' === sfConfig::get('sf_app') ? 'dmUser/signout' : 'dmUserAdmin/signout'
+    ))
+    ->redirect();
 
     return $this->browser->with('user')->begin()->isAuthenticated(false)->end();
   }

@@ -103,6 +103,10 @@ abstract class BaseDmLock extends myDoctrineRecord
              ),
              'type' => 'unique',
              ));
+        $this->option('symfony', array(
+             'form' => false,
+             'filter' => false,
+             ));
     }
 
     public function setUp()

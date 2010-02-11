@@ -5,15 +5,29 @@ class BasedmFrontActions extends dmFrontBaseActions
   
   public function executePage(dmWebRequest $request)
   {
+    $this->page = $this->getPageFromRequest($request);
+
+    $this->secure();
+     
+    return $this->renderPage();
+  }
+
+  protected function getPageFromRequest(dmWebRequest $request)
+  {
+    if($request->hasParameter('dm_page'))
+    {
+      return $request->getParameter('dm_page');
+    }
+
     $slug = $request->getParameter('slug');
 
     // find matching page_route for this slug
     $pageRoute = $this->getService('page_routing')->find($slug);
-    
+
     if ($pageRoute)
     {
-      $this->page = $pageRoute->getPage();
-      
+      $page = $pageRoute->getPage();
+
       // found a page on another culture
       if($pageRoute->getCulture() !== $this->getUser()->getCulture())
       {
@@ -28,31 +42,33 @@ class BasedmFrontActions extends dmFrontBaseActions
       {
         return $this->redirect($redirectionUrl, 301);
       }
-      
+
       // else use main.error404 page
-      $this->page = dmDb::table('DmPage')->fetchError404();
+      $page = dmDb::table('DmPage')->fetchError404();
     }
 
-    $this->secure();
-     
-    return $this->renderPage();
+    return $page;
   }
 
   protected function secure()
   {
+    $user = $this->getUser();
+    
     if (
-          // the site is not active and requires the view_site permission to be displayed
-          (!dmConfig::get('site_active') && !$this->getUser()->can('site_view'))
-          // the page is not active and requires the view_site permission to be displayed
-      ||  (!$this->page->get('is_active') && !$this->getUser()->can('site_view'))
+          // the site is not active and requires the site_view permission to be displayed
+          (!dmConfig::get('site_active') && !$user->can('site_view'))
+          // the page is not active and requires the site_view permission to be displayed
+      ||  (!$this->page->get('is_active') && !$user->can('site_view'))
           // the page is secured and requires authentication to be displayed
-      ||  ($this->page->get('is_secure') && !$this->getUser()->isAuthenticated())
+      ||  ($this->page->get('is_secure') && !$user->isAuthenticated())
           // the page is secured and the user has not required credentials
-      ||  ($this->page->get('is_secure') && $this->page->get('credentials') && !$this->getUser()->can($this->page->get('credentials')))
+      ||  ($this->page->get('is_secure') && $this->page->get('credentials') && !$user->can($this->page->get('credentials')))
     )
     {
-      // use main.login page
-      $this->page = dmDb::table('DmPage')->fetchLogin();
+      $this->getResponse()->setStatusCode($user->isAuthenticated() ? 403 : 401);
+      
+      // use main.signin page
+      $this->page = dmDb::table('DmPage')->fetchSignin();
     }
   }
   
@@ -61,18 +77,6 @@ class BasedmFrontActions extends dmFrontBaseActions
     $this->page = dmDb::table('DmPage')->fetchError404();
     
     return $this->renderPage();
-  }
-  
-  public function executeLogin(dmWebRequest $request)
-  {
-    $this->page = dmDb::table('DmPage')->fetchLogin();
-    
-    return $this->renderPage();
-  }
-  
-  public function executeSecure(dmWebRequest $request)
-  {
-    return $this->executeLogin($request);
   }
   
   protected function renderPage()
@@ -84,13 +88,9 @@ class BasedmFrontActions extends dmFrontBaseActions
     {
       $this->response->setStatusCode(404); 
     }
-    elseif($this->page->isModuleAction('main', 'login'))
-    {
-      $this->getResponse()->setStatusCode(401);
-    }
-
-    $template = $this->page->getPageView()->getLayout()->get('template');
     
+    $template = $this->page->getPageView()->getLayout()->get('template');
+
     if (empty($template))
     {
       $template = 'page';
@@ -98,14 +98,14 @@ class BasedmFrontActions extends dmFrontBaseActions
     
     $this->setTemplate($template);
     
-    $userLayout = dmProject::rootify('apps/front/modules/dmFront/templates/layout');
+    $userLayout = sfConfig::get('sf_root_dir').'/apps/front/modules/dmFront/templates/layout';
     if (file_exists($userLayout.'.php'))
     {
       $this->setLayout($userLayout);
     }
     else
     {
-      $this->setLayout(dmOs::join(sfConfig::get('dm_front_dir'), 'modules/dmFront/templates/layout'));
+      $this->setLayout(sfConfig::get('dm_front_dir').'/modules/dmFront/templates/layout');
     }
     
     $this->helper = $this->getService('page_helper');
@@ -179,7 +179,6 @@ class BasedmFrontActions extends dmFrontBaseActions
       }
     }
   }
-
 
   public function executeEditToggle(sfWebRequest $request)
   {

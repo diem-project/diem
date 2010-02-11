@@ -133,11 +133,6 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
 
   public function renderAccessLinks()
   {
-    if (!sfConfig::get('dm_accessibility_access_links', true))
-    {
-      return '';
-    }
-
     $html = '<div class="dm_access_links">';
 
     $html .= '<a href="#content">'.$this->serviceContainer->getService('i18n')->__('Go to content').'</a>';

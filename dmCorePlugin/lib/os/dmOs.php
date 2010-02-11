@@ -2,7 +2,7 @@
 
 class dmOs
 {
-  /*
+  /**
    * Builds a path with many path parts
    *
    * dmOs("/home/user/", "/dir", "sub_dir", "file.ext")
@@ -79,13 +79,13 @@ class dmOs
 
   public static function getFileExtension($file, $widthDot = true)
   {
-    $extension = dmArray::get(pathinfo($file), 'extension');
+    $extension = pathinfo($file, PATHINFO_EXTENSION);
     return $widthDot ? '.'.$extension : $extension;
   }
 
   public static function getFileWithoutExtension($file)
   {
-    return dmArray::get(pathinfo($file), 'filename');
+    return pathinfo($file, PATHINFO_FILENAME);
   }
 
   public static function sanitizeDirName($dirName)

@@ -4,29 +4,23 @@ $.widget('ui.dmZone', {
 
   _init : function()
   {
-    var self = this;
-    
-    self.initialize();
+    this.initialize();
   },
   
   initialize: function()
   {
-    this.id = this.element.attr('id').substring(8);
+    var self = this;
     
-    this.initWidgets();
+    self.id = self.element.attr('id').substring(8);
     
-    this.initEdit();
-  },
-  
-  initEdit: function()
-  {
-    var zone = this;
+    self.initWidgets();
     
-    $('a.dm_zone_edit', this.element).bind('click', function() {
-      if (zone.element.hasClass('dm_dragging')) {
-        return false;
+    $('a.dm_zone_edit', self.element).bind('click', function()
+    {
+      if (!self.element.hasClass('dm_dragging'))
+      {
+        self.openEditDialog();
       }
-      zone.openEditDialog();
     });
   },
 	
@@ -44,7 +38,8 @@ $.widget('ui.dmZone', {
       data:     { zone_id: zone.getId() },
       title:    $('#dm_zone_'+zone.getId()+' > a.dm_zone_edit').attr('title'),
 			'class':  dialog_class,
-      beforeClose:  function() {
+      beforeClose:  function()
+      {
         if (zone.deleted) return;
         setTimeout(function() {
           $.ajax({
@@ -57,7 +52,8 @@ $.widget('ui.dmZone', {
           });
         }, 100);
       }
-    }).bind('dmAjaxResponse', function() {
+    }).bind('dmAjaxResponse', function()
+    {
       $dialog.prepare();
       /*
        * Apply generic front form abilities

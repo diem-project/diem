@@ -132,7 +132,7 @@ class dmTableRelationHolder
   }
 
 
-  /*
+  /**
    * @return array LocalKey Relations with class === DmMedia
    */
   public function getLocalMedias()

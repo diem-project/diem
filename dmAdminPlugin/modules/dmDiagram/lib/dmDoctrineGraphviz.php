@@ -30,7 +30,7 @@ class dmDoctrineGraphviz
 
     $imageFullPath = dmOs::join(sfConfig::get('sf_web_dir'), 'cache', $diagramImage);
 
-    $dotFile = dmOs::join(sys_get_temp_dir(), dmString::random(12).'.dot');
+    $dotFile = tempnam(sys_get_temp_dir(), 'dm_mld_');
 
     if (!$this->filesystem->mkdir(dirname($imageFullPath)))
     {
@@ -41,9 +41,11 @@ class dmDoctrineGraphviz
 
     $return = $this->filesystem->exec(sprintf('dot -Tpng %s > %s', $dotFile, $imageFullPath));
 
+    unlink($dotFile);
+
     if (!$return)
     {
-      throw new dmException(sprintf('Diem can not generate the mcd diagram : %s', $this->filesystem->getLastExec('output')));
+      throw new dmException(sprintf('Diem can not generate the mld diagram : %s', $this->filesystem->getLastExec('output')));
     }
     
     return '/cache/'.$diagramImage;

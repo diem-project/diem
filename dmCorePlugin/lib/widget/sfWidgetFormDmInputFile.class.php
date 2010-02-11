@@ -5,7 +5,7 @@
  */
 class sfWidgetFormDmInputFile extends sfWidgetFormInputFile
 {
-  /*
+  /**
    * Remove value attribute for html5 validation
    */
   public function render($name, $value = null, $attributes = array(), $errors = array())

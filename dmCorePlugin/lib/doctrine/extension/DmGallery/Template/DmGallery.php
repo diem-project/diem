@@ -24,7 +24,6 @@ class Doctrine_Template_DmGallery extends Doctrine_Template
     $this->_plugin = new Doctrine_DmGallery($this->_options);
   }
   
-
   public function setUp()
   {
     $this->_plugin->initialize($this->_table);
@@ -35,10 +34,19 @@ class Doctrine_Template_DmGallery extends Doctrine_Template
       'refClass' => $this->_plugin->getTable()->getOption('name')
     )), Doctrine_Relation::MANY);
   }
-  
+
   public function hasMedias()
   {
     return $this->getNbMedias() > 0;
+  }
+
+  public function hasMedia(DmMedia $media)
+  {
+    return dmDb::table($this->getGalleryRelClass())
+    ->createQuery('r')
+    ->where('r.dm_record_id = ?', $this->getInvoker()->get('id'))
+    ->andWhere('r.dm_media_id = ?', $media->get('id'))
+    ->exists();
   }
   
   public function getNbMedias()
@@ -48,26 +56,43 @@ class Doctrine_Template_DmGallery extends Doctrine_Template
   
   public function addMedia(DmMedia $media)
   {
-    $this->getDmGallery()->add($media);
+    if(!$this->hasMedia($media))
+    {
+      $rel = dmDb::table($this->getGalleryRelClass())->create(array(
+        'dm_media_id' => $media->get('id'),
+        'dm_record_id' => $this->getInvoker()->get('id')
+      ));
+
+      $rel->save();
+    }
     
-    return $this->_invoker;
+    return $this->getInvoker();
   }
   
   public function addMedias($medias)
   {
-    $currentMedias = $this->getDmGallery();
-    
     foreach($medias as $media)
     {
-      $currentMedias->add($media);
+      $this->addMedia($media);
     }
-    
-    return $this->_invoker;
+
+    return $this->getInvoker();
   }
 
-  public function getDmGallery()
+  public function removeMedias()
   {
-    if (!$medias = $this->_invoker->reference($this->_options['mediaAlias']))
+    dmDb::table($this->getGalleryRelClass())
+    ->createQuery()
+    ->delete()
+    ->where('dm_record_id = ?', $this->_invoker->get('id'))
+    ->execute();
+
+    return $this->getInvoker();
+  }
+
+  public function getDmGallery($reload = false)
+  {
+    if ($reload || (!$medias = $this->_invoker->reference($this->_options['mediaAlias'])))
     {
       $medias = dmDb::query('DmMedia m, m.Folder f, m.'.$this->getGalleryRelClass().' rel')
       ->where('rel.dm_record_id = ?', $this->_invoker->get('id'))

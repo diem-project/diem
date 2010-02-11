@@ -274,7 +274,14 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
       $validatorSubclass = 'DoctrineChoice';
     }
 
-    return isset($validatorClass) ? $validatorClass : sprintf('sfValidator%s', $validatorSubclass);
+    $validatorClass = isset($validatorClass) ? $validatorClass : sprintf('sfValidator%s', $validatorSubclass);
+
+    $validatorClass = $this->getGeneratorManager()->getConfiguration()->getEventDispatcher()->filter(
+      new sfEvent($this, 'dm.form_generator.validator_class', array('column' => $column)),
+      $validatorClass
+    )->getReturnValue();
+
+    return $validatorClass;
   }
 
 }

@@ -4,7 +4,7 @@
 class PluginDmMediaTable extends myDoctrineTable
 {
 
-  /*
+  /**
    * Performance shortcuts
    */
   public function findOneByIdWithFolder($id)

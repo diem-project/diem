@@ -35,4 +35,9 @@ abstract class PluginDmUserTable extends myDoctrineTable
     
     return $columns;
   }
+
+  public function getIdentifierColumnName()
+  {
+    return 'username';
+  }
 }

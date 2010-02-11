@@ -136,6 +136,10 @@ DmUserGroup:
       onDelete: CASCADE
 
 DmRememberKey:
+  actAs:
+    Timestampable:
+      updated:
+        disabled: true
   options:
     symfony:
       form:   false

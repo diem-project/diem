@@ -23,7 +23,7 @@ class myTestProjectBuilder
 
     $this->changeHomeLayout();
     
-    $this->addLoginForm();
+    $this->addSigninForm();
 
     $this->addBreadCrumb();
 
@@ -342,13 +342,70 @@ class myTestProjectBuilder
       array(),
       $page->PageView->Area->Zones[0]
     )->save();
+
+    // user list
+    $this->createWidget(
+      'dmUser/list',
+      array(
+        'orderField'  => 'created_at',
+        'orderType'   => 'asc',
+        'maxPerPage'  => 0,
+        'navTop'      => true,
+        'navBottom'   => true
+      ),
+      dmDb::table('DmPage')->findOneByModuleAndAction('dmUser', 'list')->PageView->Area->Zones[0]
+    )->save();
+
+    $this->context->setPage($page = dmDb::table('DmPage')->findOneByModuleAndAction('dmUser', 'show'));
+
+    // user show
+    $this->createWidget(
+      'dmUser/show',
+      array(),
+      $page->PageView->Area->Zones[0]
+    )->save();
+    
+    // dmTag list
+    $this->createWidget(
+      'dmTag/list',
+      array(
+        'orderField'  => 'name',
+        'orderType'   => 'asc',
+        'maxPerPage'  => 0,
+        'navTop'      => true,
+        'navBottom'   => true
+      ),
+      dmDb::table('DmPage')->findOneByModuleAndAction('dmTag', 'list')->PageView->Area->Zones[0]
+    )->save();
+
+    $this->context->setPage($page = dmDb::table('DmPage')->findOneByModuleAndAction('dmTag', 'show'));
+
+    // dmTag show
+    $this->createWidget(
+      'dmTag/show',
+      array(),
+      $page->PageView->Area->Zones[0]
+    )->save();
+
+    // domain list
+    $this->createWidget(
+      'dmTestDomain/listByTag',
+      array(
+        'orderField'  => 'position',
+        'orderType'   => 'asc',
+        'maxPerPage'  => 0,
+        'navTop'      => true,
+        'navBottom'   => true
+      ),
+      $page->PageView->Area->Zones[0]
+    )->save();
   }
 
   protected function loremize()
   {
     $this->context->get('project_loremizer')->execute(5);
 
-    foreach(array('DmTestDomain' => 9, 'DmTestCateg' => 9, 'DmTestPost' => 19, 'DmTestTag' => 39, 'DmTestComment' => 39) as $model => $nb)
+    foreach(array('DmTestDomain' => 9, 'DmTestCateg' => 9, 'DmTestPost' => 19, 'DmTestTag' => 39, 'DmTestComment' => 39, 'DmTag' => 20) as $model => $nb)
     {
       $this->context->get('table_loremizer')->execute(dmDb::table($model), $nb);
 
@@ -371,7 +428,7 @@ class myTestProjectBuilder
     $this->createWidget(
       'dmWidgetNavigation/breadCrumb',
       array('includeCurrent' => true),
-      dmDb::table('DmPage')->findOneByModuleAndAction('main', 'login')->PageView->Layout->getArea('top')->Zones[0]
+      dmDb::table('DmPage')->findOneByModuleAndAction('main', 'signin')->PageView->Layout->getArea('top')->Zones[0]
     )->save();
   }
 
@@ -380,7 +437,7 @@ class myTestProjectBuilder
     $this->createWidget(
       'dmWidgetContent/link',
       array('href' => 'page:1'),
-      dmDb::table('DmPage')->findOneByModuleAndAction('main', 'login')->PageView->Layout->getArea('top')->Zones[0]
+      dmDb::table('DmPage')->findOneByModuleAndAction('main', 'signin')->PageView->Layout->getArea('top')->Zones[0]
     )->save();
 
     $this->createWidget(
@@ -390,12 +447,12 @@ class myTestProjectBuilder
     )->save();
   }
 
-  protected function addLoginForm()
-  {
+  protected function addSigninForm()
+  { 
     $this->createWidget(
-      'main/loginForm',
+      'dmUser/form',
       array(),
-      dmDb::table('DmPage')->findOneByModuleAndAction('main', 'login')->PageView->Area->Zones[0]
+      dmDb::table('DmPage')->findOneByModuleAndAction('main', 'signin')->PageView->Area->Zones[0]
     )->save();
   }
 

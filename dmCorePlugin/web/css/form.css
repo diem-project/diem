@@ -54,7 +54,7 @@
 }
 
 .dm_form .toggle_group {
-  background: url(../../core/images/default_bg.png) repeat-x scroll 50% 50%;
+  background: url(../../dmCorePlugin/images/default_bg.png) repeat-x scroll 50% 50%;
   border: 1px solid #D3D3D3;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
@@ -69,18 +69,18 @@
   color: #000;
 }
 .dm_media_receiver.hover {
-  background: url(../../core/images/default_bg_green.png) repeat-x scroll 50% 50%;
+  background: url(../../dmCorePlugin/images/default_bg_green.png) repeat-x scroll 50% 50%;
   border: 1px solid #D3D3D3;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
 }
 
 .droppable_active {
-  background: url(../../core/images/default_bg_yellow.png) repeat-x scroll 50% 50%;
+  background: url(../../dmCorePlugin/images/default_bg_yellow.png) repeat-x scroll 50% 50%;
 }
 
 .droppable_hover {
-  background: url(../../core/images/default_bg_green.png) repeat-x scroll 50% 50%;
+  background: url(../../dmCorePlugin/images/default_bg_green.png) repeat-x scroll 50% 50%;
 }
 
 /*
@@ -89,7 +89,7 @@
 
 div.ui-dialog.dm input[type=submit],
 div.ui-dialog.dm a.button {
-  background: url(../../core/images/default_bg.png) repeat-x scroll 50% 50%;
+  background: url(../../dmCorePlugin/images/default_bg.png) repeat-x scroll 50% 50%;
   border:1px solid #D3D3D3;
   color:#555;
   -moz-border-radius: 4px;
@@ -114,22 +114,22 @@ div.ui-dialog.dm a.button.fright {
 
 div.ui-dialog.dm input.green[type=submit],
 div.ui-dialog.dm a.button.green {
-  background: url(../../core/images/default_bg_green.png) repeat-x scroll 50% 50%;
+  background: url(../../dmCorePlugin/images/default_bg_green.png) repeat-x scroll 50% 50%;
 }
 
 div.ui-dialog.dm input.blue[type=submit],
 div.ui-dialog a.button.blue {
-  background: url(../../core/images/default_bg_blue.png) repeat-x scroll 50% 50%;
+  background: url(../../dmCorePlugin/images/default_bg_blue.png) repeat-x scroll 50% 50%;
 }
 
 div.ui-dialog.dm input.red[type=submit],
 div.ui-dialog.dm a.button.red {
-  background: url(../../core/images/default_bg_red.png) repeat-x scroll 50% 50%;
+  background: url(../../dmCorePlugin/images/default_bg_red.png) repeat-x scroll 50% 50%;
 }
 
 div.ui-dialog.dm input.yellow[type=submit],
 div.ui-dialog.dm a.button.yellow {
-  background: url(../../core/images/default_bg_yellow.png) repeat-x scroll 50% 50%;
+  background: url(../../dmCorePlugin/images/default_bg_yellow.png) repeat-x scroll 50% 50%;
 }
 
 div.ui-dialog.dm input[type=submit]:hover,

@@ -47,8 +47,8 @@ class dmAdminRoutingConfigHandler extends sfRoutingConfigHandler
   static public function getConfiguration(array $configFiles)
   {
     return array_merge(
-      self::getDmConfiguration(),
-      parent::getConfiguration($configFiles)
+      parent::getConfiguration($configFiles),
+      self::getDmConfiguration()
     );
   }
 
@@ -120,6 +120,24 @@ class dmAdminRoutingConfigHandler extends sfRoutingConfigHandler
     $config['default'] = array(
       'class' => 'sfRoute',
       'url'   => '/+/:module/:action/*'
+    );
+
+    $config['signin'] = array(
+      'class' => 'sfRoute',
+      'url'   => '/security/signin',
+      'params' => array(
+        'module' => 'dmUserAdmin',
+        'action' => 'signin'
+      )
+    );
+
+    $config['signout'] = array(
+      'class' => 'sfRoute',
+      'url'   => '/security/signout',
+      'params' => array(
+        'module' => 'dmUserAdmin',
+        'action' => 'signout'
+      )
     );
     
     $config['dm_module_type'] = array(

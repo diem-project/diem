@@ -284,4 +284,22 @@ abstract class PluginDmUser extends BaseDmUser
       $this->_set('password', $v);
     }
   }
+
+  public function preDelete($event)
+  {
+    if(($userService = $this->getService('user')) && ($loggedUser = $userService->getUser()))
+    {
+      if($loggedUser->id == $this->id)
+      {
+        throw new dmRecordException('You cannot delete yourself from the database.');
+      }
+
+      if($this->is_super_admin && !$loggedUser->is_super_admin)
+      {
+        throw new dmRecordException('You cannot delete a superadmin.');
+      }
+    }
+
+    return parent::preDelete($event);
+  }
 }

@@ -134,7 +134,7 @@ class dmMediaSynchronizer
     }
   }
 
-  /*
+  /**
    * Sanitize files name (moves file if non regular name)
    */
   protected function sanitizeFile($file)
@@ -155,7 +155,7 @@ class dmMediaSynchronizer
     return $file;
   }
 
-  /*
+  /**
    * Sanitize dirs name (move dirs)
    */
   protected function sanitizeDir($dir)

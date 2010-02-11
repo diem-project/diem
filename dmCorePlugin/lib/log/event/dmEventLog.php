@@ -32,7 +32,6 @@ class dmEventLog extends dmFileLog
       'user.sign_in' => 'listenToUserSignInEvent',
       'user.sign_out' => 'listenToUserSignOutEvent',
       'dm.cache.clear' => 'listenToCacheClearEvent',
-      'dm.cache.clear_template' => 'listenToCacheClearTemplateEvent',
       'dm.sitemap.generated' => 'listenToSitemapUpdatedEvent',
       'dm.search.populated' => 'listenToSearchUpdatedEvent',
       'dm.config.updated' => 'listenToConfigUpdatedEvent'
@@ -93,16 +92,6 @@ class dmEventLog extends dmFileLog
       'action'  => 'clear',
       'type'    => 'cache',
       'subject' => 'Cache cleared'
-    ));
-  }
-  
-  public function listenToCacheClearTemplateEvent(sfEvent $event)
-  {
-    $this->log(array(
-      'server'  => $_SERVER,
-      'action'  => 'clear',
-      'type'    => 'template_cache',
-      'subject' => 'Template cache cleared'
     ));
   }
   

@@ -6,16 +6,8 @@ abstract class dmFileLog extends dmLog
   $dispatcher,
   $filesystem,
   $serviceContainer,
-  $options;
-  
-  public function getDefaultOptions()
-  {
-    return array_merge(parent::getDefaultOptions(), array(
-      'rotation'            => true,
-      'max_size_kilobytes'  => 2,
-      'buffer_size'         => 1024 * 16
-    ));
-  }
+  $options,
+  $nbFields;
   
   public function __construct(sfEventDispatcher $dispatcher, dmFileSystem $filesystem, sfServiceContainer $serviceContainer, array $options = array())
   {
@@ -24,6 +16,16 @@ abstract class dmFileLog extends dmLog
     $this->serviceContainer = $serviceContainer;
     
     $this->initialize($options);
+  }
+
+  public function getDefaultOptions()
+  {
+    return array_merge(parent::getDefaultOptions(), array(
+      'rotation'            => true,
+      'max_size_kilobytes'  => 2,
+      'buffer_size'         => 1024 * 16,
+      'enabled'             => true
+    ));
   }
   
   public function initialize(array $options)
@@ -34,10 +36,17 @@ abstract class dmFileLog extends dmLog
     {
       $this->options['file'] = dmProject::rootify($this->options['file']);
     }
+
+    $this->nbFields = count($this->fields);
   }
   
   public function log(array $data)
   {
+    if(!$this->getOption('enabled'))
+    {
+      return;
+    }
+    
     try
     {
       $this->checkFile();
@@ -125,7 +134,10 @@ abstract class dmFileLog extends dmLog
           continue;
         }
         
-        $data = $this->restoreKeys($this->decode($encodedLine));
+        if(!($data = $this->restoreKeys($this->decode($encodedLine))))
+        {
+          continue;
+        }
         
         if ($filter && !call_user_func($filter, $data))
         {
@@ -181,7 +193,7 @@ abstract class dmFileLog extends dmLog
   
   protected function encode(array $array)
   {
-    return implode('|', str_replace('|', ' ', $array));
+    return implode('|', str_replace(array('|', "\n"), ' ', $array));
   }
   
   protected function decode($string)
@@ -191,6 +203,11 @@ abstract class dmFileLog extends dmLog
 
   protected function restoreKeys(array $arrayEntry)
   {
+    if($this->nbFields !== count($arrayEntry))
+    {
+      return false;
+    }
+
     return array_combine($this->fields, $arrayEntry);
   }
   

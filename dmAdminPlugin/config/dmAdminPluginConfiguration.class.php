@@ -2,9 +2,8 @@
 class dmAdminPluginConfiguration extends sfPluginConfiguration
 {
   protected static
-  $dependencies = array(),
   $helpers = array('Dm'),
-  $externalModules = array('dmAuth', 'dmUser', 'dmPermission', 'dmGroup');
+  $externalModules = array('dmUserAdmin', 'dmPermissionAdmin', 'dmGroupAdmin');
 
   public function configure()
   {

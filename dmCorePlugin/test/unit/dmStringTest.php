@@ -71,7 +71,7 @@ $t->diag('::retrieveCssFromString');
 $cssFromStringsTests = array(
   array('', array(), '', array(), 'empty string'),
   array('#an_id', array(), '', array('id' => 'an_id'), 'one id only'),
-  array('#an_id', array('id' => 'old'), '', array('id' => 'an_id'), 'id in opts is overrided'),
+  array('#an_id', array('id' => 'old'), '', array('id' => 'an_id'), 'id in opts is overridden'),
   array('.a_class', array(), '', array('class' => array('a_class')), 'one class only'),
   array('.a_class.another_class', array(), '', array('class' => array('a_class', 'another_class')), 'multiple classes'),
   array('#an_id.a_class', array(), '', array('id' => 'an_id', 'class' => array('a_class')), 'an id and a class'),

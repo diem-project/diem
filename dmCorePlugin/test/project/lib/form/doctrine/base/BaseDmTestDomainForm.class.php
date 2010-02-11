@@ -20,6 +20,7 @@ abstract class BaseDmTestDomainForm extends BaseFormDoctrine
       'updated_at'  => new sfWidgetFormDateTime(),
       'position'    => new sfWidgetFormInputText(),
         'categs_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'DmTestCateg', 'expanded' => true)),
+        'tags_list'   => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'DmTag', 'expanded' => true)),
     ));
 
     $this->setValidators(array(
@@ -28,6 +29,7 @@ abstract class BaseDmTestDomainForm extends BaseFormDoctrine
       'updated_at'  => new sfValidatorDateTime(),
       'position'    => new sfValidatorInteger(array('required' => false)),
         'categs_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestCateg', 'required' => false)),
+        'tags_list'   => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTag', 'required' => false)),
     ));
 
 		if('embed' == sfConfig::get('dm_i18n_form'))
@@ -83,11 +85,17 @@ abstract class BaseDmTestDomainForm extends BaseFormDoctrine
       $this->setDefault('categs_list', $this->object->Categs->getPrimaryKeys());
     }
 
+    if (isset($this->widgetSchema['tags_list']))
+    {
+      $this->setDefault('tags_list', $this->object->Tags->getPrimaryKeys());
+    }
+
   }
 
   protected function doSave($con = null)
   {
     $this->saveCategsList($con);
+    $this->saveTagsList($con);
 
     parent::doSave($con);
   }
@@ -127,6 +135,44 @@ abstract class BaseDmTestDomainForm extends BaseFormDoctrine
     if (count($link))
     {
       $this->object->link('Categs', array_values($link));
+    }
+  }
+
+  public function saveTagsList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['tags_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $existing = $this->object->Tags->getPrimaryKeys();
+    $values = $this->getValue('tags_list');
+    if (!is_array($values))
+    {
+      $values = array();
+    }
+
+    $unlink = array_diff($existing, $values);
+    if (count($unlink))
+    {
+      $this->object->unlink('Tags', array_values($unlink));
+    }
+
+    $link = array_diff($values, $existing);
+    if (count($link))
+    {
+      $this->object->link('Tags', array_values($link));
     }
   }
 

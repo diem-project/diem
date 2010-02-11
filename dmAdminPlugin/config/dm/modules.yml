@@ -68,19 +68,6 @@ System:
     dmError:
       name:         Error
       credentials:  error_log
-  Security:
-    dmUser:
-      name:         User
-      credentials:  security_user
-      plugin:       dmUserPlugin
-    dmPermission:
-      name:         Permission
-      credentials:  security_permission
-      plugin:       dmUserPlugin
-    dmGroup:
-      name:         Group
-      credentials:  security_group
-      plugin:       dmUserPlugin
   Dev:
     dmDiagram:
       name:         See diagrams

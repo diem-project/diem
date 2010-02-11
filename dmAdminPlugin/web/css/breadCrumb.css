@@ -58,7 +58,7 @@
 
 #breadCrumb div.dm_mini_search_form input.dm_submit {
   font-size: 12px;
-  background: url(../../core/images/default_bg.png) center left repeat-x;
+  background: url(../../dmCorePlugin/images/default_bg.png) center left repeat-x;
   color: #444;
   cursor: pointer;
   padding: 2px 5px 1px 5px;

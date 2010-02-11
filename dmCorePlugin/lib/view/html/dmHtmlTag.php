@@ -87,7 +87,7 @@ abstract class dmHtmlTag extends dmConfigurable
     return $this;
   }
   
-  /*
+  /**
    * get an option by key
    * @return mixed option value or default
    */

@@ -2,7 +2,7 @@
 
 class dmFrontWebController extends sfFrontWebController
 {
-  /*
+  /**
    * @see sfFrontWebController
    */
   public function redirect($url, $delay = 0, $statusCode = 302)

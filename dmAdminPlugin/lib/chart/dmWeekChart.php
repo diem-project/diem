@@ -11,13 +11,13 @@ class dmWeekChart extends dmGaChart
     
     $dataSet = new dmChartData;
     $dataSet->AddPoint($this->data['pageviews'], 'pageviews');
-    $dataSet->AddPoint($this->data['visitors'], 'visitors');
+    $dataSet->AddPoint($this->data['visits'], 'visits');
     $dataSet->AddPoint($this->data['bounces'], 'bounces');
 //    $dataSet->AddPoint($this->data['pagesPerVisitor'], 'pagesPerVisitor');
     $dataSet->AddPoint($this->data['date'], 'date');
     $dataSet->SetAbsciseLabelSerie("date");
     $dataSet->SetSerieName("Pages", "pageviews");
-    $dataSet->SetSerieName("Visitors", "visitors");
+    $dataSet->SetSerieName("Visitors", "visits");
     $dataSet->SetSerieName("Bounces", "bounces");
 //    $dataSet->SetSerieName("per Visitor", "pagesPerVisitor");
     
@@ -25,16 +25,16 @@ class dmWeekChart extends dmGaChart
     $this->setGraphArea(40, 10, $this->getWidth()-40, $this->getHeight()-20);
     $this->drawGraphArea(255, 255, 255);
   
-    $dataSet->AddSerie("visitors"); 
+    $dataSet->AddSerie("visits");
     $dataSet->AddSerie("bounces"); 
-    $dataSet->SetYAxisName("visitors");
+    $dataSet->SetYAxisName("visits");
     $this->setLineStyle(1, 6);
     $this->drawScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_START0, self::$colors['grey2'][0], self::$colors['grey2'][1], self::$colors['grey2'][2],TRUE,0,0, false, 1);
     $this->drawGrid(4,TRUE, self::$colors['grey1'][0], self::$colors['grey1'][1], self::$colors['grey1'][2]);
     $this->drawLineGraph($dataSet->GetData(),$dataSet->GetDataDescription());
     $this->drawPlotGraph($dataSet->GetData(),$dataSet->GetDataDescription(),3,2,255,255,255);
     
-    $this->drawArea($dataSet->GetData(),"visitors","bounces",self::$colors['blue'][0], self::$colors['blue'][1], self::$colors['blue'][2], 50);
+    $this->drawArea($dataSet->GetData(),"visits","bounces",self::$colors['blue'][0], self::$colors['blue'][1], self::$colors['blue'][2], 50);
   
 //    $this->clearScale();
 //    $dataSet->removeAllSeries(); 
@@ -88,7 +88,7 @@ class dmWeekChart extends dmGaChart
     {
       $report = $this->gapi->getReport(array(
         'dimensions'  => array('day', 'month', 'date'),
-        'metrics'     => array('pageviews', 'visitors', 'bounces'),
+        'metrics'     => array('pageviews', 'visits', 'bounces'),
         'sort_metric' => 'date',
         'start_date'  => date('Y-m-d',strtotime('10 days ago')),
         'end_date'  => date('Y-m-d',strtotime('1 day ago'))
@@ -97,9 +97,10 @@ class dmWeekChart extends dmGaChart
       $data = $this->reportToData($report, array(
         'date',
         'pageviews',
-        'visitors',
+        'visits',
         'bounces'
       ));
+
       $this->setCache('data', $data);
     }
     

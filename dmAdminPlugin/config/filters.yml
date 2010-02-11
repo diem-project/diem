@@ -3,8 +3,7 @@ rendering:    ~
 remember_me:
   class:      dmRememberMeFilter
 
-security:
-  class:      dmSecurityFilter
+security:     ~
 
 dm_init:
   class:      dmAdminInitFilter

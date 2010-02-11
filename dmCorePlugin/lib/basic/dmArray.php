@@ -3,10 +3,14 @@
 class dmArray
 {
 
-  /*
+  /**
    * Sets each array key to its corresponding value
+   *
+   * @param array $array source array
+   *
+   * @return array new array
    */
-  public static function valueToKey($array)
+  public static function valueToKey(array $array)
   {
     $tmp = array();
     foreach($array as $value)
@@ -17,17 +21,24 @@ class dmArray
     return $tmp;
   }
 
-  /*
+  /**
    * Returns the value of an array, if the key exists
+   *
+   * @param array      $array          source array
+   * @param int|string $key            key to get
+   * @param mixed      $default        default
+   * @param boolean    $defaultIfEmpty activate check for if empty
+   *
+   * @return mixed
    */
-  public static function get($array, $key, $default = null, $defaultIfNull = false)
+  public static function get($array, $key, $default = null, $defaultIfEmpty = false)
   {
     if (!is_array($array))
     {
       return $default;
     }
 
-    if (false === $defaultIfNull)
+    if (false === $defaultIfEmpty)
     {
       if(isset($array[$key]))
       {
@@ -49,7 +60,13 @@ class dmArray
     }
   }
 
-  // get first value of an array
+  /**
+   * get first value of an array
+   *
+   * @param array $array source array
+   *
+   * @return mixed first value
+   */
   public static function first($array)
   {
     if(!is_array($array))
@@ -68,7 +85,13 @@ class dmArray
     return $a;
   }
 
-  // get last value of an array
+  /**
+   * get last value of an array
+   *
+   * @param array $array source array
+   *
+   * @return mixed last value
+   */
   public static function last($array)
   {
     if(!is_array($array))
@@ -87,13 +110,14 @@ class dmArray
     return $a;
   }
 
-  // get first key of an array
-  public static function firstKey($array)
-  {
-    return self::firstEntryIn(array_keys($array));
-  }
-
-  // get first valueS of an array
+  /**
+   * get first n values of an array
+   *
+   * @param array $array source array
+   * @param int   $nb    how many values
+   *
+   * @return array the first n values
+   */
   public static function firsts($array, $nb)
   {
     if(!is_array($array))
@@ -108,22 +132,20 @@ class dmArray
 
     $nb = min(array($nb, count($array)));
 
-    $return_entries = array();
-
-    for($it = 0; $it < $nb; $it++)
-    {
-      if ($entry = array_shift($array))
-      {
-        $return_entries[] = $entry;
-      }
-    }
-
+    $return_entries = array_slice($array, 0, $nb);
     unset($array);
 
     return $return_entries;
   }
 
-  // unset empty elements of the array
+  /**
+   * unset empty elements of the array
+   *
+   * @param array $array array to clean
+   * @param array $keys  keys to clean
+   *
+   * @return array cleaned array
+   */
   public static function unsetEmpty(array $array, array $keys)
   {
     foreach($keys as $key)
@@ -137,7 +159,13 @@ class dmArray
     return $array;
   }
   
-  // transform an array of string to a css classes string
+  /**
+   * transform an array of string to a css classes string
+   *
+   * @param array $classes single class or multi class values allowed
+   *
+   * @return string cleaned value
+   */
   public static function toHtmlCssClasses(array $classes)
   {
     return implode(' ', array_unique(array_filter(array_map('trim', $classes))));

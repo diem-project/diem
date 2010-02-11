@@ -87,8 +87,6 @@ parameters:
     black_list:               []                    # List of filenames not to minify
     gz_compression:           false                 # whether to compress with gzip
 
-  auth_layout_helper.class:   dmAuthLayoutHelper    # Responsible for rendering the authentication page layout
-
   cache_manager.class:        dmCacheManager        # Responsible for managing cache
   cache_manager.options:
     meta_cache_class:         dmMetaCache           # class for metacache ( use file cache or apc cache depending on server )
@@ -105,7 +103,8 @@ parameters:
     rotation:                 true                  # enable rotation on the log file ( strongly recommended )
     max_size_kilobytes:       1024                  # max size for the log file before rotating
     ignore_models:            []                    # models not to log
-    ignore_internal_actions:  true                  # whether to ignore Diem internal actions
+    ignore_internal_actions:  true                  # wether to ignore Diem internal actions
+    enabled:                  true                  # wether to log events or not
   
   event_log_entry.class:      dmEventLogEntry       # An entry of the event log
   
@@ -116,6 +115,7 @@ parameters:
     entry_service_name:       request_log_entry     # service name for an entry of this log
     rotation:                 true                  # enable rotation on the log file ( strongly recommended )
     max_size_kilobytes:       1024                  # max size for the log file before rotating
+    enabled:                  true                  # wether to log requests or not
   
   request_log_entry.class:    dmRequestLogEntry     # An entry of the event log
 
@@ -296,11 +296,6 @@ services:
 
   layout_helper:
     class:                    %layout_helper.class%
-    shared:                   false
-    arguments:                [ @dispatcher, @service_container ]
-
-  auth_layout_helper:
-    class:                    %auth_layout_helper.class%
     shared:                   false
     arguments:                [ @dispatcher, @service_container ]
 

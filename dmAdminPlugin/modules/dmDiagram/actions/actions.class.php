@@ -35,7 +35,7 @@ class dmDiagramActions extends dmAdminBaseActions
       $this->getUser()->logError($e->getMessage());
     }
 
-    $this->getUser()->logInfo('Hold down your mouse button to move the images');
+    $this->getUser()->logInfo('Hold down your mouse button to move the images', false);
   }
   
   protected function loadServiceContainerDumper()
@@ -51,7 +51,7 @@ class dmDiagramActions extends dmAdminBaseActions
     
     $dependencyDiagramImageFullPath = dmOs::join(sfConfig::get('sf_web_dir'), 'cache', $dependencyDiagramImage);
     
-    $dotFile = dmOs::join(sys_get_temp_dir(), dmString::random(12).'.dot');
+    $dotFile = tempnam(sys_get_temp_dir(), 'dm_dependency_');
     
     if (!$this->context->getFilesystem()->mkdir(dirname($dependencyDiagramImageFullPath)))
     {
@@ -112,7 +112,9 @@ class dmDiagramActions extends dmAdminBaseActions
     //$return = $filesystem->exec(sprintf('twopi -Granksep=5 -Tpng %s > %s', $dotFile, $dependencyDiagramImageFullPath));
 
     $return = $filesystem->exec(sprintf('neato -Tpng %s > %s', $dotFile, $dependencyDiagramImageFullPath));
-    
+
+    unlink($dotFile);
+
     if (!$return)
     {
       $this->getUser()->logError(sprintf('Diem can not generate the %s dependency diagram. Probably graphviz is not installed on the server.', $appName), false);

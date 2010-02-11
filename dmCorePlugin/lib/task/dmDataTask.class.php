@@ -168,8 +168,8 @@ EOF;
     );    
 
     $existingSettings = dmDb::query('DmSetting s INDEXBY s.name')
-    ->select('s.name')
-    ->fetchArray();
+    ->withI18n()
+    ->fetchRecords();
     
     foreach($array as $name => $config)
     {
@@ -180,6 +180,11 @@ EOF;
         $setting->fromArray($config);
 
         $setting->save();
+      }
+      elseif(!$existingSettings[$name]->hasCurrentTranslation())
+      {
+        $existingSettings[$name]->fromArray($config);
+        $existingSettings[$name]->save();
       }
     }
     
@@ -359,7 +364,6 @@ EOF;
         $this->logSection('dm:data', sprintf('%s : updated %d translation(s)', $culture, $nbUpdated));
       }
     }
-    
     
   }
 

@@ -66,7 +66,7 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
     $this->addField($field);
   }
 
-  /*
+  /**
    * @todo retrieve html nodes text ( better than Zend_Search_Lucene_Document_Html )
    */
   protected function getPageBodyText()

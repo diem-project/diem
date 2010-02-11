@@ -38,13 +38,13 @@ class dmPageUnitTestHelper extends dmUnitTestHelper
 
 		  $t->is($error404->getNodeParentId(), $root->id, 'error404->getNodeParentId() returns root.id');
 
-    $login = $this->pageTable->findOneByModuleAndAction('main', 'login');
+    $signin = $this->pageTable->findOneByModuleAndAction('main', 'signin');
 
-      $t->ok($login instanceof DmPage, 'login exists');
+      $t->ok($signin instanceof DmPage, 'signin exists');
 
-      $t->is($login->getNode()->getParent(), $root, 'login is child of root');
+      $t->is($signin->getNode()->getParent(), $root, 'signin is child of root');
 
-      $t->is($login->getNodeParentId(), $root->id, 'login->getNodeParentId() returns root.id');
+      $t->is($signin->getNodeParentId(), $root->id, 'signin->getNodeParentId() returns root.id');
 	}
 
 	public function testI18nFetching(lime_test $t)

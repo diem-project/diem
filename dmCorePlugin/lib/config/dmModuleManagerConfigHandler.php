@@ -111,12 +111,12 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
   
   protected function sortModuleTypes()
   {
-    // We generally want writer modules first
-    if($projectModules = dmArray::get($this->config, 'Project'))
+    // We generally want content modules first
+    if($projectModules = dmArray::get($this->config, 'Content'))
     {
-      unset($this->config['Project']);
+      unset($this->config['Content']);
       
-      $this->config = array_merge(array('Project' => $projectModules), $this->config);
+      $this->config = array_merge(array('Content' => $projectModules), $this->config);
     }
   }
   
@@ -127,9 +127,9 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
       $this->throwException('No main module');
     }
     
-    if (!isset($this->config['Project']))
+    if (!isset($this->config['Content']))
     {
-      $this->throwException('No Project module type');
+      $this->throwException('No Content module type');
     }
     
     foreach($this->modules as $key => $module)
@@ -295,12 +295,9 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
     $this->modules = array();
     $this->projectModules = array();
     
-    $pluginModules = $this->getPluginModules($configFiles);
-    
     foreach($config as $typeName => $typeConfig)
     {
       $this->config[$typeName] = array();
-      $isInProject = $typeName === 'Project';
       
       foreach($typeConfig as $spaceName => $spaceConfig)
       {
@@ -308,17 +305,8 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
         
         foreach((array) $spaceConfig as $moduleKey => $moduleConfig)
         {
-          $moduleKey = dmString::modulize($moduleKey);
-          
-          if (isset($this->modules[$moduleKey]))
-          {
-            continue;
-          }
-          
-          $plugin = dmArray::get($pluginModules, $moduleKey, false);
-    
-          $moduleConfig = $this->fixModuleConfig($moduleKey, $moduleConfig, $isInProject, $plugin);
-          
+          $moduleConfig = $this->fixModuleConfig($moduleKey, $moduleConfig, $typeName === 'Content');
+
           $this->modules[$moduleKey] = $moduleConfig;
           
           if ($moduleConfig['is_project'])
@@ -332,37 +320,7 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
     }
   }
   
-  /*
-   * Returns plugins modules,
-   * not defined in the project but in a plugin
-   */
-  protected function getPluginModules(array $configFiles)
-  {
-    $pluginModules = array();
-    
-    foreach($configFiles as $configFile)
-    {
-      if (0 === strpos($configFile, sfConfig::get('sf_plugins_dir')) || (0 === strpos($configFile, dm::getDir()) && !dmProject::isInProject($configFile)))
-      {
-        $pluginName = basename(str_replace('/config/dm/modules.yml', '', $configFile));
-        
-        foreach((array)sfYaml::load(file_get_contents($configFile)) as $typeName => $typeConfig)
-        {
-          foreach($typeConfig as $spaceName => $spaceConfig)
-          {
-            foreach($spaceConfig as $moduleKey => $moduleConfig)
-            {
-              $pluginModules[$moduleKey] = $pluginName;
-            }
-          }
-        }
-      }
-    }
-    
-    return $pluginModules;
-  }
-  
-  protected function fixModuleConfig($moduleKey, $moduleConfig, $isInProject, $plugin)
+  protected function fixModuleConfig($moduleKey, $moduleConfig, $isInContent)
   {
     /*
      * Extract plural from name
@@ -406,9 +364,10 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
       'model' =>      $model,
       'credentials' => isset($moduleConfig['credentials']) ? trim($moduleConfig['credentials']) : null,
       'underscore'  => (string) dmString::underscore($moduleKey),
-      'is_project'  => (boolean) dmArray::get($moduleConfig, 'project', $isInProject),
-      'plugin'      => dmArray::get($moduleConfig, 'plugin', $plugin),
-      'has_admin'   => (boolean) dmArray::get($moduleConfig, 'admin', $model || !$isInProject),
+      'is_project'  => (boolean) $isInContent || dmArray::get($moduleConfig, 'page', false) || count(dmArray::get($moduleConfig, 'components', array())),
+      'plugin'      => $moduleConfig['plugin'],
+      'overridden'  => dmArray::get($moduleConfig, 'overridden', false),
+      'has_admin'   => (boolean) dmArray::get($moduleConfig, 'admin', $model || !$isInContent),
       'has_front'   => (boolean) dmArray::get($moduleConfig, 'front', true),
       'components'  => dmArray::get($moduleConfig, 'components', array())
     );
@@ -486,9 +445,88 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
   
   /**
    * @see sfConfigHandler
+   *
+   * Additionally this method merges modules
    */
   static public function getConfiguration(array $configFiles)
   {
-    return self::parseYamls($configFiles);
+    $config = array();
+
+    foreach ($configFiles as $configFile)
+    {
+      $values = self::parseYaml($configFile);
+
+      // BC 5.0_BETA6 "Content" was named "Project"
+      if(isset($values['Project']) && !isset($values['Content']))
+      {
+        $values['Content'] = $values['Project'];
+        unset($values['Project']);
+      }
+
+      $pluginName = self::isProjectConfigFile($configFile) ? false : basename(str_replace('/config/dm/modules.yml', '', $configFile));
+
+      foreach($values as $valuesTypeName => $valuesType)
+      {
+        foreach($valuesType as $valuesSpaceName => $valuesSpace)
+        {
+          foreach(array_keys($valuesSpace) as $moduleKey)
+          {
+            // add plugin name
+            $values[$valuesTypeName][$valuesSpaceName][$moduleKey]['plugin'] = $pluginName;
+
+            // fix non modulized module keys
+            if ($moduleKey !== dmString::modulize($moduleKey))
+            {
+              $values[$valuesTypeName][$valuesSpaceName][dmString::modulize($moduleKey)] = $values[$valuesTypeName][$valuesSpaceName][$moduleKey];
+              unset($values[$valuesTypeName][$valuesSpaceName][$moduleKey]);
+            }
+          }
+
+          // merge overridden modules
+          foreach($config as $configTypeName => $configType)
+          {
+            foreach($configType as $configSpaceName => $configSpace)
+            {
+              foreach(array_intersect_key($values[$valuesTypeName][$valuesSpaceName], $configSpace) as $moduleKey => $module)
+              {
+                // merge the new module with the old one
+                $values[$valuesTypeName][$valuesSpaceName][$moduleKey] = sfToolkit::arrayDeepMerge(
+                  $configSpace[$moduleKey],
+                  $values[$valuesTypeName][$valuesSpaceName][$moduleKey]
+                );
+
+                $values[$valuesTypeName][$valuesSpaceName][$moduleKey]['overridden'] = true;
+                $values[$valuesTypeName][$valuesSpaceName][$moduleKey]['plugin'] = $configSpace[$moduleKey]['plugin'];
+
+                // remove the old module
+                unset($config[$configTypeName][$configSpaceName][$moduleKey]);
+              }
+            }
+          }
+        }
+      }
+
+      $config = sfToolkit::arrayDeepMerge($config, $values);
+    }
+
+    return $config;
+  }
+
+  protected static function isProjectConfigFile($configFile)
+  {
+    // Diem embedded in project
+    if(0 === strpos(dm::getDir(), sfConfig::get('sf_root_dir')))
+    {
+      return
+          0 === strpos($configFile, sfConfig::get('sf_root_dir'))
+      &&  0 !== strpos($configFile, sfConfig::get('sf_plugins_dir'))
+      &&  0 !== strpos($configFile, dm::getDir());
+    }
+    else
+    {
+      return
+          0 === strpos($configFile, sfConfig::get('sf_root_dir'))
+      &&  0 !== strpos($configFile, sfConfig::get('sf_plugins_dir'));
+    }
   }
 }

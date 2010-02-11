@@ -12,7 +12,7 @@
  */
 abstract class PluginDmWidget extends BaseDmWidget
 {
-  /*
+  /**
    * Add the i18n or fallback i18n value to the widget array
    */
   public function toArrayWithMappedValue()

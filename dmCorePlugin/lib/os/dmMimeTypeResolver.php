@@ -5,13 +5,9 @@ class dmMimeTypeResolver
   protected
   $mimeTypes;
   
-  public function getByFilename($file)
+  public function getByFilename($file, $default = null)
   {
-    $pathInfo = pathinfo($file);
-    
-    return isset($pathInfo['extension'])
-    ? $this->getByExtension($pathInfo['extension'])
-    : null;
+    return $this->getByExtension(pathinfo($file,PATHINFO_EXTENSION), $default);
   }
   
   public function getGroupByFilename($file)
@@ -19,8 +15,13 @@ class dmMimeTypeResolver
     return $this->getMimeTypeGroup($this->getByFilename($file));
   }
   
-  public function getByExtension($extension)
+  public function getByExtension($extension, $default = null)
   {
+    if(!$extension)
+    {
+      return $default;
+    }
+    
     $extension  = strtolower(trim($extension, '.'));
     $mimeTypes  = $this->getMimeTypes();
     
@@ -30,7 +31,7 @@ class dmMimeTypeResolver
     }
     else
     {
-      $mimeType = null;
+      $mimeType = $default;
     }
     
     unset($mimeTypes);

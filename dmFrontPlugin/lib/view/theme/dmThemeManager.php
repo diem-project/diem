@@ -6,7 +6,7 @@ class dmThemeManager extends dmConfigurable
   $dispatcher,
   $serviceContainer,
   $themes;
-  
+
   public function __construct(sfEventDispatcher $dispatcher, sfServiceContainer $serviceContainer, array $options)
   {
     $this->dispatcher       = $dispatcher;
@@ -14,65 +14,100 @@ class dmThemeManager extends dmConfigurable
     
     $this->initialize($options);
   }
-  
-  public function initialize(array $options)
+
+  protected function initialize(array $options)
   {
     $this->configure($options);
-    
-    if (!$this->themeKeyExists($this->options['default']))
+
+    if (!$this->themeNameExists($this->options['default']))
     {
-      $this->options['default'] = dmArray::first($this->getThemeKeys());
+      $this->options['default'] = dmArray::first($this->getThemeNames());
     }
     
     $this->themes = array();
   }
-  
-  public function getConfig()
+
+  public function configure(array $options = array())
   {
-    return $this->config;
+    $options['default'] = null;
+    
+    foreach($options['list'] as $themeName => $themeConfig)
+    {
+      // enabled options defaults to true
+      if(null === dmArray::get($themeConfig, 'enabled'))
+      {
+        $options['list'][$themeName]['enabled'] = true;
+      }
+
+      // first enabled theme is the default theme
+      if(null === $options['default'] && $options['list'][$themeName]['enabled'])
+      {
+        $options['default'] = $themeName;
+      }
+
+      // path is renamed to dir BC 5.0_BETA6
+      if(isset($options['list'][$themeName]['path']))
+      {
+        $options['list'][$themeName]['dir'] = $options['list'][$themeName]['path'];
+        unset($options['list'][$themeName]['path']);
+      }
+
+      // theme key is the theme name
+      $options['list'][$themeName]['name'] = $themeName;
+    }
+
+    if(null === $options['default'])
+    {
+      throw new dmException('No theme is enabled!');
+    }
+
+    return parent::configure($options);
   }
-  
-  public function getDefaultThemeKey()
+
+  public function getDefaultThemeName()
   {
     return $this->options['default'];
   }
-  
-  public function getThemeKeys()
+
+  public function getDefaultTheme()
+  {
+    return $this->getTheme($this->getDefaultThemeName());
+  }
+
+  public function getThemeNames()
   {
     return array_keys($this->options['list']);
   }
-  
-  public function themeKeyExists($key)
+
+  public function themeNameExists($name)
   {
-    return empty($key) ? false : in_array($key, $this->getThemeKeys());
+    return empty($name) ? false : in_array($name, $this->getThemeNames());
   }
-  
-  public function getTheme($key)
+
+  public function getTheme($name)
   {
-    if(isset($this->themes[$key]))
+    if(isset($this->themes[$name]))
     {
-      return $this->themes[$key];
+      return $this->themes[$name];
     }
     
-    if(!isset($this->options['list'][$key]))
+    if(!isset($this->options['list'][$name]))
     {
-      throw new dmException(sprintf('%s is not a valid theme key. These are : %s', $key, implode(', ', $this->getThemeKeys())));
+      throw new dmException(sprintf('%s is not a valid theme name. These are : %s', $name, implode(', ', $this->getThemeNames())));
     }
+
+    $this->serviceContainer->setParameter('theme.options', $this->options['list'][$name]);
     
-    $this->serviceContainer->addParameters(array(
-      'theme.options' => array_merge(array('key' => $key), $this->options['list'][$key])
-    ));
-    
-    return $this->themes[$key] = $this->serviceContainer->getService('theme');
+    return $this->themes[$name] = $this->serviceContainer->getService('theme');
   }
-  
+
   public function getThemes()
   {
-    foreach($this->getThemeKeys() as $key)
+    foreach($this->getThemeNames() as $name)
     {
-      if (!isset($this->themes[$key]))
+      if (!isset($this->themes[$name]))
       {
-        $this->getTheme($key);
+        $this->getTheme($name);
       }
     }
     
@@ -88,11 +123,11 @@ class dmThemeManager extends dmConfigurable
   {
     $themes = $this->getThemes();
     
-    foreach($themes as $key => $theme)
+    foreach($themes as $name => $theme)
     {
       if (!$theme->isEnabled())
       {
-        unset($themes[$key]);
+        unset($themes[$name]);
       }
     }
   

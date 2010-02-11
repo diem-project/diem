@@ -3,9 +3,9 @@
 /**
  * PluginDmContact form.
  *
- * @package    ##PROJECT_NAME##
+ * @package    retest
  * @subpackage form
- * @author     ##AUTHOR_NAME##
+ * @author     Your name here
  * @version    SVN: $Id$
  */
 abstract class PluginDmContactForm extends BaseDmContactForm

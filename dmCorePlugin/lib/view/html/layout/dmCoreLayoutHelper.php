@@ -6,7 +6,9 @@ class dmCoreLayoutHelper
     $dispatcher,
     $serviceContainer,
     $baseWebPath,
+    $isHtml4,
     $isHtml5;
+    
 
   public function __construct(sfEventDispatcher $dispatcher, dmBaseServiceContainer $serviceContainer)
   {
@@ -18,6 +20,7 @@ class dmCoreLayoutHelper
   
   protected function initialize()
   {
+    $this->isHtml4 = 4 == $this->getDocTypeOption('version', 4);
     $this->isHtml5 = 5 == $this->getDocTypeOption('version', 5);
   }
   
@@ -32,12 +35,9 @@ class dmCoreLayoutHelper
     $this->renderHeadJavascripts();
   }
 
-  public function renderBodyTag()
+  public function renderBodyTag($options = array())
   {
-    return sprintf('<body class="%s_%s">',
-      $this->serviceContainer->getParameter('controller.module'),
-      $this->serviceContainer->getParameter('controller.action')
-    );
+    return $this->getHelper()->open('body', dmString::toArray($options));
   }
   
   protected function getDocTypeOption($name, $default)
@@ -63,13 +63,17 @@ class dmCoreLayoutHelper
     {
       $doctype = '<!DOCTYPE html>';
     }
+    else if ($this->isHtml4)
+    {
+      $doctype = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">';
+    }
     else
     {
       $doctype = sprintf(
-        '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML %s %s//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-%s.dtd">',
+        '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML %s%s//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1%s.dtd">',
         $this->getDocTypeOption('version', '1.0'),
-        ucfirst(strtolower($this->getDocTypeOption('compliance', 'transitional'))),
-        strtolower($this->getDocTypeOption('compliance', 'transitional'))
+        '1.1' == $this->getDocTypeOption('version', '1.0') ? ''  : ' '.ucfirst(strtolower($this->getDocTypeOption('compliance', 'transitional'))),
+        '1.1' == $this->getDocTypeOption('version', '1.0') ? '1' : '-'.strtolower($this->getDocTypeOption('compliance', 'transitional'))
       );
     }
     
@@ -78,7 +82,7 @@ class dmCoreLayoutHelper
   
   public function renderHtmlTag()
   {
-    if ($this->isHtml5())
+    if ($this->isHtml5() || $this->isHtml4)
     {
       return '<html>';
     }
@@ -86,9 +90,9 @@ class dmCoreLayoutHelper
     $culture = $this->serviceContainer->getParameter('user.culture');
 
     return sprintf(
-      '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="%s" lang="%s">',
+      '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="%s" >',
       $culture,
-      $culture
+      '1.1' == $this->getDocTypeOption('version', '1.0') ? '' : "lang=\"$culture\""
     );
   }
   
@@ -174,7 +178,7 @@ class dmCoreLayoutHelper
     return $html;
   }
 
-  /*
+  /**
    * JavaScript libs declared in dm_js_head_inclusion
    * are declared in the <head> section
    */

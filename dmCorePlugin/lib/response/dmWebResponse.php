@@ -255,7 +255,7 @@ class dmWebResponse extends sfWebResponse
     return $javascripts;
   }
   
-  /*
+  /**
    * Means that request has been sent by a human, and the application will send html for a browser.
    * CLI, ajax and flash are NOT human.
    * @return boolean $human

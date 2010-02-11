@@ -6,13 +6,10 @@ abstract class dmFrontBaseServiceContainer extends dmBaseServiceContainer
   protected function loadParameters(array $parameters = array())
   {
     parent::loadParameters();
-    
-    $this->addParameters(array(
-      'theme_manager.options' => array(
-        'list'    => sfConfig::get('dm_theme_list'),
-        'default' => sfConfig::get('dm_theme_default')
-      )
-    ));
+
+    $this->addParameters(array('theme_manager.options' => array(
+      'list' => sfConfig::get('dm_theming_themes', sfConfig::get('dm_theme_list')) // BC 5.0_BETA6
+    )));
     
     $this->setParameter('context.page', null);
   }

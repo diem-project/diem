@@ -56,7 +56,8 @@ class dmFrontComponentGenerator extends dmFrontModuleGenerator
 
     if ($code = $this->class->generate())
     {
-      $return = file_put_contents($file, "<?php\n".$code) && $this->filesystem->chmod($file, 0777);
+      $return = file_put_contents($file, "<?php\n".$code);
+      $this->filesystem->chmod($file, 0777);
     }
     else
     {

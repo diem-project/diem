@@ -1,6 +1,6 @@
 <?php
 
-define('DIEM_VERSION', '5.0.0-RC1_DEV');
+define('DIEM_VERSION', '5.0.0-BETA6_DEV');
 
 /*
  * Include Symfony
@@ -49,8 +49,20 @@ class dmBase
   {
     return self::$startTime;
   }
+
+  /**
+   * Loads the Swift mailer
+   */
+  public static function enableMailer()
+  {
+    if(!class_exists('Swift_Message'))
+    {
+      Swift::registerAutoload();
+      sfMailer::initialize();
+    }
+  }
   
-  /*
+  /**
    * All context creations are made here.
    * You can replace here the dmContext class by your own.
    */
@@ -104,7 +116,7 @@ class dmBase
     return $parts[0].'.'.$parts[1];
   }
   
-  /*
+  /**
    * Symfony common objects accessors
    */
 
@@ -113,7 +125,7 @@ class dmBase
     return dmContext::getInstance()->getRouting();
   }
 
-  /*
+  /**
    * @return dmWebRequest
    */
   public static function getRequest()
@@ -153,16 +165,16 @@ class dmBase
     return dmContext::getInstance()->getConfiguration()->loadHelpers($helpers);
   }
   
-  public function getHelper()
+  public static function getHelper()
   {
     return dmContext::getInstance()->getHelper();
   }
 
-  /*
+  /**
    * Gadgets
    */
 
-  /*
+  /**
    * Diem code size
    * returns array(files, lines, characters)
    */

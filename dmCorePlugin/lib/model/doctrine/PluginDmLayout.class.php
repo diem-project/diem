@@ -15,7 +15,7 @@ abstract class PluginDmLayout extends BaseDmLayout
   protected static
   $areaTypes = array('top', 'bottom', 'left', 'right');
 
-  /*
+  /**
    * How many pages use this layout?
    */
   public function getNbPages()

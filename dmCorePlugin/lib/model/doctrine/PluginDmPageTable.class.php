@@ -7,9 +7,9 @@ class PluginDmPageTable extends myDoctrineTable
   $recordPageCache = array(),
   $findByStringCache = array();
   
-  /*
+  /**
    * Check that basic pages exist
-   * ( main/root, main/error404, main/login )
+   * ( main/root, main/error404, main/signin )
    * and, if they don't, will create them
    */
   public function checkBasicPages()
@@ -20,8 +20,8 @@ class PluginDmPageTable extends myDoctrineTable
       $root = $this->create(array(
         'module' => 'main',
         'action' => 'root',
-        'name' => $this->getService('i18n')->__('Home'),
-        'title' => $this->getService('i18n')->__('Home'),
+        'name' => $this->tryToTranslate('Home'),
+        'title' => $this->tryToTranslate('Home'),
         'slug' => ''
       ));
 
@@ -40,8 +40,8 @@ class PluginDmPageTable extends myDoctrineTable
       $page404 = $this->create(array(
         'module' => 'main',
         'action' => 'error404',
-        'name' => $this->getService('i18n')->__('Page not found'),
-        'title' => $this->getService('i18n')->__('Page not found'),
+        'name' => $this->tryToTranslate('Page not found'),
+        'title' => $this->tryToTranslate('Page not found'),
         'slug' => 'error404'
       ));
 
@@ -54,20 +54,37 @@ class PluginDmPageTable extends myDoctrineTable
       )->save();
     }
 
-    // check login page
-    if (!$this->createQuery('p')->where('p.module = ? AND p.action = ?', array('main', 'login'))->exists())
+    // check signin page
+    if (!$this->createQuery('p')->where('p.module = ? AND p.action = ?', array('main', 'signin'))->exists())
     {
-      $this->create(array(
+      $signinPage = $this->create(array(
         'module' => 'main',
-        'action' => 'login',
-        'name' => $this->getService('i18n')->__('Login'),
-        'title' => $this->getService('i18n')->__('Login'),
-        'slug' => 'login'
-      ))->getNode()->insertAsLastChildOf($root);
+        'action' => 'signin',
+        'name' => $this->tryToTranslate('Signin'),
+        'title' => $this->tryToTranslate('Signin'),
+        'slug' => 'signin'
+      ));
+      
+      $signinPage->getNode()->insertAsLastChildOf($root);
+
+      dmDb::table('DmWidget')->createInZone(
+        $signinPage->PageView->Area->Zones[0],
+        'dmUser/signin'
+      )->save();
     }
   }
+
+  protected function tryToTranslate($message)
+  {
+    if($i18n = $this->getService('i18n'))
+    {
+      return $i18n->__($message);
+    }
+
+    return $message;
+  }
   
-  /*
+  /**
    * Check that search page exist
    * and, if doesn't, will create it
    */
@@ -75,13 +92,20 @@ class PluginDmPageTable extends myDoctrineTable
   {
     if (!$this->createQuery('p')->where('p.module = ? AND p.action = ?', array('main', 'search'))->exists())
     {
-      $this->create(array(
-        'name' => $this->getService('i18n')->__('Search results'),
-        'title' => $this->getService('i18n')->__('Search results'),
+      $searchResultsPage = $this->create(array(
+        'name' => $this->tryToTranslate('Search results'),
+        'title' => $this->tryToTranslate('Search results'),
         'module' => 'main',
         'action' => 'search',
         'slug' => 'search'
-      ))->getNode()->insertAsLastChildOf($this->getTree()->fetchRoot());
+      ));
+
+      $searchResultsPage->getNode()->insertAsLastChildOf($this->getTree()->fetchRoot());
+
+      dmDb::table('DmWidget')->createInZone(
+        $searchResultsPage->PageView->Area->Zones[0],
+        'dmWidgetSearch/results'
+      )->save();
     }
   }
   
@@ -149,7 +173,7 @@ class PluginDmPageTable extends myDoctrineTable
     unset($pages);
   }
   
-  /*
+  /**
    * Queries
    */
 
@@ -167,7 +191,7 @@ class PluginDmPageTable extends myDoctrineTable
     ->execute(array(), $hydrationMode);
   }
   
-  /*
+  /**
    * Performance finder shortcuts
    */
   public function findOneBySource($source)
@@ -260,11 +284,11 @@ class PluginDmPageTable extends myDoctrineTable
     return $this->findOneByModuleAndActionWithI18n('main', 'error404');
   }
   
-  public function fetchLogin()
+  public function fetchSignin()
   {
     $this->checkBasicPages();
     
-    return $this->findOneByModuleAndActionWithI18n('main', 'login');
+    return $this->findOneByModuleAndActionWithI18n('main', 'signin');
   }
   
   public function findOneByIdWithI18n($id, $culture = null)
@@ -321,15 +345,12 @@ class PluginDmPageTable extends myDoctrineTable
 
   public function findOneByModuleAndActionWithI18n($module, $action, $culture = null)
   {
-    $timer = dmDebug::timerOrNull('dmPageTable::findOneByModuleAndActionWithI18n');
-    $page = $this->createQuery('p')
+    return $this->createQuery('p')
     ->where('p.module = ?', $module)
     ->andWhere('p.action = ?', $action)
     ->withI18n($culture, null, 'p')
     ->dmCache()
     ->fetchOne();
-    $timer && $timer->addTime();
-    return $page;
   }
 
 }
