@@ -5,8 +5,8 @@
 /* embedded form */
 .sf_admin_form form ul.dm_form_elements {
   clear: both;
-  background: url(../../dmCorePlugin/images/default_bg.png) center left repeat-x;
-  border: 1px solid #D3D3D3;
+  -moz-box-shadow: 0 0 5px #aaa;
+  -webkit-box-shadow: 0 0 5px #aaa;
   padding: 10px;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
@@ -188,9 +188,9 @@ div.dm_form_pagination {
 .sf_admin_form ul.checkbox_list {
   max-height: 300px;
   overflow-y: auto;
-  border: 1px solid #ddd;
-  -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
+  -moz-box-shadow: 0 0 5px #aaa;
+  -webkit-box-shadow: 0 0 5px #aaa;
 }
 
 .sf_admin_form ul.checkbox_list > li {
@@ -228,6 +228,11 @@ div.dm_form_pagination {
 }
 .sf_admin_form .dm_media_file .view {
   float: left;
+}
+.sf_admin_form .dm_media_file .view img {
+  -moz-box-shadow: 2px 2px 5px #888;
+  -webkit-box-shadow: 2px 2px 5px #888;
+  border: 1px solid #aaa;
 }
 .sf_admin_form .dm_media_file .infos {
   margin-left: 260px;
