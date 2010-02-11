@@ -182,7 +182,8 @@ div.dm_form_pagination {
   max-height: 300px;
   overflow-y: auto;
   border: 1px solid #ddd;
-  moz-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
 }
 
 .sf_admin_form ul.checkbox_list > li {
