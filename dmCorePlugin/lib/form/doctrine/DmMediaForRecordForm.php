@@ -3,8 +3,7 @@
 class DmMediaForRecordForm extends DmMediaForm
 {
   protected
-  $record,
-  $fileAlreadyExists;
+  $record;
 
   public static function factory(myDoctrineRecord $record, $local, $alias, $required)
   {
@@ -26,12 +25,6 @@ class DmMediaForRecordForm extends DmMediaForm
     $form->configureRequired($required);
     $form->setRecord($record);
     return $form;
-  }
-
-  public function resetFormFields()
-  {
-    parent::resetFormFields();
-    $this->fileAlreadyExists = null;
   }
   
   public function checkFolder($validator, $values)

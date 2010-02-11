@@ -169,7 +169,7 @@ abstract class PluginDmMedia extends BaseDmMedia
    */
   public function create(sfValidatedFile $file)
   {
-    $this->file = dmOs::sanitizeFileName($file->getOriginalName());
+    $this->file = $this->getAvailableFileName(dmOs::sanitizeFileName($file->getOriginalName()));
 
     $this->clearCache();
 
@@ -188,6 +188,35 @@ abstract class PluginDmMedia extends BaseDmMedia
     $this->destroy();
     
     return $this->create($file);
+  }
+
+  /*
+   * if this file already exists in the folder,
+   * add a numeric suffix not to override the first one
+   */
+  protected function getAvailableFileName($fileName)
+  {
+    if(!$this->get('Folder')->hasFile($fileName))
+    {
+      return $fileName;
+    }
+
+    $name = pathinfo($fileName, PATHINFO_FILENAME);
+    $extension = pathinfo($fileName, PATHINFO_EXTENSION);
+
+    if(!preg_match('/_\d+$/', $name))
+    {
+      $name .= '_1';
+    }
+    $number = (int) preg_replace('/.+_(\d+)$/', '$1', $name);
+
+    while($this->get('Folder')->hasFile($name.'.'.$extension))
+    {
+      ++$number;
+      $name = preg_replace('/(.+)_\d+$/', '$1_'.$number, $name);
+    }
+
+    return $name.'.'.$extension;
   }
 
   /**
@@ -317,27 +346,9 @@ abstract class PluginDmMedia extends BaseDmMedia
       throw new dmException(sprintf('Trying to save DmMedia with no existing file : %s', $this->file));
     }
 
-    /*
-     * If this media is new, and shares its name with another media in the same folder,
-     * this media is not saved and the other one is updated with this media's value
-     */
     if($this->isNew())
     {
-      if($sameMedia = $this->getTable()->findOneByFileAndDmMediaFolderId($this->file, $this->dm_media_folder_id))
-      {
-        return $sameMedia
-        ->setLegend($this->getLegend())
-        ->setAuthor($this->getAuthor())
-        ->setLicense($this->getLicense())
-        ->setMime($this->getMime())
-        ->setSize($this->getSize())
-        ->set('dimensions', $this->getDimensions(), false)
-        ->save($conn);
-      }
-      else
-      {
-        $this->refreshFromFile();
-      }
+      $this->refreshFromFile();
     }
 
     return parent::save($conn);

@@ -70,38 +70,18 @@ abstract class dmFormDoctrine extends sfFormDoctrine
       return $values;
     }
 
-    // uploading a file
-    if($values[$formName]['file'])
+    /*
+     * We have a new file for an existing media.
+     * Let's create a new media
+     */
+    if($values[$formName]['file'] && $values[$formName]['id'])
     {
-      $values[$formName]['dm_media_folder_id'] = $this->object->getTable()->getDmMediaFolder()->get('id');
-      
-      $existingMedia = dmDb::query('DmMedia m')
-      ->where('m.dm_media_folder_id = ?', $values[$formName]['dm_media_folder_id'])
-      ->andWhere('m.file = ?', $values[$formName]['file']->getOriginalName())
-      ->fetchRecord();
-      /*
-       * We have a media with same folder / filename
-       * let's reuse the media, and replace the file
-       */
-      if ($existingMedia)
-      {
-        $values[$formName]['id'] = $existingMedia->get('id');
+      $values[$formName]['id'] = null;
         
-        $this->embeddedForms[$formName]->setObject($existingMedia);
-      }
-      /*
-       * We have a new file for an existing media.
-       * Let's create a new media
-       */
-      elseif($values[$formName]['id'])
-      {
-        $values[$formName]['id'] = null;
-        
-        $media = new DmMedia;
-        $media->Folder = $this->object->getDmMediaFolder();
-  
-        $this->embeddedForms[$formName]->setObject($media);
-      }
+      $media = new DmMedia;
+      $media->Folder = $this->object->getDmMediaFolder();
+
+      $this->embeddedForms[$formName]->setObject($media);
     }
     
     return $values;
