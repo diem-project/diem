@@ -288,7 +288,7 @@ abstract class PluginDmMedia extends BaseDmMedia
 
     if($mimeTypeResolver = $this->getService('mime_type_resolver'))
     {
-      $this->mime = $mimeTypeResolver->getByFilename($this->getFullPath());
+      $this->mime = $mimeTypeResolver->getByFilename($this->getFullPath(), 'application/force-download');
     }
     
     /*
