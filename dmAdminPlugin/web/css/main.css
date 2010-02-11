@@ -157,6 +157,11 @@ div.dm_gallery_medium a.dm_gallery_link {
   font-size: 120%;
 }
 
+.quiet {
+  font-size: 90%;
+  color: #888;
+}
+
 div.dm_admin_homepage_column {
   width: 33.33%;
   float: left;
