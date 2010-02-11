@@ -184,7 +184,6 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
       }
       if ($relation)
       {
-        
         if($relation instanceof Doctrine_Relation_ForeignKey)
         {
           $html = "get_partial('dmAdminGenerator/relationForeign', array('record' => $".$this->getSingularName().", 'alias' => '".$alias."'));";

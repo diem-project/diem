@@ -78,7 +78,14 @@
   width: 98%;
 }
 
-.sf_admin_form div.sf_admin_form_row_inner {
+.sf_admin_form div.sf_admin_form_row div.dm_foreigns,
+.sf_admin_form div.sf_admin_form_row div.dm_associations {
+  margin-left: 20%;
+  padding: 10px;
+  -moz-box-shadow: 0 0 5px #aaa;
+  -webkit-box-shadow: 0 0 5px #aaa;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
 }
 
 .sf_admin_form div.sf_admin_form_row_inner div.label_wrap,

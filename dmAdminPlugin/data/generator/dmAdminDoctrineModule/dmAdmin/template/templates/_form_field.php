@@ -50,15 +50,43 @@
 [?php else: //check if is a media view ?]
   <div class="[?php echo $divClass ?]">
     [?php
+    $found = false;
+    
     if ('dm_gallery' === $name)
     {
+      $found = true;
       include_partial('dmMedia/galleryMedium', array('record' => $form->getObject()));
     }
     elseif (substr($name, -5) === '_view')
     {
+      $found = true;
       include_partial('dmMedia/viewBig', array('object' => $form->getObject()->getDmMediaByColumnName(substr($name, 0, strlen($name)-5))));
     }
-    else
+    elseif (substr($name, -5) === '_list')
+    {
+      if (!$relation = $form->getObject()->getTable()->getRelationHolder()->get($alias = dmString::camelize(substr($name, 0, strlen($name)-5))))
+      {
+        $relation = $form->getObject()->getTable()->getRelationHolder()->get($alias = substr($name, 0, strlen($name)-5));
+      }
+      if ($relation)
+      {
+        echo '<div class="sf_admin_form_row_inner clearfix">';
+        echo '<div class="label_wrap">'.__($field->getConfig('label', '', true)).'</div>';
+        if($relation instanceof Doctrine_Relation_ForeignKey)
+        {
+          $found = true;
+          include_partial('dmAdminGenerator/relationForeign', array('record' => $form->getObject(), 'alias' => $alias));
+        }
+        elseif ($relation instanceof Doctrine_Relation_Association)
+        {
+          $found = true;
+          include_partial('dmAdminGenerator/relationAssociation', array('record' => $form->getObject(), 'alias' => $alias));
+        }
+        echo '</div>';
+      }
+    }
+
+    if(!$found)
     {
       if (sfConfig::get('sf_debug'))
       {
