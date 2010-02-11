@@ -17,6 +17,7 @@ abstract class BaseDmTestDomainFormFilter extends BaseFormFilterDoctrine
       'updated_at'  => new sfWidgetFormFilterDate(array('from_date' => new sfWidgetFormInputText(array(), array("class" => "datepicker_me")), 'to_date' => new sfWidgetFormInputText(array(), array("class" => "datepicker_me")), 'with_empty' => false)),
       'position'    => new sfWidgetFormFilterInput(),
       'categs_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'DmTestCateg')),
+      'tags_list'   => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'DmTag')),
     ));
 
     $this->setValidators(array(
@@ -24,6 +25,7 @@ abstract class BaseDmTestDomainFormFilter extends BaseFormFilterDoctrine
       'updated_at'  => new sfValidatorDateRange(array('required' => false, 'from_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 00:00:00')), 'to_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 23:59:59')))),
       'position'    => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
       'categs_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestCateg', 'required' => false)),
+      'tags_list'   => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTag', 'required' => false)),
     ));
 
     $this->widgetSchema->setNameFormat('dm_test_domain_filters[%s]');
@@ -51,6 +53,22 @@ abstract class BaseDmTestDomainFormFilter extends BaseFormFilterDoctrine
           ->andWhereIn('DmTestDomainCateg.categ_id', $values);
   }
 
+  public function addTagsListColumnQuery(Doctrine_Query $query, $field, $values)
+  {
+    if (!is_array($values))
+    {
+      $values = array($values);
+    }
+
+    if (!count($values))
+    {
+      return;
+    }
+
+    $query->leftJoin('r.DmTestDomainDmTag DmTestDomainDmTag')
+          ->andWhereIn('DmTestDomainDmTag.dm_tag_id', $values);
+  }
+
   public function getModelName()
   {
     return 'DmTestDomain';
@@ -64,6 +82,7 @@ abstract class BaseDmTestDomainFormFilter extends BaseFormFilterDoctrine
       'updated_at'  => 'Date',
       'position'    => 'Number',
       'categs_list' => 'ManyKey',
+      'tags_list'   => 'ManyKey',
     );
   }
 }

@@ -12,11 +12,13 @@ class dmAdminGeneratorBuilder
 
   protected
   $module,
+  $dispatcher,
   $table;
 
-  public function __construct(dmModule $module)
+  public function __construct(dmModule $module, sfEventDispatcher $dispatcher)
   {
     $this->module = $module;
+    $this->dispatcher = $dispatcher;
     $this->table = $module->getTable();
   }
 
@@ -35,7 +37,7 @@ class dmAdminGeneratorBuilder
 
   protected function getConfig()
   {
-    return array(
+    $config = array(
       'actions' => $this->getActions(),
       'fields'  => $this->getFields(),
       'list'    => $this->getList(),
@@ -44,6 +46,11 @@ class dmAdminGeneratorBuilder
       'edit'    => $this->getEdit(),
       'new'     => $this->getNew()
     );
+    
+    return $this->dispatcher->filter(
+      new sfEvent($this, 'dm.admin_generator_builder.config', array('module' => $this->module)),
+      $config
+    )->getReturnValue();
   }
 
   protected function getActions()

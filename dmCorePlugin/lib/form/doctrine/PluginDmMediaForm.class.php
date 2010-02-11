@@ -26,6 +26,11 @@ abstract class PluginDmMediaForm extends BaseDmMediaForm
     $this->mergePostValidator(new sfValidatorCallback(array('callback' => array($this, 'clearName'))));
     $this->mergePostValidator(new sfValidatorCallback(array('callback' => array($this, 'checkFolder'))));
   }
+  
+  public function setMimeTypeWhiteList($mimeTypes)
+  {
+    $this->validatorSchema['file']->setOption('mime_types', $mimeTypes);
+  }
 
   protected function doUpdateObject($values)
   {
@@ -50,26 +55,38 @@ abstract class PluginDmMediaForm extends BaseDmMediaForm
 
     if ($validatedFile)
     {
-      if ($this->object->isNew())
-      {
-        if (!$this->object->create($validatedFile))
-        {
-          throw new dmException(sprintf('Can not create file for media %s', $this->object));
-        }
-      }
-      else
-      {
-        if (!$this->object->replaceFile($validatedFile))
-        {
-          throw new dmException(sprintf('Can not replace file for media %s', $object));
-        }
-      }
+      $values = $this->handleValidatedFile($validatedFile, $values);
     }
 
     if(isset($moveToFolderId))
     {
       $this->object->move(dmDb::table('DmMediaFolder')->find($moveToFolderId));
     }
+  }
+
+  /*
+   * By default, when a file is uploaded
+   * 1. If media is new, create the file
+   * 2. If media already exists with another file, keep the media and replace the file
+   */
+  protected function handleValidatedFile(sfValidatedFile $file, array $values)
+  {
+    if ($this->object->isNew())
+    {
+      if (!$this->object->create($file))
+      {
+        throw new dmException(sprintf('Can not create file for media %s', $this->object));
+      }
+    }
+    else
+    {
+      if (!$this->object->replaceFile($file))
+      {
+        throw new dmException(sprintf('Can not replace file for media %s', $object));
+      }
+    }
+
+    return $values;
   }
 
   public function clearName($validator, $values)
@@ -100,7 +117,7 @@ abstract class PluginDmMediaForm extends BaseDmMediaForm
 
       if(!is_writable($folder->fullPath))
       {
-        $error = new sfValidatorError($validator, dmProject::unRootify($folder->fullPath)." is not writable");
+        $error = new sfValidatorError($validator, dmProject::unRootify($folder->fullPath).' is not writable');
 
         // throw an error bound to the file field
         throw new sfValidatorErrorSchema($validator, array('file' => $error));

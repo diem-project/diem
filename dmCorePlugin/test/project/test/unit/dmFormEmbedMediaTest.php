@@ -7,7 +7,7 @@ $helper->boot();
 $categ = dmDb::create('DmTestCateg', array('name' => dmString::random()))->saveGet();
 $user = dmDb::table('DmUser')->findOne();
 
-$t = new lime_test(40);
+$t = new lime_test(44);
 
 $t->comment('Create a post without media');
 
@@ -160,10 +160,16 @@ $t->is($postId, $post->id, 'The same post has been updated');
 
 $t->is($post->Image->exists(), true, 'The post has an existing media');
 
-$t->is($post->Image->id, $media1->id, 'The same old media were reused');
+$t->isnt($post->Image->id, $media1->id, 'The same old media were NOT reused');
+$media1Bis = $post->Image;
 
-$t->is($post->Image->file, $media1FileName, 'Post media filename is '.$media1FileName);
+$t->is($post->Image->file, $expected = str_replace('.jpg', '_1.jpg', $media1FileName), 'Post media filename is '.$expected);
 $t->is($post->Image->size, filesize($media1FullPath), 'Post media size is '.filesize($media1FullPath));
+
+$t->ok($media1->exists(), 'media1 still exists');
+$t->is($media1->file, $media1FileName, 'media1 file name is '.$media1FileName);
+$t->ok($media1Bis->exists(), 'media1Bis exists');
+$t->is($media1Bis->file, $expected = str_replace('.jpg', '_1.jpg', $media1FileName), 'media1Bis file name is '.$expected);
 
 $t->comment('Upload a new media to the post');
 
@@ -250,12 +256,12 @@ $t->is($postId, $post->id, 'The same post has been updated');
 $t->is($post->Image->exists(), true, 'The post has an existing media');
 
 $media3 = $post->Image;
-$t->is($media3->file, $media3FileName, 'Post media filename is '.$media3FileName);
+$t->is($media3->file, $expected = str_replace('.jpg', '_1.jpg', $media3FileName), 'Post media filename is '.$expected);
 $t->is($media3->size, filesize($media3FullPath), 'Post media size is '.filesize($media3FullPath));
 
-$t->is($media2->id, $media3->id, 'The new media is the same');
+$t->isnt($media2->id, $media3->id, 'The new media is NOT the same');
 
-$t->is($media2->file, $media3->file, 'The media filename is the same');
+$t->isnt($media2->file, $media3->file, 'The media filename is NOT the same');
 
 $t->isnt($media2Size, $media3->size, 'The media file has changed');
 

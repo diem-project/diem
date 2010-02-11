@@ -15,13 +15,15 @@ abstract class BaseDmTestFruitForm extends BaseFormDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-      'id'    => new sfWidgetFormInputHidden(),
-      'title' => new sfWidgetFormInputText(),
+      'id'        => new sfWidgetFormInputHidden(),
+      'title'     => new sfWidgetFormInputText(),
+        'tags_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'DmTag', 'expanded' => true)),
     ));
 
     $this->setValidators(array(
-      'id'    => new sfValidatorDoctrineChoice(array('model' => $this->getModelName(), 'column' => 'id', 'required' => false)),
-      'title' => new sfValidatorString(array('max_length' => 255, 'required' => false)),
+      'id'        => new sfValidatorDoctrineChoice(array('model' => $this->getModelName(), 'column' => 'id', 'required' => false)),
+      'title'     => new sfValidatorString(array('max_length' => 255, 'required' => false)),
+        'tags_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTag', 'required' => false)),
     ));
 
     $this->widgetSchema->setNameFormat('dm_test_fruit[%s]');
@@ -57,6 +59,62 @@ abstract class BaseDmTestFruitForm extends BaseFormDoctrine
   public function getModelName()
   {
     return 'DmTestFruit';
+  }
+
+  public function updateDefaultsFromObject()
+  {
+    parent::updateDefaultsFromObject();
+
+    if (isset($this->widgetSchema['tags_list']))
+    {
+      $this->setDefault('tags_list', $this->object->Tags->getPrimaryKeys());
+    }
+
+  }
+
+  protected function doSave($con = null)
+  {
+    $this->saveTagsList($con);
+
+    parent::doSave($con);
+  }
+
+  public function saveTagsList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['tags_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $existing = $this->object->Tags->getPrimaryKeys();
+    $values = $this->getValue('tags_list');
+    if (!is_array($values))
+    {
+      $values = array();
+    }
+
+    $unlink = array_diff($existing, $values);
+    if (count($unlink))
+    {
+      $this->object->unlink('Tags', array_values($unlink));
+    }
+
+    $link = array_diff($values, $existing);
+    if (count($link))
+    {
+      $this->object->link('Tags', array_values($link));
+    }
   }
 
 }

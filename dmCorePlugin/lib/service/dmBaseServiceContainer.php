@@ -136,6 +136,15 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
       
       $this->getService('page_i18n_builder')->connect();
     }
+
+    /*
+     * Disable logging when request has a dm_nolog parameter
+     */
+    if($this->getService('request')->getParameter('dm_nolog'))
+    {
+      $this->getService('event_log')->setOption('enabled', false);
+      $this->getService('request_log')->setOption('enabled', false);
+    }
   }
 
   /**

@@ -28,7 +28,7 @@ if (!empty($mldUserImage))
       _tag('h2', 'Diem User Database'._link($mldUserImage)->text(__('Download'))->target('blank'))
     ).
     _tag('div.dm_box_inner',
-      _tag('div.full_width_image', _media($mldUserImage))
+      _tag('div.full_width_image', _media($mldUserImage)->set('.panview#mld_user'))
     )
   );
 }

@@ -12,7 +12,7 @@ class dmPageSynchronizer
   }
 
   public function execute(array $onlyModules = array())
-  {
+  { 
     if(empty($onlyModules))
     {
       $onlyModules = $this->moduleManager->getProjectModules();
@@ -25,11 +25,8 @@ class dmPageSynchronizer
     $onlyModules = dmModuleManager::removeModulesChildren($onlyModules);
     
     $this->updateListPages();
-    
 
-//    dmDebug::show(dmOs::getPerformanceInfos());
     $this->removeShowPages($onlyModules);
-//    dmDebug::kill(dmOs::getPerformanceInfos());
 
     $this->updateShowPages($onlyModules);
   }

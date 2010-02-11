@@ -173,6 +173,8 @@ class dmPageTreeWatcher extends dmConfigurable
   
   public function synchronizePages(array $modules = array())
   {
+    dmDb::table('DmPage')->checkBasicPages();
+    
     if ($this->useThread())
     {
       $threadLauncher = $this->serviceContainer->getService('thread_launcher');

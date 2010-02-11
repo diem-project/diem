@@ -4,7 +4,7 @@
 class PluginDmWidgetTable extends myDoctrineTable
 {
 
-  public function createInZone(DmZone $zone, $moduleAction, $values)
+  public function createInZone(DmZone $zone, $moduleAction, $values = array())
   {
     list($module, $action) = explode('/', $moduleAction);
 

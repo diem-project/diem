@@ -29,6 +29,7 @@ abstract class BaseDmTestFruit extends myDoctrineRecord
     public function setUp()
     {
         parent::setUp();
-        
+        $dmtaggable0 = new Doctrine_Template_DmTaggable();
+        $this->actAs($dmtaggable0);
     }
 }

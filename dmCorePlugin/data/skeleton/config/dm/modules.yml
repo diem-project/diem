@@ -3,6 +3,6 @@ Content:
   Global:
   
     main:                   # the main module is required, and must not be removed.
-      actions:
+      components:
         header:
         footer:

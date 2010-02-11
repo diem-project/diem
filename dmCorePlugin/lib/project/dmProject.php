@@ -40,11 +40,9 @@ class dmProject
   {
     if (null === self::$models)
     {
-      self::$models = array();
-      foreach(glob(dmOs::join(sfConfig::get('sf_lib_dir'), 'model/doctrine/base/Base*.class.php')) as $baseModel)
-      {
-        self::$models[] = preg_replace('|^Base(\w+).class.php$|', '$1', basename($baseModel));
-      }
+      $baseFiles = glob(dmOs::join(sfConfig::get('sf_lib_dir'), 'model/doctrine/base/Base*.class.php'));
+      
+      self::$models = self::getModelsFromBaseFiles($baseFiles);
     }
 
     return self::$models;
@@ -54,15 +52,11 @@ class dmProject
   {
     if (null === self::$allModels)
     {
-      $baseModels = sfFinder::type('file')
+      $baseFiles = sfFinder::type('file')
       ->name('/^Base\w+.class.php$/i')
       ->in(dmOs::join(sfConfig::get('sf_lib_dir'), 'model/doctrine'));
 
-      self::$allModels = array();
-      foreach($baseModels as $baseModel)
-      {
-        self::$allModels[] = preg_replace('|^Base(\w+).class.php$|', '$1', basename($baseModel));
-      }
+      self::$allModels = self::getModelsFromBaseFiles($baseFiles);
     }
 
     return self::$allModels;
@@ -72,19 +66,26 @@ class dmProject
   {
     if (null === self::$dmModels)
     {
-      $baseModels = sfFinder::type('file')
+      $baseFiles = sfFinder::type('file')
       ->name('/Base\w+.class.php/i')
       ->maxDepth(0)
       ->in(dmOs::join(sfConfig::get("sf_lib_dir"), "model/doctrine/dmCorePlugin/base"));
 
-      self::$dmModels = array();
-      foreach($baseModels as $baseModel)
-      {
-        self::$dmModels[] = preg_replace('|^Base(\w+).class.php$|', '$1', basename($baseModel));
-      }
+      self::$dmModels = self::getModelsFromBaseFiles($baseFiles);
     }
     
     return self::$dmModels;
+  }
+
+  protected static function getModelsFromBaseFiles(array $files)
+  {
+    $models = array();
+    foreach($files as $file)
+    {
+      $models[] = preg_replace('|^Base(\w+).class.php$|', '$1', basename($file));
+    }
+
+    return $models;
   }
 
   public static function checkFilesystemPermissions()

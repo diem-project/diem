@@ -137,7 +137,7 @@ class dmWidgetTypeManager extends dmConfigurable
         return null;
       }
 
-      throw new dmException(sprintf("The %s.%s widget type does not exist", $module, $action));
+      throw new dmException(sprintf("The %s/%s widget does not exist", $module, $action));
     }
 
     return $widgetType;

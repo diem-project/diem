@@ -114,11 +114,6 @@ abstract class dmBaseLinkTag extends dmHtmlTag
    */
   public function params(array $params)
   {
-    foreach($params as $key => $value)
-    {
-      $params[$key] = $value;
-    }
-
     return $this->setOption('params', array_merge($this->get('params', array()), $params));
   }
 

@@ -183,13 +183,21 @@ class dmRecordLoremizer extends dmConfigurable
       return $this->getRandomLink();
     }
 
-    $nbCarac = mt_rand(min(4, $column['length']), max(40, $column['length']));
+    if($column['length'] < 40)
+    {
+      $nbCarac = mt_rand(1, $column['length']);
+    }
+    else
+    {
+      $maxLen = $column['length'] > 80 ? $column['length'] / 2 : $column['length'];
+      $nbCarac = mt_rand(min(4, $column['length']), max(40, $maxLen));
+    }
+
     $val = trim(dmLorem::getLittleLorem($nbCarac));
 
     if (dmArray::get($column, 'unique'))
     {
-      $rlen = mt_rand(4, 10);
-      $val = substr($val.dmString::random($rlen), 0, $column['length']);
+      $val = substr(dmString::random(4).' '.$val, 0, $column['length']);
     }
 
     if (dmArray::get($column, 'nospace'))

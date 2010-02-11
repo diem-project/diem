@@ -289,7 +289,7 @@ class dmSeoSynchronizer
     
     foreach ($placeholders as $placeholder)
     {
-      if ('culture' === $placeholder)
+      if ('culture' === $placeholder || 'user.culture' === $placeholder)
       {
         $replacements[$this->wrap($placeholder)] = $this->culture;
         continue;

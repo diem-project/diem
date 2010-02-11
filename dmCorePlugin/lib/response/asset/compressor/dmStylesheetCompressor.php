@@ -14,12 +14,25 @@ class dmStylesheetCompressor extends dmAssetCompressor
   
   protected function isCachable($stylesheet, array $options = array())
   {
+    // don't cache user asset if it's protected
     if($this->options['protect_user_assets'] && strncmp($stylesheet, '/dm', 3) !== 0)
     {
       return false;
     }
-    
-    return !isset($options['condition']);
+
+    // don't cache stylesheet if included with any condition
+    if(isset($options['condition']))
+    {
+      return false;
+    }
+
+    // don't cache stylesheet if it contains an @import rule
+    if(false !== strpos(file_get_contents(sfConfig::get('sf_web_dir').$stylesheet), '@import'))
+    {
+      return false;
+    }
+
+    return true;
   }
   
   protected function processCacheKey($cacheKey)

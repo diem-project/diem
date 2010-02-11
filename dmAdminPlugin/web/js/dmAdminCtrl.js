@@ -19,7 +19,7 @@
       {
         $form.dmAdminForm(this.options);
       }
-      else if ($("body").hasClass('list')) 
+      else if ($("#dm_admin_content").hasClass('action_index'))
       {
         this.listPage();
       }
@@ -101,7 +101,7 @@
       {
         $searchInput.focus();
       }
-      
+
       self.$.find('input.sf_admin_list_batch_checkbox').each(function()
       {
         $(this).click(function()

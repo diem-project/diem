@@ -9,7 +9,7 @@ all:
   js:
     compress:             true          # (RECOMMENDED) Performance : Minifies javascripts and put them into a single compressed file
     cdn:
-      enabled:            false         # (RECOMMENDED) uses google cdn to load jQuery
+      enabled:            false         # Uses google cdn to load jQuery
     head_inclusion:       [ ]           # If you want some libraries to be included in the <head> section,
                                         # declare them here. This degrades performances but is required
                                         # by some symfony plugins that embed jQuery code.
@@ -22,5 +22,7 @@ all:
                                         # More configuration : please use ProjectConfiguration::configureDoctrine* methods
     identifier_fields:    [ name, title, subject, author, id ]   # Fields used to represent a record with a string
     cache_enabled:        true          # (RECOMMENDED) Use doctrine query cache. No side effect, automatic cache invalidation )
-    cache_result_enabled: false         # Use doctrine result cache when query->dmCache() is called
-    cache_result_enabled_default: false # Use doctrine result cache on every query ( performance gain, possible issues )
+
+  performance:
+    enable_mailer:        true          # Set to false to disable Swift loading: significant performance boost.
+                                        # If set to false, you can enable the mailer on demand with dm::enableMailer()
