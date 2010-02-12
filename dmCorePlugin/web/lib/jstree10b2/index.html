@@ -1,0 +1,191 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>jsTree Testing</title>
+	<script type="text/javascript" src="../_lib/jquery.js"></script>
+	<script type="text/javascript" src="../_lib/jquery.cookie.js"></script>
+	<script type="text/javascript" src="../_lib/jquery.hotkeys.js"></script>
+	<script type="text/javascript" src="jquery.jstree.js?asdf"></script>
+	<script type="text/javascript">
+	$(function ( ) {
+		$("#asdf1").jstree({
+			html_data : { },
+			themes : { theme: "default", dots : true },
+			languages : [ "en", "bg" ],
+			ui : { 
+				initially_open : ["phtml_1"],
+				initially_select : ["phtml_3"]
+			},
+			types : {
+				valid_children : [ "root" ],
+				types : {
+					"root" : {
+						icon : { image : "http://www.jstree.com/demos/drive.png" },
+						valid_children : [ "default" ],
+						max_depth : 1
+					},
+					"default" : {
+						valid_children : [ "default" ],
+						icon : { image : "themes/default/icons.png" },
+					}
+				}
+			},
+			move : {
+				move_to : "all"
+			},
+			cookies : {
+				open : "my_open_cookie_name",
+				options : { 
+					expires : 20
+				}
+			}
+		})
+		.bind("jstree.move", function (event, data) {
+			setTimeout(
+				(function (d) { return function () { $.jstree.rollback(d.rb); } })(data),
+				1000);
+		});
+
+		$("#asdf2").jstree({
+			json_data : {
+				data : [
+					{ attr : { id : "node_1" }, data : "A node", children : [ { data : "Only child" } ], state : "open" },
+					{ data : "Some other node" }
+				]
+			},
+			move : {
+				move_from : "all"
+			},
+			themes : { theme: "default", dots : true },
+			plugins : [ "json_data", "themes", "ui", "move" ]
+		});
+
+		$("#asdf3").jstree({
+			json_data : {
+				async : true,
+				ajax : {
+					url : "./data.json",
+					dataType : "json",
+					data : function (n) { return { "id" : n == -1 ? 0 : n.id }; },
+					success : function () { alert("SUCCESS"); }
+				}
+			},
+			themes : { theme: "default", dots : true },
+			plugins : [ "json_data", "themes", "ui" ]
+		});
+
+		$(".jstree-foreign").bind("mousedown", function (event) {
+			$.jstree._move.prepare_drag($(this), -1, "Фаниииии тоя ГЪЗ", event);
+			return false;
+		});
+		$(document)
+			.bind("jstree.drag", function (event, data) {
+				if($(data.event.target).closest(".jstree-drop").length) {
+					$.jstree._move.data.state = 1;
+					$.jstree._move.data.r_t = -1;
+				}
+			})
+			.bind("jstree.start_drag", function (event, d) {
+				$.jstree._move.data.state = 0;
+				//console.log("**** START DRAG ****");
+			})
+			.bind("jstree.stop_drag", function (event, d) {
+				//$.jstree._move.data.state = 0;
+				//console.log("**** STOP DRAG ****");
+			})
+	});
+	</script>
+	<style type="text/css">
+	html, body { margin:0; padding:0; }
+	body, input { font-family:Verdana; font-size:10px; }
+	#asdf1, #asdf2, #asdf3 { border:5px solid gray; margin:10px 10px 10px 10px; width:240px; overflow:hidden;  height:200px; overflow:auto; float:left; }
+	.jstree-drop { border:5px solid green; background:lime; display:block; height:200px; width:200px; line-height:180px; float:left; margin:10px 0px; color:green; font-weight:bold; text-align:center; font-size:20px; }
+	.jstree-foreign { clear:both; border:5px solid navy; background:#8F90FF; display:block; width:200px; height:20px; line-height:20px; color:navy; margin:10px 10px 0 10px; text-align:center; font-weight:bold; }
+	</style>
+</head>
+<body>
+	<span class="jstree-foreign">You can drop this on a tree</span>
+	<div id="asdf1">
+		<ul>
+			<li id="phtml_1" rel="root">
+				<a href="#" class="en">Root node 1</a>
+				<a href="#" class="bg">Клон корен 1</a>
+				<ul>
+					<li id="phtml_2">
+						<a href="#" class="en">Child node 1</a>
+						<a href="#" class="bg">Под-клон 1</a>
+					</li>
+					<li id="phtml_3">
+						<a href="#" class="en">Child node 2</a>
+						<a href="#" class="bg">Под-клон 2</a>
+					</li>
+					<li id="phtml_4">
+						<a href="#" class="en">Some other child node with &lt; &gt; longer text</a>
+						<a href="#" class="bg">Друг под-клон с по-дълъг &lt; &gt; текст</a>
+						<ul>
+							<li id="phtml_5">
+								<a href="#" class="en">Child node 1</a>
+								<a href="#" class="bg">Под-клон 1</a>
+							</li>
+							<li id="phtml_6">
+								<a href="#" class="en">Child node 2</a>
+								<a href="#" class="bg">Под-клон 2</a>
+							</li>
+							<li id="phtml_7">
+								<a href="#" class="en">Some other child node with &lt; &gt; longer text</a>
+								<a href="#" class="bg">Друг под-клон с по-дълъг &lt; &gt; текст</a>
+								<ul>
+									<li id="phtml_8">
+										<a href="#" class="en">Child node 1</a>
+										<a href="#" class="bg">Под-клон 1</a>
+									</li>
+									<li id="phtml_9">
+										<a href="#" class="en">Child node 2</a>
+										<a href="#" class="bg">Под-клон 2</a>
+									</li>
+									<li id="phtml_10">
+										<a href="#" class="en">Some other child node with &lt; &gt; longer text</a>
+										<a href="#" class="bg">Друг под-клон с по-дълъг &lt; &gt; текст</a>
+										<ul>
+											<li id="phtml_11">
+												<a href="#" class="en">Some other child node with &lt; &gt; longer text</a>
+												<a href="#" class="bg">Друг под-клон с по-дълъг &lt; &gt; текст</a>
+										<ul>
+											<li id="phtml_12">
+												<a href="#" class="en">Some other child node with &lt; &gt; longer text</a>
+												<a href="#" class="bg">Друг под-клон с по-дълъг &lt; &gt; текст</a>
+										<ul>
+											<li id="phtml_13">
+												<a href="#" class="en">Some other child node with &lt; &gt; longer text</a>
+												<a href="#" class="bg">Друг под-клон с по-дълъг &lt; &gt; текст</a>
+											</li>
+										</ul>
+											</li>
+										</ul>
+											</li>
+										</ul>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+					<li id="phtml_14" rel="root">
+						<a href="#" class="en">Root node 2</a>
+						<a href="#" class="bg">Клон корен 2</a>
+					</li>
+				</ul>
+			</li>
+			<li id="phtml_15" rel="root">
+				<a href="#" class="en">Root node 2</a>
+				<a href="#" class="bg">Клон корен 2</a>
+			</li>
+		</ul>
+	</div>
+	<span class="jstree-drop">DROP ZONE</span>
+	<div id="asdf2"></div>
+	<div id="asdf3"></div>
+</body>
+</html>
