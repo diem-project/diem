@@ -8,7 +8,7 @@ require_once(dm::getDir().'/dmCorePlugin/test/unit/helper/dmUnitTestHelper.php')
 $helper = new dmUnitTestHelper();
 $helper->boot('front');
 
-$t = new lime_test();
+$t = new lime_test(50);
 
 dm::loadHelpers(array('Dm', 'I18N'));
 
