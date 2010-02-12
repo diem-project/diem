@@ -33,8 +33,6 @@ js:
     metadata:         metadata/jquery.metadata.min
     jqtransform:      jqtransform/jquery.jqtransform.min
     form:             form/jquery.form.hack
-    jsTree:           jsTree/source/tree_component.min
-    jsTreeCss:        jsTree/source/css
     blockUI:          blockUI/jquery.blockUI-2.31.min
     jgrowl:           jgrowl/jquery.jgrowl_minimized
     ajaxqueue:        ajaxqueue/jquery.ajaxQueue
@@ -45,8 +43,7 @@ js:
     expose:           expose/jquery.expose-1.0.1.min
     qtip:             qtip/jquery.qtip-1.0.0-rc3.min
     hotkeys:          hotkeys/jquery.hotkeys-0.7.9.min
-    tree-component:   jsTree/source/tree_component.min
-    tree-css:         jsTree/source/css
+    jstree:           jstree10b2/jquery.jstree
     fieldSelection:   jquery-fieldselection/jquery-fieldselection
     panView:          panview/jquery-plugin-panview.min
 

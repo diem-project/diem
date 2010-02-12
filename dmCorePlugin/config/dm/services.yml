@@ -84,7 +84,7 @@ parameters:
   javascript_compressor.class: dmJavascriptCompressor # Responsible for minifying, merging and compressing javascripts
   javascript_compressor.options:
     minify:                   true                  # whether to minify code
-    black_list:               []                    # List of filenames not to minify
+    black_list:               [ jquery.jstree.js ]        # List of filenames not to minify
     gz_compression:           false                 # whether to compress with gzip
 
   cache_manager.class:        dmCacheManager        # Responsible for managing cache
@@ -172,6 +172,9 @@ parameters:
 
   menu.class:                 dmMenu                # Build an render menus
   menu.options:               []
+
+  page_tree_view.class:       dmPageTreeView        # Render the page tree
+  page_tree_view.options:     []
 
 services:
 
@@ -418,3 +421,8 @@ services:
     class:                    %media_synchronizer.class%
     shared:                   true
     arguments:                [ @filesystem ]
+
+  page_tree_view:
+    class:                    %page_tree_view.class%
+    shared:                   false
+    arguments:                [ %user.culture%, %page_tree_view.options% ]
