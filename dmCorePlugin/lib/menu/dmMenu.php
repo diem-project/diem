@@ -154,6 +154,9 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
     return null === $this->label ? $this->getName() : $this->label;
   }
 
+  /**
+   * @return dmBaseLinkTag the link tag
+   */
   public function getLink()
   {
     if(!$this->link instanceof dmBaseLinkTag && !empty($this->link))
@@ -164,6 +167,9 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
     return $this->link;
   }
 
+  /**
+   * @return dmMenu the parent menu
+   */
   public function end()
   {
     return $this->parent;
@@ -179,12 +185,18 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
     return $this->level;
   }
 
+  /**
+   * @return dmMenu the root menu
+   */
   public function getRoot()
   {
     return $this->parent ? $this->parent->getRoot() : $this;
   }
 
-  public function getParent(dmMenu $parent = null)
+  /**
+   * @return dmMenu the parent menu
+   */
+  public function getParent()
   {
     return $this->parent;
   }
@@ -222,6 +234,25 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
     }
 
     return $this->children[$name];
+  }
+
+  public function getSiblings($includeMe = false)
+  {
+    if(!$this->getParent())
+    {
+      throw new dmException('Root menu has no siblings');
+    }
+
+    $siblings = array();
+    foreach($this->getParent()->getChildren() as $key => $child)
+    {
+      if($includeMe || $child != $this)
+      {
+        $siblings[$key] = $child;
+      }
+    }
+
+    return $siblings;
   }
 
   /**
@@ -266,6 +297,36 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
   }
 
   /**
+   * Move
+   */
+  public function moveToFirst()
+  {
+    $siblings = array($this->getName() => $this) + $this->getSiblings();
+
+    $this->getParent()->setChildren($siblings)->reAssignChildrenNums();
+
+    return $this;
+  }
+
+  public function moveToLast()
+  {
+    $siblings = $this->getSiblings() + array($this->getName() => $this);
+
+    $this->getParent()->setChildren($siblings)->reAssignChildrenNums();
+
+    return $this;
+  }
+
+  public function reAssignChildrenNums()
+  {
+    $it = 0;
+    foreach($this->getChildren() as $child)
+    {
+      $child->num(++$it);
+    }
+  }
+
+  /**
    * Manipulation
    */
 
@@ -301,6 +362,13 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
   public function removeChildren()
   {
     $this->children = array();
+
+    return $this;
+  }
+
+  public function setChildren(array $children)
+  {
+    $this->children = $children;
 
     return $this;
   }
