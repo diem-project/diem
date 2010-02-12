@@ -7,11 +7,9 @@ class dmInterfaceActions extends BasedmInterfaceActions
 
   public function executeLoadPageTree(dmWebRequest $request)
   {
-    $tree = new dmFrontRecursivePageList();
-
     return $this->renderAsync(array(
-      'html'  => $tree->render(),
-      'js'    => array('lib.tree-component', 'lib.tree-css')
+      'html'  => $this->getService('page_tree_view')->render(),
+      //'js'    => array('lib.jstree')
     ), true);
   }
 
