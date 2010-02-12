@@ -44,15 +44,23 @@ class dmContentChart extends dmChart
   {
     if (null === $this->modules)
     {
-      $this->modules = array();
+      $modules = array();
       foreach($this->serviceContainer->getService('module_manager')->getProjectModules() as $module)
       {
         if ($module->hasModel() && $module->getTable()->hasField('created_at') && $module->getTable()->createQuery()->count())
         {
-          $this->modules[$module->getKey()] = $module;
+          $modules[$module->getKey()] = $module;
         }
       }
-      $this->modules = array_merge($this->modules, $this->getInternalModules());
+      
+      $modules = array_merge($modules, $this->getInternalModules());
+
+      $this->modules = $this->serviceContainer->getService('module_manager')->keysToModules(
+        $this->serviceContainer->getService('dispatcher')->filter(
+          new sfEvent($this, 'dm.content_chart.filter_modules', array('modules' => $modules)),
+          array_keys($modules)
+        )->getReturnValue()
+      );
     }
     
     return $this->modules;

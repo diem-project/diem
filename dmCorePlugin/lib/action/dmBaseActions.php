@@ -152,7 +152,7 @@ abstract class dmBaseActions extends sfActions
 
       if(empty($options['file_name']))
       {
-        $options['file_name'] = dmString::slugify(dmConfig::get('site_name')).'-'.basename($path);
+        $options['file_name'] = basename($pathOrData);
       }
     }
     else

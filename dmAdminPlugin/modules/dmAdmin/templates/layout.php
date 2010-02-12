@@ -1,7 +1,5 @@
 <?php
 
-$timer = dmDebug::timerOrNull('dmAdmin/templates/layout');
-
 $helper = $sf_context->get('layout_helper');
 
 echo 
@@ -35,5 +33,3 @@ $helper->renderHtmlTag(),
       
   '</body>',
 '</html>';
-
-$timer && $timer->addTime();

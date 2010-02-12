@@ -6,7 +6,15 @@ abstract class dmDoctrineTable extends Doctrine_Table
   $eventDispatcher,   // mandatory
   $moduleManager,     // mandatory
   $serviceContainer;  // optional
-  
+
+  protected
+  $hasI18n;           // cache
+
+  public function construct()
+  {
+    $this->hasI18n = $this->hasRelation('Translation');
+  }
+
   /**
    * @return DmMediaFolder the DmMediaFolder used to store this table's record's medias
    */
@@ -322,7 +330,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
 
   public function hasI18n()
   {
-    return $this->hasRelation('Translation');
+    return $this->hasI18n;
   }
 
   public function getI18nTable()
