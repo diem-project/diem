@@ -64,6 +64,8 @@ parameters:
 
   sitemap_menu.class:         dmSitemapMenu         # Automate HTML sitemaps with dmMenu
 
+  page_tree_view.class:       dmFrontPageTreeView   # Render the page tree
+
 services:
 
   page_routing:

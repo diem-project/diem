@@ -1,6 +1,6 @@
 <?php
 
-class dmAdminRecursivePageList extends dmRecursivePageList
+class dmFrontPageTreeView extends dmPageTreeView
 {
 
   protected function getPageLink(array $page)

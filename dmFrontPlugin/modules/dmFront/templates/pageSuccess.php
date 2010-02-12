@@ -11,7 +11,7 @@
 
 <div id="dm_page"<?php $isEditMode && print ' class="edit"' ?>>
 
-  <div class="layout">
+  <div class="dm_layout">
 
     <?php echo $helper->renderArea('top', '.clearfix') ?>
 

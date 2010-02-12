@@ -50,11 +50,11 @@
         }
       });
     },
-		
-		loaded: function()
-		{
-			
-		},
+    
+    loaded: function()
+    {
+
+    },
     
     open: function()
     {
@@ -77,26 +77,26 @@
     
     refresh: function()
     {
-      var pageBar = this;
+      var self = this;
       
       $tree = $('#dm_page_tree');
-			
-			$tree.tree(pageBar.getTreeOptions());
+
+      $tree.jstree(self.getTreeOptions($tree));
       
       if ($.fn.draggable) 
       {
-        $('li', $tree).draggable({
+        $tree.find('li').draggable({
           containment: 'document',
           distance: 20,
           revert: 'invalid',
-					zIndex: 1000,
+          zIndex: 1000,
           helper: function(e)
           {
             return $('<div class="dm_page_draggable_helper">').html($(this).find('a:first').clone()).appendTo($('body'));
           },
           start: function(event, ui)
           {
-            pageBar.close();
+            self.close();
             $('div.markItUp, input.dm_link_droppable').addClass('active');
           },
           stop: function(event, ui)

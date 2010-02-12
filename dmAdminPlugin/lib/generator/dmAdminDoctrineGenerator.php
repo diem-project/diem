@@ -184,7 +184,6 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
       }
       if ($relation)
       {
-        
         if($relation instanceof Doctrine_Relation_ForeignKey)
         {
           $html = "get_partial('dmAdminGenerator/relationForeign', array('record' => $".$this->getSingularName().", 'alias' => '".$alias."'));";
@@ -211,7 +210,7 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
 
     if ($field->isLink())
     {
-      $html = sprintf("_link('@%s?action=edit&pk='.\$%s->getPrimaryKey())->text(%s)->title(__('Open'))", $this->module->getUnderscore(), $this->getSingularName(), $html);
+      $html = sprintf("_link('@%s?action=edit&pk='.\$%s->getPrimaryKey())->text(%s)->title(__('Open'))->addClass('link_edit')", $this->module->getUnderscore(), $this->getSingularName(), $html);
     }
 
     return $html;

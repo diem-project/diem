@@ -29,7 +29,7 @@ foreach($pager as $result)
     _tag('span.score', ceil(100*$result->getScore()).'%').
     
     _link($page)->text(
-      _tag('span.page_name', $page->name).
+      _tag('span.page_name', escape($page->name)).
       ($page->description ? _tag('span.page_description', $page->description) : '')
     )
   );

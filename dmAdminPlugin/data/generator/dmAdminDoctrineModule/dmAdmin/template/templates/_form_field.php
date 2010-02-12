@@ -1,4 +1,5 @@
 [?php
+
   $required = ($validator = $form->getValidatorSchema()->offsetGet($name)) ? $validator->getOption('required') : false;
   $divClass = dmArray::toHtmlCssClasses(array(
     $class,
@@ -6,9 +7,15 @@
     $field->getConfig('is_link') ? 'dm_link_droppable' : '',
     $required ? 'required' : ''
   ));
+
+  if('empty_' === $name)
+  {
+    echo '<div class="'.$divClass.'"></div>';
+    return;
+  }
 ?]
 [?php if ($field->isPartial()): ?]
-  <div class="[?php echo $divClass ?]">[?php include_partial('<?php echo $this->getModuleName() ?>/'.$name, array('<?php echo $this->getModuleName() ?>' => $form->getObject(), 'form' => $form, 'attributes' => $attributes instanceof sfOutputEscaper ? $attributes->getRawValue() : $attributes)) ?]</div>
+  <div class="[?php echo $divClass ?]">[?php include_partial('<?php echo $this->getModuleName() ?>/'.$name, array('<?php echo $this->getModule()->getKey() ?>' => $form->getObject(), 'form' => $form, 'attributes' => $attributes instanceof sfOutputEscaper ? $attributes->getRawValue() : $attributes)) ?]</div>
 [?php elseif ($field->isComponent()): ?]
   <div class="[?php echo $divClass ?]">[?php include_component('<?php echo $this->getModuleName() ?>', $name, array('<?php echo $this->getModuleName() ?>' => $form->getObject(), 'form' => $form, 'attributes' => $attributes instanceof sfOutputEscaper ? $attributes->getRawValue() : $attributes)) ?]</div>
 [?php elseif ($field->getConfig('markdown')): ?]
@@ -50,15 +57,43 @@
 [?php else: //check if is a media view ?]
   <div class="[?php echo $divClass ?]">
     [?php
+    $found = false;
+    
     if ('dm_gallery' === $name)
     {
+      $found = true;
       include_partial('dmMedia/galleryMedium', array('record' => $form->getObject()));
     }
     elseif (substr($name, -5) === '_view')
     {
+      $found = true;
       include_partial('dmMedia/viewBig', array('object' => $form->getObject()->getDmMediaByColumnName(substr($name, 0, strlen($name)-5))));
     }
-    else
+    elseif (substr($name, -5) === '_list')
+    {
+      if (!$relation = $form->getObject()->getTable()->getRelationHolder()->get($alias = dmString::camelize(substr($name, 0, strlen($name)-5))))
+      {
+        $relation = $form->getObject()->getTable()->getRelationHolder()->get($alias = substr($name, 0, strlen($name)-5));
+      }
+      if ($relation)
+      {
+        echo '<div class="sf_admin_form_row_inner clearfix">';
+        echo '<div class="label_wrap">'.__($field->getConfig('label', '', true)).'</div>';
+        if($relation instanceof Doctrine_Relation_ForeignKey)
+        {
+          $found = true;
+          include_partial('dmAdminGenerator/relationForeign', array('record' => $form->getObject(), 'alias' => $alias));
+        }
+        elseif ($relation instanceof Doctrine_Relation_Association)
+        {
+          $found = true;
+          include_partial('dmAdminGenerator/relationAssociation', array('record' => $form->getObject(), 'alias' => $alias));
+        }
+        echo '</div>';
+      }
+    }
+
+    if(!$found)
     {
       if (sfConfig::get('sf_debug'))
       {

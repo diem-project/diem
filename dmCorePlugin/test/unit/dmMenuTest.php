@@ -8,7 +8,7 @@ require_once(dm::getDir().'/dmCorePlugin/test/unit/helper/dmUnitTestHelper.php')
 $helper = new dmUnitTestHelper();
 $helper->boot('front');
 
-$t = new lime_test(46);
+$t = new lime_test(50);
 
 dm::loadHelpers(array('Dm', 'I18N'));
 
@@ -178,3 +178,48 @@ $menu = $helper->get('menu')->addChild('Home', '@homepage')->end();
 $html = _tag('ul', _tag('li.first.last.dm_parent', _link()->text($helper->get('i18n')->__('Home'))));
 
 $t->is($menu->render(), $html, 'Parent li has the dm_parent class');
+
+$menu = $helper->get('menu')
+->addChild('Home')->end()
+->addChild('Sites')
+  ->addChild('Diem')->end()
+  ->addChild('Symfony')->end()
+->end();
+
+$html = _tag('ul',
+  _tag('li.first', 'Home').
+  _tag('li.last',
+    'Sites'.
+    _tag('ul',
+      _tag('li.first', 'Diem').
+      _tag('li.last', 'Symfony')
+    )
+  )
+);
+
+$t->is($menu->render(), $html, $html);
+
+$t->comment('->getSiblings()');
+
+$t->is_deeply($menu['Home']->getSiblings(), array('Sites' => $menu['Sites']), '->getSiblings() works');
+
+$t->is_deeply($menu['Home']->getSiblings(true), array('Home' => $menu['Home'], 'Sites' => $menu['Sites']), '->getSiblings(true) works');
+
+$t->comment('Move menus');
+
+$menu['Home']->moveToLast();
+
+$menu['Sites']['Symfony']->moveToFirst();
+
+$html = _tag('ul',
+  _tag('li.first',
+    'Sites'.
+    _tag('ul',
+      _tag('li.first', 'Symfony').
+      _tag('li.last', 'Diem')
+    )
+  ).
+  _tag('li.last', 'Home')
+);
+
+$t->is($menu->render(), $html, $html);

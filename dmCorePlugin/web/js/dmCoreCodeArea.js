@@ -15,14 +15,14 @@
       var self = this;
       
       this.element.css({
-				'fontFamily': 'monospace',
-			  'fontSize': '12px',
-			  'lineHeight': '15px',
+    'fontFamily': 'monospace',
+     'fontSize': '12px',
+     'lineHeight': '15px',
         'backgroundImage': 'url('+$.dm.ctrl.options.dm_core_asset_root+'images/codeArea/lines.png)',
         'backgroundRepeat': 'no-repeat',
         'backgroundPosition': '0 0',
-			  'paddingLeft': '28px'
-		  }).unbind().addClass("dm_code_area").focus();
+     'paddingLeft': '28px'
+    }).unbind().addClass("dm_code_area").focus();
       
       if (this.options.lines) 
       {

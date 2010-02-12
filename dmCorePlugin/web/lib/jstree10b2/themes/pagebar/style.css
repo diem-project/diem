@@ -1,0 +1,26 @@
+.jstree-pagebar {
+  margin-left:-18px;
+}
+
+.jstree-pagebar li,
+.jstree-pagebar ins {
+  background-image: url("d.png");
+  background-repeat:no-repeat;
+  background-color:transparent;
+}
+.jstree-pagebar li { background-position:-90px 0; background-repeat:repeat-y;  }
+.jstree-pagebar li.jstree-last { background:transparent; }
+.jstree-pagebar .jstree-open > ins { background-position:-72px 0; }
+.jstree-pagebar .jstree-closed > ins { background-position:-54px 0; }
+.jstree-pagebar .jstree-leaf > ins { background-position:-36px 0; }
+
+.jstree-pagebar .tree_node {
+  border: 1px solid #FCFCFC;
+  padding:0 1px;
+}
+.jstree-pagebar .jstree-hovered {
+  background-color: #d8f0fa !important;
+  border-color: #99defd;
+}
+
+.jstree-pagebar .jstree-no-icons a .icon { display:none; }

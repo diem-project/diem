@@ -40,6 +40,7 @@ class dmAdminAssetConfig extends dmAssetConfig
       'lib.fieldSelection',
       'lib.blockUI',
       'lib.hotkeys',
+      'lib.jstree',
       'core.config',
       'core.plugins',
       'core.editPlugins',

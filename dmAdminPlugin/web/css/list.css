@@ -91,6 +91,10 @@ div.sf_admin_list table {
   color:#444;
 }
 
+div.sf_admin_list a.link_edit {
+  font-size: 110%;
+}
+
 div.sf_admin_list thead tr,
 div.sf_admin_list tfoot tr {
   background:#E6E6E6 url(../../dmCorePlugin/images/default_bg.png) repeat-x scroll 50% 50%;

@@ -72,7 +72,9 @@ parameters:
   log_view.log:                                   # The log to render
   log_view.options:
     show_ip:                  true                # whether to show users IP
- 
+
+  page_tree_view.class:       dmAdminPageTreeView # Render the page tree
+  
 services:
 
   homepage_manager:

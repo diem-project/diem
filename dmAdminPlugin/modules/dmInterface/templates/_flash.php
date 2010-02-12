@@ -14,7 +14,7 @@ foreach(array('info', 'notice', 'alert', 'error') as $log_type)
       {
         $html .= _tag('li.flash.ui-corner-all.'.$class,
           _tag('span.icon.fleft.mr5.s16block.s16_'.$class).
-          nl2br(__($message, array(), 'admin'))
+          nl2br(__($message, array()))
         );
       }
       $html .= _close("ul");

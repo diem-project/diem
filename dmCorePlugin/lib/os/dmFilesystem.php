@@ -75,19 +75,6 @@ class dmFilesystem extends sfFilesystem
 
     return $username.":".$permissions;
   }
-
-//  public function execOld($command)
-//  {
-//    exec($command, $output, $returnCode);
-//    
-//    $this->lastExec = array(
-//      'command' => $command,
-//      'output' => implode("\n", $output),
-//      'return' => $returnCode
-//    );
-//    
-//    return 0 === $returnCode;
-//  }
   
   public function exec($command, $stdoutCallback = null, $stderrCallback = null)
   {
