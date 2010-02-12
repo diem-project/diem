@@ -9,11 +9,11 @@
     }
 
   };
-	
-	$(function()
-	{
-	  $.dm.ctrl.options = $.extend($.dm.defaults, dm_configuration);
-	  $.dm.ctrl.init();
-	});
+ 
+ $(function()
+ {
+   $.dm.ctrl.options = $.extend($.dm.defaults, dm_configuration);
+   $.dm.ctrl.init();
+ });
   
 })(jQuery);

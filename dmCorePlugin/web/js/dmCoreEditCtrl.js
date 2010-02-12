@@ -38,10 +38,10 @@
           $(e.target).show().parent().css('opacity', 1);
         },
         resizable: false
-		  }, options || {});
+    }, options || {});
       
       opt.dialogClass = opt['class'] ? opt['class'] + " dm" : "dm";
-			
+   
       var $dialog = $('<div>').dialog(opt).bind('dialogclose', function()
       {
         setTimeout(function() {
@@ -82,24 +82,24 @@
       
       return $dialog;
     },
-		
-		errorDialog: function(title, body, opt)
-		{
-			opt = $.extend({
+  
+  errorDialog: function(title, body, opt)
+  {
+   opt = $.extend({
         title:    title,
         position: [5, 5],
         buttons: {
           Close: function() { $(this).dialog('close'); }
         }
       }, opt || {});
-			
-			if ($existing = $('#dm_error_dialog div.dm_error'))
-			{
-				$existing.dialog('close');
-			}
+   
+   if ($existing = $('#dm_error_dialog div.dm_error'))
+   {
+    $existing.dialog('close');
+   }
           
       $('<div class="dm_error">').html(body).dialog(opt).parent().attr('id', 'dm_error_dialog').addClass('dm');
-		}
+  }
   });
-	
+ 
 })(jQuery);

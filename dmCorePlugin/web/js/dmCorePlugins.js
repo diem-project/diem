@@ -14,8 +14,8 @@
     {
     }
   };
-	
-	$.loadStylesheets = function(stylesheets)
+ 
+ $.loadStylesheets = function(stylesheets)
   {
     $.each(stylesheets, function()
     {

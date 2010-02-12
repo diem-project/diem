@@ -22,7 +22,7 @@
     markErrorTabs: function()
     {
       var self = this;
-			
+   
       self.element.find('>ul.ui-tabs-nav a').each(function()
       {
         if (self.element.find('div.ui-tabs-panel' + $(this).attr('href') + ' ul.error_list').length) 
