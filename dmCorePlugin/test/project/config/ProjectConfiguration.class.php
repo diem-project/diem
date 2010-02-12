@@ -16,7 +16,6 @@ class ProjectConfiguration extends dmProjectConfiguration
     $this->enablePlugins(array(
       'dmAlternativeHelperPlugin',
       'dmContactPlugin',
-      'dmFlowPlayerPlugin',
       'dmTagPlugin'
     ));
 
@@ -30,7 +29,6 @@ class ProjectConfiguration extends dmProjectConfiguration
   {
     $this->pluginConfigurations['dmCorePlugin']->connectTests();
     $this->pluginConfigurations['dmAlternativeHelperPlugin']->connectTests();
-    $this->pluginConfigurations['dmFlowPlayerPlugin']->connectTests();
     $this->pluginConfigurations['dmContactPlugin']->connectTests();
     $this->pluginConfigurations['dmUserPlugin']->connectTests();
   }
