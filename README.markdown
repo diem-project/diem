@@ -1,6 +1,3 @@
-diemPlugin
-==========
-
 Diem is a content management framework (CMF) for PHP projects.
 
 As a framework,
