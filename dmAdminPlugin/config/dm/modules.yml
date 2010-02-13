@@ -41,16 +41,13 @@ Seo:
     dmSitemap:
       name:         Manage XML sitemap
       credentials:  sitemap
-  Metas:
+  Pages:
+    dmPage:
+      name:         Manage pages
+      credentials:  manage_pages
     dmAutoSeo:
-      name:         Automatic|Automatic
+      name:         Automatic SEO|Automatic SEO
       credentials:  automatic_metas
-    dmManualSeo:
-      name:         Manual|Manual
-      credentials:  automatic_metas
-#    dmSeoValidation:
-#      name:         Seo Validation
-#      credentials:  metas_validation
   Redirections:
     dmRedirect:
       name:         Url Redirections

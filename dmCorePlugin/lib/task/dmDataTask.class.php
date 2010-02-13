@@ -150,13 +150,13 @@ EOF;
         'default_value' => '',
         'description' => 'Append something at the beginning of all pages title',
         'group_name' =>'seo',
-        'credentials' => 'static_metas'
+        'credentials' => 'manual_metas'
       ),
       'title_suffix' => array(
         'default_value' => ' | '.dmString::humanize(dmProject::getKey()),
         'description' => 'Append something at the end of all pages title',
         'group_name' =>'seo',
-        'credentials' => 'static_metas'
+        'credentials' => 'manual_metas'
       ),
       'smart_404' => array(
         'type' => 'boolean',
@@ -404,7 +404,7 @@ EOF;
       "sitemap" => "Regenerate sitemap",
       "automatic_metas" => "Configure automatic pages metas",
       "manual_metas" => "Configure manually pages metas",
-      "static_metas" => "Configure static pages metas",
+      "manage_pages" => "Move and sort pages",
       'url_redirection' => 'Configure url redirections',
       "use_google_analytics" => "Use google analytics",
       "google_analytics" => "Configure google analytics",
@@ -458,7 +458,7 @@ EOF;
           'admin',
           'sitemap',
           'automatic_metas',
-          'static_metas',
+          'manual_metas',
           'url_redirection',
           'google_analytics',
           'use_google_analytics',
