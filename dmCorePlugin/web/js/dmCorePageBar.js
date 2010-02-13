@@ -81,6 +81,8 @@
       
       $tree = $('#dm_page_tree');
 
+      $.jstree._themes = $.dm.ctrl.options.dm_core_asset_root+'lib/jstree10b2/themes/';
+      
       $tree.jstree(self.getTreeOptions($tree));
       
       if ($.fn.draggable) 

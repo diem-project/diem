@@ -55,7 +55,6 @@ class dmFrontAssetConfig extends dmAssetConfig
         'lib.ui-dialog',
         'lib.blockUI',
         'lib.form',
-        'lib.jstree',
         'core.config',
         'core.plugins',
         'core.editPlugins',

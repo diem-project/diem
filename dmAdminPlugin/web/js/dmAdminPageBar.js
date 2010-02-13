@@ -10,11 +10,11 @@
     
     getTreeOptions: function($tree)
     {
-			return {
+      return {
         animation: 300,
         plugins: ['ui', 'cookies', 'html_data', 'themes'],
         themes: {
-          theme: "pagebar",
+          theme: 'pagebar',
           dots : true,
           icons: false
         },
