@@ -40,4 +40,12 @@ class PluginDmMediaTable extends myDoctrineTable
     ->andWhere('f.rel_path = ?', $dirName)
     ->fetchOne();
   }
+
+  public function findByFolderRelPath($folderRelPath)
+  {
+    return $this->createQuery('m')
+    ->innerJoin('m.Folder f')
+    ->where('f.rel_path = ?', $folderRelPath)
+    ->fetchRecords();
+  }
 }
