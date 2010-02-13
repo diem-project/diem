@@ -1,7 +1,5 @@
 Internal:
   Page:
-    dmPage:
-      admin:        false
     dmPageView:
       admin:        false
     dmArea:

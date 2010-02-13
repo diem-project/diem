@@ -1,0 +1,7 @@
+treeSuccess:
+  stylesheets:  [ admin.pageTree ]
+  javascripts:  [ lib.jstree, admin.pageTree ]
+
+seoSuccess:
+  stylesheets:  [ admin.manualSeo ]
+  javascripts:  [ admin.manualSeo ]

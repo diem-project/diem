@@ -1,0 +1,8 @@
+all:
+  credentials: [ manage_pages, manual_metas ]
+
+tree:
+  credentials: [ manage_pages ]
+
+seo:
+  credentials: [ manual_metas ]

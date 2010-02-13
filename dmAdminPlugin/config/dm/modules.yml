@@ -44,7 +44,7 @@ Seo:
   Pages:
     dmPage:
       name:         Manage pages
-      credentials:  manage_pages
+      credentials:  manage_pages, manual_metas
     dmAutoSeo:
       name:         Automatic SEO|Automatic SEO
       credentials:  automatic_metas
