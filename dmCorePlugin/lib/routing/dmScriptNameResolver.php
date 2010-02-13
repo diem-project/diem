@@ -3,18 +3,20 @@
 class dmScriptNameResolver
 {
   protected
-  $context;
+  $requestContext,
+  $culture;
   
-  public function __construct(dmContext $context)
+  public function __construct(array $requestContext, $culture)
   {
-    $this->context = $context;
+    $this->requestContext = $requestContext;
+    $this->culture        = $culture;
   }
   
   public function get($app = null, $env = null, $culture = null)
   {
     $app = null === $app ? sfConfig::get('sf_app') : $app;
     $env = null === $env ? sfConfig::get('sf_environment') : $env;
-    $culture = null === $culture ? $this->context->getUser()->getCulture() : $culture;
+    $culture = null === $culture ? $this->culture : $culture;
 
     $knownAppUrls = json_decode(dmConfig::get('base_urls', '[]'), true);
 
@@ -27,7 +29,7 @@ class dmScriptNameResolver
         throw new dmException(sprintf('Diem can not guess %s app url', $app));
       }
 
-      $appUrl = $this->context->getRequest()->getAbsoluteUrlRoot().'/'.$script;
+      $appUrl = $this->requestContext['absolute_url_root'].'/'.$script;
     }
 
     return $appUrl;

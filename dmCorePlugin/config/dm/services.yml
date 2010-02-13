@@ -221,7 +221,7 @@ services:
   script_name_resolver:
     class:                    %script_name_resolver.class%
     shared:                   true
-    arguments:                [ @context ]
+    arguments:                [ %request.context%, %user.culture% ]
 
   error_watcher:
     class:                    %error_watcher.class%
