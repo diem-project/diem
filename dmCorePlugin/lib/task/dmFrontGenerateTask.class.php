@@ -119,6 +119,25 @@ EOF;
         }
       }
     }
+
+    $layoutFile = dmProject::rootify('apps/front/modules/dmFront/templates/layout.php');
+
+    if(!file_exists($layoutFile))
+    {
+      if ($filesystem->mkdir(dirname($layoutFile)))
+      {
+        $filesystem->copy(
+          dmOs::join(sfConfig::get('dm_front_dir'), 'modules/dmFront/templates/layout.php'),
+          $layoutFile
+        );
+
+        $filesystem->chmod($layoutFile, 0777);
+      }
+      else
+      {
+        $this->logBlock('Can NOT create layout '.$layoutFile, 'ERROR');
+      }
+    }
   }
 
 }

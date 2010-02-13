@@ -96,17 +96,9 @@ class BasedmFrontActions extends dmFrontBaseActions
       $template = 'page';
     }
     
-    $this->setTemplate($template);
+    $this->setTemplate($template, 'dmFront');
     
-    $userLayout = sfConfig::get('sf_root_dir').'/apps/front/modules/dmFront/templates/layout';
-    if (file_exists($userLayout.'.php'))
-    {
-      $this->setLayout($userLayout);
-    }
-    else
-    {
-      $this->setLayout(sfConfig::get('dm_front_dir').'/modules/dmFront/templates/layout');
-    }
+    $this->setLayout(sfConfig::get('sf_root_dir').'/apps/front/modules/dmFront/templates/layout');
     
     $this->helper = $this->getService('page_helper');
     
