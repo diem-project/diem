@@ -19,7 +19,7 @@ class DmAdminMediaForm extends DmMediaForm
         'choices' => array_keys($folderChoices),
         'required' => true
       ));
-      $this->widgetSchema->setLabel('dm_media_folder_id', 'Move');
+      $this->widgetSchema->setLabel('dm_media_folder_id', 'Move to');
     }
   }
 
