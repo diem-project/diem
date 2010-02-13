@@ -21,7 +21,8 @@ echo _open('div.clearfix');
         __('Created at') => format_datetime($file->createdAt),
         __('Updated at') => format_datetime($file->updatedAt),
         __('Url') => $file->getFullWebPath()
-      ), '.clearfix')
+      ), '.clearfix').
+      _link($file->getFullWebPath())->text(__('Download'))->target('blank')->set('.block.s16.s16_download')
     ).
 
     get_partial('dmInterface/flash').
