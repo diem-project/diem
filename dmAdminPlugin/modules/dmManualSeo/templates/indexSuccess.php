@@ -1,4 +1,0 @@
-<?php
-
-$table = _table();
-
