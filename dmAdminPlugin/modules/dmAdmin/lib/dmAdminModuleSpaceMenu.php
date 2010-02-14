@@ -32,7 +32,7 @@ class dmAdminModuleSpaceMenu extends dmMenu
         ->label(
           $this->helper->link('@'.$module->getUnderscore())
           ->text(
-            $this->i18n->__($module->getName()).
+            $this->i18n->__($module->getPlural()).
             $this->helper->tag('span.infos', $nbRecordsText)
           )
           ->set('.dm_big_button')
