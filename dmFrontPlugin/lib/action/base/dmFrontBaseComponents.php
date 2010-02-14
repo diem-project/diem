@@ -21,7 +21,7 @@ class dmFrontBaseComponents extends dmBaseComponents
     $this->forms = $this->getService('form_manager');
   }
   
-  /*
+  /**
    * @return DmPage the current page
    */
   public function getPage()
@@ -29,7 +29,7 @@ class dmFrontBaseComponents extends dmBaseComponents
     return $this->context->getPage();
   }
   
-  /*
+  /**
    * Preload all pages related to records
    */
   protected function preloadPages($records)

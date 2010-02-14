@@ -5,7 +5,7 @@ class dmFrontModuleComponents extends myFrontBaseComponents
   protected
   $dmModule;
   
-  /*
+  /**
    * Add required stuff to the record query
    * @param string $rootAlias        The root alias for this query
    * @return myDoctrineQuery
@@ -26,7 +26,7 @@ class dmFrontModuleComponents extends myFrontBaseComponents
     return $query;
   }
 
-  /*
+  /**
    * @param myDoctrineQuery $query        The query used to fetch the record
    * @return myDoctrineRecord $record
    */
@@ -42,7 +42,7 @@ class dmFrontModuleComponents extends myFrontBaseComponents
     return $record;
   }
 
-  /*
+  /**
    * Add required stuff to the list query
    * @param string $rootAlias        The root alias for this query
    * @return myDoctrineQuery
@@ -79,7 +79,7 @@ class dmFrontModuleComponents extends myFrontBaseComponents
       }
     }
 
-    /*
+    /**
      * Apply filters
      */
     if(!empty($this->filters))
@@ -119,7 +119,7 @@ class dmFrontModuleComponents extends myFrontBaseComponents
     return $query;
   }
 
-  /*
+  /**
    * @param myDoctrineQuery $query        The query passed to pager
    * @return myDoctrinePager $pager
    */
@@ -157,7 +157,7 @@ class dmFrontModuleComponents extends myFrontBaseComponents
   }
   
 
-  /*
+  /**
    * @return dmModule the current module for this component
    */
   protected function getDmModule()
@@ -170,7 +170,7 @@ class dmFrontModuleComponents extends myFrontBaseComponents
     return $this->dmModule;
   }
 
-  /*
+  /**
    * @return myDoctrineTable the table of the current module for this component
    */
   protected function getTable()
