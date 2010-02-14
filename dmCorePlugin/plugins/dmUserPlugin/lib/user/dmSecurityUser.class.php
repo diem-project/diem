@@ -256,6 +256,16 @@ class dmSecurityUser extends sfBasicSecurityUser
     return $this->user;
   }
 
+  public function getDmUser()
+  {
+    return $this->getUser();
+  }
+
+  public function getGuardUser()
+  {
+    return $this->getUser();
+  }
+
   public function getUserId()
   {
     if ($user = $this->getUser())
