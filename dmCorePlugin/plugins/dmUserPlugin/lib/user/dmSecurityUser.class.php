@@ -256,11 +256,23 @@ class dmSecurityUser extends sfBasicSecurityUser
     return $this->user;
   }
 
+
+  /**
+   * Returns the related DmUser.
+   *
+   * @return DmUser
+   */
   public function getDmUser()
   {
     return $this->getUser();
   }
 
+
+  /**
+   * Returns the related DmUser.
+   *
+   * @return DmUser
+   */
   public function getGuardUser()
   {
     return $this->getUser();
