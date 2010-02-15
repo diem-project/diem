@@ -1,0 +1,136 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>jsTree &raquo; Demos</title>
+
+	<script type="text/javascript" src="../lib/jquery.js"></script>
+	<script type="text/javascript" src="../lib/jquery.cookie.js"></script>
+	<script type="text/javascript" src="../lib/jquery.hotkeys.js"></script>
+	<script type="text/javascript" src="../lib/jquery.metadata.js"></script>
+	<script type="text/javascript" src="../lib/sarissa.js"></script>
+	<script type="text/javascript" src="../jquery.tree.js"></script>
+	<script type="text/javascript" src="../plugins/jquery.tree.checkbox.js"></script>
+	<script type="text/javascript" src="../plugins/jquery.tree.contextmenu.js"></script>
+	<script type="text/javascript" src="../plugins/jquery.tree.cookie.js"></script>
+	<script type="text/javascript" src="../plugins/jquery.tree.hotkeys.js"></script>
+	<script type="text/javascript" src="../plugins/jquery.tree.metadata.js"></script>
+	<script type="text/javascript" src="../plugins/jquery.tree.themeroller.js"></script>
+	<script type="text/javascript" src="../plugins/jquery.tree.xml_flat.js"></script>
+	<script type="text/javascript" src="../plugins/jquery.tree.xml_nested.js"></script>
+
+	<link type="text/css" rel="stylesheet" href="syntax/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="syntax/shThemeDefault.css"/>
+	<style type="text/css">
+	html, body { margin:0; padding:0; }
+	body, td, th, pre, code, select, option, input, textarea { font-family:"Trebuchet MS", Sans-serif; font-size:10pt; }
+	#container { width:800px; margin:10px auto; overflow:hidden; }
+	.demo { height:200px; width:300px; float:left; margin:0; border:1px solid gray; font-family:Verdana; font-size:10px; background:white; }
+	.code { width:490px; float:right; margin:0 0 10px 0; border:1px solid gray; }
+	pre { display:block; }
+	.syntaxhighlighter { margin:0 0 0 0 !important; padding:0 !important; }
+	</style>
+	<script type="text/javascript" src="syntax/shCore.js"></script>
+	<script type="text/javascript" src="syntax/shBrushJScript.js"></script>
+	<script type="text/javascript" src="syntax/shBrushXml.js"></script>
+</head>
+<body>
+<div id="container">
+	<h1 class="title">Very first tree table example</h1>
+	<p>This is certainly not really finished, but better than nothing, I hope :-)</p>
+	<script type="text/javascript" class="source">
+        function setWidthRecursive(NODE, TREE_OBJ, width)
+        {
+           TREE_OBJ.get_node(NODE).children('a').css('width', width + 'px');
+
+           var childNodes = TREE_OBJ.children(NODE);
+
+           for (var i = 0; i < childNodes.length; ++i)
+           {
+              setWidthRecursive(childNodes[i], TREE_OBJ, width - 20);
+           }
+        }
+
+	$(function () { 
+		$("#basic_html").tree(
+                {
+                   callback: {
+                      onmove: function(NODE, REF_NODE, TYPE, TREE_OBJ, RB) { 
+                         var refWidth = Number(TREE_OBJ.get_node(REF_NODE).children('a').css('width').replace('px',''));
+
+                         if (TYPE == 'inside')
+                            setWidthRecursive(NODE, TREE_OBJ, refWidth - 20);
+                         else
+                            setWidthRecursive(NODE, TREE_OBJ, refWidth);
+                      }
+                   }
+                });
+	});
+	</script>
+        <style type="text/css">
+           .cake {
+              background-color: white !important;
+              width: 200px;
+              display: inline-block;
+              border: 0px solid black !important; 
+              border: 0px solid black !important; 
+              border-left: 1px solid black !important; 
+              }
+           .quantity {
+              background-color: white !important;
+              width: 100px;
+              display: inline-block;
+              border: 0px solid black !important; 
+              border: 0px solid black !important; 
+              border-left: 1px solid black !important; 
+              }
+           .tableheader {
+              display: inline-block;
+              border-bottom: solid black 1px;
+              padding: 0px 3px;
+              border-left: 1px solid black; 
+              }
+           .lefttableheader {
+              display: inline-block;
+              border-bottom: solid black 1px;
+              padding: 0px 3px;
+              }
+           .tableframe {
+              display: inline-block;
+              border: 1px solid black;
+              padding: 0px 0px;
+              }
+        </style>
+        <div class="tableframe">
+        <span class="lefttableheader" style="width:242px"><b>Person</b></span><span class="tableheader" style="width:200px"><b>Best loved cake</b></span><span class="tableheader" style="width:100px"><b>Quantity/year</b></span>
+	<div class="table_demo" id="basic_html">
+		<ul>
+			<li id="group_1" class="open"><a href="#" style="width:220px"><ins>&nbsp;</ins>Germans</a><span class="cake">&nbsp;</span><span class="quantity">&nbsp;</span>
+				<ul>
+			                <li id="person_1"><a href="#" style="width:200px"><ins>&nbsp;</ins>Stefan</a><span class="cake">Käsekuchen</span><span class="quantity">10kg</span></li>
+					<li id="person_2"><a href="#" style="width:200px"><ins>&nbsp;</ins>Martina</a><span class="cake">Rhabarbertorte</span><span class="quantity">12kg</span></li>
+					<li id="person_3"><a href="#" style="width:200px"><ins>&nbsp;</ins>Jens</a><span class="cake">Blaubeerspirale</span><span class="quantity">17kg</span></li>
+					<li id="person_4"><a href="#" style="width:200px"><ins>&nbsp;</ins>Marlies</a><span class="cake">Bienenstich</span><span class="quantity">3kg</span></li>
+					<li id="children"><a href="#" style="width:200px"><ins>&nbsp;</ins>Children</a><span class="cake">&nbsp;</span><span class="quantity">&nbsp;</span>
+				           <ul>
+					      <li id="person_5"><a href="#" style="width:180px"><ins>&nbsp;</ins>Kevin</a><span class="cake">Schokoladenkeks</span><span class="quantity">7kg</span></li>
+					      <li id="person_6"><a href="#" style="width:180px"><ins>&nbsp;</ins>Linda</a><span class="cake">Vanillekipferl</span><span class="quantity">1.2kg</span></li>
+				           </ul>
+                                        </li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+      </div>
+</div><BR>
+<BR>
+__________ Information from ESET Smart Security, version of virus signature database 4542 (20091026) __________<BR>
+<BR>
+The message was checked by ESET Smart Security.<BR>
+<BR>
+<A HREF="http://www.eset.com">http://www.eset.com</A><BR>
+
+
+</body></html>

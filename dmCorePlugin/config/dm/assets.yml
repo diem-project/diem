@@ -39,13 +39,13 @@ js:
     cookie:           cookie/jquery.cookie.min
     markitup:         markitup/jquery.markitup.min
     markitupSet:      dmMarkitup/sets/markdown/set
-    fancybox:         fancybox/jquery.fancybox-1.2.1.pack
     expose:           expose/jquery.expose-1.0.1.min
     qtip:             qtip/jquery.qtip-1.0.0-rc3.min
     hotkeys:          hotkeys/jquery.hotkeys-0.7.9.min
     jstree:           jstree10b2/jquery.jstree.hack.min
     fieldSelection:   jquery-fieldselection/jquery-fieldselection
     panView:          panview/jquery-plugin-panview.min
+    tipsy:            tipsy/javascripts/jquery.tipsy.min
 
 css:
 
@@ -74,4 +74,4 @@ css:
     jgrowl:           jgrowl/jquery.jgrowl
     markitup:         dmMarkitup/skins/markitup/style
     markitupSet:      dmMarkitup/sets/markdown/style
-    fancybox:         fancybox/jquery.fancybox
+    tipsy:            tipsy/stylesheets/tipsy

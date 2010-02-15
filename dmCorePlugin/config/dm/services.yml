@@ -425,4 +425,4 @@ services:
   page_tree_view:
     class:                    %page_tree_view.class%
     shared:                   false
-    arguments:                [ %user.culture%, %page_tree_view.options% ]
+    arguments:                [ @helper, %user.culture%, %page_tree_view.options% ]

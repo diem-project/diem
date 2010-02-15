@@ -36,6 +36,8 @@
       {
         $.dm.ping.init(this.options);
       }
+
+      this.$.find('a[title], input[title]').tipsy();
     },
 
     showMoreRelatedRecords: function()

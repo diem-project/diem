@@ -9,6 +9,7 @@ class dmFrontAddMenu extends dmMenu
     ->name('Front add menu')
     ->ulClass('ui-helper-reset level0')
     ->addChild('Add')
+    ->setOption('root_add', true)
     ->ulClass('ui-widget ui-widget-content level1')
     ->liClass('ui-corner-bottom ui-state-default')
     ->addClipboard()
@@ -76,6 +77,10 @@ class dmFrontAddMenu extends dmMenu
         $widget->get('id'),
         strtolower(parent::renderLabel())
       );
+    }
+    elseif($this->getOption('root_add'))
+    {
+      return '<a class="tipable s24block s24_add widget24" title="'.$this->__('Add').'"</a>';
     }
     
     return '<a>'.strtolower(parent::renderLabel()).'</a>';

@@ -2,20 +2,18 @@
 
 echo _open('div#dm_tool_bar.dm.clearfix.'.sfConfig::get('dm_toolBar_flavour', 'blue'));
 
-  echo _tag('a.show_tool_bar_toggle.s16block.s16_chevron_'.($sf_user->getShowToolBar() ? 'down' : 'up'), '+');
+  //echo _tag('a.show_tool_bar_toggle.s16block.s16_chevron_'.($sf_user->getShowToolBar() ? 'down' : 'up'), '+');
 
-  echo _link('@signout')->text('')->title($sf_user->getUsername().' : '.__('Logout'))->set('.widget16.s16block.s16_signout');
-  
-  echo _link('app:admin')->text('')->title(__('Administration'))->set('.widget16.s16block.s16_home');
+  echo _link('@signout')->text('')->title($sf_user->getUsername().' : '.__('Logout'))->set('.tipable.widget16.s16block.s16_signout');
   
   if ($sf_user->can('clear_cache'))
   {
-    echo _link('+/dmCore/refresh')->text('')->title(__('Clear cache'))->set('.dm_refresh_link.widget16.s16block.s16_clear');
+    echo _link('+/dmCore/refresh')->text('')->title(__('Clear cache'))->set('.tipable.dm_refresh_link.widget16.s16block.s16_clear');
   }
   
   if($sf_user->can('code_editor'))
   {
-    echo _link('+/dmCodeEditor/launch')->text('')->title(__('Code Editor'))->set('.code_editor.widget16.s16block.s16_code_editor');
+    echo _link('+/dmCodeEditor/launch')->text('')->title(__('Code Editor'))->set('.tipable.code_editor.widget16.s16block.s16_code_editor');
   }
 
   if (isset($cultureSelect))
@@ -30,20 +28,22 @@ echo _open('div#dm_tool_bar.dm.clearfix.'.sfConfig::get('dm_toolBar_flavour', 'b
 
   if ($sf_user->can('page_edit'))
   {
-    echo _link('+/dmPage/edit')->set('a.page_edit_form.widget24.s24block.s24_page_edit')->text('')->title(__('Edit page'));
+    echo _link('+/dmPage/edit')->set('.tipable.page_edit_form.widget24.s24block.s24_page_edit')->text('')->title(__('Edit page'));
   }
 
-  if ($sf_user->can('zone_add, widget_add, page_add'))
+  if ($sf_user->can('zone_add, widget_add'))
   {
-    echo _tag('a.edit_toggle.widget24.s24block.s24_view_'.($sf_user->getIsEditMode() ? 'on' : 'off'), array('title' => __('Show page structure')), '');
+    echo _tag('a.tipable.edit_toggle.widget24.s24block.s24_view_'.($sf_user->getIsEditMode() ? 'on' : 'off'), array('title' => __('Show page structure')), '');
   }
 
-  if($sf_user->can('widget_add'))
+  if($sf_user->can('zone_add, widget_add, page_add'))
   {
-    echo _tag('div.dm_menu.widget16.dm_add_menu', array('json' =>array(
+    echo _tag('div.dm_menu.dm_add_menu', array('json' =>array(
       'reload_url' => _link('+/dmInterface/reloadAddMenu')->getHref()
-    )), '...');
+    )), £('a.widget24.s24block.s24_add.dm_fake_link'));
   }
+
+  echo _link('app:admin')->text(__('Go to admin'))->set('.widget16');
   
   if (sfConfig::get('sf_web_debug'))
   {

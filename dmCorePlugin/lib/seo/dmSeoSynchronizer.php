@@ -220,7 +220,7 @@ class dmSeoSynchronizer
      * Assign replacements to patterns
      */
     $values = $this->compilePatterns($patterns, $replacements, $parentSlug);
-
+    
     /*
      * Compare obtained seo values with page values
      */

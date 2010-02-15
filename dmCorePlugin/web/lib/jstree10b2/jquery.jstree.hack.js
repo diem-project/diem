@@ -793,20 +793,37 @@ EXAMPLES & DOCS!
 			// a list of types
 			types : {
 				// the default type
-				"default" : {
+				"auto" : {
 					"max_children"	: -1,
 					"max_depth"		: -1,
 					"valid_children": "all",
 
 					// Bound functions - you can bind any other function here (using boolean or function)
-					"select_node"	: true,
+					"select_node"	: false,
 					"open_node"		: true,
 					"close_node"	: true,
 
 					"create_node"	: true,
 					"delete_node"	: true,
-					"cut"			: true,
-					"copy"			: true,
+					"cut"			: false,
+					"copy"			: false,
+					"paste"			: true
+				},
+				// the default type
+				"manual" : {
+					"max_children"	: 2,
+					"max_depth"		: 2,
+					"valid_children": "all",
+
+					// Bound functions - you can bind any other function here (using boolean or function)
+					"select_node"	: false,
+					"open_node"		: true,
+					"close_node"	: true,
+
+					"create_node"	: true,
+					"delete_node"	: true,
+					"cut"			: false,
+					"copy"			: false,
 					"paste"			: true
 				}
 			}

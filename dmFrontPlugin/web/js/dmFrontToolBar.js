@@ -16,6 +16,8 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
     this.pageEditForm();
     
     this.codeEditor();
+
+    this.element.find('a.tipable').tipsy({gravity: 's'});
   },
 	
 	initSelectCulture: function()
@@ -169,12 +171,10 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
       success:  function(html)
       {
         $menu.html(html);
+        
+        $actions = $menu.find('li.dm_add_menu_actions').prependTo($menu.find('ul.level1'));
 
-        $actions = $menu.find('ul.level1').prepend(
-          '<li class="dm_add_menu_actions clearfix">'+
-          '<input class="dm_add_menu_search" />'+
-          '</li>'
-        ).find('li.dm_add_menu_actions');
+        $menu.find('a.tipable, input.dm_add_menu_search').tipsy({gravity: 's'});
 
         $menu.find('input.dm_add_menu_search').bind('keyup', function()
         {

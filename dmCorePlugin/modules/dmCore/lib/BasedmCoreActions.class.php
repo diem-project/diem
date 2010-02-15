@@ -129,7 +129,7 @@ class BasedmCoreActions extends dmBaseActions
           break;
 
         case 3:
-          $this->getService('page_tree_watcher')->synchronizeSeo();
+          $this->getService('page_tree_watcher')->setOption('use_thread', false)->synchronizeSeo();
 
           if (count($this->getI18n()->getCultures()) > 1)
           {

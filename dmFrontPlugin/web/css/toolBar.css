@@ -13,11 +13,11 @@ body {
   overflow-y: hidden;
 }
 
-#dm_tool_bar .show_tool_bar_toggle {
+#dm_tool_bar a.show_tool_bar_toggle {
   float: left;
   margin-top: 13px;
 }
-#dm_tool_bar.hidden .show_tool_bar_toggle {
+#dm_tool_bar.hidden a.show_tool_bar_toggle {
   margin-top: 0px;
 }
 
@@ -26,32 +26,21 @@ body {
   color: #888;
 }
 
-#dm_tool_bar div.dm_menu .strong {
-  font-weight: bold;
-}
-
 #dm_tool_bar ul.level0 {
   position: relative;
-  padding:0 2px 2px 2px;
 }
 #dm_tool_bar ul.level0 > li {
-  float:left;
+  float: left;
   padding: 0 1px 1px 1px;
-  position:relative;
+  position: relative;
   height: 25px;
   cursor: default;
   background: none;
   border: none;
 }
-#dm_tool_bar ul.level0 > li > a {
-  float:left;
-  padding: 5px 10px 0px 10px;
-  text-decoration:none;
-  font-size: 1.1em;
-  font-weight: bold;
-  cursor: pointer;
-  height: 20px;
-  text-transform: capitalize;
+#dm_tool_bar a.dm_fake_link {
+  margin-left: 6px;
+  margin-right: 6px;
 }
 
 #dm_tool_bar ul.level0 > li.ui-state-active {
@@ -77,7 +66,7 @@ body {
 
   left: -4000px;
   
-  max-height: 300px;
+  height: 300px;
   overflow: auto;
   background: #FCFCFC;
   -moz-box-shadow: 4px -4px 4px #888;

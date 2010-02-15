@@ -3,18 +3,20 @@
 abstract class dmPageTreeView extends dmConfigurable
 {
   protected
-  $tree,
+  $helper,
   $culture,
+  $tree,
   $html,
   $level,
   $lastLevel;
 
-  public function __construct($culture, array $options)
+  public function __construct(dmHelper $helper, $culture, array $options)
   {
-    $this->initialize($options);
-    
+    $this->helper   = $helper;
     $this->culture  = $culture;
-    $this->tree     = $this->getTree();
+    $this->tree     = $this->getRecordTree();
+    
+    $this->initialize($options);
   }
 
   protected function initialize(array $options)
@@ -24,30 +26,31 @@ abstract class dmPageTreeView extends dmConfigurable
 
   abstract protected function getPageLink(array $page);
 
-  protected function getTree()
+  protected function getRecordTree()
   {
-    $pageTable = dmDb::table('DmPage');
+    $pageTableTree = dmDb::table('DmPage')->getTree();
 
-    $q = $pageTable->createQuery('page')
-    ->withI18n($this->culture, null, 'page')
-    ->select('page.id, page.action, pageTranslation.name, pageTranslation.slug');
+    $pageTableTree->setBaseQuery($this->getRecordTreeQuery());
 
-    $pageTable->getTree()->setBaseQuery($q);
-
-    $tree = $pageTable->getTree()->fetchTree(array(), Doctrine_Core::HYDRATE_NONE);
+    $tree = $pageTableTree->fetchTree(array(), Doctrine_Core::HYDRATE_NONE);
     
-    $pageTable->getTree()->resetBaseQuery();
+    $pageTableTree->resetBaseQuery();
 
     return $tree;
+  }
+
+  protected function getRecordTreeQuery()
+  {
+    return dmDb::table('DmPage')->createQuery('page')
+    ->withI18n($this->culture, null, 'page')
+    ->select('page.id, page.action, pageTranslation.name, pageTranslation.slug');
   }
 
   public function render($options = array())
   {
     $this->options = array_merge(dmString::toArray($options, true), $this->options);
 
-    $this->html = isset($this->options['class'])
-    ? '<ul class="'.$this->options['class'].'">'
-    : '<ul>';
+    $this->html = $this->helper->open('ul', $this->options);
 
     $this->lastLevel = false;
     foreach($this->tree as $node)
