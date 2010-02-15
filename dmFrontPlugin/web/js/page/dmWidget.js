@@ -200,7 +200,7 @@ $.widget('ui.dmWidget', {
       }
       widget.openEditDialog();
       return true;
-    });
+    }).tipsy({gravity: 's'});
   },
   
   getId: function()

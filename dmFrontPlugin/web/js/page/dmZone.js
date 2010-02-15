@@ -21,7 +21,7 @@ $.widget('ui.dmZone', {
       {
         self.openEditDialog();
       }
-    });
+    }).tipsy({gravity: 's'});
   },
 	
 	openEditDialog: function()

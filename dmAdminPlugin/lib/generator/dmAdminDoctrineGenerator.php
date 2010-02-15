@@ -154,14 +154,13 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
       }
       else
       {
-        $localModule = dmContext::getInstance()->getModuleManager()->getModuleByModel($relation->getClass());
+        $localModule = $this->moduleManager->getModuleByModel($relation->getClass());
         
         if ($localModule && $localModule->hasAdmin())
         {
           $html = "(\$sf_user->canAccessToModule('{$localModule->getKey()}')
 ? _link(\${$this->getSingularName()}->get('{$relation->getAlias()}'))
 ->text(\${$this->getSingularName()}->get('{$relation->getAlias()}')->__toString())
-->title(__('Open'))
 ->set('.associated_record.s16right.s16_arrow_up_right_medium')
 : $".$this->getSingularName()."->get('".$relation->getAlias()."'))";
         }
@@ -207,7 +206,7 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
 
     if ($field->isLink())
     {
-      $html = sprintf("_link('@%s?action=edit&pk='.\$%s->getPrimaryKey())->text(%s)->title(__('Open'))->addClass('link_edit')", $this->module->getUnderscore(), $this->getSingularName(), $html);
+      $html = sprintf("_link('@%s?action=edit&pk='.\$%s->getPrimaryKey())->text(%s)->addClass('link_edit')", $this->module->getUnderscore(), $this->getSingularName(), $html);
     }
 
     return $html;

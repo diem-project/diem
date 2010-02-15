@@ -92,7 +92,6 @@ class dmAdminRelatedRecordsView extends dmConfigurable
       {
         $html .= $this->helper->link($foreignRecord)
         ->text($foreignRecord->__toString())
-        ->title($this->i18n->__('Open'))
         ->set('.associated_record.s16right.s16_arrow_up_right_medium');
       }
       else
