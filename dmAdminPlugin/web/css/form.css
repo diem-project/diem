@@ -78,8 +78,7 @@
   width: 98%;
 }
 
-.sf_admin_form div.sf_admin_form_row div.dm_foreigns,
-.sf_admin_form div.sf_admin_form_row div.dm_associations {
+.sf_admin_form div.sf_admin_form_row div.dm_related_records {
   margin-left: 20%;
   padding: 10px;
   -moz-box-shadow: 0 0 5px #aaa;

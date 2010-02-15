@@ -27,18 +27,13 @@ echo _open('div#dm_tool_bar.dm.clearfix.'.sfConfig::get('dm_toolBar_flavour', 'b
   {
     echo _tag('div.widget16.mt3', $themeSelect->render('dm_select_theme', $sf_user->getTheme()->getName()));
   }
-  
+
   if ($sf_user->can('page_edit'))
   {
     echo _link('+/dmPage/edit')->set('a.page_edit_form.widget24.s24block.s24_page_edit')->text('')->title(__('Edit page'));
   }
-  
-  if ($sf_user->can('page_add'))
-  {
-    echo _link('+/dmPage/new')->set('a.page_add_form.widget24.s24block.s24_page_add')->text('')->title(__('Add new page'));
-  }
 
-  if ($sf_user->can('zone_add, widget_add'))
+  if ($sf_user->can('zone_add, widget_add, page_add'))
   {
     echo _tag('a.edit_toggle.widget24.s24block.s24_view_'.($sf_user->getIsEditMode() ? 'on' : 'off'), array('title' => __('Show page structure')), '');
   }

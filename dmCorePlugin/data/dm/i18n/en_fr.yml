@@ -414,3 +414,4 @@
 "Invalid mime type (%mime_type%).": "Type de fichier non accepté (%mime_type%)."
 "Download": "Télécharger"
 "Move to": "Déplacer dans"
+"[1] And one more...|(1,+Inf] And %1% more...": "[1] Et un autre...|(1,+Inf] Et %1% autres..."

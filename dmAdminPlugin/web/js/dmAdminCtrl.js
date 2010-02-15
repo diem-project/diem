@@ -28,12 +28,23 @@
 			
 			this.autoLoading();
 
+      this.showMoreRelatedRecords();
+
       this.checkVersion();
 
       if($.dm.ping && this.options.authenticated)
       {
         $.dm.ping.init(this.options);
       }
+    },
+
+    showMoreRelatedRecords: function()
+    {
+      this.$.find('a.show_more_related_records').one('click', function()
+      {
+        $(this).parent().parent().block().load($(this).attr('href'));
+        return false;
+      });
     },
 
     checkVersion: function()

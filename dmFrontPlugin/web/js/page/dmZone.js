@@ -137,7 +137,7 @@ $.widget('ui.dmZone', {
         }
         else if (sortEvents.update && sortEvents.receive)
         {
-          $(this).parent().dmZone(ui.item.hasClass('widget_paste') ? 'pasteWidget' : 'addWidget', ui.item);
+          $(this).parent().dmZone(ui.item.text('').block().hasClass('widget_paste') ? 'pasteWidget' : 'addWidget', ui.item);
         }
         else if (sortEvents.update)
         {

@@ -74,6 +74,12 @@ parameters:
     show_ip:                  true                # whether to show users IP
 
   page_tree_view.class:       dmAdminPageTreeView # Render the page tree
+
+  related_records_view.class:   dmAdminRelatedRecordsView # shows a list of records related to another one
+  related_records_view.options:
+    new:                        true            # add a link to create a new related record
+    sort:                       true            # add a link to sort related records
+    max:                        3               # max number of records to show
   
 services:
 
@@ -161,3 +167,8 @@ services:
     class:                    %log_view.class%
     shared:                   false
     arguments:                [ %log_view.log%, @i18n, @user, @helper, %log_view.options% ]
+
+  related_records_view:
+    class:                    %related_records_view.class%
+    shared:                   false
+    arguments:                [ @module_manager, @helper, @routing, @i18n, %related_records_view.options% ]

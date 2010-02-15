@@ -51,6 +51,7 @@ body {
   font-weight: bold;
   cursor: pointer;
   height: 20px;
+  text-transform: capitalize;
 }
 
 #dm_tool_bar ul.level0 > li.ui-state-active {
@@ -68,9 +69,9 @@ body {
   font-size: 12px;
   position: absolute;
   bottom: 25px;
-  width: 470px;
+  width: 455px;
   border-bottom: none;
-  padding: 0 10px 10px 10px;
+  padding-bottom: 10px;
   -moz-border-radius: 4px 4px 0 0;
   -webkit-border-radius: 4px 4px 0 0;
 
@@ -78,7 +79,7 @@ body {
   
   max-height: 300px;
   overflow: auto;
-  background: #fff;
+  background: #FCFCFC;
   -moz-box-shadow: 4px -4px 4px #888;
   -webkit-box-shadow: 4px -4px 4px #888;
 }
@@ -91,12 +92,12 @@ body {
   display: block;
   float: none;
   padding-top: 10px;
+  padding: 10px 10px 0 10px;
 }
 
-#dm_tool_bar ul.level1 > li > a {
+#dm_tool_bar ul.level1 > li.dm_droppable_widgets > a {
   text-transform: uppercase;
   font-weight: bold;
-  color: #0085CF;
   color: #046BCA;
   cursor: default;
 }
@@ -114,19 +115,20 @@ body {
   list-style: none;
 }
 
-#dm_tool_bar ul.level2 span.move,
+#dm_tool_bar span.move,
 div.dm_zone_add_helper,
 div.dm_widget_add_helper {
   cursor: move;
   display:block;
-  padding: 3px 5px;
+  padding: 3px 0;
   width: 134px;
   color: #666;
-  background: url(../../dmCorePlugin/images/default_bg.png) repeat-x scroll 50% 50%;
+  background: url(../../dmCorePlugin/images/default_bg.png) repeat-x 50% 50%;
   border: 1px solid #D3D3D3;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
   text-align: center;
+  text-transform: capitalize;
 }
 
 div.dm_zone_add_helper,
@@ -134,17 +136,56 @@ div.dm_widget_add_helper {
 	white-space: nowrap;
 	padding: 5px 0;
 	font-weight: bold;
+  background: url(../../dmCorePlugin/images/default_bg_blue.png) repeat-x 50% 50%;
+  -moz-box-shadow: 0 0 4px #888;
+  color: #444;
 }
 
-#dm_tool_bar ul.level2 span.move:hover {
+#dm_tool_bar span.move:hover {
   color: #444;
-  background: url(../../dmCorePlugin/images/default_bg_blue.png) repeat-x scroll 50% 50%;
+  background: url(../../dmCorePlugin/images/default_bg_blue.png) repeat-x 50% 50%;
+  -moz-box-shadow: 0 0 4px #888;
 }
 
 #dm_tool_bar ul.level2 > li a {
   display: block;
   padding: 1px 0;
   color: #666;
+}
+
+/*
+ * actions bar
+ */
+#dm_tool_bar ul.level1 > li.dm_add_menu_actions {
+  padding: 10px;
+  background: url(../../dmCorePlugin/images/default_bg.png) repeat-x 50% 50%;
+  -moz-border-radius: 4px 0 0 0;
+  -webkit-border-radius: 4px 0 0 0;
+  border-bottom: 1px solid #D4D4D4;
+}
+
+#dm_tool_bar ul.level1 > li.dm_add_menu_actions input {
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  float: left;
+  padding: 3px 5px;
+  width: 134px;
+  color: #666;
+  height: 16px;
+  font-family: Verdana,Arial,sans-serif;
+  font-size: 12px;
+}
+
+#dm_tool_bar ul.level1 > li.dm_add_menu_actions span.zone_add {
+  float: left;
+  margin-left: 10px;
+}
+
+#dm_tool_bar ul.level1 > li.dm_add_menu_actions a.page_add_form {
+  color: #046BCA;
+  margin-left: 10px;
+  margin-top: 0;
+  line-height:22px;
 }
 
 #dm_tool_bar #sfWebDebug .sfWebDebugTop

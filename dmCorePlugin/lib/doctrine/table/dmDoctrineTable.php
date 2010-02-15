@@ -200,8 +200,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
   }
 
   /**
-   * @return dmDoctrine query
-   * the default admin list query
+   * @return dmDoctrineQuery the default admin list query
    */
   public function getAdminListQuery(dmDoctrineQuery $query)
   {

@@ -45,7 +45,8 @@ $.widget('ui.dmArea', {
         receive:                function(e, ui) { sortEvents.receive = $(this).parent(); },
         remove:                 function(e, ui) { sortEvents.remove = true; },
         update:                 function(e, ui) { sortEvents.update = true; },
-        start:                  function(e, ui) {
+        start:                  function(e, ui)
+        {
           ui.item.addClass('dm_dragging');
 				  
 					// adding a zone
@@ -65,23 +66,27 @@ $.widget('ui.dmArea', {
 							'margin': '0'
 						})
 						.html(ui.item.html());
-//						ui.helper.css('width', 'auto');
 					}
 					
 					$('#dm_page div.dm_zones').addClass('droppable-active');
 					
 					sortEvents = [];
         },
-        stop:                   function(e, ui) {
-          if (sortEvents.update && sortEvents.receive && sortEvents.remove) {
+        stop:                   function(e, ui)
+        {
+          if (sortEvents.update && sortEvents.receive && sortEvents.remove)
+          {
             sortEvents.receive.dmArea('moveZone', ui.item);
           }
-          else if (sortEvents.update && sortEvents.receive) {
+          else if (sortEvents.update && sortEvents.receive)
+          {
             $(this).parent().dmArea('addZone');
           }
-          else if (sortEvents.update) {
+          else if (sortEvents.update)
+          {
             $(this).parent().dmArea('sortZones');
           }
+          
           setTimeout(function() { ui.item.removeClass('dm_dragging'); }, 200);
           
           $('#dm_page div.dm_zones').removeClass('droppable-active');
@@ -93,7 +98,7 @@ $.widget('ui.dmArea', {
   moveZone: function($zone)
   {
     $.ajax({
-      url:      $.dm.ctrl.getHref('+/dmZone/move')
+      url: $.dm.ctrl.getHref('+/dmZone/move')
       +"?moved_dm_zone="+$zone.dmZone('getId')
       +"&to_dm_area="+this.getId()
       +"&"+$('div.dm_zones', this.element).sortable('serialize')

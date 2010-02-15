@@ -25,9 +25,7 @@ class dmAdminGeneratorActions extends dmAdminBaseActions
   public function executeSaveSort(sfWebRequest $request)
   {
     $this->forward404Unless(
-      $module = $this->context->getModuleManager()->getModuleOrNull(
-        $request->getParameter('dm_module')
-      )
+      $module = $this->context->getModuleManager()->getModuleOrNull($request->getParameter('dm_module'))
     );
 
     $elements = $request->getParameter('dm_sort_element');
@@ -96,7 +94,6 @@ class dmAdminGeneratorActions extends dmAdminBaseActions
     return $this->redirectBack();
   }
 
-  // changing max_per_page
   public function executeChangeMaxPerPage(sfWebRequest $request)
   {
     $this->forward404Unless(
@@ -116,4 +113,18 @@ class dmAdminGeneratorActions extends dmAdminBaseActions
     return $this->redirectBack();
   }
 
+  public function executeShowMoreRelatedRecords(sfWebRequest $request)
+  {
+    $this->forward404Unless(
+      $record = dmDb::table($request->getParameter('model'))->find($request->getParameter('pk'))
+    );
+
+    $view = $this->getServiceContainer()->mergeParameter('related_records_view.options', array(
+      'record'  => $record,
+      'alias'   => $request->getParameter('alias'),
+      'max'     => 999
+    ))->getService('related_records_view');
+
+    return $this->renderText($view->renderList());
+  }
 }

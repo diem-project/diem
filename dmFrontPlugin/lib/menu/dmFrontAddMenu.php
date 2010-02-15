@@ -12,7 +12,6 @@ class dmFrontAddMenu extends dmMenu
     ->ulClass('ui-widget ui-widget-content level1')
     ->liClass('ui-corner-bottom ui-state-default')
     ->addClipboard()
-    ->addZones()
     ->addWidgets();
     
     $this->serviceContainer->getService('dispatcher')->notify(new sfEvent($this, 'dm.front.add_menu', array()));
@@ -25,21 +24,13 @@ class dmFrontAddMenu extends dmMenu
     if($widget = $this->serviceContainer->getService('front_clipboard')->getWidget())
     {
       $this
-      ->addChild('Clipboard')->credentials('widget_add')->ulClass('clearfix level2')
+      ->addChild('Clipboard')->credentials('widget_add')->ulClass('clearfix level2')->liClass('dm_droppable_widgets')
       ->addChild($this->serviceContainer->get('widget_type_manager')->getWidgetType($widget)->getName())
       ->setOption('clipboard_widget', $widget)
       ->setOption('clipboard_method', $this->serviceContainer->getService('front_clipboard')->getMethod());
     }
 
     return $this;
-  }
-
-  public function addZones()
-  {
-    return $this
-    ->addChild('Zone')->credentials('zone_add')->ulClass('clearfix level2')
-    ->addChild('Zone')->setOption('is_zone', true)
-    ->end()->end();
   }
   
   public function addWidgets()
@@ -51,7 +42,8 @@ class dmFrontAddMenu extends dmMenu
       ? $module->getName()
       : dmString::humanize(str_replace('dmWidget', '', $space))
       )
-      ->ulClass('clearfix level2');
+      ->ulClass('clearfix level2')
+      ->liClass('dm_droppable_widgets');
       
       foreach($widgetTypes as $key => $widgetType)
       {
@@ -74,22 +66,18 @@ class dmFrontAddMenu extends dmMenu
       return sprintf('<span class="widget_add move" id="dmwa_%s-%s">%s</span>',
         $widgetType->getModule(),
         $widgetType->getAction(),
-        parent::renderLabel()
+        strtolower(parent::renderLabel())
       );
-    }
-    elseif($this->getOption('is_zone'))
-    {
-      return '<span class="zone_add move">'.parent::renderLabel().'</a>';
     }
     elseif($widget = $this->getOption('clipboard_widget'))
     {
       return sprintf('<span class="widget_paste move dm_%s" id="dmwp_%d">%s</span>',
         $this->getOption('clipboard_method'),
         $widget->get('id'),
-        parent::renderLabel()
+        strtolower(parent::renderLabel())
       );
     }
     
-    return '<a>'.parent::renderLabel().'</a>';
+    return '<a>'.strtolower(parent::renderLabel()).'</a>';
   }
 }

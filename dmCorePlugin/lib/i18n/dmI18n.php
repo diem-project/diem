@@ -25,6 +25,22 @@ class dmI18n extends sfI18N
 
     return $array;
   }
+
+  public function formatNumberChoice($text, $args = array(), $number, $catalogue = 'messages')
+  {
+    $translated = $this->__($text, $args, $catalogue);
+
+    $choice = new sfChoiceFormat();
+
+    $retval = $choice->format($translated, $number);
+
+    if ($retval === false)
+    {
+      throw new dmException(sprintf('Unable to parse your choice "%s".', $translated));
+    }
+
+    return $retval;
+  }
   
   /**
    * Gets the translation for the given string

@@ -79,17 +79,12 @@
       {
         echo '<div class="sf_admin_form_row_inner clearfix">';
         echo '<div class="label_wrap">'.__($field->getConfig('label', '', true)).'</div>';
-        if($relation instanceof Doctrine_Relation_ForeignKey)
-        {
-          $found = true;
-          include_partial('dmAdminGenerator/relationForeign', array('record' => $form->getObject(), 'alias' => $alias));
-        }
-        elseif ($relation instanceof Doctrine_Relation_Association)
-        {
-          $found = true;
-          include_partial('dmAdminGenerator/relationAssociation', array('record' => $form->getObject(), 'alias' => $alias));
-        }
+        echo $sf_context->getServiceContainer()->mergeParameter('related_records_view.options', array(
+          'record' => $form->getObject(),
+          'alias'  => $alias
+        ))->getService('related_records_view')->render();
         echo '</div>';
+        $found = true;
       }
     }
 

@@ -182,16 +182,13 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
       {
         $relation = $this->table->getRelationHolder()->get($alias = substr($fieldName, 0, strlen($fieldName)-5));
       }
+      
       if ($relation)
       {
-        if($relation instanceof Doctrine_Relation_ForeignKey)
-        {
-          $html = "get_partial('dmAdminGenerator/relationForeign', array('record' => $".$this->getSingularName().", 'alias' => '".$alias."'));";
-        }
-        elseif ($relation instanceof Doctrine_Relation_Association)
-        {
-          $html = "get_partial('dmAdminGenerator/relationAssociation', array('record' => $".$this->getSingularName().", 'alias' => '".$alias."'));";
-        }
+        $html = "\$sf_context->getServiceContainer()->mergeParameter('related_records_view.options', array(
+  'record' => $".$this->getSingularName().",
+  'alias'  => '".$alias."'
+))->getService('related_records_view')->render()";
       }
     }
     elseif ('dm_gallery' === $fieldName)

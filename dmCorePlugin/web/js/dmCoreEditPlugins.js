@@ -145,45 +145,48 @@
   $.widget('ui.dmMenu', {
 
     options: {
-      hoverClass: 'hover'
+      hoverClass: 'hover',
+      open:       function(){}
     },
   
     _init: function()
     {
-      var menu = this;
+      var self = this;
       
-      menu.$tabs = $('> ul > li', menu.element);
+      self.$tabs = $('> ul > li', self.element);
       
-      $('> a', menu.$tabs).click(function()
+      $('> a', self.$tabs).click(function()
       {
-        if (!menu.lock) 
+        if (!self.lock)
         {
-          menu.open($(this).parent());
+          self.open($(this).parent());
         }
       });
     },
     
     open: function($tab)
     {
-      var menu = this;
+      var self = this;
       
       $tab.addClass(this.options.hoverClass).find('> ul').outClick(function()
       {
-        menu.close();
-        menu.lock = true;
+        self.close();
+        self.lock = true;
         $(document).bind('mouseup', function()
         {
           setTimeout(function()
           {
-            menu.lock = false;
+            self.lock = false;
           }, 50);
         });
       });
       
-      menu.$tabs.not($tab).bind('mouseover', function()
+      self.$tabs.not($tab).bind('mouseover', function()
       {
-        menu.close().open($(this));
+        self.close().open($(this));
       });
+
+      self.options.open.apply($tab);
     },
     
     close: function()
