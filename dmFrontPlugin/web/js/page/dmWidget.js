@@ -22,7 +22,7 @@ $.widget('ui.dmWidget', {
     var $dialog = $.dm.ctrl.ajaxDialog({
       url:          $.dm.ctrl.getHref('+/dmWidget/edit'),
       data:         { widget_id: widget.getId() },
-      title:        $('a.dm_widget_edit', widget.element).attr('title'),
+      title:        $('a.dm_widget_edit', widget.element).attr('original-title'),
       width:        370,
 			'class':      'dm_widget_edit_dialog_wrap '+dialogClass,
       beforeClose:  function()
@@ -102,6 +102,9 @@ $.widget('ui.dmWidget', {
           });
         });
       });
+
+      // enable tool tips
+      $dialog.parent().find('a[title], input[title]').tipsy({gravity: 's'});
       
       $form.find('form').dmAjaxForm({
         beforeSubmit: function(data) {

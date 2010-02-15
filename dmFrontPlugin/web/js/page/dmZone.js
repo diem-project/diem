@@ -36,7 +36,7 @@ $.widget('ui.dmZone', {
     var $dialog = $.dm.ctrl.ajaxDialog({
       url:      $.dm.ctrl.getHref('+/dmZone/edit'),
       data:     { zone_id: zone.getId() },
-      title:    $('#dm_zone_'+zone.getId()+' > a.dm_zone_edit').attr('title'),
+      title:    $('#dm_zone_'+zone.getId()+' > a.dm_zone_edit').attr('original-title'),
 			'class':  dialog_class,
       beforeClose:  function()
       {
