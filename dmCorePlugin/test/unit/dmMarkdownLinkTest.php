@@ -4,7 +4,7 @@ require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
 $helper = new dmUnitTestHelper();
 $helper->boot('front');
 
-$t = new lime_test(88);
+$t = new lime_test(91);
 
 $markdown = $helper->get('markdown');
 dm::loadHelpers(array('Dm'));
@@ -138,3 +138,8 @@ $source = '[link to email](mailto:test@mail.com)';
 $t->is($result = $markdown->toText($source), 'link to email', $result);
 $t->is($result = $markdown->brutalToText($source), 'link to email', $result);
 $t->is($result = $markdown->toHtml($source), '<p class="dm_first_p">'._link('mailto:test@mail.com')->text('link to email')->render().'</p>', $result);
+
+$source = '[DRY](http://c2.com/cgi/wiki?DontRepeatYourself)';
+$t->is($result = $markdown->toText($source), 'DRY', $result);
+$t->is($result = $markdown->brutalToText($source), 'DRY', $result);
+$t->is($result = $markdown->toHtml($source), '<p class="dm_first_p"><a class="link" href="http://c2.com/cgi/wiki?DontRepeatYourself">DRY</a></p>', $result);

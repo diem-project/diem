@@ -4,7 +4,11 @@ require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
 $helper = new dmUnitTestHelper();
 $helper->boot('front');
 
-$t = new lime_test(39);
+$t = new lime_test(40);
+
+dm::loadHelpers(array('Dm'));
+
+$t->is((string)_link('http://c2.com/cgi/wiki?DontRepeatYourself')->text('DRY'), $expected = '<a class="link" href="http://c2.com/cgi/wiki?DontRepeatYourself">DRY</a>', $expected);
 
 sfConfig::set('sf_no_script_name', false);
 
@@ -31,8 +35,6 @@ $testPage = dmDb::create('DmPage', array(
 ));
 
 $testPage->Node->insertAsLastChildOf($home);
-
-dm::loadHelpers(array('Dm'));
 
 $scriptName = $helper->get('request')->getScriptName();
 $t->diag('Current cli script name = '.$scriptName);

@@ -183,6 +183,15 @@ abstract class dmBaseLinkTag extends dmHtmlTag
         dmString::getBaseFromUrl($attributes['href']),
         array_merge(dmString::getDataFromUrl($attributes['href']), $attributes['params'])
         );
+
+        /*
+         * if last href char is a =, remove it
+         * fixes http://github.com/diem-project/diem/issues/#issue/6
+         */
+        if('=' === substr($attributes['href'], -1))
+        {
+          $attributes['href'] = substr($attributes['href'], 0, strlen($attributes['href']) - 1);
+        }
       }
       
       unset($attributes['params']);

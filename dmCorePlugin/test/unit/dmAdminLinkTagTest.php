@@ -4,9 +4,11 @@ require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
 $helper = new dmUnitTestHelper();
 $helper->boot('admin');
 
-$t = new lime_test(13);
+$t = new lime_test(14);
 
 dm::loadHelpers(array('Dm'));
+
+$t->is((string)_link('http://c2.com/cgi/wiki?DontRepeatYourself')->text('DRY'), $expected = '<a class="link" href="http://c2.com/cgi/wiki?DontRepeatYourself">DRY</a>', $expected);
 
 $scriptName = $helper->get('request')->getRelativeUrlRoot();
 $t->diag('Current cli script name = '.$scriptName);
