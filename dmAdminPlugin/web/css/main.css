@@ -1,4 +1,4 @@
-body{font:12px arial,helvetica,verdana,sans-serif;*font-size:small;*font:x-small;}select,input,button,textarea{font:99% arial,helvetica,clean,sans-serif;}table{font-size:inherit;font:100%;}pre,code{font-family:monospace;font-size:108%;line-height:100%;}
+body{font:12px arial,helvetica,verdana,sans-serif;}select,input,button,textarea{font:99% arial,helvetica,clean,sans-serif;}table{font-size:inherit;font:100%;}pre,code{font-family:monospace;font-size:108%;line-height:100%;}
 h1{
   font-size:138.5%;
   height: 2em;
@@ -160,6 +160,15 @@ div.dm_gallery_medium a.dm_gallery_link {
 .quiet {
   font-size: 90%;
   color: #888;
+}
+
+.help_box {
+  background: #eeeeff;
+  padding: 10px;
+  border: 1px solid #ddddff;
+  margin: 1em;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
 }
 
 div.dm_admin_homepage_column {

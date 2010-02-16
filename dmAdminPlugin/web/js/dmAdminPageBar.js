@@ -10,8 +10,6 @@
 
     extendTreeOptions: function($tree, options)
     {
-      options.selected = $tree.find('> ul > li:first').attr('id');
-
       return options;
     }
     

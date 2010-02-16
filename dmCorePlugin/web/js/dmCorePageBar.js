@@ -109,6 +109,8 @@
 
     getTreeOptions: function($tree)
     {
+      var rootId = $tree.find('> ul > li:first').attr('id');
+      
       return this.extendTreeOptions($tree, {
         ui: {
           theme_path: $.dm.ctrl.options.dm_core_asset_root + 'lib/dmTree/',
@@ -143,8 +145,13 @@
           onrgtclk: function(NODE, TREE_OBJ, EV)
           {
             EV.preventDefault(); EV.stopPropagation(); return false;
+          },
+          beforeclose: function(node, tree)
+          {
+            return node.id != rootId;
           }
-        }
+        },
+        opened: [rootId]
       });
     }
     

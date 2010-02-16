@@ -17,7 +17,7 @@
 
     extendTreeOptions: function($tree, options)
     {
-      options.selected = 'dmp' + $.dm.ctrl.options.page_id;
+      options.selected = ['dmp' + $.dm.ctrl.options.page_id];
 
       options.callback.ondblclk = function(NODE, TREE_OBJ)
       {
