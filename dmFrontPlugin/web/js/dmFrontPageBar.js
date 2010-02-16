@@ -12,6 +12,9 @@
     {
       this.element.find('a').each(function() {
         $(this).attr('href', $.dm.ctrl.options.script_name+$(this).attr('href'));
+      }).dblclick(function() {
+        $('body').block();
+        location.href = $(this).attr('href');
       });
     },
 
