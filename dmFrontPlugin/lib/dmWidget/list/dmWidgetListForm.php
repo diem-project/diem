@@ -67,7 +67,7 @@ class dmWidgetListForm extends dmWidgetProjectModelForm
         $this->widgetSchema[$filterName]    = new sfWidgetFormDoctrineChoice(array(
           'model'     => $filterModule->getModel(),
           'add_empty' => $this->allowFilterAutoRecordId($filterModule)
-          ? sprintf('(%s) %s', $this->__('automatic'), $this->getFilterAutoRecord($filterModule)->__toString())
+          ? sprintf('(%s) %s', $this->__('contextual'), $this->getFilterAutoRecord($filterModule)->__toString())
           : false
         ));
         $this->widgetSchema[$filterName]->setLabel($filterModule->getName());
