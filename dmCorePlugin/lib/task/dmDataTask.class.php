@@ -533,6 +533,8 @@ EOF;
           'admin',
           'content',
           'tool_bar_admin',
+          'page_bar_admin',
+          'media_bar_admin',
           'see_log',
           'site_view',
           'see_chart'

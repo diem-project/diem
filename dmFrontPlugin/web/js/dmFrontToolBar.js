@@ -34,7 +34,7 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
       if (!$('body > div.dm_page_edit_dialog').length) 
       {
         $dialog = $.dm.ctrl.ajaxDialog({
-          title:    $(this).attr('title'),
+          title:    $(this).attr('original-title'),
           'class':  'dm_page_edit_dialog',
           url:      $(this).attr('href'),
           width:    400
@@ -74,7 +74,7 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
 			var $link = $('a.code_editor', this.element);
       
       $dialog = $.dm.ctrl.ajaxDialog({
-        title:    $link.attr('title'),
+        title:    $link.attr('original-title'),
         'class':  'dm_code_editor_dialog',
         width:    500,
         height:   300,

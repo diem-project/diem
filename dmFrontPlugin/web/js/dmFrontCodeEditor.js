@@ -42,6 +42,8 @@
         self.$tabs.tabs('add', url, html);
         return false;
       });
+
+      self.$dialog.find('a[title]').tipsy({gravity: 's'});
       
       if ($.isFunction(self.options.callback || null)) 
       {
