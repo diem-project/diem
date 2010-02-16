@@ -94,7 +94,7 @@
           zIndex: 1000,
           helper: function(e)
           {
-            return $('<div class="dm_page_draggable_helper">').html($(this).find('a:first').clone()).appendTo($('body'));
+            return $('<div class="dm dm_page_draggable_helper">').html($(this).find('a:first').clone()).appendTo($('body'));
           },
           start: function(event, ui)
           {
