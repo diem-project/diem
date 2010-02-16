@@ -5,14 +5,15 @@ echo _open('div.dm_page_manager.ui-tabs.ui-widget.ui-widget-content.ui-corner-al
 include_partial('dmPage/tabs');
 
 echo _open('table#dm_page_meta_table', array('json' => array(
-  'translation_url' => _link('dmPage/tableTranslation')->getHref()
+  'translation_url' => _link('dmPage/tableTranslation')->getHref(),
+  'edition_url' => _link('dmPage/editField')->getHref()
 )));
 
 echo _open('thead')._open('tr');
 
 foreach($fields as $field)
 {
-  echo _tag('th', __($field));
+  echo _tag('th', $pageMetaView->renderField($field));
 }
 
 echo _close('thead')._close('tr');
@@ -21,10 +22,12 @@ echo _open('tbody');
 
 foreach($pages as $page)
 {
-  echo '<tr>';
+  $pageMetaView->setPage($page);
+  
+  echo _open('tr#'.$page['id']);
   foreach($fields as $field)
   {
-    echo sprintf('<td rel="%s">%s</td>', $field, $page[$field]);
+    echo $pageMetaView->renderMeta($field);
   }
   echo '</tr>';
 }

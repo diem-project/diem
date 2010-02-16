@@ -141,7 +141,7 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
     }
     else if ('Boolean' == $field->getType())
     {
-      $html = "sprintf('<span class=\"s16block s16_%s {field: \'%s\'}\"></span>', ".$html." ? 'tick' : 'cross', '".$fieldName."')";
+      $html = "sprintf('<a class=\"s16block s16_%s {field: \'%s\'}\" title=\"%s\"></a>', ".$html." ? 'tick' : 'cross', '".$fieldName."', __('Click to edit'))";
     }
     /*
      * Local Relation

@@ -10,9 +10,25 @@ class BasedmPageActions extends dmAdminBaseActions
 
   public function executeManageMetas()
   {
-    $this->pages = dmDb::query('DmPage p')->withI18n()->fetchRecords();
+    $this->pages = dmDb::query('DmPage p')
+    ->withI18n()
+    ->select('p.id, p.lft, p.level, p.action, pTranslation.name as name, pTranslation.slug as slug, pTranslation.title as title, pTranslation.h1 as h1, pTranslation.description as description, pTranslation.is_active as is_active')
+    ->fetchArray();
 
-    $this->fields = array('name', 'title', 'description', 'is_active');
+    $this->fields = array('lft', 'name', 'slug', 'title', 'h1', 'description', 'is_active');
+
+    $this->pageMetaView = new dmAdminPageMetaView($this->getHelper(), $this->getI18n());
+  }
+
+  public function executeEditField(sfWebRequest $request)
+  {
+    $this->forward404Unless($page = dmDb::table('DmPage')->find($request->getParameter('page_id')));
+    $field = $request->getParameter('field');
+
+    $page->set($field, $request->getParameter('value'));
+    $page->save();
+
+    return $this->renderText($page->get($field));
   }
 
   public function executeTableTranslation()

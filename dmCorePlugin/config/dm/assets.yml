@@ -47,6 +47,7 @@ js:
     panView:          panview/jquery-plugin-panview.min
     tipsy:            tipsy/javascripts/jquery.tipsy.min
     dataTable:        dataTables-1.6/js/jquery.dataTables.min
+    jeditable:        jeditable/jquery.jeditable.min
 
 css:
 

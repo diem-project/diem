@@ -73,6 +73,9 @@
 .dm .ui-icon-closethick { background-position: -96px -128px; }
 .dm .ui-icon-circle-triangle-e { background-position: -48px -192px; }
 .dm .ui-icon-circle-triangle-w { background-position: -80px -192px; }
+.ui-icon-carat-2-n-s { background-position: -128px 0; }
+.ui-icon-triangle-1-n { background-position: 0 -16px; }
+.ui-icon-triangle-1-s { background-position: -64px -16px; }
 
 /* Misc visuals
 ----------------------------------*/

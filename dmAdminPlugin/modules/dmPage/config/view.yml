@@ -6,4 +6,4 @@ reorderPagesSuccess:
 
 manageMetasSuccess:
   stylesheets:  [ admin.manualSeo ]
-  javascripts:  [ lib.dataTable, admin.manualSeo ]
+  javascripts:  [ lib.jeditable, lib.dataTable, admin.manualSeo ]

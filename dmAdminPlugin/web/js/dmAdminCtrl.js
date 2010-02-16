@@ -149,7 +149,7 @@
       });
 
       // toggle booleans
-      self.$.find('td.sf_admin_boolean span').click(function() {
+      self.$.find('td.sf_admin_boolean a').click(function() {
         $(this).toggleClass('s16_tick s16_cross');
         $.ajax({
           url:      self.$.find('tbody').metadata().toggle_url,
