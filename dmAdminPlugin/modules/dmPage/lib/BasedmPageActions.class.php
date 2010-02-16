@@ -10,6 +10,7 @@ class BasedmPageActions extends dmAdminBaseActions
 
   public function executeTree()
   {
+    sfConfig::set('dm_pageBar_enabled', false);
     $this->tree = $this->getService('page_tree_view', 'dmAdminFullPageTreeView');
   }
 

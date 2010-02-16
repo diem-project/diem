@@ -134,9 +134,6 @@
             icon: { position: '0 -848px;'}
           }
         },
-        rules: {
-          multiple: false
-        },
         callback: {
           onselect: function(NODE, TREE_OBJ)
           {
@@ -147,9 +144,6 @@
           {
             EV.preventDefault(); EV.stopPropagation(); return false;
           }
-        },
-        plugins : {
-          cookie : { prefix : "jstree_" }
         }
       });
     }
