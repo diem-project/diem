@@ -1,8 +1,14 @@
 all:
   credentials: [ manage_pages, manual_metas ]
 
-tree:
+reorderPages:
   credentials: [ manage_pages ]
 
-seo:
+move:
+  credentials: [ manage_pages ]
+
+manageMetas:
+  credentials: [ manual_metas ]
+
+tableTranslations:
   credentials: [ manual_metas ]

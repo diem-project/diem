@@ -46,6 +46,7 @@ js:
     fieldSelection:   jquery-fieldselection/jquery-fieldselection
     panView:          panview/jquery-plugin-panview.min
     tipsy:            tipsy/javascripts/jquery.tipsy.min
+    dataTable:        dataTables-1.6/js/jquery.dataTables.min
 
 css:
 

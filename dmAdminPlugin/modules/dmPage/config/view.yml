@@ -1,10 +1,9 @@
 all:
   stylesheets:  [ lib.ui-tabs ]
 
-treeSuccess:
-  stylesheets:  [ admin.pageTree ]
+reorderPagesSuccess:
   javascripts:  [ lib.jstree, admin.pageTree ]
 
-seoSuccess:
+manageMetasSuccess:
   stylesheets:  [ admin.manualSeo ]
-  javascripts:  [ admin.manualSeo ]
+  javascripts:  [ lib.dataTable, admin.manualSeo ]
