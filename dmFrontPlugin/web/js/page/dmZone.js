@@ -41,12 +41,15 @@ $.widget('ui.dmZone', {
       beforeClose:  function()
       {
         if (zone.deleted) return;
-        setTimeout(function() {
+        
+        setTimeout(function()
+        {
           $.ajax({
 						dataType: 'json',
             url:      $.dm.ctrl.getHref('+/dmZone/getAttributes'),
             data:     { zone_id: zone.getId() },
-            success:  function(datas) {
+            success:  function(datas)
+            {
               zone.element.attr('class', 'dm_zone '+ (datas[1] || "").replace(/\./g, ' ')).css('width', datas[0]);
             }
           });
@@ -60,11 +63,13 @@ $.widget('ui.dmZone', {
        */
       $dialog.dmFrontForm();
       var $form = $('form', $dialog).dmAjaxForm({
-        beforeSubmit: function() {
+        beforeSubmit: function()
+        {
           $dialog.block();
           zone.element.block();
         },
-        success:  function(html) {
+        success:  function(html)
+        {
           if (html == 'ok') {
             $dialog.dialog('close');
           }
@@ -77,7 +82,7 @@ $.widget('ui.dmZone', {
       });
       
       $('a.delete', $form).click(function() {
-        if (confirm($(this).attr('title')+" ?")) {
+        if (confirm($(this).attr('original-title')+" ?")) {
           zone._delete();
           $dialog.dialog('close');
         }

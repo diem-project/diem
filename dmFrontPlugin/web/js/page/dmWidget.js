@@ -35,8 +35,10 @@ $.widget('ui.dmWidget', {
     }).bind('dmAjaxResponse', function() {
       $dialog.prepare();
 
-      $('a.delete', $dialog).click(function() {
-        if (confirm($(this).attr('title')+" ?")) {
+      $('a.delete', $dialog).click(function()
+      {
+        if (confirm($(this).attr('original-title')+" ?"))
+        {
           widget._delete();
           $dialog.dialog('close');
         }

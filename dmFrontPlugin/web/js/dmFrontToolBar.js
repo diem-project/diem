@@ -221,7 +221,7 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
             if (!$('body > div.dm_page_add_dialog').length)
             {
               $dialog = $.dm.ctrl.ajaxDialog({
-                title:    $(this).attr('title'),
+                title:    $(this).attr('original-title'),
                 'class':  'dm_page_add_dialog',
                 url:      $(this).attr('href'),
                 width:    400
