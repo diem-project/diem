@@ -4,7 +4,7 @@ require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
 $helper = new dmUnitTestHelper();
 $helper->boot('front');
 
-$t = new lime_test(18);
+$t = new lime_test(21);
 
 $forms = $helper->get('form_manager');
 
@@ -23,12 +23,13 @@ catch(Exception $e)
 $forms['dmUser'] = new DmUserForm;
 
 $form = $forms['dmUser'];
+$widgetSchema = $form->getWidgetSchema();
 
 $t->isa_ok($form, 'DmUserForm', 'Created a DmUserForm');
 
 $form->setName('first_dmUser_form');
 
-$form->getWidgetSchema()->setHelp('username', 'username help');
+$widgetSchema->setHelp('username', 'username help');
 
 $t->is($form->getName(), 'first_dmUser_form', 'Changed form name to first_dmUser_form');
 
@@ -75,3 +76,16 @@ $t->is(substr_count($form->open().$form['username'].$form->renderHiddenFields().
 $t->is(substr_count($form->open().$form['username'].$form['password'].$form->renderHiddenFields().$form->close(), 'first_dmUser_form[_csrf_token]'), 1, 'CRSF protection outputed once');
 
 $t->is(substr_count($form->open().$form['username']->label()->error()->field().$form['password']->label()->error()->field().$form->renderHiddenFields().$form->close(), 'first_dmUser_form[_csrf_token]'), 1, 'CRSF protection outputed once');
+
+$widgetSchema['username']->setAttribute('class', 'test_class_1');
+$got = (string)$form['username']->render();
+$expected = '<input class="test_class_1" type="text" name="first_dmUser_form[username]" id="first_dmUser_form_username" />';
+$t->is($got, $expected, $got);
+
+$got = (string)$form['username']->field();
+$expected = '<input class="test_class_1 required" type="text" name="first_dmUser_form[username]" id="first_dmUser_form_username" />';
+$t->is($got, $expected, $got);
+
+$got = (string)$form['username']->field('.other_class');
+$expected = '<input class="test_class_1 other_class required" type="text" name="first_dmUser_form[username]" id="first_dmUser_form_username" />';
+$t->is($got, $expected, $got);

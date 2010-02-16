@@ -23,8 +23,13 @@ class dmFormField extends sfFormField
   public function field($attributes = array())
   {
     $attributes = dmString::toArray($attributes);
+
+    $parentAttributes = $this->parent->getWidget()->offsetGet($this->name)->getAttributes();
     
-    $attributes['class'] = dmArray::get($attributes, 'class', array());
+    $attributes['class'] = array_merge(
+      (array) dmArray::get($parentAttributes, 'class'),
+      dmArray::get($attributes, 'class', array())
+    );
     
     if ($this->isRequired)
     {
@@ -36,8 +41,8 @@ class dmFormField extends sfFormField
     }
     
     $attributes['class'] = dmArray::toHtmlCssClasses($attributes['class']);
-    
-    $this->htmlBuffer .= parent::render($attributes);
+
+    $this->htmlBuffer .= parent::render(array_merge($parentAttributes, $attributes));
     
     return $this;
   }
