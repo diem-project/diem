@@ -1,10 +1,9 @@
 all:
-  stylesheets:  [ lib.ui-tabs, lib.ui-accordion ]
-  javascripts:  [ lib.ui-accordion ]
+  stylesheets:  [ lib.ui-tabs ]
 
 treeSuccess:
   stylesheets:  [ admin.pageTree ]
-  javascripts:  [ lib.jstree, admin.pageTree ]
+  javascripts:  [ lib.jstree09, admin.pageTree ]
 
 seoSuccess:
   stylesheets:  [ admin.manualSeo ]
