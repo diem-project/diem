@@ -9,7 +9,7 @@ class dmInterfaceActions extends BasedmInterfaceActions
   {
     return $this->renderAsync(array(
       'html'  => $this->getService('page_tree_view')->render(),
-      'js'    => array('lib.jstree')
+      //'js'    => array('lib.jstree')
     ), true);
   }
 
