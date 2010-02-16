@@ -5,33 +5,37 @@
   {
     _init: function()
     {
-   this.markitup();
-   
-   this.selection = null;
-   
-   this.drop();
-   
-   this.saveSelection();
+      this.markitup();
+
+      this.selection = null;
+
+      this.drop();
+
+      this.saveSelection();
     },
   
   saveSelection: function()
   {
-   var self = this;
-   
-   $('#dm_page_bar_toggler, #dm_media_bar_toggler').bind('click', function()
-   {
-      self.selection = self.element.getSelection();
-   });
+    var self = this;
+
+    $('#dm_page_bar_toggler, #dm_media_bar_toggler').bind('click', function()
+    {
+      try
+      {
+        self.selection = self.element.getSelection();
+      }
+      catch(e){}
+    });
   },
   
   getSelection: function()
   {
-   return (this.selection && this.selection.length) ? this.selection : this.element.getSelection();
+    return (this.selection && this.selection.length) ? this.selection : this.element.getSelection();
   },
   
   markitup: function()
   {
-      this.element.markItUp(dmMarkitupMarkdown);
+    this.element.markItUp(dmMarkitupMarkdown);
   },
   
   drop: function()
