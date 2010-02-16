@@ -16,9 +16,9 @@ class BasedmPageActions extends dmAdminBaseActions
 
   public function executeMetas()
   {
-    $this->pages = dmDb::table('DmPage')->withI18n()->fetchRecords();
+    $this->pages = dmDb::query('DmPage p')->withI18n()->fetchRecords();
 
-    $fields = array('name', 'title', 'description', '');
+    $fields = array('name', 'title', 'description', 'is_active');
   }
 
   public function executeMove(sfWebRequest $request)
