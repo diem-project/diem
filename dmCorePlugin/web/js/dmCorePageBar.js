@@ -81,9 +81,7 @@
       
       $tree = $('#dm_page_tree');
 
-      $.jstree._themes = $.dm.ctrl.options.dm_core_asset_root+'lib/jstree10b2/themes/';
-      
-      $tree.jstree(self.getTreeOptions($tree));
+      $tree.tree(self.getTreeOptions($tree));
       
       if ($.fn.draggable) 
       {
@@ -107,6 +105,53 @@
           }
         });
       }
+    },
+
+    getTreeOptions: function($tree)
+    {
+      return this.extendTreeOptions($tree, {
+        ui: {
+          theme_path: $.dm.ctrl.options.dm_core_asset_root + 'lib/dmTree/',
+          theme_name: 'page-panel',
+          animation	: 200
+        },
+        types: {
+          'default': {
+            icon: { image:  $.dm.ctrl.options.dm_core_asset_root + 'images/16/sprite.png'},
+            clickable: true,
+            renameable: false,
+            deletable: false,
+            creatable: false,
+            draggable: false,
+            max_children: -1,
+            max_depth: -1,
+            valid_children: "all"
+          },
+          'manual': {
+            icon: { position: '0 -864px;'}
+          },
+          'auto': {
+            icon: { position: '0 -848px;'}
+          }
+        },
+        rules: {
+          multiple: false
+        },
+        callback: {
+          onselect: function(NODE, TREE_OBJ)
+          {
+            TREE_OBJ.toggle_branch.call(TREE_OBJ, NODE);
+          },
+          // right click - to prevent use: EV.preventDefault(); EV.stopPropagation(); return false
+          onrgtclk: function(NODE, TREE_OBJ, EV)
+          {
+            EV.preventDefault(); EV.stopPropagation(); return false;
+          }
+        },
+        plugins : {
+          cookie : { prefix : "jstree_" }
+        }
+      });
     }
     
   };

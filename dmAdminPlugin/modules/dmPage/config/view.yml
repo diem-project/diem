@@ -3,7 +3,7 @@ all:
 
 treeSuccess:
   stylesheets:  [ admin.pageTree ]
-  javascripts:  [ lib.jstree09, admin.pageTree ]
+  javascripts:  [ lib.jstree, admin.pageTree ]
 
 seoSuccess:
   stylesheets:  [ admin.manualSeo ]

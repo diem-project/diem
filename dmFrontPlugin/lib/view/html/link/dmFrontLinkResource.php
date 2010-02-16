@@ -49,7 +49,7 @@ class dmFrontLinkResource
        * If a blank space is found in the source,
        * remove characters after it
        * because they are just a comment
-       * ex : page:1?var=val Home
+       * i.e. page:1?var=val Home
        */
       if ($blankSpacePos = strpos($source, ' '))
       {

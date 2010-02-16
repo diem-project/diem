@@ -1,0 +1,57 @@
+/* LOCKED */
+div.tree-page-panel .locked li a { color:gray; }
+/* DOTS */
+div.tree-page-panel ul { background-position:6px 1px; background-repeat:repeat-y; background-image:url(data:image/gif;base64,R0lGODlhAgACAIAAAB4dGf///yH5BAEAAAEALAAAAAACAAIAAAICRF4AOw==); }
+div.tree-page-panel li { background-position:-64px -16px; background-repeat:no-repeat; background-image:url("icons.png"); }
+/* NO DOTS */
+div.tree-page-panel .no_dots, div.tree-page-panel .no_dots ul { background:transparent; }
+div.tree-page-panel .no_dots li.leaf { background-image:none; background-color:transparent; }
+/* OPEN or CLOSED */
+div.tree-page-panel li.open { background:url("icons.png") -32px -48px no-repeat; }
+div.tree-page-panel li.closed, #jstree-draggeddiv.tree-page-panel li li.open { background:url("icons.png") -48px -32px no-repeat; }
+#jstree-marker { background-image:url("icons.png"); }
+/* DEFAULT, HOVER, CLICKED, LOADING STATES */
+div.tree-page-panel li a, div.tree-page-panel li span { border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; }
+div.tree-page-panel li a:hover, div.tree-page-panel li a.hover, div.tree-page-panel li span { background: #e7f4f9; border:1px solid #d8f0fa; padding:0px 3px 0px 3px; }
+div.tree-page-panel li a.clicked, div.tree-page-panel li a.clicked:hover, div.tree-page-panel li span.clicked { background: #beebff; border:1px solid #99defd; padding:0px 3px 0px 3px; }
+/* ICONS */
+div.tree-page-panel ins { background-image:url("icons.png"); background-position:0 0; background-repeat:no-repeat; }
+div.tree-page-panel ul li a.loading ins { background-image:url("throbber.gif") !important; background-position:0 0 !important; } /* UL is added to make selector stronger */
+div.tree-page-panel li a ins.forbidden { background-position:-16px -16px; }
+div.tree-page-panel .locked li a ins { background-position:0 -48px; }
+div.tree-page-panel li span ins { background-position:-16px 0; }
+#jstree-draggeddiv.tree-page-panel ins { background:url("icons.png") -16px -32px no-repeat !important; }
+#jstree-draggeddiv.tree-page-panel ins.forbidden { background:url("icons.png") -16px -16px no-repeat !important; }
+
+/* CONTEXT MENU */
+div.tree-page-panel-context a ins { background-image:url("icons.png"); background-repeat:no-repeat; background-position:-64px -64px; }
+div.tree-page-panel-context a ins.create { background-position:0 -16px; }
+div.tree-page-panel-context a ins.rename { background-position:-16px 0px; }
+div.tree-page-panel-context a ins.remove { background-position:0 -32px; }
+
+/* DIEM OVERRIDE */
+div.dm div.tree-page-panel li {
+  line-height: inherit;
+  line-height:18px;
+  padding:0 0 0 15px;
+  overflow: hidden;
+  height:18px;
+  font-size: 12px;
+}
+div.dm div.tree-page-panel li.open {
+  height: auto;
+}
+div.dm div.tree-page-panel li ins {
+  vertical-align: middle;
+}
+div.dm div.tree-page-panel li a {
+  padding:1px;
+  line-height:16px;
+  margin:0;
+}
+div.dm div.tree-page-panel li a:hover,
+div.dm div.tree-page-panel li a.hover,
+div.dm div.tree-page-panel li a.clicked,
+div.dm div.tree-page-panel li a.clicked:hover {
+  padding:0px;
+}

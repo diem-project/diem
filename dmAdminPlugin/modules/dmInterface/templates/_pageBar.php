@@ -1,6 +1,6 @@
 <?php
 
-echo _open('div#dm_page_bar');
+echo _open('div#dm_page_bar.dm');
 
   echo _tag('p.title', __('Site tree')._link('dmPage/tree')->text(__('Edit'))->set('.fright.mr10.s16.s16_sort'));
 

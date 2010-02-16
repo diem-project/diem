@@ -12,26 +12,21 @@
     {
       this.element.find('a').each(function() {
         $(this).attr('href', $.dm.ctrl.options.script_name+$(this).attr('href'));
-      }).dblclick(function() {
-        $('body').block();
-        location.href = $(this).attr('href');
       });
     },
 
-    getTreeOptions: function($tree)
+    extendTreeOptions: function($tree, options)
     {
-			return {
-        animation: 300,
-        plugins: ['ui', 'cookies', 'html_data', 'themes'],
-        themes: {
-          theme: "pagebar",
-          dots : true,
-          icons: false
-        },
-        ui: {
-          initially_open: ['dmp' + $.dm.ctrl.options.page_id]
-        }
-      };
+      options.selected = 'dmp' + $.dm.ctrl.options.page_id;
+
+      options.callback.ondblclk = function(NODE, TREE_OBJ)
+      {
+        $('body').block();
+        location.href = $('a', NODE).attr('href');
+        return false;
+      }
+
+      return options;
     }
     
   }));

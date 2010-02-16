@@ -7,21 +7,12 @@
     {
       this.initPageBar();
     },
-    
-    getTreeOptions: function($tree)
+
+    extendTreeOptions: function($tree, options)
     {
-      return {
-        animation: 300,
-        plugins: ['ui', 'cookies', 'html_data', 'themes'],
-        themes: {
-          theme: 'pagebar',
-          dots : true,
-          icons: false
-        },
-        ui: {
-          initially_open: [$tree.find('> ul > li:first').attr('id')]
-        }
-      };
+      options.selected = $tree.find('> ul > li:first').attr('id');
+
+      return options;
     }
     
   }));

@@ -24,7 +24,7 @@ abstract class dmPageTreeView extends dmConfigurable
     $this->configure($options);
   }
 
-  abstract protected function getPageLink(array $page);
+  abstract protected function renderPageLink(array $page);
 
   protected function getRecordTree()
   {
@@ -87,11 +87,16 @@ abstract class dmPageTreeView extends dmConfigurable
       $html = str_repeat('</li></ul>', $this->lastLevel - $this->level).'</li>';
     }
 
-    $html .= '<li id="dmp'.$page[0].'">';
+    $html .= $this->renderOpenLi($page);
 
-    $html .= $this->getPageLink($page);
+    $html .= $this->renderPageLink($page);
 
     return $html;
+  }
+
+  protected function renderOpenLi(array $page)
+  {
+    return '<li id="dmp'.$page[0].'" rel="'.($page[1] === 'show' ? 'auto' : 'manual').'">';
   }
 
 }

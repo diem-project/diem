@@ -1,12 +1,5 @@
 <?php
 
-class dmAdminFullPageTreeView extends dmPageTreeView
+class dmAdminFullPageTreeView extends dmAdminPageTreeView
 {
-
-  protected function getPageLink(array $page)
-  {
-    $type = $page[1] === 'show' ? 'auto' : 'manual';
-
-    return '<a rel="'.$type.'">'.$page[5].'</a>';
-  }
 }

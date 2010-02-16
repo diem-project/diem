@@ -42,8 +42,7 @@ js:
     expose:           expose/jquery.expose-1.0.1.min
     qtip:             qtip/jquery.qtip-1.0.0-rc3.min
     hotkeys:          hotkeys/jquery.hotkeys-0.7.9.min
-    jstree:           jstree10b2/jquery.jstree.hack.min
-    jstree09:         jstree099b2/jquery.tree.min
+    jstree:           jstree099b2/jquery.tree.min
     fieldSelection:   jquery-fieldselection/jquery-fieldselection
     panView:          panview/jquery-plugin-panview.min
     tipsy:            tipsy/javascripts/jquery.tipsy.min
