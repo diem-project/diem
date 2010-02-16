@@ -29,7 +29,7 @@ $.widget('ui.dmWidget', {
       {
         if (!widget.deleted)
         {
-          widget.reload();
+          widget.reload(500);
         }
       }
     }).bind('dmAjaxResponse', function() {
@@ -159,20 +159,23 @@ $.widget('ui.dmWidget', {
     self.element.slideUp(500, function() { self.destroy(); self.element.remove(); });
   },
 
-  reload: function()
+  reload: function(timeout)
   {
     var self = this;
 
     self.element.block();
-    
-    $.ajax({
-      url:      $.dm.ctrl.getHref('+/dmWidget/getFull'),
-      data:     { widget_id: self.getId() },
-      success:  function(html)
-      {
-        self.replace(html);
-      }
-    });
+
+    setTimeout(function()
+    {
+      $.ajax({
+        url:      $.dm.ctrl.getHref('+/dmWidget/getFull'),
+        data:     { widget_id: self.getId() },
+        success:  function(html)
+        {
+          self.replace(html);
+        }
+      });
+    }, timeout || 0);
   },
 
   replace: function(html)
