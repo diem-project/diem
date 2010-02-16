@@ -23,7 +23,7 @@ div.console div.dm_box_inner
   font-size: 12px;
   padding-left: 20px;
   margin-left: 30px;
-  background: url(../images/16/loader.gif) center left no-repeat;
+  background: url(../images/16/gear.png) center left no-repeat;
   display: none;
   color: #fff; 
 }

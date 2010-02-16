@@ -58,7 +58,7 @@ $.widget('ui.dmWidget', {
       {
         $cutCopy.appendTo($dialog.parent().find('div.ui-dialog-titlebar')).show().find('a').click(function()
         {
-          var $a = $(this).addClass('s16loading');
+          var $a = $(this).addClass('s16_gear');
           
           $.ajax({
             url:      $(this).attr('href'),
@@ -66,7 +66,7 @@ $.widget('ui.dmWidget', {
             {
               $('#dm_tool_bar').dmFrontToolBar('reloadAddMenu', function()
               {
-                $a.removeClass('s16loading');
+                $a.removeClass('s16_gear');
               });
             }
           });

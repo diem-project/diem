@@ -33,7 +33,7 @@ $.dm.coreToolBar = {
 
     $link.click(function()
     {
-      $link.addClass('s16loading');
+      $link.addClass('s16_gear');
       $.blockUI();
       $.ajax({
         url:      $link.attr('href'),

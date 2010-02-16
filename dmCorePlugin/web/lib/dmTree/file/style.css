@@ -183,7 +183,7 @@
   height: 14px;
 }
 .tree .tree-file  li a.loading {
-  background: transparent url(../../../images/16/loader.gif) no-repeat top left;
+  background: transparent url(../../../images/16/gear.png) no-repeat top left;
   height: 14px;
 }
 /*********************************** DIR ********************************************/

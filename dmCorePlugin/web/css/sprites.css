@@ -21,11 +21,6 @@
   background: transparent;
 }
 
-.dm .s16loading {
-  background-image: url(../images/16/loader.gif) !important;
-  background-position: 0 0 !important;
-}
-
 .s24, .s24block, .s24right,
 .dm .s24, .dm .s24block, .dm .s24right {
   background-color: transparent !important;

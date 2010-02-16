@@ -71,7 +71,7 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
 		}
 		else
 		{
-			var $link = $('a.code_editor', this.element).addClass('s16loading');;
+			var $link = $('a.code_editor', this.element).addClass('s16_gear');
       
       $dialog = $.dm.ctrl.ajaxDialog({
         title:    $link.attr('original-title'),
@@ -85,7 +85,7 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
 					callback: callback
 				});
         
-        $link.removeClass('s16loading');
+        $link.removeClass('s16_gear');
       });
     }
 	},

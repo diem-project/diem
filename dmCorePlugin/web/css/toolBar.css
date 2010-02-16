@@ -92,6 +92,6 @@ div.dm_refresh_show ul.dm_steps > li {
 }
 
 div.dm_refresh_show ul.dm_steps > li.current {
-  background: url(../images/16/loader.gif) right top no-repeat;
+  background-image: url(../images/16/gear.png);
   color: #000;
 }
