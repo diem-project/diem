@@ -5,7 +5,11 @@ class dmWidgetContentLinkForm extends dmWidgetPluginForm
 
   public function configure()
   {
-    $this->widgetSchema['href']     = new sfWidgetFormInputText(array(), array('class' => 'dm_link_droppable'));
+    $this->widgetSchema['href']     = new sfWidgetFormInputText(array(), array(
+      'class' => 'dm_link_droppable',
+      'title' => $this->__('Accepts pages, medias and urls')
+    ));
+    
     $this->validatorSchema['href']  = new dmValidatorLinkUrl(array('required' => true));
     
     $this->widgetSchema['text']     = new sfWidgetFormTextarea(array(), array('rows' => 2));

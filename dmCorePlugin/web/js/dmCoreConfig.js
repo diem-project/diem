@@ -41,9 +41,10 @@ if ($.blockUI)
 // Performance: disable tipsy usage of $.metadata
 if($.fn.tipsy)
 {
-  $.fn.tipsy.elementOptions = function(ele, options) {
+  $.fn.tipsy.elementOptions = function(elem, options) {
     return options;
   };
+  $.fn.tipsy.defaults.delayIn = 100;
 }
 
 })(jQuery);

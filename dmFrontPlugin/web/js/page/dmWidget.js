@@ -39,6 +39,7 @@ $.widget('ui.dmWidget', {
       {
         if (confirm($(this).attr('original-title')+" ?"))
         {
+          $('body > div.tipsy').remove();
           widget._delete();
           $dialog.dialog('close');
         }

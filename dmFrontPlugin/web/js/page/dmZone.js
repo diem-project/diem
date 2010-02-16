@@ -82,7 +82,9 @@ $.widget('ui.dmZone', {
       });
       
       $('a.delete', $form).click(function() {
-        if (confirm($(this).attr('original-title')+" ?")) {
+        if (confirm($(this).attr('original-title')+" ?"))
+        {
+          $('body > div.tipsy').remove();
           zone._delete();
           $dialog.dialog('close');
         }
