@@ -53,11 +53,9 @@ $.widget('ui.dmWidget', {
        */
       if ($cutCopy = $form.find('div.dm_cut_copy_actions').orNot())
       {
-        $dialog.parent().find('div.ui-dialog-titlebar').append($cutCopy);
-        $cutCopy.show().find('a').click(function()
+        $cutCopy.appendTo($dialog.parent().find('div.ui-dialog-titlebar')).show().find('a').click(function()
         {
-          var $a = $(this), text = $(this).text();
-          $a.text('...');
+          var $a = $(this).addClass('s16loading');
           
           $.ajax({
             url:      $(this).attr('href'),
@@ -65,7 +63,7 @@ $.widget('ui.dmWidget', {
             {
               $('#dm_tool_bar').dmFrontToolBar('reloadAddMenu', function()
               {
-                $a.text(text);
+                $a.removeClass('s16loading');
               });
             }
           });

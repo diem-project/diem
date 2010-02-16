@@ -38,4 +38,12 @@ if ($.blockUI)
  });
 }
 
+// Performance: disable tipsy usage of $.metadata
+if($.fn.tipsy)
+{
+  $.fn.tipsy.elementOptions = function(ele, options) {
+    return options;
+  };
+}
+
 })(jQuery);

@@ -37,7 +37,14 @@
         $.dm.ping.init(this.options);
       }
 
-      this.$.find('a[title], input[title]').tipsy();
+      this.tips();
+    },
+
+    tips: function()
+    {
+      this.$.find('a[title]:not(div.dm_form_action_bar_bottom a), input[title]').tipsy({gravity: 'n'});
+
+      this.$.find('div.dm_form_action_bar_bottom a[title]').tipsy({gravity: 's'});
     },
 
     showMoreRelatedRecords: function()
