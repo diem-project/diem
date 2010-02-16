@@ -33,16 +33,12 @@ _tag('div#'.$baseTabId.'_links',
   _tag('ul.dm_form_elements',
     _tag('li.dm_form_element.clearfix',
       $form['titleLink']
-      ->label(__('Title'))
-      ->field('.dm_link_droppable')
-      ->error().
+      ->label(__('Title'))->field()->error().
       _tag('p.dm_help', __('Add a link to the text title').'<br />'.__('Drag & Drop a page or enter an url'))
     ).
     _tag('li.dm_form_element.clearfix',
       $form['mediaLink']
-      ->label('Media')
-      ->field('.dm_link_droppable')
-      ->error().
+      ->label(__('Media'))->field()->error().
       _tag('p.dm_help', __('Add a link to the text media').'<br />'.__('Drag & Drop a page or enter an url'))
     )
   )

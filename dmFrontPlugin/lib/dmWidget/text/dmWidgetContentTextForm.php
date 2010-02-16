@@ -10,13 +10,19 @@ class dmWidgetContentTextForm extends dmWidgetContentImageForm
     $this->widgetSchema['title'] = new sfWidgetFormInputText();
     $this->validatorSchema['title'] = new sfValidatorString(array('required' => false));
     
-    $this->widgetSchema['titleLink'] = new sfWidgetFormInputText();
+    $this->widgetSchema['titleLink'] = new sfWidgetFormInputText(array(), array(
+      'class' => 'dm_link_droppable',
+      'title' => $this->__('Accepts pages, medias and urls')
+    ));
     $this->validatorSchema['titleLink'] = new dmValidatorLinkUrl(array('required' => false));
 
     $this->widgetSchema['text'] = new sfWidgetFormTextarea();
     $this->validatorSchema['text'] = new sfValidatorString(array('required' => false));
     
-    $this->widgetSchema['mediaLink'] = new sfWidgetFormInputText();
+    $this->widgetSchema['mediaLink'] = new sfWidgetFormInputText(array(), array(
+      'class' => 'dm_link_droppable',
+      'title' => $this->__('Accepts pages, medias and urls')
+    ));
     $this->validatorSchema['mediaLink'] = new dmValidatorLinkUrl(array('required' => false));
     
     $this->widgetSchema['titlePosition'] = new sfWidgetFormChoice(array(
