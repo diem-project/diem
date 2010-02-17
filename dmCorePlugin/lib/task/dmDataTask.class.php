@@ -384,6 +384,7 @@ EOF;
       "widget_add" => "Add widgets",
       "widget_edit" => "Edit widgets",
       "widget_delete" => "Delete widgets",
+      'record_edit_front' => 'Edit records from the front',
       "page_add" => "Add pages",
       "page_edit" => "Edit pages",
       "page_delete" => "Delete pages",
