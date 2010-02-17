@@ -170,7 +170,7 @@ class dmProject
   
   public static function isInProject($path)
   {
-    return strpos(dmOs::normalize($path), self::getRootDir().'/') === 0;
+    return strpos(dmOs::normalize($path), self::getRootDir()) === 0;
   }
   
   public static function appExists($application)

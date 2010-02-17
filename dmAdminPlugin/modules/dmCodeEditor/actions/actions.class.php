@@ -13,14 +13,14 @@ class dmCodeEditorActions extends dmAdminBaseActions
   
   public function executeGetDirContent(sfWebRequest $request)
   {
-    return $this->renderJson($this->getService('code_editor')->getDirContent($request->getParameter('dir')));
+    return $this->renderJson($this->getService('code_editor')->openDir($request->getParameter('dir')));
   }
   
   public function executeOpenFile(sfWebRequest $request)
   {
     try
     {
-      $this->file = $this->getService('code_editor')->getFileAsArray($request->getParameter('id'));
+      $this->file = $this->getService('code_editor')->openFile($request->getParameter('id'));
     }
     catch(Exception $e)
     {
@@ -50,7 +50,7 @@ class dmCodeEditorActions extends dmAdminBaseActions
     {
       return $this->renderJson(array(
         'type'    => 'error',
-        'message' => 'Save failed : '.$e->getMessage()
+        'message' => 'Save failed: '.$e->getMessage()
       ));
     }
 
