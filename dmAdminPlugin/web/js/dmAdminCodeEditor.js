@@ -12,8 +12,9 @@
     {
       height = $(window).height();
       $tree.height(height - 110);
-      $editor.height(height);
-      $editor.find('textarea').height(height - 110);
+      $editor.find('textarea')
+      .height(height - 142)
+      .width($editor.width() - 30);
     }
 
     function loadTab(ui)
@@ -33,6 +34,7 @@
       .click(function()
       {
         $tabs.tabs('remove', $tabs.find('ul.ui-tabs-nav > li').index($tab));
+        $('div.tipsy').remove();
         return false;
       });
 
@@ -48,6 +50,8 @@
       {
         savePanel($panel);
       });
+
+      $(window).scrollTop(0);
     }
 
     function savePanel($panel)
@@ -57,10 +61,15 @@
         return;
       }
 
-      $panel.block();
+      $panel.find('span.info')
+      .html('Saving...')
+      .removeClass('s16_error s16_tick')
+      .addClass('s16_gear')
+      .show()
+
       $.ajax({
         dataType: 'json',
-        type: '   post',
+        type:     'post',
         url:      $ide.metadata().save_file_url,
         data: {
           file: $panel.find('input.path').val(),
@@ -68,8 +77,12 @@
         },
         success: function(data)
         {
-          $panel.find('span.info').html(data.message)[(data.type == 'error' ? 'add' : 'remove') + 'Class']('error');
-          $panel.unblock();
+          $panel.find('span.info')
+          .html(data.message)
+          .removeClass('s16_gear')
+          .toggleClass('s16_error', data.type == 'error')
+          .toggleClass('s16_tick', data.type != 'error')
+          .show();
         }
       });
     }
@@ -123,7 +136,7 @@
       },
       types: {
         'default': {
-          icon: { image:  $.dm.ctrl.options.dm_core_asset_root + 'images/16/sprite.png'},
+          icon: {image:  $.dm.ctrl.options.dm_core_asset_root + 'images/16/sprite.png'},
           clickable: true,
           renameable: false,
           deletable: false,
@@ -149,26 +162,28 @@
         // right click - to prevent use: EV.preventDefault(); EV.stopPropagation(); return false
         onrgtclk: function(NODE, TREE_OBJ, EV)
         {
-          EV.preventDefault(); EV.stopPropagation(); return false;
+          EV.preventDefault();EV.stopPropagation();return false;
         },
         beforedata: function(NODE, TREE_OBJ)
         {
-          return { dir : $(NODE).attr("id") || '/' };
+          return {dir : $(NODE).attr("id") || '/'};
         },
         ondblclk: function(NODE, TREE_OBJ)
         {
           if ($(NODE).hasClass('readable_file'))
           {
+            realPath = decodePath(NODE.id);
+            
             // if file already opened, switch to its panel
-            if ($("a[href$=#file_" + NODE.id + "]", self.$tabs).length)
+            if ($existingTab = $tabs.find("li[original-title=" + realPath + "]").orNot())
             {
-              $tabs.tabs("select", "#file_" + NODE.id);
+              $tabs.tabs("select", $existingTab.find('>a').attr('href'));
             }
             //load file from server
             else
             {
               $tabs.tabs('add', $ide.metadata().open_file_url + '?id=' + NODE.id,
-                '<span title="'+decodePath(NODE.id)+'">'+$(NODE).find('a:first').text()+'</span>'
+                '<span title="'+realPath+'">'+$(NODE).find('a:first').text()+'</span>'
               );
             }
           }

@@ -178,4 +178,4 @@ services:
   code_editor:
     class:                    %code_editor.class%
     shared:                   false
-    arguments:                [ @filesystem ]
+    arguments:                [ @filesystem, @mime_type_resolver, @file_backup ]

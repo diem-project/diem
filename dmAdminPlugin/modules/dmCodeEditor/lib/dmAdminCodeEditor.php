@@ -7,15 +7,19 @@ class dmAdminCodeEditor extends dmConfigurable
 {
   protected
   $filesystem,
+  $mimeTypeResolver,
+  $fileBackup,
   $pathReplacements = array(
     '/' => '_-SLASH-_',
     '.' => '_-DOT-_',
     ' ' => '_-SPACE-_'
   );
 
-  public function __construct(dmFilesystem $filesystem, array $options = array())
+  public function __construct(dmFilesystem $filesystem, dmMimeTypeResolver $mimeTypeResolver, dmFileBackup $fileBackup, array $options = array())
   {
-    $this->filesystem = $filesystem;
+    $this->filesystem       = $filesystem;
+    $this->mimeTypeResolver = $mimeTypeResolver;
+    $this->fileBackup       = $fileBackup;
 
     $this->initialize($options);
   }
@@ -44,6 +48,48 @@ class dmAdminCodeEditor extends dmConfigurable
   protected function encodePath($path)
   {
     return strtr(dmProject::unRootify($path), $this->getOption('path_replacements'));
+  }
+
+  public function saveFile($file, $data)
+  {
+    $file = $this->decodePath($file);
+
+    if(!dmProject::isInProject($file))
+    {
+      throw new dmException('Can not save a file outside of the project');
+    }
+
+    if (!is_readable($file) || !is_file($file))
+    {
+      throw new dmException($file.' does not exist or is not readable');
+    }
+
+    $this->fileBackup->save($file);
+
+    if(!file_put_contents($file, $data))
+    {
+      throw new dmException('Can not save file to '.$file);
+    }
+  }
+
+  public function getFileAsArray($file)
+  {
+    $file = $this->decodePath($file);
+
+    if (!is_readable($file) || !is_file($file))
+    {
+      throw new dmException($file.' does not exist or is not readable');
+    }
+
+    $mimeGroup = $this->mimeTypeResolver->getGroupByFilename($file);
+
+    return array(
+      'full_path'   => $file,
+      'path'        => dmProject::unRootify($file),
+      'is_writable' => is_writable($file) && !$this->fileBackup->isFileBackup($file),
+      'is_image'    => 'image' === $mimeGroup,
+      'code'        => 'image' !== $mimeGroup ? dmString::unixify(file_get_contents($file)) : ''
+    );
   }
 
   public function getDirContent($dir)

@@ -102,10 +102,14 @@ class dmFileBackup extends dmConfigurable
     }
   }
   
-  
   public function isEnabled()
   {
     return sfConfig::get('dm_backup_enabled');
+  }
+
+  public function isFileBackup($file)
+  {
+    return 0 === strpos($file, $this->getDir());
   }
   
 }
