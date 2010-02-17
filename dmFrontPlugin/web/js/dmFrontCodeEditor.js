@@ -53,13 +53,20 @@
     
     tab: function(ui)
     {
-      var self = this, $panel = $('#' + ui.panel.id), $tab = $(ui.tab).parent();
+      var self = this,
+      $panel = $('#' + ui.panel.id),
+      $tab = $(ui.tab).parent(),
+      $span = $(ui.tab).find('>span>span');
+
+      $tab.attr('title', $span.unwrap().attr('title')).tipsy({gravity: 's'});
+      $span.attr('title', null);
       
       $tab.prepend('<img class="close" width="9px" height="8px" src="' + $.dm.ctrl.options.dm_core_asset_root + 'images/cross-small.png' + '" />');
       
       $('img.close', $tab).click(function()
       {
         self.$tabs.tabs('remove', $('ul.ui-tabs-nav > li', self.$tabs).index($tab));
+        $('div.tipsy').remove()
         return false;
       });
       
