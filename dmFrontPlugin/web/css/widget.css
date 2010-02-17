@@ -33,14 +33,11 @@
   opacity: 0.5;
 }
 
-.dm_widget_helper {
-  
-}
-
-.dm_new_widget {
+div.dm_new_widget {
   background: url(../images/32/blackbox.png) top left no-repeat;
   padding-left: 40px;
-  min-height: 32px;
+  height: 32px;
+  line-height: 32px;
 }
 
 div.dm_widget_edit div.code_editor_links {
@@ -59,4 +56,17 @@ div.dm_widget_edit_dialog_wrap div.dm_cut_copy_actions a {
   height: 16px;
   float: left;
   margin-left: 10px;
+}
+
+a.dm_widget_record_edit {
+  background: url(../images/48/edit.png) top left no-repeat;
+  height: 48px;
+  width: 48px;
+  position: absolute;
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+a.dm_widget_record_edit:hover {
+  opacity: 1;
 }

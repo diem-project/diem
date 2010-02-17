@@ -194,6 +194,22 @@ $.widget('ui.dmWidget', {
     .unblock()
     .trigger('dmWidgetLaunch');
   },
+
+  openRecordEditDialog: function(widgetId)
+  {
+    $.ajax({
+      url:      $.dm.ctrl.getHref('+/dmWidget/editRecord')+'?widget_id='+widgetId,
+      success:  function(html)
+      {
+        $('<div class="diem-colorbox none"></div>')
+        .html(html)
+        .dmExtractEncodedAssets()
+        .find('a')
+        .colorbox({width:"90%", height:"90%", iframe: true})
+        .trigger('click');
+      }
+    });
+  },
   
   initialize: function()
   {
@@ -206,6 +222,11 @@ $.widget('ui.dmWidget', {
         return false;
       }
       widget.openEditDialog();
+      return true;
+    }).tipsy({gravity: 's'});
+
+    $('a.dm_widget_record_edit', this.element).click(function() {
+      widget.openRecordEditDialog($(this).metadata({ type: 'html5' }).widget_id);
       return true;
     }).tipsy({gravity: 's'});
   },

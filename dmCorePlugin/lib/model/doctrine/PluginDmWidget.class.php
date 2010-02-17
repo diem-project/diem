@@ -29,6 +29,11 @@ abstract class PluginDmWidget extends BaseDmWidget
     return json_decode($this->get('value'), true);
   }
 
+  public function getValueByKey($key)
+  {
+    return dmArray::get($this->getValues(), $key);
+  }
+
   public function setValues($v)
   {
     $this->set('value', json_encode($v));

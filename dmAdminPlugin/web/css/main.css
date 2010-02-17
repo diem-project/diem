@@ -1,4 +1,9 @@
 body{font:12px arial,helvetica,verdana,sans-serif;}select,input,button,textarea{font:99% arial,helvetica,clean,sans-serif;}table{font-size:inherit;font:100%;}pre,code{font-family:monospace;font-size:108%;line-height:100%;}
+
+body {
+  background: #fff;
+}
+
 h1{
   font-size:138.5%;
   height: 2em;

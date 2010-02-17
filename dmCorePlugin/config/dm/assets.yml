@@ -48,6 +48,7 @@ js:
     tipsy:            tipsy/javascripts/jquery.tipsy.min
     dataTable:        dataTables-1.6/js/jquery.dataTables.min
     jeditable:        jeditable/jquery.jeditable.min
+    colorbox:         colorbox/jquery.colorbox.min
 
 css:
 
@@ -77,3 +78,4 @@ css:
     markitup:         dmMarkitup/skins/markitup/style
     markitupSet:      dmMarkitup/sets/markdown/style
     tipsy:            tipsy/stylesheets/tipsy
+    colorbox:         colorbox/theme3/colorbox

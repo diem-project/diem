@@ -8,9 +8,6 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
     $helper,
     $page,
     $areas;
-
-  protected static
-  $innerCssClassWidgets = array('dmWidgetContent.title', 'dmWidgetContent.media', 'dmWidgetContent.link');
     
   public function __construct(sfEventDispatcher $dispatcher, sfServiceContainer $serviceContainer, dmHelper $helper, array $options = array())
   {
@@ -25,6 +22,7 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
   {
     return array(
       'widget_css_class_pattern'  => '%module%_%action%',
+      'inner_css_class_widgets'   => array('dmWidgetContent/title', 'dmWidgetContent/media', 'dmWidgetContent/link'),
       'is_html5'                  => 5 == $this->getDocTypeOption('version', 5)
     );
   }
@@ -296,9 +294,9 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
   {
     try
     {
-      $this->serviceContainer->setParameter('widget_renderer.widget', $widget);
-      
-      $renderer = $this->serviceContainer->getService('widget_renderer');
+      $renderer = $this->serviceContainer
+      ->setParameter('widget_renderer.widget', $widget)
+      ->getService('widget_renderer');
       
       $html = $renderer->getHtml();
     
@@ -314,7 +312,7 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
     }
     catch(Exception $e)
     {
-      if (sfConfig::get('dm_debug') || sfConfig::get('dm_search_populating') || 'test' === sfConfig::get('sf_environment'))
+      if (sfConfig::get('dm_debug') || 'test' === sfConfig::get('sf_environment'))
       {
         throw $e;
       }
@@ -361,7 +359,7 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
    */
   protected function isInnerCssClassWidget(array $widget)
   {
-    return in_array($widget['module'].'.'.$widget['action'], self::$innerCssClassWidgets);
+    return in_array($widget['module'].'/'.$widget['action'], $this->getOption('inner_css_class_widgets'));
   }
   
   protected function getWidgetCssClassFromPattern(array $widget)

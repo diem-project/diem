@@ -16,7 +16,7 @@ class dmFrontModuleComponents extends myFrontBaseComponents
 
     if ($this->recordId)
     {
-      $query->addWhere($query->getRootAlias().'.id = ?', $this->recordId)->fetchRecord();
+      $query->addWhere($query->getRootAlias().'.id = ?', $this->recordId);
     }
     elseif ($this->getPage()->getDmModule()->hasModel())
     {

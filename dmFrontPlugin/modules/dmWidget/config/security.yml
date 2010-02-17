@@ -18,3 +18,9 @@ delete:
 
 render:
   is_secure:    false
+
+editRecord:
+  credentials:  record_edit_front
+
+getFull:
+  credentials:  widget_edit

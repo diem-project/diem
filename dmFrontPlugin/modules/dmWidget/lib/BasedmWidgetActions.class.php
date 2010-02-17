@@ -9,14 +9,40 @@ class BasedmWidgetActions extends dmFrontBaseActions
    */
   public function executeRender(dmWebRequest $request)
   {
+    return $this->renderText(
+      $this->getService('page_helper')->renderWidgetInner($this->requireWidget()->toArrayWithMappedValue())
+    );
+  }
+
+  public function executeEditRecord(dmWebRequest $request)
+  {
+    $widget = $this->requireWidget();
+
     $this->forward404Unless(
-      $widget = dmDb::table('DmWidget')->find($request->getParameter('widget_id')),
-      'No widget found'
+        $widget->action === 'show'
+    &&  ($module = $this->getService('module_manager')->getModuleOrNull($widget->module))
+    &&  $module->hasModel()
+    &&  $module->hasAdmin()
     );
 
-    return $this->renderText(
-      $this->getService('page_helper')->renderWidgetInner($widget->toArrayWithMappedValue())
-    );
+    $query = $module->getTable()->createQuery('r');
+
+    if ($widget->getValueByKey('recordId'))
+    {
+      $query->addWhere('r.id = ?', $widget->getValueByKey('recordId'))->fetchRecord();
+    }
+    elseif ($this->getPage()->getDmModule()->hasModel())
+    {
+      $query->whereDescendantId($this->getPage()->getDmModule()->getModel(), $this->getPage()->get('record_id'), $module->getModel());
+    }
+
+    $this->forward404Unless($record = $query->fetchRecord());
+
+    return $this->renderAsync(array(
+      'html'  => $this->getHelper()->link('app:admin/+/'.$module->getKey().'/edit?pk='.$record->id),
+      'js'    => array('lib.colorbox'),
+      'css'   => array('lib.colorbox')
+    ), true);
   }
 
   public function executeCopy(dmWebRequest $request)
@@ -31,9 +57,7 @@ class BasedmWidgetActions extends dmFrontBaseActions
 
   protected function clipboard(dmWebRequest $request, $method)
   {
-    $this->forward404Unless($widget = dmDb::table('DmWidget')->find($request->getParameter('id')));
-
-    $this->getService('front_clipboard')->$method($widget);
+    $this->getService('front_clipboard')->$method($this->requireWidget());
 
     return $this->renderText('ok');
   }
@@ -52,7 +76,7 @@ class BasedmWidgetActions extends dmFrontBaseActions
 
   public function executeEdit(dmWebRequest $request)
   {
-    $this->forward404Unless($widget = dmDb::table('DmWidget')->find($request->getParameter('widget_id')));
+    $widget = $this->requireWidget();
   
     try
     {
@@ -169,15 +193,7 @@ class BasedmWidgetActions extends dmFrontBaseActions
 
   public function executeGetFull(sfWebRequest $request)
   {
-    $this->forwardSecureUnless(
-      $this->getUser()->can('widget_edit')
-    );
-
-    $this->forward404Unless(
-      $widget = dmDb::table('DmWidget')->find($request->getParameter('widget_id'))
-    );
-
-    $widgetArray = $widget->toArrayWithMappedValue();
+    $widgetArray = $this->requireWidget('id')->toArrayWithMappedValue();
 
     try
     {
@@ -201,15 +217,7 @@ class BasedmWidgetActions extends dmFrontBaseActions
 
   public function executeDelete(sfWebRequest $request)
   {
-    $this->forwardSecureUnless(
-      $this->getUser()->can('widget_delete')
-    );
-
-    $this->forward404Unless(
-      $this->widget = dmDb::table('DmWidget')->find($request->getParameter('widget_id'))
-    );
-
-    $this->widget->delete();
+    $this->requireWidget()->delete();
 
     return $this->renderText('ok');
   }
@@ -267,10 +275,7 @@ class BasedmWidgetActions extends dmFrontBaseActions
 
   public function executeMove(sfWebRequest $request)
   {
-    $this->forward404Unless(
-      $widget = dmDb::table('DmWidget')->find($request->getParameter('moved_dm_widget')),
-      'Can not find widget'
-    );
+    $widget = $this->requireWidget('moved_dm_widget');
 
     $this->forward404Unless(
       $toZone = dmDb::table('DmZone')->find($request->getParameter('to_dm_zone')),
@@ -311,5 +316,20 @@ class BasedmWidgetActions extends dmFrontBaseActions
 
       $this->getUser()->logError($this->getI18n()->__('A problem occured when sorting the items'));
     }
+  }
+
+  protected function requireWidget($requestParameterName = 'widget_id')
+  {
+    $this->forward404Unless(
+      $widgetId = $this->getRequest()->getParameter($requestParameterName),
+      'No '.$requestParameterName.' parameter'
+    );
+    
+    $this->forward404Unless(
+      $widget = dmDb::table('DmWidget')->findOneByIdWithI18n($widgetId),
+      'No widget found'
+    );
+
+    return $widget;
   }
 }
