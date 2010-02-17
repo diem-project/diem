@@ -4,11 +4,13 @@ class dmFrontLinkTagRoute extends dmFrontLinkTag
 {
   protected
   $route,
-  $controller;
+  $controller,
+  $routing;
   
-  public function __construct(dmFrontLinkResource $resource, sfWebController $controller, array $requestContext, array $options = array())
+  public function __construct(dmFrontLinkResource $resource, sfWebController $controller, dmRouting $routing, array $requestContext, array $options = array())
   {
     $this->controller = $controller;
+    $this->routing    = $routing;
     
     parent::__construct($resource, $requestContext, $options);
   }
@@ -23,7 +25,7 @@ class dmFrontLinkTagRoute extends dmFrontLinkTag
   protected function getBaseHref($return_array = false)
   {
     list($route_name, $route_parameters) = $this->controller->convertUrlStringToParameters($this->route);
-    $routes = sfContext::getInstance()->getRouting()->getRoutes();
+    $routes = $this->routing->getRoutes();
     
     if (!isset($routes[$route_name]))
     {           
