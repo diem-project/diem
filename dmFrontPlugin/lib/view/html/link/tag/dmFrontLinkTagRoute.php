@@ -7,7 +7,7 @@ class dmFrontLinkTagRoute extends dmFrontLinkTag
   $controller,
   $routing;
   
-  public function __construct(dmFrontLinkResource $resource, sfWebController $controller, dmRouting $routing, array $requestContext, array $options = array())
+  public function __construct(dmFrontLinkResource $resource, sfWebController $controller, dmFrontRouting $routing, array $requestContext, array $options = array())
   {
     $this->controller = $controller;
     $this->routing    = $routing;
