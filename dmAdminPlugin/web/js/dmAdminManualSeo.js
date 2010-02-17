@@ -3,6 +3,14 @@
 
   var $table = $('#dm_page_meta_table');
 
+  $table.dataTable({
+    "oLanguage": {
+			"sUrl": $table.metadata().translation_url
+		},
+    "bJQueryUI": true,
+		"sPaginationType": "full_numbers"
+  });
+
   var editCallback = function( sValue, y ) {
     var aPos = $table.fnGetPosition( this );
     $table.fnUpdate( sValue, aPos[0], aPos[1] );
@@ -15,7 +23,7 @@
     };
   };
 
-  $table.find('tbody td.editable').one('mouseover', function()
+  $table.find('td.editable').one('mouseover', function()
   {
     $(this).editable($table.metadata().edition_url, {
       type: $(this).hasClass('edit_textarea') ? 'textarea' : 'text',
@@ -28,12 +36,19 @@
     });
   });
 
-  $table.dataTable({
-    "oLanguage": {
-			"sUrl": $table.metadata().translation_url
-		},
-    "bJQueryUI": true,
-		"sPaginationType": "full_numbers"
+  // toggle booleans
+  $table.find('span.boolean').click(function() {
+    $(this).toggleClass('s16_tick s16_cross');
+    $.ajax({
+      url:      $table.metadata().toggle_url,
+      data:     {
+        field:  this.getAttribute('rel'),
+        page_id: this.parentNode.parentNode.getAttribute('id')
+      },
+      success:  function(data) {
+        $(this).toggleClass('s16_tick', '1' == data).toggleClass('s16_cross', '0' == data);
+      }
+    });
   });
   
 })(jQuery);

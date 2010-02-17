@@ -8,16 +8,35 @@ class BasedmPageActions extends dmAdminBaseActions
     $this->redirect('dmPage/reorderPages');
   }
 
-  public function executeManageMetas()
+  public function executeManageMetas(sfWebRequest $request)
   {
-    $this->pages = dmDb::query('DmPage p')
-    ->withI18n()
-    ->select('p.id, p.lft, p.level, p.action, pTranslation.name as name, pTranslation.slug as slug, pTranslation.title as title, pTranslation.h1 as h1, pTranslation.description as description, pTranslation.is_active as is_active')
-    ->fetchArray();
-
-    $this->fields = array('lft', 'name', 'slug', 'title', 'h1', 'description', 'is_active');
-
     $this->pageMetaView = new dmAdminPageMetaView($this->getHelper(), $this->getI18n());
+
+    $this->form = new dmAdminPageMetaFieldsForm($this->pageMetaView);
+
+    if($request->hasParameter($this->form->getName()))
+    {
+      $this->form->bindRequest($request);
+      $this->fields = $this->form->getValue('fields');
+    }
+    else
+    {
+      $this->fields = $this->form->getDefault('fields');
+    }
+
+    $query = dmDb::query('DmPage p')
+    ->withI18n()
+    ->select('p.id, p.lft, p.level, p.action');
+
+    foreach($this->fields as $field)
+    {
+      if('lft' !== $field)
+      {
+        $query->addSelect('pTranslation.'.$field.' as '.$field);
+      }
+    }
+
+    $this->pages = $query->fetchArray();
   }
 
   public function executeEditField(sfWebRequest $request)
@@ -29,6 +48,25 @@ class BasedmPageActions extends dmAdminBaseActions
     $page->save();
 
     return $this->renderText($page->get($field));
+  }
+
+  public function executeToggleBoolean(dmWebRequest $request)
+  {
+    $this->forward404Unless($page = dmDb::table('DmPage')->find($request->getParameter('page_id')));
+    $field = $request->getParameter('field');
+
+    if('is_active' === $field)
+    {
+      $page->setIsActiveManually(!$page->get($field));
+    }
+    else
+    {
+      $page->set($field, !$page->get($field));
+    }
+
+    $page->save();
+
+    return $this->renderText($page->$field ? '1' : '0');
   }
 
   public function executeTableTranslation()

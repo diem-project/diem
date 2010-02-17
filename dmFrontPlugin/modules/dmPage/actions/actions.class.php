@@ -45,6 +45,7 @@ class dmPageActions extends dmFrontBaseActions
       $this->page = $this->form
       ->updateObject()
       ->updateAutoModFromModified()
+      ->setIsActiveManually()
       ->saveGet();
 
       /*

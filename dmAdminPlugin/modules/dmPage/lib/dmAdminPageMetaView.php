@@ -7,13 +7,16 @@ class dmAdminPageMetaView
   $i18n,
   $page,
   $availableFields = array(
+    'lft' => 'Position',
     'name' => 'Name',
     'slug' => 'Url',
     'title' => 'Title',
     'h1' => 'H1',
     'description' => 'Description',
+    'keywords' => 'Keywords',
     'is_active' => 'Available',
-    'lft' => 'Position'
+    'is_secure' => 'Secure',
+    'is_indexable' => 'Indexable'
   );
 
   public function __construct(dmHelper $helper, dmI18n $i18n)
@@ -36,7 +39,7 @@ class dmAdminPageMetaView
 
   public function getAvailableFields()
   {
-    return $this->availableFields();
+    return array_keys($this->availableFields);
   }
 
   public function renderField($field)
@@ -46,7 +49,7 @@ class dmAdminPageMetaView
 
   public function renderMeta($field)
   {
-    if('is_active' === $field)
+    if(0 === strncmp($field, 'is_', 3))
     {
       $html = $this->renderBooleanMeta($field);
     }
@@ -90,10 +93,10 @@ class dmAdminPageMetaView
   public function renderBooleanMeta($field)
   {
     return sprintf(
-      '<td class="boolean" rel="%s" title="%s">%s</td>',
+      '<td><span class="boolean s16block s16_%s" rel="%s" title="%s"></span></td>',
+      $this->page[$field] ? 'tick' : 'cross',
       $field,
-      $this->clickToEditText,
-      $this->page[$field]
+      $this->clickToEditText
     );
   }
 }

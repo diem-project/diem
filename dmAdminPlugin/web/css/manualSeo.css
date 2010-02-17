@@ -1,4 +1,25 @@
-.dataTables_wrapper {
+form.dm_meta_fields {
+  margin: 1em 0.5em;
+  background: url(../../dmCorePlugin/lib/jquery-ui/css/images/ui-bg_highlight-soft_75_cccccc_1x100.png) repeat-x center;
+  border: 1px solid #bbb;
+  height: 3em;
+}
+
+form.dm_meta_fields li {
+  float: left;
+  margin: 0.8em 1em 0 1em;
+}
+
+form.dm_meta_fields label, form.dm_meta_fields input {
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+form.dm_meta_fields input.submit {
+  margin-top: 0.6em;
+}
+
+#dm_page_meta_table_wrapper {
 	position: relative;
 	min-height: 302px;
 	clear: both;
@@ -11,7 +32,7 @@
   margin-left: 1px;
 }
 
-.dataTables_processing {
+#dm_page_meta_table_wrapper .dataTables_processing {
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -27,49 +48,49 @@
 	background-color: white;
 }
 
-.dataTables_length {
+#dm_page_meta_table_wrapper .dataTables_length {
 	width: 40%;
 	float: left;
 }
 
-.dataTables_filter {
+#dm_page_meta_table_wrapper .dataTables_filter {
 	width: 50%;
 	float: right;
 	text-align: right;
 }
 
-.dataTables_info {
+#dm_page_meta_table_wrapper .dataTables_info {
 	width: 60%;
 	float: left;
 }
 
-.dataTables_paginate {
+#dm_page_meta_table_wrapper .dataTables_paginate {
 	width: 44px;
 	float: right;
 	text-align: right;
 }
 
 /* Pagination nested */
-.paginate_disabled_previous, .paginate_enabled_previous, .paginate_disabled_next, .paginate_enabled_next {
+#dm_page_meta_table_wrapper .paginate_disabled_previous, #dm_page_meta_table_wrapper .paginate_enabled_previous, #dm_page_meta_table_wrapper .paginate_disabled_next, #dm_page_meta_table_wrapper .paginate_enabled_next {
 	height: 19px;
 	width: 19px;
 	margin-left: 3px;
 	float: left;
 }
 
-.paginate_disabled_previous {
+#dm_page_meta_table_wrapper .paginate_disabled_previous {
 	background-image: url('../images/back_disabled.jpg');
 }
 
-.paginate_enabled_previous {
+#dm_page_meta_table_wrapper .paginate_enabled_previous {
 	background-image: url('../images/back_enabled.jpg');
 }
 
-.paginate_disabled_next {
+#dm_page_meta_table_wrapper .paginate_disabled_next {
 	background-image: url('../images/forward_disabled.jpg');
 }
 
-.paginate_enabled_next {
+#dm_page_meta_table_wrapper .paginate_enabled_next {
 	background-image: url('../images/forward_enabled.jpg');
 }
 
@@ -103,37 +124,15 @@
 	text-align: center;
 }
 
-
-
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * DataTables sorting
  */
 
-.sorting_asc {
-	background: url('../images/sort_asc.png') no-repeat center right;
-}
-
-.sorting_desc {
-	background: url('../images/sort_desc.png') no-repeat center right;
-}
-
-.sorting {
-	background: url('../images/sort_both.png') no-repeat center right;
-}
-
-.sorting_asc_disabled {
-	background: url('../images/sort_asc_disabled.png') no-repeat center right;
-}
-
-.sorting_desc_disabled {
-	background: url('../images/sort_desc_disabled.png') no-repeat center right;
-}
-
-tr.odd {
+#dm_page_meta_table tr.odd {
 	background-color: #E2E4FF;
 }
 
-tr.even {
+#dm_page_meta_table tr.even {
 	background-color: white;
 }
 
@@ -141,11 +140,11 @@ tr.even {
  * Misc
  */
 
-.css_right {
+#dm_page_meta_table .css_right {
    float: right;
 }
 
-.fg-button {
+#dm_page_meta_table_wrapper .fg-button {
   padding: 3px 8px;
   margin: 0 1px;
   cursor: pointer;
@@ -159,58 +158,46 @@ tr.even {
   clear: both;
 }
 
-.top, .bottom {
+#dm_page_meta_table span.boolean {
+  cursor: pointer;
+}
+
+#dm_page_meta_table .top, #dm_page_meta_table .bottom {
 	padding: 15px;
 	background-color: #F5F5F5;
 	border: 1px solid #CCCCCC;
 }
 
-.top .dataTables_info {
+#dm_page_meta_table .top .dataTables_info {
 	float: none;
 }
 
-.clear {
+#dm_page_meta_table .clear {
 	clear: both;
 }
 
-.dataTables_empty {
+#dm_page_meta_table .dataTables_empty {
 	text-align: center;
 }
 
-tfoot input {
+#dm_page_meta_table tfoot input {
 	margin: 0.5em 0;
 	width: 100%;
 	color: #444;
 }
 
-tfoot input.search_init {
+#dm_page_meta_table tfoot input.search_init {
 	color: #999;
 }
 
-td.group {
-	background-color: #d1cfd0;
-	border-bottom: 2px solid #A19B9E;
-	border-top: 2px solid #A19B9E;
-}
-
-td.details {
-	background-color: #d1cfd0;
-	border: 2px solid #A19B9E;
-}
-
-
-.example_alt_pagination div.dataTables_info {
-	width: 40%;
-}
-
-.paging_full_numbers {
+#dm_page_meta_table_wrapper .paging_full_numbers {
 	width: 400px;
 	height: 22px;
 	line-height: 22px;
 }
 
-.paging_full_numbers span.paginate_button,
- 	.paging_full_numbers span.paginate_active {
+#dm_page_meta_table_wrapper .paging_full_numbers span.paginate_button,
+#dm_page_meta_table_wrapper .paging_full_numbers span.paginate_active {
 	border: 1px solid #aaa;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
@@ -219,24 +206,16 @@ td.details {
 	cursor: pointer;
 }
 
-.paging_full_numbers span.paginate_button {
+#dm_page_meta_table_wrapper .paging_full_numbers span.paginate_button {
 	background-color: #ddd;
 }
 
-.paging_full_numbers span.paginate_button:hover {
+#dm_page_meta_table_wrapper .paging_full_numbers span.paginate_button:hover {
 	background-color: #ccc;
 }
 
-.paging_full_numbers span.paginate_active {
+#dm_page_meta_table_wrapper .paging_full_numbers span.paginate_active {
 	background-color: #99B3FF;
-}
-
-#dm_page_meta_table tr.even.row_selected td {
-	background-color: #B0BED9;
-}
-
-#dm_page_meta_table tr.odd.row_selected td {
-	background-color: #9FAFD1;
 }
 
 
@@ -244,36 +223,26 @@ td.details {
  * Sorting classes for columns
  */
 /* For the standard odd/even */
-tr.odd td.sorting_1 {
+#dm_page_meta_table tr.odd td.sorting_1 {
 	background-color: #D3D6FF;
 }
 
-tr.odd td.sorting_2 {
+#dm_page_meta_table tr.odd td.sorting_2 {
 	background-color: #DADCFF;
 }
 
-tr.odd td.sorting_3 {
+#dm_page_meta_table tr.odd td.sorting_3 {
 	background-color: #E0E2FF;
 }
 
-tr.even td.sorting_1 {
+#dm_page_meta_table tr.even td.sorting_1 {
 	background-color: #EAEBFF;
 }
 
-tr.even td.sorting_2 {
+#dm_page_meta_table tr.even td.sorting_2 {
 	background-color: #F2F3FF;
 }
 
-tr.even td.sorting_3 {
+#dm_page_meta_table tr.even td.sorting_3 {
 	background-color: #F9F9FF;
-}
-
-
-
-div.box {
-	height: 100px;
-	padding: 10px;
-	overflow: auto;
-	border: 1px solid #8080FF;
-	background-color: #E5E5FF;
 }

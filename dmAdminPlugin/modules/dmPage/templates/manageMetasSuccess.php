@@ -4,9 +4,17 @@ echo _open('div.dm_page_manager.ui-tabs.ui-widget.ui-widget-content.ui-corner-al
 
 include_partial('dmPage/tabs');
 
+echo
+$form->open('.dm_meta_fields.ui-corner-all').
+$form['fields']->field().
+$form->submit(__('Select columns')).
+$form->renderHiddenFields().
+$form->close();
+
 echo _open('table#dm_page_meta_table', array('json' => array(
   'translation_url' => _link('dmPage/tableTranslation')->getHref(),
-  'edition_url' => _link('dmPage/editField')->getHref()
+  'edition_url' => _link('dmPage/editField')->getHref(),
+  'toggle_url' => _link('dmPage/toggleBoolean')->getHref()
 )));
 
 echo _open('thead')._open('tr');

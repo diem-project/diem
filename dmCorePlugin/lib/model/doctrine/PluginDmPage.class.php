@@ -59,12 +59,17 @@ abstract class PluginDmPage extends BaseDmPage
     return 0 != $this->get('record_id');
   }
 
+  /**
+   * Get the record related to this page, if any
+   * 
+   * @return dmDoctrineRecord the related record
+   */
   public function getRecord()
   {
-//    if ($this->hasCache('record'))
-//    {
-//      return $this->getCache('record');
-//    }
+    if ($this->hasCache('record'))
+    {
+      return $this->getCache('record');
+    }
     
     if (($module = $this->getDmModule()) && ($table = $module->getTable()))
     {
@@ -78,8 +83,7 @@ abstract class PluginDmPage extends BaseDmPage
       $record = false;
     }
     
-    return $record;
-//    return $this->setCache('record', $record);
+    return $this->setCache('record', $record);
   }
 
   public function setRecord(dmDoctrineRecord $record)
@@ -90,6 +94,28 @@ abstract class PluginDmPage extends BaseDmPage
     }
 
     return $this->setCache('record', $record);
+  }
+
+  /*
+   * When the is_active value of the page is set manually,
+   * if the page has an activable record,
+   * the record is_active field is synced
+   */
+  public function setIsActiveManually($value = null)
+  {
+    $value = null === $value ? $this->get('is_active') : (bool)$value;
+    
+    $this->set('is_active', $value);
+
+    if($record = $this->getRecord())
+    {
+      if($record->getTable()->hasField('is_active'))
+      {
+        $record->set('is_active', $value);
+      }
+    }
+
+    return $this;
   }
 
   public function getDmModule()
@@ -179,6 +205,13 @@ LIMIT 1')->getStatement();
 
   public function save(Doctrine_Connection $conn = null)
   {
+    $record = $this->getRecord();
+
+    if($record)
+    {
+      $record->save();
+    }
+
     if ($this->isModified())
     {
       if (!$this->isNew() && ($this->isFieldModified('module') || $this->isFieldModified('action')))
@@ -198,7 +231,7 @@ LIMIT 1')->getStatement();
       
       $this->getPageView();
 
-      if ($this->getDmModule() && $this->getIsAutomatic() && !($this->getRecord() instanceof dmDoctrineRecord))
+      if ($this->getDmModule() && $this->getIsAutomatic() && !$record instanceof dmDoctrineRecord)
       {
         throw new dmException(sprintf(
           '%s automatic page can not be saved because it has no object for record_id = %s',

@@ -136,7 +136,6 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
     }
   }
   
-  
   protected function batchToggleBoolean(array $ids, $field, $value)
   {
     $table = $this->getDmModule()->getTable();
@@ -528,8 +527,15 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
       && ($record = $this->getDmModule()->getTable()->find($request->getParameter('pk')))
     );
 
-    $record->set($field, !$record->get($field));
-    $record->save();
+    if('is_active' === $field && ($page = $record->getDmPage()))
+    {
+      $page->setIsActiveManually(!$record->get($field))->save();
+    }
+    else
+    {
+      $record->set($field, !$record->get($field));
+      $record->save();
+    }
 
     return $this->renderText($record->$field ? '1' : '0');
   }
