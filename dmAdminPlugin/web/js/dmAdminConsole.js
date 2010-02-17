@@ -41,4 +41,9 @@ function scroll()
   $console[0].scrollTop = 16*$console.find("li").length;
 }
 
+$(window).bind('resize', function()
+{
+  $console.height($(window).height() - 90);
+}).trigger('resize');
+
 })(jQuery);
