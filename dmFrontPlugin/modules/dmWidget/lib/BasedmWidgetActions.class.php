@@ -126,22 +126,16 @@ class BasedmWidgetActions extends dmFrontBaseActions
     $devActions= '';
     if ($this->getUser()->can('code_editor') && $form instanceof dmWidgetProjectForm)
     {
-      if ($this->getUser()->can('code_editor_view'))
+      $templateDir = dmOs::join(sfConfig::get('sf_app_module_dir'), $form->getDmModule()->getKey(), 'templates', '_'.$form->getDmComponent()->getKey().'.php');
+      if (file_exists($templateDir))
       {
-        $templateDir = dmOs::join(sfConfig::get('sf_app_module_dir'), $form->getDmModule()->getKey(), 'templates', '_'.$form->getDmComponent()->getKey().'.php');
-        if (file_exists($templateDir))
-        {
-          $devActions .= '<a href="#'.dmProject::unRootify($templateDir).'" class="code_editor s16 s16_code_editor block">'.$this->getI18n()->__('Edit template code').'</a>';
-        }
+        $devActions .= '<a href="#'.dmProject::unRootify($templateDir).'" class="code_editor s16 s16_code_editor block">'.$this->getI18n()->__('Edit template code').'</a>';
       }
       
-      if ($this->getUser()->can('code_editor_controller'))
+      $componentDir = dmOs::join(sfConfig::get('sf_app_module_dir'), $form->getDmModule()->getKey(), 'actions/components.class.php');
+      if (file_exists($componentDir))
       {
-        $componentDir = dmOs::join(sfConfig::get('sf_app_module_dir'), $form->getDmModule()->getKey(), 'actions/components.class.php');
-        if (file_exists($componentDir))
-        {
-          $devActions .= '<a href="#'.dmProject::unRootify($componentDir).'" class="code_editor s16 s16_code_editor block">'.$this->getI18n()->__('Edit component code').'</a>';
-        }
+        $devActions .= '<a href="#'.dmProject::unRootify($componentDir).'" class="code_editor s16 s16_code_editor block">'.$this->getI18n()->__('Edit component code').'</a>';
       }
     }
 

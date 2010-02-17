@@ -49,7 +49,6 @@ EOF;
     
     $this->get('dispatcher')->notify(new sfEvent($this, 'dm.data.after'));
   }
-  
 
   protected function loadSettings()
   {
@@ -374,10 +373,7 @@ EOF;
       "admin" => "Log into administration",
       "clear_cache" => "Clear the cache",
       "log" => "Manage logs",
-      'code_editor' => 'Edit code',
-      'code_editor_controller' => 'Edit code : controller',
-      'code_editor_model' => 'Edit code : model',
-      'code_editor_view' => 'Edit code : view',
+      'code_editor' => 'Use admin and front code editors',
       "security_user" => "Manage security users",
       "security_permission" => "Manage security permissions",
       "security_group" => "Manage security groups",
