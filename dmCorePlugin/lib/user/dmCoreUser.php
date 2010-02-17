@@ -43,6 +43,26 @@ abstract class dmCoreUser extends dmSecurityUser implements dmMicroCacheInterfac
   }
 
   /**
+   * Will return the value only once per user session
+   *
+   * @param   mixed   $value the value to return only once
+   * @param   string  $identifier an identifier to make this call unique
+   * 
+   * @return  mixed   $value or null
+   */
+  public function oncePerSession($value, $identifier = '')
+  {
+    $hash = md5($value.$identifier);
+
+    if(!$this->hasAttribute('once.'.$hash))
+    {
+      $this->setAttribute('once.'.$hash, true);
+
+      return $value;
+    }
+  }
+
+  /**
    * Adds a value to a flash array
    */
   public function addFlash($name, $value, $persist = true)

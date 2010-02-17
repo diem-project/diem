@@ -4,12 +4,20 @@ echo _open('div.dm_page_manager.ui-tabs.ui-widget.ui-widget-content.ui-corner-al
 
 include_partial('dmPage/tabs');
 
+echo once_per_session(
+  _tag('p.help_box', _tag('span.s16.s16_help.block', __('Choose columns to display in the table.')))
+);
+
 echo
 $form->open('.dm_meta_fields.ui-corner-all').
 $form['fields']->field().
 $form->submit(__('Select columns')).
 $form->renderHiddenFields().
 $form->close();
+
+echo once_per_session(
+  _tag('p.help_box', _tag('span.s16.s16_help.block', __('Click any value in the table to modify it.')))
+);
 
 echo _open('table#dm_page_meta_table', array('json' => array(
   'translation_url' => _link('dmPage/tableTranslation')->getHref(),

@@ -26,7 +26,7 @@ class dmAdminPageMetaFieldsForm extends dmForm
       'multiple' => true
     ));
 
-    $this->setDefault('fields', array('lft', 'name', 'slug', 'title', 'is_active', 'is_secure'));
+    $this->setDefault('fields', array('lft', 'name', 'slug', 'title', 'is_active'));
   }
 
   protected function getTranslatedChoicesArray()

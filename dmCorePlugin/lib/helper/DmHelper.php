@@ -115,3 +115,16 @@ function toggle_init($val = 0)
 {
   sfConfig::set('dm_helper_toggle', $val);
 }
+
+/**
+ * Will return the value only once per user session
+ *
+ * @param   mixed   $value the value to return only once
+ * @param   string  $identifier an identifier to make this call unique
+ *
+ * @return  mixed   $value or null
+ */
+function once_per_session($value, $identifier = '')
+{
+  return sfContext::getInstance()->getUser()->oncePerSession($value, $identifier);
+}
