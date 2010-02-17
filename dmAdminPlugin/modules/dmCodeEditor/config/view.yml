@@ -1,16 +1,8 @@
 indexSuccess:
 
-  stylesheets:
-    - lib.jgrowl
-    - admin.codeEditor
+  stylesheets: [ lib.ui-tabs, admin.codeEditor ]
     
-  javascripts:
-    - lib.ui-tabs
-    - lib.jsTree
-    - lib.jsTreeCss
-    - lib.jgrowl
-    - core.codeArea
-    - admin.codeEditor
+  javascripts: [ lib.ui-tabs, lib.jstree, core.codeArea, admin.codeEditor ]
     
    
 openFileSuccess:

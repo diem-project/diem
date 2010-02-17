@@ -80,6 +80,8 @@ parameters:
     new:                        true            # add a link to create a new related record
     sort:                       true            # add a link to sort related records
     max:                        3               # max number of records to show
+
+  code_editor.class:            dmAdminCodeEditor # Performs file operations on the project
   
 services:
 
@@ -172,3 +174,8 @@ services:
     class:                    %related_records_view.class%
     shared:                   false
     arguments:                [ @module_manager, @helper, @routing, @i18n, %related_records_view.options% ]
+
+  code_editor:
+    class:                    %code_editor.class%
+    shared:                   false
+    arguments:                [ @filesystem ]

@@ -1,0 +1,98 @@
+/* LOCKED */
+div.tree-code-editor .locked li a { color:gray; }
+/* DOTS */
+div.tree-code-editor ul { background-position:6px 1px; background-repeat:repeat-y; background-image:url(data:image/gif;base64,R0lGODlhAgACAIAAAB4dGf///yH5BAEAAAEALAAAAAACAAIAAAICRF4AOw==); }
+div.tree-code-editor li { background-position:-64px -16px; background-repeat:no-repeat; background-image:url("icons.png"); }
+/* NO DOTS */
+div.tree-code-editor .no_dots, div.tree-code-editor .no_dots ul { background:transparent; }
+div.tree-code-editor .no_dots li.leaf { background-image:none; background-color:transparent; }
+/* OPEN or CLOSED */
+div.tree-code-editor li.open { background:url("icons.png") -32px -48px no-repeat; }
+div.tree-code-editor li.closed, #jstree-draggeddiv.tree-code-editor li li.open { background:url("icons.png") -48px -32px no-repeat; }
+#jstree-marker { background-image:url("icons.png"); }
+/* DEFAULT, HOVER, CLICKED, LOADING STATES */
+div.tree-code-editor li a, div.tree-code-editor li span { border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; }
+div.tree-code-editor li a:hover, div.tree-code-editor li a.hover, div.tree-code-editor li span { background: #e7f4f9; border:1px solid #d8f0fa; padding:0px 3px 0px 3px; }
+div.tree-code-editor li a.clicked, div.tree-code-editor li a.clicked:hover, div.tree-code-editor li span.clicked { background: #beebff; border:1px solid #99defd; padding:0px 3px 0px 3px; }
+/* ICONS */
+div.tree-code-editor ins { background-image:url("icons.png"); background-position:0 0; background-repeat:no-repeat; }
+div.tree-code-editor ul li a.loading ins { background-image:url("throbber.gif") !important; background-position:0 0 !important; } /* UL is added to make selector stronger */
+div.tree-code-editor li a ins.forbidden { background-position:-16px -16px; }
+div.tree-code-editor .locked li a ins { background-position:0 -48px; }
+div.tree-code-editor li span ins { background-position:-16px 0; }
+#jstree-draggeddiv.tree-code-editor ins { background:url("icons.png") -16px -32px no-repeat !important; }
+#jstree-draggeddiv.tree-code-editor ins.forbidden { background:url("icons.png") -16px -16px no-repeat !important; }
+
+/* CONTEXT MENU */
+div.tree-code-editor-context a ins { background-image:url("icons.png"); background-repeat:no-repeat; background-position:-64px -64px; }
+div.tree-code-editor-context a ins.create { background-position:0 -16px; }
+div.tree-code-editor-context a ins.rename { background-position:-16px 0px; }
+div.tree-code-editor-context a ins.remove { background-position:0 -32px; }
+
+/* DIEM OVERRIDE */
+div.tree-code-editor li {
+  padding-left: 10px;
+}
+div.tree-code-editor li ins {
+  vertical-align: middle;
+  background-image: url(../../../images/16/sprite.png);
+}
+div.tree-code-editor ul li a.loading ins { background-image:url(../../../images/16/gear.png) !important; background-position:0 0 !important; } /* UL is added to make selector stronger */
+
+/*********************************** DIR ********************************************/
+
+div.tree-code-editor li.dir > a > ins { background-position: 0 -512px; }
+div.tree-code-editor li.dir.open.dir > a > ins { background-position: 0 -528px; }
+
+div.tree-code-editor li.dir.not_writable_dir > a,
+div.tree-code-editor li.dir.not_writable_dir > a { color: red; }
+
+/*********************************** FILE ********************************************/
+
+div.tree-code-editor li.file > a > ins { background-position: 0 -544px; }
+
+div.tree-code-editor li.file_html > a > ins { background-position: 0 -560px; }
+
+div.tree-code-editor li.file_swf > a > ins { background-position: 0 -576px; }
+
+div.tree-code-editor li.file_avi > a > ins,
+div.tree-code-editor li.file_flv > a > ins,
+div.tree-code-editor li.file_mpg > a > ins,
+div.tree-code-editor li.file_mpeg > a > ins { background-position: 0 -592px; }
+
+div.tree-code-editor li.file_mp3 > a > ins,
+div.tree-code-editor li.file_wma > a > ins,
+div.tree-code-editor li.file_ogg > a > ins { background-position: 0 -608px; }
+
+div.tree-code-editor li.file_pdf > a > ins { background-position: 0 -624px; }
+
+div.tree-code-editor li.file_php > a > ins { background-position: 0 -640px; }
+
+div.tree-code-editor li.file_jpg > a > ins,
+div.tree-code-editor li.file_jpeg > a > ins,
+div.tree-code-editor li.file_png > a > ins,
+div.tree-code-editor li.file_gif > a > ins { background-position: 0 -656px; }
+
+div.tree-code-editor li.file_odp > a > ins,
+div.tree-code-editor li.file_ppt > a > ins { background-position: 0 -672px; }
+
+div.tree-code-editor li.file_js > a > ins { background-position: 0 -688px; }
+
+div.tree-code-editor li.file_yml > a > ins,
+div.tree-code-editor li.file_ini > a > ins,
+div.tree-code-editor li.file_txt > a > ins { background-position: 0 -704px; }
+
+div.tree-code-editor li.file_zip > a > ins,
+div.tree-code-editor li.file_tar > a > ins,
+div.tree-code-editor li.file_tgz > a > ins,
+div.tree-code-editor li.file_gz > a > ins,
+div.tree-code-editor li.file_rar > a > ins { background-position: 0 -720px; }
+
+div.tree-code-editor li.file_css > a > ins { background-position: 0 -736px; }
+
+div.tree-code-editor li.file_odt > a > ins,
+div.tree-code-editor li.file_doc > a > ins { background-position: 0 -752px; }
+
+div.tree-code-editor li.file_ods > a > ins,
+div.tree-code-editor li.file_xls > a > ins { background-position: 0 -768px; }
+

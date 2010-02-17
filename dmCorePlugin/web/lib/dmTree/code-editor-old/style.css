@@ -1,0 +1,70 @@
+
+/*********************************** DIR ********************************************/
+
+div.tree-code-editor li.open a.dir,
+div.tree-code-editor li.open a.folder { background-position: 0 -528px; }
+
+div.tree-code-editor li.closed a.dir,
+div.tree-code-editor li.open a.dir { background-position: 0 -512px; }
+
+div.tree-code-editor li.closed a.not_writable_dir,
+div.tree-code-editor li.open a.not_writable_dir { background-position: 0 -800px; }
+
+div.tree-code-editor li.leaf a.not_readable_dir
+{
+ background-position: 0 -816px;
+ color: red;
+ cursor:default;
+}
+
+
+
+/*********************************** FILE ********************************************/
+
+div.tree-code-editor li .file { background-position: 0 -544px; }
+
+div.tree-code-editor li .file_html { background-position: 0 -560px; }
+
+div.tree-code-editor li .file_swf { background-position: 0 -576px; }
+
+div.tree-code-editor li .file_avi,
+div.tree-code-editor li .file_flv,
+div.tree-code-editor li .file_mpg,
+div.tree-code-editor li .file_mpeg { background-position: 0 -592px; }
+
+div.tree-code-editor li .file_mp3,
+div.tree-code-editor li .file_wma,
+div.tree-code-editor li .file_ogg { background-position: 0 -608px; }
+
+div.tree-code-editor li .file_pdf { background-position: 0 -624px; }
+
+div.tree-code-editor li .file_php { background-position: 0 -640px; }
+
+div.tree-code-editor li .file_jpg,
+div.tree-code-editor li .file_jpeg,
+div.tree-code-editor li .file_png,
+div.tree-code-editor li .file_gif { background-position: 0 -656px; }
+
+div.tree-code-editor li .file_odp,
+div.tree-code-editor li .file_ppt { background-position: 0 -672px; }
+
+div.tree-code-editor li .file_js { background-position: 0 -688px; }
+
+div.tree-code-editor li .file_yml,
+div.tree-code-editor li .file_ini,
+div.tree-code-editor li .file_txt { background-position: 0 -704px; }
+
+div.tree-code-editor li .file_zip,
+div.tree-code-editor li .file_tar,
+div.tree-code-editor li .file_tgz,
+div.tree-code-editor li .file_gz,
+div.tree-code-editor li .file_rar { background-position: 0 -720px; }
+
+div.tree-code-editor li .file_css { background-position: 0 -736px; }
+
+div.tree-code-editor li .file_odt,
+div.tree-code-editor li .file_doc { background-position: 0 -752px; }
+
+div.tree-code-editor li .file_ods,
+div.tree-code-editor li .file_xls { background-position: 0 -768px; }
+

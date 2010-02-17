@@ -1,102 +1,19 @@
 <?php
-/**
- * dmCodeEditor actions.
- *
- * @package    diem
- * @subpackage dmCodeEditor
- * @author     Your name here
- * @version    SVN: $Id: actions.class.php 12474 2008-10-31 10:41:27Z fabien $
- */
+
 class dmCodeEditorActions extends dmAdminBaseActions
 {
 
   public function executeIndex(sfWebRequest $request)
   {
-    $treeJson = array(
-      array(
-        'attributes' => array(
-          'id' => dmCodeEditorTools::encodeUrlTree('/')
-        ),
-        'state' => 'open',
-        'data' => array(
-          'title' => '/',
-          'attributes' => array(
-            'class' => 'dir root'
-          )
-        ),
-        'children' => $this->getTreeJson(sfCOnfig::get('sf_root_dir'))
-      )
-    );
+    sfConfig::set('dm_pageBar_enabled', false);
+    sfConfig::set('dm_mediaBar_enabled', false);
     
-    $this->getUser()->logAlert('The admin code editor is <strong>-NOT-</strong> completed yet an may not work', false);
-    
-    $this->getResponse()->addJavascriptConfig('dm_tree_json', $treeJson);
+    $this->editor = $this->getService('code_editor');
   }
   
-  public function executeConstructTree(sfWebRequest $request)
+  public function executeGetDirContent(sfWebRequest $request)
   {
-    $id = $request->getParameter("id", dmCodeEditorTools::encodeUrlTree('/'));
-    
-    $currentDir = dmProject::rootify(dmCodeEditorTools::decodeUrlTree($id));
-    
-    $this->getResponse()->setContentType('application/json');
-
-    return $this->renderText(json_encode($this->getTreeJson($currentDir)));
-  }
-  
-  protected function getTreeJson($currentDir)
-  {
-    $data = array();
-    
-    $arrayDir = sfFinder::type('dir')->maxdepth(0)->not_name("/^\..*/")->follow_link()->in($currentDir);
-      natcasesort($arrayDir);
-
-      $arrayFile = sfFinder::type('file')->maxdepth(0)->not_name("/^\..*/")->follow_link()->in($currentDir);
-      natcasesort($arrayFile);
-    
-      foreach( $arrayDir as $dir )
-      {
-        $isReadable = is_readable($dir);
-        $isWritable = is_writable($dir);
-        
-        $data[] = array(
-          'attributes' => array(
-            'id' => dmCodeEditorTools::encodeUrlTree($dir)
-          ),
-          'state' => $isReadable ? 'closed' : '',
-          'data' => array(
-            'title' => basename($dir),
-            'attributes' => array(
-              'class' => sprintf('dir %s %s',
-                 $isReadable ? 'readable_dir' : 'not_readable_dir',
-                 $isWritable ? 'writable_dir' : 'not_writable_dir'
-              )
-            )
-          )
-        );
-      }
-      
-      foreach( $arrayFile as $file )
-      {
-        $data[] = array(
-          'attributes' => array(
-            'id' => dmCodeEditorTools::encodeUrlTree($file)
-          ),
-          'state' => '',
-          'data' => array(
-            'title' => basename($file),
-            'attributes' => array(
-              'class' => sprintf('file file_%s%s%s',
-                 strtolower(dmOs::getFileExtension($file, false)),
-                 is_readable($file) ? ' readable_file' : '',
-                 is_writable($file) ? ' writable_file' : ''
-              )
-            )
-          )
-        );
-      }
-    
-    return $data;
+    return $this->renderJson($this->getService('code_editor')->getDirContent($request->getParameter('dir')));
   }
   
   public function executeOpenFile(sfWebRequest $request)
