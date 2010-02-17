@@ -18,7 +18,15 @@ class dmCodeEditorActions extends dmAdminBaseActions
   
   public function executeOpenFile(sfWebRequest $request)
   {
-    $this->file = $this->getService('code_editor')->getFileAsArray($request->getParameter('id'));
+    try
+    {
+      $this->file = $this->getService('code_editor')->getFileAsArray($request->getParameter('id'));
+    }
+    catch(Exception $e)
+    {
+      $this->message = $e->getMessage();
+      return 'Error';
+    }
 
     if($this->file['is_image'])
     {
