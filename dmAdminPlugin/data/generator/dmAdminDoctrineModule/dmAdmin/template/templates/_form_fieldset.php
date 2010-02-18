@@ -16,7 +16,7 @@
     [?php include_partial('<?php echo $this->getModuleName() ?>/form_field', array(
       'name'       => $name,
       'attributes' => $field->getConfig('attributes', array()),
-      'label'      => substr($name, -5) === '_form' ? false : $field->getConfig('label'),
+      'label'      => $field->getConfig('label'),
       'help'       => $field->getConfig('help'),
       'form'       => $form,
       'field'      => $field,

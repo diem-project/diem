@@ -54,6 +54,8 @@ class dmAdminInitFilter extends dmInitFilter
 
   public function listenToAdminSaveObjectWhenEmbedded(sfEvent $e)
   {
+    $this->getContext()->getEventDispatcher()->notify(new sfEvent($this, 'dm.controller.redirect'));
+    
     print '<script type="text/javascript">
 parent.document.getElementById("cboxClose").setAttribute("rel", "dm_close");
 </script>';

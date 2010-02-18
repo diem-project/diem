@@ -86,6 +86,17 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
       }
     }
 
+    foreach($this->table->getRelationHolder()->getLocalMedias() as $alias => $relation)
+    {
+      $name = $relation->getLocal().'_form';
+      $names[] = $name;
+      $fields[$name] = array_merge(array(
+        'label'        => $alias,
+        'is_real'      => false,
+        'type'         => 'Text'
+      ), isset($this->config['fields'][$name]) ? $this->config['fields'][$name] : array());
+    }
+
     if (isset($this->config['fields']))
     {
       foreach ($this->config['fields'] as $name => $params)

@@ -366,7 +366,7 @@ class dmAdminGeneratorBuilder
   protected function getFormFields()
   {
     $fields = array();
-    
+
     /*
      * Add is_link options
      */
@@ -380,13 +380,6 @@ class dmAdminGeneratorBuilder
         );
       }
     }
-
-//    foreach($this->table->getRelationHolder()->getAssociations() as $alias => $relation)
-//    {
-//      $fields[dmString::underscore($alias).'_list'] = array(
-//        'label' => false
-//      );
-//    }
 
     return $fields;
   }

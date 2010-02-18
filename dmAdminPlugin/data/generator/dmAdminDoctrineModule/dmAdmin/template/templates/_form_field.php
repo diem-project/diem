@@ -13,6 +13,24 @@
     echo '<div class="'.$divClass.'"></div>';
     return;
   }
+
+  if($form->getObject()->getTable()->isI18nColumn($name))
+  {
+    $label = _media('dmCore/images/flag-16/'.$sf_user->getCulture().'.png')
+    ->size(16, 16)
+    ->set('.dm_label_culture')
+    ->alt(format_language($sf_user->getCulture())).
+    $label;
+  }
+
+  if($required)
+  {
+    $label = $label.
+    _media('dmCore/images/16/required.png')
+    ->size(16, 16)
+    ->set('.dm_label_required')
+    ->alt(__('Required.'));
+  }
 ?]
 [?php if ($field->isPartial()): ?]
   <div class="[?php echo $divClass ?]">[?php include_partial('<?php echo $this->getModuleName() ?>/'.$name, array('<?php echo $this->getModule()->getKey() ?>' => $form->getObject(), 'form' => $form, 'attributes' => $attributes instanceof sfOutputEscaper ? $attributes->getRawValue() : $attributes)) ?]</div>
