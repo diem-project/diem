@@ -254,6 +254,11 @@ $.widget('ui.dmWidget', {
     $('a.dm_widget_record_edit', this.element).click(function() {
       self.openRecordEditDialog();
     }).tipsy({gravity: $.fn.tipsy.autoSouth});
+
+    if($('div.dm_new_widget', this.element).length)
+    {
+      $('a.dm_widget_record_edit', this.element).hide();
+    }
   },
   
   getId: function()
