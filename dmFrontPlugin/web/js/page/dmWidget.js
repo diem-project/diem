@@ -217,6 +217,7 @@ $.widget('ui.dmWidget', {
           height:"90%",
           iframe: true,
           speed: 200,
+          opacity: 0.5,
           onClosed: function()
           {
             self.reload();
