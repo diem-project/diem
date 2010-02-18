@@ -42,9 +42,9 @@
 
     tips: function()
     {
-      this.$.find('a[title]:not(div.dm_form_action_bar_bottom a), input[title]').tipsy({gravity: 'n'});
+      this.$.find('a[title]:not(div.dm_form_action_bar_bottom a), input[title]').tipsy({gravity: $.fn.tipsy.autoNorth});
 
-      this.$.find('div.dm_form_action_bar_bottom a[title]').tipsy({gravity: 's'});
+      this.$.find('div.dm_form_action_bar_bottom a[title]').tipsy({gravity: $.fn.tipsy.autoSouth});
     },
 
     showMoreRelatedRecords: function()

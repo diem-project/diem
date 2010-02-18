@@ -105,7 +105,7 @@ $.widget('ui.dmWidget', {
       });
 
       // enable tool tips
-      $dialog.parent().find('a[title], input[title]').tipsy({gravity: 's'});
+      $dialog.parent().find('a[title], input[title]').tipsy({gravity: $.fn.tipsy.autoSouth});
       
       $form.find('form').dmAjaxForm({
         beforeSubmit: function(data) {
@@ -249,11 +249,11 @@ $.widget('ui.dmWidget', {
       if (!self.element.hasClass('dm_dragging')) {
         self.openEditDialog();
       }
-    }).tipsy({gravity: 's'});
+    }).tipsy({gravity: $.fn.tipsy.autoSouth});
 
     $('a.dm_widget_record_edit', this.element).click(function() {
       self.openRecordEditDialog();
-    }).tipsy({gravity: 's'});
+    }).tipsy({gravity: $.fn.tipsy.autoSouth});
   },
   
   getId: function()

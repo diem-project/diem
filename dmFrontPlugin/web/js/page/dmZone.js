@@ -21,7 +21,7 @@ $.widget('ui.dmZone', {
       {
         self.openEditDialog();
       }
-    }).tipsy({gravity: 's'});
+    }).tipsy({gravity: $.fn.tipsy.autoSouth});
   },
 	
 	openEditDialog: function()

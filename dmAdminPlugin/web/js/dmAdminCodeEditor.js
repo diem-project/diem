@@ -24,7 +24,7 @@
       $tab = $(ui.tab).parent(),
       $span = $(ui.tab).find('>span>span');
 
-      $tab.attr('title', $span.unwrap().attr('title')).tipsy({gravity: 's'});
+      $tab.attr('title', $span.unwrap().attr('title')).tipsy({gravity: $.fn.tipsy.autoSouth});
       $span.attr('title', null);
 
 			$(window).trigger('resize');

@@ -178,7 +178,7 @@
             {
               $(this)[$(this).find('label').text().match(term) ? 'show' : 'hide']();
             });
-          }).tipsy({gravity: 's'});
+          }).tipsy({gravity: $.fn.tipsy.autoSouth});
         }
       });
     }

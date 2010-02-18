@@ -43,7 +43,7 @@
         return false;
       });
 
-      self.$dialog.find('a[title]').tipsy({gravity: 's'});
+      self.$dialog.find('a[title]').tipsy({gravity: $.fn.tipsy.autoSouth});
       
       if ($.isFunction(self.options.callback || null)) 
       {
@@ -58,7 +58,7 @@
       $tab = $(ui.tab).parent(),
       $span = $(ui.tab).find('>span>span');
 
-      $tab.attr('title', $span.unwrap().attr('title')).tipsy({gravity: 's'});
+      $tab.attr('title', $span.unwrap().attr('title')).tipsy({gravity: $.fn.tipsy.autoSouth});
       $span.attr('title', null);
       
       $tab.prepend('<img class="close" width="9px" height="8px" src="' + $.dm.ctrl.options.dm_core_asset_root + 'images/cross-small.png' + '" />');

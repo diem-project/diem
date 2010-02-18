@@ -10,7 +10,7 @@ $.widget('ui.dmAdminToolBar', $.extend({}, $.dm.coreToolBar, {
 	    hoverClass: 'ui-state-active'
 	  });
 
-    this.element.find('a.tipable').tipsy({gravity: 'n'});
+    this.element.find('a.tipable').tipsy({gravity: $.fn.tipsy.autoNorth});
   }
 
 }));

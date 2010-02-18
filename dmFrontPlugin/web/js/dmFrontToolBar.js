@@ -17,7 +17,7 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
     
     this.codeEditor();
 
-    this.element.find('a.tipable').tipsy({gravity: 's'});
+    this.element.find('a.tipable').tipsy({gravity: $.fn.tipsy.autoSouth});
   },
 	
 	initSelectCulture: function()
@@ -176,7 +176,7 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
         
         $actions = $menu.find('li.dm_add_menu_actions').prependTo($menu.find('ul.level1'));
 
-        $menu.find('a.tipable, input.dm_add_menu_search').tipsy({gravity: 's'});
+        $menu.find('a.tipable, input.dm_add_menu_search').tipsy({gravity: $.fn.tipsy.autoSouth});
 
         $menu.find('input.dm_add_menu_search').bind('keyup', function()
         {

@@ -45,6 +45,12 @@ if($.fn.tipsy)
     return options;
   };
   $.fn.tipsy.defaults.delayIn = 500;
+  $.fn.tipsy.autoNorth = function() {
+    return $(this).offset().left > 100 ? ($(this).offset().left < ($(window).width() - 100) ? 'n' : 'e') : 'w';
+  };
+  $.fn.tipsy.autoSouth = function() {
+    return $(this).offset().left > 100 ? ($(this).offset().left < ($(window).width() - 100) ? 's' : 'e') : 'w';
+  };
 }
 
 })(jQuery);
