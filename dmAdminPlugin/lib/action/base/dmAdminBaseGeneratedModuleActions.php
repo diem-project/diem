@@ -337,22 +337,13 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
       'admin_sort_form.defaults'  => array(),
       'admin_sort_form.options'   => array(
         'module' => $this->getDmModule(),
-        'query'  => $this->getSortTableQuery()
+        'query'  => $this->getDmModule()->getTable()->createQuery('r')->orderBy('r.position asc')
       )
     ));
     
     $this->form = $this->getService('admin_sort_table_form');
     
     $this->processSortForm($this->form);
-  }
-  
-  protected function getSortTableQuery()
-  {
-    $query = $this->getDmModule()->getTable()->createQuery('r')
-    ->orderBy('r.position asc')
-    ->whereIsActive(true, $this->getDmModule()->getModel());
-    
-    return $query;
   }
   
   public function executeSortReferers(sfWebRequest $request)
