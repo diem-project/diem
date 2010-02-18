@@ -3,7 +3,7 @@
 }
 
 /* embedded form */
-.sf_admin_form form ul.dm_form_elements {
+div.sf_admin_form form ul.dm_form_elements {
   clear: both;
   -moz-box-shadow: 0 0 5px #aaa;
   -webkit-box-shadow: 0 0 5px #aaa;
@@ -11,46 +11,46 @@
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
 }
-.sf_admin_form form ul.dm_form_elements li.dm_form_element {
+div.sf_admin_form form ul.dm_form_elements li.dm_form_element {
   margin: 5px;
 }
 
-.sf_admin_form_inner {
+div.sf_admin_form_inner {
   margin-top: 10px;
   font-size: inherit;
 }
 
-.sf_admin_form form .dm_help_wrap,
-.sf_admin_form form .help {
+div.sf_admin_form form .dm_help_wrap,
+div.sf_admin_form form .help {
   color: #888;
   margin-left:20%;
 }
 
-.sf_admin_form fieldset {
+div.sf_admin_form fieldset {
   margin: 0 0 10px 0;
 }
 
-.sf_admin_form fieldset .fieldset_title {
+div.sf_admin_form fieldset .fieldset_title {
   height: 24px;
   background: url(../../dmCorePlugin/images/default_bg.png) center left repeat-x;
 }
 
-.sf_admin_form fieldset .fieldset_title > span.fieldset_name {
+div.sf_admin_form fieldset .fieldset_title > span.fieldset_name {
   line-height: 22px;
   cursor: default;
   font-size: 14px;
 }
 
-.sf_admin_form fieldset .ui-accordion-header {
+div.sf_admin_form fieldset .ui-accordion-header {
   position: inherit;
 }
-.sf_admin_form fieldset .ui-accordion-header .ui-icon {
+div.sf_admin_form fieldset .ui-accordion-header .ui-icon {
   position: inherit;
   float: left;
   margin-top: 4px;
 }
 
-.sf_admin_form .fieldset_content {
+div.sf_admin_form .fieldset_content {
   overflow: visible;
   padding: 0;
   margin: 0;
@@ -59,26 +59,26 @@
   border-color: #D3D3D3;
 }
 
-.sf_admin_form .fieldset_content_inner {
+div.sf_admin_form .fieldset_content_inner {
   background: url(../images/edit/separator_bg.png) 50% 50% no-repeat;
 }
 
-.sf_admin_form .fieldset_none {
+div.sf_admin_form .fieldset_none {
   border-top: 1px solid #D3D3D3;
 }
 
-.sf_admin_form .sf_admin_form_row {
+div.sf_admin_form div.sf_admin_form_row {
   float: left;
   width: 48%;
   margin: 1%;
   background: #fff;
 }
 
-.sf_admin_form .sf_admin_form_row.big {
+div.sf_admin_form div.sf_admin_form_row.big {
   width: 98%;
 }
 
-.sf_admin_form div.sf_admin_form_row div.dm_related_records {
+div.sf_admin_form div.sf_admin_form_row div.dm_related_records {
   margin-left: 20%;
   padding: 10px;
   -moz-box-shadow: 0 0 5px #aaa;
@@ -87,15 +87,15 @@
   -webkit-border-radius: 4px;
 }
 
-.sf_admin_form div.sf_admin_form_row_inner div.label_wrap,
-.sf_admin_form ul.dm_form_elements li.dm_form_element label {
+div.sf_admin_form div.sf_admin_form_row_inner div.label_wrap,
+div.sf_admin_form ul.dm_form_elements li.dm_form_element label {
   float: left;
   width: 20%;
 }
-.sf_admin_form .sf_admin_form_row.required > div.sf_admin_form_row_inner > div.label_wrap > label {
+div.sf_admin_form div.sf_admin_form_row.required > div.sf_admin_form_row_inner > div.label_wrap > label {
   font-weight: bold;
 }
-.sf_admin_form div.sf_admin_form_row_inner label.fnone {
+div.sf_admin_form div.sf_admin_form_row_inner label.fnone {
   float: none;
   width: auto;
 }
@@ -108,23 +108,23 @@ div.control span.unselect_all {
   color: #046BCA;
 }
 
-.sf_admin_form div.sf_admin_form_row_inner input,
-.sf_admin_form div.sf_admin_form_row_inner select,
-.sf_admin_form div.sf_admin_form_row_inner textarea {
+div.sf_admin_form div.sf_admin_form_row_inner input,
+div.sf_admin_form div.sf_admin_form_row_inner select,
+div.sf_admin_form div.sf_admin_form_row_inner textarea {
   width: 76%;
 }
-.sf_admin_form div.sf_admin_form_row_inner textarea.dm_markdown {
+div.sf_admin_form div.sf_admin_form_row_inner textarea.dm_markdown {
   width: 98.5%;
 }
-.sf_admin_form div.sf_admin_form_row_inner input[type=checkbox] {
+div.sf_admin_form div.sf_admin_form_row_inner input[type=checkbox] {
   width: auto;
 }
 
-.sf_admin_form div.sf_admin_form_row_inner input.datepicker_me {
+div.sf_admin_form div.sf_admin_form_row_inner input.datepicker_me {
   width: auto;
 }
 
-.sf_admin_form .error {
+div.sf_admin_form .error {
   border: 1px solid #D7BBB8;
   padding: 5px;
   margin-bottom: 5px;
@@ -184,15 +184,15 @@ div.dm_form_pagination {
   float: right;
 }
 
-.sf_admin_form ul.checkbox_list {
-  max-height: 300px;
+div.sf_admin_form ul.checkbox_list {
+  max-height: 200px;
   overflow-y: auto;
   -webkit-border-radius: 4px;
   -moz-box-shadow: 0 0 5px #aaa;
   -webkit-box-shadow: 0 0 5px #aaa;
 }
 
-.sf_admin_form ul.checkbox_list > li {
+div.sf_admin_form ul.checkbox_list > li {
   display: block;
   padding: 2px 4px;
   cursor: pointer;
@@ -201,39 +201,62 @@ div.dm_form_pagination {
   background: #fff;
 }
 
-.sf_admin_form ul.checkbox_list > li.active {
+div.sf_admin_form ul.checkbox_list > li.active {
   background-color: #E1FEE5;
   border-color: #E1FEE5;
 }
 
-.sf_admin_form ul.checkbox_list > li:hover {
+div.sf_admin_form ul.checkbox_list > li:hover {
   background-color: #F1F5FE;
   border-color: #ddd;
 }
 
-.sf_admin_form ul.checkbox_list > li label {
+div.sf_admin_form ul.checkbox_list > li label {
   float: none;
   width: auto;
   cursor: pointer;
 }
 
-.sf_admin_form ul.checkbox_list > li input {
+div.sf_admin_form ul.checkbox_list > li input {
   vertical-align: middle;
   cursor: pointer;
 }
 
-.sf_admin_form .dm_media_file {
+div.sf_admin_form div.dm_checkbox_search {
+  padding: 5px 10px;
+  background: url(../../dmCorePlugin/images/default_bg.png) repeat-x 50% 50%;
+  -moz-border-radius: 4px 4px 0 0;
+  -webkit-border-radius: 4px 4px 0 0;
+  border: 1px solid #D4D4D4;
+  margin-left: 20%;
+  -moz-box-shadow: 0 0 5px #aaa;
+  -webkit-box-shadow: 0 0 5px #aaa;
+}
+
+div.sf_admin_form div.dm_checkbox_search > input {
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  padding: 2px 5px;
+  width: 134px;
+  color: #666;
+  font-family: Verdana,Arial,sans-serif;
+  font-size: 12px;
+  background: #FFFFFF;
+  border: 1px solid #D4D4D4;
+}
+
+div.sf_admin_form .dm_media_file {
   position: relative;
 }
-.sf_admin_form .dm_media_file .view {
+div.sf_admin_form .dm_media_file .view {
   float: left;
 }
-.sf_admin_form .dm_media_file .view img {
+div.sf_admin_form .dm_media_file .view img {
   -moz-box-shadow: 2px 2px 5px #888;
   -webkit-box-shadow: 2px 2px 5px #888;
   border: 1px solid #aaa;
 }
-.sf_admin_form .dm_media_file .infos {
+div.sf_admin_form .dm_media_file .infos {
   margin-left: 260px;
   font-size: 11px;
 }

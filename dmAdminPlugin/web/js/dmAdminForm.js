@@ -129,31 +129,57 @@
     
     checkBoxList: function()
     {
-      var $list = $('ul.checkbox_list', this.element);
+      var self = this;
       
-      $('> li > label, > li > input', $list).click(function(e)
+      $('ul.checkbox_list', self.element).each(function()
       {
-        e.stopPropagation();
-      });
-      
-      $('> li', $list).click(function()
-      {
-        var $input = $('> input', $(this));
-        $input.attr('checked', !$input.attr('checked')).trigger('change');
-      });
-      
-      $('> li > input', $list).change(function()
-      {
-        $(this).parent()[($(this).attr('checked') ? 'add' : 'remove') + 'Class']('active');
-        return true;
-      }).trigger('change');
-      
-      $('div.control span.select_all, div.control span.unselect_all', $list.parent().parent()).each(function()
-      {
-        $(this).click(function()
+        var $list = $(this), $lis = $('> li', $list);
+
+        $lis.find('> label, > input').click(function(e)
         {
-          $(this).closest('div.sf_admin_form_row_inner').find('input:checkbox').attr('checked', $(this).hasClass('select_all')).trigger('change');
+          e.stopPropagation();
         });
+
+        $lis.click(function()
+        {
+          var $input = $('> input', $(this));
+          $input.attr('checked', !$input.attr('checked')).trigger('change');
+        });
+
+        $lis.find('> input').change(function()
+        {
+          $(this).parent()[($(this).attr('checked') ? 'add' : 'remove') + 'Class']('active');
+          return true;
+        }).trigger('change');
+
+        $('div.control span.select_all, div.control span.unselect_all', $list.parent().parent()).each(function()
+        {
+          $(this).click(function()
+          {
+            $(this).closest('div.sf_admin_form_row_inner').find('input:checkbox:visible').attr('checked', $(this).hasClass('select_all')).trigger('change');
+          });
+        });
+
+        if($lis.length > 9)
+        {
+          $('<div class="dm_checkbox_search"><input type="text" title="Search" /></div>')
+          .prependTo($list.parent())
+          .find('input').bind('keyup', function()
+          {
+            var term = $.trim($(this).val());
+
+            if(term == '')
+            {
+              $lis.show();
+              return;
+            }
+
+            $lis.each(function()
+            {
+              $(this)[$(this).find('label').text().match(term) ? 'show' : 'hide']();
+            });
+          }).tipsy({gravity: 's'});
+        }
       });
     }
     
