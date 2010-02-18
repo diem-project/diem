@@ -44,7 +44,7 @@ if($.fn.tipsy)
   $.fn.tipsy.elementOptions = function(elem, options) {
     return options;
   };
-  $.fn.tipsy.defaults.delayIn = 100;
+  $.fn.tipsy.defaults.delayIn = 500;
 }
 
 })(jQuery);

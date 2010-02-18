@@ -75,14 +75,15 @@ class dmFrontPageEditHelper extends dmFrontPageBaseHelper
      */
     if('show' === $widget['action'] && $this->user->can('record_edit_front'))
     {
-      $module = $this->moduleManager->getModule($widget['module']);
-
-      if($module->hasModel())
+      if($module = $this->moduleManager->getModuleOrNull($widget['module']))
       {
-        $html .= sprintf('<a class="dm dm_widget_record_edit" title="%s"></a>',
-          $this->i18n->__('Edit this %1%', array('%1%' => $this->i18n->__(dmString::lcfirst($module->getName())))),
-          $widget['id']
-        );
+        if($module->hasModel())
+        {
+          $html .= sprintf('<a class="dm dm_widget_record_edit" title="%s"></a>',
+            $this->i18n->__('Edit this %1%', array('%1%' => $this->i18n->__(dmString::lcfirst($module->getName())))),
+            $widget['id']
+          );
+        }
       }
     }
 
