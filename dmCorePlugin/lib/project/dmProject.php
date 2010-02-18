@@ -87,46 +87,6 @@ class dmProject
 
     return $models;
   }
-
-  public static function checkFilesystemPermissions()
-  {
-    $requiredWritableDirs = array(
-      sfConfig::get('sf_cache_dir'),
-      sfConfig::get('dm_cache_dir'),
-      sfConfig::get('sf_log_dir'),
-//      sfConfig::get('dm_data_dir'),
-//      dmOs::join(sfConfig::get('dm_data_dir'), 'backup'),
-//      dmOs::join(sfConfig::get('dm_data_dir'), 'index'),
-//      dmOs::join(sfConfig::get('dm_data_dir'), 'log'),
-      sfConfig::get('sf_upload_dir'),
-//      dmOs::join(sfConfig::get('sf_lib_dir'), 'migration/doctrine')
-    );
-
-    $messages = array();
-
-    foreach($requiredWritableDirs as $requiredWritableDir)
-    {
-      if (!is_dir($requiredWritableDir))
-      {
-        $oldUmask = umask(0);
-        @mkdir($requiredWritableDir, 0777, true);
-        umask($oldUmask);
-      }
-    
-      if(!is_writable($requiredWritableDir))
-      {
-        $messages[] = sprintf(
-          'Folder %s should be writable',
-          str_replace(sfConfig::get('sf_root_dir'), '', $requiredWritableDir)
-        );
-      }
-    }
-
-    if(count($messages))
-    {
-      dm::getUser()->logAlert(implode("\n", $messages), false);
-    }
-  }
   
   public static function getRootDir()
   {

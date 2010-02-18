@@ -22,7 +22,7 @@
       }
 
       $this->dispatcher->notify(new sfEvent($this, 'admin.save_object', array('object' => $<?php echo $this->getSingularName() ?>)));
-
+      
       if ($request->hasParameter('_save_and_add'))
       {
         $this->getUser()->setFlash('notice', $notice.' You can add another one below.');

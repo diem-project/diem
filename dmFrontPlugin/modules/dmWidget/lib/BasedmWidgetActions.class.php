@@ -39,7 +39,10 @@ class BasedmWidgetActions extends dmFrontBaseActions
     $this->forward404Unless($record = $query->fetchRecord());
 
     return $this->renderAsync(array(
-      'html'  => $this->getHelper()->link('app:admin/+/'.$module->getKey().'/edit?pk='.$record->id),
+      'html'  => $this->getHelper()->link('app:admin/+/'.$module->getKey().'/edit')->params(array(
+        'pk'        => $record->id,
+        'dm_embed'  => 1
+      )),
       'js'    => array('lib.colorbox'),
       'css'   => array('lib.colorbox')
     ), true);
@@ -193,7 +196,7 @@ class BasedmWidgetActions extends dmFrontBaseActions
 
   public function executeGetFull(sfWebRequest $request)
   {
-    $widgetArray = $this->requireWidget('id')->toArrayWithMappedValue();
+    $widgetArray = $this->requireWidget()->toArrayWithMappedValue();
 
     try
     {

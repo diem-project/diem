@@ -21,7 +21,7 @@ $.widget('ui.dmWidget', {
 		
     var $dialog = $.dm.ctrl.ajaxDialog({
       url:          $.dm.ctrl.getHref('+/dmWidget/edit'),
-      data:         { widget_id: widget.getId() },
+      data:         {widget_id: widget.getId()},
       title:        $('a.dm_widget_edit', widget.element).attr('original-title'),
       width:        370,
 			'class':      'dm_widget_edit_dialog_wrap '+dialogClass,
@@ -153,10 +153,10 @@ $.widget('ui.dmWidget', {
     
     $.ajax({
       url:      $.dm.ctrl.getHref('+/dmWidget/delete'),
-      data:     { widget_id: self.getId() }
+      data:     {widget_id: self.getId()}
     });
     
-    self.element.slideUp(500, function() { self.destroy(); self.element.remove(); });
+    self.element.slideUp(500, function() {self.destroy();self.element.remove();});
   },
 
   reload: function(timeout)
@@ -169,7 +169,7 @@ $.widget('ui.dmWidget', {
     {
       $.ajax({
         url:      $.dm.ctrl.getHref('+/dmWidget/getFull'),
-        data:     { widget_id: self.getId() },
+        data:     {widget_id: self.getId()},
         success:  function(html)
         {
           self.replace(html);
@@ -197,37 +197,61 @@ $.widget('ui.dmWidget', {
 
   openRecordEditDialog: function(widgetId)
   {
+    var self = this, $button = self.element.find('a.dm_widget_record_edit');
+
+    $.fn.tipsy.remove();
+
+    $button.block();
+    
     $.ajax({
-      url:      $.dm.ctrl.getHref('+/dmWidget/editRecord')+'?widget_id='+widgetId,
+      url:      $.dm.ctrl.getHref('+/dmWidget/editRecord'),
+      data:     {widget_id: self.getId(), dm_embed: 1},
       success:  function(html)
       {
         $('<div class="diem-colorbox none"></div>')
         .html(html)
         .dmExtractEncodedAssets()
         .find('a')
-        .colorbox({width:"90%", height:"90%", iframe: true})
+        .colorbox({
+          width:"90%",
+          height:"90%",
+          iframe: true,
+          speed: 200,
+          onClosed: function()
+          {
+            self.reload();
+          }
+        })
         .trigger('click');
+
+        $button.unblock();
+
+        var $close = $('#cboxClose').attr('rel', ''), interval = setInterval(function()
+        {
+          if($close.attr('rel') == 'dm_close')
+          {
+            clearInterval(interval);
+            $close.trigger('click');
+          }
+        }, 200);
       }
     });
   },
   
   initialize: function()
   {
-    var widget = this;
+    var self = this;
     
     this.id = this.element.attr('id').substring(10);
     
     $('a.dm_widget_edit', this.element).click(function() {
-      if (widget.element.hasClass('dm_dragging')) {
-        return false;
+      if (!self.element.hasClass('dm_dragging')) {
+        self.openEditDialog();
       }
-      widget.openEditDialog();
-      return true;
     }).tipsy({gravity: 's'});
 
     $('a.dm_widget_record_edit', this.element).click(function() {
-      widget.openRecordEditDialog($(this).metadata({ type: 'html5' }).widget_id);
-      return true;
+      self.openRecordEditDialog();
     }).tipsy({gravity: 's'});
   },
   

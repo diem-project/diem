@@ -197,6 +197,11 @@
     }
     
   });
+
+  $.fn.tipsy.remove = function()
+  {
+    $('body > div.tipsy').remove();
+  }
  
  /*
   * Make ui dialogs position: fixed

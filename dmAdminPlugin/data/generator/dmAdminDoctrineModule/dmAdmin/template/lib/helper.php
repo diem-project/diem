@@ -29,6 +29,11 @@ abstract class Base<?php echo ucfirst($this->getModuleName()) ?>GeneratorHelper 
     {
       $route['pk'] = $object->getPrimaryKey();
     }
+
+    if(sfConfig::get('dm_admin_embedded'))
+    {
+      $route['dm_embed'] = 1;
+    }
     
     return $route;
   }

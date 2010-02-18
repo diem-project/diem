@@ -38,8 +38,8 @@ class dmAdminLayoutHelper extends dmCoreLayoutHelper
     {
       $html .= $helper->renderPartial('dmInterface', 'mediaBar', array('cacheKey' => $cacheKey));
     }
-    
-    if ($user->can('tool_bar_admin'))
+
+    if (sfConfig::get('dm_toolBar_enabled', true) && $user->can('tool_bar_admin'))
     {
       $html .= $helper->renderComponent('dmInterface', 'toolBar', array('cacheKey' => $cacheKey));
     }

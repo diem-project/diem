@@ -29,11 +29,6 @@ abstract class dmInitFilter extends dmFilter
     }
   }
   
-  protected function checkFilesystemPermissions()
-  {
-    return dmProject::checkFilesystemPermissions();
-  }
-  
   protected function saveApplicationUrl()
   {
     if(dmConfig::isCli())

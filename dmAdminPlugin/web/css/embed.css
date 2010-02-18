@@ -1,0 +1,26 @@
+#dm_admin_content {
+  margin-top: 0;
+  padding: 0;
+}
+
+#dm_page_bar, #dm_media_bar {
+  top: 0;
+}
+
+div.dm_form_action_bar {
+  border: none;
+  background: #fff;
+  text-align: center;
+  padding: 0;
+}
+
+div.dm_form_action_bar li {
+  float: none;
+  margin: none;
+  display: inline;
+}
+
+
+#dm_page_bar p.title a {
+  display: none;
+}

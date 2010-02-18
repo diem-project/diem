@@ -11,6 +11,11 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
     {
       $route['pk'] = $object->getPrimaryKey();
     }
+
+    if(sfConfig::get('dm_admin_embedded'))
+    {
+      $route['dm_embed'] = 1;
+    }
     
     return $route;
   }

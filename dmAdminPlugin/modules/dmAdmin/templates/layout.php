@@ -17,7 +17,7 @@ $helper->renderHtmlTag(),
       $sf_request->getParameter('action')
     ),
 
-      $sf_context->get('bread_crumb')->render(),
+      sfConfig::get('dm_admin_embedded') ? '' : $sf_context->get('bread_crumb')->render(),
 
       get_partial('dmInterface/flash'),
   
