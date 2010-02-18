@@ -117,6 +117,7 @@ class dmFrontLinkResource
       }
       elseif(
           strncmp($source, 'http://', 7)  === 0
+      ||  strncmp($source, 'https://', 7)  === 0
       ||  strncmp($source, 'ftp://', 6)   === 0
       ||  strncmp($source, 'mailto:', 7)  === 0
       ||  strncmp($source, '#', 1)        === 0
