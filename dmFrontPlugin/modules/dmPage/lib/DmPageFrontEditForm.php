@@ -73,6 +73,7 @@ class DmPageFrontEditForm extends DmPageForm
       'title'     => $this->object->title,
       'h1'        => $this->object->h1,
       'description' => $this->object->description,
+      'keywords'  => $this->object->keywords,
       'is_active' => $this->object->is_active,
       'is_secure' => $this->object->is_secure,
       'credentials' => $this->object->credentials,
