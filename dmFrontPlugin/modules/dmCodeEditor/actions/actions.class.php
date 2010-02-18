@@ -60,6 +60,8 @@ class dmCodeEditorActions extends dmFrontBaseActions
 
     @file_put_contents($file, $request->getParameter('code'));
 
+    $this->getService('cache_cleaner')->clearTemplate();
+
     if (dmOs::getFileExtension($file, false) == 'css')
     {
       $return = array(
