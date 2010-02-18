@@ -9,7 +9,7 @@ $t = new lime_test(24);
 dmDb::table('DmPage')->checkBasicPages();
 
 // create form
-require_once(dmOs::join(sfConfig::get('dm_front_dir'), 'modules/dmPage/lib/form/DmPageFrontNewForm.php'));
+require_once(dmOs::join(sfConfig::get('dm_front_dir'), 'modules/dmPage/lib/DmPageFrontNewForm.php'));
 $form = new DmPageFrontNewForm;
 $form->removeCsrfProtection();
 
