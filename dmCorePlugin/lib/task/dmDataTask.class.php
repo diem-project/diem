@@ -534,7 +534,8 @@ EOF;
           'media_bar_admin',
           'see_log',
           'site_view',
-          'see_chart'
+          'see_chart',
+          'record_edit_front'
         )
       )
     );

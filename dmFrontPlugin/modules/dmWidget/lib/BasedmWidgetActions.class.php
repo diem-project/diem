@@ -228,11 +228,6 @@ class BasedmWidgetActions extends dmFrontBaseActions
   public function executeSort(sfWebRequest $request)
   {
     $this->forward404Unless(
-      $zone = dmDb::table('DmZone')->find($request->getParameter('dm_zone')),
-      'Can not find zone'
-    );
-
-    $this->forward404Unless(
       $widgetList = $request->getParameter('dm_widget'),
       'Missing widget list'
     );

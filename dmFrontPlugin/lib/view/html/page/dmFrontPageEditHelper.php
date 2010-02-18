@@ -45,15 +45,6 @@ class dmFrontPageEditHelper extends dmFrontPageBaseHelper
   public function renderWidget(array $widget)
   {
     list($widgetWrapClass, $widgetInnerClass) = $this->getWidgetContainerClasses($widget);
-    
-    try
-    {
-      $widgetPublicName = $this->serviceContainer->getService('widget_type_manager')->getWidgetType($widget)->getPublicName();
-    }
-    catch(Exception $e)
-    {
-      $widgetPublicName = $widget['module'].'.'.$widget['action'];
-    }
 
     /*
      * Open widget wrap with wrapped user's classes
@@ -65,6 +56,15 @@ class dmFrontPageEditHelper extends dmFrontPageBaseHelper
      */
     if ($this->user->can('widget_edit'))
     {
+      try
+      {
+        $widgetPublicName = $this->serviceContainer->getService('widget_type_manager')->getWidgetType($widget)->getPublicName();
+      }
+      catch(Exception $e)
+      {
+        $widgetPublicName = $widget['module'].'.'.$widget['action'];
+      }
+      
       $title = $this->i18n->__('Edit this %1%', array('%1%' => $this->i18n->__(dmString::lcfirst($widgetPublicName))));
       
       $html .= '<a class="dm dm_widget_edit" title="'.$title.'"></a>';
@@ -79,10 +79,8 @@ class dmFrontPageEditHelper extends dmFrontPageBaseHelper
 
       if($module->hasModel())
       {
-        $title = $this->i18n->__('Edit this %1%', array('%1%' => $this->i18n->__(dmString::lcfirst($module->getName()))));
-
-        $html .= sprintf('<a class="dm dm_widget_record_edit" title="%s" data-widget_id="%s"></a>',
-          $title,
+        $html .= sprintf('<a class="dm dm_widget_record_edit" title="%s"></a>',
+          $this->i18n->__('Edit this %1%', array('%1%' => $this->i18n->__(dmString::lcfirst($module->getName())))),
           $widget['id']
         );
       }

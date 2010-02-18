@@ -23,4 +23,4 @@ editRecord:
   credentials:  record_edit_front
 
 getFull:
-  credentials:  widget_edit
+  is_secure:    false
