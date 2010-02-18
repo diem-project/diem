@@ -17,7 +17,7 @@
   if($form->getObject()->getTable()->isI18nColumn($name))
   {
     $label = _media('dmCore/images/flag-16/'.$sf_user->getCulture().'.png')
-    ->size(16, 16)
+    ->size(16, 11)
     ->set('.dm_label_culture')
     ->alt(format_language($sf_user->getCulture())).
     $label;
@@ -27,7 +27,7 @@
   {
     $label = $label.
     _media('dmCore/images/16/required.png')
-    ->size(16, 11)
+    ->size(16, 16)
     ->set('.dm_label_required')
     ->alt(__('Required.'));
   }
