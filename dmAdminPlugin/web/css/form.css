@@ -109,6 +109,7 @@ div.control span.unselect_all {
   cursor: pointer;
   display: block;
   color: #046BCA;
+  font-weight: normal;
 }
 
 div.sf_admin_form div.sf_admin_form_row_inner input,
