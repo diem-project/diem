@@ -60,8 +60,6 @@ class dmCodeEditorActions extends dmFrontBaseActions
 
     @file_put_contents($file, $request->getParameter('code'));
 
-    $this->getService('cache_cleaner')->clearTemplate();
-
     if (dmOs::getFileExtension($file, false) == 'css')
     {
       $return = array(
@@ -71,6 +69,8 @@ class dmCodeEditorActions extends dmFrontBaseActions
     }
     else
     {
+      $this->getService('cache_cleaner')->clearTemplate();
+      
       $return = array(
         'type' => 'php',
         'widgets' => $this->getWidgetInnersForFile($file)
