@@ -54,6 +54,8 @@ class dmCodeEditorActions extends dmAdminBaseActions
       ));
     }
 
+    $this->getService('cache_cleaner')->clearTemplate();
+
     return $this->renderJson(array(
       'type'    => 'ok',
       'message' => $this->getI18n()->__('Your modifications have been saved')
