@@ -27,7 +27,7 @@
   {
     $label = $label.
     _media('dmCore/images/16/required.png')
-    ->size(16, 16)
+    ->size(16, 11)
     ->set('.dm_label_required')
     ->alt(__('Required.'));
   }
