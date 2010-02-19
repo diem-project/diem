@@ -33,12 +33,12 @@ foreach (array(
 {
   try
   {
-    $t->comment($classes.' -> '.$v->clean($classes));
-    $t->pass('->clean() checks that the value is a valid css class + id');
+    $t->comment('"'.$classes.'" -> "'.$v->clean($classes).'"');
+    $t->pass('->clean() checks that the value is a valid css class name + id');
   }
   catch (sfValidatorError $e)
   {
-    $t->fail('->clean() checks that the value is a valid css class + id');
+    $t->fail('->clean() checks that the value is a valid css class name + id');
   }
 }
 
@@ -56,12 +56,12 @@ foreach (array(
   try
   {
     $v->clean($nonClass);
-    $t->fail('->clean() throws an sfValidatorError if the value is not a valid css class + id');
+    $t->fail('->clean() throws an sfValidatorError if the value is not a valid css class name + id');
     $t->skip('', 1);
   }
   catch (sfValidatorError $e)
   {
-    $t->pass('->clean() throws an sfValidatorError if the value is not a valid css class + id');
+    $t->pass('->clean() throws an sfValidatorError if the value is not a valid css class name + id');
     $t->is($e->getCode(), 'invalid', '->clean() throws a sfValidatorError');
   }
 }
