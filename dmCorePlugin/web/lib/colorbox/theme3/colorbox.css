@@ -20,7 +20,7 @@
 */
 #cboxOverlay{background:#000;}
 
-#colorbox{border:3px solid black;-moz-border-radius:4px;-webkit-border-radius:4px;}
+#colorbox{border:1px solid black;-moz-border-radius:4px;-webkit-border-radius:4px;-moz-border-shadow: 0 0 5px #000;-webkit-border-shadow: 0 0 5px #000;}
     #cboxContent{}
         #cboxLoadedContent{background:#fff;}
         #cboxTitle{position:absolute; top:-20px; left:0; color:#ccc;}
