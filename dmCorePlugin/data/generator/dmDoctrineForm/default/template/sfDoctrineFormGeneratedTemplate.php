@@ -81,8 +81,10 @@ abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->
   }
 
 <?php foreach($this->getMediaRelations() as $mediaRelation): ?>
-  /*
-   * Create Media form for <?php echo $mediaRelation['local']."\n"; ?>
+  /**
+   * Creates a DmMediaForm instance for <?php echo $mediaRelation['local']."\n"; ?>
+   *
+   * @return DmMediaForm a form instance for the related media
    */
   protected function createMediaFormFor<?php echo dmString::camelize($mediaRelation['local']); ?>()
   {
