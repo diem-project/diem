@@ -123,13 +123,24 @@ class BasedmMediaLibraryActions extends dmAdminBaseActions
       'can not find media'
     );
 
-    if (!$this->file->isWritable())
+    if (!$this->file->checkFileExists())
+    {
+      $this->getUser()->logAlert($this->getI18n()->__('File %1% does not exist', array('%1%' => $this->file->getRelPath())));
+    }
+    elseif (!$this->file->isWritable())
     {
       $this->getUser()->logAlert($this->getI18n()->__('File %1% is not writable', array('%1%' => $this->file->getRelPath())));
     }
     else
     {
-      $this->file->delete();
+      try
+      {
+        $this->file->delete();
+      }
+      catch(Doctrine_Connection_Exception $e)
+      {
+        $this->getUser()->logError($this->getI18n()->__('File %file% can not be deleted because a record needs it', array('%file%' => $this->file->getRelPath())));
+      }
     }
 
     return $this->redirect($this->getRouting()->getMediaUrl($this->file->Folder));

@@ -68,8 +68,15 @@ class dmMediaSynchronizer
     foreach ($medias as $name => $media)
     {
       // File does not exist, media exists: delete media
-      $media->delete();
-
+      try
+      {
+        $media->delete();
+      }
+      catch(Doctrine_Connection_Exception $e)
+      {
+        //A record needs this media, but the file has been removed :-/
+      }
+      
       $dirty = true;
     }
 

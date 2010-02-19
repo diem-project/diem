@@ -343,25 +343,14 @@ abstract class PluginDmMedia extends BaseDmMedia
 
     if (!$this->checkFileExists())
     {
-      throw new dmException(sprintf('Trying to save DmMedia with no existing file : %s', $this->file));
+      //throw new dmException(sprintf('Trying to save DmMedia with no existing file : %s', $this->file));
     }
-
-    if($this->isNew())
+    elseif($this->isNew())
     {
       $this->refreshFromFile();
     }
 
     return parent::save($conn);
-  }
-
-  public function delete(Doctrine_Connection $conn = null)
-  {
-    if (!$this->destroy())
-    {
-      throw new dmException('Can not delete '.$this->getFullPath());
-    }
-
-    return parent::delete($conn);
   }
 
 }

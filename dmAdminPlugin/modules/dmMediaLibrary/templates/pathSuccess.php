@@ -48,7 +48,7 @@ if ($children = $folder->getNode()->getChildren())
 foreach($files as $f)
 {
   echo _tag('li.file.media_id_'.$f->getId(),
-    ($f->isImage()
+    (($f->isImage() && $f->checkFileExists())
     ? _link($sf_context->getRouting()->getMediaUrl($f))->text(
         _tag('span.image_background',
           array('style' => sprintf(
