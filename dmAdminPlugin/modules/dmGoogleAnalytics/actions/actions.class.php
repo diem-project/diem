@@ -10,10 +10,15 @@ class dmGoogleAnalyticsActions extends dmAdminBaseActions
       $this->form = new dmGoogleAnalyticsForm();
       $this->form->setGapi($this->getService('gapi'));
       
-      if ($request->isMethod('post') && $this->form->bindAndValid($request))
+      if ($request->isMethod('post'))
       {
-        $this->form->save();
-        return $this->redirect('@dm_google_analytics');
+        dmConfig::set('ga_key', dmArray::get($request->getParameter($this->form->getName()), 'key'));
+        
+        if($this->form->bindAndValid($request))
+        {
+          $this->form->save();
+          return $this->redirect('@dm_google_analytics');
+        }
       }
     }
 

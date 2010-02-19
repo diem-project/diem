@@ -54,8 +54,6 @@ class dmGoogleAnalyticsForm extends dmForm
 
   public function save()
   {
-    dmConfig::set('ga_key', $this->getValue('key'));
-    
     if($this->getValue('token'))
     {
       dmConfig::set('ga_token', $this->getValue('token'));
