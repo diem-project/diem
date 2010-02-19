@@ -477,7 +477,6 @@ EOF;
           'admin',
           'content',
           'code_editor',
-          'code_editor_view',
           'media_library',
           'loremize',
           'export_table',
