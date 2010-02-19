@@ -353,4 +353,14 @@ abstract class PluginDmMedia extends BaseDmMedia
     return parent::save($conn);
   }
 
+  public function postDelete($event)
+  {
+    parent::postDelete($event);
+
+    if (!$this->destroy())
+    {
+      throw new dmException('Can not delete '.$this->getFullPath());
+    }
+  }
+
 }
