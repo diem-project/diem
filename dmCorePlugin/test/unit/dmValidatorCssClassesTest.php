@@ -53,12 +53,12 @@ foreach (array(
   try
   {
     $v->clean($nonClass);
-    $t->fail('->clean() throws an sfValidatorError if the value is not a valid css class');
+    $t->fail('->clean() throws an sfValidatorError if the value is not a valid css class name');
     $t->skip('', 1);
   }
   catch (sfValidatorError $e)
   {
-    $t->pass('->clean() throws an sfValidatorError if the value is not a valid css class');
+    $t->pass('->clean() throws an sfValidatorError if the value is not a valid css class name');
     $t->is($e->getCode(), 'invalid', '->clean() throws a sfValidatorError');
   }
 }
