@@ -1,0 +1,5 @@
+link_test_route_1:
+  url: /simple-url
+  
+link_test_route_2:
+  url: /advanced-parametered-url/:var1/:var2
