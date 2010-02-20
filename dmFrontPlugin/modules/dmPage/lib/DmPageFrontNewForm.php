@@ -9,10 +9,14 @@ class DmPageFrontNewForm extends DmPageForm
 
     $this->useFields(array());
     
-    $this->widgetSchema['name'] = new sfWidgetFormInputText();
+    $this->widgetSchema['name'] = new sfWidgetFormInputText(array(), array(
+      'autocomplete' => 'off'
+    ));
     $this->validatorSchema['name'] = new sfValidatorString(array('max_length' => 255));
     
-    $this->widgetSchema['slug'] = new sfWidgetFormInputText();
+    $this->widgetSchema['slug'] = new sfWidgetFormInputText(array(), array(
+      'autocomplete' => 'off'
+    ));
     $this->validatorSchema['slug'] = new sfValidatorString(array('max_length' => 255));
 
     $this->widgetSchema['dm_layout_id'] = new sfWidgetFormDoctrineChoice(array(
