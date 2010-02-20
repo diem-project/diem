@@ -15,7 +15,7 @@ abstract class dmConfigurable
   public function configure(array $options = array())
   {
     $this->options = array_merge(
-      $this->getDefaultOptions(),
+      $this->options ? $this->options : $this->getDefaultOptions(),
       $options
     );
   }

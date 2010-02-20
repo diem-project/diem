@@ -176,6 +176,9 @@ parameters:
   page_tree_view.class:       dmPageTreeView        # Render the page tree
   page_tree_view.options:     []
 
+  download.class:             dmDownloadResponse    # Triggers a download from a file or string data
+  download.options:           []
+
 services:
 
   text_diff:
@@ -426,3 +429,8 @@ services:
     class:                    %page_tree_view.class%
     shared:                   false
     arguments:                [ @helper, %user.culture%, %page_tree_view.options% ]
+
+  download:
+    class:                    %download.class%
+    shared:                   false
+    arguments:                [ @response, @mime_type_resolver, %download.options% ]

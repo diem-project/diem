@@ -144,52 +144,9 @@ abstract class dmBaseActions extends sfActions
    * @param mixed $pathOrData path to file or raw data
    * @param array $options    optional information file_name and type
    */
-  protected function download($pathOrData, array $options = array())
+  protected function download($fileOrData, array $options = array())
   {
-    if (is_readable($pathOrData))
-    {
-      $data = file_get_contents($pathOrData);
-
-      if(empty($options['file_name']))
-      {
-        $options['file_name'] = basename($pathOrData);
-      }
-    }
-    else
-    {
-      $data = $pathOrData;
-
-      if(empty($options['file_name']))
-      {
-        $options['file_name'] = dmString::slugify(dmConfig::get('site_name')).'-'.dmString::random(8);
-      }
-    }
-    
-    if (!isset($options['type']))
-    {
-      $options['type'] = $this->getService('mime_type_resolver')->getByFilename($options['file_name']);
-    }
-
-    //Gather relevent info about file
-    $fileLenght = strlen($data);
-
-    //Begin writing headers
-    header("Pragma: public");
-    header("Expires: 0");
-    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-    header("Cache-Control: public");
-    header("Content-Description: File Transfer");
-
-    //Use the switch-generated Content-Type
-    header('Content-Type: '.$options['type']);
-
-    //Force the download
-    header("Content-Disposition: attachment; filename=\"".$options['file_name']."\";");
-    header("Content-Transfer-Encoding: binary");
-    header("Content-Length: ".$fileLenght);
-    
-    print $data;
-    exit;
+    $this->getService('download')->configure($options)->execute($fileOrData);
   }
   
   /**
