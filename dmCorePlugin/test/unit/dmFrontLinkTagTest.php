@@ -4,11 +4,9 @@ require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
 $helper = new dmUnitTestHelper();
 $helper->boot('front');
 
-$t = new lime_test(40);
+$t = new lime_test(45);
 
 dm::loadHelpers(array('Dm'));
-
-$t->is((string)_link('http://c2.com/cgi/wiki?DontRepeatYourself')->text('DRY'), $expected = '<a class="link" href="http://c2.com/cgi/wiki?DontRepeatYourself">DRY</a>', $expected);
 
 sfConfig::set('sf_no_script_name', false);
 
@@ -38,6 +36,8 @@ $testPage->Node->insertAsLastChildOf($home);
 
 $scriptName = $helper->get('request')->getScriptName();
 $t->diag('Current cli script name = '.$scriptName);
+
+$t->is((string)_link('http://c2.com/cgi/wiki?DontRepeatYourself')->text('DRY'), $expected = '<a class="link" href="http://c2.com/cgi/wiki?DontRepeatYourself">DRY</a>', $expected);
 
 $t->like(£link()->render(), '|<a class="link dm_current|', '£link() has class dm_current');
 
@@ -201,3 +201,37 @@ $expected = sprintf(
   'http://diem-project.org', 'http://diem-project.org'
 );
 $t->is((string)£link('http://diem-project.org')->set('.beafv.myclass'), $expected, 'beafh link is '.$expected);
+
+
+$expected = sprintf(
+  '<a class="link" href="%s">%s</a>',
+  $helper->getContext()->getRequest()->getPathInfoPrefix().'/simple-url',
+  'simple route url'
+);
+$t->is((string)£link('@link_test_route_1')->text('simple route url'), $expected, 'route link is '.$expected);
+
+$expected = sprintf(
+  '<a class="link" href="%s">%s</a>',
+  $helper->getContext()->getRequest()->getPathInfoPrefix().'/simple-url?var1=value1',
+  'simple route url with extra query string'
+);
+$t->is((string)£link('@link_test_route_1')->param('var1', 'value1')->text('simple route url with extra query string'), $expected, 'route link is '.$expected);
+              
+$expected = sprintf(
+  '<a class="link" href="%s">%s</a>',
+  $helper->getContext()->getRequest()->getPathInfoPrefix().'/advanced-parametered-url/value1/value2',
+  'advanced parametered route url'
+);
+$t->is((string)£link('@link_test_route_2')->params(array('var1'=> 'value1', 'var2' => 'value2'))->text('advanced parametered route url'), $expected, 'route link is '.$expected);
+
+$expected = sprintf(
+  '<a class="link" href="%s">%s</a>',
+  $helper->getContext()->getRequest()->getPathInfoPrefix().'/advanced-parametered-url/value1/value2?var3=value3',
+  'advanced parametered route url with extrauery string'
+);
+$t->is((string)£link('@link_test_route_2')->params(array('var1'=> 'value1', 'var2' => 'value2'))->param('var3', 'value3')->text('advanced parametered route url with extrauery string'), $expected, 'route link is '.$expected);
+
+sfConfig::set('sf_debug', true);
+$expected = 'The "/advanced-parametered-url/:var1/:var2" route has some missing mandatory parameters (:var1, :var2).';
+$t->is((string)£link('@link_test_route_2')->text('advanced parametered route url'), $expected, 'route link is '.$expected);
+sfConfig::set('sf_debug', false);
