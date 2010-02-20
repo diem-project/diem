@@ -149,13 +149,13 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
     
     $toggler.click(function()
     {
-			activate(active = $toggler.hasClass('s16_chevron_up'));
-      
-			setTimeout(function() {
+      activate(active = $toggler.hasClass('s16_chevron_up'));
+
+      setTimeout(function() {
         $.ajax({
           url: $.dm.ctrl.getHref('+/dmFront/showToolBarToggle') + "?active=" + (active ? 1 : 0)
         });
-			}, 100);
+      }, 100);
     });
   },
 
@@ -180,7 +180,7 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
 
         $menu.find('input.dm_add_menu_search').bind('keyup', function()
         {
-          var term = $.trim($(this).val());
+          var term = new RegExp($.trim($(this).val()), 'i');
 
           if(term == '')
           {

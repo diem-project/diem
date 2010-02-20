@@ -59,14 +59,14 @@ $.dm.coreToolBar = {
 
     if ('ajax' == data.type)
     {
-     $.ajax({
-          url:      data.url,
-      dataType: 'json',
-          success:  function(data)
-          {
-            self.refreshStep(data, step+1);
-          }
-        });
+      $.ajax({
+        url:      data.url,
+        dataType: 'json',
+        success:  function(data)
+        {
+          self.refreshStep(data, step+1);
+        }
+      });
     }
     else
     {
