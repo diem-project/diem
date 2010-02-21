@@ -332,6 +332,7 @@ class dmAdminGeneratorBuilder
       }
       else
       {
+        continue;
         $label = dmString::humanize($alias);
       }
       
