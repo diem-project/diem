@@ -17,14 +17,6 @@ class dmInterfaceActions extends BasedmInterfaceActions
   {
     $menu = $this->getService('front_add_menu')->build()->render();
 
-    if ($this->getUser()->can('page_add'))
-    {
-      $menu .= $this->getHelper()->link('+/dmPage/new')
-      ->set('a.tipable.page_add_form.widget24.s24block.s24_page_add')
-      ->text('')
-      ->title($this->getI18n()->__('Add new page'));
-    }
-
     if($this->getUser()->can('zone_add'))
     {
       $menu .= '<span class="zone_add move ui-draggable">Zone</span>';
