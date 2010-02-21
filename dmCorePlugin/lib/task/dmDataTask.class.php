@@ -443,7 +443,7 @@ EOF;
   protected function loadGroups()
   {
     $array = array(
-      "developper" => array(
+      "developer" => array(
         'description' => "Able to read and update source code",
         'permissions' => array(
           'system'
