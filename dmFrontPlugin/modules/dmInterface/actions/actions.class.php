@@ -23,7 +23,7 @@ class dmInterfaceActions extends BasedmInterfaceActions
     }
 
     $menu .= '<li class="dm_add_menu_actions clearfix">'.
-    '<input class="dm_add_menu_search" title="'.$this->getI18n()->__('Search a widget').'" />'.
+    '<input class="dm_add_menu_search" title="'.$this->getI18n()->__('Search for a widget').'" />'.
     '</li>';
 
     return $this->renderText($menu);
