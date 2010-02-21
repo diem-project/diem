@@ -244,11 +244,7 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
         };
 
         $menu.dmMenu({
-          hoverClass: 'ui-state-active',
-          open: function()
-          {
-            this.find('input.dm_add_menu_search').focus();
-          }
+          hoverClass: 'ui-state-active'
         })
         .find('li.dm_droppable_widgets').disableSelection();
 
