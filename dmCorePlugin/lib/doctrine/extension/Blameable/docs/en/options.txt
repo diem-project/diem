@@ -1,0 +1,115 @@
+Blameable can work quite well based on its default options, however you might want more a customized model, this is where the power of the Blameable options come into play.
+
+Much like Timestampable, you can control each created and updated columns name, alias, type, length, and options. You can totally disable either of the columns if you don't want to audit that particular attribute of the model, for instance, if you are modeling something that immutable, you could disable the updated column since that particular model will never be changed as a result of its nature.
+
+Blameable's other options control
+
+  * the blameVar, the index in the $_SESSION or $_GLOBALS array which stores the user data
+  * the Blameable Listener
+  * the default value if the blameVar isn't available
+
+## Options
+
+  *listener*
+
+  Default: `Doctrine_Template_Blameable_Listener`
+  
+  The Blameable listener controls where the user data is retrieved from to be used in the created and updated columns.  If your user management is handled differently, perhaps with a third party plugin, you can create your own listener to work with. 
+  >**Note**
+  >custom listeners must be a subclass of Doctrine_Template_Blameable_Listener
+
+  *blameVar*
+
+  Default: `userId`
+  
+  The blameVar is the index of the user data in the $_SESSION or $_GLOBALS array.
+
+  *default*
+
+  Default: false
+  
+  The default value to be used if user data is unavailable. The value of default can be either Doctrine DQL or a literal value.
+
+  If the default value is Doctrine DQL then the blameVar is used to access the user data from the retrieve result set.
+  >**Note**
+  >the Blameable listener retrieves a single record (fetchOne)
+
+  If the default value is a literal value, then that literal value is used as the user data
+
+  *params*
+  
+  Default: array()
+
+  The parameters to be sent to the DQL query used as the default value
+
+### Column Options
+
+  *name*
+
+  Default: created => `created_by` , updated => `updated_by`
+
+  The name of the column that is created by Blameable
+
+  *alias*
+
+  Default: null
+
+  The alias that Doctrine will refer to the column as
+
+  *type*
+
+  Default: integer
+
+  The type of the column
+
+  *length*
+
+  Default: 8
+
+  The length of the column
+
+  *options*
+
+  Default: array('notnull' => true)
+
+  The column options
+
+  *disabled*
+
+  Default: false
+
+  If the column will be added to the model
+
+  *onInsert*
+
+  Default: true
+
+  If the column will be set when the model is first saved to the database.
+  >**Note**
+  >this option is only available for the updated column
+
+### Relation Options
+
+  *name*
+  
+  Default: created => `CreatedBy`, updated => `UpdatedBy`
+  
+  The name of the relation to be added to the model
+  
+  *class*
+  
+  Default: User
+  
+  The Doctrine class of the relation
+  
+  *foreign*
+  
+  Default: id
+  
+  The column name in the foreign relation
+  
+  *disabled*
+  
+  Default: true
+  
+  If the relation will be added to the model

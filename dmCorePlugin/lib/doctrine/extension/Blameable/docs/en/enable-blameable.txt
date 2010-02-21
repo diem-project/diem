@@ -1,0 +1,16 @@
+You can enable blaming on any given model simply by adding the `Blameable` behaviour using the `actAs` functionality in your models. Blameable can work `out of the box` using it's default options, however many options are supported.
+
+Below is an example of where we enable it on a simple BlogPost model.
+
+    [yml]
+    BlogPost:
+      actAs: [Blameable]
+      columns:
+        title:
+          type: string(255)
+          notnull: true
+        description:
+          type: string(255)
+          notnull: true
+
+Now when the model is generated two columns, created_by and updated_by, will automatically be added.  By default the values for the columns will be taken from the `userId` index in either the $_SESSION or $_GLOBALS array, depending on how the script which created or modifies the model was run, a webserver or the CLI, respectively.
