@@ -3,7 +3,7 @@
   $required = ($validator = $form->getValidatorSchema()->offsetGet($name)) ? $validator->getOption('required') : false;
 
   // embedded media forms are required if their file field is required
-  $required && $form[$name] instanceof sfFormFieldSchema && ($fileValidator = $form->getValidatorSchema()->offsetGet($name)->offsetGet('file')) && $required = $fileValidator->getOption('required');
+  $required && $form[$name] instanceof sfFormFieldSchema && ($formValidator = $form->getValidatorSchema()->offsetGet($name)) && $formValidator instanceof sfValidatorSchema && ($fileValidator = $formValidator->offsetGet('file')) && $required = $fileValidator->getOption('required');
 
   $divClass = dmArray::toHtmlCssClasses(array(
     $class,
