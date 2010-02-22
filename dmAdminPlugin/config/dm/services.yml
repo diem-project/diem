@@ -77,11 +77,11 @@ parameters:
 
   related_records_view.class:   dmAdminRelatedRecordsView # shows a list of records related to another one
   related_records_view.options:
-    new:                        true            # add a link to create a new related record
-    sort:                       true            # add a link to sort related records
-    max:                        3               # max number of records to show
+    new:                        true              # add a link to create a new related record
+    sort:                       true              # add a link to sort related records
+    max:                        3                 # max number of records to show
 
-  code_editor.class:            dmAdminCodeEditor # Performs file operations on the project
+  code_editor.class:          dmAdminCodeEditor   # Performs file operations on the project
   
 services:
 

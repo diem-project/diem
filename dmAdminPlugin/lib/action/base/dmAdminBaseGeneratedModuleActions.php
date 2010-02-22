@@ -304,8 +304,6 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
     // we want an array, not a doctrine collection
     $this->revisions = $this->revisions->getData();
     
-//    dmDebug::kill($this->revisions);
-    
     if (count($this->revisions) > 1)
     {
       usort($this->revisions, create_function('$a, $b',

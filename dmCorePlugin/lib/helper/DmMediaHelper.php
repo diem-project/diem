@@ -3,11 +3,11 @@
 function media_file_infos(DmMedia $object)
 {
   $infos = array(
-        __('Size') => dmOs::humanizeSize($object->getSize()),
-        __('Type') => $object->getMime(),
-        __('Created at') => dm_datetime($object->getCreatedAt()),
-        __('Updated at') => dm_datetime($object->getUpdatedAt()),
-        __('Url') => $object->getFullWebPath()
+    __('Size') => dmOs::humanizeSize($object->get('size')),
+    __('Type') => $object->get('mime'),
+    __('Created at') => format_date($object->get('created_at'), 'f'),
+    __('Updated at') => format_date($object->get('updated_at'), 'f'),
+    __('Url') => $object->getFullWebPath()
   );
   if ($object->isImage())
   {
