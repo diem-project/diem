@@ -11,7 +11,8 @@ class dmUpgradeTask extends dmContextTask
     'clearLogs',
     'authDmUserModule',
     'authDmUserAdminModule',
-    'renameLoginPage'
+    'renameLoginPage',
+    'fixBaseFormFilterDoctrineSetup'
   );
   
   /**
@@ -78,7 +79,7 @@ class dmUpgradeTask extends dmContextTask
   {
     foreach(array('request', 'event') as $logName)
     {
-      $file = sfConfig::get('sf_data_dir').'/dm/log/'.$logName.'.log';
+      $file = dmOs::normalize(sfConfig::get('sf_data_dir').'/dm/log/'.$logName.'.log');
 
       if(file_exists($file) && false !== strpos(file_get_contents($file), '{"time":'))
       {
@@ -160,5 +161,20 @@ class dmUpgradeTask extends dmContextTask
         $page->save();
       }
     }
+  }
+
+  protected function upgradeToFixBaseFormFilterDoctrineSetup()
+  {
+  	// base file path
+  	$file = dmOs::normalize(sfConfig::get('sf_lib_dir').'/filter/doctrine/BaseFormFilterDoctrine.class.php');
+
+  	/// get content
+    $content = file_get_contents($file);
+
+    // remove empty setup method
+    $content = preg_replace('#\s+public function setup\(\)\s+\{\s+\}#i', '', $content);
+
+    // push new content
+    file_put_contents($file, $content);
   }
 }
