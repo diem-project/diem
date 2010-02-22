@@ -3,8 +3,9 @@ parameters:
   text_diff.class:            dmTextDiff            # Responsible for generating text diffs
 
   record_text_diff.class:     dmRecordTextDiff      # Responsible for rendering diffs between two versions of a record
-  record_text_diff.from_version:
-  record_text_diff.to_version:
+  record_text_diff.options:
+    media_width:              150
+    media_height:             100
 
   mail.class:                 dmMail                # Responsible for building an email from a DmMailTemplate and a data array, then pass it to Swift.
 
@@ -176,6 +177,9 @@ parameters:
   page_tree_view.class:       dmPageTreeView        # Render the page tree
   page_tree_view.options:     []
 
+  download.class:             dmDownloadResponse    # Triggers a download from a file or string data
+  download.options:           []
+
 services:
 
   text_diff:
@@ -185,8 +189,8 @@ services:
 
   record_text_diff:
     class:                    %record_text_diff.class%
-    shared:                   false
-    arguments:                [ @service_container, %record_text_diff.from_version%, %record_text_diff.to_version% ]
+    shared:                   true
+    arguments:                [ @text_diff, @i18n, @helper, %record_text_diff.options% ]
 
   mail:
     class:                    %mail.class%
@@ -426,3 +430,8 @@ services:
     class:                    %page_tree_view.class%
     shared:                   false
     arguments:                [ @helper, %user.culture%, %page_tree_view.options% ]
+
+  download:
+    class:                    %download.class%
+    shared:                   false
+    arguments:                [ @response, @mime_type_resolver, %download.options% ]

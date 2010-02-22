@@ -1,4 +1,4 @@
-<?php
+<?php use_helper('Date');
 
 if (!count($revisions))
 {
@@ -27,7 +27,10 @@ foreach($revisions as $revision)
 
 echo _close('ul');
 
+$model = get_class($record);
+$revisionModel = get_class($revision);
 $fields = array_diff($revisions[0]->getTable()->getFieldNames(), array('id', 'version', 'lang'));
+$recordDiff = $sf_context->get('record_text_diff');
 
 $table = _table();
 $table->head(__('Field'), __('Difference'), __('Value'));
@@ -36,55 +39,54 @@ $nbRevisions = count($revisions);
 
 foreach($revisions as $index => $revision)
 {
+  $recordDiff->compare(
+    dmArray::get($revisions, $index+1, new $revisionModel()),
+    $revision
+  );
+
+  $diffs  = $recordDiff->getHtmlDiffs($fields);
+  $values = $recordDiff->getHtmlValues($fields);
+  
   echo _open('div.revision.dm_data#revision_'.$revision->version);
   
-  $revertText = __('Revert to revision %1%', array('%1%' => $revision->version));
-  echo _tag('ul.actions',
-    _tag('li',
-      $index !== 0
-      ? _link('+/dmAdminGenerator/revert')
-      ->text($revertText)
-      ->title($revertText)
-      ->set('.s16.s16_arrow_curve_180.dm_js_confirm')
-      ->params(array(
-        'model'   => get_class($record),
-        'pk'      => $record->getPrimaryKey(),
-        'version' => $revision->version
-      ))
-      : _tag('span.s16.s16_arrow_curve_180', $revertText)
-    )
+  echo _open('div.revision_header');
+
+  echo _link($record)
+  ->text(__('Back to %1%', array('%1%' => $record->__toString())))
+  ->set('.s16.s16_arrow_left.back_to_record');
+
+  if($index !== 0)
+  {
+    echo _link('+/dmAdminGenerator/revert')
+    ->textTitle(__('Revert to revision %1%', array('%1%' => $revision->version)))
+    ->set('.dm_medium_button.dm_js_confirm.revert_to_revision')
+    ->params(array(
+      'model'   => $model,
+      'pk'      => $record->getPrimaryKey(),
+      'version' => $revision->version
+    ));
+  }
+  
+  echo _tag('p.revision_title',
+    __('Revision %number%', array('%number%' => $revision->version)).
+    (isset($values['updated_by'])
+    ? ' - '.$values['updated_by']
+    : '').
+    (isset($values['updated_at'])
+    ? ' - '.format_date($values['updated_at'], 'f')
+    : '')
   );
+
+  echo _close('div');
   
   $table->clearBody();
   
-  if ($index < ($nbRevisions - 1))
-  {
-    $diffs = $sf_context->getServiceContainer()
-    ->setParameter('record_text_diff.from_version', $revisions[$index+1])
-    ->setParameter('record_text_diff.to_version', $revision)
-    ->getService('record_text_diff')
-    ->getHtmlDiffs($fields);
-  }
-  else
-  {
-    $diffs = false;
-  }
-  
   foreach($fields as $field)
   {
-    if ($record->getTable()->isBooleanColumn($field))
-    {
-      $string = __($revision->get($field) ? 'Yes' : 'No');
-    }
-    else
-    {
-      $string = nl2br($revision->get($field));
-    }
-    
     $table->body(
       _tag('div', __(dmString::humanize($field))),
-      _tag('div', $diffs ? nl2br($diffs[$field]) : '-'),
-      _tag('div', $string)
+      _tag('div', $diffs[$field]),
+      _tag('div', $values[$field])
     );
   }
   

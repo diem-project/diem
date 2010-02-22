@@ -15,6 +15,8 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
     
     this.pageEditForm();
     
+    this.pageAddForm();
+    
     this.codeEditor();
 
     this.element.find('a.tipable').tipsy({gravity: $.fn.tipsy.autoSouth});
@@ -41,6 +43,26 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
         }).bind('dmAjaxResponse', function()
         {
           $dialog.dmFrontPageEditForm().prepare();
+        });
+      }
+      return false;
+    });
+  },
+
+  pageAddForm: function()
+  {
+    this.element.find('a.page_add_form').click(function()
+    {
+      if (!$('body > div.dm_page_add_dialog').length)
+      {
+        $dialog = $.dm.ctrl.ajaxDialog({
+          title:    $(this).attr('original-title'),
+          'class':  'dm_page_add_dialog',
+          url:      $(this).attr('href'),
+          width:    400
+        }).bind('dmAjaxResponse', function()
+        {
+          $dialog.dmFrontPageAddForm().prepare();
         });
       }
       return false;
@@ -176,7 +198,9 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
         
         $actions = $menu.find('li.dm_add_menu_actions').prependTo($menu.find('ul.level1'));
 
-        $menu.find('a.tipable, input.dm_add_menu_search').tipsy({gravity: $.fn.tipsy.autoSouth});
+        $actions.find('input.dm_add_menu_search').hint();
+
+        $menu.find('a.tipable').tipsy({gravity: 's'});
 
         $menu.find('input.dm_add_menu_search').bind('keyup', function()
         {
@@ -213,27 +237,6 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
           $actions.append($newZone);
         }
 
-        if($newPage = $menu.find('a.page_add_form').orNot())
-        {
-          $actions.append($newPage.click(function()
-          {
-            $menu.dmMenu('close');
-            if (!$('body > div.dm_page_add_dialog').length)
-            {
-              $dialog = $.dm.ctrl.ajaxDialog({
-                title:    $(this).attr('original-title'),
-                'class':  'dm_page_add_dialog',
-                url:      $(this).attr('href'),
-                width:    400
-              }).bind('dmAjaxResponse', function()
-              {
-                $dialog.dmFrontPageAddForm().prepare();
-              });
-            }
-            return false;
-          }));
-        }
-
         var dragStart = function()
         {
           $menu.dmMenu('close');
@@ -241,11 +244,7 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
         };
 
         $menu.dmMenu({
-          hoverClass: 'ui-state-active',
-          open: function()
-          {
-            this.find('input.dm_add_menu_search').focus();
-          }
+          hoverClass: 'ui-state-active'
         })
         .find('li.dm_droppable_widgets').disableSelection();
 

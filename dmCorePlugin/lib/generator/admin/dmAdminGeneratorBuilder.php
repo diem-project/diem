@@ -316,7 +316,10 @@ class dmAdminGeneratorBuilder
       }
     }
 
-    foreach($this->table->getRelationHolder()->getAssociations() as $alias => $relation)
+    foreach(array_merge(
+      $this->table->getRelationHolder()->getAssociations(),
+      $this->table->getRelationHolder()->getForeigns()
+    ) as $alias => $relation)
     {
       if ($this->table->hasTemplate('DmGallery') && 'DmMedia' === $relation->getClass())
       {
@@ -329,6 +332,7 @@ class dmAdminGeneratorBuilder
       }
       else
       {
+        continue;
         $label = dmString::humanize($alias);
       }
       

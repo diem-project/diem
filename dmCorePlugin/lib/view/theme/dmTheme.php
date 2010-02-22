@@ -48,11 +48,7 @@ class dmTheme
       }
       catch(Exception $e)
       {
-        $message = sprintf(
-          'Theme %s can not be created. Please check %s permissions',
-          $this->dir,
-          $this->getBasePath()
-        );
+        $message = $e->getMessage();
         
         $this->dispatcher->notify(new sfEvent($this, 'application.log', array('priority' => sfLogger::ERR, $message)));
         
@@ -83,9 +79,15 @@ class dmTheme
   {
     foreach($this->getFullPaths() as $fullPath)
     {
-      if (!$this->filesystem->mkdir($fullPath))
+      @$this->filesystem->mkdir($fullPath);
+      
+      if (!is_dir($fullPath))
       {
-        throw new dmException(sprintf('%s can not be created', $fullPath));
+        throw new dmException(sprintf(
+          '%s can not be created. Please check %s permissions',
+          dmProject::unRootify($fullPath),
+          dmProject::unRootify(dirname($fullPath))
+        ));
       }
     }
 

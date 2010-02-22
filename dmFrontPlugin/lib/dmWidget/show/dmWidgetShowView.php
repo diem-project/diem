@@ -33,7 +33,7 @@ class dmWidgetShowView extends dmWidgetProjectModelView
     
     $record = $query->withI18n(null, $this->dmModule->getModel(), 'r')->fetchOne();
     
-    return $record->toIndexableString();
+    return $record ? $record->toIndexableString() : '';
   }
   
 }

@@ -319,7 +319,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
 
   public function isSortable()
   {
-    return $this->hasTemplate('Sortable') && 'id' === $this->getPrimaryKey();
+    return ($this->hasTemplate('DmSortable') || $this->hasTemplate('Sortable')) && 'id' === $this->getPrimaryKey();
   }
   
   public function isVersionable()

@@ -4,6 +4,11 @@
 class PluginDmMediaTable extends myDoctrineTable
 {
 
+  public function getIdentifierColumnName()
+  {
+    return 'file';
+  }
+
   /**
    * Performance shortcuts
    */

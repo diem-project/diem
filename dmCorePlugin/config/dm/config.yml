@@ -28,8 +28,6 @@ default:
       h1:                 255
       description:        160
       keywords:           255
-    sitemap:                            # see http://sitemaps.org
-      path:               sitemap.xml   # relative path from web dir where diem will generate the sitemap
 
   orm:                                  # Doctrine ORM configuration
                                         # More configuration : please use ProjectConfiguration::configureDoctrine method
@@ -49,7 +47,7 @@ default:
     flavour:              blue          # the toolbar flavour. Diem default values: grey, blue, green, brown, black
                                         # You can also set a custom flavour and style #dm_tool_bar.flavour_name in your themeAdmin css path
   media:
-    default:              false         # default resource to use when using £media with an empty resource.
+    default:              false         # default resource to use when using _media with an empty resource.
                                         # example: /uploads/default.jpg
   security:
     remember_cookie_name:               # defaults to "dm_remember_%project_name%"

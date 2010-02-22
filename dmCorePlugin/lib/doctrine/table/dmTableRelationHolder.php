@@ -24,6 +24,11 @@ class dmTableRelationHolder
     return $this->relations = $this->table->getRelations();
   }
 
+  public function getAllAliases()
+  {
+    return array_keys($this->getAll());
+  }
+
   public function get($alias)
   {
     return dmArray::get($this->getAll(), $alias);

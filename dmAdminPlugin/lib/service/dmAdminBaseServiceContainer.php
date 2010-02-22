@@ -2,12 +2,6 @@
 
 abstract class dmAdminBaseServiceContainer extends dmBaseServiceContainer
 {
-  protected function loadDependencies(array $dependencies)
-  {
-    parent::loadDependencies($dependencies);
-    
-    $this->setService('routing', $dependencies['context']->getRouting());
-  }
   
   protected function connectServices()
   {

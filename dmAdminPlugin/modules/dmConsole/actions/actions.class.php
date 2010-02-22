@@ -41,7 +41,7 @@ class dmConsoleActions extends dmAdminBaseActions
       $command = dmArray::get($this->getAliases(), $command, $command);
       if (!in_array($parts[0], $this->getCommands()))
         return $this->renderText(sprintf(
-          "%s<li>This command is not available. You can do : <strong>%s</strong></li>",
+          "%s<li>This command is not available. You can do: <strong>%s</strong></li>",
           $this->renderCommand($command), implode(' ', $this->getCommands())
         ));
       $exec = sprintf('%s', $command);
@@ -84,7 +84,7 @@ class dmConsoleActions extends dmAdminBaseActions
       $this->whoami = 'unknown_user';
     }
     
-    $this->pwd = getcwd(); //$filesystem->exec('pwd') ? $filesystem->getLastExec('output') : '';
+    $this->pwd = getcwd();
 
     $this->prompt = $this->whoami.'@'.php_uname('n').':'.'~/'.dmProject::unRootify($this->pwd).'$&nbsp;';
 

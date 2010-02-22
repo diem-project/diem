@@ -25,8 +25,8 @@ echo _open('div.clearfix');
       definition_list(array(
         __('Size') => dmOs::humanizeSize($object->getSize()),
         __('Type') => $object->getType(),
-        __('Created at') => format_datetime($object->getCreatedAt()),
-        __('Updated at') => format_datetime($object->getUpdatedAt()),
+        __('Created at') => format_date($object->get('created_at'), 'f'),
+        __('Updated at') => format_date($object->get('created_at'), 'f'),
         __('Url') => $object->getFullWebPath()
       ), '.clearfix.dm_little_dl')
     )

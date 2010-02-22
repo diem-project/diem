@@ -202,13 +202,13 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
     }
     
     $this->download($data, array(
-      'filename' => sprintf('%s-%s_%s.%s',
+      'file_name' => sprintf('%s-%s_%s.%s',
         dmConfig::get('site_name'),
         dm::getI18n()->__($options['module']->getName()),
         date('Y-m-d'),
         $options['extension']
       ),
-      'type' => sprintf('%s; charset=%s', $mime, $options['encoding'])
+      'mime_type' => sprintf('%s; charset=%s', $mime, $options['encoding'])
     ));
   }
   
@@ -303,8 +303,6 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
     
     // we want an array, not a doctrine collection
     $this->revisions = $this->revisions->getData();
-    
-//    dmDebug::kill($this->revisions);
     
     if (count($this->revisions) > 1)
     {

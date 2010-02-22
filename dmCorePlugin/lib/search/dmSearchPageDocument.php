@@ -114,13 +114,13 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
           'widget_view.data'  => $widget
         ));
         
-        $text .= $this->context->get('widget_view')->renderForIndex();
+        $html .= $this->context->get('widget_view')->renderForIndex();
       }
     }
     
     sfConfig::set('dm_search_populating', false);
     
-    $indexableText = dmSearchIndex::cleanText($text);
+    $indexableText = dmSearchIndex::cleanText($html);
     
     unset($areas, $html, $helper);
     
