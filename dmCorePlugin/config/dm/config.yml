@@ -28,8 +28,6 @@ default:
       h1:                 255
       description:        160
       keywords:           255
-    sitemap:                            # see http://sitemaps.org
-      path:               sitemap.xml   # relative path from web dir where diem will generate the sitemap
 
   orm:                                  # Doctrine ORM configuration
                                         # More configuration : please use ProjectConfiguration::configureDoctrine method
