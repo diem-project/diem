@@ -23,6 +23,30 @@ class dmDoctrineFormFilterGenerator extends sfDoctrineFormFilterGenerator
     return $models;
   }
 
+  /**
+   * Generates classes and templates in cache.
+   *
+   * @param array $params The parameters
+   *
+   * @return string The data to put in configuration cache
+   */
+  public function generate($params = array())
+  {
+    // create the project base class for all forms
+    $file = sfConfig::get('sf_lib_dir').'/filter/doctrine/BaseFormFilterDoctrine.class.php';
+    if (!file_exists($file))
+    {
+      if (!is_dir($directory = dirname($file)))
+      {
+        mkdir($directory, 0777, true);
+      }
+
+      copy(dmOs::join(sfConfig::get('dm_core_dir'), 'data/skeleton/lib/filter/doctrine/BaseFormFilterDoctrine.class.php'), $file);
+    }
+
+    parent::generate($params);
+  }  
+
   public function getWidgetOptionsForColumn($column)
   {
     $options = array();

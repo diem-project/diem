@@ -5,7 +5,4 @@
  */
 abstract class BaseFormFilterDoctrine extends dmFormFilterDoctrine
 {
-  public function setup()
-  {
-  }
 }
