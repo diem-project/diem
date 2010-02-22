@@ -434,3 +434,5 @@
 "File %file% does not exist": "Il file %file% non esiste"
 "File %file% can not be deleted because a record needs it": "Il file %file% non può essere eliminato perchè è associato a un altro record"
 "Add widgets": "Aggiungi widget"
+"Back to %1%": "Torna a %1%"
+"Revision %number%": "Versione %number%"
