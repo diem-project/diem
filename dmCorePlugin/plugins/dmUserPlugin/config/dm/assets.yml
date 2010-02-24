@@ -2,4 +2,10 @@ css:
 
   dmUserPlugin:
     
-    adminAuth:             adminAuth
+    adminAuth:              adminAuth
+    myAccount:              myAccount
+
+js:
+
+  dmUserPlugin:
+    myAccount:              myAccount

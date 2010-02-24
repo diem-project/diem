@@ -107,6 +107,13 @@
   text-decoration: underline;
 }
 
+#dm_tool_bar #sfWebDebugBar
+{
+  position: inherit;
+  margin-top: 6px;
+  float: right;
+}
+
 #dm_tool_bar #sfWebDebug .sfWebDebugTop
 {
   top: 30px;

@@ -9,3 +9,6 @@ signin:
 
 signout:
   is_secure: false
+
+myAccount:
+  credentials:  admin

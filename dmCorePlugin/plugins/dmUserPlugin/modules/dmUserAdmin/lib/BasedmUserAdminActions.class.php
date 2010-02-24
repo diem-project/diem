@@ -3,6 +3,24 @@
 class BasedmUserAdminActions extends autodmUserAdminActions
 {
 
+  public function executeMyAccount(sfWebRequest $request)
+  {
+    $this->forward404Unless(
+      $this->dmUser = $this->getUser()->getDmUser()
+    );
+
+    $this->form = new DmUserAdminMyAccountForm($this->dmUser);
+
+    if($request->hasParameter($this->form->getName()) && $this->form->bindAndValid($request))
+    {
+      $this->form->save();
+
+      $this->getUser()->logInfo('Your modifications have been saved');
+
+      return $this->redirectBack();
+    }
+  }
+
   public function executeSignin(dmWebRequest $request)
   {
     if ($this->getUser()->isAuthenticated())

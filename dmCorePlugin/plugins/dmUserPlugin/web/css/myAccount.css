@@ -1,0 +1,10 @@
+div.dm_user_my_account li.dm_form_element {
+  margin: 0.5em 0;
+}
+div.dm_user_my_account .collapsible li.dm_form_element {
+  margin: 0;
+}
+
+div.dm_user_my_account input.submit {
+  margin-top: 1em;
+}

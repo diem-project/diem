@@ -47,6 +47,10 @@
   line-height: 16px;
 }
 
+#dm_tool_bar .widget16.fright {
+  float: right;
+}
+
 #dm_tool_bar .widget16.mt3 {
   margin-top: 3px;
 }

@@ -2,8 +2,6 @@
 
 echo _open('div#dm_tool_bar.clearfix.'.sfConfig::get('dm_toolBar_flavour', 'blue'));
 
-  echo _link('@signout')->text('')->title($sf_user->getUsername().' : '.__('Logout'))->set('.tipable.widget16.s16block.s16_signout');
-
   if ($sf_user->can('clear_cache'))
   {
     echo _link('dmCore/refresh')->text('')->title(__('Update project'))->set('.tipable.dm_refresh_link.widget16.s16block.s16_clear');
@@ -35,6 +33,19 @@ echo _open('div#dm_tool_bar.clearfix.'.sfConfig::get('dm_toolBar_flavour', 'blue
   if(sfConfig::get('dm_locks_enabled'))
   {
     echo _tag('div.dm_active_users', '');
+  }
+
+  if($dmUser = $sf_user->getDmUser())
+  {
+    echo _link('@signout')
+    ->text('')
+    ->title(__('Logout'))
+    ->set('.tipable.widget16.fright.s16block.s16_signout');
+
+    echo _link('dmUserAdmin/myAccount')
+    ->text($dmUser->get('username'))
+    ->title(__('My account'))
+    ->set('.tipable.widget16.fright');
   }
 
   if (sfConfig::get('sf_web_debug'))
