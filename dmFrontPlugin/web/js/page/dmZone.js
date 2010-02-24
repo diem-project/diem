@@ -62,6 +62,10 @@ $.widget('ui.dmZone', {
        * Apply generic front form abilities
        */
       $dialog.dmFrontForm();
+
+      // enable tool tips
+      $dialog.parent().find('a[title], input[title]').tipsy({gravity: $.fn.tipsy.autoSouth});
+      
       var $form = $('form', $dialog).dmAjaxForm({
         beforeSubmit: function()
         {
@@ -81,10 +85,11 @@ $.widget('ui.dmZone', {
         }
       });
       
-      $('a.delete', $form).click(function() {
+      $('a.delete', $form).click(function()
+      {
         if (confirm($(this).attr('original-title')+" ?"))
         {
-          $('body > div.tipsy').remove();
+          $.fn.tipsy.remove();
           zone._delete();
           $dialog.dialog('close');
         }
