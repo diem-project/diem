@@ -130,7 +130,7 @@ class Doctrine_Template_Listener_DmBlameable extends Doctrine_Record_Listener
      */
     public function getUserIdentity()
     {
-        $ident = 0;
+        $ident = null;
 
         if(class_exists('sfContext', false) && sfContext::hasInstance() && $user = sfContext::getInstance()->getUser())
         {
