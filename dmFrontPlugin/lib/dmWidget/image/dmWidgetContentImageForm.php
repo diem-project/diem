@@ -59,8 +59,12 @@ class dmWidgetContentImageForm extends dmWidgetContentBaseMediaForm
     return array(
       'fit'     => 'Fit',
       'center'  => 'Center',
-      'scale'   => 'Scale',
-      'inflate' => 'Inflate'
+      'scale'   => 'Scale', 
+      'inflate' => 'Inflate',
+      'left'    => 'Left',
+      'right'   => 'Rightr',
+      'top'     => 'Top',
+      'bottom'  => 'Bottom',
     );
   }
   
