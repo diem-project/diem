@@ -2,10 +2,6 @@
 
 echo _open('div#dm_tool_bar.dm.clearfix.'.sfConfig::get('dm_toolBar_flavour', 'blue'));
 
-  //echo _tag('a.show_tool_bar_toggle.s16block.s16_chevron_'.($sf_user->getShowToolBar() ? 'down' : 'up'), '+');
-
-  echo _link('@signout')->text('')->title($sf_user->getUsername().' : '.__('Logout'))->set('.tipable.widget16.s16block.s16_signout');
-  
   if ($sf_user->can('clear_cache'))
   {
     echo _link('+/dmCore/refresh')->text('')->title(__('Clear cache'))->set('.tipable.dm_refresh_link.widget16.s16block.s16_clear');
@@ -50,6 +46,19 @@ echo _open('div#dm_tool_bar.dm.clearfix.'.sfConfig::get('dm_toolBar_flavour', 'b
 
   echo _link('app:admin')->text(__('Go to admin'))->set('.widget16');
   
+  if($dmUser = $sf_user->getDmUser())
+  {
+    echo _link('@signout')
+    ->text('')
+    ->title(__('Logout'))
+    ->set('.tipable.widget16.fright.s16block.s16_signout');
+
+    echo _link('app:admin/+/dmUserAdmin/myAccount')
+    ->text($dmUser->get('username'))
+    ->title(__('My account'))
+    ->set('.tipable.widget16.fright');
+  }
+
   if (sfConfig::get('sf_web_debug'))
   {
     echo '__SF_WEB_DEBUG__';
