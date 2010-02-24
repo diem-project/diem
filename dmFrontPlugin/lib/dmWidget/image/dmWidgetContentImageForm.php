@@ -62,7 +62,7 @@ class dmWidgetContentImageForm extends dmWidgetContentBaseMediaForm
       'scale'   => 'Scale', 
       'inflate' => 'Inflate',
       'left'    => 'Left',
-      'right'   => 'Rightr',
+      'right'   => 'Right',
       'top'     => 'Top',
       'bottom'  => 'Bottom',
     );
