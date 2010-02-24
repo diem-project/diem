@@ -29,9 +29,13 @@ abstract class PluginDmUserForm extends BaseDmUserForm
       $this['is_super_admin']
     );
 
-    $this->widgetSchema['password'] = new sfWidgetFormInputPassword();
+    $this->widgetSchema['password'] = new sfWidgetFormInputPassword(array(), array(
+      'autocomplete' => 'off'
+    ));
     $this->validatorSchema['password']->setOption('required', $this->object->isNew());
-    $this->widgetSchema['password_again'] = new sfWidgetFormInputPassword();
+    $this->widgetSchema['password_again'] = new sfWidgetFormInputPassword(array(), array(
+      'autocomplete' => 'off'
+    ));
     $this->validatorSchema['password_again'] = clone $this->validatorSchema['password'];
 
     $this->widgetSchema->moveField('password_again', 'after', 'password');

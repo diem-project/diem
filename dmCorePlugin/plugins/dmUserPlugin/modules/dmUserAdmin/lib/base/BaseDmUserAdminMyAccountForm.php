@@ -1,6 +1,6 @@
 <?php
 
-class BaseDmUserAdminMyAccountForm extends BaseDmUserForm
+class BaseDmUserAdminMyAccountForm extends DmUserForm
 {
 
   /**
@@ -10,9 +10,13 @@ class BaseDmUserAdminMyAccountForm extends BaseDmUserForm
   {
     parent::setup();
 
-    $this->widgetSchema['password'] = new sfWidgetFormInputPassword();
+    $this->widgetSchema['password'] = new sfWidgetFormInputPassword(array(), array(
+      'autocomplete' => 'off'
+    ));
     $this->validatorSchema['password']->setOption('required', false);
-    $this->widgetSchema['password_again'] = new sfWidgetFormInputPassword();
+    $this->widgetSchema['password_again'] = new sfWidgetFormInputPassword(array(), array(
+      'autocomplete' => 'off'
+    ));
     $this->validatorSchema['password_again'] = clone $this->validatorSchema['password'];
 
     $this->widgetSchema->moveField('password_again', 'after', 'password');
