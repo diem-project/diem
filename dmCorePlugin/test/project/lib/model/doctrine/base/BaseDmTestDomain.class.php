@@ -62,6 +62,8 @@ abstract class BaseDmTestDomain extends myDoctrineRecord
               1 => 'is_active',
              ),
              ));
+        $dmblameable1 = new Doctrine_Template_DmBlameable();
+        $i18n0->addChild($dmblameable1);
         $dmtaggable0 = new Doctrine_Template_DmTaggable();
         $this->actAs($timestampable0);
         $this->actAs($sortable0);

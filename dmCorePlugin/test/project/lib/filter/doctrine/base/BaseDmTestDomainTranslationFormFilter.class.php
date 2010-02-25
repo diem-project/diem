@@ -13,13 +13,17 @@ abstract class BaseDmTestDomainTranslationFormFilter extends BaseFormFilterDoctr
   public function setup()
   {
     $this->setWidgets(array(
-      'title'     => new sfWidgetFormFilterInput(),
-      'is_active' => new sfWidgetFormChoice(array('choices' => array('' => dm::getI18n()->__('yes or no', array(), 'dm'), 1 => dm::getI18n()->__('yes', array(), 'dm'), 0 => dm::getI18n()->__('no', array(), 'dm')))),
+      'title'      => new sfWidgetFormFilterInput(),
+      'is_active'  => new sfWidgetFormChoice(array('choices' => array('' => dm::getI18n()->__('yes or no', array(), 'dm'), 1 => dm::getI18n()->__('yes', array(), 'dm'), 0 => dm::getI18n()->__('no', array(), 'dm')))),
+      'created_by' => new sfWidgetFormDoctrineChoice(array('model' => 'DmUser', 'add_empty' => true)),
+      'updated_by' => new sfWidgetFormDoctrineChoice(array('model' => 'DmUser', 'add_empty' => true)),
     ));
 
     $this->setValidators(array(
-      'title'     => new sfValidatorPass(array('required' => false)),
-      'is_active' => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
+      'title'      => new sfValidatorPass(array('required' => false)),
+      'is_active'  => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
+      'created_by' => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('CreatedBy'), 'column' => 'id')),
+      'updated_by' => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('UpdatedBy'), 'column' => 'id')),
     ));
 
     $this->widgetSchema->setNameFormat('dm_test_domain_translation_filters[%s]');
@@ -39,10 +43,12 @@ abstract class BaseDmTestDomainTranslationFormFilter extends BaseFormFilterDoctr
   public function getFields()
   {
     return array(
-      'id'        => 'Number',
-      'title'     => 'Text',
-      'is_active' => 'Boolean',
-      'lang'      => 'Text',
+      'id'         => 'Number',
+      'title'      => 'Text',
+      'is_active'  => 'Boolean',
+      'lang'       => 'Text',
+      'created_by' => 'ForeignKey',
+      'updated_by' => 'ForeignKey',
     );
   }
 }

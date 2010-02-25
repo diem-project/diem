@@ -16,6 +16,8 @@ DmTestDomain:
     Sortable:
     I18n:
       fields:         [ title, is_active ]
+      actAs:
+        DmBlameable:
     DmTaggable:
   columns:  
     title:            { type: string(255), notnull: true }  
@@ -164,5 +166,6 @@ DmTestComment:
 DmTestFruit:
   actAs:
     DmTaggable:
+    DmBlameable:
   columns:  
     title:            { type: string(255) }

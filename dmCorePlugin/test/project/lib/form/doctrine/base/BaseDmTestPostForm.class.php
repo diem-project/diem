@@ -76,15 +76,19 @@ abstract class BaseDmTestPostForm extends BaseFormDoctrine
     parent::unsetAutoFields();
   }
 
-  /*
-   * Create Media form for image_id
+  /**
+   * Creates a DmMediaForm instance for image_id
+   *
+   * @return DmMediaForm a form instance for the related media
    */
   protected function createMediaFormForImageId()
   {
     return DmMediaForRecordForm::factory($this->object, 'image_id', 'Image', $this->validatorSchema['image_id']->getOption('required'));
   }
-  /*
-   * Create Media form for file_id
+  /**
+   * Creates a DmMediaForm instance for file_id
+   *
+   * @return DmMediaForm a form instance for the related media
    */
   protected function createMediaFormForFileId()
   {

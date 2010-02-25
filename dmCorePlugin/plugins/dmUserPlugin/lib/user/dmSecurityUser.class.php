@@ -167,6 +167,8 @@ class dmSecurityUser extends sfBasicSecurityUser
     $user->set('last_login', date('Y-m-d H:i:s'));
     $user->save($con);
 
+    $this->user = $user;
+
     if ($remember)
     {
       try

@@ -14,7 +14,7 @@ abstract class PluginDmUser extends BaseDmUser
    */
   public function __toString()
   {
-    return $this->get('username');
+    return $this->get('username') ? $this->get('username') : '';
   }
 
   /**
