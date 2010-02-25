@@ -164,8 +164,11 @@ class dmSecurityUser extends sfBasicSecurityUser
     $this->isSuperAdmin = $user->get('is_super_admin');
 
     // save last login
-    $user->set('last_login', date('Y-m-d H:i:s'));
-    $user->save($con);
+    dmDb::table('Dmuser')->createQuery()
+    ->update('Dmuser')
+    ->where('id = ?', $user->get('id'))
+    ->set('last_login', "'".date('Y-m-d H:i:s')."'")
+    ->execute();
 
     $this->user = $user;
 
