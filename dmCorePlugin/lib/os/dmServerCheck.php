@@ -37,7 +37,8 @@ class dmServerCheck
     new dmServerCheckUnit('register globals', ini_get('register_globals'), false),
     new dmServerCheckUnit('session auto_start', ini_get('session.auto_start'), false),
     new dmServerCheckUnit('mbstring', extension_loaded('mbstring'), true),
-    new dmServerCheckUnit('utf8_decode()', function_exists('utf8_decode'), true)
+    new dmServerCheckUnit('utf8_decode()', function_exists('utf8_decode'), true),
+    new dmServerCheckUnit('exec()', function_exists('exec'), true)
     ),
        'php extensions' => array(
     new dmServerCheckUnit('pdo', extension_loaded('pdo'), true, self::ERROR),
