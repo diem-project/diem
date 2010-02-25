@@ -34,7 +34,7 @@
       .click(function()
       {
         $tabs.tabs('remove', $tabs.find('ul.ui-tabs-nav > li').index($tab));
-        $.fn.tipsy.remove();
+        $.dm.removeTipsy();
         return false;
       });
 

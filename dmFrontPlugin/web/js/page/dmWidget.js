@@ -39,7 +39,7 @@ $.widget('ui.dmWidget', {
       {
         if (confirm($(this).attr('original-title')+" ?"))
         {
-          $.fn.tipsy.remove();
+          $.dm.removeTipsy();
           widget._delete();
           $dialog.dialog('close');
         }
@@ -199,7 +199,7 @@ $.widget('ui.dmWidget', {
   {
     var self = this, $button = self.element.find('a.dm_widget_record_edit');
 
-    $.fn.tipsy.remove();
+    $.dm.removeTipsy();
 
     $button.block();
     

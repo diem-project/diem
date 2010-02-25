@@ -89,7 +89,7 @@ $.widget('ui.dmZone', {
       {
         if (confirm($(this).attr('original-title')+" ?"))
         {
-          $.fn.tipsy.remove();
+          $.dm.removeTipsy();
           zone._delete();
           $dialog.dialog('close');
         }

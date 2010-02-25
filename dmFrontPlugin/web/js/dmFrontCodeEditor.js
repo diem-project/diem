@@ -66,7 +66,7 @@
       $('img.close', $tab).click(function()
       {
         self.$tabs.tabs('remove', $('ul.ui-tabs-nav > li', self.$tabs).index($tab));
-        $.fn.tipsy.remove();
+        $.dm.removeTipsy();
         return false;
       });
       

@@ -237,7 +237,7 @@
     
   });
 
-  $.fn.tipsy.remove = function()
+  $.dm.removeTipsy = function()
   {
     $('body > div.tipsy').remove();
   }
