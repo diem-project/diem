@@ -15,7 +15,6 @@ for i in ../plugins/* ../../symfony; do
     #Update to the last revision and merge it to master branch
     git remote update
     git merge origin/master
-    
     #Go back
     cd $baseRep
   fi
