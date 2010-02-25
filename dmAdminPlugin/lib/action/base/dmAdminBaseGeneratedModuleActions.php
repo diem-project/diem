@@ -521,7 +521,7 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
       && ($record = $this->getDmModule()->getTable()->find($request->getParameter('pk')))
     );
 
-    if('is_active' === $field && ($page = $record->getDmPage()))
+    if('is_active' === $field && $record->getDmModule()->hasPage() && ($page = $record->getDmPage()))
     {
       $page->setIsActiveManually(!$record->get($field))->save();
     }
