@@ -599,7 +599,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
       {
         return $this->_getI18n($fieldName, $load);
       }
-      elseif(!ctype_lower($fieldName))
+      elseif(!ctype_lower($fieldName) && !ctype_upper($fieldName{0}))
       {
         $underscoredFieldName = dmString::underscore($fieldName);
         if (strpos($underscoredFieldName, '_') !== false && $i18nTable->hasField($underscoredFieldName))
