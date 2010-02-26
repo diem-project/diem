@@ -5,7 +5,17 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
   protected
   $context,
   $source,
-  $options;
+  $options = array(
+    'boost_values' => array(
+      'body' => 1,
+      'slug' => 3,
+      'name' => 3,
+      'title' => 4,
+      'h1' => 4,
+      'description' => 3,
+      'keywords' => 5
+    )
+  );
   
   public function __construct(dmContext $context, $source, array $options = array())
   {
@@ -17,7 +27,7 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
   
   protected function initialize(array $options)
   {
-    $this->options  = $options;
+    $this->options  = sfToolkit::arrayDeepMerge($this->options, $options);
     
     if (!$this->source instanceof DmPage)
     {
@@ -51,6 +61,14 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
     
     return $this;
   }
+
+  protected function getBoostValues()
+  {
+    return $this->context->getEventDispatcher()->filter(
+      new sfEvent($this, 'dm.search.filter_boost_values', array('page' => $this->source)),
+      $this->options['boost_values']
+    )->getReturnValue();
+  }
   
   protected function store($name, $value, $boost = 1)
   {
@@ -81,7 +99,8 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
     
     $this->context->setPage($page);
     
-    $helper = $this->context->get('page_helper');
+    $helper             = $this->context->get('page_helper');
+    $widgetTypeManager  = $this->context->get('widget_type_manager');
     
     $areas = dmDb::query('DmPageView pv, pv.Area a')
     ->select('a.id')
@@ -106,7 +125,7 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
         $widget['value'] = isset($widget['Translation'][$culture]['value']) ? $widget['Translation'][$culture]['value'] : '';
         unset($widget['Translation']);
         
-        $widgetType = $this->context->get('widget_type_manager')->getWidgetType($widget['module'], $widget['action']);
+        $widgetType = $widgetTypeManager->getWidgetType($widget['module'], $widget['action']);
 
         $this->context->getServiceContainer()->addParameters(array(
           'widget_view.class' => $widgetType->getViewClass(),

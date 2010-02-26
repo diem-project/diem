@@ -232,10 +232,7 @@ class dmSearchIndex extends dmSearchIndexCommon
     $size = 0;
     foreach (new DirectoryIterator($this->getFullPath()) as $node)
     {
-      if (!in_array($node->getFilename(), array('CVS', '.svn', '_svn')))
-      {
-        $size += $node->getSize();
-      }
+      $size += $node->getSize();
     }
 
     return $size;
