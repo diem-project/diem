@@ -20,8 +20,10 @@
 
   if(empty($label))
   {
-    $label = __(dmString::humanize($name));
+    $label = dmString::humanize($name);
   }
+
+  $label = __($label);
 
   if($form->getObject()->getTable()->isI18nColumn($name))
   {
