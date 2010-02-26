@@ -284,6 +284,11 @@ abstract class dmDoctrineTable extends Doctrine_Table
     {
       $columns[] = $pk;
     }
+
+    $columns = $this->getEventDispatcher()->filter(
+      new sfEvent($this, 'dm.table.filter_seo_columns'),
+      $columns
+    )->getReturnValue();
     
     return $columns;
   }
