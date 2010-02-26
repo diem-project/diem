@@ -273,6 +273,11 @@ class dmSeoSynchronizer
     }
     catch(Exception $e)
     {
+      if(sfConfig::get('dm_debug'))
+      {
+        throw $e;
+      }
+      
       return false;
     }
     
@@ -337,7 +342,14 @@ class dmSeoSynchronizer
         }
         else
         {
-          $usedValue = $usedRecord->get($field);
+          try
+          {
+            $usedValue = $usedRecord->get($field);
+          }
+          catch(Doctrine_Record_UnknownPropertyException $e)
+          {
+            $usedValue = $usedRecord->{'get'.dmString::camelize($field)}();
+          }
           
           $processMarkdown = $usedRecord->getTable()->hasField($field) && $usedRecord->getTable()->isMarkdownColumn($field);
         }
