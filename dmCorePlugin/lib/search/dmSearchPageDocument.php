@@ -37,26 +37,30 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
   
   public function populate()
   {
-    $page = $this->source;
-    $i18n = $page->getCurrentTranslation();
+    $i18n = $this->source->getCurrentTranslation();
+
+    $boostValues = $this->getBoostValues($this->source);
     
-    $this->store('page_id', $page->get('id'));
+    $this->store('page_id', $this->source->get('id'));
 
-    $this->index('body', $this->getPageBodyText(), 1);
+    if($boostValues['body'])
+    {
+      $this->index('body', $this->getPageBodyText(), $boostValues['body']);
+    }
+    
+    $this->index('slug', dmString::unSlugify($i18n->get('slug')), $boostValues['slug']);
 
-    $this->index('slug', dmString::unSlugify($i18n->get('slug')), 3);
+    $this->index('name', $i18n->get('name'), $boostValues['name']);
 
-    $this->index('name', $i18n->get('name'), 3);
+    $this->index('title', $i18n->get('title'), $boostValues['title']);
 
-    $this->index('title', $i18n->get('title'), 4);
+    $this->index('h1', $i18n->get('h1'), $boostValues['h1']);
 
-    $this->index('h1', $i18n->get('h1'), 4);
-
-    $this->index('description', $i18n->get('description'), 3);
+    $this->index('description', $i18n->get('description'), $boostValues['description']);
 
     if (sfConfig::get('dm_seo_use_keywords'))
     {
-      $this->index('keywords', $i18n->get('keywords'), 5);
+      $this->index('keywords', $i18n->get('keywords'), $boostValues['keywords']);
     }
     
     return $this;

@@ -196,7 +196,6 @@ class dmSearchIndex extends dmSearchIndexCommon
     );
   }
   
-  
   /**
    * @return Zend_Search_Lucene_Proxy instance
    */
