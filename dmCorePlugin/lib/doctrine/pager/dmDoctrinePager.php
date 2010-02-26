@@ -65,7 +65,7 @@ class dmDoctrinePager extends sfDoctrinePager
   public function serialize()
   {
     $vars = get_object_vars($this);
-    unset($vars['query'], $vars['cache']);
+    unset($vars['query'], $vars['resultsCache']);
     return serialize($vars);
   }
   

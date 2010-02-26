@@ -386,6 +386,11 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
     {
       return;
     }
+
+    if (!in_array(strtolower($sort[1]), array('asc', 'desc')))
+    {
+      $sort[1] = 'asc';
+    }
     
     $this->tryToSortWithForeignColumn($query, $sort);
   }
