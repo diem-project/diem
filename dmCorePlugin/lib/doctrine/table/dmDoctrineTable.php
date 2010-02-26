@@ -290,7 +290,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
       $columns
     )->getReturnValue();
     
-    return $columns;
+    return array_unique(array_filter($columns));
   }
   
   public function getIndexableColumns()

@@ -18,7 +18,7 @@ foreach($modules as $module)
   
   foreach($module->getTable()->getSeoColumns() as $variable)
   {
-    echo _tag('li.dm_variable', $seoSynchronizer->wrap($module->getKey().'.'.$variable));
+    echo _tag('li.dm_variable', $seoSynchronizer->wrap($module->getUnderscore().'.'.$variable));
   }
   
   echo _close('ul'), _close('li');
