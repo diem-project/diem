@@ -33,8 +33,6 @@ default:
                                         # More configuration : please use ProjectConfiguration::configureDoctrine method
     identifier_fields:    [ name, title, slug, subject, id ] # Fields used to represent a record with a string
     cache_enabled:        true          # (RECOMMENDED) Use doctrine query cache. No side effect, automatic cache invalidation )
-    cache_result_enabled: false         # Use doctrine result cache where query->dmCache() is called
-    cache_result_enabled_default: false # Use doctrine result cache on every query ( performance gain, possible issues )
     
   backup:                               # keep a copy of files modified by Dm code editors
     enabled:              true          # (RECOMMENDED) enable backup
