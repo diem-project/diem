@@ -274,7 +274,20 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
   }
 
   /**
-   * Checks
+   * Returns true if the user has access to this menu item.
+   *
+   * false if the user is authenticated and the menu is only for
+   * not authenticated users
+   *
+   * true is the menu is not secure and there is no credential on it
+   *
+   * false if the module is secure and the user not authenticated
+   *
+   * false if the user has not the correct credentials
+   *
+   *
+   * @return boolean true if the user has access to this menu item or not
+   *
    */
 
   public function checkUserAccess()
@@ -308,7 +321,7 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
 
     return 0 !== $nbChildren;
   }
-
+  
   /**
    * Returns true if the item has a child with the given name.
    *
