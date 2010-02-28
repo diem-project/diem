@@ -19,7 +19,10 @@ class dmInterfaceActions extends BasedmInterfaceActions
 
     if($this->getUser()->can('zone_add'))
     {
-      $menu .= '<span class="zone_add move ui-draggable">Zone</span>';
+      $menu .= sprintf(
+        '<span class="zone_add move ui-draggable">%s</span>',
+        $this->getI18n()->__('Zone')
+      );
     }
 
     $menu .= '<li class="dm_add_menu_actions clearfix">'.

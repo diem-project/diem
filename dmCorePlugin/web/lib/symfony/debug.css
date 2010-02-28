@@ -32,6 +32,16 @@
   right: 0px;
   top: 6px;
   white-space: nowrap;
+  opacity: 0.80;
+  z-index: 10000;
+  white-space: nowrap;
+  background-color: #ddd;
+}
+
+#dm_tool_bar #sfWebDebugBar
+{
+  background-color: transparent;
+  opacity: 1;
 }
 
 #sfWebDebugBar img

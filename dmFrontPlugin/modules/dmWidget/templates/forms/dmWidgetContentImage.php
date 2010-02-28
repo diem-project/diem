@@ -13,7 +13,8 @@ if ($hasMedia)
 
 echo _tag('ul.media_fields'.($hasMedia ? '.none' : ''),
   $form['mediaName']->renderRow().
-  $form['file']->renderRow()
+  $form['file']->renderRow().
+  (isset($form['removeMedia']) ? $form['removeMedia']->renderRow() : '')
 );
 
 echo _close('div');
@@ -37,7 +38,7 @@ if ($hasMedia)
       $form['background']->label()->field()->error()
     ).
     $form['quality']->renderRow().
-    (isset($skipLink) ? '' : $form['link']->renderRow(array('class' => 'dm_link_droppable')))
+    (isset($form['link']) ? $form['link']->renderRow(array('class' => 'dm_link_droppable')) : '')
   );
 }
 
