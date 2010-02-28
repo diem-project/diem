@@ -55,6 +55,24 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
     return $this;
   }
 
+  /**
+   * Setter for the label.
+   *
+   * You can use this setter to override the default label generated
+   * A label is generated when there is no link passed to the addChild method
+   * or when link is set to false with link(false)
+   * For example, it's easy to add a span around the label with
+   * label('<span class="you_class">Menu label</span>')
+   *
+   * @see link()
+   * @see addChild()
+   *
+   * @param  string $label The label to render
+   *
+   * @return object Return $this (fluent interface)
+   *
+   */
+
   public function label($label)
   {
     $this->label = $label;
@@ -290,6 +308,17 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
 
     return 0 !== $nbChildren;
   }
+
+  /**
+   * Returns true if the item has a child with the given name.
+   *
+   * @see addChild()
+   *
+   * @param  string $iname The child name
+   *
+   * @return boolean true if the item has a child with the given name
+   *
+   */
 
   public function hasChild($name)
   {
