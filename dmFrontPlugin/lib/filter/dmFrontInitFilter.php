@@ -50,10 +50,9 @@ class dmFrontInitFilter extends dmInitFilter
     
     $pageCacheConfig = sfConfig::get('dm_performance_page_cache');
 
-    // enable page cache only for non-authenticated users
-    if($pageCacheConfig && $pageCacheConfig['enabled'] && !$this->user->getAttribute('user_id', null, 'dmSecurityUser'))
+    if($pageCacheConfig && $pageCacheConfig['enabled'] && $viewCacheManager = $this->context->getViewCacheManager())
     {
-      if($viewCacheManager = $this->context->getViewCacheManager())
+      if($this->shouldEnablePageCache())
       {
         $viewCacheManager->addCache('dmFront', 'page', array(
           'withLayout'      => true,
@@ -61,10 +60,19 @@ class dmFrontInitFilter extends dmInitFilter
           'clientLifeTime'  => $pageCacheConfig['life_time'],
           'contextual'      => false, // useless for page cache, only used for partials & components
         ));
-        
+
         sfConfig::set('dm_internal_page_cached', $viewCacheManager->has($viewCacheManager->getCurrentCacheKey()));
       }
     }
+  }
+
+  protected function shouldEnablePageCache()
+  {
+    return $this->contect->getEventDispatcher()->filter(
+      new sfEvent($this, 'dm.page_cache.enable', array('context' => $this->context)),
+      // by default, the page is cached only for non-authenticated users
+      !$this->user->getAttribute('user_id', null, 'dmSecurityUser')
+    )->getReturnValue();
   }
 
   protected function replaceH1()
