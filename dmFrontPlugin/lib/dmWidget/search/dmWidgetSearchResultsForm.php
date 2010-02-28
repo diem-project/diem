@@ -10,7 +10,9 @@ class dmWidgetSearchResultsForm extends dmWidgetPluginForm
     /*
      * Max per page
      */
-    $this->widgetSchema['maxPerPage']     = new sfWidgetFormInputText(array(), array(
+    $this->widgetSchema['maxPerPage']     = new sfWidgetFormInputText(array(
+      'label' => 'Max per page'
+    ), array(
       'size' => 3
     ));
     $this->validatorSchema['maxPerPage']  = new sfValidatorInteger(array(
