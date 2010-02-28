@@ -47,12 +47,17 @@ class dmFrontInitFilter extends dmInitFilter
     // enable page cache only for non-authenticated users
     if($pageCacheConfig && $pageCacheConfig['enabled'] && !$this->user->getAttribute('user_id', null, 'dmSecurityUser'))
     {
-      $this->context->getViewCacheManager()->addCache('dmFront', 'page', array(
-        'withLayout'      => true,
-        'lifeTime'        => $pageCacheConfig['life_time'],
-        'clientLifeTime'  => $pageCacheConfig['life_time'],
-        'contextual'      => false, // useless for page cache, only used for partials & components
-      ));
+      if($viewCacheManager = $this->context->getViewCacheManager())
+      {
+        $viewCacheManager->addCache('dmFront', 'page', array(
+          'withLayout'      => true,
+          'lifeTime'        => $pageCacheConfig['life_time'],
+          'clientLifeTime'  => $pageCacheConfig['life_time'],
+          'contextual'      => false, // useless for page cache, only used for partials & components
+        ));
+        
+        sfConfig::set('dm_internal_page_cached', $viewCacheManager->has($viewCacheManager->getCurrentCacheKey()));
+      }
     }
   }
 

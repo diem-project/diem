@@ -27,13 +27,8 @@ class dmRequestLogEntry extends dmLogEntry
       'xhr'           => (int)    $isXhr,
       'mem'           => (string) memory_get_peak_usage(true),
       'timer'         => (string) sprintf('%.0f', $milliseconds),
-      'cache'         => $this->isPageCached($data['context']->getViewCacheManager()) && $milliseconds < 200
+      'cache'         => sfConfig::get('dm_internal_page_cached')
     );
-  }
-
-  protected function isPageCached(sfViewCacheManager $viewCacheManager = null)
-  {
-    return $viewCacheManager && $viewCacheManager->has($viewCacheManager->getCurrentCacheKey());
   }
   
   protected function cleanUri($uri)

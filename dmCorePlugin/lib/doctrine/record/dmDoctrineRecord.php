@@ -298,10 +298,18 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
   {
     if(!$this->getDmModule()->hasPage())
     {
-      throw new dmException(sprintf('record %s has no page because module %s has no page', get_class($this), $this->getDmModule()));
+      throw new dmRecordException(sprintf('record %s has no page because module %s has no page', get_class($this), $this->getDmModule()));
     }
 
     return dmDb::table('DmPage')->findOneByRecordWithI18n($this);
+  }
+
+  /**
+   * @return boolean true if this record has a page, false otherwise
+   */
+  public function hasDmPage()
+  {
+    return $this->getDmModule()->hasPage() && dmDb::table('DmPage')->findOneByRecordWithI18n($this);
   }
 
   /**
