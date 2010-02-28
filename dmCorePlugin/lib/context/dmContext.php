@@ -29,7 +29,7 @@ class dmContext extends sfContext
   public function initialize(sfApplicationConfiguration $configuration)
   {
     $this->checkProjectIsSetup();
-    
+
     parent::initialize($configuration);
 
     sfConfig::set('dm_debug', $this->getRequest()->getParameter('dm_debug', false));
