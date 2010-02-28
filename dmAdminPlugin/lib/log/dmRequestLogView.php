@@ -51,14 +51,17 @@ class dmRequestLogView extends dmLogView
   
   protected function renderLocation(dmRequestLogEntry $entry)
   {
-    return sprintf('<span class="dm_nowrap">%s</span><br />%s<span class="light">%s ms</span>&nbsp;<span class="light">%s Mb</span>',
+    return sprintf('<span class="dm_nowrap">%s</span><br />%s<span class="light">%s ms</span>&nbsp;<span class="light">%s Mb</span>%s',
       $this->renderLink($entry),
       sprintf('<span class="s16 s16_%s">%s</span>',
         'status_'.$entry->getStatus(),
         $entry->renderCodeOrNull().' '
       ),
       $entry->get('timer'),
-      round($entry->get('mem') / (1024*1024))
+      round($entry->get('mem') / (1024*1024)),
+      $entry->get('cache')
+      ? '<span class="s16 s16_lightning_small"></span>'
+      : ''
     );
   }
   

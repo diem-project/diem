@@ -60,6 +60,9 @@ default:
   performance:
     enable_mailer:        true          # Set to false to disable Swift loading: significant performance boost.
                                         # If set to false, you can enable the mailer on demand with dm::enableMailer()
+    page_cache:                         # Will cache entire pages and serve them very fast.
+      enabled:            false         # Enable the page cache for all pages
+      life_time:          86400         # Server-side lifetime of the cache in seconds (86400 seconds equals one day)
  
 ###### dm internal config ######
   

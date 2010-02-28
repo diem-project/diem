@@ -14,7 +14,8 @@ class dmRequestLog extends dmFileLog
     'user_agent',
     'xhr',
     'mem',
-    'timer'
+    'timer',
+    'cache'
   );
   
   public function getDefaultOptions()

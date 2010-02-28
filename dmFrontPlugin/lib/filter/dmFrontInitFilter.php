@@ -17,6 +17,8 @@ class dmFrontInitFilter extends dmInitFilter
 
     $this->loadAssetConfig();
 
+    $this->enablePageCache();
+
     // ajax calls use dm_cpi or page_id request parameter to set a page
     if($pageId = $this->request->getParameter('dm_cpi', $this->request->getParameter('page_id')))
     {
@@ -31,6 +33,27 @@ class dmFrontInitFilter extends dmInitFilter
     $filterChain->execute();
 
     $this->replaceH1();
+  }
+
+  protected function enablePageCache()
+  {
+    if(!sfConfig::get('sf_cache'))
+    {
+      return;
+    }
+    
+    $pageCacheConfig = sfConfig::get('dm_performance_page_cache');
+
+    // enable page cache only for non-authenticated users
+    if($pageCacheConfig && $pageCacheConfig['enabled'] && !$this->user->getAttribute('user_id', null, 'dmSecurityUser'))
+    {
+      $this->context->getViewCacheManager()->addCache('dmFront', 'page', array(
+        'withLayout'      => true,
+        'lifeTime'        => $pageCacheConfig['life_time'],
+        'clientLifeTime'  => $pageCacheConfig['life_time'],
+        'contextual'      => false, // useless for page cache, only used for partials & components
+      ));
+    }
   }
 
   protected function replaceH1()

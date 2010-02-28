@@ -309,14 +309,9 @@ class dmString extends sfInflector
 
   public static function truncate($text, $length = 30, $truncateString = '...', $truncateLastspace = false)
   {
-    if (empty($text))
+    if(!is_string($text))
     {
-      return $text;
-    }
-
-    if(is_array($text))
-    {
-      throw new dmException('Can not truncate an array : '.implode($text));
+      throw new dmException('Can not truncate a non-string: '.$text);
     }
 
     $text = (string) $text;

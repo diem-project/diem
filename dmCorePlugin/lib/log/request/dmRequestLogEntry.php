@@ -12,8 +12,8 @@ class dmRequestLogEntry extends dmLogEntry
   public function configure(array $data)
   {
     $isXhr = $data['context']->getRequest()->isXmlHttpRequest();
-    
     $uri = $this->cleanUri(dmArray::get($data['server'], 'PATH_INFO', $data['server']['REQUEST_URI']));
+    $milliseconds = (microtime(true) - dm::getStartTime()) * 1000;
     
     $this->data = array(
       'time'          => (string) $data['server']['REQUEST_TIME'],
@@ -26,8 +26,14 @@ class dmRequestLogEntry extends dmLogEntry
       'user_agent'    => dmString::truncate($isXhr ? '' : isset($data['server']['HTTP_USER_AGENT']) ? $data['server']['HTTP_USER_AGENT'] : '', 500),
       'xhr'           => (int)    $isXhr,
       'mem'           => (string) memory_get_peak_usage(true),
-      'timer'         => (string) sprintf('%.0f', (microtime(true) - dm::getStartTime()) * 1000)
+      'timer'         => (string) sprintf('%.0f', $milliseconds),
+      'cache'         => $this->isPageCached($data['context']->getViewCacheManager()) && $milliseconds < 200
     );
+  }
+
+  protected function isPageCached(sfViewCacheManager $viewCacheManager = null)
+  {
+    return $viewCacheManager && $viewCacheManager->has($viewCacheManager->getCurrentCacheKey());
   }
   
   protected function cleanUri($uri)
