@@ -33,6 +33,28 @@ class dmWidgetContentTextForm extends dmWidgetContentImageForm
     ));
     
     $this->widgetSchema['titlePosition']->setLabel('Title position');
+
+    // delete the media association
+    $this->widgetSchema['removeMedia'] = new sfWidgetFormInputCheckbox();
+    $this->validatorSchema['removeMedia'] = new  sfValidatorBoolean(array('required' => false));
+    $this->widgetSchema['removeMedia']->setLabel('Remove');
+
+    //unset the media link
+    unset($this['link']);
+  }
+
+  public function getWidgetValues()
+  {
+    $values = parent::getWidgetValues();
+    
+    if($values['removeMedia'])
+    {
+      $values['mediaId'] = null;
+    }
+
+    unset($values['removeMedia']);
+
+    return $values;
   }
 
   public function getStylesheets()

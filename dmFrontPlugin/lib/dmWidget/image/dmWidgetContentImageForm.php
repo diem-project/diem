@@ -80,7 +80,7 @@ class dmWidgetContentImageForm extends dmWidgetContentBaseMediaForm
 
   protected function renderContent($attributes)
   {
-    return self::$serviceContainer->getService('helper')->renderPartial('dmWidget', 'forms/dmWidgetContentImage', array(
+    return $this->getHelper()->renderPartial('dmWidget', 'forms/dmWidgetContentImage', array(
       'form' => $this,
       'hasMedia' => (boolean) $this->getValueOrDefault('mediaId')
     ));
@@ -90,7 +90,7 @@ class dmWidgetContentImageForm extends dmWidgetContentBaseMediaForm
   {
     $values = parent::getWidgetValues();
 
-    if($media = dmDb::table('DmMedia')->find($values['mediaId']))
+    if($media = dmDb::table('DmMedia')->findOneByIdWithFolder($values['mediaId']))
     {
       if ($media->isImage())
       {
