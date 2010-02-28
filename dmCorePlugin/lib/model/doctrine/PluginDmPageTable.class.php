@@ -274,7 +274,15 @@ class PluginDmPageTable extends myDoctrineTable
     ->andWhere('t.lang = ?', $culture ? $culture : dmDoctrineRecord::getDefaultCulture())
     ->fetchOne();
   }
-  
+
+  public function findByLevelWithI18n($level, $culture = null)
+  {
+    return $this->createQuery('p')
+    ->where('p.level = ?', $level)
+    ->withI18n($culture, null, 'p')
+    ->fetchRecords();
+  }
+
   public function fetchError404()
   {
     $this->checkBasicPages();
