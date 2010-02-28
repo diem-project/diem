@@ -253,7 +253,7 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
           connectToSortable: 'div.dm_widgets',
           helper: function()
           {
-            return $('<div class="dm"><div class="dm_widget_add_helper ui-corner-all">New '+$(this).text()+'</div></div>');
+            return $('<div class="dm"><div class="dm_widget_add_helper ui-corner-all">'+$(this).text()+'</div></div>');
           },
           appendTo: '#dm_page',
           cursorAt: { left: 30, top: 10 },
@@ -266,7 +266,7 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
           connectToSortable: 'div.dm_zones',
           helper: function()
           {
-            return $('<div class="dm"><div class="dm_zone_add_helper ui-corner-all">New Zone</div></div>');
+            return $('<div class="dm"><div class="dm_zone_add_helper ui-corner-all">'+$(this).text()+'</div></div>');
           },
           appendTo: '#dm_page',
           cursorAt: { left: 30, top: 10 },

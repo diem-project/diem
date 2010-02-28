@@ -39,7 +39,7 @@ class dmFrontAddMenu extends dmMenu
     foreach($this->serviceContainer->get('widget_type_manager')->getWidgetTypes() as $space => $widgetTypes)
     {
       $spaceMenu = $this->addChild(
-      ($module = $this->serviceContainer->getService('module_manager')->getModuleOrNull($space))
+      $this->getI18n()->__($module = $this->serviceContainer->getService('module_manager')->getModuleOrNull($space))
       ? $module->getName()
       : dmString::humanize(str_replace('dmWidget', '', $space))
       )
@@ -48,7 +48,10 @@ class dmFrontAddMenu extends dmMenu
       
       foreach($widgetTypes as $key => $widgetType)
       {
-        $spaceMenu->addChild($widgetType->getName())->setOption('widget_type', $widgetType);
+        $spaceMenu
+        ->addChild($widgetType->getName())
+        ->label($this->getI18n()->__($widgetType->getName()))
+        ->setOption('widget_type', $widgetType);
       }
 
       if(!$spaceMenu->hasChildren())
