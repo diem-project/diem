@@ -175,6 +175,22 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
     return $this->parent;
   }
 
+
+  /**
+   * Returns the nesting level
+   *
+   * Use it when you want to override some of the default behavior
+   * depending on the nesting level of your menu.
+   * You could easily add some html to the link or the label
+   * depending of the level by overriding renderLabel or renderLink
+   *
+   * @see renderLabel()
+   * @see renderLink()
+   *
+   * @return int true Nesting level of the menu item, based on the nested set
+   *
+   */
+
   public function getLevel()
   {
     if (null === $this->level)
