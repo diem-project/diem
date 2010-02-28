@@ -13,26 +13,32 @@ class dmFrontInitFilter extends dmInitFilter
     
     $this->redirectNoScriptName();
 
-    $this->saveApplicationUrl();
-
-    $this->loadAssetConfig();
-
     $this->enablePageCache();
 
-    // ajax calls use dm_cpi or page_id request parameter to set a page
-    if($pageId = $this->request->getParameter('dm_cpi', $this->request->getParameter('page_id')))
+    if(!sfConfig::get('dm_internal_page_cached'))
     {
-      if (!$page = dmDb::table('DmPage')->findOneByIdWithI18n($pageId))
+      $this->loadAssetConfig();
+
+      // ajax calls use dm_cpi or page_id request parameter to set a page
+      if($pageId = $this->request->getParameter('dm_cpi', $this->request->getParameter('page_id')))
       {
-        throw new dmException(sprintf('There is no page with id %s', $pageId));
+        if (!$page = dmDb::table('DmPage')->findOneByIdWithI18n($pageId))
+        {
+          throw new dmException(sprintf('There is no page with id %s', $pageId));
+        }
+
+        $this->context->setPage($page);
       }
-      
-      $this->context->setPage($page);
     }
     
     $filterChain->execute();
 
-    $this->replaceH1();
+    if(!sfConfig::get('dm_internal_page_cached'))
+    {
+      $this->saveApplicationUrl();
+
+      $this->replaceH1();
+    }
   }
 
   protected function enablePageCache()
