@@ -262,7 +262,6 @@ class PluginDmPageTable extends myDoctrineTable
     ->where('p.module = ?', $record->getDmModule()->getKey())
     ->andWhere('p.action = ?', 'show')
     ->andWhere('p.record_id = ?', $record->get('id'))
-    ->dmCache()
     ->fetchRecord();
   }
   
@@ -273,7 +272,6 @@ class PluginDmPageTable extends myDoctrineTable
     ->innerJoin('p.Translation t')
     ->where('t.slug = ?', $slug)
     ->andWhere('t.lang = ?', $culture ? $culture : dmDoctrineRecord::getDefaultCulture())
-    ->dmCache()
     ->fetchOne();
   }
   
@@ -321,7 +319,6 @@ class PluginDmPageTable extends myDoctrineTable
     ->andWhere('p.action = ?', 'show')
     ->andWhere('p.record_id = ?', $record->get('id'))
     ->withI18n(null, null, 'p')
-    ->dmCache()
     ->fetchOne();
   }
 
@@ -330,7 +327,6 @@ class PluginDmPageTable extends myDoctrineTable
     return $this->createQuery('p')
     ->where('p.module = ?', $module)
     ->andWhere('p.action = ?', $action)
-    ->dmCache()
     ->fetchRecords();
   }
 
@@ -339,7 +335,6 @@ class PluginDmPageTable extends myDoctrineTable
     return $this->createQuery('p')
     ->where('p.module = ?', $module)
     ->andWhere('p.action = ?', $action)
-    ->dmCache()
     ->fetchRecord();
   }
 
@@ -349,7 +344,6 @@ class PluginDmPageTable extends myDoctrineTable
     ->where('p.module = ?', $module)
     ->andWhere('p.action = ?', $action)
     ->withI18n($culture, null, 'p')
-    ->dmCache()
     ->fetchOne();
   }
 

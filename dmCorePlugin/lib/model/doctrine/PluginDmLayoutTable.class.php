@@ -10,7 +10,7 @@ class PluginDmLayoutTable extends myDoctrineTable
   {
     if (null === $this->firstLayout || !$this->firstLayout->exists())
     {
-      if (!$this->firstLayout = $this->createQuery()->dmCache()->fetchRecord())
+      if (!$this->firstLayout = $this->createQuery()->fetchRecord())
       {
         $this->firstLayout = dmDb::create('DmLayout', array('name' => 'Global'))->saveGet();
       }

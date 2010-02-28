@@ -8,7 +8,6 @@ class PluginDmPageViewTable extends myDoctrineTable
   {
     return $this->createQuery('p')
     ->where('p.module = ? AND p.action = ?', array($module, $action))
-    ->dmCache()
     ->fetchRecord();
   }
 
