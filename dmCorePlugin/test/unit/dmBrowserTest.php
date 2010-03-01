@@ -34,7 +34,7 @@ $tests = array(
   $googleBot => array('name' => 'googlebot', 'version' => '2.1', 'is_unknown' => false),
   $msnBot => array('name' => 'msnbot', 'version' => '2.0', 'is_unknown' => false),
   $yahooBot => array('name' => 'yahoobot', 'version' => null, 'is_unknown' => false),
-  $operaWindows => array('name' => 'opera', 'version' => '9.80', 'is_unknown' => false),
+  $operaWindows => array('name' => 'opera', 'version' => '10.10', 'is_unknown' => false),
   $firefoxLinux => array('name' => 'firefox', 'version' => '3.0', 'is_unknown' => false),
   $firefoxWindows => array('name' => 'firefox', 'version' => '3.5', 'is_unknown' => false),
 //  $firefoxWindowsSp2 => array('name' => 'firefox', 'version' => '3.0', 'is_unknown' => false),
