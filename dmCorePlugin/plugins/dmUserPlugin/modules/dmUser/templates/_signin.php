@@ -14,6 +14,6 @@ echo _tag('ul',
 
 echo $form->renderHiddenFields();
 
-echo $form->submit('Signin');
+echo $form->submit(__('Signin'));
 
 echo $form->close();
