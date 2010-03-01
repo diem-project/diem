@@ -325,7 +325,7 @@ EOF;
             {
               if ($existing['target'] !== $target)
               {
-                $this->log(sprintf('%s -> %s', $existing['target'], $target));
+                //$this->log(sprintf('%s -> %s', $existing['target'], $target));
                 // don't overwrite user modified translations
                 if ($existing['created_at'] === $existing['updated_at'])
                 {
