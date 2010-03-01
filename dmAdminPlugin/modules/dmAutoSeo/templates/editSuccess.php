@@ -7,7 +7,7 @@ include_partial('dmAutoSeo/tabs', array('autoSeos' => $autoSeos, 'current' => $a
 echo _open('div.dm_auto_seo.clearfix');
 
 echo _tag('div.dm_half1',
-  _tag('h2', '1. Edit meta generation rules').
+  _tag('h2', __('1. Edit meta generation rules')).
   
   _tag('div.clearfix',
   
@@ -36,7 +36,7 @@ echo _tag('div.dm_half1',
 
 echo _open('div.dm_half2');
 
-echo _tag('h2', '2. Preview generated metas');
+echo _tag('h2', __('2. Preview generated metas'));
 
 echo _tag('div.mt10',
   get_component('dmAutoSeo', 'preview', array('autoSeo' => $autoSeo, 'form' => $form, 'rules' => $previewRules))
