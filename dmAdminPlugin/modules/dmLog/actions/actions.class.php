@@ -62,7 +62,7 @@ class dmLogActions extends dmAdminBaseActions
     
     $nbEntries = array(
       'request' => 8,
-      'event'   => 5
+      'event'   => 8
     );
     
     foreach(array('request', 'event') as $logKey)

@@ -3,7 +3,7 @@
 echo _open('div.dm_variables');
 
 echo _tag('div.dm_info.ui-corner-all',
-  _tag('span.s16block.s16_help.fleft.mr5').' Open a tab to see the variables you can use here.'
+  _tag('span.s16block.s16_help.fleft.mr5').' '.__('Variables you can use here:')
 );
 
 echo _open('ul.dm_modules.dm_accordion.mt10');
@@ -12,7 +12,7 @@ foreach($modules as $module)
 {
   echo _open('li.dm_module');
   
-  echo _tag('h3.dm_module_name', _tag('a href=#', $module->getName()));
+  echo _tag('h3.dm_module_name', _tag('a href=#', __($module->getName())));
   
   echo _open('ul.dm_variables');
   

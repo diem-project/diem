@@ -37,6 +37,7 @@ a:hover {
 
 .dm_box {
   border: 1px solid #D3D3D3;
+  border-radius: 4px;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
   background: #FBFBFB;
@@ -67,6 +68,7 @@ div.dm_box_inner.m5 {
 .dm_box .title, .dm_box .title h1, .dm_box .title h2 {
   height: 24px;
   line-height: 24px;
+  border-radius: 4px 4px 0 0;
   -moz-border-radius: 4px 4px 0 0;
   -webkit-border-radius: 4px 4px 0 0;
   text-align: center;
@@ -111,6 +113,7 @@ dl.dm_little_dl dd {
   font-size: 13px;
   border: 1px solid #D3D3D3;
   color: #444;
+  border-radius: 40px;
   -moz-border-radius: 40px;
   -webkit-border-radius: 40px;
   color: #046BCA;
@@ -172,6 +175,7 @@ div.dm_gallery_medium a.dm_gallery_link {
   padding: 10px;
   border: 1px solid #ddddff;
   margin: 1em;
+  border-radius: 4px;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
 }

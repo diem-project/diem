@@ -33,6 +33,7 @@ div.dm_media_library ul.content span.image_background {
 }
 
 div.dm_media_library ul.content a:hover {
+  border-radius: 4px;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
   background-color: #ffffaa;

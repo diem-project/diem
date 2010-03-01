@@ -48,6 +48,7 @@ body {
 }
 
 #dm_code_editor_content ul.ui-tabs-nav {
+  border-radius: 4px 4px 0 0;
   -moz-border-radius: 4px 4px 0 0;
   -webkit-border-radius: 4px 4px 0 0;
 }
@@ -69,7 +70,7 @@ body {
   background: url(../../dmCorePlugin/images/default_bg.png) repeat-x center;
   height: 22px;
   padding-top: 8px;
-  
+  border-radius: 0 0 4px 4px;
   -moz-border-radius: 0 0 4px 4px;
   -webkit-border-radius: 0 0 4px 4px;
   border: 1px solid #D3D3D3;

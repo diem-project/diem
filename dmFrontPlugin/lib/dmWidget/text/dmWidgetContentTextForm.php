@@ -35,9 +35,12 @@ class dmWidgetContentTextForm extends dmWidgetContentImageForm
     $this->widgetSchema['titlePosition']->setLabel('Title position');
 
     // delete the media association
-    $this->widgetSchema['removeMedia'] = new sfWidgetFormInputCheckbox();
-    $this->validatorSchema['removeMedia'] = new  sfValidatorBoolean(array('required' => false));
-    $this->widgetSchema['removeMedia']->setLabel('Remove');
+    if($this->getDefault('mediaId'))
+    {
+      $this->widgetSchema['removeMedia'] = new sfWidgetFormInputCheckbox();
+      $this->validatorSchema['removeMedia'] = new  sfValidatorBoolean(array('required' => false));
+      $this->widgetSchema['removeMedia']->setLabel('Remove');
+    }
 
     //unset the media link
     unset($this['link']);
@@ -47,7 +50,7 @@ class dmWidgetContentTextForm extends dmWidgetContentImageForm
   {
     $values = parent::getWidgetValues();
     
-    if($values['removeMedia'])
+    if(dmArray::get($values, 'removeMedia'))
     {
       $values['mediaId'] = null;
     }

@@ -11,6 +11,7 @@ generator:
       actions: ~
       fields:
         css_class:
+          label: "CSS class"
           help: "This CSS class is applied to the body tag"
         template:
           help: "Template to use, located on apps/front/modules/dmFront/templates/%template_name%Success.php"

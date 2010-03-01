@@ -1,5 +1,6 @@
 #dm_tool_bar {
   top: 0;
+  box-shadow: 0 4px 4px #888;
   -moz-box-shadow: 0 4px 4px #888;
   -webkit-box-shadow: 0 4px 4px #888;
 }
@@ -57,6 +58,7 @@
   width: 200px;
   border-top: 0;
   padding: 0 10px 5px 10px;
+  border-radius: 0 0 4px 4px;
   -moz-border-radius: 0 0 4px 4px;
   -webkit-border-radius:  0 0 4px 4px;
 
@@ -65,6 +67,7 @@
   max-height: 300px;
   overflow: auto;
   background: #fff;
+  box-shadow: 4px 4px 4px #888;
   -moz-box-shadow: 4px 4px 4px #888;
   -webkit-box-shadow: 4px 4px 4px #888;
 }
@@ -142,6 +145,7 @@
 }
 
 #dm_tool_bar div.dm_active_users span {
+  border-radius: 4px;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
   background: #FFFFFF;

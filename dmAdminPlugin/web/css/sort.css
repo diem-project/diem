@@ -4,6 +4,7 @@
 
 .dm_sort li {
   list-style: none;
+  border-radius: 4px;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
   height: 24px;
@@ -29,6 +30,7 @@
 }
 
 .dm_sort li.ui-state-highlight {
+  border-radius: 4px;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
   height: 24px;

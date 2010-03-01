@@ -176,12 +176,12 @@ class BasedmWidgetActions extends dmFrontBaseActions
     {
       $copyActions = $helper->tag('div.dm_cut_copy_actions.none',
         $helper->link('+/dmWidget/cut')
-        ->param('id', $form->getDmWidget()->get('id'))
+        ->param('widget_id', $form->getDmWidget()->get('id'))
         ->text('')
         ->title($this->getI18n()->__('Cut'))
         ->set('.s16block.s16_cut.dm_widget_cut').
         $helper->link('+/dmWidget/copy')
-        ->param('id', $form->getDmWidget()->get('id'))
+        ->param('widget_id', $form->getDmWidget()->get('id'))
         ->text('')
         ->title($this->getI18n()->__('Copy'))
         ->set('.s16block.s16_copy.dm_widget_copy')

@@ -16,9 +16,9 @@ class dmWeekChart extends dmGaChart
 //    $dataSet->AddPoint($this->data['pagesPerVisitor'], 'pagesPerVisitor');
     $dataSet->AddPoint($this->data['date'], 'date');
     $dataSet->SetAbsciseLabelSerie("date");
-    $dataSet->SetSerieName("Pages", "pageviews");
-    $dataSet->SetSerieName("Visitors", "visits");
-    $dataSet->SetSerieName("Bounces", "bounces");
+    $dataSet->SetSerieName($this->getI18n()->__('Pages'), "pageviews");
+    $dataSet->SetSerieName($this->getI18n()->__('Visitors'), "visits");
+    $dataSet->SetSerieName($this->getI18n()->__('Bounce rate'), "bounces");
 //    $dataSet->SetSerieName("per Visitor", "pagesPerVisitor");
     
     // Prepare the graph area
@@ -27,7 +27,7 @@ class dmWeekChart extends dmGaChart
   
     $dataSet->AddSerie("visits");
     $dataSet->AddSerie("bounces"); 
-    $dataSet->SetYAxisName("visits");
+    $dataSet->SetYAxisName($this->getI18n()->__('Visitors'));
     $this->setLineStyle(1, 6);
     $this->drawScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_START0, self::$colors['grey2'][0], self::$colors['grey2'][1], self::$colors['grey2'][2],TRUE,0,0, false, 1);
     $this->drawGrid(4,TRUE, self::$colors['grey1'][0], self::$colors['grey1'][1], self::$colors['grey1'][2]);
@@ -58,6 +58,7 @@ class dmWeekChart extends dmGaChart
     // Draw the 2nd graph
     $dataSet->removeAllSeries();
     $dataSet->AddSerie("pageviews");
+    //$dataSet->SetYAxisName($this->getI18n()->__('Pages'));
     $this->setLineStyle(1, 6);
     $this->setLineStyle(1, 1);
     $this->drawRightScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_START0, self::$colors['grey2'][0], self::$colors['grey2'][1], self::$colors['grey2'][2],TRUE,0,0, false, 1);

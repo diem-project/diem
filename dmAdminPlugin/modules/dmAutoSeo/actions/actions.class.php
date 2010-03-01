@@ -13,7 +13,12 @@ class dmAutoSeoActions extends dmAdminBaseActions
   
   public function executeIndex(dmWebRequest $request)
   {
-    $this->autoSeos = $this->getDmAutoSeos();
+    $autoSeos = $this->getDmAutoSeos();
+
+    if(!empty($autoSeos))
+    {
+      $this->redirect($this->getHelper()->link($autoSeos[0])->getHref());
+    }
   }
   
   public function executeEdit(dmWebRequest $request)

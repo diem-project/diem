@@ -54,7 +54,7 @@ class BasedmFrontActions extends dmFrontBaseActions
   {
     $user = $this->getUser();
     
-    if (
+    $accessDenied =
           // the site is not active and requires the site_view permission to be displayed
           (!dmConfig::get('site_active') && !$user->can('site_view'))
           // the page is not active and requires the site_view permission to be displayed
@@ -63,7 +63,14 @@ class BasedmFrontActions extends dmFrontBaseActions
       ||  ($this->page->get('is_secure') && !$user->isAuthenticated())
           // the page is secured and the user has not required credentials
       ||  ($this->page->get('is_secure') && $this->page->get('credentials') && !$user->can($this->page->get('credentials')))
-    )
+    ;
+
+    $accessDenied = $this->getDispatcher()->filter(
+      new sfEvent($this, 'dm.page.deny_access', array('page' => $this->page, 'context' => $this->context)),
+      $accessDenied
+    )->getReturnValue();
+
+    if($accessDenied)
     {
       $this->getResponse()->setStatusCode($user->isAuthenticated() ? 403 : 401);
       

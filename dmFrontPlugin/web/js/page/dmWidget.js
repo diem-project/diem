@@ -32,7 +32,8 @@ $.widget('ui.dmWidget', {
           widget.reload(500);
         }
       }
-    }).bind('dmAjaxResponse', function() {
+    }).bind('dmAjaxResponse', function()
+    {
       $dialog.prepare();
 
       $('a.delete', $dialog).click(function()
@@ -156,7 +157,7 @@ $.widget('ui.dmWidget', {
       data:     {widget_id: self.getId()}
     });
     
-    self.element.slideUp(500, function() {self.destroy();self.element.remove();});
+    self.element.slideUp(500, function() {self.destroy();self.element.remove();$.dm.removeTipsy();});
   },
 
   reload: function(timeout)

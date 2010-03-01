@@ -20,7 +20,9 @@ h1 {
 }
 
 table {
+  box-shadow: 0 0 5px #76C6D2;
   -moz-box-shadow: 0 0 5px #76C6D2;
+  -webkit-box-shadow: 0 0 5px #76C6D2;
 }
 
 table thead th {

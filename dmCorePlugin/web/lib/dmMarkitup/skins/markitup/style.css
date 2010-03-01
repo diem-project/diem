@@ -10,6 +10,7 @@ div.markItUpContainer  {
   background:#FFF url(images/bg-container.png) repeat-x top left;
   padding:5px 5px 2px 5px;
   font:11px Verdana, Arial, Helvetica, sans-serif;
+  border-radius: 4px;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
 }
@@ -66,6 +67,7 @@ div.markItUpHeader ul a {
   background: #F8F8F8;
   background-position: 0 -28px;
   overflow-y: auto;
+  border-radius: 4px;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
 }
