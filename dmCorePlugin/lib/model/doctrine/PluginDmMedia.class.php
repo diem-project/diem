@@ -196,7 +196,7 @@ abstract class PluginDmMedia extends BaseDmMedia
    */
   protected function getAvailableFileName($fileName)
   {
-    if(!$this->get('Folder')->hasFile($fileName))
+    if(!file_exists(dmOs::join($this->get('Folder')->getFullPath(), $fileName)))
     {
       return $fileName;
     }
@@ -310,9 +310,9 @@ abstract class PluginDmMedia extends BaseDmMedia
       $this->destroyThumbnails();
     }
 
-    if ($this->checkFileExists())
+    if ($this->checkFileExists() && $this->getService('filesystem'))
     {
-      $this->getServiceContainer()->getService('filesystem')->unlink($this->getFullPath());
+      $this->getService('filesystem')->unlink($this->getFullPath());
     }
 
     return !$this->checkFileExists();
@@ -320,7 +320,7 @@ abstract class PluginDmMedia extends BaseDmMedia
 
   public function destroyThumbnails()
   {
-    if (!$this->isImage())
+    if (!$this->isImage() || !$this->getService('filesystem'))
     {
       return true;
     }
