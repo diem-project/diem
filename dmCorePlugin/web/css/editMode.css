@@ -90,3 +90,7 @@ ul.ui-tabs-nav > li.dm_error.ui-tabs-selected {
   max-height: 400px;
   overflow: auto !important;
 }
+
+body > div.tipsy {
+  font-family: Verdana,Arial,sans-serif;
+}
