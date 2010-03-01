@@ -238,7 +238,7 @@ class dmLogChart extends dmChart
   
   public function filterEvent(array $data)
   {
-    return in_array($data['action'].' '.$data['type'], $this->eventsFilter);
+    return isset($data['action']) && in_array($data['action'].' '.$data['type'], $this->eventsFilter);
   }
 
 }
