@@ -104,11 +104,6 @@ class dmSecurityUser extends sfBasicSecurityUser
       return true;
     }
 
-    if (!$this->getUser())
-    {
-      return false;
-    }
-
     if ($this->isSuperAdmin)
     {
       return true;
