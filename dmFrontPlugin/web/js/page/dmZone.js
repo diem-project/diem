@@ -129,7 +129,7 @@ $.widget('ui.dmZone', {
         {
           ui.placeholder
           .addClass('dm dm_widget block')
-          .html('<a class="dm dm_widget_edit"></a><div class="dm_widget_inner"><br /></div>');
+          .html('<a class="dm dm_widget_edit"></a><div class="dm_widget_inner "><div class="dm dm_new_widget"></div></div>');
         }
         // moving a widget
         else 
@@ -242,7 +242,7 @@ $.widget('ui.dmZone', {
       data:     { zone_id: this.getId() }
     });
     
-    this.element.slideUp(500, function() { zone.destroy(); zone.element.remove(); });
+    this.element.slideUp(500, function() { zone.destroy(); zone.element.remove();$.dm.removeTipsy(); });
   },
   
   getId: function()
