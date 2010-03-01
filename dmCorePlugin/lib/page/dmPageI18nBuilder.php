@@ -114,13 +114,19 @@ class dmPageI18nBuilder extends dmConfigurable
     ->fetchOne(array(), Doctrine_Core::HYDRATE_ARRAY);
     
     $missingTranslations = new myDoctrineCollection(dmDb::table('DmPageTranslation'));
-    
+
+    $changes = array(
+      'lang' => $culture
+    );
+
+    if(!$this->getOption('activate_new_translations'))
+    {
+      $changes['is_active'] = false;
+    }
+
     foreach($missingCultures as $culture)
     {
-      $missingTranslations->add($translationTable->create(array_merge($mainTranslationArray, array(
-        'lang'      => $culture,
-        'is_active' => $this->getOption('activate_new_translations')
-      ))));
+      $missingTranslations->add($translationTable->create(array_merge($mainTranslationArray, $changes)));
     }
     
     $missingTranslations->save();
