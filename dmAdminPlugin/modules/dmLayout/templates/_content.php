@@ -29,7 +29,7 @@ foreach($dm_layout->get('Areas') as $area)
   if(!empty($widgets))
   {
     echo _tag('li.mb5',
-      _tag('strong', $area->type.': ').
+      _tag('strong', __(ucfirst($area->type)).': ').
       implode(' | ', $widgets)
     );
   }
