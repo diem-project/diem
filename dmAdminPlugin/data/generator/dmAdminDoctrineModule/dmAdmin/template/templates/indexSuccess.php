@@ -60,7 +60,7 @@
     
       [?php if($configuration->getLoremize() && $sf_user->can('loremize')): ?]
       <div class="dm_loremize">
-      <p class="dm_sort s16 s16_edit fleft">Loremize :</p>
+      <p class="dm_sort s16 s16_edit fleft">[?php echo __('Loremize'); ?]:</p>
       [?php
       $loremizeLink = _link('@<?php echo $this->getModule()->getUnderscore() ?>?action=loremize&nb=__DM_NB_RECORDS__')
       ->text('__DM_NB_RECORDS__')
