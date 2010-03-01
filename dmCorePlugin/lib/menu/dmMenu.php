@@ -55,6 +55,24 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
     return $this;
   }
 
+  /**
+   * Setter for the label.
+   *
+   * You can use this setter to override the default label generated
+   * A label is generated when there is no link passed to the addChild method
+   * or when link is set to false with link(false)
+   * For example, it's easy to add a span around the label with
+   * label('<span class="you_class">Menu label</span>')
+   *
+   * @see link()
+   * @see addChild()
+   *
+   * @param  string $label The label to render
+   *
+   * @return object Return $this (fluent interface)
+   *
+   */
+
   public function label($label)
   {
     $this->label = $label;
@@ -175,6 +193,22 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
     return $this->parent;
   }
 
+
+  /**
+   * Returns the nesting level
+   *
+   * Use it when you want to override some of the default behavior
+   * depending on the nesting level of your menu.
+   * You could easily add some html to the link or the label
+   * depending of the level by overriding renderLabel or renderLink
+   *
+   * @see renderLabel()
+   * @see renderLink()
+   *
+   * @return int true Nesting level of the menu item, based on the nested set
+   *
+   */
+
   public function getLevel()
   {
     if (null === $this->level)
@@ -256,7 +290,20 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
   }
 
   /**
-   * Checks
+   * Returns true if the user has access to this menu item.
+   *
+   * false if the user is authenticated and the menu is only for
+   * not authenticated users
+   *
+   * true is the menu is not secure and there is no credential on it
+   *
+   * false if the module is secure and the user not authenticated
+   *
+   * false if the user has not the correct credentials
+   *
+   *
+   * @return boolean true if the user has access to this menu item or not
+   *
    */
 
   public function checkUserAccess()
@@ -290,6 +337,17 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
 
     return 0 !== $nbChildren;
   }
+  
+  /**
+   * Returns true if the item has a child with the given name.
+   *
+   * @see addChild()
+   *
+   * @param  string $iname The child name
+   *
+   * @return boolean true if the item has a child with the given name
+   *
+   */
 
   public function hasChild($name)
   {
