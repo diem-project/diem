@@ -293,7 +293,7 @@ EOF;
       $table = dmDb::table('DmTransUnit');
       
       $existQuery = $table->createQuery('t')
-      ->select('t.id, t.target, t.created_at, t.updated_at')
+      ->select('t.id, t.source, t.target, t.created_at, t.updated_at')
       ->where('t.dm_catalogue_id = ? AND t.source = ?');
       $catalogueId = $catalogue->get('id');
       
@@ -315,16 +315,17 @@ EOF;
 
           if (!is_string($source) || !is_string($target))
           {
-            $this->logSection('dm:data', 'Error line '.$line.' : '.dmProject::unrootify($dataFile));
+            $this->logSection('dm:data', 'Error line '.$line.': '.dmProject::unrootify($dataFile));
           }
           else
           {
             $existing = $existQuery->fetchOneArray(array($catalogueId, $source));
 
-            if (!empty($existing))
+            if (!empty($existing) && $existing['source'] === $source)
             {
               if ($existing['target'] !== $target)
               {
+                $this->log(sprintf('%s -> %s', $existing['target'], $target));
                 // don't overwrite user modified translations
                 if ($existing['created_at'] === $existing['updated_at'])
                 {
@@ -338,7 +339,7 @@ EOF;
                 }
               }
             }
-            else
+            elseif(empty($existing))
             {
               $addedTranslations->add(dmDb::create('DmTransUnit', array(
                 'dm_catalogue_id' => $catalogue->get('id'),
@@ -356,11 +357,11 @@ EOF;
     
       if ($nbAdded)
       {
-        $this->logSection('dm:data', sprintf('%s : added %d translation(s)', $culture, $nbAdded));
+        $this->logSection('dm:data', sprintf('%s: added %d translation(s)', $culture, $nbAdded));
       }
       if ($nbUpdated)
       {
-        $this->logSection('dm:data', sprintf('%s : updated %d translation(s)', $culture, $nbUpdated));
+        $this->logSection('dm:data', sprintf('%s: updated %d translation(s)', $culture, $nbUpdated));
       }
     }
     
