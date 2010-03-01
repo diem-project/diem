@@ -7,6 +7,7 @@
   margin: 3px;
   margin-top: 0;
   padding: 0px;
+  border-radius: 0 4px 4px 4px;
   -moz-border-radius: 0 4px 4px 4px;
   -webkit-border-radius: 0 4px 4px 4px;
 }

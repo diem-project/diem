@@ -50,6 +50,7 @@ div.ui-dialog.dm.dm_code_editor_dialog .ui-dialog-content {
   margin: 0 3px 0 0;
   padding: 3px;
   border: none;
+  border-radius: 4px;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
   margin-bottom: 2px;
@@ -70,6 +71,7 @@ div.ui-dialog.dm.dm_code_editor_dialog .ui-dialog-content {
   float: left;
   background: #eeeeff;
   overflow: hidden;
+  border-radius: 4px;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
 }

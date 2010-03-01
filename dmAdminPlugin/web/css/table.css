@@ -1,6 +1,7 @@
 div.dm_table_wrap {
   border: 1px solid #ccc;
   background: #fff;
+  border-radius: 4px;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
   padding: 10px;

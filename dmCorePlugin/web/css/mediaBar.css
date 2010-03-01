@@ -20,6 +20,7 @@ body.mediaBarOpen #sf_admin_content {
   border-left: 3px solid #F4F4F4;
   overflow: hidden;
   font-size: 11px;
+  box-shadow: -3px 0 4px #888;
   -moz-box-shadow: -3px 0 4px #888;
   -webkit-box-shadow: -3px 0 4px #888;
 }
@@ -33,8 +34,10 @@ body.mediaBarOpen #sf_admin_content {
   background: url(../images/bar_togglers.png) top left no-repeat;
   background-position: 0 -100px;
   cursor: pointer;
+  border-radius: 8px 0 0 8px;
   -moz-border-radius: 8px 0 0 8px;
   -webkit-border-radius: 8px 0 0 8px;
+  box-shadow: -2px 0 5px #888;
   -moz-box-shadow: -2px 0 5px #888;
   -webkit-box-shadow: -2px 0 5px #888;
 }

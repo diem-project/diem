@@ -4,6 +4,8 @@ body {
 
 #dm_tool_bar {
   bottom: 0;
+  box-shadow: 0 -4px 4px #888;
+  -webkit-box-shadow: 0 -4px 4px #888;
   -moz-box-shadow: 0 -4px 4px #888;
 }
 
@@ -61,6 +63,7 @@ body {
   width: 455px;
   border-bottom: none;
   padding-bottom: 10px;
+  border-radius: 4px 4px 0 0;
   -moz-border-radius: 4px 4px 0 0;
   -webkit-border-radius: 4px 4px 0 0;
 
@@ -69,6 +72,7 @@ body {
   height: 300px;
   overflow: auto;
   background: #FCFCFC;
+  box-shadow: 4px -4px 4px #888;
   -moz-box-shadow: 4px -4px 4px #888;
   -webkit-box-shadow: 4px -4px 4px #888;
 }
@@ -114,6 +118,7 @@ div.dm_widget_add_helper {
   color: #666;
   background: url(../../dmCorePlugin/images/default_bg.png) repeat-x 50% 50%;
   border: 1px solid #D3D3D3;
+  border-radius: 4px;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
   text-align: center;
@@ -126,14 +131,18 @@ div.dm_widget_add_helper {
 	padding: 5px 0;
 	font-weight: bold;
   background: url(../../dmCorePlugin/images/default_bg_blue.png) repeat-x 50% 50%;
+  box-shadow: 0 0 4px #888;
   -moz-box-shadow: 0 0 4px #888;
+  -webkit-box-shadow: 0 0 4px #888;
   color: #444;
 }
 
 #dm_tool_bar span.move:hover {
   color: #444;
   background: url(../../dmCorePlugin/images/default_bg_blue.png) repeat-x 50% 50%;
+  box-shadow: 0 0 4px #888;
   -moz-box-shadow: 0 0 4px #888;
+  -webkit-box-shadow: 0 0 4px #888;
 }
 
 #dm_tool_bar ul.level2 > li a {
@@ -148,12 +157,14 @@ div.dm_widget_add_helper {
 #dm_tool_bar ul.level1 > li.dm_add_menu_actions {
   padding: 10px;
   background: url(../../dmCorePlugin/images/default_bg.png) repeat-x 50% 50%;
+  border-radius: 4px 0 0 0;
   -moz-border-radius: 4px 0 0 0;
   -webkit-border-radius: 4px 0 0 0;
   border-bottom: 1px solid #D4D4D4;
 }
 
 #dm_tool_bar ul.level1 > li.dm_add_menu_actions input {
+  border-radius: 4px;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
   float: left;
