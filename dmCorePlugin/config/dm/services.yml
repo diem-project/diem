@@ -143,7 +143,7 @@ parameters:
   page_i18n_builder.class:    dmPageI18nBuilder     # Multilingual sites only. When a page is created in a culture,
                                                     # this service will generate missing page translations for other cultures.
   page_i18n_builder.options:
-    activate_new_translations: false                # if set to true, the created translations are active and can be accessed by users
+    activate_new_translations: true                 # if set to true, the created translations are active and can be accessed by users
 
   project_loremizer.class:    dmProjectLoremizer    # Fills the project with random records
   project_loremizer.options:
