@@ -16,6 +16,6 @@ echo _tag('ul',
 
 echo $form->renderHiddenFields();
 
-echo $form->submit('Register');
+echo $form->submit(__('Register'));
 
 echo $form->close();
