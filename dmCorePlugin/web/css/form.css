@@ -60,9 +60,16 @@
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
 }
-.dm_form .toggle_group .toggler{
+.dm_form .toggle_group .toggler {
   display: block;
   padding: 5px;
+}
+.dm_form .toggle_group .toggler:hover {
+  border-color: #666;
+  background: url(../../dmCorePlugin/images/default_bg_green.png) repeat-x scroll 50% 50%;
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;;
 }
 
 .dm_media_receiver {
