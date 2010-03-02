@@ -4,7 +4,7 @@ require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
 $helper = new dmUnitTestHelper();
 $helper->boot();
 
-$t = new lime_test(18);
+$t = new lime_test(19);
 $browser = $helper->get('browser');
 
 $namorokaUbuntu = 'Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2pre) Gecko/20100116 Ubuntu/9.10 (karmic) Namoroka/3.6pre';
@@ -17,6 +17,7 @@ $googleBot = 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot
 $msnBot = 'msnbot/2.0b (+http://search.msn.com/msnbot.htm)';
 $firefoxLinux = 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.17) Gecko/2010010604 Linux Mint/7 (Gloria) Firefox/3.0.17';
 $firefoxWindows = 'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-GB; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7 GTB6 (.NET CLR 3.5.30729)';
+$firefoxOsx = 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.1.8) Gecko/20100202 Firefox/3.5.8';
 //$firefoxWindowsSp2 = 'Gecko 2009122116Mozilla/5.0 (Windows; U; Windows NT 6.0; de; rv:1.9.0.17) Gecko/2009122116 Firefox[xSP_2:077784879bbf239604c69a247f6786a0_220] 967907703 (.NET CLR 3.5.30729)';
 $chromeLinux = 'Mozilla/5.0 (X11; U; Linux i686; en-US) AppleWebKit/532.5 (KHTML, like Gecko) Chrome/4.0.249.43 Safari/532.5';
 $speedySpider = 'Speedy Spider (http://www.entireweb.com/about/search_tech/speedy_spider/)';
@@ -39,6 +40,7 @@ $tests = array(
   $opera10Windows => array('name' => 'opera', 'version' => '10.10', 'is_unknown' => false),
   $firefoxLinux => array('name' => 'firefox', 'version' => '3.0', 'is_unknown' => false),
   $firefoxWindows => array('name' => 'firefox', 'version' => '3.5', 'is_unknown' => false),
+  $firefoxOsx => array('name' => 'firefox', 'version' => '3.5', 'is_unknown' => false),
 //  $firefoxWindowsSp2 => array('name' => 'firefox', 'version' => '3.0', 'is_unknown' => false),
   $chromeLinux => array('name' => 'chrome', 'version' => '4.0', 'is_unknown' => false),
   $speedySpider => array('name' => null, 'version' => null, 'is_unknown' => true),
