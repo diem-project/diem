@@ -1,18 +1,18 @@
 (function($)
 {
 
-var $tabs = $('div.dm_logs', this.$dom);
+var $tabs = $('#dm_admin_content div.dm_logs');
 
-$tabs.tabs($.extend({
-  cache: true,
+$tabs.block().tabs($.extend({
+  cache: false,
   select: function()
   {
     $tabs.block();
   },
-  show: function()
+  load: function()
   {
     $tabs.unblock();
   }
-}, $tabs.metadata())).block();
+}, $tabs.metadata()));
   
 })(jQuery);
