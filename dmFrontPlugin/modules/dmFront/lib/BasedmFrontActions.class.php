@@ -115,11 +115,6 @@ class BasedmFrontActions extends dmFrontBaseActions
     
     return sfView::SUCCESS;
   }
-  
-  public function executeToAdmin(dmWebRequest $request)
-  {
-    return $this->redirect($this->getHelper()->link('app:admin')->getHref());
-  }
 
   /*
    * If an sfAction exists for the current page module.action,
@@ -229,5 +224,28 @@ class BasedmFrontActions extends dmFrontBaseActions
     }
 
     return $this->redirectBack();
+  }
+
+  public function executeToAdmin(dmWebRequest $request)
+  {
+    return $this->redirect($this->getHelper()->link('app:admin')->getHref());
+  }
+
+  public function executeReloadSearchIndex()
+  {
+    $authFile = sfConfig::get('sf_cache_dir').'/dm/search_index_'.time();
+    $this->forwardSecureUnless(file_exists($authFile));
+    unlink($authFile);
+    
+    try
+    {
+      $this->getService('search_engine')->populate();
+      $this->getService('search_engine')->optimize();
+      return $this->renderText('ok');
+    }
+    catch(Exception $e)
+    {
+      return $this->renderText($e->getMessage());
+    }
   }
 }
