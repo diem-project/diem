@@ -40,7 +40,7 @@ class dmRecordLoremizer extends dmConfigurable
     {
       $this->loremizeAssociations();
     }
-    
+
     return $this->record;
   }
   
@@ -83,6 +83,11 @@ class dmRecordLoremizer extends dmConfigurable
     }
     // handle local keys
     elseif ($localRelation = $this->table->getRelationHolder()->getLocalByColumnName($columnName))
+    {
+      $val = $this->getRandomId($localRelation->getTable());
+    }
+    // handle i18n local keys
+    elseif ($this->table->hasI18n() && ($localRelation = $this->table->getI18nTable()->getRelationHolder()->getLocalByColumnName($columnName)))
     {
       $val = $this->getRandomId($localRelation->getTable());
     }
