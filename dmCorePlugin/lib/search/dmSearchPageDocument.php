@@ -62,8 +62,6 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
     {
       $this->index('keywords', $i18n->get('keywords'), $boostValues['keywords']);
     }
-    
-    return $this;
   }
 
   protected function getBoostValues()

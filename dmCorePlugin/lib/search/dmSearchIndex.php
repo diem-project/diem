@@ -126,9 +126,13 @@ class dmSearchIndex extends dmSearchIndexCommon
       ++$nb;
       $logger->log($this->getName().' '.$nb.'/'.$nbMax.' : /'.$page->get('slug'));
       
-      $this->serviceContainer->setParameter('search_document.source', $page);
-      
-      $this->luceneIndex->addDocument($this->serviceContainer->getService('search_document')->populate());
+      $document = $this->serviceContainer
+      ->setParameter('search_document.source', $page)
+      ->getService('search_document');
+
+      $document->populate();
+
+      $this->luceneIndex->addDocument($document);
     }
     
     $user->setCulture($oldCulture);
