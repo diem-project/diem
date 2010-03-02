@@ -15,7 +15,7 @@ class dmAutoSeoActions extends dmAdminBaseActions
   {
     $autoSeos = $this->getDmAutoSeos();
 
-    if(!empty($autoSeos))
+    if($autoSeos->count())
     {
       $this->redirect($this->getHelper()->link($autoSeos[0])->getHref());
     }
