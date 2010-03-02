@@ -4,6 +4,8 @@ class dmSeoSynchronizer
 {
   protected static
   $truncateCache,
+  $patternsPlaceholdersCache,
+  $shouldProcessMarkdownCache,
   $moduleIsActivatable = array();
   
   protected
@@ -24,6 +26,9 @@ class dmSeoSynchronizer
   public function execute(array $onlyModules, $culture)
   {
     $this->setCulture($culture);
+
+    // clear existing auto seo to avoid translation fetching problems
+    //dmDb::table('DmAutoSeo')->clear();
     
     $recordDefaultCulture = myDoctrineRecord::getDefaultCulture();
     myDoctrineRecord::setDefaultCulture($this->culture);
@@ -74,11 +79,17 @@ class dmSeoSynchronizer
       ->createFromModuleAndAction($module->getKey(), 'show', $this->culture)
       ->saveGet();
     }
+
+    $autoSeoRecordTranslation = $autoSeoRecord->getCurrentTranslation();
+    if(!$autoSeoRecordTranslation->exists())
+    {
+      $autoSeoRecordTranslation = $autoSeoRecord->getI18nFallback();
+    }
     
     $patterns = array();
     foreach(DmPage::getAutoSeoFields() as $patternField)
     {
-      $patterns[$patternField] = $autoSeoRecord->get($patternField);
+      $patterns[$patternField] = $autoSeoRecordTranslation->get($patternField);
     }
     
     if (isset($patterns['keywords']) && !sfConfig::get('dm_seo_use_keywords'))
@@ -107,7 +118,8 @@ class dmSeoSynchronizer
      */
     $records = $module->getTable()->createQuery('r INDEXBY r.id')
     ->withI18n($this->culture, $module->getModel(), 'r')
-    ->fetchRecords();
+    ->fetchRecords()
+    ->getData();
     
     /*
      * get parent slugs
@@ -127,8 +139,16 @@ class dmSeoSynchronizer
     foreach($pages as $page)
     {
       $record = $records[$page['record_id']];
-      $parentId = $this->getNodeParentId($page);
-      $parentSlug = isset($parentSlugs[$parentId]) ? $parentSlugs[$parentId] : '';
+
+      if(!empty($parentSlugs))
+      {
+        $parentId = $this->getNodeParentId($page);
+        $parentSlug = isset($parentSlugs[$parentId]) ? $parentSlugs[$parentId] : '';
+      }
+      else
+      {
+        $parentSlug = '';
+      }
 
       $modifiedFields = $this->updatePage($page, $module, $record, $patterns, $parentSlug);
       
@@ -201,13 +221,14 @@ class dmSeoSynchronizer
 
   public function updatePage(array $page, dmProjectModule $module, dmDoctrineRecord $record, $patterns, $parentSlug)
   {
-    $pageAutoMod = dmArray::get($page, 'auto_mod', 'snthdk');
-
-    foreach($patterns as $field => $pattern)
+    if('snthdk' !== $page['auto_mod'])
     {
-      if (strpos($pageAutoMod, $field{0}) === false)
+      foreach($patterns as $field => $pattern)
       {
-        unset($patterns[$field]);
+        if (false === strpos($page['auto_mod'], $field{0}))
+        {
+          unset($patterns[$field]);
+        }
       }
     }
 
@@ -242,11 +263,9 @@ class dmSeoSynchronizer
   {
     if ($this->shouldUpdatePageIsActiveForModule($module))
     {
-      $recordIsActive = $record->get('is_active');
-
-      if ($page['is_active'] !== $recordIsActive)
+      if ($page['is_active'] != $record->get('is_active'))
       {
-        $modifiedFields['is_active'] = $recordIsActive;
+        $modifiedFields['is_active'] = $record->get('is_active');
       }
     }
 
@@ -284,15 +303,12 @@ class dmSeoSynchronizer
     return true;
   }
   
-  public function getReplacementsForPatterns(dmProjectModule $module, $patterns, dmDoctrineRecord $record)
-  {
-    preg_match_all('/%([\w\d\.-]+)%/i', implode('', $patterns), $results);
-    $placeholders = array_unique($results[1]);
-    
+  public function getReplacementsForPatterns(dmProjectModule $module, array $patterns, dmDoctrineRecord $record)
+  {    
     $moduleKey = $module->getKey();
     $replacements = array();
     
-    foreach ($placeholders as $placeholder)
+    foreach(self::getPatternsPlaceholders($patterns) as $placeholder)
     {
       if ('culture' === $placeholder || 'user.culture' === $placeholder)
       {
@@ -317,7 +333,7 @@ class dmSeoSynchronizer
       /*
        * Retrieve used record
        */
-      if ($usedModuleKey == $moduleKey)
+      if ($usedModuleKey === $moduleKey)
       {
         $usedRecord = $record;
       }
@@ -335,7 +351,7 @@ class dmSeoSynchronizer
         /*
          * get record value for field
          */
-        if ($field == '__toString')
+        if ($field === '__toString')
         {
           $usedValue = $usedRecord->__toString();
           $processMarkdown = true;
@@ -351,7 +367,7 @@ class dmSeoSynchronizer
             $usedValue = $usedRecord->{'get'.dmString::camelize($field)}();
           }
           
-          $processMarkdown = $usedRecord->getTable()->hasField($field) && $usedRecord->getTable()->isMarkdownColumn($field);
+          $processMarkdown = self::shouldProcessMarkdown($usedRecord->getTable(), $field);
         }
         
         unset($usedRecord);
@@ -392,12 +408,17 @@ class dmSeoSynchronizer
         $value = strtr($pattern, $slugReplacements);
         
         // add parent slug
-        if ($pattern{0} != '/')
+        if ($pattern{0} !== '/')
         {
-          $value = $parentSlug.'/'.strtr($pattern, $slugReplacements);
+          $value = $parentSlug.'/'.$value;
         }
         
-        $value = trim(preg_replace('|(/{2,})|', '/', $value), '/');
+        $value = trim($value, '/');
+
+        if(false !== strpos($value, '//'))
+        {
+          $value = preg_replace('|(/{2,})|', '/', $value);
+        }
       }
       elseif($field === 'title')
       {
@@ -467,9 +488,33 @@ LIMIT 1')->getStatement();
 
     $this->nodeParentIdStmt->execute(array($pageData['lft'], $pageData['rgt']));
     
-    $result = $this->nodeParentIdStmt->fetch(PDO::FETCH_NUM);
-    
-    return $result[0];
+    return $this->nodeParentIdStmt->fetchColumn();
+  }
+
+  protected static function getPatternsPlaceholders(array $patterns)
+  {
+    $flatPatterns = implode('', $patterns);
+
+    if(isset(self::$patternsPlaceholdersCache[$flatPatterns]))
+    {
+      return self::$patternsPlaceholdersCache[$flatPatterns];
+    }
+
+    preg_match_all('/%([\w\d\.-]+)%/i', $flatPatterns, $results);
+
+    return self::$patternsPlaceholdersCache[$flatPatterns] = array_unique($results[1]);
+  }
+
+  protected static function shouldProcessMarkdown(dmDoctrineTable $table, $field)
+  {
+    $key = $table->getComponentName().'.'.$field;
+
+    if(isset(self::$shouldProcessMarkdownCache[$key]))
+    {
+      return self::$shouldProcessMarkdownCache[$key];
+    }
+
+    return self::$shouldProcessMarkdownCache[$key] = $table->hasField($field) && $table->isMarkdownColumn($field);
   }
 
   /**

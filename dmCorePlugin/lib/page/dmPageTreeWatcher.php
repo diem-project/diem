@@ -193,7 +193,7 @@ class dmPageTreeWatcher extends dmConfigurable
   public function synchronizeSeo(array $modules = array(), array $cultures = null)
   {
     $cultures = null === $cultures ? $this->serviceContainer->get('i18n')->getCultures() : $cultures;
-    
+
     if ($this->useThread())
     {
       $this->serviceContainer->getService('thread_launcher')->execute('dmSeoSynchronizerThread', array(
