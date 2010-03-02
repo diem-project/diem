@@ -4,8 +4,8 @@ class dmSeoSynchronizer
 {
   protected static
   $truncateCache,
-  $patternsPlaceholdersCache,
-  $shouldProcessMarkdownCache,
+  $patternsPlaceholdersCache = array(),
+  $shouldProcessMarkdownCache = array(),
   $moduleIsActivatable = array();
   
   protected
@@ -154,10 +154,7 @@ class dmSeoSynchronizer
         $modifiedPages[$page['id']] = $modifiedFields;
       }
     }
-
-    // disable freeing records because it makes tests using records after synchronisation fail.
-    //$records->free(true);
-
+    
     /*
      * Save modifications
      */
@@ -218,11 +215,13 @@ class dmSeoSynchronizer
 
   public function updatePage(array $page, dmProjectModule $module, dmDoctrineRecord $record, $patterns, $parentSlug)
   {
-    if('snthdk' !== $page['auto_mod'])
+    $pageAutoMod = $page['exist'] ? $page['auto_mod'] : 'snthdk';
+    
+    if('snthdk' !== $pageAutoMod)
     {
       foreach($patterns as $field => $pattern)
       {
-        if (false === strpos($page['auto_mod'], $field{0}))
+        if (false === strpos($pageAutoMod, $field{0}))
         {
           unset($patterns[$field]);
         }
