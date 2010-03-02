@@ -4,23 +4,23 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
 {
   protected
   $context,
-  $source,
+  $page,
   $options = array(
     'boost_values' => array(
-      'body' => 1,
-      'slug' => 3,
-      'name' => 3,
-      'title' => 4,
-      'h1' => 4,
+      'body'        => 1,
+      'slug'        => 3,
+      'name'        => 3,
+      'title'       => 4,
+      'h1'          => 4,
       'description' => 3,
-      'keywords' => 5
+      'keywords'    => 5
     )
   );
   
-  public function __construct(dmContext $context, $source, array $options = array())
+  public function __construct(dmContext $context, DmPage $page, array $options = array())
   {
     $this->context  = $context;
-    $this->source   = $source;
+    $this->page     = $page;
     
     $this->initialize($options);
   }
@@ -29,57 +29,87 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
   {
     $this->options  = sfToolkit::arrayDeepMerge($this->options, $options);
     
-    if (!$this->source instanceof DmPage)
+    if (!$this->page instanceof DmPage)
     {
-      throw new dmException(sprintf('%s require a source instance of DmPage, %s given', get_class($this), get_class($this->source)));
+      throw new dmException(sprintf('%s require a source instance of DmPage, %s given', get_class($this), get_class($this->page)));
     }
   }
-  
+
+  /**
+   * Fill the field values with the page
+   */
   public function populate()
   {
-    $i18n = $this->source->getCurrentTranslation();
+    $boostValues = $this->getBoostValues();
 
-    $boostValues = $this->getBoostValues($this->source);
-    
-    $this->store('page_id', $this->source->get('id'));
+    // store the page id without indexing it
+    $this->store('page_id', $this->page->get('id'));
 
+    // index the page slug
+    $this->index('slug', dmString::unSlugify($this->page->get('slug')), $boostValues['slug']);
+
+    // index the page name
+    $this->index('name', $this->page->get('name'), $boostValues['name']);
+
+    // index the page title
+    $this->index('title', $this->page->get('title'), $boostValues['title']);
+
+    // index the page h1
+    $this->index('h1', $this->page->get('h1'), $boostValues['h1']);
+
+    // index the page description
+    $this->index('description', $this->page->get('description'), $boostValues['description']);
+
+    // index keywords only if the project uses them
+    if (sfConfig::get('dm_seo_use_keywords'))
+    {
+      $this->index('keywords', $this->page->get('keywords'), $boostValues['keywords']);
+    }
+
+    // process the page body only if its boost value is not null
     if($boostValues['body'])
     {
       $this->index('body', $this->getPageBodyText(), $boostValues['body']);
     }
-    
-    $this->index('slug', dmString::unSlugify($i18n->get('slug')), $boostValues['slug']);
-
-    $this->index('name', $i18n->get('name'), $boostValues['name']);
-
-    $this->index('title', $i18n->get('title'), $boostValues['title']);
-
-    $this->index('h1', $i18n->get('h1'), $boostValues['h1']);
-
-    $this->index('description', $i18n->get('description'), $boostValues['description']);
-
-    if (sfConfig::get('dm_seo_use_keywords'))
-    {
-      $this->index('keywords', $i18n->get('keywords'), $boostValues['keywords']);
-    }
   }
 
+  /**
+   * Get the boost values for each field
+   *
+   * @return array the boost values for each field
+   */
   protected function getBoostValues()
   {
     return $this->context->getEventDispatcher()->filter(
-      new sfEvent($this, 'dm.search.filter_boost_values', array('page' => $this->source)),
+      new sfEvent($this, 'dm.search.filter_boost_values', array('page' => $this->page)),
       $this->options['boost_values']
     )->getReturnValue();
   }
-  
-  protected function store($name, $value, $boost = 1)
+
+  /**
+   * Store a field without indexing it
+   *
+   * @param string  $name   the field name
+   * @param mixed   $value  the field value
+   *
+   * @return dmSearchDocument the search_document instance
+   */
+  protected function store($name, $value)
   {
     $field = Zend_Search_Lucene_Field::UnIndexed($name, $value);
-    $field->boost = $boost;
     $this->addField($field);
   }
-  
-  protected function index($name, $value, $boost = 1)
+
+  /**
+   * Index a field
+   *
+   * @param string  $name   the field name
+   * @param mixed   $value  the field value
+   * @param float   $boost  the boost value
+   *
+   * @return dmSearchDocument the search_document instance
+   */
+  protected function index($name, $value, $boost = 1.0)
   {
     $field = Zend_Search_Lucene_Field::UnStored($name, $value);
     $field->boost = $boost;
@@ -87,7 +117,9 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
   }
 
   /**
-   * @todo retrieve html nodes text ( better than Zend_Search_Lucene_Document_Html )
+   * Get a page indexable content
+   *
+   * @return string the page text content
    */
   protected function getPageBodyText()
   {
@@ -96,17 +128,16 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
       throw new dmException('Can only be used in front app ( current : '.sfConfig::get('sf_app').' )');
     }
     
-    $page     = $this->source;
     $culture  = $this->options['culture'];
     
-    $this->context->setPage($page);
+    $this->context->setPage($this->page);
     
     $helper             = $this->context->get('page_helper');
     $widgetTypeManager  = $this->context->get('widget_type_manager');
     
     $areas = dmDb::query('DmPageView pv, pv.Area a')
     ->select('a.id')
-    ->where('pv.module = ? AND pv.action = ?', array($page->get('module'), $page->get('action')))
+    ->where('pv.module = ? AND pv.action = ?', array($this->page->get('module'), $this->page->get('action')))
     ->fetchPDO();
     
     $zones = dmDb::query('DmZone z')
