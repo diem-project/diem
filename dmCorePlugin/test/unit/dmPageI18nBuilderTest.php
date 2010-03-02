@@ -62,7 +62,7 @@ foreach($i18n->getCultures() as $culture)
   
   foreach(array('slug', 'name', 'title', 'h1', 'description', 'keywords') as $field)
   {
-    $t->is($pageTranslation->get($field), $page->get($field), sprintf('The %s translated page %s is %s', $culture, $field, $page->get('slug')));
+    $t->is($pageTranslation->get($field), $page->get($field), sprintf('The %s translated page %s is %s', $culture, $field, $page->get($field)));
   }
 }
 
@@ -88,10 +88,3 @@ foreach($pages as $page)
 unset($pages);
 
 $t->is($nbMissingTranslations, 0, 'All page translations have been created');
-
-$i18nBuilder->createAllPagesTranslations();
-
-/*
- * Clear the mess
- */
-$randomCreatedPage->Node->delete();

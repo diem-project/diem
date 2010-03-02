@@ -26,9 +26,6 @@ class dmSeoSynchronizer
   public function execute(array $onlyModules, $culture)
   {
     $this->setCulture($culture);
-
-    // clear existing auto seo to avoid translation fetching problems
-    //dmDb::table('DmAutoSeo')->clear();
     
     $recordDefaultCulture = myDoctrineRecord::getDefaultCulture();
     myDoctrineRecord::setDefaultCulture($this->culture);

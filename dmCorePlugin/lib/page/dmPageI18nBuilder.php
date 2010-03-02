@@ -28,6 +28,8 @@ class dmPageI18nBuilder extends dmConfigurable
     }
     
     $this->configure($options);
+
+    $this->setOption('cultures', array_unique(array_filter($this->getOption('cultures'))));
   }
   
   public function connect()
@@ -44,29 +46,41 @@ class dmPageI18nBuilder extends dmConfigurable
   
   public function listenToPagePostSaveEvent(sfEvent $event)
   {
-    $this->createPageTranslations($event->getSubject());
+    $this->createPageTranslations($event->getSubject()->get('id'));
   }
   
   public function createAllPagesTranslations()
   {
-    $pages = dmDb::table('DmPage')->createQuery('p')
-    ->leftJoin('p.Translation')
-    ->fetchRecords();
+    $cultures = $this->getOption('cultures');
     
-    foreach($pages as $page)
+    $pageIds = dmDb::table('DmPage')->createQuery('p')
+    ->select('p.id')
+    ->fetchFlat();
+
+    $existingTranslations = array_flip(dmDb::query('DmPageTranslation p')
+    ->select('CONCAT(p.id, p.lang)')
+    ->fetchFlat());
+    
+    foreach($pageIds as $pageId)
     {
-      $this->createPageTranslations($page);
+      foreach($cultures as $culture)
+      {
+        if(!isset($existingTranslations[$pageId.$culture]))
+        {
+          $this->createPageTranslations($pageId);
+        }
+      }
     }
   }
   
-  protected function createPageTranslations(DmPage $page)
+  protected function createPageTranslations($pageId)
   {
-    $cultures = array_unique($this->getOption('cultures'));
+    $cultures = $this->getOption('cultures');
     
     $translationTable = dmDb::table('DmPageTranslation');
     
     $existingCultures = $translationTable->createQuery('t')
-    ->where('t.id = ? ', $page->get('id'))
+    ->where('t.id = ? ', $pageId)
     ->andWhereIn('t.lang', $cultures)
     ->select('t.lang')
     ->fetchFlat();
@@ -101,7 +115,7 @@ class dmPageI18nBuilder extends dmConfigurable
     
     $mainTranslationArray = $translationTable->createQuery('t')
     ->select('t.slug, t.name, t.title, t.h1, t.description, t.keywords, t.is_active')
-    ->where('t.id = ?', $page->get('id'))
+    ->where('t.id = ?', $pageId)
     ->andWhere('t.lang = ?', $mainCulture)
     ->limit(1)
     ->fetchOne(array(), Doctrine_Core::HYDRATE_ARRAY);

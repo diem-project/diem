@@ -37,5 +37,13 @@ class dmSyncPagesTask extends dmContextTask
     $startTime = microtime(true);
     $treeWatcher->synchronizeSeo();
     $this->logSection('diem', sprintf('%d page translations synchronized in %s ms', dmDb::table('DmPageTranslation')->count(), round(1000*(microtime(true) - $startTime))));
+
+    if (count($this->get('i18n')->getCultures()) > 1)
+    {
+      $this->logSection('diem', 'Create missing page translations... this may take some time');
+      $startTime = microtime(true);
+      $this->get('page_i18n_builder')->createAllPagesTranslations();
+      $this->logSection('diem', sprintf('Finished in %s ms', round(1000*(microtime(true) - $startTime))));
+    }
   }
 }
