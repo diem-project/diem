@@ -1,5 +1,5 @@
 /*
- * jQuery UI Selectable 1.8rc2
+ * jQuery UI Selectable 1.8rc3
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -255,7 +255,7 @@ $.widget("ui.selectable", $.ui.mouse, {
 });
 
 $.extend($.ui.selectable, {
-	version: "1.8rc2"
+	version: "1.8rc3"
 });
 
 })(jQuery);

@@ -1,5 +1,5 @@
 /*
- * jQuery UI Sortable 1.8rc2
+ * jQuery UI Sortable 1.8rc3
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -724,10 +724,10 @@ $.widget("ui.sortable", $.ui.mouse, {
 			//Update the placeholder 
 			this.options.placeholder.update(this.currentContainer, this.placeholder); 
 		
+			this.containers[innermostIndex]._trigger("over", event, this._uiHash(this)); 
+			this.containers[innermostIndex].containerCache.over = 1;
 		} 
 	
-		this.containers[innermostIndex]._trigger("over", event, this._uiHash(this)); 
-		this.containers[innermostIndex].containerCache.over = 1;
 		
 	},
 
@@ -1046,7 +1046,7 @@ $.widget("ui.sortable", $.ui.mouse, {
 });
 
 $.extend($.ui.sortable, {
-	version: "1.8rc2"
+	version: "1.8rc3"
 });
 
 })(jQuery);

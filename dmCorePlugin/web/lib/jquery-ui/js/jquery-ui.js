@@ -1,5 +1,5 @@
 /*!
- * jQuery UI 1.8rc2
+ * jQuery UI 1.8rc3
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -13,7 +13,7 @@ var isFF2 = $.browser.mozilla && (parseFloat($.browser.version) < 1.9);
 
 //Helper functions and ui object
 $.ui = {
-	version: "1.8rc2",
+	version: "1.8rc3",
 
 	// $.ui.plugin is deprecated.  Use the proxy pattern instead.
 	plugin: {
@@ -204,7 +204,7 @@ $.extend($.expr[':'], {
 
 })(jQuery);
 /*!
- * jQuery UI Widget 1.8rc2
+ * jQuery UI Widget 1.8rc3
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -440,7 +440,7 @@ $.Widget.prototype = {
 
 })( jQuery );
 /*!
- * jQuery UI Mouse 1.8rc2
+ * jQuery UI Mouse 1.8rc3
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -591,7 +591,7 @@ $.widget("ui.mouse", {
 
 })(jQuery);
 /*
- * jQuery UI Draggable 1.8rc2
+ * jQuery UI Draggable 1.8rc3
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -1051,7 +1051,7 @@ $.widget("ui.draggable", $.ui.mouse, {
 });
 
 $.extend($.ui.draggable, {
-	version: "1.8rc2"
+	version: "1.8rc3"
 });
 
 $.ui.plugin.add("draggable", "connectToSortable", {
@@ -1362,6 +1362,7 @@ $.ui.plugin.add("draggable", "stack", {
 		var group = $.makeArray($(o.stack)).sort(function(a,b) {
 			return (parseInt($(a).css("zIndex"),10) || 0) - (parseInt($(b).css("zIndex"),10) || 0);
 		});
+		if (!group.length) { return; }
 		
 		var min = parseInt(group[0].style.zIndex) || 0;
 		$(group).each(function(i) {
@@ -1387,7 +1388,7 @@ $.ui.plugin.add("draggable", "zIndex", {
 
 })(jQuery);
 /*
- * jQuery UI Droppable 1.8rc2
+ * jQuery UI Droppable 1.8rc3
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -1535,7 +1536,7 @@ $.widget("ui.droppable", {
 });
 
 $.extend($.ui.droppable, {
-	version: "1.8rc2"
+	version: "1.8rc3"
 });
 
 $.ui.intersect = function(draggable, droppable, toleranceMode) {
@@ -1672,7 +1673,7 @@ $.ui.ddmanager = {
 
 })(jQuery);
 /*
- * jQuery UI Resizable 1.8rc2
+ * jQuery UI Resizable 1.8rc3
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -2192,7 +2193,7 @@ $.widget("ui.resizable", $.ui.mouse, {
 });
 
 $.extend($.ui.resizable, {
-	version: "1.8rc2"
+	version: "1.8rc3"
 });
 
 /*
@@ -2471,7 +2472,7 @@ var isNumber = function(value) {
 
 })(jQuery);
 /*
- * jQuery UI Selectable 1.8rc2
+ * jQuery UI Selectable 1.8rc3
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -2727,12 +2728,12 @@ $.widget("ui.selectable", $.ui.mouse, {
 });
 
 $.extend($.ui.selectable, {
-	version: "1.8rc2"
+	version: "1.8rc3"
 });
 
 })(jQuery);
 /*
- * jQuery UI Sortable 1.8rc2
+ * jQuery UI Sortable 1.8rc3
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -3457,10 +3458,10 @@ $.widget("ui.sortable", $.ui.mouse, {
 			//Update the placeholder 
 			this.options.placeholder.update(this.currentContainer, this.placeholder); 
 		
+			this.containers[innermostIndex]._trigger("over", event, this._uiHash(this)); 
+			this.containers[innermostIndex].containerCache.over = 1;
 		} 
 	
-		this.containers[innermostIndex]._trigger("over", event, this._uiHash(this)); 
-		this.containers[innermostIndex].containerCache.over = 1;
 		
 	},
 
@@ -3779,12 +3780,12 @@ $.widget("ui.sortable", $.ui.mouse, {
 });
 
 $.extend($.ui.sortable, {
-	version: "1.8rc2"
+	version: "1.8rc3"
 });
 
 })(jQuery);
 /*
- * jQuery UI Effects 1.8rc2
+ * jQuery UI Effects 1.8rc3
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -4086,7 +4087,7 @@ $.fn.extend({
 /******************************************************************************/
 
 $.extend($.effects, {
-	version: "1.8rc2",
+	version: "1.8rc3",
 
 	// Saves a set of properties in a data storage
 	save: function(element, set) {
@@ -4203,7 +4204,7 @@ function _normalizeArguments(effect, options, speed, callback) {
 		speed = null;
 		options = {};
 	}
-	if (typeof options == 'number') {
+	if (typeof options == 'number' || $.fx.speeds[options]) {
 		callback = speed;
 		speed = options;
 		options = {};
@@ -4494,7 +4495,7 @@ $.extend($.easing,
 
 })(jQuery);
 /*
- * jQuery UI Effects Blind 1.8rc2
+ * jQuery UI Effects Blind 1.8rc3
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -4543,7 +4544,7 @@ $.effects.blind = function(o) {
 
 })(jQuery);
 /*
- * jQuery UI Effects Bounce 1.8rc2
+ * jQuery UI Effects Bounce 1.8rc3
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -4621,7 +4622,7 @@ $.effects.bounce = function(o) {
 
 })(jQuery);
 /*
- * jQuery UI Effects Clip 1.8rc2
+ * jQuery UI Effects Clip 1.8rc3
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -4675,7 +4676,7 @@ $.effects.clip = function(o) {
 
 })(jQuery);
 /*
- * jQuery UI Effects Drop 1.8rc2
+ * jQuery UI Effects Drop 1.8rc3
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -4725,7 +4726,7 @@ $.effects.drop = function(o) {
 
 })(jQuery);
 /*
- * jQuery UI Effects Explode 1.8rc2
+ * jQuery UI Effects Explode 1.8rc3
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -4804,7 +4805,7 @@ $.effects.explode = function(o) {
 
 })(jQuery);
 /*
- * jQuery UI Effects Fade 1.8rc2
+ * jQuery UI Effects Fade 1.8rc3
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -4836,7 +4837,7 @@ $.effects.fade = function(o) {
 
 })(jQuery);
 /*
- * jQuery UI Effects Fold 1.8rc2
+ * jQuery UI Effects Fold 1.8rc3
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -4892,7 +4893,7 @@ $.effects.fold = function(o) {
 
 })(jQuery);
 /*
- * jQuery UI Effects Highlight 1.8rc2
+ * jQuery UI Effects Highlight 1.8rc3
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -4942,7 +4943,7 @@ $.effects.highlight = function(o) {
 
 })(jQuery);
 /*
- * jQuery UI Effects Pulsate 1.8rc2
+ * jQuery UI Effects Pulsate 1.8rc3
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -4993,7 +4994,7 @@ $.effects.pulsate = function(o) {
 
 })(jQuery);
 /*
- * jQuery UI Effects Scale 1.8rc2
+ * jQuery UI Effects Scale 1.8rc3
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -5171,7 +5172,7 @@ $.effects.size = function(o) {
 
 })(jQuery);
 /*
- * jQuery UI Effects Shake 1.8rc2
+ * jQuery UI Effects Shake 1.8rc3
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -5228,7 +5229,7 @@ $.effects.shake = function(o) {
 
 })(jQuery);
 /*
- * jQuery UI Effects Slide 1.8rc2
+ * jQuery UI Effects Slide 1.8rc3
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -5278,7 +5279,7 @@ $.effects.slide = function(o) {
 
 })(jQuery);
 /*
- * jQuery UI Effects Transfer 1.8rc2
+ * jQuery UI Effects Transfer 1.8rc3
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -5323,7 +5324,7 @@ $.effects.transfer = function(o) {
 
 })(jQuery);
 /*
- * jQuery UI Accordion 1.8rc2
+ * jQuery UI Accordion 1.8rc3
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -5637,8 +5638,8 @@ $.widget("ui.accordion", {
 				options: o,
 				newHeader: clickedIsActive && o.collapsible ? $([]) : clicked,
 				oldHeader: this.active,
-				newContent: clickedIsActive && o.collapsible ? $([]) : toShow.find('> *'),
-				oldContent: toHide.find('> *')
+				newContent: clickedIsActive && o.collapsible ? $([]) : toShow,
+				oldContent: toHide
 			},
 			down = this.headers.index( this.active[0] ) > this.headers.index( clicked[0] );
 
@@ -5762,7 +5763,7 @@ $.widget("ui.accordion", {
 
 
 $.extend($.ui.accordion, {
-	version: "1.8rc2",
+	version: "1.8rc3",
 	animations: {
 		slide: function(options, additions) {
 			options = $.extend({
@@ -5834,7 +5835,7 @@ $.extend($.ui.accordion, {
 
 })(jQuery);
 /*
- * jQuery UI Autocomplete 1.8rc2
+ * jQuery UI Autocomplete 1.8rc3
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -5857,6 +5858,7 @@ $.widget( "ui.autocomplete", {
 	_create: function() {
 		var self = this;
 		this.element
+			.addClass( "ui-autocomplete-input" )
 			.attr( "autocomplete", "off" )
 			// TODO verify these actually work as intended
 			.attr({
@@ -5885,11 +5887,11 @@ $.widget( "ui.autocomplete", {
 					break;
 				case keyCode.ENTER:
 					// when menu is open or has focus
-					if ( self.menu && self.menu.active ) {
+					if ( self.menu.active ) {
 						event.preventDefault();
 					}
 				case keyCode.TAB:
-					if ( !self.menu || !self.menu.active ) {
+					if ( !self.menu.active ) {
 						return;
 					}
 					self.menu.select();
@@ -5954,22 +5956,16 @@ $.widget( "ui.autocomplete", {
 			.zIndex( this.element.zIndex() + 1 )
 			// workaround for jQuery bug #5781 http://dev.jquery.com/ticket/5781
 			.css({ top: 0, left: 0 })
-			.position({
-				my: "left top",
-				at: "left bottom",
-				of: this.element,
-				collision: "none"
-			})
 			.hide()
 			.data( "menu" );
 		if ( $.fn.bgiframe ) {
-			 menu.element.bgiframe();
+			 this.menu.element.bgiframe();
 		}
 	},
 
 	destroy: function() {
 		this.element
-			.removeClass( "ui-autocomplete ui-widget ui-widget-content ui-corner-all" )
+			.removeClass( "ui-autocomplete-input ui-widget ui-widget-content" )
 			.removeAttr( "autocomplete" )
 			.removeAttr( "role" )
 			.removeAttr( "aria-autocomplete" )
@@ -6044,6 +6040,7 @@ $.widget( "ui.autocomplete", {
 		if ( this.menu.element.is(":visible") ) {
 			this._trigger( "close", event );
 			this.menu.element.hide();
+			this.menu.deactivate();
 		}
 		if ( this.previous != this.element.val() ) {
 			this._trigger( "change", event );
@@ -6072,16 +6069,26 @@ $.widget( "ui.autocomplete", {
 	_suggest: function( items ) {
 		var self = this,
 			ul = this.menu.element.empty();
-		$.each( items, function( index, item ) {
-			self._renderItem( ul, item );
-		});
+		this._renderMenu( ul, items );
 		// TODO refresh should check if the active item is still in the dom, removing the need for a manual deactivate
 		this.menu.deactivate();
 		this.menu.refresh();
-		this.menu.element.show();
+		this.menu.element.show().position({
+			my: "left top",
+			at: "left bottom",
+			of: this.element,
+			collision: "none"
+		});
 		if ( ul.width() <= this.element.width() ) {
 			ul.width( this.element.width() );
 		}
+	},
+	
+	_renderMenu: function( ul, items ) {
+		var self = this;
+		$.each( items, function( index, item ) {
+			self._renderItem( ul, item );
+		});
 	},
 
 	_renderItem: function( ul, item) {
@@ -6158,7 +6165,7 @@ $.widget("ui.menu", {
 		var self = this;
 
 		// don't refresh list items that are already adapted
-		var items = this.element.children("li:not(.ui-menu-item)")
+		var items = this.element.children("li:not(.ui-menu-item):has(a)")
 			.addClass("ui-menu-item")
 			.attr("role", "menuitem");
 		
@@ -6293,7 +6300,7 @@ $.widget("ui.menu", {
 
 })(jQuery);
 /*
- * jQuery UI Button 1.8rc2
+ * jQuery UI Button 1.8rc3
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -6367,9 +6374,6 @@ $.widget( "ui.button", {
 					return;
 				}
 				$( this ).toggleClass( "ui-state-active" );
-				self.element
-					.attr( "checked", !self.element[0].checked )
-					.click();
 				self.buttonElement.attr( "aria-pressed", self.element[0].checked );
 			});
 		} else if ( this.type === "radio") {
@@ -6378,9 +6382,6 @@ $.widget( "ui.button", {
 					return;
 				}
 				$( this ).addClass( "ui-state-active" );
-				self.element
-					.attr( "checked", true )
-					.click();
 				self.buttonElement.attr( "aria-pressed", true );
 
 				var radio = self.element[ 0 ],
@@ -6437,7 +6438,7 @@ $.widget( "ui.button", {
 						// TODO pass through original event correctly (just as 2nd argument doesn't work)
 						$(this).trigger("click");
 					}
-				})
+				});
 			}
 		}
 
@@ -6461,7 +6462,7 @@ $.widget( "ui.button", {
 			if ( checked ) {
 				this.buttonElement.addClass( "ui-state-active" );
 			}
-			this.buttonElement.attr( "aria-pressed", checked )
+			this.buttonElement.attr( "aria-pressed", checked );
 		} else {
 			this.buttonElement = this.element;
 		}
@@ -6572,7 +6573,7 @@ $.widget( "ui.buttonset", {
 
 })( jQuery );
 /*
- * jQuery UI Datepicker 1.8rc2
+ * jQuery UI Datepicker 1.8rc3
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -6586,7 +6587,7 @@ $.widget( "ui.buttonset", {
 
 (function($) { // hide the namespace
 
-$.extend($.ui, { datepicker: { version: "1.8rc2" } });
+$.extend($.ui, { datepicker: { version: "1.8rc3" } });
 
 var PROP_NAME = 'datepicker';
 var dpuuid = new Date().getTime();
@@ -8291,7 +8292,7 @@ $.fn.datepicker = function(options){
 $.datepicker = new Datepicker(); // singleton instance
 $.datepicker.initialized = false;
 $.datepicker.uuid = new Date().getTime();
-$.datepicker.version = "1.8rc2";
+$.datepicker.version = "1.8rc3";
 
 // Workaround for #4055
 // Add another global to avoid noConflict issues with inline event handlers
@@ -8299,7 +8300,7 @@ window['DP_jQuery_' + dpuuid] = $;
 
 })(jQuery);
 /*
- * jQuery UI Dialog 1.8rc2
+ * jQuery UI Dialog 1.8rc3
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -8366,8 +8367,12 @@ $.widget("ui.dialog", {
 				// setting tabIndex makes the div focusable
 				// setting outline to 0 prevents a border on focus in Mozilla
 				.attr('tabIndex', -1).css('outline', 0).keydown(function(event) {
-					(options.closeOnEscape && event.keyCode
-						&& event.keyCode == $.ui.keyCode.ESCAPE && self.close(event));
+					if (options.closeOnEscape && event.keyCode
+						&& event.keyCode == $.ui.keyCode.ESCAPE) {
+						
+						self.close(event);
+						event.preventDefault();
+					}
 				})
 				.attr({
 					role: 'dialog',
@@ -8628,7 +8633,7 @@ $.widget("ui.dialog", {
 			handle: '.ui-dialog-titlebar',
 			containment: 'document',
 			start: function(event) {
-				heightBeforeDrag = options.height;
+				heightBeforeDrag = options.height === "auto" ? "auto" : $(this).height();
 				$(this).height($(this).height()).addClass("ui-dialog-dragging");
 				self._trigger('dragStart', event);
 			},
@@ -8847,11 +8852,9 @@ $.widget("ui.dialog", {
 		var options = this.options;
 
 		// reset content sizing
-		this.element.css({
-			height: 0,
-			minHeight: 0,
-			width: 'auto'
-		});
+		// hide for non content measurement because height: 0 doesn't work in IE quirks mode (see #4350)
+		this.element.css('width', 'auto')
+			.hide();
 
 		// reset wrapper sizing
 		// determine the height of all the non-content elements
@@ -8867,8 +8870,10 @@ $.widget("ui.dialog", {
 				height: 'auto'
 			}
 			: {
-				height: Math.max(options.height - nonContentHeight, 0)
-			});
+				minHeight: 0,
+				height: Math.max(options.height - nonContentHeight, 0)				
+			})
+			.show();
 
 		(this.uiDialog.is(':data(resizable)') &&
 			this.uiDialog.resizable('option', 'minHeight', this._minHeight()));
@@ -8876,7 +8881,7 @@ $.widget("ui.dialog", {
 });
 
 $.extend($.ui.dialog, {
-	version: "1.8rc2",
+	version: "1.8rc3",
 
 	uuid: 0,
 	maxZ: 0,
@@ -8892,6 +8897,8 @@ $.extend($.ui.dialog, {
 
 $.extend($.ui.dialog.overlay, {
 	instances: [],
+	// reuse old instances due to IE memory leak with alpha transparency (see #5185)
+	oldInstances: [],
 	maxZ: 0,
 	events: $.map('focus,mousedown,mouseup,keydown,keypress,click'.split(','),
 		function(event) { return event + '.dialog-overlay'; }).join(' '),
@@ -8904,7 +8911,7 @@ $.extend($.ui.dialog.overlay, {
 				// handle $(el).dialog().dialog('close') (see #4065)
 				if ($.ui.dialog.overlay.instances.length) {
 					$(document).bind($.ui.dialog.overlay.events, function(event) {
-						// stop events if the z-index of the target is <= the z-index of the overlay
+						// stop events if the z-index of the target is < the z-index of the overlay
 						return ($(event.target).zIndex() >= $.ui.dialog.overlay.maxZ);
 					});
 				}
@@ -8912,19 +8919,24 @@ $.extend($.ui.dialog.overlay, {
 
 			// allow closing by pressing the escape key
 			$(document).bind('keydown.dialog-overlay', function(event) {
-				(dialog.options.closeOnEscape && event.keyCode
-						&& event.keyCode == $.ui.keyCode.ESCAPE && dialog.close(event));
+				if (dialog.options.closeOnEscape && event.keyCode
+					&& event.keyCode == $.ui.keyCode.ESCAPE) {
+					
+					dialog.close(event);
+					event.preventDefault();
+				}
 			});
 
 			// handle window resize
 			$(window).bind('resize.dialog-overlay', $.ui.dialog.overlay.resize);
 		}
 
-		var $el = $('<div></div>').appendTo(document.body)
-			.addClass('ui-widget-overlay').css({
-				width: this.width(),
-				height: this.height()
-			});
+		var $el = (this.oldInstances.length ? this.oldInstances.splice(0, 1)[0] : $('<div></div>').addClass('ui-widget-overlay'))
+					.appendTo(document.body)
+					.css({
+						width: this.width(),
+						height: this.height()
+					});
 
 		($.fn.bgiframe && $el.bgiframe());
 
@@ -8933,7 +8945,7 @@ $.extend($.ui.dialog.overlay, {
 	},
 
 	destroy: function($el) {
-		this.instances.splice($.inArray(this.instances, $el), 1);
+		this.oldInstances.push(this.instances.splice($.inArray(this.instances, $el), 1)[0]);
 
 		if (this.instances.length === 0) {
 			$([document, window]).unbind('.dialog-overlay');
@@ -9027,7 +9039,7 @@ $.extend($.ui.dialog.overlay.prototype, {
 
 })(jQuery);
 /*
- * jQuery UI Position 1.8rc2
+ * jQuery UI Position 1.8rc3
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -9259,7 +9271,7 @@ if ( !$.offset.setOffset ) {
 
 })( jQuery );
 /*
- * jQuery UI Progressbar 1.8rc2
+ * jQuery UI Progressbar 1.8rc3
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -9361,12 +9373,12 @@ $.widget( "ui.progressbar", {
 });
 
 $.extend( $.ui.progressbar, {
-	version: "1.8rc2"
+	version: "1.8rc3"
 });
 
 })( jQuery );
 /*
- * jQuery UI Slider 1.8rc2
+ * jQuery UI Slider 1.8rc3
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -9980,12 +9992,12 @@ $.widget("ui.slider", $.ui.mouse, {
 });
 
 $.extend($.ui.slider, {
-	version: "1.8rc2"
+	version: "1.8rc3"
 });
 
 })(jQuery);
 /*
- * jQuery UI Tabs 1.8rc2
+ * jQuery UI Tabs 1.8rc3
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -10589,11 +10601,26 @@ $.widget("ui.tabs", {
 					o.ajaxOptions.success(r, s);
 				}
 				catch (e) {}
+			},
+			error: function(xhr, s, e) {
+				// take care of tab labels
+				self._cleanup();
 
-				// last, so that load event is fired before show...
-				self.element.dequeue("tabs");
+				// callbacks
+				self._trigger('load', null, self._ui(self.anchors[index], self.panels[index]));
+				try {
+					// Passing index avoid a race condition when this method is
+					// called after the user has selected another tab.
+					// Pass the anchor that initiated this request allows
+					// loadError to manipulate the tab content panel via $(a.hash)
+					o.ajaxOptions.error(xhr, s, index, a);
+				}
+				catch (e) {}
 			}
 		}));
+
+		// last, so that load event is fired before show...
+		self.element.dequeue("tabs");
 
 		return this;
 	},
@@ -10630,7 +10657,7 @@ $.widget("ui.tabs", {
 });
 
 $.extend($.ui.tabs, {
-	version: '1.8rc2'
+	version: '1.8rc3'
 });
 
 /*

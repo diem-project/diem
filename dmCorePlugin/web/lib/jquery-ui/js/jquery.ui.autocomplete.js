@@ -1,5 +1,5 @@
 /*
- * jQuery UI Autocomplete 1.8rc2
+ * jQuery UI Autocomplete 1.8rc3
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -22,6 +22,7 @@ $.widget( "ui.autocomplete", {
 	_create: function() {
 		var self = this;
 		this.element
+			.addClass( "ui-autocomplete-input" )
 			.attr( "autocomplete", "off" )
 			// TODO verify these actually work as intended
 			.attr({
@@ -50,11 +51,11 @@ $.widget( "ui.autocomplete", {
 					break;
 				case keyCode.ENTER:
 					// when menu is open or has focus
-					if ( self.menu && self.menu.active ) {
+					if ( self.menu.active ) {
 						event.preventDefault();
 					}
 				case keyCode.TAB:
-					if ( !self.menu || !self.menu.active ) {
+					if ( !self.menu.active ) {
 						return;
 					}
 					self.menu.select();
@@ -119,22 +120,16 @@ $.widget( "ui.autocomplete", {
 			.zIndex( this.element.zIndex() + 1 )
 			// workaround for jQuery bug #5781 http://dev.jquery.com/ticket/5781
 			.css({ top: 0, left: 0 })
-			.position({
-				my: "left top",
-				at: "left bottom",
-				of: this.element,
-				collision: "none"
-			})
 			.hide()
 			.data( "menu" );
 		if ( $.fn.bgiframe ) {
-			 menu.element.bgiframe();
+			 this.menu.element.bgiframe();
 		}
 	},
 
 	destroy: function() {
 		this.element
-			.removeClass( "ui-autocomplete ui-widget ui-widget-content ui-corner-all" )
+			.removeClass( "ui-autocomplete-input ui-widget ui-widget-content" )
 			.removeAttr( "autocomplete" )
 			.removeAttr( "role" )
 			.removeAttr( "aria-autocomplete" )
@@ -209,6 +204,7 @@ $.widget( "ui.autocomplete", {
 		if ( this.menu.element.is(":visible") ) {
 			this._trigger( "close", event );
 			this.menu.element.hide();
+			this.menu.deactivate();
 		}
 		if ( this.previous != this.element.val() ) {
 			this._trigger( "change", event );
@@ -237,16 +233,26 @@ $.widget( "ui.autocomplete", {
 	_suggest: function( items ) {
 		var self = this,
 			ul = this.menu.element.empty();
-		$.each( items, function( index, item ) {
-			self._renderItem( ul, item );
-		});
+		this._renderMenu( ul, items );
 		// TODO refresh should check if the active item is still in the dom, removing the need for a manual deactivate
 		this.menu.deactivate();
 		this.menu.refresh();
-		this.menu.element.show();
+		this.menu.element.show().position({
+			my: "left top",
+			at: "left bottom",
+			of: this.element,
+			collision: "none"
+		});
 		if ( ul.width() <= this.element.width() ) {
 			ul.width( this.element.width() );
 		}
+	},
+	
+	_renderMenu: function( ul, items ) {
+		var self = this;
+		$.each( items, function( index, item ) {
+			self._renderItem( ul, item );
+		});
 	},
 
 	_renderItem: function( ul, item) {
@@ -323,7 +329,7 @@ $.widget("ui.menu", {
 		var self = this;
 
 		// don't refresh list items that are already adapted
-		var items = this.element.children("li:not(.ui-menu-item)")
+		var items = this.element.children("li:not(.ui-menu-item):has(a)")
 			.addClass("ui-menu-item")
 			.attr("role", "menuitem");
 		

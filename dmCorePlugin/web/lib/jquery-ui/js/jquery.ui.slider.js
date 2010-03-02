@@ -1,5 +1,5 @@
 /*
- * jQuery UI Slider 1.8rc2
+ * jQuery UI Slider 1.8rc3
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -613,7 +613,7 @@ $.widget("ui.slider", $.ui.mouse, {
 });
 
 $.extend($.ui.slider, {
-	version: "1.8rc2"
+	version: "1.8rc3"
 });
 
 })(jQuery);
