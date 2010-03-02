@@ -15,9 +15,9 @@ class dmPageI18nBuilder extends dmConfigurable
   
   public function getDefaultOptions()
   {
-    return array_merge(parent::getDefaultOptions(), array(
-      'activate_new_translations' => false
-    ));
+    return array(
+      'activate_new_translations' => true
+    );
   }
   
   protected function initialize(array $options)
@@ -78,14 +78,7 @@ class dmPageI18nBuilder extends dmConfigurable
     }
     
     // calculate missing cultures for this page
-    $missingCultures = array();
-    foreach($cultures as $culture)
-    {
-      if (!in_array($culture, $existingCultures))
-      {
-        $missingCultures[] = $culture;
-      }
-    }
+    $missingCultures = array_diff($cultures, $existingCultures);
     
     // all translations exist
     if(empty($missingCultures))
@@ -107,7 +100,7 @@ class dmPageI18nBuilder extends dmConfigurable
     }
     
     $mainTranslationArray = $translationTable->createQuery('t')
-    ->select('t.slug, t.name, t.title, t.h1, t.description, t.keywords')
+    ->select('t.slug, t.name, t.title, t.h1, t.description, t.keywords, t.is_active')
     ->where('t.id = ?', $page->get('id'))
     ->andWhere('t.lang = ?', $mainCulture)
     ->limit(1)
@@ -115,18 +108,21 @@ class dmPageI18nBuilder extends dmConfigurable
     
     $missingTranslations = new myDoctrineCollection(dmDb::table('DmPageTranslation'));
 
-    $changes = array(
-      'lang' => $culture
-    );
-
-    if(!$this->getOption('activate_new_translations'))
+    if($this->getOption('activate_new_translations'))
     {
-      $changes['is_active'] = false;
+      $isActive = $mainTranslationArray['is_active'];
+    }
+    else
+    {
+      $isActive = false;
     }
 
     foreach($missingCultures as $culture)
     {
-      $missingTranslations->add($translationTable->create(array_merge($mainTranslationArray, $changes)));
+      $missingTranslations->add($translationTable->create(array_merge($mainTranslationArray, array(
+        'lang'      => $culture,
+        'is_active' => $isActive
+      ))));
     }
     
     $missingTranslations->save();
