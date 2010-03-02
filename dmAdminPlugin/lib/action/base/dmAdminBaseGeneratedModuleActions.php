@@ -67,8 +67,14 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
     
     if('integer' === dmArray::get($table->getColumnDefinition($sort[0]), 'type'))
     {
+      if($table->isI18nColumn($sort[0]))
+      {
+        $query->addOrderBy(sprintf('%s.%s %s', $query->getJoinAliasForRelationAlias($table->getComponentName(), 'Translation'), $sort[0], $sort[1]));
+        // Success, skip default sorting by local column
+        return;
+      }
       // If the sort column is a local key, try to sort with foreign table
-      if ($relation = $table->getRelationHolder()->getLocalByColumnName($sort[0]))
+      elseif ($relation = $table->getRelationHolder()->getLocalByColumnName($sort[0]))
       {
         if ($relation instanceof Doctrine_Relation_LocalKey && ($foreignTable = $relation->getTable()) instanceof dmDoctrineTable)
         {
