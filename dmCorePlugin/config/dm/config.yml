@@ -50,6 +50,7 @@ default:
   security:
     remember_cookie_name:               # defaults to "dm_remember_%project_name%"
     remember_key_expiration_age:        # defaults to 15 days
+    version_check:        true          # verifies regularly if you are using the latest Diem version.
 
   locks:                                # whether to enable real time resource locks
     enabled:              <?php echo sfConfig::get('sf_debug') ? "false\n" : "true\n"; ?>

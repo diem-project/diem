@@ -6,7 +6,10 @@ class BasedmAdminActions extends dmAdminBaseActions
   {
     $this->homepageManager = $this->getService('homepage_manager');
 
-    $this->checkVersion = $this->getUser()->can('system') && $this->getService('diem_version_check')->shouldCheck();
+    $this->checkVersion =
+        sfConfig::get('dm_security_version_check')
+    &&  $this->getUser()->can('system')
+    &&  $this->getService('diem_version_check')->shouldCheck();
   }
 
   public function executeVersionCheck()
