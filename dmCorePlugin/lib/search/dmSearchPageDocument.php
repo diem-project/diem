@@ -2,6 +2,10 @@
 
 class dmSearchPageDocument extends Zend_Search_Lucene_Document
 {
+  protected static
+  $areaQueryCache,
+  $zonesQueryCache;
+  
   protected
   $context,
   $page,
@@ -127,27 +131,18 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
     {
       throw new dmException('Can only be used in front app ( current : '.sfConfig::get('sf_app').' )');
     }
-
-    return '';
     
     $culture  = $this->options['culture'];
     
     $this->context->setPage($this->page);
     
-    $helper             = $this->context->get('page_helper');
-    $widgetTypeManager  = $this->context->get('widget_type_manager');
+    $serviceContainer   = $this->context->getServiceContainer();
+    $helper             = $serviceContainer->get('page_helper');
+    $widgetTypeManager  = $serviceContainer->get('widget_type_manager');
     
-    $areas = dmDb::query('DmPageView pv, pv.Area a')
-    ->select('a.id')
-    ->where('pv.module = ? AND pv.action = ?', array($this->page->get('module'), $this->page->get('action')))
-    ->fetchPDO();
+    $areas = self::getAreaQuery()->fetchPDO(array($this->page->get('module'), $this->page->get('action')));
     
-    $zones = dmDb::query('DmZone z')
-    ->leftJoin('z.Widgets w')
-    ->innerJoin('w.Translation wTranslation WITH wTranslation.lang = ?', $culture)
-    ->select('z.dm_area_id, w.module, w.action, wTranslation.value')
-    ->where('z.dm_area_id = ?',$areas[0][0])
-    ->fetchArray();
+    $zones = self::getZonesQuery()->fetchArray(array($culture, $areas[0][0]));
     
     sfConfig::set('dm_search_populating', true);
     
@@ -162,23 +157,56 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
         
         $widgetType = $widgetTypeManager->getWidgetType($widget['module'], $widget['action']);
 
-        $this->context->getServiceContainer()->addParameters(array(
+        $html .= $serviceContainer
+        ->addParameters(array(
           'widget_view.class' => $widgetType->getViewClass(),
           'widget_view.type'  => $widgetType,
           'widget_view.data'  => $widget
-        ));
-        
-        $html .= $this->context->get('widget_view')->renderForIndex();
+        ))
+        ->getService('widget_view')
+        ->renderForIndex();
       }
     }
     
     sfConfig::set('dm_search_populating', false);
     
-    $indexableText = dmSearchIndex::cleanText($html);
+    $indexableText = $this->cleanText($html);
     
-    unset($areas, $html, $helper);
+    unset($areas, $zones, $html, $helper);
     
     return $indexableText;
+  }
+
+  protected function cleanText($text)
+  {
+    return dmSearchIndex::cleanText($text);
+  }
+
+  protected static function getAreaQuery()
+  {
+    if(null !== self::$areaQueryCache)
+    {
+      return self::$areaQueryCache;
+    }
+
+    return self::$areaQueryCache = dmDb::query('DmPageView pv, pv.Area a')
+    ->select('a.id')
+    ->where('pv.module = ?')
+    ->andWhere('pv.action = ?');
+  }
+
+  protected static function getZonesQuery()
+  {
+    if(null !== self::$zonesQueryCache)
+    {
+      return self::$zonesQueryCache;
+    }
+
+    return self::$zonesQueryCache = dmDb::query('DmZone z')
+    ->leftJoin('z.Widgets w')
+    ->innerJoin('w.Translation wTranslation WITH wTranslation.lang = ?')
+    ->select('z.dm_area_id, w.module, w.action, wTranslation.value')
+    ->where('z.dm_area_id = ?');
   }
 
 }

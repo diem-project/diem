@@ -483,13 +483,14 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
 
   public function toIndexableString()
   {
-    $indexParts = array();
+    $index = '';
+    
     foreach($this->_table->getIndexableColumns() as $columnName => $column)
     {
-      $indexParts[] = $this->get($columnName);
+      $index .= ' '.$this->get($columnName);
     }
 
-    return implode(' ', $indexParts);
+    return trim($index);
   }
 
   public function isFieldModified($field)

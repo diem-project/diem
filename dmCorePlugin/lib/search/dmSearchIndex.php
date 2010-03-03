@@ -108,10 +108,21 @@ class dmSearchIndex extends dmSearchIndexCommon
     $this->serviceContainer->mergeParameter('search_document.options', array(
       'culture' => $this->getCulture()
     ));
+
+    $pager = $this->serviceContainer
+    ->setParameter('doctrine_pager.model', 'DmPage')
+    ->getService('doctrine_pager')
+    ->setMaxPerPage(100)
+    ->setQuery($this->getPagesQuery())
+    ->setPage(1)
+    ->init();
+
+    $nb = 1;
+    $nbMax = $pager->getNbResults();
+    $pagerPage = 1;
+    $pagerPageMax = $pager->getLastPage();
     
-    $pages = $this->getPagesQuery()->fetchRecords();
-    
-    if (!count($pages))
+    if (!count($nbMax))
     {
       $logger->log($this->getName().': No pages to populate the index');
       return;
@@ -120,20 +131,25 @@ class dmSearchIndex extends dmSearchIndexCommon
     $oldCulture = $user->getCulture();
     $user->setCulture($this->getCulture());
 
-    $nb = 0;
-    $nbMax = count($pages);
-    foreach ($pages as $page)
+    while($pagerPage <= $pagerPageMax)
     {
-      ++$nb;
-      $logger->log($this->getName().' '.$nb.'/'.$nbMax.': /'.$page->get('slug'));
-      
-      $document = $this->serviceContainer
-      ->setParameter('search_document.source', $page)
-      ->getService('search_document');
+      foreach ($pager->getResultsWithoutCache() as $page)
+      {
+        $logger->log($this->getName().' '.$nb.'/'.$nbMax.': /'.$page->get('slug'));
 
-      $document->populate();
+        $document = $this->serviceContainer
+        ->setParameter('search_document.source', $page)
+        ->getService('search_document');
 
-      $this->luceneIndex->addDocument($document);
+        $document->populate();
+
+        $this->luceneIndex->addDocument($document);
+
+        ++$nb;
+      }
+
+      ++$pagerPage;
+      $pager->setPage($pagerPage)->init();
     }
     
     $user->setCulture($oldCulture);
@@ -142,16 +158,14 @@ class dmSearchIndex extends dmSearchIndexCommon
 
     $logger->log($this->getName().': Index populated in ' . round($time, 2) . ' seconds.');
 
-    $logger->log($this->getName().': Time per document ' . round($time / count($pages), 3) . ' seconds.');
+    $logger->log($this->getName().': Time per document ' . round($time / $nbMax, 3) . ' seconds.');
 
     $this->serviceContainer->get('dispatcher')->notify(new sfEvent($this, 'dm.search.populated', array(
       'culture' => $this->getCulture(),
       'name' => $this->getName(),
-      'nb_documents' => count($pages),
+      'nb_documents' => $nbMax,
       'time' => $time
     )));
-    
-    unset($pages);
     
     $this->fixPermissions();
   }

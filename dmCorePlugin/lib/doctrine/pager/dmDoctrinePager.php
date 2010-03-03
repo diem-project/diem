@@ -46,7 +46,7 @@ class dmDoctrinePager extends sfDoctrinePager
   }
   
   /**
-   * Get all the results for the pager instance
+   * Get all the results for the pager instance, and cache them
    *
    * @param mixed $hydrationMode A hydration mode identifier
    *
@@ -60,6 +60,18 @@ class dmDoctrinePager extends sfDoctrinePager
     }
     
     return $this->resultsCache;
+  }
+
+  /**
+   * Get all the results for the pager instance
+   *
+   * @param mixed $hydrationMode A hydration mode identifier
+   *
+   * @return Doctrine_Collection|array
+   */
+  public function getResultsWithoutCache($hydrationMode = null)
+  {
+    return parent::getResults($hydrationMode)->getData();
   }
   
   public function serialize()
