@@ -44,7 +44,7 @@ class dmSearchIndexGroup extends dmSearchIndexCommon
   public function populate()
   {
     $start = microtime(true);
-    
+
     foreach ($this->getIndices() as $name => $index)
     {
       $this->serviceContainer->getService('logger')->log($this->getName().': Populating index "' . $name . '"...');
