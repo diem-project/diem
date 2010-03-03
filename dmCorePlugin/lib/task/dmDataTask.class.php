@@ -192,7 +192,7 @@ EOF;
 
   protected function loadMedia()
   {
-    dmDb::table('DmMediaFolder')->checkRoot();
+    dmDb::table('DmMediaFolder')->checkRoot()->sync();
   }
 
   protected function loadUsers()
