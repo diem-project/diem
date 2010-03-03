@@ -31,6 +31,7 @@ class dmSearchIndex extends dmSearchIndexCommon
       try
       {
         $this->luceneIndex = Zend_Search_Lucene::open($this->getFullPath());
+        $this->luceneIndex->setFormatVersion(Zend_Search_Lucene::FORMAT_2_3);
       }
       catch(Zend_Search_Lucene_Exception $e)
       {
