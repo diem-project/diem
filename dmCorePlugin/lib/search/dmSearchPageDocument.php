@@ -127,6 +127,8 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
     {
       throw new dmException('Can only be used in front app ( current : '.sfConfig::get('sf_app').' )');
     }
+
+    return '';
     
     $culture  = $this->options['culture'];
     

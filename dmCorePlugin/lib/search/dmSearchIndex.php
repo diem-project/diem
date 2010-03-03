@@ -64,9 +64,10 @@ class dmSearchIndex extends dmSearchIndexCommon
     $hits = array();
     foreach($luceneHits as $hit)
     {
-      $this->serviceContainer->setParameter('search_hit.score', $hit->score);
-      $this->serviceContainer->setParameter('search_hit.page_id', $hit->page_id);
-      $hits[] = $this->serviceContainer->getService('search_hit');
+      $hits[] = $this->serviceContainer
+      ->setParameter('search_hit.score', $hit->score)
+      ->setParameter('search_hit.page_id', $hit->page_id)
+      ->getService('search_hit');
     }
     unset($luceneHits);
 
@@ -99,10 +100,9 @@ class dmSearchIndex extends dmSearchIndexCommon
     $logger = $this->serviceContainer->getService('logger');
     $user   = $this->serviceContainer->getService('user');
     
-    $logger->log($this->getName().' : Populating index...');
+    $logger->log($this->getName().': Populating index...');
 
     $this->erase();
-    $logger->log($this->getName().' : Index erased.');
     
     $this->serviceContainer->mergeParameter('search_document.options', array(
       'culture' => $this->getCulture()
@@ -112,7 +112,7 @@ class dmSearchIndex extends dmSearchIndexCommon
     
     if (!count($pages))
     {
-      $logger->log($this->getName().' : No pages to populate the index');
+      $logger->log($this->getName().': No pages to populate the index');
       return;
     }
     
@@ -124,7 +124,7 @@ class dmSearchIndex extends dmSearchIndexCommon
     foreach ($pages as $page)
     {
       ++$nb;
-      $logger->log($this->getName().' '.$nb.'/'.$nbMax.' : /'.$page->get('slug'));
+      $logger->log($this->getName().' '.$nb.'/'.$nbMax.': /'.$page->get('slug'));
       
       $document = $this->serviceContainer
       ->setParameter('search_document.source', $page)
@@ -139,9 +139,9 @@ class dmSearchIndex extends dmSearchIndexCommon
 
     $time = microtime(true) - $start;
 
-    $logger->log($this->getName().' : Index populated in "' . round($time, 2) . '" seconds.');
+    $logger->log($this->getName().': Index populated in ' . round($time, 2) . ' seconds.');
 
-    $logger->log($this->getName().' : Time per document "' . round($time / count($pages), 3) . '" seconds.');
+    $logger->log($this->getName().': Time per document ' . round($time / count($pages), 3) . ' seconds.');
 
     $this->serviceContainer->get('dispatcher')->notify(new sfEvent($this, 'dm.search.populated', array(
       'culture' => $this->getCulture(),
@@ -158,13 +158,13 @@ class dmSearchIndex extends dmSearchIndexCommon
   public function optimize()
   {
     $start = microtime(true);
-    $logger = $this->serviceContainer->getService('logger')->log($this->getName().' : Optimizing index...');
+    $logger = $this->serviceContainer->getService('logger')->log($this->getName().': Optimizing index...');
     
     $this->luceneIndex->optimize();
     
     $this->fixPermissions();
 
-    $logger = $this->serviceContainer->getService('logger')->log($this->getName().' : Index optimized in "' . round(microtime(true) - $start, 2) . '" seconds.');
+    $logger = $this->serviceContainer->getService('logger')->log($this->getName().': Index optimized in "' . round(microtime(true) - $start, 2) . '" seconds.');
   }
 
   protected function erase()

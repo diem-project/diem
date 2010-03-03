@@ -44,17 +44,15 @@ class dmSearchIndexGroup extends dmSearchIndexCommon
   public function populate()
   {
     $start = microtime(true);
-
-    $this->serviceContainer->getService('logger')->log($this->getName().' : Populating group...');
     
     foreach ($this->getIndices() as $name => $index)
     {
-      $this->serviceContainer->getService('logger')->log($this->getName().' : Populating index "' . $name . '"...');
+      $this->serviceContainer->getService('logger')->log($this->getName().': Populating index "' . $name . '"...');
 
       $index->populate();
     }
 
-    $this->serviceContainer->getService('logger')->log($this->getName().' : Group populated in "' . round(microtime(true) - $start, 2) . '" seconds.');
+    $this->serviceContainer->getService('logger')->log($this->getName().': Group populated in "' . round(microtime(true) - $start, 2) . '" seconds.');
   
     $this->serviceContainer->getService('logger')->log('-----> Search index population successfully completed');
     
