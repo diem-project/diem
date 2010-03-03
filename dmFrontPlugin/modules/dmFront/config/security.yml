@@ -5,7 +5,3 @@ editToggle:
 showToolBarToggle:
   is_secure:        true
   credentials:      [tool_bar_front]
-
-toAdmin:
-  is_secure:        true
-  credentials:      [admin]
