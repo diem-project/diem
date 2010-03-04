@@ -240,15 +240,15 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
     
         if (empty($componentConfig['type']))
         {
-          if (strncmp($componentKey, 'list', 4) === 0)
+          if ($options['model'] && strncmp($componentKey, 'list', 4) === 0)
           {
             $componentConfig['type'] = 'list';
           }
-          elseif (strncmp($componentKey, 'show', 4) === 0)
+          elseif ($options['model'] && strncmp($componentKey, 'show', 4) === 0)
           {
             $componentConfig['type'] = 'show';
           }
-          elseif (strncmp($componentKey, 'form', 4) === 0)
+          elseif ($options['model'] && strncmp($componentKey, 'form', 4) === 0)
           {
             $componentConfig['type'] = 'form';
           }
