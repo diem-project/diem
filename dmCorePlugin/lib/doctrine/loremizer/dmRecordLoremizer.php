@@ -158,6 +158,9 @@ class dmRecordLoremizer extends dmConfigurable
       case 'date':
         $val = date("Y-m-d H:i:s", mt_rand(strtotime('-10 year') , time()));
         break;
+      case 'year':
+        $val = date("Y", mt_rand(strtotime('-10 year') , time()));
+        break;
       case 'enum':
         $val = $column['values'][array_rand($column['values'])];
         break;
@@ -167,7 +170,7 @@ class dmRecordLoremizer extends dmConfigurable
         break;
       case 'float':
       case 'decimal':
-        $val = mt_rand(0, pow(10, $column['length']) - 1)/pow(10, $column['scale']);
+        $val = mt_rand(0, pow(10, $column['length']) - 1)/pow(10, dmArray::get($column, 'scale', 2));
         break;
       default:
         throw new dmException(sprintf('Diem can not generate random content for %s column', $columnName));
