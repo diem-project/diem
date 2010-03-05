@@ -31,6 +31,7 @@ class dmFrontPagerView extends dmConfigurable implements Iterator, Countable
       'last'              => dmString::escape('>>'),
       'nb_links'          => 9,
       'ajax'              => false,
+      'url_params'        => array(),
       'widget_id'         => null   // only used when ajax = true
     );
   }
@@ -198,15 +199,21 @@ class dmFrontPagerView extends dmConfigurable implements Iterator, Countable
 
   protected function renderLink($page, $text)
   {
-    $link = $this->helper->link($this->getBaseHref())->param('page', $page)->text($text);
+    $link = $this->helper->link($this->getBaseHref())
+    ->param('page', $page)
+    ->params($this->getOption('url_params'))
+    ->text($text);
 
     if($this->getOption('ajax'))
     {
-      $link->json(array('href' => $this->helper->link('+/dmWidget/render')
+      $ajaxHref = $this->helper->link('+/dmWidget/render')
       ->param('page', $page)
       ->param('widget_id', $this->getOption('widget_id'))
       ->param('page_id', ($page = $this->context->getPage()) ? $page->id : null)
-      ->getHref()));
+      ->params($this->getOption('url_params'))
+      ->getHref();
+      
+      $link->json(array('href' => $ajaxHref));
     }
 
     return $link;
