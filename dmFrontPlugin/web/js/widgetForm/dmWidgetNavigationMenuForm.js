@@ -33,9 +33,10 @@ $.fn.extend({
 </ul>'
         );
 
-      $items.append($li)
-      .find('input.text').val(item.text).end()
+      $li.find('input.text').val(item.text).end()
       .find('input.link').val(item.link);
+      
+      $items.append($li);
 
       var $itemText = $li.find('a.item_text');
 
