@@ -246,7 +246,7 @@ $.widget('ui.dmWidget', {
     
     this.id = this.element.attr('id').substring(10);
     
-    $('a.dm_widget_edit', this.element).click(function() {
+    $('a.dm_widget_edit, a.dm_widget_fast_edit', this.element).click(function() {
       if (!self.element.hasClass('dm_dragging')) {
         self.openEditDialog();
       }

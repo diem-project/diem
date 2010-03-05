@@ -397,7 +397,13 @@ class dmDataLoad
       "widget_add" => "Add widgets",
       "widget_edit" => "Edit widgets",
       "widget_delete" => "Delete widgets",
-      'record_edit_front' => 'Edit records from the front',
+      'widget_edit_fast' => 'Can fast edit widgets',
+      'widget_edit_fast_record' => 'Fast edit widget record',
+      'widget_edit_fast_content_title' => 'Fast edit widget content title',
+      'widget_edit_fast_content_link' => 'Fast edit widget content link',
+      'widget_edit_fast_content_media' => 'Fast edit widget content media',
+      'widget_edit_fast_content_text' => 'Fast edit widget content text',
+      'widget_edit_fast_navigation_menu' => 'Fast edit widget navigation menu',
       "page_add" => "Add pages",
       "page_edit" => "Edit pages",
       "page_delete" => "Delete pages",
@@ -546,10 +552,21 @@ class dmDataLoad
           'media_bar_admin',
           'see_log',
           'site_view',
-          'see_chart',
-          'record_edit_front'
+          'see_chart'
         )
-      )
+      ),
+      "front_editor" => array(
+        'description' => "Can fast edit front widgets",
+        'permissions' => array(
+          'widget_edit_fast',
+          'widget_edit_fast_record',
+          'widget_edit_fast_content_title',
+          'widget_edit_fast_content_link',
+          'widget_edit_fast_content_text',
+          'widget_edit_fast_content_media',
+          'widget_edit_fast_navigation_menu'
+        )
+      ),
     );
 
     $permissions = dmDb::query('DmPermission p INDEXBY name')->select('p.name')->fetchArray();

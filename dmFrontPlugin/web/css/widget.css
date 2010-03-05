@@ -59,7 +59,8 @@ div.dm_widget_edit_dialog_wrap div.dm_cut_copy_actions a {
   margin-left: 10px;
 }
 
-a.dm_widget_record_edit {
+a.dm_widget_record_edit,
+a.dm_widget_fast_edit {
   background: url(../images/48/edit.png) top left no-repeat;
   height: 48px;
   width: 48px;
@@ -68,6 +69,7 @@ a.dm_widget_record_edit {
   opacity: 0.6;
 }
 
-a.dm_widget_record_edit:hover {
+a.dm_widget_record_edit:hover,
+a.dm_widget_fast_edit:hover {
   opacity: 1;
 }
