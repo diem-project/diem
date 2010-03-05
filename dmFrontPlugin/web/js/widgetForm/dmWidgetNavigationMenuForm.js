@@ -26,14 +26,16 @@ $.fn.extend({
       .html('\
 <a class="item_text s16 s16_layer" title="'+metadata.click_message+'">'+item.text+'</a> \
 <ul class="item_form"> \
-<li class="clearfix"><label>'+metadata.text_message+':</label><input class="text" type="text" name="'+formName+'[text][]" value="'+item.text+'" /></li> \
-<li class="clearfix"><label>'+metadata.link_message+':</label><input class="link" type="text" name="'+formName+'[link][]" value="'+item.link+'" /></li> \
+<li class="clearfix"><label>'+metadata.text_message+':</label><input class="text" type="text" name="'+formName+'[text][]" /></li> \
+<li class="clearfix"><label>'+metadata.link_message+':</label><input class="link" type="text" name="'+formName+'[link][]" /></li> \
 <li class="clearfix for_depth"><label>'+metadata.depth_message+':</label><select class="depth" name="'+formName+'[depth][]">'+self.getDepthOptions(item.depth)+'</select></li>\
 <li class="clearfix"><a class="remove s16 s16_delete" style="color: red">'+metadata.delete_message+' '+item.text+'</a></li> \
 </ul>'
         );
 
-      $items.append($li);
+      $items.append($li)
+      .find('input.text').val(item.text).end()
+      .find('input.link').val(item.link);
 
       var $itemText = $li.find('a.item_text');
 
