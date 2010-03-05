@@ -83,7 +83,7 @@ class dmFrontAddMenu extends dmMenu
     }
     elseif($this->getOption('root_add'))
     {
-      return '<a class="tipable s24block s24_add widget24" title="'.$this->__('Add widgets').'"</a>';
+      return '<a class="tipable s24block s24_add widget24" title="'.$this->__('Add widgets').'"></a>';
     }
     
     return '<a>'.strtolower(parent::renderLabel()).'</a>';
