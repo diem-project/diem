@@ -17,3 +17,6 @@ thumbnail:
 ping:
   is_secure:    true
   credential:   admin
+
+selectCulture:
+  is_secure:    false
