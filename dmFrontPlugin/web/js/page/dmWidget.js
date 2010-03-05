@@ -13,6 +13,8 @@ $.widget('ui.dmWidget', {
   {
     var widget = this, activeTab = null, dialogClass = widget.element.attr('id')+'_edit_dialog';
 
+    $.dm.removeTipsy();
+
 	  if ($('body > div.'+dialogClass).length)
 		{
       $('body > div.'+dialogClass).find('div.ui-dialog-content').dialog('moveToTop');
