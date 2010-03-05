@@ -490,3 +490,8 @@
 "Save this %1% to access to the gallery": "Enregistrez ce(tte) %1% pour accéder à la galerie"
 "UL CSS class": "Classe CSS du UL"
 "LI CSS class": "Classe CSS du LI"
+"Ascendant": "Ascendant"
+"Descendant": "Descendant"
+"Version": "Version"
+"The widget can not be rendered because its type does not exist anymore.": "Ce widget ne peut être affiché car son type n'existe plus."
+"Link to this page:": "Lien vers cette page:"
