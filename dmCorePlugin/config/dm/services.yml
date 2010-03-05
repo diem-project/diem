@@ -180,6 +180,8 @@ parameters:
   download.class:             dmDownloadResponse    # Triggers a download from a file or string data
   download.options:           []
 
+  data_load.class:            dmDataLoad            # Responsible for loading default data in the project
+
 services:
 
   text_diff:
@@ -435,3 +437,8 @@ services:
     class:                    %download.class%
     shared:                   false
     arguments:                [ @response, @mime_type_resolver, %download.options% ]
+
+  data_load:
+    class:                    %data_load.class%
+    shared:                   false
+    arguments:                [ @dispatcher, @i18n ]
