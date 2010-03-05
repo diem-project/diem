@@ -45,6 +45,8 @@ class dmWidgetListView extends dmWidgetProjectModelView
 
     $viewVars['filters'] = $filters;
 
+    $viewVars['page'] = $this->getService('request')->getParameter('page', 1);
+
     return $viewVars;
   }
 
