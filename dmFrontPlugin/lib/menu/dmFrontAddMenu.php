@@ -36,13 +36,16 @@ class dmFrontAddMenu extends dmMenu
   
   public function addWidgets()
   {
+    $moduleManager = $this->serviceContainer->getService('module_manager');
+    
     foreach($this->serviceContainer->get('widget_type_manager')->getWidgetTypes() as $space => $widgetTypes)
     {
-      $spaceMenu = $this->addChild(
-      $this->getI18n()->__($module = $this->serviceContainer->getService('module_manager')->getModuleOrNull($space))
+      $spaceName = ($module = $moduleManager->getModuleOrNull($space))
       ? $module->getName()
-      : dmString::humanize(str_replace('dmWidget', '', $space))
-      )
+      : dmString::humanize(str_replace('dmWidget', '', $space));
+      
+      $spaceMenu = $this->addChild($space)
+      ->label($this->getI18n()->__($spaceName))
       ->ulClass('clearfix level2')
       ->liClass('dm_droppable_widgets');
       
