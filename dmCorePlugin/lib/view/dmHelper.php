@@ -251,10 +251,15 @@ class dmHelper extends dmConfigurable
     }
     
     $serviceName = 'media_tag_'.$resource->getMime();
-    
+
     if (!$this->serviceContainer->hasService($serviceName))
     {
-      throw new dmException('helper->media can not display '.$source.' : missing service '.$serviceName);
+      throw new dmException('helper->media can not display '.$source.': missing service '.$serviceName);
+    }
+
+    if (!class_exists($this->serviceContainer->getParameter($serviceName.'.class')))
+    {
+      throw new dmException('helper->media can not display '.$source.': missing service '.$serviceName);
     }
 
     $media = $this->serviceContainer->getService($serviceName);
