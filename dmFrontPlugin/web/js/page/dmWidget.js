@@ -24,7 +24,7 @@ $.widget('ui.dmWidget', {
     var $dialog = $.dm.ctrl.ajaxDialog({
       url:          $.dm.ctrl.getHref('+/dmWidget/edit'),
       data:         {widget_id: widget.getId()},
-      title:        $('a.dm_widget_edit', widget.element).attr('original-title'),
+      title:        $('a.dm_widget_edit', widget.element).tipsyTitle(),
       width:        370,
 			'class':      'dm_widget_edit_dialog_wrap '+dialogClass,
       beforeClose:  function()
@@ -40,7 +40,7 @@ $.widget('ui.dmWidget', {
 
       $('a.delete', $dialog).click(function()
       {
-        if (confirm($(this).attr('original-title')+" ?"))
+        if (confirm($(this).tipsyTitle()+" ?"))
         {
           $.dm.removeTipsy();
           widget._delete();

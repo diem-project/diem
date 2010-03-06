@@ -10,7 +10,7 @@
         $('a.dm_js_confirm, input.dm_js_confirm').live('click', function(e)
         {
           e.stopPropagation();
-          if (!confirm(($(this).attr('title') || $(this).attr('original-title') || 'Are you sure') + ' ?'))
+          if (!confirm(($(this).tipsyTitle() || 'Are you sure') + ' ?'))
           {
             return false;
           }

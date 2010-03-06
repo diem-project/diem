@@ -177,6 +177,11 @@
           $win.unload(remove); // handles Firefox's autocomplete
         }
       });
+    },
+    
+    tipsyTitle: function()
+    {
+      return $(this).attr('title') || $(this).attr('original-title');
     }
 
   });

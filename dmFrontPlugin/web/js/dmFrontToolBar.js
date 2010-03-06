@@ -36,7 +36,7 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
       if (!$('body > div.dm_page_edit_dialog').length) 
       {
         $dialog = $.dm.ctrl.ajaxDialog({
-          title:    $(this).attr('original-title'),
+          title:    $(this).tipsyTitle(),
           'class':  'dm_page_edit_dialog',
           url:      $(this).attr('href'),
           width:    400
@@ -56,7 +56,7 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
       if (!$('body > div.dm_page_add_dialog').length)
       {
         $dialog = $.dm.ctrl.ajaxDialog({
-          title:    $(this).attr('original-title'),
+          title:    $(this).tipsyTitle(),
           'class':  'dm_page_add_dialog',
           url:      $(this).attr('href'),
           width:    400
@@ -96,7 +96,7 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
 			var $link = $('a.code_editor', this.element).addClass('s16_gear');
       
       $dialog = $.dm.ctrl.ajaxDialog({
-        title:    $link.attr('original-title'),
+        title:    $link.tipsyTitle(),
         'class':  'dm_code_editor_dialog',
         width:    500,
         height:   300,

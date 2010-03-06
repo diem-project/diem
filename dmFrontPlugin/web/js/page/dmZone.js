@@ -36,7 +36,7 @@ $.widget('ui.dmZone', {
     var $dialog = $.dm.ctrl.ajaxDialog({
       url:      $.dm.ctrl.getHref('+/dmZone/edit'),
       data:     { zone_id: zone.getId() },
-      title:    $('#dm_zone_'+zone.getId()+' > a.dm_zone_edit').attr('original-title'),
+      title:    $('#dm_zone_'+zone.getId()+' > a.dm_zone_edit').tipsyTitle(),
 			'class':  dialog_class,
       beforeClose:  function()
       {
@@ -87,7 +87,7 @@ $.widget('ui.dmZone', {
       
       $('a.delete', $form).click(function()
       {
-        if (confirm($(this).attr('original-title')+" ?"))
+        if (confirm($(this).tipsyTitle()+" ?"))
         {
           $.dm.removeTipsy();
           zone._delete();
