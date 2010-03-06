@@ -401,7 +401,7 @@ class dmDataLoad
       'widget_edit_fast_record' => 'Fast edit widget record',
       'widget_edit_fast_content_title' => 'Fast edit widget content title',
       'widget_edit_fast_content_link' => 'Fast edit widget content link',
-      'widget_edit_fast_content_media' => 'Fast edit widget content media',
+      'widget_edit_fast_content_image' => 'Fast edit widget content image',
       'widget_edit_fast_content_text' => 'Fast edit widget content text',
       'widget_edit_fast_navigation_menu' => 'Fast edit widget navigation menu',
       "page_add" => "Add pages",
@@ -563,7 +563,7 @@ class dmDataLoad
           'widget_edit_fast_content_title',
           'widget_edit_fast_content_link',
           'widget_edit_fast_content_text',
-          'widget_edit_fast_content_media',
+          'widget_edit_fast_content_image',
           'widget_edit_fast_navigation_menu'
         )
       ),
