@@ -14,7 +14,9 @@ class BaseDmUserAdminMyAccountForm extends DmUserForm
       'autocomplete' => 'off'
     ));
     $this->validatorSchema['password']->setOption('required', false);
-    $this->widgetSchema['password_again'] = new sfWidgetFormInputPassword(array(), array(
+    $this->widgetSchema['password_again'] = new sfWidgetFormInputPassword(array(
+      'label' => 'Password (again)'
+    ), array(
       'autocomplete' => 'off'
     ));
     $this->validatorSchema['password_again'] = clone $this->validatorSchema['password'];
