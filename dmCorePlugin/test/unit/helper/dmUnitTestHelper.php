@@ -9,11 +9,7 @@ class dmUnitTestHelper
 
   public function boot($app = 'admin', $env = 'test', $debug = true)
   {
-    $rootDir = getcwd();
-
-    // configuration
-    require_once $rootDir.'/config/ProjectConfiguration.class.php';
-    $this->configuration = ProjectConfiguration::getApplicationConfiguration($app, $env, $debug, $rootDir);
+    $this->bootFast($app, $env, $debug);
 
     // autoloader
     $autoload = sfSimpleAutoload::getInstance(sfConfig::get('sf_cache_dir').'/project_autoload.cache');
@@ -23,18 +19,31 @@ class dmUnitTestHelper
     )));
     $autoload->register();
 
+    $this->context = dmContext::createInstance($this->configuration);
+
+    $this->moduleManager = $this->context->getModuleManager();
+
+    dmDb::table('DmPage')->checkBasicPages();
+
+    return $this;
+  }
+
+  public function bootFast($app = 'admin', $env = 'test', $debug = true)
+  {
+    $rootDir = getcwd();
+
+    // configuration
+    require_once $rootDir.'/config/ProjectConfiguration.class.php';
+    $this->configuration = ProjectConfiguration::getApplicationConfiguration($app, $env, $debug, $rootDir);
+
     // lime
     include $this->configuration->getSymfonyLibDir().'/vendor/lime/lime.php';
 
-    $this->context = dmContext::createInstance($this->configuration);
-
-    $this->initialize();
-
     register_shutdown_function(array($this, 'cleanup'));
-    
+
     $this->cleanup();
 
-    return $this;
+    new sfDatabaseManager($this->configuration);
   }
 
   function cleanup()
@@ -44,7 +53,7 @@ class dmUnitTestHelper
     {
       if(method_exists($this->configuration, 'cleanup'))
       {
-        $this->configuration->cleanup($this->get('filesystem'));
+        $this->configuration->cleanup(new sfFilesystem());
       }
     }
     catch (Exception $e)
@@ -131,14 +140,7 @@ class dmUnitTestHelper
 
     if ($t) $t->ok(true, sprintf('Pages synchronized in %01.2f s | %d pages', $timer->getElapsedTime(), dmDb::table('DmPage')->count()));
   }
-
-  public function initialize()
-  {
-    $this->moduleManager = $this->context->getModuleManager();
-
-    dmDb::table('DmPage')->checkBasicPages();
-  }
-
+  
   public function getModuleManager()
   {
     return $this->moduleManager;
