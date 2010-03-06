@@ -19,9 +19,7 @@ class dmUnitTestHelper
     )));
     $autoload->register();
 
-    $this->context = dmContext::createInstance($this->configuration);
-
-    $this->moduleManager = $this->context->getModuleManager();
+    $this->initialize();
 
     dmDb::table('DmPage')->checkBasicPages();
 
@@ -44,6 +42,13 @@ class dmUnitTestHelper
     $this->cleanup();
 
     new sfDatabaseManager($this->configuration);
+  }
+
+  protected function initialize()
+  {
+    $this->context = dmContext::createInstance($this->configuration);
+
+    $this->moduleManager = $this->context->getModuleManager();
   }
 
   function cleanup()
