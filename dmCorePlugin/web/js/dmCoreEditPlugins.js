@@ -15,7 +15,7 @@
         {
           if($input.hasClass('page_only'))
           {
-            accept = '#dm_page_bar li';
+            accept = '#dm_page_bar li > a';
           }
           else if($input.hasClass('media_only'))
           {
@@ -23,7 +23,7 @@
           }
           else
           {
-            accept = '#dm_page_bar li, #dm_media_bar li.file';
+            accept = '#dm_page_bar li > a, #dm_media_bar li.file';
           }
 
           $input.droppable({
@@ -39,7 +39,7 @@
               }
               else
               {
-                $input.val('page:' + ui.draggable.attr('id').replace(/dmp/, '') + ' ' + ui.draggable.find('>a').text());
+                $input.val('page:' + ui.draggable.attr('data-page-id') + ' ' + ui.draggable.text());
               }
 
               callback && $.isFunction(callback) && callback.apply($input);

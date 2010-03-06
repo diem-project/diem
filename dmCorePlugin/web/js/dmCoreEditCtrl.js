@@ -59,7 +59,7 @@
     
     ajaxDialog: function(opt)
     {
-      self = this;
+      var self = this;
       opt = $.extend({
         title: 'Loading'
       }, opt);
@@ -85,7 +85,7 @@
   
   errorDialog: function(title, body, opt)
   {
-   opt = $.extend({
+    opt = $.extend({
         title:    title,
         position: [5, 5],
         buttons: {

@@ -76,15 +76,15 @@ $.fn.extend({
     });
 
     $items.droppable({
-      accept:       '#dm_page_bar li',
+      accept:       '#dm_page_bar li > a',
       activeClass:  'droppable_active',
       hoverClass:   'droppable_hover',
       tolerance:    'touch',
       drop:         function(event, ui)
       {
         createItemElement({
-          link: 'page:'+ui.draggable.attr('id').replace(/dmp/, ''),
-          text: ui.draggable.find('>a').text()
+          link: 'page:'+ui.draggable.attr('data-page-id'),
+          text: ui.draggable.text()
         });
 
         $items.attr('scrollTop', 999999);
