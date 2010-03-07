@@ -7,8 +7,8 @@ $.widget('ui.dmAdminToolBar', $.extend({}, $.dm.coreToolBar, {
     this.initToolBar();
     
     $('div.dm_menu', this.element).disableSelection().dmMenu({
-	    hoverClass: 'ui-state-active'
-	  });
+      hoverClass: 'ui-state-active'
+    });
 
     this.element.find('a.tipable').tipsy({gravity: $.fn.tipsy.autoNorth});
   }

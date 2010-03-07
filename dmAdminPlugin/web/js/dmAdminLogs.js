@@ -13,7 +13,7 @@ $.each(['request', 'event'], function()
 });
 
 setTimeout(refresh, 300);
-	
+  
 function refresh()
 {
   $.ajax({

@@ -11,7 +11,7 @@
       ui: {
         theme_path: $.dm.ctrl.options.dm_core_asset_root + 'lib/dmTree/',
         theme_name: 'page-edit',
-        animation	: 200
+        animation  : 200
       },
       types: {
         'default': {

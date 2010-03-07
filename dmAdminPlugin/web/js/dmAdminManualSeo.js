@@ -5,10 +5,10 @@
 
   $table.dataTable({
     "oLanguage": {
-			"sUrl": $table.metadata().translation_url
-		},
+      "sUrl": $table.metadata().translation_url
+    },
     "bJQueryUI": true,
-		"sPaginationType": "full_numbers"
+    "sPaginationType": "full_numbers"
   });
 
   var editCallback = function( sValue, y ) {

@@ -53,8 +53,8 @@
         var $editor = $(this);
         var $preview = $('#dm_markdown_preview_'+$editor.metadata().code);
         var value = $editor.val();
-				
-				$editor.dmMarkdown();
+        
+        $editor.dmMarkdown();
 
         var $container = $editor.closest('div.markItUpContainer');
 
@@ -96,7 +96,7 @@
             }
           })
         );
-				
+        
         setInterval(function()
         {
           if ($editor.val() != value) 

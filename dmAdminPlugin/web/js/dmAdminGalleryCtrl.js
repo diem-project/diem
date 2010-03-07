@@ -6,7 +6,7 @@ $gallery.find('a.open_form').click(function()
 {
   $gallery.find('form.dm_add_media').toggle();
 });
-	
+  
 $list.sortable({
   tolerance:              'pointer',
   opacity:                0.5,
