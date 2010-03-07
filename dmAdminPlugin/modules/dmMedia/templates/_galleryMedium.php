@@ -4,7 +4,7 @@ if(!$record->exists())
 {
   echo _tag('p.help_box', _tag('span.s16.s16_help.block',
     __('Save this %1% to access to the gallery', array(
-      '%1%' => $record->getDmModule()->getName()
+      '%1%' => __(dmString::lcfirst($record->getDmModule()->getName()))
     ))
   ));
   
