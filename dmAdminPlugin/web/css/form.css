@@ -132,6 +132,10 @@ div.sf_admin_form div.sf_admin_form_row_inner input.datepicker_me {
   width: auto;
 }
 
+div.sf_admin_form div.sf_widget_form_date_time select {
+  width: auto;
+}
+
 div.sf_admin_form .error {
   border: 1px solid #D7BBB8;
   padding: 5px;
