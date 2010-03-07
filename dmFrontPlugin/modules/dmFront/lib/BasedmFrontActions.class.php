@@ -234,7 +234,9 @@ class BasedmFrontActions extends dmFrontBaseActions
   public function executeReloadSearchIndex()
   {
     $authFile = sfConfig::get('sf_cache_dir').'/dm/search_index_'.time();
-    $this->forwardSecureUnless(file_exists($authFile));
+
+    $this->forwardSecureUnless($this->getUser()->can('search_engine') || file_exists($authFile));
+
     unlink($authFile);
     
     try
