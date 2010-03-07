@@ -43,11 +43,11 @@ abstract class dmSearchIndexCommon extends dmConfigurable
     $currentUmask = umask();
     umask(0000);
     
-    chmod($this->getFullPath(), 0777);
+    @chmod($this->getFullPath(), 0777);
     
     foreach (sfFinder::type('all')->in($this->getFullPath()) as $item)
     {
-      chmod($item, 0777);
+      @chmod($item, 0777);
     }
     
     umask($currentUmask);
