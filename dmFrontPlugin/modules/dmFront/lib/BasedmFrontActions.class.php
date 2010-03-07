@@ -14,9 +14,14 @@ class BasedmFrontActions extends dmFrontBaseActions
 
   protected function getPageFromRequest(dmWebRequest $request)
   {
-    if($request->hasParameter('dm_page'))
+    if($dmPage = $request->getParameter('dm_page'))
     {
-      return $request->getParameter('dm_page');
+      if(is_string($dmPage))
+      {
+        $this->forward404Unless($dmPage = dmDb::table('DmPage')->findOneBySource($dmPage));
+      }
+      
+      return $dmPage;
     }
 
     $slug = $request->getParameter('slug');
