@@ -80,7 +80,7 @@ $t->ok($widget->exists(), 'Widget has been saved');
 $expected = array(
   'mediaId'     => $media->id,
   'legend'      => '',
-  'width'       => '1600',
+  'width'       => '1000',
   'height'      => '',
   'method'      => dmConfig::get('image_resize_method'),
   'background'  => 'FFFFFF',
