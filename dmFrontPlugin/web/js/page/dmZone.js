@@ -23,21 +23,21 @@ $.widget('ui.dmZone', {
       }
     }).tipsy({gravity: $.fn.tipsy.autoSouth});
   },
-	
-	openEditDialog: function()
-	{
+  
+  openEditDialog: function()
+  {
     var zone = this, dialog_class = zone.element.attr('id')+'_edit_dialog';
-		
+    
     if ($('div.'+dialog_class).length)
     {
       return;
     }
-		
+    
     var $dialog = $.dm.ctrl.ajaxDialog({
       url:      $.dm.ctrl.getHref('+/dmZone/edit'),
       data:     { zone_id: zone.getId() },
       title:    $('#dm_zone_'+zone.getId()+' > a.dm_zone_edit').tipsyTitle(),
-			'class':  dialog_class,
+      'class':  dialog_class,
       beforeClose:  function()
       {
         if (zone.deleted) return;
@@ -45,7 +45,7 @@ $.widget('ui.dmZone', {
         setTimeout(function()
         {
           $.ajax({
-						dataType: 'json',
+            dataType: 'json',
             url:      $.dm.ctrl.getHref('+/dmZone/getAttributes'),
             data:     { zone_id: zone.getId() },
             success:  function(datas)
@@ -95,7 +95,7 @@ $.widget('ui.dmZone', {
         }
       });
     });
-	},
+  },
   
   initWidgets: function()
   {
@@ -135,7 +135,7 @@ $.widget('ui.dmZone', {
         else 
         {
           ui.placeholder.addClass(ui.item.attr('class')).css('width', ui.item.css('width')).html(ui.item.html());
-				}
+        }
 
         $('#dm_page div.dm_widgets').addClass('droppable-active');
 
@@ -181,16 +181,16 @@ $.widget('ui.dmZone', {
       data: {
         mod:    mod_act[0],
         act:    mod_act[1]
-			},
+      },
       success:  function(widgetHtml) {
         $('div.dm_widgets', zone.element).find('span.widget_add').replaceWith(widgetHtml);
         var $newWidget = null;
-				$('div.dm_widget', zone.element).each(function() {
-					if (!$(this).data('loaded'))
-					{
-						$newWidget = $(this);
-					}
-				});
+        $('div.dm_widget', zone.element).each(function() {
+          if (!$(this).data('loaded'))
+          {
+            $newWidget = $(this);
+          }
+        });
         zone.initialize();
         zone.sortWidgets();
         $newWidget.dmWidget('openEditDialog');
@@ -213,7 +213,7 @@ $.widget('ui.dmZone', {
       url:      $.dm.ctrl.getHref('+/dmWidget/paste')+"?to_dm_zone="+zone.getId(),
       data: {
         id:     id
-			},
+      },
       success:  function(widgetHtml)
       {
         $('div.dm_widgets', zone.element).find('span.widget_paste').replaceWith(widgetHtml);

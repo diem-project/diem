@@ -48,29 +48,29 @@ $.widget('ui.dmArea', {
         start:                  function(e, ui)
         {
           ui.item.addClass('dm_dragging');
-				  
-					// adding a zone
-					if (ui.placeholder.is('span')) 
-					{
-						ui.placeholder
-						.addClass('dm dm_zone block')
-						.html('<a class="dm dm_zone_edit"/><div class="dm_widgets"></div>')
-						.css('width', '100%');
-					}
-					// moving a zone
-					else 
-					{
-						ui.placeholder.addClass(ui.item.attr('class'))
-						.css({
-							'width': ui.item.css('width'),
-							'margin': '0'
-						})
-						.html(ui.item.html());
-					}
-					
-					$('#dm_page div.dm_zones').addClass('droppable-active');
-					
-					sortEvents = [];
+          
+          // adding a zone
+          if (ui.placeholder.is('span')) 
+          {
+            ui.placeholder
+            .addClass('dm dm_zone block')
+            .html('<a class="dm dm_zone_edit"/><div class="dm_widgets"></div>')
+            .css('width', '100%');
+          }
+          // moving a zone
+          else 
+          {
+            ui.placeholder.addClass(ui.item.attr('class'))
+            .css({
+              'width': ui.item.css('width'),
+              'margin': '0'
+            })
+            .html(ui.item.html());
+          }
+          
+          $('#dm_page div.dm_zones').addClass('droppable-active');
+          
+          sortEvents = [];
         },
         stop:                   function(e, ui)
         {

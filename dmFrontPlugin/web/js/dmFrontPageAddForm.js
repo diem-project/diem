@@ -13,8 +13,8 @@
     form: function()
     {
       var self = this;
-			
-			self.element.dmFrontForm();
+      
+      self.element.dmFrontForm();
       
       self.$name = $('input#dm_page_front_new_form_name', self.element);
       
@@ -55,7 +55,7 @@
       
       self.$slug.bind('keyup', function()
       {
-				self.$slug.val(self.slugify(self.$slug.val()));
+        self.$slug.val(self.slugify(self.$slug.val()));
         self.autoSlug = false;
       });
       
@@ -81,7 +81,7 @@
     
     slugify: function(str)
     {
-			if(!str) return '';
+      if(!str) return '';
 //      str = str.replace(/^\s+|\s+$/g, ''); // trim
       str = str.toLowerCase();
 

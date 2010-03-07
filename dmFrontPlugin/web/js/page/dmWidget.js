@@ -15,18 +15,18 @@ $.widget('ui.dmWidget', {
 
     $.dm.removeTipsy();
 
-	  if ($('body > div.'+dialogClass).length)
-		{
+    if ($('body > div.'+dialogClass).length)
+    {
       $('body > div.'+dialogClass).find('div.ui-dialog-content').dialog('moveToTop');
-			return;
-		}
-		
+      return;
+    }
+    
     var $dialog = $.dm.ctrl.ajaxDialog({
       url:          $.dm.ctrl.getHref('+/dmWidget/edit'),
       data:         {widget_id: widget.getId()},
       title:        $('a.dm_widget_edit', widget.element).tipsyTitle(),
       width:        370,
-			'class':      'dm_widget_edit_dialog_wrap '+dialogClass,
+      'class':      'dm_widget_edit_dialog_wrap '+dialogClass,
       beforeClose:  function()
       {
         if (!widget.deleted)
@@ -48,9 +48,9 @@ $.widget('ui.dmWidget', {
         }
       });
       
-			var $form = $('div.dm_widget_edit', $dialog);
-			if (!$form.length)
-			{
+      var $form = $('div.dm_widget_edit', $dialog);
+      if (!$form.length)
+      {
         return;
       }
       
