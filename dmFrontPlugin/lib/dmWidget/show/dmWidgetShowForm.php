@@ -38,7 +38,9 @@ class dmWidgetShowForm extends dmWidgetProjectModelForm
 
   protected function getAutoRecord()
   {
-    return $this->getPage() ? $this->getPage()->getRecord()->getAncestorRecord($this->dmModule->getModel()) : false;
+    $record = $this->getPage() ? $this->getPage()->getRecord() : false;
+    
+    return $record ? $record->getAncestorRecord($this->dmModule->getModel()) : false;
   }
 
   protected function getFirstDefaults()
