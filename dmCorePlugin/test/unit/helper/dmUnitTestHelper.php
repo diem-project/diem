@@ -58,7 +58,7 @@ class dmUnitTestHelper
     {
       if(method_exists($this->configuration, 'cleanup'))
       {
-        $this->configuration->cleanup(new sfFilesystem());
+        $this->configuration->cleanup($this->context ? $this->context->get('filesystem') : new sfFilesystem());
       }
     }
     catch (Exception $e)
