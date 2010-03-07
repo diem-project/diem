@@ -17,15 +17,15 @@ abstract class BaseDmTagForm extends BaseFormDoctrine
     $this->setWidgets(array(
       'id'                  => new sfWidgetFormInputHidden(),
       'name'                => new sfWidgetFormInputText(),
-        'dm_test_domain_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomain', 'expanded' => true)),
         'dm_test_fruit_list'  => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'DmTestFruit', 'expanded' => true)),
+        'dm_test_domain_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomain', 'expanded' => true)),
     ));
 
     $this->setValidators(array(
       'id'                  => new sfValidatorDoctrineChoice(array('model' => $this->getModelName(), 'column' => 'id', 'required' => false)),
       'name'                => new sfValidatorString(array('max_length' => 255)),
-        'dm_test_domain_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomain', 'required' => false)),
         'dm_test_fruit_list'  => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestFruit', 'required' => false)),
+        'dm_test_domain_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomain', 'required' => false)),
     ));
 
     $this->validatorSchema->setPostValidator(
@@ -71,62 +71,24 @@ abstract class BaseDmTagForm extends BaseFormDoctrine
   {
     parent::updateDefaultsFromObject();
 
-    if (isset($this->widgetSchema['dm_test_domain_list']))
-    {
-      $this->setDefault('dm_test_domain_list', $this->object->DmTestDomain->getPrimaryKeys());
-    }
-
     if (isset($this->widgetSchema['dm_test_fruit_list']))
     {
       $this->setDefault('dm_test_fruit_list', $this->object->DmTestFruit->getPrimaryKeys());
+    }
+
+    if (isset($this->widgetSchema['dm_test_domain_list']))
+    {
+      $this->setDefault('dm_test_domain_list', $this->object->DmTestDomain->getPrimaryKeys());
     }
 
   }
 
   protected function doSave($con = null)
   {
-    $this->saveDmTestDomainList($con);
     $this->saveDmTestFruitList($con);
+    $this->saveDmTestDomainList($con);
 
     parent::doSave($con);
-  }
-
-  public function saveDmTestDomainList($con = null)
-  {
-    if (!$this->isValid())
-    {
-      throw $this->getErrorSchema();
-    }
-
-    if (!isset($this->widgetSchema['dm_test_domain_list']))
-    {
-      // somebody has unset this widget
-      return;
-    }
-
-    if (null === $con)
-    {
-      $con = $this->getConnection();
-    }
-
-    $existing = $this->object->DmTestDomain->getPrimaryKeys();
-    $values = $this->getValue('dm_test_domain_list');
-    if (!is_array($values))
-    {
-      $values = array();
-    }
-
-    $unlink = array_diff($existing, $values);
-    if (count($unlink))
-    {
-      $this->object->unlink('DmTestDomain', array_values($unlink));
-    }
-
-    $link = array_diff($values, $existing);
-    if (count($link))
-    {
-      $this->object->link('DmTestDomain', array_values($link));
-    }
   }
 
   public function saveDmTestFruitList($con = null)
@@ -164,6 +126,44 @@ abstract class BaseDmTagForm extends BaseFormDoctrine
     if (count($link))
     {
       $this->object->link('DmTestFruit', array_values($link));
+    }
+  }
+
+  public function saveDmTestDomainList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['dm_test_domain_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $existing = $this->object->DmTestDomain->getPrimaryKeys();
+    $values = $this->getValue('dm_test_domain_list');
+    if (!is_array($values))
+    {
+      $values = array();
+    }
+
+    $unlink = array_diff($existing, $values);
+    if (count($unlink))
+    {
+      $this->object->unlink('DmTestDomain', array_values($unlink));
+    }
+
+    $link = array_diff($values, $existing);
+    if (count($link))
+    {
+      $this->object->link('DmTestDomain', array_values($link));
     }
   }
 

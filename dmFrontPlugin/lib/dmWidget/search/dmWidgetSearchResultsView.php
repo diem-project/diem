@@ -9,9 +9,9 @@ class dmWidgetSearchResultsView extends dmWidgetPluginView
   {
     $vars = parent::filterViewVars($vars);
     
-    $vars['form'] = new mySearchForm;
+    $vars['form'] = new mySearchForm();
     
-    $vars['form']->bindRequest($this->context->getRequest());
+    $vars['form']->bind(array('query' => $this->context->getRequest()->getParameter('query')));
     
     $vars['query'] = $vars['form']->getValue('query');
     

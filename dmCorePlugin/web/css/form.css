@@ -56,12 +56,20 @@
 .dm_form .toggle_group {
   background: url(../../dmCorePlugin/images/default_bg.png) repeat-x scroll 50% 50%;
   border: 1px solid #D3D3D3;
+  border-radius: 4px;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
 }
-.dm_form .toggle_group .toggler{
+.dm_form .toggle_group .toggler {
   display: block;
   padding: 5px;
+}
+.dm_form .toggle_group .toggler:hover {
+  border-color: #666;
+  background: url(../../dmCorePlugin/images/default_bg_green.png) repeat-x scroll 50% 50%;
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;;
 }
 
 .dm_media_receiver {
@@ -71,6 +79,7 @@
 .dm_media_receiver.hover {
   background: url(../../dmCorePlugin/images/default_bg_green.png) repeat-x scroll 50% 50%;
   border: 1px solid #D3D3D3;
+  border-radius: 4px;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
 }
@@ -92,6 +101,7 @@ div.ui-dialog.dm a.button {
   background: url(../../dmCorePlugin/images/default_bg.png) repeat-x scroll 50% 50%;
   border:1px solid #D3D3D3;
   color:#555;
+  border-radius: 4px;
   -moz-border-radius: 4px;
   -webkit-border-radius:  4px;
   height: 24px;

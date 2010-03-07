@@ -51,7 +51,7 @@ abstract class dmFrontBaseServiceContainer extends dmBaseServiceContainer
      * If user can edit front, the page helper service will use the edit class,
      * and it will require the user to check its credentials
      */
-    if ($this->getService('user')->can('zone_add, widget_add, record_edit_front'))
+    if ($this->getService('user')->can('zone_add, widget_add, widget_edit_fast'))
     {
       $this->setParameter('page_helper.class', $this->getParameter('page_helper.edit_class'));
     }

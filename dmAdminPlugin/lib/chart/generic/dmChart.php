@@ -14,6 +14,7 @@ abstract class dmChart extends pChart
 
   protected
   $serviceContainer,
+  $i18n,
   $cacheKey = '',
   $data,
   $available = true;
@@ -37,8 +38,12 @@ abstract class dmChart extends pChart
   protected function initialize(array $options)
   {
     $this->configure($options);
+
+    $this->i18n = $this->serviceContainer->getService('i18n');
     
     $this->addToCacheKey($this->options);
+
+    $this->addToCacheKey($this->serviceContainer->getParameter('user.culture'));
 
     $this->setFontProperties("Fonts/tahoma.ttf", 10);
 
@@ -216,5 +221,10 @@ abstract class dmChart extends pChart
       }
 
     }
+  }
+
+  protected function getI18n()
+  {
+    return $this->i18n;
   }
 }

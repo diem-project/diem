@@ -30,6 +30,10 @@ class dmWidgetShowView extends dmWidgetProjectModelView
     {
       $query->whereDescendantId($page->getDmModule()->getModel(), $page->get('record_id'), $this->dmModule->getModel());
     }
+    else
+    {
+      return '';
+    }
     
     $record = $query->withI18n(null, $this->dmModule->getModel(), 'r')->fetchOne();
     

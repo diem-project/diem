@@ -9,7 +9,6 @@ class PluginDmAutoSeoTable extends myDoctrineTable
     return $this->createQuery('a')
     ->whereIn('a.module', array_keys($this->getModuleManager()->getModulesWithPage()))
     ->withI18n($culture)
-    ->dmCache()
     ->fetchRecords();
   }
   

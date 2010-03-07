@@ -46,6 +46,7 @@ div.dm_auth form {
   margin: 20px auto 0 auto;
   padding: 10px;
   background: url(../images/alpha_white_bg_light.png) repeat;
+  border-radius: 4px;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
   border: 1px outset #fff;
@@ -54,6 +55,7 @@ div.dm_auth form {
 div.dm_auth form.dm_form.list li input {
   background: none;
   border: 1px inset #fff;
+  border-radius: 4px;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
   padding: 3px;
@@ -113,6 +115,7 @@ div.dm_auth ul.choices {
   margin: 20px auto 0 auto;
   padding: 10px;
   background: url(../images/alpha_white_bg_light.png) repeat;
+  border-radius: 4px;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
   border: 1px outset #fff;

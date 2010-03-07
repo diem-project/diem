@@ -84,12 +84,6 @@ class dmProjectConfiguration extends sfProjectConfiguration
       $driver = new Doctrine_Cache_Apc(array('prefix' => dmProject::getNormalizedRootDir().'/doctrine/'));
       
       $manager->setAttribute(Doctrine_Core::ATTR_QUERY_CACHE, $driver);
-      
-      if(sfConfig::get('dm_cache_result_enabled'))
-      {
-        $manager->setAttribute(Doctrine_Core::ATTR_RESULT_CACHE, $driver);
-        $manager->setAttribute(Doctrine_Core::ATTR_RESULT_CACHE_LIFESPAN, 24 * 60 * 60);
-      }
     }
   }
 

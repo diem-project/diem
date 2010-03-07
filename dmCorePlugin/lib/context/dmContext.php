@@ -29,7 +29,7 @@ class dmContext extends sfContext
   public function initialize(sfApplicationConfiguration $configuration)
   {
     $this->checkProjectIsSetup();
-    
+
     parent::initialize($configuration);
 
     sfConfig::set('dm_debug', $this->getRequest()->getParameter('dm_debug', false));
@@ -105,11 +105,6 @@ class dmContext extends sfContext
     &&  !$this->factories['request']->isFlashRequest()
     &&  $this->factories['response']->isHtml()
     );
-    
-    /*
-     * Configure i18n
-     */
-    $this->factories['i18n']->setUseInternalCatalogue($this->getUser()->can('admin'));
   }
   
   public function reloadModuleManager()

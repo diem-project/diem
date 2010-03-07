@@ -34,7 +34,12 @@ $.widget('ui.dmFrontForm', {
     
     $('textarea.dm_markdown', self.form).each(function()
 		{
-      $(this).dmMarkdown().resizable({handles: 's'}).parent().css('position', 'relative');
+      $(this).dmMarkdown();
+
+      if(!$.browser.webkit)
+      {
+        $(this).resizable({handles: 's'}).parent().css('position', 'relative');
+      }
     });
   }
   

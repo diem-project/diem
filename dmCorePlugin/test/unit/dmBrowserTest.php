@@ -4,18 +4,20 @@ require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
 $helper = new dmUnitTestHelper();
 $helper->boot();
 
-$t = new lime_test(17);
+$t = new lime_test(19);
 $browser = $helper->get('browser');
 
 $namorokaUbuntu = 'Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2pre) Gecko/20100116 Ubuntu/9.10 (karmic) Namoroka/3.6pre';
 $namorokaMac = 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2) Gecko/20100105 Firefox/3.6';
 $chromeMac = 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_2; en-US) AppleWebKit/532.5 (KHTML, like Gecko) Chrome/4.0.249.49 Safari/532.5';
 $safariMac = 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_2; fr-fr) AppleWebKit/531.21.8 (KHTML, like Gecko) Version/4.0.4 Safari/531.21.10';
-$operaWindows = 'Opera/9.80 (Windows NT 5.1; U; en) Presto/2.2.15 Version/10.10';
+$opera9Windows = 'Opera/9.61 (Windows NT 6.0; U; en) Presto/2.1.1';
+$opera10Windows = 'Opera/9.80 (Windows NT 5.1; U; en) Presto/2.2.15 Version/10.10';
 $googleBot = 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)';
 $msnBot = 'msnbot/2.0b (+http://search.msn.com/msnbot.htm)';
 $firefoxLinux = 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.17) Gecko/2010010604 Linux Mint/7 (Gloria) Firefox/3.0.17';
 $firefoxWindows = 'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-GB; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7 GTB6 (.NET CLR 3.5.30729)';
+$firefoxOsx = 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.1.8) Gecko/20100202 Firefox/3.5.8';
 //$firefoxWindowsSp2 = 'Gecko 2009122116Mozilla/5.0 (Windows; U; Windows NT 6.0; de; rv:1.9.0.17) Gecko/2009122116 Firefox[xSP_2:077784879bbf239604c69a247f6786a0_220] 967907703 (.NET CLR 3.5.30729)';
 $chromeLinux = 'Mozilla/5.0 (X11; U; Linux i686; en-US) AppleWebKit/532.5 (KHTML, like Gecko) Chrome/4.0.249.43 Safari/532.5';
 $speedySpider = 'Speedy Spider (http://www.entireweb.com/about/search_tech/speedy_spider/)';
@@ -34,9 +36,11 @@ $tests = array(
   $googleBot => array('name' => 'googlebot', 'version' => '2.1', 'is_unknown' => false),
   $msnBot => array('name' => 'msnbot', 'version' => '2.0', 'is_unknown' => false),
   $yahooBot => array('name' => 'yahoobot', 'version' => null, 'is_unknown' => false),
-  $operaWindows => array('name' => 'opera', 'version' => '9.80', 'is_unknown' => false),
+  $opera9Windows => array('name' => 'opera', 'version' => '9.61', 'is_unknown' => false),
+  $opera10Windows => array('name' => 'opera', 'version' => '10.10', 'is_unknown' => false),
   $firefoxLinux => array('name' => 'firefox', 'version' => '3.0', 'is_unknown' => false),
   $firefoxWindows => array('name' => 'firefox', 'version' => '3.5', 'is_unknown' => false),
+  $firefoxOsx => array('name' => 'firefox', 'version' => '3.5', 'is_unknown' => false),
 //  $firefoxWindowsSp2 => array('name' => 'firefox', 'version' => '3.0', 'is_unknown' => false),
   $chromeLinux => array('name' => 'chrome', 'version' => '4.0', 'is_unknown' => false),
   $speedySpider => array('name' => null, 'version' => null, 'is_unknown' => true),

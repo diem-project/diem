@@ -199,6 +199,7 @@ form.dm_meta_fields input.submit {
 #dm_page_meta_table_wrapper .paging_full_numbers span.paginate_button,
 #dm_page_meta_table_wrapper .paging_full_numbers span.paginate_active {
 	border: 1px solid #aaa;
+  border-radius: 5px;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 	padding: 2px 5px;

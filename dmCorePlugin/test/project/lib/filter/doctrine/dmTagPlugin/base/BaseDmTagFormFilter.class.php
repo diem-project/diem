@@ -14,14 +14,14 @@ abstract class BaseDmTagFormFilter extends BaseFormFilterDoctrine
   {
     $this->setWidgets(array(
       'name'                => new sfWidgetFormFilterInput(),
-      'dm_test_domain_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomain')),
       'dm_test_fruit_list'  => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'DmTestFruit')),
+      'dm_test_domain_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomain')),
     ));
 
     $this->setValidators(array(
       'name'                => new sfValidatorPass(array('required' => false)),
-      'dm_test_domain_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomain', 'required' => false)),
       'dm_test_fruit_list'  => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestFruit', 'required' => false)),
+      'dm_test_domain_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomain', 'required' => false)),
     ));
 
     $this->widgetSchema->setNameFormat('dm_tag_filters[%s]');
@@ -31,22 +31,6 @@ abstract class BaseDmTagFormFilter extends BaseFormFilterDoctrine
     $this->setupInheritance();
 
     parent::setup();
-  }
-
-  public function addDmTestDomainListColumnQuery(Doctrine_Query $query, $field, $values)
-  {
-    if (!is_array($values))
-    {
-      $values = array($values);
-    }
-
-    if (!count($values))
-    {
-      return;
-    }
-
-    $query->leftJoin('r.DmTestDomainDmTag DmTestDomainDmTag')
-          ->andWhereIn('DmTestDomainDmTag.id', $values);
   }
 
   public function addDmTestFruitListColumnQuery(Doctrine_Query $query, $field, $values)
@@ -65,6 +49,22 @@ abstract class BaseDmTagFormFilter extends BaseFormFilterDoctrine
           ->andWhereIn('DmTestFruitDmTag.id', $values);
   }
 
+  public function addDmTestDomainListColumnQuery(Doctrine_Query $query, $field, $values)
+  {
+    if (!is_array($values))
+    {
+      $values = array($values);
+    }
+
+    if (!count($values))
+    {
+      return;
+    }
+
+    $query->leftJoin('r.DmTestDomainDmTag DmTestDomainDmTag')
+          ->andWhereIn('DmTestDomainDmTag.id', $values);
+  }
+
   public function getModelName()
   {
     return 'DmTag';
@@ -75,8 +75,8 @@ abstract class BaseDmTagFormFilter extends BaseFormFilterDoctrine
     return array(
       'id'                  => 'Number',
       'name'                => 'Text',
-      'dm_test_domain_list' => 'ManyKey',
       'dm_test_fruit_list'  => 'ManyKey',
+      'dm_test_domain_list' => 'ManyKey',
     );
   }
 }

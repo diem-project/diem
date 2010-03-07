@@ -284,13 +284,19 @@ abstract class dmDoctrineTable extends Doctrine_Table
     {
       $columns[] = $pk;
     }
+
+    $columns = $this->getEventDispatcher()->filter(
+      new sfEvent($this, 'dm.table.filter_seo_columns'),
+      $columns
+    )->getReturnValue();
     
-    return $columns;
+    return array_unique(array_filter($columns));
   }
   
   public function getIndexableColumns()
   {
     $columns = $this->getHumanColumns();
+    
     foreach($columns as $columnName => $column)
     {
       if(in_array($column['type'], array('time', 'timestamp', 'boolean')))

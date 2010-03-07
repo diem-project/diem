@@ -71,9 +71,9 @@ class dmFrontPageEditHelper extends dmFrontPageBaseHelper
     }
 
     /*
-     * Add record edit button if required
+     * Add fast record edit button if required
      */
-    if('show' === $widget['action'] && $this->user->can('record_edit_front'))
+    if('show' === $widget['action'] && $this->user->can('widget_edit_fast') && $this->user->can('widget_edit_fast_record'))
     {
       if($module = $this->moduleManager->getModuleOrNull($widget['module']))
       {
@@ -84,6 +84,31 @@ class dmFrontPageEditHelper extends dmFrontPageBaseHelper
             $widget['id']
           );
         }
+      }
+    }
+
+    /*
+     * Add fast edit button if required
+     */
+    elseif(!$this->user->can('widget_edit') && $this->user->can('widget_edit_fast'))
+    {
+      $fastEditPermission = 'widget_edit_fast_'.dmString::underscore(str_replace('dmWidget', '', $widget['module'])).'_'.$widget['action'];
+
+      if($this->user->can($fastEditPermission))
+      {
+        try
+        {
+          $widgetPublicName = $this->serviceContainer->getService('widget_type_manager')->getWidgetType($widget)->getPublicName();
+        }
+        catch(Exception $e)
+        {
+          $widgetPublicName = $widget['module'].'.'.$widget['action'];
+        }
+
+        $html .= sprintf('<a class="dm dm_widget_fast_edit" title="%s"></a>',
+          $this->i18n->__('Edit this %1%', array('%1%' => $this->i18n->__(dmString::lcfirst($widgetPublicName)))),
+          $widget['id']
+        );
       }
     }
 

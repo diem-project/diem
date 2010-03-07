@@ -5,9 +5,11 @@
 /* embedded form */
 div.sf_admin_form form ul.dm_form_elements {
   clear: both;
+  box-shadow: 0 0 5px #aaa;
   -moz-box-shadow: 0 0 5px #aaa;
   -webkit-box-shadow: 0 0 5px #aaa;
   padding: 10px;
+  border-radius: 4px;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
 }
@@ -81,8 +83,10 @@ div.sf_admin_form div.sf_admin_form_row.big {
 div.sf_admin_form div.sf_admin_form_row div.dm_related_records {
   margin-left: 20%;
   padding: 10px;
+  box-shadow: 0 0 5px #aaa;
   -moz-box-shadow: 0 0 5px #aaa;
   -webkit-box-shadow: 0 0 5px #aaa;
+  border-radius: 4px;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
 }
@@ -128,6 +132,10 @@ div.sf_admin_form div.sf_admin_form_row_inner input.datepicker_me {
   width: auto;
 }
 
+div.sf_admin_form div.sf_widget_form_date_time select {
+  width: auto;
+}
+
 div.sf_admin_form .error {
   border: 1px solid #D7BBB8;
   padding: 5px;
@@ -144,6 +152,7 @@ div.dm_form_action_bar {
   padding: 5px;
   background:#E6E6E6 url(../../dmCorePlugin/images/default_bg.png) repeat-x scroll 50% 50%;
   border:1px solid #D3D3D3;
+  border-radius: 4px;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
 }
@@ -191,7 +200,7 @@ div.dm_form_pagination {
 div.sf_admin_form ul.checkbox_list {
   max-height: 200px;
   overflow-y: auto;
-  -webkit-border-radius: 4px;
+  box-shadow: 0 0 5px #aaa;
   -moz-box-shadow: 0 0 5px #aaa;
   -webkit-box-shadow: 0 0 5px #aaa;
 }
@@ -229,15 +238,18 @@ div.sf_admin_form ul.checkbox_list > li input {
 div.sf_admin_form div.dm_checkbox_search {
   padding: 5px 10px;
   background: url(../../dmCorePlugin/images/default_bg.png) repeat-x 50% 50%;
+  border-radius: 4px 4px 0 0;
   -moz-border-radius: 4px 4px 0 0;
   -webkit-border-radius: 4px 4px 0 0;
   border: 1px solid #D4D4D4;
   margin-left: 20%;
+  box-shadow: 0 0 5px #aaa;
   -moz-box-shadow: 0 0 5px #aaa;
   -webkit-box-shadow: 0 0 5px #aaa;
 }
 
 div.sf_admin_form div.dm_checkbox_search > input {
+  border-radius: 4px;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
   padding: 2px 5px;
@@ -256,6 +268,7 @@ div.sf_admin_form .dm_media_file .view {
   float: left;
 }
 div.sf_admin_form .dm_media_file .view img {
+  box-shadow: 2px 2px 5px #888;
   -moz-box-shadow: 2px 2px 5px #888;
   -webkit-box-shadow: 2px 2px 5px #888;
   border: 1px solid #aaa;

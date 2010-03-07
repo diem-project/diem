@@ -198,9 +198,7 @@ LIMIT 1')->getStatement();
 
     $stmt->execute(array($this->get('lft'), $this->get('rgt')));
     
-    $result = $stmt->fetch(PDO::FETCH_NUM);
-    
-    return $result[0];
+    return $stmt->fetchColumn();
   }
 
   public function save(Doctrine_Connection $conn = null)

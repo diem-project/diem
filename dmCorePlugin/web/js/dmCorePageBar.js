@@ -85,14 +85,20 @@
       
       if ($.fn.draggable) 
       {
-        $tree.find('li').draggable({
+        $tree.find('li > a').mousedown(function(ev){
+          // Without it IE selects text while dragging
+          if($.browser.msie)
+          {
+            document.onselectstart = function() { return false; }
+          }
+        }).draggable({
           containment: 'document',
           distance: 20,
           revert: 'invalid',
           zIndex: 1000,
           helper: function(e)
           {
-            return $('<div class="dm dm_page_draggable_helper">').html($(this).find('a:first').clone()).appendTo($('body'));
+            return $('<div class="dm dm_page_draggable_helper"></div>').html($(this).clone()).appendTo($('body'));
           },
           start: function(event, ui)
           {
@@ -102,6 +108,11 @@
           stop: function(event, ui)
           {
             $('div.markItUp, input.dm_link_droppable').removeClass('active');
+            // Re-enable text selection in IE
+            if($.browser.msie)
+            {
+              document.onselectstart = null;
+            }
           }
         });
       }

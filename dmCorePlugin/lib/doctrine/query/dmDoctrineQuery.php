@@ -5,42 +5,6 @@ abstract class dmDoctrineQuery extends Doctrine_Query
   protected static
   $moduleManager;
 
-  protected static
-  $cacheDrivers;
-
-  /**
-   * Constructor.
-   *
-   * @param Doctrine_Connection  The connection object the query will use.
-   * @param Doctrine_Hydrator_Abstract  The hydrator that will be used for generating result sets.
-   */
-  public function __construct(Doctrine_Connection $connection = null, Doctrine_Hydrator_Abstract $hydrator = null)
-  {
-    parent::__construct($connection, $hydrator);
-
-    if (sfConfig::get('dm_orm_cache_result_enabled_default'))
-    {
-      $this->dmCache();
-    }
-  }
-
-  /**
-   * useResultCache if available
-   *
-   * @param Doctrine_Cache_Interface|bool $driver      cache driver
-   * @param integer $timeToLive                        how long the cache entry is valid
-   * @return Doctrine_Hydrate                          this object
-   */
-  public function dmCache($driver = true, $timeToLive = null, $resultCacheHash = null)
-  {
-    if (sfConfig::get('dm_orm_cache_result_enabled'))
-    {
-      $this->useResultCache($driver, $timeToLive, $resultCacheHash);
-    }
-
-    return $this;
-  }
-
   /**
    * Join translation results if they exist
    * if $model is specified, will verify that it has I18n

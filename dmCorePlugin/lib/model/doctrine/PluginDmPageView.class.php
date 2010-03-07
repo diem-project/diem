@@ -37,4 +37,11 @@ abstract class PluginDmPageView extends BaseDmPageView
     }
   }
 
+  public function postDelete($event)
+  {
+    parent::postDelete($event);
+
+    $this->Area->delete();
+  }
+
 }

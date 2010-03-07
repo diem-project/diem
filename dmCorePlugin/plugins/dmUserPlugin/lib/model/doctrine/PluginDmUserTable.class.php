@@ -19,7 +19,7 @@ abstract class PluginDmUserTable extends myDoctrineTable
   
   public function findOneById($id)
   {
-    return $this->createQuery('u')->where('u.id = ?', $id)->dmCache()->fetchRecord();
+    return $this->createQuery('u')->where('u.id = ?', $id)->fetchRecord();
   }
   
   public function getAdminListQuery(dmDoctrineQuery $query)

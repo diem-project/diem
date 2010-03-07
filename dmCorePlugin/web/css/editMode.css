@@ -17,6 +17,7 @@
   background:     #fff url(../images/48/loader.gif) 10px 10px no-repeat;
   cursor:         wait;
   padding:        10px;
+  border-radius: 48px;
   -moz-border-radius: 48px;
   -webkit-border-radius: 48px;
   opacity:        0.7;
@@ -39,8 +40,10 @@
   padding:        10px;
   cursor:         wait;
   padding:        10px;
+  border-radius: 8px;
   -moz-border-radius: 8px;
   -webkit-border-radius: 8px;
+  box-shadow: 5px 5px 10px #444;
   -moz-box-shadow: 5px 5px 10px #444;
   -webkit-box-shadow: 5px 5px 10px #444;
 }
@@ -48,6 +51,7 @@
 .blockUI.blockOverlay {
   background:     #444;
   opacity:        0.2;
+  border-radius: 4px;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
   cursor:         wait;
@@ -85,4 +89,8 @@ ul.ui-tabs-nav > li.dm_error.ui-tabs-selected {
 #dm_error_dialog div.ui-dialog-content {
   max-height: 400px;
   overflow: auto !important;
+}
+
+body > div.tipsy {
+  font-family: Verdana,Arial,sans-serif;
 }

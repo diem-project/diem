@@ -31,6 +31,7 @@ class dmSearchIndex extends dmSearchIndexCommon
       try
       {
         $this->luceneIndex = Zend_Search_Lucene::open($this->getFullPath());
+        $this->luceneIndex->setFormatVersion(Zend_Search_Lucene::FORMAT_2_3);
       }
       catch(Zend_Search_Lucene_Exception $e)
       {
@@ -64,9 +65,10 @@ class dmSearchIndex extends dmSearchIndexCommon
     $hits = array();
     foreach($luceneHits as $hit)
     {
-      $this->serviceContainer->setParameter('search_hit.score', $hit->score);
-      $this->serviceContainer->setParameter('search_hit.page_id', $hit->page_id);
-      $hits[] = $this->serviceContainer->getService('search_hit');
+      $hits[] = $this->serviceContainer
+      ->setParameter('search_hit.score', $hit->score)
+      ->setParameter('search_hit.page_id', $hit->page_id)
+      ->getService('search_hit');
     }
     unset($luceneHits);
 
@@ -99,54 +101,71 @@ class dmSearchIndex extends dmSearchIndexCommon
     $logger = $this->serviceContainer->getService('logger');
     $user   = $this->serviceContainer->getService('user');
     
-    $logger->log($this->getName().' : Populating index...');
+    $logger->log($this->getName().': Populating index...');
 
     $this->erase();
-    $logger->log($this->getName().' : Index erased.');
     
     $this->serviceContainer->mergeParameter('search_document.options', array(
       'culture' => $this->getCulture()
     ));
+
+    $pager = $this->serviceContainer
+    ->setParameter('doctrine_pager.model', 'DmPage')
+    ->getService('doctrine_pager')
+    ->setMaxPerPage(100)
+    ->setQuery($this->getPagesQuery())
+    ->setPage(1)
+    ->init();
+
+    $nb = 1;
+    $nbMax = $pager->getNbResults();
+    $pagerPage = 1;
+    $pagerPageMax = $pager->getLastPage();
     
-    $pages = $this->getPagesQuery()->fetchRecords();
-    
-    if (!count($pages))
+    if (!count($nbMax))
     {
-      $logger->log($this->getName().' : No pages to populate the index');
+      $logger->log($this->getName().': No pages to populate the index');
       return;
     }
     
     $oldCulture = $user->getCulture();
     $user->setCulture($this->getCulture());
 
-    $nb = 0;
-    $nbMax = count($pages);
-    foreach ($pages as $page)
+    while($pagerPage <= $pagerPageMax)
     {
-      ++$nb;
-      $logger->log($this->getName().' '.$nb.'/'.$nbMax.' : /'.$page->get('slug'));
-      
-      $this->serviceContainer->setParameter('search_document.source', $page);
-      
-      $this->luceneIndex->addDocument($this->serviceContainer->getService('search_document')->populate());
+      foreach ($pager->getResultsWithoutCache() as $page)
+      {
+        $logger->log($this->getName().' '.$nb.'/'.$nbMax.': /'.$page->get('slug'));
+
+        $document = $this->serviceContainer
+        ->setParameter('search_document.source', $page)
+        ->getService('search_document');
+
+        $document->populate();
+
+        $this->luceneIndex->addDocument($document);
+
+        ++$nb;
+      }
+
+      ++$pagerPage;
+      $pager->setPage($pagerPage)->init();
     }
     
     $user->setCulture($oldCulture);
 
     $time = microtime(true) - $start;
 
-    $logger->log($this->getName().' : Index populated in "' . round($time, 2) . '" seconds.');
+    $logger->log($this->getName().': Index populated in ' . round($time, 2) . ' seconds.');
 
-    $logger->log($this->getName().' : Time per document "' . round($time / count($pages), 3) . '" seconds.');
+    $logger->log($this->getName().': Time per document ' . round($time / $nbMax, 3) . ' seconds.');
 
     $this->serviceContainer->get('dispatcher')->notify(new sfEvent($this, 'dm.search.populated', array(
       'culture' => $this->getCulture(),
       'name' => $this->getName(),
-      'nb_documents' => count($pages),
+      'nb_documents' => $nbMax,
       'time' => $time
     )));
-    
-    unset($pages);
     
     $this->fixPermissions();
   }
@@ -154,13 +173,13 @@ class dmSearchIndex extends dmSearchIndexCommon
   public function optimize()
   {
     $start = microtime(true);
-    $logger = $this->serviceContainer->getService('logger')->log($this->getName().' : Optimizing index...');
+    $logger = $this->serviceContainer->getService('logger')->log($this->getName().': Optimizing index...');
     
     $this->luceneIndex->optimize();
     
     $this->fixPermissions();
 
-    $logger = $this->serviceContainer->getService('logger')->log($this->getName().' : Index optimized in "' . round(microtime(true) - $start, 2) . '" seconds.');
+    $logger = $this->serviceContainer->getService('logger')->log($this->getName().': Index optimized in "' . round(microtime(true) - $start, 2) . '" seconds.');
   }
 
   protected function erase()
@@ -195,7 +214,6 @@ class dmSearchIndex extends dmSearchIndexCommon
       'Size'      => dmOs::humanizeSize($this->getByteSize())
     );
   }
-  
   
   /**
    * @return Zend_Search_Lucene_Proxy instance
@@ -232,10 +250,7 @@ class dmSearchIndex extends dmSearchIndexCommon
     $size = 0;
     foreach (new DirectoryIterator($this->getFullPath()) as $node)
     {
-      if (!in_array($node->getFilename(), array('CVS', '.svn', '_svn')))
-      {
-        $size += $node->getSize();
-      }
+      $size += $node->getSize();
     }
 
     return $size;

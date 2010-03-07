@@ -17,7 +17,7 @@ class dmContentChart extends dmChart
     foreach($this->getModules() as $moduleKey => $module)
     {
       $dataSet->AddPoint($this->data['modules'][$moduleKey], $moduleKey);
-      $dataSet->SetSerieName($module->getPlural(), $moduleKey);
+      $dataSet->SetSerieName($this->getI18n()->__($module->getPlural()), $moduleKey);
       $dataSet->AddSerie($moduleKey);
     }
     

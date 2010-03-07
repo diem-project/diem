@@ -43,14 +43,14 @@
     var self = this;
    
     self.element.droppable({
-      accept:       '#dm_page_bar li, #dm_media_bar li.file.image',
+      accept:       '#dm_page_bar li > a, #dm_media_bar li.file.image',
       activeClass:  'droppable_active',
       hoverClass:   'droppable_hover',
       //          tolerance:    'touch',
       drop: function(e, ui)
       {
         var selection = self.getSelection(),
-        linkText = selection.text || $.trim(ui.draggable.find('>a').text()),
+        linkText = selection.text || $.trim(ui.draggable.text()),
         scrollTop = self.element.scrollTop();
      
         if (ui.draggable.hasClass('file'))
@@ -61,7 +61,7 @@
         else
         {
           var type = "page";
-          var placeholder = "["+linkText+"]("+type+":"+ui.draggable.attr('id').replace(/dmp/, '')+")"
+          var placeholder = "["+linkText+"]("+type+":"+ui.draggable.attr('data-page-id')+")"
         }
           
         if (selection)

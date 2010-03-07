@@ -1,5 +1,5 @@
 /*
- * jQuery UI Draggable 1.8rc2
+ * jQuery UI Draggable 1.8rc3
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -459,7 +459,7 @@ $.widget("ui.draggable", $.ui.mouse, {
 });
 
 $.extend($.ui.draggable, {
-	version: "1.8rc2"
+	version: "1.8rc3"
 });
 
 $.ui.plugin.add("draggable", "connectToSortable", {
@@ -770,6 +770,7 @@ $.ui.plugin.add("draggable", "stack", {
 		var group = $.makeArray($(o.stack)).sort(function(a,b) {
 			return (parseInt($(a).css("zIndex"),10) || 0) - (parseInt($(b).css("zIndex"),10) || 0);
 		});
+		if (!group.length) { return; }
 		
 		var min = parseInt(group[0].style.zIndex) || 0;
 		$(group).each(function(i) {

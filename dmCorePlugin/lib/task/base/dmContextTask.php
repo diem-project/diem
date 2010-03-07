@@ -21,6 +21,7 @@ abstract class dmContextTask extends dmBaseTask
     {
       if (!dmContext::hasInstance())
       {
+        $this->logSection('diem', sprintf('Loading %s...', get_class($this->configuration)));
         dm::createContext($this->configuration);
       }
       
@@ -35,13 +36,6 @@ abstract class dmContextTask extends dmBaseTask
     if (!$this->get('filesystem')->mkdir($path))
     {
       $this->logBlock(sprintf('Can not mkdir %s', $path), 'ERROR');
-    }
-    else
-    {
-      if (!@chmod($path, 0777))
-      {
-        //$this->alert('Can not chmod '.$path);
-      }
     }
   }
 

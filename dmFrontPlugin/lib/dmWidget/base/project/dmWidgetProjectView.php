@@ -12,12 +12,12 @@ abstract class dmWidgetProjectView extends dmWidgetBaseView
   
     if (!$this->dmModule = $this->getService('module_manager')->getModule($this->widget['module']))
     {
-      throw new dmException('the module "%s" does not exist', $this->dmWidget->get('module'));
+      throw new dmException('the module "%s" does not exist', $this->widget['module']);
     }
 
     if (!$this->dmComponent = $this->dmModule->getComponent($this->widget['action']))
     {
-      throw new dmException(sprintf('the action "%s" does not exist for module "%s"', $this->widget['action'], $this->dmModule));
+      throw new dmException(sprintf('the component "%s" does not exist for module "%s"', $this->widget['action'], $this->widget['module']));
     }
   }
 

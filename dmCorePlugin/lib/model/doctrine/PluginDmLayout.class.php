@@ -113,4 +113,11 @@ abstract class PluginDmLayout extends BaseDmLayout
     }
   }
 
+  public function postDelete($event)
+  {
+    parent::postDelete($event);
+
+    $this->Areas->delete();
+  }
+
 }

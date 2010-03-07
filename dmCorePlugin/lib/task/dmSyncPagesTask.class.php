@@ -24,20 +24,26 @@ class dmSyncPagesTask extends dmContextTask
   {
     $this->withDatabase();
     
-    $treeWatcher = $this->get('page_tree_watcher');
-    
-    $treeWatcher->setOption('use_thread', false);
+    $treeWatcher = $this->get('page_tree_watcher')->setOption('use_thread', false);
     
     $this->logSection('diem', 'Synchronize pages... this may take some time');
-    
+
+    $startTime = microtime(true);
     $treeWatcher->synchronizePages();
-    $this->log(sprintf('%d pages', dmDb::table('DmPage')->count()));
+    $this->logSection('diem', sprintf('%d pages synchronized in %s ms', dmDb::table('DmPage')->count(), round(1000*(microtime(true) - $startTime))));
     
     $this->logSection('diem', 'Synchronize SEO... this may take some time');
-    
+
+    $startTime = microtime(true);
     $treeWatcher->synchronizeSeo();
-    $this->log(sprintf('%d page translations', dmDb::table('DmPageTranslation')->count()));
-    
-    $this->logSection('diem', 'Done.');
+    $this->logSection('diem', sprintf('%d page translations synchronized in %s ms', dmDb::table('DmPageTranslation')->count(), round(1000*(microtime(true) - $startTime))));
+
+    if (count($this->get('i18n')->getCultures()) > 1)
+    {
+      $this->logSection('diem', 'Create missing page translations... this may take some time');
+      $startTime = microtime(true);
+      $this->get('page_i18n_builder')->createAllPagesTranslations();
+      $this->logSection('diem', sprintf('Finished in %s ms', round(1000*(microtime(true) - $startTime))));
+    }
   }
 }

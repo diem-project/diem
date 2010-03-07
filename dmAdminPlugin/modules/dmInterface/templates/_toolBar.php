@@ -24,7 +24,7 @@ echo _open('div#dm_tool_bar.clearfix.'.sfConfig::get('dm_toolBar_flavour', 'blue
     $apcLoad = dmAPCCache::getLoad();
     echo _link('dmServer/apc')
     ->set('.tipable.dm_load_monitor.fleft')
-    ->title(sprintf('APC load : %s / %s', $apcLoad['usage'], $apcLoad['limit']))
+    ->title(sprintf('APC usage: %s / %s', $apcLoad['usage'], $apcLoad['limit']))
     ->text(sprintf('<span style="height: %dpx;"></span>', round($apcLoad['percent'] * 0.21)));
   }
 

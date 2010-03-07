@@ -36,7 +36,7 @@ $.widget('ui.dmZone', {
     var $dialog = $.dm.ctrl.ajaxDialog({
       url:      $.dm.ctrl.getHref('+/dmZone/edit'),
       data:     { zone_id: zone.getId() },
-      title:    $('#dm_zone_'+zone.getId()+' > a.dm_zone_edit').attr('original-title'),
+      title:    $('#dm_zone_'+zone.getId()+' > a.dm_zone_edit').tipsyTitle(),
 			'class':  dialog_class,
       beforeClose:  function()
       {
@@ -87,7 +87,7 @@ $.widget('ui.dmZone', {
       
       $('a.delete', $form).click(function()
       {
-        if (confirm($(this).attr('original-title')+" ?"))
+        if (confirm($(this).tipsyTitle()+" ?"))
         {
           $.dm.removeTipsy();
           zone._delete();
@@ -129,7 +129,7 @@ $.widget('ui.dmZone', {
         {
           ui.placeholder
           .addClass('dm dm_widget block')
-          .html('<a class="dm dm_widget_edit"></a><div class="dm_widget_inner">New Widget</div>');
+          .html('<a class="dm dm_widget_edit"></a><div class="dm_widget_inner "><div class="dm dm_new_widget"></div></div>');
         }
         // moving a widget
         else 
@@ -242,7 +242,7 @@ $.widget('ui.dmZone', {
       data:     { zone_id: this.getId() }
     });
     
-    this.element.slideUp(500, function() { zone.destroy(); zone.element.remove(); });
+    this.element.slideUp(500, function() { zone.destroy(); zone.element.remove();$.dm.removeTipsy(); });
   },
   
   getId: function()

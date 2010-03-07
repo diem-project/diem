@@ -22,8 +22,17 @@ class dmWidgetContentTitleView extends dmWidgetPluginView
   protected function doRender()
   {
     $vars = $this->getViewVars();
-    
-    return $this->getHelper()->tag($vars['tag'], array('class' => $vars['cssClass']), $vars['text']);
+
+    if(empty($vars['href']))
+    {
+      $content = $vars['text'];
+    }
+    else
+    {
+      $content = $this->getHelper()->link($vars['href'])->text($vars['text']);
+    }
+
+    return $this->getHelper()->tag($vars['tag'], array('class' => $vars['cssClass']), $content);
   }
   
   protected function doRenderForIndex()

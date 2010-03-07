@@ -1,5 +1,5 @@
 /*
- * jQuery UI Dialog 1.8rc2
+ * jQuery UI Dialog 1.8rc3
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -66,8 +66,12 @@ $.widget("ui.dialog", {
 				// setting tabIndex makes the div focusable
 				// setting outline to 0 prevents a border on focus in Mozilla
 				.attr('tabIndex', -1).css('outline', 0).keydown(function(event) {
-					(options.closeOnEscape && event.keyCode
-						&& event.keyCode == $.ui.keyCode.ESCAPE && self.close(event));
+					if (options.closeOnEscape && event.keyCode
+						&& event.keyCode == $.ui.keyCode.ESCAPE) {
+						
+						self.close(event);
+						event.preventDefault();
+					}
 				})
 				.attr({
 					role: 'dialog',
@@ -328,7 +332,7 @@ $.widget("ui.dialog", {
 			handle: '.ui-dialog-titlebar',
 			containment: 'document',
 			start: function(event) {
-				heightBeforeDrag = options.height;
+				heightBeforeDrag = options.height === "auto" ? "auto" : $(this).height();
 				$(this).height($(this).height()).addClass("ui-dialog-dragging");
 				self._trigger('dragStart', event);
 			},
@@ -547,11 +551,9 @@ $.widget("ui.dialog", {
 		var options = this.options;
 
 		// reset content sizing
-		this.element.css({
-			height: 0,
-			minHeight: 0,
-			width: 'auto'
-		});
+		// hide for non content measurement because height: 0 doesn't work in IE quirks mode (see #4350)
+		this.element.css('width', 'auto')
+			.hide();
 
 		// reset wrapper sizing
 		// determine the height of all the non-content elements
@@ -567,8 +569,10 @@ $.widget("ui.dialog", {
 				height: 'auto'
 			}
 			: {
-				height: Math.max(options.height - nonContentHeight, 0)
-			});
+				minHeight: 0,
+				height: Math.max(options.height - nonContentHeight, 0)				
+			})
+			.show();
 
 		(this.uiDialog.is(':data(resizable)') &&
 			this.uiDialog.resizable('option', 'minHeight', this._minHeight()));
@@ -576,7 +580,7 @@ $.widget("ui.dialog", {
 });
 
 $.extend($.ui.dialog, {
-	version: "1.8rc2",
+	version: "1.8rc3",
 
 	uuid: 0,
 	maxZ: 0,
@@ -592,6 +596,8 @@ $.extend($.ui.dialog, {
 
 $.extend($.ui.dialog.overlay, {
 	instances: [],
+	// reuse old instances due to IE memory leak with alpha transparency (see #5185)
+	oldInstances: [],
 	maxZ: 0,
 	events: $.map('focus,mousedown,mouseup,keydown,keypress,click'.split(','),
 		function(event) { return event + '.dialog-overlay'; }).join(' '),
@@ -604,7 +610,7 @@ $.extend($.ui.dialog.overlay, {
 				// handle $(el).dialog().dialog('close') (see #4065)
 				if ($.ui.dialog.overlay.instances.length) {
 					$(document).bind($.ui.dialog.overlay.events, function(event) {
-						// stop events if the z-index of the target is <= the z-index of the overlay
+						// stop events if the z-index of the target is < the z-index of the overlay
 						return ($(event.target).zIndex() >= $.ui.dialog.overlay.maxZ);
 					});
 				}
@@ -612,19 +618,24 @@ $.extend($.ui.dialog.overlay, {
 
 			// allow closing by pressing the escape key
 			$(document).bind('keydown.dialog-overlay', function(event) {
-				(dialog.options.closeOnEscape && event.keyCode
-						&& event.keyCode == $.ui.keyCode.ESCAPE && dialog.close(event));
+				if (dialog.options.closeOnEscape && event.keyCode
+					&& event.keyCode == $.ui.keyCode.ESCAPE) {
+					
+					dialog.close(event);
+					event.preventDefault();
+				}
 			});
 
 			// handle window resize
 			$(window).bind('resize.dialog-overlay', $.ui.dialog.overlay.resize);
 		}
 
-		var $el = $('<div></div>').appendTo(document.body)
-			.addClass('ui-widget-overlay').css({
-				width: this.width(),
-				height: this.height()
-			});
+		var $el = (this.oldInstances.length ? this.oldInstances.splice(0, 1)[0] : $('<div></div>').addClass('ui-widget-overlay'))
+					.appendTo(document.body)
+					.css({
+						width: this.width(),
+						height: this.height()
+					});
 
 		($.fn.bgiframe && $el.bgiframe());
 
@@ -633,7 +644,7 @@ $.extend($.ui.dialog.overlay, {
 	},
 
 	destroy: function($el) {
-		this.instances.splice($.inArray(this.instances, $el), 1);
+		this.oldInstances.push(this.instances.splice($.inArray(this.instances, $el), 1)[0]);
 
 		if (this.instances.length === 0) {
 			$([document, window]).unbind('.dialog-overlay');

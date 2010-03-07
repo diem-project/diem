@@ -18,6 +18,8 @@ class dmBrowserDetection
 
     $this->fixSafariVersion();
 
+    $this->fixOperaVersion();
+
     $this->fixIphone();
 
     $this->fixYahoo();
@@ -67,6 +69,15 @@ class dmBrowserDetection
     if ('safari' === $this->name && strpos($this->userAgent, ' version/'))
     {
       $this->version = preg_replace('|.+\sversion/([0-9]+(?:\.[0-9]+)?).+|', '$1', $this->userAgent);
+    }
+  }
+
+  protected function fixOperaVersion()
+  {
+    // Opera 10.00 (and higher) version number is located at the end
+    if('opera' === $this->name && strpos($this->userAgent, ' version/'))
+    {
+      $this->version = preg_replace('|.+\sversion/([0-9]+\.[0-9]+)\s*.*|', '$1', $this->userAgent);
     }
   }
 

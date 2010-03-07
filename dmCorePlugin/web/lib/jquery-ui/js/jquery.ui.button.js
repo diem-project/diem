@@ -1,5 +1,5 @@
 /*
- * jQuery UI Button 1.8rc2
+ * jQuery UI Button 1.8rc3
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -73,9 +73,6 @@ $.widget( "ui.button", {
 					return;
 				}
 				$( this ).toggleClass( "ui-state-active" );
-				self.element
-					.attr( "checked", !self.element[0].checked )
-					.click();
 				self.buttonElement.attr( "aria-pressed", self.element[0].checked );
 			});
 		} else if ( this.type === "radio") {
@@ -84,9 +81,6 @@ $.widget( "ui.button", {
 					return;
 				}
 				$( this ).addClass( "ui-state-active" );
-				self.element
-					.attr( "checked", true )
-					.click();
 				self.buttonElement.attr( "aria-pressed", true );
 
 				var radio = self.element[ 0 ],
@@ -143,7 +137,7 @@ $.widget( "ui.button", {
 						// TODO pass through original event correctly (just as 2nd argument doesn't work)
 						$(this).trigger("click");
 					}
-				})
+				});
 			}
 		}
 
@@ -167,7 +161,7 @@ $.widget( "ui.button", {
 			if ( checked ) {
 				this.buttonElement.addClass( "ui-state-active" );
 			}
-			this.buttonElement.attr( "aria-pressed", checked )
+			this.buttonElement.attr( "aria-pressed", checked );
 		} else {
 			this.buttonElement = this.element;
 		}

@@ -298,10 +298,18 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
   {
     if(!$this->getDmModule()->hasPage())
     {
-      throw new dmException(sprintf('record %s has no page because module %s has no page', get_class($this), $this->getDmModule()));
+      throw new dmRecordException(sprintf('record %s has no page because module %s has no page', get_class($this), $this->getDmModule()));
     }
 
     return dmDb::table('DmPage')->findOneByRecordWithI18n($this);
+  }
+
+  /**
+   * @return boolean true if this record has a page, false otherwise
+   */
+  public function hasDmPage()
+  {
+    return $this->getDmModule()->hasPage() && dmDb::table('DmPage')->findOneByRecordWithI18n($this);
   }
 
   /**
@@ -475,13 +483,14 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
 
   public function toIndexableString()
   {
-    $indexParts = array();
+    $index = '';
+    
     foreach($this->_table->getIndexableColumns() as $columnName => $column)
     {
-      $indexParts[] = $this->get($columnName);
+      $index .= ' '.$this->get($columnName);
     }
 
-    return implode(' ', $indexParts);
+    return trim($index);
   }
 
   public function isFieldModified($field)

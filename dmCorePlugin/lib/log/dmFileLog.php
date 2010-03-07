@@ -205,7 +205,12 @@ abstract class dmFileLog extends dmLog
   {
     if($this->nbFields !== count($arrayEntry))
     {
-      return false;
+      $values = array();
+      foreach($arrayEntry as $index => $value)
+      {
+        $values[$this->fields[$index]] = $value;
+      }
+      return $values;
     }
 
     return array_combine($this->fields, $arrayEntry);

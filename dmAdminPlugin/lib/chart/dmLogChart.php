@@ -23,16 +23,17 @@ class dmLogChart extends dmChart
     $dataSet->AddPoint($this->data['nbErr'], 'nbErr');
     $dataSet->AddPoint($this->data['mem'], 'mem');
 
-    $dataSet->SetSerieName("Requests / minute", "nbReq");
-    $dataSet->SetSerieName("Errors / minute", "nbErr");
-    $dataSet->SetSerieName("Latency in ms", "time");
-    $dataSet->SetSerieName("Memory used %", "mem");
+    $dataSet->SetSerieName($this->getI18n()->__('Requests per minute'), "nbReq");
+    $dataSet->SetSerieName($this->getI18n()->__('Errors per minute'), "nbErr");
+    $dataSet->SetSerieName($this->getI18n()->__('Latency in ms'), "time");
+    $dataSet->SetSerieName($this->getI18n()->__('Memory used in %'), "mem");
     
     foreach($this->eventsFilter as $eventType)
     {
       $dataSet->AddPoint($this->data['events'][$eventType], $eventType);
-      $dataSet->SetSerieName(dmString::humanize($eventType), $eventType);
     }
+
+    $dataSet->SetSerieName($this->getI18n()->__('Cache cleared'), 'clear cache');
     
     $dataSet->SetAbsciseLabelSerie('date');
     $dataSet->SetXAxisFormat('date');
@@ -74,7 +75,7 @@ class dmLogChart extends dmChart
     $this->clearScale();
     $dataSet->removeAllSeries();
     $dataSet->AddSerie("time");
-    $dataSet->SetYAxisName("Latency in s");
+    $dataSet->SetYAxisName($this->getI18n()->__('Latency in ms'));
     $this->drawScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_START0, self::$colors['grey2'][0], self::$colors['grey2'][1], self::$colors['grey2'][2],TRUE,0,0, false, 10);
     $this->drawFilledCubicCurve($dataSet->GetData(),$dataSet->GetDataDescription(), 0.2, 30);
     
@@ -238,7 +239,7 @@ class dmLogChart extends dmChart
   
   public function filterEvent(array $data)
   {
-    return in_array($data['action'].' '.$data['type'], $this->eventsFilter);
+    return isset($data['action']) && in_array($data['action'].' '.$data['type'], $this->eventsFilter);
   }
 
 }

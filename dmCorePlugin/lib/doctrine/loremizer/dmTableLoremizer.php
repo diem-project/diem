@@ -125,6 +125,11 @@ class dmTableLoremizer extends dmConfigurable
     {
       $columns[] = $relation->getLocalColumnName();
     }
+
+    if(2 !== count($columns))
+    {
+      return array();
+    }
     
     return dmDb::pdo(sprintf(
       'SELECT r.%s, r.%s FROM %s r',

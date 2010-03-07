@@ -1,5 +1,5 @@
 /*
- * jQuery UI Accordion 1.8rc2
+ * jQuery UI Accordion 1.8rc3
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -313,8 +313,8 @@ $.widget("ui.accordion", {
 				options: o,
 				newHeader: clickedIsActive && o.collapsible ? $([]) : clicked,
 				oldHeader: this.active,
-				newContent: clickedIsActive && o.collapsible ? $([]) : toShow.find('> *'),
-				oldContent: toHide.find('> *')
+				newContent: clickedIsActive && o.collapsible ? $([]) : toShow,
+				oldContent: toHide
 			},
 			down = this.headers.index( this.active[0] ) > this.headers.index( clicked[0] );
 
@@ -438,7 +438,7 @@ $.widget("ui.accordion", {
 
 
 $.extend($.ui.accordion, {
-	version: "1.8rc2",
+	version: "1.8rc3",
 	animations: {
 		slide: function(options, additions) {
 			options = $.extend({

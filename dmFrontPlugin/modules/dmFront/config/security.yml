@@ -1,0 +1,7 @@
+editToggle:
+  is_secure:        true
+  credentials:      [tool_bar_front]
+
+showToolBarToggle:
+  is_secure:        true
+  credentials:      [tool_bar_front]

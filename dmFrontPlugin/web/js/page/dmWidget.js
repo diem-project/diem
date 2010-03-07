@@ -13,6 +13,8 @@ $.widget('ui.dmWidget', {
   {
     var widget = this, activeTab = null, dialogClass = widget.element.attr('id')+'_edit_dialog';
 
+    $.dm.removeTipsy();
+
 	  if ($('body > div.'+dialogClass).length)
 		{
       $('body > div.'+dialogClass).find('div.ui-dialog-content').dialog('moveToTop');
@@ -22,7 +24,7 @@ $.widget('ui.dmWidget', {
     var $dialog = $.dm.ctrl.ajaxDialog({
       url:          $.dm.ctrl.getHref('+/dmWidget/edit'),
       data:         {widget_id: widget.getId()},
-      title:        $('a.dm_widget_edit', widget.element).attr('original-title'),
+      title:        $('a.dm_widget_edit', widget.element).tipsyTitle(),
       width:        370,
 			'class':      'dm_widget_edit_dialog_wrap '+dialogClass,
       beforeClose:  function()
@@ -32,12 +34,13 @@ $.widget('ui.dmWidget', {
           widget.reload(500);
         }
       }
-    }).bind('dmAjaxResponse', function() {
+    }).bind('dmAjaxResponse', function()
+    {
       $dialog.prepare();
 
       $('a.delete', $dialog).click(function()
       {
-        if (confirm($(this).attr('original-title')+" ?"))
+        if (confirm($(this).tipsyTitle()+" ?"))
         {
           $.dm.removeTipsy();
           widget._delete();
@@ -156,7 +159,7 @@ $.widget('ui.dmWidget', {
       data:     {widget_id: self.getId()}
     });
     
-    self.element.slideUp(500, function() {self.destroy();self.element.remove();});
+    self.element.slideUp(500, function() {self.destroy();self.element.remove();$.dm.removeTipsy();});
   },
 
   reload: function(timeout)
@@ -245,7 +248,7 @@ $.widget('ui.dmWidget', {
     
     this.id = this.element.attr('id').substring(10);
     
-    $('a.dm_widget_edit', this.element).click(function() {
+    $('a.dm_widget_edit, a.dm_widget_fast_edit', this.element).click(function() {
       if (!self.element.hasClass('dm_dragging')) {
         self.openEditDialog();
       }

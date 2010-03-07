@@ -1,5 +1,14 @@
 <?php
 
+if($page->hasRecord())
+{
+  $linkToPage = sprintf("_link($%s)", $page->dmModule->getKey());
+}
+else
+{
+  $linkToPage = sprintf("_link('%s/%s')", $page->module, $page->action);
+}
+
 echo _tag('div.dm.dm_page_edit_wrap',
 
   $form->open('.dm_form.list.little').
@@ -29,7 +38,12 @@ echo _tag('div.dm.dm_page_edit_wrap',
         (isset($form['parent_id']) ? $form['parent_id']->renderRow() : '').
         $form['dm_layout_id']->renderRow().
         $form['module']->renderRow().
-        $form['action']->renderRow()
+        $form['action']->renderRow().
+        _tag('p.dm_help.s16.s16_help',
+          __('Link to this page:').
+          ' '.
+          _tag('strong', $linkToPage)
+        )
       )
     ).
     _tag('div#dm_page_edit_publication',

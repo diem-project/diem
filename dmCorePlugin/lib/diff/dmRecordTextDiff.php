@@ -83,11 +83,11 @@ class dmRecordTextDiff extends dmConfigurable
       {
         if($fromValue)
         {
-          $diff = str_replace($fromValue, $this->renderRelatedRecord($this->fromVersion, $relation), $diff);
+          $diff = str_replace('>'.$fromValue.'<', '>'.$this->renderRelatedRecord($this->fromVersion, $relation).'<', $diff);
         }
         if($toValue)
         {
-          $diff = str_replace($toValue, $this->renderRelatedRecord($this->toVersion, $relation), $diff);
+          $diff = str_replace('>'.$toValue.'<', '>'.$this->renderRelatedRecord($this->toVersion, $relation).'<', $diff);
         }
       }
     }

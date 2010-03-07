@@ -20,8 +20,10 @@ body.pageBarOpen #sf_admin_content {
   border-right: 3px solid #F4F4F4;
   overflow: hidden;
   font-size: 11px;
+  box-shadow: 3px 0 4px #888;
   -moz-box-shadow: 3px 0 4px #888;
   -webkit-box-shadow: 3px 0 4px #888;
+  z-index: 20;
 }
 
 #dm_page_bar_toggler {
@@ -32,10 +34,13 @@ body.pageBarOpen #sf_admin_content {
   height: 100px;
   background: url(../images/bar_togglers.png) top left no-repeat;
   cursor: pointer;
+  border-radius: 0 8px 8px 0;
   -moz-border-radius: 0 8px 8px 0;
   -webkit-border-radius: 0 8px 8px 0;
+  box-shadow: 2px 0 5px #888;
   -moz-box-shadow: 2px 0 5px #888;
   -webkit-box-shadow: 2px 0 5px #888;
+  z-index: 20;
 }
 
 #dm_page_bar_toggler:hover {

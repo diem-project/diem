@@ -18,6 +18,13 @@
     return;
   }
 
+  if(empty($label))
+  {
+    $label = dmString::humanize($name);
+  }
+
+  $label = __($label);
+
   if($form->getObject()->getTable()->isI18nColumn($name))
   {
     $label = _media('dmCore/images/flag-16/'.$sf_user->getCulture().'.png')

@@ -33,8 +33,6 @@ default:
                                         # More configuration : please use ProjectConfiguration::configureDoctrine method
     identifier_fields:    [ name, title, slug, subject, id ] # Fields used to represent a record with a string
     cache_enabled:        true          # (RECOMMENDED) Use doctrine query cache. No side effect, automatic cache invalidation )
-    cache_result_enabled: false         # Use doctrine result cache where query->dmCache() is called
-    cache_result_enabled_default: false # Use doctrine result cache on every query ( performance gain, possible issues )
     
   backup:                               # keep a copy of files modified by Dm code editors
     enabled:              true          # (RECOMMENDED) enable backup
@@ -52,6 +50,7 @@ default:
   security:
     remember_cookie_name:               # defaults to "dm_remember_%project_name%"
     remember_key_expiration_age:        # defaults to 15 days
+    version_check:        true          # verifies regularly if you are using the latest Diem version.
 
   locks:                                # whether to enable real time resource locks
     enabled:              <?php echo sfConfig::get('sf_debug') ? "false\n" : "true\n"; ?>
@@ -60,6 +59,9 @@ default:
   performance:
     enable_mailer:        true          # Set to false to disable Swift loading: significant performance boost.
                                         # If set to false, you can enable the mailer on demand with dm::enableMailer()
+    page_cache:                         # Will cache entire pages and serve them very fast.
+      enabled:            false         # Enable the page cache for all pages
+      life_time:          86400         # Server-side lifetime of the cache in seconds (86400 seconds equals one day)
  
 ###### dm internal config ######
   

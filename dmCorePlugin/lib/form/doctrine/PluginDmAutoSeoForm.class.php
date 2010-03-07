@@ -22,12 +22,12 @@ abstract class PluginDmAutoSeoForm extends BaseDmAutoSeoForm
     $this->widgetSchema['description'] = new sfWidgetFormTextarea(array(), array('rows' =>2));
     
     $this->widgetSchema->setHelps(array(
-      'slug' => 'The page url, without domain name. Must be unique. If the slug does not start with a /, the parent\'s page slug will be added.',
-      'title' => 'The page title, without '.self::$serviceContainer->getService('helper')->link('@dm_config_panel')->anchor('dm_setting_group_seo')->text('prefix & suffix').'. Should be unique.',
-      'name' => 'The page name is used by links to this page. Should be unique.',
-      'h1' => 'Assign first header here or let it blank to let the webdesigner choose it. Should be unique.',
+      'slug' => 'The page url, without domain name. Must be unique. If the slug does not start with a \'/\', the parent slug is added.',
+      'title' => 'The page title, without prefix nor suffix. Should be unique.',
+      'name' => 'The page name, used by links to this page. Should be unique.',
+      'h1' => 'Assign first header here or let it blank to let the designer choose it. Should be unique.',
       'description' => 'The page description meta, frequently displayed in search engines result page.',
-      'keywords' => 'Never used by search-engine. Provide meta informations to the page.'
+      'keywords' => 'Provides additional meta informations to the page. Also used by Diem internal search engine.'
     ));
 
     $this->mergePostValidator(new sfValidatorCallback(array('callback' => array($this, 'checkRules'))));

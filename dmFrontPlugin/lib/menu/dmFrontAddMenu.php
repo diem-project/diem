@@ -36,19 +36,25 @@ class dmFrontAddMenu extends dmMenu
   
   public function addWidgets()
   {
+    $moduleManager = $this->serviceContainer->getService('module_manager');
+    
     foreach($this->serviceContainer->get('widget_type_manager')->getWidgetTypes() as $space => $widgetTypes)
     {
-      $spaceMenu = $this->addChild(
-      ($module = $this->serviceContainer->getService('module_manager')->getModuleOrNull($space))
+      $spaceName = ($module = $moduleManager->getModuleOrNull($space))
       ? $module->getName()
-      : dmString::humanize(str_replace('dmWidget', '', $space))
-      )
+      : dmString::humanize(str_replace('dmWidget', '', $space));
+      
+      $spaceMenu = $this->addChild($space)
+      ->label($this->getI18n()->__($spaceName))
       ->ulClass('clearfix level2')
       ->liClass('dm_droppable_widgets');
       
       foreach($widgetTypes as $key => $widgetType)
       {
-        $spaceMenu->addChild($widgetType->getName())->setOption('widget_type', $widgetType);
+        $spaceMenu
+        ->addChild($widgetType->getName())
+        ->label($this->getI18n()->__($widgetType->getName()))
+        ->setOption('widget_type', $widgetType);
       }
 
       if(!$spaceMenu->hasChildren())
@@ -80,7 +86,7 @@ class dmFrontAddMenu extends dmMenu
     }
     elseif($this->getOption('root_add'))
     {
-      return '<a class="tipable s24block s24_add widget24" title="'.$this->__('Add widgets').'"</a>';
+      return '<a class="tipable s24block s24_add widget24" title="'.$this->__('Add widgets').'"></a>';
     }
     
     return '<a>'.strtolower(parent::renderLabel()).'</a>';

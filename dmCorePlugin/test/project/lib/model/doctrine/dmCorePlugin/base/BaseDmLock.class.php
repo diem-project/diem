@@ -40,7 +40,7 @@
  * @package    retest
  * @subpackage model
  * @author     Your name here
- * @version    SVN: $Id: Builder.php 7021 2010-01-12 20:39:49Z lsmith $
+ * @version    SVN: $Id: Builder.php 7200 2010-02-21 09:37:37Z beberlei $
  */
 abstract class BaseDmLock extends myDoctrineRecord
 {

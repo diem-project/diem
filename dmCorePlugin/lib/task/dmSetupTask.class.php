@@ -41,7 +41,7 @@ EOF;
     if (!$this->isProjectLocked() && $this->projectHasModels())
     {
       // don't use cache:clear task because it changes current app & environment
-      sfToolkit::clearDirectory(sfConfig::get('sf_cache_dir'));
+      @sfToolkit::clearDirectory(sfConfig::get('sf_cache_dir'));
       
       if (false && !$options['clear-db'])
       {

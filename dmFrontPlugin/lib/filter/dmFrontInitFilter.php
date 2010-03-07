@@ -13,24 +13,66 @@ class dmFrontInitFilter extends dmInitFilter
     
     $this->redirectNoScriptName();
 
-    $this->saveApplicationUrl();
+    $this->enablePageCache();
 
-    $this->loadAssetConfig();
-
-    // ajax calls use dm_cpi or page_id request parameter to set a page
-    if($pageId = $this->request->getParameter('dm_cpi', $this->request->getParameter('page_id')))
+    if(!sfConfig::get('dm_internal_page_cached'))
     {
-      if (!$page = dmDb::table('DmPage')->findOneByIdWithI18n($pageId))
+      $this->loadAssetConfig();
+
+      // ajax calls use dm_cpi or page_id request parameter to set a page
+      if($pageId = $this->request->getParameter('dm_cpi', $this->request->getParameter('page_id')))
       {
-        throw new dmException(sprintf('There is no page with id %s', $pageId));
+        if (!$page = dmDb::table('DmPage')->findOneByIdWithI18n($pageId))
+        {
+          throw new dmException(sprintf('There is no page with id %s', $pageId));
+        }
+
+        $this->context->setPage($page);
       }
-      
-      $this->context->setPage($page);
     }
     
     $filterChain->execute();
 
-    $this->replaceH1();
+    if(!sfConfig::get('dm_internal_page_cached'))
+    {
+      $this->saveApplicationUrl();
+
+      $this->replaceH1();
+    }
+  }
+
+  protected function enablePageCache()
+  {
+    if(!sfConfig::get('sf_cache'))
+    {
+      return;
+    }
+    
+    $pageCacheConfig = sfConfig::get('dm_performance_page_cache');
+
+    if($pageCacheConfig && $pageCacheConfig['enabled'] && $viewCacheManager = $this->context->getViewCacheManager())
+    {
+      if($this->shouldEnablePageCache())
+      {
+        $viewCacheManager->addCache('dmFront', 'page', array(
+          'withLayout'      => true,
+          'lifeTime'        => $pageCacheConfig['life_time'],
+          'clientLifeTime'  => $pageCacheConfig['life_time'],
+          'contextual'      => false, // useless for page cache, only used for partials & components
+        ));
+
+        sfConfig::set('dm_internal_page_cached', $viewCacheManager->has($viewCacheManager->getCurrentCacheKey()));
+      }
+    }
+  }
+
+  protected function shouldEnablePageCache()
+  {
+    return $this->context->getEventDispatcher()->filter(
+      new sfEvent($this, 'dm.page_cache.enable', array('context' => $this->context)),
+      // by default, the page is cached only for non-authenticated users
+      !$this->user->getAttribute('user_id', null, 'dmSecurityUser')
+    )->getReturnValue();
   }
 
   protected function replaceH1()

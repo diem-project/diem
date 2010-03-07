@@ -31,30 +31,56 @@ class dmSearchEngineActions extends dmAdminBaseActions
 
   public function executeReload()
   {
-    $filesystem = $this->context->getFilesystem();
-    
-    if (!$filesystem->sf('dm:search-update'))
+    try
+    {
+      $this->doReload();
+      $this->getUser()->logInfo($this->getI18n()->__('The search index has been updated'));
+    }
+    catch(dmException $e)
     {
       $this->getUser()->logError($this->getI18n()->__('Something went wrong when updating the search index'));
+      $this->getUser()->logAlert($e->getMessage());
+      $this->getUser()->logError('Try running php symfony dm:search-update --env=dev in a terminal,'."\n".' and check permissions in '.$this->getService('search_engine')->getOption('dir'));
+    }
+
+    return $this->redirect('dmSearchEngine/index');
+  }
+
+  protected function doReload()
+  {
+    if(dmConfig::canSystemCall())
+    {
+      $filesystem = $this->getService('filesystem');
       
-      if (sfConfig::get('sf_debug'))
+      if(!$filesystem->sf('dm:search-update'))
       {
-        $this->getUser()->logAlert(implode("\n", array(
+        throw new dmException(implode("\n", array(
           $filesystem->getLastExec('command'),
           $filesystem->getLastExec('output'),
           'return code : '.$filesystem->getLastExec('return')
         )));
-        
-        $dir = $this->getService('search_engine')->getOption('dir');
-        $this->getUser()->logError('Try running php symfony dm:search-update --env=dev in a terminal,'."\n".' and check permissions in '.$dir);
       }
     }
     else
     {
-      $this->getUser()->logInfo($this->getI18n()->__('The search index has been updated'));
-    }
+      $browser = $this->getService('web_browser');
+      $url = $this->getHelper()->link('app:front/+/dmFront/reloadSearchIndex')->getHref();
+      
+      touch(sfConfig::get('sf_cache_dir').'/dm/search_index_'.time());
+      $browser->get($url);
 
-    return $this->redirect('dmSearchEngine/index');
+      if(200 != $browser->getResponseCode())
+      {
+        throw new dmException('The reload search index call returned the code '.$browser->getResponseCode());
+      }
+      
+      $response = $browser->getResponseText();
+
+      if('ok' != $response)
+      {
+        throw new dmException('An error occured: '.$response);
+      }
+    }
   }
 
   protected function getSearchPager($query)
