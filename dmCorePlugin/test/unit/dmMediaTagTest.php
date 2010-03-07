@@ -15,6 +15,7 @@ $user->setCulture('en');
 dm::loadHelpers(array('Dm'));
 
 $imageFullPath = $deletables[] = $theme->getFullPath('images/testImage.jpg');
+$helper->get('filesystem')->mkdir(dirname($imageFullPath));
 copy(
 dmOs::join(sfConfig::get('dm_core_dir'), 'data/image/defaultMedia.jpg'),
 $imageFullPath
