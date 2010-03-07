@@ -35,9 +35,21 @@ class dmWidgetNavigationMenuView extends dmWidgetPluginView
   
   protected function doRender()
   {
-    $vars = $this->getViewVars();
+    if ($this->isCachable() && $cache = $this->getCache())
+    {
+      return $cache;
+    }
     
-    return $vars['menu']->render();
+    $vars = $this->getViewVars();
+
+    $html = $vars['menu']->render();
+
+    if ($this->isCachable())
+    {
+      $this->setCache($html);
+    }
+    
+    return $html;
   }
 
 }
