@@ -190,7 +190,7 @@ $.widget('ui.dmWidget', {
     
     this.element
     .attr('class', $('>div:first', '<div>'+html+'</div>').attr('class'))
-    .find('>div.dm_widget_inner')
+    .find('div.dm_widget_inner')
     .html($('>div.dm_widget_inner', html).html())
     .attr('class', $('>div.dm_widget_inner', html).attr('class'))
     .end()
