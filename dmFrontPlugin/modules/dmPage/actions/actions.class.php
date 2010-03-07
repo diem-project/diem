@@ -105,6 +105,8 @@ class dmPageActions extends dmFrontBaseActions
     }
     
     $this->parentSlugsJson = json_encode($parentSlugs);
+
+    $this->transliterationJson = json_encode(sfConfig::get('dm_string_transliteration'));
     
     return $this->renderAsync(array(
       'js'   => array('front.pageAddForm'),

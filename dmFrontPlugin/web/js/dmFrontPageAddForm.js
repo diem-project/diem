@@ -23,6 +23,20 @@
       self.$slug = $('input#dm_page_front_new_form_slug', self.element).attr('disabled', self.autoSlug);
 
       self.parentSlugs = $.parseJSON($('div.parent_slugs', self.element).text());
+      self.transliteration = $.extend(
+        $.parseJSON($('div.transliteration', self.element).text()),
+        {
+          '·': '-',
+          '_': '-',
+          ',': '-',
+          ':': '-'
+        }
+      );
+      self.transliterationSources = new Array();
+      for (var i in self.transliteration)
+      {
+        self.transliterationSources.push(i);
+      }
       
       self.$form = $('form', self.element).dmAjaxForm({
         beforeSubmit: function(data)
@@ -81,18 +95,21 @@
     
     slugify: function(str)
     {
+      var self = this;
+      
       if(!str) return '';
-//      str = str.replace(/^\s+|\s+$/g, ''); // trim
+      
       str = str.toLowerCase();
 
-      // remove accents, swap ñ for n, etc
-      var from = "àáäâèéëêìíïîòóöôùúüûñç·_,:;", to = "aaaaeeeeiiiioooouuuunc-----";
-      for (var i = 0, l = from.length; i < l; i++) 
+      str = str.replace(new RegExp(self.transliterationSources.join("|"), "g"), function(source)
       {
-        str = str.replace(new RegExp(from[i], "g"), to[i]);
-      }
+        return self.transliteration[source];
+      });
       
-      str = str.replace(/\s+|-{2,}/g, '-').replace(/[^a-zA-Z0-9-/]/g, '');
+      str = str
+      .replace(/\s+|\.|_|\,|;|:/g, '-')
+      .replace(/[^a-zA-Z0-9-/]/g, '')
+      .replace(/-{2,}/g, '-');
       return str;
     }
     
