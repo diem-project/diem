@@ -103,7 +103,7 @@ class dmForm extends sfFormSymfony
     $this->getFormFieldSchema()->render($attributes).
     sprintf('<li class="dm_form_element"><label>%s</label>%s</li>',
     $this->__('Validate'),
-    $this->renderSubmitTag($this->__('Validate'))
+    $this->renderSubmitTag($this->__('Send'))
     ).
     '</ul>'.
     $this->close();

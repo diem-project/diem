@@ -72,6 +72,8 @@ class dmPageTreeWatcher extends dmConfigurable
     {
       $this->modifiedTables[$model] = $table;
     }
+
+    return $this;
   }
 
   public function listenToControllerRedirectionEvent(sfEvent $event)
