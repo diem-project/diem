@@ -65,7 +65,7 @@ class dmFrontPageEditHelper extends dmFrontPageBaseHelper
         $widgetPublicName = $widget['module'].'.'.$widget['action'];
       }
       
-      $title = $this->i18n->__('Edit this %1%', array('%1%' => $this->i18n->__(dmString::lcfirst($widgetPublicName))));
+      $title = $this->i18n->__('Edit this %1%', array('%1%' => $this->i18n->__($widgetPublicName)));
       
       $html .= '<a class="dm dm_widget_edit" title="'.$title.'"></a>';
     }
@@ -80,7 +80,7 @@ class dmFrontPageEditHelper extends dmFrontPageBaseHelper
         if($module->hasModel())
         {
           $html .= sprintf('<a class="dm dm_widget_record_edit" title="%s"></a>',
-            $this->i18n->__('Edit this %1%', array('%1%' => $this->i18n->__(dmString::lcfirst($module->getName())))),
+            $this->i18n->__('Edit this %1%', array('%1%' => $this->i18n->__($module->getName()))),
             $widget['id']
           );
         }
