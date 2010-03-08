@@ -182,6 +182,10 @@ parameters:
 
   data_load.class:            dmDataLoad            # Responsible for loading default data in the project
 
+  markdown_translator.class:  dmMarkdownTranslator  # Responsible for providing the markdown editor translated strings
+  markdown_translator.options:
+    messages:                 [ Heading 2, Heading 3, Heading 4, Bold, Italic, Bulleted List, Numeric List, Link, Enlarge the editor ]
+
 services:
 
   text_diff:
@@ -443,3 +447,8 @@ services:
     class:                    %data_load.class%
     shared:                   false
     arguments:                [ @dispatcher, @i18n ]
+
+  markdown_translator:
+    class:                    %markdown_translator.class%
+    shared:                   false
+    arguments:                [ @i18n, %markdown_translator.options% ]

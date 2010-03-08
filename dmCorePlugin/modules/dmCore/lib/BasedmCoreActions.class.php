@@ -179,4 +179,13 @@ class BasedmCoreActions extends dmBaseActions
     return $this->renderText($this->getService('markdown')->toHtml($request->getParameter('text')));
   }
 
+  public function executeGetMarkdownTranslations(dmWebRequest $request)
+  {
+    if($culture = $request->getParameter('culture'))
+    {
+      $this->getUser()->setCulture($culture);
+    }
+    
+    return $this->renderJson($this->getService('markdown_translator')->execute());
+  }
 }

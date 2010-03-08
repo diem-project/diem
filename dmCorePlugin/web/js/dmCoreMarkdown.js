@@ -7,6 +7,8 @@
     {
       this.markitup();
 
+      this.translateControls();
+
       this.selection = null;
 
       this.drop();
@@ -36,6 +38,42 @@
   markitup: function()
   {
     this.element.markItUp(dmMarkitupMarkdown);
+  },
+
+  translateControls: function()
+  {
+    if($.dm.ctrl.options.culture == "en")
+    {
+      return;
+    }
+    
+    var self = this;
+
+    setTimeout(function()
+    {
+      $.ajax({
+        url:      $.dm.ctrl.getHref('+/dmCore/getMarkdownTranslations'),
+        data:     { culture: $.dm.ctrl.options.culture },
+        cache:    true,
+        dataType: 'json',
+        success:  function(translations)
+        {
+          var messages = new Array();
+          for (var i in translations)
+          {
+            messages.push(i);
+          }
+
+          self.element.parent().parent().find('div.markItUpHeader a').each(function()
+          {
+            $(this).attr('title', $(this).tipsyTitle().replace(new RegExp(messages.join("|"), "g"), function(message)
+            {
+              return translations[message];
+            }));
+          });
+        }
+      });
+    }, 400);
   },
   
   drop: function()

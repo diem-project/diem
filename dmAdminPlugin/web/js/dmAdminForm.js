@@ -71,7 +71,7 @@
         });
 
         $container.find('div.markItUpHeader ul').append(
-          $('<li class="markitup_full_screen"><a title="Full Screen">Full Screen</a></li>')
+          $('<li class="markitup_full_screen"><a title="Enlarge the editor">+</a></li>')
           .click(function() {
             $container.toggleClass('dm_markdown_full_screen');
 
