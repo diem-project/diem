@@ -3,6 +3,7 @@
 class dmTableTag extends dmHtmlTag
 {
   protected
+  $helper,
   $head,
   $body,
   $foot;
@@ -10,14 +11,16 @@ class dmTableTag extends dmHtmlTag
   protected static
   $toggler;
   
-  public function __construct()
+  public function __construct(dmHelper $helper)
   {
+    $this->helper = $helper;
+    
     $this->initialize();
   }
   
   protected function initialize(array $options = array())
   {
-    parent:: initialize($options);
+    parent::initialize($options);
     
     $this->head = $this->body = $this->foot = array();
   }
@@ -29,7 +32,11 @@ class dmTableTag extends dmHtmlTag
   
   public function render()
   {
-    return '<table>'.$this->renderHead().$this->renderFoot().$this->renderBody().'</table>';
+    return $this->helper->tag('table', $this->options,
+      $this->renderHead().
+      $this->renderFoot().
+      $this->renderBody()
+    );
   }
   
   public function renderHead()

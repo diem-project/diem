@@ -281,13 +281,13 @@ class dmHelper extends dmConfigurable
     return $this->media($source);
   }
   
-  public function table()
+  public function table($opt = null)
   {
-    return $this->serviceContainer->get('table_tag');
+    return $this->serviceContainer->get('table_tag')->set($opt);
   }
-  public function £table()
+  public function £table($opt = null)
   {
-    return $this->table();
+    return $this->table($opt);
   }
   
   public function getStylesheetWebPath($asset)

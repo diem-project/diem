@@ -262,6 +262,7 @@ services:
   table_tag:
     class:                    %table_tag.class%
     shared:                   false
+    arguments:                [ @helper ]
 
   search_engine:
     class:                    %search_engine.class%

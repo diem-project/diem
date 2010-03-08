@@ -32,13 +32,13 @@ function £media($source)
 /**
  * @return dmTableTag
  */
-function _table()
+function _table($opt = null)
 {
-  return sfContext::getInstance()->getHelper()->table();
+  return sfContext::getInstance()->getHelper()->table($opt);
 }
-function £table()
+function £table($opt = null)
 {
-  return _table();
+  return _table($opt);
 }
 
 function _open($name, array $opt = array())
