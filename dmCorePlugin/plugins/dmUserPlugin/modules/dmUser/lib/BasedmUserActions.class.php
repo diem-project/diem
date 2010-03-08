@@ -16,7 +16,7 @@ class BasedmUserActions extends myFrontModuleActions
       {
         $this->getUser()->signin($form->getValue('user'), $form->getValue('remember'));
 
-        $this->redirectSignedInUser();
+        $this->redirectSignedInUser($request);
       }
     }
   }
@@ -25,9 +25,9 @@ class BasedmUserActions extends myFrontModuleActions
    * Override this method to redirect the user to some page
    * just after he(she) successfully signed in.
    */
-  protected function redirectSignedInUser()
+  protected function redirectSignedInUser(dmWebRequest $request)
   {
-    $this->redirect($request->getReferer());
+    $this->redirect($request->getReferer($request));
   }
 
   /**
@@ -57,7 +57,7 @@ class BasedmUserActions extends myFrontModuleActions
 
         $this->getUser()->signin($user);
 
-        $this->redirectRegisteredUser();
+        $this->redirectRegisteredUser($request);
       }
     }
   }
@@ -66,9 +66,9 @@ class BasedmUserActions extends myFrontModuleActions
    * Override this method to redirect the user to some page
    * just after he(she) successfully registered.
    */
-  protected function redirectRegisteredUser()
+  protected function redirectRegisteredUser(dmWebRequest $request)
   {
-    $this->redirect($request->getReferer());
+    $this->redirect($request->getReferer($request));
   }
 
   public function executeSignin(dmWebRequest $request)
