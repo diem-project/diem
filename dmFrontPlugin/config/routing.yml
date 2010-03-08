@@ -11,7 +11,7 @@ toAdmin:
 
 signin:
   url:          /security/signin
-  params:       { module: dmUser, action: signin }
+  params:       { module: dmFront, action: page, dm_page: main/signin }
 
 signout:
   url:          /security/signout

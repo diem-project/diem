@@ -62,7 +62,7 @@ class PluginDmPageTable extends myDoctrineTable
         'action' => 'signin',
         'name' => $this->tryToTranslate('Signin'),
         'title' => $this->tryToTranslate('Signin'),
-        'slug' => 'signin'
+        'slug' => 'security/signin'
       ));
       
       $signinPage->getNode()->insertAsLastChildOf($root);
