@@ -1,5 +1,11 @@
 <?php
 
+if($sf_user->isAuthenticated())
+{
+  echo _tag('p', __('You are authenticated as %username%', array('%username%' => $sf_user->getUsername())));
+  return;
+}
+
 echo $form->open('action=@signin .dm_signin_form');
 
 echo _tag('ul',

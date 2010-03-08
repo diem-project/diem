@@ -2,7 +2,7 @@
 
 if($sf_user->isAuthenticated())
 {
-  echo _tag('p', __('You are logged in as %username%', array('%username%' => $sf_user->getUsername())));
+  echo _tag('p', __('You are authenticated as %username%', array('%username%' => $sf_user->getUsername())));
   return;
 }
 
