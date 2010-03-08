@@ -23,7 +23,7 @@ class dmSearchEngineActions extends dmAdminBaseActions
     {
       $this->shellUser = dmConfig::canSystemCall() ? exec('whoami') : 'www-data';
       
-      $this->phpCli = sfToolkit::getPhpCli();
+      $this->phpCli = dmConfig::canSystemCall() ? sfToolkit::getPhpCli() : '/path/to/php';
       
       $this->rootDir = sfConfig::get('sf_root_dir');
     }

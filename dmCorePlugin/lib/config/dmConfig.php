@@ -189,12 +189,16 @@ class dmConfig
     {
       try
       {
-        return (bool) sfToolkit::getPhpCli();
+        $canSystemCall = (bool) sfToolkit::getPhpCli();
       }
       catch(sfException $e)
       {
-        return false;
+        $canSystemCall = false;
       }
+    }
+    else
+    {
+      $canSystemCall = false;
     }
 
     return false;
