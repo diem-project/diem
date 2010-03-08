@@ -16,9 +16,18 @@ class BasedmUserActions extends myFrontModuleActions
       {
         $this->getUser()->signin($form->getValue('user'), $form->getValue('remember'));
 
-        return $this->redirect($request->getReferer());
+        $this->redirectSignedInUser();
       }
     }
+  }
+
+  /**
+   * Override this method to redirect the user to some page
+   * just after he(she) successfully signed in.
+   */
+  protected function redirectSignedInUser()
+  {
+    $this->redirect($request->getReferer());
   }
 
   /**
@@ -30,15 +39,36 @@ class BasedmUserActions extends myFrontModuleActions
 
     if ($request->isMethod('post') && $request->hasParameter($form->getName()))
     {
-      if ($form->bindAndValid($request))
+      $data = $request->getParameter($form->getName());
+      
+      if($form->isCaptchaEnabled())
+      {
+        $data = array_merge($data, array('captcha' => array(
+          'recaptcha_challenge_field' => $request->getParameter('recaptcha_challenge_field'),
+          'recaptcha_response_field'  => $request->getParameter('recaptcha_response_field'),
+        )));
+      }
+
+      $form->bind($data, $request->getFiles($form->getName()));
+      
+      if ($form->isValid())
       {
         $user = $form->save();
 
         $this->getUser()->signin($user);
 
-        return $this->redirect($request->getReferer());
+        $this->redirectRegisteredUser();
       }
     }
+  }
+
+  /**
+   * Override this method to redirect the user to some page
+   * just after he(she) successfully registered.
+   */
+  protected function redirectRegisteredUser()
+  {
+    $this->redirect($request->getReferer());
   }
 
   public function executeSignin(dmWebRequest $request)
