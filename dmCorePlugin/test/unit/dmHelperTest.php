@@ -4,7 +4,7 @@ require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
 $helper = new dmUnitTestHelper();
 $helper->boot('front');
 
-$t = new lime_test(35);
+$t = new lime_test(36);
 
 dm::loadHelpers(array('Dm', 'I18N'));
 
@@ -82,10 +82,13 @@ $div = '<div></div>';
 $t->is(£('div lang='.$helper->get('user')->getCulture()), $div, $div);
 
 $table = '<table><thead><tr><th>Header 1</th><th>Header 2</th></tr></thead></table>';
-$t->is(£table()->head('Header 1', 'Header 2')->render(), $table, $table);
+$t->is(_table()->head('Header 1', 'Header 2')->render(), $table, $table);
+
+$table = '<table><thead><tr><th>Header 1</th><th>Header 2</th></tr></thead><tbody><tr><td>Value 1</td><td>Value 2</td></tr><tr><td>Value 3</td><td>Value 4</td></tr></tbody></table>';
+$t->is(£table()->head('Header 1', 'Header 2')->body('Value 1', 'Value 2')->body('Value 3', 'Value 4')->render(), $table, $table);
 
 $table = '<table><thead><tr><th>Header 1</th><th>Header 2</th></tr></thead><tbody><tr class="even"><td>Value 1</td><td>Value 2</td></tr><tr class="odd"><td>Value 3</td><td>Value 4</td></tr></tbody></table>';
-$t->is(£table()->head('Header 1', 'Header 2')->body('Value 1', 'Value 2')->body('Value 3', 'Value 4')->render(), $table, $table);
+$t->is(£table()->useStrip(true)->head('Header 1', 'Header 2')->body('Value 1', 'Value 2')->body('Value 3', 'Value 4')->render(), $table, $table);
 
 $ctrlFullPath = dmOs::join(sfConfig::get('sf_web_dir'), 'dmCorePlugin/js/dmCoreCtrl.js');
 $t->is($helper->get('helper')->getJavascriptFullPath('core.ctrl'), $ctrlFullPath, 'core ctrl is in '.$ctrlFullPath);

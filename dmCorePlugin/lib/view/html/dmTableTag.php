@@ -7,16 +7,19 @@ class dmTableTag extends dmHtmlTag
   $head,
   $body,
   $foot,
-  $useStrip = false;
-  
-  protected static
-  $stripper;
+  $useStrip = false,
+  $stripCount;
   
   public function __construct(dmHelper $helper)
   {
     $this->helper = $helper;
     
     $this->initialize();
+  }
+
+  public function getDefaultOptions()
+  {
+    return array();
   }
   
   protected function initialize(array $options = array())
@@ -74,7 +77,7 @@ class dmTableTag extends dmHtmlTag
       return '';
     }
     
-    self::$stripper = 0;
+    $this->stripCount = 0;
     
     $html = '<'.$partTag.'>';
 
@@ -90,9 +93,9 @@ class dmTableTag extends dmHtmlTag
   
   protected function renderRow(array $row, $cellTag)
   {
-    if ($this->useStrip)
+    if ($this->useStrip && 'td' === $cellTag)
     {
-      $open = '<tr class="'.((++self::$stripper%2) ? 'even' : 'odd').'">';
+      $open = '<tr class="'.((++$this->stripCount % 2) ? 'even' : 'odd').'">';
     }
     else
     {
