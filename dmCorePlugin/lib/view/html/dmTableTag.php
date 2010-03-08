@@ -6,10 +6,11 @@ class dmTableTag extends dmHtmlTag
   $helper,
   $head,
   $body,
-  $foot;
+  $foot,
+  $useStrip = false;
   
   protected static
-  $toggler;
+  $stripper;
   
   public function __construct(dmHelper $helper)
   {
@@ -23,6 +24,18 @@ class dmTableTag extends dmHtmlTag
     parent::initialize($options);
     
     $this->head = $this->body = $this->foot = array();
+  }
+
+  public function useStrip($value = null)
+  {
+    if (null === $value)
+    {
+      return $this->useStrip;
+    }
+
+    $this->useStrip = (bool) $value;
+
+    return $this;
   }
   
   public function clearBody()
@@ -46,7 +59,7 @@ class dmTableTag extends dmHtmlTag
   
   public function renderBody()
   {
-    return $this->renderPart($this->body, 'tbody', 'td', array('toggle' => true));
+    return $this->renderPart($this->body, 'tbody', 'td');
   }
   
   public function renderFoot()
@@ -54,34 +67,32 @@ class dmTableTag extends dmHtmlTag
     return $this->renderPart($this->foot, 'tfoot', 'th');
   }
   
-  protected function renderPart(array $rows, $partTag, $cellTag, array $options = array())
+  protected function renderPart(array $rows, $partTag, $cellTag)
   {
     if (empty($rows))
     {
       return '';
     }
     
-    $options = array_merge(array(
-      'toggle' => false
-    ), $options);
-    
-    self::$toggler = 0;
+    self::$stripper = 0;
     
     $html = '<'.$partTag.'>';
+
     foreach($rows as $row)
     {
-      $html .= $this->renderRow($row, $cellTag, $options);
+      $html .= $this->renderRow($row, $cellTag);
     }
+    
     $html .= '</'.$partTag.'>';
     
     return $html;
   }
   
-  protected function renderRow(array $row, $cellTag, array $options)
+  protected function renderRow(array $row, $cellTag)
   {
-    if ($options['toggle'])
+    if ($this->useStrip)
     {
-      $open = '<tr class="'.((++self::$toggler%2) ? 'even' : 'odd').'">';
+      $open = '<tr class="'.((++self::$stripper%2) ? 'even' : 'odd').'">';
     }
     else
     {
@@ -94,18 +105,21 @@ class dmTableTag extends dmHtmlTag
   public function head()
   {
     $this->head[] = $this->validateRowArgs(func_get_args());
+
     return $this;
   }
 
   public function body()
   {
     $this->body[] = $this->validateRowArgs(func_get_args());
+
     return $this;
   }
 
   public function foot()
   {
     $this->foot[] = $this->validateRowArgs(func_get_args());
+    
     return $this;
   }
   
