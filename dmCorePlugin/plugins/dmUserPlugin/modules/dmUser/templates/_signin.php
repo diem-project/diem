@@ -1,6 +1,6 @@
 <?php
 
-echo $form->open('.dm_signin_form');
+echo $form->open('action=@signin .dm_signin_form');
 
 echo _tag('ul',
 

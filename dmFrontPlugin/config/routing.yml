@@ -9,6 +9,10 @@ toAdmin:
   url:          /admin
   params:       { module: dmFront, action: toAdmin }
 
+signin:
+  url:          /security/signin
+  params:       { module: dmUser, action: signin }
+
 signout:
   url:          /security/signout
   params:       { module: dmUser, action: signout }
