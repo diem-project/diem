@@ -40,12 +40,26 @@ class dmPageTreeWatcher extends dmConfigurable
     $this->dispatcher->connect('dm.controller.redirect', array($this, 'listenToControllerRedirectionEvent'));
     
     $this->dispatcher->connect('dm.record.modification', array($this, 'listenToRecordModificationEvent'));
+
+    $this->dispatcher->connect('dm.record.page_missing', array($this, 'listenToRecordPageMissingEvent'));
+  }
+
+  public function listenToRecordPageMissingEvent(sfEvent $event)
+  {
+    $this->addModifiedRecord($event->getSubject())->update();
+
+    $event->setReturnValue(dmDb::table('DmPage')->findOneByRecordWithI18n($event->getSubject()));
+
+    return true;
   }
   
   public function listenToRecordModificationEvent(sfEvent $event)
   {
-    $record = $event->getSubject();
-    
+    $this->addModifiedRecord($event->getSubject());
+  }
+
+  public function addModifiedRecord(dmDoctrineRecord $record)
+  {
     if ($record instanceof DmAutoSeo)
     {
       $table = $record->getTargetDmModule()->getTable();
@@ -54,7 +68,7 @@ class dmPageTreeWatcher extends dmConfigurable
     {
       $table = $record->getTable();
     }
-    
+
     if ($table instanceof dmDoctrineTable)
     {
       if (!isset($this->modifiedTables[$table->getComponentName()]) && $table->interactsWithPageTree())
@@ -62,6 +76,8 @@ class dmPageTreeWatcher extends dmConfigurable
         $this->addModifiedTable($table);
       }
     }
+
+    return $this;
   }
   
   public function addModifiedTable(dmDoctrineTable $table)
@@ -102,7 +118,7 @@ class dmPageTreeWatcher extends dmConfigurable
       $this->synchronizeSeo($modifiedModules);
     }
 
-    $this->initialize();
+    $this->reset();
   }
 
   public function getModifiedModules()

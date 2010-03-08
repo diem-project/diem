@@ -301,7 +301,22 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
       throw new dmRecordException(sprintf('record %s has no page because module %s has no page', get_class($this), $this->getDmModule()));
     }
 
-    return dmDb::table('DmPage')->findOneByRecordWithI18n($this);
+    if($page = dmDb::table('DmPage')->findOneByRecordWithI18n($this))
+    {
+      return $page;
+    }
+
+    // The record has no page yet, let's try to create it right now
+    $event = new sfEvent($this, 'dm.record.page_missing', array());
+    
+    $this->getEventDispatcher()->notifyUntil($event);
+
+    if($event->isProcessed())
+    {
+      $page = $event->getReturnValue();
+    }
+    
+    return $page;
   }
 
   /**

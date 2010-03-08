@@ -183,6 +183,7 @@ class dmSeoSynchronizer
             $modifiedFields['lang'] = $this->culture;
             $translation = new DmPageTranslation;
             $translation->fromArray($modifiedFields);
+
             $conn->unitOfWork->processSingleInsert($translation);
           }
           else
@@ -259,7 +260,7 @@ class dmSeoSynchronizer
   {
     if ($this->shouldUpdatePageIsActiveForModule($module))
     {
-      if ($page['is_active'] != $record->get('is_active'))
+      if (!$page['exist'] || $page['is_active'] != $record->get('is_active'))
       {
         $modifiedFields['is_active'] = $record->get('is_active');
       }

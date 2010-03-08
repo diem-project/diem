@@ -9,7 +9,7 @@ class dmFrontLinkTagRecord extends dmFrontLinkTagPage
   {
     $this->record = $this->resource->getSubject();
     
-    $this->resource->setSubject($this->getRecordPage($this->record));
+    $this->resource->setSubject($this->record->getDmPage());
 
     if (!$this->resource->getSubject() instanceof DmPage)
     {
@@ -17,23 +17,6 @@ class dmFrontLinkTagRecord extends dmFrontLinkTagPage
     }
     
     parent::initialize($options);
-  }
-
-  protected function getRecordPage(dmDoctrineRecord $record)
-  {
-    $page = dmDb::table('DmPage')->findOneByRecordWithI18n($record);
-
-    if($page)
-    {
-      return $page;
-    }
-
-    // The record has no page yet, let's try to create it right now
-    sfContext::getInstance()->get('page_tree_watcher')
-    ->addModifiedTable($record->getTable())
-    ->update();
-
-    return dmDb::table('DmPage')->findOneByRecordWithI18n($record);
   }
 
 }
