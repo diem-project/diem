@@ -36,7 +36,7 @@ $b
   'code' => 200
 ))
 ->isPageModuleAction('main/signin')
-->has('.dm_signin_form input.submit')
+->has('.dm_signin_form input.submit')->with('response')->debug()
 ->info('Go to unsecured page')
 ->get('page1')
 ->checks(array(

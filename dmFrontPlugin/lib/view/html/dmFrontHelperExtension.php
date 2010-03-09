@@ -32,7 +32,7 @@ class dmFrontHelperExtension
   /**
    * Render a widget
    * ->getWidget('main', 'header') //renders your main/header widget
-   * ->getWidget('dmWidgetContent', 'title', array('text' => 'Blah')) //renders a Diem title widget
+   * ->getWidget('dmWidgetContent', 'title', array('text' => 'Blah', 'tag' => 'h2')) //renders a Diem title widget
    *
    * @return (string) the HTML produced by the widget
    */

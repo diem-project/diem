@@ -41,7 +41,7 @@ abstract class BaseDmMailTemplateForm extends BaseFormDoctrine
     else
     {
       $this->mergeI18nForm();
-		}
+    }
 
     $this->widgetSchema->setNameFormat('dm_mail_template[%s]');
 

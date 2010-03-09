@@ -449,11 +449,11 @@ class myTestProjectBuilder
 
   protected function addSigninForm()
   { 
-    $this->createWidget(
-      'dmUser/form',
-      array(),
-      dmDb::table('DmPage')->findOneByModuleAndAction('main', 'signin')->PageView->Area->Zones[0]
-    )->save();
+//    $this->createWidget(
+//      'dmUser/form',
+//      array(),
+//      dmDb::table('DmPage')->findOneByModuleAndAction('main', 'signin')->PageView->Area->Zones[0]
+//    )->save();
   }
 
   protected function createWidget($moduleAction, array $data, DmZone $zone)
