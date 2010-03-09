@@ -44,6 +44,12 @@ class dmFrontPageEditHelper extends dmFrontPageBaseHelper
 
   public function renderWidget(array $widget)
   {
+    //it the widget is called programmatically, it has no id and can not be edited
+    if(!isset($widget['id']))
+    {
+      return parent::renderWidget($widget);
+    }
+
     list($widgetWrapClass, $widgetInnerClass) = $this->getWidgetContainerClasses($widget);
 
     /*

@@ -33,6 +33,8 @@ abstract class dmFrontBaseServiceContainer extends dmBaseServiceContainer
     parent::connectServices();
     
     $this->getService('page_helper')->connect();
+
+    $this->getService('helper_extension')->connect();
   }
   
   /**

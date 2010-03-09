@@ -69,6 +69,8 @@ parameters:
 
   page_tree_view.class:       dmFrontPageTreeView   # Render the page tree
 
+  helper_extension.class:     dmFrontHelperExtension # Adds methods to the helper service
+
 services:
 
   page_routing:
@@ -180,6 +182,11 @@ services:
     arguments:                [ @context, %front_pager_view.options% ]
 
   sitemap_menu:
-    class:              %sitemap_menu.class%
-    shared:             false
-    arguments:          [ @service_container, %menu.options% ]
+    class:                    %sitemap_menu.class%
+    shared:                   false
+    arguments:                [ @service_container, %menu.options% ]
+
+  helper_extension:
+    class:                    %helper_extension.class%
+    shared:                   true
+    arguments:                [ @dispatcher, @service_container ]

@@ -314,4 +314,22 @@ class dmHelper extends dmConfigurable
   {
     return $this->context->getRequest()->getRelativeUrlRoot().$this->context->getResponse()->calculateAssetPath('other', $asset);
   }
+
+  public function __call($method, $arguments)
+  {
+    $event = new sfEvent($this, 'dm.helper.method_not_found', array('method' => $method, 'arguments' => $arguments));
+
+    // calls all listeners until one is able to implement the $method
+    $this->context->getEventDispatcher()->notifyUntil($event);
+
+    // no listener was able to proces the event? The method does not exist
+    if (!$event->isProcessed())
+    {
+      throw new sfException(sprintf('Call to undefined method %s::%s.', get_class($this), $method));
+    }
+
+    // return the listener returned value
+    return $event->getReturnValue();
+  }
+  
 }
