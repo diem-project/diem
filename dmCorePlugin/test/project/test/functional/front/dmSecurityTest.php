@@ -31,12 +31,12 @@ $page2->save();
 $b
 ->isAuthenticated(false)
 ->info('Go to signin page')
-->get('/signin')
+->get('security/signin')
 ->checks(array(
   'code' => 200
 ))
 ->isPageModuleAction('main/signin')
-->has('.dm_signin_form input.submit')->with('response')->debug()
+->has('.dm_signin_form input.submit')
 ->info('Go to unsecured page')
 ->get('page1')
 ->checks(array(
