@@ -95,7 +95,7 @@ class dmFunctionalTestHelper
 
   protected function frontLogin($username, $password)
   {
-    $this->browser->get('@signin')
+    $this->browser->get('/security/signin')
     ->checks(array(
       'code' => 200,
       'moduleAction' => 'dmFront/page'
