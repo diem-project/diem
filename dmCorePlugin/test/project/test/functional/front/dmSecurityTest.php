@@ -77,7 +77,7 @@ $b
 ->checks(array(
   'moduleAction' => 'dmFront/page',
   'method' => 'post',
-  'code' => 401
+  'code' => 200
 ))
 ->isPageModuleAction('main/signin')
 ->has('.dm_signin_form ul.error_list li', 'Required.')
@@ -90,7 +90,7 @@ $b
 ->checks(array(
   'moduleAction' => 'dmFront/page',
   'method' => 'post',
-  'code' => 401
+  'code' => 200
 ))
 ->isPageModuleAction('main/signin')
 ->has('.dm_signin_form ul.error_list li', 'The username and/or password is invalid.')
@@ -112,7 +112,7 @@ $b
   'method' => 'get',
   'code' => 200
 ))
-->isPageModuleAction('main/page11')
+->isPageModuleAction('main/root')
 ->isAuthenticated(true)
 ->has('.dm_signin_form input.submit', false)
 ->info('Go to inactive page')
