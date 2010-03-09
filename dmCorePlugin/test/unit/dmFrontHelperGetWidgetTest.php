@@ -26,8 +26,9 @@ $expected = '<div class="dm_widget content_title"><div class="dm_widget_inner"><
 $t->is($title, $expected, 'rendered title H2 with CSS class');
 
 $title = dm_get_widget('main', 'header', array(
+  'name' => 'Thibault',
   'css_class' => 'custom_class'
 ));
-$expected = '<div class="dm_widget main_header"><div class="dm_widget_inner custom_class"></div></div>';
+$expected = '<div class="dm_widget main_header"><div class="dm_widget_inner custom_class">name: Thibault</div></div>';
 
-$t->is($title, $expected, 'rendered main header with CSS class');
+$t->is($title, $expected, 'rendered main header with component param and CSS class');
