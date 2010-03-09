@@ -28,10 +28,9 @@ class BasedmUserActions extends myFrontModuleActions
     }
     else
     {
-      $this->getResponse()->setStatusCode(401);
-
       if ($request->isXmlHttpRequest())
       {
+        $this->getResponse()->setStatusCode(401);
         $this->getResponse()->setHeaderOnly(true);
         return sfView::NONE;
       }
@@ -98,12 +97,16 @@ class BasedmUserActions extends myFrontModuleActions
   {
     $request->setParameter('dm_page', dmDb::table('DmPage')->fetchSignin());
 
+    $this->getResponse()->setStatusCode(401);
+
     $this->forward('dmFront', 'page');
   }
 
   public function executeSecure(dmWebRequest $request)
   {
     $request->setParameter('dm_page', dmDb::table('DmPage')->fetchSignin());
+
+    $this->getResponse()->setStatusCode(403);
 
     $this->forward('dmFront', 'page');
   }
