@@ -77,10 +77,10 @@ class BasedmFrontActions extends dmFrontBaseActions
 
     if($accessDenied)
     {
-      $this->getResponse()->setStatusCode($user->isAuthenticated() ? 403 : 401);
-      
-      // use main.signin page
-      $this->page = dmDb::table('DmPage')->fetchSignin();
+      // use main/signin page
+      $this->getRequest()->setParameter('dm_page', dmDb::table('DmPage')->fetchSignin());
+
+      $this->forward('dmFront', 'page');
     }
   }
   

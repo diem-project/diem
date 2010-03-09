@@ -10,14 +10,35 @@ class BasedmUserActions extends myFrontModuleActions
   {
     $form = $this->forms['DmSigninFront'];
 
+    $user = $this->getUser();
+    
+    if ($user->isAuthenticated())
+    {
+      return $this->redirect('@homepage');
+    }
+
     if ($request->isMethod('post') && $request->hasParameter($form->getName()))
     {
       if ($form->bindAndValid($request))
       {
-        $this->getUser()->signin($form->getValue('user'), $form->getValue('remember'));
+        $user->signin($form->getValue('user'), $form->getValue('remember'));
 
         $this->redirectSignedInUser($request);
       }
+    }
+    else
+    {
+      $this->getResponse()->setStatusCode(401);
+
+      if ($request->isXmlHttpRequest())
+      {
+        $this->getResponse()->setHeaderOnly(true);
+        return sfView::NONE;
+      }
+
+      // if we have been forwarded, then the referer is the current URL
+      // if not, this is the referer of the current request
+      $user->setReferer($this->getContext()->getActionStack()->getSize() > 1 ? $request->getUri() : $request->getReferer());
     }
   }
 
@@ -27,7 +48,9 @@ class BasedmUserActions extends myFrontModuleActions
    */
   protected function redirectSignedInUser(dmWebRequest $request)
   {
-    $this->redirect($request->getReferer($request));
+    $redirectUrl = $this->getUser()->getReferer($request->getReferer(), '@homepage');
+    
+    $this->redirect($redirectUrl);
   }
 
   /**
@@ -68,25 +91,21 @@ class BasedmUserActions extends myFrontModuleActions
    */
   protected function redirectRegisteredUser(dmWebRequest $request)
   {
-    $this->redirect($request->getReferer($request));
+    $this->redirect($request->getReferer());
   }
 
   public function executeSignin(dmWebRequest $request)
   {
     $request->setParameter('dm_page', dmDb::table('DmPage')->fetchSignin());
 
-    $this->getResponse()->setStatusCode(401);
-
-    return $this->forward('dmFront', 'page');
+    $this->forward('dmFront', 'page');
   }
 
   public function executeSecure(dmWebRequest $request)
   {
     $request->setParameter('dm_page', dmDb::table('DmPage')->fetchSignin());
-    
-    $this->getResponse()->setStatusCode(403);
 
-    return $this->forward('dmFront', 'page');
+    $this->forward('dmFront', 'page');
   }
 
   public function executeSignout($request)

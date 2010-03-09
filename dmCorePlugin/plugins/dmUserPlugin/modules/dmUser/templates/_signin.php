@@ -8,13 +8,13 @@ if($sf_user->isAuthenticated())
 
 echo $form->open('.dm_signin_form action=@signin');
 
-echo _tag('ul',
+echo _tag('ul.dm_form_elements',
 
-  _tag('li', $form['username']->label()->field()->error()).
+  _tag('li.dm_form_element', $form['username']->label()->field()->error()).
 
-  _tag('li', $form['password']->label()->field()->error()).
+  _tag('li.dm_form_element', $form['password']->label()->field()->error()).
 
-  _tag('li', $form['remember']->label()->field()->error())
+  _tag('li.dm_form_element', $form['remember']->label()->field()->error())
 
 );
 
