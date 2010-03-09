@@ -19,4 +19,9 @@ class dmWidgetSearchFormView extends dmWidgetPluginView
     return $vars;
   }
 
+  public function isCachable()
+  {
+    return parent::isCachable() && !$this->getService('request')->hasParameter('query');
+  }
+
 }

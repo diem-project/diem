@@ -32,9 +32,9 @@ dmWidgetNavigation:
 dmWidgetSearch:
     
   form:
-    cache:              false
+    cache:              true
     public_name:        Search form
     
   results:
-    cache:              false
+    cache:              true
     public_name:        Search results
