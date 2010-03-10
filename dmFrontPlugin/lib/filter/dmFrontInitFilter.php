@@ -10,7 +10,7 @@ class dmFrontInitFilter extends dmInitFilter
   public function execute($filterChain)
   {
     $this->redirectTrailingSlash();
-    
+
     $this->redirectNoScriptName();
 
     $this->enablePageCache();
@@ -30,7 +30,7 @@ class dmFrontInitFilter extends dmInitFilter
         $this->context->setPage($page);
       }
     }
-    
+
     $filterChain->execute();
 
     if(!sfConfig::get('dm_internal_page_cached'))

@@ -137,7 +137,7 @@ class dmFrontModuleComponents extends myFrontBaseComponents
     ->setPager($doctrinePager)
     ->setOption('navigation_top', $this->navTop)
     ->setOption('navigation_bottom', $this->navBottom)
-    ->setOption('widget_id', $this->dm_widget ? $this->dm_widget['id'] : null);
+    ->setOption('widget_id', dmArray::get($this->dm_widget, 'id'));
 
     try
     {
