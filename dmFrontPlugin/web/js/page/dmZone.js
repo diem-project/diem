@@ -106,7 +106,7 @@ $.widget('ui.dmZone', {
       this.$widgets.dmWidget();
     }
     
-    $('div.dm_widgets', this.element).sortable({
+    $('>div.dm_widgets', this.element).sortable({
       opacity:                0.5,
       handle:                 'a.dm_widget_edit',
       distance:               5,
