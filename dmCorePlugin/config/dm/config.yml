@@ -50,7 +50,12 @@ default:
   security:
     remember_cookie_name:               # defaults to "dm_remember_%project_name%"
     remember_key_expiration_age:        # defaults to 15 days
+
+  web_services:
     version_check:        true          # verifies regularly if you are using the latest Diem version.
+    report_anonymous_data: true         # reports anonymous data about plugins used.
+                                        # http://diem-project.org/plugins will show the best plugins based on these reports.
+                                        # the report request is sent only once, when a superadministrator logs in.
 
   locks:                                # whether to enable real time resource locks
     enabled:              <?php echo sfConfig::get('sf_debug') ? "false\n" : "true\n"; ?>

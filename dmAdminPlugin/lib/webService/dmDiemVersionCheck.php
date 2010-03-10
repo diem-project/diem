@@ -22,7 +22,7 @@ class dmDiemVersionCheck extends dmConfigurable
 
   public function shouldCheck()
   {
-    return $this->getOption('enabled') && !$this->getService('user')->getAttribute('version_check', false, 'dm');
+    return !$this->getService('user')->getAttribute('version_check', false, 'dm');
   }
 
   public function isUpToDate()

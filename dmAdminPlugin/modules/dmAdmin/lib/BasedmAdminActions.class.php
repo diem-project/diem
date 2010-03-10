@@ -7,19 +7,14 @@ class BasedmAdminActions extends dmAdminBaseActions
     $this->homepageManager = $this->getService('homepage_manager');
 
     $this->checkVersion =
-        sfConfig::get('dm_security_version_check')
+        sfConfig::get('dm_web_services_version_check')
     &&  $this->getUser()->can('system')
     &&  $this->getService('diem_version_check')->shouldCheck();
-  }
 
-  public function executeVersionCheck()
-  {
-    $this->versionCheck = $this->getService('diem_version_check');
-
-    if($this->versionCheck->isUpToDate())
-    {
-      return $this->renderText('');
-    }
+    $this->reportAnonymousData =
+        sfConfig::get('dm_web_services_report_anonymous_data')
+    &&  $this->getUser()->can('system')
+    &&  $this->getService('report_anonymous_data')->shouldSend();
   }
 
   public function executeModuleType(dmWebRequest $request)
@@ -89,5 +84,22 @@ class BasedmAdminActions extends dmAdminBaseActions
     }
     
     return null;
+  }
+
+  public function executeVersionCheck()
+  {
+    $this->versionCheck = $this->getService('diem_version_check');
+
+    if($this->versionCheck->isUpToDate())
+    {
+      return $this->renderText('');
+    }
+  }
+
+  public function executeReportAnonymousData()
+  {
+    $this->getService('report_anonymous_data')->send();
+
+    return $this->renderText('ok');
   }
 }

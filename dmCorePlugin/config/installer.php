@@ -181,11 +181,13 @@ $this->logBlock('Your configuration is valid', 'INFO_LARGE');
 
 usleep(1000000);
 
+$sendReports = $this->askConfirmation(array('Send anonymous reports about plugins used to improve http://diem-project.org/plugins (Y/n)'), 'QUESTION_LARGE', true);
+
 if (!$this->askConfirmation(array(
   'The installation will remove all data in the '.$settings['database']['name'].' database.',
   '',
-  'Are you sure you want to proceed? (y/N)'
-), 'QUESTION_LARGE', false)
+  'Are you sure you want to proceed? (Y/n)'
+), 'QUESTION_LARGE', true)
 )
 {
   $this->logSection('diem', 'installation aborted');
@@ -204,7 +206,8 @@ $this->replaceTokens(sfConfig::get('sf_config_dir'), array(
   'SYMFONY_CORE_AUTOLOAD' => $symfonyCoreAutoload,
   'DIEM_CORE_STARTER'     => var_export(dmOs::join(sfConfig::get('dm_core_dir'), 'lib/core/dm.php'), true),
   'DIEM_WEB_DIR'          => "sfConfig::get('sf_root_dir').'/".$settings['web_dir_name']."'",
-  'DIEM_CULTURE'          => var_export($settings['culture'], true)
+  'DIEM_CULTURE'          => var_export($settings['culture'], true),
+  'SEND_REPORTS'          => var_export($sendReports, true)
 ));
 
 $this->filesystem->remove(array(

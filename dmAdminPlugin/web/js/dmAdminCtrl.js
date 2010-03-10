@@ -32,6 +32,8 @@
 
       this.checkVersion();
 
+      this.reportAnonymousData();
+
       if($.dm.ping && this.options.authenticated)
       {
         $.dm.ping.init(this.options);
@@ -66,6 +68,16 @@
           {
             $versionCheck.html(html).click(function() { $versionCheck.remove(); });
           }
+        });
+      }
+    },
+
+    reportAnonymousData: function()
+    {
+      if($reportAnonymousData = $('#dm_async_report').orNot())
+      {
+        $.ajax({
+          url:      $.dm.ctrl.getHref('+/dmAdmin/reportAnonymousData')
         });
       }
     },
