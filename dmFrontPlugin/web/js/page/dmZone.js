@@ -100,7 +100,7 @@ $.widget('ui.dmZone', {
   initWidgets: function()
   {
     this.$widgets = $('div.dm_widget', this.element);
-    
+
     if (this.$widgets.length)
     {
       this.$widgets.dmWidget();

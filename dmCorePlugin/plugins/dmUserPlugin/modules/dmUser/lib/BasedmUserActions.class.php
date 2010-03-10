@@ -48,7 +48,7 @@ class BasedmUserActions extends myFrontModuleActions
   protected function redirectSignedInUser(dmWebRequest $request)
   {
     $redirectUrl = $this->getUser()->getReferer($request->getReferer());
-    
+
     $this->redirect('' != $redirectUrl ? $redirectUrl : '@homepage');
   }
 
