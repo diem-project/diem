@@ -175,7 +175,6 @@ $b
 ->isPageModuleAction('main/page11')
 ->isAuthenticated(true)
 ->has('.dm_signin_form input.submit', false)
-->info('Trigger page synchronisation')
 
 ->info('Go to secured page with credentials')
 ->get('page12')
