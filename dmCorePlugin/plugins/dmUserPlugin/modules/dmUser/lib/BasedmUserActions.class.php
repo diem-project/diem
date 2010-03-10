@@ -12,7 +12,7 @@ class BasedmUserActions extends myFrontModuleActions
 
     $user = $this->getUser();
     
-    if ($user->isAuthenticated())
+    if ($user->isAuthenticated() && $this->getPage() != dmDb::table('DmPage')->getTree()->fetchRoot())
     {
       return $this->redirect('@homepage');
     }
