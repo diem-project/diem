@@ -84,7 +84,7 @@ parameters:
 
   report_anonymous_data.class: dmReportAnonymousData  # reports anonymous data about plugins used.
   report_anonymous_data.options:                      # http://diem-project.org/plugins will show the best plugins based on these reports.
-    url:                       http://diem-project.localhost/dev.php/service/report-anonymous-data
+    url:                       http://diem-project.org/service/report-anonymous-data
   
 services:
 
