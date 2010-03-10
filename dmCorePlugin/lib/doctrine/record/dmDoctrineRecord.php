@@ -790,6 +790,11 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
    */
   public function getVersion()
   {
+    if (!$this->getTable()->isVersionable())
+    {
+      return $this->_get('version');
+    }
+
     if (!$this->getTable()->hasI18n())
     {
       return $this->_get('Version');
