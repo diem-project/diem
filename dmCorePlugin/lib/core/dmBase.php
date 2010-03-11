@@ -1,7 +1,6 @@
 <?php
 
-// first stable version for 5.0 branch
-define('DIEM_VERSION', '5.0.0');
+define('DIEM_VERSION', '5.1.0_DEV');
 
 /*
  * Include Symfony
