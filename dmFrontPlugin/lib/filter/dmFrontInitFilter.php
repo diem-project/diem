@@ -65,8 +65,6 @@ class dmFrontInitFilter extends dmInitFilter
           'clientLifeTime'  => $pageCacheConfig['life_time'],
           'contextual'      => false, // useless for page cache, only used for partials & components
         ));
-
-        sfConfig::set('dm_internal_page_cached', $viewCacheManager->has($viewCacheManager->getCurrentCacheKey()));
       }
     }
   }
@@ -77,10 +75,19 @@ class dmFrontInitFilter extends dmInitFilter
   public function generatePageCacheKey($internalUri, $hostName, $vary, $contextualPrefix, sfViewCacheManager $viewCacheManager)
   {
     sfConfig::set('sf_cache_namespace_callable', null);
-    
     $cacheKey = $viewCacheManager->generateCacheKey($internalUri, $hostName, $vary, $contextualPrefix);
+    sfConfig::set('sf_cache_namespace_callable', array($this, 'generatePageCacheKey'));
 
-    return $cacheKey . '/'.$this->user->getCulture();
+    if(strpos($internalUri, '@sf_cache_partial') === 0)
+    {
+      return $cacheKey;
+    }
+
+    $cacheKey = $this->user->getCulture() .':'. $cacheKey;
+
+    sfConfig::set('dm_internal_page_cached', $viewCacheManager->getCache()->has($cacheKey));
+
+    return $cacheKey;
   }
 
   protected function shouldEnablePageCache()
