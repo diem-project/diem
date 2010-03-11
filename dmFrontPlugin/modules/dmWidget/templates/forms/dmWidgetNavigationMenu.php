@@ -32,7 +32,7 @@ _tag('div#'.$baseTabId.'_advanced',
     $form['cssClass']->renderRow().
     $form['ulClass']->renderRow().
     $form['liClass']->renderRow().
-    ($form['menuClass'] ? $form['menuClass']->renderRow() : '')
+    (isset($form['menuClass']) ? $form['menuClass']->renderRow() : '')
   )
 ),
 
