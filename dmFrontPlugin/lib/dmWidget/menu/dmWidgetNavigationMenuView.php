@@ -16,7 +16,9 @@ class dmWidgetNavigationMenuView extends dmWidgetPluginView
   {
     $vars = parent::filterViewVars($vars);
 
-    $vars['menu'] = $this->getService('menu')
+    $menuClass = dmArray::get($vars, 'menuClass');
+
+    $vars['menu'] = $this->getService('menu', $menuClass ? $menuClass : null)
     ->ulClass($vars['ulClass']);
 
     foreach($vars['items'] as $index => $item)
