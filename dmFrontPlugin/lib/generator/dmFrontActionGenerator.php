@@ -98,13 +98,15 @@ class dmFrontActionGenerator extends dmFrontModuleGenerator
   
   protected function buildFormMethod($methodName, dmModuleComponent $component)
   {
-    $body = "\$form = \$this->forms['{$this->module->getModel()}'];
+    $body = "\$form = new {$this->module->getModel()}Form();
     
-if (\$request->isMethod('post') && \$form->bindAndValid(\$request))
+if (\$request->hasParameter(\$form->getName()) && \$form->bindAndValid(\$request))
 {
   \$form->save();
   \$this->redirectBack();
-}";
+}
+
+\$this->forms['{$this->module->getModel()}'] = \$form;";
     
     return new dmZendCodeGeneratorPhpMethod(array(
       'indentation' => $this->indentation,

@@ -79,13 +79,8 @@ class dmFormManager implements ArrayAccess
   public function offsetGet($name)
   {
     $name = dmString::camelize($name);
-    
-    if (!array_key_exists($name, $this->forms))
-    {
-      $this->forms[$name] = $this->createForm($name);
-    }
 
-    return $this->forms[$name];
+    return isset($this->forms[$name]) ? $this->forms[$name] : null;
   }
 
   /**
@@ -102,6 +97,8 @@ class dmFormManager implements ArrayAccess
     {
       throw new InvalidArgumentException(sprintf('The object "%s" is not an instance of dmForm', get_class($value)));
     }
+
+    $this->prepareFormForPage($value);
     
     $this->forms[$name] = $value;
   }
