@@ -17,7 +17,7 @@ class dmEventLogView extends dmLogView
   protected function renderUser(dmEventLogEntry $entry)
   {
     return sprintf('%s%s<br /><span class=light>%s</span>',
-      ($username = $entry->get('username')) ? sprintf('<strong class="mr10">%s</strong>', $username) : '',
+      ($username = $entry->get('username')) ? sprintf('<strong class="mr10">%s</strong>', dmString::truncate($username, 20, '...')) : '',
       $this->renderIp($entry->get('ip')),
       $entry->get('session_id')
     );

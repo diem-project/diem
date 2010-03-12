@@ -18,7 +18,7 @@ class dmRequestLogView extends dmLogView
   protected function renderUser(dmRequestLogEntry $entry)
   {
     return sprintf('%s%s',
-      ($username = $entry->get('username')) ? sprintf('<strong class="mr10">%s</strong><br />', $username) : '',
+      ($username = $entry->get('username')) ? sprintf('<strong class="mr10">%s</strong><br />', dmString::truncate($username, 20, '...')) : '',
       $this->renderIp($entry->get('ip'))
     );
   }
