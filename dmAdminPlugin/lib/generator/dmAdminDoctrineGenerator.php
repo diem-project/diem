@@ -20,6 +20,18 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
 
     $this->setGeneratorClass('dmAdminDoctrineModule');
   }
+
+  /**
+   * Configures this generator.
+   */
+  public function configure()
+  {
+    parent::configure();
+
+    $this->generatorManager->getConfiguration()->getEventDispatcher()->notify(
+      new sfEvent($this, 'dm.admin_generator.post_configure', array('table' => $this->table))
+    );
+  }
   
   /**
    * Returns the default configuration for fields.
