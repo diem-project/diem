@@ -12,7 +12,7 @@ echo _open('div#dm_tool_bar.clearfix.'.sfConfig::get('dm_toolBar_flavour', 'blue
     echo _link('dmCodeEditor/index')->text('')->title(__('Code Editor'))->set('.tipable.widget16.s16block.s16_code_editor');
   }
 
-  echo _tag('div.dm_menu.widget16', $menu->render());
+  include_component('dmInterface', 'toolBarMenu');
 
   if (isset($cultureSelect))
   {
