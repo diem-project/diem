@@ -38,40 +38,9 @@ EOF;
     
     $this->dispatcher->notify(new sfEvent($this, 'dm.setup.before', array('clear-db' => $options['clear-db'])));
     
-    if (!$this->isProjectLocked() && $this->projectHasModels())
-    {
-      // don't use cache:clear task because it changes current app & environment
-      @sfToolkit::clearDirectory(sfConfig::get('sf_cache_dir'));
-      
-      if (false && !$options['clear-db'])
-      {
-        try
-        {
-          $ret = $this->runTask('dm:check-need-migration');
-        }
-        catch(Exception $e)
-        {
-          $this->logBlock('An error occured when creating migrations: '.$e->getMessage());
-          $ret = dmCheckNeedMigrationTask::REQUIRE_MIGRATION_TRUE;
-        }
-        
-        if (dmCheckNeedMigrationTask::REQUIRE_MIGRATION_TRUE == $ret)
-        {
-          if (!$this->askConfirmation(array(
-            'The project requires a doctrine migration',
-            'If you already performed the migration, you may continue',
-            'Are you sure you want to continue ? (y/N)'
-          ), 'QUESTION_LARGE', false)
-          )
-          {
-            $this->logSection('diem', 'task aborted');
-      
-            return 1;
-          }
-        }
-      }
-    }
-    
+    // don't use cache:clear task because it changes current app & environment
+    @sfToolkit::clearDirectory(sfConfig::get('sf_cache_dir'));
+
     $this->runTask('doctrine:build', array(), array('model' => true));
 
     if ($options['clear-db'] || $this->isProjectLocked())
