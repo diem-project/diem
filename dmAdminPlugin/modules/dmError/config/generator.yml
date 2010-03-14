@@ -15,7 +15,7 @@ generator:
       list:
         display:
           - =name
-          - klass
+          - php_class
           - description
           - module
           - action
@@ -30,7 +30,7 @@ generator:
       filter:
         display:
           - name
-          - klass
+          - php_class
           - description
           - module
           - action
@@ -41,7 +41,7 @@ generator:
         display:
           NONE: [name]
           Description: [_description]
-          Others: [klass, module, action, uri, env]
+          Others: [php_class, module, action, uri, env]
         class: DmErrorAdminForm
         fields: {  }
       edit: ~

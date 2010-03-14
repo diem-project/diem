@@ -150,7 +150,7 @@ DmError:
       updated:
         disabled: true
   columns:
-    klass:                  { type: string(127), notnull: true }
+    php_class:              { type: string(127), notnull: true }
     name:                   { type: string(255), notnull: true }
     description:            { type: string(60000) }
     module:                 { type: string(127), notnull: false }
