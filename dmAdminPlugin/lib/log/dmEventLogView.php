@@ -31,9 +31,14 @@ class dmEventLogView extends dmLogView
   
   protected function renderSubject(dmEventLogEntry $entry)
   {
-    return 'exception' === $entry->get('type')
-    ? $this->helper->link('@dm_error')->param('search', $entry->get('subject'))->text($entry->get('subject'))
-    : $this->i18n->__($entry->get('subject'));
+    $subject = $this->i18n->__($entry->get('subject'));
+
+    if($record = $entry->get('record_object'))
+    {
+      $subject = $this->helper->link($record)->text($subject);
+    }
+
+    return $subject;
   }
   
   protected function renderAction(dmEventLogEntry $entry)
@@ -57,6 +62,7 @@ class dmEventLogView extends dmLogView
       case 'clear':     $class = 's24 s24_info'; break;
       case 'sign_in':
       case 'sign_out':  $class = 's24 s24_user'; break;
+      case 'send':      $class = 's24 s24_mail'; break;
       default:          $class = '';
     }
     
