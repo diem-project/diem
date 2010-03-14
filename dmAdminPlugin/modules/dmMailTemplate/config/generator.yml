@@ -14,17 +14,18 @@ generator:
           label: Html
         is_active:
           label: Active
+        subject:
+          is_big: true
+        body:
+          is_big: true
+        vars:
+          is_big: true
       list:
         display:
           - '=name'
           - description
-          - vars
-          - title
-          - body
-          - from_email
-          - to_email
-          - is_html
           - is_active
+          - nb_sent_mails
           - created_at
           - updated_at
         sort:
@@ -39,7 +40,7 @@ generator:
           - is_active
           - description
           - vars
-          - title
+          - subject
           - body
           - from_email
           - to_email
@@ -47,9 +48,10 @@ generator:
           - updated_at
       form:
         display:
-          NONE: [name, is_html, is_active]
-          Body: [body]
-          Others: [description, vars, title, from_email, to_email]
+          NONE: [name, is_active, description, is_html]
+          Email: [_vars, subject, body]
+          Addresses: [from_email, to_email, cc_email, bcc_email]
+          Advanced: [reply_to_email, sender_email]
         class: DmMailTemplateAdminForm
         fields: {  }
       edit: ~

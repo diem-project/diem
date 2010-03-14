@@ -201,7 +201,7 @@ services:
   mail:
     class:                    %mail.class%
     shared:                   false
-    arguments:                [ @service_container ]
+    arguments:                [ @context, @dispatcher ]
 
   thread_launcher:
     class:                    %thread_launcher.class%
