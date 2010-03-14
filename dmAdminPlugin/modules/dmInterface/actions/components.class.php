@@ -7,8 +7,6 @@ class dmInterfaceComponents extends BasedmInterfaceComponents
 
   public function executeToolBar()
   {
-    $this->menu = $this->getService('admin_menu')->build();
-
     if ($this->getI18n()->hasManyCultures())
     {
       $cultures = array();
@@ -20,5 +18,10 @@ class dmInterfaceComponents extends BasedmInterfaceComponents
     
       $this->cultureSelect = new sfWidgetFormSelect(array('choices' => $cultures));
     }
+  }
+
+  public function executeToolBarMenu()
+  {
+    $this->menu = $this->getService('admin_menu')->build();
   }
 }
