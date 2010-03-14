@@ -17,7 +17,7 @@ class dmEventLogView extends dmLogView
   protected function renderUser(dmEventLogEntry $entry)
   {
     return sprintf('%s%s<br /><span class=light>%s</span>',
-      ($username = $entry->get('username')) ? sprintf('<strong class="mr10">%s</strong>', dmString::truncate($username, 20, '...')) : '',
+      ($username = $entry->get('username')) ? sprintf('<strong class="mr10">%s</strong>', dmString::escape(dmString::truncate($username, 20, '...'))) : '',
       $this->renderIp($entry->get('ip')),
       $entry->get('session_id')
     );
@@ -26,7 +26,6 @@ class dmEventLogView extends dmLogView
   protected function renderTime(dmEventLogEntry $entry)
   {
     return str_replace(' CEST', '', $this->dateFormat->format($entry->get('time')));
-//    return date('Y/m/d H:m:s', $entry->get('time'));
   }
   
   protected function renderSubject(dmEventLogEntry $entry)
@@ -35,7 +34,7 @@ class dmEventLogView extends dmLogView
 
     if($record = $entry->get('record_object'))
     {
-      $subject = $this->helper->link($record)->text($subject);
+      $subject = $this->helper->link($record)->text(dmString::escape($subject));
     }
 
     return $subject;

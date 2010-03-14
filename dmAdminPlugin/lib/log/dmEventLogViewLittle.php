@@ -15,7 +15,7 @@ class dmEventLogViewLittle extends dmEventLogView
   {
     $username = $entry->get('username');
     
-    return ($username ? '<strong class="mr10">'.dmString::truncate($username, 20, '...').'</strong><br />' : '').$entry->get('ip');
+    return ($username ? '<strong class="mr10">'.dmString::escape(dmString::truncate($username, 20, '...')).'</strong><br />' : '').$entry->get('ip');
   }
   
   protected function renderActionAndSubject(dmEventLogEntry $entry)
