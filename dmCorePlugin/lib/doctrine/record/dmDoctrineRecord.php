@@ -60,6 +60,17 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
   }
 
   /**
+   * Notify insertion
+   */
+  public function postInsert($event)
+  {
+    if ($ed = $this->getEventDispatcher())
+    {
+      $ed->notify(new sfEvent($this, 'dm.record.creation'));
+    }
+  }
+
+  /**
    * Add page tree watcher registering
    */
   public function postDelete($event)

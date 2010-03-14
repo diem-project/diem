@@ -9,12 +9,16 @@ generator:
     with_doctrine_route: false
     config:
       actions: ~
-      fields: {  }
+      fields:
+        debug:
+          is_big:  true
       list:
         display:
-          - =name
-          - header
-          - description
+          - =subject
+          - body
+          - from_email
+          - to_email
+          - dm_mail_template_id
           - created_at
         sort:
           - created_at
@@ -23,14 +27,16 @@ generator:
         table_count_method: ~
       filter:
         display:
-          - name
-          - header
-          - description
+          - subject
+          - body
+          - from_email
+          - to_email
+          - dm_mail_template_id
           - created_at
       form:
         display:
-          NONE: [name, created_at]
-          Content: [header, description]
+          NONE: [_content, _infos]
+          Debug: [_debug]
         class: DmSentMailAdminForm
         fields: {  }
       edit: ~

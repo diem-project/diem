@@ -13,10 +13,4 @@ require_once dirname(__FILE__).'/../lib/dmSentMailGeneratorHelper.class.php';
  */
 class dmSentMailActions extends autoDmSentMailActions
 {
-  public function preExecute()
-  {
-    $this->getUser()->logAlert('Diem mail support is <strong>-NOT-</strong> completed. Please use the symfony 1.4 mail service instead', false);
-    
-    parent::preExecute();
-  }
 }
