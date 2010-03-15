@@ -4,7 +4,7 @@ require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
 $helper = new dmUnitTestHelper();
 $helper->boot();
 
-$t = new lime_test(50);
+$t = new lime_test(53);
 
 $t->comment('iconv available : '.function_exists('iconv'));
 
@@ -138,3 +138,18 @@ $t->is_deeply(dmString::toArray('#an_id.a_class.another_class an_option=a_value 
   'an_option' => 'a_value',
   'other_option' => 'other_value',
 ), '::toArray() with implodeClasses = true');
+
+$t->is_deeply(dmString::toArray('action="http://site.com/url"'), array(
+  'action' => 'http://site.com/url'
+), 'correctly extract action');
+
+$t->is_deeply(dmString::toArray('.class action="http://site.com/url"'), array(
+  'class' => array('class'),
+  'action' => 'http://site.com/url'
+), 'correctly extract action and class');
+
+$t->is_deeply(dmString::toArray('#id.class action="http://site.com/url"'), array(
+  'id' => 'id',
+  'action' => 'http://site.com/url',
+  'class' => array('class')
+), 'correctly extract action, id and class');
