@@ -6,11 +6,13 @@
 abstract class dmConfigurable
 {
   protected $options;
-  
+
   /**
    * Configures the current object.
    *
    * @param array $options     An array of options
+   *
+   * @return dmConfigurable The current object instance
    */
   public function configure(array $options = array())
   {
@@ -18,6 +20,8 @@ abstract class dmConfigurable
       null !== $this->options ? $this->options : $this->getDefaultOptions(),
       $options
     );
+
+    return $this;
   }
   
   /**
