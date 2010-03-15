@@ -15,7 +15,7 @@ class dmWidgetListView extends dmWidgetProjectModelView
       {
         if (!$this->allowFilterAutoRecordId($filterModule))
         {
-          $this->addRequiredVar($filter);
+          $this->addRequiredVar($filter.'Filter');
         }
       }
     }
