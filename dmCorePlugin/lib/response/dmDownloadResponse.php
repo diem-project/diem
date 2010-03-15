@@ -41,7 +41,7 @@ class dmDownloadResponse extends dmConfigurable
 
     $this->writeHeaders();
 
-    if($file)
+    if(isset($file))
     {
       readfile($file);
     }
