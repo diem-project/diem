@@ -8,7 +8,7 @@ class BasedmUserActions extends myFrontModuleActions
    */
   public function executeSigninWidget(dmWebRequest $request)
   {
-    $form = $this->forms['DmSigninFront'];
+    $form = new DmSigninFrontForm();
 
     $user = $this->getUser();
     
@@ -39,6 +39,8 @@ class BasedmUserActions extends myFrontModuleActions
       // if not, this is the referer of the current request
       $user->setReferer($this->getContext()->getActionStack()->getSize() > 1 ? $request->getUri() : $request->getReferer());
     }
+    
+    $this->forms['DmSigninFront'] = $form;
   }
 
   /**
@@ -57,7 +59,7 @@ class BasedmUserActions extends myFrontModuleActions
    */
   public function executeFormWidget(dmWebRequest $request)
   {
-    $form = $this->forms['DmUser'];
+    $form = new DmUserForm();
 
     if ($request->isMethod('post') && $request->hasParameter($form->getName()))
     {
@@ -82,6 +84,8 @@ class BasedmUserActions extends myFrontModuleActions
         $this->redirectRegisteredUser($request);
       }
     }
+
+    $this->forms['DmUser'] = $form;
   }
 
   /**
