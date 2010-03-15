@@ -1,6 +1,6 @@
 <?php
 
-class BaseDmUserAdminMyAccountForm extends DmUserForm
+class BaseDmUserAdminMyAccountForm extends BaseDmUserForm
 {
 
   /**
