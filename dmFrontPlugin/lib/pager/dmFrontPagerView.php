@@ -98,7 +98,7 @@ class dmFrontPagerView extends dmConfigurable implements Iterator, Countable
 
     $this->initBaseHref();
     
-    $cacheKey = md5(var_export($this->getOptions(), true).$this->getBaseHref());
+    $cacheKey = $this->calculateCacheKey();
 
     if (isset($this->navigationCache[$cacheKey]))
     {
@@ -120,6 +120,17 @@ class dmFrontPagerView extends dmConfigurable implements Iterator, Countable
     $this->navigationCache[$cacheKey] = $html;
 
     return $html;
+  }
+
+  protected function calculateCacheKey()
+  {
+    $options = array();
+    foreach($this->getOptions() as $key => $option)
+    {
+      $options[$key] = (string) $option;
+    }
+
+    return md5(var_export($options, true).$this->getBaseHref());
   }
 
   protected function openPager()
