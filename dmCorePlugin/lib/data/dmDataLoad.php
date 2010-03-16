@@ -253,7 +253,7 @@ class dmDataLoad
       /*
        * English to $culture
        */
-      if (!dmDb::table('DmCatalogue')->retrieveBySourceTargetSpace('en', $culture, 'messages'))
+      if ($culture != 'en' && !dmDb::table('DmCatalogue')->retrieveBySourceTargetSpace('en', $culture, 'messages'))
       {
         dmDb::create('DmCatalogue', array(
           'source_lang' => 'en',
@@ -279,7 +279,7 @@ class dmDataLoad
         if (!dmDb::table('DmCatalogue')->retrieveBySourceTargetSpace(sfConfig::get('sf_default_culture'), $culture, 'messages'))
         {
           dmDb::create('DmCatalogue', array(
-            'source_lang' => 'en',
+            'source_lang' => sfConfig::get('sf_default_culture'),
             'target_lang' => $culture,
             'name' => 'messages.'.$culture
           ))->save();
