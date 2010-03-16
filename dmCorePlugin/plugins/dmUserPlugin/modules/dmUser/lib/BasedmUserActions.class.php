@@ -11,11 +11,6 @@ class BasedmUserActions extends myFrontModuleActions
     $form = new DmSigninFrontForm();
 
     $user = $this->getUser();
-    
-    if ($user->isAuthenticated() && $this->getPage() != dmDb::table('DmPage')->getTree()->fetchRoot())
-    {
-      return $this->redirect('@homepage');
-    }
 
     if ($request->isMethod('post') && $request->hasParameter($form->getName()))
     {
