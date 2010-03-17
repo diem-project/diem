@@ -5,9 +5,9 @@ class dmFrontLayoutHelper extends dmCoreLayoutHelper
   protected
     $page;
 
-  protected function initialize()
+  protected function initialize(array $options)
   {
-    parent::initialize();
+    parent::initialize($options);
 
     $this->setPage($this->serviceContainer->getParameter('context.page'));
   }

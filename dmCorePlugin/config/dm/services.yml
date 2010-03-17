@@ -186,6 +186,8 @@ parameters:
   markdown_translator.options:
     messages:                 [ Heading 2, Heading 3, Heading 4, Bold, Italic, Bulleted List, Numeric List, Link, Enlarge the editor ]
 
+  layout_helper.options:      []
+
 services:
 
   text_diff:
@@ -311,7 +313,7 @@ services:
   layout_helper:
     class:                    %layout_helper.class%
     shared:                   false
-    arguments:                [ @dispatcher, @service_container ]
+    arguments:                [ @dispatcher, @service_container, %layout_helper.options% ]
 
   filesystem:
     class:                    %filesystem.class%

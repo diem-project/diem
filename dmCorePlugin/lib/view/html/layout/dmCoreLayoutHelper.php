@@ -1,6 +1,6 @@
 <?php
 
-class dmCoreLayoutHelper
+class dmCoreLayoutHelper extends dmConfigurable
 {
   protected
     $dispatcher,
@@ -10,16 +10,18 @@ class dmCoreLayoutHelper
     $isHtml5;
     
 
-  public function __construct(sfEventDispatcher $dispatcher, dmBaseServiceContainer $serviceContainer)
+  public function __construct(sfEventDispatcher $dispatcher, dmBaseServiceContainer $serviceContainer, array $options = array())
   {
     $this->dispatcher = $dispatcher;
     $this->serviceContainer = $serviceContainer;
     
-    $this->initialize();
+    $this->initialize($options);
   }
   
-  protected function initialize()
+  protected function initialize(array $options)
   {
+    $this->configure($options);
+    
     $this->isHtml4 = 4 == $this->getDocTypeOption('version', 4);
     $this->isHtml5 = 5 == $this->getDocTypeOption('version', 5);
   }
