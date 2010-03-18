@@ -5,3 +5,6 @@
 "Register": "Créer un compte"
 "Change password": "Changer de mot de passe"
 "You are authenticated as %username%": "Vous êtes connecté en tant que %username%"
+"Old password": "Ancien mot de passe"
+"New password": "Nouveau mot de passe"
+"New password (again)": "Nouveau mot de passe ( confirmation )"
