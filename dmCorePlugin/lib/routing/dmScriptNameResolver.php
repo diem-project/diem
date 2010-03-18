@@ -18,7 +18,14 @@ class dmScriptNameResolver
     $env = null === $env ? sfConfig::get('sf_environment') : $env;
     $culture = null === $culture ? $this->culture : $culture;
 
-    $knownAppUrls = json_decode(dmConfig::get('base_urls', '[]'), true);
+    if($config = dmConfig::get('base_urls'))
+    {
+      $knownAppUrls = json_decode($config, true);
+    }
+    else
+    {
+      $knownAppUrls = array();
+    }
 
     $appUrlKey = implode('-', array($app, $env, $culture));
 
