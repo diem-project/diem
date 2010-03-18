@@ -42,6 +42,17 @@ abstract class dmWidgetBaseForm extends dmForm
     $this->validatorSchema['cssClass']  = new dmValidatorCssClasses(array('required' => false));
     
     $this->setDefault('cssClass', $this->dmWidget->get('css_class'));
+
+    /*
+     * if the user can not edit widgets (but only fast edit them)
+     * remove the CSS class field
+     */
+    if(($user = $this->getService('user')) && !$user->can('widget_edit'))
+    {
+      $this->changeToHidden('cssClass');
+      $this->widgetSchema['cssClass']->setAttribute('readonly', true);
+      //unset($this['cssClass']);
+    }
   }
 
   public function getDmWidget()
@@ -49,7 +60,7 @@ abstract class dmWidgetBaseForm extends dmForm
     return $this->dmWidget;
   }
   
-  /*
+  /**
    * Overload this method to alter form values
    * when form has been validated
    */
@@ -94,7 +105,7 @@ abstract class dmWidgetBaseForm extends dmForm
     );
   }
 
-  /*
+  /**
    * Try to guess default values
    * from last updated widget with same module.action
    * @return array default values
@@ -144,7 +155,11 @@ abstract class dmWidgetBaseForm extends dmForm
   public function updateWidget()
   {
     $this->dmWidget->setValues($this->getWidgetValues());
-    $this->dmWidget->set('css_class', $this->getValue('cssClass'));
+
+    if(isset($this['cssClass']))
+    {
+      $this->dmWidget->set('css_class', $this->getValue('cssClass'));
+    }
     
     return $this->dmWidget;
   }
