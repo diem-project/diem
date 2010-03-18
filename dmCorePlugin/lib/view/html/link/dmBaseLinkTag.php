@@ -202,6 +202,11 @@ abstract class dmBaseLinkTag extends dmHtmlTag
       $attributes['href'] .= '#'.$attributes['anchor'];
     }
 
+    if(!empty($attributes['class']) && in_array('nofollow', $attributes['class']))
+    {
+      $attributes['nofollow'] = true;
+    }
+
     // makes unit testing easier
     ksort($attributes);
     
