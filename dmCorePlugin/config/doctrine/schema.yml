@@ -287,7 +287,6 @@ DmSentMail:
     bcc_email:              { type: string(5000) }
     reply_to_email:         { type: string(5000) }
     sender_email:           { type: string(5000) }
-    list_unsuscribe:        { type: string(5000) }
     strategy:               { type: string(255) }
     transport:              { type: string(255) }
     culture:                { type: string(16) }

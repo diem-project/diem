@@ -246,8 +246,11 @@ class dmMail
     {
       $headers->remove('List-Unsubscribe');
     }
-    
-    $headers->addTextHeader('List-Unsubscribe', 'http://site.com');
+
+    if($template->list_unsuscribe)
+    {
+      $headers->addTextHeader('List-Unsubscribe', strtr($template->list_unsuscribe, $replacements));
+    }
 
     $this->isRendered = true;
 
