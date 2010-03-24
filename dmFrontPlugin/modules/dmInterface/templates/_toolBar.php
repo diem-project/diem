@@ -37,7 +37,7 @@ echo _open('div#dm_tool_bar.dm.clearfix.'.sfConfig::get('dm_toolBar_flavour', 'b
     echo _tag('a.tipable.edit_toggle.widget24.s24block.s24_view_'.($sf_user->getIsEditMode() ? 'on' : 'off'), array('title' => __('Show page structure')), '');
   }
 
-  if($sf_user->can('zone_add, widget_add, page_add'))
+  if($sf_user->can('widget_add'))
   {
     echo _tag('div.dm_menu.dm_add_menu', array('json' =>array(
       'reload_url' => _link('+/dmInterface/reloadAddMenu')->getHref()
