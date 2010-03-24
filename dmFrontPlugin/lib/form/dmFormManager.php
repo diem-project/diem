@@ -4,12 +4,14 @@ class dmFormManager implements ArrayAccess
 {
   protected
   $serviceContainer,
+  $dispatcher,
   $forms;
   
-  public function __construct(dmFrontServiceContainer $serviceContainer)
+  public function __construct(dmFrontServiceContainer $serviceContainer, sfEventDispatcher $dispatcher)
   {
     $this->serviceContainer = $serviceContainer;
-    
+    $this->dispatcher       = $dispatcher;
+
     $this->initialize();
   }
   
@@ -80,7 +82,18 @@ class dmFormManager implements ArrayAccess
   {
     $name = dmString::camelize($name);
 
-    return isset($this->forms[$name]) ? $this->forms[$name] : null;
+    if(isset($this->forms[$name]))
+    {
+      $form = $this->forms[$name];
+    }
+    else
+    {
+      $form = null;
+
+      $this->dispatcher->notify(new sfEvent($this, 'dm.form_manager.not_found', array('name' => $name)));
+    }
+
+    return $form;
   }
 
   /**

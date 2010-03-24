@@ -145,6 +145,8 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
     $zones = self::getZonesQuery()->fetchArray(array($culture, $areas[0][0]));
     
     sfConfig::set('dm_search_populating', true);
+
+    $this->context->getEventDispatcher()->connect('dm.form_manager.not_found', array($this, 'listenToFormManagerNotFoundEvent'));
     
     $html = '';
     
@@ -157,17 +159,25 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
         
         $widgetType = $widgetTypeManager->getWidgetType($widget['module'], $widget['action']);
 
-        $html .= $serviceContainer
-        ->addParameters(array(
-          'widget_view.class' => $widgetType->getViewClass(),
-          'widget_view.type'  => $widgetType,
-          'widget_view.data'  => $widget
-        ))
-        ->getService('widget_view')
-        ->renderForIndex();
+        try
+        {
+          $html .= $serviceContainer
+          ->addParameters(array(
+            'widget_view.class' => $widgetType->getViewClass(),
+            'widget_view.type'  => $widgetType,
+            'widget_view.data'  => $widget
+          ))
+          ->getService('widget_view')
+          ->renderForIndex();
+        }
+        catch(dmSearchPageDocumentException $e)
+        {
+          // a form is required but not available, skip this widget
+        }
       }
     }
-    
+
+    $this->context->getEventDispatcher()->disconnect('dm.form_manager.not_found', array($this, 'listenToFormManagerNotFoundEvent'));
     sfConfig::set('dm_search_populating', false);
     
     $indexableText = $this->cleanText($html);
@@ -175,6 +185,11 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
     unset($areas, $zones, $html, $helper);
     
     return $indexableText;
+  }
+
+  public function listenToFormManagerNotFoundEvent(sfEvent $event)
+  {
+    throw new dmSearchPageDocumentException('Form required');
   }
 
   protected function cleanText($text)

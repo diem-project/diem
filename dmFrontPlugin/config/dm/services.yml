@@ -94,7 +94,7 @@ services:
 
   form_manager:
     class:                    %form_manager.class%
-    arguments:                [ @service_container ]
+    arguments:                [ @service_container, @dispatcher ]
     shared:                   true
 
   link_tag_record:
