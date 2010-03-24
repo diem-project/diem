@@ -22,6 +22,6 @@ div.dm_config_panel.ui-tabs div.ui-tabs-panel {
   color: #666;
 }
 
-.dm_config_panel li.dm_form_element.setting_timestamp select {
+.dm_config_panel li.dm_form_element.setting_datetime select {
   width: auto;
 }

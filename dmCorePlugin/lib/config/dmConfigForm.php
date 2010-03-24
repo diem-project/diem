@@ -107,15 +107,15 @@ class dmConfigForm extends dmForm
     return new sfValidatorBoolean();
   }
 
-  // Type Timestamp
-  protected function getTimestampSettingWidget(DmSetting $setting)
+  // Type Datetime
+  protected function getDatetimeSettingWidget(DmSetting $setting)
   {
     $widget = new sfWidgetFormDateTime(array(), $setting->getParamsArray());
 
     return $widget->setDefault($setting->get('value'));
   }
 
-  protected function getTimestampSettingValidator(DmSetting $setting)
+  protected function getDatetimeSettingValidator(DmSetting $setting)
   {
     return new sfValidatorDateTime();
   }
