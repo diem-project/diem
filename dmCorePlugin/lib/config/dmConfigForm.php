@@ -98,13 +98,26 @@ class dmConfigForm extends dmForm
   protected function getBooleanSettingWidget(DmSetting $setting)
   {
     $widget = new sfWidgetFormInputCheckbox(array(), $setting->getParamsArray());
-    
+
     return $widget->setDefault(1 == $setting->get('value') ? true : false);
   }
-  
+
   protected function getBooleanSettingValidator(DmSetting $setting)
   {
     return new sfValidatorBoolean();
+  }
+
+  // Type Timestamp
+  protected function getTimestampSettingWidget(DmSetting $setting)
+  {
+    $widget = new sfWidgetFormDateTime(array(), $setting->getParamsArray());
+
+    return $widget->setDefault($setting->get('value'));
+  }
+
+  protected function getTimestampSettingValidator(DmSetting $setting)
+  {
+    return new sfValidatorDateTime();
   }
 
   //Type Select List

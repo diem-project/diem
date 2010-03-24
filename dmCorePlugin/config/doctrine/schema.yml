@@ -220,7 +220,7 @@ DmSetting:
   columns:
     name:                   { type: string(127), notnull: true, unique: true }
     description:            { type: string(255) }
-    type:                   { type: enum, notnull: true, values: [text, boolean, select, textarea, number], default: 'text' }
+    type:                   { type: enum, notnull: true, values: [text, boolean, select, textarea, number, timestamp], default: 'text' }
     value:                  { type: string(60000) }
     params:                 { type: string(60000) }
     group_name:             { type: string(255), notnull: true, default: '' }

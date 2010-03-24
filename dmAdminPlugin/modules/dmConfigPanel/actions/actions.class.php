@@ -40,6 +40,8 @@ class dmConfigPanelActions extends dmAdminBaseActions
       }
     }
 
+    $this->getDispatcher()->notify(new sfEvent($this->form, 'form.post_configure'));
+
     if($request->isMethod('post'))
     {
       if ($this->form->bindAndValid($request))

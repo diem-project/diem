@@ -38,7 +38,7 @@ foreach($settings as $group => $groupSettings)
     }
     ++$it;
     
-    echo _tag('li.dm_form_element.clearfix',
+    echo _tag('li.dm_form_element.clearfix.setting_'.$setting->type,
       $form[$settingName]->label()->field()->error().
       _tag('div.dm_help_wrap', escape(__($form[$settingName]->getHelp())))
     );
