@@ -223,7 +223,7 @@ class BasedmFrontActions extends dmFrontBaseActions
 
     $this->getUser()->setCulture($culture);
     
-    if ($pageId = $request->getParameter('dm_cpi'))
+    if ($pageId = $request->getParameter('dm_cpi', $request->getParameter('page_id')))
     {
       $this->forward404Unless($page = dmDb::table('DmPage')->findOneByIdWithI18n($pageId));
       
