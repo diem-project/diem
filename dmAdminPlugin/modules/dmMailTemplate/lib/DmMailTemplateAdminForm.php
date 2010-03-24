@@ -21,5 +21,7 @@ class DmMailTemplateAdminForm extends BaseDmMailTemplateForm
     
     // Unset automatic fields like 'created_at', 'updated_at', 'created_by', 'updated_by'
     $this->unsetAutoFields();
+
+    unset($this['vars']);
   }
 }

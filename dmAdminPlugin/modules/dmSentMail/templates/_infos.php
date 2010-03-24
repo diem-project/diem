@@ -12,6 +12,7 @@ echo _tag('div.dm_data',
   ->body('BCC', $mail->bcc_email)
   ->body('Sender', $mail->sender_email)
   ->body('Reply to', $mail->reply_to_email)
+  ->body('List Unsuscribe', $mail->list_unsuscribe)
   ->body('Date', format_date($mail->created_at, 'f'))
   ->body('Language', format_language($mail->culture))
   ->body('Template', _link($mail->Template))

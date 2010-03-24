@@ -18,8 +18,10 @@ generator:
           is_big: true
         body:
           is_big: true
-        vars:
+        show_vars:
           is_big: true
+        list_unsuscribe:
+          help:   "http://www.list-unsubscribe.com/"
       list:
         display:
           - '=name'
@@ -49,9 +51,9 @@ generator:
       form:
         display:
           NONE: [name, is_active, description, is_html]
-          Email: [_vars, subject, body]
+          Email: [_show_vars, subject, body]
           Addresses: [from_email, to_email, cc_email, bcc_email]
-          Advanced: [reply_to_email, sender_email]
+          Advanced: [reply_to_email, sender_email, list_unsuscribe]
         class: DmMailTemplateAdminForm
         fields: {  }
       edit: ~

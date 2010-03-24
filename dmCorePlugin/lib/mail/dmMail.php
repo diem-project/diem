@@ -240,6 +240,15 @@ class dmMail
       }
     }
 
+    $headers = $this->getMessage()->getHeaders();
+
+    if($headers->has('List-Unsubscribe'))
+    {
+      $headers->remove('List-Unsubscribe');
+    }
+    
+    $headers->addTextHeader('List-Unsubscribe', 'http://site.com');
+
     $this->isRendered = true;
 
     return $this;
