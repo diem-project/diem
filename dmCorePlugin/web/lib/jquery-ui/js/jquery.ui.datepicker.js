@@ -1,5 +1,5 @@
 /*
- * jQuery UI Datepicker 1.8rc3
+ * jQuery UI Datepicker 1.8
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -13,7 +13,7 @@
 
 (function($) { // hide the namespace
 
-$.extend($.ui, { datepicker: { version: "1.8rc3" } });
+$.extend($.ui, { datepicker: { version: "1.8" } });
 
 var PROP_NAME = 'datepicker';
 var dpuuid = new Date().getTime();
@@ -646,7 +646,7 @@ $.extend(Datepicker.prototype, {
 				inst.dpDiv.show(showAnim, $.datepicker._get(inst, 'showOptions'), duration, postProcess);
 			else
 				inst.dpDiv[showAnim || 'show']((showAnim ? duration : null), postProcess);
-			if (!showAnim)
+			if (!showAnim || !duration)
 				postProcess();
 			if (inst.input.is(':visible') && !inst.input.is(':disabled'))
 				inst.input.focus();
@@ -1718,7 +1718,7 @@ $.fn.datepicker = function(options){
 $.datepicker = new Datepicker(); // singleton instance
 $.datepicker.initialized = false;
 $.datepicker.uuid = new Date().getTime();
-$.datepicker.version = "1.8rc3";
+$.datepicker.version = "1.8";
 
 // Workaround for #4055
 // Add another global to avoid noConflict issues with inline event handlers

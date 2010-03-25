@@ -1,5 +1,5 @@
 /*
- * jQuery UI Effects 1.8rc3
+ * jQuery UI Effects 1.8
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -301,7 +301,7 @@ $.fn.extend({
 /******************************************************************************/
 
 $.extend($.effects, {
-	version: "1.8rc3",
+	version: "1.8",
 
 	// Saves a set of properties in a data storage
 	save: function(element, set) {
@@ -417,6 +417,10 @@ function _normalizeArguments(effect, options, speed, callback) {
 		callback = options;
 		speed = null;
 		options = {};
+	}
+	if ($.isFunction(speed)) {
+		callback = speed;
+		speed = null;
 	}
 	if (typeof options == 'number' || $.fx.speeds[options]) {
 		callback = speed;
