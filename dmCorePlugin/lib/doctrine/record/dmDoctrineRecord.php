@@ -371,10 +371,17 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
       throw new dmRecordException(sprintf('%s is not an ancestor of %s', $model, $this->getDmModule()));
     }
 
-    return $ancestorModule->getTable()->createQuery($ancestorModule->getKey())
+    $id = $ancestorModule->getTable()->createQuery($ancestorModule->getKey())
     ->whereDescendantId($this->getDmModule()->getModel(), $this->get('id'), $ancestorModule->getModel())
     ->select($ancestorModule->getKey().'.id')
     ->fetchValue();
+
+    if(is_array($id))
+    {
+      $id = array_shift($id);
+    }
+
+    return $id;
   }
 
   /**
