@@ -83,7 +83,7 @@ abstract class dmMediaTag extends dmHtmlTag
   {
     $attributes = parent::prepareAttributesForHtml($attributes);
 
-    $attributes['src'] = $this->resource->getWebPath();
+    $attributes['src'] = urlencode($this->resource->getWebPath());
 
     return $attributes;
   }
