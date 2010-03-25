@@ -61,7 +61,7 @@ abstract class BaseDmTestPostForm extends BaseFormDoctrine
     else
     {
       $this->mergeI18nForm();
-    }
+		}
 
     $this->widgetSchema->setNameFormat('dm_test_post[%s]');
 

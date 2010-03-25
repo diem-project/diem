@@ -39,7 +39,7 @@ abstract class BaseDmTestDomainForm extends BaseFormDoctrine
     else
     {
       $this->mergeI18nForm();
-    }
+		}
 
     $this->widgetSchema->setNameFormat('dm_test_domain[%s]');
 
