@@ -141,8 +141,8 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
     $widgetTypeManager  = $serviceContainer->get('widget_type_manager');
     
     $areas = self::getAreaQuery()->fetchPDO(array($this->page->get('module'), $this->page->get('action')));
-    
-    $zones = self::getZonesQuery()->fetchArray(array($culture, $areas[0][0]));
+
+    $zones = self::getZonesQuery()->fetchArray(array($culture, $areas[0][1]));
     
     sfConfig::set('dm_search_populating', true);
     
@@ -190,7 +190,7 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
     }
 
     return self::$areaQueryCache = dmDb::query('DmPageView pv, pv.Area a')
-    ->select('a.id')
+    ->select('pv.id, a.id')
     ->where('pv.module = ?')
     ->andWhere('pv.action = ?');
   }
