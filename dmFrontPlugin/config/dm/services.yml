@@ -71,6 +71,8 @@ parameters:
 
   helper_extension.class:     dmFrontHelperExtension # Adds methods to the helper service
 
+  tool_bar_view.class:        dmFrontToolBarView  # Renders the front toolbar
+
 services:
 
   page_routing:

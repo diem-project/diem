@@ -454,3 +454,8 @@ services:
     class:                    %markdown_translator.class%
     shared:                   false
     arguments:                [ @i18n, %markdown_translator.options% ]
+  
+  tool_bar_view:
+    class:                    %tool_bar_view.class%
+    shared:                   false
+    arguments:                [ @dispatcher, @user, @helper, @i18n, @service_container ]
