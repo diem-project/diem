@@ -37,7 +37,7 @@ abstract class BaseDmTestCategForm extends BaseFormDoctrine
     else
     {
       $this->mergeI18nForm();
-    }
+		}
 
     $this->widgetSchema->setNameFormat('dm_test_categ[%s]');
 

@@ -130,7 +130,7 @@ class dmFrontPagerView extends dmConfigurable implements Iterator, Countable
       $options[$key] = (string) $option;
     }
 
-    return md5(var_export($options, true).$this->getBaseHref());
+    return md5(var_export($options, true).$this->getBaseHref().$this->getPage());
   }
 
   protected function openPager()

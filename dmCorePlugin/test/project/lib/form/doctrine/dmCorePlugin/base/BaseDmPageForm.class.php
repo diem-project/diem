@@ -47,7 +47,7 @@ abstract class BaseDmPageForm extends BaseFormDoctrine
     else
     {
       $this->mergeI18nForm();
-    }
+		}
 
     $this->widgetSchema->setNameFormat('dm_page[%s]');
 

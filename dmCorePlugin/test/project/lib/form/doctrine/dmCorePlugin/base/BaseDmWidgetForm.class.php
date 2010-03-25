@@ -41,7 +41,7 @@ abstract class BaseDmWidgetForm extends BaseFormDoctrine
     else
     {
       $this->mergeI18nForm();
-    }
+		}
 
     $this->widgetSchema->setNameFormat('dm_widget[%s]');
 

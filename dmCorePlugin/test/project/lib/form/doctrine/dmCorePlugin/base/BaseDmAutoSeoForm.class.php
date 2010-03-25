@@ -41,7 +41,7 @@ abstract class BaseDmAutoSeoForm extends BaseFormDoctrine
     else
     {
       $this->mergeI18nForm();
-    }
+		}
 
     $this->widgetSchema->setNameFormat('dm_auto_seo[%s]');
 
