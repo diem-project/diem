@@ -382,6 +382,29 @@ jQuery(function($){
 		yearSuffix: ''};
     $.datepicker.setDefaults($.datepicker.regional['fi']);
 });
+﻿/* Faroese initialisation for the jQuery UI date picker plugin */
+/* Written by Sverri Mohr Olsen, sverrimo@gmail.com */
+jQuery(function($){
+	$.datepicker.regional['fo'] = {
+		closeText: 'Lat aftur',
+		prevText: '&#x3c;Fyrra',
+		nextText: 'Næsta&#x3e;',
+		currentText: 'Í dag',
+		monthNames: ['Januar','Februar','Mars','Apríl','Mei','Juni',
+		'Juli','August','September','Oktober','November','Desember'],
+		monthNamesShort: ['Jan','Feb','Mar','Apr','Mei','Jun',
+		'Jul','Aug','Sep','Okt','Nov','Des'],
+		dayNames: ['Sunnudagur','Mánadagur','Týsdagur','Mikudagur','Hósdagur','Fríggjadagur','Leyardagur'],
+		dayNamesShort: ['Sun','Mán','Týs','Mik','Hós','Frí','Ley'],
+		dayNamesMin: ['Su','Má','Tý','Mi','Hó','Fr','Le'],
+		weekHeader: 'Vk',
+		dateFormat: 'dd-mm-yy',
+		firstDay: 0,
+		isRTL: false,
+		showMonthAfterYear: false,
+		yearSuffix: ''};
+	$.datepicker.setDefaults($.datepicker.regional['fo']);
+});
 /* Swiss-French initialisation for the jQuery UI date picker plugin. */
 /* Written Martin Voelkle (martin.voelkle@e-tc.ch). */
 jQuery(function($){
@@ -970,6 +993,29 @@ jQuery(function($){
 		yearSuffix: ''};
     $.datepicker.setDefaults($.datepicker.regional['sv']);
 });
+﻿/* Tamil (UTF-8) initialisation for the jQuery UI date picker plugin. */
+/* Written by S A Sureshkumar (saskumar@live.com). */
+jQuery(function($){
+	$.datepicker.regional['ta'] = {
+		closeText: 'மூடு',
+		prevText: 'முன்னையது',
+		nextText: 'அடுத்தது',
+		currentText: 'இன்று',
+		monthNames: ['தை','மாசி','பங்குனி','சித்திரை','வைகாசி','ஆனி',
+		'ஆடி','ஆவணி','புரட்டாசி','ஐப்பசி','கார்த்திகை','மார்கழி'],
+		monthNamesShort: ['தை','மாசி','பங்','சித்','வைகா','ஆனி',
+		'ஆடி','ஆவ','புர','ஐப்','கார்','மார்'],
+		dayNames: ['ஞாயிற்றுக்கிழமை','திங்கட்கிழமை','செவ்வாய்க்கிழமை','புதன்கிழமை','வியாழக்கிழமை','வெள்ளிக்கிழமை','சனிக்கிழமை'],
+		dayNamesShort: ['ஞாயிறு','திங்கள்','செவ்வாய்','புதன்','வியாழன்','வெள்ளி','சனி'],
+		dayNamesMin: ['ஞா','தி','செ','பு','வி','வெ','ச'],
+		weekHeader: 'Не',
+		dateFormat: 'dd/mm/yy',
+		firstDay: 1,
+		isRTL: false,
+		showMonthAfterYear: false,
+		yearSuffix: ''};
+	$.datepicker.setDefaults($.datepicker.regional['ta']);
+});
 ﻿/* Thai initialisation for the jQuery UI date picker plugin. */
 /* Written by pipo (pipo@sixhead.com). */
 jQuery(function($){
@@ -1082,7 +1128,30 @@ jQuery(function($){
 		yearSuffix: '年'};
 	$.datepicker.setDefaults($.datepicker.regional['zh-CN']);
 });
-/* Chinese initialisation for the jQuery UI date picker plugin. *//* Written by SCCY (samuelcychan@gmail.com). */jQuery(function($){	$.datepicker.regional['zh-HK'] = {		closeText: '關閉',		prevText: '&#x3c;上月',		nextText: '下月&#x3e;',		currentText: '今天',		monthNames: ['一月','二月','三月','四月','五月','六月',		'七月','八月','九月','十月','十一月','十二月'],		monthNamesShort: ['一','二','三','四','五','六',		'七','八','九','十','十一','十二'],		dayNames: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],		dayNamesShort: ['周日','周一','周二','周三','周四','周五','周六'],		dayNamesMin: ['日','一','二','三','四','五','六'],		weekHeader: '周',		dateFormat: 'dd-mm-yy',		firstDay: 0,		isRTL: false,		showMonthAfterYear: true,		yearSuffix: '年'};	$.datepicker.setDefaults($.datepicker.regional['zh-HK']);});﻿/* Chinese initialisation for the jQuery UI date picker plugin. */
+/* Chinese initialisation for the jQuery UI date picker plugin. */
+/* Written by SCCY (samuelcychan@gmail.com). */
+jQuery(function($){
+	$.datepicker.regional['zh-HK'] = {
+		closeText: '關閉',
+		prevText: '&#x3c;上月',
+		nextText: '下月&#x3e;',
+		currentText: '今天',
+		monthNames: ['一月','二月','三月','四月','五月','六月',
+		'七月','八月','九月','十月','十一月','十二月'],
+		monthNamesShort: ['一','二','三','四','五','六',
+		'七','八','九','十','十一','十二'],
+		dayNames: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
+		dayNamesShort: ['周日','周一','周二','周三','周四','周五','周六'],
+		dayNamesMin: ['日','一','二','三','四','五','六'],
+		weekHeader: '周',
+		dateFormat: 'dd-mm-yy',
+		firstDay: 0,
+		isRTL: false,
+		showMonthAfterYear: true,
+		yearSuffix: '年'};
+	$.datepicker.setDefaults($.datepicker.regional['zh-HK']);
+});
+﻿/* Chinese initialisation for the jQuery UI date picker plugin. */
 /* Written by Ressol (ressol@gmail.com). */
 jQuery(function($){
 	$.datepicker.regional['zh-TW'] = {
