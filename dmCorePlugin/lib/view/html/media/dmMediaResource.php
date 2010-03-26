@@ -110,7 +110,8 @@ class dmMediaResource
         $this->type = self::REMOTE;
         $this->remotePath = $source;
   
-        $this->mime = 'image'; //$this->mimeTypeResolver->getGroupByFilename(dmString::getBaseFromUrl($source));
+        $this->mime = $this->mimeTypeResolver->getGroupByFilename(dmString::getBaseFromUrl($source));
+        $this->mime = $this->mime ? $this->mime : 'image';
       }
       else
       {
