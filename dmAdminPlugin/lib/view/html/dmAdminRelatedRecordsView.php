@@ -55,6 +55,11 @@ class dmAdminRelatedRecordsView extends dmConfigurable
 
   public function render()
   {
+    if($this->record->isNew())
+    {
+      return '';
+    }
+    
     $html = '<div class="dm_related_records">';
 
     if (count($this->foreignRecords))
