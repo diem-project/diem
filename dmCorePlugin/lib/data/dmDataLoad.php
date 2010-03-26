@@ -192,10 +192,27 @@ class dmDataLoad
 
         $setting->save();
       }
+      /*
+       * The setting exists, but the default culture has no value!
+       * This can happen when the default culture changes
+       */
       elseif(!$existingSettings[$name]->hasCurrentTranslation())
       {
-        $existingSettings[$name]->fromArray($config);
-        $existingSettings[$name]->save();
+        /*
+         * Try to find an existing config from another culture
+         */
+        $existing = dmDb::query('DmSettingTranslation s')
+        ->where('s.id = ?', $existingSettings[$name]->id)
+        ->limit(1)
+        ->fetchArray();
+        
+        if($existing = dmArray::first($existing))
+        {
+          $config = $existing;
+          unset($config['id'], $config['lang']);
+        }
+        
+        $existingSettings[$name]->fromArray($config)->getCurrentTranslation()->save();
       }
     }
 
