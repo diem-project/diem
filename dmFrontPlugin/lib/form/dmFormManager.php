@@ -82,18 +82,12 @@ class dmFormManager implements ArrayAccess
   {
     $name = dmString::camelize($name);
 
-    if(isset($this->forms[$name]))
+    if(!isset($this->forms[$name]))
     {
-      $form = $this->forms[$name];
-    }
-    else
-    {
-      $form = null;
-
-      $this->dispatcher->notify(new sfEvent($this, 'dm.form_manager.not_found', array('name' => $name)));
+      throw new dmFormNotFoundException('The form '.$name.' is not loaded');
     }
 
-    return $form;
+    return $this->forms[$name];
   }
 
   /**
