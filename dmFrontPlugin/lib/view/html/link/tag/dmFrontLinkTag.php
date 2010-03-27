@@ -2,6 +2,8 @@
 
 abstract class dmFrontLinkTag extends dmBaseLinkTag
 {
+  protected
+  $requestContext;
   
   public function __construct(dmFrontLinkResource $resource, array $requestContext, array $options = array())
   {
@@ -29,5 +31,24 @@ abstract class dmFrontLinkTag extends dmBaseLinkTag
     }
 
     return $this->getBaseHref();
+  }
+  
+  public function getHrefPrefix()
+  {
+    return sfConfig::get('sf_no_script_name')
+    ? $this->requestContext['prefix']
+    : $this->requestContext['script_name'];
+  }
+
+  public function getAbsoluteHref()
+  {
+    $href = $this->getHref();
+
+    if(strpos($href, '://'))
+    {
+      return $href;
+    }
+
+    return str_replace('//', '/', $this->requestContext['absolute_url_root'].'/'.$href);
   }
 }
