@@ -172,4 +172,16 @@ class dmAdminLinkTag extends dmBaseLinkTag
     return $text;
   }
 
+  public function getAbsoluteHref()
+  {
+    $href = $this->getHref();
+
+    if(strpos($href, '://'))
+    {
+      return $href;
+    }
+
+    return str_replace('//', '/', $this->serviceContainer->getService('request')->getAbsoluteUrlRoot().'/'.$href);
+  }
+
 }
