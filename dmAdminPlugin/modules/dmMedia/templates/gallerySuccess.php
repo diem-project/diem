@@ -8,13 +8,19 @@ use_javascript('admin.gallery');
 
 echo _open('div.dm_gallery_big', array('json' => $galleryOptions));
 
+echo $addByIdForm->open('action=dmMedia/addToGalleryById').
+$addByIdForm['media_id']->field().
+$addByIdForm['model']->field().
+$addByIdForm['pk']->field().
+$addByIdForm->close();
+
 echo _tag('div.dm_gallery_actions.clearfix',
   _link($record)->set('.s16.s16_arrow_left.back').
   _tag('a.open_form.dm_big_button', _tag('span.s16.s16_add', __('Add')))
 );
 
 echo $form->render('.dm_add_media.dm_form.list.little.ui-corner-all'.($form->isBound() ? '' : '.none').' action="+/dmMedia/gallery?model='.get_class($record).'&pk='.$record->getPrimaryKey().'"');
-
+echo _tag('div.help_box', __('Drag & drop a media here'));
 echo _open('ul.list.clearfix');
 
 foreach($medias as $media)
