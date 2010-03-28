@@ -542,6 +542,8 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
       $record->save();
     }
 
+    $this->getDispatcher()->notify(new sfEvent($this, 'dm.controller.redirect'));
+
     return $this->renderText($record->$field ? '1' : '0');
   }
 }
