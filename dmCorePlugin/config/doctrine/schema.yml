@@ -41,10 +41,6 @@ DmPageView:
       foreign:              id
       onDelete:             SET NULL
       foreignAlias:         PageViews
-    Area:
-      class:                DmArea
-      local:                id
-      foreign:              dm_page_view_id
 
 DmLayout:
   columns:
@@ -68,7 +64,7 @@ DmArea:
       class:                DmPageView
       local:                dm_page_view_id
       foreign:              id
-      foreignAlias:         Area
+      foreignAlias:         Areas
       onDelete:             CASCADE
 
 DmZone:
