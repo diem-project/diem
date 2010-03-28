@@ -5,6 +5,17 @@ class DmMediaForRecordForm extends DmMediaForm
   protected
   $record;
 
+  public function configure()
+  {
+    parent::configure();
+
+    $this->widgetSchema['id']->setAttribute('class', 'dm_media_id');
+
+    $this->getWidgetSchema()
+    ->getFormFormatter()
+    ->setDecoratorFormat("<ul class=\"dm_media_for_record_form dm_form_elements\">\n  %content%</ul>");
+  }
+
   public static function factory(myDoctrineRecord $record, $local, $alias, $required)
   {
     /*

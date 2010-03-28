@@ -2,6 +2,15 @@
 
 class BasedmMediaActions extends dmAdminBaseActions
 {
+
+  public function executePreview(sfWebRequest $request)
+  {
+    $this->forward404Unless(
+      $media = dmDb::table('DmMedia')->findOneByIdWithFolder($request->getParameter('id'))
+    );
+
+    return $this->renderPartial('dmMedia/viewBig', array('object' => $media));
+  }
   
   public function executeGallery(dmWebRequest $request)
   {

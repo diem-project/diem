@@ -50,7 +50,7 @@
 [?php elseif ($field->getConfig('markdown')): ?]
   [?php include_partial("dmAdminGenerator/markdown", array("form" => $form, "field" => $field, "class" => $class, "name" => $name, "label" => $label, "attributes" => $attributes, "help" => $help)); ?]
 [?php elseif(isset($form[$name])): ?]
-  <div class="[?php echo $divClass ?][?php $form[$name]->hasError() and print ' errors' ?]">
+  <div data-field-name="[?php echo $name ?]" class="[?php echo $divClass ?][?php $form[$name]->hasError() and print ' errors' ?]">
     [?php if ($form[$name]->hasError()): ?]
       <div class="error">
         <div class="s16 s16_error">[?php echo __((string) $form[$name]->getError()) ?]</div>
