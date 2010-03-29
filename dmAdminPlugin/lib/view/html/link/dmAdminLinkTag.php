@@ -113,17 +113,17 @@ class dmAdminLinkTag extends dmBaseLinkTag
 
     elseif(is_object($this->resource) && $this->resource instanceof dmDoctrineRecord)
     {
-      if (($module = $this->resource->getDmModule()) && $module->hasAdmin())
+      if($this->resource instanceof DmPage)
+      {
+        $resource = $this->serviceContainer->getService('script_name_resolver')->get('front').'/'.$this->resource->get('slug');
+      }
+      elseif (($module = $this->resource->getDmModule()) && $module->hasAdmin())
       {
         $resource = array(
           'sf_route' => $module->getUnderscore(),
           'action'   => 'edit',
           'pk'       => $this->resource->getPrimaryKey()
         );
-      }
-      elseif($this->resource instanceof DmPage)
-      {
-        $resource = $this->serviceContainer->getService('script_name_resolver')->get('front').'/'.$this->resource->get('slug');
       }
     }
     
