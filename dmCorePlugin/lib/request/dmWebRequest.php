@@ -2,7 +2,6 @@
 
 class dmWebRequest extends sfWebRequest
 {
-
   protected
   $absoluteUrlRoot;
 
@@ -52,4 +51,8 @@ class dmWebRequest extends sfWebRequest
     return $context;
   }
 
+  public function setGetParameters(array $getParameters)
+  {
+    $this->getParameters = $getParameters;
+  }
 }
