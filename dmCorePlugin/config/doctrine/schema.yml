@@ -251,7 +251,7 @@ DmMailTemplate:
   actAs:
     Timestampable:
     I18n:
-      fields:               [ subject, description, body, from_email, to_email, is_html, is_active ]
+      fields:               [ subject, description, body, from_email, to_email, cc_email, bcc_email, reply_to_email, sender_email, list_unsuscribe, is_html, is_active ]
   columns:
     name:                   { type: string(255), notnull: true, unique: true }
     description:            { type: string(5000) }
