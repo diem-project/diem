@@ -95,7 +95,7 @@ class dmFrontInitFilter extends dmInitFilter
     return $this->context->getEventDispatcher()->filter(
       new sfEvent($this, 'dm.page_cache.enable', array('context' => $this->context)),
       // by default, the page is cached only for non-authenticated users
-      !$this->user->getAttribute('user_id', null, 'dmSecurityUser')
+      !$this->user->isAuthenticated()
     )->getReturnValue();
   }
 
