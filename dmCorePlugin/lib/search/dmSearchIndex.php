@@ -141,9 +141,15 @@ class dmSearchIndex extends dmSearchIndexCommon
         ->setParameter('search_document.source', $page)
         ->getService('search_document');
 
-        $document->populate();
-
-        $this->luceneIndex->addDocument($document);
+        try
+        {
+          $document->populate();
+          $this->luceneIndex->addDocument($document);
+        }
+        catch(dmSearchPageNotIndexableException $e)
+        {
+          $logger->log('SKIPPED '.$page->get('slug'));
+        }
 
         ++$nb;
       }
