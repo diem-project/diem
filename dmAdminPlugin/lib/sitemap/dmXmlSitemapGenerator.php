@@ -106,7 +106,7 @@ class dmXmlSitemapGenerator extends dmConfigurable
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 %s
 </urlset>',
-    $this->getUrls($this->getPages($culture))
+    $this->getUrls($this->getPages($culture), $culture)
     );
   }
 
@@ -116,7 +116,8 @@ class dmXmlSitemapGenerator extends dmConfigurable
    */
   protected function getPages($culture)
   {
-    return dmDb::query('DmPage p')->withI18n($culture)
+    return dmDb::query('DmPage p')
+    ->withI18n($culture)
     ->where('pTranslation.is_secure = ?', false)
     ->addWhere('pTranslation.is_active = ?', true)
     ->addWhere('p.module != ? OR ( p.action != ? AND p.action != ? AND p.action != ?)', array('main', 'error404', 'search', 'signin'))
@@ -124,25 +125,25 @@ class dmXmlSitemapGenerator extends dmConfigurable
     ->fetchRecords();
   }
   
-  protected function getUrls(myDoctrineCollection $pages)
+  protected function getUrls(myDoctrineCollection $pages, $culture)
   {
     $urls = array();
 
     foreach($pages as $page)
     {
-      $urls[] = $this->getUrl($page);
+      $urls[] = $this->getUrl($page, $culture);
     }
     
     return implode("\n", $urls);
   }
   
-  protected function getUrl(dmPage $page)
+  protected function getUrl(dmPage $page, $culture)
   {
     return sprintf('  <url>
     <loc>
       %s
     </loc>
-  </url>', $this->getOption('domain').'/'.$page->_getI18n('slug'));
+  </url>', $this->getOption('domain').'/'.$page->get('Translation')->get($culture)->get('slug'));
   }
 
   protected function write($filePath, $xml)
