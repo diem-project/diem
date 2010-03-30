@@ -3,7 +3,7 @@
 class dmSearchPageDocument extends Zend_Search_Lucene_Document
 {
   protected static
-  $areaQueryCache,
+  $pageViewQueryCache,
   $zonesQueryCache;
   
   protected
@@ -140,9 +140,17 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
     $helper             = $serviceContainer->get('page_helper');
     $widgetTypeManager  = $serviceContainer->get('widget_type_manager');
     
-    $areas = self::getAreaQuery()->fetchPDO(array($this->page->get('module'), $this->page->get('action')));
+    $pageView = self::getPageViewQuery()->fetchArray(array($this->page->get('module'), $this->page->get('action')));
 
-    $zones = self::getZonesQuery()->fetchArray(array($culture, $areas[0][1]));
+    $areaIds = array();
+    foreach($pageView[0]['Areas'] as $area)
+    {
+      $areaIds[] = $area['id'];
+    }
+    $zonesQuery = clone self::getZonesQuery();
+    $zones = $zonesQuery
+    ->whereIn('z.dm_area_id', $areaIds)
+    ->fetchArray(array($culture));
     
     sfConfig::set('dm_search_populating', true);
 
@@ -189,14 +197,14 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
     return dmSearchIndex::cleanText($text);
   }
 
-  protected static function getAreaQuery()
+  protected static function getPageViewQuery()
   {
-    if(null !== self::$areaQueryCache)
+    if(null !== self::$pageViewQueryCache)
     {
-      return self::$areaQueryCache;
+      return self::$pageViewQueryCache;
     }
 
-    return self::$areaQueryCache = dmDb::query('DmPageView pv, pv.Area a')
+    return self::$pageViewQueryCache = dmDb::query('DmPageView pv, pv.Areas a')
     ->select('pv.id, a.id')
     ->where('pv.module = ?')
     ->andWhere('pv.action = ?');
@@ -212,8 +220,7 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
     return self::$zonesQueryCache = dmDb::query('DmZone z')
     ->leftJoin('z.Widgets w')
     ->innerJoin('w.Translation wTranslation WITH wTranslation.lang = ?')
-    ->select('z.dm_area_id, w.module, w.action, wTranslation.value')
-    ->where('z.dm_area_id = ?');
+    ->select('z.dm_area_id, w.module, w.action, wTranslation.value');
   }
 
 }
