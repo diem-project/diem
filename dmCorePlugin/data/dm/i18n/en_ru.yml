@@ -59,7 +59,7 @@
 "does not match the date format": "Неверный формат даты"
 "The date must be before": "Дата должна быть раньше"
 "The date must be after": "Дата должна быть после"
-"[0]no element|[1]1 element|(1,+Inf]%1% elements": "[0]нет элемента|[1]1 элемент|(1,+inf]%1% элементов"
+"[0]no element|[1]1 element|(1,+Inf]%1% elements": "[0]нет элемента|[1]1 элемент|(1,+Inf]%1% элементов"
 "You must select an action to execute on the selected items.": "Вы должны выбрать действие, которое нужно выполнить с выбранными элементами."
 "No result": "Результатов не найдено"
 "The selected items have been deleted successfully.": "Выбранные элементы были успешно удалены."
