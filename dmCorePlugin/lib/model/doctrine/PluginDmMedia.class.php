@@ -47,7 +47,7 @@ abstract class PluginDmMedia extends BaseDmMedia
       }
     }
 
-    return $this->setCache('foreign', $foreigns);
+    return $this->setCache('foreigns', $foreigns);
   }
 
   public function getNbForeigns()
