@@ -131,7 +131,7 @@ abstract class dmWidgetBaseView
         'lifeTime'        => 86400,
         'clientLifeTime'  => 86400,
         'contextual'      => !$this->isStatic(),
-        'vary'            => array($this->widget['id'], $this->getService('user')->getUserId())
+        'vary'            => array($this->widget['id'], $this->getService('user')->getUserId(), $this->getService('user')->getCulture())
       ));
     }
 
