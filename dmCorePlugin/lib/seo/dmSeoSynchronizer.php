@@ -77,11 +77,7 @@ class dmSeoSynchronizer
       ->saveGet();
     }
 
-    $autoSeoRecordTranslation = $autoSeoRecord->getCurrentTranslation();
-    if(!$autoSeoRecordTranslation->exists())
-    {
-      $autoSeoRecordTranslation = $autoSeoRecord->getI18nFallback();
-    }
+    $autoSeoRecordTranslation = $autoSeoRecord->getOrCreateCurrentTranslation();
     
     $patterns = array();
     foreach(DmPage::getAutoSeoFields() as $patternField)
