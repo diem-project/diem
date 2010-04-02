@@ -12,6 +12,13 @@
     {
       this.element.find('a').each(function() {
         $(this).attr('href', $.dm.ctrl.options.script_name+$(this).attr('href'));
+        
+        // We need to remove the href because IE can't enable dragging with it
+        if($.browser.msie)
+        {
+          $(this).data('a_href', $(this).attr('href'));
+          $(this).removeAttr('href');
+        }
       });
     },
 
@@ -22,7 +29,16 @@
       options.callback.ondblclk = function(NODE, TREE_OBJ)
       {
         $('body').block();
-        location.href = $('a', NODE).attr('href');
+        
+        // Redirection under IE as we removed href
+        if($.browser.msie)
+        {
+          location.href = $('a', NODE).data('a_href');
+        }
+        else
+        {
+          location.href = $('a', NODE).attr('href');
+        }
         return false;
       }
 

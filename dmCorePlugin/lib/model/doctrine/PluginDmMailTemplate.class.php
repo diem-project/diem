@@ -13,4 +13,25 @@
 abstract class PluginDmMailTemplate extends BaseDmMailTemplate
 {
 
+  public function showVars()
+  {
+    return implode(', ', array_map(array($this, 'wrapVar'), $this->getVarsArray()));
+  }
+
+  public function getVarsArray()
+  {
+    return array_map('trim', explode(',', $this->get('vars')));
+  }
+
+  public function wrapVar($var)
+  {
+    return '%'.$var.'%';
+  }
+
+  public function getNbSentMails()
+  {
+    return dmDb::query('DmSentMail s')
+    ->where('s.dm_mail_template_id = ?', $this->id)
+    ->count();
+  }
 }

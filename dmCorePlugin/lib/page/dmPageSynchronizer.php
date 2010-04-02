@@ -176,7 +176,7 @@ class dmPageSynchronizer
     foreach($projectModules as $moduleKey => $module)
     {
       /*
-       * Only root modules, wich have no parent, need a list page
+       * Only root modules, which have no parent, need a list page
        */
       if (!isset($listPages[$moduleKey]))
       {
@@ -401,9 +401,7 @@ LIMIT 1')->getStatement();
 
     $this->nodeParentIdStmt->execute(array($pageData['lft'], $pageData['rgt']));
     
-    $result = $this->nodeParentIdStmt->fetch(PDO::FETCH_NUM);
-    
-    return $result[0];
+    return $this->nodeParentIdStmt->fetchColumn();
   }
   
   protected function getParentRecordIds(dmProjectModule $module, dmProjectModule $parentModule)

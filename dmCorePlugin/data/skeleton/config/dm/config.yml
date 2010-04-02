@@ -29,3 +29,9 @@ all:
     page_cache:                         # Will cache entire pages and serve them very fast.
       enabled:            false         # Enable the page cache for all pages
       life_time:          86400         # Server-side lifetime of the cache in seconds (86400 seconds equals one day)
+
+  web_services:
+    version_check:        true          # verifies regularly if you are using the latest Diem version.
+    report_anonymous_data: ##SEND_REPORTS##         # reports anonymous data about plugins used.
+                                        # http://diem-project.org/plugins will show the best plugins based on these reports.
+                                        # the report request is sent only once, when a superadministrator logs in.

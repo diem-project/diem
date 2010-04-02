@@ -130,7 +130,14 @@ class dmMediaSynchronizer
      */
     foreach ($children as $child)
     {
-      $child->getNode()->delete();
+      try
+      {
+        $child->getNode()->delete();
+      }
+      catch(Doctrine_Connection_Exception $e)
+      {
+        //A record needs a media in this folder, but the folder has been removed :-/
+      }
 
       $dirty = true;
     }

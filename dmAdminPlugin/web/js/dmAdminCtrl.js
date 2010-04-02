@@ -25,12 +25,14 @@
       }
       
       this.liveEvents();
-			
-			this.autoLoading();
+      
+      this.autoLoading();
 
       this.showMoreRelatedRecords();
 
       this.checkVersion();
+
+      this.reportAnonymousData();
 
       if($.dm.ping && this.options.authenticated)
       {
@@ -69,26 +71,36 @@
         });
       }
     },
-		
-		autoLoading: function()
-		{
-			var self = this, nbElements = 1;
-			
-			$('.dm_auto_loading', self.$).each(function()
-			{
-				var $this = $(this), metadata = $this.metadata();
-				$this.height(metadata.height || ($this.width()/500) * 300);
+
+    reportAnonymousData: function()
+    {
+      if($reportAnonymousData = $('#dm_async_report').orNot())
+      {
+        $.ajax({
+          url:      $.dm.ctrl.getHref('+/dmAdmin/reportAnonymousData')
+        });
+      }
+    },
+    
+    autoLoading: function()
+    {
+      var self = this, nbElements = 1;
+      
+      $('.dm_auto_loading', self.$).each(function()
+      {
+        var $this = $(this), metadata = $this.metadata();
+        $this.height(metadata.height || ($this.width()/500) * 300);
         setTimeout(function() {
-					$.ajax({
-						url:     metadata.url,
-						success: function(html) {
-							$this.hide().html(html).fadeIn(1000);
-						}
-					});
-			  }, nbElements*500);
-				nbElements ++;
-			});
-		},
+          $.ajax({
+            url:     metadata.url,
+            success: function(html) {
+              $this.hide().html(html).fadeIn(1000);
+            }
+          });
+        }, nbElements*500);
+        nbElements ++;
+      });
+    },
     
     bars: function()
     {

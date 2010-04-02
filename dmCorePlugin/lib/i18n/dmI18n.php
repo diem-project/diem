@@ -3,17 +3,11 @@
 class dmI18n extends sfI18N
 {
   protected
-  $useInternalCatalogue = false,
   $cultures = array();
   
   public function setCultures(array $cultures)
   {
     $this->cultures = array_unique($cultures);
-  }
-  
-  public function setUseInternalCatalogue($v)
-  {
-    $this->useInternalCatalogue = (bool) $v;
   }
 
   public function translateArray(array $array, $args = array(), $catalogue = 'messages')

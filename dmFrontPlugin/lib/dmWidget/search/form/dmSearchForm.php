@@ -8,10 +8,12 @@ class dmSearchForm extends BaseForm
     $this->setName('search')
     ->widgetSchema->setNameFormat('%s');
     
-    $this->widgetSchema['query'] = new sfWidgetFormInputText();
+    $this->widgetSchema['query'] = new sfWidgetFormInputText(array(
+      'label' => 'Query'
+    ));
     
     $this->validatorSchema['query'] = new sfValidatorString(array('required' => false));
-    
+
     $this->removeCsrfProtection();
   }
   

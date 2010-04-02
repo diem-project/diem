@@ -23,6 +23,7 @@ body.pageBarOpen #sf_admin_content {
   box-shadow: 3px 0 4px #888;
   -moz-box-shadow: 3px 0 4px #888;
   -webkit-box-shadow: 3px 0 4px #888;
+  z-index: 20;
 }
 
 #dm_page_bar_toggler {
@@ -39,6 +40,7 @@ body.pageBarOpen #sf_admin_content {
   box-shadow: 2px 0 5px #888;
   -moz-box-shadow: 2px 0 5px #888;
   -webkit-box-shadow: 2px 0 5px #888;
+  z-index: 20;
 }
 
 #dm_page_bar_toggler:hover {

@@ -15,7 +15,7 @@ class dmFrontI18n extends dmI18n
     
     $result = $this->__orFalse($string, $args, $catalogue);
 
-    if ( false === $result && $catalogue !== 'dm' && $this->useInternalCatalogue)
+    if (false === $result && $catalogue !== 'dm')
     {
       $result = $this->__orFalse($string, $args, 'dm');
     }

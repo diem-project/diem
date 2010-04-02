@@ -21,3 +21,7 @@ div.dm_config_panel.ui-tabs div.ui-tabs-panel {
   margin-left: 20%;
   color: #666;
 }
+
+.dm_config_panel li.dm_form_element.setting_datetime select {
+  width: auto;
+}

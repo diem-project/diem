@@ -185,6 +185,22 @@ class dmConfig
 
   public static function canSystemCall()
   {
-    return function_exists('exec');
+    if(function_exists('exec'))
+    {
+      try
+      {
+        $canSystemCall = (bool) sfToolkit::getPhpCli();
+      }
+      catch(sfException $e)
+      {
+        $canSystemCall = false;
+      }
+    }
+    else
+    {
+      $canSystemCall = false;
+    }
+
+    return false;
   }
 }

@@ -105,11 +105,6 @@ class dmContext extends sfContext
     &&  !$this->factories['request']->isFlashRequest()
     &&  $this->factories['response']->isHtml()
     );
-    
-    /*
-     * Configure i18n
-     */
-    $this->factories['i18n']->setUseInternalCatalogue($this->getUser()->can('admin'));
   }
   
   public function reloadModuleManager()

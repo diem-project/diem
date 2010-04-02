@@ -80,10 +80,10 @@ class dmForm extends sfFormSymfony
   
   public function changeToEmail($fieldName)
   {
-    $this->validatorSchema[$fieldName] = new sfValidatorAnd(array(
-      $this->validatorSchema[$fieldName],
-      new sfValidatorEmail(),
-    ));
+    $this->validatorSchema[$fieldName] = new sfValidatorEmail(
+      $this->validatorSchema[$fieldName]->getOptions(),
+      $this->validatorSchema[$fieldName]->getMessages()
+    );
   }
   
   /**
@@ -103,7 +103,7 @@ class dmForm extends sfFormSymfony
     $this->getFormFieldSchema()->render($attributes).
     sprintf('<li class="dm_form_element"><label>%s</label>%s</li>',
     $this->__('Validate'),
-    $this->renderSubmitTag($this->__('Validate'))
+    $this->renderSubmitTag($this->__('Send'))
     ).
     '</ul>'.
     $this->close();

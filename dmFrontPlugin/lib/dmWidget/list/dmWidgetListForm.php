@@ -92,7 +92,12 @@ class dmWidgetListForm extends dmWidgetProjectModelForm
 
   protected function allowFilterAutoRecordId(dmModule $filterModule)
   {
-    return $this->getPage() ? $this->getPage()->getDmModule()->knows($filterModule) : false;
+    if($page = $this->getPage())
+    {
+      return $page->hasRecord() && $page->getDmModule()->knows($filterModule);
+    }
+
+    return false;
   }
 
   protected function getFilterAutoRecord(dmModule $filterModule)

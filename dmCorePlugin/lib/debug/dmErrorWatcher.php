@@ -82,7 +82,7 @@ class dmErrorWatcher extends dmConfigurable
   {
     dmDb::create('DmError', array(
       'description' => $error->name."\n".$error->exception->getTraceAsString(),
-      'klass' => $error->class,
+      'php_class' => $error->class,
       'name' => dmString::truncate($error->name, 255, ''),
       'module' => $error->module,
       'action' => $error->action,

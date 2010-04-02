@@ -1,7 +1,7 @@
 <?php
 
-// Third release candidate for Diem 5.0
-define('DIEM_VERSION', '5.0.0-RC3_DEV');
+// First dev preview for Diem 5.1
+define('DIEM_VERSION', '5.1.0-DEV');
 
 /*
  * Include Symfony

@@ -41,11 +41,10 @@ class dmAdminModuleTypeMenu extends dmMenu
           }
 
           $spaceMenu->addChild($module->getName())
+          ->liClass('dm_module')
           ->label(
-            $this->helper->tag('li.dm_module',
-              $this->helper->link('@'.$module->getUnderscore())->text($this->i18n->__($module->getPlural())).
-              $this->helper->tag('p.infos', $nbRecordsText)
-            )
+            $this->helper->link('@'.$module->getUnderscore())->text($this->i18n->__($module->getPlural())).
+            $this->helper->tag('p.infos', $nbRecordsText)
           );
         }
       }

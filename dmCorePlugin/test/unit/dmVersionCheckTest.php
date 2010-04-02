@@ -4,7 +4,7 @@ require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
 $helper = new dmUnitTestHelper();
 $helper->boot('admin');
 
-$t = new lime_test(20);
+$t = new lime_test(18);
 
 $t->comment('Weird version numbers will be shown during this test.');
 $t->comment('Diem real version number is '.DIEM_VERSION);
@@ -27,18 +27,6 @@ $versionCheck = $helper->get('diem_version_check', 'dmDiemVersionCheckMock');
 dm::setVersion('5.0.0-BETA1');
 
 $t->is(dm::getVersion(), '5.0.0-BETA1', 'Diem version is 5.0.0-BETA1');
-
-$t->ok($versionCheck->shouldCheck(), 'versionCheck should check');
-
-$t->comment('disable version check');
-
-$versionCheck->setOption('enabled', false);
-
-$t->ok(!$versionCheck->shouldCheck(), 'versionCheck should not check');
-
-$t->comment('enable version check');
-
-$versionCheck->setOption('enabled', true);
 
 $t->ok($versionCheck->shouldCheck(), 'versionCheck should check');
 

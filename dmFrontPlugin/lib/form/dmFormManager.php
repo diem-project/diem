@@ -4,12 +4,14 @@ class dmFormManager implements ArrayAccess
 {
   protected
   $serviceContainer,
+  $dispatcher,
   $forms;
   
-  public function __construct(dmFrontServiceContainer $serviceContainer)
+  public function __construct(dmFrontServiceContainer $serviceContainer, sfEventDispatcher $dispatcher)
   {
     $this->serviceContainer = $serviceContainer;
-    
+    $this->dispatcher       = $dispatcher;
+
     $this->initialize();
   }
   
@@ -79,10 +81,10 @@ class dmFormManager implements ArrayAccess
   public function offsetGet($name)
   {
     $name = dmString::camelize($name);
-    
-    if (!array_key_exists($name, $this->forms))
+
+    if(!isset($this->forms[$name]))
     {
-      $this->forms[$name] = $this->createForm($name);
+      throw new dmFormNotFoundException('The form '.$name.' is not loaded');
     }
 
     return $this->forms[$name];
@@ -102,6 +104,8 @@ class dmFormManager implements ArrayAccess
     {
       throw new InvalidArgumentException(sprintf('The object "%s" is not an instance of dmForm', get_class($value)));
     }
+
+    $this->prepareFormForPage($value);
     
     $this->forms[$name] = $value;
   }

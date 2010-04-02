@@ -3,35 +3,43 @@
 class dmMail
 {
   protected
-  $serviceContainer,
+  $mailer,
+  $dispatcher,
+  $message,
   $template,
-  $data,
-  $attributes;
-
-  protected static
-  $swiftLoaded = false;
+  $values,
+  $isRendered;
   
-  public function __construct(dmBaseServiceContainer $serviceContainer)
+  public function __construct(sfContext $context, sfEventDispatcher $dispatcher)
   {
-    $this->serviceContainer = $serviceContainer;
+    $this->mailer     = $context->getMailer();
+    $this->dispatcher = $dispatcher;
     
     $this->initialize();
   }
   
   protected function initialize()
   {
-    $this->data = array();
-    $this->attributes = array(
-      'title' => null,
-      'body'  => null,
-      'from'  => array(),
-      'to'    => array()
-    );
+    dm::enableMailer();
+    
+    $this->values     = array();
+    $this->isRendered = false;
+    $this->message    = Swift_Message::newInstance();
   }
 
+  /**
+   * Set a template to the mail
+   *
+   * @param mixed $templateName the template name, or a DmMailTemplateInstance
+   * @return dmMail $this
+   */
   public function setTemplate($templateName)
   {
-    if (!$this->template = dmDb::query('DmMailTemplate t')->where('t.name = ?', $templateName)->fetchRecord())
+    if($templateName instanceof DmMailTemplate)
+    {
+      $this->template = $templateName;
+    }
+    elseif (!$this->template = dmDb::query('DmMailTemplate t')->where('t.name = ?', $templateName)->fetchRecord())
     {
       $this->template = dmDb::create('DmMailTemplate', array('name' => $templateName));
     }
@@ -39,103 +47,262 @@ class dmMail
     return $this;
   }
 
-  public function set($data)
+  /**
+   * Get the template used to build the mail
+   *
+   * @return DmMailTemplate the template instance
+   */
+  public function getTemplate()
   {
-    if ($data instanceof dmDoctrinRecord)
-    {
-      $data = $data->toArray();
-    }
-    elseif($data instanceof dmFormDoctrine)
-    {
-      $data = $data->getObject()->toArray();
-    }
-    elseif($data instanceof dmForm)
-    {
-      $data = $data->getValues();
-    }
-    else
-    {
-      $data = (array) $data;
-    }
+    return $this->template;
+  }
 
-    $this->data = array_merge($this->data, $data);
+  /**
+   * Set a message manually to the mail
+   *
+   * @param Swift_Message $message the Swift message
+   * @return dmMail $this
+   */
+  public function setMessage(Swift_Message $message)
+  {
+    $this->message = $message;
 
     return $this;
   }
 
+  /**
+   * Get the Swift message that will be sent
+   *
+   * @return Swift_Message the message instance
+   */
+  public function getMessage()
+  {
+    return $this->message;
+  }
+
+  /**
+   * Set a mailer manually
+   *
+   * @param sfMailer $mailer another mailer
+   * @return dmMail $this
+   */
+  public function setMailer(sfMailer $mailer)
+  {
+    $this->mailer = $mailer;
+
+    return $this;
+  }
+
+  /**
+   * Get the mailer used
+   *
+   * @return sfMailer the mailer instance
+   */
+  public function getMailer()
+  {
+    return $this->mailer;
+  }
+
+  /**
+   * Add values to the mail that will be available in the template
+   *
+   * @param   mixed   $data   a record, a form or an array
+   * @param   string  $prefix a prefix for this data
+   * @return  dmMail  $this
+   */
+  public function addValues($values, $prefix = null)
+  {
+    if ($values instanceof dmDoctrineRecord)
+    {
+      $values = $values->toArray();
+    }
+    elseif($values instanceof dmFormDoctrine)
+    {
+      $values = $values->getObject()->toArray();
+    }
+    elseif($values instanceof dmForm)
+    {
+      $values = $values->getValues();
+    }
+
+    if(!is_array($values))
+    {
+      throw new dmException('dmMail->setValues supports records, forms and arrays');
+    }
+
+    foreach($values as $key => $value)
+    {
+      if(is_array($value))
+      {
+        unset($values[$key]);
+      }
+      elseif(is_object($value))
+      {
+        try
+        {
+          $values[$key] = (string)$value;
+        }
+        catch(Exception $e)
+        {
+          unset($values[$key]);
+        }
+      }
+      elseif($prefix)
+      {
+        $values[$prefix.$key] = $value;
+        unset($values[$key]);
+      }
+    }
+
+    $this->values = array_merge($this->values, $values);
+
+    return $this;
+  }
+
+  /**
+   * Return values that will be available in the template
+   *
+   * @return array $values
+   */
+  public function getValues()
+  {
+    return $this->values;
+  }
+
+  /**
+   * Binds the mail with available data
+   * Uses Swift to send it.
+   *
+   * @return dmMail $this
+   */
   public function send()
   {
-    $this->bind();
+    if(!$this->getTemplate()->get('is_active'))
+    {
+      return $this;
+    }
     
-    throw new dmException('TODO');
+    if(!$this->isRendered())
+    {
+      $this->render();
+    }
 
-    //Create a message
-    $message = Swift_Message::newInstance($this->get('title'))
-    ->setFrom($this->get('from'))
-    ->setTo($this->get('to'))
-    ->setBody($this->get('body'));
+    $eventParams = array(
+      'mailer'    => $this->getMailer(),
+      'message'   => $this->getMessage(),
+      'template'  => $this->getTemplate()
+    );
 
-    //Send the message
-    $result = $mailer->send($message);
+    $this->dispatcher->notify(new sfEvent($this, 'dm.mail.pre_send', $eventParams));
+
+    $this->getMailer()->send($this->getMessage());
+
+    $this->dispatcher->notify(new sfEvent($this, 'dm.mail.post_send', $eventParams));
     
     return $this;
   }
 
-  public function toDebug()
+  public function isRendered()
   {
-    $this->bind();
-
-    return $this->attributes;
-  }
-  
-  protected function get($name)
-  {
-    return $this->attributes[$name];
+    return $this->isRendered;
   }
 
-  protected function bind()
+  /**
+   * Builds the Swift message inserting vars in templates
+   *
+   * @return dmMail $this
+   */
+  public function render()
   {
-    if (!$this->template instanceof DmMailTemplate)
+    if (!$this->getTemplate())
     {
-      throw new dmException('You must call setTemplate() to set a mail template');
+      throw new dmMailException('You must call setTemplate() to set a mail template');
     }
     
     $this->updateTemplate();
     
-    $this->attributes = array(
-      'title' => null,
-      'body'  => null,
-      'from'  => array('email' => 'name'),
-      'to'    => array('email' => 'name')
-    );
+    $template = $this->getTemplate();
+    $replacements = $this->getReplacements();
     
-    dmDebug::kill($this->attributes, $this->data);
+    $this->getMessage()
+    ->setSubject(strtr($template->subject, $replacements))
+    ->setBody(strtr($template->body, $replacements))
+    ->setFrom($this->emailListToArray(strtr($template->from_email, $replacements)))
+    ->setTo($this->emailListToArray(strtr($template->to_email, $replacements)));
+
+    foreach(array('cc', 'bcc', 'reply_to', 'sender') as $field)
+    {
+      if($value = $template->get($field.'_email'))
+      {
+        $processedValue = $this->emailListToArray(strtr($value, $replacements));
+        
+        $this->getMessage()->{'set'.dmString::camelize($field)}($processedValue);
+      }
+    }
+
+    $headers = $this->getMessage()->getHeaders();
+
+    if($headers->has('List-Unsubscribe'))
+    {
+      $headers->remove('List-Unsubscribe');
+    }
+
+    if($template->list_unsuscribe)
+    {
+      $headers->addTextHeader('List-Unsubscribe', strtr($template->list_unsuscribe, $replacements));
+    }
+
+    $this->isRendered = true;
+
+    return $this;
+  }
+
+  protected function getReplacements()
+  {
+    $replacements = array();
+
+    foreach($this->getValues() as $key => $value)
+    {
+      $replacements[$this->wrap($key)] = $value;
+    }
+
+    return $replacements;
+  }
+
+  protected function emailListToArray($emails)
+  {
+    return array_unique(array_filter(array_map('trim', explode(',', str_replace("\n", ',', $emails)))));
   }
   
   protected function updateTemplate()
   {
-    if ($this->template->get('vars') != implode(', ', array_keys($this->data)))
+    $template     = $this->getTemplate();
+    $templateVars = array_keys($this->getValues());
+
+    natsort($templateVars);
+
+    if ($template->get('vars') != implode(', ', $templateVars))
     {
-      $this->template->set('vars', implode(', ', array_keys($this->data)));
+      $template->set('vars', implode(', ', $templateVars));
     }
     
-    if (!$this->template->get('body'))
+    if (!$template->get('body'))
     {
       $body = array();
-      foreach($this->data as $key =>  $value)
+      foreach($this->getValues() as $key =>  $value)
       {
         $body[] = dmString::humanize($key).' : '.$this->wrap($key);
       }
-      $this->template->set('body', implode("\n", $body));
+      $template->set('body', implode("\n", $body));
     }
     
-    if($this->template->isModified())
+    if($template->isModified())
     {
-      $this->template->save();
+      $template->save();
     }
   }
   
-  public function wrap($key)
+  protected function wrap($key)
   {
     return '%'.$key.'%';
   }

@@ -20,7 +20,10 @@ echo _tag('div.search_actions.clearfix',
   ).
   _tag('div.dm_third',
     _tag('h2.mb10', __('Index maintenance')).
-    _link('dmSearchEngine/reload')->text(__('Reload index'))->set('.dm_medium_button')
+    _link('dmSearchEngine/reload')
+     ->text(__('Reload index'))
+     ->set('.dm_medium_button')
+     ->set('onclick', '$("div.search_actions").block();')
   )
 );
 

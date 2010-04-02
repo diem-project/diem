@@ -4,7 +4,7 @@ require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
 $helper = new dmUnitTestHelper();
 $helper->boot('admin');
 
-$t = new lime_test(14);
+$t = new lime_test(16);
 
 dm::loadHelpers(array('Dm'));
 
@@ -58,3 +58,11 @@ $t->is($errorLink, '<a class="link">'.$badSource.' is not a valid link resource<
 $page->Node->delete();
 
 $t->is((string)_link('mailto:test@mail.com')->text('email'), $html = '<a class="link" href="mailto:test@mail.com">email</a>', 'mailto: '.$html);
+
+$t->comment('Nofollow attribute');
+
+$expected = '<a class="link" href="http://site.com" nofollow="1">Site</a>';
+$t->is((string)£link('http://site.com')->text('Site')->set('nofollow', true), $expected, '->set("nofollow", true)');
+
+$expected = '<a class="link nofollow" href="http://site.com" nofollow="1">Site</a>';
+$t->is((string)£link('http://site.com')->text('Site')->set('.nofollow'), $expected, '->set(".nofollow")');

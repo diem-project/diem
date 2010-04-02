@@ -2,6 +2,15 @@
 
 class BasedmMediaActions extends dmAdminBaseActions
 {
+
+  public function executePreview(sfWebRequest $request)
+  {
+    $this->forward404Unless(
+      $media = dmDb::table('DmMedia')->findOneByIdWithFolder($request->getParameter('id'))
+    );
+
+    return $this->renderPartial('dmMedia/viewBig', array('object' => $media));
+  }
   
   public function executeGallery(dmWebRequest $request)
   {
@@ -34,6 +43,22 @@ class BasedmMediaActions extends dmAdminBaseActions
     ->orderBy('rel.position ASC')
     ->select('m.*, f.*, rel.id as dm_gallery_rel_id')
     ->fetchRecords();
+
+    $this->addByIdForm = new AddMediaByIdForm($this->record);
+  }
+
+  public function executeAddToGalleryById(sfWebRequest $request)
+  {
+    $this->forward404Unless($request->isMethod('post'));
+
+    $form = new AddMediaByIdForm();
+    if($form->bindAndValid($request))
+    {
+      $this->getUser()->logInfo('The item was updated successfully.');
+      $form->save();
+    }
+
+    return $this->redirectBack();
   }
   
   public function executeSortGallery(dmWebRequest $request)

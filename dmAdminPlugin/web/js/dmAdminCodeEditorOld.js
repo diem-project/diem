@@ -13,8 +13,8 @@
       self.tree();
       
       $(window).bind('resize', self.resize);
-			
-			self.resize();
+      
+      self.resize();
     },
     
     resize: function()
@@ -44,9 +44,9 @@
     tab: function(ui)
     {
       var self = this, $panel = $('#' + ui.panel.id), $tab = $(ui.tab).parent();
-			
-			// adjust textarea's height according to window's height
-			self.resize();
+      
+      // adjust textarea's height according to window's height
+      self.resize();
       
       $tab.prepend('<img class="close" width="9px" height="8px" src="' + $.dm.ctrl.options.dm_core_asset_root + 'images/cross-small.png' + '" />');
       
@@ -107,7 +107,7 @@
         data: {
           type: "json",
           json: $.dm.ctrl.options.dm_tree_json,
-					url: $.dm.ctrl.getHref('+/dmCodeEditor/constructTree'),
+          url: $.dm.ctrl.getHref('+/dmCodeEditor/constructTree'),
           async: true,
           async_data: function(NODE)
           {
@@ -413,8 +413,8 @@
               else 
               {
                 self.$tabs.tabs('add', $.dm.ctrl.getHref('+/dmCodeEditor/openFile') + '?id=' + NODE.id,
-								  '<span title="'+self.decodeUrlTree(NODE.id)+'">'+$element_dbl_click.text()+'</span>'
-								);
+                  '<span title="'+self.decodeUrlTree(NODE.id)+'">'+$element_dbl_click.text()+'</span>'
+                );
               }
             }
             else 

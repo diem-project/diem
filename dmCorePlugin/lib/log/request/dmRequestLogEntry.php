@@ -84,7 +84,7 @@ class dmRequestLogEntry extends dmLogEntry
   
   public function renderCodeOrNull()
   {
-    return 200 == $this->get('code') ? '' : $this->get('code');
+    return 200 == $this->get('code') ? '&nbsp;' : $this->get('code');
   }
   
   public static function isError(array $data)

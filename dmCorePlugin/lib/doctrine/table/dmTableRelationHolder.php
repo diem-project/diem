@@ -120,6 +120,11 @@ class dmTableRelationHolder
       }
     }
 
+    if($this->table->hasI18n())
+    {
+      return $this->table->getI18nTable()->getRelationHolder()->getLocalByColumnName($columnName);
+    }
+
     return null;
   }
 

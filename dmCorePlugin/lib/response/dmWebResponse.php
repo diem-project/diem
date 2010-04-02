@@ -74,7 +74,19 @@ class dmWebResponse extends sfWebResponse
   {
     $this->theme = $theme;
   }
-  
+
+  public function getTheme()
+  {
+    if($this->theme)
+    {
+      return $this->theme;
+    }
+    // quick ugly fix
+    else
+    {
+      return sfContext::getInstance()->getServiceContainer()->getParameter('user.theme');
+    }
+  }
 
   public function getAssetAliases()
   {
@@ -153,7 +165,7 @@ class dmWebResponse extends sfWebResponse
       }
       elseif($type === 'css')
       {
-        $path = $this->theme->getPath('css/'.$asset.'.css');
+        $path = $this->getTheme()->getPath('css/'.$asset.'.css');
       }
       else
       {

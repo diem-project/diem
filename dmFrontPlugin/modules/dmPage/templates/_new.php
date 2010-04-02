@@ -28,4 +28,6 @@ echo _tag('div.form',
 
 echo _tag('div.parent_slugs.none', $parentSlugsJson);
 
+echo _tag('div.transliteration.none', $transliterationJson);
+
 echo _close('div');

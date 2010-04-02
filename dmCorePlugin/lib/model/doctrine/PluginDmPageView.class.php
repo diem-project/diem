@@ -25,16 +25,31 @@ abstract class PluginDmPageView extends BaseDmPageView
     return $layout;
   }
 
-  public function save(Doctrine_Connection $conn = null)
+  public function getArea($type)
   {
-    $return = parent::save($conn);
-
-    if ($this->get('Area')->isNew())
+    foreach($this->get('Areas') as $area)
     {
-      $this->get('Area')->fromArray(array(
-        'type' => 'content'
-      ))->save();
+      if($area->get('type') == $type)
+      {
+        return $area;
+      }
     }
+
+    $area = dmDb::create('DmArea', array(
+      'dm_page_view_id' => $this->get('id'),
+      'type' => $type
+    ))->saveGet();
+
+    $this->get('Areas')->add($area);
+
+    return $area;
+  }
+
+  public function postDelete($event)
+  {
+    parent::postDelete($event);
+
+    $this->Areas->delete();
   }
 
 }

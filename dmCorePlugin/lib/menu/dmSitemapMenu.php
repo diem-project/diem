@@ -14,7 +14,8 @@ class dmSitemapMenu extends dmMenu
 
   protected function addPage(DmPage $page)
   {
-    $pageMenu = $this->addChild($page->get('name'), $page)
+    $pageMenu = $this->addChild('page-'.$page->get('id'), $page)
+    ->label(dmString::escape($page->get('name')))
     ->secure($page->get('is_secure'))
     ->credentials($page->get('credentials'));
 

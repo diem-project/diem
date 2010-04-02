@@ -48,9 +48,17 @@ abstract class dmFormDoctrine extends sfFormDoctrine
     }
     
     $isFileProvided = isset($values[$formName]['file']) && !empty($values[$formName]['file']['size']);
-    
-    //no existing media, no file, and it is not required : skip all
-    if ($this->embeddedForms[$formName]->getObject()->isNew() && !$isFileProvided && !$this->embeddedForms[$formName]->getValidator('file')->getOption('required'))
+
+    // media id provided with drag&drop
+    if(!empty($values[$formName]['id']) && !$isFileProvided)
+    {
+      if($this->embeddedForms[$formName]->getObject()->isNew() || $this->embeddedForms[$formName]->getObject()->id != $values[$formName]['id'])
+      {
+        $this->embeddedForms[$formName]->setObject(dmDb::table('DmMedia')->findOneByIdWithFolder($values[$formName]['id']));
+      }
+    }
+    // no existing media, no file, and it is not required : skip all
+    elseif ($this->embeddedForms[$formName]->getObject()->isNew() && !$isFileProvided && !$this->embeddedForms[$formName]->getValidator('file')->getOption('required'))
     {
       // remove the embedded media form if the file field was not provided
       unset($this->embeddedForms[$formName], $values[$formName]);

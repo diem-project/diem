@@ -131,7 +131,7 @@ abstract class dmWidgetBaseView
         'lifeTime'        => 86400,
         'clientLifeTime'  => 86400,
         'contextual'      => !$this->isStatic(),
-        'vary'            => array($this->widget['id'])
+        'vary'            => array($this->widget['id'], $this->getService('user')->getUserId(), $this->getService('user')->getCulture())
       ));
     }
 
@@ -254,14 +254,23 @@ abstract class dmWidgetBaseView
   
   protected function generateCacheKey()
   {
-    return sprintf('widget/%s/%s/%s', $this->widget['module'], $this->widget['action'], md5(serialize($this->filterCacheVars($this->compiledVars))));
+    return sprintf('widget/%s/%s/%s',
+      $this->widget['module'],
+      $this->widget['action'],
+      md5(serialize($this->filterCacheVars($this->compiledVars)))
+    );
   }
   
   protected function filterCacheVars(array $vars)
   {
-    if (!$this->isStatic() && $this->context->getPage())
+    if (!$this->isStatic())
     {
-      $vars['page_id'] = $this->context->getPage()->get('id');
+      if($this->context->getPage())
+      {
+        $vars['page_id'] = $this->context->getPage()->get('id');
+      }
+      
+      $vars['user_id'] = $this->getService('user')->getUserId();
     }
     
     return $vars;

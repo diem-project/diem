@@ -5,8 +5,8 @@ dmWidgetContent:
 # and set the form_class and view_class values.
 # Example :
 # title:
-#   form_class:         myTitleForm
-#   view_class:         myTitleView
+#   form_class:         myWidgetTitleForm
+#   view_class:         myWidgetTitleView
 #   cache:              true
 
   title:
@@ -32,9 +32,9 @@ dmWidgetNavigation:
 dmWidgetSearch:
     
   form:
-    cache:              false
+    cache:              true
     public_name:        Search form
     
   results:
-    cache:              false
+    cache:              true
     public_name:        Search results

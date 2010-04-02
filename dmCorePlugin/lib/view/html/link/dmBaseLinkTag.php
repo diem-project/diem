@@ -3,8 +3,7 @@
 abstract class dmBaseLinkTag extends dmHtmlTag
 {
   protected
-  $resource,
-  $requestContext;
+  $resource;
   
   protected function initialize(array $options = array())
   {
@@ -41,14 +40,7 @@ abstract class dmBaseLinkTag extends dmHtmlTag
    * @return string baseHref the href without query string
    */
   abstract protected function getBaseHref();
-  
-  public function getHrefPrefix()
-  {
-    return sfConfig::get('sf_no_script_name')
-    ? $this->requestContext['prefix']
-    : $this->requestContext['script_name'];
-  }
-  
+    
   /**
    * Set text
    * @return dmLinkTag $this
@@ -202,6 +194,11 @@ abstract class dmBaseLinkTag extends dmHtmlTag
       $attributes['href'] .= '#'.$attributes['anchor'];
     }
 
+    if(!empty($attributes['class']) && in_array('nofollow', $attributes['class']))
+    {
+      $attributes['nofollow'] = true;
+    }
+
     // makes unit testing easier
     ksort($attributes);
     
@@ -216,20 +213,6 @@ abstract class dmBaseLinkTag extends dmHtmlTag
   public function getText()
   {
     return $this->renderText();
-  }
-
-  public function getAbsoluteHref()
-  {
-    $href = $this->getHref();
-    
-    $uriPrefix = dm::getRequest()->getUriPrefix();
-     
-    if (strpos($href, $uriPrefix) !== 0)
-    {
-      $href = $uriPrefix.$href;
-    }
-     
-    return $href;
   }
 
   protected function renderText()

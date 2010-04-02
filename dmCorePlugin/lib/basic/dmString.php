@@ -226,12 +226,18 @@ class dmString extends sfInflector
     
     $string = trim($string);
 
-    $firstSpacePos = strpos($string, ' ');
-    
+    /*
+     * Stop search for classes and id
+     * if a space or an equal sign appears
+     */
+    $spacePos = strpos($string, ' ');
+    $equalPos = strpos($string, '=');
+    $stopPos = min(false === $spacePos ? PHP_INT_MAX : $spacePos, false === $equalPos ? PHP_INT_MAX : $equalPos);
+
     $firstSharpPos = strpos($string, '#');
     
     // if we have a # before the first space
-    if (false !== $firstSharpPos && (false === $firstSpacePos || $firstSharpPos < $firstSpacePos))
+    if (false !== $firstSharpPos && (false === $stopPos || $firstSharpPos < $stopPos))
     {
       // fetch id
       preg_match('/#([\w\-]*)/', $string, $id);
@@ -240,9 +246,9 @@ class dmString extends sfInflector
         $opt['id'] = $id[1];
         $string = self::str_replace_once('#'.$id[1], '', $string);
         
-        if (false != $firstSpacePos)
+        if (false != $stopPos)
         {
-          $firstSpacePos = $firstSpacePos - strlen($id[1]) - 1;
+          $stopPos = $stopPos - strlen($id[1]) - 1;
         }
       }
     }
@@ -251,7 +257,7 @@ class dmString extends sfInflector
     while(false !== ($firstDotPos = strpos($string, '.')))
     {
       // if the string contains a space, and the dot is after this space, then it's not a class
-      if (false !== $firstSpacePos && $firstDotPos > $firstSpacePos)
+      if (false !== $stopPos && $firstDotPos > $stopPos)
       {
         break;
       }
@@ -270,9 +276,9 @@ class dmString extends sfInflector
           $opt['class'] = array($class[1]);
         }
         
-        if (false != $firstSpacePos)
+        if (false != $stopPos)
         {
-          $firstSpacePos = $firstSpacePos - strlen($class[1]) - 1;
+          $stopPos = $stopPos - strlen($class[1]) - 1;
         }
       }
       

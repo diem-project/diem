@@ -31,7 +31,7 @@ $page2->save();
 $b
 ->isAuthenticated(false)
 ->info('Go to signin page')
-->get('/signin')
+->get('security/signin')
 ->checks(array(
   'code' => 200
 ))
@@ -77,7 +77,7 @@ $b
 ->checks(array(
   'moduleAction' => 'dmFront/page',
   'method' => 'post',
-  'code' => 401
+  'code' => 200
 ))
 ->isPageModuleAction('main/signin')
 ->has('.dm_signin_form ul.error_list li', 'Required.')
@@ -90,7 +90,7 @@ $b
 ->checks(array(
   'moduleAction' => 'dmFront/page',
   'method' => 'post',
-  'code' => 401
+  'code' => 200
 ))
 ->isPageModuleAction('main/signin')
 ->has('.dm_signin_form ul.error_list li', 'The username and/or password is invalid.')
@@ -112,7 +112,7 @@ $b
   'method' => 'get',
   'code' => 200
 ))
-->isPageModuleAction('main/page11')
+->isPageModuleAction('main/root')
 ->isAuthenticated(true)
 ->has('.dm_signin_form input.submit', false)
 ->info('Go to inactive page')
@@ -175,28 +175,29 @@ $b
 ->isPageModuleAction('main/page11')
 ->isAuthenticated(true)
 ->has('.dm_signin_form input.submit', false)
-->info('Trigger page synchronisation')
 
 ->info('Go to secured page with credentials')
 ->get('page12')
-->isPageModuleAction('main/signin')
-->checks(array(
-  'code' => 403
-))
-->info('Go to inactive page')
-->get('page2')
-->checks(array(
-  'code' => 403
-))
-->has('.dm_signin_form input.submit')
-->get('/authors')
-->isPageModuleAction('dmUser/list')
-->has('.dm_user_list li a', 'admin')
-->click('.dm_user_list li a')
-->checks()
-->isPageModuleAction('dmUser/show')
-->has('h1', 'admin')
-->has('span.email', 'admin@project.com');
+->isPageModuleAction('main/signin');
+
+//move register form out of main/signin to enable these tests
+//->checks(array(
+//  'code' => 403
+//))
+//->info('Go to inactive page')
+//->get('page2')
+//->checks(array(
+//  'code' => 403
+//))
+//->has('.dm_signin_form input.submit')
+//->get('/authors')
+//->isPageModuleAction('dmUser/list')
+//->has('.dm_user_list li a', 'admin')
+//->click('.dm_user_list li a')
+//->checks()
+//->isPageModuleAction('dmUser/show')
+//->has('h1', 'admin')
+//->has('span.email', 'admin@project.com');
 
 
 /*

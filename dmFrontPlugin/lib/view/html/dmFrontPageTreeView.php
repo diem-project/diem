@@ -5,7 +5,7 @@ class dmFrontPageTreeView extends dmPageTreeView
 
   protected function renderPageLink(array $page)
   {
-    return '<a href="'.$page[6].'"><ins></ins>'.$page[5].'</a>';
+    return '<a href="'.$page[6].'" data-page-id="'.$page[0].'"><ins></ins>'.$page[5].'</a>';
   }
 
   protected function getRecordTreeQuery()

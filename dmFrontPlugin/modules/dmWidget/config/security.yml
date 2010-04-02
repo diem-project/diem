@@ -5,7 +5,7 @@ new:
   credentials:  widget_add
   
 edit:
-  credentials:  widget_edit
+  credentials:  [[ widget_edit, widget_edit_fast ]]
   
 sort:
   credentials:  widget_edit

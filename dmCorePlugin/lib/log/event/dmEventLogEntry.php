@@ -3,7 +3,7 @@
 class dmEventLogEntry extends dmLogEntry
 {
   protected static
-  $usersCache     = array();
+  $recordsCache   = array();
   
   public function configure(array $data)
   {
@@ -21,7 +21,8 @@ class dmEventLogEntry extends dmLogEntry
       'user_id'       => (string) $userId,
       'action'        => (string) $data['action'],
       'type'          => (string) $data['type'],
-      'subject'       => dmString::truncate($data['subject'], 500)
+      'subject'       => dmString::truncate($data['subject'], 500),
+      'record'        => isset($data['record']) ? get_class($data['record']).':'.$data['record']->get('id') : ''
     );
   }
   
@@ -36,18 +37,35 @@ class dmEventLogEntry extends dmLogEntry
     
     if($userId && is_numeric($userId))
     {
-      if (!isset(self::$usersCache[$userId]))
-      {
-        self::$usersCache[$userId] = $userId ? dmDb::query('DmUser u')->where('u.id = ?', $userId)->fetchRecord() : null;
-      }
-      
-      return self::$usersCache[$userId];
+      return $this->fetchRecord('DmUser', $userId);
     }
-    
-    return null;
   }
-  
-  
+
+  protected function getRecordObject()
+  {
+    if($record = $this->get('record'))
+    {
+      list($model, $id) = explode(':', $record);
+
+      return $this->fetchRecord($model, $id);
+    }
+  }
+
+  protected function fetchRecord($model, $id)
+  {
+    $key = $model.':'.$id;
+    
+    if (!isset(self::$recordsCache[$key]))
+    {
+      self::$recordsCache[$key] = dmDb::table($model)
+      ->createQuery('r')
+      ->where('r.id = ?', $id)
+      ->fetchRecord();
+    }
+
+    return self::$recordsCache[$key];
+  }
+
   protected function getUsername()
   {
     return ($user = $this->getUser())
@@ -56,5 +74,5 @@ class dmEventLogEntry extends dmLogEntry
       ? 'task'
       : '');
   }
-  
+
 }

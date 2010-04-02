@@ -17,7 +17,7 @@ class dmEventLogView extends dmLogView
   protected function renderUser(dmEventLogEntry $entry)
   {
     return sprintf('%s%s<br /><span class=light>%s</span>',
-      ($username = $entry->get('username')) ? sprintf('<strong class="mr10">%s</strong>', $username) : '',
+      ($username = $entry->get('username')) ? sprintf('<strong class="mr10">%s</strong>', dmString::escape(dmString::truncate($username, 20, '...'))) : '',
       $this->renderIp($entry->get('ip')),
       $entry->get('session_id')
     );
@@ -26,14 +26,18 @@ class dmEventLogView extends dmLogView
   protected function renderTime(dmEventLogEntry $entry)
   {
     return str_replace(' CEST', '', $this->dateFormat->format($entry->get('time')));
-//    return date('Y/m/d H:m:s', $entry->get('time'));
   }
   
   protected function renderSubject(dmEventLogEntry $entry)
   {
-    return 'exception' === $entry->get('type')
-    ? $this->helper->link('@dm_error')->param('search', $entry->get('subject'))->text($entry->get('subject'))
-    : $this->i18n->__($entry->get('subject'));
+    $subject = $this->i18n->__($entry->get('subject'));
+
+    if($record = $entry->get('record_object'))
+    {
+      $subject = $this->helper->link($record)->text(dmString::escape($subject));
+    }
+
+    return $subject;
   }
   
   protected function renderAction(dmEventLogEntry $entry)
@@ -57,6 +61,7 @@ class dmEventLogView extends dmLogView
       case 'clear':     $class = 's24 s24_info'; break;
       case 'sign_in':
       case 'sign_out':  $class = 's24 s24_user'; break;
+      case 'send':      $class = 's24 s24_mail'; break;
       default:          $class = '';
     }
     

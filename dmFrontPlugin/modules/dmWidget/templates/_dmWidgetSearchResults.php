@@ -8,7 +8,7 @@
 
 if (!$pager)
 {
-  echo _tag('h1', __('No results for "%1%"', array('%1%' => $query)));
+  echo _tag('h1', __('No results for "%1%"', array('%1%' => escape($query))));
   return;
 }
 

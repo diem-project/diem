@@ -251,10 +251,15 @@ class dmHelper extends dmConfigurable
     }
     
     $serviceName = 'media_tag_'.$resource->getMime();
-    
+
     if (!$this->serviceContainer->hasService($serviceName))
     {
-      throw new dmException('helper->media can not display '.$source.' : missing service '.$serviceName);
+      throw new dmException('helper->media can not display '.$source.': missing service '.$serviceName);
+    }
+
+    if (!class_exists($this->serviceContainer->getParameter($serviceName.'.class')))
+    {
+      throw new dmException('helper->media can not display '.$source.': missing service '.$serviceName);
     }
 
     $media = $this->serviceContainer->getService($serviceName);
@@ -276,13 +281,13 @@ class dmHelper extends dmConfigurable
     return $this->media($source);
   }
   
-  public function table()
+  public function table($opt = null)
   {
-    return $this->serviceContainer->get('table_tag');
+    return $this->serviceContainer->get('table_tag')->set($opt);
   }
-  public function £table()
+  public function £table($opt = null)
   {
-    return $this->table();
+    return $this->table($opt);
   }
   
   public function getStylesheetWebPath($asset)
@@ -309,4 +314,22 @@ class dmHelper extends dmConfigurable
   {
     return $this->context->getRequest()->getRelativeUrlRoot().$this->context->getResponse()->calculateAssetPath('other', $asset);
   }
+
+  public function __call($method, $arguments)
+  {
+    $event = new sfEvent($this, 'dm.helper.method_not_found', array('method' => $method, 'arguments' => $arguments));
+
+    // calls all listeners until one is able to implement the $method
+    $this->context->getEventDispatcher()->notifyUntil($event);
+
+    // no listener was able to proces the event? The method does not exist
+    if (!$event->isProcessed())
+    {
+      throw new sfException(sprintf('Call to undefined method %s::%s.', get_class($this), $method));
+    }
+
+    // return the listener returned value
+    return $event->getReturnValue();
+  }
+  
 }

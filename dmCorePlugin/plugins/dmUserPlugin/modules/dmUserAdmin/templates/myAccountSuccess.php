@@ -22,6 +22,8 @@ echo $form['email']->renderRow();
 echo _tag('li.collapsible',
   _tag('a.collapsible_button', __('Change password')).
   _tag('ul.collapsible_content',
+    $form['username']->field()->error().
+    $form['old_password']->renderRow().
     $form['password']->renderRow().
     $form['password_again']->renderRow()
   )

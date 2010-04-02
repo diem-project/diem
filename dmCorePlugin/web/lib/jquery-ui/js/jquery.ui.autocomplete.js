@@ -1,5 +1,5 @@
 /*
- * jQuery UI Autocomplete 1.8rc2
+ * jQuery UI Autocomplete 1.8
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -10,7 +10,7 @@
  * Depends:
  *	jquery.ui.core.js
  *	jquery.ui.widget.js
- *  jquery.ui.position.js
+ *	jquery.ui.position.js
  */
 (function( $ ) {
 
@@ -20,8 +20,10 @@ $.widget( "ui.autocomplete", {
 		delay: 300
 	},
 	_create: function() {
-		var self = this;
+		var self = this,
+			doc = this.element[ 0 ].ownerDocument;
 		this.element
+			.addClass( "ui-autocomplete-input" )
 			.attr( "autocomplete", "off" )
 			// TODO verify these actually work as intended
 			.attr({
@@ -50,11 +52,12 @@ $.widget( "ui.autocomplete", {
 					break;
 				case keyCode.ENTER:
 					// when menu is open or has focus
-					if ( self.menu && self.menu.active ) {
+					if ( self.menu.active ) {
 						event.preventDefault();
 					}
+					//passthrough - ENTER and TAB both select the current element
 				case keyCode.TAB:
-					if ( !self.menu || !self.menu.active ) {
+					if ( !self.menu.active ) {
 						return;
 					}
 					self.menu.select();
@@ -63,8 +66,8 @@ $.widget( "ui.autocomplete", {
 					self.element.val( self.term );
 					self.close( event );
 					break;
-				case 16:
-				case 17:
+				case keyCode.SHIFT:
+				case keyCode.CONTROL:
 				case 18:
 					// ignore metakeys (shift, ctrl, alt)
 					break;
@@ -94,7 +97,7 @@ $.widget( "ui.autocomplete", {
 		};
 		this.menu = $( "<ul></ul>" )
 			.addClass( "ui-autocomplete" )
-			.appendTo( this.element.parent() )
+			.appendTo( "body", doc )
 			.menu({
 				focus: function( event, ui ) {
 					var item = ui.item.data( "item.autocomplete" );
@@ -111,30 +114,29 @@ $.widget( "ui.autocomplete", {
 					self.close( event );
 					self.previous = self.element.val();
 					// only trigger when focus was lost (click on menu)
-					if ( self.element[0] != document.activeElement ) {
+					if ( self.element[0] !== doc.activeElement ) {
 						self.element.focus();
+					}
+				},
+				blur: function( event, ui ) {
+					if ( self.menu.element.is(":visible") ) {
+						self.element.val( self.term );
 					}
 				}
 			})
 			.zIndex( this.element.zIndex() + 1 )
 			// workaround for jQuery bug #5781 http://dev.jquery.com/ticket/5781
 			.css({ top: 0, left: 0 })
-			.position({
-				my: "left top",
-				at: "left bottom",
-				of: this.element,
-				collision: "none"
-			})
 			.hide()
 			.data( "menu" );
 		if ( $.fn.bgiframe ) {
-			 menu.element.bgiframe();
+			 this.menu.element.bgiframe();
 		}
 	},
 
 	destroy: function() {
 		this.element
-			.removeClass( "ui-autocomplete ui-widget ui-widget-content ui-corner-all" )
+			.removeClass( "ui-autocomplete-input ui-widget ui-widget-content" )
 			.removeAttr( "autocomplete" )
 			.removeAttr( "role" )
 			.removeAttr( "aria-autocomplete" )
@@ -145,23 +147,25 @@ $.widget( "ui.autocomplete", {
 
 	_setOption: function( key ) {
 		$.Widget.prototype._setOption.apply( this, arguments );
-		if ( key == "source" ) {
+		if ( key === "source" ) {
 			this._initSource();
 		}
 	},
 
 	_initSource: function() {
+		var array,
+			url;
 		if ( $.isArray(this.options.source) ) {
-			var array = this.options.source;
+			array = this.options.source;
 			this.source = function( request, response ) {
 				// escape regex characters
 				var matcher = new RegExp( $.ui.autocomplete.escapeRegex(request.term), "i" );
 				response( $.grep( array, function(value) {
-    				return matcher.test( value.value || value.label || value );
+					return matcher.test( value.label || value.value || value );
 				}) );
 			};
-		} else if ( typeof this.options.source == "string" ) {
-			var url = this.options.source;
+		} else if ( typeof this.options.source === "string" ) {
+			url = this.options.source;
 			this.source = function( request, response ) {
 				$.getJSON( url, request, response );
 			};
@@ -196,8 +200,8 @@ $.widget( "ui.autocomplete", {
 	_response: function( content ) {
 		if ( content.length ) {
 			content = this._normalize( content );
-			this._trigger( "open" );
 			this._suggest( content );
+			this._trigger( "open" );
 		} else {
 			this.close();
 		}
@@ -209,8 +213,9 @@ $.widget( "ui.autocomplete", {
 		if ( this.menu.element.is(":visible") ) {
 			this._trigger( "close", event );
 			this.menu.element.hide();
+			this.menu.deactivate();
 		}
-		if ( this.previous != this.element.val() ) {
+		if ( this.previous !== this.element.val() ) {
 			this._trigger( "change", event );
 		}
 	},
@@ -221,7 +226,7 @@ $.widget( "ui.autocomplete", {
 			return items;
 		}
 		return $.map( items, function(item) {
-			if ( typeof item == "string" ) {
+			if ( typeof item === "string" ) {
 				return {
 					label: item,
 					value: item
@@ -235,18 +240,32 @@ $.widget( "ui.autocomplete", {
 	},
 
 	_suggest: function( items ) {
-		var self = this,
-			ul = this.menu.element.empty();
-		$.each( items, function( index, item ) {
-			self._renderItem( ul, item );
-		});
+		var ul = this.menu.element
+				.empty()
+				.zIndex( this.element.zIndex() + 1 ),
+			menuWidth,
+			textWidth;
+		this._renderMenu( ul, items );
 		// TODO refresh should check if the active item is still in the dom, removing the need for a manual deactivate
 		this.menu.deactivate();
 		this.menu.refresh();
-		this.menu.element.show();
-		if ( ul.width() <= this.element.width() ) {
-			ul.width( this.element.width() );
-		}
+		this.menu.element.show().position({
+			my: "left top",
+			at: "left bottom",
+			of: this.element,
+			collision: "none"
+		});
+
+		menuWidth = ul.width( "" ).width();
+		textWidth = this.element.width();
+		ul.width( Math.max( menuWidth, textWidth ) );
+	},
+	
+	_renderMenu: function( ul, items ) {
+		var self = this;
+		$.each( items, function( index, item ) {
+			self._renderItem( ul, item );
+		});
 	},
 
 	_renderItem: function( ul, item) {
@@ -281,7 +300,7 @@ $.extend( $.ui.autocomplete, {
 	}
 });
 
-})( jQuery );
+}( jQuery ));
 
 /*
  * jQuery UI Menu (not officially released)
@@ -308,7 +327,7 @@ $.widget("ui.menu", {
 		this.element
 			.addClass("ui-menu ui-widget ui-widget-content ui-corner-all")
 			.attr({
-				role: "menu",
+				role: "listbox",
 				"aria-activedescendant": "ui-active-menuitem"
 			})
 			.click(function(e) {
@@ -323,7 +342,7 @@ $.widget("ui.menu", {
 		var self = this;
 
 		// don't refresh list items that are already adapted
-		var items = this.element.children("li:not(.ui-menu-item)")
+		var items = this.element.children("li:not(.ui-menu-item):has(a)")
 			.addClass("ui-menu-item")
 			.attr("role", "menuitem");
 		
@@ -333,17 +352,14 @@ $.widget("ui.menu", {
 			// mouseenter doesn't work with event delegation
 			.mouseenter(function() {
 				self.activate($(this).parent());
+			})
+			.mouseleave(function() {
+				self.deactivate();
 			});
 	},
 
 	activate: function(item) {
 		this.deactivate();
-		this.active = item.eq(0)
-			.children("a")
-				.addClass("ui-state-hover")
-				.attr("id", "ui-active-menuitem")
-			.end();
-		this._trigger("focus", null, { item: item });
 		if (this.hasScroll()) {
 			var offset = item.offset().top - this.element.offset().top,
 				scroll = this.element.attr("scrollTop"),
@@ -354,6 +370,12 @@ $.widget("ui.menu", {
 				this.element.attr("scrollTop", scroll + offset - elementHeight + item.height());
 			}
 		}
+		this.active = item.eq(0)
+			.children("a")
+				.addClass("ui-state-hover")
+				.attr("id", "ui-active-menuitem")
+			.end();
+		this._trigger("focus", null, { item: item });
 	},
 
 	deactivate: function() {
@@ -362,6 +384,7 @@ $.widget("ui.menu", {
 		this.active.children("a")
 			.removeClass("ui-state-hover")
 			.removeAttr("id");
+		this._trigger("blur");
 		this.active = null;
 	},
 
@@ -456,4 +479,4 @@ $.widget("ui.menu", {
 	}
 });
 
-})(jQuery);
+}(jQuery));

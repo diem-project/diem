@@ -49,6 +49,28 @@ abstract class PluginDmUserForm extends BaseDmUserForm
 
     $this->changeToEmail('email');
 
+    if ($this->isCaptchaEnabled())
+    {
+      $this->addCaptcha();
+    }
+
     $this->mergePostValidator(new sfValidatorSchemaCompare('password', sfValidatorSchemaCompare::EQUAL, 'password_again', array(), array('invalid' => 'The two passwords must be the same.')));
+  }
+
+  public function addCaptcha()
+  {
+    $this->widgetSchema['captcha'] = new sfWidgetFormReCaptcha(array(
+      'label'       => 'Captcha',
+      'public_key'  => sfConfig::get('app_recaptcha_public_key')
+    ));
+
+    $this->validatorSchema['captcha'] = new sfValidatorReCaptcha(array(
+      'private_key' => sfConfig::get('app_recaptcha_private_key')
+    ));
+  }
+
+  public function isCaptchaEnabled()
+  {
+    return sfConfig::get('app_recaptcha_enabled');
   }
 }

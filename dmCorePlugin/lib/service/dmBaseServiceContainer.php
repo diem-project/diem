@@ -202,6 +202,18 @@ abstract class dmBaseServiceContainer extends sfServiceContainer
   }
 
   /**
+   * Adds parameters to the service container parameters.
+   *
+   * @param array $parameters An array of parameters
+   */
+  public function addParameters(array $parameters)
+  {
+    $this->setParameters(array_merge($this->parameters, $parameters));
+
+    return $this;
+  }
+
+  /**
    * Will recreate a new shared service
    */
   public function reload($id)

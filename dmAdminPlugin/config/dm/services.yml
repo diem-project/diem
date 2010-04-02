@@ -65,7 +65,6 @@ parameters:
 
   diem_version_check.class:   dmDiemVersionCheck # Responsible for checking if a new version is available
   diem_version_check.options:
-    enabled:                  true
     url:                      http://diem-project.org/service/current-version
 
   log_view.class:                                 # Renders a diem log
@@ -82,7 +81,13 @@ parameters:
     max:                        3                 # max number of records to show
 
   code_editor.class:          dmAdminCodeEditor   # Performs file operations on the project
-  
+
+  report_anonymous_data.class: dmReportAnonymousData  # reports anonymous data about plugins used.
+  report_anonymous_data.options:                      # http://diem-project.org/plugins will show the best plugins based on these reports.
+    url:                       http://diem-project.org/service/report-anonymous-data
+
+  tool_bar_view.class:        dmAdminToolBarView  # Renders the admin toolbar
+
 services:
 
   homepage_manager:
@@ -179,3 +184,8 @@ services:
     class:                    %code_editor.class%
     shared:                   false
     arguments:                [ @filesystem, @mime_type_resolver, @file_backup ]
+
+  report_anonymous_data:
+    class:                    %report_anonymous_data.class%
+    shared:                   false
+    arguments:                [ @service_container, %report_anonymous_data.options% ]

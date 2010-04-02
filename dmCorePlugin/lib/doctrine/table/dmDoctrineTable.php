@@ -128,7 +128,11 @@ abstract class dmDoctrineTable extends Doctrine_Table
     
     foreach($this->getRelationHolder()->getAll() as $relation)
     {
-      if ($relation->getAlias() === 'Translation')
+      if($relation->getAlias() === 'Version' && $this->isVersionable())
+      {
+        continue;
+      }
+      elseif ($relation->getAlias() === 'Translation')
       {
         $query->withI18n();
       }
@@ -150,7 +154,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
             continue;
           }
         }
-
+        
         $joinAlias = dmString::lcfirst($relation->getAlias());
         $query->leftJoin(sprintf('%s.%s %s', $rootAlias, $relation->getAlias(), $joinAlias));
 
@@ -296,6 +300,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
   public function getIndexableColumns()
   {
     $columns = $this->getHumanColumns();
+    
     foreach($columns as $columnName => $column)
     {
       if(in_array($column['type'], array('time', 'timestamp', 'boolean')))

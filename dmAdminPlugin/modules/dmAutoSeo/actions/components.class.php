@@ -31,7 +31,7 @@ class dmAutoSeoComponents extends dmAdminBaseComponents
     ->limit(1)
     ->fetchValue();
     
-    if ($this->page = dmDb::table('DmPage')->findOneByIdWithI18n($pageId))
+    if ($pageId && ($this->page = dmDb::table('DmPage')->findOneByIdWithI18n($pageId)))
     {
       try
       {

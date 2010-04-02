@@ -77,7 +77,6 @@ class dmWidgetType extends dmConfigurable
     return dmString::underscore($this->getModule());
   }
 
-
   public function __toString()
   {
     return $this->getKey();

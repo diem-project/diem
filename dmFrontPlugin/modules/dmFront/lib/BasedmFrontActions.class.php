@@ -14,9 +14,14 @@ class BasedmFrontActions extends dmFrontBaseActions
 
   protected function getPageFromRequest(dmWebRequest $request)
   {
-    if($request->hasParameter('dm_page'))
+    if($dmPage = $request->getParameter('dm_page'))
     {
-      return $request->getParameter('dm_page');
+      if(is_string($dmPage))
+      {
+        $this->forward404Unless($dmPage = dmDb::table('DmPage')->findOneBySource($dmPage));
+      }
+      
+      return $dmPage;
     }
 
     $slug = $request->getParameter('slug');
@@ -72,10 +77,12 @@ class BasedmFrontActions extends dmFrontBaseActions
 
     if($accessDenied)
     {
+      // use main/signin page
+      $this->getRequest()->setParameter('dm_page', dmDb::table('DmPage')->fetchSignin());
+
       $this->getResponse()->setStatusCode($user->isAuthenticated() ? 403 : 401);
-      
-      // use main.signin page
-      $this->page = dmDb::table('DmPage')->fetchSignin();
+
+      $this->forward('dmFront', 'page');
     }
   }
   
@@ -114,11 +121,6 @@ class BasedmFrontActions extends dmFrontBaseActions
     $this->launchDirectActions();
     
     return sfView::SUCCESS;
-  }
-  
-  public function executeToAdmin(dmWebRequest $request)
-  {
-    return $this->redirect($this->getHelper()->link('app:admin')->getHref());
   }
 
   /*
@@ -221,7 +223,7 @@ class BasedmFrontActions extends dmFrontBaseActions
 
     $this->getUser()->setCulture($culture);
     
-    if ($pageId = $request->getParameter('dm_cpi'))
+    if ($pageId = $request->getParameter('dm_cpi', $request->getParameter('page_id')))
     {
       $this->forward404Unless($page = dmDb::table('DmPage')->findOneByIdWithI18n($pageId));
       
@@ -229,5 +231,30 @@ class BasedmFrontActions extends dmFrontBaseActions
     }
 
     return $this->redirectBack();
+  }
+
+  public function executeToAdmin(dmWebRequest $request)
+  {
+    return $this->redirect($this->getHelper()->link('app:admin')->getHref());
+  }
+
+  public function executeReloadSearchIndex()
+  {
+    $authFile = sfConfig::get('sf_cache_dir').'/dm/search_index_'.time();
+
+    $this->forwardSecureUnless($this->getUser()->can('search_engine') || file_exists($authFile));
+
+    unlink($authFile);
+    
+    try
+    {
+      $this->getService('search_engine')->populate();
+      $this->getService('search_engine')->optimize();
+      return $this->renderText('ok');
+    }
+    catch(Exception $e)
+    {
+      return $this->renderText($e->getMessage());
+    }
   }
 }

@@ -21,9 +21,9 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
 
     this.element.find('a.tipable').tipsy({gravity: $.fn.tipsy.autoSouth});
   },
-	
-	initSelectCulture: function()
-	{
+  
+  initSelectCulture: function()
+  {
     $('#dm_select_culture').bind('change', function() {
       location.href = $.dm.ctrl.getHref('+/dmFront/selectCulture')+'?culture='+$(this).val()+'&dm_cpi='+$.dm.ctrl.options.page_id
     });
@@ -36,7 +36,7 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
       if (!$('body > div.dm_page_edit_dialog').length) 
       {
         $dialog = $.dm.ctrl.ajaxDialog({
-          title:    $(this).attr('original-title'),
+          title:    $(this).tipsyTitle(),
           'class':  'dm_page_edit_dialog',
           url:      $(this).attr('href'),
           width:    400
@@ -56,7 +56,7 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
       if (!$('body > div.dm_page_add_dialog').length)
       {
         $dialog = $.dm.ctrl.ajaxDialog({
-          title:    $(this).attr('original-title'),
+          title:    $(this).tipsyTitle(),
           'class':  'dm_page_add_dialog',
           url:      $(this).attr('href'),
           width:    400
@@ -71,32 +71,32 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
   
   codeEditor: function()
   {
-		var self = this;
-		
+    var self = this;
+    
     $('a.code_editor', self.element).click(function()
     {
       self.element.dmFrontToolBar('openCodeEditor');
       return false;
     });
   },
-	
-	openCodeEditor: function(callback)
-	{
-		callback = callback || null;
-		
-		if ($dialog = $('body > div.dm_code_editor_dialog').orNot()) 
+  
+  openCodeEditor: function(callback)
+  {
+    callback = callback || null;
+    
+    if ($dialog = $('body > div.dm_code_editor_dialog').orNot()) 
     {
-			if ($.isFunction(callback))
-			{
-				callback($dialog);
-			}
-		}
-		else
-		{
-			var $link = $('a.code_editor', this.element).addClass('s16_gear');
+      if ($.isFunction(callback))
+      {
+        callback($dialog);
+      }
+    }
+    else
+    {
+      var $link = $('a.code_editor', this.element).addClass('s16_gear');
       
       $dialog = $.dm.ctrl.ajaxDialog({
-        title:    $link.attr('original-title'),
+        title:    $link.tipsyTitle(),
         'class':  'dm_code_editor_dialog',
         width:    500,
         height:   300,
@@ -104,13 +104,13 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
       }).bind('dmAjaxResponse', function()
       {
         $dialog.dmFrontCodeEditor({
-					callback: callback
-				});
+          callback: callback
+        });
         
         $link.removeClass('s16_gear');
       });
     }
-	},
+  },
   
   editToggle: function()
   {
@@ -155,15 +155,15 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
   showToolBarToggle: function()
   {
     var self = this, $toggler = $('a.show_tool_bar_toggle', self.element), $hidables = $('#dm_page_bar, #dm_media_bar, #dm_page_bar_toggler, #dm_media_bar_toggler, #sfWebDebug');
-		
-		var activate = function(active)
-		{
+    
+    var activate = function(active)
+    {
       $toggler[(active ? 'add' : 'remove')+'Class']('s16_chevron_down')[(active ? 'remove' : 'add')+'Class']('s16_chevron_up')
       self.element[(active ? 'remove' : 'add')+'Class']('hidden');
       $hidables[(active) ? 'show' : 'hide']();
       $('body').css('margin-bottom', active ? '30px' : 0);
-		}
-		
+    }
+    
     if ($toggler.hasClass('s16_chevron_up')) 
     {
       activate(false);

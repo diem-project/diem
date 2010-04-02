@@ -10,7 +10,7 @@ class dmFrontInitFilter extends dmInitFilter
   public function execute($filterChain)
   {
     $this->redirectTrailingSlash();
-    
+
     $this->redirectNoScriptName();
 
     $this->enablePageCache();
@@ -30,7 +30,7 @@ class dmFrontInitFilter extends dmInitFilter
         $this->context->setPage($page);
       }
     }
-    
+
     $filterChain->execute();
 
     if(!sfConfig::get('dm_internal_page_cached'))
@@ -54,16 +54,40 @@ class dmFrontInitFilter extends dmInitFilter
     {
       if($this->shouldEnablePageCache())
       {
+        if(!sfConfig::get('sf_cache_namespace_callable'))
+        {
+          sfConfig::set('sf_cache_namespace_callable', array($this, 'generatePageCacheKey'));
+        }
+        
         $viewCacheManager->addCache('dmFront', 'page', array(
           'withLayout'      => true,
           'lifeTime'        => $pageCacheConfig['life_time'],
           'clientLifeTime'  => $pageCacheConfig['life_time'],
           'contextual'      => false, // useless for page cache, only used for partials & components
         ));
-
-        sfConfig::set('dm_internal_page_cached', $viewCacheManager->has($viewCacheManager->getCurrentCacheKey()));
       }
     }
+  }
+
+  /**
+   * Make the cache key depend on the user culture
+   */
+  public function generatePageCacheKey($internalUri, $hostName, $vary, $contextualPrefix, sfViewCacheManager $viewCacheManager)
+  {
+    sfConfig::set('sf_cache_namespace_callable', null);
+    $cacheKey = $viewCacheManager->generateCacheKey($internalUri, $hostName, $vary, $contextualPrefix);
+    sfConfig::set('sf_cache_namespace_callable', array($this, 'generatePageCacheKey'));
+
+    if(strpos($internalUri, '@sf_cache_partial') === 0)
+    {
+      return $cacheKey;
+    }
+
+    $cacheKey = $this->user->getCulture() .':'. $cacheKey;
+
+    sfConfig::set('dm_internal_page_cached', $viewCacheManager->getCache()->has($cacheKey));
+
+    return $cacheKey;
   }
 
   protected function shouldEnablePageCache()
@@ -71,7 +95,7 @@ class dmFrontInitFilter extends dmInitFilter
     return $this->context->getEventDispatcher()->filter(
       new sfEvent($this, 'dm.page_cache.enable', array('context' => $this->context)),
       // by default, the page is cached only for non-authenticated users
-      !$this->user->getAttribute('user_id', null, 'dmSecurityUser')
+      !$this->user->isAuthenticated()
     )->getReturnValue();
   }
 

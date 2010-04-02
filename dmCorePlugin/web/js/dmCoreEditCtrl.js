@@ -10,7 +10,7 @@
         $('a.dm_js_confirm, input.dm_js_confirm').live('click', function(e)
         {
           e.stopPropagation();
-          if (!confirm(($(this).attr('title') || $(this).attr('original-title') || 'Are you sure') + ' ?'))
+          if (!confirm(($(this).tipsyTitle() || 'Are you sure') + ' ?'))
           {
             return false;
           }
@@ -59,7 +59,7 @@
     
     ajaxDialog: function(opt)
     {
-      self = this;
+      var self = this;
       opt = $.extend({
         title: 'Loading'
       }, opt);
@@ -85,7 +85,7 @@
   
   errorDialog: function(title, body, opt)
   {
-   opt = $.extend({
+    opt = $.extend({
         title:    title,
         position: [5, 5],
         buttons: {

@@ -60,6 +60,17 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
   }
 
   /**
+   * Notify insertion
+   */
+  public function postInsert($event)
+  {
+    if ($ed = $this->getEventDispatcher())
+    {
+      $ed->notify(new sfEvent($this, 'dm.record.creation'));
+    }
+  }
+
+  /**
    * Add page tree watcher registering
    */
   public function postDelete($event)
@@ -301,7 +312,22 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
       throw new dmRecordException(sprintf('record %s has no page because module %s has no page', get_class($this), $this->getDmModule()));
     }
 
-    return dmDb::table('DmPage')->findOneByRecordWithI18n($this);
+    if($page = dmDb::table('DmPage')->findOneByRecordWithI18n($this))
+    {
+      return $page;
+    }
+
+    // The record has no page yet, let's try to create it right now
+    $event = new sfEvent($this, 'dm.record.page_missing', array());
+    
+    $this->getEventDispatcher()->notifyUntil($event);
+
+    if($event->isProcessed())
+    {
+      $page = $event->getReturnValue();
+    }
+    
+    return $page;
   }
 
   /**
@@ -356,10 +382,17 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
       throw new dmRecordException(sprintf('%s is not an ancestor of %s', $model, $this->getDmModule()));
     }
 
-    return $ancestorModule->getTable()->createQuery($ancestorModule->getKey())
+    $id = $ancestorModule->getTable()->createQuery($ancestorModule->getKey())
     ->whereDescendantId($this->getDmModule()->getModel(), $this->get('id'), $ancestorModule->getModel())
     ->select($ancestorModule->getKey().'.id')
     ->fetchValue();
+
+    if(is_array($id))
+    {
+      $id = array_shift($id);
+    }
+
+    return $id;
   }
 
   /**
@@ -483,13 +516,14 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
 
   public function toIndexableString()
   {
-    $indexParts = array();
+    $index = '';
+    
     foreach($this->_table->getIndexableColumns() as $columnName => $column)
     {
-      $indexParts[] = $this->get($columnName);
+      $index .= ' '.$this->get($columnName);
     }
 
-    return implode(' ', $indexParts);
+    return trim($index);
   }
 
   public function isFieldModified($field)
@@ -774,6 +808,11 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
    */
   public function getVersion()
   {
+    if (!$this->getTable()->isVersionable())
+    {
+      return $this->_get('version');
+    }
+
     if (!$this->getTable()->hasI18n())
     {
       return $this->_get('Version');

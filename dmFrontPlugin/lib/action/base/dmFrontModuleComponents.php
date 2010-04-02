@@ -130,14 +130,14 @@ class dmFrontModuleComponents extends myFrontBaseComponents
     ->getService('doctrine_pager')
     ->setMaxPerPage($this->maxPerPage)
     ->setQuery($query)
-    ->setPage(null === $page ? $this->request->getParameter('page', 1) : $page)
+    ->setPage(null === $page ? $this->page : $page)
     ->init();
     
     $pager = $this->getService('front_pager_view')
     ->setPager($doctrinePager)
     ->setOption('navigation_top', $this->navTop)
     ->setOption('navigation_bottom', $this->navBottom)
-    ->setOption('widget_id', $this->dm_widget ? $this->dm_widget['id'] : null);
+    ->setOption('widget_id', dmArray::get($this->dm_widget, 'id'));
 
     try
     {

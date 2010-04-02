@@ -91,7 +91,7 @@ class BasedmCoreActions extends dmBaseActions
     if ($request->hasParameter('dm_use_thread'))
     {
       $this->getServiceContainer()
-      ->mergeParameter('page_tree_watcher.options', array('use_thread' => $request->getParameter('use_thread')))
+      ->mergeParameter('page_tree_watcher.options', array('use_thread' => $request->getParameter('dm_use_thread')))
       ->reload('page_tree_watcher');
     }
 
@@ -129,7 +129,7 @@ class BasedmCoreActions extends dmBaseActions
           break;
 
         case 3:
-          $this->getService('page_tree_watcher')->setOption('use_thread', false)->synchronizeSeo();
+          $this->getService('page_tree_watcher')->synchronizeSeo();
 
           if (count($this->getI18n()->getCultures()) > 1)
           {
@@ -179,4 +179,13 @@ class BasedmCoreActions extends dmBaseActions
     return $this->renderText($this->getService('markdown')->toHtml($request->getParameter('text')));
   }
 
+  public function executeGetMarkdownTranslations(dmWebRequest $request)
+  {
+    if($culture = $request->getParameter('culture'))
+    {
+      $this->getUser()->setCulture($culture);
+    }
+    
+    return $this->renderJson($this->getService('markdown_translator')->execute());
+  }
 }

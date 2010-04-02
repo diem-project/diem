@@ -38,12 +38,21 @@ abstract class dmWidgetBaseForm extends dmForm
   {
     parent::configure();
 
-    $this->widgetSchema['cssClass']     = new sfWidgetFormInputText();
+    $this->widgetSchema['cssClass']     = new sfWidgetFormInputText(array('label' => 'CSS class'));
     $this->validatorSchema['cssClass']  = new dmValidatorCssClasses(array('required' => false));
-
-    $this->widgetSchema['cssClass']->setLabel('CSS class');
     
     $this->setDefault('cssClass', $this->dmWidget->get('css_class'));
+
+    /*
+     * if the user can not edit widgets (but only fast edit them)
+     * remove the CSS class field
+     */
+    if(($user = $this->getService('user')) && !$user->can('widget_edit'))
+    {
+      $this->changeToHidden('cssClass');
+      $this->widgetSchema['cssClass']->setAttribute('readonly', true);
+      //unset($this['cssClass']);
+    }
   }
 
   public function getDmWidget()
@@ -51,7 +60,7 @@ abstract class dmWidgetBaseForm extends dmForm
     return $this->dmWidget;
   }
   
-  /*
+  /**
    * Overload this method to alter form values
    * when form has been validated
    */
@@ -89,12 +98,14 @@ abstract class dmWidgetBaseForm extends dmForm
       </div>',
       sprintf('<a class="dm cancel close_dialog button fleft">%s</a>', $this->__('Cancel')),
       sprintf('<input type="submit" class="submit try blue fright" name="try" value="%s" />', $this->__('Try')),
-      sprintf('<a class="dm delete button red fleft" title="%s">%s</a>', $this->__('Delete this widget'), $this->__('Delete')),
+      $this->getService('user')->can('widget_delete')
+      ? sprintf('<a class="dm delete button red fleft" title="%s">%s</a>', $this->__('Delete this widget'), $this->__('Delete'))
+      : '',
       sprintf('<input type="submit" class="submit and_save green fright" name="and_save" value="%s" />', $this->__('Save and close'))
     );
   }
 
-  /*
+  /**
    * Try to guess default values
    * from last updated widget with same module.action
    * @return array default values
@@ -144,7 +155,11 @@ abstract class dmWidgetBaseForm extends dmForm
   public function updateWidget()
   {
     $this->dmWidget->setValues($this->getWidgetValues());
-    $this->dmWidget->set('css_class', $this->getValue('cssClass'));
+
+    if(isset($this['cssClass']))
+    {
+      $this->dmWidget->set('css_class', $this->getValue('cssClass'));
+    }
     
     return $this->dmWidget;
   }

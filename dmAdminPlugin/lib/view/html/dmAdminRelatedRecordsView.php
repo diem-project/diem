@@ -50,11 +50,16 @@ class dmAdminRelatedRecordsView extends dmConfigurable
       $this->foreignRecords = array($this->foreignRecords);
     }
 
-    $this->setOption('foreign_has_route', $this->routing->hasRouteName($this->foreignModule->getUnderscore()));
+    $this->setOption('foreign_has_route', $this->foreignModule && $this->routing->hasRouteName($this->foreignModule->getUnderscore()));
   }
 
   public function render()
   {
+    if($this->record->isNew())
+    {
+      return '';
+    }
+    
     $html = '<div class="dm_related_records">';
 
     if (count($this->foreignRecords))

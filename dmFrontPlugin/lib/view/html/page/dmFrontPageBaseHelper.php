@@ -66,11 +66,11 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
       $culture = null === $culture ? $this->serviceContainer->getParameter('user.culture') : $culture;
       $fallBackCulture = sfConfig::get('sf_default_culture');
       
-      $this->areas = dmDb::query('DmArea a INDEXBY a.type')
+      $areas = dmDb::query('DmArea a')
       ->leftJoin('a.Zones z')
       ->leftJoin('z.Widgets w')
       ->leftJoin('w.Translation wTranslation WITH wTranslation.lang = ? OR wTranslation.lang = ?', array($culture, $fallBackCulture))
-      ->select('a.type, z.width, z.css_class, w.module, w.action, wTranslation.value, w.css_class')
+      ->select('a.dm_layout_id, a.type, z.width, z.css_class, w.module, w.action, wTranslation.value, w.css_class')
       ->where('a.dm_layout_id = ?', $this->page->getPageView()->getLayout()->get('id'))
       ->orWhere('a.dm_page_view_id = ?', $this->page->getPageView()->get('id'))
       ->orderBy('z.position asc, w.position asc')
@@ -82,7 +82,7 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
        * which can not be achived
        * normally when hydrating with an array
        */
-      foreach($this->areas as $areaIndex => $area)
+      foreach($areas as $areaIndex => $area)
       {
         foreach($area['Zones'] as $zoneIndex => $zone)
         {
@@ -102,31 +102,59 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
             }
             
             // assign the value to the widget array
-            $this->areas[$areaIndex]['Zones'][$zoneIndex]['Widgets'][$widgetIndex]['value'] = $value;
+            $areas[$areaIndex]['Zones'][$zoneIndex]['Widgets'][$widgetIndex]['value'] = $value;
             
             // unset the useless Translation array
-            unset($this->areas[$areaIndex]['Zones'][$zoneIndex]['Widgets'][$widgetIndex]['Translation']);
+            unset($areas[$areaIndex]['Zones'][$zoneIndex]['Widgets'][$widgetIndex]['Translation']);
           }
         }
       }
       /*
        * End of strange code
        */
+
+      /**
+       * Give nice keys to the areas array
+       */
+      $this->areas = array();
+      foreach($areas as $area)
+      {
+        $prefix = $area['dm_layout_id'] ? 'layout' : 'page';
+
+        $this->areas[$prefix.'.'.$area['type']] = $area;
+      }
+      unset($areas);
     }
     
     return $this->areas;
   }
   
-  public function getArea($type)
+  public function getArea($name)
   {
     $areas = $this->getAreas();
 
-    if (!isset($areas[$type]))
+    if(isset($areas[$name]))
     {
-      throw new dmException(sprintf('Page %s with layout %s has no area for type %s', $this->page, $this->page->Layout, $type));
+      return $areas[$name];
     }
 
-    return $areas[$type];
+    list($prefix, $type) = explode('.', $name);
+
+    if(!in_array($prefix, array('layout', 'page')) || !$type)
+    {
+      throw new dmException('Since Diem 5.1, the area name must be layout.xxx or page.xxx');
+    }
+
+    if('layout' === $prefix)
+    {
+      $area = $this->page->getPageView()->getLayout()->getArea($type);
+    }
+    else
+    {
+      $area = $this->page->getPageView()->getArea($type);
+    }
+
+    return $area->toArray();
   }
 
   public function renderAccessLinks()
@@ -140,17 +168,19 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
     return $html;
   }
 
-  public function renderArea($type, $options = array())
+  public function renderArea($name, $options = array())
   {
     $options = dmString::toArray($options);
     
-    $tagName = $this->getAreaTypeTagName($type);
+    $tagName = $this->getAreaTypeTagName($name);
 
-    $area = $this->getArea($type);
+    $area = $this->getArea($name);
+
+    list($prefix, $type) = explode('.', $name);
     
     $options['class'] = array_merge(dmArray::get($options, 'class', array()), array(
       'dm_area',
-      'content' === $type ? 'dm_content' : 'dm_layout_'.$type
+      'dm_'.$prefix.'_'.$type
     ));
     
     $options['id'] = dmArray::get($options, 'id', 'dm_area_'.$area['id']);
@@ -208,7 +238,7 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
   {
     if ($this->isHtml5())
     {
-      switch($areaType)
+      switch(substr($areaType, strpos($areaType, '.')+1))
       {
         case 'top':     $tagName = 'header';  break;
         case 'left':    $tagName = 'aside';   break;

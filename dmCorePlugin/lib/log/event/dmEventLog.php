@@ -10,7 +10,8 @@ class dmEventLog extends dmFileLog
     'user_id',
     'action',
     'type',
-    'subject'
+    'subject',
+    'record'
   );
 
   public function getDefaultOptions()
@@ -28,13 +29,15 @@ class dmEventLog extends dmFileLog
   {
     return array(
       'dm.record.modification' => 'listenToRecordModificationEvent',
+      'dm.record.creation' => 'listenToRecordCreationEvent',
       'application.throw_exception' => 'listenToThrowExceptionEvent',
       'user.sign_in' => 'listenToUserSignInEvent',
       'user.sign_out' => 'listenToUserSignOutEvent',
       'dm.cache.clear' => 'listenToCacheClearEvent',
       'dm.sitemap.generated' => 'listenToSitemapUpdatedEvent',
       'dm.search.populated' => 'listenToSearchUpdatedEvent',
-      'dm.config.updated' => 'listenToConfigUpdatedEvent'
+      'dm.config.updated' => 'listenToConfigUpdatedEvent',
+      'dm.mail.post_send' => 'listenToMailPostSendEvent'
     );
   }
   
@@ -46,6 +49,23 @@ class dmEventLog extends dmFileLog
     {
       $dispatcher->connect($event, array($this, $method));
     }
+  }
+
+  public function listenToMailPostSendEvent(sfEvent $event)
+  {
+    $sentMail = dmDb::table('DmSentMail')->createFromSwiftMessage($event['message'])->merge(array(
+      'dm_mail_template_id' => isset($event['template']) ? $event['template']->get('id') : null,
+      'strategy'            => $event['mailer']->getDeliveryStrategy(),
+      'transport'           => get_class($event['mailer']->getTransport()),
+    ))->saveGet();
+
+    $this->log(array(
+      'server'  => $_SERVER,
+      'action'  => 'send',
+      'type'    => 'mail',
+      'subject' => isset($event['template']) ? $event['template']->get('name') : $event['message']->getSubject(),
+      'record'  => $sentMail
+    ));
   }
   
   public function listenToConfigUpdatedEvent(sfEvent $event)
@@ -124,17 +144,56 @@ class dmEventLog extends dmFileLog
       'subject' => $event->getSubject()->getMessage()
     ));
   }
-  
-  public function listenToRecordModificationEvent(sfEvent $event)
+
+  public function listenToRecordCreationEvent(sfEvent $event)
   {
     $record = $event->getSubject();
-    $action = $event['type'];
-    
-    if (!$this->isRecordActionLoggable($record, $action))
+
+    if (!$this->isRecordAndActionLoggable($record, 'create'))
     {
       return;
     }
+
+    list($subject, $type) = $this->getSubjectAndTypeFromRecord($record);
+
+    $this->log(array(
+      'server'  => $_SERVER,
+      'action'  => 'create',
+      'type'    => $type,
+      'subject' => $subject,
+      'record'  => $record
+    ));
+  }
+  
+  public function listenToRecordModificationEvent(sfEvent $event)
+  {
+    $action = $event['type'];
+
+    if('create' == $action)
+    {
+      return;
+    }
+
+    $record = $event->getSubject();
     
+    if (!$this->isRecordAndActionLoggable($record, $action))
+    {
+      return;
+    }
+
+    list($subject, $type) = $this->getSubjectAndTypeFromRecord($record, $action);
+    
+    $this->log(array(
+      'server'  => $_SERVER,
+      'action'  => $action,
+      'type'    => $type,
+      'subject' => $subject,
+      'record'  => $action == 'delete' ? null : $record
+    ));
+  }
+
+  protected function getSubjectAndTypeFromRecord($record)
+  {
     try
     {
       $subject = $record->__toString();
@@ -143,7 +202,7 @@ class dmEventLog extends dmFileLog
     {
       $subject = '-';
     }
-  
+
     if ($record instanceof DmPage)
     {
       $type = 'Page';
@@ -156,16 +215,11 @@ class dmEventLog extends dmFileLog
     {
       $type = get_class($record);
     }
-    
-    $this->log(array(
-      'server'  => $_SERVER,
-      'action'  => $action,
-      'type'    => $type,
-      'subject' => $subject
-    ));
+
+    return array($subject, $type);
   }
   
-  protected function isRecordActionLoggable($record, $action)
+  protected function isRecordAndActionLoggable($record, $action)
   {
     if(in_array(get_class($record), $this->options['ignore_models']))
     {

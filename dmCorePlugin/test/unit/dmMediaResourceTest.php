@@ -14,6 +14,7 @@ $theme = $user->getTheme();
 $user->setCulture('en');
 
 $imageFullPath = $theme->getFullPath('images/testImage.jpg');
+$sc->get('filesystem')->mkdir(dirname($imageFullPath));
 copy(
 dmOs::join(sfConfig::get('dm_core_dir'), 'data/image/defaultMedia.jpg'),
 $imageFullPath

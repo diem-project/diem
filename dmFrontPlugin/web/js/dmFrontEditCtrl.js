@@ -6,7 +6,7 @@
     init: function()
     {
       $('#dm_page').dmPage().find('div.dm_widget').trigger('dmWidgetLaunch');
-			
+      
       $('#dm_page_bar').dmFrontPageBar();
 
       if ($mediaBar = $('#dm_media_bar').orNot())

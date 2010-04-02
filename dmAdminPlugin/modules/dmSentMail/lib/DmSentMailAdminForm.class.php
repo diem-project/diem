@@ -10,4 +10,8 @@
  */
 class DmSentMailAdminForm extends BaseDmSentMailForm
 {
+  public function configure()
+  {
+    parent::configure();
+  }
 }

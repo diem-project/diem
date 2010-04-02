@@ -28,6 +28,26 @@ class dmSecurityUser extends sfBasicSecurityUser
       $this->isSuperAdmin = $user->get('is_super_admin');
     }
   }
+  
+  /**
+   * Sets authentication for user.
+   *
+   * @param  bool $authenticated
+   */
+  public function setAuthenticated($authenticated)
+  {
+    parent::setAuthenticated($authenticated);
+    
+    if($this->isAuthenticated() && ($user = $this->getUser()))
+    {
+      $this->isSuperAdmin = $user->get('is_super_admin');
+    }
+    else
+    {
+      $this->isSuperAdmin = false;
+      $this->user = null;
+    }
+  }
 
   /**
    * Returns the referer uri.

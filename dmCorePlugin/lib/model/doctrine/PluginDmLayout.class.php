@@ -12,9 +12,6 @@
  */
 abstract class PluginDmLayout extends BaseDmLayout
 {
-  protected static
-  $areaTypes = array('top', 'bottom', 'left', 'right');
-
   /**
    * How many pages use this layout?
    */
@@ -68,19 +65,9 @@ abstract class PluginDmLayout extends BaseDmLayout
     
     return $newLayout;
   }
-  
-  public static function getAreaTypes()
-  {
-    return self::$areaTypes;
-  }
 
   public function getArea($type)
   {
-    if (!in_array($type, self::getAreaTypes()))
-    {
-      throw new dmException(sprintf('%s is not a valid area type. These are : %s', $type, implode(', ', self::getAreaTypes())));
-    }
-
     foreach($this->get('Areas') as $area)
     {
       if($area->get('type') == $type)
@@ -89,28 +76,21 @@ abstract class PluginDmLayout extends BaseDmLayout
       }
     }
 
-    return null;
+    $area = dmDb::create('DmArea', array(
+      'dm_layout_id' => $this->get('id'),
+      'type' => $type
+    ))->saveGet();
+
+    $this->get('Areas')->add($area);
+
+    return $area;
   }
 
-  public function save(Doctrine_Connection $conn = null)
+  public function postDelete($event)
   {
-    parent::save($conn);
+    parent::postDelete($event);
 
-    $this->checkMissingAreas();
-  }
-  
-  protected function checkMissingAreas()
-  {
-    foreach(self::getAreaTypes() as $type)
-    {
-      if (!$this->getArea($type))
-      {
-        $this->get('Areas')->add(dmDb::create('DmArea', array(
-          'dm_layout_id' => $this->get('id'),
-          'type' => $type
-        ))->saveGet());
-      }
-    }
+    $this->Areas->delete();
   }
 
 }

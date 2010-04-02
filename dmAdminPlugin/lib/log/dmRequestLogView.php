@@ -18,7 +18,7 @@ class dmRequestLogView extends dmLogView
   protected function renderUser(dmRequestLogEntry $entry)
   {
     return sprintf('%s%s',
-      ($username = $entry->get('username')) ? sprintf('<strong class="mr10">%s</strong><br />', $username) : '',
+      ($username = $entry->get('username')) ? sprintf('<strong class="mr10">%s</strong><br />', dmString::escape(dmString::truncate($username, 20, '...'))) : '',
       $this->renderIp($entry->get('ip'))
     );
   }
@@ -31,7 +31,7 @@ class dmRequestLogView extends dmLogView
       $this->getBrowserIcon($browser),
       ucfirst($browser->getName()),
       $browser->getVersion(),
-      str_replace('Linux', '<strong>Linux</strong>', $entry->get('user_agent'))
+      str_replace('Linux', '<strong>Linux</strong>', dmString::escape($entry->get('user_agent')))
     );
   }
 
@@ -70,13 +70,12 @@ class dmRequestLogView extends dmLogView
     $uri = ltrim($entry->get('uri'), '/');
     $text = $uri ? $uri : $entry->get('app').' home';
     
-    return $this->helper->link('app:'.$entry->get('app').'/'.$uri)->text($text);
+    return $this->helper->link('app:'.$entry->get('app').'/'.$uri)->text(dmString::escape($text));
   }
   
   protected function renderTime(dmRequestLogEntry $entry)
   {
     return str_replace(' CEST', '', $this->dateFormat->format($entry->get('time')));
-//    return date('Y/m/d H:m:s', $entry->get('time'));
   }
   
   protected function renderApp(dmRequestLogEntry $entry)

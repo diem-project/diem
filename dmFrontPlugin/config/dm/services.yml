@@ -69,6 +69,10 @@ parameters:
 
   page_tree_view.class:       dmFrontPageTreeView   # Render the page tree
 
+  helper_extension.class:     dmFrontHelperExtension # Adds methods to the helper service
+
+  tool_bar_view.class:        dmFrontToolBarView  # Renders the front toolbar
+
 services:
 
   page_routing:
@@ -92,7 +96,7 @@ services:
 
   form_manager:
     class:                    %form_manager.class%
-    arguments:                [ @service_container ]
+    arguments:                [ @service_container, @dispatcher ]
     shared:                   true
 
   link_tag_record:
@@ -180,6 +184,11 @@ services:
     arguments:                [ @context, %front_pager_view.options% ]
 
   sitemap_menu:
-    class:              %sitemap_menu.class%
-    shared:             false
-    arguments:          [ @service_container, %menu.options% ]
+    class:                    %sitemap_menu.class%
+    shared:                   false
+    arguments:                [ @service_container, %menu.options% ]
+
+  helper_extension:
+    class:                    %helper_extension.class%
+    shared:                   true
+    arguments:                [ @dispatcher, @service_container ]

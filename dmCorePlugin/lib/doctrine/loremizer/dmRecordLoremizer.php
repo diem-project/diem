@@ -40,7 +40,7 @@ class dmRecordLoremizer extends dmConfigurable
     {
       $this->loremizeAssociations();
     }
-    
+
     return $this->record;
   }
   
@@ -83,6 +83,11 @@ class dmRecordLoremizer extends dmConfigurable
     }
     // handle local keys
     elseif ($localRelation = $this->table->getRelationHolder()->getLocalByColumnName($columnName))
+    {
+      $val = $this->getRandomId($localRelation->getTable());
+    }
+    // handle i18n local keys
+    elseif ($this->table->hasI18n() && ($localRelation = $this->table->getI18nTable()->getRelationHolder()->getLocalByColumnName($columnName)))
     {
       $val = $this->getRandomId($localRelation->getTable());
     }
@@ -153,6 +158,9 @@ class dmRecordLoremizer extends dmConfigurable
       case 'date':
         $val = date("Y-m-d H:i:s", mt_rand(strtotime('-10 year') , time()));
         break;
+      case 'year':
+        $val = date("Y", mt_rand(strtotime('-10 year') , time()));
+        break;
       case 'enum':
         $val = $column['values'][array_rand($column['values'])];
         break;
@@ -162,7 +170,7 @@ class dmRecordLoremizer extends dmConfigurable
         break;
       case 'float':
       case 'decimal':
-        $val = mt_rand(0, pow(10, $column['length']) - 1)/pow(10, $column['scale']);
+        $val = mt_rand(0, pow(10, $column['length']) - 1)/pow(10, dmArray::get($column, 'scale', 2));
         break;
       default:
         throw new dmException(sprintf('Diem can not generate random content for %s column', $columnName));

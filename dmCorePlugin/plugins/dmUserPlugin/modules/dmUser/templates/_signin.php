@@ -1,14 +1,20 @@
 <?php
 
-echo $form->open('.dm_signin_form');
+if($sf_user->isAuthenticated())
+{
+  echo _tag('p', __('You are authenticated as %username%', array('%username%' => $sf_user->getUsername())));
+  return;
+}
 
-echo _tag('ul',
+echo $form->open('.dm_signin_form action=@signin');
 
-  _tag('li', $form['username']->label()->field()->error()).
+echo _tag('ul.dm_form_elements',
 
-  _tag('li', $form['password']->label()->field()->error()).
+  _tag('li.dm_form_element', $form['username']->label()->field()->error()).
 
-  _tag('li', $form['remember']->label()->field()->error())
+  _tag('li.dm_form_element', $form['password']->label()->field()->error()).
+
+  _tag('li.dm_form_element', $form['remember']->label()->field()->error())
 
 );
 

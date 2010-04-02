@@ -11,7 +11,37 @@
       this.markdown();
       this.checkBoxList();
       this.droppableInput();
+      this.droppableMedia();
       this.hotKeys();
+    },
+
+    droppableMedia: function()
+    {
+      var self = this;
+      
+      self.element.find('ul.dm_media_for_record_form').each(function()
+      {
+        var $this = $(this);
+        var fieldName = $this.closest('div.sf_admin_form_row').attr('data-field-name');
+        var viewClass = 'sf_admin_form_field_'+fieldName.replace(/_form/, '_view');
+        
+        $(this).droppable({
+          accept: '#dm_media_bar li',
+          activeClass: 'droppable_active',
+          hoverClass: 'droppable_hover',
+          //          tolerance:    'touch',
+          drop: function(e, ui)
+          {
+            var mediaId = ui.draggable.attr('id').replace(/dmm/, '');
+            $this.find('input.dm_media_id').val(mediaId);
+
+            if($view = self.element.find('div.'+viewClass).orNot())
+            {
+              $view.block().load($.dm.ctrl.getHref('+/dmMedia/preview?id='+mediaId)).unblock();
+            }
+          }
+        });
+      });
     },
 
     droppableInput: function()
@@ -53,8 +83,8 @@
         var $editor = $(this);
         var $preview = $('#dm_markdown_preview_'+$editor.metadata().code);
         var value = $editor.val();
-				
-				$editor.dmMarkdown();
+        
+        $editor.dmMarkdown();
 
         var $container = $editor.closest('div.markItUpContainer');
 
@@ -71,7 +101,7 @@
         });
 
         $container.find('div.markItUpHeader ul').append(
-          $('<li class="markitup_full_screen"><a title="Full Screen">Full Screen</a></li>')
+          $('<li class="markitup_full_screen"><a title="Enlarge the editor">+</a></li>')
           .click(function() {
             $container.toggleClass('dm_markdown_full_screen');
 
@@ -96,7 +126,7 @@
             }
           })
         );
-				
+        
         setInterval(function()
         {
           if ($editor.val() != value) 

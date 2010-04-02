@@ -180,6 +180,14 @@ parameters:
   download.class:             dmDownloadResponse    # Triggers a download from a file or string data
   download.options:           []
 
+  data_load.class:            dmDataLoad            # Responsible for loading default data in the project
+
+  markdown_translator.class:  dmMarkdownTranslator  # Responsible for providing the markdown editor translated strings
+  markdown_translator.options:
+    messages:                 [ Heading 2, Heading 3, Heading 4, Bold, Italic, Bulleted List, Numeric List, Link, Enlarge the editor ]
+
+  layout_helper.options:      []
+
 services:
 
   text_diff:
@@ -195,7 +203,7 @@ services:
   mail:
     class:                    %mail.class%
     shared:                   false
-    arguments:                [ @service_container ]
+    arguments:                [ @context, @dispatcher ]
 
   thread_launcher:
     class:                    %thread_launcher.class%
@@ -260,6 +268,7 @@ services:
   table_tag:
     class:                    %table_tag.class%
     shared:                   false
+    arguments:                [ @helper ]
 
   search_engine:
     class:                    %search_engine.class%
@@ -304,7 +313,7 @@ services:
   layout_helper:
     class:                    %layout_helper.class%
     shared:                   false
-    arguments:                [ @dispatcher, @service_container ]
+    arguments:                [ @dispatcher, @service_container, %layout_helper.options% ]
 
   filesystem:
     class:                    %filesystem.class%
@@ -435,3 +444,18 @@ services:
     class:                    %download.class%
     shared:                   false
     arguments:                [ @response, @mime_type_resolver, %download.options% ]
+
+  data_load:
+    class:                    %data_load.class%
+    shared:                   false
+    arguments:                [ @dispatcher, @i18n ]
+
+  markdown_translator:
+    class:                    %markdown_translator.class%
+    shared:                   false
+    arguments:                [ @i18n, %markdown_translator.options% ]
+  
+  tool_bar_view:
+    class:                    %tool_bar_view.class%
+    shared:                   false
+    arguments:                [ @dispatcher, @user, @helper, @i18n, @service_container ]

@@ -92,6 +92,6 @@ class dmFrontAssetConfig extends dmAssetConfig
 
   public function userCanEdit()
   {
-    return $this->user->can('tool_bar_front, record_edit_front');
+    return $this->user->can('tool_bar_front, widget_edit_fast');
   }
 }

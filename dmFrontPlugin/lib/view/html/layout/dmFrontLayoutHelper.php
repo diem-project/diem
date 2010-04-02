@@ -5,9 +5,9 @@ class dmFrontLayoutHelper extends dmCoreLayoutHelper
   protected
     $page;
 
-  protected function initialize()
+  protected function initialize(array $options)
   {
-    parent::initialize();
+    parent::initialize($options);
 
     $this->setPage($this->serviceContainer->getParameter('context.page'));
   }
@@ -82,7 +82,7 @@ class dmFrontLayoutHelper extends dmCoreLayoutHelper
     
     if ($user->can('tool_bar_front'))
     {
-      $html .= $helper->renderComponent('dmInterface', 'toolBar', array('cacheKey' => $cacheKey));
+      $html .= $helper->renderPartial('dmInterface', 'toolBar', array('cacheKey' => $cacheKey));
     }
     
     return $html;

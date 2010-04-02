@@ -1,5 +1,5 @@
 /*
- * jQuery UI Tabs 1.8rc2
+ * jQuery UI Tabs 1.8
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -13,7 +13,8 @@
  */
 (function($) {
 
-var tabId = 0;
+var tabId = 0,
+	listId = 0;
 
 $.widget("ui.tabs", {
 	options: {
@@ -63,7 +64,7 @@ $.widget("ui.tabs", {
 	},
 
 	_cookie: function() {
-		var cookie = this.cookie || (this.cookie = this.options.cookie.name || 'ui-tabs-' + $.data(this.list[0]));
+		var cookie = this.cookie || (this.cookie = this.options.cookie.name || 'ui-tabs-' + (++listId));
 		return $.cookie.apply(null, [cookie].concat($.makeArray(arguments)));
 	},
 
@@ -603,11 +604,26 @@ $.widget("ui.tabs", {
 					o.ajaxOptions.success(r, s);
 				}
 				catch (e) {}
+			},
+			error: function(xhr, s, e) {
+				// take care of tab labels
+				self._cleanup();
 
-				// last, so that load event is fired before show...
-				self.element.dequeue("tabs");
+				// callbacks
+				self._trigger('load', null, self._ui(self.anchors[index], self.panels[index]));
+				try {
+					// Passing index avoid a race condition when this method is
+					// called after the user has selected another tab.
+					// Pass the anchor that initiated this request allows
+					// loadError to manipulate the tab content panel via $(a.hash)
+					o.ajaxOptions.error(xhr, s, index, a);
+				}
+				catch (e) {}
 			}
 		}));
+
+		// last, so that load event is fired before show...
+		self.element.dequeue("tabs");
 
 		return this;
 	},
@@ -644,7 +660,7 @@ $.widget("ui.tabs", {
 });
 
 $.extend($.ui.tabs, {
-	version: '1.8rc2'
+	version: '1.8'
 });
 
 /*

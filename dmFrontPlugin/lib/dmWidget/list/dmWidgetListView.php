@@ -15,7 +15,7 @@ class dmWidgetListView extends dmWidgetProjectModelView
       {
         if (!$this->allowFilterAutoRecordId($filterModule))
         {
-          $this->addRequiredVar($filter);
+          $this->addRequiredVar($filter.'Filter');
         }
       }
     }
@@ -44,6 +44,8 @@ class dmWidgetListView extends dmWidgetProjectModelView
     }
 
     $viewVars['filters'] = $filters;
+
+    $viewVars['page'] = $this->getService('request')->getParameter('page', 1);
 
     return $viewVars;
   }

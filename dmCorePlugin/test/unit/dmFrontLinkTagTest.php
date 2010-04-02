@@ -4,7 +4,7 @@ require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
 $helper = new dmUnitTestHelper();
 $helper->boot('front');
 
-$t = new lime_test(45);
+$t = new lime_test(47);
 
 dm::loadHelpers(array('Dm'));
 
@@ -235,3 +235,11 @@ sfConfig::set('sf_debug', true);
 $expected = 'The "/advanced-parametered-url/:var1/:var2" route has some missing mandatory parameters (:var1, :var2).';
 $t->is((string)£link('@link_test_route_2')->text('advanced parametered route url'), $expected, 'route link is '.$expected);
 sfConfig::set('sf_debug', false);
+
+$t->comment('Nofollow attribute');
+
+$expected = '<a class="link" href="http://site.com" nofollow="1">Site</a>';
+$t->is((string)£link('http://site.com')->text('Site')->set('nofollow', true), $expected, '->set("nofollow", true)');
+
+$expected = '<a class="link nofollow" href="http://site.com" nofollow="1">Site</a>';
+$t->is((string)£link('http://site.com')->text('Site')->set('.nofollow'), $expected, '->set(".nofollow")');

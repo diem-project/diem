@@ -13,18 +13,20 @@ $.widget('ui.dmWidget', {
   {
     var widget = this, activeTab = null, dialogClass = widget.element.attr('id')+'_edit_dialog';
 
-	  if ($('body > div.'+dialogClass).length)
-		{
+    $.dm.removeTipsy();
+
+    if ($('body > div.'+dialogClass).length)
+    {
       $('body > div.'+dialogClass).find('div.ui-dialog-content').dialog('moveToTop');
-			return;
-		}
-		
+      return;
+    }
+    
     var $dialog = $.dm.ctrl.ajaxDialog({
       url:          $.dm.ctrl.getHref('+/dmWidget/edit'),
       data:         {widget_id: widget.getId()},
-      title:        $('a.dm_widget_edit', widget.element).attr('original-title'),
+      title:        $('a.dm_widget_edit', widget.element).tipsyTitle(),
       width:        370,
-			'class':      'dm_widget_edit_dialog_wrap '+dialogClass,
+      'class':      'dm_widget_edit_dialog_wrap '+dialogClass,
       beforeClose:  function()
       {
         if (!widget.deleted)
@@ -38,7 +40,7 @@ $.widget('ui.dmWidget', {
 
       $('a.delete', $dialog).click(function()
       {
-        if (confirm($(this).attr('original-title')+" ?"))
+        if (confirm($(this).tipsyTitle()+" ?"))
         {
           $.dm.removeTipsy();
           widget._delete();
@@ -46,9 +48,9 @@ $.widget('ui.dmWidget', {
         }
       });
       
-			var $form = $('div.dm_widget_edit', $dialog);
-			if (!$form.length)
-			{
+      var $form = $('div.dm_widget_edit', $dialog);
+      if (!$form.length)
+      {
         return;
       }
       
@@ -188,7 +190,7 @@ $.widget('ui.dmWidget', {
     
     this.element
     .attr('class', $('>div:first', '<div>'+html+'</div>').attr('class'))
-    .find('>div.dm_widget_inner')
+    .find('div.dm_widget_inner')
     .html($('>div.dm_widget_inner', html).html())
     .attr('class', $('>div.dm_widget_inner', html).attr('class'))
     .end()
@@ -246,7 +248,7 @@ $.widget('ui.dmWidget', {
     
     this.id = this.element.attr('id').substring(10);
     
-    $('a.dm_widget_edit', this.element).click(function() {
+    $('> a.dm_widget_edit, > a.dm_widget_fast_edit', this.element).click(function() {
       if (!self.element.hasClass('dm_dragging')) {
         self.openEditDialog();
       }

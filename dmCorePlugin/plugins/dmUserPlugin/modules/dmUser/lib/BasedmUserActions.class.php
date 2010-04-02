@@ -8,17 +8,45 @@ class BasedmUserActions extends myFrontModuleActions
    */
   public function executeSigninWidget(dmWebRequest $request)
   {
-    $form = $this->forms['DmSigninFront'];
+    $form = new DmSigninFrontForm();
+
+    $user = $this->getUser();
 
     if ($request->isMethod('post') && $request->hasParameter($form->getName()))
     {
       if ($form->bindAndValid($request))
       {
-        $this->getUser()->signin($form->getValue('user'), $form->getValue('remember'));
+        $user->signin($form->getValue('user'), $form->getValue('remember'));
 
-        return $this->redirect($request->getReferer());
+        $this->redirectSignedInUser($request);
       }
     }
+    else
+    {
+      if ($request->isXmlHttpRequest())
+      {
+        $this->getResponse()->setStatusCode(401);
+        $this->getResponse()->setHeaderOnly(true);
+        return sfView::NONE;
+      }
+
+      // if we have been forwarded, then the referer is the current URL
+      // if not, this is the referer of the current request
+      $user->setReferer($this->getContext()->getActionStack()->getSize() > 1 ? $request->getUri() : $request->getReferer());
+    }
+    
+    $this->forms['DmSigninFront'] = $form;
+  }
+
+  /**
+   * Override this method to redirect the user to some page
+   * just after he(she) successfully signed in.
+   */
+  protected function redirectSignedInUser(dmWebRequest $request)
+  {
+    $redirectUrl = $this->getUser()->getReferer($request->getReferer());
+
+    $this->redirect('' != $redirectUrl ? $redirectUrl : '@homepage');
   }
 
   /**
@@ -26,19 +54,42 @@ class BasedmUserActions extends myFrontModuleActions
    */
   public function executeFormWidget(dmWebRequest $request)
   {
-    $form = $this->forms['DmUser'];
+    $form = new DmUserForm();
 
     if ($request->isMethod('post') && $request->hasParameter($form->getName()))
     {
-      if ($form->bindAndValid($request))
+      $data = $request->getParameter($form->getName());
+      
+      if($form->isCaptchaEnabled())
+      {
+        $data = array_merge($data, array('captcha' => array(
+          'recaptcha_challenge_field' => $request->getParameter('recaptcha_challenge_field'),
+          'recaptcha_response_field'  => $request->getParameter('recaptcha_response_field'),
+        )));
+      }
+
+      $form->bind($data, $request->getFiles($form->getName()));
+      
+      if ($form->isValid())
       {
         $user = $form->save();
 
         $this->getUser()->signin($user);
 
-        return $this->redirect($request->getReferer());
+        $this->redirectRegisteredUser($request);
       }
     }
+
+    $this->forms['DmUser'] = $form;
+  }
+
+  /**
+   * Override this method to redirect the user to some page
+   * just after he(she) successfully registered.
+   */
+  protected function redirectRegisteredUser(dmWebRequest $request)
+  {
+    $this->redirect($request->getReferer());
   }
 
   public function executeSignin(dmWebRequest $request)
@@ -47,16 +98,16 @@ class BasedmUserActions extends myFrontModuleActions
 
     $this->getResponse()->setStatusCode(401);
 
-    return $this->forward('dmFront', 'page');
+    $this->forward('dmFront', 'page');
   }
 
   public function executeSecure(dmWebRequest $request)
   {
     $request->setParameter('dm_page', dmDb::table('DmPage')->fetchSignin());
-    
+
     $this->getResponse()->setStatusCode(403);
 
-    return $this->forward('dmFront', 'page');
+    $this->forward('dmFront', 'page');
   }
 
   public function executeSignout($request)

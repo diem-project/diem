@@ -41,10 +41,6 @@ DmPageView:
       foreign:              id
       onDelete:             SET NULL
       foreignAlias:         PageViews
-    Area:
-      class:                DmArea
-      local:                id
-      foreign:              dm_page_view_id
 
 DmLayout:
   columns:
@@ -68,7 +64,7 @@ DmArea:
       class:                DmPageView
       local:                dm_page_view_id
       foreign:              id
-      foreignAlias:         Area
+      foreignAlias:         Areas
       onDelete:             CASCADE
 
 DmZone:
@@ -150,23 +146,13 @@ DmError:
       updated:
         disabled: true
   columns:
-    klass:                  { type: string(127), notnull: true }
+    php_class:              { type: string(127), notnull: true }
     name:                   { type: string(255), notnull: true }
     description:            { type: string(60000) }
     module:                 { type: string(127), notnull: false }
     action:                 { type: string(127), notnull: false }
     uri:                    { type: string(255), notnull: true }
     env:                    { type: string(63), notnull: true }
-    
-DmSentMail:
-  actAs:
-    Timestampable:
-      updated:
-        disabled: true
-  columns:
-    name:                   { type: string(255) }
-    header:                 { type: string(60000) }
-    description:            { type: string(60000) }
 
 DmLock:
   options:
@@ -230,7 +216,7 @@ DmSetting:
   columns:
     name:                   { type: string(127), notnull: true, unique: true }
     description:            { type: string(255) }
-    type:                   { type: enum, notnull: true, values: [text, boolean, select, textarea, number], default: 'text' }
+    type:                   { type: enum, notnull: true, values: [text, boolean, select, textarea, number, datetime], default: 'text' }
     value:                  { type: string(60000) }
     params:                 { type: string(60000) }
     group_name:             { type: string(255), notnull: true, default: '' }
@@ -265,14 +251,45 @@ DmMailTemplate:
   actAs:
     Timestampable:
     I18n:
-      fields:               [ title, description, body, from_email, to_email, is_html, is_active ]
+      fields:               [ subject, description, body, from_email, to_email, cc_email, bcc_email, reply_to_email, sender_email, list_unsuscribe, is_html, is_active ]
   columns:
     name:                   { type: string(255), notnull: true, unique: true }
     description:            { type: string(5000) }
     vars:                   { type: string(5000) }
-    title:                  { type: string(5000) }
-    body:                   { type: clob }
-    from_email:             { type: string(5000) }
+    subject:                { type: string(5000), notnull: true }
+    body:                   { type: clob, notnull: true }
+    from_email:             { type: string(5000), notnull: true }
     to_email:               { type: string(5000) }
+    cc_email:               { type: string(5000) }
+    bcc_email:              { type: string(5000) }
+    reply_to_email:         { type: string(5000) }
+    sender_email:           { type: string(5000) }
+    list_unsuscribe:        { type: string(5000) }
     is_html:                { type: boolean, notnull: true, default: false }
     is_active:              { type: boolean, notnull: true, default: true }
+
+DmSentMail:
+  actAs:
+    Timestampable:
+      updated:
+        disabled: true
+  columns:
+    dm_mail_template_id:    { type: integer }
+    subject:                { type: string(5000), notnull: true }
+    body:                   { type: clob, notnull: true }
+    from_email:             { type: string(5000), notnull: true }
+    to_email:               { type: string(5000) }
+    cc_email:               { type: string(5000) }
+    bcc_email:              { type: string(5000) }
+    reply_to_email:         { type: string(5000) }
+    sender_email:           { type: string(5000) }
+    strategy:               { type: string(255) }
+    transport:              { type: string(255) }
+    culture:                { type: string(16) }
+    debug_string:           { type: clob }
+  relations:
+    Template:
+      class:                DmMailTemplate
+      local:                dm_mail_template_id
+      onDelete:             SET NULL
+      foreignAlias:         SentMails

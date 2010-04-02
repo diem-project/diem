@@ -27,7 +27,7 @@
       $tab.attr('title', $span.unwrap().attr('title')).tipsy({gravity: $.fn.tipsy.autoSouth});
       $span.attr('title', null);
 
-			$(window).trigger('resize');
+      $(window).trigger('resize');
 
       $('<img class="close" width="9px" height="8px" src="' + $.dm.ctrl.options.dm_core_asset_root + 'images/cross-small.png' + '" />')
       .prependTo($tab)
