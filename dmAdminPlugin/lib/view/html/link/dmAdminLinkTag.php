@@ -54,6 +54,21 @@ class dmAdminLinkTag extends dmBaseLinkTag
           throw new dmException(sprintf('%s is not a valid link resource', $resource));
         }
       }
+
+      if (strncmp($resource, 'media:', 6) === 0)
+      {
+        $mediaResource = preg_replace('|^media:(\d+).*|', '$1', $resource);
+        
+        if ($media = dmDb::table('DmMedia')->findOneByIdWithFolder($mediaResource))
+        {
+          $mediaFullPath = $media->getFullPath();
+          $this->resource = dmContext::getInstance()->getRequest()->getRelativeUrlRoot().str_replace(dmOs::normalize(sfConfig::get('sf_web_dir')), '', dmOs::normalize($mediaFullPath));
+        }
+        else
+        {
+          throw new dmException(sprintf('%s is not a valid media resource. The media with id %s does not exist', $resource, $mediaResource));
+        }
+      }
       
       if (strncmp($this->resource, 'app:', 4) === 0)
       {
