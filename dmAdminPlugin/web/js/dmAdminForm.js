@@ -206,7 +206,7 @@
 
             $lis.each(function()
             {
-              $(this)[$(this).find('label').text().match(term) ? 'show' : 'hide']();
+              $(this)[$(this).find('label').text().toLowerCase().indexOf(term.toLowerCase()) != -1 ? 'show' : 'hide']();
             });
           }).tipsy({gravity: $.fn.tipsy.autoSouth});
         }
