@@ -11,7 +11,7 @@ $dmModels = dmProject::getDmModels();
 $allModels = dmProject::getAllModels();
 
 $t->is_deeply($models, $expected = array(
-  'DmTestCateg', 'DmTestComment', 'DmTestDomainCateg', 'DmTestDomain', 'DmTestFruit', 'DmTestPost', 'DmTestPostTag', 'DmTestTag', 'DmTestUser'
+  'DmTestCateg', 'DmTestComment', 'DmTestDomainCateg', 'DmTestDomain', 'DmTestFruit', 'DmTestPost', 'DmTestPostTag', 'DmTestTag', 'DmTestUser', 'DmContact', 'DmTag'
 ), 'dmProject::getModels() -> '.implode(', ', $expected));
 
 $t->is_deeply(array_intersect($models, $allModels), $models, 'dmProject::getAllModels() contain all project models');

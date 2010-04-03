@@ -40,7 +40,21 @@ class dmProject
   {
     if (null === self::$models)
     {
-      $baseFiles = glob(dmOs::join(sfConfig::get('sf_lib_dir'), 'model/doctrine/base/Base*.class.php'));
+      $baseFiles = array_merge(
+        glob(sfConfig::get('sf_lib_dir').'/model/doctrine/base/Base*.class.php'),
+        glob(sfConfig::get('sf_lib_dir').'/model/doctrine/*Plugin/base/Base*.class.php')
+      );
+
+      $dmCoreDir = dmOs::join(sfConfig::get('sf_lib_dir'), 'model/doctrine/dmCorePlugin/base/');
+      $dmUserDir = dmOs::join(sfConfig::get('sf_lib_dir'), 'model/doctrine/dmUserPlugin/base/');
+
+      foreach($baseFiles as $index => $file)
+      {
+        if(0 === strpos($file, $dmCoreDir) || 0 === strpos($file, $dmUserDir))
+        {
+          unset($baseFiles[$index]);
+        }
+      }
       
       self::$models = self::getModelsFromBaseFiles($baseFiles);
     }
@@ -52,9 +66,10 @@ class dmProject
   {
     if (null === self::$allModels)
     {
-      $baseFiles = sfFinder::type('file')
-      ->name('/^Base\w+.class.php$/i')
-      ->in(dmOs::join(sfConfig::get('sf_lib_dir'), 'model/doctrine'));
+      $baseFiles = array_merge(
+        glob(sfConfig::get('sf_lib_dir').'/model/doctrine/base/Base*.class.php'),
+        glob(sfConfig::get('sf_lib_dir').'/model/doctrine/*Plugin/base/Base*.class.php')
+      );
 
       self::$allModels = self::getModelsFromBaseFiles($baseFiles);
     }
@@ -66,10 +81,7 @@ class dmProject
   {
     if (null === self::$dmModels)
     {
-      $baseFiles = sfFinder::type('file')
-      ->name('/Base\w+.class.php/i')
-      ->maxDepth(0)
-      ->in(dmOs::join(sfConfig::get("sf_lib_dir"), "model/doctrine/dmCorePlugin/base"));
+      $baseFiles = glob(dmOs::join(sfConfig::get('sf_lib_dir'), 'model/doctrine/dmCorePlugin/base/Base*.class.php'));
 
       self::$dmModels = self::getModelsFromBaseFiles($baseFiles);
     }
