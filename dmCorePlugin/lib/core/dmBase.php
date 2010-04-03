@@ -1,7 +1,7 @@
 <?php
 
-// First dev preview for Diem 5.1
-define('DIEM_VERSION', '5.1.0-DEV');
+// First alpha for Diem 5.1
+define('DIEM_VERSION', '5.1.0-ALPHA1');
 
 /*
  * Include Symfony
