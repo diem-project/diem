@@ -43,10 +43,13 @@ class dmFrontPagerView extends dmConfigurable implements Iterator, Countable
 
   protected function initBaseHref()
   {
-    $this->setBaseHref(($page = $this->context->getPage())
-    ? $this->helper->link($page)->getAbsoluteHref()
-    : preg_replace('|/page/([0-9]+)|', '?page=$1', $this->context->getRequest()->getUri())
-    );
+    if(!$this->baseHref)
+    {
+      $this->setBaseHref(($page = $this->context->getPage())
+      ? $this->helper->link($page)->getAbsoluteHref()
+      : preg_replace('|/page/([0-9]+)|', '?page=$1', $this->context->getRequest()->getUri())
+      );
+    }
   }
 
   public function setBaseHref($baseHref)
