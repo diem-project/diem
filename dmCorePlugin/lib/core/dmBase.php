@@ -1,10 +1,9 @@
 <?php
 
+// Second maintenance release for Diem 5.0
 define('DIEM_VERSION', '5.0.2');
 
-/*
- * Include Symfony
- */
+// Include Symfony
 if (!defined('SYMFONY_VERSION'))
 {
   require_once realpath(dirname(__FILE__).'/../../..').'/symfony/lib/autoload/sfCoreAutoload.class.php';
