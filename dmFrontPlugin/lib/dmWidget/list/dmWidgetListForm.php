@@ -4,9 +4,7 @@ class dmWidgetListForm extends dmWidgetProjectModelForm
 {
   public function configure()
   {
-    /*
-     * Max per page
-     */
+    // Max per page
     $this->widgetSchema['maxPerPage']     = new sfWidgetFormInputText(array(), array(
       'size' => 3
     ));
@@ -16,18 +14,14 @@ class dmWidgetListForm extends dmWidgetProjectModelForm
       'max' => 99999
     ));
 
-    /*
-     * Paginators top & bottom
-     */
-    $this->widgetSchema['navTop']      = new sfWidgetFormInputCheckbox();
-    $this->validatorSchema['navTop']   = new sfValidatorBoolean();
+    // Paginators top & bottom
+    $this->widgetSchema['navTop']       = new sfWidgetFormInputCheckbox();
+    $this->validatorSchema['navTop']    = new sfValidatorBoolean();
 
     $this->widgetSchema['navBottom']    = new sfWidgetFormInputCheckbox();
     $this->validatorSchema['navBottom'] = new sfValidatorBoolean();
 
-    /*
-     * Order field selection
-     */
+    // Order field selection
     $orderFields = $this->getAvailableOrderFields();
     $this->widgetSchema['orderField']    = new sfWidgetFormSelect(array(
       'choices' => $orderFields
@@ -36,9 +30,7 @@ class dmWidgetListForm extends dmWidgetProjectModelForm
       'choices' => array_keys($orderFields)
     ));
 
-    /*
-     * Order type selection
-     */
+    // Order type selection
     $orderTypes = $this->getOrderTypes();
     $this->widgetSchema['orderType']    = new sfWidgetFormSelect(array(
       'choices' => $orderTypes
@@ -47,9 +39,7 @@ class dmWidgetListForm extends dmWidgetProjectModelForm
       'choices' => array_keys($orderTypes)
     ));
 
-    /*
-     * Filters
-     */
+    // Filters
     foreach($this->dmComponent->getOption('filters', array()) as $filter)
     {
       if (!$filterModule = $this->dmModule->getAncestor($filter))

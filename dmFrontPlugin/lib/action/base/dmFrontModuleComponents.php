@@ -120,7 +120,7 @@ class dmFrontModuleComponents extends myFrontBaseComponents
   }
 
   /**
-   * @param myDoctrineQuery $query        The query passed to pager
+   * @param myDoctrineQuery   $query  The query passed to pager
    * @return dmFrontPagerView $pager
    */
   protected function getPager(myDoctrineQuery $query, $page = null)
