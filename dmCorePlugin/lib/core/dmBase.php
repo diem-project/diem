@@ -3,9 +3,7 @@
 // First alpha for Diem 5.1
 define('DIEM_VERSION', '5.1.0-ALPHA1');
 
-/*
- * Include Symfony
- */
+// include symfony
 if (!defined('SYMFONY_VERSION'))
 {
   require_once realpath(dirname(__FILE__).'/../../..').'/symfony/lib/autoload/sfCoreAutoload.class.php';
