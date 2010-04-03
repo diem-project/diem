@@ -1,7 +1,6 @@
 <?php
 
-// First alpha for Diem 5.1
-define('DIEM_VERSION', '5.1.0-ALPHA1');
+define('DIEM_VERSION', '5.1.0-ALPHA2');
 
 // include symfony
 if (!defined('SYMFONY_VERSION'))
