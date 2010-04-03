@@ -10,11 +10,33 @@ class dmSearchPager extends sfPager
 {
   protected
   $hits;
+
+  /**
+   * Constructor.
+   *
+   * @param string  $hits       The search results
+   * @param integer $maxPerPage Number of records to display per page
+   */
+  public function __construct($hits, $maxPerPage = 10)
+  {
+    $this->setHits($hits);
+    $this->setMaxPerPage($maxPerPage);
+    $this->parameterHolder = new sfParameterHolder();
+  }
+
+  /**
+   * Sets the current hits.
+   *
+   * @param array $hits
+   */
+  public function setHits($hits)
+  {
+    $this->hits = $hits;
+  }
   
   // function to be called after parameters have been set
   public function init()
   {
-    $this->hits = $this->class;
     $this->setNbResults(count($this->hits));
     
     if ($this->getPage() == 0 || $this->getMaxPerPage() == 0 || $this->getNbResults() == 0)

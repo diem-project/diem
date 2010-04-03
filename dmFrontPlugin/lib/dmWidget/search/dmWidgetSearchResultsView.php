@@ -11,7 +11,7 @@ class dmWidgetSearchResultsView extends dmWidgetPluginView
     
     $vars['form'] = new mySearchForm();
     
-    $vars['form']->bind(array('query' => $this->context->getRequest()->getParameter('query')));
+    $vars['form']->bind(array('query' => $this->getService('request')->getParameter('query')));
     
     $vars['query'] = $vars['form']->getValue('query');
     
@@ -22,20 +22,22 @@ class dmWidgetSearchResultsView extends dmWidgetPluginView
   
   protected function getResultsPager(array $vars)
   {
-    $this->index = $this->context->get('search_engine');
-    
-    if(count($results = $this->index->search($vars['query'])))
+    $results = $this->getService('search_engine')->search($vars['query']);
+
+    if(empty($results))
     {
-      $pager = new dmSearchPager($results, dmArray::get($vars, 'maxPerPage', 99999));
-      $pager->setPage($this->context->getRequest()->getParameter('page', 1));
-      $pager->init();
+      return null;
     }
-    else
-    {
-      $pager = null;
-    }
+
+    $pager = new dmSearchPager($results, dmArray::get($vars, 'maxPerPage', 99999));
+    $pager->setPage($this->getService('request')->getParameter('page', 1));
+    $pager->init();
     
-    return $pager;
+    return $this->getService('front_pager_view')
+    ->setPager($pager)
+    ->setOption('navigation_top', dmArray::get($vars, 'navTop'))
+    ->setOption('navigation_bottom', dmArray::get($vars, 'navBottom'))
+    ->setBaseHref($this->getService('request')->getUri());
   }
 
 }

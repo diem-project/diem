@@ -7,9 +7,7 @@ class dmWidgetSearchResultsForm extends dmWidgetPluginForm
   {
     parent::configure();
 
-    /*
-     * Max per page
-     */
+    /// Max per page
     $this->widgetSchema['maxPerPage']     = new sfWidgetFormInputText(array(
       'label' => 'Per page'
     ), array(
@@ -20,12 +18,28 @@ class dmWidgetSearchResultsForm extends dmWidgetPluginForm
       'max' => 99999,
       'required' => false
     ));
+
+    // Paginators top & bottom
+    $this->widgetSchema['navTop']       = new sfWidgetFormInputCheckbox(array(
+      'label' => 'Top'
+    ));
+    $this->validatorSchema['navTop']    = new sfValidatorBoolean();
+
+    $this->widgetSchema['navBottom']    = new sfWidgetFormInputCheckbox(array(
+      'label' => 'Bottom'
+    ));
+    $this->validatorSchema['navBottom'] = new sfValidatorBoolean();
   }
 
   protected function getFirstDefaults()
   {
     return array_merge(parent::getFirstDefaults(), array(
-      'maxPerPage' =>10
+      'maxPerPage' => 10
     ));
+  }
+
+  protected function renderContent($attributes)
+  {
+    return $this->getHelper()->renderPartial('dmWidget', 'forms/dmWidgetSearchResults', array('form' => $this));
   }
 }
