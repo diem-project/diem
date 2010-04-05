@@ -133,7 +133,7 @@ class DmPageFrontEditForm extends DmPageForm
       
       if($existingPageName)
       {
-        $error = new sfValidatorError($validator, dm::getI18n()->__('The page "%1%" uses this slug', array('%1%' => $existingPageName)));
+        $error = new sfValidatorError($validator, $this->getI18n()->__('The page "%1%" uses this slug', array('%1%' => $existingPageName)));
         // throw an error bound to the password field
         throw new sfValidatorErrorSchema($validator, array('slug' => $error));
       }
@@ -158,7 +158,7 @@ class DmPageFrontEditForm extends DmPageForm
       
       if($existingPage)
       {
-        $error = new sfValidatorError($validator, dm::getI18n()->__('The page "%1%" uses this module.action', array('%1%' => $existingPage->name)));
+        $error = new sfValidatorError($validator, $this->getI18n()->__('The page "%1%" uses this module.action', array('%1%' => $existingPage->name)));
         // throw an error bound to the password field
         throw new sfValidatorErrorSchema($validator, array('action' => $error));
       }
