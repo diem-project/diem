@@ -81,7 +81,7 @@
     var self = this;
    
     self.element.droppable({
-      accept:       '#dm_page_bar li > a, #dm_media_bar li.file.image',
+      accept:       '#dm_page_bar li > a, #dm_media_bar li.file',
       activeClass:  'droppable_active',
       hoverClass:   'droppable_hover',
       //          tolerance:    'touch',
@@ -94,12 +94,16 @@
         if (ui.draggable.hasClass('file'))
         {
           var type = "media";
-          var placeholder = "!["+linkText+"]("+type+":"+ui.draggable.attr('id').replace(/dmm/, '')+")"
+          var placeholder = "["+linkText+"]("+type+":"+ui.draggable.attr('id').replace(/dmm/, '')+")";
+          if(ui.draggable.hasClass('image'))
+          {
+            placeholder = '!'+placeholder;
+          }
         }
         else
         {
           var type = "page";
-          var placeholder = "["+linkText+"]("+type+":"+ui.draggable.attr('data-page-id')+")"
+          var placeholder = "["+linkText+"]("+type+":"+ui.draggable.attr('data-page-id')+")";
         }
           
         if (selection)
