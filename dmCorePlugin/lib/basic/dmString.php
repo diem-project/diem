@@ -148,7 +148,7 @@ class dmString extends sfInflector
       return self::slugify($text, $preserveSlashes);
     }
     
-    return preg_replace('|^(.*)-(html?)$|', '$1.$2', self::slugify($text));
+    return preg_replace('|^(.*)-(html?)$|', '$1.$2', self::slugify($text, $preserveSlashes));
   }
   
   /**
