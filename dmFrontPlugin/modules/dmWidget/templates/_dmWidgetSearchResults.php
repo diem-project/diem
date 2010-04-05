@@ -32,7 +32,7 @@ foreach($pager as $result)
     
     _link($page)->text(
       _tag('span.page_name', escape($page->name)).
-      ($page->description ? _tag('span.page_description', $page->description) : '')
+      dmString::truncate($result->getPageContent(), 200)
     )
   );
 }
