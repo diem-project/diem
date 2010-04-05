@@ -88,22 +88,25 @@
       drop: function(e, ui)
       {
         var selection = self.getSelection(),
-        linkText = selection.text || $.trim(ui.draggable.text()),
+        linkText = selection.text || $.trim(ui.draggable.find('span.ws').remove().end().text()),
         scrollTop = self.element.scrollTop();
      
         if (ui.draggable.hasClass('file'))
         {
-          var type = "media";
-          var placeholder = "["+linkText+"]("+type+":"+ui.draggable.attr('id').replace(/dmm/, '')+")";
+          var mediaId = ui.draggable.attr('id').replace(/dmm/, '');
+          
           if(ui.draggable.hasClass('image'))
           {
-            placeholder = '!'+placeholder;
+            var placeholder = "![](media:"+mediaId+")";
+          }
+          else
+          {
+            var placeholder = "["+linkText+"](media:"+mediaId+")";
           }
         }
         else
         {
-          var type = "page";
-          var placeholder = "["+linkText+"]("+type+":"+ui.draggable.attr('data-page-id')+")";
+          var placeholder = "["+linkText+"](page:"+ui.draggable.attr('data-page-id')+")";
         }
           
         if (selection)
