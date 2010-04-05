@@ -136,6 +136,20 @@ class dmString extends sfInflector
 
     return $text;
   }
+
+  /**
+   * Like slugify, but allows ".htm" and ".html" extensions
+   * @return string slug
+   */
+  public static function urlize($text, $preserveSlashes = false)
+  {
+    if(!preg_match('|\.html?$|', $text))
+    {
+      return self::slugify($text, $preserveSlashes);
+    }
+    
+    return preg_replace('|^(.*)-(html?)$|', '$1.$2', self::slugify($text));
+  }
   
   /**
    * Transform a slug into a human readable text with blank spaces

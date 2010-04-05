@@ -4,21 +4,19 @@ require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
 $helper = new dmUnitTestHelper();
 $helper->boot();
 
-$t = new lime_test(53);
+$t = new lime_test(59);
 
 $t->comment('iconv available : '.function_exists('iconv'));
 
-$t->is(
-  dmString::slugify(" phrâse avèc dés accënts "),
-  $expected = "phrase-avec-des-accents",
-  $expected
-);
+$t->is(dmString::slugify(" phrâse avèc dés accënts "), $expected = "phrase-avec-des-accents", $expected);
+$t->is(dmString::slugify("fonctionnalité"), $expected = "fonctionnalite", $expected);
+$t->is(dmString::urlize(" phrâse avèc dés accënts "), $expected = "phrase-avec-des-accents", $expected);
+$t->is(dmString::urlize("fonctionnalité"), $expected = "fonctionnalite", $expected);
 
-$t->is(
-  dmString::slugify("fonctionnalité"),
-  $expected = "fonctionnalite",
-  $expected
-);
+$t->is(dmString::slugify("an-url.htm"), $expected = "an-url-htm", $expected);
+$t->is(dmString::slugify("an-url.html"), $expected = "an-url-html", $expected);
+$t->is(dmString::urlize("an-url.htm"), $expected = "an-url.htm", $expected);
+$t->is(dmString::urlize("an-url.html"), $expected = "an-url.html", $expected);
 
 $hexTests = array(
 array('ffffff', 'FFFFFF'),
