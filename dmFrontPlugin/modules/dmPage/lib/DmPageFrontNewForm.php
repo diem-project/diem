@@ -100,7 +100,7 @@ class DmPageFrontNewForm extends DmPageForm
   {
     if (!empty($values['slug']))
     {
-      $values['slug'] = dmString::slugify($values['slug'], true);
+      $values['slug'] = dmString::urlize($values['slug'], true);
       
       $existingPageName = dmDb::query('DmPageTranslation t')
       ->where('t.lang = ? AND t.slug = ?', array($this->object->lang, $values['slug']))
