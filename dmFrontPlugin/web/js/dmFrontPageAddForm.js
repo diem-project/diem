@@ -26,7 +26,6 @@
       self.transliteration = $.extend(
         $.parseJSON($('div.transliteration', self.element).text()),
         {
-          '·': '-',
           '_': '-',
           ',': '-',
           ':': '-'
@@ -107,8 +106,8 @@
       });
       
       str = str
-      .replace(/\s+|\.|_|\,|;|:/g, '-')
-      .replace(/[^a-zA-Z0-9-\/]/g, '')
+      .replace(/\s+|_|\,|;|:/g, '-')
+      .replace(/[^a-zA-Z0-9-\/\.]/g, '')
       .replace(/-{2,}/g, '-');
       
       return str;
