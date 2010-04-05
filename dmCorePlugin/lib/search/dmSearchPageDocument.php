@@ -9,6 +9,7 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
   protected
   $context,
   $page,
+  $pageContentCache,
   $options = array(
     'boost_values' => array(
       'body'        => 1,
@@ -73,8 +74,11 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
     // process the page body only if its boost value is not null
     if($boostValues['body'])
     {
-      $this->index('body', $this->getPageBodyText(), $boostValues['body']);
+      $this->index('content_index', $this->getPageContentForIndex(), $boostValues['body']);
     }
+
+    // store page content to display it on search results
+    $this->store('content', $this->getPageContentForStore());
   }
 
   /**
@@ -100,7 +104,7 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
    */
   protected function store($name, $value)
   {
-    $field = Zend_Search_Lucene_Field::UnIndexed($name, $value);
+    $field = Zend_Search_Lucene_Field::unIndexed($name, $value);
     $this->addField($field);
   }
 
@@ -115,7 +119,7 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
    */
   protected function index($name, $value, $boost = 1.0)
   {
-    $field = Zend_Search_Lucene_Field::UnStored($name, $value);
+    $field = Zend_Search_Lucene_Field::unStored($name, $value);
     $field->boost = $boost;
     $this->addField($field);
   }
@@ -125,8 +129,43 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
    *
    * @return string the page text content
    */
-  protected function getPageBodyText()
+  protected function getPageContentForIndex()
   {
+    return dmSearchIndex::cleanText($this->getPageContent());
+  }
+
+  /**
+   * Get a page storable content
+   *
+   * @return string the page text content
+   */
+  protected function getPageContentForStore()
+  {
+    $content = $this->getPageContent();
+
+    return dmMarkdown::brutalToText(
+      trim(
+        preg_replace('|\s{2,}|', ' ',
+          strip_tags(
+            str_replace(array("\n", '<'), array(' ', ' <'), $content)
+          )
+        )
+      )
+    );
+  }
+
+  /**
+   * Get a page content
+   *
+   * @return string the page text content
+   */
+  protected function getPageContent()
+  {
+    if(null !== $this->pageContentCache)
+    {
+      return $this->pageContentCache;
+    }
+    
     if (sfConfig::get('sf_app') !== 'front')
     {
       throw new dmException('Can only be used in front app ( current : '.sfConfig::get('sf_app').' )');
@@ -154,7 +193,7 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
     
     sfConfig::set('dm_search_populating', true);
 
-    $html = '';
+    $this->pageContentCache = '';
     
     foreach($zones as $zone)
     {
@@ -167,7 +206,7 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
 
         try
         {
-          $html .= $serviceContainer
+          $this->pageContentCache .= $serviceContainer
           ->addParameters(array(
             'widget_view.class' => $widgetType->getViewClass(),
             'widget_view.type'  => $widgetType,
@@ -185,16 +224,9 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
 
     sfConfig::set('dm_search_populating', false);
     
-    $indexableText = $this->cleanText($html);
-    
     unset($areas, $zones, $html, $helper);
     
-    return $indexableText;
-  }
-
-  protected function cleanText($text)
-  {
-    return dmSearchIndex::cleanText($text);
+    return $this->pageContentCache;
   }
 
   protected static function getPageViewQuery()

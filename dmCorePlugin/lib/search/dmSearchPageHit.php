@@ -4,13 +4,15 @@ class dmSearchPageHit
 {
   protected
   $pageId,
+  $pageContent,
   $score,
   $page;
   
-  public function __construct($score, $pageId)
+  public function __construct($score, $pageId, $pageContent)
   {
     $this->score = $score;
     $this->pageId = $pageId;
+    $this->pageContent = $pageContent;
   }
   
   public function getScore()
@@ -27,10 +29,15 @@ class dmSearchPageHit
     
     return $this->page;
   }
-  
+
   public function getPageId()
   {
     return $this->pageId;
+  }
+
+  public function getPageContent()
+  {
+    return $this->pageContent;
   }
   
   public function setPage(DmPage $page)

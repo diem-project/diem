@@ -74,6 +74,7 @@ parameters:
   search_hit.class:           dmSearchPageHit       # Single search result
   search_hit.score:                                 # Hit score in % ( will be set by search_index when creating the hit )
   search_hit.page_id:                               # Hit page id ( will be set by search_index when creating the hit )
+  search_hit.page_content:                          # Hit page content ( will be set by search_index when creating the hit )
 
   theme.class:                dmTheme               # Responsible for managing a CSS theme
 
@@ -288,7 +289,7 @@ services:
   search_hit:
     class:                    %search_hit.class%
     shared:                   false
-    arguments:                [ %search_hit.score%, %search_hit.page_id% ]
+    arguments:                [ %search_hit.score%, %search_hit.page_id%, %search_hit.page_content% ]
 
   asset_config:
     class:                    %asset_config.class%

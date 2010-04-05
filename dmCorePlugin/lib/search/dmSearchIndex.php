@@ -72,6 +72,7 @@ class dmSearchIndex extends dmSearchIndexCommon
       $hits[] = $this->serviceContainer
       ->setParameter('search_hit.score', $hit->score)
       ->setParameter('search_hit.page_id', $hit->page_id)
+      ->setParameter('search_hit.page_content', $hit->content)
       ->getService('search_hit');
     }
     unset($luceneHits);
@@ -224,7 +225,7 @@ class dmSearchIndex extends dmSearchIndexCommon
       'Size'      => dmOs::humanizeSize($this->getByteSize())
     );
   }
-  
+
   /**
    * @return Zend_Search_Lucene_Proxy instance
    */
