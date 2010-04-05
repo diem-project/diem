@@ -15,7 +15,14 @@ class dmInterfaceComponents extends BasedmInterfaceComponents
 
       foreach($this->getI18n()->getCultures() as $key)
       {
-        $cultures[$key] = sfCultureInfo::getInstance($key)->getLanguage($key);
+        try
+        {
+          $cultures[$key] = sfCultureInfo::getInstance($key)->getLanguage($key);
+        }
+        catch(sfException $e)
+        {
+          $cultures[$key] = $key;
+        }
       }
     
       $this->cultureSelect = new sfWidgetFormSelect(array('choices' => $cultures));
