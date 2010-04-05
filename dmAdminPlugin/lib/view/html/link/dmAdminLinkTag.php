@@ -40,7 +40,6 @@ class dmAdminLinkTag extends dmBaseLinkTag
       {
         $resource = substr($resource, 0, $blankSpacePos);
       }
-      
       if (strncmp($resource, 'page:', 5) === 0)
       {
         $pageResource = preg_replace('|^(page:\d+).*$|', '$1', $resource);
@@ -54,23 +53,27 @@ class dmAdminLinkTag extends dmBaseLinkTag
           throw new dmException(sprintf('%s is not a valid link resource', $resource));
         }
       }
-
-      if (strncmp($resource, 'media:', 6) === 0)
+      elseif(strncmp($resource, 'media:', 6) === 0)
       {
         $mediaResource = preg_replace('|^media:(\d+).*|', '$1', $resource);
         
         if ($media = dmDb::table('DmMedia')->findOneByIdWithFolder($mediaResource))
         {
-          $mediaFullPath = $media->getFullPath();
-          $this->resource = dmContext::getInstance()->getRequest()->getRelativeUrlRoot().str_replace(dmOs::normalize(sfConfig::get('sf_web_dir')), '', dmOs::normalize($mediaFullPath));
+          $resource = '/'.$media->getWebPath();
+          /*
+           * add relativeUrlRoot to absolute resource
+           */
+          if($relativeUrlRoot = dmArray::get($this->serviceContainer->getParameter('request.context'), 'relative_url_root'))
+          {
+            $resource = $relativeUrlRoot.$resource;
+          }
         }
         else
         {
           throw new dmException(sprintf('%s is not a valid media resource. The media with id %s does not exist', $resource, $mediaResource));
         }
       }
-      
-      if (strncmp($this->resource, 'app:', 4) === 0)
+      elseif (strncmp($this->resource, 'app:', 4) === 0)
       {
         $type = 'uri';
         $app = substr($this->resource, 4);
