@@ -28,7 +28,14 @@ abstract class dmToolBarView
 
       foreach($this->i18n->getCultures() as $key)
       {
-        $cultures[$key] = sfCultureInfo::getInstance($key)->getLanguage($key);
+        try
+        {
+          $cultures[$key] = sfCultureInfo::getInstance($key)->getLanguage($key);
+        }
+        catch(sfException $e)
+        {
+          $cultures[$key] = $key;
+        }
       }
 
       return new sfWidgetFormSelect(array('choices' => $cultures));
