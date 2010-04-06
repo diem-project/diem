@@ -328,7 +328,7 @@ class dmString extends sfInflector
   }
 
   /**
-   * Will use mb_strtolower if available, strtolowe if not
+   * Will use mb_strtolower if available, strtolower if not
    * @param   $str  the string
    * @return  $str  the lowercase string
    */
