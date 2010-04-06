@@ -55,6 +55,16 @@ div.dm_filter_box .label {
   line-height: 22px;
 }
 
-div.dm_filter_box .field {
+div.dm_filter_box .field > input {
+  float: left;
+}
 
+div.dm_filter_box .dm_filter_empty {
+  float: left;
+  margin-left: 1em;
+  margin-top: 2px;
+}
+
+div.dm_filter_box .dm_filter_empty input {
+  vertical-align: middle;
 }

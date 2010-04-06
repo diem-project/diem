@@ -52,6 +52,10 @@ class dmDoctrineFormFilterGenerator extends sfDoctrineFormFilterGenerator
     {
       $class = 'sfWidgetFormChoice';
     }
+    elseif('sfWidgetFormFilterInput' == $class)
+    {
+      $class = 'sfWidgetFormDmFilterInput';
+    }
 
     return $class;
   }
