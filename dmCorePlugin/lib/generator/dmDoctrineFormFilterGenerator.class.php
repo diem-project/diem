@@ -70,7 +70,7 @@ class dmDoctrineFormFilterGenerator extends sfDoctrineFormFilterGenerator
       case 'datetime':
       case 'timestamp':
         $options[] = "'choices' => array(
-        'any'   => '',
+        ''      => '',
         'today' => \$this->getI18n()->__('Today'),
         'week'  => \$this->getI18n()->__('Past %number% days', array('%number%' => 7)),
         'month' => \$this->getI18n()->__('This month'),
@@ -123,7 +123,7 @@ class dmDoctrineFormFilterGenerator extends sfDoctrineFormFilterGenerator
 
     if(in_array($column->getDoctrineType(), array('date', 'datetime', 'timestamp')))
     {
-      $options = "array('choices' => array_keys(\$this->widgetSchema['{$column->getName()}']->getOption('choices')))";
+      $options = "array('required' => false, 'choices' => array_keys(\$this->widgetSchema['{$column->getName()}']->getOption('choices')))";
     }
 
     return $options;

@@ -9,7 +9,8 @@ abstract class dmFormFilterDoctrine extends sfFormFilterDoctrine
 
     switch($values)
     {
-      case 'any':
+      case null:
+      case '':
         break;
       case 'today':
         $query->andWhere(
