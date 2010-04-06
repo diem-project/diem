@@ -10,6 +10,11 @@ class DmForgotPasswordForm extends dmForm
     $this->validatorSchema->setPostValidator(new sfValidatorCallback(array(
       'callback' => array($this, 'validateEmail')
     )));
+
+    if ($this->isCaptchaEnabled())
+    {
+      $this->addCaptcha();
+    }
   }
 
   public function validateEmail($validator, $values)
@@ -25,5 +30,22 @@ class DmForgotPasswordForm extends dmForm
   public function getUserByEmail($email)
   {
     return dmDb::table('DmUser')->retrieveByEmail($email);
+  }
+
+  public function addCaptcha()
+  {
+    $this->widgetSchema['captcha'] = new sfWidgetFormReCaptcha(array(
+      'label'       => 'Captcha',
+      'public_key'  => sfConfig::get('app_recaptcha_public_key')
+    ));
+
+    $this->validatorSchema['captcha'] = new sfValidatorReCaptcha(array(
+      'private_key' => sfConfig::get('app_recaptcha_private_key')
+    ));
+  }
+
+  public function isCaptchaEnabled()
+  {
+    return sfConfig::get('app_recaptcha_enabled');
   }
 }

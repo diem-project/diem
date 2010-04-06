@@ -103,7 +103,19 @@ class BasedmUserActions extends myFrontModuleActions
 
     if ($request->isMethod('post') && $request->hasParameter($form->getName()))
     {
-      if ($form->bindAndValid($request))
+      $data = $request->getParameter($form->getName());
+
+      if($form->isCaptchaEnabled())
+      {
+        $data = array_merge($data, array('captcha' => array(
+          'recaptcha_challenge_field' => $request->getParameter('recaptcha_challenge_field'),
+          'recaptcha_response_field'  => $request->getParameter('recaptcha_response_field'),
+        )));
+      }
+
+      $form->bind($data, $request->getFiles($form->getName()));
+
+      if ($form->isValid())
       {
         $user = $form->getUserByEmail($form->getValue('email'));
         $newPassword = dmString::random(7);

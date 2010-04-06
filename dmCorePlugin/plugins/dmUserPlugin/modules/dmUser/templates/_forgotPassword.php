@@ -15,11 +15,17 @@ if($email = $sf_user->getFlash('dm_new_password_sent'))
 
 echo $form->open('.dm_forgot_password_form');
 
-echo _tag('ul.dm_form_elements',
+echo _open('ul.dm_form_elements');
 
-  _tag('li.dm_form_element', $form['email']->label()->field()->error())
+  echo _tag('li.dm_form_element', $form['email']->label()->field()->error());
 
-);
+  // render captcha if enabled
+  if($form->isCaptchaEnabled())
+  {
+    echo _tag('li.dm_form_element', $form['captcha']->label(null, 'for=false')->field()->error());
+  }
+
+echo _close('ul');
 
 echo $form->renderHiddenFields();
 
