@@ -7,7 +7,8 @@ class dmUpgradeTask extends dmContextTask
 {
   protected
   $changes = array(
-    'multipleAreas'
+    'multipleAreas',
+    'userUid'
   );
   
   /**
@@ -45,6 +46,26 @@ class dmUpgradeTask extends dmContextTask
       {
         $this->logBlock('Can not upgrade to change '.$change.' : '.$e->getMessage(), 'ERROR');
       }
+    }
+  }
+
+  /**
+   * Populate the user uid if missing
+   */
+  protected function upgradeToUserUid()
+  {
+    $users = dmDb::query('DmUser u')
+    ->where('u.uid IS NULL')
+    ->fetchRecords();
+
+    if(count($users))
+    {
+      $this->logSection('diem', 'Populate UID for '.count($users).' users.');
+      foreach($users as $user)
+      {
+        $user->uid = dmString::random(8);
+      }
+      $users->save();
     }
   }
 

@@ -13,6 +13,11 @@ class BasedmUserComponents extends myFrontModuleComponents
     $this->form = $this->forms['DmUser'];
   }
 
+  public function executeForgotPassword()
+  {
+    $this->form = $this->forms['DmForgotPassword'];
+  }
+
   public function executeList()
   {
     $query = $this->getListQuery();

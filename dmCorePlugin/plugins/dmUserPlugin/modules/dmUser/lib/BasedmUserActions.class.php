@@ -34,7 +34,7 @@ class BasedmUserActions extends myFrontModuleActions
       // if not, this is the referer of the current request
       $user->setReferer($this->getContext()->getActionStack()->getSize() > 1 ? $request->getUri() : $request->getReferer());
     }
-    
+
     $this->forms['DmSigninFront'] = $form;
   }
 
@@ -90,6 +90,54 @@ class BasedmUserActions extends myFrontModuleActions
   protected function redirectRegisteredUser(dmWebRequest $request)
   {
     $this->redirect($request->getReferer());
+  }
+
+  /**
+   * Handle dmUser/forgotPassword form validation and sends an email with a new password
+   */
+  public function executeForgotPasswordWidget(dmWebRequest $request)
+  {
+    $form = new DmForgotPasswordForm();
+
+    $user = $this->getUser();
+
+    if ($request->isMethod('post') && $request->hasParameter($form->getName()))
+    {
+      $data = $request->getParameter($form->getName());
+
+      if($form->isCaptchaEnabled())
+      {
+        $data = array_merge($data, array('captcha' => array(
+          'recaptcha_challenge_field' => $request->getParameter('recaptcha_challenge_field'),
+          'recaptcha_response_field'  => $request->getParameter('recaptcha_response_field'),
+        )));
+      }
+
+      $form->bind($data, $request->getFiles($form->getName()));
+
+      if ($form->isValid())
+      {
+        $user = $form->getUserByEmail($form->getValue('email'));
+        $newPassword = dmString::random(7);
+        $user->password = $newPassword;
+        $user->save();
+
+        $this->getService('mail')
+        ->setTemplate('dm_user_forgot_password')
+        ->addValues(array(
+          'username'      => $user->username,
+          'email'         => $user->email,
+          'new_password'  => $newPassword
+        ))
+        ->send();
+
+        $this->getUser()->setFlash('dm_new_password_sent', $user->email);
+
+        $this->redirectBack();
+      }
+    }
+
+    $this->forms['DmForgotPassword'] = $form;
   }
 
   public function executeSignin(dmWebRequest $request)

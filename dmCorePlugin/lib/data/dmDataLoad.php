@@ -20,7 +20,8 @@ class dmDataLoad
     "layouts",
     "pages",
     "i18n",
-    "media"
+    "media",
+    "mail_templates"
   );
 
   public function __construct(sfEventDispatcher $dispatcher, dmI18n $i18n)
@@ -60,6 +61,48 @@ class dmDataLoad
     }
 
     $this->dispatcher->notify(new sfEvent($this, 'dm.data.after'));
+  }
+
+  protected function loadMailTemplates()
+  {
+    $array = array(
+      'dm_user_forgot_password' => array(
+        'description' => 'Sent to a user that requests a new password',
+        'vars'        => 'username, email, new_password',
+        'from_email'  => 'webmaster@domain.com',
+        'to_email'    => '%email%',
+        'subject'     => dmConfig::get('site_name').': your new password',
+        'body'        => 'Hello %username%'."\n".'Your new password is "%new_password%".'
+      )
+    );
+
+    $table = dmDb::table('DmMailTemplate');
+
+    foreach($array as $name => $data)
+    {
+      if(!$mailTemplate = $table->findOneByNameWithI18n($name))
+      {
+        $table->create(array_merge($data, array('name' => $name)))->save();
+      }
+      elseif(!$mailTemplate->hasCurrentTranslation())
+      {
+        /*
+         * Try to find an existing config from another culture
+         */
+        $existing = $table
+        ->where('s.id = ?', $mailTemplate->id)
+        ->limit(1)
+        ->fetchArray();
+
+        if($existing = dmArray::first($existing))
+        {
+          $data = $existing;
+          unset($data['id'], $data['lang']);
+        }
+
+        $mailTemplate->fromArray($data)->getCurrentTranslation()->save();
+      }
+    }
   }
 
   protected function loadSettings()
