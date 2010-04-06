@@ -23,6 +23,9 @@ DmUser:
       default: false
     last_login:
       type: timestamp
+    uid:
+      type: string(8)
+      unique: true
   indexes:
     is_active_idx:
       fields: [is_active]
