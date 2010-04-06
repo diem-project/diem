@@ -2,6 +2,17 @@
 
 class dmDoctrineFormFilterGenerator extends sfDoctrineFormFilterGenerator
 {
+  /**
+   * Initializes the current sfGenerator instance.
+   *
+   * @param sfGeneratorManager $generatorManager A sfGeneratorManager instance
+   */
+  public function initialize(sfGeneratorManager $generatorManager)
+  {
+    parent::initialize($generatorManager);
+
+    $this->setGeneratorClass('dmDoctrineFormFilter');
+  }
 
   /**
    * Filter out models that have disabled generation of form classes
@@ -45,7 +56,25 @@ class dmDoctrineFormFilterGenerator extends sfDoctrineFormFilterGenerator
     }
 
     parent::generate($params);
-  }  
+  }
+  
+  /**
+   * Returns a sfWidgetForm class name for a given column.
+   *
+   * @param  sfDoctrineColumn $column
+   * @return string    The name of a subclass of sfWidgetForm
+   */
+  public function getWidgetClassForColumn($column)
+  {
+    $class = parent::getWidgetClassForColumn($column);
+
+    if('sfWidgetFormFilterDate' == $column)
+    {
+      $column = 'sfWidgetFormDmFilterDate';
+    }
+
+    return $column;
+  }
 
   public function getWidgetOptionsForColumn($column)
   {
