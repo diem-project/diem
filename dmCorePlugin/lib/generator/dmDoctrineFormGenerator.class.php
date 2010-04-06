@@ -128,26 +128,6 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
     }
   }
 
-  /**
-   * Filter out models that have disabled generation of form classes
-   *
-   * @return array $models Array of models to generate forms for
-   */
-  protected function filterModels($models)
-  {
-    $models = parent::filterModels($models);
-    
-    foreach ($models as $key => $model)
-    {
-      if (strncmp($model, 'ToPrfx', 6) === 0)
-      {
-        unset($models[$key]);
-      }
-    }
-
-    return $models;
-  }
-
   public function getModule()
   {
     return $this->moduleManager->getModuleByModel($this->table->getComponentName());

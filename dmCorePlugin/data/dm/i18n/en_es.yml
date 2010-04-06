@@ -59,7 +59,7 @@
 "does not match the date format": "no coincide con el formato de fecha"
 "The date must be before": "La fecha debe ser antes de"
 "The date must be after": "La fecha debe ser posterior a"
-"[0]no element|[1]1 element|(1,+Inf]%1% elements": "[0] no hay ningún elemento | [1] 1 elemento | (1, + inf] %1% elementos"
+"[0]no element|[1]1 element|(1,+Inf]%1% elements": "[0] no hay ningún elemento | [1] 1 elemento | (1, + Inf] %1% elementos"
 "You must select an action to execute on the selected items.": "Debe seleccionar una acción a ejecutar con los elementos seleccionados."
 "No result": "Ningún resultado"
 "The selected items have been deleted successfully.": "Los elementos seleccionados se han eliminado con éxito."

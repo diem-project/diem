@@ -15,26 +15,6 @@ class dmDoctrineFormFilterGenerator extends sfDoctrineFormFilterGenerator
   }
 
   /**
-   * Filter out models that have disabled generation of form classes
-   *
-   * @return array $models Array of models to generate forms for
-   */
-  protected function filterModels($models)
-  {
-    $models = parent::filterModels($models);
-    
-    foreach ($models as $key => $model)
-    {
-      if (strncmp($model, 'ToPrfx', 6) === 0)
-      {
-        unset($models[$key]);
-      }
-    }
-
-    return $models;
-  }
-
-  /**
    * Generates classes and templates in cache.
    *
    * @param array $params The parameters
@@ -84,7 +64,7 @@ class dmDoctrineFormFilterGenerator extends sfDoctrineFormFilterGenerator
     switch ($column->getDoctrineType())
     {
       case 'boolean':
-        $options[] = "'choices' => array('' => dm::getI18n()->__('yes or no', array(), 'dm'), 1 => dm::getI18n()->__('yes', array(), 'dm'), 0 => dm::getI18n()->__('no', array(), 'dm'))";
+        $options[] = "'choices' => array('' => \$this->getI18n()->__('yes or no', array(), 'dm'), 1 => \$this->getI18n()->__('yes', array(), 'dm'), 0 => \$this->getI18n()->__('no', array(), 'dm'))";
         break;
       case 'date':
       case 'datetime':
