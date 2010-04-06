@@ -68,12 +68,12 @@ class dmDoctrineFormFilterGenerator extends sfDoctrineFormFilterGenerator
   {
     $class = parent::getWidgetClassForColumn($column);
 
-    if('sfWidgetFormFilterDate' == $column)
+    if('sfWidgetFormFilterDate' == $class)
     {
-      $column = 'sfWidgetFormDmFilterDate';
+      $class = 'sfWidgetFormDmFilterDate';
     }
 
-    return $column;
+    return $class;
   }
 
   public function getWidgetOptionsForColumn($column)
