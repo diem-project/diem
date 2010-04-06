@@ -72,7 +72,7 @@ div.sf_admin_form .fieldset_none {
 div.sf_admin_form div.sf_admin_form_row {
   float: left;
   width: 48%;
-  margin: 1%;
+  padding: 1%;
   background: #fff;
 }
 
