@@ -1,4 +1,7 @@
 <div class="dm_module_search">
+  
+  <a class="dm_open_filter_box ui-corner-all s16block s16_gear" title="[?php echo __('Advanced search'); ?]"></a>
+  <div class="dm_filter_box" data-load-url="[?php echo _link('@<?php echo $this->getModule()->getUnderscore() ?>?action=showFilters')->getHref() ?]"></div>
   [?php
     $currentSearch = $sf_user->getAppliedSearchOnModule('<?php echo $this->getModuleName(); ?>');
     printf('<form action="%s" method="get">', url_for1(array('sf_route' => '<?php echo $this->getModule()->getUnderscore(); ?>')));

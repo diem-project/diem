@@ -1,0 +1,51 @@
+a.dm_open_filter_box {
+  float: left;
+  margin: 3px 5px 0 0 !important;
+}
+
+div.dm_filter_box {
+  width: 400px;
+  height: 400px;
+  overflow: auto;
+  background: #fff;
+  border: 1px solid #D3D3D3;
+  position: absolute;
+  top: 29px;
+  right: 0;
+  z-index: 10;
+  display: none;
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  box-shadow: 0 0 5px #aaa;
+  -moz-box-shadow: 0 0 5px #aaa;
+  -webkit-box-shadow: 0 0 5px #aaa;
+}
+
+div.dm_filter_box p.title {
+  color:#444444;
+  font-size:1.2em;
+  font-weight:bold;
+  display:block;
+  height: 2em;
+  line-height: 2em;
+  text-align: center;
+  background: url(../../dmCorePlugin/images/default_bg.png) center left repeat-x;
+  border-bottom: 1px solid #D3D3D3;
+  border-radius: 4px 4px 0 0;
+  -moz-border-radius: 4px 4px 0 0;
+  -webkit-border-radius: 4px 4px 0 0;
+}
+
+div.dm_filter_box form {
+  float: none;
+}
+
+div.dm_filter_box .label {
+  float: left;
+  width: 25%;
+}
+
+div.dm_filter_box .field {
+
+}

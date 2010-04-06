@@ -1,5 +1,6 @@
 [?php
-  use_helper('I18N', 'Date');
+  use_helper('Date');
+  use_stylesheet('admin.filter');
   use_stylesheet('admin.list');
   
   $appliedFilters = $sf_user->getAppliedFiltersOnModule('<?php echo $this->getModuleName(); ?>');
@@ -12,7 +13,7 @@
 <div id="sf_admin_container" class='{baseUrl: "[?php echo url_for1('<?php echo $this->getUrlForAction('list') ?>') ?]"}'>
 
   <div id="list_header" class="clearfix">
-    [?php
+    [?php /*
       if (count($appliedFilters))
       {
         echo _open('div.s16.s16_magnifier.dm_active_search');
@@ -29,7 +30,7 @@
         echo link_to(__('Back to list'), '<?php echo $this->getUrlForAction('list') ?>', array('action' => 'filter'), array('query_string' => '_reset', 'method' => 'post', 'class' => 'ml10 reset'));
         echo _close('div');
       }
-    ?]
+    */ ?]
   </div>
 
   <div id="sf_admin_header">
