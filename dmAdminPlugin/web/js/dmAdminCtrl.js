@@ -56,7 +56,6 @@
       {
         !$box.hasClass('loaded') && $box.addClass('loaded').load($box.attr('data-load-url'), function()
         {
-          $box.find("input.datepicker_me").datepicker({});
         });
       }).trigger('mouseover').trigger('mouseout').click();
     },

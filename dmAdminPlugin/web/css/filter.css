@@ -41,9 +41,16 @@ div.dm_filter_box form {
   float: none;
 }
 
+div.dm_filter_box .sf_admin_form_row {
+  margin-top: 1em;
+}
+
 div.dm_filter_box .label {
   float: left;
-  width: 25%;
+  width: 30%;
+  text-align: right;
+  margin-right: 1%;
+  line-height: 22px;
 }
 
 div.dm_filter_box .field {

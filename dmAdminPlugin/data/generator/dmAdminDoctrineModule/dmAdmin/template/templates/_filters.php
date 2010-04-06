@@ -23,8 +23,15 @@
       )) ?]
     [?php endforeach; ?]
     [?php echo $form->renderHiddenFields() ?]
-    [?php echo link_to(__('Reset', array(), 'sf_admin'), '<?php echo $this->getModule()->getUnderscore() ?>', array('action' => 'filter'), array('query_string' => '_reset', 'method' => 'post')) ?]
-    <input type="submit" value="[?php echo __('Filter', array(), 'sf_admin') ?]" />
+
+    <div class="sf_admin_form_row">
+      <div class="label">
+        [?php echo link_to(__('Reset', array(), 'sf_admin'), '<?php echo $this->getModule()->getUnderscore() ?>', array('action' => 'filter'), array('query_string' => '_reset', 'method' => 'post')) ?]
+      </div>
+      <div class="field">
+        <input type="submit" value="[?php echo __('Filter', array(), 'sf_admin') ?]" />
+      </div>
+    </div>
 
   </form>
 </div>
