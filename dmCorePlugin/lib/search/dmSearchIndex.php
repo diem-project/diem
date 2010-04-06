@@ -210,7 +210,7 @@ class dmSearchIndex extends dmSearchIndexCommon
    */
   public function getStopWords()
   {
-    return str_word_count(strtolower(dmConfig::get('search_stop_words')), 1);
+    return str_word_count(dmString::strtolower(dmConfig::get('search_stop_words')), 1);
   }
 
   public function describe()
@@ -234,7 +234,7 @@ class dmSearchIndex extends dmSearchIndexCommon
     return trim(
     preg_replace('|\s{2,}|', ' ',
     preg_replace('|\W|', ' ',
-    strtolower(
+    dmString::strtolower(
     dmString::transliterate(
     strip_tags(
     str_replace(array("\n", '<'), array(' ', ' <'), $text)
