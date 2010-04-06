@@ -73,7 +73,7 @@ class dmFrontAddMenu extends dmMenu
       return sprintf('<span class="widget_add move" id="dmwa_%s-%s">%s</span>',
         $widgetType->getModule(),
         $widgetType->getAction(),
-        strtolower(parent::renderLabel())
+        dmString::strtolower(parent::renderLabel())
       );
     }
     elseif($widget = $this->getOption('clipboard_widget'))
@@ -81,7 +81,7 @@ class dmFrontAddMenu extends dmMenu
       return sprintf('<span class="widget_paste move dm_%s" id="dmwp_%d">%s</span>',
         $this->getOption('clipboard_method'),
         $widget->get('id'),
-        strtolower(parent::renderLabel())
+        dmString::strtolower(parent::renderLabel())
       );
     }
     elseif($this->getOption('root_add'))
@@ -89,6 +89,6 @@ class dmFrontAddMenu extends dmMenu
       return '<a class="tipable s24block s24_add widget24" title="'.$this->__('Add widgets').'"></a>';
     }
     
-    return '<a>'.strtolower(parent::renderLabel()).'</a>';
+    return '<a>'.dmString::strtolower(parent::renderLabel()).'</a>';
   }
 }

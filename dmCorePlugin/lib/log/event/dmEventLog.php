@@ -72,7 +72,7 @@ class dmEventLog extends dmFileLog
   {
     $setting = $event['setting'];
     
-    if ('internal' == strtolower($setting->groupName))
+    if ('internal' == dmString::strtolower($setting->groupName))
     {
       return;
     }

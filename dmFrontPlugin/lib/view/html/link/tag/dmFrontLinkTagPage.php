@@ -92,7 +92,7 @@ class dmFrontLinkTagPage extends dmFrontLinkTag
     
     $text = $this->renderText();
     
-    if (isset($preparedAttributes['title']) && strtolower($preparedAttributes['title']) == strtolower($text))
+    if (isset($preparedAttributes['title']) && dmString::strtolower($preparedAttributes['title']) == dmString::strtolower($text))
     {
       unset($preparedAttributes['title']);
     }
