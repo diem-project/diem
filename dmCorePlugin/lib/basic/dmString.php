@@ -127,7 +127,7 @@ class dmString extends sfInflector
     $text = preg_replace(array('/\W/', '/\s+/'), array(' ', '-'), $text);
 
     // trim and lowercase
-    $text = strtolower(trim($text, '-'));
+    $text = self::strtolower(trim($text, '-'));
     
     if ($preserveSlashes)
     {
@@ -419,7 +419,7 @@ class dmString extends sfInflector
   {
     if (!empty($string))
     {
-      $string{0} = strtolower($string{0});
+      $string{0} = self::strtolower($string{0});
     }
     
     return $string;
