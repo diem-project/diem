@@ -69,9 +69,13 @@ class dmDoctrineFormFilterGenerator extends sfDoctrineFormFilterGenerator
       case 'date':
       case 'datetime':
       case 'timestamp':
-        $widget = 'new sfWidgetFormInputText(array(), array("class" => "datepicker_me"))';
-        $options[] = "'from_date' => $widget, 'to_date' => $widget";
-        $options[] = $withEmpty;
+        $options[] = "'choices' => array(
+  'any'   => \$this->getI18n()->__('Any day'),
+  'today' => \$this->getI18n()->__('Today'),
+  'past_week' => \$this->getI18n()->__('Past %number% days', array('%number%' => 7)),
+  'past_month' => \$this->getI18n()->__('This month'),
+  'past_year' => \$this->getI18n()->__('This year')
+)";
         break;
       case 'enum':
         $values = array('' => '');
