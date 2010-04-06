@@ -13,6 +13,26 @@
       this.droppableInput();
       this.droppableMedia();
       this.hotKeys();
+      this.rowColors();
+    },
+
+    rowColors: function()
+    {
+      var self = this;
+
+      self.element.find('div.sf_admin_form_row').each(function()
+      {
+        var $row = $(this);
+        $row.find('input, textarea, select').each(function()
+        {
+          var initialValue = $(this).val()+$(this).attr('checked');
+          event = $(this).is('input, textarea') ? 'change keyup click' : 'change';
+          $(this).bind(event, function()
+          {
+            $row.toggleClass('dm_row_modified', $(this).val()+$(this).attr('checked') != initialValue);
+          });
+        });
+      });
     },
 
     droppableMedia: function()

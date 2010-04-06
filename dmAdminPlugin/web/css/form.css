@@ -76,6 +76,10 @@ div.sf_admin_form div.sf_admin_form_row {
   background: #fff;
 }
 
+div.sf_admin_form div.sf_admin_form_row.dm_row_modified {
+  background: #E0F1AD;
+}
+
 div.sf_admin_form div.sf_admin_form_row.big {
   width: 98%;
 }
