@@ -1,6 +1,11 @@
 <div class="dm_module_search">
   
-  <a class="dm_open_filter_box ui-corner-all s16block s16_gear" title="[?php echo __('Advanced search'); ?]"></a>
+  <a class="dm_open_filter_box ui-corner-all s16 s16_gear" title="[?php echo __('Advanced search'); ?]">
+    [?php
+      $nbAppliedFilters = count($sf_user->getAppliedFiltersOnModule('<?php echo $this->getModuleName(); ?>'));
+      echo $nbAppliedFilters ? $nbAppliedFilters : '&nbsp;';
+    ?]
+  </a>
   <div class="dm_filter_box" data-load-url="[?php echo _link('@<?php echo $this->getModule()->getUnderscore() ?>?action=showFilters')->getHref() ?]"></div>
   [?php
     $currentSearch = $sf_user->getAppliedSearchOnModule('<?php echo $this->getModuleName(); ?>');

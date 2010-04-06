@@ -57,7 +57,7 @@
         !$box.hasClass('loaded') && $box.addClass('loaded').load($box.attr('data-load-url'), function()
         {
         });
-      }).trigger('mouseover').trigger('mouseout').click();
+      });
     },
 
     tips: function()

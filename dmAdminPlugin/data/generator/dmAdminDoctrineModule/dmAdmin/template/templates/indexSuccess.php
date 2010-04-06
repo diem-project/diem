@@ -3,7 +3,6 @@
   use_stylesheet('admin.filter');
   use_stylesheet('admin.list');
   
-  $appliedFilters = $sf_user->getAppliedFiltersOnModule('<?php echo $this->getModuleName(); ?>');
 
   slot('dm.mini_search_form');
   include_partial('<?php echo $this->getModuleName() ?>/search');
@@ -11,27 +10,6 @@
 ?]
 
 <div id="sf_admin_container" class='{baseUrl: "[?php echo url_for1('<?php echo $this->getUrlForAction('list') ?>') ?]"}'>
-
-  <div id="list_header" class="clearfix">
-    [?php /*
-      if (count($appliedFilters))
-      {
-        echo _open('div.s16.s16_magnifier.dm_active_search');
-        //echo __('Search').' : ';
-        $appliedFiltersHtml = array();
-        foreach($appliedFilters as $appliedFilter)
-        {
-          $appliedFiltersHtml[] =
-            __($configuration->getFormFilterField($filters, $appliedFilter)->getConfig('label', dmString::humanize($appliedFilter))).
-            ' = '.
-            dmArray::get($filters->getDefault($appliedFilter), 'text', __('yes'));
-        }
-        echo implode(', ', $appliedFiltersHtml);
-        echo link_to(__('Back to list'), '<?php echo $this->getUrlForAction('list') ?>', array('action' => 'filter'), array('query_string' => '_reset', 'method' => 'post', 'class' => 'ml10 reset'));
-        echo _close('div');
-      }
-    */ ?]
-  </div>
 
   <div id="sf_admin_header">
     [?php include_partial('<?php echo $this->getModuleName() ?>/list_header', array('pager' => $pager)) ?]

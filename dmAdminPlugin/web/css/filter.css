@@ -1,6 +1,8 @@
 a.dm_open_filter_box {
   float: left;
   margin: 3px 5px 0 0 !important;
+  line-height: 16px;
+  font-weight: bold;
 }
 
 div.dm_filter_box {
