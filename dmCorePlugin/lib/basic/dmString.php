@@ -313,6 +313,16 @@ class dmString extends sfInflector
     return $val;
   }
 
+  /**
+   * Will use mb_strtolower if available, strtolowe if not
+   * @param   $str  the string
+   * @return  $str  the lowercase string
+   */
+  public static function strtolower($str)
+  {
+    return function_exists('mb_strtolower') ? mb_strtolower($str) : strtolower($str);
+  }
+
   public static function truncate($text, $length = 30, $truncateString = '...', $truncateLastspace = false)
   {
     if(is_array($text))

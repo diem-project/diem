@@ -39,14 +39,12 @@ abstract class dmAdminModelGeneratorHelper extends sfModelGeneratorHelper
     return
     '<li class="sf_admin_action_view_page">'.
     _link('app:front/'.$page->get('slug'))
-    ->title(__($params['title'], array('%1%' => strtolower(__($this->getModule()->getName())))))
+    ->title(__($params['title'], array('%1%' => dmString::strtolower(__($this->getModule()->getName())))))
     ->text(__($params['label']))
     ->set('.s16.s16_file_html.sf_admin_action')
     ->target('blank').
     '</li>';
   }
-  
-
 
   public function linkToNew($params)
   {
@@ -54,13 +52,13 @@ abstract class dmAdminModelGeneratorHelper extends sfModelGeneratorHelper
     __($params['label']), $this->getRouteArrayForAction('new'),
     array(
       'class' => 'sf_admin_action_new sf_admin_action s16 s16_add',
-      'title' => __($params['title'], array('%1%' => strtolower(__($this->getModule()->getName()))))
+      'title' => __($params['title'], array('%1%' => dmString::strtolower(__($this->getModule()->getName()))))
     ));
   }
 
   public function linkToDelete($object, $params)
   {
-    $title = __($params['title'], array('%1%' => strtolower(__($this->getModule()->getName()))));
+    $title = __($params['title'], array('%1%' => dmString::strtolower(__($this->getModule()->getName()))));
     return '<li class="sf_admin_action_delete">'.link_to1(__($params['label']), $this->getRouteArrayForAction('delete', $object),
     array(
     'class' => 's16 s16_delete dm_delete_link sf_admin_action',
@@ -112,7 +110,7 @@ abstract class dmAdminModelGeneratorHelper extends sfModelGeneratorHelper
       __($params['label']), $this->getRouteArrayForAction('history', $object),
       array(
         'class' => 'sf_admin_action s16 s16_clock_history',
-        'title' => __($params['title'], array('%1%' => strtolower(__($this->getModule()->getName()))))
+        'title' => __($params['title'], array('%1%' => dmString::strtolower(__($this->getModule()->getName()))))
       )
     ).
     '</li>';
