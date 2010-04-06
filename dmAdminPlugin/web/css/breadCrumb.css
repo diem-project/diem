@@ -46,6 +46,14 @@
   float: right;
 }
 
+div.dm_module_search {
+  position: relative;
+}
+
+div.dm_module_search form {
+  float: left;
+}
+
 #dm_module_search_input {
   font-size: 13px;
   height: 17px;

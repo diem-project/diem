@@ -34,6 +34,7 @@ css:
     flash:            flash
     list:             list
     form:             form
+    filter:           filter
     verticalBar:      verticalBar
     media:            media
     console:          console

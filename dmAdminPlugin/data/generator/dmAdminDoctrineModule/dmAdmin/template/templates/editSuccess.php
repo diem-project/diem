@@ -1,5 +1,6 @@
 [?php 
   use_helper('Date');
+  use_stylesheet('admin.filter');
   use_stylesheet('admin.form');
   use_javascript('admin.form');
 

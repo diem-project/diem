@@ -2,6 +2,17 @@
 
 class dmDoctrineFormFilterGenerator extends sfDoctrineFormFilterGenerator
 {
+  /**
+   * Initializes the current sfGenerator instance.
+   *
+   * @param sfGeneratorManager $generatorManager A sfGeneratorManager instance
+   */
+  public function initialize(sfGeneratorManager $generatorManager)
+  {
+    parent::initialize($generatorManager);
+
+    $this->setGeneratorClass('dmDoctrineFormFilter');
+  }
 
   /**
    * Generates classes and templates in cache.
@@ -25,7 +36,25 @@ class dmDoctrineFormFilterGenerator extends sfDoctrineFormFilterGenerator
     }
 
     parent::generate($params);
-  }  
+  }
+  
+  /**
+   * Returns a sfWidgetForm class name for a given column.
+   *
+   * @param  sfDoctrineColumn $column
+   * @return string    The name of a subclass of sfWidgetForm
+   */
+  public function getWidgetClassForColumn($column)
+  {
+    $class = parent::getWidgetClassForColumn($column);
+
+    if('sfWidgetFormFilterDate' == $class)
+    {
+      $class = 'sfWidgetFormChoice';
+    }
+
+    return $class;
+  }
 
   public function getWidgetOptionsForColumn($column)
   {
@@ -40,9 +69,13 @@ class dmDoctrineFormFilterGenerator extends sfDoctrineFormFilterGenerator
       case 'date':
       case 'datetime':
       case 'timestamp':
-        $widget = 'new sfWidgetFormInputText(array(), array("class" => "datepicker_me"))';
-        $options[] = "'from_date' => $widget, 'to_date' => $widget";
-        $options[] = $withEmpty;
+        $options[] = "'choices' => array(
+        ''      => '',
+        'today' => \$this->getI18n()->__('Today'),
+        'week'  => \$this->getI18n()->__('Past %number% days', array('%number%' => 7)),
+        'month' => \$this->getI18n()->__('This month'),
+        'year'  => \$this->getI18n()->__('This year')
+      )";
         break;
       case 'enum':
         $values = array('' => '');
@@ -59,6 +92,40 @@ class dmDoctrineFormFilterGenerator extends sfDoctrineFormFilterGenerator
 
     return count($options) ? sprintf('array(%s)', implode(', ', $options)) : '';
   }
-
   
+  /**
+   * Returns a sfValidator class name for a given column.
+   *
+   * @param  sfDoctrineColumn $column
+   * @return string    The name of a subclass of sfValidator
+   */
+  public function getValidatorClassForColumn($column)
+  {
+    $class = parent::getValidatorClassForColumn($column);
+
+    if('sfValidatorDateRange' == $class)
+    {
+      $class = 'sfValidatorChoice';
+    }
+
+    return $class;
+  }
+
+  /**
+   * Returns a PHP string representing options to pass to a validator for a given column.
+   *
+   * @param  sfDoctrineColumn $column
+   * @return string    The options to pass to the validator as a PHP string
+   */
+  public function getValidatorOptionsForColumn($column)
+  {
+    $options = parent::getValidatorOptionsForColumn($column);
+
+    if(in_array($column->getDoctrineType(), array('date', 'datetime', 'timestamp')))
+    {
+      $options = "array('required' => false, 'choices' => array_keys(\$this->widgetSchema['{$column->getName()}']->getOption('choices')))";
+    }
+
+    return $options;
+  }
 }

@@ -24,3 +24,11 @@
 
     $this->setTemplate('index');
   }
+
+  public function executeShowFilters(sfWebRequest $request)
+  {
+    return $this->renderPartial('filters', array(
+      'configuration' => $this->configuration,
+      'form' => $this->configuration->getFilterForm($this->getFilters())
+    ));
+  }
