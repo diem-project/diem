@@ -35,7 +35,7 @@ class dmDoctrineFormFilterGenerator extends sfDoctrineFormFilterGenerator
     switch ($column->getDoctrineType())
     {
       case 'boolean':
-        $options[] = "'choices' => array('' => dm::getI18n()->__('yes or no', array(), 'dm'), 1 => dm::getI18n()->__('yes', array(), 'dm'), 0 => dm::getI18n()->__('no', array(), 'dm'))";
+        $options[] = "'choices' => array('' => \$this->getI18n()->__('yes or no', array(), 'dm'), 1 => \$this->getI18n()->__('yes', array(), 'dm'), 0 => \$this->getI18n()->__('no', array(), 'dm'))";
         break;
       case 'date':
       case 'datetime':
