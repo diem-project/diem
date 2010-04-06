@@ -3,16 +3,17 @@ System:
   Security:
 
     dmUser:
-      name:         User
-      credentials:  security_user
+      name:             User
+      credentials:      security_user
       components:
         signin:
-        form:       { name: "Register" }
+        form:           { name: "Register" }
+        forgotPassword:
 
     dmPermission:
-      name:         Permission
-      credentials:  security_permission
+      name:             Permission
+      credentials:      security_permission
 
     dmGroup:
-      name:         Group
-      credentials:  security_group
+      name:             Group
+      credentials:      security_group
