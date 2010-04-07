@@ -132,7 +132,7 @@ class dmWidgetListForm extends dmWidgetProjectModelForm
 
     $allowedTypes = array('time', 'timestamp', 'date', 'enum', 'integer', 'string');
 
-    foreach($this->dmModule->getTable()->getColumns() as $columnName => $column)
+    foreach($this->dmModule->getTable()->getAllColumns() as $columnName => $column)
     {
       if (in_array($column['type'], $allowedTypes))
       {

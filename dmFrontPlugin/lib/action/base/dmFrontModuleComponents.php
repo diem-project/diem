@@ -73,9 +73,13 @@ class dmFrontModuleComponents extends myFrontBaseComponents
       {
         $query->addOrderBy('RANDOM()');
       }
-      else
+      elseif($this->getTable()->hasColumn($this->orderField))
       {
-        $query->addOrderBy($this->orderField.' '.$this->orderType);
+        $query->addOrderBy($rootAlias.'.'.$this->orderField.' '.$this->orderType);
+      }
+      elseif($this->getTable()->hasI18n() && $this->getTable()->getI18nTable()->hasColumn($this->orderField))
+      {
+        $query->addOrderBy($rootAlias.'Translation.'.$this->orderField.' '.$this->orderType);
       }
     }
 
