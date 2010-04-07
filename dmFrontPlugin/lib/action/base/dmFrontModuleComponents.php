@@ -64,7 +64,7 @@ class dmFrontModuleComponents extends myFrontBaseComponents
      */
     $query->whereIsActive(true, $this->getDmModule()->getModel());
     
-    /*
+    /**
      * Apply order
      */
     if(!empty($this->orderType))
