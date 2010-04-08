@@ -52,7 +52,7 @@ class dmStylesheetCompressor extends dmAssetCompressor
 
   public function fixCssPaths($content, $path)
   {
-    if (preg_match_all("/url\(\s?[\'|\"]?(.+)[\'|\"]?\s?\)/ix", $content, $urlMatches))
+    if (preg_match_all("/url\(\s?[\'|\"]?(.+)[\'|\"]?\s?\)/Uix", $content, $urlMatches))
     {
       $urlMatches = array_unique( $urlMatches[1] );
       $cssPathArray = explode('/', $path);
