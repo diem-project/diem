@@ -81,23 +81,26 @@ class dmCoreLayoutHelper extends dmConfigurable
     
     return $doctype."\n";
   }
-  
+
   public function renderHtmlTag()
   {
-    if ($this->isHtml5() || $this->isHtml4)
-    {
-      return '<html>';
-    }
-    
     $culture = $this->serviceContainer->getParameter('user.culture');
 
-    return sprintf(
-      '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="%s"%s >',
-      $culture,
-      '1.1' == $this->getDocTypeOption('version', '1.0') ? '' : " lang=\"$culture\""
-    );
+    if ($this->isHtml5() || $this->isHtml4)
+    {
+      $htmlTag = sprintf('<html lang="%s">', $culture);
+    }
+    else
+    {
+      $htmlTag = sprintf(
+        '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="%s"%s >',
+        $culture,
+        '1.1' == $this->getDocTypeOption('version', '1.0') ? '' : " lang=\"$culture\""
+      );
+    }
+
+    return $htmlTag;
   }
-  
   
   protected function getMetas()
   {
