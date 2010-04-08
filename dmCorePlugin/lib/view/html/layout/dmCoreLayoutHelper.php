@@ -92,9 +92,9 @@ class dmCoreLayoutHelper extends dmConfigurable
     $culture = $this->serviceContainer->getParameter('user.culture');
 
     return sprintf(
-      '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="%s" >',
+      '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="%s"%s >',
       $culture,
-      '1.1' == $this->getDocTypeOption('version', '1.0') ? '' : "lang=\"$culture\""
+      '1.1' == $this->getDocTypeOption('version', '1.0') ? '' : " lang=\"$culture\""
     );
   }
   
