@@ -1,5 +1,13 @@
 <?php
 
+/*
+ * Stop here because of sqlite bug on my test server
+ */
+if ('Sqlite' === Doctrine_Manager::connection()->getDriverName())
+{
+  return;
+}
+
 require_once(dirname(__FILE__).'/helper/dmPageUnitTestHelper.php');
 $helper = new dmPageUnitTestHelper();
 $helper->boot();
@@ -30,14 +38,6 @@ $helper->testI18nFetching($t); // 6 tests
 $helper->syncPages($t); // 1 test
 
 $helper->checkTreeIntegrity($t); // 2 tests
-
-/*
- * Stop here because of sqlite bug
- */
-if ('Sqlite' === Doctrine_Manager::connection()->getDriverName())
-{
-  return;
-}
 
 $t->diag('Randomly add 2 records by table, and add associations');
 
