@@ -109,8 +109,7 @@ class dmWidgetListForm extends dmWidgetProjectModelForm
   {
     $defaults = array_merge(parent::getFirstDefaults(), array(
       'orderType'  => 'asc',
-      'maxPerPage' => 5,
-      'maxPerPage' => 0
+      'maxPerPage' => 5
     ));
     
     if(!$this->getDefault('orderField') && $this->dmModule->getTable()->isSortable())
