@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * Provides basic methods for configurable services
  */
 abstract class dmConfigurable
