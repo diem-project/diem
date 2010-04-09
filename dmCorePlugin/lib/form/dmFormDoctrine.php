@@ -54,7 +54,11 @@ abstract class dmFormDoctrine extends sfFormDoctrine
     {
       if($this->embeddedForms[$formName]->getObject()->isNew() || $this->embeddedForms[$formName]->getObject()->id != $values[$formName]['id'])
       {
-        $this->embeddedForms[$formName]->setObject(dmDb::table('DmMedia')->findOneByIdWithFolder($values[$formName]['id']));
+        if($media = dmDb::table('DmMedia')->findOneByIdWithFolder($values[$formName]['id']))
+        {
+          $this->embeddedForms[$formName]->setObject($media);
+          $values[$formName]['dm_media_folder_id'] = $media->dm_media_folder_id;
+        }
       }
     }
     // no existing media, no file, and it is not required : skip all
