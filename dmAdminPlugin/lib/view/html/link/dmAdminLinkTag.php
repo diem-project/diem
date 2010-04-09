@@ -181,7 +181,7 @@ class dmAdminLinkTag extends dmBaseLinkTag
       return $href;
     }
 
-    return str_replace('//', '/', $this->serviceContainer->getService('request')->getAbsoluteUrlRoot().'/'.$href);
+    return $this->serviceContainer->getService('request')->getUriPrefix().$href;
   }
 
 }
