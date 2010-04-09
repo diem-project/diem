@@ -66,13 +66,13 @@ $hrefWithParam = $scriptName.'?var=val&other=value';
 $t->is((string)£link()->param('var', 'val')->param('other', 'value')->getHref(), $hrefWithParam, $hrefWithParam);
 $t->is((string)£link()->params(array('var' => 'val', 'other' => 'value'))->getHref(), $hrefWithParam, $hrefWithParam);
 
-$absoluteHrefWithParam = 'http://'.$scriptName.'?var=val';
+$absoluteHrefWithParam = £link()->getAbsoluteHref().'?var=val';
 $t->is((string)£link()->param('var', 'val')->getAbsoluteHref(), $absoluteHrefWithParam, $absoluteHrefWithParam);
 
-$absoluteHrefWithParam2 = 'http://'.$scriptName.'?var=val&var2=val2';
+$absoluteHrefWithParam2 = $absoluteHrefWithParam.'&var2=val2';
 $t->is((string)£link($absoluteHrefWithParam)->param('var2', 'val2')->getHref(), $absoluteHrefWithParam2, $absoluteHrefWithParam2);
 
-$absoluteHrefWithParam3 = 'http://'.$scriptName.'?var=val&var2=changed_value';
+$absoluteHrefWithParam3 = $absoluteHrefWithParam.'&var2=changed_value';
 $t->is((string)£link($absoluteHrefWithParam)->param('var2', 'changed_value')->getHref(), $absoluteHrefWithParam3, $absoluteHrefWithParam3);
 
 $linkWithParam2 = sprintf('<a class="%s" href="%s">%s</a>', 'link', str_replace('&', '&amp;', $absoluteHrefWithParam2), 'abs link with params');
