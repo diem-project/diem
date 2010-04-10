@@ -25,7 +25,7 @@
  * @package    retest
  * @subpackage model
  * @author     Your name here
- * @version    SVN: $Id: Builder.php 7380 2010-03-15 21:07:50Z jwage $
+ * @version    SVN: $Id: Builder.php 7490 2010-03-29 19:53:27Z jwage $
  */
 abstract class BaseDmZone extends myDoctrineRecord
 {
@@ -38,11 +38,11 @@ abstract class BaseDmZone extends myDoctrineRecord
              ));
         $this->hasColumn('css_class', 'string', 255, array(
              'type' => 'string',
-             'length' => '255',
+             'length' => 255,
              ));
         $this->hasColumn('width', 'string', 15, array(
              'type' => 'string',
-             'length' => '15',
+             'length' => 15,
              ));
     }
 
@@ -58,7 +58,8 @@ abstract class BaseDmZone extends myDoctrineRecord
              'local' => 'id',
              'foreign' => 'dm_zone_id'));
 
-        $sortable0 = new Doctrine_Template_Sortable();
+        $sortable0 = new Doctrine_Template_Sortable(array(
+             ));
         $this->actAs($sortable0);
     }
 }

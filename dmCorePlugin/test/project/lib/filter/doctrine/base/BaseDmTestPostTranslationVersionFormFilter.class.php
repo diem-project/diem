@@ -13,11 +13,11 @@ abstract class BaseDmTestPostTranslationVersionFormFilter extends BaseFormFilter
   public function setup()
   {
     $this->setWidgets(array(
-      'title'     => new sfWidgetFormFilterInput(),
-      'excerpt'   => new sfWidgetFormFilterInput(),
-      'body'      => new sfWidgetFormFilterInput(),
-      'url'       => new sfWidgetFormFilterInput(),
-      'is_active' => new sfWidgetFormChoice(array('choices' => array('' => dm::getI18n()->__('yes or no', array(), 'dm'), 1 => dm::getI18n()->__('yes', array(), 'dm'), 0 => dm::getI18n()->__('no', array(), 'dm')))),
+      'title'     => new sfWidgetFormDmFilterInput(),
+      'excerpt'   => new sfWidgetFormDmFilterInput(),
+      'body'      => new sfWidgetFormDmFilterInput(),
+      'url'       => new sfWidgetFormDmFilterInput(),
+      'is_active' => new sfWidgetFormChoice(array('choices' => array('' => $this->getI18n()->__('yes or no', array(), 'dm'), 1 => $this->getI18n()->__('yes', array(), 'dm'), 0 => $this->getI18n()->__('no', array(), 'dm')))),
     ));
 
     $this->setValidators(array(

@@ -34,7 +34,7 @@
  * @package    retest
  * @subpackage model
  * @author     Your name here
- * @version    SVN: $Id: Builder.php 7380 2010-03-15 21:07:50Z jwage $
+ * @version    SVN: $Id: Builder.php 7490 2010-03-29 19:53:27Z jwage $
  */
 abstract class BaseDmSetting extends myDoctrineRecord
 {
@@ -45,11 +45,11 @@ abstract class BaseDmSetting extends myDoctrineRecord
              'type' => 'string',
              'notnull' => true,
              'unique' => true,
-             'length' => '127',
+             'length' => 127,
              ));
         $this->hasColumn('description', 'string', 255, array(
              'type' => 'string',
-             'length' => '255',
+             'length' => 255,
              ));
         $this->hasColumn('type', 'enum', null, array(
              'type' => 'enum',
@@ -61,31 +61,32 @@ abstract class BaseDmSetting extends myDoctrineRecord
               2 => 'select',
               3 => 'textarea',
               4 => 'number',
+              5 => 'datetime',
              ),
              'default' => 'text',
              ));
         $this->hasColumn('value', 'string', 60000, array(
              'type' => 'string',
-             'length' => '60000',
+             'length' => 60000,
              ));
         $this->hasColumn('params', 'string', 60000, array(
              'type' => 'string',
-             'length' => '60000',
+             'length' => 60000,
              ));
         $this->hasColumn('group_name', 'string', 255, array(
              'type' => 'string',
              'notnull' => true,
              'default' => '',
-             'length' => '255',
+             'length' => 255,
              ));
         $this->hasColumn('default_value', 'string', 60000, array(
              'type' => 'string',
              'default' => '',
-             'length' => '60000',
+             'length' => 60000,
              ));
         $this->hasColumn('credentials', 'string', 255, array(
              'type' => 'string',
-             'length' => '255',
+             'length' => 255,
              ));
     }
 

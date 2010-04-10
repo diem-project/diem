@@ -58,7 +58,7 @@
  * @package    retest
  * @subpackage model
  * @author     Your name here
- * @version    SVN: $Id: Builder.php 7380 2010-03-15 21:07:50Z jwage $
+ * @version    SVN: $Id: Builder.php 7490 2010-03-29 19:53:27Z jwage $
  */
 abstract class BaseDmUser extends myDoctrineRecord
 {
@@ -69,27 +69,27 @@ abstract class BaseDmUser extends myDoctrineRecord
              'type' => 'string',
              'notnull' => true,
              'unique' => true,
-             'length' => '255',
+             'length' => 255,
              ));
         $this->hasColumn('email', 'string', 255, array(
              'type' => 'string',
              'notnull' => true,
              'unique' => true,
-             'length' => '255',
+             'length' => 255,
              ));
         $this->hasColumn('algorithm', 'string', 128, array(
              'type' => 'string',
              'default' => 'sha1',
              'notnull' => true,
-             'length' => '128',
+             'length' => 128,
              ));
         $this->hasColumn('salt', 'string', 128, array(
              'type' => 'string',
-             'length' => '128',
+             'length' => 128,
              ));
         $this->hasColumn('password', 'string', 128, array(
              'type' => 'string',
-             'length' => '128',
+             'length' => 128,
              ));
         $this->hasColumn('is_active', 'boolean', null, array(
              'type' => 'boolean',
@@ -149,7 +149,8 @@ abstract class BaseDmUser extends myDoctrineRecord
              'local' => 'id',
              'foreign' => 'created_by'));
 
-        $timestampable0 = new Doctrine_Template_Timestampable();
+        $timestampable0 = new Doctrine_Template_Timestampable(array(
+             ));
         $this->actAs($timestampable0);
     }
 }

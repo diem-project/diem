@@ -14,11 +14,17 @@ abstract class BaseDmWidgetFormFilter extends BaseFormFilterDoctrine
   {
     $this->setWidgets(array(
       'dm_zone_id' => new sfWidgetFormDoctrineChoice(array('model' => 'DmZone', 'add_empty' => true)),
-      'module'     => new sfWidgetFormFilterInput(),
-      'action'     => new sfWidgetFormFilterInput(),
-      'css_class'  => new sfWidgetFormFilterInput(),
-      'position'   => new sfWidgetFormFilterInput(),
-      'updated_at' => new sfWidgetFormFilterDate(array('from_date' => new sfWidgetFormInputText(array(), array("class" => "datepicker_me")), 'to_date' => new sfWidgetFormInputText(array(), array("class" => "datepicker_me")), 'with_empty' => false)),
+      'module'     => new sfWidgetFormDmFilterInput(),
+      'action'     => new sfWidgetFormDmFilterInput(),
+      'css_class'  => new sfWidgetFormDmFilterInput(),
+      'position'   => new sfWidgetFormDmFilterInput(),
+      'updated_at' => new sfWidgetFormChoice(array('choices' => array(
+        ''      => '',
+        'today' => $this->getI18n()->__('Today'),
+        'week'  => $this->getI18n()->__('Past %number% days', array('%number%' => 7)),
+        'month' => $this->getI18n()->__('This month'),
+        'year'  => $this->getI18n()->__('This year')
+      ))),
     ));
 
     $this->setValidators(array(
@@ -27,7 +33,7 @@ abstract class BaseDmWidgetFormFilter extends BaseFormFilterDoctrine
       'action'     => new sfValidatorPass(array('required' => false)),
       'css_class'  => new sfValidatorPass(array('required' => false)),
       'position'   => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
-      'updated_at' => new sfValidatorDateRange(array('required' => false, 'from_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 00:00:00')), 'to_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 23:59:59')))),
+      'updated_at' => new sfValidatorChoice(array('required' => false, 'choices' => array_keys($this->widgetSchema['updated_at']->getOption('choices')))),
     ));
 
     $this->widgetSchema->setNameFormat('dm_widget_filters[%s]');

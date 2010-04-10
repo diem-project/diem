@@ -13,16 +13,16 @@ abstract class BaseDmSettingFormFilter extends BaseFormFilterDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-      'name'        => new sfWidgetFormFilterInput(),
-      'type'        => new sfWidgetFormChoice(array('choices' => array('' => '', 'text' => 'text', 'boolean' => 'boolean', 'select' => 'select', 'textarea' => 'textarea', 'number' => 'number'))),
-      'params'      => new sfWidgetFormFilterInput(),
-      'group_name'  => new sfWidgetFormFilterInput(),
-      'credentials' => new sfWidgetFormFilterInput(),
+      'name'        => new sfWidgetFormDmFilterInput(),
+      'type'        => new sfWidgetFormChoice(array('choices' => array('' => '', 'text' => 'text', 'boolean' => 'boolean', 'select' => 'select', 'textarea' => 'textarea', 'number' => 'number', 'datetime' => 'datetime'))),
+      'params'      => new sfWidgetFormDmFilterInput(),
+      'group_name'  => new sfWidgetFormDmFilterInput(),
+      'credentials' => new sfWidgetFormDmFilterInput(),
     ));
 
     $this->setValidators(array(
       'name'        => new sfValidatorPass(array('required' => false)),
-      'type'        => new sfValidatorChoice(array('required' => false, 'choices' => array('text' => 'text', 'boolean' => 'boolean', 'select' => 'select', 'textarea' => 'textarea', 'number' => 'number'))),
+      'type'        => new sfValidatorChoice(array('required' => false, 'choices' => array('text' => 'text', 'boolean' => 'boolean', 'select' => 'select', 'textarea' => 'textarea', 'number' => 'number', 'datetime' => 'datetime'))),
       'params'      => new sfValidatorPass(array('required' => false)),
       'group_name'  => new sfValidatorPass(array('required' => false)),
       'credentials' => new sfValidatorPass(array('required' => false)),

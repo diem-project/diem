@@ -13,8 +13,8 @@ abstract class BaseDmTestTagTranslationFormFilter extends BaseFormFilterDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-      'name' => new sfWidgetFormFilterInput(),
-      'slug' => new sfWidgetFormFilterInput(),
+      'name' => new sfWidgetFormDmFilterInput(),
+      'slug' => new sfWidgetFormDmFilterInput(),
     ));
 
     $this->setValidators(array(

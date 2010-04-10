@@ -37,7 +37,7 @@
  * @package    retest
  * @subpackage model
  * @author     Your name here
- * @version    SVN: $Id: Builder.php 7380 2010-03-15 21:07:50Z jwage $
+ * @version    SVN: $Id: Builder.php 7490 2010-03-29 19:53:27Z jwage $
  */
 abstract class BaseDmAutoSeo extends myDoctrineRecord
 {
@@ -47,46 +47,46 @@ abstract class BaseDmAutoSeo extends myDoctrineRecord
         $this->hasColumn('module', 'string', 127, array(
              'type' => 'string',
              'notnull' => true,
-             'length' => '127',
+             'length' => 127,
              ));
         $this->hasColumn('action', 'string', 127, array(
              'type' => 'string',
              'notnull' => true,
-             'length' => '127',
+             'length' => 127,
              ));
         $this->hasColumn('slug', 'string', 255, array(
              'type' => 'string',
              'notnull' => true,
-             'length' => '255',
+             'length' => 255,
              ));
         $this->hasColumn('name', 'string', 255, array(
              'type' => 'string',
              'notnull' => true,
-             'length' => '255',
+             'length' => 255,
              ));
         $this->hasColumn('title', 'string', 255, array(
              'type' => 'string',
              'notnull' => true,
-             'length' => '255',
+             'length' => 255,
              ));
         $this->hasColumn('h1', 'string', 255, array(
              'type' => 'string',
              'notnull' => false,
-             'length' => '255',
+             'length' => 255,
              ));
         $this->hasColumn('description', 'string', 255, array(
              'type' => 'string',
              'notnull' => false,
-             'length' => '255',
+             'length' => 255,
              ));
         $this->hasColumn('keywords', 'string', 255, array(
              'type' => 'string',
              'notnull' => false,
-             'length' => '255',
+             'length' => 255,
              ));
         $this->hasColumn('strip_words', 'string', 10000, array(
              'type' => 'string',
-             'length' => '10000',
+             'length' => 10000,
              ));
 
 

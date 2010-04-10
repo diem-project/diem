@@ -13,16 +13,16 @@ abstract class BaseDmPageTranslationFormFilter extends BaseFormFilterDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-      'slug'         => new sfWidgetFormFilterInput(),
-      'name'         => new sfWidgetFormFilterInput(),
-      'title'        => new sfWidgetFormFilterInput(),
-      'h1'           => new sfWidgetFormFilterInput(),
-      'description'  => new sfWidgetFormFilterInput(),
-      'keywords'     => new sfWidgetFormFilterInput(),
-      'auto_mod'     => new sfWidgetFormFilterInput(),
-      'is_active'    => new sfWidgetFormChoice(array('choices' => array('' => dm::getI18n()->__('yes or no', array(), 'dm'), 1 => dm::getI18n()->__('yes', array(), 'dm'), 0 => dm::getI18n()->__('no', array(), 'dm')))),
-      'is_secure'    => new sfWidgetFormChoice(array('choices' => array('' => dm::getI18n()->__('yes or no', array(), 'dm'), 1 => dm::getI18n()->__('yes', array(), 'dm'), 0 => dm::getI18n()->__('no', array(), 'dm')))),
-      'is_indexable' => new sfWidgetFormChoice(array('choices' => array('' => dm::getI18n()->__('yes or no', array(), 'dm'), 1 => dm::getI18n()->__('yes', array(), 'dm'), 0 => dm::getI18n()->__('no', array(), 'dm')))),
+      'slug'         => new sfWidgetFormDmFilterInput(),
+      'name'         => new sfWidgetFormDmFilterInput(),
+      'title'        => new sfWidgetFormDmFilterInput(),
+      'h1'           => new sfWidgetFormDmFilterInput(),
+      'description'  => new sfWidgetFormDmFilterInput(),
+      'keywords'     => new sfWidgetFormDmFilterInput(),
+      'auto_mod'     => new sfWidgetFormDmFilterInput(),
+      'is_active'    => new sfWidgetFormChoice(array('choices' => array('' => $this->getI18n()->__('yes or no', array(), 'dm'), 1 => $this->getI18n()->__('yes', array(), 'dm'), 0 => $this->getI18n()->__('no', array(), 'dm')))),
+      'is_secure'    => new sfWidgetFormChoice(array('choices' => array('' => $this->getI18n()->__('yes or no', array(), 'dm'), 1 => $this->getI18n()->__('yes', array(), 'dm'), 0 => $this->getI18n()->__('no', array(), 'dm')))),
+      'is_indexable' => new sfWidgetFormChoice(array('choices' => array('' => $this->getI18n()->__('yes or no', array(), 'dm'), 1 => $this->getI18n()->__('yes', array(), 'dm'), 0 => $this->getI18n()->__('no', array(), 'dm')))),
     ));
 
     $this->setValidators(array(

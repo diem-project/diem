@@ -15,19 +15,39 @@ abstract class BaseDmSentMailForm extends BaseFormDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-      'id'          => new sfWidgetFormInputHidden(),
-      'name'        => new sfWidgetFormInputText(),
-      'header'      => new sfWidgetFormTextarea(),
-      'description' => new sfWidgetFormTextarea(),
-      'created_at'  => new sfWidgetFormDateTime(),
+      'id'                  => new sfWidgetFormInputHidden(),
+      'dm_mail_template_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Template'), 'add_empty' => true)),
+      'subject'             => new sfWidgetFormTextarea(),
+      'body'                => new sfWidgetFormTextarea(),
+      'from_email'          => new sfWidgetFormTextarea(),
+      'to_email'            => new sfWidgetFormTextarea(),
+      'cc_email'            => new sfWidgetFormTextarea(),
+      'bcc_email'           => new sfWidgetFormTextarea(),
+      'reply_to_email'      => new sfWidgetFormTextarea(),
+      'sender_email'        => new sfWidgetFormTextarea(),
+      'strategy'            => new sfWidgetFormInputText(),
+      'transport'           => new sfWidgetFormInputText(),
+      'culture'             => new sfWidgetFormInputText(),
+      'debug_string'        => new sfWidgetFormTextarea(),
+      'created_at'          => new sfWidgetFormDateTime(),
     ));
 
     $this->setValidators(array(
-      'id'          => new sfValidatorDoctrineChoice(array('model' => $this->getModelName(), 'column' => 'id', 'required' => false)),
-      'name'        => new sfValidatorString(array('max_length' => 255, 'required' => false)),
-      'header'      => new sfValidatorString(array('max_length' => 60000, 'required' => false)),
-      'description' => new sfValidatorString(array('max_length' => 60000, 'required' => false)),
-      'created_at'  => new sfValidatorDateTime(),
+      'id'                  => new sfValidatorDoctrineChoice(array('model' => $this->getModelName(), 'column' => 'id', 'required' => false)),
+      'dm_mail_template_id' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Template'), 'required' => false)),
+      'subject'             => new sfValidatorString(array('max_length' => 5000)),
+      'body'                => new sfValidatorString(),
+      'from_email'          => new sfValidatorString(array('max_length' => 5000)),
+      'to_email'            => new sfValidatorString(array('max_length' => 5000, 'required' => false)),
+      'cc_email'            => new sfValidatorString(array('max_length' => 5000, 'required' => false)),
+      'bcc_email'           => new sfValidatorString(array('max_length' => 5000, 'required' => false)),
+      'reply_to_email'      => new sfValidatorString(array('max_length' => 5000, 'required' => false)),
+      'sender_email'        => new sfValidatorString(array('max_length' => 5000, 'required' => false)),
+      'strategy'            => new sfValidatorString(array('max_length' => 255, 'required' => false)),
+      'transport'           => new sfValidatorString(array('max_length' => 255, 'required' => false)),
+      'culture'             => new sfValidatorString(array('max_length' => 16, 'required' => false)),
+      'debug_string'        => new sfValidatorString(array('required' => false)),
+      'created_at'          => new sfValidatorDateTime(),
     ));
 
     $this->widgetSchema->setNameFormat('dm_sent_mail[%s]');

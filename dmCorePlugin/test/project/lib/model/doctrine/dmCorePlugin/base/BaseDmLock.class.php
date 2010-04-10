@@ -40,7 +40,7 @@
  * @package    retest
  * @subpackage model
  * @author     Your name here
- * @version    SVN: $Id: Builder.php 7380 2010-03-15 21:07:50Z jwage $
+ * @version    SVN: $Id: Builder.php 7490 2010-03-29 19:53:27Z jwage $
  */
 abstract class BaseDmLock extends myDoctrineRecord
 {
@@ -54,17 +54,17 @@ abstract class BaseDmLock extends myDoctrineRecord
         $this->hasColumn('user_name', 'string', 255, array(
              'type' => 'string',
              'notnull' => true,
-             'length' => '255',
+             'length' => 255,
              ));
         $this->hasColumn('module', 'string', 127, array(
              'type' => 'string',
              'notnull' => true,
-             'length' => '127',
+             'length' => 127,
              ));
         $this->hasColumn('action', 'string', 127, array(
              'type' => 'string',
              'notnull' => true,
-             'length' => '127',
+             'length' => 127,
              ));
         $this->hasColumn('record_id', 'integer', null, array(
              'type' => 'integer',
@@ -79,17 +79,17 @@ abstract class BaseDmLock extends myDoctrineRecord
         $this->hasColumn('app', 'string', 127, array(
              'type' => 'string',
              'notnull' => true,
-             'length' => '127',
+             'length' => 127,
              ));
         $this->hasColumn('url', 'string', 255, array(
              'type' => 'string',
              'notnull' => true,
-             'length' => '255',
+             'length' => 255,
              ));
         $this->hasColumn('culture', 'string', 15, array(
              'type' => 'string',
              'notnull' => true,
-             'length' => '15',
+             'length' => 15,
              ));
 
 

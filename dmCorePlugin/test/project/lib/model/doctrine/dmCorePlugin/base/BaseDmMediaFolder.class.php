@@ -16,7 +16,7 @@
  * @package    retest
  * @subpackage model
  * @author     Your name here
- * @version    SVN: $Id: Builder.php 7380 2010-03-15 21:07:50Z jwage $
+ * @version    SVN: $Id: Builder.php 7490 2010-03-29 19:53:27Z jwage $
  */
 abstract class BaseDmMediaFolder extends myDoctrineRecord
 {
@@ -27,7 +27,7 @@ abstract class BaseDmMediaFolder extends myDoctrineRecord
              'type' => 'string',
              'notnull' => true,
              'unique' => true,
-             'length' => '255',
+             'length' => 255,
              ));
 
         $this->option('symfony', array(
@@ -42,7 +42,8 @@ abstract class BaseDmMediaFolder extends myDoctrineRecord
              'local' => 'id',
              'foreign' => 'dm_media_folder_id'));
 
-        $nestedset0 = new Doctrine_Template_NestedSet();
+        $nestedset0 = new Doctrine_Template_NestedSet(array(
+             ));
         $this->actAs($nestedset0);
     }
 }

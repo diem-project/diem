@@ -14,9 +14,9 @@ abstract class BaseDmZoneFormFilter extends BaseFormFilterDoctrine
   {
     $this->setWidgets(array(
       'dm_area_id' => new sfWidgetFormDoctrineChoice(array('model' => 'DmArea', 'add_empty' => true)),
-      'css_class'  => new sfWidgetFormFilterInput(),
-      'width'      => new sfWidgetFormFilterInput(),
-      'position'   => new sfWidgetFormFilterInput(),
+      'css_class'  => new sfWidgetFormDmFilterInput(),
+      'width'      => new sfWidgetFormDmFilterInput(),
+      'position'   => new sfWidgetFormDmFilterInput(),
     ));
 
     $this->setValidators(array(

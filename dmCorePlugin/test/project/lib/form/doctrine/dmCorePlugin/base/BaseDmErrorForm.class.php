@@ -16,7 +16,7 @@ abstract class BaseDmErrorForm extends BaseFormDoctrine
   {
     $this->setWidgets(array(
       'id'          => new sfWidgetFormInputHidden(),
-      'klass'       => new sfWidgetFormInputText(),
+      'php_class'   => new sfWidgetFormInputText(),
       'name'        => new sfWidgetFormInputText(),
       'description' => new sfWidgetFormTextarea(),
       'module'      => new sfWidgetFormInputText(),
@@ -28,7 +28,7 @@ abstract class BaseDmErrorForm extends BaseFormDoctrine
 
     $this->setValidators(array(
       'id'          => new sfValidatorDoctrineChoice(array('model' => $this->getModelName(), 'column' => 'id', 'required' => false)),
-      'klass'       => new sfValidatorString(array('max_length' => 127)),
+      'php_class'   => new sfValidatorString(array('max_length' => 127)),
       'name'        => new sfValidatorString(array('max_length' => 255)),
       'description' => new sfValidatorString(array('max_length' => 60000, 'required' => false)),
       'module'      => new sfValidatorString(array('max_length' => 127, 'required' => false)),

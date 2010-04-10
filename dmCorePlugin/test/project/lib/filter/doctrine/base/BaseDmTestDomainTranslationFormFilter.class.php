@@ -13,8 +13,8 @@ abstract class BaseDmTestDomainTranslationFormFilter extends BaseFormFilterDoctr
   public function setup()
   {
     $this->setWidgets(array(
-      'title'      => new sfWidgetFormFilterInput(),
-      'is_active'  => new sfWidgetFormChoice(array('choices' => array('' => dm::getI18n()->__('yes or no', array(), 'dm'), 1 => dm::getI18n()->__('yes', array(), 'dm'), 0 => dm::getI18n()->__('no', array(), 'dm')))),
+      'title'      => new sfWidgetFormDmFilterInput(),
+      'is_active'  => new sfWidgetFormChoice(array('choices' => array('' => $this->getI18n()->__('yes or no', array(), 'dm'), 1 => $this->getI18n()->__('yes', array(), 'dm'), 0 => $this->getI18n()->__('no', array(), 'dm')))),
       'created_by' => new sfWidgetFormDoctrineChoice(array('model' => 'DmUser', 'add_empty' => true)),
       'updated_by' => new sfWidgetFormDoctrineChoice(array('model' => 'DmUser', 'add_empty' => true)),
     ));

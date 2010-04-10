@@ -9,23 +9,23 @@
  * @property string $action
  * @property integer $dm_layout_id
  * @property DmLayout $Layout
- * @property DmArea $Area
+ * @property Doctrine_Collection $Areas
  * 
- * @method string     getModule()       Returns the current record's "module" value
- * @method string     getAction()       Returns the current record's "action" value
- * @method integer    getDmLayoutId()   Returns the current record's "dm_layout_id" value
- * @method DmLayout   getLayout()       Returns the current record's "Layout" value
- * @method DmArea     getArea()         Returns the current record's "Area" value
- * @method DmPageView setModule()       Sets the current record's "module" value
- * @method DmPageView setAction()       Sets the current record's "action" value
- * @method DmPageView setDmLayoutId()   Sets the current record's "dm_layout_id" value
- * @method DmPageView setLayout()       Sets the current record's "Layout" value
- * @method DmPageView setArea()         Sets the current record's "Area" value
+ * @method string              getModule()       Returns the current record's "module" value
+ * @method string              getAction()       Returns the current record's "action" value
+ * @method integer             getDmLayoutId()   Returns the current record's "dm_layout_id" value
+ * @method DmLayout            getLayout()       Returns the current record's "Layout" value
+ * @method Doctrine_Collection getAreas()        Returns the current record's "Areas" collection
+ * @method DmPageView          setModule()       Sets the current record's "module" value
+ * @method DmPageView          setAction()       Sets the current record's "action" value
+ * @method DmPageView          setDmLayoutId()   Sets the current record's "dm_layout_id" value
+ * @method DmPageView          setLayout()       Sets the current record's "Layout" value
+ * @method DmPageView          setAreas()        Sets the current record's "Areas" collection
  * 
  * @package    retest
  * @subpackage model
  * @author     Your name here
- * @version    SVN: $Id: Builder.php 7380 2010-03-15 21:07:50Z jwage $
+ * @version    SVN: $Id: Builder.php 7490 2010-03-29 19:53:27Z jwage $
  */
 abstract class BaseDmPageView extends myDoctrineRecord
 {
@@ -35,12 +35,12 @@ abstract class BaseDmPageView extends myDoctrineRecord
         $this->hasColumn('module', 'string', 127, array(
              'type' => 'string',
              'notnull' => true,
-             'length' => '127',
+             'length' => 127,
              ));
         $this->hasColumn('action', 'string', 127, array(
              'type' => 'string',
              'notnull' => true,
-             'length' => '127',
+             'length' => 127,
              ));
         $this->hasColumn('dm_layout_id', 'integer', null, array(
              'type' => 'integer',
@@ -65,7 +65,7 @@ abstract class BaseDmPageView extends myDoctrineRecord
              'foreign' => 'id',
              'onDelete' => 'SET NULL'));
 
-        $this->hasOne('DmArea as Area', array(
+        $this->hasMany('DmArea as Areas', array(
              'local' => 'id',
              'foreign' => 'dm_page_view_id'));
     }

@@ -67,7 +67,7 @@
  * @package    retest
  * @subpackage model
  * @author     Your name here
- * @version    SVN: $Id: Builder.php 7380 2010-03-15 21:07:50Z jwage $
+ * @version    SVN: $Id: Builder.php 7490 2010-03-29 19:53:27Z jwage $
  */
 abstract class BaseDmTestPost extends myDoctrineRecord
 {
@@ -85,11 +85,11 @@ abstract class BaseDmTestPost extends myDoctrineRecord
         $this->hasColumn('title', 'string', 255, array(
              'type' => 'string',
              'notnull' => true,
-             'length' => '255',
+             'length' => 255,
              ));
         $this->hasColumn('excerpt', 'string', 800, array(
              'type' => 'string',
-             'length' => '800',
+             'length' => 800,
              ));
         $this->hasColumn('body', 'clob', null, array(
              'type' => 'clob',
@@ -98,7 +98,7 @@ abstract class BaseDmTestPost extends myDoctrineRecord
         $this->hasColumn('url', 'string', 255, array(
              'type' => 'string',
              'extra' => 'link',
-             'length' => '255',
+             'length' => 255,
              ));
         $this->hasColumn('image_id', 'integer', null, array(
              'type' => 'integer',

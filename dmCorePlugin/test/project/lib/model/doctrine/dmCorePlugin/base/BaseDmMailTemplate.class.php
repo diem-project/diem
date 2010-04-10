@@ -8,36 +8,54 @@
  * @property string $name
  * @property string $description
  * @property string $vars
- * @property string $title
+ * @property string $subject
  * @property clob $body
  * @property string $from_email
  * @property string $to_email
+ * @property string $cc_email
+ * @property string $bcc_email
+ * @property string $reply_to_email
+ * @property string $sender_email
+ * @property string $list_unsuscribe
  * @property boolean $is_html
  * @property boolean $is_active
+ * @property Doctrine_Collection $SentMails
  * 
- * @method string         getName()        Returns the current record's "name" value
- * @method string         getDescription() Returns the current record's "description" value
- * @method string         getVars()        Returns the current record's "vars" value
- * @method string         getTitle()       Returns the current record's "title" value
- * @method clob           getBody()        Returns the current record's "body" value
- * @method string         getFromEmail()   Returns the current record's "from_email" value
- * @method string         getToEmail()     Returns the current record's "to_email" value
- * @method boolean        getIsHtml()      Returns the current record's "is_html" value
- * @method boolean        getIsActive()    Returns the current record's "is_active" value
- * @method DmMailTemplate setName()        Sets the current record's "name" value
- * @method DmMailTemplate setDescription() Sets the current record's "description" value
- * @method DmMailTemplate setVars()        Sets the current record's "vars" value
- * @method DmMailTemplate setTitle()       Sets the current record's "title" value
- * @method DmMailTemplate setBody()        Sets the current record's "body" value
- * @method DmMailTemplate setFromEmail()   Sets the current record's "from_email" value
- * @method DmMailTemplate setToEmail()     Sets the current record's "to_email" value
- * @method DmMailTemplate setIsHtml()      Sets the current record's "is_html" value
- * @method DmMailTemplate setIsActive()    Sets the current record's "is_active" value
+ * @method string              getName()            Returns the current record's "name" value
+ * @method string              getDescription()     Returns the current record's "description" value
+ * @method string              getVars()            Returns the current record's "vars" value
+ * @method string              getSubject()         Returns the current record's "subject" value
+ * @method clob                getBody()            Returns the current record's "body" value
+ * @method string              getFromEmail()       Returns the current record's "from_email" value
+ * @method string              getToEmail()         Returns the current record's "to_email" value
+ * @method string              getCcEmail()         Returns the current record's "cc_email" value
+ * @method string              getBccEmail()        Returns the current record's "bcc_email" value
+ * @method string              getReplyToEmail()    Returns the current record's "reply_to_email" value
+ * @method string              getSenderEmail()     Returns the current record's "sender_email" value
+ * @method string              getListUnsuscribe()  Returns the current record's "list_unsuscribe" value
+ * @method boolean             getIsHtml()          Returns the current record's "is_html" value
+ * @method boolean             getIsActive()        Returns the current record's "is_active" value
+ * @method Doctrine_Collection getSentMails()       Returns the current record's "SentMails" collection
+ * @method DmMailTemplate      setName()            Sets the current record's "name" value
+ * @method DmMailTemplate      setDescription()     Sets the current record's "description" value
+ * @method DmMailTemplate      setVars()            Sets the current record's "vars" value
+ * @method DmMailTemplate      setSubject()         Sets the current record's "subject" value
+ * @method DmMailTemplate      setBody()            Sets the current record's "body" value
+ * @method DmMailTemplate      setFromEmail()       Sets the current record's "from_email" value
+ * @method DmMailTemplate      setToEmail()         Sets the current record's "to_email" value
+ * @method DmMailTemplate      setCcEmail()         Sets the current record's "cc_email" value
+ * @method DmMailTemplate      setBccEmail()        Sets the current record's "bcc_email" value
+ * @method DmMailTemplate      setReplyToEmail()    Sets the current record's "reply_to_email" value
+ * @method DmMailTemplate      setSenderEmail()     Sets the current record's "sender_email" value
+ * @method DmMailTemplate      setListUnsuscribe()  Sets the current record's "list_unsuscribe" value
+ * @method DmMailTemplate      setIsHtml()          Sets the current record's "is_html" value
+ * @method DmMailTemplate      setIsActive()        Sets the current record's "is_active" value
+ * @method DmMailTemplate      setSentMails()       Sets the current record's "SentMails" collection
  * 
  * @package    retest
  * @subpackage model
  * @author     Your name here
- * @version    SVN: $Id: Builder.php 7380 2010-03-15 21:07:50Z jwage $
+ * @version    SVN: $Id: Builder.php 7490 2010-03-29 19:53:27Z jwage $
  */
 abstract class BaseDmMailTemplate extends myDoctrineRecord
 {
@@ -48,30 +66,53 @@ abstract class BaseDmMailTemplate extends myDoctrineRecord
              'type' => 'string',
              'notnull' => true,
              'unique' => true,
-             'length' => '255',
+             'length' => 255,
              ));
         $this->hasColumn('description', 'string', 5000, array(
              'type' => 'string',
-             'length' => '5000',
+             'length' => 5000,
              ));
         $this->hasColumn('vars', 'string', 5000, array(
              'type' => 'string',
-             'length' => '5000',
+             'length' => 5000,
              ));
-        $this->hasColumn('title', 'string', 5000, array(
+        $this->hasColumn('subject', 'string', 5000, array(
              'type' => 'string',
-             'length' => '5000',
+             'notnull' => true,
+             'length' => 5000,
              ));
         $this->hasColumn('body', 'clob', null, array(
              'type' => 'clob',
+             'notnull' => true,
              ));
         $this->hasColumn('from_email', 'string', 5000, array(
              'type' => 'string',
-             'length' => '5000',
+             'notnull' => true,
+             'length' => 5000,
              ));
         $this->hasColumn('to_email', 'string', 5000, array(
              'type' => 'string',
-             'length' => '5000',
+             'length' => 5000,
+             ));
+        $this->hasColumn('cc_email', 'string', 5000, array(
+             'type' => 'string',
+             'length' => 5000,
+             ));
+        $this->hasColumn('bcc_email', 'string', 5000, array(
+             'type' => 'string',
+             'length' => 5000,
+             ));
+        $this->hasColumn('reply_to_email', 'string', 5000, array(
+             'type' => 'string',
+             'length' => 5000,
+             ));
+        $this->hasColumn('sender_email', 'string', 5000, array(
+             'type' => 'string',
+             'length' => 5000,
+             ));
+        $this->hasColumn('list_unsuscribe', 'string', 5000, array(
+             'type' => 'string',
+             'length' => 5000,
              ));
         $this->hasColumn('is_html', 'boolean', null, array(
              'type' => 'boolean',
@@ -88,17 +129,26 @@ abstract class BaseDmMailTemplate extends myDoctrineRecord
     public function setUp()
     {
         parent::setUp();
+        $this->hasMany('DmSentMail as SentMails', array(
+             'local' => 'id',
+             'foreign' => 'dm_mail_template_id'));
+
         $timestampable0 = new Doctrine_Template_Timestampable();
         $i18n0 = new Doctrine_Template_I18n(array(
              'fields' => 
              array(
-              0 => 'title',
+              0 => 'subject',
               1 => 'description',
               2 => 'body',
               3 => 'from_email',
               4 => 'to_email',
-              5 => 'is_html',
-              6 => 'is_active',
+              5 => 'cc_email',
+              6 => 'bcc_email',
+              7 => 'reply_to_email',
+              8 => 'sender_email',
+              9 => 'list_unsuscribe',
+              10 => 'is_html',
+              11 => 'is_active',
              ),
              ));
         $this->actAs($timestampable0);

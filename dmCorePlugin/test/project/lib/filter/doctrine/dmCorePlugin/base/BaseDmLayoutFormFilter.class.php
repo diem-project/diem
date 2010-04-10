@@ -13,9 +13,9 @@ abstract class BaseDmLayoutFormFilter extends BaseFormFilterDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-      'name'      => new sfWidgetFormFilterInput(),
-      'template'  => new sfWidgetFormFilterInput(),
-      'css_class' => new sfWidgetFormFilterInput(),
+      'name'      => new sfWidgetFormDmFilterInput(),
+      'template'  => new sfWidgetFormDmFilterInput(),
+      'css_class' => new sfWidgetFormDmFilterInput(),
     ));
 
     $this->setValidators(array(

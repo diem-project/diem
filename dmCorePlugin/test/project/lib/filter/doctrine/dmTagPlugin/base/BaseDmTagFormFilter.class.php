@@ -13,7 +13,7 @@ abstract class BaseDmTagFormFilter extends BaseFormFilterDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-      'name'                => new sfWidgetFormFilterInput(),
+      'name'                => new sfWidgetFormDmFilterInput(),
       'dm_test_domain_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomain')),
       'dm_test_fruit_list'  => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'DmTestFruit')),
     ));

@@ -13,7 +13,7 @@ abstract class BaseDmTestFruitFormFilter extends BaseFormFilterDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-      'title'      => new sfWidgetFormFilterInput(),
+      'title'      => new sfWidgetFormDmFilterInput(),
       'created_by' => new sfWidgetFormDoctrineChoice(array('model' => 'DmUser', 'add_empty' => true)),
       'updated_by' => new sfWidgetFormDoctrineChoice(array('model' => 'DmUser', 'add_empty' => true)),
       'tags_list'  => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'DmTag')),

@@ -25,7 +25,7 @@
  * @package    retest
  * @subpackage model
  * @author     Your name here
- * @version    SVN: $Id: Builder.php 7380 2010-03-15 21:07:50Z jwage $
+ * @version    SVN: $Id: Builder.php 7490 2010-03-29 19:53:27Z jwage $
  */
 abstract class BaseDmTransUnit extends myDoctrineRecord
 {
@@ -39,16 +39,16 @@ abstract class BaseDmTransUnit extends myDoctrineRecord
         $this->hasColumn('source', 'string', 60000, array(
              'type' => 'string',
              'notnull' => true,
-             'length' => '60000',
+             'length' => 60000,
              ));
         $this->hasColumn('target', 'string', 60000, array(
              'type' => 'string',
              'notnull' => true,
-             'length' => '60000',
+             'length' => 60000,
              ));
         $this->hasColumn('meta', 'string', 255, array(
              'type' => 'string',
-             'length' => '255',
+             'length' => 255,
              ));
     }
 
@@ -60,7 +60,8 @@ abstract class BaseDmTransUnit extends myDoctrineRecord
              'foreign' => 'id',
              'onDelete' => 'CASCADE'));
 
-        $timestampable0 = new Doctrine_Template_Timestampable();
+        $timestampable0 = new Doctrine_Template_Timestampable(array(
+             ));
         $this->actAs($timestampable0);
     }
 }

@@ -25,7 +25,7 @@
  * @package    retest
  * @subpackage model
  * @author     Your name here
- * @version    SVN: $Id: Builder.php 7380 2010-03-15 21:07:50Z jwage $
+ * @version    SVN: $Id: Builder.php 7490 2010-03-29 19:53:27Z jwage $
  */
 abstract class BaseDmLayout extends myDoctrineRecord
 {
@@ -36,17 +36,17 @@ abstract class BaseDmLayout extends myDoctrineRecord
              'type' => 'string',
              'notnull' => true,
              'unique' => true,
-             'length' => '255',
+             'length' => 255,
              ));
         $this->hasColumn('template', 'string', 255, array(
              'type' => 'string',
              'notnull' => true,
              'default' => 'page',
-             'length' => '255',
+             'length' => 255,
              ));
         $this->hasColumn('css_class', 'string', 255, array(
              'type' => 'string',
-             'length' => '255',
+             'length' => 255,
              ));
     }
 

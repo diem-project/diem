@@ -13,25 +13,31 @@ abstract class BaseDmErrorFormFilter extends BaseFormFilterDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-      'klass'       => new sfWidgetFormFilterInput(),
-      'name'        => new sfWidgetFormFilterInput(),
-      'description' => new sfWidgetFormFilterInput(),
-      'module'      => new sfWidgetFormFilterInput(),
-      'action'      => new sfWidgetFormFilterInput(),
-      'uri'         => new sfWidgetFormFilterInput(),
-      'env'         => new sfWidgetFormFilterInput(),
-      'created_at'  => new sfWidgetFormFilterDate(array('from_date' => new sfWidgetFormInputText(array(), array("class" => "datepicker_me")), 'to_date' => new sfWidgetFormInputText(array(), array("class" => "datepicker_me")), 'with_empty' => false)),
+      'php_class'   => new sfWidgetFormDmFilterInput(),
+      'name'        => new sfWidgetFormDmFilterInput(),
+      'description' => new sfWidgetFormDmFilterInput(),
+      'module'      => new sfWidgetFormDmFilterInput(),
+      'action'      => new sfWidgetFormDmFilterInput(),
+      'uri'         => new sfWidgetFormDmFilterInput(),
+      'env'         => new sfWidgetFormDmFilterInput(),
+      'created_at'  => new sfWidgetFormChoice(array('choices' => array(
+        ''      => '',
+        'today' => $this->getI18n()->__('Today'),
+        'week'  => $this->getI18n()->__('Past %number% days', array('%number%' => 7)),
+        'month' => $this->getI18n()->__('This month'),
+        'year'  => $this->getI18n()->__('This year')
+      ))),
     ));
 
     $this->setValidators(array(
-      'klass'       => new sfValidatorPass(array('required' => false)),
+      'php_class'   => new sfValidatorPass(array('required' => false)),
       'name'        => new sfValidatorPass(array('required' => false)),
       'description' => new sfValidatorPass(array('required' => false)),
       'module'      => new sfValidatorPass(array('required' => false)),
       'action'      => new sfValidatorPass(array('required' => false)),
       'uri'         => new sfValidatorPass(array('required' => false)),
       'env'         => new sfValidatorPass(array('required' => false)),
-      'created_at'  => new sfValidatorDateRange(array('required' => false, 'from_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 00:00:00')), 'to_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 23:59:59')))),
+      'created_at'  => new sfValidatorChoice(array('required' => false, 'choices' => array_keys($this->widgetSchema['created_at']->getOption('choices')))),
     ));
 
     $this->widgetSchema->setNameFormat('dm_error_filters[%s]');
@@ -52,7 +58,7 @@ abstract class BaseDmErrorFormFilter extends BaseFormFilterDoctrine
   {
     return array(
       'id'          => 'Number',
-      'klass'       => 'Text',
+      'php_class'   => 'Text',
       'name'        => 'Text',
       'description' => 'Text',
       'module'      => 'Text',

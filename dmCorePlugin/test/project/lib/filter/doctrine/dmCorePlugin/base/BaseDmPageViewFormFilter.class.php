@@ -13,8 +13,8 @@ abstract class BaseDmPageViewFormFilter extends BaseFormFilterDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-      'module'       => new sfWidgetFormFilterInput(),
-      'action'       => new sfWidgetFormFilterInput(),
+      'module'       => new sfWidgetFormDmFilterInput(),
+      'action'       => new sfWidgetFormDmFilterInput(),
       'dm_layout_id' => new sfWidgetFormDoctrineChoice(array('model' => 'DmLayout', 'add_empty' => true)),
     ));
 

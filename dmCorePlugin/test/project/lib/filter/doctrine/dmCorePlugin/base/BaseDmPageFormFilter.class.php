@@ -13,13 +13,13 @@ abstract class BaseDmPageFormFilter extends BaseFormFilterDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-      'module'      => new sfWidgetFormFilterInput(),
-      'action'      => new sfWidgetFormFilterInput(),
-      'record_id'   => new sfWidgetFormFilterInput(),
-      'credentials' => new sfWidgetFormFilterInput(),
-      'lft'         => new sfWidgetFormFilterInput(),
-      'rgt'         => new sfWidgetFormFilterInput(),
-      'level'       => new sfWidgetFormFilterInput(),
+      'module'      => new sfWidgetFormDmFilterInput(),
+      'action'      => new sfWidgetFormDmFilterInput(),
+      'record_id'   => new sfWidgetFormDmFilterInput(),
+      'credentials' => new sfWidgetFormDmFilterInput(),
+      'lft'         => new sfWidgetFormDmFilterInput(),
+      'rgt'         => new sfWidgetFormDmFilterInput(),
+      'level'       => new sfWidgetFormDmFilterInput(),
     ));
 
     $this->setValidators(array(

@@ -28,7 +28,7 @@
  * @package    retest
  * @subpackage model
  * @author     Your name here
- * @version    SVN: $Id: Builder.php 7380 2010-03-15 21:07:50Z jwage $
+ * @version    SVN: $Id: Builder.php 7490 2010-03-29 19:53:27Z jwage $
  */
 abstract class BaseDmPermission extends myDoctrineRecord
 {
@@ -38,11 +38,11 @@ abstract class BaseDmPermission extends myDoctrineRecord
         $this->hasColumn('name', 'string', 255, array(
              'type' => 'string',
              'unique' => true,
-             'length' => '255',
+             'length' => 255,
              ));
         $this->hasColumn('description', 'string', 5000, array(
              'type' => 'string',
-             'length' => '5000',
+             'length' => 5000,
              ));
     }
 
@@ -67,7 +67,8 @@ abstract class BaseDmPermission extends myDoctrineRecord
              'local' => 'id',
              'foreign' => 'dm_permission_id'));
 
-        $timestampable0 = new Doctrine_Template_Timestampable();
+        $timestampable0 = new Doctrine_Template_Timestampable(array(
+             ));
         $this->actAs($timestampable0);
     }
 }

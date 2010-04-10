@@ -13,7 +13,7 @@ abstract class BaseDmWidgetTranslationFormFilter extends BaseFormFilterDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-      'value' => new sfWidgetFormFilterInput(),
+      'value' => new sfWidgetFormDmFilterInput(),
     ));
 
     $this->setValidators(array(

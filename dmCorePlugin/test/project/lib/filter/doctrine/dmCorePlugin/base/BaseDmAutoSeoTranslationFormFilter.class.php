@@ -13,13 +13,13 @@ abstract class BaseDmAutoSeoTranslationFormFilter extends BaseFormFilterDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-      'slug'        => new sfWidgetFormFilterInput(),
-      'name'        => new sfWidgetFormFilterInput(),
-      'title'       => new sfWidgetFormFilterInput(),
-      'h1'          => new sfWidgetFormFilterInput(),
-      'description' => new sfWidgetFormFilterInput(),
-      'keywords'    => new sfWidgetFormFilterInput(),
-      'strip_words' => new sfWidgetFormFilterInput(),
+      'slug'        => new sfWidgetFormDmFilterInput(),
+      'name'        => new sfWidgetFormDmFilterInput(),
+      'title'       => new sfWidgetFormDmFilterInput(),
+      'h1'          => new sfWidgetFormDmFilterInput(),
+      'description' => new sfWidgetFormDmFilterInput(),
+      'keywords'    => new sfWidgetFormDmFilterInput(),
+      'strip_words' => new sfWidgetFormDmFilterInput(),
     ));
 
     $this->setValidators(array(
