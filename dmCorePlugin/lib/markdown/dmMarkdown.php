@@ -310,18 +310,8 @@ class dmMarkdown extends MarkdownExtra_Parser
   
   protected function cleanText($text)
   {
-    return strtr($text, array(
-        "\r\n"    => "\n",
-        "&#8217;" => "'"
-      , '“'       => '&lquot;'
-      , '”'       => '&rquot;'
-      , '®'       => '&reg;'
-      , '‘'       => '&lsquo;'
-      , '’'       => '&rsquo;'
-      , '�'       => ' '
-    ));
+    return str_replace("\r\n", "\n", $text);
   }
-  
   
   /**
    * Very fast function to translate markdown text to pure text without formatting
