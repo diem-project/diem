@@ -1,15 +1,19 @@
 <?php
 
+require_once(sfConfig::get('dm_core_dir').'/vendor/php-html-writer/lib/phpHtmlWriter.php');
+
 class dmHelper extends dmConfigurable
 {
   protected
   $context,
-  $serviceContainer;
+  $serviceContainer,
+  $htmlWriter;
   
   public function __construct(dmContext $context, array $options = array())
   {
     $this->context          = $context;
     $this->serviceContainer = $context->getServiceContainer();
+    $this->htmlWriter       = new phpHtmlWriter();
     
     $this->initialize($options);
   }
@@ -54,8 +58,9 @@ class dmHelper extends dmConfigurable
 
   public function open($tagName, array $opt = array())
   {
-    return $this->tag($tagName, $opt, false, false);
+    return $this->htmlWriter->open($tagName, $opt);
   }
+  
   public function £o($tagName, array $opt = array())
   {
     return $this->open($tagName, $opt);
@@ -63,158 +68,19 @@ class dmHelper extends dmConfigurable
 
   public function close($tagName)
   {
-    if ($pos = strpos($tagName, '.') !== false)
-    {
-      $classes = substr($tagName, $pos+1);
-      $tagName = substr($tagName, 0, $pos);
-      
-      if ($this->options['use_beaf'] && (strpos($classes, 'beafh') !== false || strpos($classes, 'beafv') !== false))
-      {
-        if (in_array($tagName, array('span', 'a', 'p')))
-        {
-          $beafTag = 'span';
-        }
-        else
-        {
-          $beafTag = 'div';
-        }
-        
-        return '</'.$beafTag.'><'.$beafTag.' class="beafter"></'.$beafTag.'></'.$tagName.'>';
-      }
-    }
-    
-    return '</'.$tagName.'>';
+    return $this->htmlWriter->close($tagName);
   }
+  
   public function £c($tagName)
   {
     return $this->close($tagName);
   }
 
-  public function tag($tagName, $opt = array(), $content = false, $openAndClose = true)
+  public function tag($tagName, $opt = array(), $content = false)
   {
-    if (!($tagName = trim($tagName)))
-    {
-      return '';
-    }
-
-    $tagOpt = array();
-
-    // separate tag name from attribues in $tagName
-    if ($firstSpacePos = strpos($tagName, ' '))
-    {
-      $tagNameOpt = substr($tagName, $firstSpacePos + 1);
-      $tagName = substr($tagName, 0, $firstSpacePos);
-
-      // DMS STYLE - string opt in name
-      dmString::retrieveOptFromString($tagNameOpt, $tagOpt);
-    }
-
-    // JQUERY STYLE - css expression
-    dmString::retrieveCssFromString($tagName, $tagOpt);
-
-    // ARRAY STYLE - array opt
-    if (is_array($opt) && !empty($opt))
-    {
-      if (isset($opt['json']))
-      {
-        $tagOpt['class'][] = json_encode($opt['json']);
-        unset($opt['json']);
-      }
-      if (isset($opt['class']))
-      {
-        $tagOpt['class'][] = is_array($opt['class']) ? implode(' ', $opt['class']) : $opt['class'];
-        unset($opt['class']);
-      }
-      
-      $tagOpt = array_merge($tagOpt, $opt);
-    }
-
-    // SYMFONY STYLE - string opt
-    elseif (is_string($opt) && $content)
-    {
-      $opt = sfToolkit::stringToArray($opt);
-      if (isset($opt['class']))
-      {
-        $tagOpt['class'][] = explode(' ', $opt['class']);
-        unset($opt['class']);
-      }
-      
-      $tagOpt = array_merge($tagOpt, $opt);
-    }
-
-    if (!$content)
-    {
-      if (!is_array($opt))
-      {
-        $content = $opt;
-      }
-      else // No opt
-      {
-        $content = null;
-      }
-    }
-
-    $class = isset($tagOpt['class']) ? $tagOpt['class'] : array();
-
-    if ($this->options['use_beaf'] && (in_array('beafh', $class) || in_array('beafv', $class)))
-    {
-      $isBeaf = true;
-      $tagOpt['class'][] = 'clearfix';
-      $beafTag = in_array($tagName, array('span', 'a', 'p')) ? 'span' : 'div';
-    }
-    else
-    {
-      $isBeaf = false;
-    }
-
-    if(isset($tagOpt['lang']))
-    {
-      if($tagOpt['lang'] === $this->context->getUser()->getCulture())
-      {
-        unset($tagOpt['lang']);
-      }
-    }
-
-    if (isset($tagOpt['class']) && is_array($tagOpt['class']))
-    {
-      $tagOpt['class'] = implode(' ', array_unique($tagOpt['class']));
-    }
-
-    $optHtml = '';
-    foreach ($tagOpt as $key => $val)
-    {
-      $optHtml .= ' '.$key.'="'.htmlentities($val, ENT_COMPAT, 'UTF-8').'"';
-    }
-
-    if(in_array($tagName, $this->options['empty_elements']))
-    {
-      $tag = '<'.$tagName.$optHtml.' />';
-    }
-    elseif ($openAndClose)
-    {
-      if ($isBeaf)
-      {
-        $tag = '<'.$tagName.$optHtml.'><'.$beafTag.' class="beafore"></'.$beafTag.'><'.$beafTag.' class="beafin">'.$content.'</'.$beafTag.'><'.$beafTag.' class="beafter"></'.$beafTag.'></'.$tagName.'>';
-      }
-      else
-      {
-        $tag = '<'.$tagName.$optHtml.'>'.$content.'</'.$tagName.'>';
-      }
-    }
-    else
-    {
-      if ($isBeaf)
-      {
-        $tag = '<'.$tagName.$optHtml.'><'.$beafTag.' class="beafore"></'.$beafTag.'><'.$beafTag.' class="beafin">';
-      }
-      else
-      {
-        $tag = '<'.$tagName.$optHtml.'>';
-      }
-    }
-
-    return $tag;
+    return $this->htmlWriter->tag($tagName, $opt, $content);
   }
+
   public function £($tagName, $opt = array(), $content = false, $openAndClose = true)
   {
     return $this->tag($tagName, $opt, $content, $openAndClose);
