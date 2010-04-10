@@ -23,6 +23,8 @@ DmUser:
       default: false
     last_login:
       type: timestamp
+    forgot_password_code:
+      type: string(8)
   indexes:
     is_active_idx:
       fields: [is_active]
