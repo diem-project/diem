@@ -47,6 +47,7 @@ class dmWebRequest extends sfWebRequest
     $context['relative_url_root'] = $this->getRelativeUrlRoot();
     $context['absolute_url_root'] = $this->getAbsoluteUrlRoot();
     $context['script_name']       = $this->getScriptName();
+    $context['uri_prefix']        = $this->getUriPrefix();
     
     return $context;
   }
