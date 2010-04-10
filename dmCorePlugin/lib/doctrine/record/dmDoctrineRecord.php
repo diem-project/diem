@@ -584,14 +584,23 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
 
       if ($hasAccessor || method_exists($this, $accessor))
       {
-        /*
+        /**
          * Special case.
          * For versionable tables, we don't want to use
          * the getVersion accessor when requesting 'version'.
          * This is because "Version" is a relation, and "version" is a fieldname.
          * The case is lost when using getVersion.
          */
-        if ('version' === $fieldName && $this->getTable()->isVersionable())
+        if ('getVersion' === $accessor && $this->getTable()->isVersionable())
+        {
+          return $this->_get($fieldName, $load);
+        }
+        
+        /**
+         * Special case.
+         * ->getService() is reserved for getting services
+         */
+        if ('getService' === $accessor)
         {
           return $this->_get($fieldName, $load);
         }
