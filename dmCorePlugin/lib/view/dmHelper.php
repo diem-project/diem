@@ -1,6 +1,6 @@
 <?php
 
-require_once(sfConfig::get('dm_core_dir').'/vendor/php-html-writer/lib/phpHtmlWriter.php');
+require_once(sfConfig::get('dm_core_dir').'/lib/vendor/php-html-writer/lib/phpHtmlWriter.php');
 
 class dmHelper extends dmConfigurable
 {
