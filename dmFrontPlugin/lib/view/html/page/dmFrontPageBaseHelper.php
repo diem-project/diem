@@ -123,7 +123,7 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
 
     if (!isset($areas[$type]))
     {
-      throw new dmException(sprintf('Page %s with layout %s has no area for type %s', $this->page, $this->page->Layout, $type));
+      throw new dmException(sprintf('Page %s with layout %s has no area for type %s', $this->page, $this->page->PageView->Layout, $type));
     }
 
     return $areas[$type];
