@@ -16,3 +16,6 @@
 [submodule "dmCorePlugin/test/project/plugins/dmTagPlugin"]
 	path = dmCorePlugin/test/project/plugins/dmTagPlugin
 	url = git://github.com/diem-project/dmTagPlugin.git
+[submodule "dmCorePlugin/lib/vendor/php-html-writer"]
+	path = dmCorePlugin/lib/vendor/php-html-writer
+	url = git://github.com/ornicar/php-html-writer.git
