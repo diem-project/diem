@@ -35,7 +35,7 @@ $area = $layout->getArea('top');
 
 $t->ok($layout->exists(), 'Created a layout');
 $t->ok($area->exists(), 'Created a top area');
-$t->is(dmDb::table('DmArea')->count(), $nbAreas+4, $nbAreas.'+4 in db');
+$t->is(dmDb::table('DmArea')->count(), $nbAreas+1, $nbAreas.'+1 in db');
 
 $layout->delete();
 
