@@ -48,7 +48,7 @@ class dmAdminLinkTag extends dmBaseLinkTag
         
         if ($page = dmDb::table('DmPage')->findOneBySource($pageResource))
         {
-          $resource = preg_replace('|^page:\d+(.*)$|', 'app:front/'.$page->slug.'$1', $resource);
+          $resource = preg_replace('|^page:\d+(.*)$|', 'app:front/'.$page->get('slug').'$1', $resource);
         }
         else
         {
@@ -75,10 +75,11 @@ class dmAdminLinkTag extends dmBaseLinkTag
           throw new dmException(sprintf('%s is not a valid media resource. The media with id %s does not exist', $resource, $mediaResource));
         }
       }
-      elseif (strncmp($this->resource, 'app:', 4) === 0)
+
+      if (strncmp($resource, 'app:', 4) === 0)
       {
         $type = 'uri';
-        $app = substr($this->resource, 4);
+        $app = substr($resource, 4);
         /*
          * A slug may be added to the app name, extract it
          */
@@ -94,9 +95,9 @@ class dmAdminLinkTag extends dmBaseLinkTag
         
         $resource = $this->serviceContainer->getService('script_name_resolver')->get($app).$slug;
       }
-      elseif ($this->resource{0} === '/')
+      elseif ($resource{0} === '/')
       {
-        $resource = $this->resource;
+        $resource = $resource;
         
         /*
          * add relativeUrlRoot to absolute resource
@@ -106,16 +107,11 @@ class dmAdminLinkTag extends dmBaseLinkTag
           $resource = $relativeUrlRoot.$resource;
         }
       }
-      elseif(strncmp($this->resource, '+/', 2) === 0)
+      elseif(strncmp($resource, '+/', 2) === 0)
       {
-        $resource = substr($this->resource, 2);
-      }
-      else
-      {
-        $resource = $this->resource;
+        $resource = substr($resource, 2);
       }
     }
-
     elseif(is_array($this->resource))
     {
       if(isset($this->resource[1]) && is_object($this->resource[1]))
