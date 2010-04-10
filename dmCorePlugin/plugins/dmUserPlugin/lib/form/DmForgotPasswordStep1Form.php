@@ -1,6 +1,6 @@
 <?php
 
-class DmForgotPasswordForm extends dmForm
+class DmForgotPasswordStep1Form extends dmForm
 {
   public function configure()
   {

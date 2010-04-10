@@ -24,7 +24,8 @@ DmUser:
     last_login:
       type: timestamp
     forgot_password_code:
-      type: string(8)
+      type: string(12)
+      unique: true
   indexes:
     is_active_idx:
       fields: [is_active]

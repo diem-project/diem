@@ -68,11 +68,11 @@ class dmDataLoad
     $array = array(
       'dm_user_forgot_password' => array(
         'description' => 'Sent to a user that requests a new password',
-        'vars'        => 'username, email, new_password',
+        'vars'        => 'username, email, step2_url',
         'from_email'  => 'webmaster@domain.com',
         'to_email'    => '%email%',
-        'subject'     => dmConfig::get('site_name').': your new password',
-        'body'        => 'Hello %username%'."\n".'Your new password is "%new_password%".'
+        'subject'     => dmConfig::get('site_name').': change your password',
+        'body'        => 'Hello %username%'."\n".'You can choose a new password at %step2_url%'
       )
     );
 

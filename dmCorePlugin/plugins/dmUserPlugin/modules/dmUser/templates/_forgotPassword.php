@@ -6,29 +6,27 @@ if($sf_user->isAuthenticated())
   return;
 }
 
-if($email = $sf_user->getFlash('dm_new_password_sent'))
+if($email = $sf_user->getFlash('dm_forgot_password_email_sent'))
 {
-  echo _tag('p', __('A new password has been sent to %email%', array('%email%' => $email)));
+  echo _tag('p', __('A link to change your password has been sent to %email%', array('%email%' => $email)));
   echo _link('main/signin');
   return;
 }
 
-echo $form->open('.dm_forgot_password_form');
+if($sf_user->getFlash('dm_forgot_password_changed'))
+{
+  echo _tag('p', __('Your password has been changed'));
+  echo _link('main/signin');
+  return;
+}
 
-echo _open('ul.dm_form_elements');
-
-  echo _tag('li.dm_form_element', $form['email']->label()->field()->error());
-
-  // render captcha if enabled
-  if($form->isCaptchaEnabled())
-  {
-    echo _tag('li.dm_form_element', $form['captcha']->label(null, 'for=false')->field()->error());
-  }
-
-echo _close('ul');
-
-echo $form->renderHiddenFields();
-
-echo $form->submit(__('Receive a new password'));
-
-echo $form->close();
+// step 1: request a new password by giving an email
+if($step == 1)
+{
+  include_partial('dmUser/forgotPasswordStep1', array('form' => $form));
+}
+// step 2: the mail has been received, now choose the new password
+else
+{
+  include_partial('dmUser/forgotPasswordStep2', array('form' => $form));
+}

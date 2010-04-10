@@ -97,47 +97,66 @@ class BasedmUserActions extends myFrontModuleActions
    */
   public function executeForgotPasswordWidget(dmWebRequest $request)
   {
-    $form = new DmForgotPasswordForm();
-
-    $user = $this->getUser();
-
-    if ($request->isMethod('post') && $request->hasParameter($form->getName()))
+    // step 1
+    if(!$forgotPasswordCode = $request->getParameter('_code'))
     {
-      $data = $request->getParameter($form->getName());
+      $form = new DmForgotPasswordStep1Form();
 
-      if($form->isCaptchaEnabled())
+      if ($request->isMethod('post') && $request->hasParameter($form->getName()))
       {
-        $data = array_merge($data, array('captcha' => array(
-          'recaptcha_challenge_field' => $request->getParameter('recaptcha_challenge_field'),
-          'recaptcha_response_field'  => $request->getParameter('recaptcha_response_field'),
-        )));
+        $data = $request->getParameter($form->getName());
+
+        if($form->isCaptchaEnabled())
+        {
+          $data = array_merge($data, array('captcha' => array(
+            'recaptcha_challenge_field' => $request->getParameter('recaptcha_challenge_field'),
+            'recaptcha_response_field'  => $request->getParameter('recaptcha_response_field'),
+          )));
+        }
+
+        $form->bind($data, $request->getFiles($form->getName()));
+
+        if ($form->isValid())
+        {
+          $user = $form->getUserByEmail($form->getValue('email'));
+          $user->forgot_password_code = dmString::random(12);
+          $user->save();
+          
+          $this->getService('mail')->setTemplate('dm_user_forgot_password')
+          ->addValues(array(
+            'username'      => $user->username,
+            'email'         => $user->email,
+            'step2_url'     => $this->getHelper()->link($this->getPage())->param('_code', $user->forgot_password_code)->getAbsoluteHref()
+          ))
+          ->send();
+
+          $this->getUser()->setFlash('dm_forgot_password_email_sent', $user->email);
+          $this->redirectBack();
+        }
       }
-
-      $form->bind($data, $request->getFiles($form->getName()));
-
-      if ($form->isValid())
-      {
-        $user = $form->getUserByEmail($form->getValue('email'));
-        $newPassword = dmString::random(7);
-        $user->password = $newPassword;
-        $user->save();
-
-        $this->getService('mail')
-        ->setTemplate('dm_user_forgot_password')
-        ->addValues(array(
-          'username'      => $user->username,
-          'email'         => $user->email,
-          'new_password'  => $newPassword
-        ))
-        ->send();
-
-        $this->getUser()->setFlash('dm_new_password_sent', $user->email);
-
-        $this->redirectBack();
-      }
+      $this->forms['DmForgotPasswordStep1'] = $form;
     }
+    // step 2
+    else
+    {
+      $this->forward404Unless($user = dmDb::table('DmUser')->retrieveByForgotPasswordCode($forgotPasswordCode));
 
-    $this->forms['DmForgotPassword'] = $form;
+      $form = new DmForgotPasswordStep2Form($user);
+
+      if ($request->isMethod('post') && $request->hasParameter($form->getName()))
+      {
+        if($form->bindAndValid($request))
+        {
+          $user->password = $form->getValue('password');
+          $user->forgot_password_code = null;
+          $user->save();
+          
+          $this->getUser()->setFlash('dm_forgot_password_changed', true);
+          $this->redirectBack();
+        }
+      }
+      $this->forms['DmForgotPasswordStep2'] = $form;
+    }
   }
 
   public function executeSignin(dmWebRequest $request)

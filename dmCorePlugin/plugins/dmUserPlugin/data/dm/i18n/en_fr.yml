@@ -9,4 +9,6 @@
 "New password": "Nouveau mot de passe"
 "New password (again)": "Nouveau mot de passe ( confirmation )"
 "Receive a new password": "Recevoir un nouveau mot de passe"
-"A new password has been sent to %email%": "Un nouveau mot de passe a été envoyé à %email%"
+"A link to change your password has been sent to %email%": "Un lien pour changer votre mot de passe a été envoyé à %email%"
+"Your password has been changed": "Votre mot de passe a été modifié"
+"Save the new password": "Enregistrer le nouveau mot de passe"
