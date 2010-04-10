@@ -12,7 +12,7 @@ $helper->boot('front');
 // load both standard and alternative helpers
 dm::loadHelpers(array('Dm', 'DmAlternative', 'I18N'));
 
-$t = new lime_test(30);
+$t = new lime_test(29);
 
 /*
 * $helper is the test helper. It acts as a service container
@@ -130,9 +130,6 @@ $t->is(
 $div = '<div lang="c1"></div>';
 $t->is($templateHelper->£('div lang=c1'), _tag('div lang=c1'), $div);
 $t->is(£('div lang=c1'), _tag('div lang=c1'), $div);
-
-$div = '<div></div>';
-$t->is(£('div lang='.$helper->get('user')->getCulture()), $div, $div);
 
 $table = '<table><thead><tr><th>Header 1</th><th>Header 2</th></tr></thead></table>';
 $t->is(
