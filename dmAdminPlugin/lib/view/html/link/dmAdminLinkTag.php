@@ -30,7 +30,8 @@ class dmAdminLinkTag extends dmBaseLinkTag
     if(is_string($this->resource))
     {
       $resource = $this->resource;
-      /*
+      
+      /**
        * If a blank space is found in the source,
        * remove characters after it
        * because they are just a comment
@@ -40,13 +41,14 @@ class dmAdminLinkTag extends dmBaseLinkTag
       {
         $resource = substr($resource, 0, $blankSpacePos);
       }
+      
       if (strncmp($resource, 'page:', 5) === 0)
       {
         $pageResource = preg_replace('|^(page:\d+).*$|', '$1', $resource);
         
         if ($page = dmDb::table('DmPage')->findOneBySource($pageResource))
         {
-          $this->resource = preg_replace('|^page:\d+(.*)$|', 'app:front/'.$page->slug.'$1', $resource);
+          $resource = preg_replace('|^page:\d+(.*)$|', 'app:front/'.$page->slug.'$1', $resource);
         }
         else
         {
