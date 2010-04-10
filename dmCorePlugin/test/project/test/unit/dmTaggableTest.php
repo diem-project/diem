@@ -93,16 +93,16 @@ $firstTag = $popularTags->getFirst();
 $t->is_deeply($firstTag->toArray(), $expected = array(
   'id' => '26',
   'name' => 'tag1',
-  'num_dm_test_domain' => '2',
-  'num_dm_test_fruit' => '1',
+  'num_dm_test_domains' => '2',
+  'num_dm_test_fruits' => '1',
   'total_num' => '3'
-), 'Most popular tag is tag1 '.print_r($expected, true));
+), 'Most popular tag is tag1');
 
 $lastTag = $popularTags->getLast();
 $t->is_deeply($lastTag->toArray(), $expected = array(
   'id' => '31',
   'name' => 'tag6',
-  'num_dm_test_domain' => '0',
-  'num_dm_test_fruit' => '1',
+  'num_dm_test_domains' => '0',
+  'num_dm_test_fruits' => '1',
   'total_num' => '1'
-), 'Less popular tag is tag6 '.print_r($expected, true));
+), 'Less popular tag is tag6');
