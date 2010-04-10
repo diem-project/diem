@@ -49,6 +49,6 @@ abstract class dmFrontLinkTag extends dmBaseLinkTag
       return $href;
     }
 
-    return $this->requestContext['absolute_url_root'].str_replace('//', '/', '/'.$href);
+    return $this->requestContext['uri_prefix'].$href;
   }
 }
