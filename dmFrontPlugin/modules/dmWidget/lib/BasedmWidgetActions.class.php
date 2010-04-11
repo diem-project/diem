@@ -9,9 +9,18 @@ class BasedmWidgetActions extends dmFrontBaseActions
    */
   public function executeRender(dmWebRequest $request)
   {
-    return $this->renderText(
-      $this->getService('page_helper')->renderWidgetInner($this->requireWidget()->toArrayWithMappedValue())
-    );
+    $widgetArray = $this->requireWidget()->toArrayWithMappedValue();
+
+    try
+    {
+      $html = $this->getService('page_helper')->renderWidgetInner($widgetArray);
+    }
+    catch(dmFormNotFoundException $e)
+    {
+      $html = 'This widget can not be rendered directly';
+    }
+
+    return $this->renderText($html);
   }
 
   public function executeEditRecord(dmWebRequest $request)
