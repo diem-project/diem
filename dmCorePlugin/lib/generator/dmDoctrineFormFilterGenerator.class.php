@@ -132,4 +132,46 @@ class dmDoctrineFormFilterGenerator extends sfDoctrineFormFilterGenerator
 
     return $options;
   }
+
+  public function getAllColumns()
+  {
+    return array_merge($this->getColumns(), $this->getI18nColumns());
+  }
+
+  protected function getI18nColumns()
+  {
+    $columns = array();
+    
+    if($this->isI18n())
+    {
+      $i18nTable = $this->table->getI18nTable();
+
+      foreach(array_keys($i18nTable->getColumns()) as $name)
+      {
+        $columns[] = new sfDoctrineColumn($name, $i18nTable);
+      }
+    }
+
+    return $columns;
+  }
+  
+  /**
+   * Returns the maximum length for a column name.
+   *
+   * @return integer The length of the longer column name
+   */
+  public function getColumnNameMaxLength()
+  {
+    $max = parent::getColumnNameMaxLength();
+    
+    foreach ($this->getI18nColumns() as $column)
+    {
+      if (($m = strlen($column->getFieldName())) > $max)
+      {
+        $max = $m;
+      }
+    }
+
+    return $max;
+  }
 }

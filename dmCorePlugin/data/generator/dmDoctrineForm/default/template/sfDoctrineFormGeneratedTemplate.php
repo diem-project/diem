@@ -57,14 +57,14 @@ abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->
 
 <?php endif; ?>
 <?php if ($this->table->hasI18n()): ?>
-		if('embed' == sfConfig::get('dm_i18n_form'))
+    if('embed' == sfConfig::get('dm_i18n_form'))
     {
       $this->embedI18n(sfConfig::get('dm_i18n_cultures'));
     }
     else
     {
       $this->mergeI18nForm();
-		}
+    }
 
 <?php endif; ?>
     $this->widgetSchema->setNameFormat('<?php echo $this->underscore($this->modelName) ?>[%s]');

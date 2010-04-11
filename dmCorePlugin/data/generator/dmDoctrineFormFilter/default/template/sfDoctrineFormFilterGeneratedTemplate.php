@@ -31,6 +31,11 @@ abstract class Base<?php echo $this->table->getOption('name') ?>FormFilter exten
       '<?php echo $this->underscore($relation['alias']) ?>_list'<?php echo str_repeat(' ', $this->getColumnNameMaxLength() - strlen($this->underscore($relation['alias']).'_list')) ?> => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => '<?php echo $relation['table']->getOption('name') ?>', 'required' => false)),
 <?php endforeach; ?>
     ));
+    
+<?php if ($this->table->hasI18n()): ?>
+    $this->mergeI18nForm();
+
+<?php endif; ?>
 
     $this->widgetSchema->setNameFormat('<?php echo $this->underscore($this->modelName) ?>_filters[%s]');
 
@@ -67,7 +72,7 @@ abstract class Base<?php echo $this->table->getOption('name') ?>FormFilter exten
   public function getFields()
   {
     return array(
-<?php foreach ($this->getColumns() as $column): ?>
+<?php foreach ($this->getAllColumns() as $column): ?>
       '<?php echo $column->getFieldName() ?>'<?php echo str_repeat(' ', $this->getColumnNameMaxLength() - strlen($column->getFieldName())) ?> => '<?php echo $this->getType($column) ?>',
 <?php endforeach; ?>
 <?php foreach ($this->getManyToManyRelations() as $relation): ?>
