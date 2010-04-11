@@ -64,6 +64,10 @@ foreach($widgetTypes as $moduleKey => $actions)
       
       $t->pass('Successfully obtained and rendered a '.$viewClass.' instance');
     }
+    catch(dmFormNotFoundException $e)
+    {
+      $t->skip('Form not found: aborting test');
+    }
     catch(Exception $e)
     {
       $t->fail('Successfully obtained and rendered a '.$viewClass.' instance : '.$e->getMessage());
