@@ -73,11 +73,19 @@ class dmFrontTestFunctional extends dmTestFunctional
   {
     list($module, $action) = explode('/', $moduleAction);
 
-    $this
-    ->info('Add a '.$moduleAction.' widget')
-    ->get(sprintf('/index.php/+/dmWidget/add?to_dm_zone=%d&mod='.$module.'&act='.$action.'&dm_cpi=%d', $zone->id, $this->getPage()->id))
-    ->checks(array('module_action' => 'dmWidget/add', 'method' => 'get'))
-    ->has('.dm_widget.'.str_replace('dm_widget_', '', dmString::underscore($module)).'.'.dmString::underscore($action));
+    $this->info('Add a '.$moduleAction.' widget');
+
+    try
+    {
+      $this->get(sprintf('/index.php/+/dmWidget/add?to_dm_zone=%d&mod='.$module.'&act='.$action.'&dm_cpi=%d', $zone->id, $this->getPage()->id));
+
+      $this
+      ->checks(array('module_action' => 'dmWidget/add', 'method' => 'get'))
+      ->has('.dm_widget.'.str_replace('dm_widget_', '', dmString::underscore($module)).'.'.dmString::underscore($action));
+    }
+    catch(dmFormNotFoundException $e)
+    {
+    }
 
     $zone->refreshRelated('Widgets');
 
