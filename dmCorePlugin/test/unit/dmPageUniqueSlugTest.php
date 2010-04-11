@@ -30,14 +30,19 @@ $page2 = $table->create(array(
 
 $t->ok($page2->exists(), 'Created a page');
 
-$t->is($page2->slug, 'slug1-1', 'Page slug is slug1-1');
+$t->is($page2->slug, 'slug1-1', 'Page2 slug is slug1-1');
 
-$page1->slug = 'slug-1';
+$page1->slug = 'slug1-1';
 $page1->save();
 
-$t->is($page1->slug, 'slug-2', 'Page1 slug is now slug-2');
+$t->is($page1->slug, 'slug1-2', 'Page1 slug is now slug1-2');
 
-$page2->slug = 'slug';
+$page2->slug = 'slug1';
 $page2->save();
 
-$t->is($page1->slug, 'slug', 'Page2 slug is now slug1');
+$t->is($page2->slug, 'slug1', 'Page2 slug is now slug1');
+
+$page2->slug = '';
+$page2->save();
+
+$t->is($page2->slug, '-1', 'Page2 slug is now -1');
