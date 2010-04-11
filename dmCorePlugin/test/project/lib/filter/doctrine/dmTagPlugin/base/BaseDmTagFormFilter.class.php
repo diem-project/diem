@@ -13,15 +13,15 @@ abstract class BaseDmTagFormFilter extends BaseFormFilterDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-      'name'                => new sfWidgetFormDmFilterInput(),
-      'dm_test_domain_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomain')),
-      'dm_test_fruit_list'  => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'DmTestFruit')),
+      'name'                 => new sfWidgetFormDmFilterInput(),
+      'dm_test_domains_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomain')),
+      'dm_test_fruits_list'  => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'DmTestFruit')),
     ));
 
     $this->setValidators(array(
-      'name'                => new sfValidatorPass(array('required' => false)),
-      'dm_test_domain_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomain', 'required' => false)),
-      'dm_test_fruit_list'  => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestFruit', 'required' => false)),
+      'name'                 => new sfValidatorPass(array('required' => false)),
+      'dm_test_domains_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomain', 'required' => false)),
+      'dm_test_fruits_list'  => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestFruit', 'required' => false)),
     ));
 
     $this->widgetSchema->setNameFormat('dm_tag_filters[%s]');
@@ -33,7 +33,7 @@ abstract class BaseDmTagFormFilter extends BaseFormFilterDoctrine
     parent::setup();
   }
 
-  public function addDmTestDomainListColumnQuery(Doctrine_Query $query, $field, $values)
+  public function addDmTestDomainsListColumnQuery(Doctrine_Query $query, $field, $values)
   {
     if (!is_array($values))
     {
@@ -49,7 +49,7 @@ abstract class BaseDmTagFormFilter extends BaseFormFilterDoctrine
           ->andWhereIn('DmTestDomainDmTag.id', $values);
   }
 
-  public function addDmTestFruitListColumnQuery(Doctrine_Query $query, $field, $values)
+  public function addDmTestFruitsListColumnQuery(Doctrine_Query $query, $field, $values)
   {
     if (!is_array($values))
     {
@@ -73,10 +73,10 @@ abstract class BaseDmTagFormFilter extends BaseFormFilterDoctrine
   public function getFields()
   {
     return array(
-      'id'                  => 'Number',
-      'name'                => 'Text',
-      'dm_test_domain_list' => 'ManyKey',
-      'dm_test_fruit_list'  => 'ManyKey',
+      'id'                   => 'Number',
+      'name'                 => 'Text',
+      'dm_test_domains_list' => 'ManyKey',
+      'dm_test_fruits_list'  => 'ManyKey',
     );
   }
 }

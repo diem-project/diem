@@ -13,6 +13,7 @@
  * @property boolean $is_active
  * @property boolean $is_super_admin
  * @property timestamp $last_login
+ * @property string $forgot_password_code
  * @property Doctrine_Collection $Groups
  * @property Doctrine_Collection $Permissions
  * @property Doctrine_Collection $DmLock
@@ -22,38 +23,40 @@
  * @property Doctrine_Collection $Posts
  * @property Doctrine_Collection $DmTestPosts
  * 
- * @method string              getUsername()         Returns the current record's "username" value
- * @method string              getEmail()            Returns the current record's "email" value
- * @method string              getAlgorithm()        Returns the current record's "algorithm" value
- * @method string              getSalt()             Returns the current record's "salt" value
- * @method string              getPassword()         Returns the current record's "password" value
- * @method boolean             getIsActive()         Returns the current record's "is_active" value
- * @method boolean             getIsSuperAdmin()     Returns the current record's "is_super_admin" value
- * @method timestamp           getLastLogin()        Returns the current record's "last_login" value
- * @method Doctrine_Collection getGroups()           Returns the current record's "Groups" collection
- * @method Doctrine_Collection getPermissions()      Returns the current record's "Permissions" collection
- * @method Doctrine_Collection getDmLock()           Returns the current record's "DmLock" collection
- * @method Doctrine_Collection getDmUserPermission() Returns the current record's "DmUserPermission" collection
- * @method Doctrine_Collection getDmUserGroup()      Returns the current record's "DmUserGroup" collection
- * @method DmRememberKey       getRememberKeys()     Returns the current record's "RememberKeys" value
- * @method Doctrine_Collection getPosts()            Returns the current record's "Posts" collection
- * @method Doctrine_Collection getDmTestPosts()      Returns the current record's "DmTestPosts" collection
- * @method DmUser              setUsername()         Sets the current record's "username" value
- * @method DmUser              setEmail()            Sets the current record's "email" value
- * @method DmUser              setAlgorithm()        Sets the current record's "algorithm" value
- * @method DmUser              setSalt()             Sets the current record's "salt" value
- * @method DmUser              setPassword()         Sets the current record's "password" value
- * @method DmUser              setIsActive()         Sets the current record's "is_active" value
- * @method DmUser              setIsSuperAdmin()     Sets the current record's "is_super_admin" value
- * @method DmUser              setLastLogin()        Sets the current record's "last_login" value
- * @method DmUser              setGroups()           Sets the current record's "Groups" collection
- * @method DmUser              setPermissions()      Sets the current record's "Permissions" collection
- * @method DmUser              setDmLock()           Sets the current record's "DmLock" collection
- * @method DmUser              setDmUserPermission() Sets the current record's "DmUserPermission" collection
- * @method DmUser              setDmUserGroup()      Sets the current record's "DmUserGroup" collection
- * @method DmUser              setRememberKeys()     Sets the current record's "RememberKeys" value
- * @method DmUser              setPosts()            Sets the current record's "Posts" collection
- * @method DmUser              setDmTestPosts()      Sets the current record's "DmTestPosts" collection
+ * @method string              getUsername()             Returns the current record's "username" value
+ * @method string              getEmail()                Returns the current record's "email" value
+ * @method string              getAlgorithm()            Returns the current record's "algorithm" value
+ * @method string              getSalt()                 Returns the current record's "salt" value
+ * @method string              getPassword()             Returns the current record's "password" value
+ * @method boolean             getIsActive()             Returns the current record's "is_active" value
+ * @method boolean             getIsSuperAdmin()         Returns the current record's "is_super_admin" value
+ * @method timestamp           getLastLogin()            Returns the current record's "last_login" value
+ * @method string              getForgotPasswordCode()   Returns the current record's "forgot_password_code" value
+ * @method Doctrine_Collection getGroups()               Returns the current record's "Groups" collection
+ * @method Doctrine_Collection getPermissions()          Returns the current record's "Permissions" collection
+ * @method Doctrine_Collection getDmLock()               Returns the current record's "DmLock" collection
+ * @method Doctrine_Collection getDmUserPermission()     Returns the current record's "DmUserPermission" collection
+ * @method Doctrine_Collection getDmUserGroup()          Returns the current record's "DmUserGroup" collection
+ * @method DmRememberKey       getRememberKeys()         Returns the current record's "RememberKeys" value
+ * @method Doctrine_Collection getPosts()                Returns the current record's "Posts" collection
+ * @method Doctrine_Collection getDmTestPosts()          Returns the current record's "DmTestPosts" collection
+ * @method DmUser              setUsername()             Sets the current record's "username" value
+ * @method DmUser              setEmail()                Sets the current record's "email" value
+ * @method DmUser              setAlgorithm()            Sets the current record's "algorithm" value
+ * @method DmUser              setSalt()                 Sets the current record's "salt" value
+ * @method DmUser              setPassword()             Sets the current record's "password" value
+ * @method DmUser              setIsActive()             Sets the current record's "is_active" value
+ * @method DmUser              setIsSuperAdmin()         Sets the current record's "is_super_admin" value
+ * @method DmUser              setLastLogin()            Sets the current record's "last_login" value
+ * @method DmUser              setForgotPasswordCode()   Sets the current record's "forgot_password_code" value
+ * @method DmUser              setGroups()               Sets the current record's "Groups" collection
+ * @method DmUser              setPermissions()          Sets the current record's "Permissions" collection
+ * @method DmUser              setDmLock()               Sets the current record's "DmLock" collection
+ * @method DmUser              setDmUserPermission()     Sets the current record's "DmUserPermission" collection
+ * @method DmUser              setDmUserGroup()          Sets the current record's "DmUserGroup" collection
+ * @method DmUser              setRememberKeys()         Sets the current record's "RememberKeys" value
+ * @method DmUser              setPosts()                Sets the current record's "Posts" collection
+ * @method DmUser              setDmTestPosts()          Sets the current record's "DmTestPosts" collection
  * 
  * @package    retest
  * @subpackage model
@@ -101,6 +104,11 @@ abstract class BaseDmUser extends myDoctrineRecord
              ));
         $this->hasColumn('last_login', 'timestamp', null, array(
              'type' => 'timestamp',
+             ));
+        $this->hasColumn('forgot_password_code', 'string', 12, array(
+             'type' => 'string',
+             'unique' => true,
+             'length' => 12,
              ));
 
 

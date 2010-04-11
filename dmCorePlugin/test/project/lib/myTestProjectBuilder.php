@@ -170,7 +170,7 @@ class myTestProjectBuilder
     $this->createWidget(
       'main/sitemap',
       array(),
-      $page->PageView->Area->Zones[0]
+      $page->PageView->getArea('content')->Zones[0]
     )->save();
   }
 
@@ -213,13 +213,13 @@ class myTestProjectBuilder
         'navTop'      => true,
         'navBottom'   => true
       ),
-      dmDb::table('DmPage')->findOneByModuleAndAction('dmTestDomain', 'list')->PageView->Area->Zones[0]
+      dmDb::table('DmPage')->findOneByModuleAndAction('dmTestDomain', 'list')->PageView->getArea('content')->Zones[0]
     )->save();
 
     $this->createWidget(
       'dmWidgetContent/title',
       array('text' => 'Domains', 'tag' => 'h1'),
-      dmDb::table('DmPage')->findOneByModuleAndAction('dmTestDomain', 'list')->PageView->Area->Zones[0]
+      dmDb::table('DmPage')->findOneByModuleAndAction('dmTestDomain', 'list')->PageView->getArea('content')->Zones[0]
     )->save();
 
     $this->context->setPage($page = dmDb::table('DmPage')->findOneByModuleAndAction('dmTestDomain', 'show'));
@@ -234,14 +234,14 @@ class myTestProjectBuilder
         'navTop'      => true,
         'navBottom'   => true
       ),
-      $page->PageView->Area->Zones[0]
+      $page->PageView->getArea('content')->Zones[0]
     )->save();
     
     // domain show
     $this->createWidget(
       'dmTestDomain/show',
       array(),
-      $page->PageView->Area->Zones[0]
+      $page->PageView->getArea('content')->Zones[0]
     )->save();
 
     $this->context->setPage($page = dmDb::table('DmPage')->findOneByModuleAndAction('dmTestCateg', 'show'));
@@ -256,14 +256,14 @@ class myTestProjectBuilder
         'navTop'      => true,
         'navBottom'   => true
       ),
-      $page->PageView->Area->Zones[0]
+      $page->PageView->getArea('content')->Zones[0]
     )->save();
     
     // categ show
     $this->createWidget(
       'dmTestCateg/show',
       array(),
-      $page->PageView->Area->Zones[0]
+      $page->PageView->getArea('content')->Zones[0]
     )->save();
 
     $this->context->setPage($page = dmDb::table('DmPage')->findOneByModuleAndAction('dmTestPost', 'show'));
@@ -278,14 +278,14 @@ class myTestProjectBuilder
         'navTop'      => true,
         'navBottom'   => true
       ),
-      $page->PageView->Area->Zones[0]
+      $page->PageView->getArea('content')->Zones[0]
     )->save();
 
     // comment form
     $this->createWidget(
       'dmTestComment/form',
       array(),
-      $page->PageView->Area->Zones[0]
+      $page->PageView->getArea('content')->Zones[0]
     )->save();
 
     // tag list
@@ -298,14 +298,14 @@ class myTestProjectBuilder
         'navTop'      => true,
         'navBottom'   => true
       ),
-      $page->PageView->Area->Zones[0]
+      $page->PageView->getArea('content')->Zones[0]
     )->save();
 
     // post show
     $this->createWidget(
       'dmTestPost/show',
       array(),
-      $page->PageView->Area->Zones[0]
+      $page->PageView->getArea('content')->Zones[0]
     )->save();
 
     // tag list
@@ -318,7 +318,7 @@ class myTestProjectBuilder
         'navTop'      => true,
         'navBottom'   => true
       ),
-      dmDb::table('DmPage')->findOneByModuleAndAction('dmTestTag', 'list')->PageView->Area->Zones[0]
+      dmDb::table('DmPage')->findOneByModuleAndAction('dmTestTag', 'list')->PageView->getArea('content')->Zones[0]
     )->save();
 
     $this->context->setPage($page = dmDb::table('DmPage')->findOneByModuleAndAction('dmTestTag', 'show'));
@@ -333,14 +333,14 @@ class myTestProjectBuilder
         'navTop'      => true,
         'navBottom'   => true
       ),
-      $page->PageView->Area->Zones[0]
+      $page->PageView->getArea('content')->Zones[0]
     )->save();
 
     // tag show
     $this->createWidget(
       'dmTestTag/show',
       array(),
-      $page->PageView->Area->Zones[0]
+      $page->PageView->getArea('content')->Zones[0]
     )->save();
 
     // user list
@@ -353,7 +353,7 @@ class myTestProjectBuilder
         'navTop'      => true,
         'navBottom'   => true
       ),
-      dmDb::table('DmPage')->findOneByModuleAndAction('dmUser', 'list')->PageView->Area->Zones[0]
+      dmDb::table('DmPage')->findOneByModuleAndAction('dmUser', 'list')->PageView->getArea('content')->Zones[0]
     )->save();
 
     $this->context->setPage($page = dmDb::table('DmPage')->findOneByModuleAndAction('dmUser', 'show'));
@@ -362,7 +362,7 @@ class myTestProjectBuilder
     $this->createWidget(
       'dmUser/show',
       array(),
-      $page->PageView->Area->Zones[0]
+      $page->PageView->getArea('content')->Zones[0]
     )->save();
     
     // dmTag list
@@ -375,7 +375,7 @@ class myTestProjectBuilder
         'navTop'      => true,
         'navBottom'   => true
       ),
-      dmDb::table('DmPage')->findOneByModuleAndAction('dmTag', 'list')->PageView->Area->Zones[0]
+      dmDb::table('DmPage')->findOneByModuleAndAction('dmTag', 'list')->PageView->getArea('content')->Zones[0]
     )->save();
 
     $this->context->setPage($page = dmDb::table('DmPage')->findOneByModuleAndAction('dmTag', 'show'));
@@ -384,7 +384,7 @@ class myTestProjectBuilder
     $this->createWidget(
       'dmTag/show',
       array(),
-      $page->PageView->Area->Zones[0]
+      $page->PageView->getArea('content')->Zones[0]
     )->save();
 
     // domain list
@@ -397,7 +397,7 @@ class myTestProjectBuilder
         'navTop'      => true,
         'navBottom'   => true
       ),
-      $page->PageView->Area->Zones[0]
+      $page->PageView->getArea('content')->Zones[0]
     )->save();
   }
 
@@ -443,16 +443,22 @@ class myTestProjectBuilder
     $this->createWidget(
       'dmWidgetContent/title',
       array('text' => 'Home H1', 'tag' => 'h1'),
-      dmDb::table('DmPage')->findOneByModuleAndAction('main', 'root')->PageView->Area->Zones[0]
+      dmDb::table('DmPage')->findOneByModuleAndAction('main', 'root')->PageView->getArea('content')->Zones[0]
     )->save();
   }
 
   protected function addSigninForm()
-  { 
+  {
+    $this->createWidget(
+      'dmUser/signin',
+      array(),
+      dmDb::table('DmPage')->findOneByModuleAndAction('main', 'signin')->PageView->getArea('content')->Zones[0]
+    )->save();
+    
     $this->createWidget(
       'dmUser/form',
       array(),
-      dmDb::table('DmPage')->findOneByModuleAndAction('main', 'signin')->PageView->Area->Zones[0]
+      dmDb::table('DmPage')->findOneByModuleAndAction('main', 'signin')->PageView->getArea('content')->Zones[0]
     )->save();
   }
 

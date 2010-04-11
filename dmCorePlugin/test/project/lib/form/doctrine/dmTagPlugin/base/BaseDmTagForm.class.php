@@ -15,17 +15,17 @@ abstract class BaseDmTagForm extends BaseFormDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-      'id'                  => new sfWidgetFormInputHidden(),
-      'name'                => new sfWidgetFormInputText(),
-        'dm_test_domain_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomain', 'expanded' => true)),
-        'dm_test_fruit_list'  => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'DmTestFruit', 'expanded' => true)),
+      'id'                   => new sfWidgetFormInputHidden(),
+      'name'                 => new sfWidgetFormInputText(),
+        'dm_test_domains_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomain', 'expanded' => true)),
+        'dm_test_fruits_list'  => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'DmTestFruit', 'expanded' => true)),
     ));
 
     $this->setValidators(array(
-      'id'                  => new sfValidatorDoctrineChoice(array('model' => $this->getModelName(), 'column' => 'id', 'required' => false)),
-      'name'                => new sfValidatorString(array('max_length' => 255)),
-        'dm_test_domain_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomain', 'required' => false)),
-        'dm_test_fruit_list'  => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestFruit', 'required' => false)),
+      'id'                   => new sfValidatorDoctrineChoice(array('model' => $this->getModelName(), 'column' => 'id', 'required' => false)),
+      'name'                 => new sfValidatorString(array('max_length' => 255)),
+        'dm_test_domains_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomain', 'required' => false)),
+        'dm_test_fruits_list'  => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestFruit', 'required' => false)),
     ));
 
     $this->validatorSchema->setPostValidator(
@@ -71,34 +71,34 @@ abstract class BaseDmTagForm extends BaseFormDoctrine
   {
     parent::updateDefaultsFromObject();
 
-    if (isset($this->widgetSchema['dm_test_domain_list']))
+    if (isset($this->widgetSchema['dm_test_domains_list']))
     {
-      $this->setDefault('dm_test_domain_list', $this->object->DmTestDomain->getPrimaryKeys());
+      $this->setDefault('dm_test_domains_list', $this->object->DmTestDomains->getPrimaryKeys());
     }
 
-    if (isset($this->widgetSchema['dm_test_fruit_list']))
+    if (isset($this->widgetSchema['dm_test_fruits_list']))
     {
-      $this->setDefault('dm_test_fruit_list', $this->object->DmTestFruit->getPrimaryKeys());
+      $this->setDefault('dm_test_fruits_list', $this->object->DmTestFruits->getPrimaryKeys());
     }
 
   }
 
   protected function doSave($con = null)
   {
-    $this->saveDmTestDomainList($con);
-    $this->saveDmTestFruitList($con);
+    $this->saveDmTestDomainsList($con);
+    $this->saveDmTestFruitsList($con);
 
     parent::doSave($con);
   }
 
-  public function saveDmTestDomainList($con = null)
+  public function saveDmTestDomainsList($con = null)
   {
     if (!$this->isValid())
     {
       throw $this->getErrorSchema();
     }
 
-    if (!isset($this->widgetSchema['dm_test_domain_list']))
+    if (!isset($this->widgetSchema['dm_test_domains_list']))
     {
       // somebody has unset this widget
       return;
@@ -109,8 +109,8 @@ abstract class BaseDmTagForm extends BaseFormDoctrine
       $con = $this->getConnection();
     }
 
-    $existing = $this->object->DmTestDomain->getPrimaryKeys();
-    $values = $this->getValue('dm_test_domain_list');
+    $existing = $this->object->DmTestDomains->getPrimaryKeys();
+    $values = $this->getValue('dm_test_domains_list');
     if (!is_array($values))
     {
       $values = array();
@@ -119,24 +119,24 @@ abstract class BaseDmTagForm extends BaseFormDoctrine
     $unlink = array_diff($existing, $values);
     if (count($unlink))
     {
-      $this->object->unlink('DmTestDomain', array_values($unlink));
+      $this->object->unlink('DmTestDomains', array_values($unlink));
     }
 
     $link = array_diff($values, $existing);
     if (count($link))
     {
-      $this->object->link('DmTestDomain', array_values($link));
+      $this->object->link('DmTestDomains', array_values($link));
     }
   }
 
-  public function saveDmTestFruitList($con = null)
+  public function saveDmTestFruitsList($con = null)
   {
     if (!$this->isValid())
     {
       throw $this->getErrorSchema();
     }
 
-    if (!isset($this->widgetSchema['dm_test_fruit_list']))
+    if (!isset($this->widgetSchema['dm_test_fruits_list']))
     {
       // somebody has unset this widget
       return;
@@ -147,8 +147,8 @@ abstract class BaseDmTagForm extends BaseFormDoctrine
       $con = $this->getConnection();
     }
 
-    $existing = $this->object->DmTestFruit->getPrimaryKeys();
-    $values = $this->getValue('dm_test_fruit_list');
+    $existing = $this->object->DmTestFruits->getPrimaryKeys();
+    $values = $this->getValue('dm_test_fruits_list');
     if (!is_array($values))
     {
       $values = array();
@@ -157,13 +157,13 @@ abstract class BaseDmTagForm extends BaseFormDoctrine
     $unlink = array_diff($existing, $values);
     if (count($unlink))
     {
-      $this->object->unlink('DmTestFruit', array_values($unlink));
+      $this->object->unlink('DmTestFruits', array_values($unlink));
     }
 
     $link = array_diff($values, $existing);
     if (count($link))
     {
-      $this->object->link('DmTestFruit', array_values($link));
+      $this->object->link('DmTestFruits', array_values($link));
     }
   }
 
