@@ -238,15 +238,18 @@ LIMIT 1')->getStatement();
       }
     }
 
-    if(array_key_exists('slug', $this->getCurrentTranslation()->getModified()))
+    $translationModifiedFields = $this->getCurrentTranslation()->getModified();
+
+    parent::save($conn);
+    
+    if(array_key_exists('slug', $translationModifiedFields))
     {
       if(!$this->getTable()->isSlugUnique($this->get('slug'), $this->get('id')))
       {
         $this->set('slug', $this->getTable()->createUniqueSlug($this->get('slug'), $this->get('id')));
+        return $this->save();
       }
     }
-
-    parent::save($conn);
   
     if ($dispatcher = $this->getEventDispatcher())
     {

@@ -30,12 +30,12 @@ $page2 = $table->create(array(
 
 $t->ok($page2->exists(), 'Created a page');
 
-$t->is($page2->slug, 'slug1-1', 'Page2 slug is slug1-1');
+$t->is($page2->slug, 'slug1-'.$page2->id, 'Page2 slug is slug1-'.$page2->id);
 
-$page1->slug = 'slug1-1';
+$page1->slug = 'slug1-'.$page2->id;
 $page1->save();
 
-$t->is($page1->slug, 'slug1-2', 'Page1 slug is now slug1-2');
+$t->is($page1->slug, 'slug1-'.$page2->id.'-'.$page1->id, 'Page1 slug is now slug1-'.$page2->id.'-'.$page1->id);
 
 $page2->slug = 'slug1';
 $page2->save();
@@ -45,7 +45,7 @@ $t->is($page2->slug, 'slug1', 'Page2 slug is now slug1');
 $page2->slug = '';
 $page2->save();
 
-$t->is($page2->slug, '-1', 'Page2 slug is now -1');
+$t->is($page2->slug, '-'.$page2->id, 'Page2 slug is now -'.$page2->id);
 
 //$helper->get('page_tree_watcher')->connect();
 //

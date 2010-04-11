@@ -184,33 +184,7 @@ class PluginDmPageTable extends myDoctrineTable
 
   public function createUniqueSlug($slug, $id)
   {
-    $separatorPos = strrpos($slug, '-');
-
-    if(false === $separatorPos)
-    {
-      $slugPrefix = $slug;
-    }
-    else
-    {
-      $slugPrefix = substr($slug, 0, $separatorPos);
-    }
-
-    $similarSlugs = $this->getI18nTable()->createQuery('pt')
-    ->where('pt.lang = ?', dmDoctrineRecord::getDefaultCulture())
-    ->andwhere('pt.id != ?', $id ? $id : 0)
-    ->andWhere('pt.slug LIKE ?', $slugPrefix.'-%')
-    ->select('pt.slug')
-    ->fetchFlat();
-
-    $it = 0;
-    do
-    {
-      ++$it;
-      $uniqueSlug = $slugPrefix.'-'.$it;
-    }
-    while(in_array($uniqueSlug, $similarSlugs));
-
-    return $uniqueSlug;
+    return $slug.'-'.$id;
   }
   
   /**
