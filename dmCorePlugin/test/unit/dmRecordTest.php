@@ -4,7 +4,7 @@ require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
 $helper = new dmUnitTestHelper();
 $helper->boot();
 
-$t = new lime_test(26);
+$t = new lime_test(24);
 
 $t->diag('default culture tests');
 
@@ -38,10 +38,6 @@ $layout = dmDb::create('DmLayout', array(
   $t->is(dmDb::create('DmLayout')->orNull(), null, 'call orNull() on new record returns null');
 
 	$t->is($layout->orNull(), $layout, 'call orNull() on existing record returns the record');
-
-	$t->is(count($layout->Areas), 4, 'new DmLayout has 4 Areas');
-
-	$t->is($layout->Areas[4]->orNull(), null, 'call orNull() on non existing layout area returns NULL');
 
 $t->diag('Property access tests');
 
