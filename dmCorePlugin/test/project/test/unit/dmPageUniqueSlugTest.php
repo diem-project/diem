@@ -1,7 +1,7 @@
 <?php
 
-require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
-$helper = new dmUnitTestHelper();
+require_once(realpath(dirname(__FILE__).'/../../..').'/unit/helper/dmModuleUnitTestHelper.php');
+$helper = new dmModuleUnitTestHelper();
 $helper->boot();
 
 $t = new lime_test();
@@ -46,3 +46,16 @@ $page2->slug = '';
 $page2->save();
 
 $t->is($page2->slug, '-1', 'Page2 slug is now -1');
+
+//$helper->get('page_tree_watcher')->connect();
+//
+//$domain1 = dmDb::table('DmTestDomain')->create(array(
+//  'title' => '---'
+//))->saveGet();
+//
+//$domain2 = dmDb::table('DmTestDomain')->create(array(
+//  'title' => '---'
+//))->saveGet();
+//
+//$t->is($domain1->getDmPage()->slug, 'dm-test-domains-1');
+//$t->is($domain2->getDmPage()->slug, 'dm-test-domains-2');

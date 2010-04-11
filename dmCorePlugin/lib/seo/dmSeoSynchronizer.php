@@ -173,11 +173,20 @@ class dmSeoSynchronizer
 
         foreach($modifiedPages as $id => $modifiedFields)
         {
+          if(in_array('slug', $modifiedFields))
+          {
+            // verify the slug is not already in use
+            if(!dmDb::table('DmPage')->isUniqueSlug($modifiedFields['slug'], $id))
+            {
+              $modifiedFields['slug'] = dmDb::table('DmPage')->createUniqueSlug($modifiedFields['slug'], $id);
+            }
+          }
+          
           if (!$pages[$id]['exist'])
           {
             $modifiedFields['id'] = $id;
             $modifiedFields['lang'] = $this->culture;
-            $translation = new DmPageTranslation;
+            $translation = new DmPageTranslation();
             $translation->fromArray($modifiedFields);
 
             $conn->unitOfWork->processSingleInsert($translation);

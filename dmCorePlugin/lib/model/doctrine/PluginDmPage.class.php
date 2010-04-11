@@ -238,12 +238,11 @@ LIMIT 1')->getStatement();
       }
     }
 
-    $translation = $this->getCurrentTranslation();
-    if($translation->isModified())
+    if(array_key_exists('slug', $this->getCurrentTranslation()->getModified()))
     {
-      if(array_key_exists('slug', $translation->getModified()) && !$this->checkUniqueSlug())
+      if(!$this->getTable()->isSlugUnique($this->get('slug'), $this->get('id')))
       {
-        $this->makeSlugUnique();
+        $this->set('slug', $this->getTable()->createUniqueSlug($this->get('slug'), $this->get('id')));
       }
     }
 
@@ -253,47 +252,6 @@ LIMIT 1')->getStatement();
     {
       $dispatcher->notify(new sfEvent($this, 'dm.page.post_save'));
     }
-  }
-
-  protected function checkUniqueSlug()
-  {
-    return !$this->getTable()->getI18nTable()->createQuery('pt')
-    ->where('pt.lang = ?', self::getDefaultCulture())
-    ->andwhere('pt.id != '.$this->get('id'))
-    ->andWhere('pt.slug = ?', $this->get('slug'))
-    ->exists();
-  }
-
-  protected function makeSlugUnique()
-  {
-    $slug = $this->get('slug');
-    $separatorPos = strrpos($slug, '-');
-    
-    if(false === $separatorPos)
-    {
-      $slugPrefix = $slug;
-    }
-    else
-    {
-      $slugPrefix = substr($slug, 0, $separatorPos);
-    }
-    
-    $similarSlugs = $this->getTable()->getI18nTable()->createQuery('pt')
-    ->where('pt.lang = ?', self::getDefaultCulture())
-    ->andwhere('pt.id != '.$this->get('id'))
-    ->andWhere('pt.slug LIKE ?', $slugPrefix.'-%')
-    ->select('pt.slug')
-    ->fetchFlat();
-
-    $it = 0;
-    do
-    {
-      ++$it;
-      $slugTry = $slugPrefix.'-'.$it;
-    }
-    while(in_array($slugTry, $similarSlugs));
-
-    $this->set('slug', $slugTry);
   }
   
   public function preDelete($event)

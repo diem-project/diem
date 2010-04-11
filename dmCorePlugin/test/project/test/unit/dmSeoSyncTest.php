@@ -39,7 +39,7 @@ try
 }
 catch(Exception $e)
 {
-  $t->skip('Not supported on this server', $nbTests);
+  $t->skip('Not supported on this server: '.$e->getMessage(), $nbTests);
   return;
 }
 
@@ -48,12 +48,12 @@ $t->ok(true, sprintf('Seo updated in %01.2f s', $timer->getElapsedTime()));
 foreach(dmDb::table('dmTestPost')->findAll() as $post)
 {
 	if (!$page = $post->getDmPage())
-	{
-		$t->skip('Post '.$post.' has no page', 6);
-		continue;
-	}
+  {
+    $t->skip('Post '.$post.' has no page', 6);
+  	continue;
+  }
 
-	$page->refresh(true);
+  $page->refresh(true);
 
   $categ = $page->getNode()->getParent()->getRecord();
   $domain = $page->getNode()->getParent()->getNode()->getParent()->getRecord();
