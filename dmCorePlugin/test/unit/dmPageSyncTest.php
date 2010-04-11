@@ -4,11 +4,14 @@ require_once(dirname(__FILE__).'/helper/dmPageUnitTestHelper.php');
 $helper = new dmPageUnitTestHelper();
 $helper->boot();
 
+$t = new lime_test();
+
 /*
  * Stop here because of sqlite bug on my test server
  */
 if ('Sqlite' === Doctrine_Manager::connection()->getDriverName())
 {
+  $t->pass('Skip tests');
   return;
 }
 
@@ -17,8 +20,6 @@ $showModules = $helper->getModuleManager()->getModulesWithPage();
 $helper->get('page_tree_watcher')->connect();
 
 $nbBigIterations = 2;
-
-$t = new lime_test();
 
 $t->diag('page sync tests');
 
