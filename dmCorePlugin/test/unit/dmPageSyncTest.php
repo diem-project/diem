@@ -1,5 +1,9 @@
 <?php
 
+require_once(dirname(__FILE__).'/helper/dmPageUnitTestHelper.php');
+$helper = new dmPageUnitTestHelper();
+$helper->boot();
+
 /*
  * Stop here because of sqlite bug on my test server
  */
@@ -7,10 +11,6 @@ if ('Sqlite' === Doctrine_Manager::connection()->getDriverName())
 {
   return;
 }
-
-require_once(dirname(__FILE__).'/helper/dmPageUnitTestHelper.php');
-$helper = new dmPageUnitTestHelper();
-$helper->boot();
 
 $showModules = $helper->getModuleManager()->getModulesWithPage();
 
