@@ -27,41 +27,51 @@ $b->get(sprintf('+/dmWidget/render?widget_id=%d&page_id=%d', $widget->id, $pageI
 
 foreach(dmDb::table('DmPage')->findAll() as $page)
 {
-  $zones = $page->PageView->Area->Zones->getData();
-  
-//  foreach($page->PageView->Layout->Areas as $area)
-//  {
-//    $zones = array_merge($zones, $area->Zones->getData());
-//  }
-
-  $failed = array();
-  $passed = 0;
-  foreach($zones as $zone)
+  foreach($page->PageView->Areas as $area)
   {
-    foreach($zone->Widgets as $widget)
-    {
-      $b->get($url = sprintf('+/dmWidget/render?widget_id=%d&page_id=%d', $widget->id, $page->id));
+    $zones = $area->Zones->getData();
 
-      if(200 !== $b->getResponse()->getStatusCode())
+  //  foreach($page->PageView->Layout->Areas as $area)
+  //  {
+  //    $zones = array_merge($zones, $area->Zones->getData());
+  //  }
+
+    $failed = array();
+    $passed = 0;
+    foreach($zones as $zone)
+    {
+      foreach($zone->Widgets as $widget)
       {
-        $failed[] = $url;
-      }
-      else
-      {
-        $passed++;
+        try
+        {
+          $b->get($url = sprintf('+/dmWidget/render?widget_id=%d&page_id=%d', $widget->id, $page->id));
+
+          if(200 !== $b->getResponse()->getStatusCode())
+          {
+            $failed[] = $url;
+          }
+          else
+          {
+            $passed++;
+          }
+        }
+        catch(dmFormNotFoundException $e)
+        {
+          
+        }
       }
     }
-  }
 
-  if(count($failed))
-  {
-    foreach($failed as $url)
+    if(count($failed))
     {
-      $b->get($url)->checks();
+      foreach($failed as $url)
+      {
+        $b->get($url)->checks();
+      }
     }
-  }
-  elseif($passed)
-  {
-    $b->test()->pass($passed.' widgets successfully rendered for page '.$page);
+    elseif($passed)
+    {
+      $b->test()->pass($passed.' widgets successfully rendered for page '.$page);
+    }
   }
 }
