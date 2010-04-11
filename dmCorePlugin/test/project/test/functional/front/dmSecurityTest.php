@@ -214,7 +214,7 @@ $b->info('Synchronise pages...');
 $helper->getService('filesystem')->sf('dm:sync-pages');
 
 $b
-->back()
+->get('/authors')
 ->click('Jannis')
 ->checks()
 ->get('/authors/jannis')
