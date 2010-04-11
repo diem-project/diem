@@ -2,6 +2,20 @@
 
 class dmTestFunctional extends sfTestFunctional
 {
+  /**
+   * Initializes the browser tester instance.
+   *
+   * @param sfBrowserBase $browser A sfBrowserBase instance
+   * @param lime_test     $lime    A lime instance
+   */
+  public function __construct(sfBrowserBase $browser, lime_test $lime = null, $testers = array())
+  {
+    $testers = array_merge($testers, array(
+      'response'   => 'dmTesterResponse'
+    ));
+
+    parent::__construct($browser, $lime, $testers);
+  }
 
   public function checks(array $checks = array())
   {
