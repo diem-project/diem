@@ -7,7 +7,6 @@ a.dm_open_filter_box {
 
 div.dm_filter_box {
   width: 400px;
-  height: 400px;
   overflow: auto;
   background: #fff;
   border: 1px solid #D3D3D3;
@@ -41,6 +40,9 @@ div.dm_filter_box p.title {
 
 div.dm_filter_box form {
   float: none;
+  height: 400px;
+  overflow: auto;
+  padding-bottom: 1em;
 }
 
 div.dm_filter_box .sf_admin_form_row {
