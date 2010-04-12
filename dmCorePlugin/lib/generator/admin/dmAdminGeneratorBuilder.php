@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * Create a generator.yml for an admin module
  */
 class dmAdminGeneratorBuilder
@@ -210,7 +210,7 @@ class dmAdminGeneratorBuilder
       $this->table->getIdentifierColumnName()
     );
 
-    $fields = dmArray::valueToKey(array_diff($this->table->getColumnNames(), array_unique(array_merge(
+    $fields = dmArray::valueToKey(array_diff($this->table->getAllColumnNames(), array_unique(array_merge(
       // always exclude these fields
       self::$filterExcludedFields,
       // already included

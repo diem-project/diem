@@ -153,7 +153,7 @@ EOF
 
     $generatorFile = dmOs::join($moduleDir, 'config/generator.yml');
 
-    $generatorBuilder = new myAdminGeneratorBuilder($moduleObject, $this->dispatcher);
+    $generatorBuilder = new dmAdminGeneratorBuilder($moduleObject, $this->dispatcher);
 
     file_put_contents(
       $generatorFile,
