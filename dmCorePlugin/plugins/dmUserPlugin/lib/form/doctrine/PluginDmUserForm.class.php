@@ -26,7 +26,8 @@ abstract class PluginDmUserForm extends BaseDmUserForm
       $this['groups_list'],
       $this['permissions_list'],
       $this['is_active'],
-      $this['is_super_admin']
+      $this['is_super_admin'],
+      $this['forgot_password_code']
     );
 
     $this->widgetSchema['password'] = new sfWidgetFormInputPassword(array(), array(

@@ -15,7 +15,8 @@ class BaseDmUserAdminForm extends BaseDmUserForm
       $this['created_at'],
       $this['updated_at'],
       $this['salt'],
-      $this['algorithm']
+      $this['algorithm'],
+      $this['forgot_password_code']
     );
 
     if (isset($this->widgetSchema['groups_list']))
