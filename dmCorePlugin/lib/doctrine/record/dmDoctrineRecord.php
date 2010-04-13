@@ -307,7 +307,12 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
    */
   public function getDmPage()
   {
-    if(!$this->getDmModule()->hasPage())
+    if($this->getTable()->hasRelation('DmPage'))
+    {
+      return $this->_get('DmPage');
+    }
+    
+    if(!$this->getDmModule() || !$this->getDmModule()->hasPage())
     {
       throw new dmRecordException(sprintf('record %s has no page because module %s has no page', get_class($this), $this->getDmModule()));
     }
@@ -595,7 +600,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
         {
           return $this->_get($fieldName, $load);
         }
-        
+
         /**
          * Special case.
          * ->getService() is reserved for getting services
