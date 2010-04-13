@@ -190,7 +190,7 @@ class PluginDmPageTable extends myDoctrineTable
       ->where('pt.id = ?', $this->findOneById($id)->getNodeParentId())
       ->andWhere('pt.lang = ?', dmDoctrineRecord::getDefaultCulture())
       ->select('pt.slug')
-      ->fetchPDO();
+      ->fetchValue();
     }
     
     if($slug == $parentSlug)

@@ -47,7 +47,7 @@ $t->is($page2->slug, 'slug1', 'Page2 slug is now slug1');
 $page2->slug = '';
 $page2->save();
 
-$t->is($page2->slug, '-'.$page2->id, 'Page2 slug is now -'.$page2->id);
+$t->is($page2->slug, '/'.$page2->id, 'Page2 slug is now /'.$page2->id);
 
 $page1->Node->moveAsFirstChildOf($page2);
 $page2->refresh();
