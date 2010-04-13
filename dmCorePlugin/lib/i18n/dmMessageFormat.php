@@ -21,7 +21,7 @@ class dmMessageFormat extends sfMessageFormat
     
     if(false === $translated)
     {
-      $translated = $this->formatFastUnstranslated($string, $args);
+      $translated = $this->formatFastUntranslated($string, $args);
     }
     
     return $translated;
