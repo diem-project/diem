@@ -188,7 +188,7 @@ class dmSeoSynchronizer
               if(!dmDb::table('DmPage')->isUniqueSlug($translation->get('slug'), $id))
               {
                 myDoctrineQuery::create($conn)->update('DmPageTranslation')
-                ->set(array('slug' => dmDb::table('DmPage')->createUniqueSlug($translation->get('slug'), $id)))
+                ->set(array('slug' => dmDb::table('DmPage')->createUniqueSlug($translation->get('slug'), $id, $parentSlug)))
                 ->where('id = ?', $id)
                 ->andWhere('lang = ?', $this->culture)
                 ->execute();
@@ -202,7 +202,7 @@ class dmSeoSynchronizer
               // verify the slug is not already in use
               if(!dmDb::table('DmPage')->isSlugUnique($modifiedFields['slug'], $id))
               {
-                $modifiedFields['slug'] = dmDb::table('DmPage')->createUniqueSlug($modifiedFields['slug'], $id);
+                $modifiedFields['slug'] = dmDb::table('DmPage')->createUniqueSlug($modifiedFields['slug'], $id, $parentSlug);
               }
             }
             

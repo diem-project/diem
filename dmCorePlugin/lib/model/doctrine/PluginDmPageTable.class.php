@@ -182,9 +182,27 @@ class PluginDmPageTable extends myDoctrineTable
     ->exists();
   }
 
-  public function createUniqueSlug($slug, $id)
+  public function createUniqueSlug($slug, $id, $parentSlug = null)
   {
-    return $slug.'-'.$id;
+    if(null === $parentSlug)
+    {
+      $parentSlug = $this->getI18nTable()->createQuery('pt')
+      ->where('pt.id = ?', $this->findOneById($id)->getNodeParentId())
+      ->andWhere('pt.lang = ?', dmDoctrineRecord::getDefaultCulture())
+      ->select('pt.slug')
+      ->fetchPDO();
+    }
+    
+    if($slug == $parentSlug)
+    {
+      $slug .= '/'.$id;
+    }
+    else
+    {
+      $slug .= '-'.$id;
+    }
+    
+    return $slug;
   }
   
   /**
@@ -279,7 +297,6 @@ class PluginDmPageTable extends myDoctrineTable
     ->fetchRecord();
   }
   
-  
   public function findOneBySlug($slug, $culture = null)
   {
     return $this->createQuery('p')
@@ -310,7 +327,14 @@ class PluginDmPageTable extends myDoctrineTable
     
     return $this->findOneByModuleAndActionWithI18n('main', 'signin');
   }
-  
+
+  public function findOneById($id)
+  {
+    return $this->createQuery('p')
+    ->where('p.id = ?', $id)
+    ->fetchOne();
+  }
+
   public function findOneByIdWithI18n($id, $culture = null)
   {
     return $this->createQuery('p')

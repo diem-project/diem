@@ -13,7 +13,8 @@ $page1 = $table->create(array(
   'slug' => 'slug1',
   'module' => 'test',
   'action' => 'test1'
-))->saveGet();
+));
+$page1->Node->insertAsFirstChildOf($table->getTree()->fetchRoot());
 
 $t->ok($page1->exists(), 'Created a page');
 
@@ -26,7 +27,8 @@ $page2 = $table->create(array(
   'slug' => 'slug1',
   'module' => 'test',
   'action' => 'test2'
-))->saveGet();
+));
+$page2->Node->insertAsFirstChildOf($table->getTree()->fetchRoot());
 
 $t->ok($page2->exists(), 'Created a page');
 
@@ -46,6 +48,14 @@ $page2->slug = '';
 $page2->save();
 
 $t->is($page2->slug, '-'.$page2->id, 'Page2 slug is now -'.$page2->id);
+
+$page1->Node->moveAsFirstChildOf($page2);
+$page2->refresh();
+
+$page1->slug = $page2->slug;
+$page1->save();
+
+$t->is($page1->slug, $page2->slug.'/'.$page1->id, 'Page1 slug is now '.$page2->slug.'/'.$page1->id);
 
 //$helper->get('page_tree_watcher')->connect();
 //
