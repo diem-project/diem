@@ -103,15 +103,28 @@ class dmFrontModuleComponents extends myFrontBaseComponents
           }
           else
           {
-            $filterRecordId = $this->getPage()->getRecord()->getAncestorRecordId($filterModule->getModel());
+            $filterRecordId = $this->getPage()->getRecord()
+            ? $this->getPage()->getRecord()->getAncestorRecordId($filterModule->getModel())
+            : null;
   
             if (!$filterRecordId)
             {
-              throw new dmException(sprintf('Can not determine auto filter %s for page %s', $filterModule, $page));
+              throw new dmException(sprintf('Can not determine auto filter %s for page %s', $filterModule, $this->getPage()));
             }
           }
   
           $query->whereAncestorId($filterModule->getModel(), $filterRecordId, $this->getDmModule()->getModel());
+        }
+        elseif($filterColumn = $this->getTable()->getColumn($filterKey))
+        {
+          if($this->getTable()->hasI18n() && $this->getTable()->isI18nColumn($filterKey))
+          {
+            $query->addWhere($rootAlias.'Translation.'.$filterKey.' = ?', $filterValue);
+          }
+          else
+          {
+            $query->addWhere($rootAlias.'.'.$filterKey.' = ?', $filterValue);
+          }
         }
         else
         {
@@ -162,7 +175,7 @@ class dmFrontModuleComponents extends myFrontBaseComponents
   
 
   /**
-   * @return dmModule the current module for this component
+   * @return dmProjectModule the current module for this component
    */
   protected function getDmModule()
   {
