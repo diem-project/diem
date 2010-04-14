@@ -24,7 +24,7 @@ class sfWidgetFormDmDate extends sfWidgetFormI18nDate
 
   protected function configure($options = array(), $attributes = array())
   {
-    $options['culture'] = isset($options['culture']) ? $options['culture'] : dm::getUser()->getCulture();
+    $options['culture'] = isset($options['culture']) ? $options['culture'] : sfDoctrineRecord::getDefaultCulture();
     
     parent::configure($options, $attributes);
     
@@ -33,13 +33,6 @@ class sfWidgetFormDmDate extends sfWidgetFormI18nDate
 
   public function render($name, $value = null, $attributes = array(), $errors = array())
   {
-    dm::getResponse()->addJavascript('lib.ui-datepicker');
-    if('en' !== dm::getUser()->getCulture())
-    {
-      dm::getResponse()->addJavascript('lib.ui-i18n');
-    }
-    dm::getResponse()->addStylesheet('lib.ui-datepicker');
-    
     if($value && strtotime($value))
     {
       // convert value to an array
@@ -56,20 +49,18 @@ class sfWidgetFormDmDate extends sfWidgetFormI18nDate
       }
 
       $formattedValue = strtr(
-            $this->getOption('format'),
-            array(
-              '%year%' => sprintf('%04d', $value['year']),
-              '%month%' => sprintf('%02d', $value['month']),
-              '%day%' => sprintf('%02d', $value['day']),
-            )
-          );
+        $this->getOption('format'),
+        array(
+          '%year%' => sprintf('%04d', $value['year']),
+          '%month%' => sprintf('%02d', $value['month']),
+          '%day%' => sprintf('%02d', $value['day']),
+        )
+      );
     }
     else
     {
       $formattedValue = $value;
     }
-
-    //$formattedValue = dm::getI18n()->getDateForCulture(strtotime($value));
 
     return $this->renderTag(
       'input',
@@ -81,5 +72,24 @@ class sfWidgetFormDmDate extends sfWidgetFormI18nDate
         'value' => $formattedValue
       )
     );
+  }
+
+  public function getJavascripts()
+  {
+    $javascripts = array('lib.ui-datepicker');
+
+    if('en' !== $this->getOption('culture'))
+    {
+      $javascripts[] = 'lib.ui-i18n';
+    }
+    
+    return array_merge(parent::getJavascripts(), $javascripts);
+  }
+
+  public function getStylesheets()
+  {
+    return array_merge(parent::getStylesheets(), array(
+      'lib.ui-datepicker' => null
+    ));
   }
 }
