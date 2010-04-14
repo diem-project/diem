@@ -122,8 +122,6 @@ parameters:
   request_log_entry.class:    dmRequestLogEntry     # An entry of the event log
 
   browser.class:              dmBrowser             # Represents a user browser
-
-  browser_detection.class:    dmBrowserDetection    # Responsible for detecting user browser depending on its user agent
     
   page_tree_watcher.class:    dmPageTreeWatcher     # Responsible for listening all events that may require a page synchronization, and launch the synchronization if any before redirections.
   page_tree_watcher.options:
@@ -349,12 +347,8 @@ services:
   browser:
     class:                    %browser.class%
     shared:                   false
-    arguments:                [ @dispatcher, @browser_detection ]
-
-  browser_detection:
-    class:                    %browser_detection.class%
-    shared:                   true
-    arguments:                []
+    calls:
+      - [ setEventDispatcher, [ @dispatcher ] ]
       
   page_tree_watcher:
     class:                    %page_tree_watcher.class%

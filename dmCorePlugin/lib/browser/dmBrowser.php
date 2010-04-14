@@ -1,71 +1,30 @@
 <?php
 
-class dmBrowser
+require_once(sfConfig::get('dm_core_dir').'/lib/vendor/php-user-agent/lib/phpUserAgent.php');
+
+class dmBrowser extends phpUserAgent
 {
-  protected
-  $dispatcher,
-  $browserDetection,
-  $name,
-  $version;
-
-  public function __construct(sfEventDispatcher $dispatcher, dmBrowserDetection $browserDetection)
+  public function setEventDispatcher(sfEventDispatcher $dispatcher)
   {
-    $this->dispatcher = $dispatcher;
-    $this->browserDetection = $browserDetection;
-
-    $this->initialize();
-  }
-
-  protected function initialize()
-  {
-    $this->name = $this->version = null;
-  }
-
-  /**
-   * Minimal browser detection from user agent.
-   * It has the advantage of being compact and
-   * fairly performant as well, since it doesn't
-   * do any iteration or recursion.
-   *
-   * @param string $userAgent user agent to use
-   */
-  public function configureFromUserAgent($userAgent)
-  {
-    $this->initialize();
-
-    $infos = $this->browserDetection->execute($userAgent);
-    $this->setName($infos['name']);
-    $this->setVersion($infos['version']);
-
     if($this->isUnknown())
     {
       $this->dispatcher->notify(new sfEvent($this, 'dm.browser.unknown', $userAgent));
     }
   }
-
-  public function isUnknown()
+  
+  public function setBrowserName($name)
   {
-    return null === $this->name;
+    $this->browserName = $name;
   }
 
-  public function getName()
+  public function setBrowserVersion($version)
   {
-    return $this->name;
+    $this->browserVersion = $version;
   }
 
-  public function setName($name)
+  public function setOperatingSystem($operatingSystem)
   {
-    $this->name = $name;
-  }
-
-  public function getVersion()
-  {
-    return $this->version;
-  }
-
-  public function setVersion($version)
-  {
-    $this->version = $version;
+    $this->operatingSystem = $operatingSystem;
   }
 
   public function __toString()

@@ -71,14 +71,14 @@ class dmRequestLogEntry extends dmLogEntry
   public function getBrowser()
   {
     $hash = md5($this->get('user_agent'));
-    
+
     if(!isset(self::$browsersCache[$hash]))
     {
       $browser = $this->serviceContainer->getService('browser');
       $browser->configureFromUserAgent($this->get('user_agent'));
       self::$browsersCache[$hash] = $browser;
     }
-    
+
     return self::$browsersCache[$hash];
   }
   
