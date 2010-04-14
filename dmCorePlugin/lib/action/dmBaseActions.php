@@ -107,7 +107,7 @@ abstract class dmBaseActions extends sfActions
 
     if (!$backUrl || ($backUrl == $this->request->getUri() && $this->request->isMethod('get')))
     {
-      $backUrl = '@homepage';
+      $backUrl = $this->getController()->genUrl('@homepage');
     }
     
     return $backUrl;
