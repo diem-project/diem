@@ -4,7 +4,6 @@ abstract class dmCoreUser extends dmSecurityUser implements dmMicroCacheInterfac
 {
   protected
   $browser,
-  $isBrowserConfigured,
   $cache = array();
   
   public function connect()
@@ -28,12 +27,6 @@ abstract class dmCoreUser extends dmSecurityUser implements dmMicroCacheInterfac
    */
   public function getBrowser()
   {
-    if (!$this->isBrowserConfigured)
-    {
-      $this->browser->configureFromUserAgent(dmArray::get($_SERVER, 'HTTP_USER_AGENT'));
-      $this->isBrowserConfigured = true;
-    }
-    
     return $this->browser;
   }
   
