@@ -19,3 +19,6 @@
 [submodule "dmCorePlugin/lib/vendor/php-html-writer"]
 	path = dmCorePlugin/lib/vendor/php-html-writer
 	url = git://github.com/ornicar/php-html-writer.git
+[submodule "dmCorePlugin/lib/vendor/php-user-agent"]
+	path = dmCorePlugin/lib/vendor/php-user-agent
+	url = git://github.com/ornicar/php-user-agent
