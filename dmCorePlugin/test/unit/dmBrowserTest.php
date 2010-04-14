@@ -51,7 +51,7 @@ $tests = array(
   $iphone => array('browser_name' => 'applewebkit', 'browser_version' => '528.18', 'is_unknown' => false),
 );
 
-$parser = new phpUserAgentStringParser();
+$parser = $helper->get('user_agent_parser');
 
 foreach($tests as $userAgent => $description)
 {
