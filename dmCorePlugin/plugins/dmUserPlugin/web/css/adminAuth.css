@@ -85,7 +85,7 @@ div.dm_auth.unsupported_browser {
 }
 
 div.dm_auth .dm_suggested_browsers {
-  margin: 30px 0 0 95px;
+  margin: 30px 0 0 40px;
 }
 div.dm_auth .dm_suggested_browsers a {
   float: left;

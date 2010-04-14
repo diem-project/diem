@@ -42,8 +42,10 @@ class dmBrowserCheck
         $isSupported = version_compare($browser->getVersion(), 4) >= 0; break;
       case 'chrome':
         $isSupported = version_compare($browser->getVersion(), 3) >= 0; break;
+      case 'opera':
+        $isSupported = version_compare($browser->getVersion(), '10.50') >= 0; break;
       default:
-         $isSupported = false;
+        $isSupported = false;
     }
 
     return $isSupported;
