@@ -75,7 +75,7 @@ class dmRequestLogEntry extends dmLogEntry
     if(!isset(self::$browsersCache[$hash]))
     {
       $browser = $this->serviceContainer->getService('browser');
-      $browser->configureFromUserAgent($this->get('user_agent'));
+      $browser->configureFromUserAgentString($this->get('user_agent'));
       self::$browsersCache[$hash] = $browser;
     }
 
