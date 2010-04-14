@@ -11,7 +11,6 @@ div.dm_widget_navigation_menu_form .dm_help.no_margin {
 div.dm_widget_navigation_menu_form li.item_element {
   padding: 5px;
   border-bottom: 1px solid #D3D3D3;
-  position: relative;
 }
 
 div.dm_widget_navigation_menu_form li.item_element:hover {
