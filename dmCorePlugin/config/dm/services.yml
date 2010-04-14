@@ -355,7 +355,7 @@ services:
       - [ setEventDispatcher, [ @dispatcher ] ]
 
   user_agent_parser:
-    class:                    %user_agent_parser%
+    class:                    %user_agent_parser.class%
     shared:                   true
       
   page_tree_watcher:
