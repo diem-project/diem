@@ -8,7 +8,19 @@ class dmBrowser extends phpUserAgent
   {
     if($this->isUnknown())
     {
-      $dispatcher->notify(new sfEvent($this, 'dm.browser.unknown', $userAgent));
+      $dispatcher->notify(new sfEvent($this, 'dm.browser.unknown', $this->getUserAgentString()));
     }
+  }
+
+  // BC Compatibility getters
+
+  public function getName()
+  {
+    return $this->getBrowserName();
+  }
+
+  public function getVersion()
+  {
+    return $this->getBrowserVersion();
   }
 }
