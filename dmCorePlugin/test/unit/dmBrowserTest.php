@@ -29,26 +29,26 @@ $iphone = 'Mozilla/5.0 (iPhone; U; CPU iPhone OS 3_1_2 like Mac OS X; de-de) App
 $yahooBot = 'Mozilla/5.0 (compatible; Yahoo! Slurp; http://help.yahoo.com/help/us/ysearch/slurp)';
 
 $tests = array(
-  $namorokaUbuntu => array('name' => 'firefox', 'version' => '3.6', 'is_unknown' => false),
-  $namorokaMac => array('name' => 'firefox', 'version' => '3.6', 'is_unknown' => false),
-  $chromeMac => array('name' => 'chrome', 'version' => '4.0', 'is_unknown' => false),
-  $safariMac => array('name' => 'safari', 'version' => '4.0', 'is_unknown' => false),
-  $googleBot => array('name' => 'googlebot', 'version' => '2.1', 'is_unknown' => false),
-  $msnBot => array('name' => 'msnbot', 'version' => '2.0', 'is_unknown' => false),
-  $yahooBot => array('name' => 'yahoobot', 'version' => null, 'is_unknown' => false),
-  $opera9Windows => array('name' => 'opera', 'version' => '9.61', 'is_unknown' => false),
-  $opera10Windows => array('name' => 'opera', 'version' => '10.10', 'is_unknown' => false),
-  $firefoxLinux => array('name' => 'firefox', 'version' => '3.0', 'is_unknown' => false),
-  $firefoxWindows => array('name' => 'firefox', 'version' => '3.5', 'is_unknown' => false),
-  $firefoxOsx => array('name' => 'firefox', 'version' => '3.5', 'is_unknown' => false),
-//  $firefoxWindowsSp2 => array('name' => 'firefox', 'version' => '3.0', 'is_unknown' => false),
-  $chromeLinux => array('name' => 'chrome', 'version' => '4.0', 'is_unknown' => false),
-  $speedySpider => array('name' => null, 'version' => null, 'is_unknown' => true),
-  $minefieldMac => array('name' => 'firefox', 'version' => '3.7', 'is_unknown' => false),
-  $ie7Windows => array('name' => 'msie', 'version' => '7.0', 'is_unknown' => false),
-  $ie6Windows => array('name' => 'msie', 'version' => '6.0', 'is_unknown' => false),
-  $feedFetcherGoogle => array('name' => null, 'version' => null, 'is_unknown' => true),
-  $iphone => array('name' => 'iphone', 'version' => '528.18', 'is_unknown' => false),
+  $namorokaUbuntu => array('browser_name' => 'firefox', 'browser_version' => '3.6', 'is_unknown' => false),
+  $namorokaMac => array('browser_name' => 'firefox', 'browser_version' => '3.6', 'is_unknown' => false),
+  $chromeMac => array('browser_name' => 'chrome', 'browser_version' => '4.0', 'is_unknown' => false),
+  $safariMac => array('browser_name' => 'safari', 'browser_version' => '4.0', 'is_unknown' => false),
+  $googleBot => array('browser_name' => 'googlebot', 'browser_version' => '2.1', 'is_unknown' => false),
+  $msnBot => array('browser_name' => 'msnbot', 'browser_version' => '2.0', 'is_unknown' => false),
+  $yahooBot => array('browser_name' => 'yahoobot', 'browser_version' => null, 'is_unknown' => false),
+  $opera9Windows => array('browser_name' => 'opera', 'browser_version' => '9.61', 'is_unknown' => false),
+  $opera10Windows => array('browser_name' => 'opera', 'browser_version' => '10.10', 'is_unknown' => false),
+  $firefoxLinux => array('browser_name' => 'firefox', 'browser_version' => '3.0', 'is_unknown' => false),
+  $firefoxWindows => array('browser_name' => 'firefox', 'browser_version' => '3.5', 'is_unknown' => false),
+  $firefoxOsx => array('browser_name' => 'firefox', 'browser_version' => '3.5', 'is_unknown' => false),
+//  $firefoxWindowsSp2 => array('browser_name' => 'firefox', 'browser_version' => '3.0', 'is_unknown' => false),
+  $chromeLinux => array('browser_name' => 'chrome', 'browser_version' => '4.0', 'is_unknown' => false),
+  $speedySpider => array('browser_name' => null, 'browser_version' => null, 'is_unknown' => true),
+  $minefieldMac => array('browser_name' => 'firefox', 'browser_version' => '3.7', 'is_unknown' => false),
+  $ie7Windows => array('browser_name' => 'msie', 'browser_version' => '7.0', 'is_unknown' => false),
+  $ie6Windows => array('browser_name' => 'msie', 'browser_version' => '6.0', 'is_unknown' => false),
+  $feedFetcherGoogle => array('browser_name' => null, 'browser_version' => null, 'is_unknown' => true),
+  $iphone => array('browser_name' => 'applewebkit', 'browser_version' => '528.18', 'is_unknown' => false),
 );
 
 $parser = new phpUserAgentStringParser();
@@ -56,5 +56,8 @@ $parser = new phpUserAgentStringParser();
 foreach($tests as $userAgent => $description)
 {
   $browser->configureFromUserAgentString($userAgent, $parser);
-  $t->is_deeply($browser->describe(), $description, $userAgent.' -> '.implode(', ', $description));
+  $result = $browser->toArray();
+  $result['is_unknown'] = $browser->isUnknown();
+  unset($result['operating_system']);
+  $t->is_deeply($result, $description, $userAgent.' -> '.implode(', ', $description));
 }
