@@ -51,8 +51,10 @@ $tests = array(
   $iphone => array('name' => 'iphone', 'version' => '528.18', 'is_unknown' => false),
 );
 
+$parser = new phpUserAgentStringParser();
+
 foreach($tests as $userAgent => $description)
 {
-  $browser->configureFromUserAgent($userAgent);
+  $browser->configureFromUserAgentString($userAgent, $parser);
   $t->is_deeply($browser->describe(), $description, $userAgent.' -> '.implode(', ', $description));
 }
