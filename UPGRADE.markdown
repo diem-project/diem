@@ -24,3 +24,13 @@ See the new default layout file: dmFrontPlugin/modules/dmFront/templates/pageSuc
 ## Upgrade your base form filter class
 Verify your abstract class BaseFormFilterDoctrine extends dmFormFilterDoctrine
 in lib/filter/doctrine/BaseFormFilterDoctrine.class.php
+
+## Update front form create
+The front form manager does not create forms automatically anymore.
+[code php]
+// Diem 5.0
+$form = $this->forms['Contact'];
+
+// Diem 5.1
+$form = $this->forms['Contact'] = new ContactForm();
+[/code]
