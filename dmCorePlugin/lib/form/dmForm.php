@@ -101,8 +101,7 @@ class dmForm extends sfFormSymfony
     $this->open($attributes).
     '<ul class="dm_form_elements">'.
     $this->getFormFieldSchema()->render($attributes).
-    sprintf('<li class="dm_form_element"><label>%s</label>%s</li>',
-    $this->__('Validate'),
+    sprintf('<li class="dm_form_element">%s</li>',
     $this->renderSubmitTag($this->__('Send'))
     ).
     '</ul>'.

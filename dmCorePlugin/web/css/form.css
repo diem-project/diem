@@ -18,6 +18,10 @@
   text-align:right;
 }
 
+.dm_form.list.little input.submit {
+  margin-left: 30%;
+}
+
 .dm_form.list .dm_form_element > label.big {
   width: auto;
 }
