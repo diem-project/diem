@@ -1,6 +1,5 @@
 .DS_Store
 Thumbs.db
 nbproject
-dmCorePlugin/lib/vendor/php-html-writer/
 dmCorePlugin/test/project/cache/
 *.orig
