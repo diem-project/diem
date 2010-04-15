@@ -1,6 +1,7 @@
 <?php
 
-define('DIEM_VERSION', '5.1.0-BETA2');
+// Third beta for Diem 5.1
+define('DIEM_VERSION', '5.1.0-BETA3');
 
 // include symfony
 if (!defined('SYMFONY_VERSION'))
