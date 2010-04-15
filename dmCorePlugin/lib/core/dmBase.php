@@ -11,7 +11,6 @@ if (!defined('SYMFONY_VERSION'))
 
 class dmBase
 {
-
   protected static
   $startTime,
   $version,

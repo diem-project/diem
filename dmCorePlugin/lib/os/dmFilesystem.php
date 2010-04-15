@@ -247,4 +247,14 @@ class dmFilesystem extends sfFilesystem
     $from = '/'.trim($from, '/').'/';
     return $this->calculateRelativeDir($from, $to);
   }
+
+  /**
+   * Sets the formatter instance.
+   *
+   * @param sfFormatter The formatter instance
+   */
+  public function setFormatter(sfFormatter $formatter)
+  {
+    $this->formatter = $formatter;
+  }
 }

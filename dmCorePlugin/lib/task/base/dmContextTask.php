@@ -15,6 +15,10 @@ abstract class dmContextTask extends dmBaseTask
     return $this->getContext()->get($service);
   }
 
+  /**
+   * Get the current context
+   * @return dmContext
+   */
   public function getContext()
   {
     if (null === $this->context)
@@ -26,6 +30,8 @@ abstract class dmContextTask extends dmBaseTask
       }
       
       $this->context = dmContext::getInstance();
+
+      $this->context->get('filesystem')->setFormatter($this->formatter);
     }
     
     return $this->context;

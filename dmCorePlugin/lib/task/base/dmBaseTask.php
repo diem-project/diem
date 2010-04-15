@@ -11,11 +11,6 @@ abstract class dmBaseTask extends sfBaseTask
     ));
   }
 
-  public function initialize(sfEventDispatcher $dispatcher, sfFormatter $formatter)
-  {
-    parent::initialize($dispatcher, $formatter);
-  }
-
   protected function executeTask($name, $arguments = array(), $options = array())
   {
     $taskClass = $name."Task";
