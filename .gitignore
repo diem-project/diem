@@ -1,4 +1,5 @@
 nbproject
 dmCorePlugin/lib/vendor/php-html-writer/
+dmCorePlugin/lib/vendor/php-user-agent/
 dmCorePlugin/test/project/cache/
 *.orig
