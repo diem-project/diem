@@ -19,8 +19,6 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
   {
     if ($this->getTable()->hasI18n())
     {
-      self::initializeI18n();
-
       // only add filter to each table once
       if (!$this->getTable()->getOption('has_symfony_i18n_filter'))
       {
