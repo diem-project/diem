@@ -13,7 +13,7 @@ require_once(sfConfig::get('dm_core_dir').'/lib/task/dmServerCheckTask.class.php
 $this->logBlock('Diem '.DIEM_VERSION.' installer', 'INFO_LARGE');
 
 $this->logSection('Diem', 'Welcome to the the Diem installation wizard.');
-$this->logSection('Diem', 'We will now check if your server matches Symfony '.SYMFONY_VERSION.' and Diem 5.0 requirements.');
+$this->logSection('Diem', 'We will now check if your server matches Symfony '.SYMFONY_VERSION.' and Diem '.DIEM_VERSION.' requirements.');
 
 usleep(1000000);
 $this->askConfirmation('Press ENTER to start.');
