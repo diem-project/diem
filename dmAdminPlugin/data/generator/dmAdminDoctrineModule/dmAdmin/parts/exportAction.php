@@ -4,7 +4,7 @@
       'format' => $request->getParameter('format', 'csv'),
       'extension' => $request->getParameter('extension', 'csv'),
       'encoding' => $request->getParameter('encoding', 'utf-8'),
-      'exportClass' => '<?php echo $this->getModule()->getModel() ?>Export',
+      'exportClass' => '<?php echo $this->getModule()->getModel() ?>AdminExport',
       'module' => $this->getDmModule()
     ));
   }
