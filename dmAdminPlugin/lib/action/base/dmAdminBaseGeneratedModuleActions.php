@@ -192,7 +192,7 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
      * get data in an array
      */
     $exportClass = $options['exportClass'];
-    $export = new $exportClass($options['module']->getTable());
+    $export = new $exportClass($options['module']->getTable(), $this->getI18n());
     $data = $export->generate($options['format']);
     
     /*
@@ -210,7 +210,7 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
     $this->download($data, array(
       'file_name' => sprintf('%s-%s_%s.%s',
         dmConfig::get('site_name'),
-        dm::getI18n()->__($options['module']->getName()),
+        $this->getI18n()->__($options['module']->getName()),
         date('Y-m-d'),
         $options['extension']
       ),

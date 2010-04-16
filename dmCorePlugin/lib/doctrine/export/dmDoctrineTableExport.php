@@ -1,101 +1,101 @@
 <?php
 
-/*
+/**
  * Base table for table export
  * Generate a string export in csv format
  * of the table records selected by query
  */
-abstract class dmDoctrineTableExport
+abstract class dmDoctrineTableExport extends dmConfigurable
 {
   protected
   $table,
-  $fields,
+  $i18n,
   $customGetters;
-  
-  public function __construct(myDoctrineTable $table, array $options = array())
+
+  public function __construct(myDoctrineTable $table, dmI18n $i18n, array $options = array())
   {
-    $this->table = $table;
-    
-    $this->configure($options);
+    $this->table  = $table;
+    $this->i18n   = $i18n;
+
+    $this->initialize($options);
   }
-  
+
   public function getDefaultOptions()
   {
     return array(
-      'query'     => $this->table->createQuery(),
       'format'    => 'csv',
       'extension' => 'csv',
       'encoding'  => 'utf-8'
     );
   }
-  
-  public function configure(array $options = array())
+
+  public function initialize(array $options)
   {
-    $this->options = array_merge($this->getDefaultOptions(), $options);
-    
-    $this->fields = $this->getFields();
-    
+    $this->configure($options);
+
     $this->customGetters = $this->findCustomGetters();
-    
-    $this->postConfigure();
   }
-  
-  protected function postConfigure()
+
+  /**
+   * @return dmDoctrineQuery
+   */
+  public function getQuery($rootAlias = 'r')
   {
+    return $this->table->createQuery($rootAlias);
   }
-  
+
   protected function getFields()
   {
     return dmArray::valueToKey($this->table->getAllColumnNames());
   }
-  
+
   protected function findCustomGetters()
   {
     $getters = array();
-    
-    foreach(array_keys($this->fields) as $field)
+
+    foreach(array_keys($this->getFields()) as $field)
     {
       $getter = 'get'.dmString::camelize($field);
-      
+
       if (method_exists($this, $getter))
       {
         $getters[$field] = $getter;
       }
     }
-    
+
     return $getters;
   }
-  
+
   public function generate()
   {
     $header = $this->generateHeader();
     $rows   = $this->generateRows();
-    
+
     $exportArray = array_merge(array($header), $rows);
-    
+
     return $exportArray;
   }
-  
+
   protected function getRecords()
   {
-    return $this->options['query']->fetchRecords();
+    return $this->getQuery()->fetchRecords();
   }
-  
+
   protected function generateHeader()
   {
     $fields = array();
-    foreach($this->fields as $field => $fieldName)
+    foreach($this->getFields() as $field => $fieldName)
     {
-      $fields[] = dm::getI18n()->__(dmString::humanize($fieldName));
+      $fields[] = $this->i18n->__(dmString::humanize($fieldName));
     }
-    
+
     return $fields;
   }
-  
+
   protected function generateRows()
   {
     $rows = array();
-    
+
     foreach($this->getRecords() as $record)
     {
       $rows[] = $this->generateRow($record);
@@ -103,12 +103,12 @@ abstract class dmDoctrineTableExport
 
     return $rows;
   }
-  
+
   protected function generateRow(myDoctrineRecord $record)
   {
     $row = array();
-    
-    foreach($this->fields as $field => $fieldName)
+
+    foreach($this->getFields() as $field => $fieldName)
     {
       try
       {
@@ -116,21 +116,21 @@ abstract class dmDoctrineTableExport
       }
       catch(Exception $e)
       {
-        $cell = dm::getI18n()->__('Error');
-        
+        $cell = $this->i18n->__('Error');
+
         if(sfConfig::get('sf_debug'))
         {
           throw $e;
           $cell .= ' '.$e->getMessage();
         }
       }
-      
+
       $row[] = $cell;
     }
-    
+
     return $row;
   }
-  
+
   protected function generateCell($field, myDoctrineRecord $record)
   {
     if (isset($this->customGetters[$field]))
@@ -149,7 +149,7 @@ abstract class dmDoctrineTableExport
         $value = $this->call($record, $field);
       }
     }
-    
+
     if(empty($value))
     {
       $value = null;
@@ -168,13 +168,13 @@ abstract class dmDoctrineTableExport
       {
         $value = (string) $value;
       }
-      
+
       $value = trim($value);
     }
-    
+
     return $value;
   }
-  
+
   protected function call($record, $field)
   {
     throw new dmException(sprintf('The %s field does not exist in %s record', $field, get_class($record)));
