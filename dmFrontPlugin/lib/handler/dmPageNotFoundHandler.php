@@ -75,7 +75,7 @@ class dmPageNotFoundHandler
 
   protected function useDmRedirect($slug)
   {
-    if ($dmRedirect = dmDb::query('DmRedirect r')->where('r.source = ?', $slug)->fetchRecord())
+    if ($dmRedirect = dmDb::table('DmRedirect')->findOneForSlug($slug))
     {
       if ($page = dmDb::table('DmPage')->findOneBySource($dmRedirect->dest))
       {
