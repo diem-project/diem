@@ -208,7 +208,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
    */
   public function getAdminListQuery(dmDoctrineQuery $query)
   {
-    return $this->joinAll($query);
+    return $this->joinLocals($query->withI18n(null, $this->getComponentName()));
   }
 
   /**
