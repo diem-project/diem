@@ -9,13 +9,13 @@ class dmVisitChart extends dmGaChart
     $this->setColorPalette(1, 140, 140, 200);
     $this->setColorPalette(0, 140, 200, 140);
     
-    $dataSet = new dmChartData;
+    $dataSet = new dmChartData();
     $dataSet->AddPoint($this->data['pageviews'], 'pageviews');
     $dataSet->AddPoint($this->data['visitors'], 'visitors');
     $dataSet->AddPoint($this->data['dates'], 'dates');
     $dataSet->SetAbsciseLabelSerie("dates");
-    $dataSet->SetSerieName($this->getI18n()->__('Pages per month'), "pageviews");
-    $dataSet->SetSerieName($this->getI18n()->__('Visitors per month'), "visitors");
+    $dataSet->SetSerieName($this->getI18n()->__('Pages per week'), "pageviews");
+    $dataSet->SetSerieName($this->getI18n()->__('Visitors per week'), "visitors");
 
     // Prepare the graph area
     $this->setGraphArea(80, 10, $this->getWidth()-80, $this->getHeight()-20);
@@ -54,30 +54,30 @@ class dmVisitChart extends dmGaChart
   {
     if (!$this->options['use_cache'] || !$data = $this->getCache('data'))
     {
-      $to = mktime(0, 0, 0, date('m'), 0, date('Y'));
-      $from = strtotime('-12 month', $to);
+      $to = strtotime('last sunday');
+      $from = strtotime('-4 month', $to);
 
       $report = $this->gapi->getReport(array(
-        'dimensions'      => array('year', 'month'),
+        'dimensions'      => array('year', 'month', 'week'),
         'metrics'         => array('pageviews', 'visits'),
-        'sort_metric'     => 'year,ga:month',
+        'sort_metric'     => 'year,ga:month,ga:week',
         'start_date'      => date('Y-m-d', $from),
         'end_date'        => date('Y-m-d', $to)
       ));
-      
+
       $data = array(
         'dates' => array(),
         'pageviews' => array(),
         'visitors' => array()
       );
-  
+
       foreach($report as $entry)
       {
         $data['dates'][] = $entry->get('month').'/'.substr($entry->get('year'), -2);
         $data['pageviews'][] = $entry->get('pageviews');
         $data['visitors'][] = $entry->get('visits');
       }
-      
+
       $this->setCache('data', $data);
     }
     
