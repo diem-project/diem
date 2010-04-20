@@ -18,7 +18,7 @@ function media_file_infos(DmMedia $object)
   return $infos;
 }
 
-function media_file_image_tag($file, $options = array())
+function media_file_image_tag(DmMedia $file, $options = array())
 {
   $options = array_merge(array(
     'width' => $file->isImage() ? 128 : 64,
@@ -27,56 +27,14 @@ function media_file_image_tag($file, $options = array())
 
   if ($file->isImage())
   {
-    $image = _media($file)->size($options['width'], $options['height']);
+    $image = _media($file);
   }
   else
   {
-    $image = _media('dmCore/images/media/unknown.png')->size($options['width'], $options['height']);
+    $image = _media('/dmCorePlugin/images/media/unknown.png');
   }
 
-  return $image;
-}
-
-function media_file_image_src($file, & $options = array())
-{
-  $src = null;
-  if($file->isImage())
-  {
-    $src = $file->getThumbnailRelativeUrl(
-      aze::getArrayKey($options, 'width', 128),
-      aze::getArrayKey($options, 'height', 98)
-    );
-  }
-  else
-  {
-    switch($file->getType())
-    {
-      case 'txt':
-        $src = '/dmPlugin/images/dm_media/txt.png';
-        break;
-      case 'xls':
-        $src = '/dmPlugin/images/dm_media/xls.png';
-        break;
-      case 'doc':
-        $src = '/dmPlugin/images/dm_media/doc.png';
-        break;
-      case 'pdf':
-        $src = '/dmPlugin/images/dm_media/pdf.png';
-        break;
-      case 'html':
-        $src = '/dmPlugin/images/dm_media/html.png';
-        break;
-      case 'archive':
-        $src = '/dmPlugin/images/dm_media/archive.png';
-        break;
-      case 'bin':
-        $src = '/dmPlugin/images/dm_media/bin.png';
-        break;
-      default:
-        $src = '/dmPlugin/images/dm_media/unknown.png';
-    }
-  }
-  return '../'.$src;
+  return $image->size($options['width'], $options['height']);
 }
 
 function media_wrap_text($text, $distance = 5)
