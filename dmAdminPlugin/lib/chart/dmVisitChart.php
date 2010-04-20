@@ -23,7 +23,7 @@ class dmVisitChart extends dmGaChart
   
     // Draw the pageviews graph
     $dataSet->AddSerie("pageviews");  
-    $dataSet->SetYAxisName($this->getI18n()->__('Pages per month'));
+    $dataSet->SetYAxisName($this->getI18n()->__('Pages per week'));
     $this->drawScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_START0, self::$colors['grey2'][0], self::$colors['grey2'][1], self::$colors['grey2'][2],TRUE,0,0, false, 2);
     $this->drawGrid(4,TRUE, self::$colors['grey1'][0], self::$colors['grey1'][1], self::$colors['grey1'][2]);
     $this->setShadowProperties(3,3,0,0,0,30,4);
@@ -38,7 +38,7 @@ class dmVisitChart extends dmGaChart
     // Draw the 2nd graph
     $dataSet->RemoveAllSeries();
     $dataSet->AddSerie("visitors");
-    $dataSet->SetYAxisName($this->getI18n()->__('Visitors per month'));
+    $dataSet->SetYAxisName($this->getI18n()->__('Visitors per week'));
     $this->drawRightScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_START0, self::$colors['grey2'][0], self::$colors['grey2'][1], self::$colors['grey2'][2],TRUE,0,0, false, 2);
     $this->setShadowProperties(3,3,0,0,0,30,4);
     $this->drawCubicCurve($dataSet->GetData(),$dataSet->GetDataDescription());
