@@ -24,7 +24,7 @@ class dmVisitChart extends dmGaChart
     // Draw the pageviews graph
     $dataSet->AddSerie("pageviews");  
     $dataSet->SetYAxisName($this->getI18n()->__('Pages per week'));
-    $this->drawScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_START0, self::$colors['grey2'][0], self::$colors['grey2'][1], self::$colors['grey2'][2],TRUE,0,0, false, 2);
+    $this->drawScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_START0, self::$colors['grey2'][0], self::$colors['grey2'][1], self::$colors['grey2'][2],TRUE,0,0, false, 4);
     $this->drawGrid(4,TRUE, self::$colors['grey1'][0], self::$colors['grey1'][1], self::$colors['grey1'][2]);
     $this->setShadowProperties(3,3,0,0,0,30,4);
     $this->drawCubicCurve($dataSet->GetData(),$dataSet->GetDataDescription());
@@ -39,7 +39,7 @@ class dmVisitChart extends dmGaChart
     $dataSet->RemoveAllSeries();
     $dataSet->AddSerie("visitors");
     $dataSet->SetYAxisName($this->getI18n()->__('Visitors per week'));
-    $this->drawRightScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_START0, self::$colors['grey2'][0], self::$colors['grey2'][1], self::$colors['grey2'][2],TRUE,0,0, false, 2);
+    $this->drawRightScale($dataSet->GetData(),$dataSet->GetDataDescription(),SCALE_START0, self::$colors['grey2'][0], self::$colors['grey2'][1], self::$colors['grey2'][2],TRUE,0,0, false, 4);
     $this->setShadowProperties(3,3,0,0,0,30,4);
     $this->drawCubicCurve($dataSet->GetData(),$dataSet->GetDataDescription());
     $this->clearShadow();
@@ -54,7 +54,7 @@ class dmVisitChart extends dmGaChart
   {
     if (!$this->options['use_cache'] || !$data = $this->getCache('data'))
     {
-      $to = strtotime('last sunday');
+      $to = strtotime('last saturday');
       $from = strtotime('-4 month', $to);
 
       $report = $this->gapi->getReport(array(
