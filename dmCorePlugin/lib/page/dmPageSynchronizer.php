@@ -246,7 +246,15 @@ class dmPageSynchronizer
       /*
        * prepare records
        */
-      $records = dmDb::pdo('SELECT r.id FROM '.$module->getTable()->getTableName().' r')->fetchAll(PDO::FETCH_ASSOC);
+      // http://github.com/diem-project/diem/issues#issue/182
+      if(count($module->getTable()->getOption('inheritanceMap')))
+      {
+        $records = $module->getTable()->createQuery('r')->select('r.id')->fetchArray();
+      }
+      else
+      {
+        $records = dmDb::pdo('SELECT r.id FROM '.$module->getTable()->getTableName().' r')->fetchAll(PDO::FETCH_ASSOC);
+      }
       
       /*
        * prepare parent pages
@@ -279,7 +287,16 @@ class dmPageSynchronizer
       {
         $select .= ', r.'.$module->getTable()->getRelationHolder()->getLocalByClass($module->getParent()->getModel())->getLocal();
       }
-      $records = dmDb::pdo('SELECT '.$select.' FROM '.$module->getTable()->getTableName().' r')->fetchAll(PDO::FETCH_ASSOC);
+      
+       // http://github.com/diem-project/diem/issues#issue/182
+      if(count($module->getTable()->getOption('inheritanceMap')))
+      {
+        $records = $module->getTable()->createQuery('r')->select($select)->fetchArray();
+      }
+      else
+      {
+        $records = dmDb::pdo('SELECT '.$select.' FROM '.$module->getTable()->getTableName().' r')->fetchAll(PDO::FETCH_ASSOC);
+      }
       
       /*
        * prepare parent pages
