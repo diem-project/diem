@@ -19,11 +19,11 @@ class dmFrontFunctionalCoverageTest extends dmCoreFunctionalCoverageTest
   {
     foreach($this->getPages() as $page)
     {
-      if ($page->isModuleAction('main', 'error404'))
+      if ($page->isModuleAction('main', 'error404') || !$page->get('is_active'))
       {
         $expectedStatusCode = 404;
       }
-      elseif(($page->get('is_secure') || !$page->get('is_active')) && !$this->browser->getContext()->getUser()->isAuthenticated())
+      elseif($page->get('is_secure') && !$this->browser->getContext()->getUser()->isAuthenticated())
       {
         $expectedStatusCode = 401;
       }
