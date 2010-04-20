@@ -1,6 +1,7 @@
 <?php
 
-define('DIEM_VERSION', '5.1.0-BETA4');
+// First release candidate for Diem 5.1
+define('DIEM_VERSION', '5.1.0-RC1');
 
 // include symfony
 if (!defined('SYMFONY_VERSION'))
