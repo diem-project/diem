@@ -100,13 +100,20 @@ abstract class dmDoctrineTable extends Doctrine_Table
 
     foreach($this->getRelationHolder()->getLocals() as $relation)
     {
-      $joinAlias = dmString::lcfirst($relation->getAlias());
-      $query->leftJoin(sprintf('%s.%s %s', $rootAlias, $relation->getAlias(), $joinAlias));
-
-      if($withI18n && $relation->getTable()->hasI18n())
+      if ($relation->getClass() === 'DmMedia')
       {
-        $joinTranslationAlias = $joinAlias.'Translation';
-        $query->leftJoin($joinAlias.'.Translation '.$joinTranslationAlias.' ON '.$joinAlias.'.id = '.$joinTranslationAlias.'.id AND '.$joinTranslationAlias.'.lang = ?', myDoctrineRecord::getDefaultCulture());
+        $query->withDmMedia($relation->getAlias());
+      }
+      else
+      {
+        $joinAlias = dmString::lcfirst($relation->getAlias());
+        $query->leftJoin(sprintf('%s.%s %s', $rootAlias, $relation->getAlias(), $joinAlias));
+
+        if($withI18n && $relation->getTable()->hasI18n())
+        {
+          $joinTranslationAlias = $joinAlias.'Translation';
+          $query->leftJoin($joinAlias.'.Translation '.$joinTranslationAlias.' ON '.$joinAlias.'.id = '.$joinTranslationAlias.'.id AND '.$joinTranslationAlias.'.lang = ?', myDoctrineRecord::getDefaultCulture());
+        }
       }
     }
 
