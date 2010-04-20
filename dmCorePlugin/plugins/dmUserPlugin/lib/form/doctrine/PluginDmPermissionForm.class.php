@@ -13,7 +13,7 @@ abstract class PluginDmPermissionForm extends BaseDmPermissionForm
   /**
    * @see sfForm
    */
-  public function setupInheritance()
+  protected function setupInheritance()
   {
     parent::setupInheritance();
 

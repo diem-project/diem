@@ -13,7 +13,7 @@ abstract class PluginDmGroupForm extends BaseDmGroupForm
   /**
    * @see sfForm
    */
-  public function setupInheritance()
+  protected function setupInheritance()
   {
     parent::setupInheritance();
 
