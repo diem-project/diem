@@ -194,26 +194,28 @@ class dmMediaSynchronizer
   {
     $files = $dirs = array();
 
-    $resource = opendir($dir);
-    while (false !== $entryName = readdir($resource))
+    if($resource = opendir($dir))
     {
-      if (in_array($entryName, $this->ignore))
+      while (false !== $entryName = readdir($resource))
       {
-        continue;
-      }
+        if (in_array($entryName, $this->ignore))
+        {
+          continue;
+        }
 
-      $currentEntry = $dir.'/'.$entryName;
+        $currentEntry = $dir.'/'.$entryName;
 
-      if (is_file($currentEntry))
-      {
-        $files[] = $currentEntry;
+        if (is_file($currentEntry))
+        {
+          $files[] = $currentEntry;
+        }
+        elseif (is_dir($currentEntry))
+        {
+          $dirs[] = $currentEntry;
+        }
       }
-      elseif (is_dir($currentEntry))
-      {
-        $dirs[] = $currentEntry;
-      }
+      closedir($resource);
     }
-    closedir($resource);
 
     return array($dirs, $files);
   }
