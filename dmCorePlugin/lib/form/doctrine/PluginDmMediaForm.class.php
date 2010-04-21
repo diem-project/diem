@@ -20,7 +20,7 @@ abstract class PluginDmMediaForm extends BaseDmMediaForm
     $this->validatorSchema['file'] = new sfValidatorFile(array(
       'required' => $this->getObject()->isNew()
     ));
-    
+
     $this->changeToHidden('dm_media_folder_id');
 
     $this->mergePostValidator(new sfValidatorCallback(array('callback' => array($this, 'clearName'))));
@@ -31,7 +31,7 @@ abstract class PluginDmMediaForm extends BaseDmMediaForm
       $this->setMimeTypeWhiteList($mimeTypes);
     }
   }
-  
+
   public function setMimeTypeWhiteList($mimeTypes)
   {
     $this->validatorSchema['file']->setOption('mime_types', $mimeTypes);
