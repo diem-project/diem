@@ -178,7 +178,7 @@ class dmMediaSynchronizer
     {
       $renamedDir = dmOs::join(dirname($dir), dmOs::sanitizeDirName(basename($dir)));
       
-      while(dir_exists($renamedDir))
+      while(is_dir($renamedDir))
       {
         $renamedDir = dmOs::randomizeDirName($renamedDir);
       }
