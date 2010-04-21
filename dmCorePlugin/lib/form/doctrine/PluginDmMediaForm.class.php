@@ -25,6 +25,11 @@ abstract class PluginDmMediaForm extends BaseDmMediaForm
 
     $this->mergePostValidator(new sfValidatorCallback(array('callback' => array($this, 'clearName'))));
     $this->mergePostValidator(new sfValidatorCallback(array('callback' => array($this, 'checkFolder'))));
+
+    if(false !== $mimeTypes = $this->getOption('mime_types', false))
+    {
+      $this->setMimeTypeWhiteList($mimeTypes);
+    }
   }
   
   public function setMimeTypeWhiteList($mimeTypes)
