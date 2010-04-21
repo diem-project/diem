@@ -25,8 +25,16 @@ echo _open('ul.list.clearfix');
 
 foreach($medias as $media)
 {
+  try
+  {
+    $mediaHtml = _media($media)->size(160, 160);
+  }
+  catch(dmException $e)
+  {
+    $mediaHtml = _media('/dmCorePlugin/images/media/unknown.png')->size(160, 140).$media->file;
+  }
   echo _tag('li#dm_sort_'.$media->get('dm_gallery_rel_id').'.element',
-    _media($media)->size(160, 160).
+    $mediaHtml.
     _link('+/dmMedia/galleryDelete?model='.get_class($record).'&pk='.$record->getPrimaryKey().'&rel_id='.$media->get('dm_gallery_rel_id'))
     ->text(_tag('span.s16block.s16_delete'))
     ->title(__('Remove this media'))
