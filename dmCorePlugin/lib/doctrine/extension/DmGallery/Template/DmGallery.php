@@ -31,7 +31,7 @@ class Doctrine_Template_DmGallery extends Doctrine_Template
 
     dmDb::table($this->_options['mediaClass'])->bind(array($this->_table->getComponentName(), array(
       'local'    => 'dm_media_id',
-      'foreign'  => 'id',
+      'foreign'  => 'dm_record_id',
       'refClass' => $this->_plugin->getTable()->getOption('name')
     )), Doctrine_Relation::MANY);
   }
