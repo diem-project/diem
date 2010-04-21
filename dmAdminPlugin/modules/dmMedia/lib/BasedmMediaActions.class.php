@@ -16,9 +16,9 @@ class BasedmMediaActions extends dmAdminBaseActions
   {
     $this->record = $this->getGalleryRecord($request);
 
-    $this->form = new DmMediaForm();
+    $formClass = $this->record->getGalleryFormClass();
+    $this->form = new $formClass(null, array('mime_types' => 'web_images'));
     $this->form->setDefault('dm_media_folder_id', $this->record->getDmMediaFolder()->get('id'));
-    $this->form->setMimeTypeWhiteList('web_images');
 
     if ($request->isMethod('post') && $this->form->bindAndValid($request))
     {
