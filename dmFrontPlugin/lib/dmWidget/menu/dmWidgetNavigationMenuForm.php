@@ -7,6 +7,8 @@ class dmWidgetNavigationMenuForm extends dmWidgetPluginForm
   {
     $this->validatorSchema['link'] = new sfValidatorPass();
     $this->validatorSchema['text'] = new sfValidatorPass();
+    $this->validatorSchema['secure'] = new sfValidatorPass();
+    $this->validatorSchema['nofollow'] = new sfValidatorPass();
     $this->validatorSchema['depth'] = new sfValidatorPass();
 
     if (!$this->getDefault('items'))
@@ -77,13 +79,21 @@ class dmWidgetNavigationMenuForm extends dmWidgetPluginForm
     foreach(dmArray::get($values, 'link', array()) as $index => $link)
     {
       $values['items'][] = array(
-        'link'    => $values['link'][$index],
-        'text'    => $values['text'][$index],
-        'depth'   => $values['depth'][$index]
+        'link'     => $values['link'][$index],
+        'text'     => $values['text'][$index],
+        'secure'   => (int) isset($values['secure'][$index]),
+        'nofollow' => (int) isset($values['nofollow'][$index]),
+        'depth'    => $values['depth'][$index]
       );
     }
 
-    unset($values['link'], $values['text'], $values['depth']);
+    unset(
+      $values['link'],
+      $values['text'],
+      $values['secure'],
+      $values['nofollow'],
+      $values['depth']
+    );
 
     return $values;
   }

@@ -17,6 +17,8 @@ _tag('div#'.$baseTabId.'_items.drop_zone',
     'delete_message' => __('Remove'),
     'text_message' => __('Text'),
     'link_message' => __('Link'),
+    'secure_message' => __('Requires authentication'),
+    'nofollow_message' => __('No follow'),
     'depth_message' => __('Depth'),
     'click_message' => __('Click to edit, drag to sort')
   )), '').

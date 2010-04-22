@@ -11,6 +11,7 @@ $.fn.extend({
     $tabs = $form.find('div.dm_tabbed_form').dmCoreTabForm(),
 
     $items = $form.find('.items_list'),
+    itemIndex = 0,
 
     metadata = $items.metadata(),
 
@@ -19,24 +20,31 @@ $.fn.extend({
       item = $.extend({
         position: 0,
         link: '',
-        text: ''
+        text: '',
+        secure: false,
+        nofollow: false
       }, item);
 
       var $li = $('<li class="item_element">')
       .html('\
 <a class="item_text s16 s16_layer" title="'+metadata.click_message+'">'+item.text+'</a> \
 <ul class="item_form"> \
-<li class="clearfix"><label>'+metadata.text_message+':</label><input class="text" type="text" name="'+formName+'[text][]" /></li> \
-<li class="clearfix"><label>'+metadata.link_message+':</label><input class="link" type="text" name="'+formName+'[link][]" /></li> \
-<li class="clearfix for_depth"><label>'+metadata.depth_message+':</label><select class="depth" name="'+formName+'[depth][]">'+self.getDepthOptions(item.depth)+'</select></li>\
+<li class="clearfix"><label>'+metadata.text_message+':</label><input class="text" type="text" name="'+formName+'[text]['+itemIndex+']" /></li> \
+<li class="clearfix"><label>'+metadata.link_message+':</label><input class="link" type="text" name="'+formName+'[link]['+itemIndex+']" /></li> \
+<li class="clearfix"><label>'+metadata.secure_message+':</label><input class="secure" type="checkbox" name="'+formName+'[secure]['+itemIndex+']" value="1" /></li> \
+<li class="clearfix"><label>'+metadata.nofollow_message+':</label><input class="nofollow" type="checkbox" name="'+formName+'[nofollow]['+itemIndex+']" value="1" /></li> \
+<li class="clearfix for_depth"><label>'+metadata.depth_message+':</label><select class="depth" name="'+formName+'[depth]['+itemIndex+']">'+self.getDepthOptions(item.depth)+'</select></li>\
 <li class="clearfix"><a class="remove s16 s16_delete" style="color: red">'+metadata.delete_message+' '+item.text+'</a></li> \
 </ul>'
         );
 
       $li.find('input.text').val(item.text).end()
-      .find('input.link').val(item.link);
+        .find('input.link').val(item.link).end()
+        .find('input.secure').attr('checked', item.secure).end()
+        .find('input.nofollow').attr('checked', item.nofollow);
       
       $items.append($li);
+      itemIndex++;
 
       var $itemText = $li.find('a.item_text');
 
