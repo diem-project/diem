@@ -130,7 +130,9 @@ class dmAdminGeneratorBuilder
       // already included
       array($this->table->getIdentifierColumnName()),
       // exlude primary keys
-      $this->table->getPrimaryKeys()
+      $this->table->getPrimaryKeys(),
+      // exclude collumn aggregation key fields
+      array_keys((array)$this->table->getOption('inheritanceMap'))
     ))));
     
 //    foreach($this->module->getDmMediaFields() as $mediaField)
@@ -216,7 +218,9 @@ class dmAdminGeneratorBuilder
       // already included
       array($this->table->getIdentifierColumnName()),
       // exlude primary keys
-      $this->table->getPrimaryKeys()
+      $this->table->getPrimaryKeys(),
+      // exclude collumn aggregation key fields
+      array_keys((array)$this->table->getOption('inheritanceMap'))
     ))));
 
     foreach($this->getBooleanFields() as $field)
@@ -252,7 +256,9 @@ class dmAdminGeneratorBuilder
       // always exclude these fields
       self::$formExcludedFields,
       // exlude primary keys
-      $this->table->getPrimaryKeys()
+      $this->table->getPrimaryKeys(),
+      // exclude collumn aggregation key fields
+      array_keys((array)$this->table->getOption('inheritanceMap'))
     ))));
 
     /*
