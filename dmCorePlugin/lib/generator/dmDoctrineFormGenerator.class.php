@@ -133,6 +133,11 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
     return $this->moduleManager->getModuleByModel($this->table->getComponentName());
   }
 
+  public function getTable()
+  {
+    return $this->table;
+  }
+
   public function getMediaRelations()
   {
     return $this->getModule()->getTable()->getRelationHolder()->getLocalMedias();
