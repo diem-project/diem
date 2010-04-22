@@ -23,20 +23,16 @@ class dmWidgetNavigationMenuView extends dmWidgetPluginView
 
     foreach($vars['items'] as $index => $item)
     {
-      // add isset for old menu records
-      $secure = (isset($item['secure']) AND $item['secure']);
-
       $menuItem = $vars['menu']
       ->addChild($index.'-'.dmString::slugify($item['text']), $item['link'])
       ->label($item['text'])
-      ->secure($secure)
+      ->secure(!empty($item['secure']))
       ->liClass($vars['liClass'])
       ->addRecursiveChildren(dmArray::get($item, 'depth', 0));
 
-      if(isset($item['nofollow']) AND $item['nofollow'])
+      if(!empty($item['nofollow']) && $menuItem->getLink())
       {
-        $menuItem->getLink()
-        ->set('rel', 'nofollow');
+        $menuItem->getLink()->set('rel', 'nofollow');
       }
     }
 

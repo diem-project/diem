@@ -81,8 +81,8 @@ class dmWidgetNavigationMenuForm extends dmWidgetPluginForm
       $values['items'][] = array(
         'link'     => $values['link'][$index],
         'text'     => $values['text'][$index],
-        'secure'   => (int) isset($values['secure'][$index]),
-        'nofollow' => (int) isset($values['nofollow'][$index]),
+        'secure'   => (int) !empty($values['secure'][$index]),
+        'nofollow' => (int) !empty($values['nofollow'][$index]),
         'depth'    => $values['depth'][$index]
       );
     }
