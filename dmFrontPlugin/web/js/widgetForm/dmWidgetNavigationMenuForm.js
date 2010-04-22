@@ -33,7 +33,7 @@ $.fn.extend({
 <li class="clearfix"><label>'+metadata.link_message+':</label><input class="link" type="text" name="'+formName+'[link]['+itemIndex+']" /></li> \
 <li class="clearfix" style="padding-top: 5px;"> \
 <a class="remove s16 s16_delete" style="color: red;float: right">'+metadata.delete_message+'</a> \
-<a class="extend s16 s16_add_little" style="color: red">'+metadata.extended_show_message+'</a> \
+<a class="extend s16 s16_add_little" style="color: #559955">'+metadata.extended_show_message+'</a> \
 <div class="extended"> \
 <ul> \
 <li class="clearfix"><label>'+metadata.secure_message+':</label><input class="secure" type="checkbox" name="'+formName+'[secure]['+itemIndex+']" value="1" /></li> \
