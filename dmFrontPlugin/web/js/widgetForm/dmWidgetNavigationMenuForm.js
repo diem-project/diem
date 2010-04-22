@@ -31,14 +31,22 @@ $.fn.extend({
 <ul class="item_form"> \
 <li class="clearfix"><label>'+metadata.text_message+':</label><input class="text" type="text" name="'+formName+'[text]['+itemIndex+']" /></li> \
 <li class="clearfix"><label>'+metadata.link_message+':</label><input class="link" type="text" name="'+formName+'[link]['+itemIndex+']" /></li> \
+<li class="clearfix" style="padding-top: 5px;"> \
+<a class="remove s16 s16_delete" style="color: red;float: right">'+metadata.delete_message+'</a> \
+<a class="extend s16 s16_add_little" style="color: red">'+metadata.extended_show_message+'</a> \
+<div class="extended"> \
+<ul> \
 <li class="clearfix"><label>'+metadata.secure_message+':</label><input class="secure" type="checkbox" name="'+formName+'[secure]['+itemIndex+']" value="1" /></li> \
 <li class="clearfix"><label>'+metadata.nofollow_message+':</label><input class="nofollow" type="checkbox" name="'+formName+'[nofollow]['+itemIndex+']" value="1" /></li> \
 <li class="clearfix for_depth"><label>'+metadata.depth_message+':</label><select class="depth" name="'+formName+'[depth]['+itemIndex+']">'+self.getDepthOptions(item.depth)+'</select></li>\
-<li class="clearfix"><a class="remove s16 s16_delete" style="color: red">'+metadata.delete_message+' '+item.text+'</a></li> \
+</ul> \
+</div> \
+</li> \
 </ul>'
         );
 
-      $li.find('input.text').val(item.text).end()
+      $li.find('div.extended').hide().end()
+        .find('input.text').val(item.text).end()
         .find('input.link').val(item.link).end()
         .find('input.secure').attr('checked', item.secure).end()
         .find('input.nofollow').attr('checked', item.nofollow);
@@ -55,6 +63,12 @@ $.fn.extend({
           $li.find('ul.item_form').toggle(200);
         }
       })
+      .end()
+      .find('a.extend').click(function() {
+         var extended = $('.extended', $(this).parent());
+         $(this).text(extended.is(":hidden") ? metadata.extended_hide_message:metadata.extended_show_message);
+         extended.toggle();
+       })
       .end()
       .find('a.remove').click(function() {
         if (confirm($(this).text()+' ?'))
