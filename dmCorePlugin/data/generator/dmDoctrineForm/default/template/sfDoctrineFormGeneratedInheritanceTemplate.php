@@ -16,14 +16,16 @@ abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->
   {
     parent::setupInheritance();
 
-<?php foreach ($this->getColumns() as $column): ?>
-  <?php if ('DmMedia' === $relation->getClass()) continue; ?>
+<?php foreach((array)$this->getTable()->getOption('inheritanceMap') as $field => $value): ?>
+    unset($this['<?php echo $field ?>']);
+<?php endforeach; ?>
+
+    <?php foreach ($this->getColumns() as $column): ?><?php if ('DmMedia' === $relation->getClass()) continue; ?>
     $this->widgetSchema   ['<?php echo $column->getFieldName() ?>'] = new <?php echo $this->getWidgetClassForColumn($column) ?>(<?php echo $this->getWidgetOptionsForColumn($column) ?>);
     $this->validatorSchema['<?php echo $column->getFieldName() ?>'] = new <?php echo $this->getValidatorClassForColumn($column) ?>(<?php echo $this->getValidatorOptionsForColumn($column) ?>);
 
 <?php endforeach; ?>
-<?php foreach ($this->getManyToManyRelations() as $relation): ?>
-  <?php if ('DmMedia' === $relation->getClass()) continue; ?>
+<?php foreach ($this->getManyToManyRelations() as $relation): ?><?php if ('DmMedia' === $relation->getClass()) continue; ?>
     $this->widgetSchema   ['<?php echo $this->underscore($relation['alias']) ?>_list'] = new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => '<?php echo $relation['table']->getOption('name') ?>'));
     $this->validatorSchema['<?php echo $this->underscore($relation['alias']) ?>_list'] = new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => '<?php echo $relation['table']->getOption('name') ?>', 'required' => false));
 
