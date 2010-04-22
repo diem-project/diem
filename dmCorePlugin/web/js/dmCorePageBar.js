@@ -102,7 +102,6 @@
           },
           start: function(event, ui)
           {
-            self.close();
             $('div.markItUp, input.dm_link_droppable').addClass('active');
           },
           stop: function(event, ui)

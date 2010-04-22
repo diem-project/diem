@@ -68,11 +68,7 @@
           {
             return $('<div class="dm_media_helper file"></div>').html($(this).html()).appendTo($('body'));
           },
-          revert: 'invalid',
-          start: function()
-          {
-            media.close();
-          }
+          revert: 'invalid'
         });
       }
     },
