@@ -1,0 +1,36 @@
+generator:
+  class: dmAdminDoctrineGenerator
+  param:
+    model_class: DmCatalogue
+    theme: dmAdmin
+    non_verbose_templates: true
+    with_show: false
+    route_prefix: dm_catalogue
+    with_doctrine_route: false
+    config:
+      actions: ~
+      fields: {  }
+      list:
+        display:
+          - '=name'
+          - source_lang
+          - target_lang
+        sort:
+          - name
+          - asc
+        table_method: getAdminListQuery
+        table_count_method: ~
+        sortable: false
+      filter:
+        display:
+          - name
+          - source_lang
+          - target_lang
+      form:
+        display:
+          NONE: [name]
+          Others: [source_lang, target_lang]
+        class: DmCatalogueAdminForm
+        fields: {  }
+      edit: ~
+      new: ~
