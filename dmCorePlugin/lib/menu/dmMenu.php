@@ -598,7 +598,7 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
 
     do
     {
-    	$children[] = $this->__($obj->getLabel());
+      $children[] = $this->__($obj->getLabel());
     }
     while ($obj = $obj->getParent());
 
