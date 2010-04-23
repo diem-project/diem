@@ -15,7 +15,7 @@ Tools:
       credentials:  translation
     dmCatalogue:
       name:         Catalogue
-      cretentials:  dm_catalogue
+      cretentials:  system
   Monitoring:
     dmChart:
       name:         Chart
