@@ -272,10 +272,10 @@ class dmAdminGeneratorBuilder
 
     if (in_array($this->table->getIdentifierColumnName(), $fields))
     {
-			if('embed' != sfConfig::get('dm_i18n_form') || !$this->table->hasI18n() || !$this->table->isI18nColumn($field))
-	    {
-				$sets['NONE'][] = $this->table->getIdentifierColumnName();
-			}
+      if('embed' != sfConfig::get('dm_i18n_form') || !$this->table->hasI18n() || !$this->table->isI18nColumn($field))
+      {
+        $sets['NONE'][] = $this->table->getIdentifierColumnName();
+      }
       unset($fields[$this->table->getIdentifierColumnName()]);
     }
 
@@ -308,10 +308,10 @@ class dmAdminGeneratorBuilder
     {
       if (in_array($field, $fields))
       {
-				if('embed' != sfConfig::get('dm_i18n_form') || !$this->table->hasI18n() || !$this->table->isI18nColumn($field))
-		    {
-					$sets[dmString::humanize($field)][] = $field;
-				}
+        if('embed' != sfConfig::get('dm_i18n_form') || !$this->table->hasI18n() || !$this->table->isI18nColumn($field))
+        {
+          $sets[dmString::humanize($field)][] = $field;
+        }
         unset($fields[$field]);
       }
     }
@@ -343,24 +343,24 @@ class dmAdminGeneratorBuilder
     {
       $sets['Gallery'][] = 'dm_gallery';
     }
-		
-		if('embed' == sfConfig::get('dm_i18n_form') && $this->table->hasI18n())
+
+    if('embed' == sfConfig::get('dm_i18n_form') && $this->table->hasI18n())
     {
       $sets['Lang'] = array();
-			foreach(sfConfig::get('dm_i18n_cultures') as $culture)
-			{
-				$sets['Lang'][] = $culture;
-			}
+      foreach(sfConfig::get('dm_i18n_cultures') as $culture)
+      {
+        $sets['Lang'][] = $culture;
+      }
     }
-		
+
     $sets['Others'] = array();
 
     foreach($fields as $field)
     {
-			if('embed' != sfConfig::get('dm_i18n_form') || !$this->table->hasI18n() || !$this->table->isI18nColumn($field))
-	    {
-				$sets['Others'][] = $field;
-			}
+      if('embed' != sfConfig::get('dm_i18n_form') || !$this->table->hasI18n() || !$this->table->isI18nColumn($field))
+      {
+        $sets['Others'][] = $field;
+      }
       unset($fields[$field]);
     }
     
