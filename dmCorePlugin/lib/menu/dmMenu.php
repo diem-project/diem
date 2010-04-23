@@ -528,7 +528,7 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
   protected function renderLiOpenTag()
   {
     $classes  = array();
-    $id       = $this->getOption('show_id') ? dmString::slugify($this->getRoot()->getName().'-'.$this->getName()) : null;
+    $id       = $this->getOption('show_id') ? dmString::slugify('menu-'.$this->getRoot()->getName().'-'.$this->getName()) : null;
     $link     = $this->getLink();
 
     if ($this->isFirst())
