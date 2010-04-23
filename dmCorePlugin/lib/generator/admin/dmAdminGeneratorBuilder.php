@@ -451,6 +451,8 @@ class dmAdminGeneratorBuilder
     {
       $fields[] = 'position';
     }
+
+    return $fields;
   }
 
   protected function getFormExcludedFields()
@@ -469,6 +471,8 @@ class dmAdminGeneratorBuilder
     {
       $fields[] = 'position';
     }
+
+    return $fields;
   }
 
   protected function getFilterExcludedFields()
