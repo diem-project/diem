@@ -6,7 +6,6 @@
 class dmAdminGeneratorBuilder
 {
   protected static
-  $listExcludedFields    = array('position', 'lang', 'version'),
   $formExcludedFields    = array('position', 'lang', 'version', 'created_at', 'updated_at'),
   $filterExcludedFields  = array('position', 'lang', 'version');
 
@@ -126,7 +125,7 @@ class dmAdminGeneratorBuilder
 
     $fields = dmArray::valueToKey(array_diff($this->table->getAllColumnNames(), array_unique(array_merge(
       // always exclude these fields
-      self::$listExcludedFields,
+      $this->getListExcludedFields(),
       // already included
       array($this->table->getIdentifierColumnName()),
       // exlude primary keys
@@ -438,6 +437,24 @@ class dmAdminGeneratorBuilder
       }
     }
     return $values;
+  }
+
+  protected function getListExcludedFields()
+  {
+    $fields = array();
+
+    if($this->table->hasI18n())
+    {
+      $fields[] = 'lang';
+    }
+    if($this->table->isVersionable())
+    {
+      $fields[] = 'version';
+    }
+    if($this->table->isSortable())
+    {
+      $fields[] = 'position';
+    }
   }
 
 }
