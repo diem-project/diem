@@ -5,10 +5,6 @@
  */
 class dmAdminGeneratorBuilder
 {
-  protected static
-  $formExcludedFields    = array('position', 'lang', 'version', 'created_at', 'updated_at'),
-  $filterExcludedFields  = array('position', 'lang', 'version');
-
   protected
   $module,
   $dispatcher,
@@ -211,7 +207,7 @@ class dmAdminGeneratorBuilder
 
     $fields = dmArray::valueToKey(array_diff($this->table->getColumnNames(), array_unique(array_merge(
       // always exclude these fields
-      self::$filterExcludedFields,
+      $this->getFilterExcludedFields(),
       // already included
       array($this->table->getIdentifierColumnName()),
       // exlude primary keys
@@ -249,7 +245,7 @@ class dmAdminGeneratorBuilder
   {
     $fields = dmArray::valueToKey(array_diff($this->table->getAllColumnNames(), array_unique(array_merge(
       // always exclude these fields
-      self::$formExcludedFields,
+      $this->getFormExcludedFields(),
       // exlude primary keys
       $this->table->getPrimaryKeys()
     ))));
@@ -455,6 +451,29 @@ class dmAdminGeneratorBuilder
     {
       $fields[] = 'position';
     }
+  }
+
+  protected function getFormExcludedFields()
+  {
+    $fields = array('created_at', 'updated_at');
+
+    if($this->table->hasI18n())
+    {
+      $fields[] = 'lang';
+    }
+    if($this->table->isVersionable())
+    {
+      $fields[] = 'version';
+    }
+    if($this->table->isSortable())
+    {
+      $fields[] = 'position';
+    }
+  }
+
+  protected function getFilterExcludedFields()
+  {
+    return $this->getListExcludedFields();
   }
 
 }
