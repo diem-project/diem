@@ -31,11 +31,16 @@ class dmErrorWatcher extends dmConfigurable
   
   public function listenToThrowException(sfEvent $event)
   {
+    $this->handleException($event->getSubject());
+  }
+
+  public function handleException(Exception $exception)
+  {
     try
     {
       if ($this->getOption('mail_superadmin') || $this->getOption('store_in_db'))
       {
-        $error = new $this->options['error_description_class']($event->getSubject(), $this->context);
+        $error = new $this->options['error_description_class']($exception, $this->context);
 
         if($this->getOption('mail_superadmin'))
         {
@@ -50,7 +55,7 @@ class dmErrorWatcher extends dmConfigurable
     }
     catch(Exception $e)
     {
-      die(sprintf('Exception %s thrown while notifying exception %s', $e, $event->getSubject()));
+      die(sprintf('Exception %s thrown while notifying exception %s', $e, $exception));
     }
   }
 

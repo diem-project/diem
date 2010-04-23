@@ -5,11 +5,6 @@
  */
 class dmAdminGeneratorBuilder
 {
-  protected static
-  $listExcludedFields    = array('position', 'lang', 'version'),
-  $formExcludedFields    = array('position', 'lang', 'version', 'created_at', 'updated_at'),
-  $filterExcludedFields  = array('position', 'lang', 'version');
-
   protected
   $module,
   $dispatcher,
@@ -126,7 +121,7 @@ class dmAdminGeneratorBuilder
 
     $fields = dmArray::valueToKey(array_diff($this->table->getAllColumnNames(), array_unique(array_merge(
       // always exclude these fields
-      self::$listExcludedFields,
+      $this->getListExcludedFields(),
       // already included
       array($this->table->getIdentifierColumnName()),
       // exlude primary keys
@@ -214,7 +209,7 @@ class dmAdminGeneratorBuilder
 
     $fields = dmArray::valueToKey(array_diff($this->table->getAllColumnNames(), array_unique(array_merge(
       // always exclude these fields
-      self::$filterExcludedFields,
+      $this->getFilterExcludedFields(),
       // already included
       array($this->table->getIdentifierColumnName()),
       // exlude primary keys
@@ -254,7 +249,7 @@ class dmAdminGeneratorBuilder
   {
     $fields = dmArray::valueToKey(array_diff($this->table->getAllColumnNames(), array_unique(array_merge(
       // always exclude these fields
-      self::$formExcludedFields,
+      $this->getFormExcludedFields(),
       // exlude primary keys
       $this->table->getPrimaryKeys(),
       // exclude collumn aggregation key fields
@@ -278,10 +273,10 @@ class dmAdminGeneratorBuilder
 
     if (in_array($this->table->getIdentifierColumnName(), $fields))
     {
-			if('embed' != sfConfig::get('dm_i18n_form') || !$this->table->hasI18n() || !$this->table->isI18nColumn($field))
-	    {
-				$sets['NONE'][] = $this->table->getIdentifierColumnName();
-			}
+      if('embed' != sfConfig::get('dm_i18n_form') || !$this->table->hasI18n() || !$this->table->isI18nColumn($field))
+      {
+        $sets['NONE'][] = $this->table->getIdentifierColumnName();
+      }
       unset($fields[$this->table->getIdentifierColumnName()]);
     }
 
@@ -314,10 +309,10 @@ class dmAdminGeneratorBuilder
     {
       if (in_array($field, $fields))
       {
-				if('embed' != sfConfig::get('dm_i18n_form') || !$this->table->hasI18n() || !$this->table->isI18nColumn($field))
-		    {
-					$sets[dmString::humanize($field)][] = $field;
-				}
+        if('embed' != sfConfig::get('dm_i18n_form') || !$this->table->hasI18n() || !$this->table->isI18nColumn($field))
+        {
+          $sets[dmString::humanize($field)][] = $field;
+        }
         unset($fields[$field]);
       }
     }
@@ -349,24 +344,24 @@ class dmAdminGeneratorBuilder
     {
       $sets['Gallery'][] = 'dm_gallery';
     }
-		
-		if('embed' == sfConfig::get('dm_i18n_form') && $this->table->hasI18n())
+
+    if('embed' == sfConfig::get('dm_i18n_form') && $this->table->hasI18n())
     {
       $sets['Lang'] = array();
-			foreach(sfConfig::get('dm_i18n_cultures') as $culture)
-			{
-				$sets['Lang'][] = $culture;
-			}
+      foreach(sfConfig::get('dm_i18n_cultures') as $culture)
+      {
+        $sets['Lang'][] = $culture;
+      }
     }
-		
+
     $sets['Others'] = array();
 
     foreach($fields as $field)
     {
-			if('embed' != sfConfig::get('dm_i18n_form') || !$this->table->hasI18n() || !$this->table->isI18nColumn($field))
-	    {
-				$sets['Others'][] = $field;
-			}
+      if('embed' != sfConfig::get('dm_i18n_form') || !$this->table->hasI18n() || !$this->table->isI18nColumn($field))
+      {
+        $sets['Others'][] = $field;
+      }
       unset($fields[$field]);
     }
     
@@ -444,6 +439,51 @@ class dmAdminGeneratorBuilder
       }
     }
     return $values;
+  }
+
+  protected function getListExcludedFields()
+  {
+    $fields = array();
+
+    if($this->table->hasI18n())
+    {
+      $fields[] = 'lang';
+    }
+    if($this->table->isVersionable())
+    {
+      $fields[] = 'version';
+    }
+    if($this->table->isSortable())
+    {
+      $fields[] = 'position';
+    }
+
+    return $fields;
+  }
+
+  protected function getFormExcludedFields()
+  {
+    $fields = array('created_at', 'updated_at');
+
+    if($this->table->hasI18n())
+    {
+      $fields[] = 'lang';
+    }
+    if($this->table->isVersionable())
+    {
+      $fields[] = 'version';
+    }
+    if($this->table->isSortable())
+    {
+      $fields[] = 'position';
+    }
+
+    return $fields;
+  }
+
+  protected function getFilterExcludedFields()
+  {
+    return $this->getListExcludedFields();
   }
 
 }
