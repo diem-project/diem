@@ -23,6 +23,7 @@ abstract class BaseDmLayoutFormFilter extends BaseFormFilterDoctrine
       'template'  => new sfValidatorPass(array('required' => false)),
       'css_class' => new sfValidatorPass(array('required' => false)),
     ));
+    
 
     $this->widgetSchema->setNameFormat('dm_layout_filters[%s]');
 

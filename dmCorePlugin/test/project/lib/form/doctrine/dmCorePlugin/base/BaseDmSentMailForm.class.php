@@ -30,6 +30,7 @@ abstract class BaseDmSentMailForm extends BaseFormDoctrine
       'culture'             => new sfWidgetFormInputText(),
       'debug_string'        => new sfWidgetFormTextarea(),
       'created_at'          => new sfWidgetFormDateTime(),
+
     ));
 
     $this->setValidators(array(

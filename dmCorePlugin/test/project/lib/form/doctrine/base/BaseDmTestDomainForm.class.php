@@ -19,6 +19,7 @@ abstract class BaseDmTestDomainForm extends BaseFormDoctrine
       'created_at'  => new sfWidgetFormDateTime(),
       'updated_at'  => new sfWidgetFormDateTime(),
       'position'    => new sfWidgetFormInputText(),
+
         'categs_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'DmTestCateg', 'expanded' => true)),
         'tags_list'   => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'DmTag', 'expanded' => true)),
     ));
@@ -32,14 +33,14 @@ abstract class BaseDmTestDomainForm extends BaseFormDoctrine
         'tags_list'   => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTag', 'required' => false)),
     ));
 
-		if('embed' == sfConfig::get('dm_i18n_form'))
+    if('embed' == sfConfig::get('dm_i18n_form'))
     {
       $this->embedI18n(sfConfig::get('dm_i18n_cultures'));
     }
     else
     {
       $this->mergeI18nForm();
-		}
+    }
 
     $this->widgetSchema->setNameFormat('dm_test_domain[%s]');
 

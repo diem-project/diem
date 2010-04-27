@@ -20,6 +20,7 @@ abstract class BaseDmAutoSeoForm extends BaseFormDoctrine
       'action'     => new sfWidgetFormInputText(),
       'created_at' => new sfWidgetFormDateTime(),
       'updated_at' => new sfWidgetFormDateTime(),
+
     ));
 
     $this->setValidators(array(
@@ -34,14 +35,14 @@ abstract class BaseDmAutoSeoForm extends BaseFormDoctrine
       new sfValidatorDoctrineUnique(array('model' => 'DmAutoSeo', 'column' => array('module', 'action')))
     );
 
-		if('embed' == sfConfig::get('dm_i18n_form'))
+    if('embed' == sfConfig::get('dm_i18n_form'))
     {
       $this->embedI18n(sfConfig::get('dm_i18n_cultures'));
     }
     else
     {
       $this->mergeI18nForm();
-		}
+    }
 
     $this->widgetSchema->setNameFormat('dm_auto_seo[%s]');
 

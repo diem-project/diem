@@ -21,6 +21,7 @@ abstract class BaseDmSettingForm extends BaseFormDoctrine
       'params'      => new sfWidgetFormTextarea(),
       'group_name'  => new sfWidgetFormInputText(),
       'credentials' => new sfWidgetFormInputText(),
+
     ));
 
     $this->setValidators(array(
@@ -36,14 +37,14 @@ abstract class BaseDmSettingForm extends BaseFormDoctrine
       new sfValidatorDoctrineUnique(array('model' => 'DmSetting', 'column' => array('name')))
     );
 
-		if('embed' == sfConfig::get('dm_i18n_form'))
+    if('embed' == sfConfig::get('dm_i18n_form'))
     {
       $this->embedI18n(sfConfig::get('dm_i18n_cultures'));
     }
     else
     {
       $this->mergeI18nForm();
-		}
+    }
 
     $this->widgetSchema->setNameFormat('dm_setting[%s]');
 

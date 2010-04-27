@@ -19,6 +19,7 @@ abstract class BaseDmWidgetTranslationFormFilter extends BaseFormFilterDoctrine
     $this->setValidators(array(
       'value' => new sfValidatorPass(array('required' => false)),
     ));
+    
 
     $this->widgetSchema->setNameFormat('dm_widget_translation_filters[%s]');
 

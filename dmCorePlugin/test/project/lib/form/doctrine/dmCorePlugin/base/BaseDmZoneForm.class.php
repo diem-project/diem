@@ -20,6 +20,7 @@ abstract class BaseDmZoneForm extends BaseFormDoctrine
       'css_class'  => new sfWidgetFormInputText(),
       'width'      => new sfWidgetFormInputText(),
       'position'   => new sfWidgetFormInputText(),
+
     ));
 
     $this->setValidators(array(

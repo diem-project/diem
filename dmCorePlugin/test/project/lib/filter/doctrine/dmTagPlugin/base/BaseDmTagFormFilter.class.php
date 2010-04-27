@@ -23,6 +23,7 @@ abstract class BaseDmTagFormFilter extends BaseFormFilterDoctrine
       'dm_test_domains_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomain', 'required' => false)),
       'dm_test_fruits_list'  => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestFruit', 'required' => false)),
     ));
+    
 
     $this->widgetSchema->setNameFormat('dm_tag_filters[%s]');
 

@@ -24,6 +24,7 @@ abstract class BaseDmErrorForm extends BaseFormDoctrine
       'uri'         => new sfWidgetFormInputText(),
       'env'         => new sfWidgetFormInputText(),
       'created_at'  => new sfWidgetFormDateTime(),
+
     ));
 
     $this->setValidators(array(

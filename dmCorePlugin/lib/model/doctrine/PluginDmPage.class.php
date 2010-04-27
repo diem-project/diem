@@ -238,7 +238,7 @@ LIMIT 1')->getStatement();
       }
     }
 
-    $translationModifiedFields = $this->getCurrentTranslation()->getModified();
+    $translationModifiedFields = $this->hasCurrentTranslation() ? $this->getCurrentTranslation()->getModified() : array();
 
     parent::save($conn);
     

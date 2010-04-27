@@ -19,6 +19,7 @@ abstract class BaseDmLayoutForm extends BaseFormDoctrine
       'name'      => new sfWidgetFormInputText(),
       'template'  => new sfWidgetFormInputText(),
       'css_class' => new sfWidgetFormInputText(),
+
     ));
 
     $this->setValidators(array(

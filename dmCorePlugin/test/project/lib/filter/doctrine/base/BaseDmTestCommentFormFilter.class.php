@@ -43,6 +43,7 @@ abstract class BaseDmTestCommentFormFilter extends BaseFormFilterDoctrine
       'updated_at' => new sfValidatorChoice(array('required' => false, 'choices' => array_keys($this->widgetSchema['updated_at']->getOption('choices')))),
       'version'    => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
     ));
+    
 
     $this->widgetSchema->setNameFormat('dm_test_comment_filters[%s]');
 

@@ -27,6 +27,7 @@ abstract class BaseDmTestPostTranslationVersionFormFilter extends BaseFormFilter
       'url'       => new sfValidatorPass(array('required' => false)),
       'is_active' => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
     ));
+    
 
     $this->widgetSchema->setNameFormat('dm_test_post_translation_version_filters[%s]');
 

@@ -19,6 +19,7 @@ abstract class BaseDmAreaForm extends BaseFormDoctrine
       'dm_layout_id'    => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Layout'), 'add_empty' => true)),
       'dm_page_view_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('PageView'), 'add_empty' => true)),
       'type'            => new sfWidgetFormChoice(array('choices' => array('content' => 'content', 'top' => 'top', 'bottom' => 'bottom', 'left' => 'left', 'right' => 'right'))),
+
     ));
 
     $this->setValidators(array(

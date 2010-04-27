@@ -23,6 +23,7 @@ abstract class BaseDmPageViewFormFilter extends BaseFormFilterDoctrine
       'action'       => new sfValidatorPass(array('required' => false)),
       'dm_layout_id' => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Layout'), 'column' => 'id')),
     ));
+    
 
     $this->widgetSchema->setNameFormat('dm_page_view_filters[%s]');
 

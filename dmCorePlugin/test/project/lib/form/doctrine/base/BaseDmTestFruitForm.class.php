@@ -19,6 +19,7 @@ abstract class BaseDmTestFruitForm extends BaseFormDoctrine
       'title'      => new sfWidgetFormInputText(),
       'created_by' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('CreatedBy'), 'add_empty' => true)),
       'updated_by' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('UpdatedBy'), 'add_empty' => true)),
+
         'tags_list'  => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'DmTag', 'expanded' => true)),
     ));
 

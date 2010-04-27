@@ -17,6 +17,7 @@ abstract class BaseDmTagForm extends BaseFormDoctrine
     $this->setWidgets(array(
       'id'                   => new sfWidgetFormInputHidden(),
       'name'                 => new sfWidgetFormInputText(),
+
         'dm_test_domains_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomain', 'expanded' => true)),
         'dm_test_fruits_list'  => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'DmTestFruit', 'expanded' => true)),
     ));
