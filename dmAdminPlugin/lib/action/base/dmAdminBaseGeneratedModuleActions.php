@@ -453,7 +453,7 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
     {
       $this->getUser()->setFlash('error', 'You must select an action to execute on the selected items.');
 
-      $this->redirect('@'.$this->etDmModule()->getUnderscore());
+      $this->redirect('@'.$this->getDmModule()->getUnderscore());
     }
 
     if (!method_exists($this, $method = 'execute'.ucfirst($action)))
