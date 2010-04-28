@@ -25,6 +25,7 @@ abstract class BaseDmTestUserFormFilter extends BaseFormFilterDoctrine
       'media_id'    => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Media'), 'column' => 'id')),
       'is_visible'  => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
     ));
+    
 
     $this->widgetSchema->setNameFormat('dm_test_user_filters[%s]');
 

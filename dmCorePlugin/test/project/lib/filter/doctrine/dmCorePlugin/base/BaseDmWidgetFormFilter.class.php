@@ -35,6 +35,9 @@ abstract class BaseDmWidgetFormFilter extends BaseFormFilterDoctrine
       'position'   => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
       'updated_at' => new sfValidatorChoice(array('required' => false, 'choices' => array_keys($this->widgetSchema['updated_at']->getOption('choices')))),
     ));
+    
+    $this->mergeI18nForm();
+
 
     $this->widgetSchema->setNameFormat('dm_widget_filters[%s]');
 
@@ -60,6 +63,9 @@ abstract class BaseDmWidgetFormFilter extends BaseFormFilterDoctrine
       'css_class'  => 'Text',
       'position'   => 'Number',
       'updated_at' => 'Date',
+      'id'         => 'Number',
+      'value'      => 'Text',
+      'lang'       => 'Text',
     );
   }
 }

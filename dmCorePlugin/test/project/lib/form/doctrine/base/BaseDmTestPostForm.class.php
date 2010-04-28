@@ -25,6 +25,7 @@ abstract class BaseDmTestPostForm extends BaseFormDoctrine
       'created_at'  => new sfWidgetFormDateTime(),
       'updated_at'  => new sfWidgetFormDateTime(),
       'position'    => new sfWidgetFormInputText(),
+
         'tags_list'   => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'DmTestTag', 'expanded' => true)),
       ));
 
@@ -54,14 +55,14 @@ abstract class BaseDmTestPostForm extends BaseFormDoctrine
     $this->embedForm('file_id_form', $this->createMediaFormForFileId());
     unset($this['file_id']);
 
-		if('embed' == sfConfig::get('dm_i18n_form'))
+    if('embed' == sfConfig::get('dm_i18n_form'))
     {
       $this->embedI18n(sfConfig::get('dm_i18n_cultures'));
     }
     else
     {
       $this->mergeI18nForm();
-		}
+    }
 
     $this->widgetSchema->setNameFormat('dm_test_post[%s]');
 

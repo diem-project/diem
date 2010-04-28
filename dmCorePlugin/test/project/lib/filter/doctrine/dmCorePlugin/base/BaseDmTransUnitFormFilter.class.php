@@ -41,6 +41,7 @@ abstract class BaseDmTransUnitFormFilter extends BaseFormFilterDoctrine
       'created_at'      => new sfValidatorChoice(array('required' => false, 'choices' => array_keys($this->widgetSchema['created_at']->getOption('choices')))),
       'updated_at'      => new sfValidatorChoice(array('required' => false, 'choices' => array_keys($this->widgetSchema['updated_at']->getOption('choices')))),
     ));
+    
 
     $this->widgetSchema->setNameFormat('dm_trans_unit_filters[%s]');
 

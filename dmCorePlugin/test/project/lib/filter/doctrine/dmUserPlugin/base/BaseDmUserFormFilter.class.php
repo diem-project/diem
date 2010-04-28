@@ -61,6 +61,7 @@ abstract class BaseDmUserFormFilter extends BaseFormFilterDoctrine
       'groups_list'          => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmGroup', 'required' => false)),
       'permissions_list'     => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmPermission', 'required' => false)),
     ));
+    
 
     $this->widgetSchema->setNameFormat('dm_user_filters[%s]');
 

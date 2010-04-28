@@ -18,6 +18,7 @@ abstract class BaseDmTestTagForm extends BaseFormDoctrine
       'id'         => new sfWidgetFormInputHidden(),
       'created_at' => new sfWidgetFormDateTime(),
       'updated_at' => new sfWidgetFormDateTime(),
+
         'posts_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPost', 'expanded' => true)),
     ));
 
@@ -28,14 +29,14 @@ abstract class BaseDmTestTagForm extends BaseFormDoctrine
         'posts_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPost', 'required' => false)),
     ));
 
-		if('embed' == sfConfig::get('dm_i18n_form'))
+    if('embed' == sfConfig::get('dm_i18n_form'))
     {
       $this->embedI18n(sfConfig::get('dm_i18n_cultures'));
     }
     else
     {
       $this->mergeI18nForm();
-		}
+    }
 
     $this->widgetSchema->setNameFormat('dm_test_tag[%s]');
 

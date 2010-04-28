@@ -61,7 +61,7 @@ $user = $helper->get('user');
 $user->setAuthenticated(true);
 $t->is($user->isAuthenticated(), true, 'Test isAuthenticated()');
 $t->is($menu['Test']['With Route']->checkUserAccess($user), true, 'Test checkUserAccess()');
-$t->is((string) $menu['Test'], '<ul id="test-menu"><li id="test-menu-with-route" class="first last"><a class="link" href="http://www.google.com" target="_blank">With Route</a></li></ul>', 'Test authentication');
+$t->is((string) $menu['Test'], '<ul id="test-menu"><li id="menu-test-menu-with-route" class="first last"><a class="link" href="http://www.google.com" target="_blank">With Route</a></li></ul>', 'Test authentication');
 
 $t->comment('test notAuthenticated');
 $menu['Test']['With Route']->secure(false)->notAuthenticated(true);
@@ -140,7 +140,7 @@ $html = _tag('ul',
   _tag('li.last',
     'Sites'.
     _tag('ul.my_ul_class',
-      _tag('li#my-menu-diem.first', _link('http://diem-project.org')->text('Diem')).
+      _tag('li#menu-my-menu-diem.first', _link('http://diem-project.org')->text('Diem')).
       _tag('li.last', _link('http://symfony-project.org')->text('Symfony'))
     )
   )
