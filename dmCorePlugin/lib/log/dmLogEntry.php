@@ -4,11 +4,13 @@ abstract class dmLogEntry
 {
   protected
   $serviceContainer,
+  $request,
   $data;
   
   public function __construct(sfServiceContainer $serviceContainer)
   {
     $this->serviceContainer = $serviceContainer;
+    $this->request = $this->serviceContainer->getService('request');
   }
   
   abstract public function configure(array $data);
@@ -46,5 +48,21 @@ abstract class dmLogEntry
     }
     
     return '::1' === $this->data['ip'] ? 'localhost' : $this->data['ip'];
+  }
+
+  public function getCurrentRequestIp()
+  {
+    //// localhost
+    if(!$ip = $this->request->getForwardedFor())
+    {
+      $ip = $this->request->getRemoteAddress();
+    }
+    // proxies
+    elseif(is_array($ip))
+    {
+      $ip = $ip[0];
+    }
+
+    return $ip;
   }
 }
