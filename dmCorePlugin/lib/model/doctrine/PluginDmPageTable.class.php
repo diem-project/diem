@@ -300,8 +300,8 @@ class PluginDmPageTable extends myDoctrineTable
   public function findOneBySlug($slug, $culture = null)
   {
     return $this->createQuery('p')
-    ->withI18n($culture, null, 'p')
-    ->where('pTranslation.slug = ?', $slug)
+    ->innerJoin('p.Translation t')
+    ->where('t.slug = ?', $slug)
     ->fetchOne();
   }
 
