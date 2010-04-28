@@ -55,8 +55,8 @@ class dmPageRouting extends dmConfigurable
     
     // search in all cultures
     $page = dmDb::query('DmPage p')
-    ->innerJoin('p.Translation t')
-    ->where('t.slug = ?', $slug)
+    ->withI18n(null, null, 'p', 'inner')
+    ->where('pTranslation.slug = ?', $slug)
     ->fetchOne();
     
     if (!$page)
