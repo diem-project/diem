@@ -4,7 +4,7 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
 {
   protected static
   $pageViewQueryCache,
-  $zonesQueryCache;
+  $zonesQueryCache = array();
   
   protected
   $context,
@@ -186,10 +186,10 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
     {
       $areaIds[] = $area['id'];
     }
-    $zonesQuery = clone self::getZonesQuery();
+    $zonesQuery = clone self::getZonesQuery($culture);
     $zones = $zonesQuery
     ->whereIn('z.dm_area_id', $areaIds)
-    ->fetchArray(array($culture));
+    ->fetchArray();
     
     sfConfig::set('dm_search_populating', true);
 
@@ -242,16 +242,16 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
     ->andWhere('pv.action = ?');
   }
 
-  protected static function getZonesQuery()
+  protected static function getZonesQuery($culture)
   {
-    if(null !== self::$zonesQueryCache)
+    if(isset(self::$zonesQueryCache[$culture]))
     {
-      return self::$zonesQueryCache;
+      return self::$zonesQueryCache[$culture];
     }
 
-    return self::$zonesQueryCache = dmDb::query('DmZone z')
+    return self::$zonesQueryCache[$culture] = dmDb::query('DmZone z')
     ->leftJoin('z.Widgets w')
-    ->innerJoin('w.Translation wTranslation WITH wTranslation.lang = ?')
+    ->withI18n($culture, null, 'w', 'inner')
     ->select('z.dm_area_id, w.module, w.action, wTranslation.value');
   }
 
