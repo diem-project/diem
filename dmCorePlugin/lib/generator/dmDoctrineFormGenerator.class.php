@@ -51,14 +51,19 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
       $this->table = Doctrine_Core::getTable($model);
       $this->modelName = $model;
 
-      if ($this->moduleManager->getModuleByModel($model))
+      if(!$useDmForm = $this->moduleManager->getModuleByModel($model))
       {
-        $this->setGeneratorClass('dmDoctrineForm');
+        foreach((array) $this->table->getOption('subclasses') as $subClass)
+        {
+          if($this->moduleManager->getModuleByModel($subClass))
+          {
+            $useDmForm = true;
+            break;
+          }
+        }
       }
-      else
-      {
-        $this->setGeneratorClass('sfDoctrineForm');
-      }
+
+      $this->setGeneratorClass($useDmForm ? 'dmDoctrineForm' : 'sfDoctrineForm');
       
       $baseDir = sfConfig::get('sf_lib_dir') . '/form/doctrine';
 
@@ -140,7 +145,7 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
 
   public function getMediaRelations()
   {
-    return $this->getModule()->getTable()->getRelationHolder()->getLocalMedias();
+    return $this->table->getRelationHolder()->getLocalMedias();
   }
 
   /**
