@@ -269,8 +269,9 @@ abstract class dmWidgetBaseView
       {
         $vars['page_id'] = $this->context->getPage()->get('id');
       }
-      
+
       $vars['user_id'] = $this->getService('user')->getUserId();
+      $vars['culture'] = $this->getService('user')->getCulture();
     }
     
     return $vars;

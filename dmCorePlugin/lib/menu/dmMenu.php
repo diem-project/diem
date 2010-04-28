@@ -70,9 +70,7 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
    * @param  string $label The label to render
    *
    * @return object Return $this (fluent interface)
-   *
    */
-
   public function label($label)
   {
     $this->label = $label;
@@ -206,9 +204,7 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
    * @see renderLink()
    *
    * @return int true Nesting level of the menu item, based on the nested set
-   *
    */
-
   public function getLevel()
   {
     if (null === $this->level)
@@ -303,9 +299,7 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
    *
    *
    * @return boolean true if the user has access to this menu item or not
-   *
    */
-
   public function checkUserAccess()
   {
     if (!empty($this->options['not_authenticated']) && $this->user->isAuthenticated())
@@ -348,7 +342,6 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
    * @return boolean true if the item has a child with the given name
    *
    */
-
   public function hasChild($name)
   {
     return isset($this->children[$name]);

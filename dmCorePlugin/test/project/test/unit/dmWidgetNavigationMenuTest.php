@@ -144,7 +144,7 @@ $t->comment('Add a page, a non-link, an external link, a mailto, ulClass and liC
 $form->bind(array(
   'link' => array('page:1', 'page:'.$page1->id, '', 'http://jquery.com', 'mailto:mail@a.com'),
   'text' => array('Home', 'Page 1', 'nolink', 'jquery', 'mail'),
-  'secure' => array(0, 0, 0, 0, 1),
+  'secure' => array(0, 0, 0, 0, 0),
   'nofollow' => array(0, 0, 0, 0, 1),
   'depth' => array(0, 0, 0, 0, 0),
   'ulClass' => 'my_ul_class',
@@ -168,7 +168,7 @@ $t->is_deeply($helper->ksort($widget->values), $helper->ksort(array(
     array('link' => 'page:'.$page1->id, 'text' => 'Page 1', 'secure' => 0, 'nofollow' => 0, 'depth' => 0),
     array('link' => '', 'text' => 'nolink', 'depth' => 0, 'secure' => 0, 'nofollow' => 0),
     array('link' => 'http://jquery.com', 'text' => 'jquery', 'secure' => 0, 'nofollow' => 0, 'depth' => 0),
-    array('link' => 'mailto:mail@a.com', 'text' => 'mail', 'secure' => 1, 'nofollow' => 1, 'depth' => 0)
+    array('link' => 'mailto:mail@a.com', 'text' => 'mail', 'secure' => 0, 'nofollow' => 1, 'depth' => 0)
   ))
 ), 'Widget values are correct');
 
@@ -182,7 +182,7 @@ $t->is($form->getDefault('items'), array(
   array('link' => 'page:'.$page1->id, 'text' => 'Page 1', 'secure' => 0, 'nofollow' => 0, 'depth' => 0),
   array('link' => '', 'text' => 'nolink', 'secure' => 0, 'nofollow' => 0, 'depth' => 0),
   array('link' => 'http://jquery.com', 'text' => 'jquery', 'secure' => 0, 'nofollow' => 0, 'depth' => 0),
-  array('link' => 'mailto:mail@a.com', 'text' => 'mail', 'secure' => 1, 'nofollow' => 1, 'depth' => 0)
+  array('link' => 'mailto:mail@a.com', 'text' => 'mail', 'secure' => 0, 'nofollow' => 1, 'depth' => 0)
 ), 'The form default items are correct');
 
 $t->comment('Now display the widget');
@@ -202,7 +202,7 @@ $expected = array(
       array('link' => 'page:'.$page1->id, 'text' => 'Page 1', 'secure' => 0, 'nofollow' => 0, 'depth' => 0),
       array('link' => '', 'text' => 'nolink', 'secure' => 0, 'nofollow' => 0, 'depth' => 0),
       array('link' => 'http://jquery.com', 'text' => 'jquery', 'secure' => 0, 'nofollow' => 0, 'depth' => 0),
-      array('link' => 'mailto:mail@a.com', 'text' => 'mail', 'secure' => 1, 'nofollow' => 1, 'depth' => 0)
+      array('link' => 'mailto:mail@a.com', 'text' => 'mail', 'secure' => 0, 'nofollow' => 1, 'depth' => 0)
     )
   )),
   'updated_at' => $widget->updatedAt
@@ -224,8 +224,6 @@ $expectedMenu = $helper->get('menu')
 ->addChild('1-page-1', 'page:'.$page1->id)->label('Page 1')->liClass('my_li_class')->end()
 ->addChild('2-nolink', '')->label('nolink')->liClass('my_li_class')->end()
 ->addChild('3-jquery', 'http://jquery.com')->label('jquery')->liClass('my_li_class')->end();
-
-//$t->is($widgetView->render(), $expectedMenu->render(), 'render : '.$expectedMenu->render());
 
 $t->comment('Authenticate the user');
 $helper->get('user')->setAuthenticated(true);
