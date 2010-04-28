@@ -99,7 +99,9 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
         if ($isPluginModel)
         {
            file_put_contents($classFile, $this->evalTemplate('sfDoctrinePluginFormTemplate.php'));
-        } else {
+        }
+        else
+        {
            file_put_contents($classFile, $this->evalTemplate('sfDoctrineFormTemplate.php'));
         }
       }
@@ -131,11 +133,6 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
 
       copy(dmOs::join(sfConfig::get('dm_core_dir'), 'data/skeleton/lib/form/doctrine/BaseFormDoctrine.class.php'), $file);
     }
-  }
-
-  public function getModule()
-  {
-    return $this->moduleManager->getModuleByModel($this->table->getComponentName());
   }
 
   public function getTable()
