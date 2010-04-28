@@ -53,12 +53,26 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
 
       if(!$useDmForm = $this->moduleManager->getModuleByModel($model))
       {
+        /// find column_aggregation inheritance superclass
         foreach((array) $this->table->getOption('subclasses') as $subClass)
         {
           if($this->moduleManager->getModuleByModel($subClass))
           {
             $useDmForm = true;
             break;
+          }
+        }
+        /// find concrete inheritance superclass
+        if(!$useDmForm)
+        {
+          foreach($this->moduleManager->getModulesWithModel() as $module)
+          {
+            $r = new ReflectionClass($module->getModel());
+            if ($r->isSubclassOf($model))
+            {
+              $useDmForm = true;
+              break;
+            }
           }
         }
       }
@@ -87,22 +101,22 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
         $pluginBaseDir = $pluginPaths[$pluginName].'/lib/form/doctrine';
         if (!file_exists($classFile = $pluginBaseDir.'/Plugin'.$model.'Form.class.php'))
         {
-            if (!is_dir($pluginBaseDir))
-            {
-              mkdir($pluginBaseDir, 0777, true);
-            }
-            file_put_contents($classFile, $this->evalTemplate('sfDoctrineFormPluginTemplate.php'));
+          if (!is_dir($pluginBaseDir))
+          {
+            mkdir($pluginBaseDir, 0777, true);
+          }
+          file_put_contents($classFile, $this->evalTemplate('sfDoctrineFormPluginTemplate.php'));
         }
       }
       if (!file_exists($classFile = $baseDir.'/'.$model.'Form.class.php'))
       {
         if ($isPluginModel)
         {
-           file_put_contents($classFile, $this->evalTemplate('sfDoctrinePluginFormTemplate.php'));
+          file_put_contents($classFile, $this->evalTemplate('sfDoctrinePluginFormTemplate.php'));
         }
         else
         {
-           file_put_contents($classFile, $this->evalTemplate('sfDoctrineFormTemplate.php'));
+          file_put_contents($classFile, $this->evalTemplate('sfDoctrineFormTemplate.php'));
         }
       }
     }
