@@ -52,15 +52,22 @@ abstract class dmLogEntry
 
   public function getCurrentRequestIp()
   {
-    //// localhost
-    if(!$ip = $this->request->getForwardedFor())
+    if(isset($_SERVER['REMOTE_ADDR']))
     {
-      $ip = $this->request->getRemoteAddress();
+      // localhost
+      if(!$ip = $this->request->getForwardedFor())
+      {
+        $ip = $this->request->getRemoteAddress();
+      }
+      // proxies
+      elseif(is_array($ip))
+      {
+        $ip = $ip[0];
+      }
     }
-    // proxies
-    elseif(is_array($ip))
+    else
     {
-      $ip = $ip[0];
+      $ip = '-';
     }
 
     return $ip;
