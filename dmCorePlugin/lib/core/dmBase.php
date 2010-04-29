@@ -1,5 +1,6 @@
 <?php
 
+// Fourth maintenance release for Diem 5.0
 define('DIEM_VERSION', '5.0.4');
 
 // Include Symfony
