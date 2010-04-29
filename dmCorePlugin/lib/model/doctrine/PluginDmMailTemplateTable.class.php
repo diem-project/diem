@@ -4,6 +4,15 @@
 class PluginDmMailTemplateTable extends myDoctrineTable
 {
 
+  public function createDefault($name)
+  {
+    return $this->create(array(
+      'name' => $name,
+      'subject' => 'Default subject',
+      'from_email' => 'noreply@nomail.com'
+    ));
+  }
+
   public function findOneByNameWithI18n($name)
   {
     return $this->createQuery('mt')

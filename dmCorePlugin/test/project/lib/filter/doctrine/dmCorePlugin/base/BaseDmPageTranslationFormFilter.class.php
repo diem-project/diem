@@ -37,6 +37,7 @@ abstract class BaseDmPageTranslationFormFilter extends BaseFormFilterDoctrine
       'is_secure'    => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
       'is_indexable' => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
     ));
+    
 
     $this->widgetSchema->setNameFormat('dm_page_translation_filters[%s]');
 

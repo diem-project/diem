@@ -11,6 +11,13 @@ class PluginDmSentMailTable extends myDoctrineTable
    */
   public function createFromSwiftMessage(Swift_Message $message)
   {
+    $debug = $message->toString();
+
+    if($attachementPosition = strpos($debug, 'attachment; filename='))
+    {
+      $debug = substr($debug, 0, $attachementPosition);
+    }
+
     return $this->create(array(
       'subject'         => $message->getSubject(),
       'body'            => $message->getBody(),
@@ -20,7 +27,7 @@ class PluginDmSentMailTable extends myDoctrineTable
       'bcc_email'       => implode(', ', array_keys((array)$message->getBCC())),
       'reply_to_email'  => $message->getReplyTo(),
       'sender_email'    => $message->getSender(),
-      'debug_string'    => $message->toString()
+      'debug_string'    => $debug
     ));
   }
 }

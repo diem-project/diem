@@ -23,6 +23,7 @@ abstract class BaseDmTestCommentForm extends BaseFormDoctrine
       'created_at' => new sfWidgetFormDateTime(),
       'updated_at' => new sfWidgetFormDateTime(),
       'version'    => new sfWidgetFormInputText(),
+
     ));
 
     $this->setValidators(array(

@@ -57,6 +57,9 @@ abstract class BaseDmTestPostFormFilter extends BaseFormFilterDoctrine
       'tags_list'   => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestTag', 'required' => false)),
       'medias_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmMedia', 'required' => false)),
     ));
+    
+    $this->mergeI18nForm();
+
 
     $this->widgetSchema->setNameFormat('dm_test_post_filters[%s]');
 
@@ -117,6 +120,14 @@ abstract class BaseDmTestPostFormFilter extends BaseFormFilterDoctrine
       'created_at'  => 'Date',
       'updated_at'  => 'Date',
       'position'    => 'Number',
+      'id'          => 'Number',
+      'title'       => 'Text',
+      'excerpt'     => 'Text',
+      'body'        => 'Text',
+      'url'         => 'Text',
+      'is_active'   => 'Boolean',
+      'lang'        => 'Text',
+      'version'     => 'Number',
       'tags_list'   => 'ManyKey',
       'medias_list' => 'ManyKey',
     );

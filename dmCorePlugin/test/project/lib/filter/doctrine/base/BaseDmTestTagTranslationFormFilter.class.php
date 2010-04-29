@@ -21,6 +21,7 @@ abstract class BaseDmTestTagTranslationFormFilter extends BaseFormFilterDoctrine
       'name' => new sfValidatorPass(array('required' => false)),
       'slug' => new sfValidatorPass(array('required' => false)),
     ));
+    
 
     $this->widgetSchema->setNameFormat('dm_test_tag_translation_filters[%s]');
 

@@ -51,6 +51,7 @@ abstract class BaseDmSentMailFormFilter extends BaseFormFilterDoctrine
       'debug_string'        => new sfValidatorPass(array('required' => false)),
       'created_at'          => new sfValidatorChoice(array('required' => false, 'choices' => array_keys($this->widgetSchema['created_at']->getOption('choices')))),
     ));
+    
 
     $this->widgetSchema->setNameFormat('dm_sent_mail_filters[%s]');
 

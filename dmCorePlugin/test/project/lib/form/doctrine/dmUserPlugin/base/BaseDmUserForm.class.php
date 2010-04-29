@@ -27,6 +27,7 @@ abstract class BaseDmUserForm extends BaseFormDoctrine
       'forgot_password_code' => new sfWidgetFormInputText(),
       'created_at'           => new sfWidgetFormDateTime(),
       'updated_at'           => new sfWidgetFormDateTime(),
+
         'groups_list'          => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'DmGroup', 'expanded' => true)),
         'permissions_list'     => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'DmPermission', 'expanded' => true)),
     ));

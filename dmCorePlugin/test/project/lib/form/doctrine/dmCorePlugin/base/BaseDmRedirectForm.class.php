@@ -20,6 +20,7 @@ abstract class BaseDmRedirectForm extends BaseFormDoctrine
       'dest'       => new sfWidgetFormInputText(),
       'created_at' => new sfWidgetFormDateTime(),
       'updated_at' => new sfWidgetFormDateTime(),
+
     ));
 
     $this->setValidators(array(

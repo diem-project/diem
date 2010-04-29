@@ -41,6 +41,7 @@ abstract class BaseDmMailTemplateTranslationFormFilter extends BaseFormFilterDoc
       'is_html'         => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
       'is_active'       => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
     ));
+    
 
     $this->widgetSchema->setNameFormat('dm_mail_template_translation_filters[%s]');
 

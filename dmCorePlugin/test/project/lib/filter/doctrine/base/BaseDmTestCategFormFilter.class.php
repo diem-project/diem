@@ -37,6 +37,9 @@ abstract class BaseDmTestCategFormFilter extends BaseFormFilterDoctrine
       'position'     => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
       'domains_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomain', 'required' => false)),
     ));
+    
+    $this->mergeI18nForm();
+
 
     $this->widgetSchema->setNameFormat('dm_test_categ_filters[%s]');
 
@@ -75,6 +78,10 @@ abstract class BaseDmTestCategFormFilter extends BaseFormFilterDoctrine
       'created_at'   => 'Date',
       'updated_at'   => 'Date',
       'position'     => 'Number',
+      'id'           => 'Number',
+      'name'         => 'Text',
+      'is_active'    => 'Boolean',
+      'lang'         => 'Text',
       'domains_list' => 'ManyKey',
     );
   }

@@ -70,9 +70,7 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
    * @param  string $label The label to render
    *
    * @return object Return $this (fluent interface)
-   *
    */
-
   public function label($label)
   {
     $this->label = $label;
@@ -206,9 +204,7 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
    * @see renderLink()
    *
    * @return int true Nesting level of the menu item, based on the nested set
-   *
    */
-
   public function getLevel()
   {
     if (null === $this->level)
@@ -303,9 +299,7 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
    *
    *
    * @return boolean true if the user has access to this menu item or not
-   *
    */
-
   public function checkUserAccess()
   {
     if (!empty($this->options['not_authenticated']) && $this->user->isAuthenticated())
@@ -348,7 +342,6 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
    * @return boolean true if the item has a child with the given name
    *
    */
-
   public function hasChild($name)
   {
     return isset($this->children[$name]);
@@ -528,7 +521,7 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
   protected function renderLiOpenTag()
   {
     $classes  = array();
-    $id       = $this->getOption('show_id') ? dmString::slugify($this->getRoot()->getName().'-'.$this->getName()) : null;
+    $id       = $this->getOption('show_id') ? dmString::slugify('menu-'.$this->getRoot()->getName().'-'.$this->getName()) : null;
     $link     = $this->getLink();
 
     if ($this->isFirst())
@@ -598,7 +591,7 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
 
     do
     {
-    	$children[] = $this->__($obj->getLabel());
+      $children[] = $this->__($obj->getLabel());
     }
     while ($obj = $obj->getParent());
 

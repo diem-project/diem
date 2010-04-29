@@ -80,10 +80,6 @@ class dmPageRouting extends dmConfigurable
   
   protected function createRoute($slug, DmPage $page, $culture)
   {
-    return $this->serviceContainer
-    ->setParameter('page_route.slug', $slug)
-    ->setParameter('page_route.page', $page)
-    ->setParameter('page_route.culture', $culture)
-    ->getService('page_route');
+    return new dmPageRoute($slug, $page, $culture);
   }
 }

@@ -25,6 +25,7 @@ abstract class BaseDmTestDomainTranslationFormFilter extends BaseFormFilterDoctr
       'created_by' => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('CreatedBy'), 'column' => 'id')),
       'updated_by' => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('UpdatedBy'), 'column' => 'id')),
     ));
+    
 
     $this->widgetSchema->setNameFormat('dm_test_domain_translation_filters[%s]');
 

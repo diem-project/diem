@@ -2,8 +2,6 @@ parameters:
 
   page_routing.class:         dmPageRouting         # Responsible for building a page_route from a slug.
   page_routing.options:       []
-  
-  page_route.class:           dmPageRoute           # Wraps a page and a culture that match a slug
 
   html_sitemap.class:         dmFrontHtmlSitemap    # Responsible for building and rendering an HTML sitemap. Not to be confused with the xml sitemap, the HTML one is intended to be displayed on the site.
 
@@ -79,11 +77,6 @@ services:
     class:                    %page_routing.class%
     shared:                   true
     arguments:                [ @service_container, %page_routing.options% ]
-    
-  page_route:
-    class:                    %page_route.class%
-    shared:                   false
-    arguments:                [ %page_route.slug%, %page_route.page%, %page_route.culture% ]
 
   html_sitemap:
     class:                    %html_sitemap.class%

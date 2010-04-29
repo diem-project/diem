@@ -35,6 +35,9 @@ abstract class BaseDmTestTagFormFilter extends BaseFormFilterDoctrine
       'updated_at' => new sfValidatorChoice(array('required' => false, 'choices' => array_keys($this->widgetSchema['updated_at']->getOption('choices')))),
       'posts_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPost', 'required' => false)),
     ));
+    
+    $this->mergeI18nForm();
+
 
     $this->widgetSchema->setNameFormat('dm_test_tag_filters[%s]');
 
@@ -72,6 +75,10 @@ abstract class BaseDmTestTagFormFilter extends BaseFormFilterDoctrine
       'id'         => 'Number',
       'created_at' => 'Date',
       'updated_at' => 'Date',
+      'id'         => 'Number',
+      'name'       => 'Text',
+      'slug'       => 'Text',
+      'lang'       => 'Text',
       'posts_list' => 'ManyKey',
     );
   }

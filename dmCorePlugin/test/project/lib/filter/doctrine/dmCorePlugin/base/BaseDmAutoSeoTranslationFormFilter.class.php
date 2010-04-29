@@ -31,6 +31,7 @@ abstract class BaseDmAutoSeoTranslationFormFilter extends BaseFormFilterDoctrine
       'keywords'    => new sfValidatorPass(array('required' => false)),
       'strip_words' => new sfValidatorPass(array('required' => false)),
     ));
+    
 
     $this->widgetSchema->setNameFormat('dm_auto_seo_translation_filters[%s]');
 

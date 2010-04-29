@@ -25,6 +25,7 @@ abstract class BaseDmTestFruitFormFilter extends BaseFormFilterDoctrine
       'updated_by' => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('UpdatedBy'), 'column' => 'id')),
       'tags_list'  => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTag', 'required' => false)),
     ));
+    
 
     $this->widgetSchema->setNameFormat('dm_test_fruit_filters[%s]');
 

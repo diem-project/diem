@@ -22,6 +22,7 @@ abstract class BaseDmTransUnitForm extends BaseFormDoctrine
       'meta'            => new sfWidgetFormInputText(),
       'created_at'      => new sfWidgetFormDateTime(),
       'updated_at'      => new sfWidgetFormDateTime(),
+
     ));
 
     $this->setValidators(array(

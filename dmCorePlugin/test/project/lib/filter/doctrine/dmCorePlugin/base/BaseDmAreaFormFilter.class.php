@@ -23,6 +23,7 @@ abstract class BaseDmAreaFormFilter extends BaseFormFilterDoctrine
       'dm_page_view_id' => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('PageView'), 'column' => 'id')),
       'type'            => new sfValidatorChoice(array('required' => false, 'choices' => array('content' => 'content', 'top' => 'top', 'bottom' => 'bottom', 'left' => 'left', 'right' => 'right'))),
     ));
+    
 
     $this->widgetSchema->setNameFormat('dm_area_filters[%s]');
 

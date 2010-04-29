@@ -20,6 +20,7 @@ abstract class BaseDmPermissionForm extends BaseFormDoctrine
       'description' => new sfWidgetFormTextarea(),
       'created_at'  => new sfWidgetFormDateTime(),
       'updated_at'  => new sfWidgetFormDateTime(),
+
         'users_list'  => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'DmUser', 'expanded' => true)),
         'groups_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'DmGroup', 'expanded' => true)),
     ));

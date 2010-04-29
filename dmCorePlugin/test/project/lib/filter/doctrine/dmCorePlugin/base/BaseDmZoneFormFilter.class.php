@@ -25,6 +25,7 @@ abstract class BaseDmZoneFormFilter extends BaseFormFilterDoctrine
       'width'      => new sfValidatorPass(array('required' => false)),
       'position'   => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
     ));
+    
 
     $this->widgetSchema->setNameFormat('dm_zone_filters[%s]');
 

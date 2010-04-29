@@ -19,6 +19,7 @@ abstract class BaseDmPageViewForm extends BaseFormDoctrine
       'module'       => new sfWidgetFormInputText(),
       'action'       => new sfWidgetFormInputText(),
       'dm_layout_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Layout'), 'add_empty' => true)),
+
     ));
 
     $this->setValidators(array(

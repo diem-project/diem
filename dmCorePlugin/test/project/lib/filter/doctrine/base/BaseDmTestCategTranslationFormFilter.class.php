@@ -21,6 +21,7 @@ abstract class BaseDmTestCategTranslationFormFilter extends BaseFormFilterDoctri
       'name'      => new sfValidatorPass(array('required' => false)),
       'is_active' => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
     ));
+    
 
     $this->widgetSchema->setNameFormat('dm_test_categ_translation_filters[%s]');
 

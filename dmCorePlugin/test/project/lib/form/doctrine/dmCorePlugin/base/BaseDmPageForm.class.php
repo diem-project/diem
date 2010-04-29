@@ -23,6 +23,7 @@ abstract class BaseDmPageForm extends BaseFormDoctrine
       'lft'         => new sfWidgetFormInputText(),
       'rgt'         => new sfWidgetFormInputText(),
       'level'       => new sfWidgetFormInputText(),
+
     ));
 
     $this->setValidators(array(
@@ -40,14 +41,14 @@ abstract class BaseDmPageForm extends BaseFormDoctrine
       new sfValidatorDoctrineUnique(array('model' => 'DmPage', 'column' => array('module', 'action', 'record_id')))
     );
 
-		if('embed' == sfConfig::get('dm_i18n_form'))
+    if('embed' == sfConfig::get('dm_i18n_form'))
     {
       $this->embedI18n(sfConfig::get('dm_i18n_cultures'));
     }
     else
     {
       $this->mergeI18nForm();
-		}
+    }
 
     $this->widgetSchema->setNameFormat('dm_page[%s]');
 

@@ -13,20 +13,23 @@ abstract class BaseDmSettingFormFilter extends BaseFormFilterDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-      'name'        => new sfWidgetFormDmFilterInput(),
-      'type'        => new sfWidgetFormChoice(array('choices' => array('' => '', 'text' => 'text', 'boolean' => 'boolean', 'select' => 'select', 'textarea' => 'textarea', 'number' => 'number', 'datetime' => 'datetime'))),
-      'params'      => new sfWidgetFormDmFilterInput(),
-      'group_name'  => new sfWidgetFormDmFilterInput(),
-      'credentials' => new sfWidgetFormDmFilterInput(),
+      'name'          => new sfWidgetFormDmFilterInput(),
+      'type'          => new sfWidgetFormChoice(array('choices' => array('' => '', 'text' => 'text', 'boolean' => 'boolean', 'select' => 'select', 'textarea' => 'textarea', 'number' => 'number', 'datetime' => 'datetime'))),
+      'params'        => new sfWidgetFormDmFilterInput(),
+      'group_name'    => new sfWidgetFormDmFilterInput(),
+      'credentials'   => new sfWidgetFormDmFilterInput(),
     ));
 
     $this->setValidators(array(
-      'name'        => new sfValidatorPass(array('required' => false)),
-      'type'        => new sfValidatorChoice(array('required' => false, 'choices' => array('text' => 'text', 'boolean' => 'boolean', 'select' => 'select', 'textarea' => 'textarea', 'number' => 'number', 'datetime' => 'datetime'))),
-      'params'      => new sfValidatorPass(array('required' => false)),
-      'group_name'  => new sfValidatorPass(array('required' => false)),
-      'credentials' => new sfValidatorPass(array('required' => false)),
+      'name'          => new sfValidatorPass(array('required' => false)),
+      'type'          => new sfValidatorChoice(array('required' => false, 'choices' => array('text' => 'text', 'boolean' => 'boolean', 'select' => 'select', 'textarea' => 'textarea', 'number' => 'number', 'datetime' => 'datetime'))),
+      'params'        => new sfValidatorPass(array('required' => false)),
+      'group_name'    => new sfValidatorPass(array('required' => false)),
+      'credentials'   => new sfValidatorPass(array('required' => false)),
     ));
+    
+    $this->mergeI18nForm();
+
 
     $this->widgetSchema->setNameFormat('dm_setting_filters[%s]');
 
@@ -45,12 +48,17 @@ abstract class BaseDmSettingFormFilter extends BaseFormFilterDoctrine
   public function getFields()
   {
     return array(
-      'id'          => 'Number',
-      'name'        => 'Text',
-      'type'        => 'Enum',
-      'params'      => 'Text',
-      'group_name'  => 'Text',
-      'credentials' => 'Text',
+      'id'            => 'Number',
+      'name'          => 'Text',
+      'type'          => 'Enum',
+      'params'        => 'Text',
+      'group_name'    => 'Text',
+      'credentials'   => 'Text',
+      'id'            => 'Number',
+      'description'   => 'Text',
+      'value'         => 'Text',
+      'default_value' => 'Text',
+      'lang'          => 'Text',
     );
   }
 }
