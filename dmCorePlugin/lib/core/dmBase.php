@@ -1,6 +1,7 @@
 <?php
 
-define('DIEM_VERSION', '5.1.0-RC3');
+// First stable release for Diem 5.1
+define('DIEM_VERSION', '5.1.0');
 
 // include symfony
 if (!defined('SYMFONY_VERSION'))
