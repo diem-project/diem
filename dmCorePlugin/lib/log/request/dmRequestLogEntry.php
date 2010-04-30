@@ -21,7 +21,7 @@ class dmRequestLogEntry extends dmLogEntry
       'code'          => (string) $data['context']->getResponse()->getStatusCode(),
       'app'           => (string) sfConfig::get('sf_app'),
       'env'           => (string) sfConfig::get('sf_environment'),
-      'ip'            => (string) $data['server']['REMOTE_ADDR'],
+      'ip'            => (string) $this->getCurrentRequestIp(),
       'user_id'       => (string) $data['context']->getUser()->getUserId(),
       'user_agent'    => dmString::truncate($isXhr ? '' : isset($data['server']['HTTP_USER_AGENT']) ? $data['server']['HTTP_USER_AGENT'] : '', 500),
       'xhr'           => (int)    $isXhr,

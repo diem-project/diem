@@ -218,6 +218,11 @@ class dmServerCheckUnit
       return $this->state == $this->requirement;
     }
 
+    if(in_array($this->state{strlen( $this->state ) - 1}, array('K', 'M', 'G')))
+    {
+      return version_compare($this->realsize($this->state), $this->realsize($this->requirement)) >= 0;
+    }
+
     return version_compare($this->state, $this->requirement) >= 0;
   }
 
@@ -242,11 +247,7 @@ class dmServerCheckUnit
 
   protected function realsize($val)
   {
-    if (!is_numeric($val{strlen( $val ) - 1}))
-    {
-      return $val*1024*1024;
-    }
-    switch ( $val{strlen( $val ) - 1} )
+    switch ($val{strlen( $val ) - 1})
     {
       case 'G':
         $val *= 1024;

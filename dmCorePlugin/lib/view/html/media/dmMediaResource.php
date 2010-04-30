@@ -154,8 +154,8 @@ class dmMediaResource
             $this->pathFromWebDir = $this->theme->getPath($source);
           }
         }
-  
-        $this->mime = $this->mimeTypeResolver->getGroupByFilename($source);
+
+        $this->mime = $this->mimeTypeResolver->getGroupByFilename(dmString::getBaseFromUrl($source));
       }
     }
     elseif($source instanceof DmMedia)

@@ -15,69 +15,21 @@ abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->
   protected function setupInheritance()
   {
     parent::setupInheritance();
-
 <?php foreach((array)$this->getTable()->getOption('inheritanceMap') as $field => $value): ?>
     unset($this['<?php echo $field ?>']);
 <?php endforeach; ?>
 
-    <?php foreach ($this->getColumns() as $column): ?><?php if ('DmMedia' === $relation->getClass()) continue; ?>
+<?php foreach ($this->getColumns() as $column): ?>
     $this->widgetSchema   ['<?php echo $column->getFieldName() ?>'] = new <?php echo $this->getWidgetClassForColumn($column) ?>(<?php echo $this->getWidgetOptionsForColumn($column) ?>);
     $this->validatorSchema['<?php echo $column->getFieldName() ?>'] = new <?php echo $this->getValidatorClassForColumn($column) ?>(<?php echo $this->getValidatorOptionsForColumn($column) ?>);
 
 <?php endforeach; ?>
-<?php foreach ($this->getManyToManyRelations() as $relation): ?><?php if ('DmMedia' === $relation->getClass()) continue; ?>
+<?php foreach ($this->getManyToManyRelations() as $relation): ?>
     $this->widgetSchema   ['<?php echo $this->underscore($relation['alias']) ?>_list'] = new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => '<?php echo $relation['table']->getOption('name') ?>'));
     $this->validatorSchema['<?php echo $this->underscore($relation['alias']) ?>_list'] = new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => '<?php echo $relation['table']->getOption('name') ?>', 'required' => false));
 
 <?php endforeach; ?>
-
-<?php foreach($this->getMediaRelations() as $mediaRelation): ?>
-
-    /*
-     * Embed Media form for <?php echo $mediaRelation['local']."\n"; ?>
-     */
-    $this->embedForm('<?php echo $mediaRelation['local'].'_form' ?>', $this->createMediaFormFor<?php echo dmString::camelize($mediaRelation['local']); ?>());
-    unset($this['<?php echo $mediaRelation['local']; ?>']);
-<?php endforeach; ?>
     $this->widgetSchema->setNameFormat('<?php echo $this->underscore($this->modelName) ?>[%s]');
-  }
-
-
-<?php foreach($this->getMediaRelations() as $mediaRelation): ?>
-  /**
-   * Creates a DmMediaForm instance for <?php echo $mediaRelation['local']."\n"; ?>
-   *
-   * @return DmMediaForm a form instance for the related media
-   */
-  protected function createMediaFormFor<?php echo dmString::camelize($mediaRelation['local']); ?>()
-  {
-    return DmMediaForRecordForm::factory($this->object, '<?php echo $mediaRelation['local'] ?>', '<?php echo $mediaRelation['alias'] ?>', $this->validatorSchema['<?php echo $mediaRelation['local']; ?>']->getOption('required'));
-  }
-<?php endforeach; ?>
-
-  protected function doBind(array $values)
-  {
-<?php foreach($this->getMediaRelations() as $mediaRelation): ?>
-    $values = $this->filterValuesByEmbeddedMediaForm($values, '<?php echo $mediaRelation['local'] ?>');
-<?php endforeach; ?>
-    parent::doBind($values);
-  }
-
-  public function processValues($values)
-  {
-    $values = parent::processValues($values);
-<?php foreach($this->getMediaRelations() as $mediaRelation): ?>
-    $values = $this->processValuesForEmbeddedMediaForm($values, '<?php echo $mediaRelation['local'] ?>');
-<?php endforeach; ?>
-    return $values;
-  }
-
-  protected function doUpdateObject($values)
-  {
-    parent::doUpdateObject($values);
-<?php foreach($this->getMediaRelations() as $mediaRelation): ?>
-    $this->doUpdateObjectForEmbeddedMediaForm($values, '<?php echo $mediaRelation['local'] ?>', '<?php echo $mediaRelation['alias'] ?>');
-<?php endforeach; ?>
   }
 
   public function getModelName()

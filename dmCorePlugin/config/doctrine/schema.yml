@@ -226,10 +226,6 @@ DmSetting:
 # TRANSLATION SCHEMA
 
 DmCatalogue:
-  options:
-    symfony:
-      form:                 false
-      filter:               false
   columns:
     name:                   { type: string(255), notnull: true }
     source_lang:            { type: string(15), notnull: true }

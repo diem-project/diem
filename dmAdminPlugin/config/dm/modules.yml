@@ -13,6 +13,9 @@ Tools:
     dmTransUnit:
       name:         Sentence
       credentials:  translation
+    dmCatalogue:
+      name:         Catalogue
+      credentials:  system
   Monitoring:
     dmChart:
       name:         Chart

@@ -41,7 +41,7 @@ class dmMail
     }
     elseif (!$this->template = dmDb::query('DmMailTemplate t')->where('t.name = ?', $templateName)->fetchRecord())
     {
-      $this->template = dmDb::create('DmMailTemplate', array('name' => $templateName));
+      $this->template = dmDb::table('DmMailTemplate')->createDefault($templateName);
     }
     
     return $this;
@@ -223,8 +223,9 @@ class dmMail
     
     $template = $this->getTemplate();
     $replacements = $this->getReplacements();
+    $message = $this->getMessage();
     
-    $this->getMessage()
+    $message
     ->setSubject(strtr($template->subject, $replacements))
     ->setBody(strtr($template->body, $replacements))
     ->setFrom($this->emailListToArray(strtr($template->from_email, $replacements)))
@@ -236,11 +237,11 @@ class dmMail
       {
         $processedValue = $this->emailListToArray(strtr($value, $replacements));
         
-        $this->getMessage()->{'set'.dmString::camelize($field)}($processedValue);
+        $message->{'set'.dmString::camelize($field)}($processedValue);
       }
     }
 
-    $headers = $this->getMessage()->getHeaders();
+    $headers = $message->getHeaders();
 
     if($headers->has('List-Unsubscribe'))
     {
@@ -271,7 +272,23 @@ class dmMail
 
   protected function emailListToArray($emails)
   {
-    return array_unique(array_filter(array_map('trim', explode(',', str_replace("\n", ',', $emails)))));
+    $entries = array_unique(array_filter(array_map('trim', explode(',', str_replace("\n", ',', $emails)))));
+    $emails = array();
+    foreach($entries as $entry)
+    {
+      if(preg_match('/^.+\s<.+>$/', $entry))
+      {
+        $email  = preg_replace('/^.+\s<(.+)>$/', '$1', $entry);
+        $name   = preg_replace('/^(.+)\s<.+$/', '$1', $entry);
+        $emails[$email] = $name;
+      }
+      else
+      {
+        $emails[$entry] = null;
+      }
+    }
+
+    return $emails;
   }
   
   protected function updateTemplate()

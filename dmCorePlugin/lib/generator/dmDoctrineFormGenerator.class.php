@@ -51,14 +51,33 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
       $this->table = Doctrine_Core::getTable($model);
       $this->modelName = $model;
 
-      if ($this->moduleManager->getModuleByModel($model))
+      if(!$useDmForm = $this->moduleManager->getModuleByModel($model))
       {
-        $this->setGeneratorClass('dmDoctrineForm');
+        /// find column_aggregation inheritance superclass
+        foreach((array) $this->table->getOption('subclasses') as $subClass)
+        {
+          if($this->moduleManager->getModuleByModel($subClass))
+          {
+            $useDmForm = true;
+            break;
+          }
+        }
+        /// find concrete inheritance superclass
+        if(!$useDmForm)
+        {
+          foreach($this->moduleManager->getModulesWithModel() as $module)
+          {
+            $r = new ReflectionClass($module->getModel());
+            if ($r->isSubclassOf($model))
+            {
+              $useDmForm = true;
+              break;
+            }
+          }
+        }
       }
-      else
-      {
-        $this->setGeneratorClass('sfDoctrineForm');
-      }
+
+      $this->setGeneratorClass($useDmForm ? 'dmDoctrineForm' : 'sfDoctrineForm');
       
       $baseDir = sfConfig::get('sf_lib_dir') . '/form/doctrine';
 
@@ -82,20 +101,22 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
         $pluginBaseDir = $pluginPaths[$pluginName].'/lib/form/doctrine';
         if (!file_exists($classFile = $pluginBaseDir.'/Plugin'.$model.'Form.class.php'))
         {
-            if (!is_dir($pluginBaseDir))
-            {
-              mkdir($pluginBaseDir, 0777, true);
-            }
-            file_put_contents($classFile, $this->evalTemplate('sfDoctrineFormPluginTemplate.php'));
+          if (!is_dir($pluginBaseDir))
+          {
+            mkdir($pluginBaseDir, 0777, true);
+          }
+          file_put_contents($classFile, $this->evalTemplate('sfDoctrineFormPluginTemplate.php'));
         }
       }
       if (!file_exists($classFile = $baseDir.'/'.$model.'Form.class.php'))
       {
         if ($isPluginModel)
         {
-           file_put_contents($classFile, $this->evalTemplate('sfDoctrinePluginFormTemplate.php'));
-        } else {
-           file_put_contents($classFile, $this->evalTemplate('sfDoctrineFormTemplate.php'));
+          file_put_contents($classFile, $this->evalTemplate('sfDoctrinePluginFormTemplate.php'));
+        }
+        else
+        {
+          file_put_contents($classFile, $this->evalTemplate('sfDoctrineFormTemplate.php'));
         }
       }
     }
@@ -128,11 +149,6 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
     }
   }
 
-  public function getModule()
-  {
-    return $this->moduleManager->getModuleByModel($this->table->getComponentName());
-  }
-
   public function getTable()
   {
     return $this->table;
@@ -140,7 +156,7 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
 
   public function getMediaRelations()
   {
-    return $this->getModule()->getTable()->getRelationHolder()->getLocalMedias();
+    return $this->table->getRelationHolder()->getLocalMedias();
   }
 
   /**

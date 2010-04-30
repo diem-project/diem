@@ -16,7 +16,7 @@ class dmEventLogEntry extends dmLogEntry
     
     $this->data = array(
       'time'          => (string) $data['server']['REQUEST_TIME'],
-      'ip'            => (string) isset($data['server']['REMOTE_ADDR']) ? $data['server']['REMOTE_ADDR'] : '-',
+      'ip'            => (string) $this->getCurrentRequestIp(),
       'session_id'    => (string) session_id(),
       'user_id'       => (string) $userId,
       'action'        => (string) $data['action'],
