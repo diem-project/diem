@@ -73,7 +73,7 @@ class dmFrontPageEditHelper extends dmFrontPageBaseHelper
       
       $title = $this->i18n->__('Edit this %1%', array('%1%' => $this->i18n->__($widgetPublicName)));
       
-      $html .= '<a class="dm dm_widget_edit" title="'.$title.'"></a>';
+      $html .= '<a class="dm dm_widget_edit" title="'.htmlentities($title, ENT_COMPAT, 'UTF-8').'"></a>';
     }
 
     /*
