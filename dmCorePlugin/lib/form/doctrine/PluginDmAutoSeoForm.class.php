@@ -31,6 +31,8 @@ abstract class PluginDmAutoSeoForm extends BaseDmAutoSeoForm
     ));
 
     $this->mergePostValidator(new sfValidatorCallback(array('callback' => array($this, 'checkRules'))));
+  
+    $this->testRecord = $this->object->getTargetDmModule()->getTable()->findOne();
   }
   
   public function getRules()
@@ -47,14 +49,17 @@ abstract class PluginDmAutoSeoForm extends BaseDmAutoSeoForm
   
   public function checkRules($validator, $values)
   {
-    foreach($this->getRules() as $rule)
+    if($this->testRecord)
     {
-      if (!$this->validateRule($rule, $values[$rule]))
+      foreach($this->getRules() as $rule)
       {
-        $error = new sfValidatorError($validator, 'This rule is not valid');
-    
-        // throw an error bound to the password field
-        throw new sfValidatorErrorSchema($validator, array($rule => $error));
+        if (!$this->validateRule($rule, $values[$rule]))
+        {
+          $error = new sfValidatorError($validator, 'This rule is not valid');
+
+          // throw an error bound to the password field
+          throw new sfValidatorErrorSchema($validator, array($rule => $error));
+        }
       }
     }
 
@@ -68,17 +73,7 @@ abstract class PluginDmAutoSeoForm extends BaseDmAutoSeoForm
       throw new dmException('You must provide a dmSeoSynchronizer instance');
     }
     
-    return $this->seoSynchronizer->validatePattern($this->object->getTargetDmModule(), $key, $value, $this->getTestRecord());
-  }
-  
-  public function getTestRecord()
-  {
-    if (null === $this->testRecord)
-    {
-      $this->testRecord = $this->object->getTargetDmModule()->getTable()->findOne();
-    }
-    
-    return $this->testRecord;
+    return $this->seoSynchronizer->validatePattern($this->object->getTargetDmModule(), $key, $value, $this->testRecord);
   }
   
   public function setSeoSynchronizer(dmSeoSynchronizer $seoSynchronizer)
