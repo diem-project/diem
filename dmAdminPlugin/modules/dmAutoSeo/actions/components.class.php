@@ -23,6 +23,7 @@ class dmAutoSeoComponents extends dmAdminBaseComponents
   public function executePreview()
   {
     $this->module = $this->autoSeo->getTargetDmModule();
+    $this->page   = null;
     
     $pageId = dmDb::query('DmPage p')
     ->select('p.id, RANDOM() as rand')
