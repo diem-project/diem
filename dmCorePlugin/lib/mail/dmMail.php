@@ -226,6 +226,7 @@ class dmMail
     $message = $this->getMessage();
     
     $message
+    ->setContentType($template->isHtml ? "text/html" : "text/plain")
     ->setSubject(strtr($template->subject, $replacements))
     ->setBody(strtr($template->body, $replacements))
     ->setFrom($this->emailListToArray(strtr($template->from_email, $replacements)))
