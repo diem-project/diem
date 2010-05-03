@@ -4,7 +4,8 @@ class dmPageSynchronizer
 {
   protected
   $moduleManager,
-  $nodeParentIdStmt;
+  $nodeParentIdStmt,
+  $subPagesStmt;
   
   public function __construct(dmModuleManager $moduleManager)
   {
@@ -216,6 +217,7 @@ class dmPageSynchronizer
   protected function updateModuleShowPagesRecursive(dmModule $module)
   {
     $moduleKey = $module->getKey();
+    $table = $module->getTable();
 
     if (!$module->hasPage())
     {
@@ -248,13 +250,13 @@ class dmPageSynchronizer
        */
       
       // http://github.com/diem-project/diem/issues#issue/182
-      if(count($module->getTable()->getOption('inheritanceMap')))
+      if(count($table->getOption('inheritanceMap')))
       {
-        $records = $module->getTable()->createQuery('r')->select('r.id')->fetchArray();
+        $records = $table->createQuery('r')->select('r.id')->fetchArray();
       }
       else
       {
-        $records = dmDb::pdo('SELECT r.id FROM '.$module->getTable()->getTableName().' r')->fetchAll(PDO::FETCH_ASSOC);
+        $records = dmDb::pdo('SELECT r.id FROM '.$table->getTableName().' r')->fetchAll(PDO::FETCH_ASSOC);
       }
 
       /*
@@ -286,17 +288,17 @@ class dmPageSynchronizer
       $select = 'r.id';
       if ($module->hasLocal($module->getParent()))
       {
-        $select .= ', r.'.$module->getTable()->getRelationHolder()->getLocalByClass($module->getParent()->getModel())->getLocal();
+        $select .= ', r.'.$table->getRelationHolder()->getLocalByClass($module->getParent()->getModel())->getLocal();
       }
 
       // http://github.com/diem-project/diem/issues#issue/182
-      if(count($module->getTable()->getOption('inheritanceMap')))
+      if(count($table->getOption('inheritanceMap')))
       {
-        $records = $module->getTable()->createQuery('r')->select($select)->fetchArray();
+        $records = $table->createQuery('r')->select($select)->fetchArray();
       }
       else
       {
-        $records = dmDb::pdo('SELECT '.$select.' FROM '.$module->getTable()->getTableName().' r')->fetchAll(PDO::FETCH_ASSOC);
+        $records = dmDb::pdo('SELECT '.$select.' FROM '.$table->getTableName().' r')->fetchAll(PDO::FETCH_ASSOC);
       }
       
       /*
@@ -404,6 +406,42 @@ class dmPageSynchronizer
         $pageRecord->getNode()->moveAsLastChildOf($parentPage);
       }
     }
+
+    if($module->hasSubPages())
+    {
+      $this->updateSubPages($page, $record, $module);
+    }
+  }
+
+  protected function updateSubPages(array $page, array $record, dmProjectModule $module)
+  {
+    $subpageActions = $this->getSubpages($page);
+
+    foreach($module->getSubpages() as $subpageAction)
+    {
+      if(!in_array($subpageAction, $subpageActions))
+      {
+        dmDb::table('DmPage')->create(array(
+          'module'  => $page['module'],
+          'action'  => $subpageAction,
+          'record_id' => $page['record_id'],
+        ))->getNode()->insertAsLastChildOf(dmDb::table('DmPage')->find($page['id']));
+      }
+    }
+  }
+
+  protected function getSubpages(array $pageData)
+  {
+    if (null === $this->subPagesStmt)
+    {
+      $this->subPagesStmt = Doctrine_Manager::connection()->prepare(
+        'SELECT p.action FROM dm_page p WHERE p.lft > ? AND p.rgt < ? AND p.module = ? AND p.record_id = ?'
+      )->getStatement();
+    }
+
+    $this->subPagesStmt->execute(array($pageData['lft'], $pageData['rgt'], $pageData['module'], $pageData['record_id']));
+
+    return $this->subPagesStmt->fetchAll(PDO::FETCH_COLUMN);
   }
 
   protected function getNodeParentId(array $pageData)

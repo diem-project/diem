@@ -7,7 +7,15 @@ class dmProjectModule extends dmModule
     return $this->options['has_page'];
   }
 
-  // ACCESSEURS
+  public function hasSubPages()
+  {
+    return !empty($this->options['subpages']);
+  }
+
+  public function getSubPages()
+  {
+    return $this->options['subpages'];
+  }
 
   public function getComponents()
   {
