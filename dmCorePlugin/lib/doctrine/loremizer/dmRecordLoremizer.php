@@ -29,6 +29,11 @@ class dmRecordLoremizer extends dmConfigurable
     $this->record = $record;
     $this->table  = $record->getTable();
 
+    if($this->table->hasI18n())
+    {
+      $this->record->getCurrentTranslation();
+    }
+
 //    $this->record->clearRelated();
     
     foreach($this->getLoremizableColumns() as $columnName => $column)
