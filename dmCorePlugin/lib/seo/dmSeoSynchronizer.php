@@ -61,48 +61,57 @@ class dmSeoSynchronizer
       return;
     }
 
+    $actions = array_merge(array('show'), $module->getSubPages());
+    $actionsInQueryPart = '('.implode(',', array_fill(0, count($actions), '?')).')';
+
     /*
      * get autoSeo patterns
      */
-    $autoSeoRecord = dmDb::query('DmAutoSeo a')
+
+    $autoSeoRecords = dmDb::query('DmAutoSeo a INDEXBY a.action')
     ->withI18n($this->culture, null, 'a')
     ->where('a.module = ?', $module->getKey())
-    ->andWhere('a.action = ?', 'show')
-    ->fetchOne();
-    
-    if(!$autoSeoRecord)
-    {
-      $autoSeoRecord = dmDb::table('DmAutoSeo')
-      ->createFromModuleAndAction($module->getKey(), 'show', $this->culture)
-      ->saveGet();
-    }
-
-    $autoSeoRecordTranslation = $autoSeoRecord->getOrCreateCurrentTranslation();
+    ->andWhereIn('a.action', $actions)
+    ->fetchRecords();
     
     $patterns = array();
-    foreach(DmPage::getAutoSeoFields() as $patternField)
+
+    foreach($actions as $action)
     {
-      $patterns[$patternField] = $autoSeoRecordTranslation->get($patternField);
-    }
-    
-    if (isset($patterns['keywords']) && !sfConfig::get('dm_seo_use_keywords'))
-    {
-      unset($patterns['keywords']);
+      if(!isset($autoSeoRecords[$action]))
+      {
+        $autoSeoRecords[$action] = dmDb::table('DmAutoSeo')
+        ->createFromModuleAndAction($module->getKey(), $action, $this->culture)
+        ->saveGet();
+      }
+
+      $autoSeoRecordTranslation = $autoSeoRecords[$action]->getOrCreateCurrentTranslation();
+
+      $patterns[$action] = array();
+      foreach(DmPage::getAutoSeoFields() as $patternField)
+      {
+        $patterns[$action][$patternField] = $autoSeoRecordTranslation->get($patternField);
+      }
+
+      if (isset($patterns[$action]['keywords']) && !sfConfig::get('dm_seo_use_keywords'))
+      {
+        unset($patterns[$action]['keywords']);
+      }
     }
 
     /*
-     * get pages
+     * get pages and subpages
      */
     $pdoPages = dmDb::pdo('
-    SELECT p.id, p.lft, p.rgt, p.record_id, t.auto_mod, t.slug, t.name, t.title, t.h1, t.description, t.keywords, t.is_active, t.id as exist
+    SELECT p.id, p.action, p.lft, p.rgt, p.record_id, t.auto_mod, t.slug, t.name, t.title, t.h1, t.description, t.keywords, t.is_active, t.id as exist
     FROM dm_page p LEFT JOIN dm_page_translation t ON (t.id = p.id AND t.lang = ?)
-    WHERE p.module = ? AND p.action = ?', array($this->culture, $module->getKey(), 'show')
+    WHERE p.module = ? AND p.action IN '.$actionsInQueryPart, array_merge(array($this->culture, $module->getKey()), $actions)
     )->fetchAll(PDO::FETCH_ASSOC);
 
     $pages = array();
     foreach($pdoPages as $p)
     {
-      $pages[$p['id']] = $p;
+      $pages[$p['action']][$p['id']] = $p;
     }
     unset($pdoPages);
     
@@ -113,115 +122,117 @@ class dmSeoSynchronizer
     ->withI18n($this->culture, $module->getModel(), 'r')
     ->fetchRecords()
     ->getData();
-    
-    /*
-     * get parent slugs
-     * if slug pattern starts with a /
-     * we don't use parent slug to build  the page slug
-     */
-    if ($patterns['slug']{0} === '/')
-    {
-      $parentSlugs = array();
-    }
-    else
-    {
-      $parentSlugs = $this->getParentSlugs($module);
-    }
 
-    $modifiedPages = array();
-    foreach($pages as $page)
+    foreach($actions as $action)
     {
-      $record = $records[$page['record_id']];
-
-      if(!empty($parentSlugs))
+      /*
+       * get parent slugs
+       * if slug pattern starts with a /
+       * we don't use parent slug to build  the page slug
+       */
+      if ($patterns[$action]['slug']{0} === '/')
       {
-        $parentId = $this->getNodeParentId($page);
-        $parentSlug = isset($parentSlugs[$parentId]) ? $parentSlugs[$parentId] : '';
+        $parentSlugs = array();
       }
       else
       {
-        $parentSlug = '';
+        $parentSlugs = $this->getParentSlugs($module);
       }
 
-      $modifiedFields = $this->updatePage($page, $module, $record, $patterns, $parentSlug);
-      
-      if (!empty($modifiedFields))
+      $modifiedPages = array();
+      foreach($pages[$action] as $page)
       {
-        $modifiedPages[$page['id']] = $modifiedFields;
-      }
-    }
-    
-    /*
-     * Save modifications
-     */
-    if(!empty($modifiedPages))
-    {
-      /*
-       * Fix bug when no DmPage instance have been loaded yet
-       * ( this can happen when synchronization is run in a thread )
-       * DmPageTranslation class does not exist
-       */
-      if (!class_exists('DmPageTranslation'))
-      {
-        new DmPage();
-      }
-      
-      $conn = Doctrine_Manager::getInstance()->getCurrentConnection();
-      try
-      {
-        $conn->beginTransaction();
+        $record = $records[$page['record_id']];
 
-        foreach($modifiedPages as $id => $modifiedFields)
+        if(!empty($parentSlugs))
         {
-          if (!$pages[$id]['exist'])
-          {
-            $modifiedFields['id'] = $id;
-            $modifiedFields['lang'] = $this->culture;
-            $translation = new DmPageTranslation();
-            $translation->fromArray($modifiedFields);
-
-            $conn->unitOfWork->processSingleInsert($translation);
-
-            if(array_key_exists('slug', $modifiedFields))
-            {
-              // verify the slug is not already in use
-              if(!dmDb::table('DmPage')->isSlugUnique($translation->get('slug'), $id))
-              {
-                myDoctrineQuery::create($conn)->update('DmPageTranslation')
-                ->set(array('slug' => dmDb::table('DmPage')->createUniqueSlug($translation->get('slug'), $id, $parentSlug)))
-                ->where('id = ?', $id)
-                ->andWhere('lang = ?', $this->culture)
-                ->execute();
-              }
-            }
-          }
-          else
-          {
-            if(array_key_exists('slug', $modifiedFields))
-            {
-              // verify the slug is not already in use
-              if(!dmDb::table('DmPage')->isSlugUnique($modifiedFields['slug'], $id))
-              {
-                $modifiedFields['slug'] = dmDb::table('DmPage')->createUniqueSlug($modifiedFields['slug'], $id, $parentSlug);
-              }
-            }
-            
-            myDoctrineQuery::create($conn)->update('DmPageTranslation')
-            ->set($modifiedFields)
-            ->where('id = ?', $id)
-            ->andWhere('lang = ?', $this->culture)
-            ->execute();
-          }
+          $parentId = $this->getNodeParentId($page);
+          $parentSlug = isset($parentSlugs[$parentId]) ? $parentSlugs[$parentId] : '';
+        }
+        else
+        {
+          $parentSlug = '';
         }
 
-        $conn->commit();
+        $modifiedFields = $this->updatePage($page, $module, $record, $patterns[$action], $parentSlug);
+
+        if (!empty($modifiedFields))
+        {
+          $modifiedPages[$page['id']] = $modifiedFields;
+        }
       }
-      catch(Doctrine_Exception $e)
+
+      /*
+       * Save modifications
+       */
+      if(!empty($modifiedPages))
       {
-        $conn->rollback();
-        throw $e;
+        /*
+         * Fix bug when no DmPage instance have been loaded yet
+         * ( this can happen when synchronization is run in a thread )
+         * DmPageTranslation class does not exist
+         */
+        if (!class_exists('DmPageTranslation'))
+        {
+          new DmPage();
+        }
+
+        $conn = Doctrine_Manager::getInstance()->getCurrentConnection();
+        try
+        {
+          $conn->beginTransaction();
+
+          foreach($modifiedPages as $id => $modifiedFields)
+          {
+            if (!$pages[$action][$id]['exist'])
+            {
+              $modifiedFields['id'] = $id;
+              $modifiedFields['lang'] = $this->culture;
+              $translation = new DmPageTranslation();
+              $translation->fromArray($modifiedFields);
+
+              $conn->unitOfWork->processSingleInsert($translation);
+
+              if(array_key_exists('slug', $modifiedFields))
+              {
+                // verify the slug is not already in use
+                if(!dmDb::table('DmPage')->isSlugUnique($translation->get('slug'), $id))
+                {
+                  myDoctrineQuery::create($conn)->update('DmPageTranslation')
+                  ->set(array('slug' => dmDb::table('DmPage')->createUniqueSlug($translation->get('slug'), $id, $parentSlug)))
+                  ->where('id = ?', $id)
+                  ->andWhere('lang = ?', $this->culture)
+                  ->execute();
+                }
+              }
+            }
+            else
+            {
+              if(array_key_exists('slug', $modifiedFields))
+              {
+                // verify the slug is not already in use
+                if(!dmDb::table('DmPage')->isSlugUnique($modifiedFields['slug'], $id))
+                {
+                  $modifiedFields['slug'] = dmDb::table('DmPage')->createUniqueSlug($modifiedFields['slug'], $id, $parentSlug);
+                }
+              }
+
+              myDoctrineQuery::create($conn)->update('DmPageTranslation')
+              ->set($modifiedFields)
+              ->where('id = ?', $id)
+              ->andWhere('lang = ?', $this->culture)
+              ->execute();
+            }
+          }
+
+          $conn->commit();
+        }
+        catch(Doctrine_Exception $e)
+        {
+          $conn->rollback();
+          throw $e;
+        }
       }
-    
     }
     
     unset($pages);

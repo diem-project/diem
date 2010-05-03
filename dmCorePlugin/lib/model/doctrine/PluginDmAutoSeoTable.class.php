@@ -14,8 +14,6 @@ class PluginDmAutoSeoTable extends myDoctrineTable
   
   public function findOneByModuleAndAction($module, $action, $culture = null)
   {
-    $culture = null === $culture ? myDoctrineRecord::getDefaultCulture() : $culture;
-    
     return $this->createQuery('a')
     ->where('a.module = ?', $module)
     ->andWhere('a.action = ?', $action)
