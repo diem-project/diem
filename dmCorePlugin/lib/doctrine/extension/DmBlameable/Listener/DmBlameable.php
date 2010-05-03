@@ -70,7 +70,7 @@ class Doctrine_Template_Listener_DmBlameable extends Doctrine_Record_Listener
     {
         if (!$this->_options['columns']['created']['disabled']) {
             $createdName = $event->getInvoker()->getTable()->getFieldName($this->_options['columns']['created']['name']);
-            $modified = $event->getInvoker()->getModified();;
+            $modified = $event->getInvoker()->getModified();
             if (!isset($modified[$createdName])) {
                 $event->getInvoker()->$createdName = $this->getUserIdentity();
             }

@@ -44,11 +44,6 @@ abstract class BaseDmCatalogue extends myDoctrineRecord
              'notnull' => true,
              'length' => 15,
              ));
-
-        $this->option('symfony', array(
-             'form' => false,
-             'filter' => false,
-             ));
     }
 
     public function setUp()
