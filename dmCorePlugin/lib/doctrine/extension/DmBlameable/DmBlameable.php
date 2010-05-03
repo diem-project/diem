@@ -63,12 +63,14 @@ class Doctrine_Template_DmBlameable extends Doctrine_Template
                                 'relations'       => array('created' => array('disabled'      => false,
                                                                               'name'          => 'CreatedBy',
                                                                               'class'         => 'DmUser',
-                                                                              'foreign'       => 'id', 
+                                                                              'foreign'       => 'id',
+                                                                              'onDelete'      =>  'SET NULL',
                                                                               ),
                                                            'updated' => array('disabled'      => false,
                                                                               'name'          => 'UpdatedBy',
                                                                               'class'         => 'DmUser',
-                                                                              'foreign'       => 'id', 
+                                                                              'foreign'       => 'id',
+                                                                              'onDelete'      =>  'SET NULL',
                                                                               ),
                                                         ));
     
