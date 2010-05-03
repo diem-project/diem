@@ -199,25 +199,32 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
     {
       foreach($zone['Widgets'] as $widget)
       {
-        $widget['value'] = isset($widget['Translation'][$culture]['value']) ? $widget['Translation'][$culture]['value'] : '';
-        unset($widget['Translation']);
-        
-        $widgetType = $widgetTypeManager->getWidgetType($widget['module'], $widget['action']);
-
         try
         {
-          $this->pageContentCache .= $serviceContainer
-          ->addParameters(array(
-            'widget_view.class' => $widgetType->getViewClass(),
-            'widget_view.type'  => $widgetType,
-            'widget_view.data'  => $widget
-          ))
-          ->getService('widget_view')
-          ->renderForIndex();
+          $widget['value'] = isset($widget['Translation'][$culture]['value']) ? $widget['Translation'][$culture]['value'] : '';
+          unset($widget['Translation']);
+
+          $widgetType = $widgetTypeManager->getWidgetType($widget['module'], $widget['action']);
+
+          try
+          {
+            $this->pageContentCache .= $serviceContainer
+            ->addParameters(array(
+              'widget_view.class' => $widgetType->getViewClass(),
+              'widget_view.type'  => $widgetType,
+              'widget_view.data'  => $widget
+            ))
+            ->getService('widget_view')
+            ->renderForIndex();
+          }
+          catch(dmFormNotFoundException $e)
+          {
+            // a form is required but not available, skip this widget
+          }
         }
-        catch(dmFormNotFoundException $e)
+        catch(Exception $e)
         {
-          // a form is required but not available, skip this widget
+          // pass on errors
         }
       }
     }
