@@ -205,7 +205,7 @@ LIMIT 1')->getStatement();
   {
     $record = $this->getRecord();
 
-    if($record)
+    if($record && $record->isModified())
     {
       $record->save();
     }
