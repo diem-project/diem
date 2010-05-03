@@ -47,10 +47,10 @@ $t->ok(true, sprintf('Seo updated in %01.2f s', $timer->getElapsedTime()));
 
 foreach(dmDb::table('dmTestPost')->findAll() as $post)
 {
-	if (!$page = $post->getDmPage())
+  if (!$page = $post->getDmPage())
   {
     $t->skip('Post '.$post.' has no page', 6);
-  	continue;
+    continue;
   }
 
   $page->refresh(true);

@@ -50,63 +50,70 @@ $helper->checkTreeIntegrity($t); // 2 tests
 
 for($it = 1; $it<=$nbBigIterations; $it++)
 {
-	$t->diag('Randomly delete 2 records by table');
+  $t->diag('Randomly delete 2 records by table');
 
-	foreach($helper->getModuleManager()->getModulesWithPage() as $module)
-	{
-		foreach($module->getTable()->createQuery()->limit(2)->fetchRecords() as $record)
-		{
-		  try
-		  {
-			  $record->delete();
-		  }
-		  catch(Exception $e)
-		  {
-		    $t->diag(sprintf('Can not delete %s record : %s', $module, $e->getMessage()));
-		  }
-		}
-	}
-
-	$helper->updatePageTreeWatcher($t);
-//	$helper->syncPages($t); // 1 test
-
-	$helper->checkTreeIntegrity($t); // 2 tests
-
-	$t->diag('Randomly add 2 records by table');
-
-	$helper->loremizeDatabase(6, $t);
+  foreach($helper->getModuleManager()->getModulesWithPage() as $module)
+  {
+    foreach($module->getTable()->createQuery()->limit(2)->fetchRecords() as $record)
+    {
+      try
+      {
+        $record->delete();
+      }
+      catch(Exception $e)
+      {
+        $t->diag(sprintf('Can not delete %s record : %s', $module, $e->getMessage()));
+      }
+    }
+  }
 
   $helper->updatePageTreeWatcher($t);
-//	$helper->syncPages($t); // 1 test
+//  $helper->syncPages($t); // 1 test
 
-	$helper->checkTreeIntegrity($t); // 2 tests
+  $helper->checkTreeIntegrity($t); // 2 tests
 
-	$t->diag('Randomly update 2 records by table');
+  $t->diag('Randomly add 2 records by table');
 
-	$recordLoremizer = $helper->get('record_loremizer')
-	->setOption('override', true)
-	->setOption('create_associations', true);
-	
-	foreach($helper->getModuleManager()->getModulesWithModel() as $module)
-	{
-	  $records = $module->getTable()->createQuery('r')
+  $helper->loremizeDatabase(6, $t);
+
+  $helper->updatePageTreeWatcher($t);
+//  $helper->syncPages($t); // 1 test
+
+  $helper->checkTreeIntegrity($t); // 2 tests
+
+  $t->diag('Randomly update 2 records by table');
+
+  $recordLoremizer = $helper->get('record_loremizer')
+  ->setOption('override', true)
+  ->setOption('create_associations', true);
+
+  foreach($helper->getModuleManager()->getModulesWithModel() as $module)
+  {
+    $records = $module->getTable()->createQuery('r')
     ->select('r.*')
     ->withI18n(null, $module->getModel(), 'r')
-	  ->addSelect('RANDOM() as rand')
-	  ->orderBy('rand')
-	  ->limit(2)
-	  ->fetchRecords();
-	  
-		foreach($records as $record)
-		{
-			$recordLoremizer->execute($record)->save();
-		}
-	}
+    ->addSelect('RANDOM() as rand')
+    ->orderBy('rand')
+    ->limit(2)
+    ->fetchRecords();
+
+    foreach($records as $record)
+    {
+      try
+      {
+        $recordLoremizer->execute($record)->save();
+      }
+      catch(Exception $e)
+      {
+        
+      }
+    }
+  }
 
   $helper->updatePageTreeWatcher($t);
-//	$helper->syncPages($t); // 1 test
+//  $helper->syncPages($t); // 1 test
 
-	$helper->checkTreeIntegrity($t); // 2 tests
+  $helper->checkTreeIntegrity($t); // 2 tests
 }
 
 $helper->testI18nFetching($t); // 6 tests
