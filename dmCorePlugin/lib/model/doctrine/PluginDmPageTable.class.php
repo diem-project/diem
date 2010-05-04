@@ -109,7 +109,7 @@ class PluginDmPageTable extends myDoctrineTable
     }
   }
   
-  public function preloadPagesForRecords($records)
+  public function preloadPagesForRecords($records, $action = 'show')
   {
     if ($records instanceof Doctrine_Collection)
     {
@@ -134,18 +134,18 @@ class PluginDmPageTable extends myDoctrineTable
           $ids[] = $record->get('id');
         }
         
-        $this->prepareRecordPageCache($module->getKey(), array_unique($ids));
+        $this->prepareRecordPageCache($module->getKey(), array_unique($ids), $action);
       }
     }
   }
   
-  public function prepareRecordPageCache($module, array $ids, $culture = null)
+  public function prepareRecordPageCache($module, array $ids, $action = 'show')
   {
-    if(!empty($this->recordPageCache[$module]))
+    if(!empty($this->recordPageCache[$module.'/'.$action]))
     {
       foreach($ids as $index => $id)
       {
-        if (isset($this->recordPageCache[$module][$id]))
+        if (isset($this->recordPageCache[$module.'/'.$action][$id]))
         {
           unset($ids[$index]);
         }
@@ -153,7 +153,7 @@ class PluginDmPageTable extends myDoctrineTable
     }
     else
     {
-      $this->recordPageCache[$module] = array();
+      $this->recordPageCache[$module.'/'.$action] = array();
     }
     
     $pages = $this->createQuery('p')
@@ -161,13 +161,13 @@ class PluginDmPageTable extends myDoctrineTable
     ->where('p.module = ?', $module)
     ->andWhere('p.action = ?', 'show')
     ->andWhereIn('p.record_id', $ids)
-    ->withI18n($culture, null, 'p')
+    ->withI18n(null, null, 'p')
     ->fetchRecords()
     ->getData();
     
     foreach($pages as $page)
     {
-      $this->recordPageCache[$module][$page->get('record_id')] = $page;
+      $this->recordPageCache[$module.'/'.$action][$page->get('record_id')] = $page;
     }
     
     unset($pages);
@@ -211,16 +211,13 @@ class PluginDmPageTable extends myDoctrineTable
 
   public function queryByModuleAndAction($module, $action)
   {
-    return $this->createQuery('p')
-    ->where('p.module = ? AND p.action = ?', array($module, $action));
+    return $this->createQuery('p')->where('p.module = ? AND p.action = ?', array($module, $action));
   }
 
   
   public function findAllForCulture($culture, $hydrationMode = Doctrine_Core::HYDRATE_ARRAY)
   {
-    return $this->createQuery('p')
-    ->withI18n($culture, null, 'p')
-    ->execute(array(), $hydrationMode);
+    return $this->createQuery('p')->withI18n($culture, null, 'p')->execute(array(), $hydrationMode);
   }
   
   /**
@@ -287,15 +284,6 @@ class PluginDmPageTable extends myDoctrineTable
   {
     return $this->createQuery('p')->where('p.module = ?', $module)->fetchRecords();
   }
-
-  public function findOneByRecord(myDoctrineRecord $record)
-  {
-    return $this->createQuery('p')
-    ->where('p.module = ?', $record->getDmModule()->getKey())
-    ->andWhere('p.action = ?', 'show')
-    ->andWhere('p.record_id = ?', $record->get('id'))
-    ->fetchRecord();
-  }
   
   public function findOneBySlug($slug, $culture = null)
   {
@@ -329,9 +317,7 @@ class PluginDmPageTable extends myDoctrineTable
 
   public function findOneById($id)
   {
-    return $this->createQuery('p')
-    ->where('p.id = ?', $id)
-    ->fetchOne();
+    return $this->createQuery('p')->where('p.id = ?', $id)->fetchOne();
   }
 
   public function findOneByIdWithI18n($id, $culture = null)
@@ -349,19 +335,24 @@ class PluginDmPageTable extends myDoctrineTable
     ->withI18n($culture, null, 'p')
     ->fetchOne();
   }
-  
+
   public function findOneByRecordWithI18n(dmDoctrineRecord $record)
   {
+    return $this->findOneByRecordAndActionWithI18n($record);
+  }
+
+  public function findOneByRecordAndActionWithI18n(dmDoctrineRecord $record, $action = 'show')
+  {
     $module = $record->getDmModule()->getKey();
-    
-    if (isset($this->recordPageCache[$module][$record->get('id')]))
+
+    if (isset($this->recordPageCache[$module.'/'.$action][$record->get('id')]))
     {
-      return $this->recordPageCache[$module][$record->get('id')];
+      return $this->recordPageCache[$module.'/'.$action][$record->get('id')];
     }
 
     return $this->createQuery('p')
     ->where('p.module = ?', $module)
-    ->andWhere('p.action = ?', 'show')
+    ->andWhere('p.action = ?', $action)
     ->andWhere('p.record_id = ?', $record->get('id'))
     ->withI18n(null, null, 'p')
     ->fetchOne();

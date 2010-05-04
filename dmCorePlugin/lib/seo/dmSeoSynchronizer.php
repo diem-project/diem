@@ -136,7 +136,7 @@ class dmSeoSynchronizer
       }
       else
       {
-        $parentSlugs = $this->getParentSlugs($module);
+        $parentSlugs = $this->getParentSlugs($module, $action);
       }
 
       $modifiedPages = array();
@@ -466,14 +466,19 @@ class dmSeoSynchronizer
     return '%'.$property.'%';
   }
 
-  protected function getParentSlugs($module)
+  protected function getParentSlugs($module, $action)
   {
-    if($module->hasListPage())
+    if('show' !== $action)
+    {
+      $parentPageModuleKey = $module->getKey();
+      $parentPageActionKey = 'show';
+    }
+    elseif($module->hasListPage())
     {
       $parentPageModuleKey = $module->getKey();
       $parentPageActionKey = 'list';
     }
-    elseif ($parentModule = $module->getNearestAncestorWithPage())
+    elseif($parentModule = $module->getNearestAncestorWithPage())
     {
       $parentPageModuleKey = $parentModule->getKey();
       $parentPageActionKey = 'show';
