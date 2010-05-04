@@ -1,0 +1,11 @@
+all:
+  is_secure:    true
+
+delete:
+  credentials:  page_delete
+
+new:
+  credentials:  page_add
+  
+edit:
+  credentials:  page_edit
