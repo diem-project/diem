@@ -1,6 +1,6 @@
 <?php
 
-define('DIEM_VERSION', '5.1.1');
+define('DIEM_VERSION', '5.1.2');
 
 // include symfony
 if (!defined('SYMFONY_VERSION'))
