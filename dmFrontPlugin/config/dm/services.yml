@@ -8,9 +8,6 @@ parameters:
   page_not_found_handler.class: dmPageNotFoundHandler # Responsible to redirect or forward the user when the request page is not found.
 
   form_manager.class:         dmFormManager         # Responsible for creating and managing front forms.
-
-  link_tag_record.class:      dmFrontLinkTagRecord  # Responsible for rendering a link tag to a record with the £link helper. Configurable from the graphical configuration panel.
-  link_tag_record.options:    []
   
   link_tag_page.class:        dmFrontLinkTagPage    # Responsible for rendering a link tag to a DmPage instance with the £link helper. Configurable from the graphical configuration panel.
   link_tag_page.options:      []
@@ -91,11 +88,6 @@ services:
     class:                    %form_manager.class%
     arguments:                [ @service_container, @dispatcher ]
     shared:                   true
-
-  link_tag_record:
-    class:                    %link_tag_record.class%
-    shared:                   false
-    arguments:                [ %link_tag.resource%, %request.context%, %context.page%, @user, %link_tag_record.options% ]
 
   link_tag_page:
     class:                    %link_tag_page.class%
