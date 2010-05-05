@@ -35,10 +35,10 @@ class PluginDmAutoSeoTable extends myDoctrineTable
       'action'      => $action,
       'Translation' => array(
         $culture    => array(
-          'slug'        => '%'.$patterns['short'].'%',
-          'name'        => '%'.$patterns['short'].'%',
-          'title'       => '%'.$patterns['short'].'%',
-          'description' => '%'.$patterns['long'].'%',
+          'slug'        => $patterns['short'],
+          'name'        => $patterns['short'],
+          'title'       => $patterns['short'],
+          'description' => $patterns['long'],
           'lang'        => $culture
         )
       )
@@ -87,8 +87,8 @@ class PluginDmAutoSeoTable extends myDoctrineTable
     }
 
     return array(
-      'short' => $moduleUnderscore.$column,
-      'long'  => $moduleUnderscore.$descriptionColumn
+      'short' => '%'.$moduleUnderscore.$column.'%',
+      'long'  => '%'.$moduleUnderscore.$descriptionColumn.'%'
     );
   }
 }
