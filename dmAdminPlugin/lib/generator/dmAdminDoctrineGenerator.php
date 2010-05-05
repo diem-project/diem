@@ -93,7 +93,7 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
           'is_partial'   => false,
           'is_component' => false,
           'type'         => 'Text',
-          'label'        => $this->moduleManager->getModule($relation->getClass())->getPlural()
+          'label'        => $this->moduleManager->getModuleByModel($relation->getClass())->getPlural()
         ), isset($this->config['fields'][$name]) ? $this->config['fields'][$name] : array());
       }
     }
