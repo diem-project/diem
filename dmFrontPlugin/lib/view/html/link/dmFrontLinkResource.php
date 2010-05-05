@@ -4,8 +4,8 @@ class dmFrontLinkResource
 {
   protected
     $source,
-    $subject,
     $type,
+    $subject,
     $params;
     
   public function getType()
@@ -42,7 +42,7 @@ class dmFrontLinkResource
     {
       $this->fromEmpty();
     }
-    elseif (is_string($source))
+    elseif(is_string($source))
     {
       $this->fromString($source);
     }
@@ -57,7 +57,7 @@ class dmFrontLinkResource
 
     if(empty($this->type) || empty($this->subject))
     {
-      throw new dmException(sprintf('dmFrontLinkResource can not determine type of %s', $source));
+      throw new dmException(sprintf('dmFrontLinkResource can not determine type of %s %s', gettype($source), $source));
     }
     
     return $this;
@@ -180,7 +180,7 @@ class dmFrontLinkResource
     }
   }
 
-  protected function fromObject($object)
+  protected function fromObject($source)
   {
     if ($source instanceof DmPage)
     {
@@ -211,7 +211,7 @@ class dmFrontLinkResource
         throw new dmException(sprintf('%s object can not be associated to a page', get_class($source)));
       }
     }
-    elseif ($source instanceof Exception)
+    elseif($source instanceof Exception)
     {
       $this->type = 'error';
       $this->subject = $source;
