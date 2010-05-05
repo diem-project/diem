@@ -390,7 +390,8 @@ class dmPageSynchronizer
         throw new dmException(sprintf('parent page with id %d for new page %s was not found', $parentPageId, $page['module'].'.show'));
       }
       
-      $pageRecord = dmDb::table('DmPage')->create($page)->getNode()->insertAsLastChildOf($parentPage);
+      $pageRecord = dmDb::table('DmPage')->create($page);
+      $pageRecord->getNode()->insertAsLastChildOf($parentPage);
       $page['id'] = $pageRecord->get('id');
     }
     else
