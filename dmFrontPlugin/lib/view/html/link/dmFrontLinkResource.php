@@ -194,22 +194,7 @@ class dmFrontLinkResource
     }
     elseif($source instanceof dmDoctrineRecord)
     {
-      if ($module = $source->getDmModule())
-      {
-        if($module->hasPage())
-        {
-          $this->type = 'record';
-          $this->subject = $source;
-        }
-        else
-        {
-          throw new dmException(sprintf('%s module has no page', $module));
-        }
-      }
-      else
-      {
-        throw new dmException(sprintf('%s object can not be associated to a page', get_class($source)));
-      }
+      $this->fromRecord($source);
     }
     elseif($source instanceof Exception)
     {
@@ -218,8 +203,39 @@ class dmFrontLinkResource
     }
   }
 
+  protected function fromRecord(dmDoctrineRecord $source, $action = 'show')
+  {
+    if ($module = $source->getDmModule())
+    {
+      if($module->hasPage())
+      {
+        if($page = $source->getDmPage($action))
+        {
+          $this->type = 'page';
+          $this->subject = $page;
+        }
+        else
+        {
+          throw new dmException(sprintf('Can not link record %s %d because it has no page', get_class($source), $source->id));
+        }
+      }
+      else
+      {
+        throw new dmException(sprintf('%s module has no page', $module));
+      }
+    }
+    else
+    {
+      throw new dmException(sprintf('%s object can not be associated to a page', get_class($source)));
+    }
+  }
+
   protected function fromArray(array $source)
   {
+    if($source[0] instanceof dmDoctrineRecord)
+    {
+      $this->fromRecord($source[0], $source[1]);
+    }
     if(isset($source[1]))
     {
       if(is_object($source[1]))
