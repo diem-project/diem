@@ -390,7 +390,8 @@ class dmPageSynchronizer
         throw new dmException(sprintf('parent page with id %d for new page %s was not found', $parentPageId, $page['module'].'.show'));
       }
       
-      dmDb::table('DmPage')->create($page)->getNode()->insertAsLastChildOf($parentPage);
+      $pageRecord = dmDb::table('DmPage')->create($page)->getNode()->insertAsLastChildOf($parentPage);
+      $page['id'] = $pageRecord->get('id');
     }
     else
     {
@@ -409,28 +410,30 @@ class dmPageSynchronizer
 
     if($module->hasSubPages())
     {
-      $this->updateSubPages($page, $record, $module);
+      $this->updateSubPages($page['id']);
     }
   }
 
-  protected function updateSubPages(array $page, array $record, dmProjectModule $module)
+  protected function updateSubPages($showPageId)
   {
-    $subpageActions = $this->getSubpages($page);
+    $showPage = dmDb::table('DmPage')->findOneById($showPageId);
+    
+    $subpageActions = $this->getSubpages($showPage);
 
-    foreach($module->getSubpages() as $subpageAction)
+    foreach($showPage->getDmModule()->getSubpages() as $subpageAction)
     {
       if(!in_array($subpageAction, $subpageActions))
       {
         dmDb::table('DmPage')->create(array(
-          'module'  => $page['module'],
+          'module'  => $showPage->get('module'),
           'action'  => $subpageAction,
-          'record_id' => $page['record_id'],
-        ))->getNode()->insertAsLastChildOf(dmDb::table('DmPage')->find($page['id']));
+          'record_id' => $showPage->get('record_id'),
+        ))->getNode()->insertAsLastChildOf($showPage);
       }
     }
   }
 
-  protected function getSubpages(array $pageData)
+  protected function getSubpages(DmPage $page)
   {
     if (null === $this->subPagesStmt)
     {
@@ -439,7 +442,7 @@ class dmPageSynchronizer
       )->getStatement();
     }
 
-    $this->subPagesStmt->execute(array($pageData['lft'], $pageData['rgt'], $pageData['module'], $pageData['record_id']));
+    $this->subPagesStmt->execute(array($page->get('lft'), $page->get('rgt'), $page->get('module'), $page->get('record_id')));
 
     return $this->subPagesStmt->fetchAll(PDO::FETCH_COLUMN);
   }
