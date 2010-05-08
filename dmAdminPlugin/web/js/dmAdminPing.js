@@ -8,9 +8,7 @@
 
     init: function(options)
     {
-      self = this;
-
-      self.initCore(options);
+      this.initCore(options);
     },
 
     pong: function(data)
