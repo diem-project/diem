@@ -17,7 +17,6 @@ class dmDataLoad
     "groups",
     "users",
     "settings",
-    "layouts",
     "pages",
     "i18n",
     "media",
@@ -284,14 +283,6 @@ class dmDataLoad
         'password' => $password,
         'email' => 'admin@'.dmProject::getKey().'.com'
       ))->save();
-    }
-  }
-
-  protected function loadLayouts()
-  {
-    if (!dmDb::table('DmLayout')->count())
-    {
-      dmDb::create('DmLayout', array('name' => 'Global'))->saveGet()->refresh(true);
     }
   }
 

@@ -12,44 +12,41 @@
  */
 abstract class PluginDmPageView extends BaseDmPageView
 {
-  
-  public function getLayout()
+
+  public function preSave($event)
   {
-    if (!$layout = $this->_get('Layout'))
-    {
-      $layout = dmDb::table('DmLayout')->findFirstOrCreate();
-      $this->set('Layout', $layout);
-      $this->save();
-    }
-    
-    return $layout;
+    parent::preSave($event);
+
+    $this->createTemplate();
   }
 
-  public function getArea($type)
+  protected function createTemplate()
   {
-    foreach($this->get('Areas') as $area)
+    $file = $this->getTemplateFile();
+    $defaultFile = dm::getDir().'/dmFrontPlugin/modules/dmFront/templates/defaultPageViewSuccess.php';
+
+    if(!file_exists($file))
     {
-      if($area->get('type') == $type)
+      if($filesystem = $this->getService('filesystem'))
       {
-        return $area;
+        $filesystem->mkdir(dirname($file));
+      }
+      
+      if(!copy($defaultFile, $file))
+      {
+        throw new RuntimeException('Can not write page view template to '.dmProject::unRootify($file).', please check permissions');
       }
     }
-
-    $area = dmDb::create('DmArea', array(
-      'dm_page_view_id' => $this->get('id'),
-      'type' => $type
-    ))->saveGet();
-
-    $this->get('Areas')->add($area);
-
-    return $area;
   }
 
-  public function postDelete($event)
+  public function getTemplateFile()
   {
-    parent::postDelete($event);
+    return sfConfig::get('sf_root_dir').'/apps/front/modules/dmFront/templates/'.$this->get('template').'Success.php';
+  }
 
-    $this->Areas->delete();
+  public function renameForModuleAndAction($module, $action)
+  {
+    $this->name = sprintf('%s.%s', $module, $action);
   }
 
 }

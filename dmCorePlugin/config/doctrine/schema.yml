@@ -8,6 +8,7 @@ DmPage:
   columns:
     module:                 { type: string(127), notnull: true }
     action:                 { type: string(127), notnull: true }
+    page_view_name:         { type: string(255), notnull: true }
     record_id:              { type: integer, unsigned: true, notnull: true, default: 0 }
     slug:                   { type: string(255), notnull: true }
     name:                   { type: string(255), notnull: true }
@@ -24,48 +25,22 @@ DmPage:
     recordModuleAction:
       fields:               [ module, action, record_id ]
       type:                 unique
+  relations:
+    PageView:
+      class:                DmPageView
+      local:                page_view_name
+      foreign:              name
+      foreignAlias:         Pages
+      onDelete:             RESTRICT
 
 DmPageView:
   columns:
-    module:                 { type: string(127), notnull: true }
-    action:                 { type: string(127), notnull: true }
-    dm_layout_id:           { type: integer }
-  indexes:
-    dmPageViewModuleAction:
-      fields:               [ module, action ]
-      type:                 unique
-  relations:
-    Layout:
-      class:                DmLayout
-      local:                dm_layout_id
-      foreign:              id
-      onDelete:             SET NULL
-      foreignAlias:         PageViews
-
-DmLayout:
-  columns:
     name:                   { type: string(255), notnull: true, unique: true }
-    template:               { type: string(255), notnull: true, default: "page" }
-    css_class:              { type: string(255) }
+    template:               { type: string(255), notnull: true, default: "defaultPageView" }
 
 DmArea:
   columns:
-    dm_layout_id:           { type: integer, notnull: false }
-    dm_page_view_id:        { type: integer, notnull: false }
-    type:                   { type: string(255), notnull: true }
-  relations:
-    Layout:
-      class:                DmLayout
-      local:                dm_layout_id
-      foreign:              id
-      foreignAlias:         Areas
-      onDelete:             CASCADE
-    PageView:
-      class:                DmPageView
-      local:                dm_page_view_id
-      foreign:              id
-      foreignAlias:         Areas
-      onDelete:             CASCADE
+    name:                   { type: string(255), notnull: true, unique: true }
 
 DmZone:
   actAs:                    [ Sortable ]

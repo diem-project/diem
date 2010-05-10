@@ -4,11 +4,14 @@
 class PluginDmPageViewTable extends myDoctrineTable
 {
 
+  public function findOneByName($name)
+  {
+    return $this->createQuery('p')->where('p.name = ?', $name)->fetchRecord();
+  }
+
   public function findOneByModuleAndAction($module, $action)
   {
-    return $this->createQuery('p')
-    ->where('p.module = ? AND p.action = ?', array($module, $action))
-    ->fetchRecord();
+    return $this->findOneByName($this->getNameForModuleAndAction($module, $action));
   }
 
   /**
@@ -16,11 +19,14 @@ class PluginDmPageViewTable extends myDoctrineTable
    */
   public function createFromModuleAndAction($module, $action)
   {
-    return dmDb::create('DmPageView', array(
-      'module' => $module,
-      'action' => $action,
-      'dm_layout_id' => dmDb::table('DmLayout')->findFirstOrCreate()
-    ))->saveGet();
+    return $this->create(array(
+      'name' => $this->getNameForModuleAndAction($module, $action)
+    ));
+  }
+
+  public function getNameForModuleAndAction($module, $action)
+  {
+    return sprintf('%s.%s', $module, $action);
   }
 
 }

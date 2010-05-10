@@ -13,19 +13,19 @@
 
   <div class="dm_layout">
 
-    <?php echo $helper->renderArea('layout.top', '.clearfix') ?>
+    <?php echo $helper->renderArea('global.top', '.clearfix') ?>
 
     <div class="dm_layout_center clearfix">
 
-      <?php echo $helper->renderArea('layout.left') ?>
+      <?php echo $helper->renderArea('global.left') ?>
 
-      <?php echo $helper->renderArea('page.content') ?>
+      <?php echo $helper->renderArea($pageViewName.'.content') ?>
 
-      <?php echo $helper->renderArea('layout.right') ?>
+      <?php echo $helper->renderArea('global.right') ?>
 
     </div>
 
-    <?php echo $helper->renderArea('layout.bottom', '.clearfix') ?>
+    <?php echo $helper->renderArea('global.bottom', '.clearfix') ?>
 
   </div>
 

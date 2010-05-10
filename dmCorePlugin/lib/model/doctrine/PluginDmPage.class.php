@@ -135,38 +135,16 @@ abstract class PluginDmPage extends BaseDmPage
 
   public function getPageView()
   {
-    if($this->hasCache('page_view'))
-    {
-      return $this->getCache('page_view');
-    }
-
-    $pageView = dmDb::query('DmPageView p, p.Layout l')
-    ->where('p.module = ? AND p.action = ?', array($this->get('module'), $this->get('action')))
-    ->fetchOne();
+    $pageView = $this->_get('PageView');
     
-    if(!$pageView)
+    if(!$pageView->exists())
     {
-      $pageView = dmDb::table('DmPageView')->createFromModuleAndAction($this->get('module'), $this->get('action'));
+      $this->PageView = $pageView = dmDb::table('DmPageView')->create(array(
+        'name' => $this->pageViewName
+      ))->saveGet();
     }
 
-    return $this->setCache('page_view', $pageView);
-  }
-
-  public function setPageView(DmPageView $pageView, $check = true)
-  {
-    if ($check)
-    {
-      if ($pageView->get('module') != $this->get('module'))
-      {
-        throw new dmException('Assigning page view with wrong module');
-      }
-      if ($pageView->get('action') != $this->get('action'))
-      {
-        throw new dmException('Assigning page view with wrong action');
-      }
-    }
-
-    return $this->setCache('page_view', $pageView);
+    return $pageView;
   }
 
   public function getModuleAction()
@@ -212,23 +190,27 @@ LIMIT 1')->getStatement();
 
     if ($this->isModified())
     {
-      if (!$this->isNew() && ($this->isFieldModified('module') || $this->isFieldModified('action')))
+      if($this->isFieldModified('module') || $this->isFieldModified('action'))
       {
-        if ($pageView = dmDb::table('DmPageView')->findOneByModuleAndAction($this->get('module'), $this->get('action')))
+        $this->pageViewName = dmDb::table('DmPageView')->getNameForModuleAndAction($this->module, $this->action);
+      }
+      
+      if (!$this->isNew())
+      {
+        if ($pageView = dmDb::table('DmPageView')->findOneByName($this->pageViewName))
         {
-          $this->setPageView($pageView);
+          $this->PageView = $pageView;
         }
         else
         {
-          $this->getPageView()->fromArray(array(
-            'module' => $this->get('module'),
-            'action' => $this->get('action')
-          ));
+          $this->getPageView()->name = $this->pageViewName;
         }
       }
+      else
+      {
+        $this->getPageView();
+      }
       
-      $this->getPageView();
-
       if ($this->getDmModule() && $this->getIsAutomatic() && !$record instanceof dmDoctrineRecord)
       {
         throw new dmException(sprintf(

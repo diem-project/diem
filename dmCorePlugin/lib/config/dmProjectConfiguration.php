@@ -35,15 +35,6 @@ class dmProjectConfiguration extends sfProjectConfiguration
     }
   }
   
-  /*
-   * @deprecated
-   * Please use $this->setWebDir instead
-   */
-  public function setWebDirName($webDirName)
-  {
-    return $this->setWebDir(sfConfig::get('sf_root_dir').'/'.$webDirName);
-  }
-  
   public function configureDoctrine(Doctrine_Manager $manager)
   {
     Doctrine_Core::debug(sfConfig::get('dm_debug'));
