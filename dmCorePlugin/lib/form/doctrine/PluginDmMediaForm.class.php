@@ -115,6 +115,16 @@ abstract class PluginDmMediaForm extends BaseDmMediaForm
         throw new dmException('media has no folder');
       }
 
+      if(!is_dir($folder->fullPath))
+      {
+        if (!$this->getService('filesystem')->mkdir($folder->fullPath))
+        {
+          $error = new sfValidatorError($validator, dmProject::unRootify($folder->fullPath).' is not a directory');
+
+          throw new sfValidatorErrorSchema($validator, array('file' => $error));
+        }
+      }
+
       if(!is_writable($folder->fullPath))
       {
         $error = new sfValidatorError($validator, dmProject::unRootify($folder->fullPath).' is not writable');
