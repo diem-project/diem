@@ -149,7 +149,7 @@ class dmAdminGeneratorBuilder
 
     foreach($this->table->getRelationHolder()->getForeigns() as $alias => $relation)
     {
-      if ($this->module->getManager()->getModuleByModel($relation->getClass()))
+      if ($relation->getType() !== Doctrine_Relation::ONE && $this->module->getManager()->getModuleByModel($relation->getClass()))
       {
         $display[] = dmString::underscore($alias).'_list';
       }
@@ -327,14 +327,13 @@ class dmAdminGeneratorBuilder
         continue;
       }
       
-      if ($relationModule = $this->module->getManager()->getModuleByModel($relation->getClass()))
+      if ($relation->getType() !== Doctrine_Relation::ONE && $relationModule = $this->module->getManager()->getModuleByModel($relation->getClass()))
       {
         $label = $relationModule->getPlural();
       }
       else
       {
         continue;
-        $label = dmString::humanize($alias);
       }
       
       $sets[$label][] = dmString::underscore($alias).'_list';

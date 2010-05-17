@@ -52,7 +52,7 @@ DmArea:
   columns:
     dm_layout_id:           { type: integer, notnull: false }
     dm_page_view_id:        { type: integer, notnull: false }
-    type:                   { type: enum, notnull: true, values: [content, top, bottom, left, right], default: 'content' }
+    type:                   { type: string(255), notnull: true }
   relations:
     Layout:
       class:                DmLayout
