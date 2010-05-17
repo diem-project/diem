@@ -303,7 +303,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
   /**
    * @return dmPage this record page
    */
-  public function getDmPage()
+  public function getDmPage($action = 'show')
   {
     if($this->getTable()->hasRelation('DmPage'))
     {
@@ -315,13 +315,15 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
       throw new dmRecordException(sprintf('record %s has no page because module %s has no page', get_class($this), $this->getDmModule()));
     }
 
-    if($page = dmDb::table('DmPage')->findOneByRecordWithI18n($this))
+    if($page = dmDb::table('DmPage')->findOneByRecordAndActionWithI18n($this, $action))
     {
       return $page;
     }
 
     // The record has no page yet, let's try to create it right now
-    $event = new sfEvent($this, 'dm.record.page_missing', array());
+    $event = new sfEvent($this, 'dm.record.page_missing', array(
+      'action' => $action
+    ));
     
     $this->getEventDispatcher()->notifyUntil($event);
 

@@ -48,7 +48,7 @@ class dmPageTreeWatcher extends dmConfigurable
   {
     $this->addModifiedRecord($event->getSubject())->update();
 
-    $event->setReturnValue(dmDb::table('DmPage')->findOneByRecordWithI18n($event->getSubject()));
+    $event->setReturnValue(dmDb::table('DmPage')->findOneByRecordAndActionWithI18n($event->getSubject(), $event['action']));
 
     return true;
   }

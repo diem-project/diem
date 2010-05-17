@@ -14,8 +14,6 @@ class PluginDmAutoSeoTable extends myDoctrineTable
   
   public function findOneByModuleAndAction($module, $action, $culture = null)
   {
-    $culture = null === $culture ? myDoctrineRecord::getDefaultCulture() : $culture;
-    
     return $this->createQuery('a')
     ->where('a.module = ?', $module)
     ->andWhere('a.action = ?', $action)
@@ -26,16 +24,41 @@ class PluginDmAutoSeoTable extends myDoctrineTable
   /**
    * @return DmAutoSeo created record
    */
-  public function createFromModuleAndAction($module, $action, $culture = null)
+  public function createFromModuleAndAction($moduleKey, $action, $culture = null)
   {
-    $module = $this->getModuleManager()->getModule($module);
+    $module = $this->getModuleManager()->getModule($moduleKey);
+
+    $patterns = $this->getDefaultPatterns($module, $action, $culture);
+
+    return $this->create(array(
+      'module'      => $module->getKey(),
+      'action'      => $action,
+      'Translation' => array(
+        $culture    => array(
+          'slug'        => $patterns['short'],
+          'name'        => $patterns['short'],
+          'title'       => $patterns['short'],
+          'description' => $patterns['long'],
+          'lang'        => $culture
+        )
+      )
+    ));
+  }
+
+  protected function getDefaultPatterns(dmModule $module, $action)
+  {
+    if('show' !== $action)
+    {
+      return array(
+        'short' => $action,
+        'long'  => $action
+      );
+    }
 
     $moduleUnderscore = $module->getUnderscore();
-    
+
     $identifierColumnName = $module->getTable()->getIdentifierColumnName();
-    
-    $culture = null === $culture ? myDoctrineRecord::getDefaultCulture() : $culture;
-    
+
     if ('id' == $identifierColumnName)
     {
       $column = '';
@@ -44,7 +67,7 @@ class PluginDmAutoSeoTable extends myDoctrineTable
     {
       $column = '.'.$identifierColumnName;
     }
-    
+
     $descriptionColumnCandidates = array(
       'excerpt',
       'resume',
@@ -53,7 +76,7 @@ class PluginDmAutoSeoTable extends myDoctrineTable
       'text'
     );
     $descriptionColumn = $column;
-    
+
     foreach($descriptionColumnCandidates as $descriptionColumnCandidate)
     {
       if ($module->getTable()->hasField($descriptionColumnCandidate))
@@ -63,18 +86,9 @@ class PluginDmAutoSeoTable extends myDoctrineTable
       }
     }
 
-    return $this->create(array(
-      'module'      => $module->getKey(),
-      'action'      => $action,
-      'Translation' => array(
-        $culture    => array(
-          'slug'        => '%'.$moduleUnderscore.$column.'%',
-          'name'        => '%'.$moduleUnderscore.$column.'%',
-          'title'       => '%'.$moduleUnderscore.$column.'%',
-          'description' => '%'.$moduleUnderscore.$descriptionColumn.'%',
-          'lang'        => $culture
-        )
-      )
-    ));
+    return array(
+      'short' => '%'.$moduleUnderscore.$column.'%',
+      'long'  => '%'.$moduleUnderscore.$descriptionColumn.'%'
+    );
   }
 }
