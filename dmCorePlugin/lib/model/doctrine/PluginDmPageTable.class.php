@@ -40,12 +40,6 @@ class PluginDmPageTable extends myDoctrineTable
       ));
 
       $page404->getNode()->insertAsLastChildOf($root);
-
-//      dmDb::table('DmWidget')->createInZone(
-//        $page404->PageView->Area->Zones[0],
-//        'dmWidgetContent/title',
-//        array('text' => 'Page not found', 'tag' => 'h1')
-//      )->save();
     }
 
     // check signin page
@@ -60,11 +54,6 @@ class PluginDmPageTable extends myDoctrineTable
       ));
       
       $signinPage->getNode()->insertAsLastChildOf($root);
-
-//      dmDb::table('DmWidget')->createInZone(
-//        $signinPage->PageView->Area->Zones[0],
-//        'dmUser/signin'
-//      )->save();
     }
   }
 
@@ -95,11 +84,6 @@ class PluginDmPageTable extends myDoctrineTable
       ));
 
       $searchResultsPage->getNode()->insertAsLastChildOf($this->getTree()->fetchRoot());
-
-      dmDb::table('DmWidget')->createInZone(
-        $searchResultsPage->PageView->Area->Zones[0],
-        'dmWidgetSearch/results'
-      )->save();
     }
   }
   
