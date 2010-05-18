@@ -120,7 +120,7 @@ class dmDataLoad
       ),
       'site_indexable' => array(
         'type' => 'boolean',
-        'default_value' => 0,
+        'default_value' => 1,
         'description' => 'Is the site ready for search engine crawlers ?',
         'group_name' =>'site'
       ),

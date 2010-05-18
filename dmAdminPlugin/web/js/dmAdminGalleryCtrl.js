@@ -9,6 +9,7 @@
     //          tolerance:    'touch',
     drop: function(e, ui)
     {
+      $gallery.block();
       $('#add_media_by_id_form_media_id').val(ui.draggable.attr('id').replace(/dmm/, '')).parent().submit();
     }
   });
