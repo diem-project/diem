@@ -12,12 +12,26 @@ class dmFrontLinkTagUri extends dmFrontLinkTag
     
     parent::__construct($resource, $requestContext, $options);
   }
+
+  public function getDefaultOptions()
+  {
+    return array_merge(parent::getDefaultOptions(), array(
+      'external_blank' => false
+    ));
+  }
   
   protected function initialize(array $options = array())
   {
     parent::initialize($options);
+
+    $this->addAttributeToRemove(array('external_blank'));
     
     $this->uri = $this->resource->getSubject();
+
+    if($this->options['external_blank'] && 0 !== strncmp($this->uri, $this->requestContext['absolute_url_root'], strlen($this->uri)))
+    {
+      $this->target('_blank');
+    }
   }
 
   protected function getBaseHref()
