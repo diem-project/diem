@@ -68,6 +68,14 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
     ->orderBy('z.position asc, w.position asc')
     ->fetchArray();
 
+    if(empty($area))
+    {
+      dmDb::table('DmArea')->create(array('name' => $name))->save();
+      return $this->getArea($name);
+    }
+
+    $area = $area[0];
+
     /*
      * WARNING strange code
      * This code is to simulate widget i18n fallback,
