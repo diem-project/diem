@@ -27,14 +27,6 @@ class DmPageFrontEditForm extends DmPageForm
       'required' => !$this->object->getNode()->isRoot()
     ));
     
-    $this->widgetSchema['dm_layout_id'] = new sfWidgetFormDoctrineChoice(array(
-      'model' => 'DmLayout',
-      'add_empty' => false
-    ));
-    $this->validatorSchema['dm_layout_id'] = new sfValidatorDoctrineChoice(array(
-      'model' => 'DmLayout'
-    ));
-    
     if (!$this->object->getNode()->isRoot() && !$this->object->isAutomatic)
     {
       $parentChoices = $this->getParentChoices();
@@ -67,7 +59,7 @@ class DmPageFrontEditForm extends DmPageForm
     $this->mergePostValidator(new sfValidatorCallback(array('callback' => array($this, 'checkModuleAction'))));
     
     $this->setDefaults(array(
-      'dm_layout_id' => $this->object->PageView->dmLayoutId,
+      'template'  => $this->object->template,
       'name'      => $this->object->name,
       'slug'      => $this->object->slug,
       'title'     => $this->object->title,
@@ -115,7 +107,7 @@ class DmPageFrontEditForm extends DmPageForm
       }
     }
     
-    $this->object->PageView->dmLayoutId = $values['dm_layout_id'];
+    $this->object->template = $values['template'];
     
     parent::doUpdateObject($values);
   }

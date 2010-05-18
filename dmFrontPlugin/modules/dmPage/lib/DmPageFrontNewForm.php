@@ -18,14 +18,6 @@ class DmPageFrontNewForm extends DmPageForm
       'autocomplete' => 'off'
     ));
     $this->validatorSchema['slug'] = new sfValidatorString(array('max_length' => 255));
-
-    $this->widgetSchema['dm_layout_id'] = new sfWidgetFormDoctrineChoice(array(
-      'model' => 'DmLayout',
-      'add_empty' => false
-    ));
-    $this->validatorSchema['dm_layout_id'] = new sfValidatorDoctrineChoice(array(
-      'model' => 'DmLayout'
-    ));
     
     $parentChoices = $this->getParentChoices();
     
@@ -85,13 +77,10 @@ class DmPageFrontNewForm extends DmPageForm
     }
     
     $this->object->action = $action;
-    
     $this->object->title = $this->object->name;
+    $this->object->template = $values['template'];
 
     $this->object->Node->insertAsLastChildOf($parent);
-    
-    $this->object->PageView->Layout = dmDb::table('DmLayout')->find($values['dm_layout_id']);
-    $this->object->PageView->save();
     
     $this->object->save();
   }
