@@ -108,10 +108,7 @@ class BasedmFrontActions extends dmFrontBaseActions
       $this->response->setStatusCode(404); 
     }
 
-    $pageView = $this->page->getPageView();
-    
-    $this->setTemplate($pageView->get('template'), 'dmFront');
-    $this->pageViewName = $pageView->get('name');
+    $this->setTemplate($this->page->get('template'), 'dmFront');
     
     $this->setLayout(sfConfig::get('sf_root_dir').'/apps/front/modules/dmFront/templates/layout');
     

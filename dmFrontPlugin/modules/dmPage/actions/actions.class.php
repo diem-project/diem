@@ -88,7 +88,7 @@ class dmPageActions extends dmFrontBaseActions
     
     $this->form->setDefaults(array(
       'parent_id'     => $this->page->id,
-      'dm_layout_id'  => $this->page->PageView->dmLayoutId,
+      'template'      => $this->page->template,
       'slug'          => $this->page->slug ? $this->page->slug.'/?' : '?'
     ));
     

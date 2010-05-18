@@ -127,29 +127,22 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
   public function renderArea($name, $options = array())
   {
     $options = dmString::toArray($options);
-    
-    $tagName = $this->getAreaTypeTagName($name);
+
+    /**
+     * @todo allow to pass the tag name in options, as a CSS expression
+     */
+    $tagName = 'div';
 
     $area = $this->getArea($name);
-
-    list($prefix, $type) = explode('.', $name);
     
-    $options['class'] = array_merge(dmArray::get($options, 'class', array()), array(
-      'dm_area',
-      'dm_'.$prefix.'_'.$type
-    ));
+    $options['class'] = array_merge(
+      dmArray::get($options, 'class', array()),
+      array('dm_area', 'dm_area_'.dmString::underscore(str_replace('.', '_', $name)))
+    );
     
     $options['id'] = dmArray::get($options, 'id', 'dm_area_'.$area['id']);
 
     $html = '';
-
-    /*
-     * Add a content id for accessibility purpose ( access link )
-     */
-    if ('content' === $type)
-    {
-      $html .= '<div id="dm_content">';
-    }
     
     $html .= $this->helper->open($tagName, $options);
 
@@ -160,14 +153,6 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
     $html .= '</div>';
 
     $html .= sprintf('</%s>', $tagName);
-
-    /*
-     * Add a content id for accessibility purpose ( access links )
-     */
-    if ('content' === $type)
-    {
-      $html .= '</div>';
-    }
 
     return $html;
   }
@@ -185,31 +170,6 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
     }
     
     return $html;
-  }
-  
-  /*
-   * get a tag name for a given area, depending on the document type
-   */
-  protected function getAreaTypeTagName($areaType)
-  {
-    if ($this->isHtml5())
-    {
-      switch(substr($areaType, strpos($areaType, '.')+1))
-      {
-        case 'top':     $tagName = 'header';  break;
-        case 'left':    $tagName = 'aside';   break;
-        case 'content': $tagName = 'section'; break;
-        case 'right':   $tagName = 'aside';   break;
-        case 'bottom':  $tagName = 'footer';  break;
-        default:        $tagName = 'div';
-      }
-    }
-    else
-    {
-      $tagName = 'div';
-    }
-    
-    return $tagName;
   }
 
   public function renderZone(array $zone)
