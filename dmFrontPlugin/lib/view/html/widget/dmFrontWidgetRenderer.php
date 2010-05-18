@@ -69,8 +69,21 @@ class dmFrontWidgetRenderer
     $widgetView = $this->getWidgetView();
     
     $this->html        = $widgetView->render();
-    $this->stylesheets = $widgetView->getStylesheets();
     $this->javascripts = $widgetView->getJavascripts();
+
+    // Convert stylesheets array to sfWebResponse compatible
+    $this->stylesheets = array();
+    foreach($widgetView->getStylesheets() as $file => $options)
+    {
+      if(is_int($file) && is_string($options))
+      {
+        $this->stylesheets[$options] = array();
+      }
+      else
+      {
+        $this->stylesheets[$file] = $options;
+      }
+    }
 
     $this->isRendered = true;
   }
