@@ -119,67 +119,7 @@ class BasedmFrontActions extends dmFrontBaseActions
     
     $this->isEditMode = $this->getUser()->getIsEditMode();
     
-    $this->launchDirectActions();
-    
     return sfView::SUCCESS;
-  }
-
-  /*
-   * If an sfAction exists for the current page module.action,
-   * it will be executed
-   * If some sfActions exist for the current widgets module.action,
-   * they will be executed to
-   */
-  protected function launchDirectActions()
-  {
-    $moduleManager = $this->context->getModuleManager();
-    
-    $moduleActions = array();
-
-    // Add module action for page
-    if($moduleManager->hasModule($this->page->get('module')))
-    {
-      $moduleActions[] = $this->page->getModuleAction().'Page';
-    }
-    
-    // Find module/action for page widgets ( including layout )
-    foreach($this->helper->getAreas() as $areaArray)
-    {
-      foreach($areaArray['Zones'] as $zoneArray)
-      {
-        foreach($zoneArray['Widgets'] as $widgetArray)
-        {
-          if($moduleManager->hasModule($widgetArray['module']))
-          {
-            $widgetModuleAction = $widgetArray['module'].'/'.$widgetArray['action'].'Widget';
-            
-            if(!in_array($widgetModuleAction, $moduleActions))
-            {
-              $moduleActions[] = $widgetModuleAction;
-            }
-          }
-        }
-      }
-    }
-
-    foreach($moduleActions as $moduleAction)
-    {
-      list($module, $action) = explode('/', $moduleAction);
-
-      if ($this->getController()->actionExists($module, $action))
-      {
-        $actionToRun = 'execute'.ucfirst($action);
-        
-        try
-        {
-          $this->getController()->getAction($module, $action)->$actionToRun($this->getRequest());
-        }
-        catch(sfControllerException $e)
-        {
-          $this->getContext()->getLogger()->warning(sprintf('The %s/%s direct action does not exist', $module, $action));
-        }
-      }
-    }
   }
 
   public function executeEditToggle(sfWebRequest $request)
