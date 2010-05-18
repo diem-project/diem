@@ -305,9 +305,9 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
         $this->serviceContainer->getService('response')->addJavascript($javascript);
       }
       
-      foreach($renderer->getStylesheets() as $stylesheet)
+      foreach($renderer->getStylesheets() as $stylesheet => $options)
       {
-        $this->serviceContainer->getService('response')->addStylesheet($stylesheet);
+        $this->serviceContainer->getService('response')->addStylesheet($stylesheet, '', $options);
       }
     }
     catch(Exception $e)
