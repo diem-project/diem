@@ -95,24 +95,28 @@ EOF;
   protected function generateLayoutTemplates()
   {
     $this->logSection('diem', 'generate layout templates');
-    $layoutFile = dmProject::rootify('apps/front/modules/dmFront/templates/layout.php');
 
-    if(!file_exists($layoutFile))
+    foreach(array('layout.php', 'defaultSuccess.php') as $filename)
     {
-      $filesystem = $this->get('filesystem');
+      $file = dmProject::rootify('apps/front/modules/dmFront/templates/'.$filename);
 
-      if ($filesystem->mkdir(dirname($layoutFile)))
+      if(!file_exists($file))
       {
-        $filesystem->copy(
-          dmOs::join(sfConfig::get('dm_front_dir'), 'modules/dmFront/templates/layout.php'),
-          $layoutFile
-        );
+        $filesystem = $this->get('filesystem');
 
-        $filesystem->chmod($layoutFile, 0777);
-      }
-      else
-      {
-        $this->logBlock('Can NOT create layout '.$layoutFile, 'ERROR');
+        if ($filesystem->mkdir(dirname($file)))
+        {
+          $filesystem->copy(
+            dmOs::join(sfConfig::get('dm_front_dir'), 'modules/dmFront/templates/'.$filename),
+            $file
+          );
+
+          $filesystem->chmod($file, 0777);
+        }
+        else
+        {
+          $this->logBlock('Can NOT create layout '.$file, 'ERROR');
+        }
       }
     }
   }
