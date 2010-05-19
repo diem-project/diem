@@ -224,7 +224,10 @@ class dmCoreLayoutHelper extends dmConfigurable
     $html = '';
     foreach ($javascripts as $file => $options)
     {
-      $html .= '<script type="text/javascript" src="'.($file{0} === '/' ? $relativeUrlRoot.$file : $file).'"></script>';
+      if(empty($options['head_inclusion']))
+      {
+        $html .= '<script type="text/javascript" src="'.($file{0} === '/' ? $relativeUrlRoot.$file : $file).'"></script>';
+      }
     }
   
     return $html;
