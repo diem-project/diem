@@ -8,6 +8,7 @@ DmPage:
   columns:
     module:                 { type: string(127), notnull: true }
     action:                 { type: string(127), notnull: true }
+    template:               { type: string(127), notnull: true, default: "default" }
     page_view_name:         { type: string(255), notnull: true }
     record_id:              { type: integer, unsigned: true, notnull: true, default: 0 }
     slug:                   { type: string(255), notnull: true }
@@ -25,18 +26,6 @@ DmPage:
     recordModuleAction:
       fields:               [ module, action, record_id ]
       type:                 unique
-  relations:
-    PageView:
-      class:                DmPageView
-      local:                page_view_name
-      foreign:              name
-      foreignAlias:         Pages
-      onDelete:             RESTRICT
-
-DmPageView:
-  columns:
-    name:                   { type: string(255), notnull: true, unique: true }
-    template:               { type: string(255), notnull: true, default: "defaultPageView" }
 
 DmArea:
   columns:

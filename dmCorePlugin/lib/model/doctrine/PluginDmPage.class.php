@@ -133,20 +133,6 @@ abstract class PluginDmPage extends BaseDmPage
     return $this->setCache('dm_module', $moduleManager->getModuleOrNull($this->get('module')));
   }
 
-  public function getPageView()
-  {
-    $pageView = $this->_get('PageView');
-    
-    if(!$pageView->exists())
-    {
-      $this->PageView = $pageView = dmDb::table('DmPageView')->create(array(
-        'name' => $this->pageViewName
-      ))->saveGet();
-    }
-
-    return $pageView;
-  }
-
   public function getModuleAction()
   {
     return $this->get('module').'/'.$this->get('action');
@@ -190,27 +176,6 @@ LIMIT 1')->getStatement();
 
     if ($this->isModified())
     {
-      if($this->isFieldModified('module') || $this->isFieldModified('action'))
-      {
-        $this->pageViewName = dmDb::table('DmPageView')->getNameForModuleAndAction($this->module, $this->action);
-      }
-      
-      if (!$this->isNew())
-      {
-        if ($pageView = dmDb::table('DmPageView')->findOneByName($this->pageViewName))
-        {
-          $this->PageView = $pageView;
-        }
-        else
-        {
-          $this->getPageView()->name = $this->pageViewName;
-        }
-      }
-      else
-      {
-        $this->getPageView();
-      }
-      
       if ($this->getDmModule() && $this->getIsAutomatic() && !$record instanceof dmDoctrineRecord)
       {
         throw new dmException(sprintf(

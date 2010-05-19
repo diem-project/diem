@@ -1,27 +1,31 @@
-.dm_layout {
+#dm_page {
+  margin: 10px;
+}
+
+.centered_page_content {
   width: 1000px;
   margin: auto;
 }
 
-.dm_layout_top {
+.dm_area_default_top {
   background: #aaa;
 }
 
-.dm_page_content {
-  width: 600px;
-  float: left;
-}
-
-.dm_layout_left {
+.dm_area_default_left {
   width: 150px;
   float: left;
 }
 
-.dm_layout_right {
+.page_content {
+  width: 600px;
+  float: left;
+}
+
+.dm_area_default_right {
   width: 250px;
   float: left;
 }
 
-.dm_layout_bottom {
+.dm_area_default_bottom {
   background: #aaa;
 }
