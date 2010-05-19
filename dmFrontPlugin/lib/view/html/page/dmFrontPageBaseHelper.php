@@ -113,29 +113,10 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
     return $area;
   }
 
-  public function renderAccessLinks()
-  {
-    $html = '<div class="dm_access_links">';
-
-    $html .= '<a href="#content">'.$this->serviceContainer->getService('i18n')->__('Go to content').'</a>';
-
-    $html .= '</div>';
-
-    return $html;
-  }
-
   public function renderArea($name, $options = array())
   {
     $options = dmString::toArray($options);
 
-<<<<<<< HEAD
-    $area = $this->getArea($name);
-    
-    $options['class'] = array_merge(dmArray::get($options, 'class', array()), array(
-      'dm_area',
-      'dm_area_'.$name
-    ));
-=======
     /**
      * @todo allow to pass the tag name in options, as a CSS expression
      */
@@ -147,23 +128,10 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
       dmArray::get($options, 'class', array()),
       array('dm_area', 'dm_area_'.dmString::underscore(str_replace('.', '_', $name)))
     );
->>>>>>> 2ad6e4e633fc2e4df701db236ee267b539055381
     
     $options['id'] = dmArray::get($options, 'id', 'dm_area_'.$area['id']);
-
-    $html = '';
     
-    $html .= $this->helper->open($tagName, $options);
-
-    $html .= '<div class="dm_zones clearfix">';
-
-    $html .= $this->renderAreaInner($area);
-
-    $html .= '</div>';
-
-    $html .= sprintf('</%s>', $tagName);
-
-    return $html;
+    return $this->helper->tag($tagName, $options, '<div class="dm_zones clearfix">'.$this->renderAreaInner($area).'</div>');
   }
   
   protected function renderAreaInner(array $area)
