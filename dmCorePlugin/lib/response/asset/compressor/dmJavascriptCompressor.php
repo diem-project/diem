@@ -17,7 +17,7 @@ class dmJavascriptCompressor extends dmAssetCompressor
     // remove head included javascripts from compression
     foreach($this->assets as $webPath => $options)
     {
-      if (isset($options['head_inclusion']))
+      if (!empty($options['head_inclusion']))
       {
         unset($this->assets[$webPath]);
       }
