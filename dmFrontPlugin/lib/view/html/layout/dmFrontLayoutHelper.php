@@ -22,8 +22,7 @@ class dmFrontLayoutHelper extends dmCoreLayoutHelper
     $options = dmString::toArray($options);
 
     $options['class'] = dmArray::toHtmlCssClasses(array_merge(dmArray::get($options, 'class', array()), array(
-      'page_'.$this->page->get('module').'_'.$this->page->get('action'),
-      $this->page->getPageView()->getLayout()->get('css_class')
+      'page_'.$this->page->get('module').'_'.$this->page->get('action')
     )));
     
     return parent::renderBodyTag($options);

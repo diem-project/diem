@@ -68,6 +68,19 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
     ->orderBy('z.position asc, w.position asc')
     ->fetchArray();
 
+    if(empty($area))
+    {
+      dmDb::table('DmArea')->create(array(
+        'name' => $name
+      ))->save();
+
+      return $this->getArea($name);
+    }
+    else
+    {
+      $area = $area[0];
+    }
+
     /*
      * WARNING strange code
      * This code is to simulate widget i18n fallback,
@@ -123,12 +136,10 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
     $tagName = $this->getAreaTypeTagName($name);
 
     $area = $this->getArea($name);
-
-    list($prefix, $type) = explode('.', $name);
     
     $options['class'] = array_merge(dmArray::get($options, 'class', array()), array(
       'dm_area',
-      'dm_'.$prefix.'_'.$type
+      'dm_area_'.$name
     ));
     
     $options['id'] = dmArray::get($options, 'id', 'dm_area_'.$area['id']);
