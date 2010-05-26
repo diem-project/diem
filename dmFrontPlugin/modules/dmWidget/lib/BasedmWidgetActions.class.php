@@ -47,8 +47,15 @@ class BasedmWidgetActions extends dmFrontBaseActions
 
     $this->forward404Unless($record = $query->fetchRecord());
 
+    $sfModule = $module->getSfName();
+
+    if($module->isPlugin())
+    {
+      $sfModule .= 'Admin';
+    }
+
     return $this->renderAsync(array(
-      'html'  => $this->getHelper()->link('app:admin/+/'.$module->getKey().'/edit')->params(array(
+      'html'  => $this->getHelper()->link('app:admin/+/'.$sfModule.'/edit')->params(array(
         'pk'        => $record->id,
         'dm_embed'  => 1
       )),
