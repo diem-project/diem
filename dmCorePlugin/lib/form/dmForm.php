@@ -48,6 +48,18 @@ class dmForm extends sfFormSymfony
     return $this->key;
   }
   
+  /**
+   * Prevent loosing the widgetSchema name format.
+   * 
+   * @see sfForm#setWidgets($widgets)
+   */
+  public function setWidgets(array $widgets)
+  {
+    $return = parent::setWidgets($widgets);
+    $this->setName($this->name);
+    return $return;
+  }   
+  
   public function removeCsrfProtection()
   {
     $this->localCSRFSecret = false;
