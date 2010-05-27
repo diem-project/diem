@@ -10,7 +10,7 @@ abstract class dmAssetCompressor extends dmConfigurable
   $assets,
   $processedAssets,
   $cachedAssetsPaths,
-  $cacheKey,
+  $cacheKeys,
   $webDir;
   
   public function __construct(sfEventDispatcher $dispatcher, dmFilesystem $filesystem, array $requestContext, array $options = array())
