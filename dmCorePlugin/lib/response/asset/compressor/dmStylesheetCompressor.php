@@ -20,6 +20,12 @@ class dmStylesheetCompressor extends dmAssetCompressor
       return false;
     }
 
+    // don't cache stylesheet if depending on media
+    if(isset($options['media']) && 'all' != $options['media'])
+    {
+      return false;
+    }
+
     // don't cache stylesheet if included with any condition
     if(isset($options['condition']))
     {
