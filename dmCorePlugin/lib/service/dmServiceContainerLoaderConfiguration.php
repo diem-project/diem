@@ -53,7 +53,7 @@ class dmServiceContainerLoaderConfiguration implements sfServiceContainerLoaderI
   
   protected function add($service, $key, $configKey)
   {
-    if (isset($this->config[$configKey]) && $this->container->hasParameter($service.'.options'))
+    if (array_key_exists($configKey, $this->config) && $this->container->hasParameter($service.'.options'))
     {
       $this->container->setParameter(
         $service.'.options',
