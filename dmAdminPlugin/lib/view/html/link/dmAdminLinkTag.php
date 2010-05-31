@@ -19,7 +19,7 @@ class dmAdminLinkTag extends dmBaseLinkTag
 
     $this->addAttributeToRemove(array('external_blank'));
     
-    if($this->options['external_blank'] && strpos($this->resource, '://'))
+    if($this->options['external_blank'] && is_string($this->resource) && strpos($this->resource, '://'))
     {
       try
       {
