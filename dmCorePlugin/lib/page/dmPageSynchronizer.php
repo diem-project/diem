@@ -143,9 +143,10 @@ class dmPageSynchronizer
 
       if ($pageIsUseless)
       {
-        if($page = dmDb::table('DmPage'))
+        //delete node only if it's found
+        if( ($page = dmDb::table('DmPage')->find($showPage['id']) ) )
         {
-          $page->find($showPage['id'])->getNode()->delete();
+          $page->getNode()->delete();
         }
       }
     }
