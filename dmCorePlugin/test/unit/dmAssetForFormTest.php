@@ -1,5 +1,9 @@
 <?php
 
+require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
+$helper = new dmUnitTestHelper();
+$helper->boot('front');
+
 class DummyTestForm extends dmForm
 {
   public function getStylesheets()
@@ -17,10 +21,6 @@ class DummyTestForm extends dmForm
     );
   }
 }
-
-require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
-$helper = new dmUnitTestHelper();
-$helper->boot('front');
 
 $t = new lime_test();
 
