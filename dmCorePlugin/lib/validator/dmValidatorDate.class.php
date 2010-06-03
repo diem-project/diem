@@ -44,7 +44,7 @@ class dmValidatorDate extends sfValidatorDate
   protected function doClean($value)
   {
     if (is_array($value)) {
-      $clean = $this->convertDateArrayToTimestamp($value);
+      $clean = strtotime($this->convertDateArrayToString($value));
     } else if ($regex = $this->getOption('date_format')) {
       if (!preg_match($regex, $value, $match)) {
         throw new sfValidatorError($this, 'bad_format',
@@ -54,7 +54,7 @@ class dmValidatorDate extends sfValidatorDate
         $this->getOption('date_format_error') : $this->getOption('date_format'))
         );
       }
-      $clean = $this->convertDateArrayToTimestamp($match);
+      $clean = strtotime($this->convertDateArrayToString($match));
     } else if (!ctype_digit($value)) {
       $context = $this->getOption('context');
       $i18n = $context->getI18N();
