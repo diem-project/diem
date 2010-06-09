@@ -137,7 +137,7 @@ class dmPageSynchronizer
         }
         if (!$parentRecordId)
         {
-          $isUseless = true;
+          $pageIsUseless = true;
         }
       }
 
