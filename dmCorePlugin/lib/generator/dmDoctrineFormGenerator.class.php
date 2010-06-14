@@ -270,7 +270,11 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
         $validatorSubclass = 'Pass';
     }
 
-    if ($column->isPrimaryKey() || $column->isForeignKey())
+    if ($column->isPrimaryKey())
+    {
+      $validatorSubclass = 'Choice';
+    }
+    elseif ($column->isForeignKey())
     {
       $validatorSubclass = 'DoctrineChoice';
     }
