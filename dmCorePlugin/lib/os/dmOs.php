@@ -77,6 +77,10 @@ class dmOs
     return $final_name;
   }
 
+  public static function getFileName($file) {
+    return basename($file);
+  }
+
   public static function getFileExtension($file, $widthDot = true)
   {
     $extension = pathinfo($file, PATHINFO_EXTENSION);

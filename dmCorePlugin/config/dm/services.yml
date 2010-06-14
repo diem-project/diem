@@ -44,7 +44,7 @@ parameters:
   media_tag_image.class:      dmMediaTagImage       # Responsible for rendering <img> tags
   media_tag_image.options:    []                    # Configurable from the graphical configuration panel
   
-  media_tag_application.class:   dmMediaTagApplication # Responsible for rendering flash objects
+  media_tag_application.class:   dmMediaTagFile # Responsible for rendering flash objects
   media_tag_application.options: []
   
   media_tag_video.class:      dmMediaTagVideo       # Responsible for rendering video

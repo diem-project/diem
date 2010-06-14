@@ -198,3 +198,59 @@ div.dm_version_check_upgrade {
   background: #DFE9B8 url(../images/flash/green.gif) repeat-x top left;
   border-color: #CAD3A6;
 }
+
+div.dm_gallery_medium .file,
+div.dm_gallery_big .file {
+  width: 100%;
+  height: 100%;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-image: url(/dmCorePlugin/images/media/unknown.png);
+  text-align: center;
+  float: left;
+  margin: 5px 5px 0 0;
+}
+
+div.dm_gallery_medium .file {
+  border: 1px solid #D3D3D3;
+  width: 120px;
+  height: 120px;
+}
+
+div.dm_gallery_medium .file div {
+  padding-top: 102px;
+}
+
+div.dm_gallery_big .file div {
+  padding-top: 140px;
+}
+
+div.dm_gallery_big .file_pdf,
+div.dm_gallery_medium .file_pdf {
+  background-image: url(/dmCorePlugin/images/media/pdf.png);
+}
+
+div.dm_gallery_big .file_doc,
+div.dm_gallery_medium .file_doc {
+  background-image: url(/dmCorePlugin/images/media/doc.png);
+}
+
+div.dm_gallery_big .file_bin,
+div.dm_gallery_medium .file_bin {
+  background-image: url(/dmCorePlugin/images/media/bin.png);
+}
+
+div.dm_gallery_big .file_html,
+div.dm_gallery_medium .file_html {
+  background-image: url(/dmCorePlugin/images/media/html.png);
+}
+
+div.dm_gallery_big .file_ppt,
+div.dm_gallery_medium .file_ppt {
+  background-image: url(/dmCorePlugin/images/media/ppt.png);
+}
+
+div.dm_gallery_big .file_txt,
+div.dm_gallery_medium .file_txt {
+  background-image: url(/dmCorePlugin/images/media/txt.png);
+}
