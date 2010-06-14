@@ -217,11 +217,17 @@ div.dm_gallery_medium .file {
   height: 120px;
 }
 
-div.dm_gallery_medium .file div {
+div.dm_gallery_big .file a.name,
+div.dm_gallery_medium .file a.name {
+  display: block;
+}
+
+
+div.dm_gallery_medium .file a.name {
   padding-top: 102px;
 }
 
-div.dm_gallery_big .file div {
+div.dm_gallery_big .file a.name {
   padding-top: 140px;
 }
 
