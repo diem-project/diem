@@ -409,7 +409,7 @@
 "Invalid mime type (%mime_type%).": "Ongeldige mime-type (%mime_type%)."
 "Download": "Download"
 "Move to": "Verplaats naar"
-"[1] And one more...|(1,+Inf] And %1% more...": "[1] En nog een ...|( 1, + Inf] en %1% meer ..."
+"[1] And one more...|(1,+Inf] And %1% more...": "[1] En nog een ...|(1,+Inf] En %1% meer ..."
 "Go to admin": "Ga naar admin"
 "Search for a widget": "Zoek naar een widget"
 "Sort by %field%": "Sorteren op %field%"
