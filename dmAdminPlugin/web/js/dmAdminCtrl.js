@@ -198,7 +198,9 @@
     {
       if ($.fn.datepicker) 
       {
-        $("input.datepicker_me", this.$).datepicker({});
+        $("input.datepicker_me", this.$).each(function(){
+          $(this).datepicker({dateFormat: dm_configuration.dateFormat})
+        });
       }
     },
     
