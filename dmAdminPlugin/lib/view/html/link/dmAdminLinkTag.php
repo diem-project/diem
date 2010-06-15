@@ -13,6 +13,30 @@ class dmAdminLinkTag extends dmBaseLinkTag
     $this->initialize($options);
   }
   
+  protected function initialize(array $options = array())
+  {
+    parent::initialize($options);
+
+    $this->addAttributeToRemove(array('external_blank'));
+    
+    if($this->options['external_blank'] && is_string($this->resource) && strpos($this->resource, '://'))
+    {
+      try
+      {
+        $absoluteUrlRoot = dmArray::get($this->serviceContainer->getParameter('request.context'), 'absolute_url_root');
+
+        if(0 !== strncmp($this->resource, $absoluteUrlRoot, strlen($absoluteUrlRoot)))
+        {
+          $this->target('_blank');
+        }
+      }
+      catch(Exception $e)
+      {
+        // do nothing, exception will be thrown when rendering the link
+      }
+    }
+  }
+  
   public function render()
   {
     try

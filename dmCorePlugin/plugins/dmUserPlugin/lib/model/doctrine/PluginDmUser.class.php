@@ -248,7 +248,7 @@ abstract class PluginDmUser extends BaseDmUser
     
     if (!$this->groups)
     {
-      $groups = $this->get('groups');
+      $groups = $this->get('Groups');
       foreach ($groups as $group)
       {
         $this->groups[$group->get('name')] = $group;

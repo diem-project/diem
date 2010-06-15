@@ -50,7 +50,7 @@ class dmAdminUser extends dmCoreUser
       {
         if (is_array($value))
         {
-          if (dmArray::get($value, 'text') || dmArray::get($value, 'is_empty'))
+          if (dmArray::get($value, 'text') || dmArray::get($value, 'is_empty') || dmArray::get($value, 'from') || dmArray::get($value, 'to'))
           {
             $appliedFilters[] = $filter;
           }

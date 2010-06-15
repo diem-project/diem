@@ -128,3 +128,60 @@ function once_per_session($value, $identifier = '')
 {
   return sfContext::getInstance()->getUser()->oncePerSession($value, $identifier);
 }
+
+/**
+ * Returns <script> tags for all javascripts associated with the given form.
+ * @return string <script> tags
+ */
+function dm_get_javascripts_for_form(sfForm $form)
+{
+  $html = '';
+  foreach ($form->getJavascripts() as $file)
+  {
+    $file = sfContext::getInstance()->getResponse()->calculateAssetPath('js', $file);
+    $html .= javascript_include_tag($file);
+  }
+
+  return $html;
+}
+
+/**
+ * Prints <script> tags for all javascripts associated with the given form.
+ *
+ * @see get_javascripts_for_form()
+ */
+function dm_include_javascripts_for_form(sfForm $form)
+{
+  echo dm_get_javascripts_for_form($form);
+}
+
+/**
+ * Returns <link> tags for all stylesheets associated with the given form.
+ * @return string <link> tags
+ */
+function dm_get_stylesheets_for_form(sfForm $form)
+{
+  $html = '';
+  foreach ($form->getStylesheets() as $file => $media)
+  {
+    if(is_numeric($file) && is_string($media))
+    {
+      $file = $media;
+      $media = 'all';
+    }
+    $file = sfContext::getInstance()->getResponse()->calculateAssetPath('css', $file);
+    $html .= stylesheet_tag($file, array('media' => $media));
+  }
+
+  return $html;
+}
+
+/**
+ * Prints <link> tags for all stylesheets associated with the given form.
+ *
+ * @see get_stylesheets_for_form()
+ */
+function dm_include_stylesheets_for_form(sfForm $form)
+{
+  echo get_stylesheets_for_form($form);
+}

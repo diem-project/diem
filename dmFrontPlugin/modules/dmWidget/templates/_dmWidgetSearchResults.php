@@ -18,9 +18,9 @@ echo _tag('h1', __('Results %1% to %2% of %3%', array(
   '%3%' => $pager->getNbResults()
 )));
 
-echo _open('ol.search_results start='.$pager->getFirstIndice());
-
 echo $pager->renderNavigationTop();
+
+echo _open('ol.search_results start='.$pager->getFirstIndice());
 
 foreach($pager as $result)
 {

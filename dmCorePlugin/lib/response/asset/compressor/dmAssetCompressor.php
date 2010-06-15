@@ -9,7 +9,8 @@ abstract class dmAssetCompressor extends dmConfigurable
   $type,
   $assets,
   $processedAssets,
-  $cacheKey,
+  $cachedAssetsPaths,
+  $cacheKeys,
   $webDir;
   
   public function __construct(sfEventDispatcher $dispatcher, dmFilesystem $filesystem, array $requestContext, array $options = array())
@@ -73,7 +74,7 @@ abstract class dmAssetCompressor extends dmConfigurable
 
   protected function processCacheKey($cacheKey)
   {
-    return $this->cacheKey;
+    return $cacheKey;
   }
   
   protected function preProcess()
@@ -95,10 +96,11 @@ abstract class dmAssetCompressor extends dmConfigurable
     
     $this->assets           = $assets;
     $this->cachedAssets     = array();
+    $this->cachedAssetsPaths= array();
     $this->cdnAssets        = array();
     $this->preservedAssets  = array();
     $this->processedAssets  = array();
-    $this->cacheKey         = '';
+    $this->cacheKeys        = array();
     $this->webDir           = sfConfig::get('sf_web_dir');
 
     $this->preProcess();
@@ -110,12 +112,19 @@ abstract class dmAssetCompressor extends dmConfigurable
         if (!file_exists($this->webDir.$webPath))
         {
           $this->log('Missing '.$this->type.' : '.$this->webDir.$webPath);
-          $this->cacheKey .= $webPath;
+          $this->cacheKeys['all'] .= $webPath;
         }
         elseif ($this->isCachable($webPath, $options))
         {
-          $this->cachedAssets[$webPath] = $options;
-          $this->cacheKey .= $webPath.filemtime($this->webDir.$webPath);
+          $mediaType=isset($options['media']) ? $options['media'] : 'all';
+          $options['media']=$mediaType;
+          $this->cachedAssets[$mediaType][$webPath] = $options;
+
+          if(!isset($this->cacheKeys[$mediaType]))
+          {
+            $this->cacheKeys[$mediaType]=''; 
+          }
+          $this->cacheKeys[$mediaType] .= $webPath.filemtime($this->webDir.$webPath);
         }
         else
         {
@@ -130,43 +139,58 @@ abstract class dmAssetCompressor extends dmConfigurable
 
     if (!empty($this->cachedAssets))
     {
-      $this->cacheKey = md5($this->processCacheKey($this->cacheKey));
-  
-      $cacheWebPath = '/cache/'.$this->type;
-      $cacheDirPath = $this->webDir.$cacheWebPath;
-      $cacheFilePath = $cacheDirPath.'/'.$this->cacheKey.'.'.$this->type;
-   
-      $this->filesystem->mkdir($cacheDirPath);
-  
-      if(!file_exists($cacheFilePath))
-      {
-        $cacheContent = '';
 
-        foreach($this->cachedAssets as $webPath => $options)
+      $cachedAssetsPaths=array();
+
+      foreach($this->cachedAssets as $mediaType => $cachedAssets)
+      {
+        $this->cacheKeys[$mediaType] = md5($this->processCacheKey($this->cacheKeys[$mediaType]));
+
+        $cacheWebPath = '/cache/'.$this->type;
+        $cacheDirPath = $this->webDir.$cacheWebPath;
+        $cacheFilePath = $cacheDirPath.'/'.$this->cacheKeys[$mediaType].'.'.$this->type;
+
+        $this->filesystem->mkdir($cacheDirPath);
+
+        if(!file_exists($cacheFilePath))
         {
-          $cacheContent .= $this->processAssetContent(file_get_contents($this->webDir.$webPath), $webPath);
+          $cacheContent = '';
+
+          foreach($cachedAssets as $webPath => $options)
+          {
+            $cacheContent .= $this->processAssetContent(file_get_contents($this->webDir.$webPath), $webPath);
+            $this->cachedAssetsPaths[$cacheWebPath.'/'.$this->cacheKeys[$mediaType].'.'.$this->type] = $options;
+          }
+
+          $cacheContent = $this->processCacheContent($cacheContent);
+
+          file_put_contents($cacheFilePath, $cacheContent);
+          chmod($cacheFilePath, 0666);
+
+          if ($this->options['gz_compression'])
+          {
+            file_put_contents($cacheFilePath.'.gz', gzencode($cacheContent));
+            chmod($cacheFilePath.'.gz', 0666);
+          }
+
+
+
+          $message = sprintf('%s : compressed %d assets ( %s )', get_class($this), count($cachedAssets), dmOs::humanizeSize($cacheFilePath));
+          $this->dispatcher->notify(new sfEvent($this, 'application.log', array($message, 'priority' => sfLogger::INFO)));
+
         }
-  
-        $cacheContent = $this->processCacheContent($cacheContent);
-  
-        file_put_contents($cacheFilePath, $cacheContent);
-        chmod($cacheFilePath, 0666);
-        
-        if ($this->options['gz_compression'])
+        else
         {
-          file_put_contents($cacheFilePath.'.gz', gzencode($cacheContent));
-          chmod($cacheFilePath.'.gz', 0666);
+          $this->cachedAssetsPaths[$cacheWebPath.'/'.$this->cacheKeys[$mediaType].'.'.$this->type] = array('media'=>$mediaType);
         }
-      
-        $message = sprintf('%s : compressed %d assets ( %s )', get_class($this), count($this->cachedAssets), dmOs::humanizeSize($cacheFilePath));
-        $this->dispatcher->notify(new sfEvent($this, 'application.log', array($message, 'priority' => sfLogger::INFO)));
+
+
       }
-      
       $this->processedAssets = array_merge(
-        $this->cdnAssets,
-        array($cacheWebPath.'/'.$this->cacheKey.'.'.$this->type => array()),
-        $this->preservedAssets
-      );
+          $this->cdnAssets,
+          $this->cachedAssetsPaths,
+          $this->preservedAssets
+        );
     }
     else
     {
