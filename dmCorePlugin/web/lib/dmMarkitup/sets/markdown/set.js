@@ -1,4 +1,4 @@
-dmMarkitupMarkdown = {
+dmMarkitupMarkdown = dmMarkitupMarkdown || {
   previewParserPath:  '',
   onShiftEnter:    {keepDefault:false, openWith:'\n\n'},
   markupSet: [
