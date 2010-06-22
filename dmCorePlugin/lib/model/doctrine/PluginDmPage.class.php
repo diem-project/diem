@@ -216,7 +216,7 @@ LIMIT 1')->getStatement();
       {
         if ($pageView = dmDb::table('DmPageView')->findOneByModuleAndAction($this->get('module'), $this->get('action')))
         {
-          $this->setPageView($pageView);
+          $this->setPageView($pageview, false);
         }
         else
         {

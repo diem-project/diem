@@ -137,6 +137,7 @@ class dmMediaSynchronizer
       catch(Doctrine_Connection_Exception $e)
       {
         //A record needs a media in this folder, but the folder has been removed :-/
+        $this->filesystem->mkdir($child->getFullPath());
       }
 
       $dirty = true;
@@ -193,6 +194,11 @@ class dmMediaSynchronizer
   protected function getDirContents($dir)
   {
     $files = $dirs = array();
+
+    if(!is_dir($dir))
+    {
+      return array($dirs, $files);
+    }
 
     if($resource = opendir($dir))
     {

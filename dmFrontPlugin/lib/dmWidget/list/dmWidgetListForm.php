@@ -49,7 +49,7 @@ class dmWidgetListForm extends dmWidgetProjectModelForm
           $filterModule = $this->dmModule->getLocal($filter);
         }  
       }
-      
+
       if ($filterModule)
       {
         $filterName = $filterModule->getKey().'Filter';
