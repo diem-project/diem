@@ -368,17 +368,8 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
   public function getWidgetContainerClasses(array $widget)
   {
     // class for the widget div wrapper
-    $widgetWrapClass = trim('dm_widget '.$this->getWidgetCssClassFromPattern($widget));
-    
-    // if no user css_class, or if the user css_class must be applied inside the widget only
-    if(empty($widget['css_class']) || $this->isInnerCssClassWidget($widget))
-    {
-      $widgetInnerClass = 'dm_widget_inner';
-    }
-    else
-    {
-      $widgetInnerClass = 'dm_widget_inner '.$widget['css_class'];
-    }
+    $widgetWrapClass = dmArray::toHtmlCssClasses(array('dm_widget', $widget['css_class'], $this->getWidgetCssClassFromPattern($widget)));
+    $widgetInnerClass = 'dm_widget_inner';
     
     return array($widgetWrapClass, $widgetInnerClass);
   }
