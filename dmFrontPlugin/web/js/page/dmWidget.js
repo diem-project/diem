@@ -11,7 +11,7 @@ $.widget('ui.dmWidget', {
 
   openEditDialog: function()
   {
-    var widget = this, activeTab = null, dialogClass = widget.element.attr('id')+'_edit_dialog';
+    var widget = this, restoreState = {}, dialogClass = widget.element.attr('id')+'_edit_dialog';
 
     $.dm.removeTipsy();
 
@@ -25,8 +25,13 @@ $.widget('ui.dmWidget', {
       url:          $.dm.ctrl.getHref('+/dmWidget/edit'),
       data:         {widget_id: widget.getId()},
       title:        $('a.dm_widget_edit', widget.element).tipsyTitle(),
-      width:        370,
+      width:        600,
       'class':      'dm_widget_edit_dialog_wrap '+dialogClass,
+      resizable:    true,
+      resize:       function(event, ui)
+      {
+        $dialog.maximizeContent('textarea.markItUpEditor');
+      },
       beforeClose:  function()
       {
         if (!widget.deleted)
@@ -34,7 +39,83 @@ $.widget('ui.dmWidget', {
           widget.reload(500);
         }
       }
-    }).bind('dmAjaxResponse', function()
+    });
+    
+    $dialog.listenToFocusedInputs = function()
+    {
+      var $form = $('div.dm_widget_edit', $dialog);
+      
+      $form.find('.dm_form_elements :input').focus(function() {
+        restoreState.activeElementName = $(this).attr('name');
+      });
+    }
+    
+    $dialog.saveState = function()
+    {
+      var $form = $('div.dm_widget_edit', $dialog);
+      
+      // Save active tab
+      if ($tabbedFormActiveTab = $form.find('ul.ui-tabs-nav > li.ui-tabs-selected:first').orNot())
+      {
+        restoreState.activeTab = $tabbedFormActiveTab.find('>a').attr('href');
+      }
+      
+      // Save focused element
+      if (restoreState.activeElementName)
+      {
+        var s = ':input[name="'+restoreState.activeElementName+'"]:visible';
+        var activeElement = $form.find(s);
+        if(activeElement.length > 0)
+        {
+          restoreState.activeSelection = [activeElement[0].selectionStart, activeElement[0].selectionEnd];
+          restoreState.activeElementScrollTop = activeElement.scrollTop();
+        }
+      }
+    };
+    
+    $dialog.restoreState = function()
+    {
+      var $form = $('div.dm_widget_edit', $dialog);
+      
+      // Restore active tab
+      if(restoreState.activeTab)
+      {
+        $form.find('div.dm_tabbed_form').tabs('select', restoreState.activeTab);
+      }
+      
+      // Maximize content
+      $dialog.maximizeContent('textarea.markItUpEditor');
+      
+      // Restore focused element
+      if (restoreState.activeElementName)
+      {
+        var s = ':input[name="'+restoreState.activeElementName+'"]:visible';
+        var activeElement = $form.find(s);
+        activeElement.focus();
+        x = activeElement;
+        if(activeElement.length > 0)
+        {
+          if (activeElement[0].setSelectionRange)
+          {
+            activeElement[0].setSelectionRange(restoreState.activeSelection[0], restoreState.activeSelection[1]);
+          }
+          activeElement.scrollTop(restoreState.activeElementScrollTop);
+        }
+      }
+
+      $dialog.listenToFocusedInputs();
+    };
+    
+    $dialog.maximizeContent = function(elToMaximize)
+    {
+      var $form = $dialog.find('form.dm_form');
+      var formHeight = $form.height();
+      var dialogHeight = $dialog.height();
+      var $maximizable = $form.find(elToMaximize);
+      $maximizable.height($maximizable.height() + dialogHeight - formHeight);
+    };
+    
+    $dialog.bind('dmAjaxResponse', function()
     {
       $dialog.prepare();
 
@@ -89,13 +170,6 @@ $.widget('ui.dmWidget', {
         $form[formClass](widget);
       }
       /*
-       * Restore active tab
-       */
-      if(activeTab)
-      {
-        $form.find('div.dm_tabbed_form').tabs('select', activeTab);
-      }
-      /*
        * Enable code editor link
        */
       $form.find('a.code_editor').each(function() {
@@ -107,16 +181,16 @@ $.widget('ui.dmWidget', {
         });
       });
 
+      // Maximize content
+      $dialog.restoreState();
+      
       // enable tool tips
       $dialog.parent().find('a[title], input[title]').tipsy({gravity: $.fn.tipsy.autoSouth});
       
       $form.find('form').dmAjaxForm({
         beforeSubmit: function(data) {
           $dialog.block();
-          if ($tabbedFormActiveTab = $form.find('ul.ui-tabs-nav > li.ui-tabs-selected:first').orNot())
-          {
-            activeTab = $tabbedFormActiveTab.find('>a').attr('href');
-          }
+          $dialog.saveState();
         },
         error: function(xhr, textStatus, errorThrown)
         {
