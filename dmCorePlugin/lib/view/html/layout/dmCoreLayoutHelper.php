@@ -168,7 +168,7 @@ class dmCoreLayoutHelper extends dmConfigurable
     $html = '';
     foreach ($stylesheets as $file => $options)
     {
-      $stylesheetTag = '<link rel="stylesheet" type="text/css" media="'.dmArray::get($options, 'media', 'all').'" href="'.$relativeUrlRoot.$file.'" />';
+      $stylesheetTag = '<link rel="stylesheet" type="text/css" media="'.dmArray::get($options, 'media', 'all').'" href="'.($file{0} === '/' ? $relativeUrlRoot.$file : $file).'" />';
     
       if (isset($options['condition']))
       {
@@ -199,7 +199,7 @@ class dmCoreLayoutHelper extends dmConfigurable
     
     $html = '';
     foreach($javascripts as $file => $options)
-    {
+    {	  
       $html .= '<script type="text/javascript" src="'.($file{0} === '/' ? $relativeUrlRoot.$file : $file).'"></script>';
     }
 
