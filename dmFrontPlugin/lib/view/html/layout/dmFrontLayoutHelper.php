@@ -9,7 +9,12 @@ class dmFrontLayoutHelper extends dmCoreLayoutHelper
   {
     parent::initialize($options);
 
-    $this->setPage($this->serviceContainer->getParameter('context.page'));
+    if(!$currentPage = $this->serviceContainer->getParameter('context.page'))
+    {
+      throw new dmException('Can not use Diem layout helper because no Diem page is loaded.');
+    }
+
+    $this->setPage($currentPage);
   }
     
   public function setPage(DmPage $page)

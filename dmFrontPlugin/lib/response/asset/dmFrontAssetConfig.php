@@ -52,6 +52,7 @@ class dmFrontAssetConfig extends dmAssetConfig
         'lib.ui-position',
         'lib.ui-draggable',
         'lib.ui-droppable',
+        'lib.ui-resizable',
         'lib.ui-sortable',
         'lib.ui-dialog',
         'lib.blockUI',

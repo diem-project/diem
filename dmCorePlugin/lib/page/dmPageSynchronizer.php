@@ -138,13 +138,17 @@ class dmPageSynchronizer
         }
         if (!$parentRecordId)
         {
-          $isUseless = true;
+          $pageIsUseless = true;
         }
       }
 
       if ($pageIsUseless)
       {
-        dmDb::table('DmPage')->find($showPage['id'])->getNode()->delete();
+        //delete node only if it's found
+        if( ($page = dmDb::table('DmPage')->find($showPage['id']) ) )
+        {
+          $page->getNode()->delete();
+        }
       }
     }
 

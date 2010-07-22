@@ -1,4 +1,4 @@
-dmMarkitupMarkdown = {
+var dmMarkitupMarkdown = typeof dmMarkitupMarkdown == 'undefined' ? {
   previewParserPath:  '',
   onShiftEnter:    {keepDefault:false, openWith:'\n\n'},
   markupSet: [
@@ -20,7 +20,7 @@ dmMarkitupMarkdown = {
 //    {name:'Quotes', className: 'markitup_quote', openWith:'> '}
   ],
   resizeHandle:    false
-}
+} : dmMarkitupMarkdown;
 
 // mIu nameSpace to avoid conflict.
 miu = {

@@ -34,7 +34,7 @@ Documentation
 Gordon Franke
 German translation, PHP code
 
-Eric Van Kelst
+Erik Van Kelst
 Dutch translation
 
 Manea Liviu
@@ -45,6 +45,12 @@ Polish translation
 
 Reynier Pérez Mira
 Spanish translation
+
+Vincent Jousse
+Git migration, stylesheet compressor
+
+Jaime Suez
+Admin date filters
 
 COPYRIGHTS
 ==========

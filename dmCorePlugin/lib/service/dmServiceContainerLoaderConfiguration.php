@@ -41,6 +41,7 @@ class dmServiceContainerLoaderConfiguration implements sfServiceContainerLoaderI
     $this->add('link_tag_page',   'use_page_title', 'link_use_page_title');
 
     $this->add('link_tag_uri',    'external_blank', 'link_external_blank');
+    $this->add('link_tag',        'external_blank', 'link_external_blank');
     
     $this->dispatcher->notify(new sfEvent($this, 'dm.service_container.configuration', array(
       'container' => $this->container,
@@ -52,7 +53,7 @@ class dmServiceContainerLoaderConfiguration implements sfServiceContainerLoaderI
   
   protected function add($service, $key, $configKey)
   {
-    if (isset($this->config[$configKey]) && $this->container->hasParameter($service.'.options'))
+    if (array_key_exists($configKey, $this->config) && $this->container->hasParameter($service.'.options'))
     {
       $this->container->setParameter(
         $service.'.options',
