@@ -140,7 +140,7 @@ class dmSeoSynchronizer
       }
 
       $modifiedPages = array();
-      foreach($pages[$action] as $page)
+      foreach(dmArray::get($pages, $action, array()) as $page)
       {
         $record = $records[$page['record_id']];
 
