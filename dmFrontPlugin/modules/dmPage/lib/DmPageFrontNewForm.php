@@ -20,15 +20,20 @@ class DmPageFrontNewForm extends DmPageForm
     $this->validatorSchema['slug'] = new sfValidatorString(array('max_length' => 255));
     
     $parentChoices = $this->getParentChoices();
-    
     $this->widgetSchema['parent_id'] = new sfWidgetFormChoice(array(
       'choices' => $parentChoices
     ));
     $this->validatorSchema['parent_id'] = new sfValidatorChoice(array(
       'choices' => array_keys($parentChoices)
     ));
-    
-    $this->widgetSchema['dm_layout_id']->setLabel('Layout');
+
+    $templates = $this->getTemplates();
+    $this->widgetSchema['template'] = new sfWidgetFormChoice(array(
+      'choices' => array_combine($templates, $templates)
+    ));
+    $this->validatorSchema['template'] = new sfValidatorChoice(array(
+      'choices' => $templates
+    ));
 
     $this->mergePostValidator(new sfValidatorCallback(array('callback' => array($this, 'checkSlug'))));
   }

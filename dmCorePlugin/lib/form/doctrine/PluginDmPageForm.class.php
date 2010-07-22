@@ -34,7 +34,7 @@ abstract class PluginDmPageForm extends BaseDmPageForm
     $templates = array();
     foreach($files as $file)
     {
-      $templates[] = str_replace('Success.php', '', $file);
+      $templates[] = str_replace('Success.php', '', basename($file));
     }
 
     return $templates;

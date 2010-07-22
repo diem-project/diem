@@ -10,7 +10,7 @@ echo _tag('div.form',
     $form['parent_id']->renderRow().
     $form['name']->renderRow().
     $form['slug']->renderRow().
-    $form['dm_layout_id']->renderRow()
+    $form['template']->renderRow()
   ).
   sprintf(
       '<div class="actions">

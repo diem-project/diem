@@ -39,6 +39,14 @@ class DmPageFrontEditForm extends DmPageForm
         'required' => !$this->object->getNode()->isRoot()
       ));
     }
+
+    $templates = $this->getTemplates();
+    $this->widgetSchema['template'] = new sfWidgetFormChoice(array(
+      'choices' => array_combine($templates, $templates)
+    ));
+    $this->validatorSchema['template'] = new sfValidatorChoice(array(
+      'choices' => $templates
+    ));
     
     $this->widgetSchema['dm_layout_id']->setLabel('Layout');
     $this->widgetSchema['description']->setLabel('Desc');
