@@ -48,7 +48,6 @@ class DmPageFrontEditForm extends DmPageForm
       'choices' => $templates
     ));
     
-    $this->widgetSchema['dm_layout_id']->setLabel('Layout');
     $this->widgetSchema['description']->setLabel('Desc');
     $this->widgetSchema['is_active']->setLabel('Available');
     $this->widgetSchema['is_secure']->setLabel('Requires authentication');

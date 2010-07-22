@@ -48,11 +48,6 @@ class dmPageActions extends dmFrontBaseActions
       ->setIsActiveManually()
       ->saveGet();
 
-      /*
-       * dmPageView.dmLayoutId may be modified
-       */
-      $this->page->getPageView()->save();
-
       return $this->renderText($this->getHelper()->link($this->page)->getAbsoluteHref());
     }
     
