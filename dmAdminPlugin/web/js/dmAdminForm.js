@@ -26,7 +26,7 @@
         $row.find('input, textarea, select').each(function()
         {
           var initialValue = $(this).val()+$(this).attr('checked');
-          event = $(this).is('input, textarea') ? 'change keyup click' : 'change';
+          var event = $(this).is('input, textarea') ? 'change keyup click' : 'change';
           $(this).bind(event, function()
           {
             $row.toggleClass('dm_row_modified', $(this).val()+$(this).attr('checked') != initialValue);
