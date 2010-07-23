@@ -6,19 +6,7 @@ $helper->boot('front');
 
 $t = new lime_test(21);
 
-$forms = $helper->get('form_manager');
-
-$t->isa_ok($forms, 'dmFormManager', '$forms is a form manager');
-
-try
-{
-  $form = $forms['non_existing_form'];
-  $t->fail('Create non existing form');
-}
-catch(Exception $e)
-{
-  $t->pass('Create non existing form');
-}
+$forms = array();
 
 $forms['dmUser'] = new DmUserForm;
 
