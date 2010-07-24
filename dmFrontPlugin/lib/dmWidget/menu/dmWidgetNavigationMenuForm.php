@@ -23,6 +23,12 @@ class dmWidgetNavigationMenuForm extends dmWidgetPluginForm
     ));
     $this->validatorSchema['ulClass']   = new dmValidatorCssClasses(array('required' => false));
 
+    $this->widgetSchema['menuName']      = new sfWidgetFormInputText(array(
+      'label' => 'Menu name'
+    ));
+    $this->validatorSchema['menuName']   = new sfValidatorString(array('required' => false));
+    $this->widgetSchema->setHelp('menuName', 'Used for id generation');
+    
     $this->widgetSchema['liClass']      = new sfWidgetFormInputText(array(
       'label' => 'LI CSS class'
     ));
