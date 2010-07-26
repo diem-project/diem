@@ -2,6 +2,15 @@
 
 class dmFrontBaseActions extends dmBaseActions
 {
+
+  /**
+   * Forward the request to the page that matches the given slug
+   **/
+  public function forwardToSlug($slug)
+  {
+    $this->getRequest()->setParameter('slug', $slug);
+    return $this->forward('dmFront', 'page');
+  }
   
   /**
    * @return DmPage the current page
