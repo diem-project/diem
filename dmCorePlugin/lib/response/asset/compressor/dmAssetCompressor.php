@@ -166,18 +166,18 @@ abstract class dmAssetCompressor extends dmConfigurable
 
           file_put_contents($cacheFilePath, $cacheContent);
           chmod($cacheFilePath, 0666);
+          $this->dispatcher->notify(new sfEvent($this, 'dm.asset_compressor.create_cache', array('file' => $cacheFilePath)));
 
           if ($this->options['gz_compression'])
           {
-            file_put_contents($cacheFilePath.'.gz', gzencode($cacheContent));
-            chmod($cacheFilePath.'.gz', 0666);
+            $gzCacheFilePath = $cacheFilePath.'.gz';
+            file_put_contents($gzCacheFilePath, gzencode($cacheContent));
+            chmod($gzCacheFilePath, 0666);
+            $this->dispatcher->notify(new sfEvent($this, 'dm.asset_compressor.create_cache', array('file' => $gzCacheFilePath)));
           }
-
-
 
           $message = sprintf('%s : compressed %d assets ( %s )', get_class($this), count($cachedAssets), dmOs::humanizeSize($cacheFilePath));
           $this->dispatcher->notify(new sfEvent($this, 'application.log', array($message, 'priority' => sfLogger::INFO)));
-
         }
         else
         {
