@@ -18,6 +18,7 @@ abstract class BaseDmPageForm extends BaseFormDoctrine
       'id'          => new sfWidgetFormInputHidden(),
       'module'      => new sfWidgetFormInputText(),
       'action'      => new sfWidgetFormInputText(),
+      'template'    => new sfWidgetFormInputText(),
       'record_id'   => new sfWidgetFormInputText(),
       'credentials' => new sfWidgetFormInputText(),
       'lft'         => new sfWidgetFormInputText(),
@@ -27,9 +28,10 @@ abstract class BaseDmPageForm extends BaseFormDoctrine
     ));
 
     $this->setValidators(array(
-      'id'          => new sfValidatorDoctrineChoice(array('model' => $this->getModelName(), 'column' => 'id', 'required' => false)),
+      'id'          => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
       'module'      => new sfValidatorString(array('max_length' => 127)),
       'action'      => new sfValidatorString(array('max_length' => 127)),
+      'template'    => new sfValidatorString(array('max_length' => 127, 'required' => false)),
       'record_id'   => new sfValidatorInteger(array('required' => false)),
       'credentials' => new sfValidatorString(array('max_length' => 255, 'required' => false)),
       'lft'         => new sfValidatorInteger(array('required' => false)),

@@ -13,15 +13,11 @@ abstract class BaseDmAreaFormFilter extends BaseFormFilterDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-      'dm_layout_id'    => new sfWidgetFormDoctrineChoice(array('model' => 'DmLayout', 'add_empty' => true)),
-      'dm_page_view_id' => new sfWidgetFormDoctrineChoice(array('model' => 'DmPageView', 'add_empty' => true)),
-      'type'            => new sfWidgetFormChoice(array('choices' => array('' => '', 'content' => 'content', 'top' => 'top', 'bottom' => 'bottom', 'left' => 'left', 'right' => 'right'))),
+      'name' => new sfWidgetFormDmFilterInput(),
     ));
 
     $this->setValidators(array(
-      'dm_layout_id'    => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Layout'), 'column' => 'id')),
-      'dm_page_view_id' => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('PageView'), 'column' => 'id')),
-      'type'            => new sfValidatorChoice(array('required' => false, 'choices' => array('content' => 'content', 'top' => 'top', 'bottom' => 'bottom', 'left' => 'left', 'right' => 'right'))),
+      'name' => new sfValidatorPass(array('required' => false)),
     ));
     
 
@@ -42,10 +38,8 @@ abstract class BaseDmAreaFormFilter extends BaseFormFilterDoctrine
   public function getFields()
   {
     return array(
-      'id'              => 'Number',
-      'dm_layout_id'    => 'ForeignKey',
-      'dm_page_view_id' => 'ForeignKey',
-      'type'            => 'Enum',
+      'id'   => 'Number',
+      'name' => 'Text',
     );
   }
 }

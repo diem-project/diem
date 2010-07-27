@@ -23,7 +23,7 @@ abstract class BaseDmTagForm extends BaseFormDoctrine
     ));
 
     $this->setValidators(array(
-      'id'                   => new sfValidatorDoctrineChoice(array('model' => $this->getModelName(), 'column' => 'id', 'required' => false)),
+      'id'                   => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
       'name'                 => new sfValidatorString(array('max_length' => 255)),
         'dm_test_domains_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomain', 'required' => false)),
         'dm_test_fruits_list'  => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestFruit', 'required' => false)),

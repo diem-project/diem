@@ -30,7 +30,7 @@ abstract class BaseDmTestPostForm extends BaseFormDoctrine
       ));
 
     $this->setValidators(array(
-      'id'          => new sfValidatorDoctrineChoice(array('model' => $this->getModelName(), 'column' => 'id', 'required' => false)),
+      'id'          => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
       'categ_id'    => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Categ'))),
       'user_id'     => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Author'))),
       'image_id'    => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Image'), 'required' => false)),

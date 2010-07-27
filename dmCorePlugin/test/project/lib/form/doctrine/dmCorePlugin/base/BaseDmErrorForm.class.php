@@ -28,7 +28,7 @@ abstract class BaseDmErrorForm extends BaseFormDoctrine
     ));
 
     $this->setValidators(array(
-      'id'          => new sfValidatorDoctrineChoice(array('model' => $this->getModelName(), 'column' => 'id', 'required' => false)),
+      'id'          => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
       'php_class'   => new sfValidatorString(array('max_length' => 127)),
       'name'        => new sfValidatorString(array('max_length' => 255)),
       'description' => new sfValidatorString(array('max_length' => 60000, 'required' => false)),

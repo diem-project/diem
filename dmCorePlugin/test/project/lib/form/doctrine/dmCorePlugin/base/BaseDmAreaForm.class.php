@@ -15,19 +15,19 @@ abstract class BaseDmAreaForm extends BaseFormDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-      'id'              => new sfWidgetFormInputHidden(),
-      'dm_layout_id'    => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Layout'), 'add_empty' => true)),
-      'dm_page_view_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('PageView'), 'add_empty' => true)),
-      'type'            => new sfWidgetFormChoice(array('choices' => array('content' => 'content', 'top' => 'top', 'bottom' => 'bottom', 'left' => 'left', 'right' => 'right'))),
+      'id'   => new sfWidgetFormInputHidden(),
+      'name' => new sfWidgetFormInputText(),
 
     ));
 
     $this->setValidators(array(
-      'id'              => new sfValidatorDoctrineChoice(array('model' => $this->getModelName(), 'column' => 'id', 'required' => false)),
-      'dm_layout_id'    => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Layout'), 'required' => false)),
-      'dm_page_view_id' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('PageView'), 'required' => false)),
-      'type'            => new sfValidatorChoice(array('choices' => array(0 => 'content', 1 => 'top', 2 => 'bottom', 3 => 'left', 4 => 'right'), 'required' => false)),
+      'id'   => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
+      'name' => new sfValidatorString(array('max_length' => 255)),
     ));
+
+    $this->validatorSchema->setPostValidator(
+      new sfValidatorDoctrineUnique(array('model' => 'DmArea', 'column' => array('name')))
+    );
 
     $this->widgetSchema->setNameFormat('dm_area[%s]');
 
