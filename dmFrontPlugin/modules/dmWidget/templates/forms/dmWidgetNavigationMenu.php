@@ -35,6 +35,7 @@ _tag('div#'.$baseTabId.'_advanced',
   _tag('ul.dm_form_elements',
     $form['cssClass']->renderRow().
     $form['ulClass']->renderRow().
+    $form['menuName']->renderRow().
     $form['liClass']->renderRow().
     (isset($form['menuClass']) ? $form['menuClass']->renderRow() : '')
   )

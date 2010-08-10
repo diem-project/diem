@@ -81,13 +81,18 @@ abstract class dmFormFilterDoctrine extends sfFormFilterDoctrine
 
   protected function addNumberQuery(Doctrine_Query $query, $field, $values)
   {
+    if(!is_array($values))
+    {
+      $values = array('text' => $values);
+    }
+
     $fieldName = $this->getFieldName($field);
 
-    if (is_array($values) && isset($values['is_empty']) && $values['is_empty'])
+    if (isset($values['is_empty']) && $values['is_empty'])
     {
       $query->addWhere(sprintf('(%s.%s IS NULL OR %1$s.%2$s = ?)', $this->getRootAlias($query, $fieldName), $fieldName), array(''));
     }
-    else if (is_array($values) && isset($values['text']) && '' !== $values['text'])
+    else if (isset($values['text']) && '' !== $values['text'])
     {
       $query->addWhere(sprintf('%s.%s = ?', $this->getRootAlias($query, $fieldName), $fieldName), $values['text']);
     }
