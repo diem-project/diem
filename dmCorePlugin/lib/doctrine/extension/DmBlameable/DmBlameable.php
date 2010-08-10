@@ -148,6 +148,13 @@ class Doctrine_Template_DmBlameable extends Doctrine_Template
                 'foreign' => $this->_options['relations']['created']['foreign'],
           )
         );
+	//This relation adds foreignAlias to this relation - fizyk
+        Doctrine_Core::getTable( 'DmUser' )->bind(
+        array($className.' as Created'.$className.'s',
+          array( 'class'    => $className,
+            'local'    => $this->_options['relations']['created']['foreign'],
+            'foreign'  => $this->_options['columns']['created']['name']
+        )), Doctrine_Relation::MANY );
       }
       
       if( ! $this->_options['relations']['updated']['disabled'] && ! $this->_options['columns']['updated']['disabled']) {
@@ -156,6 +163,13 @@ class Doctrine_Template_DmBlameable extends Doctrine_Template
                 'foreign' => $this->_options['relations']['updated']['foreign'],
           )
         );
+	//This relation adds foreignAlias to this relation - fizyk
+        Doctrine_Core::getTable( 'DmUser' )->bind(
+        array($className.' as Updated'.$className.'s',
+          array( 'class'    => $className,
+            'local'    => $this->_options['relations']['updated']['foreign'],
+            'foreign'  => $this->_options['columns']['updated']['name']
+        )), Doctrine_Relation::MANY );
       }
       
       
