@@ -4,21 +4,9 @@ require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
 $helper = new dmUnitTestHelper();
 $helper->boot('front');
 
-$t = new lime_test(21);
+$t = new lime_test(19);
 
-$forms = $helper->get('form_manager');
-
-$t->isa_ok($forms, 'dmFormManager', '$forms is a form manager');
-
-try
-{
-  $form = $forms['non_existing_form'];
-  $t->fail('Create non existing form');
-}
-catch(Exception $e)
-{
-  $t->pass('Create non existing form');
-}
+$forms = array();
 
 $forms['dmUser'] = new DmUserForm;
 

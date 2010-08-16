@@ -9,7 +9,6 @@ DmPage:
     module:                 { type: string(127), notnull: true }
     action:                 { type: string(127), notnull: true }
     template:               { type: string(127), notnull: true, default: "default" }
-    page_view_name:         { type: string(255), notnull: true }
     record_id:              { type: integer, unsigned: true, notnull: true, default: 0 }
     slug:                   { type: string(255), notnull: true }
     name:                   { type: string(255), notnull: true }
@@ -82,6 +81,8 @@ DmMedia:
     symfony:
       filter: false
   actAs:
+    I18n:
+      fields:         [ legend, author, license ]
     Timestampable:          {}
   columns:
     dm_media_folder_id:     { type: integer, notnull: true }

@@ -168,7 +168,7 @@ class dmCoreLayoutHelper extends dmConfigurable
     $html = '';
     foreach ($stylesheets as $file => $options)
     {
-      $stylesheetTag = '<link rel="stylesheet" type="text/css" media="'.dmArray::get($options, 'media', 'all').'" href="'.$relativeUrlRoot.$file.'" />';
+      $stylesheetTag = '<link rel="stylesheet" type="text/css" media="'.dmArray::get($options, 'media', 'all').'" href="'.($file{0} === '/' ? $relativeUrlRoot.$file : $file).'" />';
     
       if (isset($options['condition']))
       {
@@ -199,7 +199,7 @@ class dmCoreLayoutHelper extends dmConfigurable
     
     $html = '';
     foreach($javascripts as $file => $options)
-    {
+    {	  
       $html .= '<script type="text/javascript" src="'.($file{0} === '/' ? $relativeUrlRoot.$file : $file).'"></script>';
     }
 
@@ -253,6 +253,7 @@ class dmCoreLayoutHelper extends dmConfigurable
       'script_name'        => sfConfig::get('sf_no_script_name') ? trim($requestContext['relative_url_root'], '/').'/' : $requestContext['script_name'].'/',
       'debug'              => sfConfig::get('sf_debug') ? true : false,
       'culture'            => $this->serviceContainer->getParameter('user.culture'),
+      'dateFormat'         => strtolower(sfDateTimeFormatInfo::getInstance($this->serviceContainer->getParameter('user.culture'))->getShortDatePattern()),
       'module'             => $this->serviceContainer->getParameter('controller.module'),
       'action'             => $this->serviceContainer->getParameter('controller.action'),
       'authenticated'      => $this->getService('user')->isAuthenticated()

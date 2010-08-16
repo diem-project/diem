@@ -24,7 +24,7 @@ abstract class BaseDmZoneForm extends BaseFormDoctrine
     ));
 
     $this->setValidators(array(
-      'id'         => new sfValidatorDoctrineChoice(array('model' => $this->getModelName(), 'column' => 'id', 'required' => false)),
+      'id'         => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
       'dm_area_id' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Area'))),
       'css_class'  => new sfValidatorString(array('max_length' => 255, 'required' => false)),
       'width'      => new sfValidatorString(array('max_length' => 15, 'required' => false)),

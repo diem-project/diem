@@ -7,6 +7,7 @@
  * 
  * @property string $module
  * @property string $action
+ * @property string $template
  * @property integer $record_id
  * @property string $slug
  * @property string $name
@@ -22,6 +23,7 @@
  * 
  * @method string  getModule()       Returns the current record's "module" value
  * @method string  getAction()       Returns the current record's "action" value
+ * @method string  getTemplate()     Returns the current record's "template" value
  * @method integer getRecordId()     Returns the current record's "record_id" value
  * @method string  getSlug()         Returns the current record's "slug" value
  * @method string  getName()         Returns the current record's "name" value
@@ -36,6 +38,7 @@
  * @method boolean getIsIndexable()  Returns the current record's "is_indexable" value
  * @method DmPage  setModule()       Sets the current record's "module" value
  * @method DmPage  setAction()       Sets the current record's "action" value
+ * @method DmPage  setTemplate()     Sets the current record's "template" value
  * @method DmPage  setRecordId()     Sets the current record's "record_id" value
  * @method DmPage  setSlug()         Sets the current record's "slug" value
  * @method DmPage  setName()         Sets the current record's "name" value
@@ -67,6 +70,12 @@ abstract class BaseDmPage extends myDoctrineRecord
         $this->hasColumn('action', 'string', 127, array(
              'type' => 'string',
              'notnull' => true,
+             'length' => 127,
+             ));
+        $this->hasColumn('template', 'string', 127, array(
+             'type' => 'string',
+             'notnull' => true,
+             'default' => 'default',
              'length' => 127,
              ));
         $this->hasColumn('record_id', 'integer', null, array(

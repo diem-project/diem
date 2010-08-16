@@ -25,7 +25,7 @@ abstract class BaseDmContactForm extends BaseFormDoctrine
     ));
 
     $this->setValidators(array(
-      'id'         => new sfValidatorDoctrineChoice(array('model' => $this->getModelName(), 'column' => 'id', 'required' => false)),
+      'id'         => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
       'name'       => new sfValidatorString(array('max_length' => 255)),
       'email'      => new sfValidatorString(array('max_length' => 255)),
       'body'       => new sfValidatorString(array('required' => false)),

@@ -11,7 +11,7 @@ class DmMediaForRecordForm extends DmMediaForm
 
     $this->widgetSchema['id']->setAttribute('class', 'dm_media_id');
 
-    $this->validatorSchema['id'] = new sfValidatorDoctrineChoice(array('model' => 'DmMedia'));
+    $this->validatorSchema['id'] = new sfValidatorDoctrineChoice(array('model' => 'DmMedia', 'required' => false));
 
     $this->getWidgetSchema()
     ->getFormFormatter()

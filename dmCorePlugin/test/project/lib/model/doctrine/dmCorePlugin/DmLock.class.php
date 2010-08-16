@@ -8,7 +8,7 @@
  * @package    retest
  * @subpackage model
  * @author     Your name here
- * @version    SVN: $Id: Builder.php 7021 2010-01-12 20:39:49Z lsmith $
+ * @version    SVN: $Id: Builder.php 7490 2010-03-29 19:53:27Z jwage $
  */
 class DmLock extends PluginDmLock
 {

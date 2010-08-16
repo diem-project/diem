@@ -2,23 +2,14 @@
 
 class dmFrontBaseActions extends dmBaseActions
 {
-  protected
-  $forms;
-  
+
   /**
-   * Initializes this component.
-   *
-   * @param sfContext $context    The current application context.
-   * @param string    $moduleName The module name.
-   * @param string    $actionName The action name.
-   *
-   * @return boolean true, if initialization completes successfully, otherwise false
-   */
-  public function initialize($context, $moduleName, $actionName)
+   * Forward the request to the page that matches the given slug
+   **/
+  public function forwardToSlug($slug)
   {
-    parent::initialize($context, $moduleName, $actionName);
-    
-    $this->forms = $this->getService('form_manager');
+    $this->getRequest()->setParameter('slug', $slug);
+    return $this->forward('dmFront', 'page');
   }
   
   /**

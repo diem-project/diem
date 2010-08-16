@@ -15,6 +15,7 @@ abstract class BaseDmPageFormFilter extends BaseFormFilterDoctrine
     $this->setWidgets(array(
       'module'       => new sfWidgetFormDmFilterInput(),
       'action'       => new sfWidgetFormDmFilterInput(),
+      'template'     => new sfWidgetFormDmFilterInput(),
       'record_id'    => new sfWidgetFormDmFilterInput(),
       'credentials'  => new sfWidgetFormDmFilterInput(),
       'lft'          => new sfWidgetFormDmFilterInput(),
@@ -25,6 +26,7 @@ abstract class BaseDmPageFormFilter extends BaseFormFilterDoctrine
     $this->setValidators(array(
       'module'       => new sfValidatorPass(array('required' => false)),
       'action'       => new sfValidatorPass(array('required' => false)),
+      'template'     => new sfValidatorPass(array('required' => false)),
       'record_id'    => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
       'credentials'  => new sfValidatorPass(array('required' => false)),
       'lft'          => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
@@ -55,6 +57,7 @@ abstract class BaseDmPageFormFilter extends BaseFormFilterDoctrine
       'id'           => 'Number',
       'module'       => 'Text',
       'action'       => 'Text',
+      'template'     => 'Text',
       'record_id'    => 'Number',
       'credentials'  => 'Text',
       'lft'          => 'Number',
