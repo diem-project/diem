@@ -50,7 +50,6 @@ EOF;
     
     $dirs = array(
       sfConfig::get('sf_apps_dir'),
-      sfConfig::get('sf_lib_dir'),
       sfConfig::get('sf_data_dir')
     );
 

@@ -12,6 +12,12 @@ toAdmin:
 signin:
   url:          /security/signin
   params:       { module: dmFront, action: page, dm_page: main/signin }
+  requirements: { sf_method: "GET" }
+
+signin_submit:
+  url:          /security/signin/submit
+  params:       { module: dmUser, action: signin }
+  requirements: { sf_method: "POST" }
 
 signout:
   url:          /security/signout

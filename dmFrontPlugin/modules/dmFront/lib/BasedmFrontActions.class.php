@@ -9,7 +9,7 @@ class BasedmFrontActions extends dmFrontBaseActions
 
     $this->secure();
      
-    return $this->renderPage();
+    return $this->renderDiemPage();
   }
 
   protected function getPageFromRequest(dmWebRequest $request)
@@ -95,10 +95,10 @@ class BasedmFrontActions extends dmFrontBaseActions
   {
     $this->page = dmDb::table('DmPage')->fetchError404();
     
-    return $this->renderPage();
+    return $this->renderDiemPage();
   }
   
-  protected function renderPage()
+  protected function renderDiemPage()
   {
     // share current page
     $this->context->setPage($this->page);

@@ -4,6 +4,15 @@ class dmFrontBaseActions extends dmBaseActions
 {
 
   /**
+   * Forward the request to the page that matches the given source
+   **/
+  public function renderPage($source)
+  {
+    $page = dmDb::table('DmPage')->findOneBySource($source);
+    return $this->forwardToSlug($page->slug);
+  }
+
+  /**
    * Forward the request to the page that matches the given slug
    **/
   public function forwardToSlug($slug)

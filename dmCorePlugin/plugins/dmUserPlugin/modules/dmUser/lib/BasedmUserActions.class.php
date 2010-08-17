@@ -6,7 +6,7 @@ class BasedmUserActions extends myFrontModuleActions
   /**
    * Handle dmUser/signin form validation and authenticates the user
    */
-  public function executeSigninWidget(dmWebRequest $request)
+  public function executeSignin(dmWebRequest $request)
   {
     $form = new DmSigninFrontForm();
 
@@ -35,7 +35,8 @@ class BasedmUserActions extends myFrontModuleActions
       $user->setReferer($this->getContext()->getActionStack()->getSize() > 1 ? $request->getUri() : $request->getReferer());
     }
 
-    $this->forms['DmSigninFront'] = $form;
+    $request->setParameter('signin_form', $form);
+    return $this->renderPage('main/signin');
   }
 
   /**
@@ -157,15 +158,6 @@ class BasedmUserActions extends myFrontModuleActions
       }
       $this->forms['DmForgotPasswordStep2'] = $form;
     }
-  }
-
-  public function executeSignin(dmWebRequest $request)
-  {
-    $request->setParameter('dm_page', dmDb::table('DmPage')->fetchSignin());
-
-    $this->getResponse()->setStatusCode(401);
-
-    $this->forward('dmFront', 'page');
   }
 
   public function executeSecure(dmWebRequest $request)

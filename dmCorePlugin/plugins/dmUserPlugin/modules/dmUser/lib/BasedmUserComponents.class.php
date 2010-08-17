@@ -5,7 +5,7 @@ class BasedmUserComponents extends myFrontModuleComponents
 
   public function executeSignin()
   {
-    $this->form = $this->forms['DmSigninFront'];
+    $this->form = $this->getRequest()->getParameter('signin_form', new DmSigninFrontForm());
   }
 
   public function executeForm()
