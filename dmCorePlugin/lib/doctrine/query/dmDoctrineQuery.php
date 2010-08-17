@@ -304,7 +304,7 @@ abstract class dmDoctrineQuery extends Doctrine_Query
    */
   public function fetchPDO($params = array())
   {
-    return $this->execute($params, DOCTRINE::HYDRATE_NONE);
+    return $this->execute($params, Doctrine_Core::HYDRATE_NONE);
   }
 
   /**
