@@ -131,7 +131,7 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
     
     $options['id'] = dmArray::get($options, 'id', 'dm_area_'.$area['id']);
     
-    return $this->helper->tag($tagName, $options, 'AREA '.$area['id'].'<div class="dm_zones clearfix">'.$this->renderAreaInner($area).'</div>');
+    return $this->helper->tag($tagName, $options, '<div class="dm_zones clearfix">'.$this->renderAreaInner($area).'</div>');
   }
   
   protected function renderAreaInner(array $area)
