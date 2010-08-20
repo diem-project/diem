@@ -39,6 +39,16 @@ class dmProjectModule extends dmModule
     return null !== $this->options['parent_key'];
   }
 
+  /**
+   * Return true if the module pages are manually positioned in the page tree
+   *
+   * @return bool
+   **/
+  public function isPageManualPosition()
+  {
+    return $this->options['page_manual_position'];
+  }
+
   public function getAncestor($ancestorKey)
   {
     if (!$this->hasParent())

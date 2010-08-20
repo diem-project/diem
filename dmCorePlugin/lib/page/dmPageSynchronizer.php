@@ -394,7 +394,8 @@ class dmPageSynchronizer
       
       dmDb::table('DmPage')->create($page)->getNode()->insertAsLastChildOf($parentPage);
     }
-    else
+    // If module pages are not manually positioned, check their position
+    elseif(!$module->isPageManualPosition())
     {
       if ($this->getNodeParentId($page) != $parentPageId)
       {

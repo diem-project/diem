@@ -376,7 +376,8 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
     {
       $moduleOptions = array_merge($moduleOptions, array(
         'parent_key' => dmArray::get($moduleConfig, 'parent') ? dmString::modulize(trim(dmArray::get($moduleConfig, 'parent'))) : null,
-        'has_page'   => (boolean) dmArray::get($moduleConfig, 'page', false)
+        'has_page'   => (boolean) dmArray::get($moduleConfig, 'page', false),
+        'page_manual_position' => (boolean) dmArray::get($moduleConfig, 'page_manual_position', false)
       ));
     }
     

@@ -43,7 +43,7 @@ abstract class dmPageTreeView extends dmConfigurable
   {
     return dmDb::table('DmPage')->createQuery('page')
     ->withI18n($this->culture, null, 'page')
-    ->select('page.id, page.action, pageTranslation.name');
+    ->select('page.id, page.module, page.action, pageTranslation.name');
   }
 
   public function render($options = array())
@@ -55,7 +55,7 @@ abstract class dmPageTreeView extends dmConfigurable
     $this->lastLevel = false;
     foreach($this->tree as $node)
     {
-      $this->level = $node[4];
+      $this->level = $node[5];
       $this->html .= $this->renderNode($node);
       $this->lastLevel = $this->level;
     }

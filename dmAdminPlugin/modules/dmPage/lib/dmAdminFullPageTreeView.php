@@ -5,13 +5,13 @@ class dmAdminFullPageTreeView extends dmAdminPageTreeView
 
   protected function renderOpenLi(array $page)
   {
-    if($page[1] === 'show')
+    $type = $this->lastLevel === false ? 'root' : 'manual';
+    if('show' === $page[2] && $module = $this->moduleManager->getModule($page[1]))
     {
-      $type = 'auto';
-    }
-    else
-    {
-      $type = $this->lastLevel === false ? 'root' : 'manual';
+      if($module->hasPage() && !$module->isPageManualPosition())
+      {
+        $type = 'auto';
+      }
     }
     
     return '<li id="dmp'.$page[0].'" rel="'.$type.'">';
