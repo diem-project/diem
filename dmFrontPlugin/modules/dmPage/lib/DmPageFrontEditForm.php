@@ -85,7 +85,7 @@ class DmPageFrontEditForm extends DmPageForm
   protected function getParentChoices()
   {
     $_parentChoices = dmDb::query('DmPage p')
-    ->where('p.record_id = 0 AND ( lft < ? OR rgt > ? )', array($this->object->lft, $this->object->rgt))
+    ->where('lft < ? OR rgt > ?', array($this->object->lft, $this->object->rgt))
     ->orderBy('p.lft')
     ->withI18n()
     ->select('p.id, p.level, pTranslation.name')
