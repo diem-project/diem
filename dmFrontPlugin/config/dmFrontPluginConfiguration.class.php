@@ -11,6 +11,15 @@ class dmFrontPluginConfiguration extends sfPluginConfiguration
   {
     sfConfig::set('dm_front_dir', realpath(dirname(__FILE__)."/.."));
     sfConfig::set('dm_context_type', 'front');
+
+    sfOutputEscaper::markClassesAsSafe(array(
+      'dmFrontPageBaseHelper',
+      'dmFrontLayoutHelper',
+      'dmHelper',
+      'dmHtmlTag',
+      'dmFrontToolBarView',
+      'dmMenu'
+    ));
     
     require_once(sfConfig::get('dm_core_dir').'/lib/config/dmFactoryConfigHandler.php');
     require_once(sfConfig::get('dm_front_dir').'/lib/config/dmFrontRoutingConfigHandler.php');
