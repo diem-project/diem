@@ -90,6 +90,11 @@ parameters:
 
 services:
 
+  page_tree_view:
+    class:                    %page_tree_view.class%
+    shared:                   false
+    arguments:                [ @module_manager, @helper, %user.culture%, %page_tree_view.options% ]
+
   homepage_manager:
     class:                    %homepage_manager.class%
     shared:                   true

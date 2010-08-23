@@ -523,5 +523,6 @@
 "Sort referers": "Sortowanie powiązanych rekordów"
 "Clipboard": "Schowek"
 "Setting": "Ustawienie"
-"Sent mail": "Wysłany e-mail"
+"Sent mail": "Wysłany e-maila"
 "Error": "Błąd"
+"Diem %version% is available. Upgrade is recommended: %link%": "Dostępna jest nowa wersja Diem %version%. Zalecamy aktualizację: %link%"

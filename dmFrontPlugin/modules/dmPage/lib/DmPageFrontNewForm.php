@@ -41,7 +41,6 @@ class DmPageFrontNewForm extends DmPageForm
   protected function getParentChoices()
   {
     $_parentChoices = dmDb::query('DmPage p')
-    ->where('p.record_id = 0')
     ->orderBy('p.lft')
     ->withI18n()
     ->select('p.id, p.level, pTranslation.name')
