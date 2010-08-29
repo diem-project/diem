@@ -20,7 +20,7 @@ render:
   is_secure:    false
 
 editRecord:
-  credentials:  record_edit_front
+  credentials:  widget_edit_fast_record
 
 getFull:
   is_secure:    false
