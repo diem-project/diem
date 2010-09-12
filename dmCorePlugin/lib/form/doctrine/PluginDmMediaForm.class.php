@@ -30,6 +30,13 @@ abstract class PluginDmMediaForm extends BaseDmMediaForm
     {
       $this->setMimeTypeWhiteList($mimeTypes);
     }
+    elseif (false !== $mimeTypes = sfConfig::get('dm_media_mime_type_whitelist',false)) 
+    {
+	if (!dmContext::getInstance()->getUser()->can('media_ignore_whitelist'))
+      {
+	  $this->setMimeTypeWhiteList($mimeTypes);
+	}
+    }
   }
 
   public function setMimeTypeWhiteList($mimeTypes)
