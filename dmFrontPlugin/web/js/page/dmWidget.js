@@ -64,7 +64,7 @@ $.widget('ui.dmWidget', {
       if (restoreState.activeElementName)
       {
         var s = ':input[name="'+restoreState.activeElementName+'"]:visible';
-        var activeElement = $form.find(s);
+        var activeElement = $form.find(s).filter('input[type=text], textarea');
         if(activeElement.length > 0)
         {
           restoreState.activeSelection = [activeElement[0].selectionStart, activeElement[0].selectionEnd];
