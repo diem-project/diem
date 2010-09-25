@@ -47,6 +47,8 @@ default:
   media:
     default:              false         # default resource to use when using _media with an empty resource.
                                         # example: /uploads/default.jpg
+#    mime_type_whitelist: [ image/png] 
+
   security:
     remember_cookie_name:               # defaults to "dm_remember_%project_name%"
     remember_key_expiration_age:        # defaults to 15 days

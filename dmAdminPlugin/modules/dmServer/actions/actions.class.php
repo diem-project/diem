@@ -24,4 +24,9 @@ class dmServerActions extends dmAdminBaseActions
     die;
   }
   
+  public function executeCheck()
+  {
+    dm::checkServer();
+    die;
+  }
 }

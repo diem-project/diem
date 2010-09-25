@@ -470,6 +470,7 @@ class dmDataLoad
       "page_bar_admin" => "See page bar in admin",
       "media_bar_admin" => "See media bar in admin",
       "media_library" => "Use media library in admin",
+      "media_ignore_whitelist" => "Upload media with any filetype",
       "tool_bar_admin" => "See toolbar in admin",
       "page_bar_front" => "See page bar in front",
       "media_bar_front" => "See media bar in front",
