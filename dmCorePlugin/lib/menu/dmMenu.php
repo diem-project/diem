@@ -104,7 +104,7 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
   {
     return $this->setOption('credentials', $credentials);
   }
-  
+
   public function ulClass($class)
   {
     return $this->setOption('ul_class', $class);
@@ -179,7 +179,7 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
     {
       $this->link = $this->helper->link($this->link);
     }
-    
+
     return $this->link;
   }
 
@@ -240,7 +240,7 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
   {
     return count($this->getChildren());
   }
-  
+
   public function getNum($num = null)
   {
     return $this->num;
@@ -331,7 +331,7 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
 
     return 0 !== $nbChildren;
   }
-  
+
   /**
    * Returns true if the item has a child with the given name.
    *
@@ -404,7 +404,7 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
     {
       $child = $child->getName();
     }
-    
+
     unset($this->children[$child]);
 
     return $this;
@@ -427,19 +427,34 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
   /**
    * Recursively add children based on the page structure
    */
-  public function addRecursiveChildren($depth = 1)
+  public function addRecursiveChildren($depth = 1,$hide = null)
   {
     if($depth < 1 || !$this->getLink() instanceof dmFrontLinkTagPage || !$this->getLink()->getPage()->getNode()->hasChildren())
     {
       return $this;
     }
 
-    $treeObject = dmDb::table('DmPage')->getTree();
-    $treeObject->setBaseQuery(
-      dmDb::table('DmPage')->createQuery('p')
+    $dbresult = dmDb::table('DmPage')->createQuery('p')
       ->withI18n($this->user->getCulture(), null, 'p')
-      ->select('p.*, pTranslation.*')
-    );
+      ->select('p.*, pTranslation.*');
+
+    if($hide !== null)
+    {
+        //List of models, witch must be hiding from pages tree
+        $models_off = sfConfig::get('dm_hide_menu_tree_models', null);
+        $actions_off = sfConfig::get('dm_hide_menu_tree_actions', null);
+
+        //Get all pages in tree without placed in config.yml
+        foreach($models_off as $key=>$name)
+        {
+           $list_actions = $actions_off[$name];
+           ($list_actions !== null && count($list_actions) > 0) && $actions_links = ' AND p.action IN ("'.implode('","',$list_actions).'")';
+           $dbresult->andWhere(' NOT (p.module = ?'.$actions_links.')', $name);
+        }
+    }
+
+    $treeObject = dmDb::table('DmPage')->getTree();
+    $treeObject->setBaseQuery($dbresult);
 
     if($pageChildren = $this->getLink()->getPage()->getNode()->getChildren())
     {
@@ -500,7 +515,7 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
   public function renderChild()
   {
     $html = '';
-    
+
     if ($this->checkUserAccess())
     {
       $html .= $this->renderLiOpenTag();
@@ -583,7 +598,7 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
 
     return $this;
   }
-  
+
   public function getPathAsString($separator = ' > ')
   {
     $children = array();
@@ -606,12 +621,12 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
       'options'   => $this->getOptions(),
       'children'  => array()
     );
-    
+
     foreach ($this->children as $key => $child)
     {
       $array['children'][$key] = $child->toArray();
     }
-    
+
     return $array;
   }
 
@@ -623,7 +638,7 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
   public function fromArray($array)
   {
     $this->name($array['name']);
-    
+
     if (isset($array['level']))
     {
       $this->level($array['level']);
