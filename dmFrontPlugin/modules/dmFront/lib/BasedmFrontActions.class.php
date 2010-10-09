@@ -176,7 +176,9 @@ class BasedmFrontActions extends dmFrontBaseActions
         
         try
         {
-          $this->getController()->getAction($module, $action)->$actionToRun($this->getRequest());
+            $this->getController()->getAction($module, $action)->preExecute();
+            $this->getController()->getAction($module, $action)->$actionToRun($this->getRequest());
+            $this->getController()->getAction($module, $action)->postExecute();
         }
         catch(sfControllerException $e)
         {
