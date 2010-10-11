@@ -446,6 +446,11 @@ services:
     shared:                   false
     arguments:                [ @helper, %user.culture%, %page_tree_view.options% ]
 
+  model_tree_view:
+    class:                    %model_tree_view.class%
+    shared:                   false
+    arguments:                [ @helper, %user.culture%, %model_tree_view.options% ]
+
   download:
     class:                    %download.class%
     shared:                   false
