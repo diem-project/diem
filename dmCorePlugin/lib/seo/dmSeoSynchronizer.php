@@ -144,7 +144,7 @@ class dmSeoSynchronizer
       }
       //@todo make this behavior optional ?
       $tmp = array();
-      if($record->getTable()->hasTemplate('NestedSet') && $record->getNode()->hasParent() && $record->getNode()->getParent())
+      if($record->getTable()->isNestedSet() && $record->getNode()->hasParent() && $record->getNode()->getParent())
       {
         $record->getNode()->getParent()->refresh(true);
         $parentSlugs = explode('/', $record->getNode()->getParent()->getDmPage()->get('slug'));

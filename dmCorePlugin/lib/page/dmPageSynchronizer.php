@@ -356,7 +356,7 @@ class dmPageSynchronizer
     $pageTable    = dmDb::table('DmPage');
 
     //@todo make this behavior optional to not break BC ?
-    if($recordTable->hasTemplate('NestedSet'))
+    if($recordTable->isNestedSet())
     {
       $recordObj = $recordTable->findOneBy($recordTable->getIdentifier(), $record['id']);
       $recordNode = $recordObj->getNode();

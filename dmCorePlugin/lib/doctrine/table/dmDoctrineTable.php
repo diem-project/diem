@@ -367,6 +367,11 @@ abstract class dmDoctrineTable extends Doctrine_Table
     return $this->hasTemplate('DmVersionable') || ($this->hasI18n() && $this->getI18nTable()->hasTemplate('DmVersionable'));
   }
 
+  public function isNestedSet()
+  {
+    return $this->hasTemplate('NestedSet');
+  }
+
   public function hasI18n()
   {
     return $this->hasI18n;
