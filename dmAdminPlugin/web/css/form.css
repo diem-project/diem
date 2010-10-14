@@ -136,7 +136,8 @@ div.sf_admin_form div.sf_admin_form_row_inner input.datepicker_me {
   width: auto;
 }
 
-div.sf_admin_form div.sf_widget_form_date_time select {
+div.sf_admin_form div.sf_widget_form_date_time select,
+div.sf_admin_form div.sf_widget_form_i18n_date_time select {
   width: auto;
 }
 
