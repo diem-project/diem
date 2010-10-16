@@ -444,4 +444,6 @@
 "Diem User Database": "Diem Benutzer Datenbank"
 "Diem Core Database": "Diem Core Datenbank"
 "As nearly all modules have a reference to dispatcher, these dependencies are hidden. ": "Da beinahe alle Module eine Referenz zum Dispatcher haben, sind diese Abhängigkeiten hier versteckt"
+"Click to edit": "Anklicken zum Bearbeiten"
+"The item was created successfully.": "Der Eintrag wurde erfolgreich erstellt."
 
