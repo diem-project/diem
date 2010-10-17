@@ -369,8 +369,12 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
   {
     // class for the widget div wrapper
     $widgetWrapClass = trim('dm_widget '.$this->getWidgetCssClassFromPattern($widget));
+    if(!empty($widget['css_class'])) {
+      $widgetWrapClass .= ' ' . $widget['css_class'];
+    }
     
-    // if no user css_class, or if the user css_class must be applied inside the widget only
+    $widgetInnerClass = 'dm_widget_inner';
+    /* if no user css_class, or if the user css_class must be applied inside the widget only
     if(empty($widget['css_class']) || $this->isInnerCssClassWidget($widget))
     {
       $widgetInnerClass = 'dm_widget_inner';
@@ -378,7 +382,7 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
     else
     {
       $widgetInnerClass = 'dm_widget_inner '.$widget['css_class'];
-    }
+    }*/
     
     return array($widgetWrapClass, $widgetInnerClass);
   }
