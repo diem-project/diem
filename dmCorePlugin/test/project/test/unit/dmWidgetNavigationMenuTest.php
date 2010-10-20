@@ -45,7 +45,7 @@ $form->updateWidget()->save();
 
 $t->ok($widget->exists(), 'Widget has been saved');
 $expected = array(
-  'ulClass' => '',  'liClass' => '',  'items' => array()
+  'ulClass' => '',  'menuName' => '',  'liClass' => '',  'items' => array()
 );
 $t->is_deeply($widget->values, $expected, 'Widget values are correct');
 
@@ -84,7 +84,7 @@ $form->updateWidget()->save();
 
 $t->ok($widget->exists(), 'Widget has been saved');
 $t->is_deeply($widget->values, array(
-  'ulClass' => '',  'liClass' => '', 'items' => array(array('link' => 'page:1', 'text' => 'Home', 'secure' => 0, 'nofollow' => 0, 'depth' => null))
+  'ulClass' => '',  'menuName' => '',  'liClass' => '', 'items' => array(array('link' => 'page:1', 'text' => 'Home', 'secure' => 0, 'nofollow' => 0, 'depth' => null))
 ), 'Widget values are correct');
 
 $t->comment('Recreate the form from the saved widget');
@@ -106,7 +106,7 @@ $expected = array(
   'module' => 'dmWidgetNavigation',
   'position' => $widget->position,
   'value' => json_encode(array(
-    'ulClass' => '',  'liClass' => '', 'items' => array(array('link' => 'page:1', 'text' => 'Home', 'secure' => 0, 'nofollow' => 0, 'depth' => null))
+    'ulClass' => '',  'menuName' => '',  'liClass' => '', 'items' => array(array('link' => 'page:1', 'text' => 'Home', 'secure' => 0, 'nofollow' => 0, 'depth' => null))
   )),
   'updated_at' => $widget->updatedAt
 );
@@ -139,7 +139,7 @@ $t->is($widgetView->render(), $expected, 'render : '.$expected);
 
 $t->is($widgetView->renderForIndex(), '', 'render for index is empty');
 
-$t->comment('Add a page, a non-link, an external link, a mailto, ulClass and liClass');
+$t->comment('Add a page, a non-link, an external link, a mailto, ulClass, menuName and liClass');
 
 $form->bind(array(
   'link' => array('page:1', 'page:'.$page1->id, '', 'http://jquery.com', 'mailto:mail@a.com'),
@@ -147,6 +147,7 @@ $form->bind(array(
   'secure' => array(0, 0, 0, 0, 0),
   'nofollow' => array(0, 0, 0, 0, 1),
   'depth' => array(0, 0, 0, 0, 0),
+  'menuName' => 'my_menu_name',
   'ulClass' => 'my_ul_class',
   'liClass' => 'my_li_class',
   'cssClass' => 'test css_class',
@@ -163,7 +164,7 @@ $form->updateWidget()->save();
 
 $t->ok($widget->exists(), 'Widget has been saved');
 $t->is_deeply($helper->ksort($widget->values), $helper->ksort(array(
-  'ulClass' => 'my_ul_class',  'liClass' => 'my_li_class', 'items' => array(
+  'ulClass' => 'my_ul_class',  'menuName' => 'my_menu_name',  'liClass' => 'my_li_class', 'items' => array(
     array('link' => 'page:1', 'text' => 'Home', 'secure' => 0, 'nofollow' => 0, 'depth' => 0),
     array('link' => 'page:'.$page1->id, 'text' => 'Page 1', 'secure' => 0, 'nofollow' => 0, 'depth' => 0),
     array('link' => '', 'text' => 'nolink', 'depth' => 0, 'secure' => 0, 'nofollow' => 0),
@@ -197,7 +198,7 @@ $expected = array(
   'module' => 'dmWidgetNavigation',
   'position' => $widget->position,
   'value' => json_encode(array(
-    'ulClass' => 'my_ul_class',  'liClass' => 'my_li_class', 'items' => array(
+    'ulClass' => 'my_ul_class',  'menuName' => 'my_menu_name',  'liClass' => 'my_li_class', 'items' => array(
       array('link' => 'page:1', 'text' => 'Home', 'secure' => 0, 'nofollow' => 0, 'depth' => 0),
       array('link' => 'page:'.$page1->id, 'text' => 'Page 1', 'secure' => 0, 'nofollow' => 0, 'depth' => 0),
       array('link' => '', 'text' => 'nolink', 'secure' => 0, 'nofollow' => 0, 'depth' => 0),
@@ -249,6 +250,7 @@ $form->bind(array(
   'secure' => 0,
   'nofollow' => 0,
   'depth' => array(0, 1),
+  'menuName' => 'my_menu_name',
   'ulClass' => 'my_ul_class',
   'liClass' => 'my_li_class',
   'cssClass' => 'test css_class',
@@ -265,7 +267,7 @@ $form->updateWidget()->save();
 
 $t->ok($widget->exists(), 'Widget has been saved');
 $t->is_deeply($helper->ksort($widget->values), $helper->ksort(array(
-  'ulClass' => 'my_ul_class',  'liClass' => 'my_li_class', 'items' => array(
+  'ulClass' => 'my_ul_class',  'menuName' => 'my_menu_name',  'liClass' => 'my_li_class', 'items' => array(
     array('link' => 'page:1', 'text' => 'Home', 'secure' => 0, 'nofollow' => 0, 'depth' => 0),
     array('link' => 'page:'.$page1->id, 'text' => 'Page 1', 'secure' => 0, 'nofollow' => 0, 'depth' => 1)
   ))
@@ -283,7 +285,7 @@ $expected = array(
   'module' => 'dmWidgetNavigation',
   'position' => $widget->position,
   'value' => json_encode(array(
-    'ulClass' => 'my_ul_class',  'liClass' => 'my_li_class', 'items' => array(
+    'ulClass' => 'my_ul_class',  'menuName' => 'my_menu_name',  'liClass' => 'my_li_class', 'items' => array(
       array('link' => 'page:1', 'text' => 'Home', 'secure' => 0, 'nofollow' => 0, 'depth' => 0),
       array('link' => 'page:'.$page1->id, 'text' => 'Page 1', 'secure' => 0, 'nofollow' => 0, 'depth' => 1)
     )
