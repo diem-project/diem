@@ -200,7 +200,13 @@ class dmCoreLayoutHelper extends dmConfigurable
     $html = '';
     foreach($javascripts as $file => $options)
     {	  
-      $html .= '<script type="text/javascript" src="'.($file{0} === '/' ? $relativeUrlRoot.$file : $file).'"></script>';
+      $scriptTag = '<script type="text/javascript" src="'.($file{0} === '/' ? $relativeUrlRoot.$file : $file).'"></script>';
+	
+      if (isset($options['condition']))
+      {
+        $scriptTag = sprintf('<!--[if %s]>%s<![endif]-->', $options['condition'], $scriptTag);
+      }
+      $html .= $scriptTag;
     }
 
     return $html;
@@ -226,7 +232,12 @@ class dmCoreLayoutHelper extends dmConfigurable
     {
       if(empty($options['head_inclusion']))
       {
-        $html .= '<script type="text/javascript" src="'.($file{0} === '/' ? $relativeUrlRoot.$file : $file).'"></script>';
+        $scriptTag = '<script type="text/javascript" src="' . ($file{0} === '/' ? $relativeUrlRoot . $file : $file) . '"></script>';
+
+        if (isset($options['condition'])) {
+          $scriptTag = sprintf('<!--[if %s]>%s<![endif]-->', $options['condition'], $scriptTag);
+        }
+        $html .= $scriptTag;
       }
     }
   
