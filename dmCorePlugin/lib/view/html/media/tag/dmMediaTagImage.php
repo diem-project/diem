@@ -85,7 +85,7 @@ class dmMediaTagImage extends dmMediaTag
   {
     if (!in_array($filterName, $this->getAvailableFilters()))
     {
-      throw new dmMediaImageException(sprintf('%s is not a valid filter. These are : %s',
+      throw new dmException(sprintf('%s is not a valid filter. These are : %s',
       $filterName,
       implode(', ', $this->getAvailableFilters())
       ));
