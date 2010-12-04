@@ -132,7 +132,7 @@ class dmWidgetListForm extends dmWidgetProjectModelForm
   {
     $fields = array();
 
-    $allowedTypes = array('time', 'timestamp', 'date', 'enum', 'integer', 'string');
+    $allowedTypes = array('time', 'timestamp', 'date', 'enum', 'integer', 'string', 'float');
     $skipColumns  = $this->dmModule->getTable()->hasI18n() ? array('lang') : array();
 
     foreach($this->dmModule->getTable()->getAllColumns() as $columnName => $column)
