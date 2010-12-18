@@ -2,6 +2,7 @@ all:
 
   i18n:
     cultures:             [ ##DIEM_CULTURE## ]        # Available cultures
+    prefix_url:           false         # Prefix URLs in front with culture
       
   cache:
     apc:                  true          # (RECOMMENDED) Use Apc if available
