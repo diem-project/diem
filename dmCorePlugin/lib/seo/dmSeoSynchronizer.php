@@ -15,7 +15,7 @@ class dmSeoSynchronizer
 
   public function __construct(dmModuleManager $moduleManager)
   {
-    $this->moduleManager  = $moduleManager;
+    $this->moduleManager = $moduleManager;
   }
 
   public function setCulture($culture)
@@ -94,9 +94,9 @@ class dmSeoSynchronizer
      * get pages
      */
     $pdoPages = dmDb::pdo('
-    SELECT p.id, p.lft, p.rgt, p.record_id, t.auto_mod, t.slug, t.name, t.title, t.h1, t.description, t.keywords, t.is_active, t.id as exist
-    FROM dm_page p LEFT JOIN dm_page_translation t ON (t.id = p.id AND t.lang = ?)
-    WHERE p.module = ? AND p.action = ?', array($this->culture, $module->getKey(), 'show')
+SELECT p.id, p.lft, p.rgt, p.record_id, t.auto_mod, t.slug, t.name, t.title, t.h1, t.description, t.keywords, t.is_active, t.id as exist
+FROM dm_page p LEFT JOIN dm_page_translation t ON (t.id = p.id AND t.lang = ?)
+WHERE p.module = ? AND p.action = ?', array($this->culture, $module->getKey(), 'show')
     )->fetchAll(PDO::FETCH_ASSOC);
 
     $pages = array();
@@ -117,7 +117,7 @@ class dmSeoSynchronizer
     /*
      * get parent slugs
      * if slug pattern starts with a /
-     * we don't use parent slug to build  the page slug
+     * we don't use parent slug to build the page slug
      */
     if ($patterns['slug']{0} === '/')
     {
@@ -144,10 +144,13 @@ class dmSeoSynchronizer
       }
       //@todo make this behavior optional ?
       $tmp = array();
-      if($record->getTable()->isNestedSet() && $record->getNode()->hasParent() && $record->getNode()->getParent())
+      if($record->getTable()->isNestedSet())
       {
-        $record->getNode()->getParent()->refresh(true);
-        $parentSlugs = explode('/', $record->getNode()->getParent()->getDmPage()->get('slug'));
+        if($record->getNode()->hasParent() && $parentNode = $record->getNode()->getParent()){
+          $parentSlugs = explode('/', $parentNode->getDmPage()->get('slug'));
+        }elseif(count($parentSlugs) > 1){
+          array_pop($parentSlugs);
+        }
         $parentSlug = implode('/', $parentSlugs);
       }
 
@@ -483,8 +486,8 @@ class dmSeoSynchronizer
     }
 
     $parentSlugResults = dmDb::pdo('SELECT t.id, t.slug
-    FROM dm_page p, dm_page_translation t
-    WHERE p.module = ? AND p.action = ? AND p.id = t.id AND t.lang = ?',
+FROM dm_page p, dm_page_translation t
+WHERE p.module = ? AND p.action = ? AND p.id = t.id AND t.lang = ?',
     array($parentPageModuleKey, $parentPageActionKey, $this->culture))
     ->fetchAll(PDO::FETCH_NUM);
 
