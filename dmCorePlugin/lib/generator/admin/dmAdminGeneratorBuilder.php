@@ -470,8 +470,7 @@ class dmAdminGeneratorBuilder
       $fields[] = 'rgt';
       $fields[] = 'level';
       if ($this->table->getTemplate('NestedSet')->getOption('hasManyRoots')) {
-        $fields[] = $this->table->getTemplate('NestedSet')->getOption('rootColumnName')
-          ? $this->table->getTemplate('NestedSet')->getOption('rootColumnName') : 'root_id';
+        $fields[] = $this->table->getTemplate('NestedSet')->getOption('rootColumnName', 'root_id');
       }
     }
 
@@ -499,8 +498,7 @@ class dmAdminGeneratorBuilder
       $fields[] = 'rgt';
       $fields[] = 'level';
       if ($this->table->getTemplate('NestedSet')->getOption('hasManyRoots')) {
-        $fields[] = $this->table->getTemplate('NestedSet')->getOption('rootColumnName')
-          ? $this->table->getTemplate('NestedSet')->getOption('rootColumnName') : 'root_id';
+        $fields[] = $this->table->getTemplate('NestedSet')->getOption('rootColumnName', 'root_id');
       }
     }
 

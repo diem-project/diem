@@ -20,14 +20,23 @@ abstract class dmFormDoctrine extends sfFormDoctrine
 
   public function configure() {
 
-    if ($this->object->getTable()->isNestedSet()) {
+    if ($this->object instanceof sfDoctrineRecord && $this->object->getTable()->isNestedSet()) {
       // unset NestedSet columns
-      unset($this['root_id'], $this['lft'], $this['rgt'], $this['level']);
+      unset($this['lft'], $this['rgt'], $this['level']);
+      if ($this->object->getTable()->getTemplate('NestedSet')->getOption('hasManyRoots')) {
+        unset($this[$this->object->getTable()->getTemplate('NestedSet')->getOption('rootColumnName')]);
+      }
+
+      // add sorting
+      $orderBy = 'lft';
+      if ($relation->getTable()->getTemplate('NestedSet')->getOption('hasManyRoots')) {
+        $orderBy = $relation->getTable()->getTemplate('NestedSet')->getOption('rootColumnName', 'root_id') . ', ' . $orderBy;
+      }
 
       $this->widgetSchema['nested_set_parent_id'] = new sfWidgetFormDoctrineChoice(array(
         'model' => get_class($this->object),
         'add_empty' => '~',
-        'order_by' => array('root_id, lft',''),
+        'order_by' => array($orderBy, ''),
         'method' => 'getNestedSetIndentedName'
         ));
       $this->validatorSchema['nested_set_parent_id'] = new sfValidatorDoctrineChoice(array(
@@ -39,7 +48,35 @@ abstract class dmFormDoctrine extends sfFormDoctrine
 
     }
 
+    if ($this->object instanceof sfDoctrineRecord) {
+      foreach ($this->getObject()->getTable()->getRelationHolder()->getAll() as $relation) {
+        if ($relation->getTable() instanceof myDoctrineTable && $relation->getTable()->isNestedSet()) {
+          // check for many to many
+          $fieldname = $relation->getType()
+                  ? dmString::underscore($relation->getAlias()) . '_list'
+                  : $relation->getLocalColumnName()
+                  ;
+          if (!($this->widgetSchema[$fieldname] instanceof sfWidgetFormDoctrineChoice)) {
+            $this->widgetSchema[$fieldname] = new sfWidgetFormDoctrineChoice(array('model' => $relation->getClass()));
+          }
+
+          $orderBy = 'lft';
+          if ($relation->getTable()->getTemplate('NestedSet')->getOption('hasManyRoots')) {
+            $orderBy = $relation->getTable()->getTemplate('NestedSet')->getOption('rootColumnName', 'root_id') . ', ' . $orderBy;
+          }
+          $this->widgetSchema[$fieldname]->setOptions(array_merge(
+                  $this->widgetSchema[$fieldname]->getOptions(),
+                  array(
+                      'method' => 'getNestedSetIndentedName',
+                      'order_by' => array($orderBy, ''),
+            )));
+
+        }
+      }
+    }
+
     parent::configure();
+
   }
 
   /**
@@ -109,7 +146,7 @@ abstract class dmFormDoctrine extends sfFormDoctrine
       $fields[] = 'rgt';
       $fields[] = 'level';
       if ($this->getObject()->getTable()->getTemplate('NestedSet')->getOption('hasManyRoots')) {
-        $fields[] = $this->getObject()->getTable()->getTemplate('NestedSet')->getOption('rootColumnName');
+        $fields[] = $this->getObject()->getTable()->getTemplate('NestedSet')->getOption('rootColumnName', 'root_id');
       }
     }
 
