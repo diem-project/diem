@@ -159,5 +159,11 @@ EOF
       $generatorFile,
       $generatorBuilder->getTransformed(file_get_contents($generatorFile))
     );
+    
+    if(is_array($securityConfig = $moduleObject->getOption('security')))
+    {
+      $securityManager = new dmModuleSecurityManager('admin');
+      $securityManager->secureModule($moduleObject);
+    }
   }
 }

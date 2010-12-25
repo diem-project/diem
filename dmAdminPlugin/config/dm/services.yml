@@ -89,7 +89,10 @@ parameters:
     url:                       http://diem-project.org/service/report-anonymous-data
 
   tool_bar_view.class:        dmAdminToolBarView  # Renders the admin toolbar
-
+  
+  admin_module_security_action_strategy.class: dmModuleActionSecurityStrategy
+  admin_module_security_record_strategy.class: dmModuleActionRecordSecurityStrategy
+    
 services:
 
   homepage_manager:
@@ -191,3 +194,14 @@ services:
     class:                    %report_anonymous_data.class%
     shared:                   false
     arguments:                [ @service_container, %report_anonymous_data.options% ]
+    
+  admin_module_security_action_strategy: 
+    class:                    %admin_module_security_action_strategy.class%
+    shared:                   true
+    arguments:                [ @service_container ]
+    
+  admin_module_security_record_strategy:
+    class:                    %admin_module_security_record_strategy.class%
+    shared:                   true
+    arguments:                [ @service_container ]
+    

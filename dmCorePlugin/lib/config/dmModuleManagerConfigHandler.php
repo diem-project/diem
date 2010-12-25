@@ -20,7 +20,7 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
   $config,
   $modules,
   $projectModules;
-  
+
   /**
    * Executes this configuration handler.
    *
@@ -34,18 +34,18 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
   public function execute($configFiles)
   {
     $config = sfFactoryConfigHandler::getConfiguration(ProjectConfiguration::getActive()->getConfigPaths('config/factories.yml'));
-    
+
     $options = $config['module_manager']['param'];
     $managerClass = $config['module_manager']['class'];
-    
+
     $this->parse($configFiles);
-    
+
     $this->validate();
-    
+
     $this->processHierarchy();
-    
+
     $this->sortModuleTypes();
-    
+
     $data = array();
 
     $data[] = sprintf('$manager = new %s();', $managerClass);
@@ -76,9 +76,9 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
           {
             $moduleReceivers = sprintf('$modules[\'%s\'] = $spaceModules[\'%s\']', $moduleKey, $moduleKey);
           }
-          
+
           $data[] = sprintf('%s = new %s(\'%s\', $typeSpaces[\'%s\'], %s);', $moduleReceivers, $moduleClass, $moduleKey, $spaceName, $this->getExportedModuleOptions($moduleKey, $moduleConfig));
-        
+
           if ($moduleConfig['model'])
           {
             $data[] = sprintf('$modelModules[\'%s\'] = \'%s\';', $moduleConfig['model'], $moduleKey);
@@ -86,21 +86,21 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
         }
 
         $data[] = sprintf('$typeSpaces[\'%s\']->initialize(\'%s\', $types[\'%s\'], $spaceModules);', $spaceName, $spaceName, $typeName);
-        
+
         $data[] = 'unset($spaceModules);';
       }
 
       $data[] = sprintf('$types[\'%s\']->initialize(\'%s\', $typeSpaces);', $typeName, $typeName);
-      
+
       $data[] = 'unset($typeSpaces);';
     }
 
     $data[] = sprintf('$manager->load($types, $modules, $projectModules, $modelModules);');
-    
+
     $data[] = 'unset($types, $modules, $projectModules, $modelModules);';
 
     $data[] = 'return $manager;';
-    
+
     unset($this->config, $this->modules, $this->projectModules);
 
     return sprintf("<?php\n".
@@ -108,30 +108,30 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
                  "// date: %s\n%s", date('Y/m/d H:i:s'), implode("\n", $data)
     );
   }
-  
+
   protected function sortModuleTypes()
   {
     // We generally want content modules first
     if($projectModules = dmArray::get($this->config, 'Content'))
     {
       unset($this->config['Content']);
-      
+
       $this->config = array_merge(array('Content' => $projectModules), $this->config);
     }
   }
-  
+
   protected function validate()
   {
     if (!isset($this->modules['main']))
     {
       $this->throwException('No main module');
     }
-    
+
     if (!isset($this->config['Content']))
     {
       $this->throwException('No Content module type');
     }
-    
+
     foreach($this->modules as $key => $module)
     {
       if ($key != dmString::modulize($key))
@@ -145,13 +145,13 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
         {
           $componentKey = $component;
         }
-        
+
         if ($componentKey != dmString::modulize($componentKey))
         {
           $this->throwModulizeException($componentKey);
         }
       }
-      
+
       if($parentKey = dmArray::get($module, 'parent_key'))
       {
         if ($parentKey == $key)
@@ -164,7 +164,7 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
         }
       }
     }
-    
+
     $moduleKeys = array();
     foreach($this->config as $typeName => $typeConfig)
     {
@@ -184,27 +184,27 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
       }
     }
   }
-  
+
   protected function throwException($message)
   {
     $params = func_get_args();
-    
+
     if (count($params) > 1)
     {
       ob_start();
       call_user_func_array('printf', $params);
       $message = ob_get_clean();
     }
-    
+
     $fullMessage = 'Error in config/dm/modules.yml : '.$message;
-    
+
     throw new sfConfigurationException($fullMessage);
   }
-  
+
   protected function throwModulizeException($string)
   {
     return $this->throwException(sprintf('The word "%s" must follow the symfony module convention : "%s"',
-      $string, dmString::modulize($string)
+    $string, dmString::modulize($string)
     ));
   }
 
@@ -212,17 +212,17 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
   {
     $isProject = $options['is_project'];
     unset($options['is_project']);
-    
+
     if ($isProject && !empty($options['components']))
     {
       //export actions properly
-      
+
       $componentsConfig = $options['components'];
-      
+
       $options['components'] = '__DM_MODULE_COMPONENTS_PLACEHOLDER__';
-      
+
       $exported = var_export($options, true);
-      
+
       $components = 'array(';
 
       foreach($componentsConfig as $componentKey => $componentConfig)
@@ -232,12 +232,12 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
           $componentKey = $componentConfig;
           $componentConfig = array();
         }
-        
+
         if (empty($componentConfig['name']))
         {
           $componentConfig['name'] = dmString::humanize($componentKey);
         }
-    
+
         if (empty($componentConfig['type']))
         {
           if ($options['model'] && strncmp($componentKey, 'list', 4) === 0)
@@ -257,26 +257,26 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
             $componentConfig['type'] = 'simple';
           }
         }
-        
+
         $components .= sprintf('\'%s\' => new dmModuleComponent(\'%s\', %s), ', $componentKey, $componentKey, var_export($componentConfig, true));
       }
 
       $components .= ')';
-      
+
       $exported = str_replace('\'__DM_MODULE_COMPONENTS_PLACEHOLDER__\'', $components, $exported);
     }
     else
     {
       $exported = var_export($options, true);
     }
-    
+
     return $exported;
   }
-  
+
   protected function getModuleChildrenKeys($key)
   {
     $children = array();
-    
+
     foreach($this->projectModules as $moduleConfig)
     {
       if ($moduleConfig['parent'] === $this->key)
@@ -290,36 +290,36 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
   {
     // parse the yaml
     $config = self::getConfiguration($configFiles);
-    
+
     $this->config = array();
     $this->modules = array();
     $this->projectModules = array();
-    
+
     foreach($config as $typeName => $typeConfig)
     {
       $this->config[$typeName] = array();
-      
+
       foreach($typeConfig as $spaceName => $spaceConfig)
       {
         $this->config[$typeName][$spaceName] = array();
-        
+
         foreach((array) $spaceConfig as $moduleKey => $moduleConfig)
         {
           $moduleConfig = $this->fixModuleConfig($moduleKey, $moduleConfig, $typeName === 'Content');
 
           $this->modules[$moduleKey] = $moduleConfig;
-          
+
           if ($moduleConfig['is_project'])
           {
             $this->projectModules[$moduleKey] = $moduleConfig;
           }
-          
+
           $this->config[$typeName][$spaceName][$moduleKey] = $moduleConfig;
         }
       }
     }
   }
-  
+
   protected function fixModuleConfig($moduleKey, $moduleConfig, $isInContent)
   {
     /*
@@ -337,11 +337,11 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
     {
       $moduleConfig['name'] = dmString::humanize($moduleKey);
     }
-    
+
     if (empty($moduleConfig['model']))
     {
       $candidateModel = dmString::camelize($moduleKey);
-      
+
       $model = class_exists('Base'.$candidateModel, true) ?
       Doctrine_Core::isValidModelClass($candidateModel) ? $candidateModel : false
       : false;
@@ -357,7 +357,10 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
       $moduleConfig['components'] = $moduleConfig['actions'];
       unset($moduleConfig['actions']);
     }
-    
+
+    //security features
+    $securityConfig = $this->fixSecurityConfig($moduleKey, $moduleConfig);
+
     $moduleOptions = array(
       'name' =>       (string) trim($moduleConfig['name']),
       'plural' =>     (string) trim(empty($moduleConfig['plural']) ? ($model ? dmString::pluralize($moduleConfig['name']) : $moduleConfig['name']) : $moduleConfig['plural']),
@@ -369,9 +372,10 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
       'overridden'  => dmArray::get($moduleConfig, 'overridden', false),
       'has_admin'   => (boolean) dmArray::get($moduleConfig, 'admin', $model || !$isInContent),
       'has_front'   => (boolean) dmArray::get($moduleConfig, 'front', true),
-      'components'  => dmArray::get($moduleConfig, 'components', array())
+      'components'  => dmArray::get($moduleConfig, 'components', array()),
+      'security'	=> $securityConfig
     );
-    
+
     if ($moduleOptions['is_project'])
     {
       $moduleOptions = array_merge($moduleOptions, array(
@@ -379,7 +383,7 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
         'has_page'   => (boolean) dmArray::get($moduleConfig, 'page', false)
       ));
     }
-    
+
     // fix non array action filters
     foreach($moduleOptions['components'] as $componentKey => $componentConfig)
     {
@@ -388,10 +392,38 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
         $moduleOptions['components'][$componentKey]['filters'] = array($componentConfig['filters']);
       }
     }
-    
+
     return $moduleOptions;
   }
-  
+
+  /**
+   * Responsible for fixing security configurations, and do what have to be done
+   * using dmSecurityManager class (creating security.yml, etc).
+   *
+   * Returns a cacheable array
+   *
+   * @param string $moduleKey
+   * @param array $moduleConfig
+   * @return array securityConfig
+   */
+  protected function fixSecurityConfig($moduleKey, $moduleConfig, $context)
+  {
+    $securityConfig = isset($moduleConfig['security']) ? $moduleConfig['security'] : array();
+
+    //check if things are rights, else make them right, at the top-level
+    $securityConfig[$context] = isset($securityConfig[$context]) && is_array($securityConfig[$context]) ? $securityConfig[$context] : array();
+    if(!isset($securityConfig[$context]['actions']))
+    {
+      $securityConfig[$context]['actions'] = array();
+    }
+    if(!isset($securityConfig[$context]['components']))
+    {
+      $securityConfig[$context]['components'] = array();
+    }
+
+    return $securityConfig;
+  }
+
   protected function processHierarchy()
   {
     foreach($this->config as $typeName => $typeConfig)
@@ -404,21 +436,21 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
           {
             continue;
           }
-          
+
           $moduleConfig['children_keys'] = $this->getChildrenKeys($moduleKey);
-          
+
           $moduleConfig['path_keys'] = $this->getPathKeys($moduleKey);
-          
+
           $this->config[$typeName][$spaceName][$moduleKey] = $moduleConfig;
         }
       }
     }
   }
-  
+
   protected function getChildrenKeys($moduleKey)
   {
     $childrenKeys = array();
-    
+
     foreach($this->projectModules as $otherModuleKey => $otherModuleConfig)
     {
       if ($otherModuleConfig['parent_key'] === $moduleKey)
@@ -426,10 +458,10 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
         $childrenKeys[] = $otherModuleKey;
       }
     }
-    
+
     return $childrenKeys;
   }
-  
+
   protected function getPathKeys($moduleKey)
   {
     $pathKeys = array();
@@ -442,7 +474,7 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
 
     return array_reverse($pathKeys);
   }
-  
+
   /**
    * @see sfConfigHandler
    *
@@ -491,8 +523,8 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
               {
                 // merge the new module with the old one
                 $values[$valuesTypeName][$valuesSpaceName][$moduleKey] = sfToolkit::arrayDeepMerge(
-                  $configSpace[$moduleKey],
-                  $values[$valuesTypeName][$valuesSpaceName][$moduleKey]
+                $configSpace[$moduleKey],
+                $values[$valuesTypeName][$valuesSpaceName][$moduleKey]
                 );
 
                 $values[$valuesTypeName][$valuesSpaceName][$moduleKey]['overridden'] = true;
@@ -518,14 +550,14 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
     if(0 === strpos(dm::getDir(), sfConfig::get('sf_root_dir')))
     {
       return
-          0 === strpos($configFile, sfConfig::get('sf_root_dir'))
+      0 === strpos($configFile, sfConfig::get('sf_root_dir'))
       &&  0 !== strpos($configFile, sfConfig::get('sf_plugins_dir'))
       &&  0 !== strpos($configFile, dm::getDir());
     }
     else
     {
       return
-          0 === strpos($configFile, sfConfig::get('sf_root_dir'))
+      0 === strpos($configFile, sfConfig::get('sf_root_dir'))
       &&  0 !== strpos($configFile, sfConfig::get('sf_plugins_dir'));
     }
   }
