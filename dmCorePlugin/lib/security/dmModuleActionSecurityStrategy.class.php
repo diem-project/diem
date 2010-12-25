@@ -9,7 +9,7 @@
  * @author serard
  *
  */
-class dmModuleActionSecurityStrategy extends dmMicroCache
+class dmModuleActionSecurityStrategy extends dmModuleSecurityStrategy
 {
   public function secure(dmModule $module, $actionName, $actionConfig)
   {
@@ -20,43 +20,67 @@ class dmModuleActionSecurityStrategy extends dmMicroCache
       $securityYaml[$actionName]['credentials'] = $actionConfig['credentials'];
     }
     $this->saveSecurityYaml($module, $securityYaml);
-    $this->createCredentialsRecords($actionConfig['credentials']);
+  }
+
+  public function manageAuto(dmModule $module, $actionName, $actionConfig)
+  {
+    $this->associatePermissionWithGroupsAndUsers($actionConfig);
+  }
+
+  protected function associatePermissionWithGroupsAndUsers($actionConfig)
+  {
     if(isset($actionConfig['auto']))
     {
-      $this->manageAuto($actionConfig['auto']);
-    }
-  }
+      if(isset($actionConfig['auto']['groups']) && !empty($actionConfig['auto']['groups']))
+      {
+        foreach($actionConfig['auto']['groups'] as $group)
+        {
+          $group = Doctrine_Core::getTable('DmGroup')->findOneBy('name', $group);
+          if($group)
+          {
+            $this->associateGroupWithPermissions($actionConfig['credentials'], $group);
+          }
+          $group->save();
+        }
+      }
+      if(isset($actionConfig['auto']['users']) && !empty($actionConfig['auto']['users']))
+      {
 
-  protected function createCredentialsRecords($credentials)
-  {
-    
+      }
+    }
   }
   
-  protected function manageAuto($toAuto)
+  protected function associateGroupWithPermissions($credentials, DmGroup $group)
   {
-    
+    if(!is_array($credentials)){
+      $credentials = array($credentials);
+    }
+    $this->doAssociateGroupWithPermissions($credentials, $group);
+  }
+  
+  protected function doAssociateGroupWithPermissions($credentials, DmGroup $group)
+  {
+    foreach($credentials as $credential)
+    {
+      if(is_array($credential))
+      {
+        $this->doAssociateGroupWithPermissions($credential, $group);
+      }
+      else{
+        $this->doAssociateGroupWithPermission($credential, $group);
+      }
+    }
   }
 
-  /**
-   * Returns the security.yml as array
-   * If file doesnt exist, returns an empty array
-   * @param dmModule $module
-   * @return array the array representation of the security.yml file for the specified dmModule $module
-   */
+  protected function doAssociateGroupWithPermission($credential, DmGroup $group)
+  {
+    $permission = Doctrine_Core::getTable('DmPermission')->findOneBy('name', $credential);
+    $group->get('Permissions')->add($permission);
+  }
+  
   protected function getSecurityYaml(dmModule $module)
   {
-    if($this->hasCache('yaml'))
-    {
-      return $this->getCache('yaml');
-    }
-
-    $yaml = array();
-    if(file_exists($filepath = $this->getSecurityFilepath($module)))
-    {
-      $yaml = sfYaml::load($filepath);
-    }
-    $this->setCache('yaml', $yaml);
-    return $yaml;
+    return $this->container->get('module_security_manager')->getSecurityYaml($module);
   }
 
   /**
@@ -67,7 +91,7 @@ class dmModuleActionSecurityStrategy extends dmMicroCache
    */
   protected function getSecurityFilepath(dmModule $module)
   {
-    return dmOs::join($module->getOption('generate_dir'), 'config', 'security.yml');
+    return $this->container->get('module_security_manager')->getSecurityFilepath($module);
   }
 
   /**
@@ -79,7 +103,6 @@ class dmModuleActionSecurityStrategy extends dmMicroCache
    */
   protected function saveSecurityYaml(dmModule $module, $securityYaml)
   {
-    $this->setCache('yaml', $securityYaml);
     $data = sfYaml::dump($securityYaml, 2);
     file_put_contents($this->getSecurityFilepath($module), $data);
   }

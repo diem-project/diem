@@ -162,7 +162,8 @@ EOF
     
     if(is_array($securityConfig = $moduleObject->getOption('security')))
     {
-      $securityManager = new dmModuleSecurityManager('admin');
+      $securityManager = dmContext::getInstance('admin')->getServiceContainer()->get('module_security_manager');
+      $securityManager->setApp('admin');
       $securityManager->secureModule($moduleObject);
     }
   }

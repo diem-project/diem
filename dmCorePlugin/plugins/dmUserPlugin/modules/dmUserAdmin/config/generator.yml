@@ -10,6 +10,8 @@ generator:
 
     config:
       fields:
+        records_list: 
+          label: Records Permissions
         groups_list:
           label: Groups
         permissions_list:
@@ -39,4 +41,5 @@ generator:
         display:
           NONE: [username, email, password, password_again, is_active, is_super_admin]
           "Groups & Permissions": [groups_list, permissions_list]
+          "Records Permissions": [records_list]
         class: DmUserAdminForm
