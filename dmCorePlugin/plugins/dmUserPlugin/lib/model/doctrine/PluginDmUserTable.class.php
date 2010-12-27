@@ -70,4 +70,48 @@ abstract class PluginDmUserTable extends myDoctrineTable
   {
     return 'username';
   }
+  
+  /**
+   * 
+   * 
+   * Adds for security
+   * 
+   * 
+   */
+  
+  public function getRecordsPermissionsForModuleActionModelQuery($module, $action, $model, $user, $permissionsAlias = 'p', $userAlias = 'u')
+	{
+		return $this->getBaseRecordPermissionQuery($user, $permissionsAlias, $userAlias)
+		->andWhere('p.secure_module = ?', $module)
+		->andWhere('p.secure_action = ?', $action)
+		->andWhere('p.secure_model = ?', $model)
+		->select('u.name, g.name');
+	}
+	
+	public function getBaseRecordPermissionQuery($user, $permissionsAlias = 'r', $userAlias = 'u', $groupsAlias = 'g')
+	{
+		return dmDb::table('DmRecordPermission')->createQuery($permissionsAlias)
+		->leftJoin('p.Groups ' . $groupsAlias)
+			->whereIn($groupsAlias .'.id', $this->getGroupsIds($user))
+	  ->leftJoin('p.Users ' . $userAlias)
+			->andWhere($userAlias. '.id = ?', $user->get($this->getIdentifier()))
+		->leftJoin($userAlias .'.Groups ug');
+	}
+	
+	public function getGroupsIds($user)
+	{
+		$groupsResult = dmDb::table('DmGroup')->createQuery('g')
+		->leftJoin('g.Users u')
+		->where('u.id = ?', $user->get($this->getIdentifier()))
+		->execute();
+		
+		$groups = array();
+		foreach($groupsResult as $group)
+		{
+			$groups[] = $group->get('id');
+		}
+		return $groups;
+	}
+	
+  
 }

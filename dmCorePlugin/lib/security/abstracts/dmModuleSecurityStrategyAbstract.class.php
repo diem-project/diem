@@ -13,6 +13,9 @@
  */
 abstract class dmModuleSecurityStrategyAbstract extends dmModuleSecurityAbstract implements dmModuleSecurityStrategyInterface
 {
+	
+	protected $module;
+	protected $action;
 
   /**
    * This method is called by dmModuleSecurityManager->secure() method for modules
@@ -22,7 +25,10 @@ abstract class dmModuleSecurityStrategyAbstract extends dmModuleSecurityAbstract
    * @param string $actionName the action's name to secure
    * @param array $actionConfig the module-action's configuration
    */
-  abstract public function secure(dmModule $module, $app, $actionName, $actionConfig);
+  public function secure(dmModule $module, $app, $actionName, $actionConfig)
+  {
+  	
+  }
 
   /**
    * Sets the module for the following calls.
@@ -37,6 +43,12 @@ abstract class dmModuleSecurityStrategyAbstract extends dmModuleSecurityAbstract
     return $this;
   }
 
+  public function setAction($action)
+  {
+  	$this->action = $action;
+  	return $this;
+  }
+  
   /**
    * This method is called by dmModuleSecurityManager->secure() method
    * at the end of its processing.

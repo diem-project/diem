@@ -71,4 +71,15 @@ class dmModuleActionSecurityStrategy extends dmModuleSecurityStrategyAbstract
   {
     $this->setCache('securityYaml', $securityYaml);
   }
+  
+  
+  
+  
+  
+  
+  
+  public function addPermissionCheckToQuery($query)
+  {
+  	$do = "niothgin";
+  }
 }

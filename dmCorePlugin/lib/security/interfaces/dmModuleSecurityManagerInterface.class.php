@@ -17,11 +17,15 @@ interface dmModuleSecurityManagerInterface
    */
   public function secure(dmModule $module);
 
-  /**
-   * Should/must be called by secure() at its end, to make
-   * all instanciated strategies securely end their processes.
-   * For example, there could be opened files to save and close.
-   * Strategies will have their ->secure() method called by this one.
+   /**
+   * Returns the corresponding strategy for
+   * the action kind and the given required strategy.
+   *
+   * The strategies and action kinds must be declared accordingly in
+   * services.yml
+   *
+   * @param string $strategy
+   * @param string $actionKind actions|components|whatever declared in services.yml
    */
-  public function save();
+  public function getStrategy($strategy, $actionKind, $module = null, $action = null);
 }
