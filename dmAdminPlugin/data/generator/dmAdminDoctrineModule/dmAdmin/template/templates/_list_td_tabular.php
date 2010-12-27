@@ -7,3 +7,5 @@
 EOF
 , strtolower($field->getType()), $name, $this->renderField($field)), $field->getConfig()) ?>
 <?php endforeach; ?>
+
+[?php include_partial('<?php echo $this->getModuleName() ?>/list_td_actions', array('<?php echo $this->getSingularName()?>'=> $<?php echo $this->getSingularName()?>, 'helper'=>$helper)) ?]

@@ -373,6 +373,7 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
       'has_admin'   => (boolean) dmArray::get($moduleConfig, 'admin', $model || !$isInContent),
       'has_front'   => (boolean) dmArray::get($moduleConfig, 'front', true),
       'components'  => dmArray::get($moduleConfig, 'components', array()),
+      'has_security'=> is_array($securityConfig),
       'security'	=> $securityConfig
     );
 
@@ -406,19 +407,36 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
    * @param array $moduleConfig
    * @return array securityConfig
    */
-  protected function fixSecurityConfig($moduleKey, $moduleConfig, $context)
+  protected function fixSecurityConfig($moduleKey, $moduleConfig, $app)
   {
-    $securityConfig = isset($moduleConfig['security']) ? $moduleConfig['security'] : array();
+    $securityConfig = isset($moduleConfig['security']) ? $moduleConfig['security'] : false;
 
-    //check if things are rights, else make them right, at the top-level
-    $securityConfig[$context] = isset($securityConfig[$context]) && is_array($securityConfig[$context]) ? $securityConfig[$context] : array();
-    if(!isset($securityConfig[$context]['actions']))
-    {
-      $securityConfig[$context]['actions'] = array();
-    }
-    if(!isset($securityConfig[$context]['components']))
-    {
-      $securityConfig[$context]['components'] = array();
+    if($securityConfig){
+      //check if things are rights, else make them right, at the top-level
+      $securityConfig[$app] = isset($securityConfig[$app]) && is_array($securityConfig[$app]) ? $securityConfig[$app] : array();
+      foreach(array('actions', 'components') as $actionKind)
+      {
+        //we cannot get serviceContainer because it isn't initialized yet ! check sfContext & dmContext for this
+        //we might not be able to get serviceContainer here before dmContext->initialize calls its parent::initialize() !
+        //so we can't check for valid strategies uses !
+        //$strategies = dmContext::getInstance($app)->getServiceContainer()->getParameter(sprintf('module_security_%s.strategies', $actionKind));
+        if(!isset($securityConfig[$app][$actionKind]) || !is_array($securityConfig[$app][$actionKind]))
+        {
+          $securityConfig[$app][$actionKind] = false;
+        }else{
+          foreach($securityConfig[$app][$actionKind] as $actionName=>$actionConfig)
+          {
+            if(!isset($actionConfig['is_secure']) || !is_bool($actionConfig['is_secure']))
+            {
+              $actionConfig['is_secure'] = false;
+            }
+            if(!isset($actionConfig['strategy']))
+            {
+              throw new dmException(sprintf('Undefined security strategy for module %s, app %s and action %s', $moduleKey, $app, $actionName));
+            }
+          }
+        }
+      }
     }
 
     return $securityConfig;

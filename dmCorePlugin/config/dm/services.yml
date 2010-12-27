@@ -194,12 +194,14 @@ parameters:
   layout_helper.options:      []
   
   module_security_manager.class: dmModuleSecurityManager
-  module_security_action_strategy.class: dmModuleActionSecurityStrategy
-  module_security_record_strategy.class: dmModuleActionRecordSecurityStrategy
+  module_security_actions_action_strategy.class: dmModuleActionSecurityStrategy
+  module_security_actions_record_strategy.class: dmModuleActionRecordSecurityStrategy
   
-  module_security.strategies: 
+  module_security_actions.strategies: 
     - action
     - record
+  module_security_components.strategies: []
+  
   record_security_manager.class: dmRecordSecurityManager
   
 services:
@@ -485,13 +487,13 @@ services:
     shared:                   true
     arguments:                [ @context, @service_container ]
     
-  module_security_action_strategy: 
-    class:                    %module_security_action_strategy.class%
+  module_security_actions_action_strategy: 
+    class:                    %module_security_actions_action_strategy.class%
     shared:                   true
     arguments:                [ @context, @service_container ]
     
-  module_security_record_strategy:
-    class:                    %module_security_record_strategy.class%
+  module_security_actions_record_strategy:
+    class:                    %module_security_actions_record_strategy.class%
     shared:                   true
     arguments:                [ @context, @service_container ]
     

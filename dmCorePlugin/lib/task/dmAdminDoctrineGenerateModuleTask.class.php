@@ -160,11 +160,6 @@ EOF
       $generatorBuilder->getTransformed(file_get_contents($generatorFile))
     );
     
-    if(is_array($securityConfig = $moduleObject->getOption('security')))
-    {
-      $securityManager = dmContext::getInstance('admin')->getServiceContainer()->get('module_security_manager');
-      $securityManager->setApp('admin');
-      $securityManager->secureModule($moduleObject);
-    }
+    dmContext::getInstance('admin')->getServiceContainer()->get('module_security_manager')->secure($moduleObject);
   }
 }

@@ -12,33 +12,53 @@ class dmRecordSecurityManager
     $this->container = $container;
   }
 
-  public function manage($kind, dmDoctrineRecord $record)
+  public function manage($hookType, dmDoctrineRecord $record)
   {
-    if($record->getDmModule() && $security = $record->getDmModule()->getOption('security'))
+    $security = $record->getDmModule()->getOption('security', false);
+    if(is_array($security))
     {
-      foreach($security as $app=>$config)
+      foreach($security as $app=>$appConfig)
       {
-        foreach($config as $actionType=>$actionConfig)
+        if(!is_array($appConfig)) continue;
+        foreach($appConfig as $actionKind=>$actionsConfig)
         {
-          if(!empty($actionConfig)){
-            $method = sprintf('manage%sFor%s', dmString::classify($kind), dmString::classify($actionType));
-            $this->$method($record, $actionConfig);
+          if(!is_array($actionsConfig)) continue;
+          foreach($actionsConfig as $actionName=>$actionConfig)
+          {
+            if(!is_array($actionConfig)) continue;
+            if(isset($actionConfig['strategy']) && 'record' === $actionConfig['strategy'])
+            {
+              $this->{'manage'.ucfirst($hookType)}($record, $actionName, $actionConfig, $app);
+            }
           }
         }
       }
     }
   }
 
-  protected function manageInsertForActions($record, $actionsConfig)
+  protected function manageInsert(dmDoctrineRecord $record, $actionName, $actionConfig, $app)
   {
-    foreach($actionsConfig as $actionName=>$actionConfig)
-    {
-      $do="n";
-    }
+    $permission = new DmRecordPermission();
+    $permission->set('secure_module', $record->getDmModule()->getKey());
+    $permission->set('secure_action', $actionName);
+    $permission->set('secure_model', get_class($record));
+    $permission->set('secure_record', $record->get($record->getTable()->getIdentifier()));
+    $permission->set('description', sprintf('Secure access to action %s of module %s for record "%s" of class %s', $actionName, $record->getDmModule()->getKey(), $record->__toString(), get_class($record)));
+    
+    $permission->save();
   }
 
-  protected function manageDeleteForActions($record, $actionsConfig)
+  protected function manageDelete(dmDoctrineRecord $record, $actionName, $actionConfig, $app)
   {
+    $permissions = Doctrine_Core::getTable('DmRecordPermission')->createQuery('p')
+    ->where('secure_model', get_class($record))
+    ->andWhere('secure_record', $record->get($record->getTable()->getIdentifier()))
+    ->execute();
 
+    if(!is_array($permissions)) return;
+    foreach($permissions as $permission)
+    {
+      $permission->delete();
+    }
   }
 }

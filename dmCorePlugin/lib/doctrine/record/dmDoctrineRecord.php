@@ -92,7 +92,10 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
    */
   public function postInsert($event)
   {
-    $this->getService('record_security_manager')->manage('insert', $this);
+    if($this->getDmModule() && $this->getDmModule()->getOption('has_security', false))
+    {
+      $this->getService('record_security_manager')->manage('insert', $this);
+    }
     if ($ed = $this->getEventDispatcher())
     {
       $ed->notify(new sfEvent($this, 'dm.record.creation'));
@@ -105,7 +108,10 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
   public function postDelete($event)
   {
     parent::postDelete($event);
-    $this->getService('record_security_manager')->manage('delete', $this);
+    if($this->getDmModule() && $this->getDmModule()->getOption('has_security', false))
+    {
+      $this->getService('record_security_manager')->manage('delete', $this);
+    }
     $this->notify('delete');
   }
 

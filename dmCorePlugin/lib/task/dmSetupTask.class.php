@@ -76,8 +76,6 @@ EOF;
     
     $this->runTask('doctrine:build-filters', array(), array('generator-class' => 'dmDoctrineFormFilterGenerator'));
 
-    $this->runTask('dm:data', array(), array('load-doctrine-data' => $options['load-doctrine-data']));
-
     $this->runTask('dm:publish-assets');
 
     $this->runTask('dm:clear-cache');
@@ -97,6 +95,8 @@ EOF;
         'Please run "php symfony dmFront:generate" manually to generate front templates'
       ), 'ERROR');
     }
+    
+    $this->runTask('dm:data', array(), array('load-doctrine-data' => $options['load-doctrine-data']));
     
     $this->runTask('dm:permissions');
     
