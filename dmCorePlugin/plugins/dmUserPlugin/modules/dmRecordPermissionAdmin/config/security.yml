@@ -1,0 +1,15 @@
+index:
+  is_secure: true
+  credentials: security_record
+list:
+  is_secure: true
+  credentials: security_record
+edit:
+  is_secure: true
+  credentials: security_record
+new:
+  is_secure: true
+  credentials: security_record
+create:
+  is_secure: true
+  credentials: security_record
