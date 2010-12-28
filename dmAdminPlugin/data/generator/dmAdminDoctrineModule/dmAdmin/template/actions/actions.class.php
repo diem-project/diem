@@ -20,7 +20,7 @@ abstract class <?php echo $this->getGeneratedModuleName() ?>Actions extends <?ph
   {
     $this->configuration = new <?php echo $this->getModuleName() ?>GeneratorConfiguration();
 
-    if (!$this->getUser()->hasCredential($this->configuration->getCredentials($this->getActionName())))
+    if ($this->isActionStrategicalySecurized() && !$this->userHasCredentials())
     {
       $this->forwardSecure();
     }
@@ -30,7 +30,7 @@ abstract class <?php echo $this->getGeneratedModuleName() ?>Actions extends <?ph
     $this->helper = new <?php echo $this->getModuleName() ?>GeneratorHelper($this->getDmModule());
   }
   
-  protected function getDmModule()
+  public function getDmModule()
   {
     if (null !== $this->dmModule)
     {
@@ -44,6 +44,40 @@ abstract class <?php echo $this->getGeneratedModuleName() ?>Actions extends <?ph
   {
     return '<?php echo $this->getModuleName(); ?>';
   }
+
+	protected function userHasCredentials()
+	{
+		return $this->getActionSecurizationStrategy($this->actionName)->userHasCredentials($this->getUser()->getUser());
+	}
+
+	protected function addRecordPermissionQuery($query)
+	{
+		if($this->context->getUser()->getUser()->get('is_super_admin')){
+			return;
+		}
+
+		if($this->isActionStrategicalySecurized())
+		{
+			return $this->getActionSecurizationStrategy($this->actionName)->addPermissionCheckToQuery($query, $this->actionName, $this->moduleName);
+		}
+		return $query;
+	}
+
+	protected function isActionStrategicalySecurized()
+	{
+		return $this->getDmModule()->hasSecurityConfiguration($this->getApplication(), 'actions', $this->actionName);
+	}
+
+	protected function getActionSecurizationStrategy()
+	{
+		$actionSecurity = $this->getDmModule()->getSecurityConfiguration($this->getApplication(), 'actions', $this->actionName);
+		return $this->context->getServiceContainer()->getService('module_security_manager')->getStrategy($actionSecurity['strategy'], 'actions', $this->dmModule, $this);
+	}
+
+	protected function getApplication()
+	{
+		return $this->context->getConfiguration()->getApplication();
+	}
 
 <?php include dirname(__FILE__).'/../../parts/exportAction.php' ?>
 

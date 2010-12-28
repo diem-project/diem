@@ -28,4 +28,11 @@ interface dmModuleSecurityStrategyInterface
    * all instanciated strategies have to save()
    */
   public function save();
+  
+  /**
+   * Returns boolean is user has needed credentials to act on module/action
+   * 
+   * @param dmUser $user
+   */
+  public function userHasCredentials($user);
 }

@@ -8,7 +8,7 @@
  * @author serard
  *
  */
-class dmModuleActionSecurityStrategy extends dmModuleSecurityStrategyAbstract
+class dmModuleActionSecurityStrategy extends dmModuleSecurityStrategyAbstract implements dmModuleSecurityStrategyInterface
 {
 
   /**
@@ -35,9 +35,14 @@ class dmModuleActionSecurityStrategy extends dmModuleSecurityStrategyAbstract
     parent::save();
   }
 
+  public function userHasCredentials($user)
+  {
+  	$security = $this->getSecurityYaml();
+  	$credentials = $security[$this->action->getActionName]['credentials'];
+  	return $user->hasCredentials($credentials);
+  }
+  
   /**
-   * 
-   * Enter description here ...
    * @param dmModule $module
    */
   protected function getSecurityYaml()

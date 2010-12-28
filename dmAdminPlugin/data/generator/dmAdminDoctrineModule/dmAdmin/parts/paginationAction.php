@@ -44,6 +44,8 @@
 
     $this->addSortQuery($query);
     
+    $this->addRecordPermissionQuery($query);
+    
     $event = $this->dispatcher->filter(new sfEvent($this, 'admin.build_query'), $query);
     $query = $event->getReturnValue();
 

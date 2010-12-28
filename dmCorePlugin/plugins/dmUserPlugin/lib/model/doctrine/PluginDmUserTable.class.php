@@ -1,5 +1,4 @@
 <?php
-
 abstract class PluginDmUserTable extends myDoctrineTable
 {
   /**
@@ -85,12 +84,13 @@ abstract class PluginDmUserTable extends myDoctrineTable
 		->andWhere('p.secure_module = ?', $module)
 		->andWhere('p.secure_action = ?', $action)
 		->andWhere('p.secure_model = ?', $model)
-		->select('u.name, g.name');
+		->addSelect('u.username, g.name');
 	}
 	
 	public function getBaseRecordPermissionQuery($user, $permissionsAlias = 'r', $userAlias = 'u', $groupsAlias = 'g')
 	{
 		return dmDb::table('DmRecordPermission')->createQuery($permissionsAlias)
+		->select($permissionsAlias.'.id')
 		->leftJoin('p.Groups ' . $groupsAlias)
 			->whereIn($groupsAlias .'.id', $this->getGroupsIds($user))
 	  ->leftJoin('p.Users ' . $userAlias)

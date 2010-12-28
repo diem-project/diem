@@ -20,14 +20,23 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
     return $route;
   }
   
+  public function getObject()
+  {
+  	if(!isset($this->object))
+  	{
+  		$this->object = $this->getDmModule()->getTable()->find($this->getContext()->getRequest()->getParameter('pk'));
+  	}
+  	return $this->object;
+  }
+  
   protected function getObjectOrForward404(dmWebRequest $request)
   {
     $this->forward404Unless(
-      $record = $this->getDmModule()->getTable()->find($request->getParameter('pk')),
+      $this->getObject(),
       sprintf('Unable to find the %s object with the following parameters "%s").', $this->getDmModule()->getModel(), str_replace("\n", '', var_export($request->getParameterHolder()->getAll(), true)))
     );
     
-    return $record;
+    return $this->object;
   }
   
   public function executeLoremize(dmWebRequest $request)
