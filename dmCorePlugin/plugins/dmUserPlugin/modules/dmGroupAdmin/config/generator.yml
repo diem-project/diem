@@ -15,6 +15,8 @@ generator:
           label: Users
         permissions_list:
           label: Permissions
+        records_list: 
+          label: Records
       list:
         display: [=name, description, created_at, updated_at]
         sort:
@@ -29,6 +31,7 @@ generator:
           NONE: [name]
           Users: [users_list]
           Permissions: [permissions_list]
+          Records: [records_list]
           Others: [description]
         class: DmGroupAdminForm
         fields: {  }

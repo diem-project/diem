@@ -23,7 +23,7 @@
     
     <div class="dm_list_action_bar dm_list_action_bar_top clearfix">[?php echo str_replace('__DM_RANDOM_ID__', dmString::random(8), $dmListActionBar); ?]</div>
     
-    [?php include_partial('<?php echo $this->getModuleName() ?>/list', array('pager' => $pager, 'sort' => $sort, 'helper' => $helper)) ?]
+    [?php include_partial('<?php echo $this->getModuleName() ?>/list', array('pager' => $pager, 'sort' => $sort, 'helper' => $helper, 'security_manager' => $security_manager)) ?]
     
     <div class="dm_list_action_bar dm_list_action_bar_bottom clearfix">[?php echo str_replace('__DM_RANDOM_ID__', dmString::random(8), $dmListActionBar); ?]</div>
     

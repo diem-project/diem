@@ -159,5 +159,7 @@ EOF
       $generatorFile,
       $generatorBuilder->getTransformed(file_get_contents($generatorFile))
     );
+    
+    dmContext::getInstance('admin')->getServiceContainer()->get('module_security_manager')->secure($moduleObject);
   }
 }

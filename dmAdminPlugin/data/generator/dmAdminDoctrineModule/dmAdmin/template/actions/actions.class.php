@@ -20,7 +20,7 @@ abstract class <?php echo $this->getGeneratedModuleName() ?>Actions extends <?ph
   {
     $this->configuration = new <?php echo $this->getModuleName() ?>GeneratorConfiguration();
 
-    if (!$this->getUser()->hasCredential($this->configuration->getCredentials($this->getActionName())))
+    if ($this->getDmModule()->getSecurityManager($this)->isActionStrategicalySecurized($this->getActionName()) && !$this->getDmModule()->getSecurityManager()->userHasCredentials($this->getActionName()))
     {
       $this->forwardSecure();
     }
@@ -30,20 +30,31 @@ abstract class <?php echo $this->getGeneratedModuleName() ?>Actions extends <?ph
     $this->helper = new <?php echo $this->getModuleName() ?>GeneratorHelper($this->getDmModule());
   }
   
-  protected function getDmModule()
+  protected function getModuleKey()
   {
-    if (null !== $this->dmModule)
-    {
-      return $this->dmModule;
-    }
-    
-    return $this->dmModule = $this->context->getModuleManager()->getModule('<?php echo $this->getModule()->getKey(); ?>');
+  	return '<?php echo $this->getModule()->getKey()?>';
   }
   
   protected function getSfModule()
   {
     return '<?php echo $this->getModuleName(); ?>';
   }
+
+	protected function addRecordPermissionQuery($query)
+	{
+		$user = $this->getUser()->getUser();
+		if($user && $user->get('is_super_admin')){
+			return;
+		}
+
+		if($this->getDmModule()->getSecurityManager()->isActionStrategicalySecurized($this->actionName))
+		{
+			return $this->getDmModule()->getSecurityManager()->getActionSecurizationStrategy($this->actionName)->addPermissionCheckToQuery($query, $this->actionName, $this->moduleName);
+		}
+		return $query;
+	}
+
+
 
 <?php include dirname(__FILE__).'/../../parts/exportAction.php' ?>
 

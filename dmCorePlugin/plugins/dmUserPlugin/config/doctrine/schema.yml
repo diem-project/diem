@@ -42,6 +42,30 @@ DmUser:
       foreign: dm_permission_id
       refClass: DmUserPermission
       foreignAlias: Users
+    Records: 
+      class: DmRecordPermission
+      local: dm_user_id
+      foreign: dm_record_permission_id
+      refClass: DmRecordPermissionUser
+      foreignAlias: Users
+      
+DmRecordPermissionUser:
+  options:
+    symfony:
+      form:   false
+      filter: false
+  columns: 
+    dm_user_id: {type: integer(11), notnull: true, primary: true}
+    dm_record_permission_id: {type: integer(11), notnull: true, primary: true}
+  relations:
+    User:
+      class: DmUser
+      local: dm_user_id
+      onDelete: CASCADE
+    Record: 
+      class: DmRecordPermission
+      local: dm_record_permission_id
+      onDelete: CASCADE
       
 DmGroup:
   actAs: [Timestampable]
@@ -63,6 +87,30 @@ DmGroup:
       foreign: dm_permission_id
       refClass: DmGroupPermission
       foreignAlias: Groups
+    Records: 
+      class: DmRecordPermission
+      local: dm_group_id
+      foreign: dm_record_permission_id
+      refClass: DmRecordPermissionGroup
+      foreignAlias: Groups
+      
+DmRecordPermissionGroup:
+  options:
+    symfony:
+      form:   false
+      filter: false 
+  columns: 
+    dm_group_id: {type: integer(11), notnull: true, primary: true}
+    dm_record_permission_id: {type: integer(11), notnull: true, primary: true}
+  relations:
+    Group:
+      class: DmGroup
+      local: dm_group_id
+      onDelete: CASCADE
+    Record:
+      class: DmRecordPermission
+      local: dm_record_permission_id
+      onDelete: CASCADE
 
 DmPermission:
   actAs: [Timestampable]
@@ -137,6 +185,27 @@ DmUserGroup:
       class: DmGroup
       local: dm_group_id
       onDelete: CASCADE
+
+DmRecordPermission: 
+  columns:
+    secure_module: {type: string(255), notnull: true}
+    secure_action: {type: string(255), notnull: true}
+    secure_model: {type: string(255), notnull: true}
+    secure_record: {type: integer(14), notnull: true}
+    description: string(1000)
+  relations:
+    Users:
+      class: DmUser
+      local: dm_record_permission_id
+      foreign: dm_user_id
+      refClass: DmRecordPermissionUser
+      foreignAlias: Records
+    Groups:
+      class: DmGroup
+      local: dm_record_permission_id
+      foreign: dm_group_id
+      refClass: DmRecordPermissionGroup
+      foreignAlias: Groups
 
 DmRememberKey:
   actAs:

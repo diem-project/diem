@@ -62,6 +62,11 @@ EOF;
       $this->chmod($dirFinder->in($dir), 0777);
       $this->chmod($fileFinder->in($dir), 0666);
     }
+    
+    if(file_exists($dataBin = dmOs::join(sfConfig::get('sf_data_dir'), 'bin'))){
+      $this->logSection('diem', 'setting execute bit for user and group to data/bin files');
+      $this->chmod($fileFinder->in($dataBin), 0770);
+    }
 
     // note those files that failed
     if (count($this->failed))

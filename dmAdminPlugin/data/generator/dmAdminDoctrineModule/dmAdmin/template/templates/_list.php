@@ -16,7 +16,7 @@
 <?php if ($this->configuration->getValue('list.batch_actions')): ?>
           <th><input class="sf_admin_list_batch_checkbox" type="checkbox" /></th>
 <?php endif; ?>
-          [?php include_partial('<?php echo $this->getModuleName() ?>/list_th_<?php echo $this->configuration->getValue('list.layout') ?>', array('sort' => $sort)) ?]
+          [?php include_partial('<?php echo $this->getModuleName() ?>/list_th_<?php echo $this->configuration->getValue('list.layout') ?>', array('sort' => $sort, 'security_manager' => $security_manager)) ?]
         </tr>
       </tfoot>
       <tbody class='{toggle_url: "[?php echo £link('@'.$helper->getUrlForAction('toggleBoolean'))->getHref() ?]"}'>
@@ -27,7 +27,7 @@
               <input type="checkbox" name="ids[]" value="[?php echo $<?php echo $this->getSingularName() ?>->getPrimaryKey() ?]" class="sf_admin_batch_checkbox" />
             </td>
 <?php endif; ?>
-            [?php include_partial('<?php echo $this->getModuleName() ?>/list_td_<?php echo $this->configuration->getValue('list.layout') ?>', array('<?php echo $this->getSingularName() ?>' => $<?php echo $this->getSingularName() ?>)) ?]
+            [?php include_partial('<?php echo $this->getModuleName() ?>/list_td_<?php echo $this->configuration->getValue('list.layout') ?>', array('<?php echo $this->getSingularName() ?>' => $<?php echo $this->getSingularName() ?>, 'helper' => $helper, 'security_manager' => $security_manager)) ?]
           </tr>
         [?php endforeach; ?]
       </tbody>

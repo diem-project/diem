@@ -3,7 +3,7 @@ System:
   Security:
 
     dmUser:
-      name:             User
+      name:             User|Users
       credentials:      security_user
       components:
         signin:
@@ -11,9 +11,39 @@ System:
         forgotPassword:
 
     dmPermission:
-      name:             Permission
+      name:             Permission|Permissions
       credentials:      security_permission
 
     dmGroup:
-      name:             Group
+      name:             Group|Groups
       credentials:      security_group
+      
+    DmRecordPermission: 
+      model: DmRecordPermission
+      admin: true
+      front: false
+      name: Record|Records
+      security:
+        admin:
+          actions:
+            index:
+              is_secure: true
+              strategy: action
+              credentials: security_record
+            list:
+              is_secure: true
+              strategy: action
+              credentials: security_record
+            edit:
+              is_secure: true
+              strategy: action
+              credentials: security_record
+            new:
+              is_secure: true
+              strategy: action
+              credentials: security_record
+            create:
+              is_secure: true
+              strategy: action
+              credentials: security_record
+    

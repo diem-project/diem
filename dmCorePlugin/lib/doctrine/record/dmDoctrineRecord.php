@@ -12,7 +12,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
 
   /**
    * Doctrine nestedSet helper
-   * @return integer  
+   * @return integer
    */
   public function getNestedSetParent() {
     if ($this->getTable()->isNestedSet())
@@ -53,8 +53,8 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
       if (!$this->getTable()->getOption('has_symfony_i18n_filter'))
       {
         $this->getTable()
-          ->unshiftFilter(new dmDoctrineRecordI18nFilter())
-          ->setOption('has_symfony_i18n_filter', true)
+        ->unshiftFilter(new dmDoctrineRecordI18nFilter())
+        ->setOption('has_symfony_i18n_filter', true)
         ;
       }
     }
@@ -76,7 +76,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
   public function preSave($event)
   {
     parent::preSave($event);
-    
+
     if ($this->isModified())
     {
       $this->notify($this->isNew() ? 'create' : 'update');
@@ -92,6 +92,10 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
    */
   public function postInsert($event)
   {
+    if(!$this instanceof dmPage && $this->getDmModule() && $this->getDmModule()->getOption('has_security', false))
+    {
+      $this->getService('record_security_manager')->manage('insert', $this);
+    }
     if ($ed = $this->getEventDispatcher())
     {
       $ed->notify(new sfEvent($this, 'dm.record.creation'));
@@ -104,7 +108,10 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
   public function postDelete($event)
   {
     parent::postDelete($event);
-
+    if(!$this instanceof dmPage && $this->getDmModule() && $this->getDmModule()->getOption('has_security', false))
+    {
+      $this->getService('record_security_manager')->manage('delete', $this);
+    }
     $this->notify('delete');
   }
 
@@ -134,9 +141,9 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     }
 
     $qPk = clone $q;
-    
+
     $qPk->select($qPk->getRootAlias().'.'.$pk)/*->distinct()*/;
-    
+
     $pks = array_values(array_unique($qPk->fetchFlat()));
 
     $recordOffset = array_search($this->getPrimaryKey(), $pks);
@@ -145,7 +152,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
       'prev' => 0 == $recordOffset ? null : $pks[$recordOffset-1],
       'next' => count($pks) == ($recordOffset+1) ? null :$pks[$recordOffset+1]
     );
-    
+
     $pks = array_unique(array_filter(array_values($map)));
 
     $records = empty($pks) ? array() : $this->_table->createQuery('q INDEXBY q.'.$pk)->whereIn('q.'.$pk, $pks)->fetchRecords();
@@ -339,7 +346,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     {
       return $this->_get('DmPage');
     }
-    
+
     if(!$this->getDmModule() || !$this->getDmModule()->hasPage())
     {
       throw new dmRecordException(sprintf('record %s has no page because module %s has no page', get_class($this), $this->getDmModule()));
@@ -352,14 +359,14 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
 
     // The record has no page yet, let's try to create it right now
     $event = new sfEvent($this, 'dm.record.page_missing', array());
-    
+
     $this->getEventDispatcher()->notifyUntil($event);
 
     if($event->isProcessed())
     {
       $page = $event->getReturnValue();
     }
-    
+
     return $page;
   }
 
@@ -531,11 +538,11 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
       'data' => $this->toArray()
     );
   }
-  
+
   public function toArrayWithI18n($deep = true, $prefixKey = false)
   {
     $array = $this->toArray($deep, $prefixKey);
-    
+
     if ($this->getTable()->hasI18n())
     {
       foreach($this->getTable()->getI18nTable()->getFieldNames() as $field)
@@ -543,14 +550,14 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
         $array[$field] = $this->get($field);
       }
     }
-    
+
     return $array;
   }
 
   public function toIndexableString()
   {
     $index = '';
-    
+
     foreach($this->_table->getIndexableColumns() as $columnName => $column)
     {
       $index .= ' '.$this->get($columnName);
@@ -637,7 +644,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
         {
           return $this->_get($fieldName, $load);
         }
-        
+
         $this->hasAccessor($fieldName, $accessor);
         return $this->$accessor($load);
       }
@@ -789,17 +796,17 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     {
       return $this->i18nFallback;
     }
-    
+
     if ($this->isNew())
     {
       return null;
     }
-    
+
     $i18nFallback = $this->_table->getI18nTable()->createQuery('t')
     ->where('t.id = ?', $this->get('id'))
     ->andWhere('t.lang = ?', sfConfig::get('sf_default_culture'))
     ->fetchRecord();
-    
+
     $this->i18nFallback = $i18nFallback ? $i18nFallback : false;
 
     return $this->i18nFallback;
@@ -827,7 +834,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
   {
     return $this->getTable()->getEventDispatcher();
   }
-  
+
   public function getServiceContainer()
   {
     return $this->getTable()->getServiceContainer();
@@ -837,12 +844,12 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
   {
     return $this->getTable()->getService($name, $class);
   }
-  
+
   public function getModuleManager()
   {
     return $this->getTable()->getModuleManager();
   }
-  
+
   /**
    * Hack to make Versionable behavior work with I18n tables
    * it will add a where clause on the current culture
@@ -859,7 +866,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     {
       return $this->_get('Version');
     }
-    
+
     return $this
     ->getTable()
     ->getI18nTable()
@@ -871,7 +878,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
     ->andWhere('v.lang = ?', self::getDefaultCulture())
     ->fetchRecords();
   }
-  
+
   /**
    * Provides access to i18n methods
    *
@@ -896,17 +903,17 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
         }
       }
       catch (Exception $e) {}
-      
+
       throw $parentException;
     }
   }
-  
-  
+
+
   public function setData(array $data)
   {
     $this->_data = $data;
   }
-  
+
   /**
    * dmMicroCache
    */

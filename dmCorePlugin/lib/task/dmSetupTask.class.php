@@ -14,7 +14,8 @@ class dmSetupTask extends dmContextTask
 
     $this->addOptions(array(
       new sfCommandOption('clear-db', null, sfCommandOption::PARAMETER_NONE, 'Drop database ( all data will be lost )'),
-      new sfCommandOption('no-confirmation', null, sfCommandOption::PARAMETER_NONE, 'Whether to force dropping of the database')
+      new sfCommandOption('no-confirmation', null, sfCommandOption::PARAMETER_NONE, 'Whether to force dropping of the database'),
+      new sfCommandOption('load-doctrine-data', 'd', sfCommandOption::PARAMETER_NONE, 'Run dm:data with -l option')
     ));
 
     $this->namespace = 'dm';
@@ -75,8 +76,6 @@ EOF;
     
     $this->runTask('doctrine:build-filters', array(), array('generator-class' => 'dmDoctrineFormFilterGenerator'));
 
-    $this->runTask('dm:data');
-
     $this->runTask('dm:publish-assets');
 
     $this->runTask('dm:clear-cache');
@@ -96,6 +95,8 @@ EOF;
         'Please run "php symfony dmFront:generate" manually to generate front templates'
       ), 'ERROR');
     }
+    
+    $this->runTask('dm:data', array(), array('load-doctrine-data' => $options['load-doctrine-data']));
     
     $this->runTask('dm:permissions');
     

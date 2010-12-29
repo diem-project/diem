@@ -19,3 +19,9 @@
 
 <?php echo $this->addCredentialCondition("[?php print \$currentHeader ?]", $field->getConfig()) ?>
 <?php endforeach; ?>
+
+<?php if($this->configuration->getValue('list.object_actions', false)):?>
+<th class="sf_admin sf_admin_list_th_object_action<?php echo $name ?>">
+[?php echo __('Actions');?]
+</th>
+<?php endif;?>

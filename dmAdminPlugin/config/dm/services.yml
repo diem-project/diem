@@ -89,8 +89,8 @@ parameters:
     url:                       http://diem-project.org/service/report-anonymous-data
 
   tool_bar_view.class:        dmAdminToolBarView  # Renders the admin toolbar
-
-services:
+  
+services: 
 
   homepage_manager:
     class:                    %homepage_manager.class%

@@ -58,7 +58,7 @@ abstract class dmAdminModelGeneratorHelper extends sfModelGeneratorHelper
 
   public function linkToDelete($object, $params)
   {
-    $title = __($params['title'], array('%1%' => dmString::strtolower(__($this->getModule()->getName()))));
+    $title = __(isset($params['title']) ? $params['title'] : $params['label'], array('%1%' => dmString::strtolower(__($this->getModule()->getName()))));
     return '<li class="sf_admin_action_delete">'.link_to1(__($params['label']), $this->getRouteArrayForAction('delete', $object),
     array(
     'class' => 's16 s16_delete dm_delete_link sf_admin_action',
