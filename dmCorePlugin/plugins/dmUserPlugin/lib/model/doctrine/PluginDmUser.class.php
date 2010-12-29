@@ -312,16 +312,30 @@ abstract class PluginDmUser extends BaseDmUser
 	 *
 	 */
 
+	public function hasRecordPermission($args)
+	{
+	  
+	}
+	
+	public function getRecordPermissions($record)
+	{
+	  
+	}
+	
 	public function hasRecordPermissionForModuleActionModel($module, $action, $model, $pk)
 	{
-		$query = $this->getTable()->getBaseRecordPermissionQuery()
-		->where('r.secure_module', $module)
-		->andWhere('r.secure_action', $action)
-		->andWhere('r.secure_model', $model)
-		->andWhere('r.secure_record', $pk)
-		->limit(1);
-		
-		return 1 === count($query->execute());
+	  $cacheKey = sprintf('%s/%s/%s/%s', $module, $action, $model, $pk);
+	  if(!$this->hasCache($cacheKey))
+	  {
+  	  $query = $this->getTable()->getBaseRecordPermissionQuery()
+  		->where('r.secure_module', $module)
+  		->andWhere('r.secure_action', $action)
+  		->andWhere('r.secure_model', $model)
+  		->andWhere('r.secure_record', $pk)
+  		->limit(1);
+  		$this->setCache('', 1 === count($query->execute()));
+	  }
+	  return $this->getCache($cacheKey);
 	}
 
 	public function getRecordsPermissionsForModuleActionModel($module, $action, $model)

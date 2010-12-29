@@ -20,6 +20,9 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
     return $route;
   }
   
+  /**
+   * @return dmDoctrineRecord 
+   */
   public function getObject()
   {
   	if(!isset($this->object))
@@ -29,6 +32,9 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
   	return $this->object;
   }
   
+  /**
+   * @param dmWebRequest $request
+   */
   protected function getObjectOrForward404(dmWebRequest $request)
   {
     $this->forward404Unless(
@@ -37,6 +43,19 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
     );
     
     return $this->object;
+  }
+  
+  /**
+   * @return dmModule
+   */
+  public function getDmModule()
+  {
+    if (null !== $this->dmModule)
+    {
+      return $this->dmModule;
+    }
+    
+    return $this->dmModule = $this->context->getModuleManager()->getModule($this->getModuleKey());
   }
   
   public function executeLoremize(dmWebRequest $request)

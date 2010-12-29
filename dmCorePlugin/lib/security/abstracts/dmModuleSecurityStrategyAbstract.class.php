@@ -25,7 +25,7 @@ abstract class dmModuleSecurityStrategyAbstract extends dmModuleSecurityAbstract
    * @param string $actionName the action's name to secure
    * @param array $actionConfig the module-action's configuration
    */
-  public function secure(dmModule $module, $app, $actionName, $actionConfig)
+  public function secure(dmModule $module, $actionName, $actionConfig)
   {
   	
   }

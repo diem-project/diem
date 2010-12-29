@@ -14,6 +14,13 @@ class dmRecordSecurityManager
 
   public function manage($hookType, dmDoctrineRecord $record)
   {
+    if($record instanceof dmRecordPermission && 'DmRecordPermission' === $record->get('secure_model'))
+    {
+      $permPermRecord = $record->getTable()->find($record->get('secure_record'));
+      if('DmRecordPermission' === $permPermRecord->get('secure_model')){
+        return; //don't go over 3 levels of permission of permission, crazy boy !
+      }
+    }
     $security = $record->getDmModule()->getOption('security', false);
     if(is_array($security))
     {
@@ -26,7 +33,7 @@ class dmRecordSecurityManager
           foreach($actionsConfig as $actionName=>$actionConfig)
           {
             if(!is_array($actionConfig)) continue;
-            if(isset($actionConfig['strategy']) && 'record' === $actionConfig['strategy'])
+            if(isset($actionConfig['strategy']) && in_array($actionConfig['strategy'], array('record', 'mixed')))
             {
               $this->{'manage'.ucfirst($hookType)}($record, $actionName, $actionConfig, $app);
             }
@@ -39,7 +46,7 @@ class dmRecordSecurityManager
   protected function manageInsert(dmDoctrineRecord $record, $actionName, $actionConfig, $app)
   {
     $permission = new DmRecordPermission();
-    $permission->set('secure_module', $record->getDmModule()->getKey());
+    $permission->set('secure_module', $record->getDmModule()->getSfName());
     $permission->set('secure_action', $actionName);
     $permission->set('secure_model', get_class($record));
     $permission->set('secure_record', $record->get($record->getTable()->getIdentifier()));

@@ -21,7 +21,7 @@ interface dmModuleSecurityStrategyInterface
    * @param unknown_type $actionName the action of module to secure
    * @param unknown_type $actionConfig the security configuration of the action
    */
-  public function secure(dmModule $module, $app, $actionName, $actionConfig);
+  public function secure(dmModule $module, $actionName, $actionConfig);
   
   /**
    * When secure() process is over (managed by dmModuleSecurityManagerInterface), 
@@ -31,8 +31,6 @@ interface dmModuleSecurityStrategyInterface
   
   /**
    * Returns boolean is user has needed credentials to act on module/action
-   * 
-   * @param dmUser $user
    */
-  public function userHasCredentials($user);
+  public function userHasCredentials();
 }

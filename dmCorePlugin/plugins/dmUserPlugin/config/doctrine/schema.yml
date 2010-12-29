@@ -45,7 +45,7 @@ DmUser:
     Records: 
       class: DmRecordPermission
       local: dm_user_id
-      foreign: dm_secure_record_id
+      foreign: dm_record_permission_id
       refClass: DmRecordPermissionUser
       foreignAlias: Users
       
@@ -56,7 +56,7 @@ DmRecordPermissionUser:
       filter: false
   columns: 
     dm_user_id: {type: integer(11), notnull: true, primary: true}
-    dm_secure_record_id: {type: integer(11), notnull: true, primary: true}
+    dm_record_permission_id: {type: integer(11), notnull: true, primary: true}
   relations:
     User:
       class: DmUser
@@ -64,7 +64,7 @@ DmRecordPermissionUser:
       onDelete: CASCADE
     Record: 
       class: DmRecordPermission
-      local: dm_secure_record_id
+      local: dm_record_permission_id
       onDelete: CASCADE
       
 DmGroup:
@@ -90,7 +90,7 @@ DmGroup:
     Records: 
       class: DmRecordPermission
       local: dm_group_id
-      foreign: dm_secure_record_id
+      foreign: dm_record_permission_id
       refClass: DmRecordPermissionGroup
       foreignAlias: Groups
       
@@ -101,7 +101,7 @@ DmRecordPermissionGroup:
       filter: false 
   columns: 
     dm_group_id: {type: integer(11), notnull: true, primary: true}
-    dm_secure_record_id: {type: integer(11), notnull: true, primary: true}
+    dm_record_permission_id: {type: integer(11), notnull: true, primary: true}
   relations:
     Group:
       class: DmGroup
@@ -109,7 +109,7 @@ DmRecordPermissionGroup:
       onDelete: CASCADE
     Record:
       class: DmRecordPermission
-      local: dm_secure_record_id
+      local: dm_record_permission_id
       onDelete: CASCADE
 
 DmPermission:
@@ -196,13 +196,13 @@ DmRecordPermission:
   relations:
     Users:
       class: DmUser
-      local: dm_secure_record_id
+      local: dm_record_permission_id
       foreign: dm_user_id
       refClass: DmRecordPermissionUser
       foreignAlias: Records
     Groups:
       class: DmGroup
-      local: dm_secure_record_id
+      local: dm_record_permission_id
       foreign: dm_group_id
       refClass: DmRecordPermissionGroup
       foreignAlias: Groups

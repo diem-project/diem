@@ -21,6 +21,11 @@ class dmModuleSecurityAbstract extends dmMicroCache
    * @var sfServiceContainer
    */
   protected $container;
+  
+  /**
+   * @var dmUser
+   */
+  protected $user;
 
   /**
    * Constructor.
@@ -30,10 +35,11 @@ class dmModuleSecurityAbstract extends dmMicroCache
    * @param dmContext $context
    * @param sfServiceContainer $container
    */
-  public function __construct(dmContext $context, sfServiceContainer $container)
+  public function __construct(dmContext $context, sfServiceContainer $container, $user)
   {
     $this->context = $context;
     $this->container = $container;
+    $this->user = $user;
   }
 
   /**

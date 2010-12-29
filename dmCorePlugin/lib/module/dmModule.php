@@ -2,14 +2,36 @@
 
 class dmModule extends dmMicroCache
 {
-	protected
-	$key,
-	$space,
-	$options;
+  /**
+   * @var string
+   */
+	protected $key;
+	
+	/**
+	 * @var dmModuleSpace
+	 */
+	protected $space;
+	
+	/**
+	 * @var array
+	 */
+	protected $options;
+	
+	/**
+	 * @var dmModuleSecurityManager
+	 */
+	protected $securityManager;
 
-	protected static
-	$manager;
+	/**
+	 * @var dmModuleManager
+	 */
+	protected static $manager;
 
+	/**
+	 * @param string $key
+	 * @param dmModuleSpace $space
+	 * @param array $options
+	 */
 	public function __construct($key, dmModuleSpace $space, array $options)
 	{
 		$this->key    = $key;
@@ -18,112 +40,182 @@ class dmModule extends dmMicroCache
 		$this->initialize($options);
 	}
 
+	/**
+	 * @param array $options
+	 */
 	protected function initialize(array $options)
 	{
 		$this->options = $options;
 	}
 
+	/**
+	 * @return dmModuleSpace
+	 */
 	public function getSpace()
 	{
 		return $this->space;
 	}
 
+	/**
+	 * @return boolean
+	 */
 	public function isProject()
 	{
 		return $this instanceof dmProjectModule;
 	}
 
+	/**
+	 * @return boolean
+	 */
 	public function isPlugin()
 	{
 		return (bool) $this->options['plugin'];
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getPluginName()
 	{
 		return $this->options['plugin'];
 	}
 
+	/**
+	 * @return boolean
+	 */
 	public function isOverridden()
 	{
 		return (bool) $this->options['overridden'];
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getSfName()
 	{
 		return $this->options['sf_name'];
 	}
 
+	/**
+	 * @return boolean
+	 */
 	public function hasAdmin()
 	{
 		return $this->options['has_admin'];
 	}
 
+	/**
+	 * @return boolean
+	 */
 	public function hasFront()
 	{
 		return $this->options['has_front'];
 	}
 
+	/**
+	 * @return string
+	 */
 	public function __toString()
 	{
 		return $this->key;
 	}
 
+	/**
+	 * @return array
+	 */
 	public function toDebug()
 	{
 		return $this->toArray();
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getKey()
 	{
 		return $this->key;
 	}
 
+	/**
+	 * @param string $key
+	 * @param $default mixed
+	 * @return mixed
+	 */
 	public function getOption($key, $default = null)
 	{
 		return isset($this->options[$key]) ? $this->options[$key] : $default;
 	}
 
+	/**
+	 * @param string $key
+	 * @param mixed $value
+	 * @param mixed
+	 */
 	public function setOption($key, $value)
 	{
 		return $this->options[$key] = $value;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getName()
 	{
 		return $this->options['name'];
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getPlural()
 	{
 		return $this->options['plural'];
 	}
 
+	/**
+	 * @return mixed array | string
+	 */
 	public function getCredentials()
 	{
 		return $this->options['credentials'];
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getModel()
 	{
 		return $this->options['model'];
 	}
 
+	/**
+	 * @return boolean
+	 */
 	public function hasModel()
 	{
 		return false !== $this->options['model'];
 	}
 
+	/**
+	 * @return boolean
+	 */
 	public function hasPage()
 	{
 		return false;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getUnderscore()
 	{
 		return $this->options['underscore'];
 	}
 
 
+	/**
+	 * @return dmDoctrineTable
+	 */
 	public function getTable()
 	{
 		if ($this->hasCache('table'))
@@ -134,6 +226,9 @@ class dmModule extends dmMicroCache
 		return $this->setCache('table', $this->hasModel() ? dmDb::table($this->options['model']) : false);
 	}
 
+	/**
+	 * @return mixed dmModule || null
+	 */
 	public function getForeign($foreignModuleKey)
 	{
 		if ($foreignModule = $this->getManager()->getModuleOrNull($foreignModuleKey))
@@ -146,6 +241,9 @@ class dmModule extends dmMicroCache
 		return null;
 	}
 
+	/**
+	 * @return boolean
+	 */
 	public function hasForeign($something)
 	{
 		if ($foreignModule = $this->getManager()->getModuleOrNull($something))
@@ -155,6 +253,9 @@ class dmModule extends dmMicroCache
 		return false;
 	}
 
+	/**
+	 * @return array
+	 */
 	public function getLocals()
 	{
 		if ($this->hasCache('locals'))
@@ -174,6 +275,9 @@ class dmModule extends dmMicroCache
 		return $this->setCache('locals', $locals);
 	}
 
+	/**
+	 * @return mixed dmModule||null
+	 */
 	public function getLocal($localModuleKey)
 	{
 		if ($localModule = $this->getManager()->getModuleOrNull($localModuleKey))
@@ -186,6 +290,9 @@ class dmModule extends dmMicroCache
 		return null;
 	}
 
+	/**
+	 * @return boolean
+	 */
 	public function hasLocal($something)
 	{
 		if ($localModule = $this->getManager()->getModuleOrNull($something))
@@ -196,6 +303,9 @@ class dmModule extends dmMicroCache
 		return false;
 	}
 
+	/**
+	 * @return array
+	 */
 	public function getAssociations()
 	{
 		if ($this->hasCache('associations'))
@@ -215,6 +325,9 @@ class dmModule extends dmMicroCache
 		return $this->setCache('associations', $associations);
 	}
 
+	/**
+	 * @return dmModule
+	 */
 	public function getAssociation($associationModuleKey)
 	{
 		if ($associationModule = $this->getManager()->getModuleOrNull($associationModuleKey))
@@ -227,6 +340,9 @@ class dmModule extends dmMicroCache
 		return null;
 	}
 
+	/**
+	 * @return boolean
+	 */
 	public function hasAssociation($something)
 	{
 		if ($associationModule = $this->getManager()->getModule($something))
@@ -237,6 +353,9 @@ class dmModule extends dmMicroCache
 		return false;
 	}
 
+	/**
+	 * @return array
+	 */
 	public function toArray()
 	{
 		return array(
@@ -246,6 +365,9 @@ class dmModule extends dmMicroCache
 		);
 	}
 
+	/**
+	 * @return boolean
+	 */
 	public function is($something)
 	{
 		if (is_string($something))
@@ -261,6 +383,9 @@ class dmModule extends dmMicroCache
 		return false;
 	}
 
+	/**
+	 * @return boolean
+	 */
 	public function interactsWithPageTree()
 	{
 		return $this->isProject();
@@ -274,64 +399,29 @@ class dmModule extends dmMicroCache
 		return self::$manager;
 	}
 
+	/**
+	 * @param dmModuleManager $manager
+	 */
 	public static function setManager(dmModuleManager $manager)
 	{
 		self::$manager = $manager;
 	}
 	
-/*
- * 
- * Adds for security
- * 
- * 
- * 
- */
-	
-	public function hasSecurityConfiguration($app = null, $actionKind = null, $action = null)
+	/**
+	 * @param dmBaseActions $action
+	 * @return dmModuleSecurityManager
+	 */
+	public function getSecurityManager(dmBaseActions $action=null)
 	{
-		if(null === $app){
-			return $this->getOption('has_security', false);
-		}else{
-			$security = $this->getOption('security');
-			$security = isset($security[$app]) ? $security[$app] : false;
-		}
-		if(!$security) return false;
-			
-		if(null === $actionKind){
-			return $security;
-		}else{
-			$security = isset($security[$actionKind]) ? $security[$actionKind] : false;
-		}
-		if(!$security) return false;
-			
-		if(null ===$action){
-			return $security;
-		}else{
-			return isset($security[$action]) ? $security[$action] : false;
-		}
-		return false;
-	}
-
-	public function getSecurityConfiguration($app = null, $actionKind = null, $action = null)
-	{
-		$security = $this->getOption('security');
-		if(null === $app) return $security;
-		
-		$security = isset($security[$app]) ? $security[$app] : false;
-		if(!$security) return false;
-			
-		if(null === $actionKind){
-			return $security;
-		}else{
-			$security = isset($security[$actionKind]) ? $security[$actionKind] : false;
-		}
-		if(!$security) return false;
-			
-		if(null ===$action){
-			return $security;
-		}else{
-			return isset($security[$action]) ? $security[$action] : false;
-		}
-		return false;
+	  if(!isset($this->securityManager))
+	  {
+	    $this->securityManager = dmContext::getInstance()->getServiceContainer()->getService('module_security_manager');
+	    $this->securityManager->setModule($this);
+	    if($action)
+	    {
+	      $this->securityManager->setAction($action);
+	    }
+	  }
+	  return $this->securityManager;
 	}
 }

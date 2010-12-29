@@ -26,38 +26,50 @@ class dmModuleActionMixedRecordSecurityStrategy extends dmModuleSecurityStrategy
 {
 
 	/**
+	 * @var dmModuleSecurityManager
+	 */
+	protected $manager;
+	
+	/**
 	 * @var dmModuleActionSecurityStrategy
 	 */
-	protected $moduleActionStrategy;
+	protected $actionStrategy;
+	
 	
 	/**
 	 * @var dmModuleActionRecordSecurityStrategy
 	 */
 	protected $moduleActionRecordStrategy;
 	
-	public function __construct($context, $container)
+	public function __construct($context, $container, $user)
 	{
-		parent::__construct($context, $container);
-		$this->moduleActionStrategy = new dmModuleActionSecurityStrategy($context, $container);
-		$this->moduleActionRecordStrategy = new dmModuleActionRecordSecurityStrategy($context, $container);
+		parent::__construct($context, $container, $user);
+		$this->manager = $this->container->getService('module_security_manager');
 	}
 	
 	/**
 	 * (non-PHPdoc)
 	 * @see dmModuleSecurityStrategyAbstract::secure()
 	 */
-	public function secure(dmModule $module, $app, $actionName, $actionConfig)
+	public function secure(dmModule $module, $actionName, $actionConfig)
 	{
-		$this->moduleActionStrategy->secure($module, $app, $actionName, $actionConfig);
+	  $this->actionStrategy = $this->manager->getStrategy('action', 'actions', $this->module, $this->action);
+	  $this->actionStrategy->secure($module, $actionName, $actionConfig);
 	}
 	
 	public function save()
 	{
-		$this->moduleActionStrategy->save();
+		$this->actionStrategy->save();
 	}
 	
-	public function userHasCredentials($user)
+	public function userHasCredentials()
 	{
-		return $this->moduleActionStrategy->userHasCredentials($user)
+	  $strategy = $this->action->getObject() ? 'record' : 'action';
+		return $this->manager->getStrategy($strategy, 'actions', $this->module, $this->action)->userHasCredentials();
+	}
+	
+	public function addPermissionCheckToQuery($query)
+	{
+	  return $this->manager->getStrategy('record', 'actions', $this->module, $this->action)->addPermissionCheckToQuery($query);
 	}
 }
