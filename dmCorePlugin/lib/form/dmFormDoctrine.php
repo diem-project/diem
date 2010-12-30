@@ -65,19 +65,22 @@ abstract class dmFormDoctrine extends sfFormDoctrine
         $orderBy = $table->getTemplate('NestedSet')->getOption('rootColumnName', 'root_id') . ', ' . $orderBy;
       }
 
-      $this->widgetSchema[$fieldName]->setOptions(array_merge(
-              $this->widgetSchema[$fieldName]->getOptions(),
-              array(
+      $options = array(
                   'method' => 'getNestedSetIndentedName',
                   'order_by' => array($orderBy, ''),
-        )));
+        );
       if ($fieldName == 'nested_set_parent_id') {
+        $options['add_empty'] = '~';
         $this->validatorSchema[$fieldName]->setOptions(array_merge(
                 $this->validatorSchema[$fieldName]->getOptions(),
                 array(
-                    'required' => 'false',
+                    'required' => false,
           )));
       }
+      $this->widgetSchema[$fieldName]->setOptions(array_merge(
+              $this->widgetSchema[$fieldName]->getOptions(),
+              $options
+        ));
     }
   }
 
