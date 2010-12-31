@@ -1,11 +1,18 @@
-  protected function getPager()
+  public function getPager()
   {
-    $pager = $this->configuration->getPager('<?php echo $this->getModelClass() ?>');
-    $pager->setQuery($this->buildQuery());
-    $pager->setPage($this->getPage());
-    $pager->init();
-
-    return $pager;
+  	if(null == $this->pager)
+  	{
+	    $this->pager = $this->configuration->getPager('<?php echo $this->getModelClass() ?>');
+	    $this->pager->setQuery($this->buildQuery());
+	    $this->pager->setPage($this->getPage());
+	    $this->pager->init();
+		}
+    return $this->pager;
+  }
+  
+  public function hasPager()
+  {
+  	return $this->pager ? true : false;
   }
 
   protected function setPage($page)
@@ -13,7 +20,7 @@
     $this->getUser()->setAttribute('<?php echo $this->getModuleName() ?>.page', $page, 'admin_module');
   }
 
-  protected function getPage()
+  public function getPage()
   {
     return $this->getUser()->getAttribute('<?php echo $this->getModuleName() ?>.page', 1, 'admin_module');
   }
