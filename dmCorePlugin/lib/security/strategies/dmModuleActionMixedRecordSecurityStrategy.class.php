@@ -72,4 +72,9 @@ class dmModuleActionMixedRecordSecurityStrategy extends dmModuleSecurityStrategy
 	{
 	  return $this->manager->getStrategy('record', 'actions', $this->module, $this->action)->addPermissionCheckToQuery($query);
 	}
+	
+	public function getIdsForAuthorizedActionWithinIds($ids)
+	{
+		return $this->manager->getStrategy('record', 'actions', $this->module, $this->action)->getIdsForAuthorizedActionWithinIds($ids);
+	}
 }

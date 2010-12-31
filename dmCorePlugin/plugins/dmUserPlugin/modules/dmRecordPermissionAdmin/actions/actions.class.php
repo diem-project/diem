@@ -13,18 +13,5 @@ require_once dirname(__FILE__).'/../lib/dmRecordPermissionAdminGeneratorHelper.c
  */
 class dmRecordPermissionAdminActions extends autoDmRecordPermissionAdminActions
 {
-  public function executeEditRecord(sfWebRequest $request)
-  {
-    $do = "";
-  }
-  
-  public function executeShowRecordInFront(sfWebRequest $request)
-  {
-    $recordPermission = Doctrine_Core::getTable('DmRecordPermission')->find($request->getParameter('id'));
-    if($recordPermission)
-    {
-      $record = $recordPermission->getRecord();
-    }
-    $this->redirect($record->getDmPage());
-  }
+
 }

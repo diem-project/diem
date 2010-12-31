@@ -48,6 +48,12 @@ DmUser:
       foreign: dm_record_permission_id
       refClass: DmRecordPermissionUser
       foreignAlias: Users
+    RecordsPermissionsAssociations: 
+      class: DmRecordPermissionAssociation
+      refClass: DmRecordPermissionAssociationUser
+      local: dm_user_id
+      foreign: dm_record_permission_association_id
+      foreignAlias: Users
       
 DmRecordPermissionUser:
   options:
@@ -93,7 +99,13 @@ DmGroup:
       foreign: dm_record_permission_id
       refClass: DmRecordPermissionGroup
       foreignAlias: Groups
-      
+    RecordsPermissionsAssociations: 
+      class: DmRecordPermissionAssociation
+      refClass: DmRecordPermissionAssociationGroup
+      local: dm_group_id
+      foreign: dm_record_permission_association_id
+      foreignAlias: Groups
+
 DmRecordPermissionGroup:
   options:
     symfony:
@@ -199,13 +211,79 @@ DmRecordPermission:
       local: dm_record_permission_id
       foreign: dm_user_id
       refClass: DmRecordPermissionUser
-      foreignAlias: Records
+      foreignAlias: RecordsPermissionsAssociations
     Groups:
       class: DmGroup
       local: dm_record_permission_id
       foreign: dm_group_id
       refClass: DmRecordPermissionGroup
-      foreignAlias: Groups
+      foreignAlias: RecordsPermissionsAssociations
+  indexes:
+    #idx_secure_module_action_model: 
+      
+## Records Permissions Associations
+
+DmRecordPermissionAssociation:
+  columns:
+    dm_secure_action: 
+      type: string(255)
+    dm_secure_module: 
+      type: string(255) 
+    dm_secure_model:
+      type: string(255)
+  relations:
+    Groups:
+      class: DmGroup
+      refClass: DmRecordPermissionAssociationGroup
+      local: dm_record_permission_association_id
+      foreign: dm_group_id
+      foreignAlias: RecordsPermissionsAssociations
+    Users:
+      class: DmUser
+      refClass: DmRecordPermissionAssociationUser
+      local: dm_record_permission_association_id
+      foreign: dm_user_id
+      foreignAlias: RecordsPermissionsAssociations
+
+DmRecordPermissionAssociationGroup:
+  options:
+    symfony:
+      form:   false
+      filter: false
+  columns:
+    dm_group_id: { type: integer(11), notnull: true}
+    dm_record_permission_association_id: {type: integer(11), notnull: true}
+  relations:
+    Association: 
+      class: DmRecordPermissionAssociation
+      local: dm_record_permission_association_id
+      onDelete: CASCADE
+    Group:
+      class: DmGroup
+      local: dm_group_id
+      onDelete: CASCADE
+
+DmRecordPermissionAssociationUser:
+  options:
+    symfony:
+      form:   false
+      filter: false
+  columns:
+    dm_user_id: {type: integer(11), notnull: true}
+    dm_record_permission_association_id: {type: integer(11), notnull: true}
+  relations:
+    Association: 
+      class: DmRecordPermissionAssociation
+      local: dm_record_permission_association_id
+      onDelete: CASCADE
+    User:
+      class: DmUser
+      local: dm_user_id
+      onDelete: CASCADE
+
+## Records Permissions Associations
+
+
 
 DmRememberKey:
   actAs:

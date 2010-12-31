@@ -67,6 +67,17 @@ abstract class dmAdminModelGeneratorHelper extends sfModelGeneratorHelper
     'confirm' => $title.' ?'
     )).'</li>';
   }
+  
+  public function linkToEdit($object, $params)
+  {
+  	$title = __(isset($params['title']) ? $params['title'] : $params['label'], array('%1%' => dmString::strtolower(__($this->getModule()->getName()))));
+    return '<li class="sf_admin_action_edit">'.link_to1(__($params['label']), $this->getRouteArrayForAction('edit', $object),
+    array(
+    'class' => 's16 s16_edit dm_edit_link sf_admin_action',
+    'title' => $title,
+    'method' => 'get'
+    )).'</li>';
+  }
 
   public function linkToList($params)
   {

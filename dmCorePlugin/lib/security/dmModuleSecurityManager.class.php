@@ -318,6 +318,21 @@ class dmModuleSecurityManager extends dmModuleSecurityAbstract implements dmModu
     if($user && $user->get('is_super_admin')){
       return true;
     }
-    return $this->getActionSecurizationStrategy($actionName)->userHasCredentials($actionName);
+    if($this->hasSecurityConfiguration($this->getApplication(), 'actions', $actionName))
+    {
+    	return $this->getActionSecurizationStrategy($actionName)->userHasCredentials($actionName, $record);
+    }
+    return true;
+  }
+  
+  /**
+   * @param string $actionName
+   * @param dmUser $user
+   * @param array $ids
+   */
+  public function getIdsForAuthorizedActionWithinIds($actionName, $user, $ids)
+  {
+  	if($user->get('is_super_admin')) return $ids;
+  	return $this->getActionSecurizationStrategy($actionName)->getIdsForAuthorizedActionWithinIds($actionName, $ids);
   }
 }

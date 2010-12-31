@@ -207,6 +207,8 @@ parameters:
   
   record_security_manager.class: dmRecordSecurityManager
   
+  record_permission_association_manager.class:      dmRecordPermissionAssociationManager
+  
 services:
 
   text_diff:
@@ -487,26 +489,30 @@ services:
     
   module_security_manager:
     class:                    %module_security_manager.class%
-    shared:                   true
+    shared:                   false
     arguments:                [ @context, @service_container, @user ]
     
   module_security_actions_action_strategy: 
     class:                    %module_security_actions_action_strategy.class%
-    shared:                   true
+    shared:                   false
     arguments:                [ @context, @service_container, @user ]
     
   module_security_actions_record_strategy:
     class:                    %module_security_actions_record_strategy.class%
-    shared:                   true
+    shared:                   false
     arguments:                [ @context, @service_container, @user ]
     
   module_security_actions_mixed_strategy: 
     class:                    %module_security_actions_mixed_strategy.class%
-    shared:                   true
+    shared:                   false
     arguments:                [ @context, @service_container, @user ]
       
   record_security_manager:
     class:                    %record_security_manager.class%
-    shared:                   true
+    shared:                   false
     arguments:                [ @context, @service_container ]
     
+  record_permission_association_manager:
+    class:                                          %record_permission_association_manager.class%
+    shared:                                         true
+    arguments:                                     [ @context, @service_container, @user ]

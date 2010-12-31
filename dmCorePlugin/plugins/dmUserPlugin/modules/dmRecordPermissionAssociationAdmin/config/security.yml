@@ -1,0 +1,15 @@
+index:
+  is_secure: true
+  credentials: security_record_permission_association
+list:
+  is_secure: true
+  credentials: security_record_permission_association
+edit:
+  is_secure: true
+  credentials: security_record_permission_association
+new:
+  is_secure: true
+  credentials: security_record_permission_association
+create:
+  is_secure: true
+  credentials: security_record_permission_association

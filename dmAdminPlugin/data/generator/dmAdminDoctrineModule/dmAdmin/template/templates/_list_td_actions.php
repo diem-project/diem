@@ -5,13 +5,16 @@
     [?php if($security_manager->userHasCredentials('delete', $<?php echo $this->getSingularName()?>)): ?]
     <?php echo $this->addCredentialCondition('[?php echo $helper->linkToDelete($'.$this->getSingularName().', '.$this->asPhp($params).') ?]', $params) ?>
 		[?php endif; ?]
-<?php /*elseif ('_edit' == $name): ?>
-    <?php echo '';*/ ?>
+<?php elseif ('_edit' == $name): ?>
+    [?php if($security_manager->userHasCredentials('edit', $<?php echo $this->getSingularName()?>)): ?]
+    <?php //echo $this->addCredentialCondition('[?php echo ' . sprintf("_link('@%s?action=edit&pk='.\$%s->getPrimaryKey())->text(__('%s'))", $this->module->getUnderscore(), $this->getSingularName(), 'Edit') .' ?]', $params) ?>
+    <?php echo $this->addCredentialCondition('[?php echo $helper->linkToEdit($'.$this->getSingularName().', '.$this->asPhp($params).') ?]', $params) ?>
+		[?php endif; ?]
 
 <?php else: ?>
 		[?php if($security_manager->userHasCredentials('<?php echo $name?>', $<?php echo $this->getSingularName()?>)): ?]
     <li class="sf_admin_action_<?php echo $params['class_suffix'] ?>">
-      <?php echo $this->addCredentialCondition($this->getLinkToAction($name, $params, true), $params) ?>
+      <?php echo $this->addCredentialCondition('[?php echo $helper->getLinkToAction(\'' . $name .'\', ' . $this->asPhp($params) .', true) ?]', $params) ?>
 		[?php endif; ?]
     </li>
 <?php endif; ?>

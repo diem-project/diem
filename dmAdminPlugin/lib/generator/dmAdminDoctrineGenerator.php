@@ -229,7 +229,7 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
 
     if ($field->isLink())
     {
-      $html = sprintf("_link('@%s?action=edit&pk='.\$%s->getPrimaryKey())->text(%s)->addClass('link_edit')", $this->module->getUnderscore(), $this->getSingularName(), $html);
+      $html = sprintf("\$security_manager->userHasCredentials('edit', \$%s) ? _link('@%s?action=edit&pk='.\$%s->getPrimaryKey())->text(%s)->addClass('link_edit') : (%s)", $this->getSingularName(), $this->module->getUnderscore(), $this->getSingularName(), $html, $html);
     }
 
     return $html;
@@ -341,12 +341,12 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
     if(null === $action){ 
       return parent::addCredentialCondition($content, $params);
     }
-    if($security = $this->module->getOption('has_security', false))
+    /*if($security = $this->module->getOption('has_security', false))
     {
       if(isset($security['admin']) && isset($security['admin']['actions']) && isset($security['admin']['actions'][$action]))
       {
         return parent::addCredentialCondition($content, array_merge(array('credentials'=>$security['admin']['actions'][$action]), $params));
       }
-    }
+    }*/
   }
 }

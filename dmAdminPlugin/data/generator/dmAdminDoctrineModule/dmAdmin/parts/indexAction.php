@@ -22,5 +22,5 @@
     $this->pager = $this->getPager();
     $this->sort = $this->getSort();
     
-    $this->security_manager = $this->getDmModule()->getSecurityManager(); //getActionSecurizationStrategy()->setRecordsPermissions($this->getUser()->getUser()->getTable()->getRecordsPermissionsByRecord(array('module' => $this->getModuleName(), 'model' => '<?php echo $this->getModelClass() ?>'), $this->getUser()->getUser(), $this->pager->getMaxPerPage())); 
+    $this->security_manager = $this->getDmModule()->getSecurityManager(); //->getAcionsPermissions($this->pager);
   }

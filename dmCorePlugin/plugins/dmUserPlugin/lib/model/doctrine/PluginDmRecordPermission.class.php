@@ -22,4 +22,9 @@ abstract class PluginDmRecordPermission extends BaseDmRecordPermission
     $table = Doctrine_Core::getTable($this->get('secure_model')); 
     return $table->findOneBy($table->getIdentifier(), $this->get('secure_record'));
   }
+  
+  public function postInsert($event)
+  {
+  	$this->getService('record_permission_association_manager')->manage($this);
+  }
 }

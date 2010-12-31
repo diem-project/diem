@@ -54,18 +54,30 @@ class dmRecordSecurityManager
     
     $permission->save();
   }
+  
+  protected function manageCreate(dmDoctrineRecord $record, $actionName, $actionConfig, $app)
+  {
+  	$do = "nothing";
+  }
 
   protected function manageDelete(dmDoctrineRecord $record, $actionName, $actionConfig, $app)
   {
-    $permissions = Doctrine_Core::getTable('DmRecordPermission')->createQuery('p')
-    ->where('secure_model', get_class($record))
-    ->andWhere('secure_record', $record->get($record->getTable()->getIdentifier()))
-    ->execute();
-
-    if(!is_array($permissions)) return;
+    $query = Doctrine_Core::getTable('DmRecordPermission')->createQuery()
+    ->select('id')
+    ->andWhere('secure_model = ?', get_class($record))
+    ->andWhere('secure_record = ?', $record->get($record->getTable()->getIdentifier()));
+    
+    $permissions = $query->execute();
+    
+    if($permissions->count() === 0) return;
     foreach($permissions as $permission)
     {
       $permission->delete();
     }
+  }
+  
+  protected function manageUpdate(dmDoctrineRecord $record, $actionName, $actionConfig, $app)
+  {
+  	$do = "nothgin";
   }
 }
