@@ -18,62 +18,75 @@ abstract class dmFormDoctrine extends sfFormDoctrine
     // further action is handled in the save() method
   }
 
-  public function configure() {
+  protected function setupNestedSet() {
 
-    if ($this->object instanceof sfDoctrineRecord && $this->object->getTable()->isNestedSet()) {
-      // unset NestedSet columns
-      unset($this['lft'], $this['rgt'], $this['level']);
-      if ($this->object->getTable()->getTemplate('NestedSet')->getOption('hasManyRoots')) {
-        unset($this[$this->object->getTable()->getTemplate('NestedSet')->getOption('rootColumnName')]);
-      }
+    if ($this->object instanceof sfDoctrineRecord && $this->object->getTable() instanceof myDoctrineTable) {
 
-      // add sorting
-      $orderBy = 'lft';
-      if ($relation->getTable()->getTemplate('NestedSet')->getOption('hasManyRoots')) {
-        $orderBy = $relation->getTable()->getTemplate('NestedSet')->getOption('rootColumnName', 'root_id') . ', ' . $orderBy;
-      }
+      // unset NestedSet columns not needed as added in the getAutoFieldsToUnset() method
 
-      $this->widgetSchema['nested_set_parent_id'] = new sfWidgetFormDoctrineChoice(array(
-        'model' => get_class($this->object),
-        'add_empty' => '~',
-        'order_by' => array($orderBy, ''),
-        'method' => 'getNestedSetIndentedName'
-        ));
-      $this->validatorSchema['nested_set_parent_id'] = new sfValidatorDoctrineChoice(array(
-        'required' => false,
-        'model' => get_class($this->object)
-        ));
-      $this->setDefault('nested_set_parent_id', $this->object->getNestedSetParentId());
-      $this->widgetSchema->setLabel('nested_set_parent_id', 'Child of');
+      $this->updateNestedSetWidget($this->object->getTable(), 'nested_set_parent_id', 'Child of');
 
-    }
-
-    if ($this->object instanceof sfDoctrineRecord) {
-      foreach ($this->getObject()->getTable()->getRelationHolder()->getAll() as $relation) {
-        if ($relation->getTable() instanceof myDoctrineTable && $relation->getTable()->isNestedSet()) {
+      // check all relations for NestedSet
+      foreach ($this->object->getTable()->getRelationHolder()->getAll() as $relation) {
+        if ($relation->getTable() instanceof dmDoctrineTable && $relation->getTable()->isNestedSet()) {
           // check for many to many
-          $fieldname = $relation->getType()
+          $fieldName = $relation->getType()
                   ? dmString::underscore($relation->getAlias()) . '_list'
                   : $relation->getLocalColumnName()
                   ;
-          if (!($this->widgetSchema[$fieldname] instanceof sfWidgetFormDoctrineChoice)) {
-            $this->widgetSchema[$fieldname] = new sfWidgetFormDoctrineChoice(array('model' => $relation->getClass()));
-          }
-
-          $orderBy = 'lft';
-          if ($relation->getTable()->getTemplate('NestedSet')->getOption('hasManyRoots')) {
-            $orderBy = $relation->getTable()->getTemplate('NestedSet')->getOption('rootColumnName', 'root_id') . ', ' . $orderBy;
-          }
-          $this->widgetSchema[$fieldname]->setOptions(array_merge(
-                  $this->widgetSchema[$fieldname]->getOptions(),
-                  array(
-                      'method' => 'getNestedSetIndentedName',
-                      'order_by' => array($orderBy, ''),
-            )));
-
+          $this->updateNestedSetWidget($relation->getTable(), $fieldName);
         }
       }
     }
+
+  }
+
+  protected function updateNestedSetWidget(dmDoctrineTable $table, $fieldName = null, $label = null)
+  {
+    if ($table->isNestedSet()) {
+      if (null === $fieldName) {
+        $fieldName = 'nested_set_parent_id';
+      }
+      // create if not exists
+      if (!($this->widgetSchema[$fieldName] instanceof sfWidgetFormDoctrineChoice)) {
+        $this->widgetSchema[$fieldName] = new sfWidgetFormDoctrineChoice(array('model' => $table->getComponentName()));
+      }
+      if (!($this->validatorSchema[$fieldName] instanceof sfValidatorDoctrineChoice)) {
+        $this->validatorSchema[$fieldName] = new sfValidatorDoctrineChoice(array('model' => $table->getComponentName()));
+      }
+
+      if (null !== $label) {
+        $this->widgetSchema[$fieldName]->setLabel('$label');
+      }
+
+      // set sorting
+      $orderBy = 'lft';
+      if ($table->getTemplate('NestedSet')->getOption('hasManyRoots', false)) {
+        $orderBy = $table->getTemplate('NestedSet')->getOption('rootColumnName', 'root_id') . ', ' . $orderBy;
+      }
+
+      $options = array(
+                  'method' => 'getNestedSetIndentedName',
+                  'order_by' => array($orderBy, ''),
+        );
+      if ($fieldName == 'nested_set_parent_id') {
+        $options['add_empty'] = '~';
+        $this->validatorSchema[$fieldName]->setOptions(array_merge(
+                $this->validatorSchema[$fieldName]->getOptions(),
+                array(
+                    'required' => false,
+          )));
+      }
+      $this->widgetSchema[$fieldName]->setOptions(array_merge(
+              $this->widgetSchema[$fieldName]->getOptions(),
+              $options
+        ));
+    }
+  }
+
+  public function configure() {
+
+    $this->setupNestedSet();
 
     parent::configure();
 
