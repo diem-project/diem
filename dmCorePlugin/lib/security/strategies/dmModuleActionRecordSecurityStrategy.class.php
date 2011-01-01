@@ -29,127 +29,123 @@
 class dmModuleActionRecordSecurityStrategy extends dmModuleSecurityStrategyAbstract implements dmModuleSecurityStrategyInterface
 {
 
-	/**
-	 * With this strategy, there's nothing to do on module generation
-	 *
-	 * (non-PHPdoc)
-	 * @see dmModuleSecurityStrategyAbstract::secure()
-	 */
-	public function secure(dmModule $module, $actionName, $actionConfig)
-	{
-		//does nothing
-	}
+  /**
+   * With this strategy, there's nothing to do on module generation
+   *
+   * (non-PHPdoc)
+   * @see dmModuleSecurityStrategyAbstract::secure()
+   */
+  public function secure(dmModule $module, $actionName, $actionConfig)
+  {
+    //does nothing
+  }
 
-	/**
-	 * Called by dmModuleSecurityManager
-	 *
-	 * Check if user has credentials to run the module/action (optionnaly for record)
-	 * within its own records permissions or with its own groups
-	 *
-	 * @param dmUser $user
-	 */
-	public function userHasCredentials($actionName = null, $record = null)
-	{
-		$cacheKey = 'userHasCredential';
-		if(!$this->hasCache($cacheKey))
-		{
-			$args = array('module' => $this->action->getModuleName(),
+  /**
+   * Called by dmModuleSecurityManager
+   *
+   * Check if user has credentials to run the module/action (optionnaly for record)
+   * within its own records permissions or with its own groups
+   *
+   * @param dmUser $user
+   */
+  public function userHasCredentials($actionName = null, $record = null)
+  {
+    $cacheKey = 'userHasCredential';
+    if(null === $record)
+    {
+      $record = $this->action->getObject();
+    }
+    if($record && $record->state() !== 3 && $this->userHasCredentials('new')) return true;
+    if($record && !$this->action->hasPager())
+    {
+      $args['record'] = $record->get($record->getTable()->getIdentifier());
+    }
+    if(!$this->hasCache($cacheKey))
+    {
+      $args = array('module' => $this->action->getModuleName(),
                     'model'  => $this->module->getOption('model')
-			);
-			if(null === $record)
-			{
-				$record = $this->action->getObject();
-			}
-			if($record && !$this->action->hasPager())
-			{
-				$args['record'] = $record->get($record->getTable()->getIdentifier());
-			}
-			
-			/*if(!$this->action->hasPager())
-			{
-				$args['action'] = $this->action->getActionName();
-			}*/
+      );
+      $permissionsQuery = dmDb::table('DmUser')->getRecordsPermissionsQuery($args, $this->user->getUser());
+      	
+      if($this->action->hasPager())
+      {
+        $records = $this->action->getPager()->getResults();
+        $recordsIds = array();
+        foreach($records as $r)
+        {
+          $recordsIds[] = $r->get($r->getTable()->getIdentifier());
+        }
+        $permissionsQuery->andWhereIn('p.secure_record', $recordsIds);
+      }else{
 
-			$permissionsQuery = dmDb::table('DmUser')->getRecordsPermissionsQuery($args, $this->user->getUser());
-			
-			if($this->action->hasPager())
-			{
-				$records = $this->action->getPager()->getResults();
-				$recordsIds = array();
-				foreach($records as $r)
-				{ 
-					$recordsIds[] = $r->get($r->getTable()->getIdentifier());
-				}
-				$permissionsQuery->andWhereIn('p.secure_record', $recordsIds);
-			}else{
-				
-			}
-			
-			$permissions = $permissionsQuery->execute(array(), Doctrine::HYDRATE_ARRAY);
-			$tmpPerms = array();
-			foreach($permissions as $permission)
-			{
-					$tmpPerms[$permission['secure_record']][$permission['secure_action']] = true;
-			}
-			$permissions = $tmpPerms;
-			unset($tmpPerms, $permission, $permissionsQuery, $args);
-			$this->setCache($cacheKey, $permissions);
-		}
-		$permissions = $this->getCache($cacheKey);
-		$recordId = $record->get($record->getTable()->getIdentifier());
-		return isset($permissions[$recordId][$actionName]);
-		
-	}
+      }
+      	
+      $permissions = $permissionsQuery->execute(array(), Doctrine::HYDRATE_ARRAY);
+      $tmpPerms = array();
+      foreach($permissions as $permission)
+      {
+        $tmpPerms[$permission['secure_record']][$permission['secure_action']] = true;
+      }
+      $permissions = $tmpPerms;
+      unset($tmpPerms, $permission, $permissionsQuery, $args);
+      $this->setCache($cacheKey, $permissions);
+    }
+    $permissions = $this->getCache($cacheKey);
+    if(!$record) return true;
+    $recordId = $record->get($record->getTable()->getIdentifier());
+    return isset($permissions[$recordId][$actionName]);
 
-	/**
-	 * Called by dmActions->buildQuery()
-	 * Restreins the query to objects user can act on.
-	 *
-	 * @param Doctrine_Query $query
-	 */
-	public function addPermissionCheckToQuery($query)
-	{
-		$cacheKey = 'permissionsIds';
-		if(!$this->hasCache($cacheKey))
-		{
-			$result = array();
-			$queryResult = dmDb::table('DmUser')->getModelPermissions($this->action, $this->user->getUser());
-			if(empty($queryResult))
-			{
-				$result[] = -1;
-			}else{
-				foreach($queryResult as $permission)
-				{
-					$result[] = $permission['secure_record'];
-				}
-			}
-			$this->setCache($cacheKey, $result);
-		}
-		return $query->andWhereIn($query->getRootAlias() . '.id', $this->getCache($cacheKey));
-	}
+  }
 
-	public function getIdsForAuthorizedActionWithinIds($actionName, $ids)
-	{
-		$userId = $this->user->getUser()->get($this->user->getUser()->getTable()->getIdentifier());
-		 
-		$query = dmDb::table('DmRecordPermission')->createQuery('p')->select('p.secure_record')
-		->leftJoin('p.Users u')
-		->leftJoin('p.Groups g')
-		->leftJoin('g.Users u1')
-		->andWhere('(u.id = ? OR u1.id = ?)', array($userId, $userId))
-		->andWhere('p.secure_model = ?', $this->module->getOption('model'))
-		->andWhere('p.secure_action = ?', $actionName)
-		->andWhereIn('p.secure_record', $ids);
-		 
-		$permissions = $query->execute(array(), Doctrine::HYDRATE_ARRAY);
-		 
-		if(empty($permissions)) return false;
-		 
-		$authorized = array();
-		foreach($permissions as $permission)
-		{
-			$authorized[] = $permission['secure_record'];
-		}
-		return $authorized;
-	}
+  /**
+   * Called by dmActions->buildQuery()
+   * Restreins the query to objects user can act on.
+   *
+   * @param Doctrine_Query $query
+   */
+  public function addPermissionCheckToQuery($query)
+  {
+    $cacheKey = 'permissionsIds';
+    if(!$this->hasCache($cacheKey))
+    {
+      $result = array();
+      $queryResult = dmDb::table('DmUser')->getModelPermissions($this->action, $this->user->getUser());
+      if(empty($queryResult))
+      {
+        $result[] = -1;
+      }else{
+        foreach($queryResult as $permission)
+        {
+          $result[] = $permission['secure_record'];
+        }
+      }
+      $this->setCache($cacheKey, $result);
+    }
+    return $query->andWhereIn($query->getRootAlias() . '.id', $this->getCache($cacheKey));
+  }
+
+  public function getIdsForAuthorizedActionWithinIds($actionName, $ids)
+  {
+    $userId = $this->user->getUser()->get($this->user->getUser()->getTable()->getIdentifier());
+    	
+    $query = dmDb::table('DmRecordPermission')->createQuery('p')->select('p.secure_record')
+    ->leftJoin('p.Users u')
+    ->leftJoin('p.Groups g')
+    ->leftJoin('g.Users u1')
+    ->andWhere('(u.id = ? OR u1.id = ?)', array($userId, $userId))
+    ->andWhere('p.secure_model = ?', $this->module->getOption('model'))
+    ->andWhere('p.secure_action = ?', $actionName)
+    ->andWhereIn('p.secure_record', $ids);
+    	
+    $permissions = $query->execute(array(), Doctrine::HYDRATE_ARRAY);
+    	
+    if(empty($permissions)) return false;
+    	
+    $authorized = array();
+    foreach($permissions as $permission)
+    {
+      $authorized[] = $permission['secure_record'];
+    }
+    return $authorized;
+  }
 }

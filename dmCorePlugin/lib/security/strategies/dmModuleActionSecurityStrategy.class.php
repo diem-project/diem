@@ -45,7 +45,7 @@ class dmModuleActionSecurityStrategy extends dmModuleSecurityStrategyAbstract im
 			if($credentials){
 				$result = $this->user->can($credentials);
 			}else{ $result = false; }
-			$this->setCache($cacheKey, $result);
+			return $this->setCache($cacheKey, $result);
 		}
 		return $this->getCache($cacheKey);
 	}
