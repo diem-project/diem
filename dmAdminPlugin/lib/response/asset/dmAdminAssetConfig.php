@@ -38,6 +38,7 @@ class dmAdminAssetConfig extends dmAssetConfig
       'lib.ui-mouse',
       'lib.ui-draggable',
       'lib.ui-droppable',
+      'lib.ui-resizable',
       'lib.fieldSelection',
       'lib.blockUI',
       'lib.hotkeys',

@@ -12,5 +12,11 @@ class DmRecordPermissionAssociationAdminForm extends BaseDmRecordPermissionAssoc
   public function configure()
   {
     parent::configure();
+    /*$this->widgetSchema['dm_secure_module'] = new sfWidgetFormDmModules();
+    $this->validatorSchema['dm_secure_module'] = new dmValidatorDmModules();
+
+    $this->widgetSchema['dm_secure_action'] = new sfWidgetFormDmActions();
+    $this->validatorSchema['dm_secure_action'] = new dmValidatorDmActions();
+    */
   }
 }

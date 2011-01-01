@@ -14,13 +14,19 @@ generator:
           label: Groups
         users_list:
           label: Users
+        dm_secure_module: 
+          label: Module
+        dm_secure_action:
+          label: Action
+        dm_secure_model:
+          label: Model
       list:
         display:
           - '=id'
           - groups_list
           - users_list
-          - dm_secure_action
           - dm_secure_module
+          - dm_secure_action
           - dm_secure_model
         sort:
           - id
@@ -31,14 +37,14 @@ generator:
       filter:
         display:
           - id
-          - dm_secure_action
           - dm_secure_module
+          - dm_secure_action
           - dm_secure_model
       form:
         display:
           Groups: [groups_list]
           Users: [users_list]
-          Others: [dm_secure_action, dm_secure_module, dm_secure_model]
+          Others: [dm_secure_module, dm_secure_action, dm_secure_model]
         class: DmRecordPermissionAssociationAdminForm
         fields: {  }
       edit: ~

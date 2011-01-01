@@ -5,7 +5,7 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
 {
   protected
   $moduleManager;
-  
+
   /**
    * Initializes the current sfGenerator instance.
    *
@@ -14,21 +14,21 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
   public function initialize(sfGeneratorManager $generatorManager)
   {
     parent::initialize($generatorManager);
-    
+
     if (!dmContext::hasInstance())
     {
       dmContext::createInstance($generatorManager->getConfiguration());
     }
-    
+
     $this->moduleManager = dmContext::getInstance()->getModuleManager();
-    
+
     $this->setGeneratorClass('dmDoctrineForm');
   }
 
   public function generate($params = array())
   {
     $this->generateBaseClasses();
-    
+
     $this->params = $params;
 
     if (!isset($this->params['model_dir_name']))
@@ -78,11 +78,11 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
       }
 
       $this->setGeneratorClass($useDmForm ? 'dmDoctrineForm' : 'sfDoctrineForm');
-      
+
       $baseDir = sfConfig::get('sf_lib_dir') . '/form/doctrine';
 
       $isPluginModel = $this->isPluginModel($model);
-      
+
       if ($isPluginModel)
       {
         $pluginName = $this->getPluginNameForModel($model);
@@ -121,7 +121,7 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
       }
     }
   }
-  
+
   protected function generateBaseClasses()
   {
     // create the project base class for all forms
@@ -203,10 +203,10 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
     {
       $widgetSubclass = 'DoctrineChoice';
     }
-    
+
     $widgetSubclass = $this->getGeneratorManager()->getConfiguration()->getEventDispatcher()->filter(
-      new sfEvent($this, 'dm.form_generator.widget_subclass', array('column' => $column)),
-      $widgetSubclass
+    new sfEvent($this, 'dm.form_generator.widget_subclass', array('column' => $column)),
+    $widgetSubclass
     )->getReturnValue();
 
     return sprintf('sfWidgetForm%s', $widgetSubclass);
@@ -282,11 +282,123 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
     $validatorClass = isset($validatorClass) ? $validatorClass : sprintf('sfValidator%s', $validatorSubclass);
 
     $validatorClass = $this->getGeneratorManager()->getConfiguration()->getEventDispatcher()->filter(
-      new sfEvent($this, 'dm.form_generator.validator_class', array('column' => $column)),
-      $validatorClass
+    new sfEvent($this, 'dm.form_generator.validator_class', array('column' => $column)),
+    $validatorClass
     )->getReturnValue();
 
     return $validatorClass;
   }
 
+  /**
+   * Get array of sfDoctrineColumn objects that exist on the current model but not its parent.
+   *
+   * @param boolean $withoutColumnAggregationKeys To include or not column_aggregation keys (columns) set by subclasses
+   * @return array $columns
+   */
+  public function getColumns($withoutColumnAggregationKeys = false)
+  {
+    $parentModel = $this->getParentModel();
+    $parentColumns = $parentModel ? array_keys(Doctrine_Core::getTable($parentModel)->getColumns()) : array();
+
+    $columns = array();
+    $selfColumns = array_diff(array_keys($this->table->getColumns()), $parentColumns);
+
+    if($withoutColumnAggregationKeys)
+    {
+      $subClasses = $this->getTable()->getOption('subclasses');
+      if(!empty($subClasses))
+      {
+        foreach($subClasses as $subClass)
+        {
+          $subTableInheritanceMap = dmDb::table($subClass)->getOption('inheritanceMap');
+          if(!empty($subTableInheritanceMap))
+          {
+            $selfColumns = array_diff($selfColumns, array_keys($subTableInheritanceMap));
+          }
+        }
+      }
+    }
+
+    foreach ($selfColumns as $name)
+    {
+      $columns[] = new dmDoctrineColumn($name, $this->table);
+    }
+
+    return $columns;
+  }
+
+  /**
+   * Returns an array containing the columns declared because of
+   * subclasses inheriting using column_aggregation and declaring
+   * a column to discriminate the record's class
+   *  
+   * @return array 
+   */
+  public function getColumnAggregationKeyFields()
+  {
+    $columnAggregationKeyColumns = array();
+    $subClasses = $this->getTable()->getOption('subclasses');
+    if(!empty($subClasses))
+    {
+      foreach($subClasses as $subClass)
+      {
+        $subTableInheritanceMap = dmDb::table($subClass)->getOption('inheritanceMap');
+        if(!empty($subTableInheritanceMap))
+        {
+          $columnName = array_keys($subTableInheritanceMap);
+          $columnName = $columnName[0];
+          $columnAggregationKeyColumns[$columnName] = new dmDoctrineColumn($columnName, $this->table);
+        }
+      }
+    }
+    return $columnAggregationKeyColumns;
+  }
+
+  /**
+   * Returns an array containing the subclasses inheriting using column_aggregate,
+   * using their declared discriminant.
+   * 
+   * @return array the choices used by sfWidgetFormChoice and sfValidatorChoice
+   */
+  public function getSubClassesChoices()
+  {
+    $choices = array();
+    $subClasses = $this->getTable()->getOption('subclasses');
+    if(!empty($subClasses))
+    {
+      foreach($subClasses as $subClass)
+      {
+        $subTableInheritanceMap = dmDb::table($subClass)->getOption('inheritanceMap');
+        if(!empty($subTableInheritanceMap))
+        {
+          $columnName = array_keys($subTableInheritanceMap);
+          $columnName = $columnName[0];
+          $discriminant = $subTableInheritanceMap[$columnName];
+          $choices[$discriminant] = ucfirst(dmString::humanize($discriminant));
+        }
+      }
+    }
+    return $choices;
+  }
+  
+  public function getSubClassesChoicesValidator()
+  {
+    $choices = array();
+    $subClasses = $this->getTable()->getOption('subclasses');
+    if(!empty($subClasses))
+    {
+      foreach($subClasses as $subClass)
+      {
+        $subTableInheritanceMap = dmDb::table($subClass)->getOption('inheritanceMap');
+        if(!empty($subTableInheritanceMap))
+        {
+          $columnName = array_keys($subTableInheritanceMap);
+          $columnName = $columnName[0];
+          $discriminant = $subTableInheritanceMap[$columnName];
+          $choices[] = $discriminant;
+        }
+      }
+    }
+    return $choices;
+  }
 }

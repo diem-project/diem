@@ -15,7 +15,10 @@ abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->
   public function setup()
   {
     $this->setWidgets(array(
-<?php foreach ($this->getColumns() as $column): ?>
+<?php foreach($this->getColumnAggregationKeyFields() as $column):?>
+			'<?php echo $column->getFieldName() ?>'<?php echo str_repeat(' ', $this->getColumnNameMaxLength() - strlen($column->getFieldName())) ?> => new sfWidgetFormChoice(array('choices' => <?php echo $this->arrayExport($this->getSubClassesChoices());?>)),
+<?php endforeach;?>
+<?php foreach ($this->getColumns(true) as $column): ?>
       '<?php echo $column->getFieldName() ?>'<?php echo str_repeat(' ', $this->getColumnNameMaxLength() - strlen($column->getFieldName())) ?> => new <?php echo $this->getWidgetClassForColumn($column) ?>(<?php echo $this->getWidgetOptionsForColumn($column) ?>),
 <?php endforeach; ?>
 
@@ -26,7 +29,11 @@ abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->
     ));
 
     $this->setValidators(array(
-<?php foreach ($this->getColumns() as $column): ?>
+<?php foreach($this->getColumnAggregationKeyFields() as $column):?>
+			'<?php echo $column->getFieldName() ?>'<?php echo str_repeat(' ', $this->getColumnNameMaxLength() - strlen($column->getFieldName())) ?> => new sfValidatorChoice(array('choices' => <?php echo $this->arrayExport($this->getSubClassesChoicesValidator());?>, 'required' => true)),
+<?php endforeach;?>
+
+<?php foreach ($this->getColumns(true) as $column): ?>
       '<?php echo $column->getFieldName() ?>'<?php echo str_repeat(' ', $this->getColumnNameMaxLength() - strlen($column->getFieldName())) ?> => new <?php echo $this->getValidatorClassForColumn($column) ?>(<?php echo $this->getValidatorOptionsForColumn($column) ?>),
 <?php endforeach; ?>
 <?php foreach ($this->getManyToManyRelations() as $relation): ?>

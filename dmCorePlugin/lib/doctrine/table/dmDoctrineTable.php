@@ -637,5 +637,4 @@ abstract class dmDoctrineTable extends Doctrine_Table
   {
     return self::$moduleManager;
   }
-  
 }

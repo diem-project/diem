@@ -362,19 +362,20 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
 		$securityConfig = $this->fixSecurityConfig($moduleKey, $moduleConfig);
 
 		$moduleOptions = array(
-      'name' =>       (string) trim($moduleConfig['name']),
-      'plural' =>     (string) trim(empty($moduleConfig['plural']) ? ($model ? dmString::pluralize($moduleConfig['name']) : $moduleConfig['name']) : $moduleConfig['plural']),
-      'model' =>      $model,
-      'credentials' => isset($moduleConfig['credentials']) ? trim($moduleConfig['credentials']) : null,
-      'underscore'  => (string) dmString::underscore($moduleKey),
-      'is_project'  => (boolean) $isInContent || dmArray::get($moduleConfig, 'page', false) || count(dmArray::get($moduleConfig, 'components', array())),
-      'plugin'      => $moduleConfig['plugin'],
-      'overridden'  => dmArray::get($moduleConfig, 'overridden', false),
-      'has_admin'   => (boolean) dmArray::get($moduleConfig, 'admin', $model || !$isInContent),
-      'has_front'   => (boolean) dmArray::get($moduleConfig, 'front', true),
-      'components'  => dmArray::get($moduleConfig, 'components', array()),
-      'has_security'=> is_array($securityConfig),
-      'security'	=> $securityConfig
+      'name'            => (string) trim($moduleConfig['name']),
+      'plural'          => (string) trim(empty($moduleConfig['plural']) ? ($model ? dmString::pluralize($moduleConfig['name']) : $moduleConfig['name']) : $moduleConfig['plural']),
+      'model'           => $model,
+      'credentials'     => isset($moduleConfig['credentials']) ? trim($moduleConfig['credentials']) : null,
+      'underscore'      => (string) dmString::underscore($moduleKey),
+      'is_project'      => (boolean) $isInContent || dmArray::get($moduleConfig, 'page', false) || count(dmArray::get($moduleConfig, 'components', array())),
+      'plugin'          => $moduleConfig['plugin'],
+      'overridden'      => dmArray::get($moduleConfig, 'overridden', false),
+      'has_admin'       => (boolean) dmArray::get($moduleConfig, 'admin', $model || !$isInContent),
+      'has_front'       => (boolean) dmArray::get($moduleConfig, 'front', true),
+      'components'      => dmArray::get($moduleConfig, 'components', array()),
+      'has_security'    => is_array($securityConfig),
+      'security'	      => $securityConfig,
+		  'i18n_catalogue'  => isset($moduleConfig['i18n_catalogue']) ? $moduleConfig['i18n_catalogue'] : sfConfig::get('dm_i18n_catalogue')
 		);
 
 		if ($moduleOptions['is_project'])
