@@ -7,7 +7,6 @@
 		[?php endif; ?]
 <?php elseif ('_edit' == $name): ?>
     [?php if($security_manager->userHasCredentials('edit', $<?php echo $this->getSingularName()?>)): ?]
-    <?php //echo $this->addCredentialCondition('[?php echo ' . sprintf("_link('@%s?action=edit&pk='.\$%s->getPrimaryKey())->text(__('%s'))", $this->module->getUnderscore(), $this->getSingularName(), 'Edit') .' ?]', $params) ?>
     <?php echo $this->addCredentialCondition('[?php echo $helper->linkToEdit($'.$this->getSingularName().', '.$this->asPhp($params).') ?]', $params) ?>
 		[?php endif; ?]
 

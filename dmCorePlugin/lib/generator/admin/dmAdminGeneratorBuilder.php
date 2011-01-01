@@ -20,7 +20,12 @@ class dmAdminGeneratorBuilder
   public function getTransformed($generator)
   {
     $yaml = sfYaml::load($generator);
+    
+    $config = $yaml['generator']['param']['config'];
+    unset($yaml['generator']['param']['config']);
+    $yaml['generator']['param']['i18n_catalogue'] = $this->module->getOption('i18n_catalogue', 'dm');
 
+    $yaml['generator']['param']['config'] = $config;
     $yaml['generator']['param']['config'] = $this->getConfig();
 
     $transformed = sfYaml::dump($yaml, 6, 0);

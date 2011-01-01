@@ -2,7 +2,7 @@
   [?php if ('NONE' != $fieldset): ?]
     <h2 class="fieldset_title ui-accordion-header ui-helper-reset ui-state-default ui-corner-top">
       <span class="ui-icon ui-icon-triangle-1-e"></span>
-      <span class="fieldset_name">[?php echo __($fieldset) ?]</span>
+      <span class="fieldset_name">[?php echo __($fieldset, array(), '<?php echo $this->getModule()->getOption('i18n_catalogue')?>') ?]</span>
     </h2>
     <div class="fieldset_content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active">
   [?php else: ?]
