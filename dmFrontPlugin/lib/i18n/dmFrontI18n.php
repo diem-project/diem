@@ -8,11 +8,6 @@ class dmFrontI18n extends dmI18n
    */
   public function __($string, $args = array(), $catalogue = 'messages')
   {
-    if(empty($catalogue))
-    {
-      $catalogue = 'messages';
-    }
-    
     $result = $this->__orFalse($string, $args, $catalogue);
 
     if (false === $result && $catalogue !== 'dm')

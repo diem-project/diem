@@ -306,6 +306,9 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
   }
 
 
+  /**
+   * @return dmModule 
+   */
   public function getModule()
   {
     if ($this->module === null)
@@ -323,7 +326,7 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
    */
   public function getI18nCatalogue()
   {
-    return sfConfig::get('dm_i18n_catalogue');
+    return $this->getModule()->getOption('i18n_catalogue', sfConfig::get('dm_i18n_catalogue'));
   }
   
   /**

@@ -6,14 +6,14 @@ class dmAdminI18n extends dmI18n
   /**
    * Search first in dm catalogue, then in requested catalogue
    */
-  public function __($string, $args = array(), $catalogue = 'messages')
+  public function __($string, $args = array(), $catalogue = 'dm', $forceCatalogue = false)
   {
     if(empty($catalogue))
     {
-      $catalogue = 'messages';
+      $catalogue = 'dm';
     }
     
-    $result = $this->__orFalse($string, $args, 'dm');
+    $result = $this->__orFalse($string, $args, $forceCatalogue ? $catalogue : 'dm');
 
     if (false === $result && $catalogue !== 'dm')
     {

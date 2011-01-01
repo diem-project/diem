@@ -23,7 +23,7 @@
     $label = dmString::humanize($name);
   }
 
-  $label = __($label);
+  $label = __($label, array(), '<?php echo $this->getModule()->getOption('i18n_catalogue')?>');
 
   if($form->getObject()->getTable()->isI18nColumn($name))
   {
@@ -40,7 +40,7 @@
     _media('dmCore/images/16/required.png')
     ->size(16, 16)
     ->set('.dm_label_required')
-    ->alt(__('Required.'));
+    ->alt(__('Required.', array(), 'sf_admin'));
   }
 ?]
 [?php if ($field->isPartial()): ?]
@@ -53,7 +53,7 @@
   <div data-field-name="[?php echo $name ?]" class="[?php echo $divClass ?][?php $form[$name]->hasError() and print ' errors' ?]">
     [?php if ($form[$name]->hasError()): ?]
       <div class="error">
-        <div class="s16 s16_error">[?php echo __((string) $form[$name]->getError()) ?]</div>
+        <div class="s16 s16_error">[?php echo __((string) $form[$name]->getError(), array(), '<?php echo $this->getModule()->getOption('i18n_catalogue')?>') ?]</div>
       </div>
     [?php endif; ?]
     <div class="sf_admin_form_row_inner clearfix">
@@ -65,7 +65,7 @@
       
       if($form[$name]->getWidget() instanceof sfWidgetFormDoctrineChoice && $form[$name]->getWidget()->getOption('multiple'))
       {
-        echo sprintf('<div class="control selection"><span class="select_all">%s</span><span class="unselect_all">%s</span></div>', __('Select all'), __('Unselect all'));
+        echo sprintf('<div class="control selection"><span class="select_all">%s</span><span class="unselect_all">%s</span></div>', __('Select all', array(), 'dm'), __('Unselect all', array(), 'dm'));
       }
       
       echo '</div>';
@@ -74,7 +74,7 @@
 
       if ($help)
       {
-        echo '<div class="help">'.__($help).'</div>';
+        echo '<div class="help">'.__($help, array(), '<?php echo $this->getModule()->getOption('i18n_catalogue')?>').'</div>';
       }
       elseif($help = $form[$name]->renderHelp())
       {
@@ -107,7 +107,7 @@
       if ($relation)
       {
         echo '<div class="sf_admin_form_row_inner clearfix">';
-        echo '<div class="label_wrap">'.__($field->getConfig('label', '', true)).'</div>';
+        echo '<div class="label_wrap">'.__($field->getConfig('label', '', true), array(), '<?php echo $this->getModule()->getOption('i18n_catalogue')?>').'</div>';
         echo $sf_context->getServiceContainer()->mergeParameter('related_records_view.options', array(
           'record' => $form->getObject(),
           'alias'  => $alias
