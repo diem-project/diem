@@ -5,6 +5,14 @@ System:
     dmUser:
       name:             User|Users
       credentials:      security_user
+      security:
+        admin:
+          actions:
+            secure:
+              is_secure: false
+            signin:
+              is_secure: false 
+              
       components:
         signin:
         form:           { name: "Register" }
