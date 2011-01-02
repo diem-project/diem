@@ -86,10 +86,15 @@ class dmAdminUser extends dmCoreUser
       $module = $this->moduleManager->getModule($moduleKey);
     }
     
+    if($module->getName() === 'customers')
+    {
+      $bla = 'ok';
+    }
+    
     return $this->availableModules[$module->getKey()] =
     $module->hasAdmin()
     //&& ($module->isProject() || in_array($moduleKey, sfConfig::get('sf_enabled_modules')))
-    && (!$module->getOption('credentials') || $this->can($module->getOption('credentials')));
+    && $module->getSecurityManager()->userHasCredentials('index'); //(!$module->getOption('credentials')); //$this->can($module->getOption('credentials')));
   }
   
 }
