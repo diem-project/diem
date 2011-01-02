@@ -239,7 +239,7 @@ class dmModuleSecurityManager extends dmModuleSecurityAbstract implements dmModu
       $security = $this->module->getOption('security');
       $security = isset($security[$app]) ? $security[$app] : false;
     }
-    if(!$security) return false;
+    if(!$security) return true;
      
     if(null === $actionKind){
       return $security;
@@ -268,7 +268,10 @@ class dmModuleSecurityManager extends dmModuleSecurityAbstract implements dmModu
     if(null === $app) return $security;
 
     $security = isset($security[$app]) ? $security[$app] : false;
-    if(!$security) return false;
+    if(!$security){
+      $credentials = $this->module->getOption('credentials');
+      return array('strategy' => 'action', 'credentials' => $credentials, 'is_secure' => !empty($credentials));
+    } 
      
     if(null === $actionKind){
       return $security;
