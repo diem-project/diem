@@ -125,7 +125,7 @@ abstract class dmFormDoctrine extends sfFormDoctrine
   protected function doSave($con = null) {
 
     parent::doSave($con);
-    $this->saveNestedSet($con);
+    $this->doSaveNestedSet($con);
   }
 
   /**
