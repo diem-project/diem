@@ -429,7 +429,7 @@ class dmForm extends sfFormSymfony
    * @see sfForm::embedFormForEach()
    * @return dmForm
    */
-  public function embedFormForEach($name, $form, $n, $options, $attributes, $labels)
+  public function embedFormForEach($name, sfForm $form, $n, $decorator = null, $innerDecorator = null, $options = array(), $attributes = array(), $labels = array())
   {
     parent::embedFormForEach($name, $this->setFormEmbedded($form), $n, $options, $attributes, $labels);
     return $this;
