@@ -298,7 +298,8 @@ class dmModuleSecurityManager extends dmModuleSecurityAbstract implements dmModu
     if($user && $user->get('is_super_admin')){
       return false;
     }
-    return $this->hasSecurityConfiguration($this->getApplication(), 'actions', $actionName);
+    $config = $this->hasSecurityConfiguration($this->getApplication(), 'actions', $actionName);
+    return $config && $config['is_secure'];
   }
 
   /**

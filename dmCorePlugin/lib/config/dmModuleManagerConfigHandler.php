@@ -433,7 +433,7 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
 						{
 							$actionConfig['is_secure'] = false;
 						}
-						if(!isset($actionConfig['strategy']))
+						if(!isset($actionConfig['strategy']) && $actionConfig['is_secure'])
 						{
 							throw new dmException(sprintf('Undefined security strategy for module %s, app %s and action %s', $moduleKey, $app, $actionName));
 						}
