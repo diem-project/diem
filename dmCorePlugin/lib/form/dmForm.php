@@ -31,20 +31,6 @@ class dmForm extends sfFormSymfony
    */
   protected $name;
 
-
-  /**
-   * Clone the options, the widgets and validators
-   * 
-   * (non-PHPdoc)
-   * @see sfForm::__clone()
-   * @return dmForm
-   */
-  public function __clone()
-  {
-    parent::__clone();
-    $this->options = clone $this->options;
-  }
-  
   /**
    * Setup the form
    * (non-PHPdoc)
