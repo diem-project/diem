@@ -22,13 +22,18 @@ abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->
 <?php foreach ($this->getColumns() as $column): ?>
     $this->widgetSchema   ['<?php echo $column->getFieldName() ?>'] = new <?php echo $this->getWidgetClassForColumn($column) ?>(<?php echo $this->getWidgetOptionsForColumn($column) ?>);
     $this->validatorSchema['<?php echo $column->getFieldName() ?>'] = new <?php echo $this->getValidatorClassForColumn($column) ?>(<?php echo $this->getValidatorOptionsForColumn($column) ?>);
-
 <?php endforeach; ?>
+
 <?php foreach ($this->getManyToManyRelations() as $relation): ?>
     $this->widgetSchema   ['<?php echo $this->underscore($relation['alias']) ?>_list'] = new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => '<?php echo $relation['table']->getOption('name') ?>', 'expanded' => true));
     $this->validatorSchema['<?php echo $this->underscore($relation['alias']) ?>_list'] = new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => '<?php echo $relation['table']->getOption('name') ?>', 'required' => false));
-
 <?php endforeach; ?>
+
+<?php foreach($this->getOneToOneRelations() as $relation):?>
+		$this->widgetSchema		['<?php echo $this->underscore($relation['local']) ?>'] = new sfWidgetFormDoctrineChoice(array('multiple' => false, 'model' => '<?php echo $relation['table']->getOption('name')?>', 'expanded' => false));
+		$this->validatorSchema['<?php echo $this->underscore($relation['local']) ?>'] = new sfValidatorDoctrineChoice(array('multiple' => false, 'model' => '<?php echo $relation['table']->getOption('name')?>', 'required' => true));
+<?php endforeach;?>
+
     $this->widgetSchema->setNameFormat('<?php echo $this->underscore($this->modelName) ?>[%s]');
   }
 
