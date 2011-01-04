@@ -344,12 +344,5 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
     if(null === $action){ 
       return parent::addCredentialCondition($content, $params);
     }
-    /*if($security = $this->module->getOption('has_security', false))
-    {
-      if(isset($security['admin']) && isset($security['admin']['actions']) && isset($security['admin']['actions'][$action]))
-      {
-        return parent::addCredentialCondition($content, array_merge(array('credentials'=>$security['admin']['actions'][$action]), $params));
-      }
-    }*/
   }
 }
