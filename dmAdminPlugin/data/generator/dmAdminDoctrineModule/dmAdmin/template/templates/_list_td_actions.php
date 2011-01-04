@@ -11,11 +11,15 @@
 		[?php endif; ?]
 
 <?php else: ?>
-		[?php if($security_manager->userHasCredentials('<?php echo $name?>', $<?php echo $this->getSingularName()?>)): ?]
-    <li class="sf_admin_action_<?php echo $params['class_suffix'] ?>">
-      <?php echo $this->addCredentialCondition('[?php echo $helper->getLinkToAction(\'' . $name .'\', ' . $this->asPhp($params) .', true) ?]', $params) ?>
+    [?php if($security_manager->userHasCredentials('<?php echo $name?>', $<?php echo $this->getSingularName()?>)): ?]
+      <li class="sf_admin_action_<?php echo $params['class_suffix'] ?>">
+		  [?php if (method_exists($helper, 'linkTo<?php echo $method = ucfirst(sfInflector::camelize($name)) ?>')): ?]
+  <?php echo $this->addCredentialCondition('[?php echo $helper->linkTo'.$method.'($form->getObject(), '.$this->asPhp($params).') ?]', $params) ?>
+		  [?php else: ?]
+  <?php echo $this->addCredentialCondition($this->getLinkToAction($name, $params, true), $params) ?>
+  		[?php endif; ?]
+      </li>
 		[?php endif; ?]
-    </li>
 <?php endif; ?>
 <?php endforeach; ?>
   </ul>
