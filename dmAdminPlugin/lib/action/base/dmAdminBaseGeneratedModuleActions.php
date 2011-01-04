@@ -28,6 +28,12 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 		if(!isset($this->object))
 		{
 			$pk = $this->getContext()->getRequest()->getParameter('pk', false);
+			if(!$pk)
+			{
+			  $id = $this->getDmModule()->getTable()->getIdentifier();
+			  $pk = $this->getContext()->getRequest()->getParameter($id, false);
+			}
+			
 			if($pk){
 				$this->object = $this->getDmModule()->getTable()->find($pk);
 			}else{
