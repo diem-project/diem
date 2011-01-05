@@ -75,4 +75,5 @@ div.markItUpHeader ul a {
 div.markItUpContainer div.ui-resizable-s {
   bottom: 0;
   background: url(images/handle.png) no-repeat center 2px;
+  z-index: 0;
 }
