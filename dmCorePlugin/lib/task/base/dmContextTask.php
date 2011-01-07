@@ -7,7 +7,7 @@ abstract class dmContextTask extends dmBaseTask
 
   protected function withDatabase()
   {
-    $this->getContext()->getDatabaseManager();
+    return $this->getContext()->getDatabaseManager();
   }
   
   protected function get($service)

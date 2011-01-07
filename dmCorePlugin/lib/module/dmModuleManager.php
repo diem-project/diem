@@ -43,6 +43,12 @@ class dmModuleManager
     return isset($this->modules[$moduleKey]);
   }
   
+  /**
+   * @param string $moduleKey
+   * @param boolean $orNull
+   * @throws dmException
+   * @return dmModule
+   */
   public function getModule($moduleKey, $orNull = false)
   {
     $moduleKey = $moduleKey instanceof dmModule ? $moduleKey->getKey() : $moduleKey;

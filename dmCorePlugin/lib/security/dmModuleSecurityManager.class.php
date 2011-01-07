@@ -143,7 +143,7 @@ class dmModuleSecurityManager extends dmModuleSecurityAbstract implements dmModu
 
   /**
    * Sometimes dmModules don't have generate_dir set, so we must set it ourselves.
-   *
+   * @todo moved to dmModule, more appropriate place
    * @param dmModule $module
    * @param unknown_type $configuration
    */
@@ -171,8 +171,9 @@ class dmModuleSecurityManager extends dmModuleSecurityAbstract implements dmModu
    * @param dmModule $module
    * @return array the array representation of the security.yml file for the specified dmModule $module
    */
-  public function getSecurityYaml(dmModule $module)
+  public function getSecurityYaml(dmModule $module = null)
   {
+  	if(null === $module){ $module = $this->module; }
     $yaml = array();
     if(file_exists($filepath = $this->getSecurityFilepath($module)))
     {
@@ -187,9 +188,10 @@ class dmModuleSecurityManager extends dmModuleSecurityAbstract implements dmModu
    * @param dmModule $module
    * @return string the path to security.yml for specified module
    */
-  public function getSecurityFilepath(dmModule $module)
+  public function getSecurityFilepath(dmModule $module = null)
   {
-    return dmOs::join($module->getOption('generate_dir'), 'config', 'security.yml');
+  	if(null === $module){ $module = $this->module; }
+    return dmOs::join($module->getGenerationDir(), 'config', 'security.yml');
   }
 
   /**

@@ -2,9 +2,14 @@
 
 class dmWebRequest extends sfWebRequest
 {
-  protected
-  $absoluteUrlRoot;
+	/**
+	 * @var string
+	 */
+  protected $absoluteUrlRoot;
 
+  /**
+   * @return string
+   */
   public function getAbsoluteUrlRoot()
   {
     if(null === $this->absoluteUrlRoot)
@@ -30,6 +35,9 @@ class dmWebRequest extends sfWebRequest
     return parent::isXmlHttpRequest() || $this->getParameter('dm_xhr');
   }
 
+  /**
+   * @return boolean
+   */
   public function isFlashRequest()
   {
     return $this->getParameter('dm_flash');
@@ -52,8 +60,23 @@ class dmWebRequest extends sfWebRequest
     return $context;
   }
 
+  /**
+   * @param array $getParameters
+   * @return dmWebRequest
+   */
   public function setGetParameters(array $getParameters)
   {
     $this->getParameters = $getParameters;
+    return $this;
+  }
+  
+	/**
+	 * @param array $postParameters
+	 * @return dmWebRequest
+	 */
+  public function setPostParameters(array $postParameters)
+  {
+  	$this->postParameters = $postParameters;
+  	return $this;
   }
 }
