@@ -13,8 +13,10 @@ require_once(dirname(__FILE__).'/../lib/Base<?php echo ucfirst($this->moduleName
  */
 abstract class <?php echo $this->getGeneratedModuleName() ?>Actions extends <?php echo $this->getActionsBaseClass() ?>
 {
-  protected
-  $dmModule;
+  /**
+	 * @var dmModule
+	 */
+  protected $dmModule;
   
   public function preExecute()
   {
@@ -30,31 +32,21 @@ abstract class <?php echo $this->getGeneratedModuleName() ?>Actions extends <?ph
     $this->helper = new <?php echo $this->getModuleName() ?>GeneratorHelper($this->getDmModule());
   }
   
+  /**
+   * @return string the module key
+   */
   protected function getModuleKey()
   {
   	return '<?php echo $this->getModule()->getKey()?>';
   }
   
+  /**
+	 * @return string the symfony module name
+	 */
   protected function getSfModule()
   {
     return '<?php echo $this->getModuleName(); ?>';
   }
-
-	protected function addRecordPermissionQuery($query)
-	{
-		$user = $this->getUser()->getUser();
-		if($user && $user->get('is_super_admin')){
-			return;
-		}
-
-		if($this->getDmModule()->getSecurityManager()->isActionStrategicalySecurized($this->actionName))
-		{
-			return $this->getDmModule()->getSecurityManager()->getActionSecurizationStrategy($this->actionName)->addPermissionCheckToQuery($query, $this->actionName, $this->moduleName);
-		}
-		return $query;
-	}
-
-
 
 <?php include dirname(__FILE__).'/../../parts/exportAction.php' ?>
 

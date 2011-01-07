@@ -23,19 +23,19 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 	/**
 	 * @return dmDoctrineRecord
 	 */
-	public function getObject()
+	public function getObject($relations = array())
 	{
 		if(!isset($this->object))
 		{
 			$pk = $this->getContext()->getRequest()->getParameter('pk', false);
 			if(!$pk)
 			{
-			  $id = $this->getDmModule()->getTable()->getIdentifier();
-			  $pk = $this->getContext()->getRequest()->getParameter($id, false);
+				$id = $this->getDmModule()->getTable()->getIdentifier();
+				$pk = $this->getContext()->getRequest()->getParameter($id, false);
 			}
-			
+
 			if($pk){
-				$this->object = $this->getDmModule()->getTable()->find($pk);
+				$this->object = $this->buildObjectQuery($pk)->fetchOne();
 			}else{
 				$this->object = false;
 			}
@@ -46,10 +46,10 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 	/**
 	 * @param dmWebRequest $request
 	 */
-	protected function getObjectOrForward404(dmWebRequest $request)
+	protected function getObjectOrForward404(dmWebRequest $request, $relations = array())
 	{
 		$this->forward404Unless(
-		$this->getObject(),
+		$this->getObject($relations),
 		sprintf('Unable to find the %s object with the following parameters "%s").', $this->getDmModule()->getModel(), str_replace("\n", '', var_export($request->getParameterHolder()->getAll(), true)))
 		);
 
@@ -292,6 +292,7 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 					case 'integer':
 					case 'float':
 					case 'decimal':
+					case 'double':
 						if (is_numeric($searchPart))
 						{
 							$ors[] = $alias.'.'.$columnName.' = ?';
@@ -629,5 +630,37 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 		$this->getDispatcher()->notify(new sfEvent($this, 'dm.controller.redirect'));
 
 		return $this->renderText($record->$field ? '1' : '0');
+	}
+
+	/**
+	 * @param dmDoctrineQuery $query
+	 * @return dmDoctrineQuery
+	 */
+	protected function addRecordPermissionQuery($query)
+	{
+		$user = $this->getUser()->getUser();
+		if($user && $user->get('is_super_admin')){
+			return;
+		}
+
+		if($this->getDmModule()->getSecurityManager()->isActionStrategicalySecurized($this->actionName))
+		{
+			return $this->getDmModule()->getSecurityManager()->getActionSecurizationStrategy($this->actionName)->addPermissionCheckToQuery($query, $this->actionName, $this->moduleName);
+		}
+		return $query;
+	}
+
+	/**
+	 * @return dmDoctrineQuery
+	 */
+	protected function buildObjectQuery($pk, $relations = array(), $locals = array())
+	{
+		$table = $this->getDmModule()->getTable();
+		$id = $table->getIdentifier();
+		if(is_array($id)) { $id = $id[0]; }
+		$query = $table->createQuery('o')->where('o.' . $id . ' = ?', $pk);
+		//$table->joinLocals($query, true);
+		$table->joinRelations($query, array_keys($table->getRelations()), true);
+		return $query;
 	}
 }
