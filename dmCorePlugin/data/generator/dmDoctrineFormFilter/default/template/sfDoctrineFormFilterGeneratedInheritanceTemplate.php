@@ -13,6 +13,9 @@ abstract class Base<?php echo $this->table->getOption('name') ?>FormFilter exten
   protected function setupInheritance()
   {
     parent::setupInheritance();
+<?php foreach((array)$this->table->getOption('inheritanceMap') as $field => $value): ?>
+    unset($this['<?php echo $field ?>']);
+<?php endforeach; ?>
 
 <?php foreach ($this->getColumns() as $column): ?>
     $this->widgetSchema   ['<?php echo $column->getFieldName() ?>'] = new <?php echo $this->getWidgetClassForColumn($column) ?>(<?php echo $this->getWidgetOptionsForColumn($column) ?>);
@@ -24,6 +27,7 @@ abstract class Base<?php echo $this->table->getOption('name') ?>FormFilter exten
     $this->validatorSchema['<?php echo $this->underscore($relation['alias']) ?>_list'] = new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => '<?php echo $relation['table']->getOption('name') ?>', 'required' => false));
 
 <?php endforeach; ?>
+
     $this->widgetSchema->setNameFormat('<?php echo $this->underscore($this->modelName) ?>_filters[%s]');
   }
 
