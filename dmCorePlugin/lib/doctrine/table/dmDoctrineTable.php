@@ -185,8 +185,11 @@ abstract class dmDoctrineTable extends Doctrine_Table
   
   /**
    * Will join named relations
+   * @param dmDoctrineQuery $query
+   * @param array $aliases
+   * @param boolean $with18n 
    */
-  public function joinRelations(array $aliases, $withI18n = false)
+  public function joinRelations($query, array $aliases, $withI18n = false)
   {
     $rootAlias = $query->getRootAlias();
 
@@ -636,5 +639,15 @@ abstract class dmDoctrineTable extends Doctrine_Table
   public function getModuleManager()
   {
     return self::$moduleManager;
+  }
+
+  /**
+   * (non-PHPdoc)
+   * @see Doctrine_Table::createQuery()
+   * @return dmDoctrineQuery
+   */
+  public function createQuery($alias = '')
+  {
+  	return parent::createQuery($alias);
   }
 }
