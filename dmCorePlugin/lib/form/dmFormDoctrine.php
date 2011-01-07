@@ -224,7 +224,7 @@ abstract class dmFormDoctrine extends sfFormDoctrine
 	 * Unset automatic fields like 'created_at', 'updated_at', 'position'
 	 * @return dmFormDoctrine
 	 */
-	protected function unsetAutoFields($autoFields = null)
+	public function unsetAutoFields($autoFields = null)
 	{
 		$autoFields = null === $autoFields ? $this->getAutoFieldsToUnset() : (array) $autoFields;
 
@@ -238,7 +238,7 @@ abstract class dmFormDoctrine extends sfFormDoctrine
 		return $this;
 	}
 
-	protected function getAutoFieldsToUnset()
+	public function getAutoFieldsToUnset()
 	{
 		$fields = array('created_at', 'updated_at');
 
