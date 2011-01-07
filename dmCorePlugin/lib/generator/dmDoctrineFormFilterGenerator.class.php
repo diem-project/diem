@@ -138,6 +138,9 @@ class dmDoctrineFormFilterGenerator extends sfDoctrineFormFilterGenerator
     return array_merge($this->getColumns(), $this->getI18nColumns());
   }
 
+  /**
+   * @return array sfDoctrineColumn
+   */
   protected function getI18nColumns()
   {
     $columns = array();
