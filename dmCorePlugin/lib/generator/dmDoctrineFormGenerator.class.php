@@ -149,11 +149,17 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
 		}
 	}
 
+	/**
+	 * @return dmDoctrineTable 
+	 */
 	public function getTable()
 	{
 		return $this->table;
 	}
 
+	/**
+	 * @return array
+	 */
 	public function getMediaRelations()
 	{
 		return $this->table->getRelationHolder()->getLocalMedias();
