@@ -604,6 +604,9 @@ abstract class dmDoctrineTable extends Doctrine_Table
     self::$eventDispatcher = $eventDispatcher;
   }
   
+  /**
+   * @param dmBaseServiceContainer $serviceContainer
+   */
   public static function setServiceContainer(dmBaseServiceContainer $serviceContainer)
   {
     self::$serviceContainer = $serviceContainer;
@@ -611,16 +614,27 @@ abstract class dmDoctrineTable extends Doctrine_Table
     self::setEventDispatcher($serviceContainer->getService('dispatcher'));
   }
   
+  /**
+   * @param dmModuleManager $moduleManager
+   */
   public static function setModuleManager(dmModuleManager $moduleManager)
   {
     self::$moduleManager = $moduleManager;
   }
   
+  /**
+   * 
+   * @return sfEventDispatcher
+   */
   public function getEventDispatcher()
   {
     return self::$eventDispatcher;
   }
   
+  /**
+   * 
+   * @return sfServiceContainer
+   */
   public function getServiceContainer()
   {
     return self::$serviceContainer;
@@ -636,6 +650,9 @@ abstract class dmDoctrineTable extends Doctrine_Table
     return null;
   }
   
+  /**
+   * @return dmModuleManager
+   */
   public function getModuleManager()
   {
     return self::$moduleManager;

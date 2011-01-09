@@ -163,7 +163,7 @@ class dmAdminRelatedRecordsView extends dmConfigurable
     }
     elseif($this->relation instanceof Doctrine_Relation_Association)
     {
-      $opposite = $this->getOneToManyOppositeRelation($this->relation);
+      $opposite = $this->relation['localTable']->getAssociationOppositeRelation($this->relation);
       if($opposite){
         $link->param('defaults['.dmString::tableize($opposite->getAlias()) . '_list][]', $this->record->get('id'));
       }
@@ -172,24 +172,6 @@ class dmAdminRelatedRecordsView extends dmConfigurable
     return $link->render();
   }
   
-	public function getOneToManyOppositeRelation($relation)
-	{
-		$relation = is_string($relation) ? $relation['localTable']->getRelation($relationName) : $relation;
-		$relatedTable = $relation->getTable();
-		$local = $relation['local'];
-		$foreign = $relation['foreign'];
-
-		foreach($relatedTable->getRelations() as $relatedTableRelation)
-		{
-			if($relatedTableRelation['foreign'] === $local)
-			{
-				return $relatedTableRelation;
-			}
-		}
-		return false;
-	}
-  
-
   protected function renderSortLink()
   {
     return $this->helper->link(array(
