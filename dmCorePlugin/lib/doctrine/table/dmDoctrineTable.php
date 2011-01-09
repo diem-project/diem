@@ -650,4 +650,25 @@ abstract class dmDoctrineTable extends Doctrine_Table
   {
   	return parent::createQuery($alias);
   }
+  
+  /**
+   * @param Doctrine_Relation_Association $relation
+   * @return Doctrine_Relation_Association the opposite relation
+   */
+	public function getAssociationOppositeRelation($relation)
+	{
+		$relation = is_string($relation) ? $relation['localTable']->getRelation($relationName) : $relation;
+		$relatedTable = $relation->getTable();
+		$local = $relation['local'];
+		$foreign = $relation['foreign'];
+
+		foreach($relatedTable->getRelations() as $relatedTableRelation)
+		{
+			if($relatedTableRelation['foreign'] === $local)
+			{
+				return $relatedTableRelation;
+			}
+		}
+		return false;
+	}
 }
