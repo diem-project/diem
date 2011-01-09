@@ -231,7 +231,8 @@ abstract class dmDoctrineTable extends Doctrine_Table
    */
   public function getAdminListQuery(dmDoctrineQuery $query)
   {
-    $relations = $this->getOption('admin.query.relations', array());
+    $relations = $this->getOption('admin.query.relations');
+    if(null === $relations){ $relations = array(); }
     $this
     ->joinLocals($query->withI18n(null, $this->getComponentName()), true)
     ->joinRelations($query, $relations, true);
