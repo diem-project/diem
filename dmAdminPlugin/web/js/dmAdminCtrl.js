@@ -48,7 +48,7 @@
     {
       var self = this, $box = self.$.find('div.dm_filter_box');
       
-      self.$.find('a.dm_open_filter_box').click(function()
+      self.$.find('a.dm_open_filter_box').unbind('click').click(function()
       {
         $box.slideToggle(200);
       })

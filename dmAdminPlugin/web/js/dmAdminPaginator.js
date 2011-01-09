@@ -2,9 +2,8 @@
 {
   $(function()
   {
-	  $.dm.admin = $.dm.admin || {};
-	  $.dm.admin.modules = $.dm.admin.modules || {};
-	  $.dm.admin.modules.index = function(){
+	  $.dm.ctrl.admin = $.dm.ctrl.admin || {};
+	  $.dm.ctrl.admin.paginator = function(){
 		  $('.dm_form_pagination a').unbind('click').click(function(e){
 			  $('#dm_admin_content').block();
 			  var link = $(this).attr('href');
@@ -15,14 +14,13 @@
 					  $('.tipsy').remove();
 					  $('#dm_admin_content').append(data);
 					  $.dm.ctrl.init();
-					  $.dm.admin.modules.index();
-					  $.dm.admin.modules.actions();
+					  $.dm.ctrl.admin.paginator();
 					  $('#dm_admin_content').unblock();
 				  }
 			  });
 			  e.preventDefault();
 		  });
 	  }
-	  $.dm.admin.modules.index();
+	  $.dm.ctrl.admin.paginator();
   });
 })(jQuery);
