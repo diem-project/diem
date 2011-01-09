@@ -231,6 +231,36 @@
           }).tipsy({gravity: $.fn.tipsy.autoSouth});
         }
       });
+      
+      $('.see_selected', self.element).click(function(){
+    	  
+    	  $('ul.checkbox_list > li', self.element).each(function(){
+    		  if(!$(this).hasClass('active')){
+    			  $(this).hide();
+    		  }else{
+    			  $(this).show();
+    		  }
+    	  });
+      });
+      
+      $('.see_unselected', self.element).click(function(){
+    	  
+    	  $('ul.checkbox_list > li', self.element).each(function(){
+    		  if($(this).hasClass('active')){
+    			  $(this).hide();
+    		  }else{
+    			  $(this).show();
+    		  }
+    	  });
+      });
+      
+      $('.see_all', self.element).click(function(){
+    	  
+    	  $('ul.checkbox_list > li', self.element).each(function(){
+    		  $(this).show();
+    	  });
+      });
+      
     }
     
   });

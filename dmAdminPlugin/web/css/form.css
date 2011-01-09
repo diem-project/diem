@@ -112,7 +112,11 @@ div.sf_admin_form div.sf_admin_form_row_inner label.fnone {
 }
 
 div.control span.select_all,
-div.control span.unselect_all {
+div.control span.unselect_all,
+div.control span.see_selected,
+div.control span.see_unselected,
+div.control span.see_all
+ {
   margin-top: 1em;
   cursor: pointer;
   display: block;
