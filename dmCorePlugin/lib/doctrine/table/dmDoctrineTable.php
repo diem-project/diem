@@ -92,7 +92,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
 
   /**
    * Will join all localKey relations
-   * @return myDoctrineQuery
+   * @return dmDoctrineTable
    */
   public function joinLocals(myDoctrineQuery $query, $withI18n = false)
   {
@@ -117,7 +117,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
       }
     }
 
-    return $query;
+    return $this;
   }
   
   public function fetchJoinAll($params = array(), $hydrationMode = Doctrine_Core::HYDRATE_RECORD)
@@ -192,7 +192,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
   public function joinRelations($query, array $aliases, $withI18n = false)
   {
     $rootAlias = $query->getRootAlias();
-
+    
     foreach($aliases as $alias)
     {
       if (!$relation = $this->getRelationHolder()->get($alias))
@@ -223,7 +223,7 @@ abstract class dmDoctrineTable extends Doctrine_Table
       }
     }
 
-    return $query;
+    return $this;
   }
 
   /**
@@ -231,8 +231,11 @@ abstract class dmDoctrineTable extends Doctrine_Table
    */
   public function getAdminListQuery(dmDoctrineQuery $query)
   {
-    $query = $this->joinLocals($query->withI18n(null, $this->getComponentName()), true);
-
+    $relations = $this->getOption('admin.query.relations', array());
+    $this
+    ->joinLocals($query->withI18n(null, $this->getComponentName()), true)
+    ->joinRelations($query, $relations, true);
+    
     if ($this->isNestedSet()) {
       if ($this->getTemplate('NestedSet')->getOption('hasManyRoots')) {
         $query->addOrderBy($this->getTemplate('NestedSet')->getOption('rootColumnName', 'root_id') . ' ASC');
