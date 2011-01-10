@@ -21,6 +21,7 @@
       'help'       => $field->getConfig('help'),
       'form'       => $form,
       'field'      => $field,
+      'search' => isset($search) ? $search : null,
       'class'      => ($it%2 ? 'odd' : 'even').' sf_admin_form_row sf_admin_'.strtolower($field->getType()).' sf_admin_form_field_'.$name.' '.(isset($form[$name]) ? dmString::underscore(get_class($form[$name]->getWidget())) : ''),
     ));if ($it%2) { echo '<div style="clear: both"></div>'; } $it++; ?]
   [?php endforeach; ?]

@@ -3,771 +3,773 @@
 class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 {
 
-  protected function getRouteArrayForAction($action, $object = null)
-  {
-    $route = array('sf_route' => $this->getDmModule()->getUnderscore(), 'action' => $action);
+	protected function getRouteArrayForAction($action, $object = null)
+	{
+		$route = array('sf_route' => $this->getDmModule()->getUnderscore(), 'action' => $action);
 
-    if (null !== $object)
-    {
-      $route['pk'] = $object->getPrimaryKey();
-    }
+		if (null !== $object)
+		{
+			$route['pk'] = $object->getPrimaryKey();
+		}
 
-    if(sfConfig::get('dm_admin_embedded'))
-    {
-      $route['dm_embed'] = 1;
-    }
+		if(sfConfig::get('dm_admin_embedded'))
+		{
+			$route['dm_embed'] = 1;
+		}
 
-    return $route;
-  }
+		return $route;
+	}
 
-  /**
-   * @return dmDoctrineRecord
-   */
-  public function getObject($relations = array())
-  {
-    if(!isset($this->object))
-    {
-      $pk = $this->getContext()->getRequest()->getParameter('pk', false);
-      if(!$pk)
-      {
-        $id = $this->getDmModule()->getTable()->getIdentifier();
-        $pk = $this->getContext()->getRequest()->getParameter($id, false);
-      }
+	/**
+	 * @return dmDoctrineRecord
+	 */
+	public function getObject($relations = array())
+	{
+		if(!isset($this->object))
+		{
+			$pk = $this->getContext()->getRequest()->getParameter('pk', false);
+			if(!$pk)
+			{
+				$id = $this->getDmModule()->getTable()->getIdentifier();
+				$pk = $this->getContext()->getRequest()->getParameter($id, false);
+			}
 
-      if($pk){
-        $this->object = $this->buildObjectQuery($pk)->fetchOne();
-      }else{
-        $this->object = false;
-      }
-    }
-    return $this->object;
-  }
+			if($pk){
+				$this->object = $this->buildObjectQuery($pk)->fetchOne();
+			}else{
+				$this->object = false;
+			}
+		}
+		return $this->object;
+	}
 
-  /**
-   * @param dmWebRequest $request
-   */
-  protected function getObjectOrForward404(dmWebRequest $request, $relations = array())
-  {
-    $this->forward404Unless(
-    $this->getObject($relations),
-    sprintf('Unable to find the %s object with the following parameters "%s").', $this->getDmModule()->getModel(), str_replace("\n", '', var_export($request->getParameterHolder()->getAll(), true)))
-    );
+	/**
+	 * @param dmWebRequest $request
+	 */
+	protected function getObjectOrForward404(dmWebRequest $request, $relations = array())
+	{
+		$this->forward404Unless(
+		$this->getObject($relations),
+		sprintf('Unable to find the %s object with the following parameters "%s").', $this->getDmModule()->getModel(), str_replace("\n", '', var_export($request->getParameterHolder()->getAll(), true)))
+		);
 
-    return $this->object;
-  }
+		return $this->object;
+	}
 
-  /**
-   * @return dmModule
-   */
-  public function getDmModule()
-  {
-    if (null !== $this->dmModule)
-    {
-      return $this->dmModule;
-    }
+	/**
+	 * @return dmModule
+	 */
+	public function getDmModule()
+	{
+		if (null !== $this->dmModule)
+		{
+			return $this->dmModule;
+		}
 
-    return $this->dmModule = $this->context->getModuleManager()->getModule($this->getModuleKey());
-  }
+		return $this->dmModule = $this->context->getModuleManager()->getModule($this->getModuleKey());
+	}
 
-  public function executeLoremize(dmWebRequest $request)
-  {
-    try
-    {
-      $this->getService('table_loremizer')->execute($this->getDmModule()->getTable(), $request->getParameter('nb', 10));
+	public function executeLoremize(dmWebRequest $request)
+	{
+		try
+		{
+			$this->getService('table_loremizer')->execute($this->getDmModule()->getTable(), $request->getParameter('nb', 10));
 
-      $this->getUser()->logInfo('Successfully loremized');
-    }
-    catch(Exception $e)
-    {
-      $this->getUser()->logError('An error occured during loremization');
+			$this->getUser()->logInfo('Successfully loremized');
+		}
+		catch(Exception $e)
+		{
+			$this->getUser()->logError('An error occured during loremization');
 
-      if (sfConfig::get('sf_debug'))
-      {
-        $this->getUser()->logAlert($e->getMessage());
-      }
+			if (sfConfig::get('sf_debug'))
+			{
+				$this->getUser()->logAlert($e->getMessage());
+			}
 
-      if (sfConfig::get('dm_debug'))
-      {
-        throw $e;
-      }
-    }
+			if (sfConfig::get('dm_debug'))
+			{
+				throw $e;
+			}
+		}
 
-    return $this->redirectBack();
-  }
+		return $this->redirectBack();
+	}
 
-  /*
-   * When sorting by a localKey column ( ex: categ_id ),
-   * try to sort with foreign's table identifier column ( ex: categ.name )
-   * Also try to sort with the translation table if any
-   */
-  protected function tryToSortWithForeignColumn(Doctrine_Query $query, array $sort)
-  {
-    $table = $this->getDmModule()->getTable();
+	/*
+	 * When sorting by a localKey column ( ex: categ_id ),
+	 * try to sort with foreign's table identifier column ( ex: categ.name )
+	 * Also try to sort with the translation table if any
+	 */
+	protected function tryToSortWithForeignColumn(Doctrine_Query $query, array $sort)
+	{
+		$table = $this->getDmModule()->getTable();
 
-    if('integer' === dmArray::get($table->getColumnDefinition($sort[0]), 'type'))
-    {
-      if($table->isI18nColumn($sort[0]))
-      {
-        $query->addOrderBy(sprintf('%s.%s %s', $query->getJoinAliasForRelationAlias($table->getComponentName(), 'Translation'), $sort[0], $sort[1]));
-        // Success, skip default sorting by local column
-        return;
-      }
-      // If the sort column is a local key, try to sort with foreign table
-      elseif ($relation = $table->getRelationHolder()->getLocalByColumnName($sort[0]))
-      {
-        if ($relation instanceof Doctrine_Relation_LocalKey && ($foreignTable = $relation->getTable()) instanceof dmDoctrineTable)
-        {
-          if (($foreignColumn = $foreignTable->getIdentifierColumnName()) != 'id')
-          {
-            if (!$joinAlias = $query->getJoinAliasForRelationAlias($table->getComponentName(), $relation->getAlias()))
-            {
-              $query->leftJoin(sprintf('%s.%s %s', $query->getRootAlias(), $relation->getAlias(), $relation->getAlias()));
-              $joinAlias = $relation->getAlias();
+		if('integer' === dmArray::get($table->getColumnDefinition($sort[0]), 'type'))
+		{
+			if($table->isI18nColumn($sort[0]))
+			{
+				$query->addOrderBy(sprintf('%s.%s %s', $query->getJoinAliasForRelationAlias($table->getComponentName(), 'Translation'), $sort[0], $sort[1]));
+				// Success, skip default sorting by local column
+				return;
+			}
+			// If the sort column is a local key, try to sort with foreign table
+			elseif ($relation = $table->getRelationHolder()->getLocalByColumnName($sort[0]))
+			{
+				if ($relation instanceof Doctrine_Relation_LocalKey && ($foreignTable = $relation->getTable()) instanceof dmDoctrineTable)
+				{
+					if (($foreignColumn = $foreignTable->getIdentifierColumnName()) != 'id')
+					{
+						if (!$joinAlias = $query->getJoinAliasForRelationAlias($table->getComponentName(), $relation->getAlias()))
+						{
+							$query->leftJoin(sprintf('%s.%s %s', $query->getRootAlias(), $relation->getAlias(), $relation->getAlias()));
+							$joinAlias = $relation->getAlias();
 
-              if($foreignTable->isI18nColumn($foreignColumn))
-              {
-                $query->leftJoin(sprintf('%s.%s %s', $joinAlias, 'Translation', $joinAlias.'Translation'));
-              }
-            }
+							if($foreignTable->isI18nColumn($foreignColumn))
+							{
+								$query->leftJoin(sprintf('%s.%s %s', $joinAlias, 'Translation', $joinAlias.'Translation'));
+							}
+						}
 
-            if($foreignTable->isI18nColumn($foreignColumn))
-            {
-              $query->addOrderBy(sprintf('%s.%s %s', $joinAlias.'Translation', $foreignColumn, $sort[1]));
-            }
-            else
-            {
-              $query->addOrderBy(sprintf('%s.%s %s', $joinAlias, $foreignColumn, $sort[1]));
-            }
-            // Success, skip default sorting by local column
-            return;
-          }
-        }
-      }
-    }
-    elseif($table->isI18nColumn($sort[0]))
-    {
-      $query->addOrderBy(sprintf('%s.%s %s', $query->getJoinAliasForRelationAlias($table->getComponentName(), 'Translation'), $sort[0], $sort[1]));
-      // Success, skip default sorting by local column
-      return;
-    }
+						if($foreignTable->isI18nColumn($foreignColumn))
+						{
+							$query->addOrderBy(sprintf('%s.%s %s', $joinAlias.'Translation', $foreignColumn, $sort[1]));
+						}
+						else
+						{
+							$query->addOrderBy(sprintf('%s.%s %s', $joinAlias, $foreignColumn, $sort[1]));
+						}
+						// Success, skip default sorting by local column
+						return;
+					}
+				}
+			}
+		}
+		elseif($table->isI18nColumn($sort[0]))
+		{
+			$query->addOrderBy(sprintf('%s.%s %s', $query->getJoinAliasForRelationAlias($table->getComponentName(), 'Translation'), $sort[0], $sort[1]));
+			// Success, skip default sorting by local column
+			return;
+		}
 
-    if($table->hasField($sort[0]))
-    {
-      $query->addOrderBy($sort[0] . ' ' . $sort[1]);
-    }
-  }
+		if($table->hasField($sort[0]))
+		{
+			$query->addOrderBy($sort[0] . ' ' . $sort[1]);
+		}
+	}
 
-  protected function processSortForm($form)
-  {
-    $request = $this->getRequest();
+	protected function processSortForm($form)
+	{
+		$request = $this->getRequest();
 
-    if ($request->isMethod('post'))
-    {
-      if($form->bindAndValid($request))
-      {
-        try
-        {
-          $form->save();
-        }
-        catch(Exception $e)
-        {
-          if (sfConfig::get('sf_debug'))
-          {
-            throw $e;
-          }
+		if ($request->isMethod('post'))
+		{
+			if($form->bindAndValid($request))
+			{
+				try
+				{
+					$form->save();
+				}
+				catch(Exception $e)
+				{
+					if (sfConfig::get('sf_debug'))
+					{
+						throw $e;
+					}
 
-          $this->getUser()->logError($this->getI18n()->__('A problem occured when sorting the items'), true);
-        }
+					$this->getUser()->logError($this->getI18n()->__('A problem occured when sorting the items'), true);
+				}
 
-        $this->getUser()->logInfo($this->getI18n()->__('The items have been sorted successfully'), true);
+				$this->getUser()->logInfo($this->getI18n()->__('The items have been sorted successfully'), true);
 
-        return $this->redirect($this->getRequest()->getUri());
-      }
-    }
-  }
+				return $this->redirect($this->getRequest()->getUri());
+			}
+		}
+	}
 
-  protected function batchToggleBoolean(array $ids, $field, $value)
-  {
-    $table = $this->getDmModule()->getTable();
-    $value = $value ? 1 : 0;
+	protected function batchToggleBoolean(array $ids, $field, $value)
+	{
+		$table = $this->getDmModule()->getTable();
+		$value = $value ? 1 : 0;
 
-    if (!$pk = $table->getPrimaryKey())
-    {
-      throw new dmException(sprintf('Table %s must have exactly one primary key to suppport batch actions', $table->getComponentName()));
-    }
+		if (!$pk = $table->getPrimaryKey())
+		{
+			throw new dmException(sprintf('Table %s must have exactly one primary key to suppport batch actions', $table->getComponentName()));
+		}
 
-    if (!$table->hasField($field))
-    {
-      throw new dmException(sprintf('Table %s has no field named %s', $table->getComponentName(), $field));
-    }
+		if (!$table->hasField($field))
+		{
+			throw new dmException(sprintf('Table %s has no field named %s', $table->getComponentName(), $field));
+		}
 
-    $query = $table->createQuery('r')->whereIn($pk, $ids);
+		$query = $table->createQuery('r')->whereIn($pk, $ids);
 
-    if($table->isI18nColumn($field))
-    {
-      $query->withI18n()->andWhere('rTranslation.'.$field.' = ?', 1-$value);
-    }
-    else
-    {
-      $query->andWhere($field.' = ?', 1-$value);
-    }
+		if($table->isI18nColumn($field))
+		{
+			$query->withI18n()->andWhere('rTranslation.'.$field.' = ?', 1-$value);
+		}
+		else
+		{
+			$query->andWhere($field.' = ?', 1-$value);
+		}
 
-    foreach($query->fetchRecords() as $record)
-    {
-      $record->set($field, $value);
-      $record->save();
-    }
+		foreach($query->fetchRecords() as $record)
+		{
+			$record->set($field, $value);
+			$record->save();
+		}
 
-    $this->getUser()->logInfo('The selected items have been modified successfully');
-  }
+		$this->getUser()->logInfo('The selected items have been modified successfully');
+	}
 
-  /*
-   * Force download an export of a table
-   * required options : format, extension, encoding, exportClass, module
-   */
-  protected function doExport(array $options)
-  {
-    /*
-     * get data in an array
-     */
-    $exportClass = $options['exportClass'];
-    $export = new $exportClass($options['module']->getTable(), $this->getI18n());
-    $data = $export->generate($options['format']);
+	/*
+	 * Force download an export of a table
+	 * required options : format, extension, encoding, exportClass, module
+	 */
+	protected function doExport(array $options)
+	{
+		/*
+		 * get data in an array
+		 */
+		$exportClass = $options['exportClass'];
+		$export = new $exportClass($options['module']->getTable(), $this->getI18n());
+		$data = $export->generate($options['format']);
 
-    /*
-     * transform into downloadable data
-     */
-    switch($options['extension'])
-    {
-      default:
-        $csv = new dmCsvWriter(',', '"');
-        $csv->setCharset($options['encoding']);
-        $data = $csv->convert($data);
-        $mime = 'text/csv';
-    }
+		/*
+		 * transform into downloadable data
+		 */
+		switch($options['extension'])
+		{
+			default:
+				$csv = new dmCsvWriter(',', '"');
+				$csv->setCharset($options['encoding']);
+				$data = $csv->convert($data);
+				$mime = 'text/csv';
+		}
 
-    $this->download($data, array(
+		$this->download($data, array(
       'file_name' => sprintf('%s-%s_%s.%s',
-    dmConfig::get('site_name'),
-    $this->getI18n()->__($options['module']->getName()),
-    date('Y-m-d'),
-    $options['extension']
-    ),
+		dmConfig::get('site_name'),
+		$this->getI18n()->__($options['module']->getName()),
+		date('Y-m-d'),
+		$options['extension']
+		),
       'mime_type' => sprintf('%s; charset=%s', $mime, $options['encoding'])
-    ));
-  }
+		));
+	}
 
-  /*
-   * Search methods
-   */
-  protected function processSearchQuery(dmDoctrineQuery $query, $search)
-  {
-    $searchParts = explode(' ', $search);
+	/*
+	 * Search methods
+	 */
+	protected function processSearchQuery(dmDoctrineQuery $query, $search, $table = null)
+	{
+		$searchParts = explode(' ', $search);
 
-    $rootAlias = $query->getRootAlias();
-    $translationAlias = $rootAlias.'Translation';
-    $table = $this->getDmModule()->getTable();
+		$rootAlias = $query->getRootAlias();
+		$translationAlias = $rootAlias.'Translation';
+		$table = null === $table ? $this->getDmModule()->getTable() : $table;
 
-    $query->withI18n($this->getUser()->getCulture(), $this->getDmModule()->getModel());
+		$query->withI18n($this->getUser()->getCulture(), $this->getDmModule()->getModel());
 
-    foreach($searchParts as $searchPart)
-    {
-      $ors = array();
-      $params = array();
+		foreach($searchParts as $searchPart)
+		{
+			$ors = array();
+			$params = array();
 
-      foreach($table->getAllColumns() as $columnName => $column)
-      {
-        $alias = $table->isI18nColumn($columnName) ? $translationAlias : $rootAlias;
+			foreach($table->getAllColumns() as $columnName => $column)
+			{
+				$alias = $table->isI18nColumn($columnName) ? $translationAlias : $rootAlias;
 
-        switch($column['type'])
-        {
-          case 'blob':
-          case 'clob':
-          case 'string':
-          case 'enum':
-          case 'date':
-            $ors[] = $alias.'.'.$columnName.' LIKE ?';
-            $params[] = '%'.$searchPart.'%';
-            break;
-          case 'integer':
-          case 'float':
-          case 'decimal':
-          case 'double':
-            if (is_numeric($searchPart))
-            {
-              $ors[] = $alias.'.'.$columnName.' = ?';
-              $params[] = $searchPart;
-            }
-            break;
-          case 'boolean':
-          case 'time':
-          case 'timestamp':
-          case 'date':
-          default:
-        }
-      }
+				switch($column['type'])
+				{
+					case 'blob':
+					case 'clob':
+					case 'string':
+					case 'enum':
+					case 'date':
+						$ors[] = $alias.'.'.$columnName.' LIKE ?';
+						$params[] = '%'.$searchPart.'%';
+						break;
+					case 'integer':
+					case 'float':
+					case 'decimal':
+					case 'double':
+						if (is_numeric($searchPart))
+						{
+							$ors[] = $alias.'.'.$columnName.' = ?';
+							$params[] = $searchPart;
+						}
+						break;
+					case 'boolean':
+					case 'time':
+					case 'timestamp':
+					case 'date':
+					default:
+				}
+			}
 
-      if(count($ors))
-      {
-        $query->addWhere(implode(' OR ', $ors), $params);
-      }
-    }
-  }
+			if(count($ors))
+			{
+				$query->addWhere(implode(' OR ', $ors), $params);
+			}
+		}
+	}
 
-  protected function addSearchQuery($query)
-  {
-    if (!$search = trim($this->getSearch()))
-    {
-      return $query;
-    }
+	protected function addSearchQuery($query)
+	{
+		if (!$search = trim($this->getSearch()))
+		{
+			return $query;
+		}
 
-    return $this->processSearchQuery($query, $search);
-  }
+		return $this->processSearchQuery($query, $search);
+	}
 
-  protected function getSearch()
-  {
-    return $this->getUser()->getAppliedSearchOnModule($this->getSfModule());
-  }
+	protected function getSearch()
+	{
+		return $this->getUser()->getAppliedSearchOnModule($this->getSfModule());
+	}
 
-  protected function setSearch($search)
-  {
-    $this->getUser()->setAttribute($this->getSfModule().'.search', $search, 'admin_module');
-  }
+	protected function setSearch($search)
+	{
+		$this->getUser()->setAttribute($this->getSfModule().'.search', $search, 'admin_module');
+	}
 
 
-  /*
-   * History methods
-   */
+	/*
+	 * History methods
+	 */
 
-  public function executeHistory(sfWebRequest $request)
-  {
-    $this->forward404Unless($this->getDmModule()->getTable()->isVersionable());
+	public function executeHistory(sfWebRequest $request)
+	{
+		$this->forward404Unless($this->getDmModule()->getTable()->isVersionable());
 
-    $this->object = $this->getObjectOrForward404($request);
+		$this->object = $this->getObjectOrForward404($request);
 
-    $this->revisions = $this->object->getVersion();
+		$this->revisions = $this->object->getVersion();
 
-    // we want an array, not a doctrine collection
-    $this->revisions = $this->revisions->getData();
+		// we want an array, not a doctrine collection
+		$this->revisions = $this->revisions->getData();
 
-    if (count($this->revisions) > 1)
-    {
-      usort($this->revisions, create_function('$a, $b',
+		if (count($this->revisions) > 1)
+		{
+			usort($this->revisions, create_function('$a, $b',
         'return $a->get(\'version\') < $b->get(\'version\');'
         ));
-    }
+		}
 
-    $this->dispatcher->notify(new sfEvent($this, 'admin.edit_object', array('object' => $this->object)));
+		$this->dispatcher->notify(new sfEvent($this, 'admin.edit_object', array('object' => $this->object)));
 
-    $this->dispatcher->connect('dm.bread_crumb.filter_links', array($this, 'historyListenToBreadCrumbFilterLinksEvent'));
-  }
+		$this->dispatcher->connect('dm.bread_crumb.filter_links', array($this, 'historyListenToBreadCrumbFilterLinksEvent'));
+	}
 
-  public function historyListenToBreadCrumbFilterLinksEvent(sfEvent $event, array $links)
-  {
-    $links[] = $this->getHelper()->tag('h1', $this->getI18n()->__('Revision history'));
+	public function historyListenToBreadCrumbFilterLinksEvent(sfEvent $event, array $links)
+	{
+		$links[] = $this->getHelper()->tag('h1', $this->getI18n()->__('Revision history'));
 
-    return $links;
-  }
+		return $links;
+	}
 
-  /*
-   * Sort methods
-   */
+	/*
+	 * Sort methods
+	 */
 
-  public function executeSortTable(sfWebRequest $request)
-  {
-    $this->forward404Unless($this->getDmModule()->getTable()->isSortable());
+	public function executeSortTable(sfWebRequest $request)
+	{
+		$this->forward404Unless($this->getDmModule()->getTable()->isSortable());
 
-    $this->context->getServiceContainer()->addParameters(array(
+		$this->context->getServiceContainer()->addParameters(array(
       'admin_sort_form.defaults'  => array(),
       'admin_sort_form.options'   => array(
         'module' => $this->getDmModule(),
         'query'  => $this->getDmModule()->getTable()->createQuery('r')->orderBy('r.position asc')
-    )
-    ));
+		)
+		));
 
-    $this->form = $this->getService('admin_sort_table_form');
+		$this->form = $this->getService('admin_sort_table_form');
 
-    $this->processSortForm($this->form);
-  }
+		$this->processSortForm($this->form);
+	}
 
-  public function executeSortTree(sfWebRequest $request)
-  {
-    $this->forward404Unless($this->getDmModule()->getTable()->isNestedSet());
+	public function executeSortTree(sfWebRequest $request)
+	{
+		$this->forward404Unless($this->getDmModule()->getTable()->isNestedSet());
 
-    sfConfig::set('dm_pageBar_enabled', false);
+		sfConfig::set('dm_pageBar_enabled', false);
 
-    $this->context->getServiceContainer()->addParameters(array(
+		$this->context->getServiceContainer()->addParameters(array(
       'model_tree_view.defaults'  => array(),
       'model_tree_view.options'   => array(
         'model'  => $this->getDmModule()->getModel(),
         'module' => $this->getDmModule()->__toString()
-    )
-    ));
+		)
+		));
 
-    $this->dm_module = $this->getDmModule();
+		$this->dm_module = $this->getDmModule();
 
-    $this->tree = $this->getService('model_tree_view', 'dmAdminModelTreeView');
+		$this->tree = $this->getService('model_tree_view', 'dmAdminModelTreeView');
 
-  }
+	}
 
-  public function executeSortReferers(sfWebRequest $request)
-  {
-    $this->forward404Unless($record = $this->getDmModule()->getTable()->find($request->getParameter('id')));
+	public function executeSortReferers(sfWebRequest $request)
+	{
+		$this->forward404Unless($record = $this->getDmModule()->getTable()->find($request->getParameter('id')));
 
-    $this->forward404Unless($moduleKey = $request->getParameter('refererModule'));
+		$this->forward404Unless($moduleKey = $request->getParameter('refererModule'));
 
-    $this->forward404Unless($this->context->getModuleManager()->hasModule($moduleKey));
+		$this->forward404Unless($this->context->getModuleManager()->hasModule($moduleKey));
 
-    $refererModule = $this->context->getModuleManager()->getModule($moduleKey);
+		$refererModule = $this->context->getModuleManager()->getModule($moduleKey);
 
-    $this->forward404Unless($refererModule->getTable()->isSortable());
+		$this->forward404Unless($refererModule->getTable()->isSortable());
 
-    $this->getServiceContainer()->addParameters(array(
+		$this->getServiceContainer()->addParameters(array(
       'admin_sort_form.defaults'  => array(),
       'admin_sort_form.options'   => array(
         'module'        => $refererModule,
         'parentRecord'  => $record,
         'query'         => $this->getSortReferersQuery($refererModule)
-    )
-    ));
+		)
+		));
 
-    $this->form = $this->getService('admin_sort_referers_form');
+		$this->form = $this->getService('admin_sort_referers_form');
 
-    $this->processSortForm($this->form);
-  }
+		$this->processSortForm($this->form);
+	}
 
-  protected function getSortReferersQuery(dmModule $refererModule)
-  {
-    return $refererModule->getTable()->createQuery('r')
-    ->whereIsActive(true, $refererModule->getModel())
-    ->orderBy('r.position asc');
-  }
+	protected function getSortReferersQuery(dmModule $refererModule)
+	{
+		return $refererModule->getTable()->createQuery('r')
+		->whereIsActive(true, $refererModule->getModel())
+		->orderBy('r.position asc');
+	}
 
-  /*
-   * List elements sorting
-   */
-  protected function addSortQuery($query)
-  {
-    if (array(null, null) == ($sort = $this->getSort()))
-    {
-      return;
-    }
+	/*
+	 * List elements sorting
+	 */
+	protected function addSortQuery($query)
+	{
+		if (array(null, null) == ($sort = $this->getSort()))
+		{
+			return;
+		}
 
-    if (!in_array(strtolower($sort[1]), array('asc', 'desc')))
-    {
-      $sort[1] = 'asc';
-    }
+		if (!in_array(strtolower($sort[1]), array('asc', 'desc')))
+		{
+			$sort[1] = 'asc';
+		}
 
-    $this->tryToSortWithForeignColumn($query, $sort);
-  }
+		$this->tryToSortWithForeignColumn($query, $sort);
+	}
 
-  protected function getSort()
-  {
-    if (null !== $sort = $this->getUser()->getAttribute($this->getSfModule().'.sort', null, 'admin_module'))
-    {
-      return $sort;
-    }
+	protected function getSort()
+	{
+		if (null !== $sort = $this->getUser()->getAttribute($this->getSfModule().'.sort', null, 'admin_module'))
+		{
+			return $sort;
+		}
 
-    $this->setSort($this->configuration->getDefaultSort());
+		$this->setSort($this->configuration->getDefaultSort());
 
-    return $this->getUser()->getAttribute($this->getSfModule().'.sort', null, 'admin_module');
-  }
+		return $this->getUser()->getAttribute($this->getSfModule().'.sort', null, 'admin_module');
+	}
 
-  protected function setSort(array $sort)
-  {
-    if (null !== $sort[0] && null === $sort[1])
-    {
-      $sort[1] = 'asc';
-    }
+	protected function setSort(array $sort)
+	{
+		if (null !== $sort[0] && null === $sort[1])
+		{
+			$sort[1] = 'asc';
+		}
 
-    $this->getUser()->setAttribute($this->getSfModule().'.sort', $sort, 'admin_module');
-  }
+		$this->getUser()->setAttribute($this->getSfModule().'.sort', $sort, 'admin_module');
+	}
 
-  protected function isValidSortColumn($column)
-  {
-    return $this->getDmModule()->getTable()->hasField($column);
-  }
+	protected function isValidSortColumn($column)
+	{
+		return $this->getDmModule()->getTable()->hasField($column);
+	}
 
-  /*
-   * Batch actions
-   */
-  public function executeBatch(sfWebRequest $request)
-  {
-    if (!$ids = $request->getParameter('ids'))
-    {
-      $this->getUser()->setFlash('error', 'You must at least select one item.');
+	/*
+	 * Batch actions
+	 */
+	public function executeBatch(sfWebRequest $request)
+	{
+		if (!$ids = $request->getParameter('ids'))
+		{
+			$this->getUser()->setFlash('error', 'You must at least select one item.');
 
-      $this->redirect('@'.$this->getDmModule()->getUnderscore());
-    }
+			$this->redirect('@'.$this->getDmModule()->getUnderscore());
+		}
 
-    foreach($request->getParameterHolder()->getAll() as $key => $value)
-    {
-      if (strncmp($key, 'batch', 5) === 0)
-      {
-        $action = $key;
-        break;
-      }
-    }
+		foreach($request->getParameterHolder()->getAll() as $key => $value)
+		{
+			if (strncmp($key, 'batch', 5) === 0)
+			{
+				$action = $key;
+				break;
+			}
+		}
 
-    if (!isset($action))
-    {
-      $this->getUser()->setFlash('error', 'You must select an action to execute on the selected items.');
+		if (!isset($action))
+		{
+			$this->getUser()->setFlash('error', 'You must select an action to execute on the selected items.');
 
-      $this->redirect('@'.$this->getDmModule()->getUnderscore());
-    }
+			$this->redirect('@'.$this->getDmModule()->getUnderscore());
+		}
 
-    if (!method_exists($this, $method = 'execute'.ucfirst($action)))
-    {
-      throw new InvalidArgumentException(sprintf('You must create a "%s" method for action "%s"', $method, $action));
-    }
+		if (!method_exists($this, $method = 'execute'.ucfirst($action)))
+		{
+			throw new InvalidArgumentException(sprintf('You must create a "%s" method for action "%s"', $method, $action));
+		}
 
-    if (!$this->getUser()->hasCredential($this->configuration->getCredentials($action)))
-    {
-      $this->forward(sfConfig::get('sf_secure_module'), sfConfig::get('sf_secure_action'));
-    }
+		if (!$this->getUser()->hasCredential($this->configuration->getCredentials($action)))
+		{
+			$this->forward(sfConfig::get('sf_secure_module'), sfConfig::get('sf_secure_action'));
+		}
 
-    $validator = new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => $this->getDmModule()->getModel()));
-    try
-    {
-      // validate ids
-      $ids = $validator->clean($ids);
+		$validator = new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => $this->getDmModule()->getModel()));
+		try
+		{
+			// validate ids
+			$ids = $validator->clean($ids);
 
-      //@todo add record security check here ! using dmModuleSecurityManager, create new method in it
-      //if there are some ids for which user can't execute the method, remove them, then execute them
-      //something like
-      $_action = substr($action, 5);
-      $_action = dmString::strtolower($_action);
-      $authorizedIdsForAction = $this->getDmModule()->getSecurityManager()->getIdsForAuthorizedActionWithinIds($_action, $this->getUser()->getUser(), $ids);
-      if(!$authorizedIdsForAction){
-        throw new LogicException('You cannot delete those elements because you are not authorized to do so.', 401);
-      }
-      if(count($ids) != count($authorizedIdsForAction)){
-        $request->setParameter('excluded_ids', array_diff($ids, $authorizedIdsForAction));
-      }
-      $request->setParameter('ids', $authorizedIdsForAction);
-      // execute batch
-      $this->$method($request);
-    }
-    catch (sfValidatorError $e)
-    {
-      $this->getUser()->setFlash('error', 'A problem occurs when deleting the selected items as some items do not exist anymore. ');
-    }
-    catch (LogicException $e)
-    {
-      $this->getUser()->setFlash('error', $e->getMessage());
-    }
+			//@todo add record security check here ! using dmModuleSecurityManager, create new method in it
+			//if there are some ids for which user can't execute the method, remove them, then execute them
+			//something like
+			$_action = substr($action, 5);
+			$_action = dmString::strtolower($_action);
+			$authorizedIdsForAction = $this->getDmModule()->getSecurityManager()->getIdsForAuthorizedActionWithinIds($_action, $this->getUser()->getUser(), $ids);
+			if(!$authorizedIdsForAction){
+				throw new LogicException('You cannot delete those elements because you are not authorized to do so.', 401);
+			}
+			if(count($ids) != count($authorizedIdsForAction)){
+				$request->setParameter('excluded_ids', array_diff($ids, $authorizedIdsForAction));
+			}
+			$request->setParameter('ids', $authorizedIdsForAction);
+			// execute batch
+			$this->$method($request);
+		}
+		catch (sfValidatorError $e)
+		{
+			$this->getUser()->setFlash('error', 'A problem occurs when deleting the selected items as some items do not exist anymore. ');
+		}
+		catch (LogicException $e)
+		{
+			$this->getUser()->setFlash('error', $e->getMessage());
+		}
 
-    $this->redirect('@'.$this->getDmModule()->getUnderscore());
-  }
+		$this->redirect('@'.$this->getDmModule()->getUnderscore());
+	}
 
-  protected function executeBatchDelete(sfWebRequest $request)
-  {
-    $table = $this->getDmModule()->getTable();
-    $ids = $request->getParameter('ids');
+	protected function executeBatchDelete(sfWebRequest $request)
+	{
+		$table = $this->getDmModule()->getTable();
+		$ids = $request->getParameter('ids');
 
-    foreach($table->createQuery()->whereIn($table->getPrimaryKey(), $ids)->fetchRecords() as $record)
-    {
-      $record->notify('delete');
-    }
+		foreach($table->createQuery()->whereIn($table->getPrimaryKey(), $ids)->fetchRecords() as $record)
+		{
+			$record->notify('delete');
+		}
 
-    $count = $table->createQuery()
-    ->delete()
-    ->from($this->getDmModule()->getModel())
-    ->whereIn($table->getPrimaryKey(), $ids)
-    ->execute();
+		$count = $table->createQuery()
+		->delete()
+		->from($this->getDmModule()->getModel())
+		->whereIn($table->getPrimaryKey(), $ids)
+		->execute();
 
-    if($request->hasParameter('excluded_ids') && $count >= count($ids))
-    {
-      $this->getUser()->logInfo('All the items you are allowed to delete have been successfully deleted. Other items were not deleted because you are not authorized to do so.');
-    }
-    elseif($request->hasParameter('excluded_ids') && $count < count($ids))
-    {
-      $this->getUser()->logInfo('An error occurs. You are authorized to delete only some of the selected items. Some of the items you are authorized to delete have been deleted.');
-    }
-    elseif ($count >= count($ids))
-    {
-      $this->getUser()->logInfo('The selected items have been deleted successfully.');
-    }
-    else
-    {
-      $this->getUser()->logInfo('A problem occurs when deleting the selected items.');
-    }
+		if($request->hasParameter('excluded_ids') && $count >= count($ids))
+		{
+			$this->getUser()->logInfo('All the items you are allowed to delete have been successfully deleted. Other items were not deleted because you are not authorized to do so.');
+		}
+		elseif($request->hasParameter('excluded_ids') && $count < count($ids))
+		{
+			$this->getUser()->logInfo('An error occurs. You are authorized to delete only some of the selected items. Some of the items you are authorized to delete have been deleted.');
+		}
+		elseif ($count >= count($ids))
+		{
+			$this->getUser()->logInfo('The selected items have been deleted successfully.');
+		}
+		else
+		{
+			$this->getUser()->logInfo('A problem occurs when deleting the selected items.');
+		}
 
-    $this->redirect('@'.$this->getDmModule()->getUnderscore());
-  }
+		$this->redirect('@'.$this->getDmModule()->getUnderscore());
+	}
 
-  protected function executeBatchActivate(sfWebRequest $request)
-  {
-    $this->batchToggleBoolean((array) $request->getParameter('ids'), 'is_active', true);
+	protected function executeBatchActivate(sfWebRequest $request)
+	{
+		$this->batchToggleBoolean((array) $request->getParameter('ids'), 'is_active', true);
 
-    $this->redirect('@'.$this->getDmModule()->getUnderscore());
-  }
+		$this->redirect('@'.$this->getDmModule()->getUnderscore());
+	}
 
-  protected function executeBatchDeactivate(sfWebRequest $request)
-  {
-    $this->batchToggleBoolean((array) $request->getParameter('ids'), 'is_active', false);
+	protected function executeBatchDeactivate(sfWebRequest $request)
+	{
+		$this->batchToggleBoolean((array) $request->getParameter('ids'), 'is_active', false);
 
-    $this->redirect('@'.$this->getDmModule()->getUnderscore());
-  }
+		$this->redirect('@'.$this->getDmModule()->getUnderscore());
+	}
 
-  public function executeToggleBoolean(dmWebRequest $request)
-  {
-    $this->forward404Unless(
-    $this->getDmModule()->getTable()->hasField($field = $request->getParameter('field'))
-    && ($record = $this->getDmModule()->getTable()->find($request->getParameter('pk')))
-    );
+	public function executeToggleBoolean(dmWebRequest $request)
+	{
+		$this->forward404Unless(
+		$this->getDmModule()->getTable()->hasField($field = $request->getParameter('field'))
+		&& ($record = $this->getDmModule()->getTable()->find($request->getParameter('pk')))
+		);
 
-    if('is_active' === $field && $record->getDmModule()->hasPage() && ($page = $record->getDmPage()))
-    {
-      $page->setIsActiveManually(!$record->get($field))->save();
-    }
-    else
-    {
-      $record->set($field, !$record->get($field));
-      $record->save();
-    }
+		if('is_active' === $field && $record->getDmModule()->hasPage() && ($page = $record->getDmPage()))
+		{
+			$page->setIsActiveManually(!$record->get($field))->save();
+		}
+		else
+		{
+			$record->set($field, !$record->get($field));
+			$record->save();
+		}
 
-    $this->getDispatcher()->notify(new sfEvent($this, 'dm.controller.redirect'));
+		$this->getDispatcher()->notify(new sfEvent($this, 'dm.controller.redirect'));
 
-    return $this->renderText($record->$field ? '1' : '0');
-  }
+		return $this->renderText($record->$field ? '1' : '0');
+	}
 
-  /**
-   * @param dmDoctrineQuery $query
-   * @return dmDoctrineQuery
-   */
-  protected function addRecordPermissionQuery($query)
-  {
-    $user = $this->getUser()->getUser();
-    if($user && $user->get('is_super_admin')){
-      return;
-    }
+	/**
+	 * @param dmDoctrineQuery $query
+	 * @return dmDoctrineQuery
+	 */
+	protected function addRecordPermissionQuery($query)
+	{
+		$user = $this->getUser()->getUser();
+		if($user && $user->get('is_super_admin')){
+			return;
+		}
 
-    if($this->getDmModule()->getSecurityManager()->isActionStrategicalySecurized($this->actionName))
-    {
-      return $this->getDmModule()->getSecurityManager()->getActionSecurizationStrategy($this->actionName)->addPermissionCheckToQuery($query, $this->actionName, $this->moduleName);
-    }
-    return $query;
-  }
+		if($this->getDmModule()->getSecurityManager()->isActionStrategicalySecurized($this->actionName))
+		{
+			return $this->getDmModule()->getSecurityManager()->getActionSecurizationStrategy($this->actionName)->addPermissionCheckToQuery($query, $this->actionName, $this->moduleName);
+		}
+		return $query;
+	}
 
-  /**
-   * Builds a query to request the object.
-   * This function can be overloaded to better fit your needs
-   * (i.e. make only one query against db to fetch every needed bits
-   * for your action & templates).
-   *  
-   * @return dmDoctrineQuery
-   */
-  protected function buildObjectQuery($pk, $relations = array(), $locals = array())
-  {
-    $table = $this->getDmModule()->getTable();
-    $id = $table->getIdentifier();
-    if(is_array($id)) { $id = $id[0]; }
-    $query = $table->createQuery('o')->where('o.' . $id . ' = ?', $pk);
-    $table->joinLocals($query, true);
-    $table->joinRelations($query, $this->getRelationsAlias(), true);
-    return $query;
-  }
+	/**
+	 * Builds a query to request the object.
+	 * This function can be overloaded to better fit your needs
+	 * (i.e. make only one query against db to fetch every needed bits
+	 * for your action & templates).
+	 *
+	 * @return dmDoctrineQuery
+	 */
+	protected function buildObjectQuery($pk, $relations = array(), $locals = array())
+	{
+		$table = $this->getDmModule()->getTable();
+		$id = $table->getIdentifier();
+		if(is_array($id)) { $id = $id[0]; }
+		$query = $table->createQuery('o')->where('o.' . $id . ' = ?', $pk);
+		$table->joinLocals($query, true);
+		$table->joinRelations($query, $this->getRelationsAlias(), true);
+		return $query;
+	}
 
-  /**
-   * Returns an array of strings representing the relations alias
-   * @return array
-   */
-  protected function getRelationsAlias()
-  {
-    $method = 'get' . ucfirst($this->actionName === 'index' ? 'list' : $this->actionName) . 'Display';
-    if(!method_exists($this->configuration, $method))
-    {
-      $method = 'getFormDisplay';
-    }
-    $fieldsets = $this->configuration->$method();
-    if($this->actionName !== 'index'){
-      $fieldsets = array_merge($fieldsets, $this->configuration->getFormDisplay());
-    }
-    $relations = array();
-    foreach($fieldsets as $fieldset=>$fields)
-    {
-      if(!is_array($fields)){
-        return $this->doGetRelations($fieldsets);
-      }else{
-        $relations = array_merge($relations, $this->doGetRelations($fields));
-      }
-    }
-    return array_diff($relations, array_keys($this->getDmModule()->getTable()->getRelationHolder()->getLocals()));
-  }
+	/**
+	 * Returns an array of strings representing the relations alias
+	 * @return array
+	 */
+	protected function getRelationsAlias()
+	{
+		$method = 'get' . ucfirst($this->actionName === 'index' ? 'list' : $this->actionName) . 'Display';
+		if(!method_exists($this->configuration, $method))
+		{
+			$method = 'getFormDisplay';
+		}
+		$fieldsets = $this->configuration->$method();
+		if($this->actionName !== 'index'){
+			$fieldsets = array_merge($fieldsets, $this->configuration->getFormDisplay());
+		}
+		$relations = array();
+		foreach($fieldsets as $fieldset=>$fields)
+		{
+			if(!is_array($fields)){
+				return $this->doGetRelations($fieldsets);
+			}else{
+				$relations = array_merge($relations, $this->doGetRelations($fields));
+			}
+		}
+		return array_diff($relations, array_keys($this->getDmModule()->getTable()->getRelationHolder()->getLocals()));
+	}
 
-  /**
-   * Called by getRelations() as it uses $this->configuration get*Fields()
-   * which can be an array of array or an array of string.
-   * This function helps no repeating code.
-   * 
-   * @param array $fields
-   */
-  protected function doGetRelations($fields)
-  {
-    $relations = array();
-    foreach($fields as $field)
-    {
-      if(substr($field, strlen($field)-5, strlen($field)) === '_list')
-      {
-        $field = dmString::camelize(substr($field, 0, strlen($field)-5));
-        if( $this->getDmModule()->getTable()->hasRelation($field))
-        {
-          $relations[] = $field;
-        }
-      }
-    }
-    return $relations;
-  }
-  
-  /**
-   * Called via ajax by edit forms which have many-to-many widgets
-   * 
-   * @param dmWebRequest $request
-   */
-  public function executePaginateRelation(dmWebRequest $request)
-  {
-    $field = lcfirst($request->getParameter('field'));
-    $relation = dmString::camelize(substr($field, 0, strlen($field) -5)); //remove _list @todo make it given by $request, using .metadata() and writting it within template
-    $relation = $this->getDmModule()->getTable()->getRelation($relation);
-    $startPage = $request->getParameter('page');
-    $maxPerPage = $request->getParameter('maxPerPage');
-    $this->getUser()->setAttribute($this->getModuleName() . '.' . $field . '.max_per_page', $maxPerPage, 'admin_module');
-    $search = $request->getParameter('search', false);
-    
-    $model = dmString::tableize($this->getDmModule()->getModel());
-    $this->$model = $this->getObject();
-    
-    $this->nearRecords = array();
-    $this->form = $this->configuration->getForm($this->$model);
-    $this->field = $this->form->getWidget($field);
-    /**
-     * @var dmDoctrinePager
-     */
-    $pager = $this->field->getPager();
-    $pager->setMaxPerPage($maxPerPage);
-    $pager->setPage($startPage);
-    
-    if(strlen($search)>0){
-      $this->getUser()->setAttribute($module.'.search', $search, 'admin_module');
-    }
-    
-    $queryBuilder = 'buildQueryFor' . dmString::camelize($field);
-    if(!method_exists($this, $queryBuilder))
-    {
-    	$query = dmDb::table($relation['class'])->createQuery();
-    }else{
-    	$query = $this->$queryBuilder();
-    }
-    $pager->setQuery($query);
-    
-    $this->name = $field;
-    $fields = array_diff(array_keys($this->form->getWidgetSchema()->getFields()), array($field));
-    foreach($fields as $field)
-    {
-      unset($this->form[$field]);
-    }
-    $this->setTemplate('edit');
-    $this->setLayout(false);
-  }
+	/**
+	 * Called by getRelations() as it uses $this->configuration get*Fields()
+	 * which can be an array of array or an array of string.
+	 * This function helps no repeating code.
+	 *
+	 * @param array $fields
+	 */
+	protected function doGetRelations($fields)
+	{
+		$relations = array();
+		foreach($fields as $field)
+		{
+			if(substr($field, strlen($field)-5, strlen($field)) === '_list')
+			{
+				$field = dmString::camelize(substr($field, 0, strlen($field)-5));
+				if( $this->getDmModule()->getTable()->hasRelation($field))
+				{
+					$relations[] = $field;
+				}
+			}
+		}
+		return $relations;
+	}
+
+	/**
+	 * Called via ajax by edit forms which have many-to-many widgets
+	 *
+	 * @param dmWebRequest $request
+	 */
+	public function executePaginateRelation(dmWebRequest $request)
+	{
+		$field = lcfirst($request->getParameter('field'));
+		$relation = dmString::camelize(substr($field, 0, strlen($field) -5)); //remove _list @todo make it given by $request, using .metadata() and writting it within template
+		$relation = $this->getDmModule()->getTable()->getRelation($relation);
+		$startPage = $request->getParameter('page');
+		$maxPerPage = $request->getParameter('maxPerPage');
+		$this->getUser()->setAttribute($this->getModuleName() . '.' . $field . '.max_per_page', $maxPerPage, 'admin_module');
+		$search = $request->getParameter('search', false);
+
+		$model = dmString::tableize($this->getDmModule()->getModel());
+		$this->$model = $this->getObject();
+
+		$this->nearRecords = array();
+		$this->form = $this->configuration->getForm($this->$model);
+		$this->field = $this->form->getWidget($field);
+		/**
+		 * @var dmDoctrinePager
+		 */
+		$pager = $this->field->getPager();
+		$pager->setMaxPerPage($maxPerPage);
+		$pager->setPage($startPage);
+
+		$queryBuilder = 'buildQueryFor' . dmString::camelize($field);
+		if(!method_exists($this, $queryBuilder))
+		{
+			$table = dmDb::table($relation['class']);
+			$query = $table->createQuery('r');
+			if(strlen($search)>0){
+				$this->processSearchQuery($query, $search, $table);
+			}
+			$this->search = $search;
+		}else{
+			$query = $this->$queryBuilder($search);
+		}
+
+		$pager->setQuery($query);
+
+		$this->name = $field;
+		$fields = array_diff(array_keys($this->form->getWidgetSchema()->getFields()), array($field));
+		foreach($fields as $field)
+		{
+			unset($this->form[$field]);
+		}
+		$this->setTemplate('edit');
+		$this->setLayout(false);
+	}
 }

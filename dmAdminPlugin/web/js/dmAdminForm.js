@@ -14,9 +14,7 @@
       this.droppableMedia();
       this.hotKeys();
       this.rowColors();
-      this.editMaxPerPage();
-      this.editPaginator();
-      this.searchPaginator();
+      this.pagination();
     },
 
     rowColors: function()
@@ -247,69 +245,35 @@
       });
       
       $('.clear > a', self.element).unbind('click').click(function(){
-    	  $(this).parent().parent().children('input').val('').keyup();
-    	  
+    	  var self = $(this);
+    	  $(this).parent().parent().children('input').val('');
+    	  var pagination = $(this).parent().parent().parent().find('.dm_form_pagination');
+    	  var metadata = pagination.metadata();
+    	  self.parent().parent().parent().parent().block();
+		  var link = metadata.link;
+		  var requestedPage = 1;
+		  link += '/page/' + requestedPage;
+		  link += '/maxPerPage/' + self.parent().parent().parent().find('.dm_max_per_page').val();
+		  
+		  $.ajax({
+			  url: link,
+			  success: function(data){
+				  data = $(data).find('.fieldset_content_inner .sf_widget_form_dm_doctrine_choice .content');
+				  self.parent().parent().parent().parent().html(data.html()).removeAttr('style');
+				  $('.tipsy').fadeOut(function(){$('.tispy').remove()});
+				  $.dm.ctrl.init();
+				  self.parent().parent().parent().parent().unblock();
+			  }
+		  });
+		  return false;
       });
       
       
     },
 
-    searchPaginator: function(){
-    	/*
-    	$('.search-box', this.element).unbind('click').bind('click', function(e){
-    		var self = $(this);
-    		e.stopPropagation();
-    		var searchBox = $(this).parent().children('.search-box');
-    		var searching = searchBox.val();
-    		var metadata = $(this).parent().parent().children('.dm_form_pagination').metadata();
-    		var link = metadata.link;
-    		self.parent().parent().parent().block();
-    		console.log(self.parent().parent().parent());
-    		link += '/search/' + searching;
-    		link += '/page/1';
-    		link += '/maxPerPage/' + $(this).parent().parent().find('.dm_max_per_page').val();
-    		$.ajax({
-    			url: link,
-    			success: function(data){
-    				  data = $(data).find('.fieldset_content_inner .sf_widget_form_dm_doctrine_choice .content');
-					  self.parent().parent().parent().html(data.html()).removeAttr('style');
-					  $('.tipsy').fadeOut(function(){$('.tispy').remove()});
-					  $.dm.ctrl.init();
-					  self.parent().parent().parent().unblock();
-    			}
-    		});
-    		return false;
-    	});*/
-    },
-
-	  editMaxPerPage: function(){
-	    	var self = this;
-		  $('.dm_max_per_page', self.element).bind('change', function(e){
-			  var self = $(this);
-			  e.preventDefault();
-			  self.parent().parent().parent().block();
-			  var target = $(e.originalTarget);
-			  var metadata = $(this).parent().metadata();
-			  var link = metadata.link;
-			  var currentPage = metadata.currentPage;
-			  var requestedPage = null;
-			  link += '/maxPerPage/' + $(this).val();
-			  $.ajax({
-				  url: link,
-				  success: function(data){
-					  data = $(data).find('.fieldset_content_inner .sf_widget_form_dm_doctrine_choice .content');
-					  self.parent().parent().parent().html(data.html()).removeAttr('style');
-					  $('.tipsy').fadeOut(function(){$('.tispy').remove()});
-					  $.dm.ctrl.init();
-					  self.parent().parent().parent().unblock();
-				  }
-			  });
-		  });
-		  
-	  },
-	  
-	  editPaginator: function(){
-		  $('.dm_checkbox_tools > .dm_form_pagination a').unbind('click').click(function(e){
+	pagination: function(){
+		
+		$('.dm_checkbox_tools > .dm_form_pagination a').unbind('click').click(function(e){
 			  var self = $(this);
 			  e.preventDefault();
 			  self.parent().parent().parent().block();
@@ -332,6 +296,11 @@
 			  }
 			  link += '/page/' + requestedPage;
 			  link += '/maxPerPage/' + self.parent().parent().parent().find('.dm_max_per_page').val();
+			  
+			  var search = self.parent().parent().parent().find('.search-box').val();
+			  if(search.length > 0){
+				  link += '/search/' + search;
+			  }
 			  $.ajax({
 				  url: link,
 				  success: function(data){
@@ -345,7 +314,60 @@
 			  return false;
 		  });
 		  
-	  }
+		  $('.dm_max_per_page', self.element).bind('change', function(e){
+			  var self = $(this);
+			  e.preventDefault();
+			  self.parent().parent().parent().block();
+			  var target = $(e.originalTarget);
+			  var metadata = $(this).parent().metadata();
+			  var link = metadata.link;
+			  var currentPage = metadata.currentPage;
+			  var requestedPage = null;
+			  link += '/maxPerPage/' + $(this).val();
+			  $.ajax({
+				  url: link,
+				  success: function(data){
+					  data = $(data).find('.fieldset_content_inner .sf_widget_form_dm_doctrine_choice .content');
+					  self.parent().parent().parent().html(data.html()).removeAttr('style');
+					  $('.tipsy').fadeOut(function(){$('.tispy').remove()});
+					  $.dm.ctrl.init();
+					  self.parent().parent().parent().unblock();
+				  }
+			  });
+		  });
+		  
+		  $('.search-box', this.element).unbind('keypress').bind('keypress', function(e){
+	    		var self = $(this);
+	    		if(e.keyCode === 13)
+    			{
+	    			var searchBox = $(this).parent().children('.search-box');
+		    		var searching = searchBox.val();
+		    		var metadata = $(this).parent().parent().children('.dm_form_pagination').metadata();
+		    		var link = metadata.link;
+		    		self.block();
+		    		link += '/search/' + searching;
+		    		link += '/page/1';
+		    		link += '/maxPerPage/' + $(this).parent().parent().find('.dm_max_per_page').val();
+		    		$('.tipsy-inner').remove();
+		    		$.ajax({
+		    			url: link,
+		    			success: function(data){
+		    				  data = $(data).find('.fieldset_content_inner .sf_widget_form_dm_doctrine_choice .content');
+							  self.parent().parent().parent().html(data.html()).removeAttr('style');
+							  $('.tipsy').remove();
+							  $('.tipsy-inner').remove();
+							  $.dm.ctrl.init();
+							  self.parent().parent().parent().find('.search-box').unblock().focus();
+							  
+		    			}
+		    		});
+		    		return false;	    			
+    			}
+	    		else{
+	    			return true;
+	    		}
+	    	});
+	}
     
   });
   
