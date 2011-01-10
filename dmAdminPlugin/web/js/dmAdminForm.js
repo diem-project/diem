@@ -50,7 +50,7 @@
           accept: '#dm_media_bar li',
           activeClass: 'droppable_active',
           hoverClass: 'droppable_hover',
-          //          tolerance:    'touch',
+          // tolerance: 'touch',
           drop: function(e, ui)
           {
             var mediaId = ui.draggable.attr('id').replace(/dmm/, '');
@@ -72,8 +72,10 @@
     
     focusFirstInput: function()
     {
+      if(this.alreadyDone) return;
       if ($firstInput = $('div.sf_admin_form_row_inner input:first', this.$)) 
       {
+        this.alreadyDone = true;
         $firstInput.focus();
       }
     },
@@ -348,7 +350,7 @@
 		    		var searching = searchBox.val();
 		    		var metadata = $(this).parent().parent().children('.dm_form_pagination').metadata();
 		    		var link = metadata.link;
-		    		self.block();
+		    		self.parent().parent().parent().block();
 		    		link += '/search/' + searching;
 		    		link += '/page/1';
 		    		link += '/maxPerPage/' + $(this).parent().parent().find('.dm_max_per_page').val();
@@ -357,12 +359,12 @@
 		    			url: link,
 		    			success: function(data){
 		    				  data = $(data).find('.fieldset_content_inner .sf_widget_form_dm_doctrine_choice .content');
-							  self.parent().parent().parent().html(data.html()).removeAttr('style');
+							  self = self.parent().parent().parent().html(data.html()).removeAttr('style');
 							  $('.tipsy').remove();
 							  $('.tipsy-inner').remove();
 							  $.dm.ctrl.init();
-							  self.parent().parent().parent().find('.search-box').unblock().focus();
-							  
+							  self.parent().parent().parent().parent().unblock();
+							  self.find('.search-box').focus();
 		    			}
 		    		});
 		    		return false;	    			
