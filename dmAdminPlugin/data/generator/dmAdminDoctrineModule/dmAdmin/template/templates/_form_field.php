@@ -63,14 +63,27 @@
       
       echo $form[$name]->renderLabel($label);
       
-      if($form[$name]->getWidget() instanceof sfWidgetFormDoctrineChoice && $form[$name]->getWidget()->getOption('multiple'))
+      if($form[$name]->getWidget() instanceof sfWidgetFormDmDoctrineChoice && $form[$name]->getWidget()->getOption('multiple'))
       {
         echo sprintf('<div class="control selection"><span class="select_all">%s</span><span class="unselect_all">%s</span><span class="see_selected">%s</span><span class="see_unselected">%s</span><span class="see_all">%s</span></div>', __('Select all', array(), 'dm'), __('Unselect all', array(), 'dm'), __('See selected', array(), 'dm'), __('See unselected', array(), 'dm'), __('See all', array(), 'dm'));
+        
+        $pager = $form[$name]->getWidget()->getPager();
+        $pager->setMaxPerPage($sf_user->getAttribute('<?php echo $this->getModuleName()?>.' . $name . '.max_per_page', 10, 'admin_module'));
+        $pager->init();
+        $linkArray = $helper->getRouteArrayForAction('paginateRelation', $form->getObject());
+        $linkArray['field'] = $name;
+        ob_start();
+        include_partial('<?php echo $this->getModuleName()?>/form_field_pagination', array('pager' => $pager, 'field' => $name, 'link' => url_for($linkArray)));
+        $pagination = ob_get_clean();
+        
+        $checkbox_tools = sprintf('<div class="dm_checkbox_tools"><div class="dm_checkbox_search_filter"><input class="search-box" type="text" title="Search" /><input title="Search" type="submit" value="%s" class="dm_submit ui-corner-right search"/><span class="clear"><a title="Clear search">X</a></span></div>%s</div>', __('Search', array(), 'dm'), $pagination);
+      }else{
+      	$checkbox_tools = '';
       }
       
       echo '</div>';
 
-      echo '<div class="content">'.$form[$name]->render($attributes instanceof sfOutputEscaper ? $attributes->getRawValue() : $attributes).'</div>';
+      echo '<div class="content">'.$checkbox_tools.$form[$name]->render($attributes instanceof sfOutputEscaper ? $attributes->getRawValue() : $attributes).'</div>';
 
       if ($help)
       {

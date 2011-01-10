@@ -667,6 +667,10 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
   protected function getRelations()
   {
     $method = 'get' . ucfirst($this->actionName === 'index' ? 'list' : $this->actionName) . 'Display';
+    if(!method_exists($this->configuration, $method))
+    {
+      $method = 'getFormDisplay';
+    }
     $fieldsets = $this->configuration->$method();
     if($this->actionName !== 'index'){
       $fieldsets = array_merge($fieldsets, $this->configuration->getFormDisplay());
@@ -698,5 +702,43 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
       }
     }
     return $relations;
+  }
+  
+  public function executePaginateRelation(sfWebRequest $request)
+  {
+    $field = lcfirst($request->getParameter('field'));
+    $startPage = $request->getParameter('page');
+    $maxPerPage = $request->getParameter('maxPerPage');
+    $this->getUser()->setAttribute($this->getModuleName() . '.' . $field . '.max_per_page', $maxPerPage, 'admin_module');
+    $search = $request->getParameter('search', false);
+    
+    $model = dmString::tableize($this->getDmModule()->getModel());
+    $this->$model = $this->getObject();
+    
+    $this->nearRecords = array();
+    $this->form = $this->configuration->getForm($this->$model);
+    $this->field = $this->form->getWidget($field);
+    /**
+     * @var dmDoctrinePager
+     */
+    $pager = $this->field->getPager();
+    $pager->setMaxPerPage($maxPerPage);
+    $pager->setPage($startPage);
+    
+    if(strlen($search)>0){
+      $this->getUser()->setAttribute($module.'.search', $search, 'admin_module');
+    }
+    $query = $this->buildQuery();
+    $pager->setQuery($query);
+    
+    $this->name = $field;
+    $fields = array_keys($this->form->getWidgetSchema()->getFields());
+    $fields = array_diff($fields, array($field));
+    foreach($fields as $field)
+    {
+      unset($this->form[$field]);
+    }
+    $this->setTemplate('edit');
+    $this->setLayout(false);
   }
 }

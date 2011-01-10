@@ -244,8 +244,8 @@ div.sf_admin_form ul.checkbox_list > li input {
   cursor: pointer;
 }
 
-div.sf_admin_form div.dm_checkbox_search {
-  padding: 5px 10px;
+div.sf_admin_form div.dm_checkbox_tools{
+	padding: 5px 10px;
   background: url(../../dmCorePlugin/images/default_bg.png) repeat-x 50% 50%;
   border-radius: 4px 4px 0 0;
   -moz-border-radius: 4px 4px 0 0;
@@ -255,9 +255,68 @@ div.sf_admin_form div.dm_checkbox_search {
   box-shadow: 0 0 5px #aaa;
   -moz-box-shadow: 0 0 5px #aaa;
   -webkit-box-shadow: 0 0 5px #aaa;
+
 }
 
-div.sf_admin_form div.dm_checkbox_search > input {
+div.sf_admin_form div.dm_checkbox_search_filter,
+div.sf_admin_form div.dm_form_pagination {
+  display: inline;
+}
+
+div.sf_admin_form div.dm_form_pagination > div, a{
+  display: inline;	
+}
+
+div.sf_admin_form div.dm_checkbox_tools select.dm_max_per_page{
+  width: auto;
+  float: left;	
+}
+
+div.sf_admin_form > div.dm_form_pagination {
+  float: right;
+  margin: 3px 0 0 0;
+}
+
+div.dm_form_pagination > a,
+div.dm_form_pagination > div {
+  float: left;
+  margin: 0 3px;
+}
+div.dm_form_pagination > div.dm_pagination_status {
+  text-align:center;
+  width:100px;
+}
+div.dm_form_pagination > div.disabled {
+  opacity: 0.3;
+}
+
+div.sf_admin_form > select.dm_max_per_page {
+  float: right;
+  margin-right: 10px;
+}
+
+div.dm_form_pagination strong {
+}
+
+div.sf_admin_form div.dm_checkbox_search_filter {
+  padding-left: 10px;	
+}
+
+div.sf_admin_form div.sf_admin_form_row_inner input.dm_submit{
+  width: 50px;
+  background: url("../../dmCorePlugin/images/default_bg.png") repeat-x scroll left center transparent;
+  border-color: #D3D3D3 #D3D3D3 #D3D3D3 -moz-use-text-color;
+  border-style: solid solid solid none;
+  border-width: 1px 1px 1px medium;
+  color: #444444;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 2px 0px 1px;
+}
+
+div.sf_admin_form div.dm_checkbox_search_filter > input,
+div.sf_admin_form div.dm_form_pagination > input
+ {
   border-radius: 4px;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
@@ -268,6 +327,14 @@ div.sf_admin_form div.dm_checkbox_search > input {
   font-size: 12px;
   background: #FFFFFF;
   border: 1px solid #D4D4D4;
+}
+
+div.sf_admin_form div.dm_checkbox_tools span.clear{
+  padding-left: 5px;	
+}
+
+div.sf_admin_form div.dm_checkbox_tools span.clear a{
+  text-decoration: none;
 }
 
 div.sf_admin_form .dm_media_file {

@@ -25,12 +25,12 @@ abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->
 
 <?php foreach ($this->getManyToManyRelations() as $relation): ?>
   <?php if ('DmMedia' === $relation->getClass()) continue; ?>
-      '<?php echo $this->underscore($relation['alias']) ?>_list'<?php echo str_repeat(' ', $this->getNumberOfSpaces($this->underscore($relation['alias']).'_list')) ?> => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => '<?php echo $relation['table']->getOption('name') ?>', 'expanded' => true)),
+      '<?php echo $this->underscore($relation['alias']) ?>_list'<?php echo str_repeat(' ', $this->getNumberOfSpaces($this->underscore($relation['alias']).'_list')) ?> => new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => '<?php echo $relation['table']->getOption('name') ?>', 'expanded' => true, 'maxPerPage' => 10)),
 <?php endforeach; ?>
 
 <?php foreach($this->getOneToManyRelations() as $relation):?>
 			<?php if($relation['alias'] === 'Translation') continue;?>
-			'<?php echo $this->underscore($relation['alias']) ?>_list'<?php echo str_repeat(' ', $this->getNumberOfSpaces($this->underscore($relation['alias']).'_list')) ?> => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => '<?php echo $relation['table']->getOption('name') ?>', 'expanded' => true)),
+			'<?php echo $this->underscore($relation['alias']) ?>_list'<?php echo str_repeat(' ', $this->getNumberOfSpaces($this->underscore($relation['alias']).'_list')) ?> => new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => '<?php echo $relation['table']->getOption('name') ?>', 'expanded' => true, 'maxPerPage' => 10)),
 <?php endforeach;?>
 
 <?php foreach($this->getOneToOneRelations() as $relation):?>
