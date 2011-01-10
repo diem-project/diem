@@ -255,7 +255,8 @@
     },
 
     searchPaginator: function(){
-    	$('.dm_submit.search', this.element).unbind('click').bind('click', function(e){
+    	/*
+    	$('.search-box', this.element).unbind('click').bind('click', function(e){
     		var self = $(this);
     		e.stopPropagation();
     		var searchBox = $(this).parent().children('.search-box');
@@ -278,7 +279,7 @@
     			}
     		});
     		return false;
-    	});
+    	});*/
     },
 
 	  editMaxPerPage: function(){
@@ -308,7 +309,6 @@
 	  },
 	  
 	  editPaginator: function(){
-		  
 		  $('.dm_checkbox_tools > .dm_form_pagination a').unbind('click').click(function(e){
 			  var self = $(this);
 			  e.preventDefault();
@@ -342,6 +342,7 @@
 					  self.parent().parent().parent().unblock();
 				  }
 			  });
+			  return false;
 		  });
 		  
 	  }

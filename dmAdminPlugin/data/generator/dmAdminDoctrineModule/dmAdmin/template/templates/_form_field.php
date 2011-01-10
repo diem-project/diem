@@ -76,7 +76,7 @@
         include_partial('<?php echo $this->getModuleName()?>/form_field_pagination', array('pager' => $pager, 'field' => $name, 'link' => url_for($linkArray)));
         $pagination = ob_get_clean();
         
-        $checkbox_tools = sprintf('<div class="dm_checkbox_tools"><div class="dm_checkbox_search_filter"><input class="search-box" type="text" title="Search" /><input title="Search" type="submit" value="%s" class="dm_submit ui-corner-right search"/><span class="clear"><a title="Clear search">X</a></span></div>%s</div>', __('Search', array(), 'dm'), $pagination);
+        $checkbox_tools = sprintf('<div class="dm_checkbox_tools"><div class="dm_checkbox_search_filter"><input class="search-box" type="text" title="Search" /><span class="clear"><a title="Clear search">X</a></span></div>%s</div>', $pagination);
       }else{
       	$checkbox_tools = '';
       }

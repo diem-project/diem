@@ -651,6 +651,11 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
   }
 
   /**
+   * Builds a query to request the object.
+   * This function can be overloaded to better fit your needs
+   * (i.e. make only one query against db to fetch every needed bits
+   * for your action & templates).
+   *  
    * @return dmDoctrineQuery
    */
   protected function buildObjectQuery($pk, $relations = array(), $locals = array())
@@ -660,11 +665,15 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
     if(is_array($id)) { $id = $id[0]; }
     $query = $table->createQuery('o')->where('o.' . $id . ' = ?', $pk);
     $table->joinLocals($query, true);
-    $table->joinRelations($query, array_keys($table->getRelations()), true);
+    $table->joinRelations($query, $this->getRelationsAlias(), true);
     return $query;
   }
 
-  protected function getRelations()
+  /**
+   * Returns an array of strings representing the relations alias
+   * @return array
+   */
+  protected function getRelationsAlias()
   {
     $method = 'get' . ucfirst($this->actionName === 'index' ? 'list' : $this->actionName) . 'Display';
     if(!method_exists($this->configuration, $method))
@@ -684,9 +693,16 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
         $relations = array_merge($relations, $this->doGetRelations($fields));
       }
     }
-    return $relations;
+    return array_diff($relations, array_keys($this->getDmModule()->getTable()->getRelationHolder()->getLocals()));
   }
 
+  /**
+   * Called by getRelations() as it uses $this->configuration get*Fields()
+   * which can be an array of array or an array of string.
+   * This function helps no repeating code.
+   * 
+   * @param array $fields
+   */
   protected function doGetRelations($fields)
   {
     $relations = array();
@@ -704,9 +720,16 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
     return $relations;
   }
   
-  public function executePaginateRelation(sfWebRequest $request)
+  /**
+   * Called via ajax by edit forms which have many-to-many widgets
+   * 
+   * @param dmWebRequest $request
+   */
+  public function executePaginateRelation(dmWebRequest $request)
   {
     $field = lcfirst($request->getParameter('field'));
+    $relation = dmString::camelize(substr($field, 0, strlen($field) -5)); //remove _list @todo make it given by $request, using .metadata() and writting it within template
+    $relation = $this->getDmModule()->getTable()->getRelation($relation);
     $startPage = $request->getParameter('page');
     $maxPerPage = $request->getParameter('maxPerPage');
     $this->getUser()->setAttribute($this->getModuleName() . '.' . $field . '.max_per_page', $maxPerPage, 'admin_module');
@@ -728,12 +751,18 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
     if(strlen($search)>0){
       $this->getUser()->setAttribute($module.'.search', $search, 'admin_module');
     }
-    $query = $this->buildQuery();
+    
+    $queryBuilder = 'buildQueryFor' . dmString::camelize($field);
+    if(!method_exists($this, $queryBuilder))
+    {
+    	$query = dmDb::table($relation['class'])->createQuery();
+    }else{
+    	$query = $this->$queryBuilder();
+    }
     $pager->setQuery($query);
     
     $this->name = $field;
-    $fields = array_keys($this->form->getWidgetSchema()->getFields());
-    $fields = array_diff($fields, array($field));
+    $fields = array_diff(array_keys($this->form->getWidgetSchema()->getFields()), array($field));
     foreach($fields as $field)
     {
       unset($this->form[$field]);

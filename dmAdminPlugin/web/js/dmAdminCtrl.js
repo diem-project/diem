@@ -216,7 +216,7 @@
     
     pagination: function(){
         	var self = this;
-    		  $('.dm_form_pagination a', self.element).unbind('click').click(function(e){
+    		  $('.dm_list_action_bar .dm_form_pagination a', self.element).unbind('click').click(function(e){
     			  $('#dm_admin_content').block();
     			  var link = $(this).attr('href');
     			  $.ajax({

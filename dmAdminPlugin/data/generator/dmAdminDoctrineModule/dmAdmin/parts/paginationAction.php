@@ -35,7 +35,7 @@
     }
 
     $this->filters->setTableMethod($tableMethod);
-		$this->getDmModule()->getTable()->setOption('admin.query.relations', $this->getRelations());
+		$this->getDmModule()->getTable()->setOption('admin.query.relations', $this->getRelationsAlias());
     $query = $this->filters->buildQuery($this->getFilters());
 <?php else: ?>
     $query = dmDb::table('<?php echo $this->getModelClass() ?>')
