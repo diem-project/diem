@@ -207,7 +207,12 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
 		}
 		else if ($column->isForeignKey())
 		{
-			$widgetSubclass = 'DoctrineChoice';
+		  if($this->table->isPaginatedColumn($column->getName()))
+		  {
+		    $widgetSubclass = 'DmDoctrineChoice';
+		  }else{
+			  $widgetSubclass = 'DoctrineChoice';
+		  }
 		}
 
 		$widgetSubclass = $this->getGeneratorManager()->getConfiguration()->getEventDispatcher()->filter(
@@ -301,7 +306,7 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
 	 * @param boolean $withoutColumnAggregationKeys To include or not column_aggregation keys (columns) set by subclasses
 	 * @return array $columns
 	 */
-	public function getColumns($withoutColumnAggregationKeys = false, $withoutLocalKeyRelationsFromSubclasses = false)
+	public function getColumns($withoutColumnAggregationKeys = false, $withoutLocalKeyRelationsFromSubclasses = false, $withoutLocalKeys = false)
 	{
 		$parentModel = $this->getParentModel();
 		$parentColumns = $parentModel ? array_keys(Doctrine_Core::getTable($parentModel)->getColumns()) : array();
@@ -339,6 +344,20 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
 				}
 				$selfColumns = array_diff($selfColumns, $subClassLocalKeysRelations);
 			}
+		}
+		
+		if($withoutLocalKeys)
+		{
+		  $relations = $this->table->getRelations();
+		  $toRemove = array();
+		  foreach($relations as $relation)
+		  {
+		    if($relation instanceof Doctrine_Relation_LocalKey)
+		    {
+		      $toRemove[] = $relation['local'];
+		    }
+		  }
+		  $selfColumns = array_diff($selfColumns, $toRemove);
 		}
 
 		foreach ($selfColumns as $name)
