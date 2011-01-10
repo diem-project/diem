@@ -24,7 +24,6 @@ js:
     ping:             dmAdminPing
     pageTree:         dmAdminPageTree
     modelTree:        dmAdminModelTree
-    paginator:        dmAdminPaginator
 
 css:
 

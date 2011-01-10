@@ -324,6 +324,10 @@
 			  var currentPage = metadata.currentPage;
 			  var requestedPage = null;
 			  link += '/maxPerPage/' + $(this).val();
+			  var search = self.parent().parent().parent().find('.search-box').val();
+			  if(search.length > 0){
+				  link += '/search/' + search;
+			  }
 			  $.ajax({
 				  url: link,
 				  success: function(data){

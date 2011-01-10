@@ -56,7 +56,6 @@ class dmAdminAssetConfig extends dmAssetConfig
       'admin.toolBar',
       'admin.pageBar',
       'admin.mediaBar',
-      'admin.paginator',
       sfConfig::get('dm_locks_enabled') ? 'admin.ping' : null,
     );
   }
