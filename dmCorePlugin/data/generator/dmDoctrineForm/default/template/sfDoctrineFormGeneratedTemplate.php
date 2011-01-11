@@ -35,7 +35,7 @@ abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->
 
 <?php foreach($this->getOneToOneRelations() as $relation):?>
 			<?php if($relation['alias'] === 'Translation') continue;?>
-			'<?php echo $this->underscore($relation['local']) ?>'<?php echo str_repeat(' ', $this->getNumberOfSpaces($this->underscore($relation['local']))) ?> => new sfWidgetFormDoctrineChoice(array('multiple' => false, 'model' => '<?php echo $relation['table']->getOption('name')?>', 'expanded' => false)),
+			'<?php echo $this->underscore($relation['local']) ?>'<?php echo str_repeat(' ', $this->getNumberOfSpaces($this->underscore($relation['local']))) ?> => new sfWidgetFormDmDoctrineChoice(array('multiple' => false, 'model' => '<?php echo $relation['table']->getOption('name')?>', 'expanded' => true, 'maxPerPage' => 10)),
 <?php endforeach;?>
 
     ));

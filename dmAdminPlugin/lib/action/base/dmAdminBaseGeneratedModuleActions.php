@@ -729,7 +729,18 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 	{
 		$field = lcfirst($request->getParameter('field'));
 		$relation = dmString::camelize(substr($field, 0, strlen($field) -5)); //remove _list @todo make it given by $request, using .metadata() and writting it within template
-		$relation = $this->getDmModule()->getTable()->getRelation($relation);
+		$table = $this->getDmModule()->getTable();
+		
+		if($table->hasRelation($relation))
+		{
+			$relation = $table->getRelation($relation);
+		}elseif($table->hasRelation($field)){
+			$relation = $table->getRelation($field);
+		}elseif($table->hasRelation($relation = dmString::camelize($field)))
+		{
+			$relation = $table->getRelation($relation);
+		}
+		
 		$startPage = $request->getParameter('page');
 		$maxPerPage = $request->getParameter('maxPerPage');
 		$this->getUser()->setAttribute($this->getModuleName() . '.' . $field . '.max_per_page', $maxPerPage, 'admin_module');
@@ -748,6 +759,22 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 		$pager->setMaxPerPage($maxPerPage);
 		$pager->setPage($startPage);
 
+		$query = $this->createPaginateRelationQuery($field, $relation, $search);
+		$pager->setQuery($query);
+
+		$this->name = $field;
+		$fields = array_diff(array_keys($this->form->getWidgetSchema()->getFields()), array($field));
+		foreach($fields as $field)
+		{
+			unset($this->form[$field]);
+		}
+		$this->configuration->setFormDisplay(array($this->name));
+		$this->setTemplate('edit');
+		$this->setLayout(false);
+	}
+
+	protected function createPaginateRelationQuery($field, $relation, $search)
+	{
 		$queryBuilder = 'buildQueryFor' . dmString::camelize($field);
 		if(!method_exists($this, $queryBuilder))
 		{
@@ -760,16 +787,6 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 		}else{
 			$query = $this->$queryBuilder($search);
 		}
-
-		$pager->setQuery($query);
-
-		$this->name = $field;
-		$fields = array_diff(array_keys($this->form->getWidgetSchema()->getFields()), array($field));
-		foreach($fields as $field)
-		{
-			unset($this->form[$field]);
-		}
-		$this->setTemplate('edit');
-		$this->setLayout(false);
+		return $query;
 	}
 }

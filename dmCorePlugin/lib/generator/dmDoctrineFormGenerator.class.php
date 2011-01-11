@@ -150,7 +150,7 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
 	}
 
 	/**
-	 * @return dmDoctrineTable 
+	 * @return dmDoctrineTable
 	 */
 	public function getTable()
 	{
@@ -173,41 +173,44 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
 	 */
 	public function getWidgetClassForColumn($column)
 	{
-		switch ($column->getDoctrineType())
+		if($column instanceof sfDoctrineColumn)
 		{
-			case 'string':
-				$widgetSubclass = null === $column->getLength() || $column->getLength() > 255 ? 'Textarea' : 'InputText';
-				break;
-			case 'boolean':
-				$widgetSubclass = 'InputCheckbox';
-				break;
-			case 'blob':
-			case 'clob':
-				$widgetSubclass = 'Textarea';
-				break;
-			case 'date':
-				$widgetSubclass = 'DmDate';
-				break;
-			case 'time':
-				$widgetSubclass = 'Time';
-				break;
-			case 'timestamp':
-				$widgetSubclass = 'DateTime';
-				break;
-			case 'enum':
-				$widgetSubclass = 'Choice';
-				break;
-			default:
-				$widgetSubclass = 'InputText';
+			switch ($column->getDoctrineType())
+			{
+				case 'string':
+					$widgetSubclass = null === $column->getLength() || $column->getLength() > 255 ? 'Textarea' : 'InputText';
+					break;
+				case 'boolean':
+					$widgetSubclass = 'InputCheckbox';
+					break;
+				case 'blob':
+				case 'clob':
+					$widgetSubclass = 'Textarea';
+					break;
+				case 'date':
+					$widgetSubclass = 'DmDate';
+					break;
+				case 'time':
+					$widgetSubclass = 'Time';
+					break;
+				case 'timestamp':
+					$widgetSubclass = 'DateTime';
+					break;
+				case 'enum':
+					$widgetSubclass = 'Choice';
+					break;
+				default:
+					$widgetSubclass = 'InputText';
+			}
 		}
 
-		if ($column->isPrimaryKey())
+		if ($column instanceof sfDoctrineColumn && $column->isPrimaryKey())
 		{
 			$widgetSubclass = 'InputHidden';
 		}
-		else if ($column->isForeignKey())
+		else if ($column instanceof sfDoctrineColumn &&  $column->isForeignKey() || $column instanceof Doctrine_Relation_LocalKey)
 		{
-			$widgetSubclass = 'DoctrineChoice';
+			$widgetSubclass = 'DmDoctrineChoice';
 		}
 
 		$widgetSubclass = $this->getGeneratorManager()->getConfiguration()->getEventDispatcher()->filter(
@@ -485,11 +488,34 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
 		}
 		return false;
 	}
-	
+
 	public function getNumberOfSpaces($text)
 	{
 		$nb = $this->getColumnNameMaxLength() - strlen($text);
 		if( $nb < 0) return 0;
 		return $nb;
+	}
+
+	/**
+	 * Returns a PHP string representing options to pass to a widget for a given column.
+	 *
+	 * @param sfDoctrineColumn $column
+	 *
+	 * @return string The options to pass to the widget as a PHP string
+	 */
+	public function getWidgetOptionsForColumn($column)
+	{
+		$options = array();
+
+		if ($column->isForeignKey())
+		{
+			$options[] = sprintf('\'model\' => $this->getRelatedModelName(\'%s\'), \'add_empty\' => %s, \'maxPerPage\' => 10', $column->getRelationKey('alias'), $column->isNotNull() ? 'false' : 'true');
+		}
+		else if ('enum' == $column->getDoctrineType() && is_subclass_of($this->getWidgetClassForColumn($column), 'sfWidgetFormChoiceBase'))
+		{
+			$options[] = '\'choices\' => '.$this->arrayExport(array_combine($column['values'], $column['values']));
+		}
+
+		return count($options) ? sprintf('array(%s)', implode(', ', $options)) : '';
 	}
 }

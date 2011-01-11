@@ -14,12 +14,9 @@ class <?php echo $this->table->getOption('name') ?>Form extends Base<?php echo $
   /**
    * @see <?php echo $parent ?>Form
    */
+<?php endif;?>
   public function configure()
   {
     parent::configure();
-<?php else: ?>
-  public function configure()
-  {
-<?php endif; ?>
   }
 }

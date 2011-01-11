@@ -206,7 +206,9 @@ div.dm_form_pagination {
   float: right;
 }
 
-div.sf_admin_form ul.checkbox_list {
+div.sf_admin_form ul.checkbox_list, 
+div.sf_admin_form ul.radio_list
+ {
   max-height: 200px;
   overflow-y: auto;
   box-shadow: 0 0 5px #aaa;
@@ -214,7 +216,18 @@ div.sf_admin_form ul.checkbox_list {
   -webkit-box-shadow: 0 0 5px #aaa;
 }
 
-div.sf_admin_form ul.checkbox_list > li {
+div.sf_admin_form ul.radio_list {
+  width: 80%;
+  float: right;
+}
+
+div.sf_admin_form ul.radio_list > li {
+	width: 99%;
+	float: right;
+}
+
+div.sf_admin_form ul.checkbox_list > li,
+div.sf_admin_form ul.radio_list > li {
   display: block;
   padding: 2px 4px;
   cursor: pointer;
@@ -223,23 +236,27 @@ div.sf_admin_form ul.checkbox_list > li {
   background: #fff;
 }
 
-div.sf_admin_form ul.checkbox_list > li.active {
+div.sf_admin_form ul.checkbox_list > li.active,
+div.sf_admin_form ul.radio_list > li.active {
   background-color: #E1FEE5;
   border-color: #E1FEE5;
 }
 
-div.sf_admin_form ul.checkbox_list > li:hover {
+div.sf_admin_form ul.checkbox_list > li:hover,
+div.sf_admin_form ul.radio_list > li:hover {
   background-color: #F1F5FE;
   border-color: #ddd;
 }
 
-div.sf_admin_form ul.checkbox_list > li label {
+div.sf_admin_form ul.checkbox_list > li label,
+div.sf_admin_form ul.radio_list > li label {
   float: none;
   width: auto;
   cursor: pointer;
 }
 
-div.sf_admin_form ul.checkbox_list > li input {
+div.sf_admin_form ul.checkbox_list > li input,
+div.sf_admin_form ul.radio_list > li input {
   vertical-align: middle;
   cursor: pointer;
 }
@@ -362,4 +379,18 @@ div.sf_admin_form img.dm_label_culture {
 
 div.sf_admin_form img.dm_label_required {
   vertical-align: middle;
+}
+
+.fullscreen {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 90%;
+  height: 90%;
+  z-index: 9999;
+  margin: 0;
+  padding: 0;
+  background: inherit;
+  border: 1px 1px 1px 1px;
 }

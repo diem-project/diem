@@ -316,7 +316,7 @@
 			  return false;
 		  });
 		  
-		  $('.dm_max_per_page', self.element).bind('change', function(e){
+		  $('.dm_max_per_page', self.element).unbind('change').bind('change', function(e){
 			  var self = $(this);
 			  e.preventDefault();
 			  self.parent().parent().parent().block();
