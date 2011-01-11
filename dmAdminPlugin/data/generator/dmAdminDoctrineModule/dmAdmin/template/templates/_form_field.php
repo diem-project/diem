@@ -81,7 +81,6 @@
         $checkbox_tools = sprintf('<div class="dm_checkbox_tools"><div class="dm_checkbox_search_filter"><input class="search-box" type="text" title="Search" value="%s"/><span class="clear"><a title="Clear search">X</a></span></div>%s</div>', isset($search) ? $search : '', $pagination);
         $resizer = '<div class="resize-handler"></div>';
       }else{
-        $pagination = '';
       	$checkbox_tools = '';
       	$resizer = '';
       }

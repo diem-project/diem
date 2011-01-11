@@ -6,21 +6,22 @@ class sfWidgetFormDmDoctrineChoice extends sfWidgetFormDoctrineChoice
   public function __construct($options = array(), $attributes = array())
   {
     $this->pager = new dmDoctrinePager($options['model']);
+    $options['translate_choices'] = false;
     parent::__construct($options, $attributes);
   }
   
   public function configure($options = array(), $attributes = array())
   {
-    $this->addRequiredOption('maxPerPage');
+    $this->addOption('maxPerPage', 10);
     parent::configure($options, $attributes);
-    $this->pager->setMaxPerPage($options['maxPerPage']);
+    $this->pager->setMaxPerPage($this->getOption('maxPerPage'));
   }
   
   public function getChoices()
   {
     if(!isset($this->choices))
     {
-      $choices = $this->pager->getResults();;
+      $choices = $this->pager->getResults();
       $this->choices = array();
       foreach($choices as $choice)
       {
@@ -46,7 +47,7 @@ class sfWidgetFormDmDoctrineChoice extends sfWidgetFormDoctrineChoice
     if (!$class = $this->getOption('renderer_class'))
     {
       $type = !$this->getOption('expanded') ? '' : ($this->getOption('multiple') ? 'checkbox' : 'radio');
-      $class = sprintf('sfWidgetFormDmSelect%s', ucfirst($type));
+      $class = sprintf('sfWidgetFormSelect%s', ucfirst($type));
     }
 
     return new $class(array_merge(array('choices' => new sfCallable(array($this, 'getChoices'))), $this->options['renderer_options']), $this->getAttributes());

@@ -420,6 +420,11 @@ abstract class dmDoctrineTable extends Doctrine_Table
     return strpos(dmArray::get($this->getColumnDefinition($columnName), 'extra', ''), 'markdown') !== false;
   }
   
+  public function isPaginatedColumn($columnName)
+  {
+    return strpos(dmArray::get($this->getColumnDefinition($columnName), 'extra', ''), 'paginated') !== false;
+  }
+  
   public function isBooleanColumn($columnName)
   {
     return 'boolean' === dmArray::get($this->getColumnDefinition($columnName), 'type');

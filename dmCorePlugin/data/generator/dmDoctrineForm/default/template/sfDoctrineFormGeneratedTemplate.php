@@ -19,23 +19,20 @@ abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->
 			'<?php echo $column->getFieldName() ?>'<?php echo str_repeat(' ', $this->getNumberOfSpaces($column->getFieldName())) ?> => new sfWidgetFormChoice(array('choices' => <?php echo $this->arrayExport($this->getSubClassesChoices());?>)),
 <?php endforeach;?>
 
-<?php foreach ($this->getColumns(true, true) as $column): ?>
+<?php foreach ($this->getColumns(true, true, true) as $column): ?>
       '<?php echo $column->getFieldName() ?>'<?php echo str_repeat(' ', $this->getNumberOfSpaces($column->getFieldName())) ?> => new <?php echo $this->getWidgetClassForColumn($column) ?>(<?php echo $this->getWidgetOptionsForColumn($column) ?>),
 <?php endforeach; ?>
 
-<?php foreach ($this->getManyToManyRelations() as $relation): ?>
-  <?php if ('DmMedia' === $relation->getClass()) continue; ?>
+<?php foreach ($this->getManyToManyRelations() as $relation): ?><?php if ('DmMedia' === $relation->getClass()) continue; ?>
       '<?php echo $this->underscore($relation['alias']) ?>_list'<?php echo str_repeat(' ', $this->getNumberOfSpaces($this->underscore($relation['alias']).'_list')) ?> => new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => '<?php echo $relation['table']->getOption('name') ?>', 'expanded' => true, 'maxPerPage' => 10)),
 <?php endforeach; ?>
 
-<?php foreach($this->getOneToManyRelations() as $relation):?>
-			<?php if($relation['alias'] === 'Translation') continue;?>
+<?php foreach($this->getOneToManyRelations() as $relation):?><?php if($relation['alias'] === 'Translation') continue;?>
 			'<?php echo $this->underscore($relation['alias']) ?>_list'<?php echo str_repeat(' ', $this->getNumberOfSpaces($this->underscore($relation['alias']).'_list')) ?> => new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => '<?php echo $relation['table']->getOption('name') ?>', 'expanded' => true, 'maxPerPage' => 10)),
 <?php endforeach;?>
 
-<?php foreach($this->getOneToOneRelations() as $relation):?>
-			<?php if($relation['alias'] === 'Translation') continue;?>
-			'<?php echo $this->underscore($relation['local']) ?>'<?php echo str_repeat(' ', $this->getNumberOfSpaces($this->underscore($relation['local']))) ?> => new sfWidgetFormDmDoctrineChoice(array('multiple' => false, 'model' => '<?php echo $relation['table']->getOption('name')?>', 'expanded' => true, 'maxPerPage' => 10)),
+<?php foreach($this->getOneToOneRelations() as $relation):?><?php if($relation['alias'] === 'Translation') continue;?>
+			'<?php echo $this->underscore($relation['local']) ?>'<?php echo str_repeat(' ', $this->getNumberOfSpaces($this->underscore($relation['local']))) ?> => new <?php echo $this->getWidgetClassForColumn(new dmDoctrineColumn($relation['local'], $relation['table'])) ?>(array('multiple' => false, 'model' => '<?php echo $relation['table']->getOption('name')?>', 'expanded' => <?php echo $this->table->isPaginatedColumn($relation['local']) ? 'true' : 'false'?>)),
 <?php endforeach;?>
 
     ));
@@ -45,22 +42,19 @@ abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->
 			'<?php echo $column->getFieldName() ?>'<?php echo str_repeat(' ', $this->getNumberOfSpaces($column->getFieldName())) ?> => new sfValidatorChoice(array('choices' => <?php echo $this->arrayExport($this->getSubClassesChoicesValidator());?>, 'required' => true)),
 <?php endforeach;?>
 
-<?php foreach ($this->getColumns(true, true) as $column): ?>
+<?php foreach ($this->getColumns(true, true, true) as $column): ?>
       '<?php echo $column->getFieldName() ?>'<?php echo str_repeat(' ', $this->getNumberOfSpaces($column->getFieldName())) ?> => new <?php echo $this->getValidatorClassForColumn($column) ?>(<?php echo $this->getValidatorOptionsForColumn($column) ?>),
 <?php endforeach; ?>
 
-<?php foreach ($this->getManyToManyRelations() as $relation): ?>
-  <?php if ('DmMedia' === $relation->getClass()) continue; ?>
+<?php foreach ($this->getManyToManyRelations() as $relation): ?><?php if ('DmMedia' === $relation->getClass()) continue; ?>
       '<?php echo $this->underscore($relation['alias']) ?>_list'<?php echo str_repeat(' ', $this->getNumberOfSpaces($this->underscore($relation['alias']).'_list')) ?> => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => '<?php echo $relation['table']->getOption('name') ?>', 'required' => false)),
 <?php endforeach; ?>
 
-<?php foreach($this->getOneToManyRelations() as $relation):?>
-			<?php if($relation['alias'] === 'Translation') continue;?>
+<?php foreach($this->getOneToManyRelations() as $relation):?><?php if($relation['alias'] === 'Translation') continue;?>
 			'<?php echo $this->underscore($relation['alias']) ?>_list'<?php echo str_repeat(' ', $this->getNumberOfSpaces($this->underscore($relation['alias']).'_list')) ?> => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => '<?php echo $relation['table']->getOption('name') ?>', 'required' => false)),
 <?php endforeach;?>
 
-<?php foreach($this->getOneToOneRelations() as $relation):?>
-			<?php if($relation['alias'] === 'Translation') continue;?>
+<?php foreach($this->getOneToOneRelations() as $relation):?><?php if($relation['alias'] === 'Translation') continue;?>
 			'<?php echo $this->underscore($relation['local']) ?>'<?php echo str_repeat(' ', $this->getNumberOfSpaces($this->underscore($relation['local']))) ?> => new sfValidatorDoctrineChoice(array('multiple' => false, 'model' => '<?php echo $relation['table']->getOption('name')?>', 'required' => true)),
 <?php endforeach;?>
     ));
