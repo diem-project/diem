@@ -210,7 +210,7 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
 		}
 		else if ($column instanceof sfDoctrineColumn &&  $column->isForeignKey() || $column instanceof Doctrine_Relation_LocalKey)
 		{
-		  if($this->table->isPaginatedColumn($column->getName()))
+		  if($this->table->isPaginatedColumn($column instanceof sfDoctrineColumn ? $column->getName() : $column['local']))
 		  {
 		    $widgetSubclass = 'DmDoctrineChoice';
 		  }else{
@@ -528,7 +528,7 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
 
 		if ($column->isForeignKey())
 		{
-			$options[] = sprintf('\'model\' => $this->getRelatedModelName(\'%s\'), \'add_empty\' => %s, \'maxPerPage\' => 10', $column->getRelationKey('alias'), $column->isNotNull() ? 'false' : 'true');
+			$options[] = sprintf('\'model\' => $this->getRelatedModelName(\'%s\'), \'add_empty\' => %s', $column->getRelationKey('alias'), $column->isNotNull() ? 'false' : 'true');
 		}
 		else if ('enum' == $column->getDoctrineType() && is_subclass_of($this->getWidgetClassForColumn($column), 'sfWidgetFormChoiceBase'))
 		{

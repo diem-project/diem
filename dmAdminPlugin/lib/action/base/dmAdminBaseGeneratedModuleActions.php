@@ -693,7 +693,7 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 				$relations = array_merge($relations, $this->doGetRelations($fields));
 			}
 		}
-		return array_diff($relations, array_keys($this->getDmModule()->getTable()->getRelationHolder()->getLocals()));
+		return array_unique(array_diff($relations, array_keys($this->getDmModule()->getTable()->getRelationHolder()->getLocals())));
 	}
 
 	/**
