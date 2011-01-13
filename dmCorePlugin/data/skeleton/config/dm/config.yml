@@ -36,3 +36,9 @@ all:
     report_anonymous_data: ##SEND_REPORTS##         # reports anonymous data about plugins used.
                                         # http://diem-project.org/plugins will show the best plugins based on these reports.
                                         # the report request is sent only once, when a superadministrator logs in.
+dev: 
+  js:
+    compress: false
+  css:
+    compress: false
+    

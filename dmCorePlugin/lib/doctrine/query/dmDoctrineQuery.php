@@ -34,11 +34,16 @@ abstract class dmDoctrineQuery extends Doctrine_Query
 	{
 		if (null === $model)
 		{
-			$this->getRootAlias();
-			$models = array_keys($this->_queryComponents);
-			$model = $models[0];
+			$_rootAlias = $this->getRootAlias();
+			$from = explode(' ', $this->_dqlParts['from'][0]);
+			$model = $from[0];
+			if(strlen($model) === 0){
+				$this->getRootAlias();
+				$models = array_keys($this->_queryComponents);
+				$model = $models[0];
+			}
 		}
-		
+
 		if (!dmDb::table($model)->hasI18n())
 		{
 			return $this;

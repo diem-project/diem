@@ -660,13 +660,23 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 	 */
 	protected function buildObjectQuery($pk, $relations = array(), $locals = array())
 	{
-		$table = $this->getDmModule()->getTable();
-		$id = $table->getIdentifier();
-		if(is_array($id)) { $id = $id[0]; }
-		$query = $table->createQuery('o')->where('o.' . $id . ' = ?', $pk);
-		$table->joinLocals($query, true);
-		$table->joinRelations($query, $this->getRelationsAlias(), true);
-		return $query;
+		//$fieldsets = $this->configuration->getFormFields($this->form, $this->actionName);
+		$method = 'buildObjectQueryFor' . dmString::camelize($this->actionName);
+		if(method_exists($this->configuration, $method))
+		{
+			return $this->$method($pk, $relations, $locals);
+		}
+		else
+		{
+			$table = $this->getDmModule()->getTable();
+			$id = $table->getIdentifier();
+			if(is_array($id)) { $id = $id[0]; }
+			$query = $table->createQuery('o')->where('o.' . $id . ' = ?', $pk);
+			
+			$table->joinLocals($query, true);
+			$table->joinRelations($query, $this->getRelationsAlias(), true);
+			return $query;
+		}
 	}
 
 	/**
@@ -730,7 +740,7 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 		$field = lcfirst($request->getParameter('field'));
 		$relation = dmString::camelize(substr($field, 0, strlen($field) -5)); //remove _list @todo make it given by $request, using .metadata() and writting it within template
 		$table = $this->getDmModule()->getTable();
-		
+
 		if($table->hasRelation($relation))
 		{
 			$relation = $table->getRelation($relation);
@@ -740,7 +750,7 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 		{
 			$relation = $table->getRelation($relation);
 		}
-		
+
 		$startPage = $request->getParameter('page');
 		$maxPerPage = $request->getParameter('maxPerPage');
 		$this->getUser()->setAttribute($this->getModuleName() . '.' . $field . '.max_per_page', $maxPerPage, 'admin_module');
@@ -768,7 +778,7 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 		{
 			unset($this->form[$field]);
 		}
-		$this->configuration->setFormDisplay(array($this->name));
+		//$this->configuration->setFormDisplay(array($this->name));
 		$this->setTemplate('edit');
 		$this->setLayout(false);
 	}
