@@ -212,9 +212,9 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
 		{
 		  if($this->table->isPaginatedColumn($column instanceof sfDoctrineColumn ? $column->getName() : $column['local']))
 		  {
-		    $widgetSubclass = 'DmDoctrineChoice';
+		    $widgetSubclass = 'DmPaginatedDoctrineChoice';
 		  }else{
-			  $widgetSubclass = 'DoctrineChoice';
+			  $widgetSubclass = 'DmDoctrineChoice';
 		  }
 		}
 
