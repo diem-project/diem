@@ -1,3 +1,4 @@
+<?php if($this->configuration->getValue('list.object_actions')):?>
 <td>
   <ul class="sf_admin_td_actions">
 <?php foreach ($this->configuration->getValue('list.object_actions') as $name => $params): ?>
@@ -24,3 +25,4 @@
 <?php endforeach; ?>
   </ul>
 </td>
+<?php endif;?>
