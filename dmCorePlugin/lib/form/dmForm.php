@@ -475,4 +475,9 @@ class dmForm extends sfFormSymfony
   {
     return $form->getOption('embedder', false);
   }
+  
+	public function needsWidget($name)
+	{
+		return isset($this->options['widgets']) && in_array($name, $this->options['widgets']);
+	}
 }
