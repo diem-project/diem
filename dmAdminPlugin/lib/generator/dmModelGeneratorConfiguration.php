@@ -369,4 +369,8 @@ abstract class dmModelGeneratorConfiguration extends sfModelGeneratorConfigurati
 		return array('widgets' => $this->getFieldsFromFieldsets($this->getFilterDisplay()));
 	}
 
+	public function setFormDisplay($fieldsets)
+	{
+		$this->overloadedFormDisplay = $fieldsets;
+	}
 }

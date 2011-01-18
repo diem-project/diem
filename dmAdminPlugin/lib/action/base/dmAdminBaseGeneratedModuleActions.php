@@ -778,7 +778,7 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 		{
 			unset($this->form[$field]);
 		}
-		//$this->configuration->setFormDisplay(array($this->name));
+		$this->configuration->setFormDisplay(array($this->name));
 		$this->setTemplate('edit');
 		$this->setLayout(false);
 	}
