@@ -32,17 +32,33 @@ abstract class dmDoctrineQuery extends Doctrine_Query
 	 */
 	public function withI18n($culture = null, $model = null, $rootAlias = null, $joinSide = 'left')
 	{
-		if (null !== $model)
+		if (null === $model)
 		{
-			if (!dmDb::table($model)->hasI18n())
-			{
-				return $this;
+			$_rootAlias = $this->getRootAlias();
+			$from = explode(' ', $this->_dqlParts['from'][0]);
+			$model = $from[0];
+			if(strlen($model) === 0){
+				$this->getRootAlias();
+				$models = array_keys($this->_queryComponents);
+				$model = $models[0];
 			}
 		}
+
+		if (!dmDb::table($model)->hasI18n())
+		{
+			return $this;
+		}
+
+		$culture = null === $culture ? myDoctrineRecord::getDefaultCulture() : $culture;
 
 		if (null === $rootAlias)
 		{
 			// refresh query for introspection
+			if(empty($this->_execParams))
+			{
+				//prevent bugs for subqueries
+				$this->fixArrayParameterValues($this->_params);
+			}
 			$this->buildSqlQuery();
 
 			$rootAlias        = $this->getRootAlias();
@@ -58,8 +74,6 @@ abstract class dmDoctrineQuery extends Doctrine_Query
 		{
 			$translationAlias = $rootAlias.'Translation';
 		}
-
-		$culture = null === $culture ? myDoctrineRecord::getDefaultCulture() : $culture;
 
 		$joinMethod = $joinSide.'Join';
 

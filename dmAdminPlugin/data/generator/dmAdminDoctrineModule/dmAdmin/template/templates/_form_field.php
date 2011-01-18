@@ -67,7 +67,7 @@
       {
         echo sprintf('<div class="control selection"><span class="select_all">%s</span><span class="unselect_all">%s</span><span class="see_selected">%s</span><span class="see_unselected">%s</span><span class="see_all">%s</span></div>', __('Select all', array(), 'dm'), __('Unselect all', array(), 'dm'), __('See selected', array(), 'dm'), __('See unselected', array(), 'dm'), __('See all', array(), 'dm'));
       }
-      if($form[$name]->getWidget() instanceof sfWidgetFormDmDoctrineChoice)
+      if($form[$name]->getWidget() instanceof sfWidgetFormDmPaginatedDoctrineChoice)
       {
         $pager = $form[$name]->getWidget()->getPager();
         $pager->setMaxPerPage($sf_user->getAttribute('<?php echo $this->getModuleName()?>.' . $name . '.max_per_page', 10, 'admin_module'));

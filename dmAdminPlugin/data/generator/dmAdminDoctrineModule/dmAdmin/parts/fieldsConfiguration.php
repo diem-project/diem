@@ -54,6 +54,7 @@
 
   public function getFormDisplay()
   {
+    if(isset($this->overloadedFormDisplay)){ return $this->overloadedFormDisplay; }
     return <?php echo $this->asPhp(isset($this->config['form']['display']) ? $this->config['form']['display'] : array()) ?>;
 <?php unset($this->config['form']['display']) ?>
   }

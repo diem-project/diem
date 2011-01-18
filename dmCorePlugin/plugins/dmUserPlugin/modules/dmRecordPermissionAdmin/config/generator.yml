@@ -39,6 +39,8 @@ generator:
           - secure_model
           - secure_record
           - description
+          - users_list
+          - groups_list
       form: 
         display:
           "Module & Action": [secure_module, secure_action]

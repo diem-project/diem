@@ -34,6 +34,8 @@ generator:
           - dm_secure_action
           - dm_secure_module
           - dm_secure_model
+          - groups_list
+          - users_list
       form:
         display:
           Groups: [groups_list]
