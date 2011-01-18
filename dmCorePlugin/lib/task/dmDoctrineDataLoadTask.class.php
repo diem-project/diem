@@ -28,7 +28,9 @@ EOF;
   protected function execute($arguments = array(), $options = array())
   {
   	$this->withDatabase();
-  	array_shift($arguments);
+  	if(isset($arguments['task'])) {
+  		unset($arguments['task']);
+  	}
   	$this->runTask('doctrine:data-load', $arguments, $options);
   }
 }
