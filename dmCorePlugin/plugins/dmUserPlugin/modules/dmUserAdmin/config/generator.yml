@@ -21,7 +21,13 @@ generator:
         is_super_admin:
           label: 'Super admin'
         password_again: { label: "Password (again)" }
-
+      filter:
+        display:
+          - username
+          - email
+          - password
+          - is_active
+          - is_super_admin
       list:
         display:
           - =username
