@@ -218,4 +218,13 @@ class dmBase
 
     return $response;
   }
+  
+  /**
+   * Returns weither we are in a CLI mode
+   * @return boolean
+   */
+  public static function isCli()
+  {
+  	return !(0 != strncasecmp(PHP_SAPI, 'cli', 3));
+  }
 }
