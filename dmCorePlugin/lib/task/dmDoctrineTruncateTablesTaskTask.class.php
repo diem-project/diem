@@ -21,13 +21,15 @@ EOF;
 		$this->logSection('doctrine', 'truncating tables');
 		$con = $this->withDatabase();
 		$dbh = Doctrine_Manager::getInstance()->getCurrentConnection()->getDbh();
-		$dbh->query('SET foreign_key_checks = 0');
 
 		$tables = $dbh->query('SHOW TABLES');
+		$dbh->query('SET foreign_key_checks = 0');
 
 		foreach($tables as $table)
 		{
 			$dbh->query('TRUNCATE ' . $table[0]);
 		}
+		$dbh->query('SET foreign_key_checks = 1');
+
 	}
 }

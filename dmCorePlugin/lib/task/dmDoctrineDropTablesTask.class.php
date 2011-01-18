@@ -39,5 +39,6 @@ EOF;
 		{
 			$dbh->query('DROP TABLE ' . $table[0]);
 		}
+		$dbh->query('SET foreign_key_checks = 1');
 	}
 }
