@@ -57,7 +57,7 @@ abstract class dmDoctrineQuery extends Doctrine_Query
 			if(empty($this->_execParams))
 			{
 				//prevent bugs for subqueries
-				$this->_execParams = array($culture);
+				$this->fixArrayParameterValues($this->_params);
 			}
 			$this->buildSqlQuery();
 
