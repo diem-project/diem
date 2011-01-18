@@ -218,11 +218,17 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
 		  }
 		}
 
+		//listeners are expecting an sfDoctrineColumn instance
+		//thanks to Yoann BRIEUX
+		if($column instanceof Doctrine_Relation_LocalKey)
+		{
+			$column = new sfDoctrineColumn($column['local'], $this->table);
+		}
 		$widgetSubclass = $this->getGeneratorManager()->getConfiguration()->getEventDispatcher()->filter(
 		new sfEvent($this, 'dm.form_generator.widget_subclass', array('column' => $column)),
 		$widgetSubclass
 		)->getReturnValue();
-
+		
 		return sprintf('sfWidgetForm%s', $widgetSubclass);
 	}
 
