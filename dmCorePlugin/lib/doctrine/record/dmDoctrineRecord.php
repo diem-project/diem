@@ -153,8 +153,8 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
 		$recordOffset = array_search($this->getPrimaryKey(), $pks);
 
 		$map = array(
-      'prev' => 0 == $recordOffset ? null : $pks[$recordOffset-1],
-      'next' => count($pks) == ($recordOffset+1) ? null :$pks[$recordOffset+1]
+      'prev' => 0 == $recordOffset ? null : (isset($pks[$recordOffset-1]) ? $pks[$recordOffset-1] : null),
+      'next' => count($pks) == ($recordOffset+1) ? null : (isset($pks[$recordOffset-1]) ? $pks[$recordOffset-1] : null)
 		);
 
 		$pks = array_unique(array_filter(array_values($map)));
