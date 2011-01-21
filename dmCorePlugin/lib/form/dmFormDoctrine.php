@@ -118,6 +118,11 @@ abstract class dmFormDoctrine extends sfFormDoctrine
 			$this->widgetSchema[$fieldName]->getOptions(),
 			$options
 			));
+			
+			if(!$this->isNew() && !$this->getObject()->getNode()->isRoot())
+			{
+			  $this->setDefault($fieldName, $this->getObject()->getNode()->getParent()->get('id'));
+			}
 		}
 		return $this;
 	}
