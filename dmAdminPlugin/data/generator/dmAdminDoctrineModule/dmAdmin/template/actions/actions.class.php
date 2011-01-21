@@ -20,6 +20,7 @@ abstract class <?php echo $this->getGeneratedModuleName() ?>Actions extends <?ph
   
   public function preExecute()
   {
+  	parent::preExecute();
     $this->configuration = new <?php echo $this->getModuleName() ?>GeneratorConfiguration();
 
     if ($this->getDmModule()->getSecurityManager($this)->isActionStrategicalySecurized($this->getActionName()) && !$this->getDmModule()->getSecurityManager()->userHasCredentials($this->getActionName()))
