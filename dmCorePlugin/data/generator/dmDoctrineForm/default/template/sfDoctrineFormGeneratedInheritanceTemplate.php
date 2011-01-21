@@ -34,6 +34,13 @@ abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->
 		$this->validatorSchema['<?php echo $this->underscore($relation['local']) ?>'] = new sfValidatorDoctrineChoice(array('multiple' => false, 'model' => '<?php echo $relation['table']->getOption('name')?>', 'required' => true));
 <?php endforeach;?>
 
+<?php foreach ($this->getOneToManyRelations() as $relation): ?><?php if($relation['alias'] === 'Translation') continue;?>
+		if($this->needsWidget('<?php echo $this->underscore($relation['alias']) ?>_list')){
+			$this->setWidget('<?php echo $this->underscore($relation['alias']) ?>_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => '<?php echo $relation['table']->getOption('name') ?>', 'expanded' => true)));
+			$this->setValidator('<?php echo $this->underscore($relation['alias']) ?>_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => '<?php echo $relation['table']->getOption('name') ?>', 'required' => false)));
+		}
+<?php endforeach; ?>
+
     $this->widgetSchema->setNameFormat('<?php echo $this->underscore($this->modelName) ?>[%s]');
   }
 
