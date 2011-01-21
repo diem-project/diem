@@ -1,7 +1,7 @@
 <?php
 
-//First version of Diem 5.4
-define('DIEM_VERSION', '5.4.0');
+//First version of Diem 5.4.0 DEV branch
+define('DIEM_VERSION', '5.4.0-DEV');
 
 // include symfony
 if (!defined('SYMFONY_VERSION'))
