@@ -410,7 +410,7 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
 	 * @param array $moduleConfig
 	 * @return array securityConfig
 	 */
-	protected function fixSecurityConfig($moduleKey, $moduleConfig, $app)
+	protected function fixSecurityConfig($moduleKey, $moduleConfig, $app = 'admin')
 	{
 		$securityConfig = isset($moduleConfig['security']) ? $moduleConfig['security'] : false;
 
