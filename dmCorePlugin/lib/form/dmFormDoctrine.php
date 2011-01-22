@@ -83,7 +83,7 @@ abstract class dmFormDoctrine extends sfFormDoctrine
 			// create if not exists
 			if (!($this->widgetSchema[$fieldName] instanceof sfWidgetFormDoctrineChoice))
 			{
-				$this->widgetSchema[$fieldName] = new sfWidgetFormDmPaginatedDoctrineChoice(array('model' => $table->getComponentName(), 'expanded'=>true, 'multiple'=>false));
+				$this->widgetSchema[$fieldName] = new sfWidgetFormDoctrineChoice(array('model' => $table->getComponentName()));
 			}
 			if (!($this->validatorSchema[$fieldName] instanceof sfValidatorDoctrineChoice))
 			{
@@ -112,7 +112,7 @@ abstract class dmFormDoctrine extends sfFormDoctrine
 			  {
 				  $options['add_empty'] = '~';
 			  }else{
-			    $this->setDefault('nested_set_parent_id', $this->getObject()->getNode()->getRootNode()->get('id'));
+			    $this->setDefault('nested_set_parent_id', $this->getObject()->getNode()->getRootValue());
 			  }
 				$this->validatorSchema[$fieldName]->setOptions(array_merge(
 				$this->validatorSchema[$fieldName]->getOptions(),
