@@ -83,7 +83,7 @@ abstract class dmFormDoctrine extends sfFormDoctrine
 			// create if not exists
 			if (!($this->widgetSchema[$fieldName] instanceof sfWidgetFormDoctrineChoice))
 			{
-				$this->widgetSchema[$fieldName] = new sfWidgetFormDoctrineChoice(array('model' => $table->getComponentName()));
+				$this->widgetSchema[$fieldName] = new sfWidgetFormDmPaginatedDoctrineChoice(array('model' => $table->getComponentName(), 'expanded'=>true, 'multiple'=>false));
 			}
 			if (!($this->validatorSchema[$fieldName] instanceof sfValidatorDoctrineChoice))
 			{
@@ -107,7 +107,13 @@ abstract class dmFormDoctrine extends sfFormDoctrine
 			);
 			if ($fieldName == 'nested_set_parent_id')
 			{
-				$options['add_empty'] = '~';
+			  
+			  if($this->getObject()->getTable()->getTemplate('NestedSet')->getOption('hasManyRoots'))
+			  {
+				  $options['add_empty'] = '~';
+			  }else{
+			    $this->setDefault('nested_set_parent_id', $this->getObject()->getNode()->getRootNode()->get('id'));
+			  }
 				$this->validatorSchema[$fieldName]->setOptions(array_merge(
 				$this->validatorSchema[$fieldName]->getOptions(),
 				array(
