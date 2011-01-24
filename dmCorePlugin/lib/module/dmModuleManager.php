@@ -126,7 +126,7 @@ class dmModuleManager
   {
   		$refl = new ReflectionClass($model);
     	$parent = $refl->getParentClass();
-    	if(!in_array($parent->getName(), array('dmDoctrineRecord', 'sfDoctrineRecord')))
+    	if(!in_array($parent->getName(), array('dmDoctrineRecord', 'sfDoctrineRecord', 'Doctrine_Record')))
     	{
     		if(isset($this->modelModules[$parent->getName()]))
     		{
