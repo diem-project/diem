@@ -94,7 +94,7 @@ class dmModuleManager
   {
     $modulesWithModel = array();
     
-    foreach($this->projectModules as $key => $module)
+    foreach($this->modules as $key => $module)
     {
       if ($module->hasModel())
       {
