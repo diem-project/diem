@@ -2,7 +2,9 @@
 
 class dmSitemapMenu extends dmMenu
 {
-  
+  public
+    $hide = array();
+
   public function build()
   {
     $pages = $this->getPagesQuery()->execute(array(), Doctrine_Core::HYDRATE_RECORD_HIERARCHY);
@@ -21,7 +23,7 @@ class dmSitemapMenu extends dmMenu
 
     foreach($page->get('__children') as $child)
     {
-      $pageMenu->addPage($child);
+       !in_array($child->id,$this->hide) && $pageMenu->addPage($child);
     }
   }
 
