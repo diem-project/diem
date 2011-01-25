@@ -62,6 +62,12 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
 						break;
 					}
 				}
+				
+				if(!$useDmForm && dmDb::table($model)->isGenerator())
+				{
+					$useDmForm = true;
+				}
+				
 				/// find concrete inheritance superclass
 				if(!$useDmForm)
 				{
