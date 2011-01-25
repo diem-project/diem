@@ -9,6 +9,7 @@
  * @subpackage form
  * @author     ##AUTHOR_NAME##
  * @version    SVN: $Id$
+ * @generator  <?php echo 'Diem ', constant('DIEM_VERSION'), "\n"?>
  */
 abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->getFormClassToExtend() . "\n" ?>
 {
