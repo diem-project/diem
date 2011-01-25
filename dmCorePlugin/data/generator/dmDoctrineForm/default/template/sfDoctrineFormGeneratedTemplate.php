@@ -14,6 +14,7 @@ abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->
 {
   public function setup()
   {
+    parent::setup();
 <?php foreach($this->getColumnAggregationKeyFields() as $column):?>
 		if($this->needsWidget('<?php echo $column->getFieldName()?>')){
 			$this->setWidget('<?php echo $column->getFieldName()?>', new sfWidgetFormChoice(array('choices' => <?php echo $this->arrayExport($this->getSubClassesChoices());?>)));
