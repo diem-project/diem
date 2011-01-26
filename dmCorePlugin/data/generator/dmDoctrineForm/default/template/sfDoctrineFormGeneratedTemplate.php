@@ -47,7 +47,7 @@ abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->
 <?php foreach ($this->getOneToOneRelations() as $relation): ?><?php if($relation['alias'] === 'Translation') continue;?>
 		if($this->needsWidget('<?php echo $this->underscore($relation['local']) ?>')){
 			$this->setWidget('<?php echo $this->underscore($relation['local']) ?>', new <?php echo $this->getWidgetClassForColumn($relation instanceof Doctrine_Relation_LocalKey ? $relation : new dmDoctrineColumn($relation['local'], $relation['table'])) ?>(array('multiple' => false, 'model' => '<?php echo $relation['table']->getOption('name')?>', 'expanded' => <?php echo $this->table->isPaginatedColumn($relation['local']) ? 'true' : 'false'?>)));
-			$this->setValidator('<?php echo $this->underscore($relation['local']) ?>', new sfValidatorDoctrineChoice(array('multiple' => false, 'model' => '<?php echo $relation['table']->getOption('name')?>', 'required' => true)));
+			$this->setValidator('<?php echo $this->underscore($relation['local']) ?>', new sfValidatorDoctrineChoice(array('multiple' => false, 'model' => '<?php echo $relation['table']->getOption('name')?>', 'required' => <?php echo $relation['notnull'] ? 'true' : 'false'?>)));
 		}
 <?php endforeach; ?>
 
