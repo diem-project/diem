@@ -13,5 +13,6 @@ class <?php echo $this->table->getOption('name') ?>Form extends Plugin<?php echo
 {
   public function configure()
   {
+    parent::configure();
   }
 }
