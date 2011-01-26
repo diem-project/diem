@@ -47,13 +47,16 @@ abstract class PluginDmUserForm extends BaseDmUserForm
 	    $this->mergePostValidator(new sfValidatorSchemaCompare('password', sfValidatorSchemaCompare::EQUAL, 'password_again', array(), array('invalid' => 'The two passwords must be the same.')));
     }
 
-    $this->validatorSchema['username'] = new sfValidatorAnd(array(
-      $this->validatorSchema['username'],
-      new sfValidatorRegex(array('pattern' => '/^[\w\d\-\s@\.]+$/')),
-    ));
+    if($this->needsWidget('username'))
+    {
+	    $this->validatorSchema['username'] = new sfValidatorAnd(array(
+	      $this->validatorSchema['username'],
+	      new sfValidatorRegex(array('pattern' => '/^[\w\d\-\s@\.]+$/')),
+	    ));
+    }
 
-    $this->changeToEmail('email');
-
+    $this->needsWidget('email') && $this->changeToEmail('email');
+    
     if ($this->isCaptchaEnabled())
     {
       $this->addCaptcha();
