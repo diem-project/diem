@@ -108,7 +108,9 @@ abstract class dmFormDoctrine extends sfFormDoctrine
 			if ($fieldName == 'nested_set_parent_id')
 			{
 			  
-			  if($this->getObject()->getTable()->getTemplate('NestedSet')->getOption('hasManyRoots'))
+			  if($this->getObject()->getTable()->getTemplate('NestedSet')->getOption('hasManyRoots') 
+			   	|| $this->getObject()->getNode()->isRoot()
+			  )
 			  {
 				  $options['add_empty'] = '~';
 			  }else{

@@ -9,11 +9,13 @@
  * @subpackage form
  * @author     ##AUTHOR_NAME##
  * @version    SVN: $Id$
+ * @generator  <?php echo 'Diem ', constant('DIEM_VERSION'), "\n"?>
  */
 abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->getFormClassToExtend() . "\n" ?>
 {
   public function setup()
   {
+    parent::setup();
 <?php foreach($this->getColumnAggregationKeyFields() as $column):?>
 		if($this->needsWidget('<?php echo $column->getFieldName()?>')){
 			$this->setWidget('<?php echo $column->getFieldName()?>', new sfWidgetFormChoice(array('choices' => <?php echo $this->arrayExport($this->getSubClassesChoices());?>)));

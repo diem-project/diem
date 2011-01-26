@@ -7,6 +7,7 @@
  * @subpackage form
  * @author     ##AUTHOR_NAME##
  * @version    SVN: $Id$
+ * @generator  <?php echo 'Diem ', constant('DIEM_VERSION'), "\n"?>
  */
 abstract class Plugin<?php echo $this->table->getOption('name') ?>Form extends Base<?php echo $this->table->getOption('name') ?>Form
 {
