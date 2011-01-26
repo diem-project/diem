@@ -471,6 +471,8 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
 			&&
 			Doctrine_Relation::MANY == $relation->getType()
 			&&
+        !isset($relation['refTable'])
+			&&
 			(null === $this->getParentModel() || !Doctrine_Core::getTable($this->getParentModel())->hasRelation($relation->getAlias()))
 			&&
 			$this->getOneToManyOppositeRelation($relation)
