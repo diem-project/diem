@@ -135,17 +135,15 @@ abstract class dmFormDoctrine extends sfFormDoctrine
 		return $this;
 	}
 
-
 	/**
 	 * (non-PHPdoc)
-	 * @see sfForm::configure()
-	 * @return dmFormDoctrine
+	 * @see sfForm::setup()
 	 */
-	public function configure()
+	public function setup()
 	{
+		parent::setup();
 		$this->embeddedFormsSaveTime = array(self::EMBEDDED_FORM_SAVE_BEFORE => array(), self::EMBEDDED_FORM_SAVE_AFTER => array());
 		$this->setupNestedSet();
-		return parent::configure() || $this;
 	}
 
 	/**
