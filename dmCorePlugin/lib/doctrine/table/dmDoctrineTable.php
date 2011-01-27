@@ -566,6 +566,11 @@ abstract class dmDoctrineTable extends Doctrine_Table
 
     return $columns;
   }
+  
+  public function getSfDoctrineColumn($name)
+  {
+  	return $this->hasColumn($name) ? new sfDoctrineColumn($name, $this) : false;
+  }
 
   /**
    * dmMicroCache
