@@ -17,6 +17,7 @@ abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->
   {
     parent::setup();
 <?php foreach($this->getColumnAggregationKeyFields() as $column):?>
+		//column_aggregation
 		if($this->needsWidget('<?php echo $column->getFieldName()?>')){
 			$this->setWidget('<?php echo $column->getFieldName()?>', new sfWidgetFormChoice(array('choices' => <?php echo $this->arrayExport($this->getSubClassesChoices());?>)));
 			$this->setValidator('<?php echo $column->getFieldName()?>', new sfValidatorChoice(array('choices' => <?php echo $this->arrayExport($this->getSubClassesChoicesValidator());?>, 'required' => true)));
@@ -24,6 +25,7 @@ abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->
 <?php endforeach;?>
 
 <?php foreach ($this->getColumns(true, true, true) as $column): ?>
+		//column
 		if($this->needsWidget('<?php echo $column->getFieldName()?>')){
 			$this->setWidget('<?php echo $column->getFieldName() ?>', new <?php echo $this->getWidgetClassForColumn($column) ?>(<?php echo $this->getWidgetOptionsForColumn($column) ?>));
 			$this->setValidator('<?php echo $column->getFieldName() ?>', new <?php echo $this->getValidatorClassForColumn($column) ?>(<?php echo $this->getValidatorOptionsForColumn($column) ?>));
@@ -31,6 +33,7 @@ abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->
 <?php endforeach; ?>
 
 <?php foreach ($this->getManyToManyRelations() as $relation): ?><?php if ('DmMedia' === $relation->getClass()) continue; ?>
+		//many to many
 		if($this->needsWidget('<?php echo $this->underscore($relation['alias']) ?>_list')){
 			$this->setWidget('<?php echo $this->underscore($relation['alias']) ?>_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => '<?php echo $relation['table']->getOption('name') ?>', 'expanded' => true)));
 			$this->setValidator('<?php echo $this->underscore($relation['alias']) ?>_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => '<?php echo $relation['table']->getOption('name') ?>', 'required' => false)));
@@ -38,6 +41,7 @@ abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->
 <?php endforeach; ?>
 
 <?php foreach ($this->getOneToManyRelations() as $relation): ?><?php if($relation['alias'] === 'Translation') continue;?>
+		//one to many
 		if($this->needsWidget('<?php echo $this->underscore($relation['alias']) ?>_list')){
 			$this->setWidget('<?php echo $this->underscore($relation['alias']) ?>_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => '<?php echo $relation['table']->getOption('name') ?>', 'expanded' => true)));
 			$this->setValidator('<?php echo $this->underscore($relation['alias']) ?>_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => '<?php echo $relation['table']->getOption('name') ?>', 'required' => false)));
@@ -45,9 +49,10 @@ abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->
 <?php endforeach; ?>
 
 <?php foreach ($this->getOneToOneRelations() as $relation): ?><?php if($relation['alias'] === 'Translation') continue;?>
+		//one to one
 		if($this->needsWidget('<?php echo $this->underscore($relation['local']) ?>')){
 			$this->setWidget('<?php echo $this->underscore($relation['local']) ?>', new <?php echo $this->getWidgetClassForColumn($relation instanceof Doctrine_Relation_LocalKey ? $relation : new dmDoctrineColumn($relation['local'], $relation['table'])) ?>(array('multiple' => false, 'model' => '<?php echo $relation['table']->getOption('name')?>', 'expanded' => <?php echo $this->table->isPaginatedColumn($relation['local']) ? 'true' : 'false'?>)));
-			$this->setValidator('<?php echo $this->underscore($relation['local']) ?>', new sfValidatorDoctrineChoice(array('multiple' => false, 'model' => '<?php echo $relation['table']->getOption('name')?>', 'required' => <?php echo $relation['notnull'] ? 'true' : 'false'?>)));
+			$this->setValidator('<?php echo $this->underscore($relation['local']) ?>', new sfValidatorDoctrineChoice(array('multiple' => false, 'model' => '<?php echo $relation['table']->getOption('name')?>', 'required' => <?php echo $this->table->getSfDoctrineColumn($relation['local'])->isNotNull() ? 'true' : 'false'?>)));
 		}
 <?php endforeach; ?>
 
