@@ -12,17 +12,36 @@ abstract class BaseDmLayoutFormFilter extends BaseFormFilterDoctrine
 {
   public function setup()
   {
-    $this->setWidgets(array(
-      'name'      => new sfWidgetFormDmFilterInput(),
-      'template'  => new sfWidgetFormDmFilterInput(),
-      'css_class' => new sfWidgetFormDmFilterInput(),
-    ));
 
-    $this->setValidators(array(
-      'name'      => new sfValidatorPass(array('required' => false)),
-      'template'  => new sfValidatorPass(array('required' => false)),
-      'css_class' => new sfValidatorPass(array('required' => false)),
-    ));
+
+		if($this->needsWidget('id')){
+			$this->setWidget('id', new sfWidgetFormDmFilterInput());
+			$this->setValidator('id', new sfValidatorDoctrineChoice(array('required' => false, 'model' => 'DmLayout', 'column' => 'id')));
+		}
+		if($this->needsWidget('name')){
+			$this->setWidget('name', new sfWidgetFormDmFilterInput());
+			$this->setValidator('name', new sfValidatorString(array('required' => false)));
+		}
+		if($this->needsWidget('template')){
+			$this->setWidget('template', new sfWidgetFormDmFilterInput());
+			$this->setValidator('template', new sfValidatorString(array('required' => false)));
+		}
+		if($this->needsWidget('css_class')){
+			$this->setWidget('css_class', new sfWidgetFormDmFilterInput());
+			$this->setValidator('css_class', new sfValidatorString(array('required' => false)));
+		}
+
+
+		if($this->needsWidget('page_views_list')){
+			$this->setWidget('page_views_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmPageView', 'expanded' => true)));
+			$this->setValidator('page_views_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmPageView', 'required' => false)));
+		}
+		if($this->needsWidget('areas_list')){
+			$this->setWidget('areas_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmArea', 'expanded' => true)));
+			$this->setValidator('areas_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmArea', 'required' => false)));
+		}
+
+
     
 
     $this->widgetSchema->setNameFormat('dm_layout_filters[%s]');

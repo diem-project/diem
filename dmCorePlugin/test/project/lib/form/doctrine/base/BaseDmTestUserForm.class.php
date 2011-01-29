@@ -8,7 +8,7 @@
  * @package    retest
  * @subpackage form
  * @author     Your name here
- * @version    SVN: $Id: sfDoctrineFormGeneratedTemplate.php 24171 2009-11-19 16:37:50Z Kris.Wallsmith $
+ * @version    SVN: $Id: sfDoctrineFormGeneratedTemplate.php 29553 2010-05-20 14:33:00Z Kris.Wallsmith $
  */
 abstract class BaseDmTestUserForm extends BaseFormDoctrine
 {
@@ -18,12 +18,12 @@ abstract class BaseDmTestUserForm extends BaseFormDoctrine
       'id'          => new sfWidgetFormInputHidden(),
       'name'        => new sfWidgetFormInputText(),
       'description' => new sfWidgetFormTextarea(),
-      'media_id'    => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Media'), 'add_empty' => true)),
+      'media_id'    => new sfWidgetFormDmDoctrineChoice(array('model' => $this->getRelatedModelName('Media'), 'add_empty' => true)),
       'is_visible'  => new sfWidgetFormInputCheckbox(),
     ));
 
     $this->setValidators(array(
-      'id'          => new sfValidatorDoctrineChoice(array('model' => $this->getModelName(), 'column' => 'id', 'required' => false)),
+      'id'          => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
       'name'        => new sfValidatorString(array('max_length' => 255, 'required' => false)),
       'description' => new sfValidatorString(array('required' => false)),
       'media_id'    => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Media'), 'required' => false)),

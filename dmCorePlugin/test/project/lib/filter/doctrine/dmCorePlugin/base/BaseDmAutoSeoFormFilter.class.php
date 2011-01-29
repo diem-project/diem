@@ -12,31 +12,44 @@ abstract class BaseDmAutoSeoFormFilter extends BaseFormFilterDoctrine
 {
   public function setup()
   {
-    $this->setWidgets(array(
-      'module'      => new sfWidgetFormDmFilterInput(),
-      'action'      => new sfWidgetFormDmFilterInput(),
-      'created_at'  => new sfWidgetFormChoice(array('choices' => array(
-        ''      => '',
-        'today' => $this->getI18n()->__('Today'),
-        'week'  => $this->getI18n()->__('Past %number% days', array('%number%' => 7)),
-        'month' => $this->getI18n()->__('This month'),
-        'year'  => $this->getI18n()->__('This year')
-      ))),
-      'updated_at'  => new sfWidgetFormChoice(array('choices' => array(
-        ''      => '',
-        'today' => $this->getI18n()->__('Today'),
-        'week'  => $this->getI18n()->__('Past %number% days', array('%number%' => 7)),
-        'month' => $this->getI18n()->__('This month'),
-        'year'  => $this->getI18n()->__('This year')
-      ))),
-    ));
 
-    $this->setValidators(array(
-      'module'      => new sfValidatorPass(array('required' => false)),
-      'action'      => new sfValidatorPass(array('required' => false)),
-      'created_at'  => new sfValidatorChoice(array('required' => false, 'choices' => array_keys($this->widgetSchema['created_at']->getOption('choices')))),
-      'updated_at'  => new sfValidatorChoice(array('required' => false, 'choices' => array_keys($this->widgetSchema['updated_at']->getOption('choices')))),
-    ));
+
+		if($this->needsWidget('id')){
+			$this->setWidget('id', new sfWidgetFormDmFilterInput());
+			$this->setValidator('id', new sfValidatorDoctrineChoice(array('required' => false, 'model' => 'DmAutoSeo', 'column' => 'id')));
+		}
+		if($this->needsWidget('module')){
+			$this->setWidget('module', new sfWidgetFormDmFilterInput());
+			$this->setValidator('module', new sfValidatorString(array('required' => false)));
+		}
+		if($this->needsWidget('action')){
+			$this->setWidget('action', new sfWidgetFormDmFilterInput());
+			$this->setValidator('action', new sfValidatorString(array('required' => false)));
+		}
+		if($this->needsWidget('created_at')){
+			$this->setWidget('created_at', new sfWidgetFormChoice(array('choices' => array(
+        ''      => '',
+        'today' => $this->getI18n()->__('Today'),
+        'week'  => $this->getI18n()->__('Past %number% days', array('%number%' => 7)),
+        'month' => $this->getI18n()->__('This month'),
+        'year'  => $this->getI18n()->__('This year')
+      ))));
+			$this->setValidator('created_at', new sfValidatorChoice(array('required' => false, 'choices' => array_keys($this->widgetSchema['created_at']->getOption('choices')))));
+		}
+		if($this->needsWidget('updated_at')){
+			$this->setWidget('updated_at', new sfWidgetFormChoice(array('choices' => array(
+        ''      => '',
+        'today' => $this->getI18n()->__('Today'),
+        'week'  => $this->getI18n()->__('Past %number% days', array('%number%' => 7)),
+        'month' => $this->getI18n()->__('This month'),
+        'year'  => $this->getI18n()->__('This year')
+      ))));
+			$this->setValidator('updated_at', new sfValidatorChoice(array('required' => false, 'choices' => array_keys($this->widgetSchema['updated_at']->getOption('choices')))));
+		}
+
+
+
+
     
     $this->mergeI18nForm();
 

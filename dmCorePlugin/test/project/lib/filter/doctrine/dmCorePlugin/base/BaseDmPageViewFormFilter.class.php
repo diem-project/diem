@@ -12,17 +12,32 @@ abstract class BaseDmPageViewFormFilter extends BaseFormFilterDoctrine
 {
   public function setup()
   {
-    $this->setWidgets(array(
-      'module'       => new sfWidgetFormDmFilterInput(),
-      'action'       => new sfWidgetFormDmFilterInput(),
-      'dm_layout_id' => new sfWidgetFormDoctrineChoice(array('model' => 'DmLayout', 'add_empty' => true)),
-    ));
 
-    $this->setValidators(array(
-      'module'       => new sfValidatorPass(array('required' => false)),
-      'action'       => new sfValidatorPass(array('required' => false)),
-      'dm_layout_id' => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Layout'), 'column' => 'id')),
-    ));
+
+		if($this->needsWidget('id')){
+			$this->setWidget('id', new sfWidgetFormDmFilterInput());
+			$this->setValidator('id', new sfValidatorDoctrineChoice(array('required' => false, 'model' => 'DmPageView', 'column' => 'id')));
+		}
+		if($this->needsWidget('module')){
+			$this->setWidget('module', new sfWidgetFormDmFilterInput());
+			$this->setValidator('module', new sfValidatorString(array('required' => false)));
+		}
+		if($this->needsWidget('action')){
+			$this->setWidget('action', new sfWidgetFormDmFilterInput());
+			$this->setValidator('action', new sfValidatorString(array('required' => false)));
+		}
+
+
+		if($this->needsWidget('areas_list')){
+			$this->setWidget('areas_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmArea', 'expanded' => true)));
+			$this->setValidator('areas_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmArea', 'required' => false)));
+		}
+
+		if($this->needsWidget('layout_list')){
+			$this->setWidget('layout_list', new sfWidgetFormDoctrineChoice(array('multiple' => false, 'model' => 'DmLayout', 'expanded' => false)));
+			$this->setValidator('layout_list', new sfValidatorDoctrineChoice(array('multiple' => false, 'model' => 'DmLayout', 'required' => true)));
+		}
+
     
 
     $this->widgetSchema->setNameFormat('dm_page_view_filters[%s]');

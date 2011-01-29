@@ -9,29 +9,50 @@
  * @subpackage form
  * @author     Your name here
  * @version    SVN: $Id$
+ * @generator  Diem 5.4.0-DEV
  */
 abstract class BaseDmSettingForm extends BaseFormDoctrine
 {
   public function setup()
   {
-    $this->setWidgets(array(
-      'id'          => new sfWidgetFormInputHidden(),
-      'name'        => new sfWidgetFormInputText(),
-      'type'        => new sfWidgetFormChoice(array('choices' => array('text' => 'text', 'boolean' => 'boolean', 'select' => 'select', 'textarea' => 'textarea', 'number' => 'number', 'datetime' => 'datetime'))),
-      'params'      => new sfWidgetFormTextarea(),
-      'group_name'  => new sfWidgetFormInputText(),
-      'credentials' => new sfWidgetFormInputText(),
+    parent::setup();
 
-    ));
+		//column
+		if($this->needsWidget('id')){
+			$this->setWidget('id', new sfWidgetFormInputHidden());
+			$this->setValidator('id', new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)));
+		}
+		//column
+		if($this->needsWidget('name')){
+			$this->setWidget('name', new sfWidgetFormInputText());
+			$this->setValidator('name', new sfValidatorString(array('max_length' => 127)));
+		}
+		//column
+		if($this->needsWidget('type')){
+			$this->setWidget('type', new sfWidgetFormChoice(array('choices' => array('text' => 'text', 'boolean' => 'boolean', 'select' => 'select', 'textarea' => 'textarea', 'number' => 'number', 'datetime' => 'datetime'))));
+			$this->setValidator('type', new sfValidatorChoice(array('choices' => array(0 => 'text', 1 => 'boolean', 2 => 'select', 3 => 'textarea', 4 => 'number', 5 => 'datetime'), 'required' => false)));
+		}
+		//column
+		if($this->needsWidget('params')){
+			$this->setWidget('params', new sfWidgetFormTextarea());
+			$this->setValidator('params', new sfValidatorString(array('max_length' => 60000, 'required' => false)));
+		}
+		//column
+		if($this->needsWidget('group_name')){
+			$this->setWidget('group_name', new sfWidgetFormInputText());
+			$this->setValidator('group_name', new sfValidatorString(array('max_length' => 255, 'required' => false)));
+		}
+		//column
+		if($this->needsWidget('credentials')){
+			$this->setWidget('credentials', new sfWidgetFormInputText());
+			$this->setValidator('credentials', new sfValidatorString(array('max_length' => 255, 'required' => false)));
+		}
 
-    $this->setValidators(array(
-      'id'          => new sfValidatorDoctrineChoice(array('model' => $this->getModelName(), 'column' => 'id', 'required' => false)),
-      'name'        => new sfValidatorString(array('max_length' => 127)),
-      'type'        => new sfValidatorChoice(array('choices' => array(0 => 'text', 1 => 'boolean', 2 => 'select', 3 => 'textarea', 4 => 'number', 5 => 'datetime'), 'required' => false)),
-      'params'      => new sfValidatorString(array('max_length' => 60000, 'required' => false)),
-      'group_name'  => new sfValidatorString(array('max_length' => 255, 'required' => false)),
-      'credentials' => new sfValidatorString(array('max_length' => 255, 'required' => false)),
-    ));
+
+
+
+
+
 
     $this->validatorSchema->setPostValidator(
       new sfValidatorDoctrineUnique(array('model' => 'DmSetting', 'column' => array('name')))

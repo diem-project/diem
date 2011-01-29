@@ -9,25 +9,50 @@
  * @subpackage form
  * @author     Your name here
  * @version    SVN: $Id$
+ * @generator  Diem 5.4.0-DEV
  */
 abstract class BaseDmLayoutForm extends BaseFormDoctrine
 {
   public function setup()
   {
-    $this->setWidgets(array(
-      'id'        => new sfWidgetFormInputHidden(),
-      'name'      => new sfWidgetFormInputText(),
-      'template'  => new sfWidgetFormInputText(),
-      'css_class' => new sfWidgetFormInputText(),
+    parent::setup();
 
-    ));
+		//column
+		if($this->needsWidget('id')){
+			$this->setWidget('id', new sfWidgetFormInputHidden());
+			$this->setValidator('id', new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)));
+		}
+		//column
+		if($this->needsWidget('name')){
+			$this->setWidget('name', new sfWidgetFormInputText());
+			$this->setValidator('name', new sfValidatorString(array('max_length' => 255)));
+		}
+		//column
+		if($this->needsWidget('template')){
+			$this->setWidget('template', new sfWidgetFormInputText());
+			$this->setValidator('template', new sfValidatorString(array('max_length' => 255, 'required' => false)));
+		}
+		//column
+		if($this->needsWidget('css_class')){
+			$this->setWidget('css_class', new sfWidgetFormInputText());
+			$this->setValidator('css_class', new sfValidatorString(array('max_length' => 255, 'required' => false)));
+		}
 
-    $this->setValidators(array(
-      'id'        => new sfValidatorDoctrineChoice(array('model' => $this->getModelName(), 'column' => 'id', 'required' => false)),
-      'name'      => new sfValidatorString(array('max_length' => 255)),
-      'template'  => new sfValidatorString(array('max_length' => 255, 'required' => false)),
-      'css_class' => new sfValidatorString(array('max_length' => 255, 'required' => false)),
-    ));
+
+		//one to many
+		if($this->needsWidget('page_views_list')){
+			$this->setWidget('page_views_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmPageView', 'expanded' => true)));
+			$this->setValidator('page_views_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmPageView', 'required' => false)));
+		}
+		//one to many
+		if($this->needsWidget('areas_list')){
+			$this->setWidget('areas_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmArea', 'expanded' => true)));
+			$this->setValidator('areas_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmArea', 'required' => false)));
+		}
+
+
+
+
 
     $this->validatorSchema->setPostValidator(
       new sfValidatorDoctrineUnique(array('model' => 'DmLayout', 'column' => array('name')))

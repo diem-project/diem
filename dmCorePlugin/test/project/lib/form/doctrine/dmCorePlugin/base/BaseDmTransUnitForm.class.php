@@ -9,31 +9,55 @@
  * @subpackage form
  * @author     Your name here
  * @version    SVN: $Id$
+ * @generator  Diem 5.4.0-DEV
  */
 abstract class BaseDmTransUnitForm extends BaseFormDoctrine
 {
   public function setup()
   {
-    $this->setWidgets(array(
-      'id'              => new sfWidgetFormInputHidden(),
-      'dm_catalogue_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('DmCatalogue'), 'add_empty' => false)),
-      'source'          => new sfWidgetFormTextarea(),
-      'target'          => new sfWidgetFormTextarea(),
-      'meta'            => new sfWidgetFormInputText(),
-      'created_at'      => new sfWidgetFormDateTime(),
-      'updated_at'      => new sfWidgetFormDateTime(),
+    parent::setup();
 
-    ));
+		//column
+		if($this->needsWidget('id')){
+			$this->setWidget('id', new sfWidgetFormInputHidden());
+			$this->setValidator('id', new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)));
+		}
+		//column
+		if($this->needsWidget('source')){
+			$this->setWidget('source', new sfWidgetFormTextarea());
+			$this->setValidator('source', new sfValidatorString(array('max_length' => 60000)));
+		}
+		//column
+		if($this->needsWidget('target')){
+			$this->setWidget('target', new sfWidgetFormTextarea());
+			$this->setValidator('target', new sfValidatorString(array('max_length' => 60000)));
+		}
+		//column
+		if($this->needsWidget('meta')){
+			$this->setWidget('meta', new sfWidgetFormInputText());
+			$this->setValidator('meta', new sfValidatorString(array('max_length' => 255, 'required' => false)));
+		}
+		//column
+		if($this->needsWidget('created_at')){
+			$this->setWidget('created_at', new sfWidgetFormDateTime());
+			$this->setValidator('created_at', new sfValidatorDateTime());
+		}
+		//column
+		if($this->needsWidget('updated_at')){
+			$this->setWidget('updated_at', new sfWidgetFormDateTime());
+			$this->setValidator('updated_at', new sfValidatorDateTime());
+		}
 
-    $this->setValidators(array(
-      'id'              => new sfValidatorDoctrineChoice(array('model' => $this->getModelName(), 'column' => 'id', 'required' => false)),
-      'dm_catalogue_id' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('DmCatalogue'))),
-      'source'          => new sfValidatorString(array('max_length' => 60000)),
-      'target'          => new sfValidatorString(array('max_length' => 60000)),
-      'meta'            => new sfValidatorString(array('max_length' => 255, 'required' => false)),
-      'created_at'      => new sfValidatorDateTime(),
-      'updated_at'      => new sfValidatorDateTime(),
-    ));
+
+
+		//one to one
+		if($this->needsWidget('dm_catalogue_id')){
+			$this->setWidget('dm_catalogue_id', new sfWidgetFormDmDoctrineChoice(array('multiple' => false, 'model' => 'DmCatalogue', 'expanded' => false)));
+			$this->setValidator('dm_catalogue_id', new sfValidatorDoctrineChoice(array('multiple' => false, 'model' => 'DmCatalogue', 'required' => true)));
+		}
+
+
+
 
     $this->widgetSchema->setNameFormat('dm_trans_unit[%s]');
 

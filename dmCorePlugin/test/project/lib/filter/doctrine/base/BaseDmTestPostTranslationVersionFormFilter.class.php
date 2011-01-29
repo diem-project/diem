@@ -12,21 +12,44 @@ abstract class BaseDmTestPostTranslationVersionFormFilter extends BaseFormFilter
 {
   public function setup()
   {
-    $this->setWidgets(array(
-      'title'     => new sfWidgetFormDmFilterInput(),
-      'excerpt'   => new sfWidgetFormDmFilterInput(),
-      'body'      => new sfWidgetFormDmFilterInput(),
-      'url'       => new sfWidgetFormDmFilterInput(),
-      'is_active' => new sfWidgetFormChoice(array('choices' => array('' => $this->getI18n()->__('yes or no', array(), 'dm'), 1 => $this->getI18n()->__('yes', array(), 'dm'), 0 => $this->getI18n()->__('no', array(), 'dm')))),
-    ));
 
-    $this->setValidators(array(
-      'title'     => new sfValidatorPass(array('required' => false)),
-      'excerpt'   => new sfValidatorPass(array('required' => false)),
-      'body'      => new sfValidatorPass(array('required' => false)),
-      'url'       => new sfValidatorPass(array('required' => false)),
-      'is_active' => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
-    ));
+
+		if($this->needsWidget('lang')){
+			$this->setWidget('lang', new sfWidgetFormDmFilterInput());
+			$this->setValidator('lang', new sfValidatorDoctrineChoice(array('required' => false, 'model' => 'DmTestPostTranslationVersion', 'column' => 'lang')));
+		}
+		if($this->needsWidget('title')){
+			$this->setWidget('title', new sfWidgetFormDmFilterInput());
+			$this->setValidator('title', new sfValidatorString(array('required' => false)));
+		}
+		if($this->needsWidget('excerpt')){
+			$this->setWidget('excerpt', new sfWidgetFormDmFilterInput());
+			$this->setValidator('excerpt', new sfValidatorString(array('required' => false)));
+		}
+		if($this->needsWidget('body')){
+			$this->setWidget('body', new sfWidgetFormDmFilterInput());
+			$this->setValidator('body', new sfValidatorString(array('required' => false)));
+		}
+		if($this->needsWidget('url')){
+			$this->setWidget('url', new sfWidgetFormDmFilterInput());
+			$this->setValidator('url', new dmValidatorLinkUrl(array('required' => false)));
+		}
+		if($this->needsWidget('is_active')){
+			$this->setWidget('is_active', new sfWidgetFormChoice(array('choices' => array('' => $this->getI18n()->__('yes or no', array(), 'dm'), 1 => $this->getI18n()->__('yes', array(), 'dm'), 0 => $this->getI18n()->__('no', array(), 'dm')))));
+			$this->setValidator('is_active', new sfValidatorBoolean());
+		}
+		if($this->needsWidget('version')){
+			$this->setWidget('version', new sfWidgetFormDmFilterInput());
+			$this->setValidator('version', new sfValidatorDoctrineChoice(array('required' => false, 'model' => 'DmTestPostTranslationVersion', 'column' => 'version')));
+		}
+
+
+
+		if($this->needsWidget('dm_test_post_translation_list')){
+			$this->setWidget('dm_test_post_translation_list', new sfWidgetFormDoctrineChoice(array('multiple' => false, 'model' => 'DmTestPostTranslation', 'expanded' => false)));
+			$this->setValidator('dm_test_post_translation_list', new sfValidatorDoctrineChoice(array('multiple' => false, 'model' => 'DmTestPostTranslation', 'required' => true)));
+		}
+
     
 
     $this->widgetSchema->setNameFormat('dm_test_post_translation_version_filters[%s]');

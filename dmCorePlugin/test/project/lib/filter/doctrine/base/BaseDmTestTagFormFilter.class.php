@@ -12,29 +12,44 @@ abstract class BaseDmTestTagFormFilter extends BaseFormFilterDoctrine
 {
   public function setup()
   {
-    $this->setWidgets(array(
-      'created_at' => new sfWidgetFormChoice(array('choices' => array(
-        ''      => '',
-        'today' => $this->getI18n()->__('Today'),
-        'week'  => $this->getI18n()->__('Past %number% days', array('%number%' => 7)),
-        'month' => $this->getI18n()->__('This month'),
-        'year'  => $this->getI18n()->__('This year')
-      ))),
-      'updated_at' => new sfWidgetFormChoice(array('choices' => array(
-        ''      => '',
-        'today' => $this->getI18n()->__('Today'),
-        'week'  => $this->getI18n()->__('Past %number% days', array('%number%' => 7)),
-        'month' => $this->getI18n()->__('This month'),
-        'year'  => $this->getI18n()->__('This year')
-      ))),
-      'posts_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPost')),
-    ));
 
-    $this->setValidators(array(
-      'created_at' => new sfValidatorChoice(array('required' => false, 'choices' => array_keys($this->widgetSchema['created_at']->getOption('choices')))),
-      'updated_at' => new sfValidatorChoice(array('required' => false, 'choices' => array_keys($this->widgetSchema['updated_at']->getOption('choices')))),
-      'posts_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPost', 'required' => false)),
-    ));
+
+		if($this->needsWidget('id')){
+			$this->setWidget('id', new sfWidgetFormDmFilterInput());
+			$this->setValidator('id', new sfValidatorDoctrineChoice(array('required' => false, 'model' => 'DmTestTag', 'column' => 'id')));
+		}
+		if($this->needsWidget('created_at')){
+			$this->setWidget('created_at', new sfWidgetFormChoice(array('choices' => array(
+        ''      => '',
+        'today' => $this->getI18n()->__('Today'),
+        'week'  => $this->getI18n()->__('Past %number% days', array('%number%' => 7)),
+        'month' => $this->getI18n()->__('This month'),
+        'year'  => $this->getI18n()->__('This year')
+      ))));
+			$this->setValidator('created_at', new sfValidatorChoice(array('required' => false, 'choices' => array_keys($this->widgetSchema['created_at']->getOption('choices')))));
+		}
+		if($this->needsWidget('updated_at')){
+			$this->setWidget('updated_at', new sfWidgetFormChoice(array('choices' => array(
+        ''      => '',
+        'today' => $this->getI18n()->__('Today'),
+        'week'  => $this->getI18n()->__('Past %number% days', array('%number%' => 7)),
+        'month' => $this->getI18n()->__('This month'),
+        'year'  => $this->getI18n()->__('This year')
+      ))));
+			$this->setValidator('updated_at', new sfValidatorChoice(array('required' => false, 'choices' => array_keys($this->widgetSchema['updated_at']->getOption('choices')))));
+		}
+
+		if($this->needsWidget('posts_list')){
+			$this->setWidget('posts_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPost', 'expanded' => true)));
+			$this->setValidator('posts_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPost', 'required' => false)));
+		}
+
+		if($this->needsWidget('dm_test_post_tag_list')){
+			$this->setWidget('dm_test_post_tag_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPostTag', 'expanded' => true)));
+			$this->setValidator('dm_test_post_tag_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPostTag', 'required' => false)));
+		}
+
+
     
     $this->mergeI18nForm();
 

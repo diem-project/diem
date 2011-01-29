@@ -61,6 +61,7 @@ abstract class BaseDmTestDomain extends myDoctrineRecord
               0 => 'title',
               1 => 'is_active',
              ),
+             'length' => 7,
              ));
         $dmblameable1 = new Doctrine_Template_DmBlameable();
         $i18n0->addChild($dmblameable1);

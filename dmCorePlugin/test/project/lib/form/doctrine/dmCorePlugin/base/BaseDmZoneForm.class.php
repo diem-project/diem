@@ -9,27 +9,50 @@
  * @subpackage form
  * @author     Your name here
  * @version    SVN: $Id$
+ * @generator  Diem 5.4.0-DEV
  */
 abstract class BaseDmZoneForm extends BaseFormDoctrine
 {
   public function setup()
   {
-    $this->setWidgets(array(
-      'id'         => new sfWidgetFormInputHidden(),
-      'dm_area_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Area'), 'add_empty' => false)),
-      'css_class'  => new sfWidgetFormInputText(),
-      'width'      => new sfWidgetFormInputText(),
-      'position'   => new sfWidgetFormInputText(),
+    parent::setup();
 
-    ));
+		//column
+		if($this->needsWidget('id')){
+			$this->setWidget('id', new sfWidgetFormInputHidden());
+			$this->setValidator('id', new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)));
+		}
+		//column
+		if($this->needsWidget('css_class')){
+			$this->setWidget('css_class', new sfWidgetFormInputText());
+			$this->setValidator('css_class', new sfValidatorString(array('max_length' => 255, 'required' => false)));
+		}
+		//column
+		if($this->needsWidget('width')){
+			$this->setWidget('width', new sfWidgetFormInputText());
+			$this->setValidator('width', new sfValidatorString(array('max_length' => 15, 'required' => false)));
+		}
+		//column
+		if($this->needsWidget('position')){
+			$this->setWidget('position', new sfWidgetFormInputText());
+			$this->setValidator('position', new sfValidatorInteger(array('required' => false)));
+		}
 
-    $this->setValidators(array(
-      'id'         => new sfValidatorDoctrineChoice(array('model' => $this->getModelName(), 'column' => 'id', 'required' => false)),
-      'dm_area_id' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Area'))),
-      'css_class'  => new sfValidatorString(array('max_length' => 255, 'required' => false)),
-      'width'      => new sfValidatorString(array('max_length' => 15, 'required' => false)),
-      'position'   => new sfValidatorInteger(array('required' => false)),
-    ));
+
+		//one to many
+		if($this->needsWidget('widgets_list')){
+			$this->setWidget('widgets_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmWidget', 'expanded' => true)));
+			$this->setValidator('widgets_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmWidget', 'required' => false)));
+		}
+
+		//one to one
+		if($this->needsWidget('dm_area_id')){
+			$this->setWidget('dm_area_id', new sfWidgetFormDmDoctrineChoice(array('multiple' => false, 'model' => 'DmArea', 'expanded' => false)));
+			$this->setValidator('dm_area_id', new sfValidatorDoctrineChoice(array('multiple' => false, 'model' => 'DmArea', 'required' => true)));
+		}
+
+
+
 
     $this->widgetSchema->setNameFormat('dm_zone[%s]');
 

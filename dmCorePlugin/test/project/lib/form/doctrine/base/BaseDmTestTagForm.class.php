@@ -9,25 +9,45 @@
  * @subpackage form
  * @author     Your name here
  * @version    SVN: $Id$
+ * @generator  Diem 5.4.0-DEV
  */
 abstract class BaseDmTestTagForm extends BaseFormDoctrine
 {
   public function setup()
   {
-    $this->setWidgets(array(
-      'id'         => new sfWidgetFormInputHidden(),
-      'created_at' => new sfWidgetFormDateTime(),
-      'updated_at' => new sfWidgetFormDateTime(),
+    parent::setup();
 
-        'posts_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPost', 'expanded' => true)),
-    ));
+		//column
+		if($this->needsWidget('id')){
+			$this->setWidget('id', new sfWidgetFormInputHidden());
+			$this->setValidator('id', new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)));
+		}
+		//column
+		if($this->needsWidget('created_at')){
+			$this->setWidget('created_at', new sfWidgetFormDateTime());
+			$this->setValidator('created_at', new sfValidatorDateTime());
+		}
+		//column
+		if($this->needsWidget('updated_at')){
+			$this->setWidget('updated_at', new sfWidgetFormDateTime());
+			$this->setValidator('updated_at', new sfValidatorDateTime());
+		}
 
-    $this->setValidators(array(
-      'id'         => new sfValidatorDoctrineChoice(array('model' => $this->getModelName(), 'column' => 'id', 'required' => false)),
-      'created_at' => new sfValidatorDateTime(),
-      'updated_at' => new sfValidatorDateTime(),
-        'posts_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPost', 'required' => false)),
-    ));
+		//many to many
+		if($this->needsWidget('posts_list')){
+			$this->setWidget('posts_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPost', 'expanded' => true)));
+			$this->setValidator('posts_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPost', 'required' => false)));
+		}
+
+		//one to many
+		if($this->needsWidget('dm_test_post_tag_list')){
+			$this->setWidget('dm_test_post_tag_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPostTag', 'expanded' => true)));
+			$this->setValidator('dm_test_post_tag_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPostTag', 'required' => false)));
+		}
+
+
+
+
 
     if('embed' == sfConfig::get('dm_i18n_form'))
     {

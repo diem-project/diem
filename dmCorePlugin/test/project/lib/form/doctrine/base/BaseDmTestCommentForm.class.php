@@ -9,33 +9,65 @@
  * @subpackage form
  * @author     Your name here
  * @version    SVN: $Id$
+ * @generator  Diem 5.4.0-DEV
  */
 abstract class BaseDmTestCommentForm extends BaseFormDoctrine
 {
   public function setup()
   {
-    $this->setWidgets(array(
-      'id'         => new sfWidgetFormInputHidden(),
-      'post_id'    => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Post'), 'add_empty' => false)),
-      'author'     => new sfWidgetFormInputText(),
-      'body'       => new sfWidgetFormTextarea(),
-      'is_active'  => new sfWidgetFormInputCheckbox(),
-      'created_at' => new sfWidgetFormDateTime(),
-      'updated_at' => new sfWidgetFormDateTime(),
-      'version'    => new sfWidgetFormInputText(),
+    parent::setup();
 
-    ));
+		//column
+		if($this->needsWidget('id')){
+			$this->setWidget('id', new sfWidgetFormInputHidden());
+			$this->setValidator('id', new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)));
+		}
+		//column
+		if($this->needsWidget('author')){
+			$this->setWidget('author', new sfWidgetFormInputText());
+			$this->setValidator('author', new sfValidatorString(array('max_length' => 255, 'required' => false)));
+		}
+		//column
+		if($this->needsWidget('body')){
+			$this->setWidget('body', new sfWidgetFormTextarea());
+			$this->setValidator('body', new sfValidatorString(array('required' => false)));
+		}
+		//column
+		if($this->needsWidget('is_active')){
+			$this->setWidget('is_active', new sfWidgetFormInputCheckbox());
+			$this->setValidator('is_active', new sfValidatorBoolean(array('required' => false)));
+		}
+		//column
+		if($this->needsWidget('created_at')){
+			$this->setWidget('created_at', new sfWidgetFormDateTime());
+			$this->setValidator('created_at', new sfValidatorDateTime());
+		}
+		//column
+		if($this->needsWidget('updated_at')){
+			$this->setWidget('updated_at', new sfWidgetFormDateTime());
+			$this->setValidator('updated_at', new sfValidatorDateTime());
+		}
+		//column
+		if($this->needsWidget('version')){
+			$this->setWidget('version', new sfWidgetFormInputText());
+			$this->setValidator('version', new sfValidatorInteger(array('required' => false)));
+		}
 
-    $this->setValidators(array(
-      'id'         => new sfValidatorDoctrineChoice(array('model' => $this->getModelName(), 'column' => 'id', 'required' => false)),
-      'post_id'    => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Post'))),
-      'author'     => new sfValidatorString(array('max_length' => 255, 'required' => false)),
-      'body'       => new sfValidatorString(array('required' => false)),
-      'is_active'  => new sfValidatorBoolean(array('required' => false)),
-      'created_at' => new sfValidatorDateTime(),
-      'updated_at' => new sfValidatorDateTime(),
-      'version'    => new sfValidatorInteger(array('required' => false)),
-    ));
+
+		//one to many
+		if($this->needsWidget('version_list')){
+			$this->setWidget('version_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmTestCommentVersion', 'expanded' => true)));
+			$this->setValidator('version_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestCommentVersion', 'required' => false)));
+		}
+
+		//one to one
+		if($this->needsWidget('post_id')){
+			$this->setWidget('post_id', new sfWidgetFormDmDoctrineChoice(array('multiple' => false, 'model' => 'DmTestPost', 'expanded' => false)));
+			$this->setValidator('post_id', new sfValidatorDoctrineChoice(array('multiple' => false, 'model' => 'DmTestPost', 'required' => true)));
+		}
+
+
+
 
     $this->widgetSchema->setNameFormat('dm_test_comment[%s]');
 

@@ -12,15 +12,28 @@ abstract class BaseDmTestCategTranslationFormFilter extends BaseFormFilterDoctri
 {
   public function setup()
   {
-    $this->setWidgets(array(
-      'name'      => new sfWidgetFormDmFilterInput(),
-      'is_active' => new sfWidgetFormChoice(array('choices' => array('' => $this->getI18n()->__('yes or no', array(), 'dm'), 1 => $this->getI18n()->__('yes', array(), 'dm'), 0 => $this->getI18n()->__('no', array(), 'dm')))),
-    ));
 
-    $this->setValidators(array(
-      'name'      => new sfValidatorPass(array('required' => false)),
-      'is_active' => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
-    ));
+
+		if($this->needsWidget('name')){
+			$this->setWidget('name', new sfWidgetFormDmFilterInput());
+			$this->setValidator('name', new sfValidatorString(array('required' => false)));
+		}
+		if($this->needsWidget('is_active')){
+			$this->setWidget('is_active', new sfWidgetFormChoice(array('choices' => array('' => $this->getI18n()->__('yes or no', array(), 'dm'), 1 => $this->getI18n()->__('yes', array(), 'dm'), 0 => $this->getI18n()->__('no', array(), 'dm')))));
+			$this->setValidator('is_active', new sfValidatorBoolean());
+		}
+		if($this->needsWidget('lang')){
+			$this->setWidget('lang', new sfWidgetFormDmFilterInput());
+			$this->setValidator('lang', new sfValidatorDoctrineChoice(array('required' => false, 'model' => 'DmTestCategTranslation', 'column' => 'lang')));
+		}
+
+
+
+		if($this->needsWidget('dm_test_categ_list')){
+			$this->setWidget('dm_test_categ_list', new sfWidgetFormDoctrineChoice(array('multiple' => false, 'model' => 'DmTestCateg', 'expanded' => false)));
+			$this->setValidator('dm_test_categ_list', new sfValidatorDoctrineChoice(array('multiple' => false, 'model' => 'DmTestCateg', 'required' => true)));
+		}
+
     
 
     $this->widgetSchema->setNameFormat('dm_test_categ_translation_filters[%s]');

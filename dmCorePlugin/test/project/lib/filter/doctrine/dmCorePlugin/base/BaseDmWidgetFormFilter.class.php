@@ -12,29 +12,46 @@ abstract class BaseDmWidgetFormFilter extends BaseFormFilterDoctrine
 {
   public function setup()
   {
-    $this->setWidgets(array(
-      'dm_zone_id' => new sfWidgetFormDoctrineChoice(array('model' => 'DmZone', 'add_empty' => true)),
-      'module'     => new sfWidgetFormDmFilterInput(),
-      'action'     => new sfWidgetFormDmFilterInput(),
-      'css_class'  => new sfWidgetFormDmFilterInput(),
-      'position'   => new sfWidgetFormDmFilterInput(),
-      'updated_at' => new sfWidgetFormChoice(array('choices' => array(
+
+
+		if($this->needsWidget('id')){
+			$this->setWidget('id', new sfWidgetFormDmFilterInput());
+			$this->setValidator('id', new sfValidatorDoctrineChoice(array('required' => false, 'model' => 'DmWidget', 'column' => 'id')));
+		}
+		if($this->needsWidget('module')){
+			$this->setWidget('module', new sfWidgetFormDmFilterInput());
+			$this->setValidator('module', new sfValidatorString(array('required' => false)));
+		}
+		if($this->needsWidget('action')){
+			$this->setWidget('action', new sfWidgetFormDmFilterInput());
+			$this->setValidator('action', new sfValidatorString(array('required' => false)));
+		}
+		if($this->needsWidget('css_class')){
+			$this->setWidget('css_class', new sfWidgetFormDmFilterInput());
+			$this->setValidator('css_class', new sfValidatorString(array('required' => false)));
+		}
+		if($this->needsWidget('position')){
+			$this->setWidget('position', new sfWidgetFormDmFilterInput());
+			$this->setValidator('position', new sfValidatorInteger(array('required' => false)));
+		}
+		if($this->needsWidget('updated_at')){
+			$this->setWidget('updated_at', new sfWidgetFormChoice(array('choices' => array(
         ''      => '',
         'today' => $this->getI18n()->__('Today'),
         'week'  => $this->getI18n()->__('Past %number% days', array('%number%' => 7)),
         'month' => $this->getI18n()->__('This month'),
         'year'  => $this->getI18n()->__('This year')
-      ))),
-    ));
+      ))));
+			$this->setValidator('updated_at', new sfValidatorChoice(array('required' => false, 'choices' => array_keys($this->widgetSchema['updated_at']->getOption('choices')))));
+		}
 
-    $this->setValidators(array(
-      'dm_zone_id' => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Zone'), 'column' => 'id')),
-      'module'     => new sfValidatorPass(array('required' => false)),
-      'action'     => new sfValidatorPass(array('required' => false)),
-      'css_class'  => new sfValidatorPass(array('required' => false)),
-      'position'   => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
-      'updated_at' => new sfValidatorChoice(array('required' => false, 'choices' => array_keys($this->widgetSchema['updated_at']->getOption('choices')))),
-    ));
+
+
+		if($this->needsWidget('zone_list')){
+			$this->setWidget('zone_list', new sfWidgetFormDoctrineChoice(array('multiple' => false, 'model' => 'DmZone', 'expanded' => false)));
+			$this->setValidator('zone_list', new sfValidatorDoctrineChoice(array('multiple' => false, 'model' => 'DmZone', 'required' => true)));
+		}
+
     
     $this->mergeI18nForm();
 

@@ -12,19 +12,36 @@ abstract class BaseDmZoneFormFilter extends BaseFormFilterDoctrine
 {
   public function setup()
   {
-    $this->setWidgets(array(
-      'dm_area_id' => new sfWidgetFormDoctrineChoice(array('model' => 'DmArea', 'add_empty' => true)),
-      'css_class'  => new sfWidgetFormDmFilterInput(),
-      'width'      => new sfWidgetFormDmFilterInput(),
-      'position'   => new sfWidgetFormDmFilterInput(),
-    ));
 
-    $this->setValidators(array(
-      'dm_area_id' => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Area'), 'column' => 'id')),
-      'css_class'  => new sfValidatorPass(array('required' => false)),
-      'width'      => new sfValidatorPass(array('required' => false)),
-      'position'   => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
-    ));
+
+		if($this->needsWidget('id')){
+			$this->setWidget('id', new sfWidgetFormDmFilterInput());
+			$this->setValidator('id', new sfValidatorDoctrineChoice(array('required' => false, 'model' => 'DmZone', 'column' => 'id')));
+		}
+		if($this->needsWidget('css_class')){
+			$this->setWidget('css_class', new sfWidgetFormDmFilterInput());
+			$this->setValidator('css_class', new sfValidatorString(array('required' => false)));
+		}
+		if($this->needsWidget('width')){
+			$this->setWidget('width', new sfWidgetFormDmFilterInput());
+			$this->setValidator('width', new sfValidatorString(array('required' => false)));
+		}
+		if($this->needsWidget('position')){
+			$this->setWidget('position', new sfWidgetFormDmFilterInput());
+			$this->setValidator('position', new sfValidatorInteger(array('required' => false)));
+		}
+
+
+		if($this->needsWidget('widgets_list')){
+			$this->setWidget('widgets_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmWidget', 'expanded' => true)));
+			$this->setValidator('widgets_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmWidget', 'required' => false)));
+		}
+
+		if($this->needsWidget('area_list')){
+			$this->setWidget('area_list', new sfWidgetFormDoctrineChoice(array('multiple' => false, 'model' => 'DmArea', 'expanded' => false)));
+			$this->setValidator('area_list', new sfValidatorDoctrineChoice(array('multiple' => false, 'model' => 'DmArea', 'required' => true)));
+		}
+
     
 
     $this->widgetSchema->setNameFormat('dm_zone_filters[%s]');

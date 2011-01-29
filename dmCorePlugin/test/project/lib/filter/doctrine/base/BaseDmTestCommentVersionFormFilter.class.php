@@ -12,35 +12,56 @@ abstract class BaseDmTestCommentVersionFormFilter extends BaseFormFilterDoctrine
 {
   public function setup()
   {
-    $this->setWidgets(array(
-      'post_id'    => new sfWidgetFormDmFilterInput(),
-      'author'     => new sfWidgetFormDmFilterInput(),
-      'body'       => new sfWidgetFormDmFilterInput(),
-      'is_active'  => new sfWidgetFormChoice(array('choices' => array('' => $this->getI18n()->__('yes or no', array(), 'dm'), 1 => $this->getI18n()->__('yes', array(), 'dm'), 0 => $this->getI18n()->__('no', array(), 'dm')))),
-      'created_at' => new sfWidgetFormChoice(array('choices' => array(
-        ''      => '',
-        'today' => $this->getI18n()->__('Today'),
-        'week'  => $this->getI18n()->__('Past %number% days', array('%number%' => 7)),
-        'month' => $this->getI18n()->__('This month'),
-        'year'  => $this->getI18n()->__('This year')
-      ))),
-      'updated_at' => new sfWidgetFormChoice(array('choices' => array(
-        ''      => '',
-        'today' => $this->getI18n()->__('Today'),
-        'week'  => $this->getI18n()->__('Past %number% days', array('%number%' => 7)),
-        'month' => $this->getI18n()->__('This month'),
-        'year'  => $this->getI18n()->__('This year')
-      ))),
-    ));
 
-    $this->setValidators(array(
-      'post_id'    => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
-      'author'     => new sfValidatorPass(array('required' => false)),
-      'body'       => new sfValidatorPass(array('required' => false)),
-      'is_active'  => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
-      'created_at' => new sfValidatorChoice(array('required' => false, 'choices' => array_keys($this->widgetSchema['created_at']->getOption('choices')))),
-      'updated_at' => new sfValidatorChoice(array('required' => false, 'choices' => array_keys($this->widgetSchema['updated_at']->getOption('choices')))),
-    ));
+
+		if($this->needsWidget('post_id')){
+			$this->setWidget('post_id', new sfWidgetFormDmFilterInput());
+			$this->setValidator('post_id', new sfValidatorInteger(array('required' => false)));
+		}
+		if($this->needsWidget('author')){
+			$this->setWidget('author', new sfWidgetFormDmFilterInput());
+			$this->setValidator('author', new sfValidatorString(array('required' => false)));
+		}
+		if($this->needsWidget('body')){
+			$this->setWidget('body', new sfWidgetFormDmFilterInput());
+			$this->setValidator('body', new sfValidatorString(array('required' => false)));
+		}
+		if($this->needsWidget('is_active')){
+			$this->setWidget('is_active', new sfWidgetFormChoice(array('choices' => array('' => $this->getI18n()->__('yes or no', array(), 'dm'), 1 => $this->getI18n()->__('yes', array(), 'dm'), 0 => $this->getI18n()->__('no', array(), 'dm')))));
+			$this->setValidator('is_active', new sfValidatorBoolean());
+		}
+		if($this->needsWidget('created_at')){
+			$this->setWidget('created_at', new sfWidgetFormChoice(array('choices' => array(
+        ''      => '',
+        'today' => $this->getI18n()->__('Today'),
+        'week'  => $this->getI18n()->__('Past %number% days', array('%number%' => 7)),
+        'month' => $this->getI18n()->__('This month'),
+        'year'  => $this->getI18n()->__('This year')
+      ))));
+			$this->setValidator('created_at', new sfValidatorChoice(array('required' => false, 'choices' => array_keys($this->widgetSchema['created_at']->getOption('choices')))));
+		}
+		if($this->needsWidget('updated_at')){
+			$this->setWidget('updated_at', new sfWidgetFormChoice(array('choices' => array(
+        ''      => '',
+        'today' => $this->getI18n()->__('Today'),
+        'week'  => $this->getI18n()->__('Past %number% days', array('%number%' => 7)),
+        'month' => $this->getI18n()->__('This month'),
+        'year'  => $this->getI18n()->__('This year')
+      ))));
+			$this->setValidator('updated_at', new sfValidatorChoice(array('required' => false, 'choices' => array_keys($this->widgetSchema['updated_at']->getOption('choices')))));
+		}
+		if($this->needsWidget('version')){
+			$this->setWidget('version', new sfWidgetFormDmFilterInput());
+			$this->setValidator('version', new sfValidatorDoctrineChoice(array('required' => false, 'model' => 'DmTestCommentVersion', 'column' => 'version')));
+		}
+
+
+
+		if($this->needsWidget('dm_test_comment_list')){
+			$this->setWidget('dm_test_comment_list', new sfWidgetFormDoctrineChoice(array('multiple' => false, 'model' => 'DmTestComment', 'expanded' => false)));
+			$this->setValidator('dm_test_comment_list', new sfValidatorDoctrineChoice(array('multiple' => false, 'model' => 'DmTestComment', 'required' => true)));
+		}
+
     
 
     $this->widgetSchema->setNameFormat('dm_test_comment_version_filters[%s]');

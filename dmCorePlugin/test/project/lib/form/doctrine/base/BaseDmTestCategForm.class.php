@@ -9,27 +9,55 @@
  * @subpackage form
  * @author     Your name here
  * @version    SVN: $Id$
+ * @generator  Diem 5.4.0-DEV
  */
 abstract class BaseDmTestCategForm extends BaseFormDoctrine
 {
   public function setup()
   {
-    $this->setWidgets(array(
-      'id'           => new sfWidgetFormInputHidden(),
-      'created_at'   => new sfWidgetFormDateTime(),
-      'updated_at'   => new sfWidgetFormDateTime(),
-      'position'     => new sfWidgetFormInputText(),
+    parent::setup();
 
-        'domains_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomain', 'expanded' => true)),
-    ));
+		//column
+		if($this->needsWidget('id')){
+			$this->setWidget('id', new sfWidgetFormInputHidden());
+			$this->setValidator('id', new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)));
+		}
+		//column
+		if($this->needsWidget('created_at')){
+			$this->setWidget('created_at', new sfWidgetFormDateTime());
+			$this->setValidator('created_at', new sfValidatorDateTime());
+		}
+		//column
+		if($this->needsWidget('updated_at')){
+			$this->setWidget('updated_at', new sfWidgetFormDateTime());
+			$this->setValidator('updated_at', new sfValidatorDateTime());
+		}
+		//column
+		if($this->needsWidget('position')){
+			$this->setWidget('position', new sfWidgetFormInputText());
+			$this->setValidator('position', new sfValidatorInteger(array('required' => false)));
+		}
 
-    $this->setValidators(array(
-      'id'           => new sfValidatorDoctrineChoice(array('model' => $this->getModelName(), 'column' => 'id', 'required' => false)),
-      'created_at'   => new sfValidatorDateTime(),
-      'updated_at'   => new sfValidatorDateTime(),
-      'position'     => new sfValidatorInteger(array('required' => false)),
-        'domains_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomain', 'required' => false)),
-    ));
+		//many to many
+		if($this->needsWidget('domains_list')){
+			$this->setWidget('domains_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomain', 'expanded' => true)));
+			$this->setValidator('domains_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomain', 'required' => false)));
+		}
+
+		//one to many
+		if($this->needsWidget('dm_test_domain_categ_list')){
+			$this->setWidget('dm_test_domain_categ_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomainCateg', 'expanded' => true)));
+			$this->setValidator('dm_test_domain_categ_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomainCateg', 'required' => false)));
+		}
+		//one to many
+		if($this->needsWidget('posts_list')){
+			$this->setWidget('posts_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPost', 'expanded' => true)));
+			$this->setValidator('posts_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPost', 'required' => false)));
+		}
+
+
+
+
 
     if('embed' == sfConfig::get('dm_i18n_form'))
     {

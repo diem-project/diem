@@ -7,14 +7,14 @@
  * 
  * @property integer $dm_layout_id
  * @property integer $dm_page_view_id
- * @property enum $type
+ * @property string $type
  * @property DmLayout $Layout
  * @property DmPageView $PageView
  * @property Doctrine_Collection $Zones
  * 
  * @method integer             getDmLayoutId()      Returns the current record's "dm_layout_id" value
  * @method integer             getDmPageViewId()    Returns the current record's "dm_page_view_id" value
- * @method enum                getType()            Returns the current record's "type" value
+ * @method string              getType()            Returns the current record's "type" value
  * @method DmLayout            getLayout()          Returns the current record's "Layout" value
  * @method DmPageView          getPageView()        Returns the current record's "PageView" value
  * @method Doctrine_Collection getZones()           Returns the current record's "Zones" collection
@@ -43,18 +43,10 @@ abstract class BaseDmArea extends myDoctrineRecord
              'type' => 'integer',
              'notnull' => false,
              ));
-        $this->hasColumn('type', 'enum', null, array(
-             'type' => 'enum',
+        $this->hasColumn('type', 'string', 255, array(
+             'type' => 'string',
              'notnull' => true,
-             'values' => 
-             array(
-              0 => 'content',
-              1 => 'top',
-              2 => 'bottom',
-              3 => 'left',
-              4 => 'right',
-             ),
-             'default' => 'content',
+             'length' => 255,
              ));
     }
 

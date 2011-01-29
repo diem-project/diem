@@ -12,17 +12,32 @@ abstract class BaseDmCatalogueFormFilter extends BaseFormFilterDoctrine
 {
   public function setup()
   {
-    $this->setWidgets(array(
-      'name'        => new sfWidgetFormDmFilterInput(),
-      'source_lang' => new sfWidgetFormDmFilterInput(),
-      'target_lang' => new sfWidgetFormDmFilterInput(),
-    ));
 
-    $this->setValidators(array(
-      'name'        => new sfValidatorPass(array('required' => false)),
-      'source_lang' => new sfValidatorPass(array('required' => false)),
-      'target_lang' => new sfValidatorPass(array('required' => false)),
-    ));
+
+		if($this->needsWidget('id')){
+			$this->setWidget('id', new sfWidgetFormDmFilterInput());
+			$this->setValidator('id', new sfValidatorDoctrineChoice(array('required' => false, 'model' => 'DmCatalogue', 'column' => 'id')));
+		}
+		if($this->needsWidget('name')){
+			$this->setWidget('name', new sfWidgetFormDmFilterInput());
+			$this->setValidator('name', new sfValidatorString(array('required' => false)));
+		}
+		if($this->needsWidget('source_lang')){
+			$this->setWidget('source_lang', new sfWidgetFormDmFilterInput());
+			$this->setValidator('source_lang', new sfValidatorString(array('required' => false)));
+		}
+		if($this->needsWidget('target_lang')){
+			$this->setWidget('target_lang', new sfWidgetFormDmFilterInput());
+			$this->setValidator('target_lang', new sfValidatorString(array('required' => false)));
+		}
+
+
+		if($this->needsWidget('units_list')){
+			$this->setWidget('units_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmTransUnit', 'expanded' => true)));
+			$this->setValidator('units_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTransUnit', 'required' => false)));
+		}
+
+
     
 
     $this->widgetSchema->setNameFormat('dm_catalogue_filters[%s]');
