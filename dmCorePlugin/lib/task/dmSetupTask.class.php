@@ -106,6 +106,8 @@ EOF;
     	$this->runTask('dm:data', array(), array('load-doctrine-data' => $options['load-doctrine-data']));
     }
     
+    $this->context->get('filesystem')->sf('dm:setup -n');
+    
     $this->runTask('dm:permissions');
     
     // fix db file permissions
