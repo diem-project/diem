@@ -92,18 +92,18 @@ EOF;
 
     $this->runTask('dmAdmin:generate');
     
+    if(!$options['dont-load-data'])
+    {
+    	$this->runTask('dm:data', array(), array('load-doctrine-data' => $options['load-doctrine-data']));
+    }
+
     $this->logSection('diem', 'generate front modules');
-    
-    if (!$this->context->get('filesystem')->sf('dmFront:generate --env=' . dmArray::get($options, 'env', 'dev')))
+    if (!$return = $this->context->get('filesystem')->sf('dmFront:generate --env=' . dmArray::get($options, 'env', 'dev')))
     {
       $this->logBlock(array(
         'Can\'t run dmFront:generate: '.$this->context->get('filesystem')->getLastExec('output'),
         'Please run "php symfony dmFront:generate" manually to generate front templates'
       ), 'ERROR');
-    }
-    if(!$options['dont-load-data'])
-    {
-    	$this->runTask('dm:data', array(), array('load-doctrine-data' => $options['load-doctrine-data']));
     }
     
     $this->runTask('dm:permissions');
