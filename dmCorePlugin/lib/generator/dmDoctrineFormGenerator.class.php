@@ -168,7 +168,7 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
 	 */
 	public function getMediaRelations()
 	{
-		return $this->table->getRelationHolder()->getLocalMedias();
+		return $this->table->getRelationHolder()->getLocalMedias(true);
 	}
 
 	/**
