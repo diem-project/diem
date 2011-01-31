@@ -28,17 +28,10 @@ EOF;
 	 */
 	protected function execute($arguments = array(), $options = array())
 	{
+		$this->withDatabase();
 		$this->logSection('doctrine', 'dropping tables');
-		$con = $this->withDatabase();
-		$dbh = Doctrine_Manager::getInstance()->getCurrentConnection()->getDbh();
-		$dbh->query('SET foreign_key_checks = 0');
-		
-		$tables = $dbh->query('SHOW TABLES');
-		
-		foreach($tables as $table)
-		{
-			$dbh->query('DROP TABLE ' . $table[0]);
-		}
-		$dbh->query('SET foreign_key_checks = 1');
+
+		$this->helper = new dmDbHelper(Doctrine_Manager::getInstance()->getCurrentConnection(), $this->dispatcher, $this->formatter);
+		$this->helper->dropTables(true);
 	}
 }
