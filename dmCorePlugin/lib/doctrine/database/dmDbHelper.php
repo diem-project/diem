@@ -63,7 +63,7 @@ class dmDbHelper
 		{
 			$this->enableForeignKeyChecks(false);
 		}
-		foreach($this->tables as $table)
+		foreach($this->getTables($conn) as $table)
 		{
 			$conn->getDbh()->query('DROP TABLE ' . $table[0]);
 		}
