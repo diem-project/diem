@@ -15,8 +15,9 @@ class dmDbHelper
 	/**
 	 * @param Doctrine_Connection $conn
 	 */
-	public function __construct($conn, $dispatcher = null, $formatter = null)
+	public function __construct($conn, $dispatcher = null, $formatter = null, $log = false)
 	{
+		$this->log = $log;
 		$this->conn= $conn;
 		$this->dispatcher = $dispatcher;
 		$this->formatter = $formatter;
@@ -24,7 +25,7 @@ class dmDbHelper
 
 	protected function getConnection($conn = null)
 	{
-		if(null === $con)
+		if(null === $conn)
 		{
 			$conn = $this->conn;
 		}
@@ -132,6 +133,9 @@ class dmDbHelper
 	
 	protected function logSection($section, $message, $size = null, $style = 'INFO')
 	{
-		$this->dispatcher->notify(new sfEvent($this, 'command.log', array($this->formatter->formatSection($section, $message, $size, $style))));
+		if($this->log)
+		{
+			$this->dispatcher->notify(new sfEvent($this, 'command.log', array($this->formatter->formatSection($section, $message, $size, $style))));
+		}
 	}
 }
