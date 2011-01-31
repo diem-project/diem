@@ -335,22 +335,29 @@ abstract class dmModelGeneratorConfiguration extends sfModelGeneratorConfigurati
 
 	public function getFormOptions()
 	{
-		$method = 'getFormOptionsFor' . dmString::camelize(dmContext::getInstance()->getActionName());
+		$method = 'getFormOptionsFor' . dmString::camelize($actionName = dmContext::getInstance()->getActionName());
 		if(method_exists($this, $method))
 		{
 			return $this->$method();
 		}
-		return $this->getDefaultFormOptions();
+		return $this->getDefaultFormOptions($actionName);
 	}
 
-	protected function getDefaultFormOptions()
+	protected function getDefaultFormOptions($action = 'form')
 	{
-		return array('widgets' => $this->getFieldsFromFieldsets($this->getFormDisplay()));
+		$method = sprintf('get%sDisplay', ucfirst($action));
+		return array('widgets' => $this->getFieldsFromFieldsets($this->$method()));
 	}
 
 	protected function getFormOptionsForEdit()
 	{
 		$fieldsets = $this->getEditDisplay();
+		return array('widgets' => $this->getFieldsFromFieldsets(empty($fieldsets) ? $this->getFormDisplay() : $fieldsets));
+	}
+	
+	protected function getFormOptionsForNew()
+	{
+		$fieldsets = $this->getNewDisplay();
 		return array('widgets' => $this->getFieldsFromFieldsets(empty($fieldsets) ? $this->getFormDisplay() : $fieldsets));
 	}
 
