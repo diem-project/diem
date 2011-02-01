@@ -346,6 +346,10 @@ abstract class dmModelGeneratorConfiguration extends sfModelGeneratorConfigurati
 	protected function getDefaultFormOptions($action = 'form')
 	{
 		$method = sprintf('get%sDisplay', ucfirst($action));
+		if(!method_exists($this, $method))
+		{
+			$method = 'getFormDisplay';
+		}
 		return array('widgets' => $this->getFieldsFromFieldsets($this->$method()));
 	}
 
