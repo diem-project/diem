@@ -39,6 +39,7 @@ EOF;
 			unset($arguments['task']);
 		}
 		$noIntegrity = $options['no-integrity'];
+		$withTimer = $options['timer'];
 		unset($options['no-integrity'], $options['timer']);
 
 		if($noIntegrity)
@@ -46,9 +47,9 @@ EOF;
 			$this->helper->enableForeignKeyChecks(false);
 		}
 
-		$options['timer'] && $timer = $this->timerStart('doctrine-data-load');
+		$withTimer && $timer = $this->timerStart('doctrine-data-load');
 		$this->runTask('doctrine:data-load', $arguments, $options);
-		$options['timer'] && $this->logSection('time', sprintf('%s s', $timer->getElapsedTime()));
+		$withTimer && $this->logSection('time', sprintf('%s s', $timer->getElapsedTime()));
 		
 		
 		if($noIntegrity)
