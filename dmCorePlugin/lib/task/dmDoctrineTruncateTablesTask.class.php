@@ -20,10 +20,15 @@ EOF;
 	{
 		$this->logSection('doctrine', 'truncating tables');
 		
+		
+		$options['timer'] && $timer = $this->timerStart('truncate-tables');
+		
 		/**
 		 * @var dmDbHelper
 		 */
 		$this->helper = new dmDbHelper(Doctrine_Manager::getInstance()->getCurrentConnection(), $this->dispatcher, $this->formatter);
 		$this->helper->truncateTables(true);
+		
+		$options['timer'] && $this->logSection('time', sprintf('%s s', $timer->getElapsedTime()));
 	}
 }
