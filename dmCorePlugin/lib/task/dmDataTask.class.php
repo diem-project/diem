@@ -42,7 +42,7 @@ EOF;
     if($options['load-doctrine-data'])
     {
     	$options['timer'] && $timer = $this->timerStart('doctrine-data-load');
-      $this->runTask('doctrine:data-load', array(), array('append'=>true));
+      $this->runTask('doctrine:data-load', array(), array('append' => true, 'env' => $options['env']));
       $options['timer'] && $this->logSection('time', sprintf('%s s', $timer->getElapsedTime()));
     }
   }
