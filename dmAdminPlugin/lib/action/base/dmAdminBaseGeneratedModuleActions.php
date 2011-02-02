@@ -2,7 +2,6 @@
 
 class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 {
-
 	protected function getRouteArrayForAction($action, $object = null)
 	{
 		$route = array('sf_route' => $this->getDmModule()->getUnderscore(), 'action' => $action);
@@ -35,7 +34,7 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 			}
 
 			if($pk){
-				$this->object = $this->buildObjectQuery($pk)->fetchOne();
+				$this->object = $this->buildObjectQuery($pk, $this->getRelationsAlias())->fetchOne();
 			}else{
 				$this->object = false;
 			}
@@ -670,8 +669,8 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 			if(is_array($id)) { $id = $id[0]; }
 			$query = $table->createQuery('o')->where('o.' . $id . ' = ?', $pk);
 			
-			$table->joinLocals($query, true);
-			$table->joinRelations($query, $this->getRelationsAlias(), true);
+			$table->joinLocals($query, true, $locals);
+			$table->joinRelations($query, $relations, true);
 			return $query;
 		}
 	}
