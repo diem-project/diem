@@ -737,4 +737,33 @@ abstract class dmDoctrineTable extends Doctrine_Table
 			}
 		}
 	}
+	/**
+	 * 
+	 * Get the opposite relation of given relation
+	 * @param string $relation 
+	 * @throws LogicException
+	 * @return Doctrine_Relation 
+	 */
+	public function getOppositeRelation($relation)
+	{
+		if(is_string($relation))
+		{
+			$relation = $this->getRelation($relation);
+		}
+		if(!$relation instanceof Doctrine_Relation)
+		{
+			throw new LogicException('Given $relation is not a Doctrine_Relation');
+		}
+		
+		$oppositeTableRelations = $relation['table']->getRelationParser()->getRelations();
+		
+		foreach($oppositeTableRelations as $rel)
+		{
+			if($rel['local'] === $relation['foreign'])
+			{
+				return $rel;
+			}
+		}
+		return false;
+	}
 }
