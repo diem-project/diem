@@ -364,4 +364,14 @@ abstract class dmDoctrineQuery extends Doctrine_Query
 	{
 		self::$moduleManager = $moduleManager;
 	}
+	
+		/**
+	 * 
+	 * @return dmDoctrineQuery
+	 */
+	public function andWhere($where, $params = array())
+	{
+		return parent::andWhere($where, $params);
+	}
+	
 }
