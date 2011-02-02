@@ -23,7 +23,7 @@
     $label = dmString::humanize($name);
   }
 
-  $label = __($label);
+  $label = __($label, array(), '<?php echo $this->getModule()->getOption('i18n_catalogue')?>');
 
   if($form->getObject()->getTable()->isI18nColumn($name))
   {
@@ -40,7 +40,7 @@
     _media('dmCore/images/16/required.png')
     ->size(16, 16)
     ->set('.dm_label_required')
-    ->alt(__('Required.'));
+    ->alt(__('Required.', array(), 'sf_admin'));
   }
 ?]
 [?php if ($field->isPartial()): ?]
@@ -53,7 +53,7 @@
   <div data-field-name="[?php echo $name ?]" class="[?php echo $divClass ?][?php $form[$name]->hasError() and print ' errors' ?]">
     [?php if ($form[$name]->hasError()): ?]
       <div class="error">
-        <div class="s16 s16_error">[?php echo __((string) $form[$name]->getError()) ?]</div>
+        <div class="s16 s16_error">[?php echo __((string) $form[$name]->getError(), array(), '<?php echo $this->getModule()->getOption('i18n_catalogue')?>') ?]</div>
       </div>
     [?php endif; ?]
     <div class="sf_admin_form_row_inner clearfix">
@@ -65,16 +65,33 @@
       
       if($form[$name]->getWidget() instanceof sfWidgetFormDoctrineChoice && $form[$name]->getWidget()->getOption('multiple'))
       {
-        echo sprintf('<div class="control selection"><span class="select_all">%s</span><span class="unselect_all">%s</span></div>', __('Select all'), __('Unselect all'));
+        echo sprintf('<div class="control selection"><span class="select_all">%s</span><span class="unselect_all">%s</span><span class="see_selected">%s</span><span class="see_unselected">%s</span><span class="see_all">%s</span></div>', __('Select all', array(), 'dm'), __('Unselect all', array(), 'dm'), __('See selected', array(), 'dm'), __('See unselected', array(), 'dm'), __('See all', array(), 'dm'));
+      }
+      if($form[$name]->getWidget() instanceof sfWidgetFormDmPaginatedDoctrineChoice)
+      {
+        $pager = $form[$name]->getWidget()->getPager();
+        $pager->setMaxPerPage($sf_user->getAttribute('<?php echo $this->getModuleName()?>.' . $name . '.max_per_page', 10, 'admin_module'));
+        $pager->init();
+        $linkArray = $helper->getRouteArrayForAction('paginateRelation', $form->getObject());
+        $linkArray['field'] = $name;
+        ob_start();
+        include_partial('<?php echo $this->getModuleName()?>/form_field_pagination', array('pager' => $pager, 'field' => $name, 'link' => url_for($linkArray)));
+        $pagination = ob_get_clean();
+        
+        $checkbox_tools = sprintf('<div class="dm_checkbox_tools"><div class="dm_checkbox_search_filter"><input class="search-box" type="text" title="Search" value="%s"/><span class="clear"><a title="Clear search">X</a></span></div>%s</div>', isset($search) ? $search : '', $pagination);
+        $resizer = '<div class="resize-handler"></div>';
+      }else{
+      	$checkbox_tools = '';
+      	$resizer = '';
       }
       
       echo '</div>';
 
-      echo '<div class="content">'.$form[$name]->render($attributes instanceof sfOutputEscaper ? $attributes->getRawValue() : $attributes).'</div>';
+      echo '<div class="content">'.$checkbox_tools.$form[$name]->render($attributes instanceof sfOutputEscaper ? $attributes->getRawValue() : $attributes). $resizer . '</div>';
 
       if ($help)
       {
-        echo '<div class="help">'.__($help).'</div>';
+        echo '<div class="help">'.__($help, array(), '<?php echo $this->getModule()->getOption('i18n_catalogue')?>').'</div>';
       }
       elseif($help = $form[$name]->renderHelp())
       {
@@ -107,7 +124,7 @@
       if ($relation)
       {
         echo '<div class="sf_admin_form_row_inner clearfix">';
-        echo '<div class="label_wrap">'.__($field->getConfig('label', '', true)).'</div>';
+        echo '<div class="label_wrap">'.__($field->getConfig('label', '', true), array(), '<?php echo $this->getModule()->getOption('i18n_catalogue')?>').'</div>';
         echo $sf_context->getServiceContainer()->mergeParameter('related_records_view.options', array(
           'record' => $form->getObject(),
           'alias'  => $alias

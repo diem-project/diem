@@ -4,13 +4,3 @@
 
     return new $class($filters, $this->getFilterFormOptions());
   }
-
-  public function getFilterFormOptions()
-  {
-    return array();
-  }
-
-  public function getFilterDefaults()
-  {
-    return array();
-  }

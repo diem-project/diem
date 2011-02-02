@@ -9,33 +9,60 @@
  * @subpackage form
  * @author     Your name here
  * @version    SVN: $Id$
+ * @generator  Diem 5.4.0-DEV
  */
 abstract class BaseDmPageForm extends BaseFormDoctrine
 {
   public function setup()
   {
-    $this->setWidgets(array(
-      'id'          => new sfWidgetFormInputHidden(),
-      'module'      => new sfWidgetFormInputText(),
-      'action'      => new sfWidgetFormInputText(),
-      'record_id'   => new sfWidgetFormInputText(),
-      'credentials' => new sfWidgetFormInputText(),
-      'lft'         => new sfWidgetFormInputText(),
-      'rgt'         => new sfWidgetFormInputText(),
-      'level'       => new sfWidgetFormInputText(),
+    parent::setup();
 
-    ));
+		//column
+		if($this->needsWidget('id')){
+			$this->setWidget('id', new sfWidgetFormInputHidden());
+			$this->setValidator('id', new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)));
+		}
+		//column
+		if($this->needsWidget('module')){
+			$this->setWidget('module', new sfWidgetFormInputText());
+			$this->setValidator('module', new sfValidatorString(array('max_length' => 127)));
+		}
+		//column
+		if($this->needsWidget('action')){
+			$this->setWidget('action', new sfWidgetFormInputText());
+			$this->setValidator('action', new sfValidatorString(array('max_length' => 127)));
+		}
+		//column
+		if($this->needsWidget('record_id')){
+			$this->setWidget('record_id', new sfWidgetFormInputText());
+			$this->setValidator('record_id', new sfValidatorInteger(array('required' => false)));
+		}
+		//column
+		if($this->needsWidget('credentials')){
+			$this->setWidget('credentials', new sfWidgetFormInputText());
+			$this->setValidator('credentials', new sfValidatorString(array('max_length' => 255, 'required' => false)));
+		}
+		//column
+		if($this->needsWidget('lft')){
+			$this->setWidget('lft', new sfWidgetFormInputText());
+			$this->setValidator('lft', new sfValidatorInteger(array('required' => false)));
+		}
+		//column
+		if($this->needsWidget('rgt')){
+			$this->setWidget('rgt', new sfWidgetFormInputText());
+			$this->setValidator('rgt', new sfValidatorInteger(array('required' => false)));
+		}
+		//column
+		if($this->needsWidget('level')){
+			$this->setWidget('level', new sfWidgetFormInputText());
+			$this->setValidator('level', new sfValidatorInteger(array('required' => false)));
+		}
 
-    $this->setValidators(array(
-      'id'          => new sfValidatorDoctrineChoice(array('model' => $this->getModelName(), 'column' => 'id', 'required' => false)),
-      'module'      => new sfValidatorString(array('max_length' => 127)),
-      'action'      => new sfValidatorString(array('max_length' => 127)),
-      'record_id'   => new sfValidatorInteger(array('required' => false)),
-      'credentials' => new sfValidatorString(array('max_length' => 255, 'required' => false)),
-      'lft'         => new sfValidatorInteger(array('required' => false)),
-      'rgt'         => new sfValidatorInteger(array('required' => false)),
-      'level'       => new sfValidatorInteger(array('required' => false)),
-    ));
+
+
+
+
+
 
     $this->validatorSchema->setPostValidator(
       new sfValidatorDoctrineUnique(array('model' => 'DmPage', 'column' => array('module', 'action', 'record_id')))

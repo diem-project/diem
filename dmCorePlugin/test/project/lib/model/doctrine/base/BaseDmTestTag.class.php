@@ -61,6 +61,7 @@ abstract class BaseDmTestTag extends myDoctrineRecord
               0 => 'name',
               1 => 'slug',
              ),
+             'length' => 7,
              ));
         $this->actAs($timestampable0);
         $this->actAs($i18n0);

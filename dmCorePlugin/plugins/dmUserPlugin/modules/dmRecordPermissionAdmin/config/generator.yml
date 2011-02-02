@@ -1,0 +1,63 @@
+generator:
+  class: dmAdminDoctrineGenerator
+  param:
+    model_class: DmRecordPermission
+    theme: dmAdmin
+    non_verbose_templates: true
+    with_show: false
+    route_prefix: dm_record_permission
+    with_doctrine_route: false
+    config:
+      fields: 
+        users_list:
+          label: Users
+        groups_list:
+          label: Groups
+      list: 
+        display:
+          - '=id'
+          - users_list
+          - groups_list
+          - secure_module
+          - secure_action
+          - secure_model
+          - secure_record
+          - description
+        object_actions:  ~
+        sort: 
+          - id
+          - asc
+        table_method: getAdminListQuery
+        table_count_method: ~
+        sortable: false
+        object_actions: ~
+      filter: 
+        display:
+          - id
+          - secure_module
+          - secure_action
+          - secure_model
+          - secure_record
+          - description
+          - users_list
+          - groups_list
+      form: 
+        display:
+          "Module & Action": [secure_module, secure_action]
+          "Model & Instance": [secure_model, secure_record]
+          "Description": [description]
+          "Users & Groups": [users_list, groups_list]
+        class: DmRecordPermissionAdminForm
+        fields: {  }
+        actions: 
+          _list: {label: 'Back to list'}
+          _save: {label: 'Save'}
+          _save_and_add: {label: 'Save and Add'}
+          _save_and_list: {label: 'Save and Back to list'}
+          _save_and_next: {label: 'Save and Next'}
+          _delete: {label: 'Delete', title: 'Delete this %1%'}
+          _add: {label: 'Add', title: 'Add a %1%'}
+          _view_page: {label: 'Show', title: 'View page on website'}
+          _history: {label: 'History', title: 'Revision history of %1%'}
+      edit: ~
+      new: ~

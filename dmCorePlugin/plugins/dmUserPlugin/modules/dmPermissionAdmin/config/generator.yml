@@ -23,7 +23,11 @@ generator:
         table_method: getAdminListQuery
         table_count_method: ~
         loremize: false
-
+      filter:
+        display: 
+          - name
+          - groups_list
+          - users_list
       form:
         display:
           NONE: [name]

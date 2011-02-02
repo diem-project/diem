@@ -7,6 +7,7 @@
  * @subpackage form
  * @author     ##AUTHOR_NAME##
  * @version    SVN: $Id$
+ * @generator  <?php echo 'Diem ', constant('DIEM_VERSION'), "\n"?>
  */
 class <?php echo $this->table->getOption('name') ?>Form extends Base<?php echo $this->table->getOption('name') ?>Form
 {
@@ -14,12 +15,9 @@ class <?php echo $this->table->getOption('name') ?>Form extends Base<?php echo $
   /**
    * @see <?php echo $parent ?>Form
    */
+<?php endif;?>
   public function configure()
   {
     parent::configure();
-<?php else: ?>
-  public function configure()
-  {
-<?php endif; ?>
   }
 }

@@ -15,5 +15,10 @@ class dmAdminModuleManagerConfigHandler extends dmModuleManagerConfigHandler
     
     return $moduleOptions;
   }
+  
+  protected function fixSecurityConfig($moduleKey, $moduleConfig, $app = 'admin')
+  {
+    return parent::fixSecurityConfig($moduleKey, $moduleConfig, $app);
+  }
 
 }

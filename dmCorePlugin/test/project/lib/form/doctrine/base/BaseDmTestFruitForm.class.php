@@ -9,27 +9,50 @@
  * @subpackage form
  * @author     Your name here
  * @version    SVN: $Id$
+ * @generator  Diem 5.4.0-DEV
  */
 abstract class BaseDmTestFruitForm extends BaseFormDoctrine
 {
   public function setup()
   {
-    $this->setWidgets(array(
-      'id'         => new sfWidgetFormInputHidden(),
-      'title'      => new sfWidgetFormInputText(),
-      'created_by' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('CreatedBy'), 'add_empty' => true)),
-      'updated_by' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('UpdatedBy'), 'add_empty' => true)),
+    parent::setup();
 
-        'tags_list'  => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'DmTag', 'expanded' => true)),
-    ));
+		//column
+		if($this->needsWidget('id')){
+			$this->setWidget('id', new sfWidgetFormInputHidden());
+			$this->setValidator('id', new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)));
+		}
+		//column
+		if($this->needsWidget('title')){
+			$this->setWidget('title', new sfWidgetFormInputText());
+			$this->setValidator('title', new sfValidatorString(array('max_length' => 255, 'required' => false)));
+		}
 
-    $this->setValidators(array(
-      'id'         => new sfValidatorDoctrineChoice(array('model' => $this->getModelName(), 'column' => 'id', 'required' => false)),
-      'title'      => new sfValidatorString(array('max_length' => 255, 'required' => false)),
-      'created_by' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('CreatedBy'), 'required' => false)),
-      'updated_by' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('UpdatedBy'), 'required' => false)),
-        'tags_list'  => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTag', 'required' => false)),
-    ));
+		//many to many
+		if($this->needsWidget('tags_list')){
+			$this->setWidget('tags_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmTag', 'expanded' => true)));
+			$this->setValidator('tags_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTag', 'required' => false)));
+		}
+
+		//one to many
+		if($this->needsWidget('dm_test_fruit_dm_tag_list')){
+			$this->setWidget('dm_test_fruit_dm_tag_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmTestFruitDmTag', 'expanded' => true)));
+			$this->setValidator('dm_test_fruit_dm_tag_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestFruitDmTag', 'required' => false)));
+		}
+
+		//one to one
+		if($this->needsWidget('created_by')){
+			$this->setWidget('created_by', new sfWidgetFormDmDoctrineChoice(array('multiple' => false, 'model' => 'DmUser', 'expanded' => false)));
+			$this->setValidator('created_by', new sfValidatorDoctrineChoice(array('multiple' => false, 'model' => 'DmUser', 'required' => false)));
+		}
+		//one to one
+		if($this->needsWidget('updated_by')){
+			$this->setWidget('updated_by', new sfWidgetFormDmDoctrineChoice(array('multiple' => false, 'model' => 'DmUser', 'expanded' => false)));
+			$this->setValidator('updated_by', new sfValidatorDoctrineChoice(array('multiple' => false, 'model' => 'DmUser', 'required' => false)));
+		}
+
+
+
 
     $this->widgetSchema->setNameFormat('dm_test_fruit[%s]');
 

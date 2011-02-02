@@ -12,25 +12,42 @@ abstract class Base<?php echo $this->table->getOption('name') ?>FormFilter exten
 {
   public function setup()
   {
-    $this->setWidgets(array(
-<?php foreach ($this->getColumns() as $column): ?>
-<?php if ($column->isPrimaryKey()) continue ?>
-      '<?php echo $column->getFieldName() ?>'<?php echo str_repeat(' ', $this->getColumnNameMaxLength() - strlen($column->getFieldName())) ?> => new <?php echo $this->getWidgetClassForColumn($column) ?>(<?php echo $this->getWidgetOptionsForColumn($column) ?>),
-<?php endforeach; ?>
-<?php foreach ($this->getManyToManyRelations() as $relation): ?>
-      '<?php echo $this->underscore($relation['alias']) ?>_list'<?php echo str_repeat(' ', $this->getColumnNameMaxLength() - strlen($this->underscore($relation['alias']).'_list')) ?> => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => '<?php echo $relation['table']->getOption('name') ?>')),
-<?php endforeach; ?>
-    ));
 
-    $this->setValidators(array(
-<?php foreach ($this->getColumns() as $column): ?>
-<?php if ($column->isPrimaryKey()) continue ?>
-      '<?php echo $column->getFieldName() ?>'<?php echo str_repeat(' ', $this->getColumnNameMaxLength() - strlen($column->getFieldName())) ?> => <?php echo $this->getValidatorForColumn($column) ?>,
+<?php foreach($this->getColumnAggregationKeyFields() as $column):?>
+		if($this->needsWidget('<?php echo $column->getFieldName()?>')){
+			$this->setWidget('<?php echo $column->getFieldName()?>', new sfWidgetFormChoice(array('multiple' => true, 'choices' => <?php echo $this->arrayExport($this->getSubClassesChoices());?>)));
+			$this->setValidator('<?php echo $column->getFieldName()?>', new sfValidatorChoice(array('multiple' => true, 'choices' => <?php echo $this->arrayExport($this->getSubClassesChoicesValidator());?>, 'required' => true)));
+		}
+<?php endforeach;?>
+
+<?php foreach ($this->getColumns(true, true, true) as $column): ?>
+		if($this->needsWidget('<?php echo $column->getFieldName()?>')){
+			$this->setWidget('<?php echo $column->getFieldName() ?>', new <?php echo $this->getWidgetClassForColumn($column) ?>(<?php echo $this->getWidgetOptionsForColumn($column) ?>));
+			$this->setValidator('<?php echo $column->getFieldName() ?>', new <?php echo $this->getValidatorClassForColumn($column) ?>(<?php echo $this->getValidatorOptionsForColumn($column) ?>));
+		}
 <?php endforeach; ?>
-<?php foreach ($this->getManyToManyRelations() as $relation): ?>
-      '<?php echo $this->underscore($relation['alias']) ?>_list'<?php echo str_repeat(' ', $this->getColumnNameMaxLength() - strlen($this->underscore($relation['alias']).'_list')) ?> => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => '<?php echo $relation['table']->getOption('name') ?>', 'required' => false)),
+
+<?php foreach ($this->getManyToManyRelations() as $relation): ?><?php if ('DmMedia' === $relation->getClass()) continue; ?>
+		if($this->needsWidget('<?php echo $this->underscore($relation['alias']) ?>_list')){
+			$this->setWidget('<?php echo $this->underscore($relation['alias']) ?>_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => '<?php echo $relation['table']->getOption('name') ?>', 'expanded' => true)));
+			$this->setValidator('<?php echo $this->underscore($relation['alias']) ?>_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => '<?php echo $relation['table']->getOption('name') ?>', 'required' => false)));
+		}
 <?php endforeach; ?>
-    ));
+
+<?php foreach ($this->getOneToManyRelations() as $relation): ?><?php if($relation['alias'] === 'Translation') continue;?>
+		if($this->needsWidget('<?php echo $this->underscore($relation['alias']) ?>_list')){
+			$this->setWidget('<?php echo $this->underscore($relation['alias']) ?>_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => '<?php echo $relation['table']->getOption('name') ?>', 'expanded' => true)));
+			$this->setValidator('<?php echo $this->underscore($relation['alias']) ?>_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => '<?php echo $relation['table']->getOption('name') ?>', 'required' => false)));
+		}
+<?php endforeach; ?>
+
+<?php foreach ($this->getOneToOneRelations() as $relation): ?><?php if($relation['alias'] === 'Translation') continue;?>
+		if($this->needsWidget('<?php echo $this->underscore($relation['alias']) ?>_list')){
+			$this->setWidget('<?php echo $this->underscore($relation['alias']) ?>_list', new <?php echo $this->getWidgetClassForColumn($relation instanceof Doctrine_Relation_LocalKey ? $relation : new dmDoctrineColumn($relation['local'], $relation['table'])) ?>(array('multiple' => false, 'model' => '<?php echo $relation['table']->getOption('name')?>', 'expanded' => <?php echo $this->table->isPaginatedColumn($relation['local']) ? 'true' : 'false'?>)));
+			$this->setValidator('<?php echo $this->underscore($relation['alias']) ?>_list', new sfValidatorDoctrineChoice(array('multiple' => false, 'model' => '<?php echo $relation['table']->getOption('name')?>', 'required' => true)));
+		}
+<?php endforeach; ?>
+
     
 <?php if ($this->table->hasI18n()): ?>
     $this->mergeI18nForm();

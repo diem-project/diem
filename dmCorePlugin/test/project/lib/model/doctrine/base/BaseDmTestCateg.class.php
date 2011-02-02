@@ -68,6 +68,7 @@ abstract class BaseDmTestCateg extends myDoctrineRecord
               0 => 'name',
               1 => 'is_active',
              ),
+             'length' => 7,
              ));
         $this->actAs($timestampable0);
         $this->actAs($sortable0);

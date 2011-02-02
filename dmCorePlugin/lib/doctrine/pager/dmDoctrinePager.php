@@ -2,97 +2,111 @@
 
 class dmDoctrinePager extends sfDoctrinePager
 {
-  protected
-  $resultsCache;
+	protected
+	$resultsCache;
 
-  /**
-   * @see sfPager
-   */
-  public function setMaxPerPage($maxPerPage)
-  {
-    parent::setMaxPerPage($maxPerPage);
+	/**
+	 * @see sfPager
+	 */
+	public function setMaxPerPage($maxPerPage)
+	{
+		parent::setMaxPerPage($maxPerPage);
 
-    return $this;
-  }
+		return $this;
+	}
 
-  /**
-   * @see sfPager
-   */
-  public function setQuery($query)
-  {
-    parent::setQuery($query);
+	/**
+	 * @see sfPager
+	 */
+	public function setQuery($query)
+	{
+		parent::setQuery($query);
 
-    return $this;
-  }
+		return $this;
+	}
 
-  /**
-   * @see sfPager
-   */
-  public function setPage($page)
-  {
-    parent::setPage($page);
+	/**
+	 * @see sfPager
+	 */
+	public function setPage($page)
+	{
+		parent::setPage($page);
 
-    return $this;
-  }
+		return $this;
+	}
 
-  /**
-   * @see sfPager
-   */
-  public function init()
-  {
-    parent::init();
+	/**
+	 * @see sfPager
+	 */
+	public function init()
+	{
+		parent::init();
 
-    return $this;
-  }
-  
-  /**
-   * Get all the results for the pager instance, and cache them
-   *
-   * @param mixed $hydrationMode A hydration mode identifier
-   *
-   * @return Doctrine_Collection|array
-   */
-  public function getResults($hydrationMode = null)
-  {
-    if (null === $this->resultsCache)
-    {
-      $this->resultsCache = parent::getResults($hydrationMode)->getData();
-    }
-    
-    return $this->resultsCache;
-  }
+		return $this;
+	}
 
-  /**
-   * Get all the results for the pager instance
-   *
-   * @param mixed $hydrationMode A hydration mode identifier
-   *
-   * @return Doctrine_Collection|array
-   */
-  public function getResultsWithoutCache($hydrationMode = null)
-  {
-    return parent::getResults($hydrationMode)->getData();
-  }
-  
-  public function serialize()
-  {
-    $vars = get_object_vars($this);
-    unset($vars['query'], $vars['resultsCache']);
-    return serialize($vars);
-  }
-  
-  public function getCountQuery()
-  {
-    $selectQuery = $this->getQuery();
-    
-    if (count($selectQuery->getDqlPart('where')))
-    {
-      $query = clone $selectQuery;
-      return $query->offset(0)->limit(0);
-    }
-    else
-    {
-      return dmDb::table($this->getClass())->createQuery();
-    }
-  }
+	/**
+	 * Get all the results for the pager instance, and cache them
+	 *
+	 * @param mixed $hydrationMode A hydration mode identifier
+	 *
+	 * @return Doctrine_Collection|array
+	 */
+	public function getResults($hydrationMode = null)
+	{
+		if (null === $this->resultsCache)
+		{
+			$this->resultsCache = parent::getResults($hydrationMode)->getData();
+		}
+
+		return $this->resultsCache;
+	}
+
+	/**
+	 * Get all the results for the pager instance
+	 *
+	 * @param mixed $hydrationMode A hydration mode identifier
+	 *
+	 * @return Doctrine_Collection|array
+	 */
+	public function getResultsWithoutCache($hydrationMode = null)
+	{
+		return parent::getResults($hydrationMode)->getData();
+	}
+
+	public function serialize()
+	{
+		$vars = get_object_vars($this);
+		unset($vars['query'], $vars['resultsCache']);
+		return serialize($vars);
+	}
+
+	public function getCountQuery()
+	{
+		$selectQuery = $this->getQuery();
+
+		if (count($selectQuery->getDqlPart('where')))
+		{
+			$query = clone $selectQuery;
+			return $query->offset(0)->limit(0);
+		}
+		else
+		{
+			return dmDb::table($this->getClass())->createQuery();
+		}
+	}
+
+	/**
+	 * Get the query for the pager.
+	 *
+	 * @return Doctrine_Query
+	 */
+	public function getQuery($withI18n = false)
+	{
+		if($withI18n && dmDb::table($this->class)->hasI18n())
+		{
+			return parent::getQuery()->withI18n();
+		}
+		return parent::getQuery();
+	}
 }

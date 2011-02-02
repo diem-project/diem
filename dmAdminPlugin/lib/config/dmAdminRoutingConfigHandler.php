@@ -64,7 +64,7 @@ class dmAdminRoutingConfigHandler extends sfRoutingConfigHandler
 
   public static function getDmConfiguration()
   {
-    $moduleManager = dmContext::getInstance()->getModuleManager();
+    $moduleManager = dmContext::getInstance('admin')->getModuleManager();
     
     // homepage first
     $config = array(

@@ -229,7 +229,7 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
 
     if ($field->isLink())
     {
-      $html = sprintf("_link('@%s?action=edit&pk='.\$%s->getPrimaryKey())->text(%s)->addClass('link_edit')", $this->module->getUnderscore(), $this->getSingularName(), $html);
+      $html = sprintf("\$security_manager->userHasCredentials('edit', \$%s) ? _link('@%s?action=edit&pk='.\$%s->getPrimaryKey())->text(%s)->addClass('link_edit') : (%s)", $this->getSingularName(), $this->module->getUnderscore(), $this->getSingularName(), $html, $html);
     }
 
     return $html;
@@ -306,6 +306,9 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
   }
 
 
+  /**
+   * @return dmModule 
+   */
   public function getModule()
   {
     if ($this->module === null)
@@ -323,7 +326,7 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
    */
   public function getI18nCatalogue()
   {
-    return sfConfig::get('dm_i18n_catalogue');
+    return $this->getModule()->getOption('i18n_catalogue', sfConfig::get('dm_i18n_catalogue'));
   }
   
   /**
@@ -334,5 +337,12 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
   public function getActionsBaseClass()
   {
     return isset($this->params['actions_base_class']) ? $this->params['actions_base_class'] : 'myAdminBaseGeneratedModuleActions';
+  }
+  
+  public function addCredentialCondition($content, $params = array(), $action=null)
+  {
+    if(null === $action){ 
+      return parent::addCredentialCondition($content, $params);
+    }
   }
 }

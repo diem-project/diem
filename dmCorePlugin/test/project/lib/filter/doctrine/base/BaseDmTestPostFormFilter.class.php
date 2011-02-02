@@ -12,51 +12,86 @@ abstract class BaseDmTestPostFormFilter extends BaseFormFilterDoctrine
 {
   public function setup()
   {
-    $this->setWidgets(array(
-      'categ_id'    => new sfWidgetFormDoctrineChoice(array('model' => 'DmTestCateg', 'add_empty' => true)),
-      'user_id'     => new sfWidgetFormDoctrineChoice(array('model' => 'DmUser', 'add_empty' => true)),
-      'image_id'    => new sfWidgetFormDoctrineChoice(array('model' => 'DmMedia', 'add_empty' => true)),
-      'file_id'     => new sfWidgetFormDoctrineChoice(array('model' => 'DmMedia', 'add_empty' => true)),
-      'date'        => new sfWidgetFormChoice(array('choices' => array(
-        ''      => '',
-        'today' => $this->getI18n()->__('Today'),
-        'week'  => $this->getI18n()->__('Past %number% days', array('%number%' => 7)),
-        'month' => $this->getI18n()->__('This month'),
-        'year'  => $this->getI18n()->__('This year')
-      ))),
-      'created_by'  => new sfWidgetFormDoctrineChoice(array('model' => 'DmUser', 'add_empty' => true)),
-      'created_at'  => new sfWidgetFormChoice(array('choices' => array(
-        ''      => '',
-        'today' => $this->getI18n()->__('Today'),
-        'week'  => $this->getI18n()->__('Past %number% days', array('%number%' => 7)),
-        'month' => $this->getI18n()->__('This month'),
-        'year'  => $this->getI18n()->__('This year')
-      ))),
-      'updated_at'  => new sfWidgetFormChoice(array('choices' => array(
-        ''      => '',
-        'today' => $this->getI18n()->__('Today'),
-        'week'  => $this->getI18n()->__('Past %number% days', array('%number%' => 7)),
-        'month' => $this->getI18n()->__('This month'),
-        'year'  => $this->getI18n()->__('This year')
-      ))),
-      'position'    => new sfWidgetFormDmFilterInput(),
-      'tags_list'   => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'DmTestTag')),
-      'medias_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'DmMedia')),
-    ));
 
-    $this->setValidators(array(
-      'categ_id'    => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Categ'), 'column' => 'id')),
-      'user_id'     => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Author'), 'column' => 'id')),
-      'image_id'    => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Image'), 'column' => 'id')),
-      'file_id'     => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('File'), 'column' => 'id')),
-      'date'        => new sfValidatorChoice(array('required' => false, 'choices' => array_keys($this->widgetSchema['date']->getOption('choices')))),
-      'created_by'  => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('CreatedBy'), 'column' => 'id')),
-      'created_at'  => new sfValidatorChoice(array('required' => false, 'choices' => array_keys($this->widgetSchema['created_at']->getOption('choices')))),
-      'updated_at'  => new sfValidatorChoice(array('required' => false, 'choices' => array_keys($this->widgetSchema['updated_at']->getOption('choices')))),
-      'position'    => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
-      'tags_list'   => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestTag', 'required' => false)),
-      'medias_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmMedia', 'required' => false)),
-    ));
+
+		if($this->needsWidget('id')){
+			$this->setWidget('id', new sfWidgetFormDmFilterInput());
+			$this->setValidator('id', new sfValidatorDoctrineChoice(array('required' => false, 'model' => 'DmTestPost', 'column' => 'id')));
+		}
+		if($this->needsWidget('date')){
+			$this->setWidget('date', new sfWidgetFormChoice(array('choices' => array(
+        ''      => '',
+        'today' => $this->getI18n()->__('Today'),
+        'week'  => $this->getI18n()->__('Past %number% days', array('%number%' => 7)),
+        'month' => $this->getI18n()->__('This month'),
+        'year'  => $this->getI18n()->__('This year')
+      ))));
+			$this->setValidator('date', new sfValidatorChoice(array('required' => false, 'choices' => array_keys($this->widgetSchema['date']->getOption('choices')))));
+		}
+		if($this->needsWidget('created_at')){
+			$this->setWidget('created_at', new sfWidgetFormChoice(array('choices' => array(
+        ''      => '',
+        'today' => $this->getI18n()->__('Today'),
+        'week'  => $this->getI18n()->__('Past %number% days', array('%number%' => 7)),
+        'month' => $this->getI18n()->__('This month'),
+        'year'  => $this->getI18n()->__('This year')
+      ))));
+			$this->setValidator('created_at', new sfValidatorChoice(array('required' => false, 'choices' => array_keys($this->widgetSchema['created_at']->getOption('choices')))));
+		}
+		if($this->needsWidget('updated_at')){
+			$this->setWidget('updated_at', new sfWidgetFormChoice(array('choices' => array(
+        ''      => '',
+        'today' => $this->getI18n()->__('Today'),
+        'week'  => $this->getI18n()->__('Past %number% days', array('%number%' => 7)),
+        'month' => $this->getI18n()->__('This month'),
+        'year'  => $this->getI18n()->__('This year')
+      ))));
+			$this->setValidator('updated_at', new sfValidatorChoice(array('required' => false, 'choices' => array_keys($this->widgetSchema['updated_at']->getOption('choices')))));
+		}
+		if($this->needsWidget('position')){
+			$this->setWidget('position', new sfWidgetFormDmFilterInput());
+			$this->setValidator('position', new sfValidatorInteger(array('required' => false)));
+		}
+
+		if($this->needsWidget('tags_list')){
+			$this->setWidget('tags_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmTestTag', 'expanded' => true)));
+			$this->setValidator('tags_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestTag', 'required' => false)));
+		}
+
+		if($this->needsWidget('dm_test_post_tag_list')){
+			$this->setWidget('dm_test_post_tag_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPostTag', 'expanded' => true)));
+			$this->setValidator('dm_test_post_tag_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPostTag', 'required' => false)));
+		}
+		if($this->needsWidget('comments_list')){
+			$this->setWidget('comments_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmTestComment', 'expanded' => true)));
+			$this->setValidator('comments_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestComment', 'required' => false)));
+		}
+		if($this->needsWidget('dm_test_post_dm_media_list')){
+			$this->setWidget('dm_test_post_dm_media_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPostDmMedia', 'expanded' => true)));
+			$this->setValidator('dm_test_post_dm_media_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPostDmMedia', 'required' => false)));
+		}
+
+		if($this->needsWidget('categ_list')){
+			$this->setWidget('categ_list', new sfWidgetFormDoctrineChoice(array('multiple' => false, 'model' => 'DmTestCateg', 'expanded' => false)));
+			$this->setValidator('categ_list', new sfValidatorDoctrineChoice(array('multiple' => false, 'model' => 'DmTestCateg', 'required' => true)));
+		}
+		if($this->needsWidget('author_list')){
+			$this->setWidget('author_list', new sfWidgetFormDoctrineChoice(array('multiple' => false, 'model' => 'DmUser', 'expanded' => false)));
+			$this->setValidator('author_list', new sfValidatorDoctrineChoice(array('multiple' => false, 'model' => 'DmUser', 'required' => true)));
+		}
+		if($this->needsWidget('image_list')){
+			$this->setWidget('image_list', new sfWidgetFormDoctrineChoice(array('multiple' => false, 'model' => 'DmMedia', 'expanded' => false)));
+			$this->setValidator('image_list', new sfValidatorDoctrineChoice(array('multiple' => false, 'model' => 'DmMedia', 'required' => true)));
+		}
+		if($this->needsWidget('file_list')){
+			$this->setWidget('file_list', new sfWidgetFormDoctrineChoice(array('multiple' => false, 'model' => 'DmMedia', 'expanded' => false)));
+			$this->setValidator('file_list', new sfValidatorDoctrineChoice(array('multiple' => false, 'model' => 'DmMedia', 'required' => true)));
+		}
+		if($this->needsWidget('created_by_list')){
+			$this->setWidget('created_by_list', new sfWidgetFormDoctrineChoice(array('multiple' => false, 'model' => 'DmUser', 'expanded' => false)));
+			$this->setValidator('created_by_list', new sfValidatorDoctrineChoice(array('multiple' => false, 'model' => 'DmUser', 'required' => true)));
+		}
+
     
     $this->mergeI18nForm();
 

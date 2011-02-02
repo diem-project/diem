@@ -12,35 +12,60 @@ abstract class BaseDmPermissionFormFilter extends BaseFormFilterDoctrine
 {
   public function setup()
   {
-    $this->setWidgets(array(
-      'name'        => new sfWidgetFormDmFilterInput(),
-      'description' => new sfWidgetFormDmFilterInput(),
-      'created_at'  => new sfWidgetFormChoice(array('choices' => array(
-        ''      => '',
-        'today' => $this->getI18n()->__('Today'),
-        'week'  => $this->getI18n()->__('Past %number% days', array('%number%' => 7)),
-        'month' => $this->getI18n()->__('This month'),
-        'year'  => $this->getI18n()->__('This year')
-      ))),
-      'updated_at'  => new sfWidgetFormChoice(array('choices' => array(
-        ''      => '',
-        'today' => $this->getI18n()->__('Today'),
-        'week'  => $this->getI18n()->__('Past %number% days', array('%number%' => 7)),
-        'month' => $this->getI18n()->__('This month'),
-        'year'  => $this->getI18n()->__('This year')
-      ))),
-      'users_list'  => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'DmUser')),
-      'groups_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'DmGroup')),
-    ));
 
-    $this->setValidators(array(
-      'name'        => new sfValidatorPass(array('required' => false)),
-      'description' => new sfValidatorPass(array('required' => false)),
-      'created_at'  => new sfValidatorChoice(array('required' => false, 'choices' => array_keys($this->widgetSchema['created_at']->getOption('choices')))),
-      'updated_at'  => new sfValidatorChoice(array('required' => false, 'choices' => array_keys($this->widgetSchema['updated_at']->getOption('choices')))),
-      'users_list'  => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmUser', 'required' => false)),
-      'groups_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmGroup', 'required' => false)),
-    ));
+
+		if($this->needsWidget('id')){
+			$this->setWidget('id', new sfWidgetFormDmFilterInput());
+			$this->setValidator('id', new sfValidatorDoctrineChoice(array('required' => false, 'model' => 'DmPermission', 'column' => 'id')));
+		}
+		if($this->needsWidget('name')){
+			$this->setWidget('name', new sfWidgetFormDmFilterInput());
+			$this->setValidator('name', new sfValidatorString(array('required' => false)));
+		}
+		if($this->needsWidget('description')){
+			$this->setWidget('description', new sfWidgetFormDmFilterInput());
+			$this->setValidator('description', new sfValidatorString(array('required' => false)));
+		}
+		if($this->needsWidget('created_at')){
+			$this->setWidget('created_at', new sfWidgetFormChoice(array('choices' => array(
+        ''      => '',
+        'today' => $this->getI18n()->__('Today'),
+        'week'  => $this->getI18n()->__('Past %number% days', array('%number%' => 7)),
+        'month' => $this->getI18n()->__('This month'),
+        'year'  => $this->getI18n()->__('This year')
+      ))));
+			$this->setValidator('created_at', new sfValidatorChoice(array('required' => false, 'choices' => array_keys($this->widgetSchema['created_at']->getOption('choices')))));
+		}
+		if($this->needsWidget('updated_at')){
+			$this->setWidget('updated_at', new sfWidgetFormChoice(array('choices' => array(
+        ''      => '',
+        'today' => $this->getI18n()->__('Today'),
+        'week'  => $this->getI18n()->__('Past %number% days', array('%number%' => 7)),
+        'month' => $this->getI18n()->__('This month'),
+        'year'  => $this->getI18n()->__('This year')
+      ))));
+			$this->setValidator('updated_at', new sfValidatorChoice(array('required' => false, 'choices' => array_keys($this->widgetSchema['updated_at']->getOption('choices')))));
+		}
+
+		if($this->needsWidget('users_list')){
+			$this->setWidget('users_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmUser', 'expanded' => true)));
+			$this->setValidator('users_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmUser', 'required' => false)));
+		}
+		if($this->needsWidget('groups_list')){
+			$this->setWidget('groups_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmGroup', 'expanded' => true)));
+			$this->setValidator('groups_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmGroup', 'required' => false)));
+		}
+
+		if($this->needsWidget('dm_user_permission_list')){
+			$this->setWidget('dm_user_permission_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmUserPermission', 'expanded' => true)));
+			$this->setValidator('dm_user_permission_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmUserPermission', 'required' => false)));
+		}
+		if($this->needsWidget('dm_group_permission_list')){
+			$this->setWidget('dm_group_permission_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmGroupPermission', 'expanded' => true)));
+			$this->setValidator('dm_group_permission_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmGroupPermission', 'required' => false)));
+		}
+
+
     
 
     $this->widgetSchema->setNameFormat('dm_permission_filters[%s]');

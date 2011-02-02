@@ -1,0 +1,53 @@
+generator:
+  class: dmAdminDoctrineGenerator
+  param:
+    model_class: DmRecordPermissionAssociation
+    theme: dmAdmin
+    non_verbose_templates: true
+    with_show: false
+    route_prefix: dm_record_permission_association
+    with_doctrine_route: false
+    config:
+      actions: ~
+      fields:
+        groups_list:
+          label: Groups
+        users_list:
+          label: Users
+        dm_secure_module: 
+          label: Module
+        dm_secure_action:
+          label: Action
+        dm_secure_model:
+          label: Model
+      list:
+        display:
+          - '=id'
+          - groups_list
+          - users_list
+          - dm_secure_module
+          - dm_secure_action
+          - dm_secure_model
+        sort:
+          - id
+          - asc
+        table_method: getAdminListQuery
+        table_count_method: ~
+        sortable: false
+      filter:
+        display:
+          - id
+          - dm_secure_module
+          - dm_secure_action
+          - dm_secure_model
+          - users_list
+          - groups_list
+      form:
+        display:
+          Groups: [groups_list]
+          Users: [users_list]
+          Others: [dm_secure_module, dm_secure_action, dm_secure_model]
+        class: DmRecordPermissionAssociationAdminForm
+        fields: {  }
+      edit: ~
+      new: ~

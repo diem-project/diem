@@ -3,17 +3,84 @@ System:
   Security:
 
     dmUser:
-      name:             User
+      name:             User|Users
       credentials:      security_user
+      security:
+        admin:
+          actions:
+            secure:
+              is_secure: false
+            signin:
+              is_secure: false 
+              
       components:
         signin:
         form:           { name: "Register" }
         forgotPassword:
 
     dmPermission:
-      name:             Permission
+      name:             Permission|Permissions
       credentials:      security_permission
 
     dmGroup:
-      name:             Group
+      name:             Group|Groups
       credentials:      security_group
+      
+    DmRecordPermission: 
+      model: DmRecordPermission
+      admin: true
+      front: false
+      name: Record Permission|Records Permissions
+      security:
+        admin:
+          actions:
+            index:
+              is_secure: true
+              strategy: action
+              credentials: security_record
+            list:
+              is_secure: true
+              strategy: action
+              credentials: security_record
+            edit:
+              is_secure: true
+              strategy: action
+              credentials: security_record
+            new:
+              is_secure: true
+              strategy: action
+              credentials: security_record
+            create:
+              is_secure: true
+              strategy: action
+              credentials: security_record
+    
+    DmRecordPermissionAssociation: 
+      model: DmRecordPermissionAssociation
+      admin: true
+      front: false
+      name: Record Permission Assocation|Records Permissions Associations
+      security:
+        admin:
+          actions:
+            index:
+              is_secure: true
+              strategy: action
+              credentials: security_record_permission_association
+            list:
+              is_secure: true
+              strategy: action
+              credentials: security_record_permission_association
+            edit:
+              is_secure: true
+              strategy: action
+              credentials: security_record_permission_association
+            new:
+              is_secure: true
+              strategy: action
+              credentials: security_record_permission_association
+            create:
+              is_secure: true
+              strategy: action
+              credentials: security_record_permission_association
+    

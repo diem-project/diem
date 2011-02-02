@@ -22,6 +22,16 @@ class dmContext extends sfContext
   }
 
   /**
+   * @param string $name
+   * @param string $class
+   * @return dmContext
+   */
+  public static function getInstance($name = null, $class = __CLASS__)
+  {
+  	return parent::getInstance($name, $class);
+  }
+  
+  /**
    * Initializes the current dmContext instance.
    *
    * @param dmApplicationConfiguration $configuration  An dmApplicationConfiguration instance

@@ -11,14 +11,32 @@
  */
 class dmForm extends sfFormSymfony
 {
-  protected static
-  $serviceContainer,
-  $counter = 1;
+  /**
+   * @var sfServiceContainer
+   */
+  protected static  $serviceContainer;
+  
+  /**
+   * @var integer
+   */
+  protected static $counter = 1;
 
-  protected
-  $key,
-  $name;
+  /**
+   * @var string
+   */
+  protected $key;
+  
+  /**
+   * @var string
+   */
+  protected $name;
 
+  /**
+   * Setup the form
+   * (non-PHPdoc)
+   * @see sfForm::setup()
+   * @return dmForm
+   */
   public function setup()
   {
     parent::setup();
@@ -28,8 +46,14 @@ class dmForm extends sfFormSymfony
     $this->key = 'dm_form_'.self::$counter++;
 
     $this->setName(dmString::underscore(get_class($this)));
+    
+    return $this;
   }
 
+  /**
+   * @param string $name
+   * @return dmForm
+   */
   public function setName($name)
   {
     $this->name = $name;
@@ -38,11 +62,18 @@ class dmForm extends sfFormSymfony
     return $this;
   }
 
+  /**
+   * (non-PHPdoc)
+   * @see sfForm::getName()
+   */
   public function getName()
   {
     return $this->name;
   }
 
+  /**
+   * @return string 
+   */
   public function getKey()
   {
     return $this->key;
@@ -60,6 +91,9 @@ class dmForm extends sfFormSymfony
     return $return;
   }   
   
+  /**
+   * @return dmForm
+   */
   public function removeCsrfProtection()
   {
     $this->localCSRFSecret = false;
@@ -72,30 +106,47 @@ class dmForm extends sfFormSymfony
     return $this;
   }
   
+  /**
+   * @param string $fieldName
+   * @return dmForm
+   */
   public function changeToHidden($fieldName)
   {
     $this->widgetSchema[$fieldName] = new sfWidgetFormInputHidden;
     return $this;
   }
   
+  /**
+   * @param string $fieldName
+   * @return dmForm
+   */
   public function changeToDisabled($fieldName)
   {
     $this->widgetSchema[$fieldName]->setAttribute('disabled', true);
     return $this;
   }
   
+  /**
+   * @param string $fieldName
+   * @return dmForm
+   */
   public function changeToReadOnly($fieldName)
   {
     $this->widgetSchema[$fieldName]->setAttribute('readonly', true);
     return $this;
   }
   
+  /**
+   * @param string $fieldName
+   * @return dmForm
+   */
   public function changeToEmail($fieldName)
   {
     $this->validatorSchema[$fieldName] = new sfValidatorEmail(
       $this->validatorSchema[$fieldName]->getOptions(),
       $this->validatorSchema[$fieldName]->getMessages()
     );
+    return $this;
   }
   
   /**
@@ -120,6 +171,11 @@ class dmForm extends sfFormSymfony
     $this->close();
   }
 
+  /**
+   * @param string $value
+   * @param array $attributes
+   * @return string the submit html tag
+   */
   public function renderSubmitTag($value = 'submit', $attributes = array())
   {
     $attributes = array_merge(array(
@@ -132,6 +188,11 @@ class dmForm extends sfFormSymfony
     return sprintf('<input%s />', $this->getWidgetSchema()->attributesToHtml($attributes));
   }
   
+  /**
+   * @param string $value
+   * @param array $attributes
+   * @return string
+   */
   public function submit($value = 'submit', $attributes = array())
   {
     return $this->renderSubmitTag($value, $attributes);
@@ -151,6 +212,10 @@ class dmForm extends sfFormSymfony
     return $this->bindRequest($request)->isValid();
   }
   
+  /**
+   * @param sfWebRequest $request
+   * @return dmForm
+   */
   public function bindRequest(sfWebRequest $request)
   {
     $this->bind($request->getParameter($this->name), $request->getFiles($this->name));
@@ -158,6 +223,11 @@ class dmForm extends sfFormSymfony
     return $this;
   }
 
+  /**
+   * Open this form as html tag <form>
+   * @param array $opt
+   * @return string the opening html tag
+   */
   public function open($opt = array())
   {
     $opt = dmString::toArray($opt, true);
@@ -203,6 +273,9 @@ class dmForm extends sfFormSymfony
     return $this->renderFormTag($action, $opt)/*.$this->renderHiddenFields()*/;
   }
   
+  /**
+   * @return string the closing form tag </form> 
+   */
   public function close()
   {
     return '</form>';
@@ -218,6 +291,10 @@ class dmForm extends sfFormSymfony
     self::$serviceContainer = $serviceContainer;
   }
 
+  /**
+   * @param string $name
+   * @return mixed
+   */
   public function getValueOrDefault($name)
   {
     if (!$return = $this->getValue($name))
@@ -278,28 +355,129 @@ class dmForm extends sfFormSymfony
     return $this->formFields[$name];
   }
   
+  /**
+   * @param string $text
+   * @param array $args
+   * @param string $catalogue
+   * @return string
+   */
   protected function __($text, $args = array(), $catalogue = null)
   {
     return $this->getI18n()->__($text, $args, $catalogue);
   }
   
+  /**
+   * @return dmI18n
+   */
   protected function getI18n()
   {
     return $this->getService('i18n');
   }
   
+  /**
+   * @return dmHelper
+   */
   protected function getHelper()
   {
     return $this->getService('helper');
   }
 
+  /**
+   * @param string $serviceName
+   * @param string $serviceClass
+   */
   protected function getService($serviceName, $serviceClass = null)
   {
     return $this->getServiceContainer()->getService($serviceName, $serviceClass);
   }
 
+  /**
+   * @return sfServiceContainer 
+   */
   protected function getServiceContainer()
   {
     return self::$serviceContainer;
   }
+  
+  /**
+   * (non-PHPdoc)
+   * @see sfForm::embedForm()
+   * @return dmForm
+   */
+  public function embedForm($name, sfForm $form, $decorator = null)
+  {
+    parent::embedForm($name, $this->setFormEmbedded($form), $decorator);
+    return $this;
+  }
+  
+  /**
+   * (non-PHPdoc)
+   * @see sfForm::embedFormForEach()
+   * @return dmForm
+   */
+  public function embedFormForEach($name, sfForm $form, $n, $decorator = null, $innerDecorator = null, $options = array(), $attributes = array(), $labels = array())
+  {
+    parent::embedFormForEach($name, $this->setFormEmbedded($form), $n, $options, $attributes, $labels);
+    return $this;
+  }
+  
+  /**
+   * Sets a sfForm as embedded by adding options
+   * 
+   * @param sfForm $form the form to setup as embedded
+   * @return sfForm
+   */
+  protected function setFormEmbedded(sfForm $form)
+  {
+    $form->setOption('is_embedded', true);
+    $form->setOption('embedder', $this);
+    return $form;
+  }
+  
+  /**
+   * Returns if the form is embedded or not
+   * 
+   * @return boolean if this form is embedded
+   */
+  public function isEmbedded()
+  {
+    return self::isFormEmbedded($this);
+  }
+  
+  /**
+   * Returns a dmForm embedding this form if any, false otherwise
+   * 
+   * @return mixed false|dmForm 
+   */
+  public function getEmbedderForm()
+  {
+    return self::getFormEmbedder($this);
+  }
+  
+  /**
+   * Returns if given form is embedded or not.
+   * So we can use this static method for basic sfForms
+   * 
+   * @param sfForm $form
+   */
+  public static function isFormEmbedded(sfForm $form)
+  {
+    return $form->getOption('is_embedded', false);
+  }
+  
+  /**
+   * Returns the embedder form if any, false otherwise.
+   * So we can use this static method for basic sfForms
+   * 
+   * @param sfForm $form
+   */
+  public static function getFormEmbedder(sfForm $form)
+  {
+    return $form->getOption('embedder', false);
+  }
+  
+	public function needsWidget($name)
+	{
+		return !isset($this->options['widgets']) ? true : ((in_array($name, $this->options['widgets']) || in_array($name.'_form', $this->options['widgets']) || in_array($name.'_view', $this->options['widgets'])));
+	}
 }

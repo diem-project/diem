@@ -1,0 +1,21 @@
+#If you want to add sf_culture at beginning of your URLs, uncomment the following, and
+#set prefix_url to true in project_root/config/dm/config.yml in i18n section
+#and don't forget to replace the ##DIEM_CULTURE## on the last line with the default culture of your website
+#dmPage:
+#  url:          /:sf_culture/:slug
+#  params:       { module: dmFront, action: page }
+#  requirements: { slug: '.+' }
+#  
+#dmPaginatedPage:
+#  url:          /:sf_culture/:slug/page/:page
+#  params:       { module: dmFront, action: page }
+#  requirements: { slug: '.+', page: '\d+' }
+#  
+#dmPaginatedHome:
+#  url:          /:sf_culture/page/:page
+#  params:       { module: dmFront, action: page, slug: '' }
+#  requirements: { page: '\d+' }
+#  
+#homepage:
+#  url:          /:sf_culture
+#  params:       { module: dmFront, action: page, slug: '', sf_culture: ##DIEM_CULTURE## }

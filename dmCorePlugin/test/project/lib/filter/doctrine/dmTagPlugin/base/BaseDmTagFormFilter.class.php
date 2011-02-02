@@ -12,17 +12,36 @@ abstract class BaseDmTagFormFilter extends BaseFormFilterDoctrine
 {
   public function setup()
   {
-    $this->setWidgets(array(
-      'name'                 => new sfWidgetFormDmFilterInput(),
-      'dm_test_domains_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomain')),
-      'dm_test_fruits_list'  => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'DmTestFruit')),
-    ));
 
-    $this->setValidators(array(
-      'name'                 => new sfValidatorPass(array('required' => false)),
-      'dm_test_domains_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomain', 'required' => false)),
-      'dm_test_fruits_list'  => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestFruit', 'required' => false)),
-    ));
+
+		if($this->needsWidget('id')){
+			$this->setWidget('id', new sfWidgetFormDmFilterInput());
+			$this->setValidator('id', new sfValidatorDoctrineChoice(array('required' => false, 'model' => 'DmTag', 'column' => 'id')));
+		}
+		if($this->needsWidget('name')){
+			$this->setWidget('name', new sfWidgetFormDmFilterInput());
+			$this->setValidator('name', new sfValidatorString(array('required' => false)));
+		}
+
+		if($this->needsWidget('dm_test_domains_list')){
+			$this->setWidget('dm_test_domains_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomain', 'expanded' => true)));
+			$this->setValidator('dm_test_domains_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomain', 'required' => false)));
+		}
+		if($this->needsWidget('dm_test_fruits_list')){
+			$this->setWidget('dm_test_fruits_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmTestFruit', 'expanded' => true)));
+			$this->setValidator('dm_test_fruits_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestFruit', 'required' => false)));
+		}
+
+		if($this->needsWidget('dm_test_domain_dm_tag_list')){
+			$this->setWidget('dm_test_domain_dm_tag_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomainDmTag', 'expanded' => true)));
+			$this->setValidator('dm_test_domain_dm_tag_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomainDmTag', 'required' => false)));
+		}
+		if($this->needsWidget('dm_test_fruit_dm_tag_list')){
+			$this->setWidget('dm_test_fruit_dm_tag_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmTestFruitDmTag', 'expanded' => true)));
+			$this->setValidator('dm_test_fruit_dm_tag_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestFruitDmTag', 'required' => false)));
+		}
+
+
     
 
     $this->widgetSchema->setNameFormat('dm_tag_filters[%s]');

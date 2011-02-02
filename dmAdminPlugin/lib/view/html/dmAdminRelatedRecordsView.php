@@ -161,10 +161,17 @@ class dmAdminRelatedRecordsView extends dmConfigurable
     {
       $link->param('defaults['.$this->relation->getForeign().']', $this->record->get('id'));
     }
+    elseif($this->relation instanceof Doctrine_Relation_Association)
+    {
+      $opposite = $this->relation['localTable']->getAssociationOppositeRelation($this->relation);
+      if($opposite){
+        $link->param('defaults['.dmString::tableize($opposite->getAlias()) . '_list][]', $this->record->get('id'));
+      }
+    }
 
     return $link->render();
   }
-
+  
   protected function renderSortLink()
   {
     return $this->helper->link(array(

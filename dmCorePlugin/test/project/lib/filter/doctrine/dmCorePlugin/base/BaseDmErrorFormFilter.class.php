@@ -12,33 +12,54 @@ abstract class BaseDmErrorFormFilter extends BaseFormFilterDoctrine
 {
   public function setup()
   {
-    $this->setWidgets(array(
-      'php_class'   => new sfWidgetFormDmFilterInput(),
-      'name'        => new sfWidgetFormDmFilterInput(),
-      'description' => new sfWidgetFormDmFilterInput(),
-      'module'      => new sfWidgetFormDmFilterInput(),
-      'action'      => new sfWidgetFormDmFilterInput(),
-      'uri'         => new sfWidgetFormDmFilterInput(),
-      'env'         => new sfWidgetFormDmFilterInput(),
-      'created_at'  => new sfWidgetFormChoice(array('choices' => array(
+
+
+		if($this->needsWidget('id')){
+			$this->setWidget('id', new sfWidgetFormDmFilterInput());
+			$this->setValidator('id', new sfValidatorDoctrineChoice(array('required' => false, 'model' => 'DmError', 'column' => 'id')));
+		}
+		if($this->needsWidget('php_class')){
+			$this->setWidget('php_class', new sfWidgetFormDmFilterInput());
+			$this->setValidator('php_class', new sfValidatorString(array('required' => false)));
+		}
+		if($this->needsWidget('name')){
+			$this->setWidget('name', new sfWidgetFormDmFilterInput());
+			$this->setValidator('name', new sfValidatorString(array('required' => false)));
+		}
+		if($this->needsWidget('description')){
+			$this->setWidget('description', new sfWidgetFormDmFilterInput());
+			$this->setValidator('description', new sfValidatorString(array('required' => false)));
+		}
+		if($this->needsWidget('module')){
+			$this->setWidget('module', new sfWidgetFormDmFilterInput());
+			$this->setValidator('module', new sfValidatorString(array('required' => false)));
+		}
+		if($this->needsWidget('action')){
+			$this->setWidget('action', new sfWidgetFormDmFilterInput());
+			$this->setValidator('action', new sfValidatorString(array('required' => false)));
+		}
+		if($this->needsWidget('uri')){
+			$this->setWidget('uri', new sfWidgetFormDmFilterInput());
+			$this->setValidator('uri', new sfValidatorString(array('required' => false)));
+		}
+		if($this->needsWidget('env')){
+			$this->setWidget('env', new sfWidgetFormDmFilterInput());
+			$this->setValidator('env', new sfValidatorString(array('required' => false)));
+		}
+		if($this->needsWidget('created_at')){
+			$this->setWidget('created_at', new sfWidgetFormChoice(array('choices' => array(
         ''      => '',
         'today' => $this->getI18n()->__('Today'),
         'week'  => $this->getI18n()->__('Past %number% days', array('%number%' => 7)),
         'month' => $this->getI18n()->__('This month'),
         'year'  => $this->getI18n()->__('This year')
-      ))),
-    ));
+      ))));
+			$this->setValidator('created_at', new sfValidatorChoice(array('required' => false, 'choices' => array_keys($this->widgetSchema['created_at']->getOption('choices')))));
+		}
 
-    $this->setValidators(array(
-      'php_class'   => new sfValidatorPass(array('required' => false)),
-      'name'        => new sfValidatorPass(array('required' => false)),
-      'description' => new sfValidatorPass(array('required' => false)),
-      'module'      => new sfValidatorPass(array('required' => false)),
-      'action'      => new sfValidatorPass(array('required' => false)),
-      'uri'         => new sfValidatorPass(array('required' => false)),
-      'env'         => new sfValidatorPass(array('required' => false)),
-      'created_at'  => new sfValidatorChoice(array('required' => false, 'choices' => array_keys($this->widgetSchema['created_at']->getOption('choices')))),
-    ));
+
+
+
     
 
     $this->widgetSchema->setNameFormat('dm_error_filters[%s]');

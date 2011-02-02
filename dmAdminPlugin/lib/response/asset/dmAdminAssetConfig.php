@@ -22,7 +22,7 @@ class dmAdminAssetConfig extends dmAssetConfig
       'admin.layout',
       'admin.bars',
       'admin.flash',
-      'admin.breadCrumb'
+      'admin.breadCrumb',
     );
   }
   
@@ -38,6 +38,7 @@ class dmAdminAssetConfig extends dmAssetConfig
       'lib.ui-mouse',
       'lib.ui-draggable',
       'lib.ui-droppable',
+      'lib.ui-resizable',
       'lib.fieldSelection',
       'lib.blockUI',
       'lib.hotkeys',
@@ -55,7 +56,7 @@ class dmAdminAssetConfig extends dmAssetConfig
       'admin.toolBar',
       'admin.pageBar',
       'admin.mediaBar',
-      sfConfig::get('dm_locks_enabled') ? 'admin.ping' : null
+      sfConfig::get('dm_locks_enabled') ? 'admin.ping' : null,
     );
   }
 }

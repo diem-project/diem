@@ -14,7 +14,10 @@ class dmSetupTask extends dmContextTask
 
     $this->addOptions(array(
       new sfCommandOption('clear-db', null, sfCommandOption::PARAMETER_NONE, 'Drop database ( all data will be lost )'),
-      new sfCommandOption('no-confirmation', null, sfCommandOption::PARAMETER_NONE, 'Whether to force dropping of the database')
+      new sfCommandOption('clear-tables', null, sfCommandOption::PARAMETER_NONE, 'used in conjunction with --clear-db, it will drop tables instead of db'),
+      new sfCommandOption('no-confirmation', null, sfCommandOption::PARAMETER_NONE, 'Whether to force dropping of the database'),
+      new sfCommandOption('load-doctrine-data', 'd', sfCommandOption::PARAMETER_NONE, 'Run dm:data with -l option'),
+      new sfCommandOption('dont-load-data', 'n', sfCommandOption::PARAMETER_NONE, 'Do not load data'),
     ));
 
     $this->namespace = 'dm';
@@ -43,31 +46,35 @@ EOF;
 
     $this->runTask('doctrine:build', array(), array('model' => true));
 
-    if ($options['clear-db'] || $this->isProjectLocked())
+    if (( $options['clear-db'] || $options['clear-tables']) || $this->isProjectLocked())
     {
       $this->reloadAutoload();
-      
-      $this->runTask('doctrine:drop-db', array(), array('no-confirmation' => dmArray::get($options, 'no-confirmation', false)));
+      if($options['clear-db'])
+      {
+      	$this->runTask('doctrine:drop-db', array(), array('env' => $options['env'], 'no-confirmation' => dmArray::get($options, 'no-confirmation', false)));
+      }else{
+    		$this->runTask('dm:drop-tables', array(), array('env' => $options['env']));
+      }
 
-      if ($ret = $this->runTask('doctrine:build-db'))
+      if ($options['clear-db'] && $ret = $this->runTask('doctrine:build-db', array(), array('env' => $options['env'])))
       {
         return $ret;
       }
       
-      $this->runTask('doctrine:build-sql');
+      $this->runTask('doctrine:build-sql', array(), array('env' => $options['env']));
     
-      $this->runTask('doctrine:insert-sql');
+      $this->runTask('doctrine:insert-sql', array(), array('env' => $options['env']));
     }
     else
     {
-      $this->runTask('dm:upgrade');
+      $this->runTask('dm:upgrade', array(), array('env' => $options['env']));
     }
     
     $this->reloadAutoload();
     
     $this->withDatabase();
     
-    $this->runTask('dm:clear-cache');
+    $this->runTask('dm:clear-cache', array(), array('env' => $options['env']));
     
     $this->getContext()->reloadModuleManager();
     
@@ -75,21 +82,23 @@ EOF;
     
     $this->runTask('doctrine:build-filters', array(), array('generator-class' => 'dmDoctrineFormFilterGenerator'));
 
-    $this->runTask('dm:data');
-
     $this->runTask('dm:publish-assets');
 
-    $this->runTask('dm:clear-cache');
+    $this->runTask('dm:clear-cache', array(), array('env' => $options['env']));
     
     $this->reloadAutoload();
     
     $this->getContext()->reloadModuleManager();
 
-    $this->runTask('dmAdmin:generate');
+    $this->runTask('dmAdmin:generate', array(), array('env' => $options['env']));
     
+    if(!$options['dont-load-data'])
+    {
+    	$this->runTask('dm:data', array(), array('load-doctrine-data' => $options['load-doctrine-data'], 'env' => $options['env']));
+    }
+
     $this->logSection('diem', 'generate front modules');
-    
-    if (!$this->context->get('filesystem')->sf('dmFront:generate --env=' . dmArray::get($options, 'env', 'dev')))
+    if (!$return = $this->context->get('filesystem')->sf('dmFront:generate --env=' . dmArray::get($options, 'env', 'dev')))
     {
       $this->logBlock(array(
         'Can\'t run dmFront:generate: '.$this->context->get('filesystem')->getLastExec('output'),
@@ -105,7 +114,7 @@ EOF;
       $this->filesystem->chmod(sfConfig::get('sf_data_dir'), 0777, 000);
     }
     
-    $this->runTask('dm:clear-cache');
+    $this->runTask('dm:clear-cache', array(), array('env' => $options['env']));
     
     $this->dispatcher->notify(new sfEvent($this, 'dm.setup.after', array('clear-db' => $options['clear-db'])));
     

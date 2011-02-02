@@ -12,25 +12,48 @@ abstract class BaseDmAutoSeoTranslationFormFilter extends BaseFormFilterDoctrine
 {
   public function setup()
   {
-    $this->setWidgets(array(
-      'slug'        => new sfWidgetFormDmFilterInput(),
-      'name'        => new sfWidgetFormDmFilterInput(),
-      'title'       => new sfWidgetFormDmFilterInput(),
-      'h1'          => new sfWidgetFormDmFilterInput(),
-      'description' => new sfWidgetFormDmFilterInput(),
-      'keywords'    => new sfWidgetFormDmFilterInput(),
-      'strip_words' => new sfWidgetFormDmFilterInput(),
-    ));
 
-    $this->setValidators(array(
-      'slug'        => new sfValidatorPass(array('required' => false)),
-      'name'        => new sfValidatorPass(array('required' => false)),
-      'title'       => new sfValidatorPass(array('required' => false)),
-      'h1'          => new sfValidatorPass(array('required' => false)),
-      'description' => new sfValidatorPass(array('required' => false)),
-      'keywords'    => new sfValidatorPass(array('required' => false)),
-      'strip_words' => new sfValidatorPass(array('required' => false)),
-    ));
+
+		if($this->needsWidget('slug')){
+			$this->setWidget('slug', new sfWidgetFormDmFilterInput());
+			$this->setValidator('slug', new sfValidatorString(array('required' => false)));
+		}
+		if($this->needsWidget('name')){
+			$this->setWidget('name', new sfWidgetFormDmFilterInput());
+			$this->setValidator('name', new sfValidatorString(array('required' => false)));
+		}
+		if($this->needsWidget('title')){
+			$this->setWidget('title', new sfWidgetFormDmFilterInput());
+			$this->setValidator('title', new sfValidatorString(array('required' => false)));
+		}
+		if($this->needsWidget('h1')){
+			$this->setWidget('h1', new sfWidgetFormDmFilterInput());
+			$this->setValidator('h1', new sfValidatorString(array('required' => false)));
+		}
+		if($this->needsWidget('description')){
+			$this->setWidget('description', new sfWidgetFormDmFilterInput());
+			$this->setValidator('description', new sfValidatorString(array('required' => false)));
+		}
+		if($this->needsWidget('keywords')){
+			$this->setWidget('keywords', new sfWidgetFormDmFilterInput());
+			$this->setValidator('keywords', new sfValidatorString(array('required' => false)));
+		}
+		if($this->needsWidget('strip_words')){
+			$this->setWidget('strip_words', new sfWidgetFormDmFilterInput());
+			$this->setValidator('strip_words', new sfValidatorString(array('required' => false)));
+		}
+		if($this->needsWidget('lang')){
+			$this->setWidget('lang', new sfWidgetFormDmFilterInput());
+			$this->setValidator('lang', new sfValidatorDoctrineChoice(array('required' => false, 'model' => 'DmAutoSeoTranslation', 'column' => 'lang')));
+		}
+
+
+
+		if($this->needsWidget('dm_auto_seo_list')){
+			$this->setWidget('dm_auto_seo_list', new sfWidgetFormDoctrineChoice(array('multiple' => false, 'model' => 'DmAutoSeo', 'expanded' => false)));
+			$this->setValidator('dm_auto_seo_list', new sfValidatorDoctrineChoice(array('multiple' => false, 'model' => 'DmAutoSeo', 'required' => true)));
+		}
+
     
 
     $this->widgetSchema->setNameFormat('dm_auto_seo_translation_filters[%s]');

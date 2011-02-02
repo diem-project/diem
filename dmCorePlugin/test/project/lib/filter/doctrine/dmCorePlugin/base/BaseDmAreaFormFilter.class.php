@@ -12,17 +12,32 @@ abstract class BaseDmAreaFormFilter extends BaseFormFilterDoctrine
 {
   public function setup()
   {
-    $this->setWidgets(array(
-      'dm_layout_id'    => new sfWidgetFormDoctrineChoice(array('model' => 'DmLayout', 'add_empty' => true)),
-      'dm_page_view_id' => new sfWidgetFormDoctrineChoice(array('model' => 'DmPageView', 'add_empty' => true)),
-      'type'            => new sfWidgetFormChoice(array('choices' => array('' => '', 'content' => 'content', 'top' => 'top', 'bottom' => 'bottom', 'left' => 'left', 'right' => 'right'))),
-    ));
 
-    $this->setValidators(array(
-      'dm_layout_id'    => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Layout'), 'column' => 'id')),
-      'dm_page_view_id' => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('PageView'), 'column' => 'id')),
-      'type'            => new sfValidatorChoice(array('required' => false, 'choices' => array('content' => 'content', 'top' => 'top', 'bottom' => 'bottom', 'left' => 'left', 'right' => 'right'))),
-    ));
+
+		if($this->needsWidget('id')){
+			$this->setWidget('id', new sfWidgetFormDmFilterInput());
+			$this->setValidator('id', new sfValidatorDoctrineChoice(array('required' => false, 'model' => 'DmArea', 'column' => 'id')));
+		}
+		if($this->needsWidget('type')){
+			$this->setWidget('type', new sfWidgetFormDmFilterInput());
+			$this->setValidator('type', new sfValidatorString(array('required' => false)));
+		}
+
+
+		if($this->needsWidget('zones_list')){
+			$this->setWidget('zones_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmZone', 'expanded' => true)));
+			$this->setValidator('zones_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmZone', 'required' => false)));
+		}
+
+		if($this->needsWidget('layout_list')){
+			$this->setWidget('layout_list', new sfWidgetFormDoctrineChoice(array('multiple' => false, 'model' => 'DmLayout', 'expanded' => false)));
+			$this->setValidator('layout_list', new sfValidatorDoctrineChoice(array('multiple' => false, 'model' => 'DmLayout', 'required' => true)));
+		}
+		if($this->needsWidget('page_view_list')){
+			$this->setWidget('page_view_list', new sfWidgetFormDoctrineChoice(array('multiple' => false, 'model' => 'DmPageView', 'expanded' => false)));
+			$this->setValidator('page_view_list', new sfValidatorDoctrineChoice(array('multiple' => false, 'model' => 'DmPageView', 'required' => true)));
+		}
+
     
 
     $this->widgetSchema->setNameFormat('dm_area_filters[%s]');
@@ -45,7 +60,7 @@ abstract class BaseDmAreaFormFilter extends BaseFormFilterDoctrine
       'id'              => 'Number',
       'dm_layout_id'    => 'ForeignKey',
       'dm_page_view_id' => 'ForeignKey',
-      'type'            => 'Enum',
+      'type'            => 'Text',
     );
   }
 }

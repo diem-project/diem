@@ -150,6 +150,7 @@ abstract class BaseDmMailTemplate extends myDoctrineRecord
               10 => 'is_html',
               11 => 'is_active',
              ),
+             'length' => 7,
              ));
         $this->actAs($timestampable0);
         $this->actAs($i18n0);

@@ -9,21 +9,21 @@
  * @property string $description
  * @property Doctrine_Collection $Users
  * @property Doctrine_Collection $Permissions
- * @property Doctrine_Collection $DmGroupPermission
- * @property Doctrine_Collection $DmUserGroup
+ * @property Doctrine_Collection $Records
+ * @property Doctrine_Collection $RecordsPermissionsAssociations
  * 
- * @method string              getName()              Returns the current record's "name" value
- * @method string              getDescription()       Returns the current record's "description" value
- * @method Doctrine_Collection getUsers()             Returns the current record's "Users" collection
- * @method Doctrine_Collection getPermissions()       Returns the current record's "Permissions" collection
- * @method Doctrine_Collection getDmGroupPermission() Returns the current record's "DmGroupPermission" collection
- * @method Doctrine_Collection getDmUserGroup()       Returns the current record's "DmUserGroup" collection
- * @method DmGroup             setName()              Sets the current record's "name" value
- * @method DmGroup             setDescription()       Sets the current record's "description" value
- * @method DmGroup             setUsers()             Sets the current record's "Users" collection
- * @method DmGroup             setPermissions()       Sets the current record's "Permissions" collection
- * @method DmGroup             setDmGroupPermission() Sets the current record's "DmGroupPermission" collection
- * @method DmGroup             setDmUserGroup()       Sets the current record's "DmUserGroup" collection
+ * @method string              getName()                           Returns the current record's "name" value
+ * @method string              getDescription()                    Returns the current record's "description" value
+ * @method Doctrine_Collection getUsers()                          Returns the current record's "Users" collection
+ * @method Doctrine_Collection getPermissions()                    Returns the current record's "Permissions" collection
+ * @method Doctrine_Collection getRecords()                        Returns the current record's "Records" collection
+ * @method Doctrine_Collection getRecordsPermissionsAssociations() Returns the current record's "RecordsPermissionsAssociations" collection
+ * @method DmGroup             setName()                           Sets the current record's "name" value
+ * @method DmGroup             setDescription()                    Sets the current record's "description" value
+ * @method DmGroup             setUsers()                          Sets the current record's "Users" collection
+ * @method DmGroup             setPermissions()                    Sets the current record's "Permissions" collection
+ * @method DmGroup             setRecords()                        Sets the current record's "Records" collection
+ * @method DmGroup             setRecordsPermissionsAssociations() Sets the current record's "RecordsPermissionsAssociations" collection
  * 
  * @package    retest
  * @subpackage model
@@ -59,13 +59,15 @@ abstract class BaseDmGroup extends myDoctrineRecord
              'local' => 'dm_group_id',
              'foreign' => 'dm_permission_id'));
 
-        $this->hasMany('DmGroupPermission', array(
-             'local' => 'id',
-             'foreign' => 'dm_group_id'));
+        $this->hasMany('DmRecordPermission as Records', array(
+             'refClass' => 'DmRecordPermissionGroup',
+             'local' => 'dm_group_id',
+             'foreign' => 'dm_record_permission_id'));
 
-        $this->hasMany('DmUserGroup', array(
-             'local' => 'id',
-             'foreign' => 'dm_group_id'));
+        $this->hasMany('DmRecordPermissionAssociation as RecordsPermissionsAssociations', array(
+             'refClass' => 'DmRecordPermissionAssociationGroup',
+             'local' => 'dm_group_id',
+             'foreign' => 'dm_record_permission_association_id'));
 
         $timestampable0 = new Doctrine_Template_Timestampable(array(
              ));

@@ -258,7 +258,7 @@ class dmCoreLayoutHelper extends dmConfigurable
   {
     $requestContext = $this->serviceContainer->getParameter('request.context');
     
-    return array_merge($this->getService('response')->getJavascriptConfig(), array(
+    return $this->dispatcher->filter(new sfEvent($this, 'layout.filter_config'), array_merge($this->getService('response')->getJavascriptConfig(), array(
       'relative_url_root'  => $requestContext['relative_url_root'],
       'dm_core_asset_root' => $requestContext['relative_url_root'].'/'.sfConfig::get('dm_core_asset').'/',
       'script_name'        => sfConfig::get('sf_no_script_name') ? trim($requestContext['relative_url_root'], '/').'/' : $requestContext['script_name'].'/',
@@ -268,7 +268,7 @@ class dmCoreLayoutHelper extends dmConfigurable
       'module'             => $this->serviceContainer->getParameter('controller.module'),
       'action'             => $this->serviceContainer->getParameter('controller.action'),
       'authenticated'      => $this->getService('user')->isAuthenticated()
-    ));
+    )))->getReturnValue();
   }
   
   public function renderJavascriptConfig()

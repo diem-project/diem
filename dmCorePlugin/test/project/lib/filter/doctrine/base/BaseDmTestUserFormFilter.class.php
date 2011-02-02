@@ -12,19 +12,32 @@ abstract class BaseDmTestUserFormFilter extends BaseFormFilterDoctrine
 {
   public function setup()
   {
-    $this->setWidgets(array(
-      'name'        => new sfWidgetFormDmFilterInput(),
-      'description' => new sfWidgetFormDmFilterInput(),
-      'media_id'    => new sfWidgetFormDoctrineChoice(array('model' => 'DmMedia', 'add_empty' => true)),
-      'is_visible'  => new sfWidgetFormChoice(array('choices' => array('' => $this->getI18n()->__('yes or no', array(), 'dm'), 1 => $this->getI18n()->__('yes', array(), 'dm'), 0 => $this->getI18n()->__('no', array(), 'dm')))),
-    ));
 
-    $this->setValidators(array(
-      'name'        => new sfValidatorPass(array('required' => false)),
-      'description' => new sfValidatorPass(array('required' => false)),
-      'media_id'    => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Media'), 'column' => 'id')),
-      'is_visible'  => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
-    ));
+
+		if($this->needsWidget('id')){
+			$this->setWidget('id', new sfWidgetFormDmFilterInput());
+			$this->setValidator('id', new sfValidatorDoctrineChoice(array('required' => false, 'model' => 'DmTestUser', 'column' => 'id')));
+		}
+		if($this->needsWidget('name')){
+			$this->setWidget('name', new sfWidgetFormDmFilterInput());
+			$this->setValidator('name', new sfValidatorString(array('required' => false)));
+		}
+		if($this->needsWidget('description')){
+			$this->setWidget('description', new sfWidgetFormDmFilterInput());
+			$this->setValidator('description', new sfValidatorString(array('required' => false)));
+		}
+		if($this->needsWidget('is_visible')){
+			$this->setWidget('is_visible', new sfWidgetFormChoice(array('choices' => array('' => $this->getI18n()->__('yes or no', array(), 'dm'), 1 => $this->getI18n()->__('yes', array(), 'dm'), 0 => $this->getI18n()->__('no', array(), 'dm')))));
+			$this->setValidator('is_visible', new sfValidatorBoolean());
+		}
+
+
+
+		if($this->needsWidget('media_list')){
+			$this->setWidget('media_list', new sfWidgetFormDoctrineChoice(array('multiple' => false, 'model' => 'DmMedia', 'expanded' => false)));
+			$this->setValidator('media_list', new sfValidatorDoctrineChoice(array('multiple' => false, 'model' => 'DmMedia', 'required' => true)));
+		}
+
     
 
     $this->widgetSchema->setNameFormat('dm_test_user_filters[%s]');

@@ -80,6 +80,7 @@ abstract class BaseDmWidget extends myDoctrineRecord
              array(
               0 => 'value',
              ),
+             'length' => 7,
              ));
         $this->actAs($sortable0);
         $this->actAs($timestampable0);

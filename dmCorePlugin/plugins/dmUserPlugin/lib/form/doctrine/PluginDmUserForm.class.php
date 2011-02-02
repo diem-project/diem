@@ -30,32 +30,37 @@ abstract class PluginDmUserForm extends BaseDmUserForm
       $this['forgot_password_code']
     );
 
-    $this->widgetSchema['password'] = new sfWidgetFormInputPassword(array(), array(
-      'autocomplete' => 'off'
-    ));
-    $this->validatorSchema['password']->setOption('required', $this->object->isNew());
-    $this->widgetSchema['password_again'] = new sfWidgetFormInputPassword(array(
-      'label' => 'Password (again)'
-    ), array(
-      'autocomplete' => 'off'
-    ));
-    $this->validatorSchema['password_again'] = clone $this->validatorSchema['password'];
+    if($this->needsWidget('password'))
+    {
+	    $this->widgetSchema['password'] = new sfWidgetFormInputPassword(array(), array(
+	      'autocomplete' => 'off'
+	    ));
+	    $this->validatorSchema['password']->setOption('required', $this->object->isNew());
+	    $this->widgetSchema['password_again'] = new sfWidgetFormInputPassword(array(
+	      'label' => 'Password (again)'
+	    ), array(
+	      'autocomplete' => 'off'
+	    ));
+	    $this->validatorSchema['password_again'] = clone $this->validatorSchema['password'];
+	
+	    $this->widgetSchema->moveField('password_again', 'after', 'password');
+	    $this->mergePostValidator(new sfValidatorSchemaCompare('password', sfValidatorSchemaCompare::EQUAL, 'password_again', array(), array('invalid' => 'The two passwords must be the same.')));
+    }
 
-    $this->widgetSchema->moveField('password_again', 'after', 'password');
+    if($this->needsWidget('username'))
+    {
+	    $this->validatorSchema['username'] = new sfValidatorAnd(array(
+	      $this->validatorSchema['username'],
+	      new sfValidatorRegex(array('pattern' => '/^[\w\d\-\s@\.]+$/')),
+	    ));
+    }
 
-    $this->validatorSchema['username'] = new sfValidatorAnd(array(
-      $this->validatorSchema['username'],
-      new sfValidatorRegex(array('pattern' => '/^[\w\d\-\s@\.]+$/')),
-    ));
-
-    $this->changeToEmail('email');
-
+    $this->needsWidget('email') && $this->changeToEmail('email');
+    
     if ($this->isCaptchaEnabled())
     {
       $this->addCaptcha();
     }
-
-    $this->mergePostValidator(new sfValidatorSchemaCompare('password', sfValidatorSchemaCompare::EQUAL, 'password_again', array(), array('invalid' => 'The two passwords must be the same.')));
   }
 
   public function addCaptcha()

@@ -13,14 +13,17 @@ require_once(dirname(__FILE__).'/../lib/Base<?php echo ucfirst($this->moduleName
  */
 abstract class <?php echo $this->getGeneratedModuleName() ?>Actions extends <?php echo $this->getActionsBaseClass() ?>
 {
-  protected
-  $dmModule;
+  /**
+	 * @var dmModule
+	 */
+  protected $dmModule;
   
   public function preExecute()
   {
+  	parent::preExecute();
     $this->configuration = new <?php echo $this->getModuleName() ?>GeneratorConfiguration();
 
-    if (!$this->getUser()->hasCredential($this->configuration->getCredentials($this->getActionName())))
+    if ($this->getDmModule()->getSecurityManager($this)->isActionStrategicalySecurized($this->getActionName()) && !$this->getDmModule()->getSecurityManager()->userHasCredentials($this->getActionName()))
     {
       $this->forwardSecure();
     }
@@ -30,16 +33,17 @@ abstract class <?php echo $this->getGeneratedModuleName() ?>Actions extends <?ph
     $this->helper = new <?php echo $this->getModuleName() ?>GeneratorHelper($this->getDmModule());
   }
   
-  protected function getDmModule()
+  /**
+   * @return string the module key
+   */
+  protected function getModuleKey()
   {
-    if (null !== $this->dmModule)
-    {
-      return $this->dmModule;
-    }
-    
-    return $this->dmModule = $this->context->getModuleManager()->getModule('<?php echo $this->getModule()->getKey(); ?>');
+  	return '<?php echo $this->getModule()->getKey()?>';
   }
   
+  /**
+	 * @return string the symfony module name
+	 */
   protected function getSfModule()
   {
     return '<?php echo $this->getModuleName(); ?>';
