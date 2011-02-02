@@ -92,14 +92,18 @@ abstract class dmDoctrineTable extends Doctrine_Table
 
 	/**
 	 * Will join all localKey relations
+	 * @param myDoctrineQuery $query the query to modify
+	 * @param boolean $withI18n join Translation ?
+	 * @param array $relations array of relations alias; if empty add all relations found
 	 * @return dmDoctrineTable
 	 */
-	public function joinLocals(myDoctrineQuery $query, $withI18n = false)
+	public function joinLocals(myDoctrineQuery $query, $withI18n = false, $relations = array())
 	{
 		$rootAlias = $query->getRootAlias();
 
 		foreach($this->getRelationHolder()->getLocals() as $relation)
 		{
+			if(!empty($relations) && !in_array($relation['alias'], $relations)) continue;
 			if ($relation->getClass() === 'DmMedia')
 			{
 				$query->withDmMedia($relation->getAlias());
