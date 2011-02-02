@@ -253,7 +253,7 @@ class dmModuleSecurityManager extends dmModuleSecurityAbstract implements dmModu
     if(null ===$action){
       return $security;
     }else{
-      return isset($security[$action]) ? $security[$action] : false;
+      return isset($security[$action]) ? $security[$action] : ($this->module->getOption('credentials', false));
     }
     return false;
   }
