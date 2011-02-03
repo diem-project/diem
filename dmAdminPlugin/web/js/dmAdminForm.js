@@ -260,7 +260,7 @@
 		  $.ajax({
 			  url: link,
 			  success: function(data){
-				  data = $(data).find('.fieldset_content_inner .sf_widget_form_dm_doctrine_choice .content');
+				  data = $(data).find('.fieldset_content_inner .sf_admin_form_field_'+metadata.field+' .content');
 				  self.parent().parent().parent().parent().html(data.html()).removeAttr('style');
 				  $('.tipsy').fadeOut(function(){$('.tispy').remove()});
 				  $.dm.ctrl.init();
