@@ -147,12 +147,13 @@ abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->
     return '<?php echo $this->modelName ?>';
   }
 
-<?php if ($this->getManyToManyRelations()): ?>
+<?php $manyRelations = array_merge($this->getManyToManyRelations(), $this->getOneToManyRelations()); ?>
+<?php if ($manyRelations): ?>
   public function updateDefaultsFromObject()
   {
     parent::updateDefaultsFromObject();
 
-<?php foreach ($this->getManyToManyRelations() as $relation): ?>
+<?php foreach ($manyRelations as $relation): ?>
     if (isset($this->widgetSchema['<?php echo $this->underscore($relation['alias']) ?>_list']))
     {
       $this->setDefault('<?php echo $this->underscore($relation['alias']) ?>_list', $this->object-><?php echo $relation['alias']; ?>->getPrimaryKeys());
@@ -163,14 +164,14 @@ abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->
 
   protected function doSave($con = null)
   {
-<?php foreach ($this->getManyToManyRelations() as $relation): ?>
+<?php foreach ($manyRelations as $relation): ?>
     $this->save<?php echo $relation['alias'] ?>List($con);
 <?php endforeach; ?>
 
     parent::doSave($con);
   }
 
-<?php foreach ($this->getManyToManyRelations() as $relation): ?>
+<?php foreach ($manyRelations as $relation): ?>
   public function save<?php echo $relation['alias'] ?>List($con = null)
   {
     if (!$this->isValid())
