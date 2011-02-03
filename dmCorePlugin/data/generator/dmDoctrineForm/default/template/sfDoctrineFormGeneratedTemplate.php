@@ -58,13 +58,14 @@ abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->
 
 
 
-<?php foreach($this->getMediaRelations() as $mediaRelation): ?>
-
+<?php foreach($this->getMediaRelations() as $mediaRelation): ?><?php if($mediaRelation['localTable'] && $mediaRelation['localTable']->isGenerator()) continue;?>
     /*
      * Embed Media form for <?php echo $mediaRelation['local']."\n"; ?>
      */
-    $this->embedForm('<?php echo $mediaRelation['local'].'_form' ?>', $this->createMediaFormFor<?php echo dmString::camelize($mediaRelation['local']); ?>());
-    unset($this['<?php echo $mediaRelation['local']; ?>']);
+    if($this->needsWidget('<?php echo $mediaRelation['local']?>')){
+      $this->embedForm('<?php echo $mediaRelation['local'].'_form' ?>', $this->createMediaFormFor<?php echo dmString::camelize($mediaRelation['local']); ?>());
+      unset($this['<?php echo $mediaRelation['local']; ?>']);
+    }
 <?php endforeach; ?>
 
 <?php if ($uniqueColumns = $this->getUniqueColumnNames()): ?>
@@ -105,7 +106,7 @@ abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->
     parent::unsetAutoFields();
   }
 
-<?php foreach($this->getMediaRelations() as $mediaRelation): ?>
+<?php foreach($this->getMediaRelations() as $mediaRelation): ?><?php if($mediaRelation['localTable'] && $mediaRelation['localTable']->isGenerator()) continue;?>
   /**
    * Creates a DmMediaForm instance for <?php echo $mediaRelation['local']."\n"; ?>
    *
@@ -119,7 +120,7 @@ abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->
 
   protected function doBind(array $values)
   {
-<?php foreach($this->getMediaRelations() as $mediaRelation): ?>
+<?php foreach($this->getMediaRelations() as $mediaRelation): ?><?php if($mediaRelation['localTable'] && $mediaRelation['localTable']->isGenerator()) continue;?>
     $values = $this->filterValuesByEmbeddedMediaForm($values, '<?php echo $mediaRelation['local'] ?>');
 <?php endforeach; ?>
     parent::doBind($values);
@@ -128,7 +129,7 @@ abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->
   public function processValues($values)
   {
     $values = parent::processValues($values);
-<?php foreach($this->getMediaRelations() as $mediaRelation): ?>
+<?php foreach($this->getMediaRelations() as $mediaRelation): ?><?php if($mediaRelation['localTable'] && $mediaRelation['localTable']->isGenerator()) continue;?>
     $values = $this->processValuesForEmbeddedMediaForm($values, '<?php echo $mediaRelation['local'] ?>');
 <?php endforeach; ?>
     return $values;
@@ -137,7 +138,7 @@ abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->
   protected function doUpdateObject($values)
   {
     parent::doUpdateObject($values);
-<?php foreach($this->getMediaRelations() as $mediaRelation): ?>
+<?php foreach($this->getMediaRelations() as $mediaRelation): ?><?php if($mediaRelation['localTable'] && $mediaRelation['localTable']->isGenerator()) continue;?>
     $this->doUpdateObjectForEmbeddedMediaForm($values, '<?php echo $mediaRelation['local'] ?>', '<?php echo $mediaRelation['alias'] ?>');
 <?php endforeach; ?>
   }
