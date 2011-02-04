@@ -13,7 +13,7 @@ abstract class PluginDmMediaForm extends BaseDmMediaForm
 	public function setup()
 	{
 		parent::setup();
-
+		$this->mergeI18nForm();
 		$this->useFields(array('dm_media_folder_id', 'file', 'legend', 'author', 'license'));
 
 		$this->widgetSchema['file'] = new sfWidgetFormDmInputFile();
