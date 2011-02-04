@@ -21,22 +21,26 @@ abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->
     unset($this['<?php echo $field ?>']);
 <?php endforeach; ?>
 
-<?php foreach ($this->getColumns() as $column): ?>
+<?php foreach ($this->getColumns(true, true, true) as $column): ?>
 		//column
-    $this->setWidget('<?php echo $column->getFieldName() ?>', new <?php echo $this->getWidgetClassForColumn($column) ?>(<?php echo $this->getWidgetOptionsForColumn($column) ?>));
-    $this->setValidator('<?php echo $column->getFieldName() ?>', new <?php echo $this->getValidatorClassForColumn($column) ?>(<?php echo $this->getValidatorOptionsForColumn($column) ?>));
-    
+		if($this->needsWidget('<?php echo $column->getFieldName()?>')){
+			$this->setWidget('<?php echo $column->getFieldName() ?>', new <?php echo $this->getWidgetClassForColumn($column) ?>(<?php echo $this->getWidgetOptionsForColumn($column) ?>));
+			$this->setValidator('<?php echo $column->getFieldName() ?>', new <?php echo $this->getValidatorClassForColumn($column) ?>(<?php echo $this->getValidatorOptionsForColumn($column) ?>));
+		}    
 <?php endforeach; ?>
 <?php foreach ($this->getManyToManyRelations() as $relation): ?>
 		//many to many
-    $this->setWidget('<?php echo $this->underscore($relation['alias']) ?>_list', new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => '<?php echo $relation['table']->getOption('name') ?>', 'expanded' => true)));
-    $this->setValidator('<?php echo $this->underscore($relation['alias']) ?>_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => '<?php echo $relation['table']->getOption('name') ?>', 'required' => false)));
-    
+		if($this->needsWidget('<?php echo $this->underscore($relation['alias']) ?>_list')){
+			$this->setWidget('<?php echo $this->underscore($relation['alias']) ?>_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => '<?php echo $relation['table']->getOption('name') ?>', 'expanded' => true)));
+			$this->setValidator('<?php echo $this->underscore($relation['alias']) ?>_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => '<?php echo $relation['table']->getOption('name') ?>', 'required' => false)));
+		}
 <?php endforeach; ?>
 <?php foreach($this->getOneToOneRelations() as $relation):?>
 		//one to one
-		$this->setWidget('<?php echo $this->underscore($relation['local']) ?>', new sfWidgetFormDoctrineChoice(array('multiple' => false, 'model' => '<?php echo $relation['table']->getOption('name')?>', 'expanded' => false)));
-		$this->setValidator('<?php echo $this->underscore($relation['local']) ?>', new sfValidatorDoctrineChoice(array('multiple' => false, 'model' => '<?php echo $relation['table']->getOption('name')?>', 'required' => true)));
+		if($this->needsWidget('<?php echo $this->underscore($relation['local']) ?>')){
+			$this->setWidget('<?php echo $this->underscore($relation['local']) ?>', new <?php echo $this->getWidgetClassForColumn($relation instanceof Doctrine_Relation_LocalKey ? $relation : new dmDoctrineColumn($relation['local'], $relation['table'])) ?>(array('multiple' => false, 'model' => '<?php echo $relation['table']->getOption('name')?>', 'expanded' =>  <?php echo $this->table->isPaginatedColumn($relation['local']) ? 'true' : 'false'?>)));
+			$this->setValidator('<?php echo $this->underscore($relation['local']) ?>', new sfValidatorDoctrineChoice(array('multiple' => false, 'model' => '<?php echo $relation['table']->getOption('name')?>', 'required' => <?php echo $this->table->getSfDoctrineColumn($relation['local'])->isNotNull() ? 'true' : 'false'?>)));
+		}
 <?php endforeach;?>
 
 <?php foreach ($this->getOneToManyRelations() as $relation): ?><?php if($relation['alias'] === 'Translation') continue;?>
@@ -47,19 +51,21 @@ abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->
 		}
 <?php endforeach; ?>
 
-<?php foreach($this->getMediaRelations() as $mediaRelation): ?>
+<?php foreach($this->getMediaRelations() as $mediaRelation): ?><?php if($mediaRelation['localTable'] && $mediaRelation['localTable']->isGenerator()) continue;?>
 
     /*
      * Embed Media form for <?php echo $mediaRelation['local']."\n"; ?>
      */
-    $this->embedForm('<?php echo $mediaRelation['local'].'_form' ?>', $this->createMediaFormFor<?php echo dmString::camelize($mediaRelation['local']); ?>());
-    unset($this['<?php echo $mediaRelation['local']; ?>']);
+    if($this->needsWidget('<?php echo $mediaRelation['local']?>')){
+      $this->embedForm('<?php echo $mediaRelation['local'].'_form' ?>', $this->createMediaFormFor<?php echo dmString::camelize($mediaRelation['local']); ?>());
+      unset($this['<?php echo $mediaRelation['local']; ?>']);
+    }
 <?php endforeach; ?>
 
     $this->widgetSchema->setNameFormat('<?php echo $this->underscore($this->modelName) ?>[%s]');
   }
 
-<?php foreach($this->getMediaRelations() as $mediaRelation): ?>
+<?php foreach($this->getMediaRelations() as $mediaRelation): ?><?php if($mediaRelation['localTable'] && $mediaRelation['localTable']->isGenerator()) continue;?>
   /**
    * Creates a DmMediaForm instance for <?php echo $mediaRelation['local']."\n"; ?>
    *
@@ -71,6 +77,30 @@ abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->
   }
 <?php endforeach; ?>
 
+  protected function doBind(array $values)
+  {
+<?php foreach($this->getMediaRelations() as $mediaRelation): ?><?php if($mediaRelation['localTable'] && $mediaRelation['localTable']->isGenerator()) continue;?>
+    $values = $this->filterValuesByEmbeddedMediaForm($values, '<?php echo $mediaRelation['local'] ?>');
+<?php endforeach; ?>
+    parent::doBind($values);
+  }
+
+  public function processValues($values)
+  {
+    $values = parent::processValues($values);
+<?php foreach($this->getMediaRelations() as $mediaRelation): ?><?php if($mediaRelation['localTable'] && $mediaRelation['localTable']->isGenerator()) continue;?>
+    $values = $this->processValuesForEmbeddedMediaForm($values, '<?php echo $mediaRelation['local'] ?>');
+<?php endforeach; ?>
+    return $values;
+  }
+  
+  protected function doUpdateObject($values)
+  {
+    parent::doUpdateObject($values);
+<?php foreach($this->getMediaRelations() as $mediaRelation): ?><?php if($mediaRelation['localTable'] && $mediaRelation['localTable']->isGenerator()) continue;?>
+    $this->doUpdateObjectForEmbeddedMediaForm($values, '<?php echo $mediaRelation['local'] ?>', '<?php echo $mediaRelation['alias'] ?>');
+<?php endforeach; ?>
+  }
 
   public function getModelName()
   {

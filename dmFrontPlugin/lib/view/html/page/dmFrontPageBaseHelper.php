@@ -7,7 +7,13 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
     $serviceContainer,
     $helper,
     $page,
-    $areas;
+    $areas,
+    $global_area_id,
+    $global_areas,
+    $area_fallBackCulture,
+    $area_culture,
+    $area_lid,
+    $area_vid;
     
   public function __construct(sfEventDispatcher $dispatcher, sfServiceContainer $serviceContainer, dmHelper $helper, array $options = array())
   {
@@ -54,79 +60,112 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
     $this->areas = null;
   }
   
-  public function getAreas($culture = null)
+ public function getAreas($culture = null)
   {
-    if (null === $this->areas)
+
+    $this->area_culture = null === $culture ? $this->serviceContainer->getParameter('user.culture') : $culture;
+    $this->area_fallBackCulture = sfConfig::get('sf_default_culture');
+
+    if (!$this->page instanceof DmPage)
     {
-      if (!$this->page instanceof DmPage)
-      {
-        throw new dmException('Can not fetch page areas because no page have been set');
-      }
-      
-      $culture = null === $culture ? $this->serviceContainer->getParameter('user.culture') : $culture;
-      $fallBackCulture = sfConfig::get('sf_default_culture');
-      
-      $areas = dmDb::query('DmArea a')
-      ->leftJoin('a.Zones z')
-      ->leftJoin('z.Widgets w')
-      ->leftJoin('w.Translation wTranslation WITH wTranslation.lang = ? OR wTranslation.lang = ?', array($culture, $fallBackCulture))
-      ->select('a.dm_layout_id, a.type, z.width, z.css_class, w.module, w.action, wTranslation.value, w.css_class')
-      ->where('a.dm_layout_id = ?', $this->page->getPageView()->getLayout()->get('id'))
-      ->orWhere('a.dm_page_view_id = ?', $this->page->getPageView()->get('id'))
-      ->orderBy('z.position asc, w.position asc')
-      ->fetchArray();
-      
-      /*
-       * WARNING strange code
-       * This code is to simulate widget i18n fallback,
-       * which can not be achived
-       * normally when hydrating with an array
-       */
-      foreach($areas as $areaIndex => $area)
-      {
-        foreach($area['Zones'] as $zoneIndex => $zone)
-        {
-          foreach($zone['Widgets'] as $widgetIndex => $widget)
-          {
-            $value = null;
-            
-            // there is a translation for $culture
-            if (isset($widget['Translation'][$culture]))
-            {
-              $value = $widget['Translation'][$culture]['value'];
-            }
-            // there is a default translation for $fallBackCulture
-            elseif (isset($widget['Translation'][$fallBackCulture]))
-            {
-              $value = $widget['Translation'][$fallBackCulture]['value'];
-            }
-            
-            // assign the value to the widget array
-            $areas[$areaIndex]['Zones'][$zoneIndex]['Widgets'][$widgetIndex]['value'] = $value;
-            
-            // unset the useless Translation array
-            unset($areas[$areaIndex]['Zones'][$zoneIndex]['Widgets'][$widgetIndex]['Translation']);
-          }
-        }
-      }
-      /*
-       * End of strange code
-       */
+      throw new dmException('Can not fetch page areas because no page have been set');
+    }
 
-      /**
-       * Give nice keys to the areas array
-       */
-      $this->areas = array();
-      foreach($areas as $area)
-      {
-        $prefix = $area['dm_layout_id'] ? 'layout' : 'page';
+    //Get global areas
+    if (null !== $this->global_area_id && empty($this->global_areas[$this->global_area_id]))
+    {
+      $this->area_lid = $this->global_area_id;
+      $this->area_vid = $this->global_area_id;
 
-        $this->areas[$prefix.'.'.$area['type']] = $area;
-      }
-      unset($areas);
+      $this->global_areas[$this->global_area_id] = $this->parseAreas($this->getDbAreas());
+    }
+
+    //Get local areas
+    if (null === $this->areas && null === $this->global_area_id)
+    {
+      $this->area_lid = $this->page->getPageView()->getLayout()->get('id');
+      $this->area_vid = $this->page->getPageView()->get('id');
+
+      $this->areas = $this->parseAreas($this->getDbAreas());
+    }
+
+    if (null !== $this->global_area_id)
+    {
+      $return_areas = $this->global_areas[$this->global_area_id];
+      $this->global_area_id = null;
+      return $return_areas;
+    }
+    else
+    {
+      return $this->areas;
     }
     
-    return $this->areas;
+  }
+  public function getDbAreas()
+  {
+  	return dmDb::query('DmArea a')
+      ->leftJoin('a.Zones z')
+      ->leftJoin('z.Widgets w')
+      ->leftJoin('w.Translation wTranslation WITH wTranslation.lang = ? OR wTranslation.lang = ?', array($this->area_culture, $this->area_fallBackCulture))
+      ->select('a.dm_layout_id, a.type, z.width, z.css_class, w.module, w.action, wTranslation.value, w.css_class')
+      ->where('a.dm_layout_id = ?', $this->area_lid)
+      ->orWhere('a.dm_page_view_id = ?', $this->area_vid)
+      ->orderBy('z.position asc, w.position asc')
+      ->fetchArray();
+  }
+  
+  public function parseAreas($areas)
+  {
+  	/*
+		* WARNING strange code
+		* This code is to simulate widget i18n fallback,
+		* which can not be achived
+		* normally when hydrating with an array
+		*/
+    foreach($areas as $areaIndex => $area)
+    {
+      foreach($area['Zones'] as $zoneIndex => $zone)
+      {
+        foreach($zone['Widgets'] as $widgetIndex => $widget)
+        {
+          $value = null;
+
+          // there is a translation for $this->area_culture
+          if (isset($widget['Translation'][$this->area_culture]))
+          {
+            $value = $widget['Translation'][$this->area_culture]['value'];
+          }
+          // there is a default translation for $this->area_fallBackCulture
+          elseif (isset($widget['Translation'][$this->area_fallBackCulture]))
+          {
+            $value = $widget['Translation'][$this->area_fallBackCulture]['value'];
+          }
+
+          // assign the value to the widget array
+          $areas[$areaIndex]['Zones'][$zoneIndex]['Widgets'][$widgetIndex]['value'] = $value;
+
+          // unset the useless Translation array
+          unset($areas[$areaIndex]['Zones'][$zoneIndex]['Widgets'][$widgetIndex]['Translation']);
+        }
+      }
+    }
+    /*
+		* End of strange code
+		*/
+
+    /**
+		* Give nice keys to the areas array
+		*/
+    $return_areas = array();
+    foreach($areas as $area)
+    {
+      $prefix = $area['dm_layout_id'] ? 'layout' : 'page';
+
+      $return_areas[$prefix.'.'.$area['type']] = $area;
+    }
+    unset($areas);
+
+    return $return_areas;
   }
   
   public function getArea($name)
@@ -171,6 +210,9 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
   public function renderArea($name, $options = array())
   {
     $options = dmString::toArray($options);
+    
+    //Set id of page we need
+    $this->global_area_id = dmArray::get($options, 'global_area', null);
     
     $tagName = $this->getAreaTypeTagName($name);
 
