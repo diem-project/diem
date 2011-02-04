@@ -195,4 +195,24 @@ class dmArray
 
 		return $array1;
 	}
+	
+	/**
+	 * Create an array of integers using $idKey from $array
+	 * Usefull when you want an array of all ids from a
+	 * dmDoctrineCollection for example.
+	 * 
+	 * @param stirng $idKey
+	 * @param array $array
+	 * 
+	 * @return array
+	 */
+	static public function toIds($idKey, $array)
+	{
+		$ids = array();
+		foreach($array as $el)
+		{
+			$ids[] = $el[$idKey];
+		}
+		return $ids;
+	}
 }
