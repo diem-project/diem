@@ -733,7 +733,7 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 	 */
 	public function executePaginateRelation(dmWebRequest $request)
 	{
-		$field = lcfirst($request->getParameter('field'));
+		$field = dmString::lcfirst($request->getParameter('field'));
 		$relation = dmString::camelize(substr($field, 0, strlen($field) -5)); //remove _list @todo make it given by $request, using .metadata() and writting it within template
 		$table = $this->getDmModule()->getTable();
 
