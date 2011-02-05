@@ -124,7 +124,7 @@ abstract class PluginDmMediaForm extends BaseDmMediaForm
 	public function isValidFilenameAndExtension($filename)
 	{
 		$filenameAndExt = explode('.', dmOs::sanitizeFileName($filename));
-		if(count($filenameAndExt) <= 2) return false;
+		if(count($filenameAndExt) < 2) return false;
 		return true;
 	}
 
