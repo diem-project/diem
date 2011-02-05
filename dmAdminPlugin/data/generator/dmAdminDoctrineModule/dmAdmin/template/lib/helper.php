@@ -19,13 +19,13 @@ abstract class Base<?php echo ucfirst($this->getModuleName()) ?>GeneratorHelper 
   public function getRouteArrayForAction($action, $object = null)
   {
     $route = array('sf_route' => '<?php echo $this->params['route_prefix'] ?>');
-    
+
     if ('list' !== $action)
     {
       $route['action'] = $action;
     }
-    
-    if (null !== $object)
+
+    if (null !== $object && !$object->isNew())
     {
       $route['pk'] = $object->getPrimaryKey();
     }
@@ -34,7 +34,7 @@ abstract class Base<?php echo ucfirst($this->getModuleName()) ?>GeneratorHelper 
     {
       $route['dm_embed'] = 1;
     }
-    
+
     return $route;
   }
 
