@@ -79,7 +79,7 @@ div.sf_admin_form div.sf_admin_form_row {
   padding: 1%;
 }
 
-div.sf_admin_form fieldset.single div.sf_admin_form_row, div.sf_admin_form fieldset.single div.sf_admin_form_row.odd.last {
+div.sf_admin_form fieldset.single div.sf_admin_form_row, div.sf_admin_form div.sf_admin_form_row.odd.last {
     float:none;
     background: #fff;
 }
@@ -114,6 +114,11 @@ div.sf_admin_form ul.dm_form_elements li.dm_form_element label {
   float: left;
   width: 20%;
 }
+
+div.sf_admin_form .sf_admin_form_row.odd.last div.sf_admin_form_row_inner div.label_wrap {
+	width: 10%;
+}
+
 div.sf_admin_form div.sf_admin_form_row_inner div.label_wrap,
 div.sf_admin_form ul.dm_form_elements li.dm_form_element label,
 div.sf_admin_form div.sf_admin_form_row_inner label {
