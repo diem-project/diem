@@ -77,7 +77,7 @@
         	$linkArray = $helper->getRouteArrayForAction('paginateRelation', $form->getObject());
         	$linkArray['field'] = $name;
         	ob_start();
-        	include_partial('<?php echo $this->getModuleName()?>/form_field_pagination', array('pager' => $pager, 'field' => $name, 'link' => url_for($linkArray)));
+        	include_partial('<?php echo $this->getModuleName()?>/form_field_pagination', array('pager' => $pager, 'form' => $form,  'field' => $name, 'link' => url_for($linkArray)));
         	$pagination = ob_get_clean();
         }
         

@@ -83,7 +83,13 @@ div.sf_admin_form fieldset.single div.sf_admin_form_row, div.sf_admin_form field
     float:none;
     background: #fff;
 }
-
+/* not certain if display is set to none whether some browsers wont count the inputs inside*/
+.sf_widget_form_dm_paginated_doctrine_choice div.hidden {
+	visibility: hidden;
+	height: 0;
+	width: 0;
+	overflow: hidden;
+}
 div.sf_admin_form div.sf_admin_form_row.dm_row_modified {
   background: #E0F1AD;
 }
