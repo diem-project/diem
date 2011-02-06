@@ -2,11 +2,11 @@
 {
 
   $.widget('ui.dmAdminForm', {
-  
+
     _init: function()
     {
       this.$ = $("#dm_admin_content");
-      
+
       this.focusFirstInput();
       this.markdown();
       this.checkBoxList();
@@ -40,13 +40,13 @@
     droppableMedia: function()
     {
       var self = this;
-      
+
       self.element.find('ul.dm_media_for_record_form').each(function()
       {
         var $this = $(this);
         var fieldName = $this.closest('div.sf_admin_form_row').attr('data-field-name');
         var viewClass = 'sf_admin_form_field_'+fieldName.replace(/_form/, '_view');
-        
+
         $(this).droppable({
           accept: '#dm_media_bar li',
           activeClass: 'droppable_active',
@@ -70,20 +70,20 @@
     {
       $('input.dm_link_droppable, .dm_link_droppable input', this.element).dmDroppableInput();
     },
-    
+
     focusFirstInput: function()
     {
       if(this.alreadyDone) return;
-      if ($firstInput = $('div.sf_admin_form_row_inner input:first', this.$)) 
+      if ($firstInput = $('div.sf_admin_form_row_inner input:first', this.$))
       {
         this.alreadyDone = true;
         $firstInput.focus();
       }
     },
-    
+
     hotKeys: function()
     {
-      if ($save = $('li.sf_admin_action_save:first input', this.$).orNot()) 
+      if ($save = $('li.sf_admin_action_save:first input', this.$).orNot())
       {
         var self = this;
 
@@ -97,17 +97,17 @@
         }, 1000);
       }
     },
-    
+
     markdown: function()
     {
       var form = this;
-      
+
       $('textarea.dm_markdown', form.element).each(function()
       {
         var $editor = $(this);
         var $preview = $('#dm_markdown_preview_'+$editor.metadata().code);
         var value = $editor.val();
-        
+
         $editor.dmMarkdown();
 
         var $container = $editor.closest('div.markItUpContainer');
@@ -137,7 +137,7 @@
               .parent().height($(window).height()-84);
 
               $preview.height($container.innerHeight() - 20);
-              
+
               window.scrollTo(0, Math.round($container.offset().top) - 40);
             }
             else
@@ -150,10 +150,10 @@
             }
           })
         );
-        
+
         setInterval(function()
         {
-          if ($editor.val() != value) 
+          if ($editor.val() != value)
           {
             value = $editor.val();
             $.ajax({
@@ -180,11 +180,11 @@
         }).width($container.width()-6);
       });
     },
-    
+
     checkBoxList: function()
     {
       var self = this;
-      
+
       $('ul.checkbox_list', self.element).each(function()
       {
         var $list = $(this), $lis = $('> li', $list);
@@ -215,11 +215,11 @@
         });
 
         $('.dm_checkbox_search_filter > input, .clear > a', self.element).tipsy({gravity: $.fn.tipsy.autoSouth});
-        
+
       });
-      
+
       $('.see_selected', self.element).unbind('click').click(function(){
-    	  
+
     	  $('ul.checkbox_list > li', $(this).parent().parent().parent().children('.content')).each(function(){
     		  if(!$(this).hasClass('active')){
     			  $(this).fadeOut();
@@ -228,9 +228,9 @@
     		  }
     	  });
       });
-      
+
       $('.see_unselected', self.element).unbind('click').click(function(){
-    	  
+
     	  $('ul.checkbox_list > li', $(this).parent().parent().parent().children('.content')).each(function(){
     		  if($(this).hasClass('active')){
     			  $(this).fadeOut();
@@ -239,14 +239,14 @@
     		  }
     	  });
       });
-      
+
       $('.see_all', self.element).unbind('click').click(function(){
-    	  
+
     	  $('ul.checkbox_list > li', $(this).parent().parent().parent().children('.content')).each(function(){
     		  $(this).fadeIn();
     	  });
       });
-      
+
       $('.clear > a', self.element).unbind('click').click(function(){
     	  var self = $(this);
     	  var input = $(this).parent().parent().children('input');
@@ -260,7 +260,7 @@
 			  var requestedPage = 1;
 			  link += '/page/' + requestedPage;
 			  link += '/maxPerPage/' + self.parent().parent().parent().find('.dm_max_per_page').val();
-			  
+
 			  $.ajax({
 				  url: link,
 				  success: function(data){
@@ -276,12 +276,12 @@
     	   }
 			  return false;
       });
-      
-      
+
+
     },
 
 	pagination: function(){
-		
+
 		$('.dm_checkbox_tools > .dm_form_pagination a').unbind('click').click(function(e){
 			  var self = $(this);
 			  e.preventDefault();
@@ -305,7 +305,7 @@
 			  }
 			  link += '/page/' + requestedPage;
 			  link += '/maxPerPage/' + self.parent().parent().parent().find('.dm_max_per_page').val();
-			  
+
 			  var search = self.parent().parent().parent().find('.search-box').val();
 			  if(search.length > 0){
 				  link += '/search/' + search;
@@ -322,7 +322,7 @@
 			  });
 			  return false;
 		  });
-		  
+
 		  $('.dm_max_per_page', self.element).unbind('change').bind('change', function(e){
 			  var self = $(this);
 			  e.preventDefault();
@@ -349,7 +349,7 @@
 			  });
 		  });
 	},
-	
+
 	searchBox: function(){
 		$('.search-box', this.element).unbind('keypress').bind('keypress', function(e){
     		var self = $(this);
@@ -360,7 +360,9 @@
 	    		var metadata = $(this).parent().parent().children('.dm_form_pagination').metadata();
 	    		var link = metadata.link;
 	    		self.parent().parent().parent().block();
-	    		link += '/search/' + searching;
+	    		if (searching!='') {
+                            link += '/search/' + searching;
+                        }
 	    		link += '/page/1';
 	    		link += '/maxPerPage/' + $(this).parent().parent().find('.dm_max_per_page').val();
 	    		$('.tipsy-inner').remove();
@@ -376,7 +378,7 @@
 						  self.find('.search-box').focus();
 	    			}
 	    		});
-	    		return false;	    			
+	    		return false;
 			}
     		else{
     			return true;
@@ -396,9 +398,9 @@
                 $(this)[$(this).find('label').text().toLowerCase().indexOf(term.toLowerCase()) != -1 ? 'show' : 'hide']();
               });
          }).tipsy({gravity: $.fn.tipsy.autoSouth});
-    		
+
 	}
-    
+
   });
-  
+
 })(jQuery);
