@@ -46,6 +46,8 @@ class dmModuleActionRecordSecurityStrategy extends dmModuleSecurityStrategyAbstr
    * Check if user has credentials to run the module/action (optionnaly for record)
    * within its own records permissions or with its own groups
    *
+   * @todo tests, tests, tests
+   *
    * @param dmUser $user
    */
   public function userHasCredentials($actionName = null, $record = null)
@@ -55,7 +57,7 @@ class dmModuleActionRecordSecurityStrategy extends dmModuleSecurityStrategyAbstr
     {
       $record = $this->action->getObject();
     }
-    if($record && $record->state() !== 3 && $this->userHasCredentials('new')) return true;
+    if($record && $actionName != 'new' && $this->userHasCredentials('new') && $record && $record->state() != 3) return true;
     if($record && !$this->action->hasPager())
     {
       $args['record'] = $record->get($record->getTable()->getIdentifier());
