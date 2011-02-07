@@ -28,8 +28,8 @@
         $row.find('input, textarea, select').each(function()
         {
           var initialValue = $(this).val()+$(this).attr('checked');
-          var event = $(this).is('input, textarea') ? 'change keyup click' : 'change';
-          $(this).bind(event, function()
+          var e = $(this).is('input, textarea') ? 'change keyup click' : 'change';
+          $(this).bind(e, function()
           {
             $row.toggleClass('dm_row_modified', $(this).val()+$(this).attr('checked') != initialValue);
           });

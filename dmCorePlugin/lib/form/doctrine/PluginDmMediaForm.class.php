@@ -18,7 +18,7 @@ abstract class PluginDmMediaForm extends BaseDmMediaForm
 
 		$this->widgetSchema['file'] = new sfWidgetFormDmInputFile();
 		$this->validatorSchema['file'] = new sfValidatorFile(array(
-      'required' => $this->getObject()->isNew()
+      'required' => false //@todo this is weir bugfix as we don't check if a media has been defined using d&d from  media bar
 		));
 
 		$this->changeToHidden('dm_media_folder_id');
@@ -124,7 +124,7 @@ abstract class PluginDmMediaForm extends BaseDmMediaForm
 	public function isValidFilenameAndExtension($filename)
 	{
 		$filenameAndExt = explode('.', dmOs::sanitizeFileName($filename));
-		if(count($filenameAndExt) <= 2) return false;
+		if(count($filenameAndExt) < 2) return false;
 		return true;
 	}
 
