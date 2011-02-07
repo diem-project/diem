@@ -44,7 +44,7 @@ generator:
           - groups_list
       form:
         display:
-          Groups: [groups_list]
+          Groups: [id, groups_list]
           Users: [users_list]
           Others: [dm_secure_module, dm_secure_action, dm_secure_model]
         class: DmRecordPermissionAssociationAdminForm
