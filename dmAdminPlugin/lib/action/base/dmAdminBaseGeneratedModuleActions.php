@@ -651,16 +651,20 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 	 * This function can be overloaded to better fit your needs
 	 * (i.e. make only one query against db to fetch every needed bits
 	 * for your action & templates).
-	 *
+	 * 
+	 * @param unknown_type $pk the primary key for query
+   * @param unknown_type $relations the relations to leftJoin, aliases
+   * @param unknown_type $locals the local keys to join
+   * @param unknown_type $noBuilder if you want to let code call configuration method if exists
 	 * @return dmDoctrineQuery
 	 */
-	protected function buildObjectQuery($pk, $relations = array(), $locals = array())
+	public function buildObjectQuery($pk, $relations = array(), $locals = array(), $noBuilder = false)
 	{
 		//$fieldsets = $this->configuration->getFormFields($this->form, $this->actionName);
 		$method = 'buildObjectQueryFor' . dmString::camelize($this->actionName);
-		if(method_exists($this->configuration, $method))
+		if(!$noBuilder && method_exists($this->configuration, $method))
 		{
-			return $this->$method($pk, $relations, $locals);
+			return $this->configuration->$method($pk, $relations, $locals, $this);
 		}
 		else
 		{
