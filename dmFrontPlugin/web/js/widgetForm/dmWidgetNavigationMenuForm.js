@@ -26,8 +26,6 @@ $.fn.extend({
         target: ''
       }, item);
 
-      alert(item.target);
-
       var $li = $('<li class="item_element">')
       .html('\
 <a class="item_text s16 s16_layer" title="'+metadata.click_message+'">'+item.text+'</a> \
