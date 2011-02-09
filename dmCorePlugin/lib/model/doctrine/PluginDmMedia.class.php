@@ -169,7 +169,7 @@ abstract class PluginDmMedia extends BaseDmMedia
    */
   public function create(sfValidatedFile $file)
   {
-    $this->file = $this->getAvailableFileName(dmString::slugify(dmOs::sanitizeFileName($file->getOriginalName())));
+    $this->file = $this->getAvailableFileName(dmString::slugify(dmOs::getFileWithoutExtension($file->getOriginalName())).dmOs::getFileExtension($file->getOriginalName(), true));
 
     $this->clearCache();
 
