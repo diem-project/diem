@@ -44,16 +44,16 @@ abstract class BaseDmTestCategFormFilter extends BaseFormFilterDoctrine
 		}
 
 		if($this->needsWidget('domains_list')){
-			$this->setWidget('domains_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomain', 'expanded' => true)));
+			$this->setWidget('domains_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomain', 'expanded' => true)));
 			$this->setValidator('domains_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomain', 'required' => false)));
 		}
 
 		if($this->needsWidget('dm_test_domain_categ_list')){
-			$this->setWidget('dm_test_domain_categ_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomainCateg', 'expanded' => true)));
+			$this->setWidget('dm_test_domain_categ_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomainCateg', 'expanded' => true)));
 			$this->setValidator('dm_test_domain_categ_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomainCateg', 'required' => false)));
 		}
 		if($this->needsWidget('posts_list')){
-			$this->setWidget('posts_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPost', 'expanded' => true)));
+			$this->setWidget('posts_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPost', 'expanded' => true)));
 			$this->setValidator('posts_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPost', 'required' => false)));
 		}
 

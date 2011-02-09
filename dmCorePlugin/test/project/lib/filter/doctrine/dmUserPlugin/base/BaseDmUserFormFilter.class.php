@@ -82,64 +82,64 @@ abstract class BaseDmUserFormFilter extends BaseFormFilterDoctrine
 		}
 
 		if($this->needsWidget('groups_list')){
-			$this->setWidget('groups_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmGroup', 'expanded' => true)));
+			$this->setWidget('groups_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmGroup', 'expanded' => true)));
 			$this->setValidator('groups_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmGroup', 'required' => false)));
 		}
 		if($this->needsWidget('permissions_list')){
-			$this->setWidget('permissions_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmPermission', 'expanded' => true)));
+			$this->setWidget('permissions_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmPermission', 'expanded' => true)));
 			$this->setValidator('permissions_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmPermission', 'required' => false)));
 		}
 		if($this->needsWidget('records_list')){
-			$this->setWidget('records_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmRecordPermission', 'expanded' => true)));
+			$this->setWidget('records_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmRecordPermission', 'expanded' => true)));
 			$this->setValidator('records_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmRecordPermission', 'required' => false)));
 		}
 		if($this->needsWidget('records_permissions_associations_list')){
-			$this->setWidget('records_permissions_associations_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmRecordPermissionAssociation', 'expanded' => true)));
+			$this->setWidget('records_permissions_associations_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmRecordPermissionAssociation', 'expanded' => true)));
 			$this->setValidator('records_permissions_associations_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmRecordPermissionAssociation', 'required' => false)));
 		}
 
 		if($this->needsWidget('dm_lock_list')){
-			$this->setWidget('dm_lock_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmLock', 'expanded' => true)));
+			$this->setWidget('dm_lock_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmLock', 'expanded' => true)));
 			$this->setValidator('dm_lock_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmLock', 'required' => false)));
 		}
 		if($this->needsWidget('posts_list')){
-			$this->setWidget('posts_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPost', 'expanded' => true)));
+			$this->setWidget('posts_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPost', 'expanded' => true)));
 			$this->setValidator('posts_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPost', 'required' => false)));
 		}
 		if($this->needsWidget('dm_test_posts_list')){
-			$this->setWidget('dm_test_posts_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPost', 'expanded' => true)));
+			$this->setWidget('dm_test_posts_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPost', 'expanded' => true)));
 			$this->setValidator('dm_test_posts_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPost', 'required' => false)));
 		}
 		if($this->needsWidget('created_dm_test_domain_translations_list')){
-			$this->setWidget('created_dm_test_domain_translations_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomainTranslation', 'expanded' => true)));
+			$this->setWidget('created_dm_test_domain_translations_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomainTranslation', 'expanded' => true)));
 			$this->setValidator('created_dm_test_domain_translations_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomainTranslation', 'required' => false)));
 		}
 		if($this->needsWidget('updated_dm_test_domain_translations_list')){
-			$this->setWidget('updated_dm_test_domain_translations_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomainTranslation', 'expanded' => true)));
+			$this->setWidget('updated_dm_test_domain_translations_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomainTranslation', 'expanded' => true)));
 			$this->setValidator('updated_dm_test_domain_translations_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomainTranslation', 'required' => false)));
 		}
 		if($this->needsWidget('created_dm_test_fruits_list')){
-			$this->setWidget('created_dm_test_fruits_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmTestFruit', 'expanded' => true)));
+			$this->setWidget('created_dm_test_fruits_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmTestFruit', 'expanded' => true)));
 			$this->setValidator('created_dm_test_fruits_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestFruit', 'required' => false)));
 		}
 		if($this->needsWidget('updated_dm_test_fruits_list')){
-			$this->setWidget('updated_dm_test_fruits_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmTestFruit', 'expanded' => true)));
+			$this->setWidget('updated_dm_test_fruits_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmTestFruit', 'expanded' => true)));
 			$this->setValidator('updated_dm_test_fruits_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestFruit', 'required' => false)));
 		}
 		if($this->needsWidget('dm_user_group_list')){
-			$this->setWidget('dm_user_group_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmUserGroup', 'expanded' => true)));
+			$this->setWidget('dm_user_group_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmUserGroup', 'expanded' => true)));
 			$this->setValidator('dm_user_group_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmUserGroup', 'required' => false)));
 		}
 		if($this->needsWidget('dm_user_permission_list')){
-			$this->setWidget('dm_user_permission_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmUserPermission', 'expanded' => true)));
+			$this->setWidget('dm_user_permission_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmUserPermission', 'expanded' => true)));
 			$this->setValidator('dm_user_permission_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmUserPermission', 'required' => false)));
 		}
 		if($this->needsWidget('dm_record_permission_user_list')){
-			$this->setWidget('dm_record_permission_user_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmRecordPermissionUser', 'expanded' => true)));
+			$this->setWidget('dm_record_permission_user_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmRecordPermissionUser', 'expanded' => true)));
 			$this->setValidator('dm_record_permission_user_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmRecordPermissionUser', 'required' => false)));
 		}
 		if($this->needsWidget('dm_record_permission_association_user_list')){
-			$this->setWidget('dm_record_permission_association_user_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmRecordPermissionAssociationUser', 'expanded' => true)));
+			$this->setWidget('dm_record_permission_association_user_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmRecordPermissionAssociationUser', 'expanded' => true)));
 			$this->setValidator('dm_record_permission_association_user_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmRecordPermissionAssociationUser', 'required' => false)));
 		}
 

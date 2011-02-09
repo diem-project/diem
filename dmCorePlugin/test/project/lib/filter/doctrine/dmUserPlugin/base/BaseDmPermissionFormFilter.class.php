@@ -48,20 +48,20 @@ abstract class BaseDmPermissionFormFilter extends BaseFormFilterDoctrine
 		}
 
 		if($this->needsWidget('users_list')){
-			$this->setWidget('users_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmUser', 'expanded' => true)));
+			$this->setWidget('users_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmUser', 'expanded' => true)));
 			$this->setValidator('users_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmUser', 'required' => false)));
 		}
 		if($this->needsWidget('groups_list')){
-			$this->setWidget('groups_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmGroup', 'expanded' => true)));
+			$this->setWidget('groups_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmGroup', 'expanded' => true)));
 			$this->setValidator('groups_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmGroup', 'required' => false)));
 		}
 
 		if($this->needsWidget('dm_user_permission_list')){
-			$this->setWidget('dm_user_permission_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmUserPermission', 'expanded' => true)));
+			$this->setWidget('dm_user_permission_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmUserPermission', 'expanded' => true)));
 			$this->setValidator('dm_user_permission_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmUserPermission', 'required' => false)));
 		}
 		if($this->needsWidget('dm_group_permission_list')){
-			$this->setWidget('dm_group_permission_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmGroupPermission', 'expanded' => true)));
+			$this->setWidget('dm_group_permission_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmGroupPermission', 'expanded' => true)));
 			$this->setValidator('dm_group_permission_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmGroupPermission', 'required' => false)));
 		}
 

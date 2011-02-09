@@ -29,7 +29,7 @@ abstract class BaseDmPageViewFormFilter extends BaseFormFilterDoctrine
 
 
 		if($this->needsWidget('areas_list')){
-			$this->setWidget('areas_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmArea', 'expanded' => true)));
+			$this->setWidget('areas_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmArea', 'expanded' => true)));
 			$this->setValidator('areas_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmArea', 'required' => false)));
 		}
 

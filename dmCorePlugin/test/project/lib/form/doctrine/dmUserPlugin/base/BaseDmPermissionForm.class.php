@@ -122,12 +122,24 @@ abstract class BaseDmPermissionForm extends BaseFormDoctrine
       $this->setDefault('groups_list', $this->object->Groups->getPrimaryKeys());
     }
 
+    if (isset($this->widgetSchema['dm_user_permission_list']))
+    {
+      $this->setDefault('dm_user_permission_list', $this->object->DmUserPermission->getPrimaryKeys());
+    }
+
+    if (isset($this->widgetSchema['dm_group_permission_list']))
+    {
+      $this->setDefault('dm_group_permission_list', $this->object->DmGroupPermission->getPrimaryKeys());
+    }
+
   }
 
   protected function doSave($con = null)
   {
     $this->saveUsersList($con);
     $this->saveGroupsList($con);
+    $this->saveDmUserPermissionList($con);
+    $this->saveDmGroupPermissionList($con);
 
     parent::doSave($con);
   }
@@ -205,6 +217,82 @@ abstract class BaseDmPermissionForm extends BaseFormDoctrine
     if (count($link))
     {
       $this->object->link('Groups', array_values($link));
+    }
+  }
+
+  public function saveDmUserPermissionList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['dm_user_permission_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $existing = $this->object->DmUserPermission->getPrimaryKeys();
+    $values = $this->getValue('dm_user_permission_list');
+    if (!is_array($values))
+    {
+      $values = array();
+    }
+
+    $unlink = array_diff($existing, $values);
+    if (count($unlink))
+    {
+      $this->object->unlink('DmUserPermission', array_values($unlink));
+    }
+
+    $link = array_diff($values, $existing);
+    if (count($link))
+    {
+      $this->object->link('DmUserPermission', array_values($link));
+    }
+  }
+
+  public function saveDmGroupPermissionList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['dm_group_permission_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $existing = $this->object->DmGroupPermission->getPrimaryKeys();
+    $values = $this->getValue('dm_group_permission_list');
+    if (!is_array($values))
+    {
+      $values = array();
+    }
+
+    $unlink = array_diff($existing, $values);
+    if (count($unlink))
+    {
+      $this->object->unlink('DmGroupPermission', array_values($unlink));
+    }
+
+    $link = array_diff($values, $existing);
+    if (count($link))
+    {
+      $this->object->link('DmGroupPermission', array_values($link));
     }
   }
 

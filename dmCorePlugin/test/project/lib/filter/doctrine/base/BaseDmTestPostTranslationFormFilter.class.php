@@ -45,7 +45,7 @@ abstract class BaseDmTestPostTranslationFormFilter extends BaseFormFilterDoctrin
 
 
 		if($this->needsWidget('version_list')){
-			$this->setWidget('version_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPostTranslationVersion', 'expanded' => true)));
+			$this->setWidget('version_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPostTranslationVersion', 'expanded' => true)));
 			$this->setValidator('version_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPostTranslationVersion', 'required' => false)));
 		}
 

@@ -226,6 +226,61 @@ abstract class BaseDmUserForm extends BaseFormDoctrine
       $this->setDefault('records_permissions_associations_list', $this->object->RecordsPermissionsAssociations->getPrimaryKeys());
     }
 
+    if (isset($this->widgetSchema['dm_lock_list']))
+    {
+      $this->setDefault('dm_lock_list', $this->object->DmLock->getPrimaryKeys());
+    }
+
+    if (isset($this->widgetSchema['posts_list']))
+    {
+      $this->setDefault('posts_list', $this->object->Posts->getPrimaryKeys());
+    }
+
+    if (isset($this->widgetSchema['dm_test_posts_list']))
+    {
+      $this->setDefault('dm_test_posts_list', $this->object->DmTestPosts->getPrimaryKeys());
+    }
+
+    if (isset($this->widgetSchema['created_dm_test_domain_translations_list']))
+    {
+      $this->setDefault('created_dm_test_domain_translations_list', $this->object->CreatedDmTestDomainTranslations->getPrimaryKeys());
+    }
+
+    if (isset($this->widgetSchema['updated_dm_test_domain_translations_list']))
+    {
+      $this->setDefault('updated_dm_test_domain_translations_list', $this->object->UpdatedDmTestDomainTranslations->getPrimaryKeys());
+    }
+
+    if (isset($this->widgetSchema['created_dm_test_fruits_list']))
+    {
+      $this->setDefault('created_dm_test_fruits_list', $this->object->CreatedDmTestFruits->getPrimaryKeys());
+    }
+
+    if (isset($this->widgetSchema['updated_dm_test_fruits_list']))
+    {
+      $this->setDefault('updated_dm_test_fruits_list', $this->object->UpdatedDmTestFruits->getPrimaryKeys());
+    }
+
+    if (isset($this->widgetSchema['dm_user_group_list']))
+    {
+      $this->setDefault('dm_user_group_list', $this->object->DmUserGroup->getPrimaryKeys());
+    }
+
+    if (isset($this->widgetSchema['dm_user_permission_list']))
+    {
+      $this->setDefault('dm_user_permission_list', $this->object->DmUserPermission->getPrimaryKeys());
+    }
+
+    if (isset($this->widgetSchema['dm_record_permission_user_list']))
+    {
+      $this->setDefault('dm_record_permission_user_list', $this->object->DmRecordPermissionUser->getPrimaryKeys());
+    }
+
+    if (isset($this->widgetSchema['dm_record_permission_association_user_list']))
+    {
+      $this->setDefault('dm_record_permission_association_user_list', $this->object->DmRecordPermissionAssociationUser->getPrimaryKeys());
+    }
+
   }
 
   protected function doSave($con = null)
@@ -234,6 +289,17 @@ abstract class BaseDmUserForm extends BaseFormDoctrine
     $this->savePermissionsList($con);
     $this->saveRecordsList($con);
     $this->saveRecordsPermissionsAssociationsList($con);
+    $this->saveDmLockList($con);
+    $this->savePostsList($con);
+    $this->saveDmTestPostsList($con);
+    $this->saveCreatedDmTestDomainTranslationsList($con);
+    $this->saveUpdatedDmTestDomainTranslationsList($con);
+    $this->saveCreatedDmTestFruitsList($con);
+    $this->saveUpdatedDmTestFruitsList($con);
+    $this->saveDmUserGroupList($con);
+    $this->saveDmUserPermissionList($con);
+    $this->saveDmRecordPermissionUserList($con);
+    $this->saveDmRecordPermissionAssociationUserList($con);
 
     parent::doSave($con);
   }
@@ -387,6 +453,424 @@ abstract class BaseDmUserForm extends BaseFormDoctrine
     if (count($link))
     {
       $this->object->link('RecordsPermissionsAssociations', array_values($link));
+    }
+  }
+
+  public function saveDmLockList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['dm_lock_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $existing = $this->object->DmLock->getPrimaryKeys();
+    $values = $this->getValue('dm_lock_list');
+    if (!is_array($values))
+    {
+      $values = array();
+    }
+
+    $unlink = array_diff($existing, $values);
+    if (count($unlink))
+    {
+      $this->object->unlink('DmLock', array_values($unlink));
+    }
+
+    $link = array_diff($values, $existing);
+    if (count($link))
+    {
+      $this->object->link('DmLock', array_values($link));
+    }
+  }
+
+  public function savePostsList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['posts_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $existing = $this->object->Posts->getPrimaryKeys();
+    $values = $this->getValue('posts_list');
+    if (!is_array($values))
+    {
+      $values = array();
+    }
+
+    $unlink = array_diff($existing, $values);
+    if (count($unlink))
+    {
+      $this->object->unlink('Posts', array_values($unlink));
+    }
+
+    $link = array_diff($values, $existing);
+    if (count($link))
+    {
+      $this->object->link('Posts', array_values($link));
+    }
+  }
+
+  public function saveDmTestPostsList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['dm_test_posts_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $existing = $this->object->DmTestPosts->getPrimaryKeys();
+    $values = $this->getValue('dm_test_posts_list');
+    if (!is_array($values))
+    {
+      $values = array();
+    }
+
+    $unlink = array_diff($existing, $values);
+    if (count($unlink))
+    {
+      $this->object->unlink('DmTestPosts', array_values($unlink));
+    }
+
+    $link = array_diff($values, $existing);
+    if (count($link))
+    {
+      $this->object->link('DmTestPosts', array_values($link));
+    }
+  }
+
+  public function saveCreatedDmTestDomainTranslationsList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['created_dm_test_domain_translations_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $existing = $this->object->CreatedDmTestDomainTranslations->getPrimaryKeys();
+    $values = $this->getValue('created_dm_test_domain_translations_list');
+    if (!is_array($values))
+    {
+      $values = array();
+    }
+
+    $unlink = array_diff($existing, $values);
+    if (count($unlink))
+    {
+      $this->object->unlink('CreatedDmTestDomainTranslations', array_values($unlink));
+    }
+
+    $link = array_diff($values, $existing);
+    if (count($link))
+    {
+      $this->object->link('CreatedDmTestDomainTranslations', array_values($link));
+    }
+  }
+
+  public function saveUpdatedDmTestDomainTranslationsList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['updated_dm_test_domain_translations_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $existing = $this->object->UpdatedDmTestDomainTranslations->getPrimaryKeys();
+    $values = $this->getValue('updated_dm_test_domain_translations_list');
+    if (!is_array($values))
+    {
+      $values = array();
+    }
+
+    $unlink = array_diff($existing, $values);
+    if (count($unlink))
+    {
+      $this->object->unlink('UpdatedDmTestDomainTranslations', array_values($unlink));
+    }
+
+    $link = array_diff($values, $existing);
+    if (count($link))
+    {
+      $this->object->link('UpdatedDmTestDomainTranslations', array_values($link));
+    }
+  }
+
+  public function saveCreatedDmTestFruitsList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['created_dm_test_fruits_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $existing = $this->object->CreatedDmTestFruits->getPrimaryKeys();
+    $values = $this->getValue('created_dm_test_fruits_list');
+    if (!is_array($values))
+    {
+      $values = array();
+    }
+
+    $unlink = array_diff($existing, $values);
+    if (count($unlink))
+    {
+      $this->object->unlink('CreatedDmTestFruits', array_values($unlink));
+    }
+
+    $link = array_diff($values, $existing);
+    if (count($link))
+    {
+      $this->object->link('CreatedDmTestFruits', array_values($link));
+    }
+  }
+
+  public function saveUpdatedDmTestFruitsList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['updated_dm_test_fruits_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $existing = $this->object->UpdatedDmTestFruits->getPrimaryKeys();
+    $values = $this->getValue('updated_dm_test_fruits_list');
+    if (!is_array($values))
+    {
+      $values = array();
+    }
+
+    $unlink = array_diff($existing, $values);
+    if (count($unlink))
+    {
+      $this->object->unlink('UpdatedDmTestFruits', array_values($unlink));
+    }
+
+    $link = array_diff($values, $existing);
+    if (count($link))
+    {
+      $this->object->link('UpdatedDmTestFruits', array_values($link));
+    }
+  }
+
+  public function saveDmUserGroupList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['dm_user_group_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $existing = $this->object->DmUserGroup->getPrimaryKeys();
+    $values = $this->getValue('dm_user_group_list');
+    if (!is_array($values))
+    {
+      $values = array();
+    }
+
+    $unlink = array_diff($existing, $values);
+    if (count($unlink))
+    {
+      $this->object->unlink('DmUserGroup', array_values($unlink));
+    }
+
+    $link = array_diff($values, $existing);
+    if (count($link))
+    {
+      $this->object->link('DmUserGroup', array_values($link));
+    }
+  }
+
+  public function saveDmUserPermissionList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['dm_user_permission_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $existing = $this->object->DmUserPermission->getPrimaryKeys();
+    $values = $this->getValue('dm_user_permission_list');
+    if (!is_array($values))
+    {
+      $values = array();
+    }
+
+    $unlink = array_diff($existing, $values);
+    if (count($unlink))
+    {
+      $this->object->unlink('DmUserPermission', array_values($unlink));
+    }
+
+    $link = array_diff($values, $existing);
+    if (count($link))
+    {
+      $this->object->link('DmUserPermission', array_values($link));
+    }
+  }
+
+  public function saveDmRecordPermissionUserList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['dm_record_permission_user_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $existing = $this->object->DmRecordPermissionUser->getPrimaryKeys();
+    $values = $this->getValue('dm_record_permission_user_list');
+    if (!is_array($values))
+    {
+      $values = array();
+    }
+
+    $unlink = array_diff($existing, $values);
+    if (count($unlink))
+    {
+      $this->object->unlink('DmRecordPermissionUser', array_values($unlink));
+    }
+
+    $link = array_diff($values, $existing);
+    if (count($link))
+    {
+      $this->object->link('DmRecordPermissionUser', array_values($link));
+    }
+  }
+
+  public function saveDmRecordPermissionAssociationUserList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['dm_record_permission_association_user_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $existing = $this->object->DmRecordPermissionAssociationUser->getPrimaryKeys();
+    $values = $this->getValue('dm_record_permission_association_user_list');
+    if (!is_array($values))
+    {
+      $values = array();
+    }
+
+    $unlink = array_diff($existing, $values);
+    if (count($unlink))
+    {
+      $this->object->unlink('DmRecordPermissionAssociationUser', array_values($unlink));
+    }
+
+    $link = array_diff($values, $existing);
+    if (count($link))
+    {
+      $this->object->link('DmRecordPermissionAssociationUser', array_values($link));
     }
   }
 

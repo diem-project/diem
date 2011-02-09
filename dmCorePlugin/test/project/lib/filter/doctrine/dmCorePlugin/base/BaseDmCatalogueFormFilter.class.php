@@ -33,7 +33,7 @@ abstract class BaseDmCatalogueFormFilter extends BaseFormFilterDoctrine
 
 
 		if($this->needsWidget('units_list')){
-			$this->setWidget('units_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmTransUnit', 'expanded' => true)));
+			$this->setWidget('units_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmTransUnit', 'expanded' => true)));
 			$this->setValidator('units_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTransUnit', 'required' => false)));
 		}
 

@@ -116,8 +116,17 @@ abstract class BaseDmMedia extends myDoctrineRecord
              'local' => 'id',
              'foreign' => 'image_id'));
 
+        $i18n0 = new Doctrine_Template_I18n(array(
+             'fields' => 
+             array(
+              0 => 'legend',
+              1 => 'author',
+              2 => 'license',
+             ),
+             ));
         $timestampable0 = new Doctrine_Template_Timestampable(array(
              ));
+        $this->actAs($i18n0);
         $this->actAs($timestampable0);
     }
 }
