@@ -287,7 +287,6 @@
 			$widgetContent = $pagination.parent().parent(),  //widget content
 			$maxPerPageSelect = $pagination.find('.dm_max_per_page'),
 			$choiceSearchBox = $pagination.parent().find('.search-box');
-			console.log('binding pagination');
 			$('a', $pagination).unbind('click.dm.paginate').bind('click.dm.paginate', function(e){
 				  var self = $(this);
 				  e.preventDefault();
