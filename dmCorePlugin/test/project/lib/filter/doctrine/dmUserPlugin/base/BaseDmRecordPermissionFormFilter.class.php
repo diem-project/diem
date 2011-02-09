@@ -40,20 +40,20 @@ abstract class BaseDmRecordPermissionFormFilter extends BaseFormFilterDoctrine
 		}
 
 		if($this->needsWidget('users_list')){
-			$this->setWidget('users_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmUser', 'expanded' => true)));
+			$this->setWidget('users_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmUser', 'expanded' => true)));
 			$this->setValidator('users_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmUser', 'required' => false)));
 		}
 		if($this->needsWidget('groups_list')){
-			$this->setWidget('groups_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmGroup', 'expanded' => true)));
+			$this->setWidget('groups_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmGroup', 'expanded' => true)));
 			$this->setValidator('groups_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmGroup', 'required' => false)));
 		}
 
 		if($this->needsWidget('dm_record_permission_user_list')){
-			$this->setWidget('dm_record_permission_user_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmRecordPermissionUser', 'expanded' => true)));
+			$this->setWidget('dm_record_permission_user_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmRecordPermissionUser', 'expanded' => true)));
 			$this->setValidator('dm_record_permission_user_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmRecordPermissionUser', 'required' => false)));
 		}
 		if($this->needsWidget('dm_record_permission_group_list')){
-			$this->setWidget('dm_record_permission_group_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmRecordPermissionGroup', 'expanded' => true)));
+			$this->setWidget('dm_record_permission_group_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmRecordPermissionGroup', 'expanded' => true)));
 			$this->setValidator('dm_record_permission_group_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmRecordPermissionGroup', 'required' => false)));
 		}
 

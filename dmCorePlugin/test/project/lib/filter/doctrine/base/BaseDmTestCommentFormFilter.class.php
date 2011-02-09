@@ -57,7 +57,7 @@ abstract class BaseDmTestCommentFormFilter extends BaseFormFilterDoctrine
 
 
 		if($this->needsWidget('version_list')){
-			$this->setWidget('version_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmTestCommentVersion', 'expanded' => true)));
+			$this->setWidget('version_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmTestCommentVersion', 'expanded' => true)));
 			$this->setValidator('version_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestCommentVersion', 'required' => false)));
 		}
 

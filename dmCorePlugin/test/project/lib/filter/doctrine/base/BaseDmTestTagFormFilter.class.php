@@ -40,12 +40,12 @@ abstract class BaseDmTestTagFormFilter extends BaseFormFilterDoctrine
 		}
 
 		if($this->needsWidget('posts_list')){
-			$this->setWidget('posts_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPost', 'expanded' => true)));
+			$this->setWidget('posts_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPost', 'expanded' => true)));
 			$this->setValidator('posts_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPost', 'required' => false)));
 		}
 
 		if($this->needsWidget('dm_test_post_tag_list')){
-			$this->setWidget('dm_test_post_tag_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPostTag', 'expanded' => true)));
+			$this->setWidget('dm_test_post_tag_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPostTag', 'expanded' => true)));
 			$this->setValidator('dm_test_post_tag_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPostTag', 'required' => false)));
 		}
 

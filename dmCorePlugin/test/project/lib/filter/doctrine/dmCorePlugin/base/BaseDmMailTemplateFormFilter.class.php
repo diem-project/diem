@@ -49,7 +49,7 @@ abstract class BaseDmMailTemplateFormFilter extends BaseFormFilterDoctrine
 
 
 		if($this->needsWidget('sent_mails_list')){
-			$this->setWidget('sent_mails_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmSentMail', 'expanded' => true)));
+			$this->setWidget('sent_mails_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmSentMail', 'expanded' => true)));
 			$this->setValidator('sent_mails_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmSentMail', 'required' => false)));
 		}
 

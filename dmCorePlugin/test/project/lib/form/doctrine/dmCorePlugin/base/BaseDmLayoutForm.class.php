@@ -93,4 +93,104 @@ abstract class BaseDmLayoutForm extends BaseFormDoctrine
     return 'DmLayout';
   }
 
+  public function updateDefaultsFromObject()
+  {
+    parent::updateDefaultsFromObject();
+
+    if (isset($this->widgetSchema['page_views_list']))
+    {
+      $this->setDefault('page_views_list', $this->object->PageViews->getPrimaryKeys());
+    }
+
+    if (isset($this->widgetSchema['areas_list']))
+    {
+      $this->setDefault('areas_list', $this->object->Areas->getPrimaryKeys());
+    }
+
+  }
+
+  protected function doSave($con = null)
+  {
+    $this->savePageViewsList($con);
+    $this->saveAreasList($con);
+
+    parent::doSave($con);
+  }
+
+  public function savePageViewsList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['page_views_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $existing = $this->object->PageViews->getPrimaryKeys();
+    $values = $this->getValue('page_views_list');
+    if (!is_array($values))
+    {
+      $values = array();
+    }
+
+    $unlink = array_diff($existing, $values);
+    if (count($unlink))
+    {
+      $this->object->unlink('PageViews', array_values($unlink));
+    }
+
+    $link = array_diff($values, $existing);
+    if (count($link))
+    {
+      $this->object->link('PageViews', array_values($link));
+    }
+  }
+
+  public function saveAreasList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['areas_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $existing = $this->object->Areas->getPrimaryKeys();
+    $values = $this->getValue('areas_list');
+    if (!is_array($values))
+    {
+      $values = array();
+    }
+
+    $unlink = array_diff($existing, $values);
+    if (count($unlink))
+    {
+      $this->object->unlink('Areas', array_values($unlink));
+    }
+
+    $link = array_diff($values, $existing);
+    if (count($link))
+    {
+      $this->object->link('Areas', array_values($link));
+    }
+  }
+
 }

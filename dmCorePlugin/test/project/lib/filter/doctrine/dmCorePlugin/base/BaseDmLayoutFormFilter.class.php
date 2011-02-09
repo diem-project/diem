@@ -33,11 +33,11 @@ abstract class BaseDmLayoutFormFilter extends BaseFormFilterDoctrine
 
 
 		if($this->needsWidget('page_views_list')){
-			$this->setWidget('page_views_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmPageView', 'expanded' => true)));
+			$this->setWidget('page_views_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmPageView', 'expanded' => true)));
 			$this->setValidator('page_views_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmPageView', 'required' => false)));
 		}
 		if($this->needsWidget('areas_list')){
-			$this->setWidget('areas_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmArea', 'expanded' => true)));
+			$this->setWidget('areas_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmArea', 'expanded' => true)));
 			$this->setValidator('areas_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmArea', 'required' => false)));
 		}
 

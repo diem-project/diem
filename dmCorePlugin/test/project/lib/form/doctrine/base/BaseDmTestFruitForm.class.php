@@ -98,11 +98,17 @@ abstract class BaseDmTestFruitForm extends BaseFormDoctrine
       $this->setDefault('tags_list', $this->object->Tags->getPrimaryKeys());
     }
 
+    if (isset($this->widgetSchema['dm_test_fruit_dm_tag_list']))
+    {
+      $this->setDefault('dm_test_fruit_dm_tag_list', $this->object->DmTestFruitDmTag->getPrimaryKeys());
+    }
+
   }
 
   protected function doSave($con = null)
   {
     $this->saveTagsList($con);
+    $this->saveDmTestFruitDmTagList($con);
 
     parent::doSave($con);
   }
@@ -142,6 +148,44 @@ abstract class BaseDmTestFruitForm extends BaseFormDoctrine
     if (count($link))
     {
       $this->object->link('Tags', array_values($link));
+    }
+  }
+
+  public function saveDmTestFruitDmTagList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['dm_test_fruit_dm_tag_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $existing = $this->object->DmTestFruitDmTag->getPrimaryKeys();
+    $values = $this->getValue('dm_test_fruit_dm_tag_list');
+    if (!is_array($values))
+    {
+      $values = array();
+    }
+
+    $unlink = array_diff($existing, $values);
+    if (count($unlink))
+    {
+      $this->object->unlink('DmTestFruitDmTag', array_values($unlink));
+    }
+
+    $link = array_diff($values, $existing);
+    if (count($link))
+    {
+      $this->object->link('DmTestFruitDmTag', array_values($link));
     }
   }
 

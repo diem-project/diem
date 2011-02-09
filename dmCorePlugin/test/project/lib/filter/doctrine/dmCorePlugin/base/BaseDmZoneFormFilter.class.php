@@ -33,7 +33,7 @@ abstract class BaseDmZoneFormFilter extends BaseFormFilterDoctrine
 
 
 		if($this->needsWidget('widgets_list')){
-			$this->setWidget('widgets_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmWidget', 'expanded' => true)));
+			$this->setWidget('widgets_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmWidget', 'expanded' => true)));
 			$this->setValidator('widgets_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmWidget', 'required' => false)));
 		}
 

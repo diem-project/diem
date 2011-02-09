@@ -54,20 +54,20 @@ abstract class BaseDmTestPostFormFilter extends BaseFormFilterDoctrine
 		}
 
 		if($this->needsWidget('tags_list')){
-			$this->setWidget('tags_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmTestTag', 'expanded' => true)));
+			$this->setWidget('tags_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmTestTag', 'expanded' => true)));
 			$this->setValidator('tags_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestTag', 'required' => false)));
 		}
 
 		if($this->needsWidget('dm_test_post_tag_list')){
-			$this->setWidget('dm_test_post_tag_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPostTag', 'expanded' => true)));
+			$this->setWidget('dm_test_post_tag_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPostTag', 'expanded' => true)));
 			$this->setValidator('dm_test_post_tag_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPostTag', 'required' => false)));
 		}
 		if($this->needsWidget('comments_list')){
-			$this->setWidget('comments_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmTestComment', 'expanded' => true)));
+			$this->setWidget('comments_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmTestComment', 'expanded' => true)));
 			$this->setValidator('comments_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestComment', 'required' => false)));
 		}
 		if($this->needsWidget('dm_test_post_dm_media_list')){
-			$this->setWidget('dm_test_post_dm_media_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPostDmMedia', 'expanded' => true)));
+			$this->setWidget('dm_test_post_dm_media_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPostDmMedia', 'expanded' => true)));
 			$this->setValidator('dm_test_post_dm_media_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPostDmMedia', 'required' => false)));
 		}
 

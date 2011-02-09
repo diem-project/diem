@@ -123,12 +123,24 @@ abstract class BaseDmRecordPermissionForm extends BaseFormDoctrine
       $this->setDefault('groups_list', $this->object->Groups->getPrimaryKeys());
     }
 
+    if (isset($this->widgetSchema['dm_record_permission_user_list']))
+    {
+      $this->setDefault('dm_record_permission_user_list', $this->object->DmRecordPermissionUser->getPrimaryKeys());
+    }
+
+    if (isset($this->widgetSchema['dm_record_permission_group_list']))
+    {
+      $this->setDefault('dm_record_permission_group_list', $this->object->DmRecordPermissionGroup->getPrimaryKeys());
+    }
+
   }
 
   protected function doSave($con = null)
   {
     $this->saveUsersList($con);
     $this->saveGroupsList($con);
+    $this->saveDmRecordPermissionUserList($con);
+    $this->saveDmRecordPermissionGroupList($con);
 
     parent::doSave($con);
   }
@@ -206,6 +218,82 @@ abstract class BaseDmRecordPermissionForm extends BaseFormDoctrine
     if (count($link))
     {
       $this->object->link('Groups', array_values($link));
+    }
+  }
+
+  public function saveDmRecordPermissionUserList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['dm_record_permission_user_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $existing = $this->object->DmRecordPermissionUser->getPrimaryKeys();
+    $values = $this->getValue('dm_record_permission_user_list');
+    if (!is_array($values))
+    {
+      $values = array();
+    }
+
+    $unlink = array_diff($existing, $values);
+    if (count($unlink))
+    {
+      $this->object->unlink('DmRecordPermissionUser', array_values($unlink));
+    }
+
+    $link = array_diff($values, $existing);
+    if (count($link))
+    {
+      $this->object->link('DmRecordPermissionUser', array_values($link));
+    }
+  }
+
+  public function saveDmRecordPermissionGroupList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['dm_record_permission_group_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $existing = $this->object->DmRecordPermissionGroup->getPrimaryKeys();
+    $values = $this->getValue('dm_record_permission_group_list');
+    if (!is_array($values))
+    {
+      $values = array();
+    }
+
+    $unlink = array_diff($existing, $values);
+    if (count($unlink))
+    {
+      $this->object->unlink('DmRecordPermissionGroup', array_values($unlink));
+    }
+
+    $link = array_diff($values, $existing);
+    if (count($link))
+    {
+      $this->object->link('DmRecordPermissionGroup', array_values($link));
     }
   }
 
