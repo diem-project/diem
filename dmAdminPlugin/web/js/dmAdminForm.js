@@ -287,9 +287,8 @@
 			$widgetContent = $pagination.parent().parent(),  //widget content
 			$maxPerPageSelect = $pagination.find('.dm_max_per_page'),
 			$choiceSearchBox = $pagination.parent().find('.search-box');
-
-
-			$('a', $pagination).unbind('click').click(function(e){
+			console.log('binding pagination');
+			$('a', $pagination).unbind('click.dm.paginate').bind('click.dm.paginate', function(e){
 				  var self = $(this);
 				  e.preventDefault();
 				  $widgetContent.block();  //widget content
@@ -330,7 +329,7 @@
 				  return false;
 			  });
 
-			   $maxPerPageSelect.unbind('change').bind('change', function(e){
+			   $maxPerPageSelect.unbind('change.dm.max-per-page').bind('change.dm.max-per-page', function(e){
 				  var self = $maxPerPageSelect;
 				  e.preventDefault();
 				  $widgetContent.block();
@@ -359,8 +358,7 @@
 			var
 			$list = $pagination.parent().siblings('ul.checkbox_list'),
 			$checkboxes = $('> li > input', $list),
-			selection = $widgetContent.data('selection')
-			;
+			selection = $widgetContent.data('selection');
 			$checkboxes.unbind('change.dm.pagination.consistency').bind('change.dm.pagination.consistency', function()
 			{
 				var $checkbox = $(this),
@@ -423,8 +421,8 @@
 	},
 
 	searchBox: function(){
-		$('.search-box', this.element).unbind('keypress').bind('keypress', function(e){
-    		var self = $(this);
+		$('.search-box', this.element).unbind('keypress.dm.searchbox').bind('keypress.dm.searchbox', function(e){
+    		var self = $(this)
     		if(e.keyCode === 13)
 			{
     			var searchBox = $(this).parent().children('.search-box');
@@ -455,7 +453,7 @@
     		else{
     			return true;
     		}
-    	}).unbind('keyup').bind('keyup', function(e){
+    	}).unbind('keyup.dm-searchbox').bind('keyup.dm-searchbox', function(e){
     		  var $list = $(this).parent().parent().parent().children('ul.checkbox_list'), $lis = $('> li', $list);
               var term = $.trim($(this).val());
 
