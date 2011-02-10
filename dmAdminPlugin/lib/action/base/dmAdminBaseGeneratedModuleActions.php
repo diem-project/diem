@@ -22,11 +22,11 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 	/**
 	 * @return dmDoctrineRecord
 	 */
-	public function getObject($relations = array())
+	public function getObject($relations = array(), $pk = 'pk')
 	{
 		if(!isset($this->object))
 		{
-			$pk = $this->getContext()->getRequest()->getParameter('pk', false);
+			$pk = $this->getContext()->getRequest()->getParameter($pk, false);
 			if(!$pk)
 			{
 				$id = $this->getDmModule()->getTable()->getIdentifier();
