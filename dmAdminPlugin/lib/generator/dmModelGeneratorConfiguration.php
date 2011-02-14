@@ -339,6 +339,15 @@ abstract class dmModelGeneratorConfiguration extends sfModelGeneratorConfigurati
 		if(method_exists($this, $method))
 		{
 			return $this->$method();
+		}else
+		{
+			foreach(array(array('new', 'create'), array('edit', 'update')) as $fallback)
+			{
+				if($actionName === $fallback[1] && method_exists($this, 'getFormOptionsFor' . $fallback[0]))
+				{
+					return $this->{'getFormOptionsFor' . $fallback[0]}();
+				}
+			}
 		}
 		return $this->getDefaultFormOptions($actionName);
 	}
@@ -348,6 +357,13 @@ abstract class dmModelGeneratorConfiguration extends sfModelGeneratorConfigurati
 		$method = sprintf('get%sDisplay', ucfirst($action));
 		if(!method_exists($this, $method))
 		{
+			foreach(array(array('new', 'create'), array('edit', 'update')) as $fallback)
+			{
+				if($action === $fallback[1] && method_exists($this, 'getFormOptionsFor' . $fallback[0]))
+				{
+					return $this->{'getFormOptionsFor' . $fallback[0]}();
+				}
+			}
 			$method = 'getFormDisplay';
 		}
 		return array('widgets' => $this->getFieldsFromFieldsets($this->$method()));
@@ -358,7 +374,7 @@ abstract class dmModelGeneratorConfiguration extends sfModelGeneratorConfigurati
 		$fieldsets = $this->getEditDisplay();
 		return array('widgets' => $this->getFieldsFromFieldsets(empty($fieldsets) ? $this->getFormDisplay() : $fieldsets));
 	}
-	
+
 	protected function getFormOptionsForNew()
 	{
 		$fieldsets = $this->getNewDisplay();
@@ -367,7 +383,7 @@ abstract class dmModelGeneratorConfiguration extends sfModelGeneratorConfigurati
 
 	public function getFilterFormOptions()
 	{
-		$method = 'getFilterFormOptionsFor' . dmContext::getInstance()->getActionName();
+		$method = 'getFilterFormOptionsFor' . ucfirst(dmContext::getInstance()->getActionName());
 		if(method_exists($this, $method))
 		{
 			return $this->$method();
