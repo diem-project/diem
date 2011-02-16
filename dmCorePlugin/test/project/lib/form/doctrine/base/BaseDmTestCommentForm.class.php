@@ -104,4 +104,60 @@ abstract class BaseDmTestCommentForm extends BaseFormDoctrine
     return 'DmTestComment';
   }
 
+  public function updateDefaultsFromObject()
+  {
+    parent::updateDefaultsFromObject();
+
+    if (isset($this->widgetSchema['version_list']))
+    {
+      $this->setDefault('version_list', $this->object->Version->getPrimaryKeys());
+    }
+
+  }
+
+  protected function doSave($con = null)
+  {
+    $this->saveVersionList($con);
+
+    parent::doSave($con);
+  }
+
+  public function saveVersionList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['version_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $existing = $this->object->Version->getPrimaryKeys();
+    $values = $this->getValue('version_list');
+    if (!is_array($values))
+    {
+      $values = array();
+    }
+
+    $unlink = array_diff($existing, $values);
+    if (count($unlink))
+    {
+      $this->object->unlink('Version', array_values($unlink));
+    }
+
+    $link = array_diff($values, $existing);
+    if (count($link))
+    {
+      $this->object->link('Version', array_values($link));
+    }
+  }
+
 }

@@ -433,7 +433,18 @@ class dmString extends sfInflector
   {
     if (!empty($string))
     {
-      $string{0} = self::strtolower($string{0});
+      if(extension_loaded('mbstring'))
+      {
+        $strlen = 'mb_strlen';
+        $substr = 'mb_substr';
+      }
+      else
+      {
+        $strlen = 'strlen';
+        $substr = 'substr';
+      }
+      $first = $substr($string, 0, 1);
+      $string = self::strtolower($first).$substr($string, 1, $strlen($string)-1);
     }
     
     return $string;

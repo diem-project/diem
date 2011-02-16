@@ -112,11 +112,29 @@ abstract class BaseDmTestCategForm extends BaseFormDoctrine
       $this->setDefault('domains_list', $this->object->Domains->getPrimaryKeys());
     }
 
+    if (isset($this->widgetSchema['dm_test_domain_categ_list']))
+    {
+      $this->setDefault('dm_test_domain_categ_list', $this->object->DmTestDomainCateg->getPrimaryKeys());
+    }
+
+    if (isset($this->widgetSchema['posts_list']))
+    {
+      $this->setDefault('posts_list', $this->object->Posts->getPrimaryKeys());
+    }
+
+    if (isset($this->widgetSchema['translation_list']))
+    {
+      $this->setDefault('translation_list', $this->object->Translation->getPrimaryKeys());
+    }
+
   }
 
   protected function doSave($con = null)
   {
     $this->saveDomainsList($con);
+    $this->saveDmTestDomainCategList($con);
+    $this->savePostsList($con);
+    $this->saveTranslationList($con);
 
     parent::doSave($con);
   }
@@ -156,6 +174,120 @@ abstract class BaseDmTestCategForm extends BaseFormDoctrine
     if (count($link))
     {
       $this->object->link('Domains', array_values($link));
+    }
+  }
+
+  public function saveDmTestDomainCategList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['dm_test_domain_categ_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $existing = $this->object->DmTestDomainCateg->getPrimaryKeys();
+    $values = $this->getValue('dm_test_domain_categ_list');
+    if (!is_array($values))
+    {
+      $values = array();
+    }
+
+    $unlink = array_diff($existing, $values);
+    if (count($unlink))
+    {
+      $this->object->unlink('DmTestDomainCateg', array_values($unlink));
+    }
+
+    $link = array_diff($values, $existing);
+    if (count($link))
+    {
+      $this->object->link('DmTestDomainCateg', array_values($link));
+    }
+  }
+
+  public function savePostsList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['posts_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $existing = $this->object->Posts->getPrimaryKeys();
+    $values = $this->getValue('posts_list');
+    if (!is_array($values))
+    {
+      $values = array();
+    }
+
+    $unlink = array_diff($existing, $values);
+    if (count($unlink))
+    {
+      $this->object->unlink('Posts', array_values($unlink));
+    }
+
+    $link = array_diff($values, $existing);
+    if (count($link))
+    {
+      $this->object->link('Posts', array_values($link));
+    }
+  }
+
+  public function saveTranslationList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['translation_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $existing = $this->object->Translation->getPrimaryKeys();
+    $values = $this->getValue('translation_list');
+    if (!is_array($values))
+    {
+      $values = array();
+    }
+
+    $unlink = array_diff($existing, $values);
+    if (count($unlink))
+    {
+      $this->object->unlink('Translation', array_values($unlink));
+    }
+
+    $link = array_diff($values, $existing);
+    if (count($link))
+    {
+      $this->object->link('Translation', array_values($link));
     }
   }
 

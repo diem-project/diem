@@ -93,18 +93,20 @@ abstract class BaseDmTestPostForm extends BaseFormDoctrine
 
 
 
-
     /*
      * Embed Media form for image_id
      */
-    $this->embedForm('image_id_form', $this->createMediaFormForImageId());
-    unset($this['image_id']);
-
+    if($this->needsWidget('image_id')){
+      $this->embedForm('image_id_form', $this->createMediaFormForImageId());
+      unset($this['image_id']);
+    }
     /*
      * Embed Media form for file_id
      */
-    $this->embedForm('file_id_form', $this->createMediaFormForFileId());
-    unset($this['file_id']);
+    if($this->needsWidget('file_id')){
+      $this->embedForm('file_id_form', $this->createMediaFormForFileId());
+      unset($this['file_id']);
+    }
 
     if('embed' == sfConfig::get('dm_i18n_form'))
     {
@@ -188,12 +190,36 @@ abstract class BaseDmTestPostForm extends BaseFormDoctrine
       $this->setDefault('medias_list', $this->object->Medias->getPrimaryKeys());
     }
 
+    if (isset($this->widgetSchema['dm_test_post_tag_list']))
+    {
+      $this->setDefault('dm_test_post_tag_list', $this->object->DmTestPostTag->getPrimaryKeys());
+    }
+
+    if (isset($this->widgetSchema['comments_list']))
+    {
+      $this->setDefault('comments_list', $this->object->Comments->getPrimaryKeys());
+    }
+
+    if (isset($this->widgetSchema['translation_list']))
+    {
+      $this->setDefault('translation_list', $this->object->Translation->getPrimaryKeys());
+    }
+
+    if (isset($this->widgetSchema['dm_test_post_dm_media_list']))
+    {
+      $this->setDefault('dm_test_post_dm_media_list', $this->object->DmTestPostDmMedia->getPrimaryKeys());
+    }
+
   }
 
   protected function doSave($con = null)
   {
     $this->saveTagsList($con);
     $this->saveMediasList($con);
+    $this->saveDmTestPostTagList($con);
+    $this->saveCommentsList($con);
+    $this->saveTranslationList($con);
+    $this->saveDmTestPostDmMediaList($con);
 
     parent::doSave($con);
   }
@@ -271,6 +297,158 @@ abstract class BaseDmTestPostForm extends BaseFormDoctrine
     if (count($link))
     {
       $this->object->link('Medias', array_values($link));
+    }
+  }
+
+  public function saveDmTestPostTagList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['dm_test_post_tag_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $existing = $this->object->DmTestPostTag->getPrimaryKeys();
+    $values = $this->getValue('dm_test_post_tag_list');
+    if (!is_array($values))
+    {
+      $values = array();
+    }
+
+    $unlink = array_diff($existing, $values);
+    if (count($unlink))
+    {
+      $this->object->unlink('DmTestPostTag', array_values($unlink));
+    }
+
+    $link = array_diff($values, $existing);
+    if (count($link))
+    {
+      $this->object->link('DmTestPostTag', array_values($link));
+    }
+  }
+
+  public function saveCommentsList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['comments_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $existing = $this->object->Comments->getPrimaryKeys();
+    $values = $this->getValue('comments_list');
+    if (!is_array($values))
+    {
+      $values = array();
+    }
+
+    $unlink = array_diff($existing, $values);
+    if (count($unlink))
+    {
+      $this->object->unlink('Comments', array_values($unlink));
+    }
+
+    $link = array_diff($values, $existing);
+    if (count($link))
+    {
+      $this->object->link('Comments', array_values($link));
+    }
+  }
+
+  public function saveTranslationList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['translation_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $existing = $this->object->Translation->getPrimaryKeys();
+    $values = $this->getValue('translation_list');
+    if (!is_array($values))
+    {
+      $values = array();
+    }
+
+    $unlink = array_diff($existing, $values);
+    if (count($unlink))
+    {
+      $this->object->unlink('Translation', array_values($unlink));
+    }
+
+    $link = array_diff($values, $existing);
+    if (count($link))
+    {
+      $this->object->link('Translation', array_values($link));
+    }
+  }
+
+  public function saveDmTestPostDmMediaList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['dm_test_post_dm_media_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $existing = $this->object->DmTestPostDmMedia->getPrimaryKeys();
+    $values = $this->getValue('dm_test_post_dm_media_list');
+    if (!is_array($values))
+    {
+      $values = array();
+    }
+
+    $unlink = array_diff($existing, $values);
+    if (count($unlink))
+    {
+      $this->object->unlink('DmTestPostDmMedia', array_values($unlink));
+    }
+
+    $link = array_diff($values, $existing);
+    if (count($link))
+    {
+      $this->object->link('DmTestPostDmMedia', array_values($link));
     }
   }
 

@@ -44,20 +44,20 @@ abstract class BaseDmTestDomainFormFilter extends BaseFormFilterDoctrine
 		}
 
 		if($this->needsWidget('categs_list')){
-			$this->setWidget('categs_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmTestCateg', 'expanded' => true)));
+			$this->setWidget('categs_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmTestCateg', 'expanded' => true)));
 			$this->setValidator('categs_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestCateg', 'required' => false)));
 		}
 		if($this->needsWidget('tags_list')){
-			$this->setWidget('tags_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmTag', 'expanded' => true)));
+			$this->setWidget('tags_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmTag', 'expanded' => true)));
 			$this->setValidator('tags_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTag', 'required' => false)));
 		}
 
 		if($this->needsWidget('dm_test_domain_categ_list')){
-			$this->setWidget('dm_test_domain_categ_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomainCateg', 'expanded' => true)));
+			$this->setWidget('dm_test_domain_categ_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomainCateg', 'expanded' => true)));
 			$this->setValidator('dm_test_domain_categ_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomainCateg', 'required' => false)));
 		}
 		if($this->needsWidget('dm_test_domain_dm_tag_list')){
-			$this->setWidget('dm_test_domain_dm_tag_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomainDmTag', 'expanded' => true)));
+			$this->setWidget('dm_test_domain_dm_tag_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomainDmTag', 'expanded' => true)));
 			$this->setValidator('dm_test_domain_dm_tag_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomainDmTag', 'required' => false)));
 		}
 

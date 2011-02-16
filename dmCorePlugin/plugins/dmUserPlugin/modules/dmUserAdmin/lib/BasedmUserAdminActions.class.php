@@ -99,7 +99,7 @@ class BasedmUserAdminActions extends autodmUserAdminActions
 
     $signoutUrl = sfConfig::get('dm_security_success_signout_url', $request->getReferer());
 
-    $this->redirect('' != $signoutUrl ? $signoutUrl : '@homepage');
+    $this->redirect('' != $signoutUrl && $signoutUrl !== $request->getReferer() ? $signoutUrl : '@homepage');
   }
 
   public function executeSecure()

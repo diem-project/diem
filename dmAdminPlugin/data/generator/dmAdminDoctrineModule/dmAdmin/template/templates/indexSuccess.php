@@ -12,7 +12,7 @@
 <div id="sf_admin_container" class='{baseUrl: "[?php echo url_for1('<?php echo $this->getUrlForAction('list') ?>') ?]"}'>
 
   <div id="sf_admin_header">
-    [?php include_partial('<?php echo $this->getModuleName() ?>/list_header', array('pager' => $pager)) ?]
+    [?php include_partial('<?php echo $this->getModuleName() ?>/list_header', array('pager' => $pager, 'helper' => $helper)) ?]
   </div>
 
   [?php $dmListActionBar = get_partial('<?php echo $this->getModuleName() ?>/list_action_bar', array('pager' => $pager, 'helper' => $helper, 'class' => 'dm_pagination_top', 'configuration' => $configuration)); ?]
@@ -59,6 +59,6 @@
   </div>
 
   <div id="sf_admin_footer">
-    [?php include_partial('<?php echo $this->getModuleName() ?>/list_footer', array('pager' => $pager)) ?]
+    [?php include_partial('<?php echo $this->getModuleName() ?>/list_footer', array('pager' => $pager, 'helper' => $helper)) ?]
   </div>
 </div>

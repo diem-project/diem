@@ -43,7 +43,7 @@ generator:
           - groups_list
       form: 
         display:
-          "Module & Action": [secure_module, secure_action]
+          "Module & Action": [id, secure_module, secure_action]
           "Model & Instance": [secure_model, secure_record]
           "Description": [description]
           "Users & Groups": [users_list, groups_list]

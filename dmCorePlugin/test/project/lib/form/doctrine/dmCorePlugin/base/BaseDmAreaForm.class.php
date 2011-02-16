@@ -84,4 +84,60 @@ abstract class BaseDmAreaForm extends BaseFormDoctrine
     return 'DmArea';
   }
 
+  public function updateDefaultsFromObject()
+  {
+    parent::updateDefaultsFromObject();
+
+    if (isset($this->widgetSchema['zones_list']))
+    {
+      $this->setDefault('zones_list', $this->object->Zones->getPrimaryKeys());
+    }
+
+  }
+
+  protected function doSave($con = null)
+  {
+    $this->saveZonesList($con);
+
+    parent::doSave($con);
+  }
+
+  public function saveZonesList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['zones_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $existing = $this->object->Zones->getPrimaryKeys();
+    $values = $this->getValue('zones_list');
+    if (!is_array($values))
+    {
+      $values = array();
+    }
+
+    $unlink = array_diff($existing, $values);
+    if (count($unlink))
+    {
+      $this->object->unlink('Zones', array_values($unlink));
+    }
+
+    $link = array_diff($values, $existing);
+    if (count($link))
+    {
+      $this->object->link('Zones', array_values($link));
+    }
+  }
+
 }

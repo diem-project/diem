@@ -335,17 +335,38 @@ abstract class dmModelGeneratorConfiguration extends sfModelGeneratorConfigurati
 
 	public function getFormOptions()
 	{
-		$method = 'getFormOptionsFor' . dmString::camelize(dmContext::getInstance()->getActionName());
+		$method = 'getFormOptionsFor' . dmString::camelize($actionName = dmContext::getInstance()->getActionName());
 		if(method_exists($this, $method))
 		{
 			return $this->$method();
+		}else
+		{
+			foreach(array(array('new', 'create'), array('edit', 'update')) as $fallback)
+			{
+				if($actionName === $fallback[1] && method_exists($this, 'getFormOptionsFor' . $fallback[0]))
+				{
+					return $this->{'getFormOptionsFor' . $fallback[0]}();
+				}
+			}
 		}
-		return $this->getDefaultFormOptions();
+		return $this->getDefaultFormOptions($actionName);
 	}
 
-	protected function getDefaultFormOptions()
+	protected function getDefaultFormOptions($action = 'form')
 	{
-		return array('widgets' => $this->getFieldsFromFieldsets($this->getFormDisplay()));
+		$method = sprintf('get%sDisplay', ucfirst($action));
+		if(!method_exists($this, $method))
+		{
+			foreach(array(array('new', 'create'), array('edit', 'update')) as $fallback)
+			{
+				if($action === $fallback[1] && method_exists($this, 'getFormOptionsFor' . $fallback[0]))
+				{
+					return $this->{'getFormOptionsFor' . $fallback[0]}();
+				}
+			}
+			$method = 'getFormDisplay';
+		}
+		return array('widgets' => $this->getFieldsFromFieldsets($this->$method()));
 	}
 
 	protected function getFormOptionsForEdit()
@@ -354,9 +375,15 @@ abstract class dmModelGeneratorConfiguration extends sfModelGeneratorConfigurati
 		return array('widgets' => $this->getFieldsFromFieldsets(empty($fieldsets) ? $this->getFormDisplay() : $fieldsets));
 	}
 
+	protected function getFormOptionsForNew()
+	{
+		$fieldsets = $this->getNewDisplay();
+		return array('widgets' => $this->getFieldsFromFieldsets(empty($fieldsets) ? $this->getFormDisplay() : $fieldsets));
+	}
+
 	public function getFilterFormOptions()
 	{
-		$method = 'getFilterFormOptionsFor' . dmContext::getInstance()->getActionName();
+		$method = 'getFilterFormOptionsFor' . ucfirst(dmContext::getInstance()->getActionName());
 		if(method_exists($this, $method))
 		{
 			return $this->$method();

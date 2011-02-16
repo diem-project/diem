@@ -33,7 +33,7 @@ class dmPageSynchronizer
 
   protected function removeShowPages(array $onlyModules)
   {
-    $modulesToCheck = dmDb::pdo('SELECT DISTINCT p.module FROM dm_page p WHERE p.action = ?', array('show'))->fetchAll(PDO::FETCH_COLUMN);
+    $modulesToCheck = dmDb::pdo('SELECT DISTINCT p.module FROM dm_page p WHERE p.action = ?', array('show'), dmDb::table('DmPage')->getConnection())->fetchAll(PDO::FETCH_COLUMN);
 
     foreach($onlyModules as $moduleKey => $module)
     {
@@ -54,7 +54,7 @@ class dmPageSynchronizer
       return;
     }
 
-    $showPages = dmDb::pdo('SELECT p.id, p.module, p.record_id FROM dm_page p WHERE p.module = ? AND p.action = ?', array($moduleKey, 'show'))->fetchAll(PDO::FETCH_ASSOC);
+    $showPages = dmDb::pdo('SELECT p.id, p.module, p.record_id FROM dm_page p WHERE p.module = ? AND p.action = ?', array($moduleKey, 'show'), dmDb::table('DmPage')->getConnection())->fetchAll(PDO::FETCH_ASSOC);
 
     $showPageRecordIds = array();
     foreach($showPages as $showPage)
@@ -71,7 +71,7 @@ class dmPageSynchronizer
           implode(',', $showPageRecordIds)
         );
 
-        $records = array_flip(dmDb::pdo($query)->fetchAll(PDO::FETCH_COLUMN));
+        $records = array_flip(dmDb::pdo($query, array(), $module->getTable()->getConnection())->fetchAll(PDO::FETCH_COLUMN));
       }
       else
       {
@@ -96,7 +96,7 @@ class dmPageSynchronizer
           $module->getTable()->getTableName(),
           implode(',', $showPageRecordIds)
         );
-        $_records = dmDb::pdo($query)->fetchAll(PDO::FETCH_ASSOC);
+        $_records = dmDb::pdo($query, array(), $module->getTable()->getConnection())->fetchAll(PDO::FETCH_ASSOC);
         $records = array();
         foreach($_records as $_record)
         {
@@ -169,7 +169,7 @@ class dmPageSynchronizer
     }
     $projectModuleKeys = array_keys($projectModules);
 
-    $_listPages = dmDb::pdo('SELECT p.id, p.module FROM dm_page p WHERE p.action = ?', array('list'))->fetchAll(PDO::FETCH_ASSOC);
+    $_listPages = dmDb::pdo('SELECT p.id, p.module FROM dm_page p WHERE p.action = ?', array('list'), dmDb::table('DmPage')->getConnection())->fetchAll(PDO::FETCH_ASSOC);
 
     $listPages = array();
     foreach($_listPages as $_listPage)
@@ -236,7 +236,7 @@ class dmPageSynchronizer
      */
     $_showPages = dmDb::pdo('SELECT p.id, p.module, p.record_id, p.lft, p.rgt FROM dm_page p WHERE p.module = ? AND p.action = ?', array(
       $moduleKey, 'show'
-    ))->fetchAll(PDO::FETCH_ASSOC);
+    ), dmDb::table('DmPage')->getConnection())->fetchAll(PDO::FETCH_ASSOC);
     $showPages = array();
     foreach($_showPages as $_showPage)
     {
@@ -258,13 +258,13 @@ class dmPageSynchronizer
       }
       else
       {
-        $records = dmDb::pdo('SELECT r.id FROM '.$module->getTable()->getTableName().' r')->fetchAll(PDO::FETCH_ASSOC);
+        $records = dmDb::pdo('SELECT r.id FROM '.$module->getTable()->getTableName().' r', array(), $module->getTable()->getConnection())->fetchAll(PDO::FETCH_ASSOC);
       }
 
       /*
        * prepare parent pages
        */
-      $parentPageIds = dmDb::pdo('SELECT p.id FROM dm_page p WHERE p.module = ? AND p.action = ?', array($moduleKey, 'list'))->fetch(PDO::FETCH_NUM);
+      $parentPageIds = dmDb::pdo('SELECT p.id FROM dm_page p WHERE p.module = ? AND p.action = ?', array($moduleKey, 'list'), dmDb::table('DmPage')->getConnection())->fetch(PDO::FETCH_NUM);
       $parentPageIds = $parentPageIds[0];
 
       if (!$parentPageIds)
@@ -300,13 +300,13 @@ class dmPageSynchronizer
       }
       else
       {
-        $records = dmDb::pdo('SELECT '.$select.' FROM '.$module->getTable()->getTableName().' r')->fetchAll(PDO::FETCH_ASSOC);
+        $records = dmDb::pdo('SELECT '.$select.' FROM '.$module->getTable()->getTableName().' r', array(), $module->getTable()->getConnection())->fetchAll(PDO::FETCH_ASSOC);
       }
 
       /*
        * prepare parent pages
        */
-      $_parentPageIds = dmDb::pdo('SELECT p.id, p.record_id FROM dm_page p WHERE p.module = ? AND p.action = ?', array($parentModule->getKey(), 'show'))->fetchAll(PDO::FETCH_NUM);
+      $_parentPageIds = dmDb::pdo('SELECT p.id, p.record_id FROM dm_page p WHERE p.module = ? AND p.action = ?', array($parentModule->getKey(), 'show'), dmDb::table('DmPage')->getConnection())->fetchAll(PDO::FETCH_NUM);
 
       $parentPageIds = array();
       foreach($_parentPageIds as $value) $parentPageIds[$value[1]] = $value[0];
@@ -456,7 +456,7 @@ LIMIT 1')->getStatement();
         $module->getTable()->getTableName(),
         $local
       );
-      $_parentRecordIds = dmDb::pdo($query, array($parentModule->getKey(), 'show'))->fetchAll(PDO::FETCH_NUM);
+      $_parentRecordIds = dmDb::pdo($query, array($parentModule->getKey(), 'show'), $module->getTable()->getConnection())->fetchAll(PDO::FETCH_NUM);
 
       $parentRecordIds = array();
       foreach($_parentRecordIds as $_parentRecordId)
@@ -483,7 +483,7 @@ LIMIT 1')->getStatement();
         $association->getLocal()
       );
 
-      $_parentRecordIds = dmDb::pdo($query, array($parentModule->getKey(), 'show'))->fetchAll(PDO::FETCH_NUM);
+      $_parentRecordIds = dmDb::pdo($query, array($parentModule->getKey(), 'show'), $module->getTable()->getConnection())->fetchAll(PDO::FETCH_NUM);
 
       $parentRecordIds = array();
       foreach($_parentRecordIds as $value)

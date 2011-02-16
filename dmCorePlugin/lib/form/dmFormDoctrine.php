@@ -127,7 +127,7 @@ abstract class dmFormDoctrine extends sfFormDoctrine
 			$options
 			));
 			
-			if(!$this->isNew() && !$this->getObject()->getNode()->isRoot())
+			if(!$this->isNew() && $this->getObject()->getNode() && !$this->getObject()->getNode()->isRoot())
 			{
 			  $this->setDefault($fieldName, $this->getObject()->getNode()->getParent()->get('id'));
 			}

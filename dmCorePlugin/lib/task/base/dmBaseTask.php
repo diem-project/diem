@@ -7,7 +7,8 @@ abstract class dmBaseTask extends sfBaseTask
   {
     $this->addOptions(array(
       new sfCommandOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'The application name', 'admin'),
-      new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev')
+      new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
+      new sfCommandOption('timer', null, sfCommandOption::PARAMETER_NONE, 'Display elapsed time')
     ));
   }
 

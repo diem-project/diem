@@ -1,6 +1,6 @@
 <?php
 
-class dmDoctrineTruncateTablesTaskTask extends dmContextTask
+class dmDoctrineTruncateTablesTask extends dmContextTask
 {
 	protected function configure()
 	{
@@ -19,17 +19,16 @@ EOF;
 	protected function execute($arguments = array(), $options = array())
 	{
 		$this->logSection('doctrine', 'truncating tables');
-		$con = $this->withDatabase();
-		$dbh = Doctrine_Manager::getInstance()->getCurrentConnection()->getDbh();
-
-		$tables = $dbh->query('SHOW TABLES');
-		$dbh->query('SET foreign_key_checks = 0');
-
-		foreach($tables as $table)
-		{
-			$dbh->query('TRUNCATE ' . $table[0]);
-		}
-		$dbh->query('SET foreign_key_checks = 1');
-
+		
+		
+		$options['timer'] && $timer = $this->timerStart('truncate-tables');
+		
+		/**
+		 * @var dmDbHelper
+		 */
+		$this->helper = new dmDbHelper(Doctrine_Manager::getInstance()->getCurrentConnection(), $this->dispatcher, $this->formatter);
+		$this->helper->truncateTables(true);
+		
+		$options['timer'] && $this->logSection('time', sprintf('%s s', $timer->getElapsedTime()));
 	}
 }

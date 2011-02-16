@@ -222,10 +222,12 @@
     			  $.ajax({
     				  url: link,
     				  success: function(data){
+    					  $.dm.ctrl.$.trigger('dm.list.paginating');
     					  $('#dm_admin_content').children('#sf_admin_container').remove();
     					  $('.tipsy').remove();
     					  $('#dm_admin_content').append(data);
     					  $.dm.ctrl.init();
+    					  $.dm.ctrl.$.trigger('dm.list.paginated');
     					  $('#dm_admin_content').unblock();
     				  }
     			  });

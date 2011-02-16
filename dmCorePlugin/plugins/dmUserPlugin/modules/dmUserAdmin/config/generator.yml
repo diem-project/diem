@@ -45,7 +45,7 @@ generator:
         loremize: false
       form:
         display:
-          NONE: [username, email, password, password_again, is_active, is_super_admin]
+          NONE: [id, username, email, password, password_again, is_active, is_super_admin]
           "Groups & Permissions": [groups_list, permissions_list]
           "Records Permissions": [records_list]
         class: DmUserAdminForm

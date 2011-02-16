@@ -89,4 +89,60 @@ abstract class BaseDmZoneForm extends BaseFormDoctrine
     return 'DmZone';
   }
 
+  public function updateDefaultsFromObject()
+  {
+    parent::updateDefaultsFromObject();
+
+    if (isset($this->widgetSchema['widgets_list']))
+    {
+      $this->setDefault('widgets_list', $this->object->Widgets->getPrimaryKeys());
+    }
+
+  }
+
+  protected function doSave($con = null)
+  {
+    $this->saveWidgetsList($con);
+
+    parent::doSave($con);
+  }
+
+  public function saveWidgetsList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['widgets_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $existing = $this->object->Widgets->getPrimaryKeys();
+    $values = $this->getValue('widgets_list');
+    if (!is_array($values))
+    {
+      $values = array();
+    }
+
+    $unlink = array_diff($existing, $values);
+    if (count($unlink))
+    {
+      $this->object->unlink('Widgets', array_values($unlink));
+    }
+
+    $link = array_diff($values, $existing);
+    if (count($link))
+    {
+      $this->object->link('Widgets', array_values($link));
+    }
+  }
+
 }

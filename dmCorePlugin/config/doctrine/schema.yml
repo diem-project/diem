@@ -120,6 +120,8 @@ DmMedia:
     symfony:
       filter: false
   actAs:
+    I18n:
+      fields:         [ legend, author, license ]
     Timestampable:          {}
   columns:
     dm_media_folder_id:     { type: integer, notnull: true }

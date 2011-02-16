@@ -12,6 +12,8 @@ System:
               is_secure: false
             signin:
               is_secure: false 
+            signout:
+              is_secure: false
               
       components:
         signin:

@@ -2,7 +2,6 @@
 
 class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 {
-
 	protected function getRouteArrayForAction($action, $object = null)
 	{
 		$route = array('sf_route' => $this->getDmModule()->getUnderscore(), 'action' => $action);
@@ -23,19 +22,26 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 	/**
 	 * @return dmDoctrineRecord
 	 */
-	public function getObject($relations = array())
+	public function getObject($relations = array(), $pk = 'pk')
 	{
 		if(!isset($this->object))
 		{
-			$pk = $this->getContext()->getRequest()->getParameter('pk', false);
-			if(!$pk)
+			$_pk = $this->getRequest()->getParameter($pk, false);
+			if(!$_pk) {
+				$_pk = $this->getRequest()->getGetParameter($pk, false);
+				if(!$_pk) {
+					$_pk = $this->getRequest()->getPostParameter($pk, false); 
+				}
+			}
+			
+			if(!$_pk)
 			{
 				$id = $this->getDmModule()->getTable()->getIdentifier();
-				$pk = $this->getContext()->getRequest()->getParameter($id, false);
+				$_pk = $this->getRequest()->getParameter($id, false);
 			}
 
-			if($pk){
-				$this->object = $this->buildObjectQuery($pk)->fetchOne();
+			if($_pk){
+				$this->object = $this->buildObjectQuery($_pk, $this->getRelationsAlias())->fetchOne();
 			}else{
 				$this->object = false;
 			}
@@ -652,16 +658,20 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 	 * This function can be overloaded to better fit your needs
 	 * (i.e. make only one query against db to fetch every needed bits
 	 * for your action & templates).
-	 *
+	 * 
+	 * @param unknown_type $pk the primary key for query
+   * @param unknown_type $relations the relations to leftJoin, aliases
+   * @param unknown_type $locals the local keys to join
+   * @param unknown_type $noBuilder if you want to let code call configuration method if exists
 	 * @return dmDoctrineQuery
 	 */
-	protected function buildObjectQuery($pk, $relations = array(), $locals = array())
+	public function buildObjectQuery($pk, $relations = array(), $locals = array(), $noBuilder = false)
 	{
 		//$fieldsets = $this->configuration->getFormFields($this->form, $this->actionName);
 		$method = 'buildObjectQueryFor' . dmString::camelize($this->actionName);
-		if(method_exists($this->configuration, $method))
+		if(!$noBuilder && method_exists($this->configuration, $method))
 		{
-			return $this->$method($pk, $relations, $locals);
+			return $this->configuration->$method($pk, $relations, $locals, $this);
 		}
 		else
 		{
@@ -670,8 +680,8 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 			if(is_array($id)) { $id = $id[0]; }
 			$query = $table->createQuery('o')->where('o.' . $id . ' = ?', $pk);
 			
-			$table->joinLocals($query, true);
-			$table->joinRelations($query, $this->getRelationsAlias(), true);
+			$table->joinLocals($query, true, $locals);
+			$table->joinRelations($query, $relations, true);
 			return $query;
 		}
 	}
@@ -715,12 +725,22 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 		$relations = array();
 		foreach($fields as $field)
 		{
-			if(substr($field, strlen($field)-5, strlen($field)) === '_list')
+			$relationName = false;
+			if(substr($field, strlen($field)-5, strlen($field)) === '_list'){
+				$relationName = substr($field, 0, strlen($field)-5);
+			}elseif(substr($field, 0, 1) === '_'){
+				$relationName = substr($field, 1, strlen($field) -1);
+			}
+			if($relationName)
 			{
-				$field = dmString::camelize(substr($field, 0, strlen($field)-5));
+				$field = dmString::camelize($relationName);
 				if( $this->getDmModule()->getTable()->hasRelation($field))
 				{
-					$relations[] = $field;
+					//don't add Doctrine_Relation_LocalKey !
+					if(!$this->getDmModule()->getTable()->getRelation($field) instanceof Doctrine_Relation_LocalKey)
+					{
+						$relations[] = $field;
+					}
 				}
 			}
 		}
@@ -734,7 +754,7 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 	 */
 	public function executePaginateRelation(dmWebRequest $request)
 	{
-		$field = lcfirst($request->getParameter('field'));
+		$field = dmString::lcfirst($request->getParameter('field'));
 		$relation = dmString::camelize(substr($field, 0, strlen($field) -5)); //remove _list @todo make it given by $request, using .metadata() and writting it within template
 		$table = $this->getDmModule()->getTable();
 
