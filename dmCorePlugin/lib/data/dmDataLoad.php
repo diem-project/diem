@@ -493,6 +493,8 @@ class dmDataLoad
       'see_chart' => 'See the charts',
       'see_diagrams' => 'See the developer diagrams',
       'see_server' => 'See the server infos',
+      'see_request' => 'See the requests window',
+    	'see_event' => 'See the events window',
       "config_panel" => "Use the configuration panel",
       "translation" => "Use the translation interface",
       "layout" => "Use the layout interface",
