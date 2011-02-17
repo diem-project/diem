@@ -626,9 +626,10 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 		if('is_active' === $field && $record->getDmModule()->hasPage() && ($page = $record->getDmPage()))
 		{
 			$page->setIsActiveManually(!$record->get($field))->save();
+		} else {
+			$record->set($field, !$record->get($field));
+			$record->save();
 		}
-		$record->set($field, !$record->get($field));
-		$record->save();
 
 		$this->getDispatcher()->notify(new sfEvent($this, 'dm.controller.redirect'));
 
