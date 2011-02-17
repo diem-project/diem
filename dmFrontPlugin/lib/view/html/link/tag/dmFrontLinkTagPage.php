@@ -49,6 +49,13 @@ class dmFrontLinkTagPage extends dmFrontLinkTag
     return $this->currentPage && $this->currentPage->get('id') === $this->page->get('id');
   }
 
+  public function isCurrentStrict()
+  {
+	$reqContext = $this->requestContext;
+	$relativeToRootRequestUri = str_replace($reqContext['uri_prefix'].$reqContext['prefix'], '', $reqContext['request_uri']);
+	return ltrim($relativeToRootRequestUri,'/') == $this->currentPage->getSlug();
+  }
+
   public function isParent()
   {
     return $this->currentPage && $this->currentPage->getNode()->isDescendantOf($this->page);
@@ -125,7 +132,7 @@ class dmFrontLinkTagPage extends dmFrontLinkTag
       {
         $attributes['class'][] = $attributes['current_class'];
           
-        if($attributes['current_span'])
+        if($attributes['current_span'] && $this->isCurrentStrict())
         {
           $attributes['tag'] = 'span';
         }
