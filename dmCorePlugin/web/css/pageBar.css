@@ -39,8 +39,8 @@ body.pageBarOpen #sf_admin_content {
   -webkit-border-radius: 0 8px 8px 0;
   box-shadow: 2px 0 5px #888;
   -moz-box-shadow: 2px 0 5px #888;
+  -webkit-box-shadow: 2px 0 5px #888;
   z-index: 16777271; /* max z-index for safari 3 */
-  z-index: 20;
 }
 
 #dm_page_bar_toggler:hover {
