@@ -106,8 +106,6 @@ EOF;
       ), 'ERROR');
     }
     
-    $this->context->get('filesystem')->sf('dm:setup -n');
-    
     $this->runTask('dm:permissions');
     
     // fix db file permissions
