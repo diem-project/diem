@@ -28,7 +28,7 @@ class dmFrontLinkTagUri extends dmFrontLinkTag
     
     $this->uri = $this->resource->getSubject();
 
-    if($this->options['external_blank'] && 0 !== strncmp($this->uri, $this->requestContext['absolute_url_root'], strlen($this->requestContext['absolute_url_root'])) && 0 !== strncmp($this->uri, $this->requestContext['prefix'], strlen($this->requestContext['prefix'])))
+    if($this->options['external_blank'] && 0 !== strncmp($this->uri, $this->requestContext['absolute_url_root'], strlen($this->requestContext['absolute_url_root'])) && 0 !== strncmp($this->uri, $this->requestContext['prefix'], strlen($this->requestContext['prefix'])) )
     {
       $this->target('_blank');
     }
