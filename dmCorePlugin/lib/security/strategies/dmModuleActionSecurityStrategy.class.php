@@ -41,7 +41,7 @@ class dmModuleActionSecurityStrategy extends dmModuleSecurityStrategyAbstract im
 		$cacheKey = $actionName;
 		if(!$this->hasCache($cacheKey)){
 			$security = $this->module->getSecurityManager()->getSecurityConfiguration($this->module->getSecurityManager()->getApplication(), 'actions', $actionName);
-			$credentials = false === $security['is_secure'] ? true : (isset($security['credentials']) ? $security['credentials'] : null);
+			$credentials = false === $security['is_secure'] ? false : (isset($security['credentials']) ? $security['credentials'] : null);
 			if($credentials){
 				$result = $this->user->can($credentials);
 			}else{ $result = false; }
