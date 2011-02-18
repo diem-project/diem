@@ -172,7 +172,7 @@ abstract class dmHtmlTag extends dmConfigurable
     {
       if (null !== $value)
       {
-        $htmlAttributesString .= ' '.$key.'="'.htmlspecialchars($value, ENT_COMPAT, 'UTF-8').'"';
+        $htmlAttributesString .= ' '.$key.'="'.htmlspecialchars((string)$value, ENT_COMPAT, 'UTF-8').'"';
       }
     }
     
