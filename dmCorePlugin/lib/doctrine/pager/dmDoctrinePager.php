@@ -85,7 +85,7 @@ class dmDoctrinePager extends sfDoctrinePager
 	{
 		$selectQuery = $this->getQuery();
 
-		if (count($selectQuery->getDqlPart('where')))
+		if (count($selectQuery->getDqlPart('where')) || count($selectQuery->getDqlPart('from')) > 1)
 		{
 			$query = clone $selectQuery;
 			return $query->offset(0)->limit(0);
