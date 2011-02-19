@@ -294,10 +294,17 @@ abstract class dmDoctrineTable extends Doctrine_Table
 		}
 
 		$columns = $this->getAllColumns();
+		foreach((array)$this->getOption('inheritanceMap') as $field => $value) {
+			 unset($columns[$field]);
+		}
 
 		if ($this->isVersionable())
 		{
 			unset($columns['version']);
+		}
+		if($this->isSortable())
+		{
+			unset($columns['position']);
 		}
 
 		foreach($columns as $columnName => $column)
