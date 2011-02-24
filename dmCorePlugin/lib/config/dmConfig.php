@@ -157,6 +157,10 @@ class dmConfig
     {
       $results = array();
     }
+    catch(Doctrine_Connection_Exception $e)
+    {
+      $results = array();
+    }
 
     self::$config = array();
     foreach($results as $result)
