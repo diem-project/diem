@@ -23,7 +23,7 @@ body.mediaBarOpen #sf_admin_content {
   box-shadow: -3px 0 4px #888;
   -moz-box-shadow: -3px 0 4px #888;
   -webkit-box-shadow: -3px 0 4px #888;
-  z-index: 20;
+  z-index: 16777271; /* max z-index for safari 3 */
 }
 
 #dm_media_bar_toggler {
@@ -41,7 +41,7 @@ body.mediaBarOpen #sf_admin_content {
   box-shadow: -2px 0 5px #888;
   -moz-box-shadow: -2px 0 5px #888;
   -webkit-box-shadow: -2px 0 5px #888;
-  z-index: 20;
+  z-index: 16777271; /* max z-index for safari 3 */
 }
 
 #dm_media_bar.open {

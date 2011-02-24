@@ -69,7 +69,7 @@ class dmDoctrineFormFilterGenerator extends sfDoctrineFormFilterGenerator
 
 		if ($column->isForeignKey() || $column instanceof Doctrine_Relation_LocalKey)
 		{
-			$options[] = sprintf('\'multiplie\' => true, \'model\' => \'%s\', \'add_empty\' => true', $column->getForeignTable()->getOption('name'));
+			$options[] = sprintf('\'multiple\' => true, \'model\' => \'%s\', \'add_empty\' => true', $column->getForeignTable()->getOption('name'));
 		}
 
 		return count($options) ? sprintf('array(%s)', implode(', ', $options)) : '';

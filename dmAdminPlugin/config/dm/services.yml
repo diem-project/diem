@@ -34,6 +34,16 @@ parameters:
     lifetime:                 43200             # time in seconds to keep a cached version of the chart
     credentials:              see_chart
 
+  request_log.options:
+    name:                     Requests          # public name for this chart
+    lifetime:                 43200             # time in seconds to keep a cached version of the chart
+    credentials:              see_request
+  
+  event_log.options:
+    name:                     Events            # public name for this chart
+    lifetime:                 43200             # time in seconds to keep a cached version of the chart
+    credentials:              see_event
+    
   gapi.class:                 dmGapi            # Responsible for fetching data from google analytics
 
   link_tag.class:             dmAdminLinkTag    # Responsible for rendering admin link tags with the £link helper
@@ -95,7 +105,7 @@ services:
   homepage_manager:
     class:                    %homepage_manager.class%
     shared:                   true
-    arguments:                [ @dispatcher, @helper ]
+    arguments:                [ @user, @service_container, @dispatcher, @helper ]
 
   bread_crumb:
     class:                    %bread_crumb.class%
