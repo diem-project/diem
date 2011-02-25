@@ -28,7 +28,7 @@
     dialog: function(options)
     {
       var opt = $.extend($.ui.dialog.defaults, {
-        zIndex: 100,
+        zIndex: 10000000,
         dragStart: function(e)
         {
           $(e.target).hide().parent().css('opacity', 0.5);
