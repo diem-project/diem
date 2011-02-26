@@ -25,7 +25,7 @@ $.widget('ui.dmWidget', {
       url:          $.dm.ctrl.getHref('+/dmWidget/edit'),
       data:         {widget_id: widget.getId()},
       title:        $('a.dm_widget_edit', widget.element).tipsyTitle(),
-      width:        600,
+      width:        '70%',
       'class':      'dm_widget_edit_dialog_wrap '+dialogClass,
       resizable:    true,
       resize:       function(event, ui)
