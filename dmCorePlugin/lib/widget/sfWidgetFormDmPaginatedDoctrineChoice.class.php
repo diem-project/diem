@@ -35,6 +35,11 @@ class sfWidgetFormDmPaginatedDoctrineChoice extends sfWidgetFormDoctrineChoice
 		return $this->choices;
 	}
 
+	public function setChoices($choices)
+	{
+		$this->choices = $choices;
+	}
+	
 	public function getPager()
 	{
 		$this->pager->init();
