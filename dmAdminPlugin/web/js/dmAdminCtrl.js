@@ -200,7 +200,7 @@
     {
       if ($.fn.datepicker) 
       {
-        $("input.datepicker_me", this.$).each(function() {
+        $("input.datepicker_me:not(:disabled)", this.$).each(function() {
           $(this).datepicker({dateFormat: dm_configuration.dateFormat})
         });
       }
