@@ -561,6 +561,11 @@ abstract class dmDoctrineTable extends Doctrine_Table
 			return $this->getCache('dm_module');
 		}
 
+    if (!$this->getModuleManager() instanceof DmModuleManager)
+    {
+      return null;
+    }
+
 		return $this->setCache('dm_module', $this->getModuleManager()->getModuleByModel($this->getComponentName()));
 	}
 	/**
