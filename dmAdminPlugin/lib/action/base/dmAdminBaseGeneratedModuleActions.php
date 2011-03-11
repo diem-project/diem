@@ -30,10 +30,10 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 			if(!$_pk) {
 				$_pk = $this->getRequest()->getGetParameter($pk, false);
 				if(!$_pk) {
-					$_pk = $this->getRequest()->getPostParameter($pk, false); 
+					$_pk = $this->getRequest()->getPostParameter($pk, false);
 				}
 			}
-			
+
 			if(!$_pk)
 			{
 				$id = $this->getDmModule()->getTable()->getIdentifier();
@@ -659,11 +659,11 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 	 * This function can be overloaded to better fit your needs
 	 * (i.e. make only one query against db to fetch every needed bits
 	 * for your action & templates).
-	 * 
+	 *
 	 * @param unknown_type $pk the primary key for query
-   * @param unknown_type $relations the relations to leftJoin, aliases
-   * @param unknown_type $locals the local keys to join
-   * @param unknown_type $noBuilder if you want to let code call configuration method if exists
+	 * @param unknown_type $relations the relations to leftJoin, aliases
+	 * @param unknown_type $locals the local keys to join
+	 * @param unknown_type $noBuilder if you want to let code call configuration method if exists
 	 * @return dmDoctrineQuery
 	 */
 	public function buildObjectQuery($pk, $relations = array(), $locals = array(), $noBuilder = false)
@@ -680,7 +680,7 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 			$id = $table->getIdentifier();
 			if(is_array($id)) { $id = $id[0]; }
 			$query = $table->createQuery('o')->where('o.' . $id . ' = ?', $pk);
-			
+
 			$table->joinLocals($query, true, $locals);
 			$table->joinRelations($query, $relations, true);
 			return $query;
@@ -699,17 +699,34 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 			$method = 'getFormDisplay';
 		}
 		$fieldsets = $this->configuration->$method();
-		if($this->actionName !== 'index'){
-			$fieldsets = array_merge($fieldsets, $this->configuration->getFormDisplay());
+		switch($this->actionName)
+		{
+			case 'filter':
+				$fieldsets = $this->configuration->getFilterDisplay();
+				break;
+			case 'index':
+				break;
+			default:
+				$fieldsets = array_merge($fieldsets, $this->configuration->getFormDisplay());
+				break;
 		}
 		$relations = array();
-		foreach($fieldsets as $fieldset=>$fields)
+
+		switch($this->actionName)
 		{
-			if(!is_array($fields)){
+			case 'filter':
 				return $this->doGetRelations($fieldsets);
-			}else{
-				$relations = array_merge($relations, $this->doGetRelations($fields));
-			}
+				break;
+			default:
+				foreach($fieldsets as $fieldset=>$fields)
+				{
+					if(!is_array($fields)){
+						return $this->doGetRelations($fieldsets);
+					}else{
+						$relations = array_merge($relations, $this->doGetRelations($fields));
+					}
+				}
+				break;
 		}
 		return array_unique(array_diff($relations, array_keys($this->getDmModule()->getTable()->getRelationHolder()->getLocals())));
 	}
