@@ -190,7 +190,7 @@ services:
   related_records_view:
     class:                    %related_records_view.class%
     shared:                   false
-    arguments:                [ @module_manager, @helper, @routing, @i18n, %related_records_view.options% ]
+    arguments:                [ @module_manager, @helper, @routing, @i18n, @user, %related_records_view.options% ]
 
   code_editor:
     class:                    %code_editor.class%
