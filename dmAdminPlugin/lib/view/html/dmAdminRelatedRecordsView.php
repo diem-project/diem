@@ -132,7 +132,7 @@ class dmAdminRelatedRecordsView extends dmConfigurable
   {
     $html = '<ul>';
 
-    if($this->getOption('new'))
+    if($this->getOption('new') && $this->record->getTable()->getRelationHolder()->get($this->alias)->getTable()->getDmModule()->getSecurityManager()->userHasCredentials('new', $this->record))
     {
       $html .= '<li>'.$this->renderNewLink().'</li>';
     }
