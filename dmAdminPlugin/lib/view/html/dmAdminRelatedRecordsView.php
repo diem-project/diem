@@ -7,18 +7,20 @@ class dmAdminRelatedRecordsView extends dmConfigurable
   $helper,
   $routing,
   $i18n,
+  $user,
   $record,
   $alias,
   $module,
   $foreignModule,
   $foreignRecords;
 
-  public function __construct(dmModuleManager $moduleManager, dmHelper $helper, sfRouting $routing, dmI18n $i18n, array $options)
+  public function __construct(dmModuleManager $moduleManager, dmHelper $helper, sfRouting $routing, dmI18n $i18n, $user, array $options)
   {
     $this->moduleManager  = $moduleManager;
     $this->helper         = $helper;
     $this->routing        = $routing;
     $this->i18n           = $i18n;
+    $this->user 					= $user;
 
     $this->initialize($options);
   }
