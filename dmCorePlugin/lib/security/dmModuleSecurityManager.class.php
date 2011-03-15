@@ -206,7 +206,7 @@ class dmModuleSecurityManager extends dmModuleSecurityAbstract implements dmModu
     $data = sfYaml::dump($securityYaml, 2);
     $filepath = $this->getSecurityFilepath($module);
     $dir = dirname($filepath);
-   	$this->container->get('filesystem')->mkdirs($dir);
+    $this->container->get('filesystem')->mkdirs($dir);
     file_put_contents($filepath, $data);
   }
 
