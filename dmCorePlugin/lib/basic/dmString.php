@@ -500,4 +500,9 @@ class dmString extends sfInflector
       return $qty;
     }
   }
+  
+  public static function removeWeakWords($text, $weakWords = array())
+  {
+  	return str_replace($weakWords, array(), $text);
+  }
 }
