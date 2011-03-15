@@ -15,7 +15,7 @@
     [?php if($security_manager->userHasCredentials('<?php echo $name?>', $<?php echo $this->getSingularName()?>)): ?]
       <li class="sf_admin_action_<?php echo $params['class_suffix'] ?>">
 		  [?php if (method_exists($helper, 'linkTo<?php echo $method = ucfirst(sfInflector::camelize($name)) ?>')): ?]
-  <?php echo $this->addCredentialCondition('[?php echo $helper->linkTo'.$method.'($form->getObject(), '.$this->asPhp($params).') ?]', $params) ?>
+  <?php echo $this->addCredentialCondition('[?php echo $helper->linkTo'.$method.'($' . $this->getSingularName() . ', '.$this->asPhp($params).') ?]', $params) ?>
 		  [?php else: ?]
   <?php echo $this->addCredentialCondition($this->getLinkToAction($name, $params, true), $params) ?>
   		[?php endif; ?]
