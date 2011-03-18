@@ -478,6 +478,6 @@ class dmForm extends sfFormSymfony
   
 	public function needsWidget($name)
 	{
-		return !isset($this->options['widgets']) ? true : ((in_array($name, $this->options['widgets']) || in_array($name.'_form', $this->options['widgets']) || in_array($name.'_view', $this->options['widgets'])));
+		return !isset($this->options['widgets']) || isset($this->widgetSchema[$name]) ? true : ((in_array($name, $this->options['widgets']) || in_array($name.'_form', $this->options['widgets']) || in_array($name.'_view', $this->options['widgets'])));
 	}
 }
