@@ -41,7 +41,7 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 			}
 
 			if($_pk){
-				$this->object = $this->buildObjectQuery($_pk, $this->getRelationsAlias())->fetchOne();
+				$this->object = $this->buildObjectQuery($_pk, empty($relations) ? $this->getRelationsAlias() : $relations)->fetchOne();
 			}else{
 				$this->object = false;
 			}
