@@ -1,0 +1,7 @@
+#!/bin/bash
+rm data/*.sqlite
+./symfony doctrine:drop-db --env=test --no-confirmation
+./symfony doctrine:create-db --env=test
+./symfony doctrine:insert-sql --env=test
+./symfony dm:setup -n --env=test
+./symfony dm:data --env=test
