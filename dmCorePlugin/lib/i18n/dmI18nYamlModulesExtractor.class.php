@@ -55,13 +55,14 @@ class dmI18nYamlModulesExtractor extends sfI18nYamlExtractor
 		}
 		else{
 			if(empty($this->strings)) return;
+			@mkdir(dirname($i18nYaml), 0777, true);
 		}
 		
-		@mkdir(dirname($i18nYaml), 0777, true);
-		foreach($this->strings as $v)
+		foreach($this->strings as $i=>$v)
 		{
-			if(strlen($v) === 0 || isset($data[$v])) continue;
-			$data[$v] = '';
+			if(strlen($i) === 0 || isset($data[$i])) continue;
+			$text = strlen($i) === 0 ? $v : $i;
+			$data[$text] = '';
 		}
 
 		file_put_contents($i18nYaml, sfYaml::dump($data, 2));
