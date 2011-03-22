@@ -26,6 +26,12 @@ class dmI18nYamlModulesExtractor extends sfI18nYamlExtractor
 				$this->strings[$type] = '';
 				foreach($modules as $moduleName => $moduleConfig)
 				{
+					$moduleObject = dmContext::getInstance()->getServiceContainer()->getService('module_manager')->getModule($moduleName);
+					if($moduleObject)
+					{
+						$this->strings[$moduleObject->getName()] = '';
+						$this->strings[$moduleObject->getPlural()] = '';
+					}
 					if(!(isset($moduleConfig['security']) && isset($moduleConfig['security']['admin']) && isset($moduleConfig['security']['admin']['actions']) && is_array($moduleConfig['security']['admin']['actions'])))
 					continue;
 					foreach($moduleConfig['security']['admin']['actions'] as $actionName => $actionConfig)
