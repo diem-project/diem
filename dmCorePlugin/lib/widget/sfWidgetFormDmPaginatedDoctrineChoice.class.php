@@ -6,6 +6,10 @@ class sfWidgetFormDmPaginatedDoctrineChoice extends sfWidgetFormDoctrineChoice
 	public function __construct($options = array(), $attributes = array())
 	{
 		$this->pager = new dmDoctrinePager($options['model']);
+		if(isset($options['query']))
+		{
+			$this->pager->setQuery($options['query']);
+		}
 		$options['translate_choices'] = false;
 		parent::__construct($options, $attributes);
 	}
