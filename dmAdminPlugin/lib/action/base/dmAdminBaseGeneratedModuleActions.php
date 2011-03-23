@@ -784,7 +784,7 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 		$this->$model = $this->getObject();
 		
 		$this->nearRecords = array();
-		$this->form = $this->configuration->getForm($this->$model);
+		$this->form = $this->configuration->getForm($this->$model, array('widgets' => array($field)));
 		$this->field = $this->form->getWidget($field);
 		$this->search = $search;
 		
