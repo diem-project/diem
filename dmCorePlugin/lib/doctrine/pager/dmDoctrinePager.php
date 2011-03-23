@@ -109,4 +109,13 @@ class dmDoctrinePager extends sfDoctrinePager
 		}
 		return parent::getQuery();
 	}
+	
+	/**
+	 * 
+	 * @return boolean
+	 */
+	public function hasQuery()
+	{
+		return isset($this->query);
+	}
 }
