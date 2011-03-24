@@ -196,11 +196,26 @@ abstract class dmBaseActions extends sfActions
     return $event->getReturnValue();
   }
   
+  /**
+   * Throws a dmHttpErrorException with given parameters
+   * 
+   * @param integer $code valid HTTP error code
+   * @param string $msg error message
+   * @param array $params option parameters array
+   * @throws dmHttpErrorException
+   */
   protected function httpError($code, $msg, $params)
   {
   	throw new dmHttpErrorException($msg, $code, $params);
   }
   
+  /**
+   * Returns a dmHttpErrorException only if $condition
+   * @param boolean $condition
+   * @param integer $code HTTP error code
+   * @param string $msg
+   * @param array $params
+   */
   protected function httpErrorIf($condition, $code, $msg, $params = array())
   {
   	if($condition)
