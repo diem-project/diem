@@ -773,39 +773,26 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 	public function executePaginateRelation(dmWebRequest $request)
 	{
 		$field = dmString::lcfirst($request->getParameter('field'));
-		$relation = dmString::camelize(substr($field, 0, strlen($field) -5)); //remove _list @todo make it given by $request, using .metadata() and writting it within template
-		$table = $this->getDmModule()->getTable();
-
-		if($table->hasRelation($relation))
-		{
-			$relation = $table->getRelation($relation);
-		}elseif($table->hasRelation($field)){
-			$relation = $table->getRelation($field);
-		}elseif($table->hasRelation($relation = dmString::camelize($field)))
-		{
-			$relation = $table->getRelation($relation);
-		}
-
+		
 		$startPage = $request->getParameter('page');
 		$maxPerPage = $request->getParameter('maxPerPage');
 		$this->getUser()->setAttribute($this->getModuleName() . '.' . $field . '.max_per_page', $maxPerPage, 'admin_module');
+		
 		$search = $request->getParameter('search', false);
-
+		
 		$model = dmString::tableize($this->getDmModule()->getModel());
 		$this->$model = $this->getObject();
-
+		
 		$this->nearRecords = array();
-		$this->form = $this->configuration->getForm($this->$model);
+		$this->form = $this->configuration->getForm($this->$model, array('widgets' => array($field)));
 		$this->field = $this->form->getWidget($field);
-		/**
-		 * @var dmDoctrinePager
-		 */
+		$this->search = $search;
+		
+		$query = $this->paginationCreateRelationQuery($field, $request->getParameter('pk'), $search);
 		$pager = $this->field->getPager();
+		$pager->setQuery($query);
 		$pager->setMaxPerPage($maxPerPage);
 		$pager->setPage($startPage);
-
-		$query = $this->createPaginateRelationQuery($field, $relation, $search);
-		$pager->setQuery($query);
 
 		$this->name = $field;
 		$fields = array_diff(array_keys($this->form->getWidgetSchema()->getFields()), array($field));
@@ -815,14 +802,29 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 		}
 		$this->configuration->setFormDisplay(array($this->name));
 		$this->setTemplate('edit');
-		$this->setLayout(false);
+		//$this->setLayout(false);
 	}
 
-	protected function createPaginateRelationQuery($field, $relation, $search)
+	protected function paginationCreateRelationQuery($field, $pk, $search)
 	{
-		$queryBuilder = 'buildQueryFor' . dmString::camelize($field);
+		$queryBuilder = 'paginateBuildQueryFor' . dmString::camelize($field);
 		if(!method_exists($this, $queryBuilder))
 		{
+			//from here, we guess the relation is bound to the object of the DmModule
+			$relation = dmString::camelize(substr($field, 0, strlen($field) -5)); //remove _list @todo make it given by $request, using .metadata() and writting it within template
+			$table = $this->getDmModule()->getTable();
+
+			//guessing relation from field name
+			if($table->hasRelation($relation))
+			{
+				$relation = $table->getRelation($relation);
+			}elseif($table->hasRelation($field)){
+				$relation = $table->getRelation($field);
+			}elseif($table->hasRelation($relation = dmString::camelize($field)))
+			{
+				$relation = $table->getRelation($relation);
+			}
+			
 			$table = dmDb::table($relation['class']);
 			$query = $table->createQuery('r');
 			if(strlen($search)>0){
@@ -830,7 +832,7 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 			}
 			$this->search = $search;
 		}else{
-			$query = $this->$queryBuilder($search);
+			$query = $this->$queryBuilder($pk, $search);
 		}
 		return $query;
 	}

@@ -3,7 +3,9 @@
 class dmDoctrinePager extends sfDoctrinePager
 {
 	protected
-	$resultsCache;
+	$resultsCache,
+	$isInited;
+	
 
 	/**
 	 * @see sfPager
@@ -38,9 +40,12 @@ class dmDoctrinePager extends sfDoctrinePager
 	/**
 	 * @see sfPager
 	 */
-	public function init()
+	public function init($force = false)
 	{
-		parent::init();
+		if(!$this->isInited || $force){
+			parent::init();
+		}
+		$this->isInited = true;
 
 		return $this;
 	}
@@ -108,5 +113,14 @@ class dmDoctrinePager extends sfDoctrinePager
 			return parent::getQuery()->withI18n();
 		}
 		return parent::getQuery();
+	}
+
+	/**
+	 *
+	 * @return boolean
+	 */
+	public function hasQuery()
+	{
+		return isset($this->query);
 	}
 }

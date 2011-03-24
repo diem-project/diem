@@ -195,4 +195,17 @@ abstract class dmBaseActions extends sfActions
 
     return $event->getReturnValue();
   }
+  
+  protected function httpError($code, $msg, $params)
+  {
+  	throw new dmHttpErrorException($msg, $code, $params);
+  }
+  
+  protected function httpErrorIf($condition, $code, $msg, $params = array())
+  {
+  	if($condition)
+  	{
+  		$this->httpError($code, $msg, $params);
+  	}
+  }
 }

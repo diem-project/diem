@@ -62,7 +62,7 @@ class dmModuleSecurityManager extends dmModuleSecurityAbstract implements dmModu
   public function secure(dmModule $module = null)
   {
     $this->clear();
-    $this->module = $this->module ?: $module;
+    $this->module = $this->module ? $this->module : $module;
     $app = $this->getApplication();
     if($security = $module->getOption('security', false))
     {
