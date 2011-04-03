@@ -6,6 +6,10 @@ class sfWidgetFormDmPaginatedDoctrineChoice extends sfWidgetFormDoctrineChoice
 	public function __construct($options = array(), $attributes = array())
 	{
 		$this->pager = new dmDoctrinePager($options['model']);
+		if(isset($options['query']))
+		{
+			$this->pager->setQuery($options['query']);
+		}
 		$options['translate_choices'] = false;
 		parent::__construct($options, $attributes);
 	}
@@ -21,10 +25,12 @@ class sfWidgetFormDmPaginatedDoctrineChoice extends sfWidgetFormDoctrineChoice
 	{
 		if(!isset($this->choices))
 		{
-			if(isset($this->options['query']))
+			if(isset($this->options['query']) && !$this->pager->hasQuery())
 			{
 				$this->pager->setQuery($this->options['query']);
+				
 			}
+			$this->pager->init();
 			$choices = $this->pager->getResults();
 			$this->choices = array();
 			foreach($choices as $choice)
@@ -35,9 +41,19 @@ class sfWidgetFormDmPaginatedDoctrineChoice extends sfWidgetFormDoctrineChoice
 		return $this->choices;
 	}
 
+	public function setChoices($choices)
+	{
+		$this->choices = $choices;
+	}
+
+	public function setPager($pager)
+	{
+		$this->pager = $pager;
+	}
+	
 	public function getPager()
 	{
-		$this->pager->init();
+		//$this->pager->init();
 		return $this->pager;
 	}
 
@@ -53,7 +69,7 @@ class sfWidgetFormDmPaginatedDoctrineChoice extends sfWidgetFormDoctrineChoice
 			$type = !$this->getOption('expanded') ? '' : ($this->getOption('multiple') ? 'checkbox' : 'radio');
 			$class = sprintf('sfWidgetFormSelect%s', ucfirst($type));
 		}
-
+		
 		return new $class(array_merge(array('choices' => new sfCallable(array($this, 'getChoices'))), $this->options['renderer_options']), $this->getAttributes());
 	}
 }

@@ -23,11 +23,6 @@ abstract class <?php echo $this->getGeneratedModuleName() ?>Actions extends <?ph
   	parent::preExecute();
     $this->configuration = new <?php echo $this->getModuleName() ?>GeneratorConfiguration();
 
-    if ($this->getDmModule()->getSecurityManager($this)->isActionStrategicalySecurized($this->getActionName()) && !$this->getDmModule()->getSecurityManager()->userHasCredentials($this->getActionName()))
-    {
-      $this->forwardSecure();
-    }
-
     $this->dispatcher->notify(new sfEvent($this, 'admin.pre_execute', array('configuration' => $this->configuration)));
 
     $this->helper = new <?php echo $this->getModuleName() ?>GeneratorHelper($this->getDmModule());

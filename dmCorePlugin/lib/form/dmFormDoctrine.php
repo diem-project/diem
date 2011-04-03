@@ -412,4 +412,11 @@ abstract class dmFormDoctrine extends sfFormDoctrine
 	{
 		return $this->object = $record;
 	}
+	
+	public function embedForm($name, sfForm $form, $decorator = null, $savingTime = self::EMBEDDED_FORM_SAVE_AFTER)
+	{
+		parent::embedForm($name, $form, $decorator);
+		$this->setEmbeddedFormSavingTime($name, $savingTime);
+		return $this;
+	}
 }

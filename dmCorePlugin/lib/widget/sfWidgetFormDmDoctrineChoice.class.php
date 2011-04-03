@@ -2,6 +2,8 @@
 class sfWidgetFormDmDoctrineChoice extends sfWidgetFormDoctrineChoice
 {
   protected $pager;
+
+  
   
   /**
    * Returns the choices associated to the model.
@@ -11,6 +13,8 @@ class sfWidgetFormDmDoctrineChoice extends sfWidgetFormDoctrineChoice
   public function getChoices()
   {
     $choices = array();
+    if($this->getOption('choices')) return $this->getOption('choices');
+    
     if (false !== $this->getOption('add_empty'))
     {
       $choices[''] = true === $this->getOption('add_empty') ? '' : $this->translate($this->getOption('add_empty'));

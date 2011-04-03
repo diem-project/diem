@@ -59,10 +59,10 @@ class dmModuleSecurityManager extends dmModuleSecurityAbstract implements dmModu
    *
    * @param dmModule $module
    */
-  public function secure(dmModule $module)
+  public function secure(dmModule $module = null)
   {
     $this->clear();
-    $this->module = $module;
+    $this->module = $this->module ? $this->module : $module;
     $app = $this->getApplication();
     if($security = $module->getOption('security', false))
     {
@@ -204,7 +204,10 @@ class dmModuleSecurityManager extends dmModuleSecurityAbstract implements dmModu
   public function saveSecurityYaml(dmModule $module, $securityYaml)
   {
     $data = sfYaml::dump($securityYaml, 2);
-    file_put_contents($this->getSecurityFilepath($module), $data);
+    $filepath = $this->getSecurityFilepath($module);
+    $dir = dirname($filepath);
+    $this->container->get('filesystem')->mkdirs($dir);
+    file_put_contents($filepath, $data);
   }
 
   /**

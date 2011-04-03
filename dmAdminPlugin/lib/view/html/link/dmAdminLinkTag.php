@@ -157,13 +157,15 @@ class dmAdminLinkTag extends dmBaseLinkTag
       {
         $resource = $this->serviceContainer->getService('script_name_resolver')->get('front').'/'.$this->resource->get('slug');
       }
-      elseif (($module = $this->resource->getDmModule()) && $module->hasAdmin())
+      elseif (($module = $this->resource->getDmModule()) && $module->hasAdmin() && $module->getSecurityManager()->userHasCredentials('edit', $this->resource))
       {
         $resource = array(
           'sf_route' => $module->getUnderscore(),
           'action'   => 'edit',
           'pk'       => $this->resource->getPrimaryKey()
         );
+      }else{
+      	$resource = '#';
       }
     }
     
