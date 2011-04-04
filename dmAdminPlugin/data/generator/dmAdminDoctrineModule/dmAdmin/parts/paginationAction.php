@@ -1,3 +1,6 @@
+  /**
+	 * @return dmDoctrinePager
+	 */
   public function getPager()
   {
   	if(null == $this->pager)
@@ -9,22 +12,34 @@
 		}
     return $this->pager;
   }
-  
+
+  /**
+	 * @return boolean
+	 */
   public function hasPager()
   {
   	return $this->pager ? true : false;
   }
 
+	/**
+	 * @param int $page
+	 */
   protected function setPage($page)
   {
     $this->getUser()->setAttribute('<?php echo $this->getModuleName() ?>.page', $page, 'admin_module');
   }
 
+  /**
+	 * @return int
+	 */
   public function getPage()
   {
     return $this->getUser()->getAttribute('<?php echo $this->getModuleName() ?>.page', 1, 'admin_module');
   }
 
+	/**
+	 * @return myDoctrineQuery
+	 */ 
   protected function buildQuery()
   {
     $tableMethod = $this->configuration->getTableMethod();
