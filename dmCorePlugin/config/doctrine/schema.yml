@@ -129,7 +129,7 @@ DmMedia:
     legend:                 { type: string(255) }
     author:                 { type: string(255) }
     license:                { type: string(255) }
-    mime:                   { type: string(63), notnull: true }
+    mime:                   { type: string(128), notnull: true }
     size:                   { type: integer(4), unsigned: true }
     dimensions:             { type: string(15) }
   relations:
