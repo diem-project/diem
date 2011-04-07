@@ -29,6 +29,7 @@ js:
     ui-tabs:          jquery-ui/js/minified/jquery.ui.tabs.min
     ui-dialog:        jquery-ui/js/minified/jquery.ui.dialog.min
     ui-accordion:     jquery-ui/js/minified/jquery.ui.accordion.min
+    ui-slider:     jquery-ui/js/minified/jquery.ui.slider.min
     ui-i18n:          jquery-ui/js/i18n/jquery.ui.datepicker-%culture%
     metadata:         metadata/jquery.metadata.min
     jqtransform:      jqtransform/jquery.jqtransform.min
