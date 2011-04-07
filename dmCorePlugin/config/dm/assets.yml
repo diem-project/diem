@@ -74,6 +74,7 @@ css:
     ui-resizable:     jquery-ui/css/jquery-ui-resizable
     ui-tabs:          jquery-ui/css/jquery-ui-tabs
     ui-accordion:     jquery-ui/css/jquery-ui-accordion
+    ui-slider:        jquery-ui/css/jquery-ui-slider
     jqtransform:      jqtransform/jqtransform
     jgrowl:           jgrowl/jquery.jgrowl
     markitup:         dmMarkitup/skins/markitup/style
