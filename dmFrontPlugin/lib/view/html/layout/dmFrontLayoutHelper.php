@@ -56,6 +56,8 @@ class dmFrontLayoutHelper extends dmCoreLayoutHelper
     {
       $metas['google-site-verification'] = dmConfig::get('gwt_key');
     }
+
+    $metas = array_merge($metas, $this->getService('response')->getMetas());
     
     return $metas;
   }
