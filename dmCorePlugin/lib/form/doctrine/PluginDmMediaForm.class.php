@@ -9,6 +9,20 @@
  */
 abstract class PluginDmMediaForm extends BaseDmMediaForm
 {
+	/**
+	 * @var boolean whether the DmMediaForm is required
+	 */
+	private $required;
+	
+	protected function setRequired($value)
+	{
+		$this->required = $value;
+	}
+	
+	public function isRequired()
+	{
+		return $this->required;
+	}
 
 	public function setup()
 	{
@@ -18,13 +32,15 @@ abstract class PluginDmMediaForm extends BaseDmMediaForm
 
 		$this->widgetSchema['file'] = new sfWidgetFormDmInputFile();
 		$this->validatorSchema['file'] = new sfValidatorFile(array(
-      'required' => false //@todo this is weir bugfix as we don't check if a media has been defined using d&d from  media bar
+			'required' => false
 		));
+		$this->getValidatorSchema()->offsetGet('dm_media_folder_id')->setOption('required', false);
 
 		$this->changeToHidden('dm_media_folder_id');
 
 		$this->mergePostValidator(new sfValidatorCallback(array('callback' => array($this, 'clearName'))));
 		$this->mergePostValidator(new sfValidatorCallback(array('callback' => array($this, 'checkFolder'))));
+		$this->mergePostValidator(new sfValidatorCallback(array('callback' => array($this, 'checkRequired'))));
 
 		if(false !== $mimeTypes = $this->getOption('mime_types', false))
 		{
@@ -154,6 +170,21 @@ abstract class PluginDmMediaForm extends BaseDmMediaForm
 				// throw an error bound to the file field
 				throw new sfValidatorErrorSchema($validator, array('file' => $error));
 			}
+		}
+
+		return $values;
+	}
+	
+
+	public function checkRequired($validator, $values)
+	{
+		$isFileProvided = isset($values['file']) && $values['file'] instanceof sfValidatedFile;
+
+		// required, no existing media, no file and no media id provided with drag&drop
+		if ($this->isRequired() && !$isFileProvided && empty($values['id']))
+		{
+			// throw an error bound to the media form
+			throw new sfValidatorError($validator, 'required');
 		}
 
 		return $values;

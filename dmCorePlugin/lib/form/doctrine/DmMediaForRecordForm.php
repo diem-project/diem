@@ -52,7 +52,7 @@ class DmMediaForRecordForm extends DmMediaForm
   
   public function configureRequired($required)
   {
-    $this->getValidator('file')->setOption('required', $required && $this->getValidator('file')->getOption('required'));
+    $this->setRequired($required);
 
     /*
      * Add checkbox to remove Media
