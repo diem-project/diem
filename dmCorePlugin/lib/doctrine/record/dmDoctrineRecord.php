@@ -957,4 +957,42 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
 
 		return $this;
 	}
+
+	public function validate()
+	{
+		$this->validateI18n();
+	}
+
+	/**
+	 * Validates I18n objects associated to $this
+	 * 
+	 * @throws Doctrine_Validator_Exception
+	 */
+	public function validateI18n()
+	{
+		if($this->getTable()->hasI18n())
+		{
+			if($this->get('Translation')->count() === 0)
+			{
+				$this->getErrorStack()->add('Translation', 'Object has no Translation & Translation is required for some fields');
+				throw new Doctrine_Validator_Exception(array($this));
+			}
+			else{
+				$inError = array();
+
+				foreach($this->get('Translation') as $translation)
+				{
+					$state = $translation->isValid();
+					if(true !== $state)
+					{
+						$inError[] = $translation;
+					}
+				}
+				if(!empty($inError))
+				{
+					throw new Doctrine_Validator_Exception($inError);
+				}
+			}
+		}
+	}
 }
