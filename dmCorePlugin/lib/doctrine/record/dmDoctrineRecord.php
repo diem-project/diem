@@ -750,6 +750,11 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
 		}
 	}
 
+	protected function _getNewI18n()
+	{
+		return $this->get('Translation')->get(sfConfig::get('sf_default_culture'));
+	}
+
 	public function _getI18n($fieldName, $load = true)
 	{
 		$culture = self::getDefaultCulture();
@@ -956,5 +961,49 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
 		}
 
 		return $this;
+	}
+
+	public function validate()
+	{
+		if(!$this instanceof DmPage) //DmPage does not need this as it is processed by SEO
+		{
+			$this->validateI18n();
+		}
+	}
+
+	/**
+	 * Validates I18n objects associated to $this
+	 *
+	 * @throws Doctrine_Validator_Exception
+	 */
+	public function validateI18n()
+	{
+		if($this->getTable()->hasI18n())
+		{
+			if($this->get('Translation')->count() === 0)
+			{
+				$newI18n = $this->_getNewI18n();
+				if(!$newI18n->isValid())
+				{
+					throw new Doctrine_Validator_Exception(array($newI18n));
+				}
+			}
+			else{
+				$inError = array();
+
+				foreach($this->get('Translation') as $translation)
+				{
+					$state = $translation->isValid();
+					if(true !== $state)
+					{
+						$inError[] = $translation;
+					}
+				}
+				if(!empty($inError))
+				{
+					throw new Doctrine_Validator_Exception($inError);
+				}
+			}
+		}
 	}
 }
