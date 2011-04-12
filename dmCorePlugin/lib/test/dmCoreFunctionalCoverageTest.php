@@ -186,6 +186,6 @@ abstract class dmCoreFunctionalCoverageTest
 
   protected function willRunOutOfMemory()
   {
-    return (dmString::convertBytes(ini_get('memory_limit')) - memory_get_usage()) < (5 * 1024 * 1024);
+    return ini_get('memory_limit') > -1 && (dmString::convertBytes(ini_get('memory_limit')) - memory_get_usage()) < (5 * 1024 * 1024);
   }
 }
