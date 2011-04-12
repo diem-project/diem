@@ -132,7 +132,7 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 
 							if($foreignTable->isI18nColumn($foreignColumn))
 							{
-								$query->leftJoin(sprintf('%s.%s %s', $joinAlias, 'Translation', $joinAlias.'Translation'));
+								$query->withI18n(); //leftJoin(sprintf('%s.%s %s', $joinAlias, 'Translation', $joinAlias.'Translation'));
 							}
 						}
 
@@ -616,13 +616,35 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 		$this->redirect('@'.$this->getDmModule()->getUnderscore());
 	}
 
+	/**
+	 * Search the 'toggle_' . $field credentials in the 
+	 * security.yml file of the module
+	 * 
+	 * i.e.: (security.yml, securing the toggling of is_active) 
+	 * toggleboolean: 
+   *   is_active: 
+   *     is_secure: true
+   *     credentials: [my_credential, admin]
+	 * 
+	 * @see $this->executeToggleBoolean() 
+	 * @overloadable
+	 * @param string $field the field to toggle (i.e. is_active)
+	 * @return boolean
+	 */
+	protected function getCredentialForToggle($field)
+	{
+		$security = $this->getSecurityValue($field, array());
+		return isset($security['is_secure']) && $security['is_secure'] && isset($security['credentials']) ? $security['credentials'] : array();
+	}
+	
 	public function executeToggleBoolean(dmWebRequest $request)
 	{
 		$this->forward404Unless(
 		$this->getDmModule()->getTable()->hasField($field = $request->getParameter('field'))
 		&& ($record = $this->getDmModule()->getTable()->find($request->getParameter('pk')))
+		&& $this->getUser()->hasCredential($this->getCredentialForToggle($request->getParameter('field')))
 		);
-
+		
 		if('is_active' === $field && $record->getDmModule()->hasPage() && ($page = $record->getDmPage()))
 		{
 			$page->setIsActiveManually(!$record->get($field))->save();
