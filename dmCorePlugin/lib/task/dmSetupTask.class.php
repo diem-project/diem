@@ -44,10 +44,24 @@ EOF;
     // don't use cache:clear task because it changes current app & environment
     @sfToolkit::clearDirectory(sfConfig::get('sf_cache_dir'));
 
-    if(!file_exists(dmOs::join(sfConfig::get('sf_root_dir'), 'lib', 'model', 'doctrine', 'myDoctrineRecord'))){
+    if(!file_exists(dmOs::join(sfConfig::get('sf_root_dir'), 'lib', 'model', 'doctrine', 'myDoctrineRecord.php'))){
       $this->getContext()->get('filesystem')->copy(
-        dmOs::join(sfConfig::get('dm_core_dir'), 'data', 'skeleton', 'lib', 'model', 'myDoctrineRecord.php'), 
+        dmOs::join(sfConfig::get('dm_core_dir'), 'data', 'skeleton', 'lib', 'model', 'doctrine', 'myDoctrineRecord.php'), 
         dmOs::join(sfConfig::get('sf_root_dir'), 'lib', 'model', 'doctrine', 'myDoctrineRecord.php')
+      );
+    }
+
+    if(!file_exists(dmOs::join(sfConfig::get('sf_root_dir'), 'lib', 'model', 'doctrine', 'myDoctrineQuery.php'))){
+      $this->getContext()->get('filesystem')->copy(
+        dmOs::join(sfConfig::get('dm_core_dir'), 'data', 'skeleton', 'lib', 'model', 'doctrine', 'myDoctrineQuery.php'),
+        dmOs::join(sfConfig::get('sf_root_dir'), 'lib', 'model', 'doctrine', 'myDoctrineQuery.php')
+      );
+    }
+
+    if(!file_exists(dmOs::join(sfConfig::get('sf_root_dir'), 'lib', 'model', 'doctrine', 'myDoctrineQuery.php'))){
+      $this->getContext()->get('filesystem')->copy(
+        dmOs::join(sfConfig::get('dm_core_dir'), 'data', 'skeleton', 'lib', 'model', 'doctrine', 'myDoctrineQuery.php'),
+        dmOs::join(sfConfig::get('sf_root_dir'), 'lib', 'model', 'doctrine', 'myDoctrineQuery.php')
       );
     }
 
