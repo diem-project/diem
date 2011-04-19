@@ -32,7 +32,6 @@ js:
     ui-slider:     jquery-ui/js/minified/jquery.ui.slider.min
     ui-i18n:          jquery-ui/js/i18n/jquery.ui.datepicker-%culture%
     metadata:         metadata/jquery.metadata.min
-    jqtransform:      jqtransform/jquery.jqtransform.min
     form:             form/jquery.form.hack
     blockUI:          blockUI/jquery.blockUI-2.31.min
     jgrowl:           jgrowl/jquery.jgrowl_minimized
