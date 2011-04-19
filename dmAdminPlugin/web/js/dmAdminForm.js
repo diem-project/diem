@@ -71,7 +71,7 @@
     
     focusFirstInput: function()
     {
-      if ($firstInput = $('div.sf_admin_form_row_inner input:first', this.$)) 
+      if ($firstInput = $('div.sf_admin_form_row_inner :input:first', this.$))
       {
         $firstInput.focus();
       }
