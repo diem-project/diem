@@ -112,7 +112,9 @@ $.widget('ui.dmWidget', {
       var formHeight = $form.height();
       var dialogHeight = $dialog.height();
       var $maximizable = $form.find(elToMaximize);
-      $maximizable.height($maximizable.height() + dialogHeight - formHeight);
+      $maximizable.each(function() {
+        $(this).height($(this).height() + dialogHeight - formHeight);
+      });
     };
     
     $dialog.bind('dmAjaxResponse', function()
