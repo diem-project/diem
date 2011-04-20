@@ -14,7 +14,7 @@
     }
   });
 
-  $gallery.find('a.open_form').click(function()
+  $gallery.find('a.open_form').unbind('click.dm').bind('click.dm', function()
   {
     $gallery.find('form.dm_add_media').toggle();
   });

@@ -122,7 +122,7 @@
 
         $container.find('div.markItUpHeader > ul').append(
           $('<li class="markitup_full_screen"><a title="Enlarge the editor">+</a></li>')
-          .click(function() {
+          .unbind('click.dm').bind('click.dm', function() {
             $container.toggleClass('dm_markdown_full_screen');
 
             if($container.hasClass('dm_markdown_full_screen'))
@@ -185,12 +185,12 @@
       {
         var $list = $(this), $lis = $('> li', $list);
 
-        $lis.find('> label, > input').click(function(e)
+        $lis.find('> label, > input').unbind('click.dm').bind('click.dm', function(e)
         {
           e.stopPropagation();
         });
 
-        $lis.click(function()
+        $lis.unbind('click.dm').bind('click.dm', function()
         {
           var $input = $('> input', $(this));
           $input.attr('checked', !$input.attr('checked')).trigger('change');
@@ -204,7 +204,7 @@
 
         $('div.control span.select_all, div.control span.unselect_all', $list.parent().parent()).each(function()
         {
-          $(this).click(function()
+          $(this).unbind('click.dm').bind('click.dm', function()
           {
             $(this).closest('div.sf_admin_form_row_inner').find('input:checkbox:visible').attr('checked', $(this).hasClass('select_all')).trigger('change');
           });

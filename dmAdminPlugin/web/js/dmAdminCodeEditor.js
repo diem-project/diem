@@ -31,7 +31,7 @@
 
       $('<img class="close" width="9px" height="8px" src="' + $.dm.ctrl.options.dm_core_asset_root + 'images/cross-small.png' + '" />')
       .prependTo($tab)
-      .click(function()
+      .unbind('click.dm').bind('click.dm', function()
       {
         $tabs.tabs('remove', $tabs.find('ul.ui-tabs-nav > li').index($tab));
         $.dm.removeTipsy();
@@ -46,7 +46,7 @@
         }
       });
 
-      $panel.find('a.save').click(function()
+      $panel.find('a.save').unbind('click.dm').bind('click.dm', function()
       {
         savePanel($panel);
       });

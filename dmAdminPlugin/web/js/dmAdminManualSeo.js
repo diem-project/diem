@@ -95,7 +95,7 @@ jQuery.fn.dataTableExt.aTypes.push( function ( sData )
   });
 
   // toggle booleans
-  $table.find('span.boolean').click(function() {
+  $table.find('span.boolean').unbind('click.dm').bind('click.dm', function() {
     $(this).toggleClass('s16_tick s16_cross');
     $.ajax({
       url:      $table.metadata().toggle_url,

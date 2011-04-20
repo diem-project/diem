@@ -48,7 +48,7 @@
     {
       var self = this, $box = self.$.find('div.dm_filter_box');
       
-      self.$.find('a.dm_open_filter_box').click(function()
+      self.$.find('a.dm_open_filter_box').unbind('click.dm').bind('click.dm', function()
       {
         $box.slideToggle(200);
       })
@@ -84,7 +84,7 @@
           url:      $.dm.ctrl.getHref('+/dmAdmin/versionCheck'),
           success:  function(html)
           {
-            $versionCheck.html(html).click(function() { $versionCheck.remove(); });
+            $versionCheck.html(html).unbind('click.dm').bind('click.dm', function() { $versionCheck.remove(); });
           }
         });
       }
@@ -154,7 +154,7 @@
 
       self.$.find('input.sf_admin_list_batch_checkbox').each(function()
       {
-        $(this).click(function()
+        $(this).unbind('click.dm').bind('click.dm', function()
         {
           self.$.find('input.sf_admin_batch_checkbox, input.sf_admin_list_batch_checkbox').attr('checked', $(this).attr('checked'));
         });
@@ -179,7 +179,7 @@
       });
 
       // toggle booleans
-      self.$.find('td.sf_admin_boolean a').click(function() {
+      self.$.find('td.sf_admin_boolean a').unbind('click.dm').bind('click.dm', function() {
         $(this).toggleClass('s16_tick s16_cross');
         $.ajax({
           url:      self.$.find('tbody').metadata().toggle_url,
@@ -206,7 +206,7 @@
     
     flashMessages: function()
     {
-      $("#flash").click(function()
+      $("#flash").unbind('click.dm').bind('click.dm', function()
       {
         $(this).remove();
       });

@@ -50,7 +50,7 @@
       
       $tab.prepend('<img class="close" width="9px" height="8px" src="' + $.dm.ctrl.options.dm_core_asset_root + 'images/cross-small.png' + '" />');
       
-      $('img.close', $tab).click(function()
+      $('img.close', $tab).unbind('click.dm').bind('click.dm', function()
       {
         self.$tabs.tabs('remove', $('ul.ui-tabs-nav > li', self.$tabs).index($tab));
         return false;
@@ -64,12 +64,12 @@
         }
       });
       
-      $panel.find('a.close').click(function()
+      $panel.find('a.close').unbind('click.dm').bind('click.dm', function()
       {
         self.$tabs.tabs('remove', self.$tabs.tabs('option', 'selected'));
       });
       
-      $panel.find('a.save').click(function()
+      $panel.find('a.save').unbind('click.dm').bind('click.dm', function()
       {
         self.save($panel);
       });
