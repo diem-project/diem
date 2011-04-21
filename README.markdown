@@ -19,4 +19,5 @@ Documentation
 Please see to the online documentation : 
 
 [Entry-level documentation](http://diem-project.org/)
+
 [High-level documentation](http://bugs.diem-project.org/projects/diem-project/wiki) **work in progress**
