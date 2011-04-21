@@ -2,20 +2,37 @@
 
 abstract class dmAdminModelGeneratorHelper extends sfModelGeneratorHelper
 {
-  protected
-  $module;
-
+	/**
+	 * @var DmModule
+	 */
+  protected $module;
+  
+  /**
+   * @var dmAdminBaseGeneratedModuleActions
+   */
+  protected $action;
+  
   public function __construct(dmModule $module)
   {
     $this->module = $module;
   }
 
-  protected function getModule()
+  public function getModule()
   {
     return $this->module;
   }
+  
+  public function setAction($action)
+  {
+  	$this->action = $action;
+  }
+  
+  public function getAction()
+  {
+  	return $this->action;
+  }
 
-  protected function getI18nCatalogue()
+  public function getI18nCatalogue()
   {
     return $this->getModule()->getOption('i18n_catalogue', 'dm');
   }
