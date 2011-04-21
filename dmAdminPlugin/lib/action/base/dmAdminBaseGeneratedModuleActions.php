@@ -537,20 +537,7 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 		{
 			// validate ids
 			$ids = $validator->clean($ids);
-
-			//@todo add record security check here ! using dmModuleSecurityManager, create new method in it
-			//if there are some ids for which user can't execute the method, remove them, then execute them
-			//something like
-			$_action = substr($action, 5);
-			$_action = dmString::strtolower($_action);
-			$authorizedIdsForAction = $this->getDmModule()->getSecurityManager()->getIdsForAuthorizedActionWithinIds($_action, $this->getUser()->getUser(), $ids);
-			if(!$authorizedIdsForAction){
-				throw new LogicException('You cannot delete those elements because you are not authorized to do so.', 401);
-			}
-			if(count($ids) != count($authorizedIdsForAction)){
-				$request->setParameter('excluded_ids', array_diff($ids, $authorizedIdsForAction));
-			}
-			$request->setParameter('ids', $authorizedIdsForAction);
+			$request->setParameter('ids', $ids);
 			// execute batch
 			$this->$method($request);
 		}
@@ -617,16 +604,16 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 	}
 
 	/**
-	 * Search the 'toggle_' . $field credentials in the 
+	 * Search the 'toggle_' . $field credentials in the
 	 * security.yml file of the module
-	 * 
-	 * i.e.: (security.yml, securing the toggling of is_active) 
-	 * toggleboolean: 
-   *   is_active: 
-   *     is_secure: true
-   *     credentials: [my_credential, admin]
-	 * 
-	 * @see $this->executeToggleBoolean() 
+	 *
+	 * i.e.: (security.yml, securing the toggling of is_active)
+	 * toggleboolean:
+	 *   is_active:
+	 *     is_secure: true
+	 *     credentials: [my_credential, admin]
+	 *
+	 * @see $this->executeToggleBoolean()
 	 * @overloadable
 	 * @param string $field the field to toggle (i.e. is_active)
 	 * @return boolean
@@ -636,15 +623,16 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 		$security = $this->getSecurityValue($field, array());
 		return isset($security['is_secure']) && $security['is_secure'] && isset($security['credentials']) ? $security['credentials'] : array();
 	}
-	
+
 	public function executeToggleBoolean(dmWebRequest $request)
 	{
-		$this->forward404Unless(
+		$this->httpErrorIf(!(
 		$this->getDmModule()->getTable()->hasField($field = $request->getParameter('field'))
 		&& ($record = $this->getDmModule()->getTable()->find($request->getParameter('pk')))
-		&& $this->getUser()->hasCredential($this->getCredentialForToggle($request->getParameter('field')))
+		&& $this->getUser()->hasCredential($this->getCredentialForToggle($request->getParameter('field')))),
+		405, 'Forbidden'
 		);
-		
+
 		if('is_active' === $field && $record->getDmModule()->hasPage() && ($page = $record->getDmPage()))
 		{
 			$page->setIsActiveManually(!$record->get($field))->save();
@@ -659,8 +647,8 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 	}
 
 	/**
-	 * @param dmDoctrineQuery $query
-	 * @return dmDoctrineQuery
+	 * @param myDoctrineQuery $query
+	 * @return myDoctrineQuery
 	 */
 	protected function addRecordPermissionQuery($query)
 	{
@@ -682,11 +670,11 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 	 * (i.e. make only one query against db to fetch every needed bits
 	 * for your action & templates).
 	 *
-	 * @param unknown_type $pk the primary key for query
-	 * @param unknown_type $relations the relations to leftJoin, aliases
-	 * @param unknown_type $locals the local keys to join
-	 * @param unknown_type $noBuilder if you want to let code call configuration method if exists
-	 * @return dmDoctrineQuery
+	 * @param int $pk the primary key for query
+	 * @param array $relations the relations to leftJoin, aliases
+	 * @param array $locals the local keys to join
+	 * @param boolean $noBuilder if you want to let code call configuration method if exists
+	 * @return myDoctrineQuery
 	 */
 	public function buildObjectQuery($pk, $relations = array(), $locals = array(), $noBuilder = false)
 	{
@@ -795,21 +783,21 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 	public function executePaginateRelation(dmWebRequest $request)
 	{
 		$field = dmString::lcfirst($request->getParameter('field'));
-		
+
 		$startPage = $request->getParameter('page');
 		$maxPerPage = $request->getParameter('maxPerPage');
 		$this->getUser()->setAttribute($this->getModuleName() . '.' . $field . '.max_per_page', $maxPerPage, 'admin_module');
-		
+
 		$search = $request->getParameter('search', false);
-		
+
 		$model = dmString::tableize($this->getDmModule()->getModel());
 		$this->$model = $this->getObject();
-		
+
 		$this->nearRecords = array();
 		$this->form = $this->configuration->getForm($this->$model, array('widgets' => array($field)));
 		$this->field = $this->form->getWidget($field);
 		$this->search = $search;
-		
+
 		$query = $this->paginationCreateRelationQuery($field, $request->getParameter('pk'), $search);
 		$pager = $this->field->getPager();
 		$pager->setQuery($query);
@@ -846,7 +834,7 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 			{
 				$relation = $table->getRelation($relation);
 			}
-			
+				
 			$table = dmDb::table($relation['class']);
 			$query = $table->createQuery('r');
 			if(strlen($search)>0){
