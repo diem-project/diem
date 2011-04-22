@@ -58,10 +58,10 @@ EOF;
       );
     }
 
-    if(!file_exists(dmOs::join(sfConfig::get('sf_root_dir'), 'lib', 'model', 'doctrine', 'myDoctrineQuery.php'))){
+    if(!file_exists(dmOs::join(sfConfig::get('sf_root_dir'), 'lib', 'model', 'doctrine', 'myDoctrineTable.php'))){
       $this->getContext()->get('filesystem')->copy(
-        dmOs::join(sfConfig::get('dm_core_dir'), 'data', 'skeleton', 'lib', 'model', 'doctrine', 'myDoctrineQuery.php'),
-        dmOs::join(sfConfig::get('sf_root_dir'), 'lib', 'model', 'doctrine', 'myDoctrineQuery.php')
+        dmOs::join(sfConfig::get('dm_core_dir'), 'data', 'skeleton', 'lib', 'model', 'doctrine', 'myDoctrineTable.php'),
+        dmOs::join(sfConfig::get('sf_root_dir'), 'lib', 'model', 'doctrine', 'myDoctrineTable.php')
       );
     }
 
