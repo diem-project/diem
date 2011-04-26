@@ -349,6 +349,26 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
     
     $this->processSortForm($this->form);
   }
+
+  public function executeSortTree(sfWebRequest $request)
+  {
+    $this->forward404Unless($this->getDmModule()->getTable()->isNestedSet());
+
+    sfConfig::set('dm_pageBar_enabled', false);
+
+    $this->context->getServiceContainer()->addParameters(array(
+      'model_tree_view.defaults'  => array(),
+      'model_tree_view.options'   => array(
+        'model'  => $this->getDmModule()->getModel(),
+        'module' => $this->getDmModule()->__toString()
+      )
+    ));
+
+    $this->dm_module = $this->getDmModule();
+
+    $this->tree = $this->getService('model_tree_view', 'dmAdminModelTreeView');
+
+  }
   
   public function executeSortReferers(sfWebRequest $request)
   {

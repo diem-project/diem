@@ -74,6 +74,8 @@ parameters:
 
   page_tree_view.class:       dmAdminPageTreeView # Render the page tree
 
+  model_tree_view.class:       dmAdminModelTreeView # Render the page tree
+
   related_records_view.class:   dmAdminRelatedRecordsView # shows a list of records related to another one
   related_records_view.options:
     new:                        true              # add a link to create a new related record

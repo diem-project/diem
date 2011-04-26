@@ -11,6 +11,15 @@ class dmFrontPluginConfiguration extends sfPluginConfiguration
   {
     sfConfig::set('dm_front_dir', realpath(dirname(__FILE__)."/.."));
     sfConfig::set('dm_context_type', 'front');
+
+    sfOutputEscaper::markClassesAsSafe(array(
+      'dmFrontPageBaseHelper',
+      'dmFrontLayoutHelper',
+      'dmHelper',
+      'dmHtmlTag',
+      'dmFrontToolBarView',
+      'dmMenu'
+    ));
     
     require_once(sfConfig::get('dm_core_dir').'/lib/config/dmFactoryConfigHandler.php');
     require_once(sfConfig::get('dm_front_dir').'/lib/config/dmFrontRoutingConfigHandler.php');
@@ -35,11 +44,14 @@ class dmFrontPluginConfiguration extends sfPluginConfiguration
     {
       $modules[] = basename($dir);
     }
-    foreach(glob(dmOs::join(sfConfig::get('sf_plugins_dir'), '*/modules/*'), GLOB_ONLYDIR) as $dir)
+    if($dirs = glob(dmOs::join(sfConfig::get('sf_plugins_dir'), '*/modules/*'), GLOB_ONLYDIR))
     {
-      if ('Admin' !== substr($dir, -5))
+      foreach($dirs as $dir)
       {
-        $modules[] = basename($dir);
+        if ('Admin' !== substr($dir, -5))
+        {
+          $modules[] = basename($dir);
+        }
       }
     }
 

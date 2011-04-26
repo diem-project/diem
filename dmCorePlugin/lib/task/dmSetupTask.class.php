@@ -89,7 +89,7 @@ EOF;
     
     $this->logSection('diem', 'generate front modules');
     
-    if (!$this->context->get('filesystem')->sf('dmFront:generate'))
+    if (!$this->context->get('filesystem')->sf('dmFront:generate --env=' . dmArray::get($options, 'env', 'dev')))
     {
       $this->logBlock(array(
         'Can\'t run dmFront:generate: '.$this->context->get('filesystem')->getLastExec('output'),

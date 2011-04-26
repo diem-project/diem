@@ -26,7 +26,8 @@ class BasedmPageActions extends dmAdminBaseActions
 
     $query = dmDb::query('DmPage p')
     ->withI18n()
-    ->select('p.id, p.lft, p.level, p.action');
+    ->select('p.id, p.lft, p.level, p.action')
+    ->orderBy('p.lft ASC');
 
     foreach($this->fields as $field)
     {
