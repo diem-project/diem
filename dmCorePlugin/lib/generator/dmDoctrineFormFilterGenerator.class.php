@@ -95,7 +95,11 @@ class dmDoctrineFormFilterGenerator extends sfDoctrineFormFilterGenerator
 			 $options = "array('required' => false, 'choices' => array_keys(\$this->widgetSchema['{$column->getName()}']->getOption('choices')))";
           break;
         case 'enum':
-          $options = str_replace('array(', "array('multiple' => true, ", $options);
+			 $options = array("'required' => false");
+          $options[] = "'multiple' => true ";
+          $values = array_combine($column['values'], $column['values']);
+          $options[] = "'choices' => ".$this->arrayExport($values);
+			 $options = sprintf('array(%s)', implode(', ', $options));
           break;
       }
 		return $options;

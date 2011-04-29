@@ -132,8 +132,15 @@ abstract class dmFormFilterDoctrine extends sfFormFilterDoctrine
   protected function addEnumQuery(Doctrine_Query $query, $field, $value)
   {
     $fieldName = $this->getFieldName($field);
-
-    $query->addWhere(sprintf('%s.%s = ?', $this->getRootAlias($query, $fieldName), $fieldName), $value);
+	 $counter = 0;
+	 $enumConditions='';
+	 $rootAlias = $this->getRootAlias($query, $fieldName);
+	 foreach ($value as $val) {
+		 $counter++;
+		 $glue = $counter < count($value) ? ' OR ' : '';
+		 $enumConditions .= sprintf('%s.%s = ?'.$glue , $rootAlias, $fieldName);
+	 }
+    $query->addWhere($enumConditions, $value);
   }
 
   protected function addTextQuery(Doctrine_Query $query, $field, $values)
