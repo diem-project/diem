@@ -63,7 +63,7 @@ class dmDoctrineFormFilterGenerator extends sfDoctrineFormFilterGenerator
 				$values = array('' => '');
 				$values = array_merge($values, $column['values']);
 				$values = array_combine($values, $values);
-				$options[] = "'choices' => " . str_replace("\n", '', $this->arrayExport($values));
+				$options[] = "'multiple' => true, 'choices' => " . str_replace("\n", '', $this->arrayExport($values));
 				break;
 		}
 
@@ -84,16 +84,20 @@ class dmDoctrineFormFilterGenerator extends sfDoctrineFormFilterGenerator
 	public function getValidatorOptionsForColumn($column)
 	{
 		$options = parent::getValidatorOptionsForColumn($column);
-
-		if(in_array($column->getDoctrineType(), array('date', 'datetime', 'timestamp')))
-		{
-			$options = "array('required' => false, 'choices' => array_keys(\$this->widgetSchema['{$column->getName()}']->getOption('choices')))";
-		}
-		elseif($column->getDoctrineType() === 'boolean')
-		{
-			$options = '';
-		}
-
+      switch ($column->getDoctrineType())
+      {
+        case 'boolean':
+			 $options = '';
+          break;
+        case 'date':
+        case 'datetime':
+        case 'timestamp':
+			 $options = "array('required' => false, 'choices' => array_keys(\$this->widgetSchema['{$column->getName()}']->getOption('choices')))";
+          break;
+        case 'enum':
+          $options = str_replace('array(', "array('multiple' => true, ", $options);
+          break;
+      }
 		return $options;
 	}
 
