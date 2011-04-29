@@ -123,7 +123,7 @@ class dmDbHelper
 				$sql = 'PRAGMA foreign_keys = ' . ($true ? 'ON' : 'OFF');
 				break;
 			default:
-				$sql = 'SET foreign_key_checks = ' . ($true ? '1' : '0');
+				$sql = 'SET @@foreign_key_checks = ' . ($true ? '1' : '0');
 				break;
 		}
 		$this->logSection('sql', $sql);
