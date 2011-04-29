@@ -63,7 +63,7 @@ class dmDoctrineFormFilterGenerator extends sfDoctrineFormFilterGenerator
 				$values = array('' => '');
 				$values = array_merge($values, $column['values']);
 				$values = array_combine($values, $values);
-				$options[] = "'multiple' => true, 'choices' => " . str_replace("\n", '', $this->arrayExport($values));
+				$options[] = "'choices' => " . str_replace("\n", '', $this->arrayExport($values));
 				break;
 		}
 
