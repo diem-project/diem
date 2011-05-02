@@ -132,7 +132,9 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 
 							if($foreignTable->isI18nColumn($foreignColumn))
 							{
+							  try{
 								$query->withI18n(); //leftJoin(sprintf('%s.%s %s', $joinAlias, 'Translation', $joinAlias.'Translation'));
+							  }catch(Exception $e){}
 							}
 						}
 
@@ -537,26 +539,13 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 		{
 			// validate ids
 			$ids = $validator->clean($ids);
-
-			//@todo add record security check here ! using dmModuleSecurityManager, create new method in it
-			//if there are some ids for which user can't execute the method, remove them, then execute them
-			//something like
-			$_action = substr($action, 5);
-			$_action = dmString::strtolower($_action);
-			$authorizedIdsForAction = $this->getDmModule()->getSecurityManager()->getIdsForAuthorizedActionWithinIds($_action, $this->getUser()->getUser(), $ids);
-			if(!$authorizedIdsForAction){
-				throw new LogicException('You cannot delete those elements because you are not authorized to do so.', 401);
-			}
-			if(count($ids) != count($authorizedIdsForAction)){
-				$request->setParameter('excluded_ids', array_diff($ids, $authorizedIdsForAction));
-			}
-			$request->setParameter('ids', $authorizedIdsForAction);
+			$request->setParameter('ids', $ids);
 			// execute batch
 			$this->$method($request);
 		}
 		catch (sfValidatorError $e)
 		{
-			$this->getUser()->setFlash('error', 'A problem occurs when deleting the selected items as some items do not exist anymore. ');
+			$this->getUser()->setFlash('error', 'A problem has occured when executing batch action for selected rows.');
 		}
 		catch (LogicException $e)
 		{

@@ -16,9 +16,9 @@ abstract class Base<?php echo ucfirst($this->getModuleName()) ?>GeneratorHelper 
     return '<?php echo $this->getModuleName() ?>';
   }
 
-  public function getRouteArrayForAction($action, $object = null)
+  public function getRouteArrayForAction($action, $object = null, $module = '<?php echo $this->params['route_prefix'] ?>', $key = 'pk', $value = null)
   {
-    $route = array('sf_route' => '<?php echo $this->params['route_prefix'] ?>');
+    $route = array('sf_route' => $module);
 
     if ('list' !== $action)
     {
@@ -27,7 +27,7 @@ abstract class Base<?php echo ucfirst($this->getModuleName()) ?>GeneratorHelper 
 
     if (null !== $object && !$object->isNew())
     {
-      $route['pk'] = $object->getPrimaryKey();
+      $route[$key] = $value === null ? $object->getPrimaryKey() : $object->get($value);
     }
 
     if(sfConfig::get('dm_admin_embedded'))
