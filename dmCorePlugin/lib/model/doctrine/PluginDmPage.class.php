@@ -15,9 +15,7 @@ abstract class PluginDmPage extends BaseDmPage
   protected
   $nameBackup;
 
-  protected static
-  $autoSeoFields = array('slug', 'name', 'title', 'h1', 'description', 'keywords');
-
+  
   /**
    * Is this page source referring to me ?
    */
@@ -299,7 +297,7 @@ LIMIT 1')->getStatement();
 
   public static function getAutoSeoFields()
   {
-    return self::$autoSeoFields;
+    return $this->getRecord()->getTable()->getAutoSeoFields();
   }
 
   /**
