@@ -215,4 +215,26 @@ class dmArray
 		}
 		return $ids;
 	}
+	
+	/**
+	 * Removes $key from $array
+	 * Can search for $value within $array as $key
+	 * 
+	 * @param array $array
+	 * @param mixed $key
+	 * @param boolean $search
+	 */
+	static public function remove(&$array, $key, $search = false)
+	{
+		if(!$search)
+		{
+			unset($array[$key]);
+		}
+		else
+		{
+			$key = array_search((string) $key, $array);
+			unset($array[$key]);
+		}
+		return $array;
+	}
 }
