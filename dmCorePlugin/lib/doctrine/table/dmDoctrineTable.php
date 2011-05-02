@@ -782,4 +782,10 @@ abstract class dmDoctrineTable extends Doctrine_Table
 		}
 		return false;
 	}
+	
+	
+  public function getAutoSeoFields()
+  {
+  	return array('slug', 'name', 'title', 'h1', 'description', 'keywords');
+  }
 }
