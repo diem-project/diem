@@ -195,15 +195,15 @@ class dmArray
 
 		return $array1;
 	}
-	
+
 	/**
 	 * Create an array of integers using $idKey from $array
 	 * Usefull when you want an array of all ids from a
 	 * dmDoctrineCollection for example.
-	 * 
+	 *
 	 * @param stirng $idKey
 	 * @param array $array
-	 * 
+	 *
 	 * @return array
 	 */
 	static public function toIds($idKey, $array)
@@ -215,11 +215,11 @@ class dmArray
 		}
 		return $ids;
 	}
-	
+
 	/**
 	 * Removes $key from $array
 	 * Can search for $value within $array as $key
-	 * 
+	 *
 	 * @param array $array
 	 * @param mixed $key
 	 * @param boolean $search
@@ -228,12 +228,20 @@ class dmArray
 	{
 		if(!$search)
 		{
-			unset($array[$key]);
+			$keys = (array) $key;
+			foreach($keys as $key)
+			{
+				unset($array[$key]);
+			}
 		}
 		else
 		{
-			$key = array_search((string) $key, $array);
-			unset($array[$key]);
+			$keys = (array) $key;
+			foreach($keys as $key)
+			{
+				 $key = array_search((string) $key, $array);
+				 if($key !== false) unset($array[$key]);
+			}
 		}
 		return $array;
 	}
