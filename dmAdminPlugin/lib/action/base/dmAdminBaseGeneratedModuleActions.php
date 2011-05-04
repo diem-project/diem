@@ -132,7 +132,9 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 
 							if($foreignTable->isI18nColumn($foreignColumn))
 							{
+							  try{
 								$query->withI18n(); //leftJoin(sprintf('%s.%s %s', $joinAlias, 'Translation', $joinAlias.'Translation'));
+							  }catch(Exception $e){}
 							}
 						}
 
@@ -543,7 +545,7 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 		}
 		catch (sfValidatorError $e)
 		{
-			$this->getUser()->setFlash('error', 'A problem occurs when deleting the selected items as some items do not exist anymore. ');
+			$this->getUser()->setFlash('error', 'A problem has occured when executing batch action for selected rows.');
 		}
 		catch (LogicException $e)
 		{
