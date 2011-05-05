@@ -372,7 +372,8 @@ abstract class dmModelGeneratorConfiguration extends sfModelGeneratorConfigurati
 	protected function getFormOptionsForEdit()
 	{
 		$fieldsets = $this->getEditDisplay();
-		return array('widgets' => dmArray::deepArrayUnion($this->getFieldsFromFieldsets(empty($fieldsets) ? $this->getFormDisplay() : $fieldsets), $this->getPrimaryKeys()));
+
+		return array('widgets' => array_merge($this->getPrimaryKeys(), $this->getFieldsFromFieldsets(empty($fieldsets) ? $this->getFormDisplay() : $fieldsets)));
 	}
 
 	protected function getFormOptionsForNew()
