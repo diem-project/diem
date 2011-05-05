@@ -335,7 +335,7 @@ abstract class dmModelGeneratorConfiguration extends sfModelGeneratorConfigurati
 
 	public function getFormOptions()
 	{
-		$method = 'getFormOptionsFor' . dmString::camelize($actionName = dmContext::getInstance()->getActionName());
+		$method = 'getFormOptionsFor' . dmString::camelize($actionName = $this->action->getActionName());
 		if(method_exists($this, $method))
 		{
 			return $this->$method();
@@ -372,7 +372,7 @@ abstract class dmModelGeneratorConfiguration extends sfModelGeneratorConfigurati
 	protected function getFormOptionsForEdit()
 	{
 		$fieldsets = $this->getEditDisplay();
-		return array('widgets' => dmArray::deepArrayUnion($this->getFieldsFromFieldsets(empty($fieldsets) ? $this->getFormDisplay() : $fieldsets), $this->getPrimaryKeys()));
+		return array('widgets' => array_merge($this->getFieldsFromFieldsets(empty($fieldsets) ? $this->getFormDisplay() : $fieldsets), $this->getPrimaryKeys()));
 	}
 
 	protected function getFormOptionsForNew()
@@ -383,7 +383,7 @@ abstract class dmModelGeneratorConfiguration extends sfModelGeneratorConfigurati
 
 	public function getFilterFormOptions()
 	{
-		$method = 'getFilterFormOptionsFor' . ucfirst(dmContext::getInstance()->getActionName());
+		$method = 'getFilterFormOptionsFor' . ucfirst($this->action->getActionName());
 		if(method_exists($this, $method))
 		{
 			return $this->$method();
