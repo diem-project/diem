@@ -144,12 +144,12 @@ class dmConfig
     {
       if(self::$culture == sfConfig::get('sf_default_culture'))
       {
-        $results = dmDb::pdo('SELECT s.name, t.value FROM dm_setting s LEFT JOIN dm_setting_translation t ON t.id=s.id AND t.lang = ?',
+        $results = dmDb::pdo('SELECT s.name, t.value, t.lang FROM dm_setting s LEFT JOIN dm_setting_translation t ON t.id=s.id AND t.lang = ?',
         array(self::$culture))->fetchAll(PDO::FETCH_NUM);
       }
       else
       {
-        $results = dmDb::pdo('SELECT s.name, t.value FROM dm_setting s LEFT JOIN dm_setting_translation t ON t.id=s.id AND t.lang IN (?, ?)',
+        $results = dmDb::pdo('SELECT s.name, t.value, t.lang FROM dm_setting s LEFT JOIN dm_setting_translation t ON t.id=s.id AND t.lang IN (?, ?)',
         array(self::$culture, sfConfig::get('sf_default_culture')))->fetchAll(PDO::FETCH_NUM);
       }
     }
@@ -165,8 +165,13 @@ class dmConfig
     self::$config = array();
     foreach($results as $result)
     {
-      self::$config[$result[0]] = $result[1];
+      if (!isset(self::$config[$result[0]]) || isset(self::$config[$result[0]]) && $result[2] == self::$culture)
+      {
+        self::$config[$result[0]] = $result[1];
+      }
+
     }
+
     unset($results);
 
     self::$loaded = true;
