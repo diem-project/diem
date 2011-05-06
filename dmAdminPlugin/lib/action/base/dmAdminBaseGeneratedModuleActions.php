@@ -1,7 +1,21 @@
 <?php
 
 class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
-{
+{ 
+	public function preExecute()
+  {
+  	parent::preExecute();
+    $this->configuration = new $this->configurationClass();
+    $this->configuration->setAction($this);
+    
+    $this->dispatcher->notify(new sfEvent($this, 'admin.pre_execute', array('configuration' => $this->configuration)));
+
+    $this->helper = new $this->helperClass($this->getDmModule());
+    $this->helper->setAction($this);
+  }
+	
+	
+	
 	protected function getRouteArrayForAction($action, $object = null)
 	{
 		$route = array('sf_route' => $this->getDmModule()->getUnderscore(), 'action' => $action);
