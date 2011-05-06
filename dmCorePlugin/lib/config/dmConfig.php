@@ -165,7 +165,7 @@ class dmConfig
     self::$config = array();
     foreach($results as $result)
     {
-      if (!isset($result[0]) || isset($result[0]) && $result[2] == self::$culture)
+      if (!isset(self::$config[$result[0]]) || isset(self::$config[$result[0]]) && $result[2] == self::$culture)
       {
         self::$config[$result[0]] = $result[1];
       }
