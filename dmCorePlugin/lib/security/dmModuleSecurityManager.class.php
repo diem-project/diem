@@ -304,7 +304,7 @@ class dmModuleSecurityManager extends dmModuleSecurityAbstract implements dmModu
       return false;
     }
     $config = $this->hasSecurityConfiguration($this->getApplication(), 'actions', $actionName);
-    return $config && $config['is_secure'];
+    return $config && isset($config['is_secure']) ? $config['is_secure'] : false;
   }
 
   /**
