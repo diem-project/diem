@@ -21,7 +21,6 @@
 
     $this->pager = $this->getPager();
     $this->sort = $this->getSort();
-    $this->security_manager = $this->getDmModule()->getSecurityManager();
     
     $this->setTemplate('index');
   }

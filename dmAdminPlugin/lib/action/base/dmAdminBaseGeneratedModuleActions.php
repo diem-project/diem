@@ -5,6 +5,7 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 	public function preExecute()
   {
   	parent::preExecute();
+  	
     $this->configuration = new $this->configurationClass();
     $this->configuration->setAction($this);
     
@@ -12,6 +13,8 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 
     $this->helper = new $this->helperClass($this->getDmModule());
     $this->helper->setAction($this);
+    
+    $this->security_manager = $this->getDmModule()->getSecurityManager($this);
   }
 	
 	
