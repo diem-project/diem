@@ -832,11 +832,13 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
 			$underscoredFieldName = dmString::underscore($fieldName);
 			if (strpos($underscoredFieldName, '_') !== false && $this->contains($underscoredFieldName))
 			{
-				return parent::_set($underscoredFieldName, $value, $load);
+				parent::_set($underscoredFieldName, $value, $load);
 			}
 		}
 
-		return parent::_set($fieldName, $value, $load);
+		parent::_set($fieldName, $value, $load);
+		
+		return $this;
 	}
 
 	public function getEventDispatcher()

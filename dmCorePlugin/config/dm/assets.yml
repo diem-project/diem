@@ -1,39 +1,53 @@
 js:
 
   core:
-    config:           dmCoreConfig
-    plugins:          dmCorePlugins
-    editPlugins:      dmCoreEditPlugins
-    ctrl:             dmCoreCtrl
-    editCtrl:         dmCoreEditCtrl
-    markdown:         dmCoreMarkdown
-    tabForm:          dmCoreTabForm
-    toolBar:          dmCoreToolBar
-    pageBar:          dmCorePageBar
-    mediaBar:         dmCoreMediaBar
-    codeArea:         dmCoreCodeArea
-    ping:             dmCorePing
+    config:                   dmCoreConfig
+    plugins:                  dmCorePlugins
+    editPlugins:              dmCoreEditPlugins
+    ctrl:                     dmCoreCtrl
+    editCtrl:                 dmCoreEditCtrl
+    markdown:                 dmCoreMarkdown
+    tabForm:                  dmCoreTabForm
+    toolBar:                  dmCoreToolBar
+    pageBar:                  dmCorePageBar
+    mediaBar:                 dmCoreMediaBar
+    codeArea:                 dmCoreCodeArea
+    ping:                     dmCorePing
     
   lib:
-    symfony_debug:    symfony/debug
-    jquery:           jquery/jquery-1.4.2.min
-    ui-core:          jquery-ui/js/minified/jquery.ui.core.min
-    ui-widget:        jquery-ui/js/minified/jquery.ui.widget.min
-    ui-mouse:         jquery-ui/js/minified/jquery.ui.mouse.min
-    ui-position:      jquery-ui/js/minified/jquery.ui.position.min
-    ui-draggable:     jquery-ui/js/minified/jquery.ui.draggable.min
-    ui-datepicker:    jquery-ui/js/minified/jquery.ui.datepicker.min
-    ui-droppable:     jquery-ui/js/minified/jquery.ui.droppable.min
-    ui-sortable:      jquery-ui/js/minified/jquery.ui.sortable.min
-    ui-resizable:     jquery-ui/js/minified/jquery.ui.resizable.min
-    ui-tabs:          jquery-ui/js/minified/jquery.ui.tabs.min
-    ui-dialog:        jquery-ui/js/minified/jquery.ui.dialog.min
-    ui-accordion:     jquery-ui/js/minified/jquery.ui.accordion.min
-    ui-slider:     jquery-ui/js/minified/jquery.ui.slider.min
-    ui-i18n:          jquery-ui/js/i18n/jquery.ui.datepicker-%culture%
+    symfony_debug:            symfony/debug
+    jquery:                   jquery/jquery-1.6.min
+    ui-core:                  jquery-ui/js/minified/jquery.ui.core.min
+    ui-widget:                jquery-ui/js/minified/jquery.ui.widget.min
+    ui-mouse:                 jquery-ui/js/minified/jquery.ui.mouse.min
+    ui-position:              jquery-ui/js/minified/jquery.ui.position.min
+    ui-draggable:             jquery-ui/js/minified/jquery.ui.draggable.min
+    ui-datepicker:            jquery-ui/js/minified/jquery.ui.datepicker.min
+    ui-droppable:             jquery-ui/js/minified/jquery.ui.droppable.min
+    ui-sortable:              jquery-ui/js/minified/jquery.ui.sortable.min
+    ui-resizable:             jquery-ui/js/minified/jquery.ui.resizable.min
+    ui-tabs:                  jquery-ui/js/minified/jquery.ui.tabs.min
+    ui-dialog:                jquery-ui/js/minified/jquery.ui.dialog.min
+    ui-accordion:             jquery-ui/js/minified/jquery.ui.accordion.min
+    ui-slider:                jquery-ui/js/minified/jquery.ui.slider.min
+    ui-i18n:                  jquery-ui/js/i18n/jquery.ui.datepicker-%culture%
+    ui-effects-blind:         jquery-ui/js/minified/jquery.effects.blind.min
+    ui-effects-bounce:        jquery-ui/js/minified/jquery.effects.bounce.min
+    ui-effects-clip:          jquery-ui/js/minified/jquery.effects.clip.min
+    ui-effects-core:          jquery-ui/js/minified/jquery.effects.core.min
+    ui-effects-drop:          jquery-ui/js/minified/jquery.effects.drop.min
+    ui-effects-explode:       jquery-ui/js/minified/jquery.effects.explode.min
+    ui-effects-fade:          jquery-ui/js/minified/jquery.effects.fade.min
+    ui-effects-fold:          jquery-ui/js/minified/jquery.effects.fold.min
+    ui-effects-highlight:     jquery-ui/js/minified/jquery.effects.highlight.min
+    ui-effects-pulsate:       jquery-ui/js/minified/jquery.effects.pulsate.min
+    ui-effects-scale:         jquery-ui/js/minified/jquery.effects.scale.min
+    ui-effects-shake:         jquery-ui/js/minified/jquery.effects.shake.min
+    ui-effects-slide:         jquery-ui/js/minified/jquery.effects.slide.min
+    ui-effects-transfer:      jquery-ui/js/minified/jquery.effects.transfer.min
     metadata:         metadata/jquery.metadata.min
     form:             form/jquery.form.hack
-    blockUI:          blockUI/jquery.blockUI-2.31.min
+    blockUI:          blockUI/jquery.blockUI-2.38
     jgrowl:           jgrowl/jquery.jgrowl_minimized
     ajaxqueue:        ajaxqueue/jquery.ajaxQueue
     cookie:           cookie/jquery.cookie.min
@@ -41,7 +55,7 @@ js:
     markitupSet:      dmMarkitup/sets/markdown/set
     expose:           expose/jquery.expose-1.0.1.min
     qtip:             qtip/jquery.qtip-1.0.0-rc3.min
-    hotkeys:          hotkeys/jquery.hotkeys-0.7.9.min
+    hotkeys:          hotkeys/jquery.hotkeys-0.8.min
     jstree:           jstree099b2/jquery.tree.min
     fieldSelection:   jquery-fieldselection/jquery-fieldselection
     panView:          panview/jquery-plugin-panview.min
