@@ -160,7 +160,7 @@ class dmMediaSynchronizer
 
       while(file_exists($renamedFile))
       {
-        $renamedFile = dmOs::randomizeFileName($renamedFile);
+        $renamedFile = dmOs::join(dirname($file),dmOs::randomizeFileName(basename($renamedFile)));
       }
       
       rename($file, $renamedFile);

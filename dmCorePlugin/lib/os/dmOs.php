@@ -95,6 +95,8 @@ class dmOs
 
   public static function sanitizeFileName($file)
   {
+    $file = self::getFileWithoutExtension($file) . strtolower(self::getFileExtension($file));
+
     return trim(preg_replace("|[".preg_quote('\'*"/\[]:;|=,', '|')."]+|i", '-', $file));
   }
 

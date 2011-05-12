@@ -23,6 +23,18 @@ class DmAdminMediaForm extends DmMediaForm
     }
   }
 
+  public function bind(array $taintedValues = null, array $taintedFiles = null)
+  {
+    foreach ($taintedFiles as $key => $data) {
+      $filename = $data['name'];
+
+      $taintedFiles[$key]['name'] = dmOs::getFileWithoutExtension($filename) .
+                                    strtolower(dmOs::getFileExtension($filename));
+    }
+
+    parent::bind($taintedValues, $taintedFiles);
+  }
+
   protected function getFolderChoices()
   {
     $_folderChoices = dmDb::query('DmMediaFolder f')
