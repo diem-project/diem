@@ -2,6 +2,7 @@
 class sfWidgetFormDmPaginatedDoctrineChoice extends sfWidgetFormDoctrineChoice
 {
 	protected $pager;
+	protected $inited = false;
 
 	public function __construct($options = array(), $attributes = array())
 	{
@@ -21,28 +22,50 @@ class sfWidgetFormDmPaginatedDoctrineChoice extends sfWidgetFormDoctrineChoice
 		$this->pager->setMaxPerPage($this->getOption('maxPerPage'));
 	}
 
+
+	public function init($force = false)
+	{
+		if(!$this->inited || $force)
+		{
+			if(!$this->pager->hasQuery() && $query = $this->getOption('query', false))
+			{
+				$this->pager->setQuery($query);
+			}
+
+			$this->inited = true;
+		}
+
+		return $this;
+	}
+
 	public function getChoices()
 	{
-		if(!isset($this->choices))
+		if(!isset($this->cache_choices))
 		{
-			if(isset($this->options['query']) && !$this->pager->hasQuery())
+			$this->init();
+			$choices = $this->getOption('choices', false);
+			if(!$choices) 
 			{
-				$this->pager->setQuery($this->options['query']);
-
+				$choices = $this->pager->getResults();
 			}
-			$this->pager->init();
-			$choices = $this->pager->getResults();
-			$this->choices = array();
-				
+			$this->cache_choices = array();
+
 			$method = $this->getOption('method');
 			$keyMethod = $this->getOption('key_method');
 
-			foreach($choices as $choice)
+			if($choices && count($choices) > 0 && is_object($choices[0]))
 			{
-				$this->choices[$choice->$keyMethod()] = $choice->$method();
+				foreach($choices as $choice)
+				{
+					$this->cache_choices[$choice->$keyMethod()] = $choice->$method();
+				}
+			}
+			elseif(isset($this->choices))
+			{
+				$this->cache_choices = $this->choices;
 			}
 		}
-		return $this->choices;
+		return $this->cache_choices;
 	}
 
 	public function setChoices($choices)
