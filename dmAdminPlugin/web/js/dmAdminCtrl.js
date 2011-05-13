@@ -158,7 +158,7 @@
       {
         $(this).click(function()
         {
-          self.$.find('input.sf_admin_batch_checkbox, input.sf_admin_list_batch_checkbox').attr('checked', $(this).attr('checked'));
+          self.$.find('input.sf_admin_batch_checkbox, input.sf_admin_list_batch_checkbox').prop('checked', $(this).prop('checked'));
         });
       });
       
