@@ -115,7 +115,9 @@ class DmPageFrontEditForm extends DmPageForm
       }
     }
     
-    $this->object->PageView->dmLayoutId = $values['dm_layout_id'];
+    $this->object->get('PageView')->set('dm_layout_id', $values['dm_layout_id']);
+    
+    unset($values['dm_layout_id']);
     
     parent::doUpdateObject($values);
   }
