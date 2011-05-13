@@ -291,7 +291,7 @@
 				  var self = $(this);
 				  e.preventDefault();
 				  $widgetContent.block();  //widget content
-				  var target = $(e.originalTarget);
+				  var target = $(e.target);
 				  var link = metadata.link;
 				  var currentPage = metadata.currentPage;
 				  var requestedPage = null;
