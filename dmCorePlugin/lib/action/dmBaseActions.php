@@ -60,7 +60,8 @@ abstract class dmBaseActions extends sfActions
     // translate asset aliases to web paths
     foreach($parts['css'] as $index => $asset)
     {
-      $parts['css'][$index] = $this->getHelper()->getStylesheetWebPath($asset);
+      if (!is_int($index)) $asset = $index;  // Hard fix by TheCelavi
+      $parts['css'][$index] = $this->getHelper()->getStylesheetWebPath($asset); // TODO Switch to $asset if fix does not work
     }
     foreach($parts['js'] as $index => $asset)
     {
@@ -88,8 +89,7 @@ abstract class dmBaseActions extends sfActions
           $parts['html'] .= '<script type="text/javascript" src="'.$js.'"></script>';
         }
       }
-    }
-
+    }    
     $this->response->setContentType('text/html');
     $this->response->setContent($parts['html']);
 
