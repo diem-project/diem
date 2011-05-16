@@ -18,15 +18,9 @@ abstract class <?php echo $this->getGeneratedModuleName() ?>Actions extends <?ph
 	 */
   protected $dmModule;
   
-  public function preExecute()
-  {
-  	parent::preExecute();
-    $this->configuration = new <?php echo $this->getModuleName() ?>GeneratorConfiguration();
-
-    $this->dispatcher->notify(new sfEvent($this, 'admin.pre_execute', array('configuration' => $this->configuration)));
-
-    $this->helper = new <?php echo $this->getModuleName() ?>GeneratorHelper($this->getDmModule());
-  }
+  protected $helperClass = '<?php echo $this->getModuleName() ?>GeneratorHelper';
+  
+  protected $configurationClass = '<?php echo $this->getModuleName() ?>GeneratorConfiguration';
   
   /**
    * @return string the module key

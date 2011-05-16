@@ -3,6 +3,17 @@
 abstract class dmDoctrineCollection extends Doctrine_Collection
 {
   
+	/**
+	 * @param myDoctrineRecord $record
+	 * @param mixed $key
+	 * @return myDoctrineCollection
+	 */
+	public function add($record, $key = null)
+	{
+		parent::add($record, $key);
+		return $this;
+	}
+	
   /**
    * Processes the difference of the last snapshot and the current data
    *

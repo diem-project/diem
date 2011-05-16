@@ -1,7 +1,24 @@
 <?php
 
 class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
-{
+{ 
+	public function preExecute()
+  {
+  	parent::preExecute();
+  	
+    $this->configuration = new $this->configurationClass();
+    $this->configuration->setAction($this);
+    
+    $this->dispatcher->notify(new sfEvent($this, 'admin.pre_execute', array('configuration' => $this->configuration)));
+
+    $this->helper = new $this->helperClass($this->getDmModule());
+    $this->helper->setAction($this);
+    
+    $this->security_manager = $this->getDmModule()->getSecurityManager($this);
+  }
+	
+	
+	
 	protected function getRouteArrayForAction($action, $object = null)
 	{
 		$route = array('sf_route' => $this->getDmModule()->getUnderscore(), 'action' => $action);
@@ -132,7 +149,9 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 
 							if($foreignTable->isI18nColumn($foreignColumn))
 							{
+							  try{
 								$query->withI18n(); //leftJoin(sprintf('%s.%s %s', $joinAlias, 'Translation', $joinAlias.'Translation'));
+							  }catch(Exception $e){}
 							}
 						}
 
@@ -543,7 +562,7 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 		}
 		catch (sfValidatorError $e)
 		{
-			$this->getUser()->setFlash('error', 'A problem occurs when deleting the selected items as some items do not exist anymore. ');
+			$this->getUser()->setFlash('error', 'A problem has occured when executing batch action for selected rows.');
 		}
 		catch (LogicException $e)
 		{

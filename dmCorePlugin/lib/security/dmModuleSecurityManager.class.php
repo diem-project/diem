@@ -74,7 +74,7 @@ class dmModuleSecurityManager extends dmModuleSecurityAbstract implements dmModu
           foreach($actionsConfig as $actionName=>$actionConfig)
           {
             if(!is_array($actionConfig)) continue;
-            if($actionConfig['is_secure'])
+            if(isset($actionConfig['is_secure']) || (!isset($actionConfig['is_secure']) && !empty($actionConfig['is_secure']) && count($actionConfig['is_secure']) > 0))
             {
               $this->getStrategy($actionConfig['strategy'], $actionKind)->secure($module, $actionName, $actionConfig);
             }
@@ -304,7 +304,7 @@ class dmModuleSecurityManager extends dmModuleSecurityAbstract implements dmModu
       return false;
     }
     $config = $this->hasSecurityConfiguration($this->getApplication(), 'actions', $actionName);
-    return $config && $config['is_secure'];
+    return $config && isset($config['is_secure']) ? $config['is_secure'] : false;
   }
 
   /**

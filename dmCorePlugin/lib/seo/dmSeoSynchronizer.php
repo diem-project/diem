@@ -1,17 +1,18 @@
 <?php
 
-class dmSeoSynchronizer
+class dmSeoSynchronizer extends dmMicroCache
 {
-  protected static
+  /*protected static
   $truncateCache,
   $patternsPlaceholdersCache = array(),
   $shouldProcessMarkdownCache = array(),
-  $moduleIsActivatable = array();
+  $moduleIsActivatable = array();*/
 
   protected
   $moduleManager,
   $culture,
-  $nodeParentIdStmt;
+  $nodeParentIdStmt,
+  $currentModule;
 
   public function __construct(dmModuleManager $moduleManager)
   {
@@ -21,8 +22,14 @@ class dmSeoSynchronizer
   public function setCulture($culture)
   {
     $this->culture = $culture;
+    return $this;
   }
 
+  public function setModule($module)
+  {
+  	$this->currentModule = $module;
+  }
+  
   public function execute(array $onlyModules, $culture)
   {
     $this->setCulture($culture);
@@ -43,6 +50,7 @@ class dmSeoSynchronizer
 
     foreach($onlyModules as $module)
     {
+    	$this->clearCache();
       $this->updateRecursive($module);
     }
 
@@ -60,6 +68,34 @@ class dmSeoSynchronizer
 
       return;
     }
+    
+    $this->currentModule = $module;
+
+    /*
+     * get pages
+     */
+    $pdoPages = dmDb::pdo('
+SELECT p.id, p.lft, p.rgt, p.record_id, t.auto_mod, t.slug, t.name, t.title, t.h1, t.description, t.keywords, t.is_active, t.id as exist
+FROM dm_page p LEFT JOIN dm_page_translation t ON (t.id = p.id AND t.lang = ?)
+WHERE p.module = ? AND p.action = ?', array($this->culture, $module->getKey(), 'show')
+    )->fetchAll(PDO::FETCH_ASSOC);
+
+    $pages = array();
+    foreach($pdoPages as $p)
+    {
+      $pages[$p['id']] = $p;
+    }
+    unset($pdoPages);
+
+    
+    /*
+     * get records
+     */
+    $records = $module->getTable()->createQuery('r INDEXBY r.id')
+    ->withI18n($this->culture, $module->getModel(), 'r')
+    ->fetchRecords()
+    ->getData();
+        
 
     /*
      * get autoSeo patterns
@@ -78,9 +114,9 @@ class dmSeoSynchronizer
     }
 
     $autoSeoRecordTranslation = $autoSeoRecord->getOrCreateCurrentTranslation();
-
+    
     $patterns = array();
-    foreach(DmPage::getAutoSeoFields() as $patternField)
+    foreach($module->getTable()->getAutoSeoFields() as $patternField)
     {
       $patterns[$patternField] = $autoSeoRecordTranslation->get($patternField);
     }
@@ -89,30 +125,6 @@ class dmSeoSynchronizer
     {
       unset($patterns['keywords']);
     }
-
-    /*
-     * get pages
-     */
-    $pdoPages = dmDb::pdo('
-SELECT p.id, p.lft, p.rgt, p.record_id, t.auto_mod, t.slug, t.name, t.title, t.h1, t.description, t.keywords, t.is_active, t.id as exist
-FROM dm_page p LEFT JOIN dm_page_translation t ON (t.id = p.id AND t.lang = ?)
-WHERE p.module = ? AND p.action = ?', array($this->culture, $module->getKey(), 'show')
-    )->fetchAll(PDO::FETCH_ASSOC);
-
-    $pages = array();
-    foreach($pdoPages as $p)
-    {
-      $pages[$p['id']] = $p;
-    }
-    unset($pdoPages);
-
-    /*
-     * get records
-     */
-    $records = $module->getTable()->createQuery('r INDEXBY r.id')
-    ->withI18n($this->culture, $module->getModel(), 'r')
-    ->fetchRecords()
-    ->getData();
 
     /*
      * get parent slugs
@@ -300,12 +312,12 @@ WHERE p.module = ? AND p.action = ?', array($this->culture, $module->getKey(), '
 
   protected function shouldUpdatePageIsActiveForModule(dmProjectModule $module)
   {
-    if(!isset(self::$moduleIsActivatable[$module->getKey()]))
+    if(!isset($this->moduleIsActivatable[$module->getKey()]))
     {
-      self::$moduleIsActivatable[$module->getKey()] = $module->getTable()->hasField('is_active');
+      $this->moduleIsActivatable[$module->getKey()] = $module->getTable()->hasField('is_active');
     }
 
-    return self::$moduleIsActivatable[$module->getKey()];
+    return $this->moduleIsActivatable[$module->getKey()];
   }
 
   public function validatePattern(dmProjectModule $module, $field, $pattern, dmDoctrineRecord $record = null)
@@ -334,7 +346,7 @@ WHERE p.module = ? AND p.action = ?', array($this->culture, $module->getKey(), '
     $moduleKey = $module->getKey();
     $replacements = array();
 
-    foreach(self::getPatternsPlaceholders($patterns) as $placeholder)
+    foreach($this->getPatternsPlaceholders($patterns) as $placeholder)
     {
       if ('culture' === $placeholder || 'user.culture' === $placeholder)
       {
@@ -393,7 +405,7 @@ WHERE p.module = ? AND p.action = ?', array($this->culture, $module->getKey(), '
             $usedValue = $usedRecord->{'get'.dmString::camelize($field)}();
           }
 
-          $processMarkdown = self::shouldProcessMarkdown($usedRecord->getTable(), $field);
+          $processMarkdown = $this->shouldProcessMarkdown($usedRecord->getTable(), $field);
         }
 
         unset($usedRecord);
@@ -455,7 +467,7 @@ WHERE p.module = ? AND p.action = ?', array($this->culture, $module->getKey(), '
         $value = strtr($pattern, $replacements);
       }
 
-      $values[$field] = self::truncateValueForField(trim($value), $field);
+      $values[$field] = $this->truncateValueForField(trim($value), $field);
     }
 
     return $values;
@@ -517,55 +529,56 @@ LIMIT 1')->getStatement();
     return $this->nodeParentIdStmt->fetchColumn();
   }
 
-  protected static function getPatternsPlaceholders(array $patterns)
+  protected function getPatternsPlaceholders(array $patterns)
   {
     $flatPatterns = implode('', $patterns);
 
-    if(isset(self::$patternsPlaceholdersCache[$flatPatterns]))
+    if($this->hasCache($cacheKey = sprintf('patterns_placeholder_cache_%s', $flatPatterns)))
     {
-      return self::$patternsPlaceholdersCache[$flatPatterns];
+      return $this->getCache($cacheKey);
     }
 
     preg_match_all('/%([\w\d\.-]+)%/i', $flatPatterns, $results);
 
-    return self::$patternsPlaceholdersCache[$flatPatterns] = array_unique($results[1]);
+    return $this->setCache($cacheKey, array_unique($results[1]));
   }
 
-  protected static function shouldProcessMarkdown(dmDoctrineTable $table, $field)
+  protected function shouldProcessMarkdown(dmDoctrineTable $table, $field)
   {
     $key = $table->getComponentName().'.'.$field;
 
-    if(isset(self::$shouldProcessMarkdownCache[$key]))
+    if($this->hasCache($cacheKey = 'should_process_markdown_%s', $key))
     {
-      return self::$shouldProcessMarkdownCache[$key];
+      return $this->getCache($cacheKey);
     }
 
-    return self::$shouldProcessMarkdownCache[$key] = $table->hasField($field) && $table->isMarkdownColumn($field);
+    return $this->setCache($cacheKey, $table->hasField($field) && $table->isMarkdownColumn($field));
   }
 
   /**
    * Static methods
    */
 
-  public static function truncateValueForField($value, $field)
+  public function truncateValueForField($value, $field)
   {
     return function_exists('mb_substr')
-    ? mb_substr($value, 0, self::getFieldMaxLength($field))
-    : substr($value, 0, self::getFieldMaxLength($field));
+    ? mb_substr($value, 0, $this->getFieldMaxLength($field))
+    : substr($value, 0, $this->getFieldMaxLength($field));
   }
 
-  public static function getFieldMaxLength($field)
+  public function getFieldMaxLength($field)
   {
-    if (null === self::$truncateCache)
+    if (!$this->hasCache('truncate'))
     {
       $truncateConfig = sfConfig::get('dm_seo_truncate');
-      self::$truncateCache = array();
-      foreach(DmPage::getAutoSeoFields() as $seoField)
+      $cache = array();
+      foreach($this->currentModule->getTable()->getAutoSeoFields() as $seoField)
       {
-        self::$truncateCache[$seoField] = dmArray::get($truncateConfig, $seoField, 255);
+        $cache[$seoField] = dmArray::get($truncateConfig, $seoField, 255);
       }
+      $this->setCache('truncate', $cache);
     }
 
-    return self::$truncateCache[$field];
+    return dmArray::get($this->getCache('truncate'), $field);
   }
 }
