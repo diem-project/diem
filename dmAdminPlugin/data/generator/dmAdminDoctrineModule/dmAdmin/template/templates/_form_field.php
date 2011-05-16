@@ -76,7 +76,7 @@
       	if($form[$name]->getWidget() instanceof sfWidgetFormDmPaginatedDoctrineChoice){
         	$pager = $form[$name]->getWidget()->getPager();
         	$pager->setMaxPerPage($sf_user->getAttribute('<?php echo $this->getModuleName()?>.' . $name . '.max_per_page', 10, 'admin_module'));
-        	$pager->init();
+        	$widget->init();
         	$linkArray = $helper->getRouteArrayForAction('paginateRelation', $form->getObject());
         	$linkArray['field'] = $name;
         	ob_start();
