@@ -105,6 +105,18 @@ class dmDoctrineFormFilterGenerator extends sfDoctrineFormFilterGenerator
 		return $options;
 	}
 
+	public function getValidatorForColumn( $column )
+	{
+		$format = 'new %s(%s)';
+
+		if (in_array( $class = $this->getValidatorClassForColumn( $column ) , array( 'sfValidatorInteger' , 'sfValidatorNumber' , 'sfValidatorString'  ) ))
+		{
+			$format = 'new sfValidatorSchemaFilter(\'text\', new %s(%s))';
+		}
+
+		return sprintf( $format , $class , $this->getValidatorOptionsForColumn( $column ) );
+	}
+
 	public function getAllColumns()
 	{
 		return array_merge($this->getColumns(), $this->getI18nColumns());
