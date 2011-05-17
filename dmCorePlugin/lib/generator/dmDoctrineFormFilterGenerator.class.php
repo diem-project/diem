@@ -84,17 +84,37 @@ class dmDoctrineFormFilterGenerator extends sfDoctrineFormFilterGenerator
 	public function getValidatorOptionsForColumn($column)
 	{
 		$options = parent::getValidatorOptionsForColumn($column);
-
-		if(in_array($column->getDoctrineType(), array('date', 'datetime', 'timestamp')))
-		{
-			$options = "array('required' => false, 'choices' => array_keys(\$this->widgetSchema['{$column->getName()}']->getOption('choices')))";
-		}
-		elseif($column->getDoctrineType() === 'boolean')
-		{
-			$options = '';
-		}
-
+      switch ($column->getDoctrineType())
+      {
+        case 'boolean':
+			 $options = '';
+          break;
+        case 'date':
+        case 'datetime':
+        case 'timestamp':
+			 $options = "array('required' => false, 'choices' => array_keys(\$this->widgetSchema['{$column->getName()}']->getOption('choices')))";
+          break;
+        case 'enum':
+			 $options = array("'required' => false");
+          $options[] = "'multiple' => true ";
+          $values = array_combine($column['values'], $column['values']);
+          $options[] = "'choices' => ".$this->arrayExport($values);
+			 $options = sprintf('array(%s)', implode(', ', $options));
+          break;
+      }
 		return $options;
+	}
+
+	public function getValidatorForColumn( $column )
+	{
+		$format = 'new %s(%s)';
+
+		if (in_array( $class = $this->getValidatorClassForColumn( $column ) , array( 'sfValidatorInteger' , 'sfValidatorNumber' , 'sfValidatorString'  ) ))
+		{
+			$format = 'new sfValidatorSchemaFilter(\'text\', new %s(%s))';
+		}
+
+		return sprintf( $format , $class , $this->getValidatorOptionsForColumn( $column ) );
 	}
 
 	public function getAllColumns()
