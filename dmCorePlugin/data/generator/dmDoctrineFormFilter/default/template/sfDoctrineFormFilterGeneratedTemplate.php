@@ -23,7 +23,7 @@ abstract class Base<?php echo $this->table->getOption('name') ?>FormFilter exten
 <?php foreach ($this->getColumns(true, true, true) as $column): ?>
 		if($this->needsWidget('<?php echo $column->getFieldName()?>')){
 			$this->setWidget('<?php echo $column->getFieldName() ?>', new <?php echo $this->getWidgetClassForColumn($column) ?>(<?php echo $this->getWidgetOptionsForColumn($column) ?>));
-			$this->setValidator('<?php echo $column->getFieldName() ?>', new <?php echo $this->getValidatorClassForColumn($column) ?>(<?php echo $this->getValidatorOptionsForColumn($column) ?>));
+			$this->setValidator('<?php echo $column->getFieldName() ?>', <?php echo $this->getValidatorForColumn($column) ?>);
 		}
 <?php endforeach; ?>
 
