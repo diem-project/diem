@@ -299,31 +299,43 @@ class dmWebResponse extends sfWebResponse
    * 
    * The result, per example, should be: xmlns:og="http://ogp.me/ns#"
    * 
+   * @return dmWebResponse instance
+   * 
    */
   public function addXmlNs($namespace, $schema) {
       $this->xmlns[$namespace] = $schema;
+      return $this;
   }
   /**
    * Sets custom XML namespace
    * @see addXmlNs
    * @param type $namespace
    * @param type $schema 
+   * 
+   * @return dmWebResponse instance
    */
   public function setXmlNs($namespace, $schema) {
       $this->addXmlNs($namespace, $schema);
+      return $this;
   }
   /**
    * Removes custom XML namespace
    * @param type $namespace 
+   * 
+   * @return dmWebResponse instance
    */
   public function removeXmlNs($namespace) {
       if (isset($this->xmlns[$namespace])) unset($this->xmlns[$namespace]);
+      return $this;
   }
   /**
    * Removes all custom XML namespace
+   * 
+   * @return dmWebResponse instance
    */
   public function clearXmlNs() {
       $this->xmlns = array();
+      return $this;
   }
   /**
    * Returns all added custom XML namespaces
@@ -357,6 +369,8 @@ class dmWebResponse extends sfWebResponse
    * @param array $attributes
    * @param mixed $value 
    * 
+   * @return dmWebResponse instance
+   * 
    */
   public function addCustomHeadTag($tagName, $attributes = array(), $value = null) {
       $this->customHeadTags[] = array(
@@ -364,6 +378,7 @@ class dmWebResponse extends sfWebResponse
           'attributes'=>$attributes,
           'value'=>$value
       );
+      return $this;
   }
   /**
    * Sets a custom HEAD tag or adds it if it does not exist
@@ -373,6 +388,8 @@ class dmWebResponse extends sfWebResponse
    * @param string $tagName
    * @param array $attributes
    * @param mixed $value 
+   * 
+   * @return dmWebResponse instance
    */
   public function setCustomHeadTagByIndex($index, $tagName, $attributes = array(), $value = null) {
       if (isset($this->customHeadTags[$index])) $this->customHeadTags[$i] = array(
@@ -380,20 +397,26 @@ class dmWebResponse extends sfWebResponse
           'attributes'=>$attributes,
           'value'=>$value
       ); else $this->addCustomHeadTag ($tagName, $attributes, $value);
+      return $this;
   }
   
   /**
    * Removes a custom HEAD tag
    * @param int $index 
+   * 
+   * @return dmWebResponse instance
    */
   
   public function removeCustomHeadTag($index) {
       if (isset($this->customHeadTags[$index])) unset($this->customHeadTags[$index]);
+      return $this;
   }
   
   /**
    * Removes all custom HEAD tags by name
    * @param string $tagName 
+   * 
+   * @return dmWebResponse instance
    */
   public function removeCustomHeadTagsByName($tagName) {
       $bucket = array();
@@ -401,13 +424,16 @@ class dmWebResponse extends sfWebResponse
           if ($this->customHeadTags[$i]['name'] == $tagName) $bucket[] = $i;
       }
       foreach ($bucket as $rem) unset ($this->customHeadTags[$rem]);
+      return $this;
   }
   
   /**
    * Removes all custom HEAD tags
+   * @return dmWebResponse instance
    */
   public function clearCustomHeadTags() {
       $this->customHeadTags = array();
+      return $this;
   }
   
   /**
