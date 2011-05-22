@@ -229,7 +229,7 @@ class dmAdminDoctrineGenerator extends sfDoctrineGenerator
 
     if ($field->isLink())
     {
-      $html = sprintf("\$security_manager->userHasCredentials('edit', \$%s) ? _link('@%s?action=edit&pk='.\$%s->getPrimaryKey())->text(%s)->addClass('link_edit') : (%s)", $this->getSingularName(), $this->module->getUnderscore(), $this->getSingularName(), $html, $html);
+      $html = sprintf("\$security_manager->userHasCredentials('edit', \$%s) ? _link(\$%s)->text(\$%s)->addClass('link_edit') : (%s)", $this->getSingularName(), $this->getSingularName(), $this->getSingularName(), $html, $html);
     }
 
     return $html;
