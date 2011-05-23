@@ -20,7 +20,7 @@ class dmFrontInitFilter extends dmInitFilter
       $this->loadAssetConfig();
 
       // ajax calls use dm_cpi or page_id request parameter to set a page
-      if($pageId = $this->request->getParameter('dm_cpi', $this->request->getParameter('page_id')))
+      if($pageId = $this->request->getParameter('dm_cpi', $this->request->getParameter('page_id', 1)))
       {
         if (!$page = dmDb::table('DmPage')->findOneByIdWithI18n($pageId))
         {
@@ -95,7 +95,7 @@ class dmFrontInitFilter extends dmInitFilter
     return $this->context->getEventDispatcher()->filter(
       new sfEvent($this, 'dm.page_cache.enable', array('context' => $this->context)),
       // by default, the page is cached only for non-authenticated users
-      !$this->user->isAuthenticated()
+      !$this->user->can('page_edit')
     )->getReturnValue();
   }
 
