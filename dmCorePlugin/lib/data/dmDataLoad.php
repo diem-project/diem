@@ -90,6 +90,7 @@ class dmDataLoad
          * Try to find an existing config from another culture
          */
         $existing = $table
+        ->createQuery('s')
         ->where('s.id = ?', $mailTemplate->id)
         ->limit(1)
         ->fetchArray();
