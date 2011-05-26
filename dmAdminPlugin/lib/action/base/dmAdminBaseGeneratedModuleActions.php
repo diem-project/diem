@@ -5,7 +5,7 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 	public function preExecute()
 	{
 		parent::preExecute();
-		 
+			
 		$this->configuration = new $this->configurationClass();
 		$this->configuration->setAction($this);
 
@@ -17,6 +17,16 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 		$this->security_manager = $this->getDmModule()->getSecurityManager($this);
 	}
 
+	public function getCredential()
+	{
+		$can = $this->getDmModule()->getSecurityManager()->userHasCredentials($this->actionName);
+
+		if(!$can)
+		{
+			return DmPermission::NEVER_GRANT_ACCESS; //we hope such credentials will never exists
+		}
+		return $can;
+	}
 
 
 	protected function getRouteArrayForAction($action, $object = null)

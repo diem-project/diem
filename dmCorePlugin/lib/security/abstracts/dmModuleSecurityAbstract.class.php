@@ -9,7 +9,7 @@
  * @author serard
  *
  */
-class dmModuleSecurityAbstract extends dmMicroCache
+class dmModuleSecurityAbstract extends dmMetaCache
 {
 
   /**
@@ -40,6 +40,8 @@ class dmModuleSecurityAbstract extends dmMicroCache
     $this->context = $context;
     $this->container = $container;
     $this->user = $user;
+    
+    $this->initialize(array('cache_dir' => dmOs::join(sfConfig::get('sf_cache_dir'), $this->getApplication(), 'security')));
   }
 
   /**
