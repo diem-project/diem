@@ -445,7 +445,10 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
     {
       foreach($pageChildren as $childPage)
       {
-        $this->addChild($childPage->get('name'), $childPage)->addRecursiveChildren($depth - 1);
+        if ( $childPage->getIsActive() )
+        {
+            $this->addChild($childPage->get('name'), $childPage)->addRecursiveChildren($depth - 1);
+        }
       }
     }
 
