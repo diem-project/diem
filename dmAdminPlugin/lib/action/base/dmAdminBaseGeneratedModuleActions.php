@@ -304,7 +304,7 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 		$translationAlias = $rootAlias.'Translation';
 		$table = null === $table ? $this->getDmModule()->getTable() : $table;
 
-		$query->withI18n($this->getUser()->getCulture(), $this->getDmModule()->getModel());
+		$query->withI18n($this->getUser()->getCulture(), $table ? $table->getOption('name') : $this->getDmModule()->getModel());
 
 		foreach($searchParts as $searchPart)
 		{
