@@ -46,7 +46,7 @@ class BasedmPageActions extends dmAdminBaseActions
     $field = $request->getParameter('field');
 
     $page->set($field, $request->getParameter('value'));
-    $page->save();
+    $page->updateAutoModFromModified()->save();
 
     return $this->renderText($page->get($field));
   }
