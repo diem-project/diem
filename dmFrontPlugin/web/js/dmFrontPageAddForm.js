@@ -92,7 +92,7 @@
       }
     },
     
-    slugify: function(str)
+    slugify: function(str) // TODO - what about other chars that are valid and can be converted? Like č to c, or š to s? This should be done with ajax load based on current culture...
     {
       var self = this;
       

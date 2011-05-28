@@ -8,14 +8,19 @@ class dmWebResponse extends sfWebResponse
   $cdnConfig,
   $javascriptConfig,
   $culture,
-  $theme;
-  
+  $theme,
+  $xmlns, // Enhancement: TheCelavi -> holder for custom XML name spaces
+  $customHeadTags; // Enhancement: TheCelavi -> holder for custom head tags
+          
   public function initialize(sfEventDispatcher $dispatcher, $options = array())
   {
     parent::initialize($dispatcher, $options);
     
     $this->javascriptConfig = array();
-    
+    // Enhancement: TheCelavi -> custom XML ns and HEAD tags
+    $this->xmlns = array();
+    $this->customHeadTags = array();
+    // End enhancement
     $this->dispatcher->connect('user.change_culture', array($this, 'listenToChangeCultureEvent'));
     
     $this->dispatcher->connect('user.change_theme', array($this, 'listenToChangeThemeEvent'));
@@ -281,4 +286,172 @@ class dmWebResponse extends sfWebResponse
   {
     $this->isHtmlForHuman = (bool) $val;
   }
+  
+  /*
+   * Enhancement: The Celavi
+   * Support for the custom XML namespaces
+   */
+  
+  /**
+   * Add custom XML namespace
+   * @param type $namespace - the namespace, the output will be xmlns:$namespace, example: og
+   * @param type $schema - path to the schema, add full URI, example: http://ogp.me/ns#
+   * 
+   * The result, per example, should be: xmlns:og="http://ogp.me/ns#"
+   * 
+   * @return dmWebResponse instance
+   * 
+   */
+  public function addXmlNs($namespace, $schema) {
+      $this->xmlns[$namespace] = $schema;
+      return $this;
+  }
+  /**
+   * Sets custom XML namespace
+   * @see addXmlNs
+   * @param type $namespace
+   * @param type $schema 
+   * 
+   * @return dmWebResponse instance
+   */
+  public function setXmlNs($namespace, $schema) {
+      $this->addXmlNs($namespace, $schema);
+      return $this;
+  }
+  /**
+   * Removes custom XML namespace
+   * @param type $namespace 
+   * 
+   * @return dmWebResponse instance
+   */
+  public function removeXmlNs($namespace) {
+      if (isset($this->xmlns[$namespace])) unset($this->xmlns[$namespace]);
+      return $this;
+  }
+  /**
+   * Removes all custom XML namespace
+   * 
+   * @return dmWebResponse instance
+   */
+  public function clearXmlNs() {
+      $this->xmlns = array();
+      return $this;
+  }
+  /**
+   * Returns all added custom XML namespaces
+   * @return array of added custom XML namespaces
+   */
+  public function getAllXmlNs() {
+      return $this->xmlns;
+  }
+  /**
+   * Returns XML namespace full URI for added custom XML namespace
+   * @param string $namespace
+   * @return string XML namespace full URI
+   */
+  public function getXmlNs($namespace) {
+      if (isset($this->xmlns[$namespace])) return $this->xmlns[$namespace];
+      else return null;
+  }
+
+  /*
+   * Enhancement: The Celavi
+   * Support for the custom HEAD tags
+   */
+  
+  /**
+   * Add a custom HEAD tag
+   * 
+   * example: <tagName attr1="attr_1_val" attr2="attr_2_val">value</tagName>
+   * or: <tagName attr1="attr_1_val" attr2="attr_2_val" /> if value is not given
+   * 
+   * @param string $tagName
+   * @param array $attributes
+   * @param mixed $value 
+   * 
+   * @return dmWebResponse instance
+   * 
+   */
+  public function addCustomHeadTag($tagName, $attributes = array(), $value = null) {
+      $this->customHeadTags[] = array(
+          'tagName'=>$tagName,
+          'attributes'=>$attributes,
+          'value'=>$value
+      );
+      return $this;
+  }
+  /**
+   * Sets a custom HEAD tag or adds it if it does not exist
+   * 
+   * @see addCustomHeadTag
+   * @param int $index
+   * @param string $tagName
+   * @param array $attributes
+   * @param mixed $value 
+   * 
+   * @return dmWebResponse instance
+   */
+  public function setCustomHeadTagByIndex($index, $tagName, $attributes = array(), $value = null) {
+      if (isset($this->customHeadTags[$index])) $this->customHeadTags[$i] = array(
+          'tagName'=>$tagName,
+          'attributes'=>$attributes,
+          'value'=>$value
+      ); else $this->addCustomHeadTag ($tagName, $attributes, $value);
+      return $this;
+  }
+  
+  /**
+   * Removes a custom HEAD tag
+   * @param int $index 
+   * 
+   * @return dmWebResponse instance
+   */
+  
+  public function removeCustomHeadTag($index) {
+      if (isset($this->customHeadTags[$index])) unset($this->customHeadTags[$index]);
+      return $this;
+  }
+  
+  /**
+   * Removes all custom HEAD tags by name
+   * @param string $tagName 
+   * 
+   * @return dmWebResponse instance
+   */
+  public function removeCustomHeadTagsByName($tagName) {
+      $bucket = array();
+      for ($i=0; $i<count($this->customHeadTags); $i++) {
+          if ($this->customHeadTags[$i]['name'] == $tagName) $bucket[] = $i;
+      }
+      foreach ($bucket as $rem) unset ($this->customHeadTags[$rem]);
+      return $this;
+  }
+  
+  /**
+   * Removes all custom HEAD tags
+   * @return dmWebResponse instance
+   */
+  public function clearCustomHeadTags() {
+      $this->customHeadTags = array();
+      return $this;
+  }
+  
+  /**
+   * Returns a custom HEAD tag by index
+   * @param int $index
+   * @return array 
+   */
+  public function getCustomHeadTagByIndex($index) {
+      if (isset($this->customHeadTags[$index]))          return $this->customHeadTags[$index];
+      else          return null;
+  }
+  
+  /**
+   * Returns all custom HEAD tags
+   * @return array
+   */
+  public function getCustomHeadTags(){
+      return $this->customHeadTags;
+  }
+  
 }
