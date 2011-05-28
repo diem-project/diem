@@ -16,7 +16,7 @@ js:
     
   lib:
     symfony_debug:            symfony/debug
-    jquery:                   jquery/jquery-1.6.min
+    jquery:                   jquery/jquery-1.6.1.min
     ui-core:                  jquery-ui/js/minified/jquery.ui.core.min
     ui-widget:                jquery-ui/js/minified/jquery.ui.widget.min
     ui-mouse:                 jquery-ui/js/minified/jquery.ui.mouse.min
@@ -63,6 +63,7 @@ js:
     dataTable:        dataTables-1.6/js/jquery.dataTables.min
     jeditable:        jeditable/jquery.jeditable.min
     colorbox:         colorbox/jquery.colorbox.min
+    maxzindex:        maxzindex/jquery.maxzindex
 
 css:
 

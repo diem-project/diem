@@ -28,7 +28,7 @@
     dialog: function(options)
     {
       var opt = $.extend($.ui.dialog.defaults, {
-        zIndex: 10000000,
+        zIndex: 1000, // This is too high, decreased to allow other jQuery plugins to work nicely
         dragStart: function(e)
         {
           $(e.target).hide().parent().css('opacity', 0.5);
@@ -70,7 +70,7 @@
         url: opt.url,
         data: opt.data || {},
         success: function(data)
-        {
+        {            
           $dialog.html(data).dmExtractEncodedAssets().trigger('dmAjaxResponse');
         },
         error: function(xhr)

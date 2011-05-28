@@ -31,6 +31,12 @@ class dmCoreLayoutHelper extends dmConfigurable
     return
     $this->renderHttpMetas().
     $this->renderMetas().
+    /* 
+     * Enhancement: The Celavi
+     * Support for the custom HEAD tags
+     *
+     */            
+    $this->renderCustomHeadTags().
     $this->renderStylesheets().
     $this->renderFavicon().
     $this->renderIeHtml5Fix().
@@ -86,16 +92,26 @@ class dmCoreLayoutHelper extends dmConfigurable
   {
     $culture = $this->serviceContainer->getParameter('user.culture');
 
+    /*
+     * Enhancement: The Celavi
+     * Support for the custom XML namespaces
+     */
+    $xmlNs = $this->getService('response')->getAllXmlNs();
+    $xmlNsString = '';
+    foreach ($xmlNs as $key=>$value) $xmlNsString .= sprintf('xmlns:%s="%s" ', $key, $value);
+    
+    
     if ($this->isHtml5() || $this->isHtml4)
     {
-      $htmlTag = sprintf('<html lang="%s">', $culture);
+      $htmlTag = sprintf('<html lang="%s" %s>', $culture, $xmlNsString);
     }
     else
     {
       $htmlTag = sprintf(
-        '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="%s"%s >',
+        '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="%s"%s %s >',
         $culture,
-        '1.1' == $this->getDocTypeOption('version', '1.0') ? '' : " lang=\"$culture\""
+        '1.1' == $this->getDocTypeOption('version', '1.0') ? '' : " lang=\"$culture\"",
+        $xmlNsString
       );
     }
 
@@ -312,5 +328,22 @@ class dmCoreLayoutHelper extends dmConfigurable
   protected function getService($name, $class = null)
   {
     return $this->serviceContainer->getService($name, $class);
+  }
+  /* 
+  * Enhancement: The Celavi
+  * Support for the custom HEAD tags  
+  */ 
+  public function renderCustomHeadTags() {
+      $cht = $this->getService('response')->getCustomHeadTags();
+      $chtString = '';
+      foreach ($cht as $c) {
+          $attr = '';
+          foreach($c['attributes'] as $key=>$value) {
+              $attr .= sprintf('%s="%s" ', $key, $value);
+          }
+          if ($c['value']) $chtString .= sprintf ('<%s %s>%s</%s>', $c['tagName'], $attr, $c['value'], $c['tagName'])."\n";
+          else $chtString .= sprintf ('<%s %s/>', $c['tagName'], $attr)."\n";          
+      }
+      return $chtString;
   }
 }
