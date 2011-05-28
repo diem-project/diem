@@ -47,7 +47,12 @@ class dmFrontPageEditHelper extends dmFrontPageBaseHelper
     //it the widget is called programmatically, it has no id and can not be edited
     if(!isset($widget['id']))
     {
-      return parent::renderWidget($widget);
+      $widget['id'] = 'programmatically_'.substr(md5(serialize($widget)), 0, 6); // give a unique id
+      $is_programmatically = true;
+    }
+    else
+    {
+      $is_programmatically = false;
     }
 
     list($widgetWrapClass, $widgetInnerClass) = $this->getWidgetContainerClasses($widget);
@@ -57,50 +62,13 @@ class dmFrontPageEditHelper extends dmFrontPageBaseHelper
      */
     $html = '<div class="'.$widgetWrapClass.'" id="dm_widget_'.$widget['id'].'">';
 
-    /*
-     * Add edit button if required
-     */
-    if ($this->user->can('widget_edit'))
+    if (!$is_programmatically)
     {
-      try
-      {
-        $widgetPublicName = $this->serviceContainer->getService('widget_type_manager')->getWidgetType($widget)->getPublicName();
-      }
-      catch(Exception $e)
-      {
-        $widgetPublicName = $widget['module'].'.'.$widget['action'];
-      }
-      
-      $title = $this->i18n->__('Edit this %1%', array('%1%' => $this->i18n->__($widgetPublicName)));
-      
-      $html .= '<a class="dm dm_widget_edit" title="'.htmlentities($title, ENT_COMPAT, 'UTF-8').'"></a>';
-    }
-
-    /*
-     * Add fast record edit button if required
-     */
-    if('show' === $widget['action'] && $this->user->can('widget_edit_fast') && $this->user->can('widget_edit_fast_record'))
-    {
-      if($module = $this->moduleManager->getModuleOrNull($widget['module']))
-      {
-        if($module->hasModel())
-        {
-          $html .= sprintf('<a class="dm dm_widget_record_edit" title="%s"></a>',
-            $this->i18n->__('Edit this %1%', array('%1%' => $this->i18n->__($module->getName()))),
-            $widget['id']
-          );
-        }
-      }
-    }
-
-    /*
-     * Add fast edit button if required
-     */
-    elseif(!$this->user->can('widget_edit') && $this->user->can('widget_edit_fast'))
-    {
-      $fastEditPermission = 'widget_edit_fast_'.dmString::underscore(str_replace('dmWidget', '', $widget['module'])).'_'.$widget['action'];
-
-      if($this->user->can($fastEditPermission))
+    
+      /*
+       * Add edit button if required
+       */
+      if ($this->user->can('widget_edit'))
       {
         try
         {
@@ -111,10 +79,51 @@ class dmFrontPageEditHelper extends dmFrontPageBaseHelper
           $widgetPublicName = $widget['module'].'.'.$widget['action'];
         }
 
-        $html .= sprintf('<a class="dm dm_widget_fast_edit" title="%s"></a>',
-          $this->i18n->__('Edit this %1%', array('%1%' => $this->i18n->__(dmString::lcfirst($widgetPublicName)))),
-          $widget['id']
-        );
+        $title = $this->i18n->__('Edit this %1%', array('%1%' => $this->i18n->__($widgetPublicName)));
+
+        $html .= '<a class="dm dm_widget_edit" title="'.htmlentities($title, ENT_COMPAT, 'UTF-8').'"></a>';
+      }
+
+      /*
+       * Add fast record edit button if required
+       */
+      if('show' === $widget['action'] && $this->user->can('widget_edit_fast') && $this->user->can('widget_edit_fast_record'))
+      {
+        if($module = $this->moduleManager->getModuleOrNull($widget['module']))
+        {
+          if($module->hasModel())
+          {
+            $html .= sprintf('<a class="dm dm_widget_record_edit" title="%s"></a>',
+              $this->i18n->__('Edit this %1%', array('%1%' => $this->i18n->__($module->getName()))),
+              $widget['id']
+            );
+          }
+        }
+      }
+
+      /*
+       * Add fast edit button if required
+       */
+      elseif(!$this->user->can('widget_edit') && $this->user->can('widget_edit_fast'))
+      {
+        $fastEditPermission = 'widget_edit_fast_'.dmString::underscore(str_replace('dmWidget', '', $widget['module'])).'_'.$widget['action'];
+
+        if($this->user->can($fastEditPermission))
+        {
+          try
+          {
+            $widgetPublicName = $this->serviceContainer->getService('widget_type_manager')->getWidgetType($widget)->getPublicName();
+          }
+          catch(Exception $e)
+          {
+            $widgetPublicName = $widget['module'].'.'.$widget['action'];
+          }
+
+          $html .= sprintf('<a class="dm dm_widget_fast_edit" title="%s"></a>',
+            $this->i18n->__('Edit this %1%', array('%1%' => $this->i18n->__(dmString::lcfirst($widgetPublicName)))),
+            $widget['id']
+          );
+        }
       }
     }
 

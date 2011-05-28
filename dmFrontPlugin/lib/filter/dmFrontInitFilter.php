@@ -103,11 +103,22 @@ class dmFrontInitFilter extends dmInitFilter
   {
     if (($page = $this->context->getPage()) && ($h1 = $page->_getI18n('h1')))
     {
-      $this->response->setContent(preg_replace(
+      $content = preg_replace(
         '|<h1(.*)>.*</h1>|iuU',
         '<h1$1>'.$h1.'</h1>',
         $this->response->getContent()
-      ));
+      );
+      
+      if (!$content) // if UTF-8 problem, relunch preg_replace without option 'u'
+      {
+        $content = preg_replace(
+        '|<h1(.*)>.*</h1>|iU',
+        '<h1$1>'.$h1.'</h1>',
+        $this->response->getContent()
+        );
+      }
+      
+      $this->response->setContent($content);
     }
   }
 
