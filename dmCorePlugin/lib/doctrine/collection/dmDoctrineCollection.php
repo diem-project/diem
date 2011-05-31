@@ -2,7 +2,16 @@
 
 abstract class dmDoctrineCollection extends Doctrine_Collection
 {
-  
+	/**
+	 * @param $conn
+	 * @return myDoctrineCollection
+	 */
+	public function saveGet($conn = null)
+	{
+		$this->save($conn);
+		return $this;
+	}
+	
 	/**
 	 * @param myDoctrineRecord $record
 	 * @param mixed $key

@@ -465,6 +465,7 @@ WHERE p.module = ? AND p.action = ?', array($this->culture, $module->getKey(), '
       else
       {
         $value = strtr($pattern, $replacements);
+        $value = strip_tags($value);
       }
 
       $values[$field] = $this->truncateValueForField(trim($value), $field);
