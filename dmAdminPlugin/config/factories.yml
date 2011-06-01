@@ -7,6 +7,13 @@ default:
       space_class:          dmModuleSpace
       module_base_class:    dmModule
       module_node_class:    dmProjectModule
+      cache:
+        class:              dmMetaCache
+        param:
+          automatic_cleaning_factor: 0
+          cache_dir:                 %SF_CONFIG_CACHE_DIR%/module_manager
+          lifetime:                  31556926
+          prefix:                    %SF_APP_DIR%/module_manager
 
   i18n:
     class:                  dmAdminI18n
