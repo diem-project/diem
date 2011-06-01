@@ -91,7 +91,7 @@ class dmErrorWatcher extends dmConfigurable
       'name' => dmString::truncate($error->name, 255, ''),
       'module' => $error->module,
       'action' => is_object($error->action) ? $error->action->getActionName() : $error->action,
-      'uri' => $error->uri,
+      'uri' => dmString::truncate($error->uri, 255),
       'env' => $error->env,
     ))->save();
   }
