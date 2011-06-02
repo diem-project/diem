@@ -78,6 +78,6 @@ class dmModuleSecurityAbstract extends dmMetaCache
   
   public function getMD5()
   {
-  	return md5($this->getApplication() . ($this->user ? serialize($this->user->toArray(false)) : 0));
+  	return md5($this->getApplication() . ($this->user->isAuthenticated() ? serialize($this->user->getUser()->toArray(false)) : 0));
   }
 }
