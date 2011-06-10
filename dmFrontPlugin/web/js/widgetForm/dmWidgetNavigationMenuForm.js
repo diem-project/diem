@@ -48,8 +48,8 @@ $.fn.extend({
       $li.find('div.extended').hide().end()
         .find('input.text').val(item.text).end()
         .find('input.link').val(item.link).end()
-        .find('input.secure').attr('checked', item.secure).end()
-        .find('input.nofollow').attr('checked', item.nofollow);
+        .find('input.secure').prop('checked', item.secure).end()
+        .find('input.nofollow').prop('checked', item.nofollow);
       
       $items.append($li);
       itemIndex++;
@@ -105,11 +105,11 @@ $.fn.extend({
       drop:         function(event, ui)
       {
         createItemElement({
-          link: 'page:'+ui.draggable.attr('data-page-id'),
+          link: 'page:'+ui.draggable.prop('data-page-id'),
           text: ui.draggable.text()
         });
 
-        $items.attr('scrollTop', 999999);
+        $items.prop('scrollTop', 999999);
       }
     }).sortable({
       opacity:                0.5,
@@ -134,7 +134,7 @@ $.fn.extend({
         text: ''
       });
 
-      $items.attr('scrollTop', 999999).find('li.item_element:last a.item_text').trigger('click');
+      $items.prop('scrollTop', 999999).find('li.item_element:last a.item_text').trigger('click');
     });
   },
 
