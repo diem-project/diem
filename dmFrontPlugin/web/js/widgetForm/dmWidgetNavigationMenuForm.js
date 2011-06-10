@@ -105,11 +105,11 @@ $.fn.extend({
       drop:         function(event, ui)
       {
         createItemElement({
-          link: 'page:'+ui.draggable.prop('data-page-id'),
+          link: 'page:'+ui.draggable.attr('data-page-id'),
           text: ui.draggable.text()
         });
 
-        $items.prop('scrollTop', 999999);
+        $items.attr('scrollTop', 999999);
       }
     }).sortable({
       opacity:                0.5,
@@ -134,7 +134,7 @@ $.fn.extend({
         text: ''
       });
 
-      $items.prop('scrollTop', 999999).find('li.item_element:last a.item_text').trigger('click');
+      $items.attr('scrollTop', 999999).find('li.item_element:last a.item_text').trigger('click');
     });
   },
 
