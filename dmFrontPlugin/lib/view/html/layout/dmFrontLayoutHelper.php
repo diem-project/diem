@@ -38,9 +38,13 @@ class dmFrontLayoutHelper extends dmCoreLayoutHelper
   {
     $metas = array(
       'description'  => $this->page->get('description'),
-      'language'     => $this->serviceContainer->getParameter('user.culture'),
       'title'        => dmConfig::get('title_prefix').$this->page->get('title').dmConfig::get('title_suffix')
     );
+
+    if (!$this->isHtml5)
+    {
+      $metas['language'] = $this->serviceContainer->getParameter('user.culture');
+    }
     
     if (sfConfig::get('dm_seo_use_keywords') && $keywords = $this->page->get('keywords'))
     {
