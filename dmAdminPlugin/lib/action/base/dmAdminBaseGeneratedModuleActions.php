@@ -155,14 +155,18 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 					{
 						if (!$joinAlias = $query->getJoinAliasForRelationAlias($table->getComponentName(), $relation->getAlias()))
 						{
-							$query->leftJoin(sprintf('%s.%s %s', $query->getRootAlias(), $relation->getAlias(), $relation->getAlias()));
-							$joinAlias = $relation->getAlias();
-
 							if($foreignTable->isI18nColumn($foreignColumn))
 							{
 								try{
 									$query->withI18n(); //leftJoin(sprintf('%s.%s %s', $joinAlias, 'Translation', $joinAlias.'Translation'));
 								}catch(Exception $e){}
+								
+								$joinAlias = $query->getRootAlias();
+							}
+							else
+							{
+								$query->leftJoin(sprintf('%s.%s %s', $query->getRootAlias(), $relation->getAlias(), $relation->getAlias()));
+								$joinAlias = $relation->getAlias();
 							}
 						}
 
