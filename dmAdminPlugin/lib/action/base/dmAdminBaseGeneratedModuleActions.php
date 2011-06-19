@@ -855,6 +855,7 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 		if(!method_exists($this, $queryBuilder))
 		{
 			//from here, we guess the relation is bound to the object of the DmModule
+			//check if it is a local key relation
 			$relation = dmString::camelize(substr($field, 0, strlen($field) -5)); //remove _list @todo make it given by $request, using .metadata() and writting it within template
 			$table = $this->getDmModule()->getTable();
 
@@ -867,6 +868,9 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 			}elseif($table->hasRelation($relation = dmString::camelize($field)))
 			{
 				$relation = $table->getRelation($relation);
+			}elseif($relation = $table->getRelationByColumn($field))
+			{
+				
 			}
 
 			$table = dmDb::table($relation['class']);

@@ -453,7 +453,7 @@
     			return true;
     		}
     	}).unbind('keyup.dm-searchbox').bind('keyup.dm-searchbox', function(e){
-    		  var $list = $(this).parent().parent().parent().children('ul.checkbox_list'), $lis = $('> li', $list);
+    		  var $list = $(this).parent().parent().parent().parent().find('ul'), $lis = $('> li', $list);
               var term = $.trim($(this).val());
 
               if(term == '')
