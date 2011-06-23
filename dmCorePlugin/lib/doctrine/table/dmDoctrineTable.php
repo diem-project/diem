@@ -788,4 +788,17 @@ abstract class dmDoctrineTable extends Doctrine_Table
   {
   	return array('slug', 'name', 'title', 'h1', 'description', 'keywords');
   }
+  
+  public function getRelationByColumn($column)
+  {
+  	$column_name = is_string($column) ? $column : $column->getName();
+  	
+  	foreach($this->getRelationParser()->getRelations() as $relation)
+  	{
+  		if($relation instanceof Doctrine_Relation_LocalKey && $relation->getLocalColumnName() === $column_name)
+  		{
+  			return $relation;
+  		}
+  	}
+  }
 }
