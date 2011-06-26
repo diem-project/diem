@@ -98,7 +98,6 @@ class dmModuleSecurityManager extends dmModuleSecurityAbstract implements dmModu
   public function clear()
   {
   	parent::clear();
-    $this->clearCache();
     $this->strategies = array();
   }
 
