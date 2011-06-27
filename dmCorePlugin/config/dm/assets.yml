@@ -19,6 +19,7 @@ js:
     jquery:                   jquery/jquery-1.6.1.min
     ui-core:                  jquery-ui/js/minified/jquery.ui.core.min
     ui-widget:                jquery-ui/js/minified/jquery.ui.widget.min
+    ui-autocomplete:          jquery-ui/js/minified/jquery.ui.autocomplete.min
     ui-button:                jquery-ui/js/minified/jquery.ui.button.min
     ui-mouse:                 jquery-ui/js/minified/jquery.ui.mouse.min
     ui-position:              jquery-ui/js/minified/jquery.ui.position.min
