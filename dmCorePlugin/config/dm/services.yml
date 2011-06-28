@@ -179,6 +179,9 @@ parameters:
   page_tree_view.class:       dmPageTreeView        # Render the page tree
   page_tree_view.options:     []
 
+  model_tree_view.class:       dmModelTreeView        # Render a model tree
+  model_tree_view.options:    []
+
   download.class:             dmDownloadResponse    # Triggers a download from a file or string data
   download.options:           []
 
@@ -442,6 +445,11 @@ services:
     class:                    %page_tree_view.class%
     shared:                   false
     arguments:                [ @helper, %user.culture%, %page_tree_view.options% ]
+
+  model_tree_view:
+    class:                    %model_tree_view.class%
+    shared:                   false
+    arguments:                [ @helper, %user.culture%, %model_tree_view.options% ]
 
   download:
     class:                    %download.class%

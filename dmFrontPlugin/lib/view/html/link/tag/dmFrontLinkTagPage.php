@@ -57,12 +57,19 @@ class dmFrontLinkTagPage extends dmFrontLinkTag
   protected function getBaseHref()
   {
     $pageSlug = $this->page->_getI18n('slug');
+    $basePrefix = $this->getHrefPrefix();
     
-    $baseHref = $this->getHrefPrefix().($pageSlug ? '/'.$pageSlug : '');
+    $prefixI18n = sfConfig::get('dm_i18n_prefix_url');
+    if($prefixI18n){
+      $culture = $this->user->getCulture();
+      $baseHref = $basePrefix . '/' . $culture . ($pageSlug ? '/' .$pageSlug : '');
+    }else{
+      $baseHref = $this->getHrefPrefix().($pageSlug ? '/'.$pageSlug : '');
+    }
     
     if(empty($baseHref))
     {
-      $baseHref = '/';
+      $baseHref = $prefixI18n ? '/'.$culture : '/';
     }
     
     return $baseHref;

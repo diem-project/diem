@@ -127,4 +127,36 @@ class dmAdminGeneratorActions extends dmAdminBaseActions
 
     return $this->renderText($view->renderList());
   }
+
+  public function executeMove(dmWebRequest $request)
+  {
+    $this->forward404Unless(
+      $module = $this->context->getModuleManager()->getModuleOrNull(
+        $request->getParameter('dm_module')
+      )
+    );
+
+    $this->forward404Unless(
+      $module instanceof dmProjectModule && $module->getTable() instanceof dmDoctrineTable && $module->getTable()->isNestedSet()
+    );
+
+    $this->forward404Unless(
+      $model = $module->getTable()->find($request->getParameter('model'))
+    );
+
+    if($nextToModel = $module->getTable()->find($request->getParameter('previous')))
+    {
+      $model->Node->moveAsNextSiblingOf($nextToModel);
+    }
+    elseif($inModel = $module->getTable()->find($request->getParameter('to')))
+    {
+      $model->Node->moveAsFirstChildOf($inModel);
+    }
+    else
+    {
+      $this->forward404('Bad operation');
+    }
+
+    return $this->renderText('ok');
+  }
 }

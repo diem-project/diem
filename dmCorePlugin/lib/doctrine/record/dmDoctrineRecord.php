@@ -11,6 +11,36 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
   $i18nFallback = null;
 
   /**
+   * Doctrine nestedSet helper
+   * @return integer  
+   */
+  public function getNestedSetParent() {
+    if ($this->getTable()->isNestedSet())
+    {
+      if (!$this->getNode()->isValidNode() || $this->getNode()->isRoot()) {
+        return null;
+      }
+
+      return $this->getNode()->getParent();
+
+    }
+    return Doctrine_Null;
+  }
+
+  public function getNestedSetParentId() {
+    if ($parent = $this->getNestedSetParent()) {
+      return $parent->id;
+    }
+  }
+
+  public function getNestedSetIndentedName()
+  {
+    if ($this->getTable()->isNestedSet()) {
+      return str_repeat('--', $this->level) . ' ' . $this;
+    }
+  }
+
+  /**
    * Initializes internationalization.
    *
    * @see Doctrine_Record

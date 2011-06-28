@@ -5,6 +5,7 @@ DmPage:
     NestedSet:
     I18n:
       fields:               [slug, name, title, h1, description, keywords, auto_mod, is_active, is_secure, is_indexable]
+      length:               7
   columns:
     module:                 { type: string(127), notnull: true }
     action:                 { type: string(127), notnull: true }
@@ -89,6 +90,7 @@ DmWidget:
         disabled: true
     I18n:
       fields:               [ value ]
+      length:               7
   columns:
     dm_zone_id:             { type: integer, notnull: true }
     module:                 { type: string(127), notnull: true }
@@ -186,6 +188,7 @@ DmAutoSeo:
     Timestampable:
     I18n:
       fields:               [ slug, name, title, h1, description, keywords, strip_words ]
+      length:               7
   columns:
     module:                 { type: string(127), notnull: true }
     action:                 { type: string(127), notnull: true }
@@ -213,6 +216,7 @@ DmSetting:
   actAs:
     I18n:
       fields:               [ description, value, default_value ]
+      length:               7
   columns:
     name:                   { type: string(127), notnull: true, unique: true }
     description:            { type: string(255) }
@@ -248,6 +252,7 @@ DmMailTemplate:
     Timestampable:
     I18n:
       fields:               [ subject, description, body, from_email, to_email, cc_email, bcc_email, reply_to_email, sender_email, list_unsuscribe, is_html, is_active ]
+      length:               7
   columns:
     name:                   { type: string(255), notnull: true, unique: true }
     description:            { type: string(5000) }

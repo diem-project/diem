@@ -109,7 +109,7 @@ class dmAdminGeneratorBuilder
       'sort'    => $this->getListSort(),
       'table_method' => 'getAdminListQuery',
       'table_count_method' => '~',
-      'sortable' => $this->table->isSortable()
+      'sortable' => $this->table->isSortable() || $this->table->isNestedSet()
     );
   }
 
@@ -135,6 +135,11 @@ class dmAdminGeneratorBuilder
 //      $display[] = $mediaField.'_view_little';
 //      unset($fields[$mediaFieldName]);
 //    }
+
+    if ($this->table->isNestedSet()) {
+      $display[] = 'nested_set_indented_name';
+      $display[] = 'nested_set_parent';
+    }
 
     foreach($this->table->getRelationHolder()->getLocals() as $alias => $relation)
     {
@@ -305,6 +310,10 @@ class dmAdminGeneratorBuilder
       }
     }
 
+    if ($this->table->isNestedSet()) {
+      $sets['NONE'][] = 'nested_set_parent_id';
+    }
+
     foreach($this->getTextFields($fields) as $field)
     {
       if (in_array($field, $fields))
@@ -456,6 +465,14 @@ class dmAdminGeneratorBuilder
     {
       $fields[] = 'position';
     }
+    if ($this->table->isNestedSet()) {
+      $fields[] = 'lft';
+      $fields[] = 'rgt';
+      $fields[] = 'level';
+      if ($this->table->getTemplate('NestedSet')->getOption('hasManyRoots')) {
+        $fields[] = $this->table->getTemplate('NestedSet')->getOption('rootColumnName', 'root_id');
+      }
+    }
 
     return $fields;
   }
@@ -475,6 +492,14 @@ class dmAdminGeneratorBuilder
     if($this->table->isSortable())
     {
       $fields[] = 'position';
+    }
+    if ($this->table->isNestedSet()) {
+      $fields[] = 'lft';
+      $fields[] = 'rgt';
+      $fields[] = 'level';
+      if ($this->table->getTemplate('NestedSet')->getOption('hasManyRoots')) {
+        $fields[] = $this->table->getTemplate('NestedSet')->getOption('rootColumnName', 'root_id');
+      }
     }
 
     return $fields;

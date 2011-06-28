@@ -10,6 +10,119 @@
  */
 abstract class dmFormDoctrine extends sfFormDoctrine
 {
+  protected $nestedSetParentId = null;
+
+  public function updateNestedSetParentIdColumn($nestedSetParentId)
+  {
+    $this->nestedSetParentId = $nestedSetParentId;
+    // further action is handled in the save() method
+  }
+
+  protected function setupNestedSet() {
+
+    if ($this->object instanceof sfDoctrineRecord && $this->object->getTable() instanceof myDoctrineTable) {
+
+      // unset NestedSet columns not needed as added in the getAutoFieldsToUnset() method
+
+      $this->updateNestedSetWidget($this->object->getTable(), 'nested_set_parent_id', 'Child of');
+
+      // check all relations for NestedSet
+      foreach ($this->object->getTable()->getRelationHolder()->getAll() as $relation) {
+        if ($relation->getTable() instanceof dmDoctrineTable && $relation->getTable()->isNestedSet()) {
+          // check for many to many
+          $fieldName = $relation->getType()
+                  ? dmString::underscore($relation->getAlias()) . '_list'
+                  : $relation->getLocalColumnName()
+                  ;
+          $this->updateNestedSetWidget($relation->getTable(), $fieldName);
+        }
+      }
+    }
+
+  }
+
+  protected function updateNestedSetWidget(dmDoctrineTable $table, $fieldName = null, $label = null)
+  {
+    if ($table->isNestedSet()) {
+      if (null === $fieldName) {
+        $fieldName = 'nested_set_parent_id';
+      }
+      // create if not exists
+      if (!($this->widgetSchema[$fieldName] instanceof sfWidgetFormDoctrineChoice)) {
+        $this->widgetSchema[$fieldName] = new sfWidgetFormDoctrineChoice(array('model' => $table->getComponentName()));
+      }
+      if (!($this->validatorSchema[$fieldName] instanceof sfValidatorDoctrineChoice)) {
+        $this->validatorSchema[$fieldName] = new sfValidatorDoctrineChoice(array('model' => $table->getComponentName()));
+      }
+
+      if (null !== $label) {
+        $this->widgetSchema[$fieldName]->setLabel('$label');
+      }
+
+      // set sorting
+      $orderBy = 'lft';
+      if ($table->getTemplate('NestedSet')->getOption('hasManyRoots', false)) {
+        $orderBy = $table->getTemplate('NestedSet')->getOption('rootColumnName', 'root_id') . ', ' . $orderBy;
+      }
+
+      $options = array(
+                  'method' => 'getNestedSetIndentedName',
+                  'order_by' => array($orderBy, ''),
+        );
+      if ($fieldName == 'nested_set_parent_id') {
+        $options['add_empty'] = '~';
+        $this->validatorSchema[$fieldName]->setOptions(array_merge(
+                $this->validatorSchema[$fieldName]->getOptions(),
+                array(
+                    'required' => false,
+          )));
+      }
+      $this->widgetSchema[$fieldName]->setOptions(array_merge(
+              $this->widgetSchema[$fieldName]->getOptions(),
+              $options
+        ));
+    }
+  }
+
+  public function configure() {
+
+    $this->setupNestedSet();
+
+    parent::configure();
+
+  }
+
+  /**
+   * Extend the doSave method to handle NestedSets
+   * @param Doctrine_Connection $con
+   */
+  protected function doSave($con = null) {
+
+    parent::doSave($con);
+
+    if ($this->object->getTable()->isNestedSet()) {
+
+      $node = $this->object->getNode();
+
+      if ($this->nestedSetParentId != $this->object->getNestedSetParentId() || !$node->isValidNode()) {
+        if (empty($this->nestedSetParentId)) {
+          //save as a root
+          if ($node->isValidNode()) {
+            $node->makeRoot($this->object['id']);
+            $this->object->save($con);
+          } else {
+            $this->object->getTable()->getTree()->createRoot($this->object); //calls $this->object->save internally
+          }
+        } else {
+          //form validation ensures an existing ID for $this->nestedSetParentId
+          $nestedSetParent = $this->object->getTable()->find($this->nestedSetParentId);
+          $nestedSetMethod = ($node->isValidNode() ? 'move' : 'insert') . 'AsFirstChildOf';
+          $node->$nestedSetMethod($nestedSetParent); //calls $this->object->save internally
+        }
+      }
+    }
+  }
+
   /**
    * Unset automatic fields like 'created_at', 'updated_at', 'position'
    */
@@ -38,6 +151,16 @@ abstract class dmFormDoctrine extends sfFormDoctrine
     if ($this->getObject()->getTable()->isVersionable())
     {
       $fields[] = 'version';
+    }
+
+    if ($this->getObject()->getTable()->isNestedSet())
+    {
+      $fields[] = 'lft';
+      $fields[] = 'rgt';
+      $fields[] = 'level';
+      if ($this->getObject()->getTable()->getTemplate('NestedSet')->getOption('hasManyRoots')) {
+        $fields[] = $this->getObject()->getTable()->getTemplate('NestedSet')->getOption('rootColumnName', 'root_id');
+      }
     }
 
     return $fields;
