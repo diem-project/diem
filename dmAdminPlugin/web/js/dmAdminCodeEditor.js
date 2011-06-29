@@ -175,7 +175,7 @@
             realPath = decodePath(NODE.id);
             
             // if file already opened, switch to its panel
-            if ($existingTab = $tabs.find("li[original-title=" + realPath + "]").orNot())
+            if ($existingTab = $tabs.find("li[original-title=\"" + realPath + "\"]").orNot())
             {
               $tabs.tabs("select", $existingTab.find('>a').attr('href'));
             }
