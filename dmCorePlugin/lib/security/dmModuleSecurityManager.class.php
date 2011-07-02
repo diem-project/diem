@@ -95,9 +95,9 @@ class dmModuleSecurityManager extends dmModuleSecurityAbstract implements dmModu
    * existing strategies, so we can reset the running
    * module.
    */
-  protected function clear()
+  public function clear()
   {
-    $this->clearCache();
+  	parent::clear();
     $this->strategies = array();
   }
 

@@ -27,11 +27,11 @@
         var $row = $(this);
         $row.find('input, textarea, select').each(function()
         {
-          var initialValue = $(this).val()+$(this).attr('checked');
+          var initialValue = $(this).val()+$(this).prop('checked');
           var e = $(this).is('input, textarea') ? 'change keyup click' : 'change';
           $(this).bind(e, function()
           {
-            $row.toggleClass('dm_row_modified', $(this).val()+$(this).attr('checked') != initialValue);
+            $row.toggleClass('dm_row_modified', $(this).val()+$(this).prop('checked') != initialValue);
           });
         });
       });
@@ -197,12 +197,12 @@
         $lis.click(function()
         {
           var $input = $('> input', $(this));
-          $input.attr('checked', !$input.attr('checked')).trigger('change');
+          $input.prop('checked', !$input.prop('checked')).trigger('change');
         });
 
         $lis.find('> input').change(function()
         {
-          $(this).parent()[($(this).attr('checked') ? 'add' : 'remove') + 'Class']('active');
+          $(this).parent()[($(this).prop('checked') ? 'add' : 'remove') + 'Class']('active');
           return true;
         }).trigger('change');
 
@@ -210,7 +210,7 @@
         {
           $(this).click(function()
           {
-            $(this).closest('div.sf_admin_form_row_inner').find('input:checkbox:visible').attr('checked', $(this).hasClass('select_all')).trigger('change');
+            $(this).closest('div.sf_admin_form_row_inner').find('input:checkbox:visible').prop('checked', $(this).hasClass('select_all')).trigger('change');
           });
         });
 
@@ -363,7 +363,7 @@
 				var $checkbox = $(this),
 				$li = $checkbox.parent(),
 				id = parseInt($checkbox.val());
-				if ($checkbox.attr('checked')) {
+				if ($checkbox.prop('checked')) {
 					$li.addClass('active');
 					if ($.inArray(id, selection)==-1) {
 						selection.push(id); // add it
@@ -453,7 +453,7 @@
     			return true;
     		}
     	}).unbind('keyup.dm-searchbox').bind('keyup.dm-searchbox', function(e){
-    		  var $list = $(this).parent().parent().parent().children('ul.checkbox_list'), $lis = $('> li', $list);
+    		  var $list = $(this).parent().parent().parent().parent().find('ul'), $lis = $('> li', $list);
               var term = $.trim($(this).val());
 
               if(term == '')

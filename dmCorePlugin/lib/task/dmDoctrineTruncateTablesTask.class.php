@@ -18,6 +18,7 @@ EOF;
 
 	protected function execute($arguments = array(), $options = array())
 	{
+		$this->withDatabase();
 		$this->logSection('doctrine', 'truncating tables');
 		
 		

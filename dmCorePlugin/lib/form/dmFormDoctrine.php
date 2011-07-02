@@ -26,6 +26,29 @@ abstract class dmFormDoctrine extends sfFormDoctrine
 	 */
 	protected $embeddedFormsSaveTime;
 	
+	
+  /**
+   * Removes a field from the form.
+   *
+   * It removes the widget and the validator for the given field.
+   *
+   * @param string $offset The field name
+   */
+  public function offsetUnset($offset)
+  {
+  	parent::offsetUnset($offset);
+  	
+  	if(isset($this->embeddedFormsSaveTime[self::EMBEDDED_FORM_SAVE_BEFORE][$offset]))
+  	{
+  		unset($this->embeddedFormsSaveTime[self::EMBEDDED_FORM_SAVE_BEFORE][$offset]);
+  	}
+  	else 
+  	{
+  		unset($this->embeddedFormsSaveTime[self::EMBEDDED_FORM_SAVE_AFTER][$offset]);
+  	}
+  }
+  
+	
 	/**
 	 * @var integer
 	 */
@@ -191,7 +214,7 @@ abstract class dmFormDoctrine extends sfFormDoctrine
 	public function setEmbeddedFormSavingTime($formName, $when)
 	{
 		if(!in_array($when, array(self::EMBEDDED_FORM_SAVE_BEFORE, self::EMBEDDED_FORM_SAVE_AFTER))){ throw new LogicException('Given $when parameter is out of range', 0); }
-		$this->embeddedFormsSaveTime[$when][] = $formName;
+		$this->embeddedFormsSaveTime[$when][$formName] = $formName;
 		return $this;
 	}	
 	

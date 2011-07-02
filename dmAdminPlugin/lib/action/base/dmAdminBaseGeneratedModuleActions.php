@@ -5,7 +5,7 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 	public function preExecute()
 	{
 		parent::preExecute();
-		 
+			
 		$this->configuration = new $this->configurationClass();
 		$this->configuration->setAction($this);
 
@@ -17,6 +17,16 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 		$this->security_manager = $this->getDmModule()->getSecurityManager($this);
 	}
 
+	public function getCredential()
+	{
+		$can = $this->getDmModule()->getSecurityManager()->userHasCredentials($this->actionName);
+
+		if(!$can)
+		{
+			return DmPermission::NEVER_GRANT_ACCESS; //we hope such credentials will never exists
+		}
+		return $can;
+	}
 
 
 	protected function getRouteArrayForAction($action, $object = null)
@@ -145,14 +155,18 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 					{
 						if (!$joinAlias = $query->getJoinAliasForRelationAlias($table->getComponentName(), $relation->getAlias()))
 						{
-							$query->leftJoin(sprintf('%s.%s %s', $query->getRootAlias(), $relation->getAlias(), $relation->getAlias()));
-							$joinAlias = $relation->getAlias();
-
 							if($foreignTable->isI18nColumn($foreignColumn))
 							{
 								try{
 									$query->withI18n(); //leftJoin(sprintf('%s.%s %s', $joinAlias, 'Translation', $joinAlias.'Translation'));
 								}catch(Exception $e){}
+								
+								$joinAlias = $query->getRootAlias();
+							}
+							else
+							{
+								$query->leftJoin(sprintf('%s.%s %s', $query->getRootAlias(), $relation->getAlias(), $relation->getAlias()));
+								$joinAlias = $relation->getAlias();
 							}
 						}
 
@@ -294,7 +308,7 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 		$translationAlias = $rootAlias.'Translation';
 		$table = null === $table ? $this->getDmModule()->getTable() : $table;
 
-		$query->withI18n($this->getUser()->getCulture(), $this->getDmModule()->getModel());
+		$query->withI18n($this->getUser()->getCulture(), $table ? $table->getOption('name') : $this->getDmModule()->getModel());
 
 		foreach($searchParts as $searchPart)
 		{
@@ -841,6 +855,7 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 		if(!method_exists($this, $queryBuilder))
 		{
 			//from here, we guess the relation is bound to the object of the DmModule
+			//check if it is a local key relation
 			$relation = dmString::camelize(substr($field, 0, strlen($field) -5)); //remove _list @todo make it given by $request, using .metadata() and writting it within template
 			$table = $this->getDmModule()->getTable();
 
@@ -853,6 +868,9 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 			}elseif($table->hasRelation($relation = dmString::camelize($field)))
 			{
 				$relation = $table->getRelation($relation);
+			}elseif($relation = $table->getRelationByColumn($field))
+			{
+				
 			}
 
 			$table = dmDb::table($relation['class']);

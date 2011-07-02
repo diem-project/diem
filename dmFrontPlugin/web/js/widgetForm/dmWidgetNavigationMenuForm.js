@@ -48,8 +48,8 @@ $.fn.extend({
       $li.find('div.extended').hide().end()
         .find('input.text').val(item.text).end()
         .find('input.link').val(item.link).end()
-        .find('input.secure').attr('checked', item.secure).end()
-        .find('input.nofollow').attr('checked', item.nofollow);
+        .find('input.secure').prop('checked', item.secure).end()
+        .find('input.nofollow').prop('checked', item.nofollow);
       
       $items.append($li);
       itemIndex++;
