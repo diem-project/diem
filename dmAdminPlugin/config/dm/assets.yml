@@ -52,3 +52,4 @@ css:
     gallery:          gallery
     history:          history
     embed:            embed
+    embedDynamic:     embedDynamic

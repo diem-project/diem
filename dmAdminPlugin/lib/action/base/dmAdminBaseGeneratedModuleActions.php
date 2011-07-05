@@ -884,4 +884,28 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 		}
 		return $query;
 	}
+  
+  /**
+   *
+   * @param dmWebRequest $request
+   * @return <type>
+   */
+  public function executeAddEmbedRelationDynamicObject(dmWebRequest $request)
+  {
+    $i = intval($request->getParameter("i", 0));
+    $field = $request->getParameter('field', '');
+
+    $form = $this->configuration->getForm();
+    $object = $this->getObject();
+
+    $form->addEmbedRelationDynamicObject($field, $i, $object);
+    
+    $vars = array('form' => $form, 'i' => $i, 'name' => $field);
+    
+    $this->getContext()->getConfiguration()->loadHelpers('Partial');
+    
+    $text = $this->renderPartial($this->getSfModule().'/embed_relation_dynamic_add', $vars);
+    
+    return $text;
+  }
 }

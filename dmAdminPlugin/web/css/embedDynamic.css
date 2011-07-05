@@ -1,0 +1,10 @@
+div.sf_admin_form .embed_dynamic .element { background: #fff; margin-bottom: 10px; padding: 3px; border: 1px solid #888; }
+div.sf_admin_form .embed_dynamic .element.ui-sortable-helper { background: #ccc; }
+div.sf_admin_form .embed_dynamic .element.ui-sortable-placeholder { background: #ccc; }
+div.sf_admin_form .embed_dynamic ul.error_list { border: 0px; background: #F88; color: #FF8; text-shadow: 0 0 5px black; font-weight: bold; padding: 5px; margin-bottom: 5px; }
+div.sf_admin_form .embed_dynamic ul.error_list li { padding-left: 30px !important; background: url(/dmCorePlugin/images/16/sprite.png) no-repeat 0 -96px; }
+div.sf_admin_form .embed_dynamic span.s16_add { margin-top: 5px; cursor: pointer; display: block; }
+div.sf_admin_form .embed_dynamic span.s16_delete { cursor: pointer; display: block; font-weight: bold; color: #800; float: right; }
+div.sf_admin_form .embed_dynamic .has_error { border: 1px solid #f00; }
+div.sf_admin_form .embed_dynamic .sf_admin_form_row { width: 45%; }
+div.sf_admin_form .embed_dynamic .sf_admin_form_row_inner div.label_wrap { float: none; }
