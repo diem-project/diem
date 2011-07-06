@@ -70,7 +70,7 @@ class dmFrontAddMenu extends dmMenu
   {
     if($widgetType = $this->getOption('widget_type'))
     {
-      return sprintf('<span class="widget_add move" id="dmwa_%s-%s">%s</span>',
+      return sprintf('<span class="widget_add move" data-id="dmwa_%s-%s">%s</span>',
         $widgetType->getModule(),
         $widgetType->getAction(),
         dmString::strtolower(parent::renderLabel())
@@ -78,7 +78,7 @@ class dmFrontAddMenu extends dmMenu
     }
     elseif($widget = $this->getOption('clipboard_widget'))
     {
-      return sprintf('<span class="widget_paste move dm_%s" id="dmwp_%d">%s</span>',
+      return sprintf('<span class="widget_paste move dm_%s" data-id="dmwp_%d">%s</span>',
         $this->getOption('clipboard_method'),
         $widget->get('id'),
         dmString::strtolower(parent::renderLabel())
