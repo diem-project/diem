@@ -31,6 +31,7 @@ class dmCoreLayoutHelper extends dmConfigurable
 		return
 		$this->renderHttpMetas().
 		$this->renderMetas().
+                $this->renderXmlNsHeadTags().
 		$this->renderStylesheets().
 		$this->renderFavicon().
 		$this->renderIeHtml5Fix().
@@ -86,16 +87,18 @@ class dmCoreLayoutHelper extends dmConfigurable
 	{
 		$culture = $this->serviceContainer->getParameter('user.culture');
 
+
 		if ($this->isHtml5() || $this->isHtml4)
 		{
-			$htmlTag = sprintf('<html lang="%s">', $culture);
+			$htmlTag = sprintf('<html lang="%s" %s>', $culture, $this->getXmlNsDeclarations());
 		}
 		else
 		{
 			$htmlTag = sprintf(
-        '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="%s"%s >',
+        '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="%s"%s %s >',
 			$culture,
-        '1.1' == $this->getDocTypeOption('version', '1.0') ? '' : " lang=\"$culture\""
+        '1.1' == $this->getDocTypeOption('version', '1.0') ? '' : " lang=\"$culture\"",
+                                $this->getXmlNsDeclarations()
 			);
 		}
 
@@ -338,4 +341,18 @@ class dmCoreLayoutHelper extends dmConfigurable
 	{
 		return $this->serviceContainer->getService($name, $class);
 	}
+        
+        protected function renderXmlNsHeadTags() {
+            $xmlnss = $this->getService('response')->getAllXmlNs();
+            $tags = '';
+            foreach ($xmlnss as $xmlns) $tags .= $xmlns->renderTags();
+            return $tags;
+        }
+        
+        protected function getXmlNsDeclarations() {
+            $xmlnss = $this->getService('response')->getAllXmlNs();
+            $ns = '';
+            foreach ($xmlnss as $xmlns) $ns .= $xmlns->renderNamespace() . ' ';
+            return $ns;
+        }
 }
