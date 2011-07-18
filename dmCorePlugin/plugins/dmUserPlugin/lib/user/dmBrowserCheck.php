@@ -44,6 +44,8 @@ class dmBrowserCheck
         $isSupported = version_compare($browser->getVersion(), 3) >= 0; break;
       case 'opera':
         $isSupported = version_compare($browser->getVersion(), '10.50') >= 0; break;
+      case 'googlebot':
+      	$isSupported = true;
       default:
         $isSupported = false;
     }
