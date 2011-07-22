@@ -115,7 +115,7 @@ abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->
 <?php foreach ($this->getManyToManyRelations() as $relation): ?>
     if (isset($this->widgetSchema['<?php echo $this->underscore($relation['alias']) ?>_list']))
     {
-      $this->setDefault('<?php echo $this->underscore($relation['alias']) ?>_list', $this->object-><?php echo $relation['alias']; ?>->getPrimaryKeys());
+      $this->setDefault('<?php echo $this->underscore($relation['alias']) ?>_list', array_merge((array)$this->getDefault('<?php echo $this->underscore($relation['alias']) ?>_list'),$this->object-><?php echo $relation['alias']; ?>->getPrimaryKeys()));
     }
 
 <?php endforeach; ?>
