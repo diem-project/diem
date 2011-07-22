@@ -40,6 +40,11 @@ class dmPageSynchronizer
       $this->removeModuleShowPagesRecursive($module, $modulesToCheck);
     }
   }
+  
+  protected function inactivePage($id)
+  {
+  	dmDb::pdo('UPDATE dm_page_translation t SET is_active = 0 WHERE t.id = ?', array($id));
+  }
 
   protected function removeModuleShowPagesRecursive(dmModule $module, array $modulesToCheck)
   {
@@ -66,12 +71,26 @@ class dmPageSynchronizer
     {
       if (!empty($showPageRecordIds))
       {
-        $query = sprintf('SELECT r.id FROM %s r WHERE r.id IN (%s)',
-          $module->getTable()->getTableName(),
-          implode(',', $showPageRecordIds)
-        );
-
-        $records = array_flip(dmDb::pdo($query, array(), $module->getTable()->getConnection())->fetchAll(PDO::FETCH_COLUMN));
+      	if($module->getTable()->isSoftDelete())
+      	{
+      		$query = sprintf('SELECT r.id, r.deleted_at FROM %s r WHERE r.id IN (%s)',
+	          $module->getTable()->getTableName(),
+	          implode(',', $showPageRecordIds)
+	        );
+      	}else{
+      		$query = sprintf('SELECT r.id FROM %s r WHERE r.id IN (%s)',
+	          $module->getTable()->getTableName(),
+	          implode(',', $showPageRecordIds)
+	        );
+      	}
+        
+        //$records = array_flip(dmDb::pdo($query, array(), $module->getTable()->getConnection())->fetchAll(PDO::FETCH_COLUMN));
+        $_records = dmDb::pdo($query, array(), $module->getTable()->getConnection())->fetchAll(PDO::FETCH_ASSOC);
+        $records = array();
+        foreach($_records as $_record)
+        {
+          $records[$_record['id']] = $_record;
+        }
       }
       else
       {
@@ -91,11 +110,22 @@ class dmPageSynchronizer
       
       if (!empty($showPageRecordIds))
       {
-        $query = sprintf('SELECT %s FROM %s r WHERE r.id IN (%s)',
-          $select,
-          $module->getTable()->getTableName(),
-          implode(',', $showPageRecordIds)
-        );
+      	if($module->getTable()->isSoftDelete())
+      	{
+      		$query = sprintf('SELECT %s, deleted_at FROM %s r WHERE r.id IN (%s)',
+	          $select,
+	          $module->getTable()->getTableName(),
+	          implode(',', $showPageRecordIds)
+	        );
+      	}else{
+      		$query = sprintf('SELECT %s FROM %s r WHERE r.id IN (%s)',
+	          $select,
+	          $module->getTable()->getTableName(),
+	          implode(',', $showPageRecordIds)
+	        );
+      	}
+      	
+        
         $_records = dmDb::pdo($query, array(), $module->getTable()->getConnection())->fetchAll(PDO::FETCH_ASSOC);
         $records = array();
         foreach($_records as $_record)
@@ -119,6 +149,10 @@ class dmPageSynchronizer
       if(!isset($records[$showPage['record_id']]))
       {
         $pageIsUseless = true;
+      }
+      elseif($module->getTable()->isSoftDelete() && null !== $records[$showPage['record_id']]['deleted_at'])
+      {
+      	$this->inactivePage($showPage['id']);
       }
       elseif(!$module->hasListPage()) // parent page is a show page
       {
