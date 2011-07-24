@@ -389,6 +389,11 @@ abstract class dmDoctrineTable extends Doctrine_Table
 	{
 		return $this->hasTemplate('NestedSet');
 	}
+	
+	public function isSoftDelete()
+	{
+		return $this->hasTemplate('SoftDelete');
+	}
 
 	public function hasI18n()
 	{

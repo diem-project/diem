@@ -65,9 +65,13 @@
       
       if($form[$name]->getWidget() instanceof sfWidgetFormDoctrineChoice && $form[$name]->getWidget()->getOption('multiple'))
       {
+	    $newRelationLink = _link(dmDb::table($form[$name]->getWidget()->getOption('model'))->getDmModule()->getSfName() . '/new')->text(__('New'));
+		if (!$form->isNew()) {
+			$newRelationLink->param('defaults['.$form->getObject()->getTable()->getRelation(dmString::camelize(substr($name, 0, strlen($name)-5)))->getForeign().']', $form->getObject()->get('id'));
+		}
         echo sprintf('<div class="control selection"><span class="select_all">%s</span><span class="unselect_all">%s</span><span class="see_selected">%s</span><span class="see_unselected">%s</span><span class="see_all">%s</span><span class="create_new">%s</span></div>', 
         __('Select all', array(), 'dm'), __('Unselect all', array(), 'dm'), __('See selected', array(), 'dm'), __('See unselected', array(), 'dm'), __('See all', array(), 'dm'),
-				_link(dmDb::table($form[$name]->getWidget()->getOption('model'))->getDmModule()->getSfName() . '/new')->text(__('New')));
+			$newRelationLink);
       }
 	$widget = $form[$name]->getWidget();
       if($widget instanceof sfWidgetFormDoctrineChoice)
