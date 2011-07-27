@@ -36,7 +36,7 @@ class dmXmlNamespace {
     }
 
     public function addTag($name, array $attributes = array(), $value = null) {
-        $this->tags[$name] = array(
+        $this->tags[] = array(
             'name' => $name,
             'attributes' => $attributes,
             'value' => $value
@@ -44,7 +44,7 @@ class dmXmlNamespace {
         return $this;
     }
     
-    public function getTag($name) {
+    public function getTagByIndex($index) {
         if (isset ($this->tags[$name])) return $this->tags[$name];
         return null;
     }
@@ -53,9 +53,9 @@ class dmXmlNamespace {
         return $this->tags;
     }
     
-    public function setTag($name, array $attributes = array(), $value = null) {
-        if (isset ($this->tags[$name])) {
-            $this->tags[$name] = array(
+    public function setTag($index, $name, array $attributes = array(), $value = null) {
+        if (isset ($this->tags[$index])) {
+            $this->tags[$index] = array(
                 'name' => $name,
                 'attributes' => $attributes,
                 'value' => $value
@@ -65,8 +65,8 @@ class dmXmlNamespace {
         else return $this->addTag ($name, $attributes, $value);        
     }
     
-    public function removeTag($name) {
-        if (isset ($this->tags[$name])) unset($this->tags[$name]);
+    public function removeTagByIndex($index) {
+        if (isset ($this->tags[$index])) unset($this->tags[$index]);
         return $this;
     }
     
@@ -76,18 +76,18 @@ class dmXmlNamespace {
     }
     
     public function renderNamespace() {
-        return 'xmlns:' . $this->namespace . '"'. $this->schema .'"';        
+        return 'xmlns:' . $this->namespace . '="'. $this->schema .'"';        
     }
     
-    public function renderTag($tagName) {
-        if (!isset ($this->tags[$tagName])) return '';
+    public function renderTag($index) {
+        if (!isset ($this->tags[$index])) return '';
         $attrStr = '';
-        $tag = $this->tags[$tagName];
+        $tag = $this->tags[$index];
         foreach ($a = $tag['attributes'] as $key=>$value) {
             $attrStr .= sprintf('%s="%s" ', $key, $value);
         }
-        if ($tag['value']) return sprintf ('<%s %s>%s</%s>', $tagName, $attrStr, $tag['value'], $tagName);
-        else return  sprintf ('<%s %s/>', $tagName, $attrStr);
+        if ($tag['value']) return sprintf ('<%s %s>%s</%s>', $tag['name'], $attrStr, $tag['value'], $tag['name']);
+        else return  sprintf ('<%s %s/>', $tag['name'], $attrStr);
     }
     
     public function renderTags() {
