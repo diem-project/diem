@@ -44,6 +44,7 @@ class dmDoctrinePager extends sfDoctrinePager
 	{
 		if(!$this->isInited || $force){
 			parent::init();
+			$this->resultsCache = null;
 		}
 		$this->isInited = true;
 

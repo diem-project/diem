@@ -374,6 +374,15 @@ class PluginDmPageTable extends myDoctrineTable
     ->andWhere('p.action = ?', $action)
     ->fetchRecords();
   }
+  
+  public function findByModuleAndActionWithI18n($module, $action)
+  {
+  	return $this->createQuery('p')
+    ->withI18n()
+    ->where('p.module = ?', $module)
+    ->andWhere('p.action = ?', $action)
+    ->fetchRecords();
+  }
 
   public function findOneByModuleAndAction($module, $action)
   {
