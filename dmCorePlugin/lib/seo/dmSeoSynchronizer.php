@@ -143,7 +143,12 @@ WHERE p.module = ? AND p.action = ?', array($this->culture, $module->getKey(), '
     $modifiedPages = array();
     foreach($pages as $page)
     {
-      $record = $records[$page['record_id']];
+    	if(isset($records[$page['record_id']]))
+      {
+      	$record = $records[$page['record_id']];
+			}else{
+				continue;
+			}
 
       if(!empty($parentSlugs))
       {
@@ -156,7 +161,7 @@ WHERE p.module = ? AND p.action = ?', array($this->culture, $module->getKey(), '
       }
       //@todo make this behavior optional ?
       $tmp = array();
-      if($record->getTable()->isNestedSet())
+      if($record && $record->getTable()->isNestedSet()) //if $record doesnt exists might be because of softDelete DQL hook, so we test truthy value
       {
         if($record->getNode()->hasParent() && $parentNode = $record->getNode()->getParent()){
           $parentSlugs = explode('/', $parentNode->getDmPage()->get('slug'));
