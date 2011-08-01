@@ -18,9 +18,10 @@ class dmHttpErrorException extends dmException
 	{
 		$exception = null === $this->wrappedException ? $this : $this->wrappedException;
 
+		$response = sfContext::getInstance()->getResponse();
+		
 		if (sfConfig::get('sf_debug'))
 		{
-			$response = sfContext::getInstance()->getResponse();
 			if (null === $response)
 			{
 				$response = new sfWebResponse(sfContext::getInstance()->getEventDispatcher());
@@ -49,7 +50,17 @@ class dmHttpErrorException extends dmException
 			}
 			else
 			{
-				$response->setStatusCode($this->httpCode);
+				$module = sfConfig::get(sprintf('sf_error_%s_module', $this->httpCode));
+				$action = sfConfig::get(sprintf('sf_error_%s_action', $this->httpCode));
+				if($module && $action)
+				{
+					sfContext::getInstance()->getRequest()->setAttribute('http_code', $this->httpCode);
+					sfContext::getInstance()->getController()->forward($module, $action);
+				}
+				else
+				{
+					$response->setStatusCode($this->httpCode);
+				}
 			}
 		}
 	}
