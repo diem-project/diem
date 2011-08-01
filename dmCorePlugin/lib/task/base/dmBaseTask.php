@@ -5,9 +5,15 @@ abstract class dmBaseTask extends sfBaseTask
 
   protected function configure()
   {
+  	$env = getenv('DM_ENV');
+  	if($env === false)
+  	{
+  		$env = 'dev';
+  	}
+  	
     $this->addOptions(array(
       new sfCommandOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'The application name', 'admin'),
-      new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
+      new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', $env),
       new sfCommandOption('timer', null, sfCommandOption::PARAMETER_NONE, 'Display elapsed time')
     ));
   }
