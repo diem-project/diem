@@ -22,8 +22,21 @@ abstract class dmBaseLinkTag extends dmHtmlTag
       'current_class' => 'dm_current',
       'parent_class'  => 'dm_parent',
       'current_span'  => false,
-      'use_beaf'      => false
+      'use_beaf'      => false,
+    	'secure' 				=> false
     ));
+  }
+  
+  public function isSecure()
+  {
+  	return (boolean) $this->options['secure'];
+  }
+  
+  public function secure($secure)
+  {
+  	$this->options['secure'] = (boolean) $secure;
+  	
+  	return $this;
   }
 
   public function isCurrent()
