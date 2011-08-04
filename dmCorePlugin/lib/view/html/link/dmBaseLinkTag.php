@@ -23,18 +23,18 @@ abstract class dmBaseLinkTag extends dmHtmlTag
       'parent_class'  => 'dm_parent',
       'current_span'  => false,
       'use_beaf'      => false,
-    	'secure' 				=> false
+    	'http_secure' 	=> false
     ));
   }
   
-  public function isSecure()
+  public function isHttpSecure()
   {
-  	return (boolean) $this->options['secure'];
+  	return (boolean) $this->options['http_secure'];
   }
   
-  public function secure($secure)
+  public function httpSecure($secure = true)
   {
-  	$this->options['secure'] = (boolean) $secure;
+  	$this->options['http_secure'] = (boolean) $secure;
   	
   	return $this;
   }
