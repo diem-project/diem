@@ -49,6 +49,12 @@ abstract class dmFrontLinkTag extends dmBaseLinkTag
       return $href;
     }
 
-    return $this->requestContext['uri_prefix'].$href;
+    $prefix = $this->requestContext['uri_prefix'];
+    
+    if($this->isSecure())
+    {
+    	$prefix = str_replace('http://', 'https://', $prefix);
+    }
+    return $prefix.$href;
   }
 }
