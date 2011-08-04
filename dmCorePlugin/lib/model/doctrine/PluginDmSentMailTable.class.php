@@ -25,8 +25,8 @@ class PluginDmSentMailTable extends myDoctrineTable
       'to_email'        => implode(', ', array_keys((array)$message->getTo())),
       'cc_email'        => implode(', ', array_keys((array)$message->getCC())),
       'bcc_email'       => implode(', ', array_keys((array)$message->getBCC())),
-      'reply_to_email'  => $message->getReplyTo(),
-      'sender_email'    => $message->getSender(),
+      'reply_to_email'  => implode(', ', array_keys((array)$message->getReplyTo())),
+      'sender_email'    => implode(', ', array_keys((array)$message->getSender())),
       'debug_string'    => $debug
     ));
   }
