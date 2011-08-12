@@ -39,7 +39,7 @@ $library.find('ul.content li.file a.link').bind('click', function()
 $library.find("div.control a.dialog_me").bind('click', function()
 {
   var $dialog = $.dm.ctrl.ajaxDialog({
-    modal:  true,
+    modal:  $.browser.mozilla && $.browser.version == '5.0' ? false : true, 
     title:  $(this).html(),
     url:    $(this).attr("href"),
     width:  380
