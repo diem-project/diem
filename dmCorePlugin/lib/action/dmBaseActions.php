@@ -60,6 +60,7 @@ abstract class dmBaseActions extends sfActions
     // translate asset aliases to web paths
     foreach($parts['css'] as $index => $asset)
     {
+      if (!is_int($index)) $asset = $index; // Hard fix for getStylesheets for symfony widgets in Front forms for admin of widgets
       $parts['css'][$index] = $this->getHelper()->getStylesheetWebPath($asset);
     }
     foreach($parts['js'] as $index => $asset)
