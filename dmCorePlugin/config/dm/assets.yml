@@ -48,7 +48,7 @@ js:
     ui-effects-slide:         jquery-ui/js/minified/jquery.effects.slide.min
     ui-effects-transfer:      jquery-ui/js/minified/jquery.effects.transfer.min
     metadata:         metadata/jquery.metadata.min
-    form:             form/jquery.form.hack
+    form:             form/jquery.form
     blockUI:          blockUI/jquery.blockUI-2.38
     jgrowl:           jgrowl/jquery.jgrowl_minimized
     ajaxqueue:        ajaxqueue/jquery.ajaxQueue
