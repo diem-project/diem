@@ -9,7 +9,7 @@ abstract class dmBaseLinkTag extends dmHtmlTag
   {
     parent::initialize($options);
     
-    $this->addAttributeToRemove(array('text', 'anchor', 'current_class', 'parent_class', 'current_span', 'use_beaf'));
+    $this->addAttributeToRemove(array('text', 'anchor', 'current_class', 'parent_class', 'current_span', 'use_beaf', 'http_secure'));
     
     $this->addEmptyAttributeToRemove(array('target', 'title'));
     
