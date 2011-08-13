@@ -265,7 +265,7 @@ class dmCoreLayoutHelper extends dmConfigurable
 				if (isset($options['condition'])) {
 					$scriptTag = sprintf('<!--[if %s]>%s<![endif]-->', $options['condition'], $scriptTag);
 				}
-				$html .= $scriptTag;
+				$html .= PHP_EOL . $scriptTag;
 			}
 		}
 
@@ -301,7 +301,7 @@ class dmCoreLayoutHelper extends dmConfigurable
 
 	public function renderJavascriptConfig()
 	{
-		return '<script type="text/javascript">var dm_configuration = '.json_encode($this->getJavascriptConfig()).';</script>';
+		return PHP_EOL . '<script type="text/javascript">var dm_configuration = '.json_encode($this->getJavascriptConfig()).';</script>';
 	}
 
 

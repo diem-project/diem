@@ -861,4 +861,5 @@
 	// Initializes ColorBox when the DOM has loaded
 	$(publicMethod.init);
 
+
 }(jQuery, document, this));
