@@ -543,7 +543,7 @@ abstract class dmFormDoctrine extends sfFormDoctrine
         
         $has_not_file = false;
         
-        if ($taintedFiles[$fieldName][$i])
+        if (isset($taintedFiles[$fieldName][$i]))
         {
           foreach ($taintedFiles[$fieldName][$i] as $key => $field)
           {
