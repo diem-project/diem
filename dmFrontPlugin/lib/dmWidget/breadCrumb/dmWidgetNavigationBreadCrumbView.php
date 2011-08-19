@@ -77,7 +77,6 @@ class dmWidgetNavigationBreadCrumbView extends dmWidgetPluginView
     foreach($ancestors as $page)
     {
       $pk_parameter = $page->getRecordId() > 0 ? '?pk='.$page->getRecordId() : '';
-      //var_dump($pk_parameter);
       
       $pages[$page->get('module').'/'.$page->get('action').$pk_parameter] = $page;
     }
