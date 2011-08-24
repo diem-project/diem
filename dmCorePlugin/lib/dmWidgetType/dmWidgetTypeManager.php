@@ -63,7 +63,7 @@ class dmWidgetTypeManager extends dmConfigurable
               'public_name' => dmArray::get($action, 'public_name', dmString::humanize($name)),
               'form_class' => dmArray::get($action, 'form_class', $fullKey.'Form'),
               'view_class' => dmArray::get($action, 'view_class', $fullKey.'View'),
-              'use_component' => dmArray::get($action, 'use_component', false) || $this->componentExists($moduleKey, $fullKey),
+              'use_component' => dmArray::get($action, 'use_component', false) || $this->componentExists($moduleKey, $actionKey),
               'cache'      => dmArray::get($action, 'cache', false),
               'assets'     => dmArray::get($action, 'assets', array())
             );
