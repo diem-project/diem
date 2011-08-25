@@ -443,11 +443,11 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
 					if(isset($securityConfig[$app]['actions']) && is_array($securityConfig[$app]['actions']))
 					{
 						//@todo the following code use the credentials: for any app. Is this what we want ?
-					  $hasGenericCredentiel = isset($moduleConfig['credentials']) ? true : false;
-					  $genericCredential = $hasGenericCredentiel ? $moduleConfig['credentials'] : false;
+					  $hasGenericCredentials = isset($moduleConfig['credentials']) ? true : false;
+					  $genericCredential = $hasGenericCredentials ? $moduleConfig['credentials'] : false;
 					  foreach($securityConfig[$app]['actions'] as $actionName => $actionConfig)
 					  {
-					  	if($hasGenericCredentiel){
+					  	if($hasGenericCredentials){
 					  		$actionConfig['is_secure'] = true;
 					  		$actionConfig['credentials'] = $genericCredential;
 					  		$actionConfig['strategy'] = 'action';
