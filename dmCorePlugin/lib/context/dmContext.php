@@ -292,6 +292,15 @@ class dmContext extends sfContext
     $this->dispatcher->notify(new sfEvent($this, 'dm.context.end'));
   }
 
+  public function shutdown()
+  {
+  	$this->dispatcher->notify(new sfEvent($this, 'sf.context.end.before'));
+  	
+  	parent::shutdown();
+  	
+  	$this->dispatcher->notify(new sfEvent($this, 'sf.context.end.after'));
+  }
+  
 
   public function isModuleAction($module, $action)
   {
