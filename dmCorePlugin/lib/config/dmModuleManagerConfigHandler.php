@@ -416,7 +416,7 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
 
 		if($securityConfig){
 			//check if things are rights, else make them right, at the top-level
-			$securityConfig[$app] = isset($securityConfig[$app]) && is_array($securityConfig[$app]) ? $securityConfig[$app] : array();
+			$securityConfig = isset($securityConfig[$app]) && is_array($securityConfig[$app]) ? $securityConfig[$app] : array();
 			foreach(array('actions', 'components') as $actionKind)
 			{
 				//we cannot get serviceContainer because it isn't initialized yet ! check sfContext & dmContext for this
