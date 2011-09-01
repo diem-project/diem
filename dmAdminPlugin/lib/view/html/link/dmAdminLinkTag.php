@@ -121,8 +121,6 @@ class dmAdminLinkTag extends dmBaseLinkTag
       }
       elseif ($resource{0} === '/')
       {
-        $resource = $resource;
-        
         /*
          * add relativeUrlRoot to absolute resource
          */
