@@ -70,11 +70,6 @@ class dmFrontLayoutHelper extends dmCoreLayoutHelper
   {
     $user = $this->getService('user');
     
-    if (!$user->can('admin'))
-    {
-      return '';
-    }
-    
     $helper = $this->getHelper();
     
     $cacheKey = sfConfig::get('sf_cache') ? $user->getCacheHash() : null;
