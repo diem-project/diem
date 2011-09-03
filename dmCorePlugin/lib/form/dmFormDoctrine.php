@@ -25,6 +25,11 @@ abstract class dmFormDoctrine extends sfFormDoctrine
 	 * @var array
 	 */
 	protected $embeddedFormsSaveTime;
+  
+  /**
+	 * @var array
+	 */
+  protected $embedRelationDynamics = array();
 	
 	
   /**
@@ -442,4 +447,133 @@ abstract class dmFormDoctrine extends sfFormDoctrine
 		$this->setEmbeddedFormSavingTime($name, $savingTime);
 		return $this;
 	}
+  
+  /**
+   * 
+   */
+  public function isEmbedRelationDynamic($fieldName)
+  {
+    return isset($this->embedRelationDynamics[$fieldName]);
+  }
+  
+  /**
+   * 
+   */
+  public function getEmbedRelationDynamic($fieldName)
+  {
+    if ($this->isEmbedRelationDynamic($fieldName))
+    {
+      return $this->embedRelationDynamics[$fieldName];
+    }
+    
+    return null;
+  }
+
+  /**
+   *
+   * @param type $relationName
+   * @param type $formClass
+   * @param type $formArgs
+   * @param type $innerDecorator
+   * @param type $decorator
+   * @return type 
+   */
+  public function embedRelationDynamic($relationName, $formClass = null, $formArgs = array(), $innerDecorator = null, $decorator = null)
+  {
+    if (false !== $pos = stripos($relationName, ' as '))
+    {
+      $fieldName = substr($relationName, $pos + 4);
+      $newRelationName = substr($relationName, 0, $pos);
+    }
+    else
+    {
+      $newRelationName = $relationName;
+      $fieldName = $newRelationName;
+    }
+
+    $this->embedRelationDynamics[$fieldName] = array('relationName' => $newRelationName,
+                                                    'formClass' => $formClass);
+
+    return $this->embedRelation($relationName, $formClass, $formArgs, $innerDecorator, $decorator);
+  }
+
+  /**
+   *
+   * @param type $fieldName
+   * @param type $i
+   * @param type $object 
+   */
+  public function addEmbedRelationDynamicObject($fieldName, $i, $object = null)
+  {
+    $embed_relation_dynamic = $this->embedRelationDynamics[$fieldName];
+    $form_object = $this->getObject();
+    $form_object_name = get_class($form_object);
+
+    $relation = $form_object->get($embed_relation_dynamic['relationName'])->getTable()->getOption('name');
+    $relation_object = new $relation;
+    $relation_object->set($form_object_name, is_object($object) && get_class($object) == $form_object_name ? $object : $form_object);
+
+    $form = new $embed_relation_dynamic['formClass']($relation_object);
+
+    $this->embeddedForms[$fieldName]->embedForm($i, $form);
+    $this->embedForm($fieldName, $this->embeddedForms[$fieldName]);
+       
+
+    $this->setEmbeddedFormSavingTime($fieldName, self::EMBEDDED_FORM_SAVE_BEFORE);
+  }
+
+  /**
+   *
+   * @param array $taintedValues
+   * @param array $taintedFiles
+   */
+  public function bind(array $taintedValues = null, array $taintedFiles = null)
+  {
+    foreach ($this->embedRelationDynamics as $fieldName => $datas)
+    {
+      $max = max(@max(array_merge(array(-1), array_keys($this[$fieldName]->getWidget()->getPositions()))),
+                 @max(array_merge(array(-1), array_keys($taintedValues[$fieldName]))));
+      
+      for ($i = 0; $i <= $max; $i++)
+      {
+        if (!isset($this[$fieldName][$i]))
+        {
+          $this->addEmbedRelationDynamicObject($fieldName, $i);
+        }
+        
+        $has_not_file = false;
+        
+        if (isset($taintedFiles[$fieldName][$i]))
+        {
+          foreach ($taintedFiles[$fieldName][$i] as $key => $field)
+          {
+            if (isset($field['file']))
+            {
+              //var_dump($fieldName, $i, $field);
+              $has_not_file = (isset($taintedValues[$fieldName][$i][$key])
+                           && empty($taintedFiles[$fieldName][$i][$key]['file']['name'])
+                           && empty($taintedValues[$fieldName][$i][$key]['id']));
+            }
+          }
+        }
+        
+        if (!isset($taintedValues[$fieldName][$i]) || $has_not_file)
+        {
+          if ($this->getObject()->get($datas['relationName'])->contains($i))
+          {
+            $this->getObject()->get($datas['relationName'])->remove($i);
+          }
+
+          unset($this->embeddedForms[$fieldName][$i],
+                $this->validatorSchema[$fieldName][$i]);
+
+          unset($taintedValues[$fieldName][$i]);
+          unset($taintedFiles[$fieldName][$i]);
+        }
+
+      }
+    }
+
+    parent::bind($taintedValues, $taintedFiles);
+  }
 }
