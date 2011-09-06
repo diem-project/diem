@@ -16,7 +16,7 @@ js:
     
   lib:
     symfony_debug:            symfony/debug
-    jquery:                   jquery/jquery-1.6.1.min
+    jquery:                   jquery/jquery-1.6.2.min
     ui-core:                  jquery-ui/js/minified/jquery.ui.core.min
     ui-widget:                jquery-ui/js/minified/jquery.ui.widget.min
     ui-autocomplete:          jquery-ui/js/minified/jquery.ui.autocomplete.min
@@ -49,7 +49,7 @@ js:
     ui-effects-transfer:      jquery-ui/js/minified/jquery.effects.transfer.min
     metadata:         metadata/jquery.metadata.min
     form:             form/jquery.form
-    blockUI:          blockUI/jquery.blockUI-2.38
+    blockUI:          blockUI/jquery.blockUI-2.39
     jgrowl:           jgrowl/jquery.jgrowl_minimized
     ajaxqueue:        ajaxqueue/jquery.ajaxQueue
     cookie:           cookie/jquery.cookie.min
