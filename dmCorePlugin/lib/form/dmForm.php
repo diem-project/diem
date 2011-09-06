@@ -342,7 +342,7 @@ class dmForm extends sfFormSymfony
         $value = $widget instanceof sfWidgetFormSchema ? $widget->getDefaults() : $widget->getDefault();
       }
 
-      $class = $widget instanceof sfWidgetFormSchema ? 'sfFormFieldSchema' : self::$serviceContainer->getParameter('form_field.class');
+      $class = $widget instanceof sfWidgetFormSchema ? 'dmFormFieldSchema' : self::$serviceContainer->getParameter('form_field.class');
 
       $this->formFields[$name] = new $class($widget, $this->getFormFieldSchema(), $name, $value, $this->errorSchema[$name]);
     
