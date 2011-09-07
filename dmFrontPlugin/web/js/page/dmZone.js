@@ -141,15 +141,16 @@ $.widget('ui.dmZone', {
 
         sortEvents = [];
       },
-      stop:                   function(e, ui)
+      stop: function(e, ui)
       {
+        var $this = $(this), invoker = $this.data('sortable').invokerItem;
         if (sortEvents.update && sortEvents.receive && sortEvents.remove)
         {
-          sortEvents.receive.dmZone('moveWidget', ui.item);
+          sortEvents.receive.dmZone('moveWidget', invoker);
         }
         else if (sortEvents.update && sortEvents.receive)
         {
-          $(this).parent().dmZone(ui.item.text('').block().hasClass('widget_paste') ? 'pasteWidget' : 'addWidget', ui.item);
+          $(this).parent().dmZone(ui.item.text('').block().hasClass('widget_paste') ? 'pasteWidget' : 'addWidget', invoker);
         }
         else if (sortEvents.update)
         {
