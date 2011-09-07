@@ -239,6 +239,10 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
 
         var dragStart = function()
         {
+          var inst = $(this).data("draggable"), invoker = $(this);
+          $.each(inst.sortables, function(i) {
+            this.instance.invokerItem = invoker;
+          });
           $menu.dmMenu('close');
           self.activateEdit(true);
         };
