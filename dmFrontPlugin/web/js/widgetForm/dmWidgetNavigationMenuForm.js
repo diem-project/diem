@@ -22,7 +22,8 @@ $.fn.extend({
         link: '',
         text: '',
         secure: false,
-        nofollow: false
+        nofollow: false,
+        target: ''
       }, item);
 
       var $li = $('<li class="item_element">')
@@ -39,6 +40,7 @@ $.fn.extend({
 <li class="clearfix"><label>'+metadata.secure_message+':</label><input class="secure" type="checkbox" name="'+formName+'[secure]['+itemIndex+']" value="1" /></li> \
 <li class="clearfix"><label>'+metadata.nofollow_message+':</label><input class="nofollow" type="checkbox" name="'+formName+'[nofollow]['+itemIndex+']" value="1" /></li> \
 <li class="clearfix for_depth"><label>'+metadata.depth_message+':</label><select class="depth" name="'+formName+'[depth]['+itemIndex+']">'+self.getDepthOptions(item.depth)+'</select></li>\
+<li class="clearfix"><label>'+metadata.target_message+':</label><input class="target" type="text" name="'+formName+'[target]['+itemIndex+']" /></li> \
 </ul> \
 </div> \
 </li> \
@@ -49,7 +51,8 @@ $.fn.extend({
         .find('input.text').val(item.text).end()
         .find('input.link').val(item.link).end()
         .find('input.secure').prop('checked', item.secure).end()
-        .find('input.nofollow').prop('checked', item.nofollow);
+        .find('input.nofollow').prop('checked', item.nofollow).end()
+        .find('input.target').val(item.target);
       
       $items.append($li);
       itemIndex++;
@@ -131,7 +134,8 @@ $.fn.extend({
     $form.find('a.external_link').click(function() {
       createItemElement({
         link: '',
-        text: ''
+        text: '',
+        target: ''
       });
 
       $items.attr('scrollTop', 999999).find('li.item_element:last a.item_text').trigger('click');
