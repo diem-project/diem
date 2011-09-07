@@ -365,7 +365,7 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
       'name'            => (string) trim($moduleConfig['name']),
       'plural'          => (string) trim(empty($moduleConfig['plural']) ? ($model ? dmString::pluralize($moduleConfig['name']) : $moduleConfig['name']) : $moduleConfig['plural']),
       'model'           => $model,
-      'credentials'     => isset($moduleConfig['credentials']) ? trim($moduleConfig['credentials']) : ((boolean) $isInContent ? 'content': null),
+      'credentials'     => isset($moduleConfig['credentials']) ? (is_string($moduleConfig['credentials']) ? trim($moduleConfig['credentials']) : (is_array($moduleConfig['credentials']) ? $moduleConfig['credentials'] : '')) : ((boolean) $isInContent ? 'content': null),
       'underscore'      => (string) dmString::underscore($moduleKey),
       'is_project'      => (boolean) $isInContent || dmArray::get($moduleConfig, 'page', false) || count(dmArray::get($moduleConfig, 'components', array())),
       'plugin'          => $moduleConfig['plugin'],
@@ -477,8 +477,10 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
 				}
 			}
 		}
+		
+		$moduleConfig['security'][$app] = $securityConfig;
 
-		return $securityConfig;
+		return $moduleConfig['security'];
 	}
 
 	protected function processHierarchy()

@@ -244,7 +244,10 @@ class dmModuleSecurityManager extends dmModuleSecurityAbstract implements dmModu
       $security = $this->module->getOption('security');
       $security = isset($security[$app]) ? $security[$app] : false;
     }
-    if(!$security) return true;
+    if(!$security)
+    {
+    	return true; //this way, usual action strategy gets involved
+    }
      
     if(null === $actionKind){
       return $security;
