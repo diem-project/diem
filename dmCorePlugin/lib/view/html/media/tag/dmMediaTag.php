@@ -12,8 +12,26 @@ abstract class dmMediaTag extends dmHtmlTag
   {
     $this->resource         = $resource;
     $this->context          = $context;
-    
+
+    $this->addAttributeToRemove('absolute');
     $this->initialize($options);
+  }
+  
+  public function getDefaultOptions()
+  {
+  	return array_merge(parent::getDefaultOptions(), array(
+  		'absolute' 				=> false
+  	));
+  }
+  
+  public function absolute($bool)
+  {
+  	return $this->setOption('absolute', (boolean) $bool);
+  }
+  
+  public function isAbsolute()
+  {
+  	return $this->getOption('absolute');
   }
   
   public function width($v)
@@ -57,16 +75,8 @@ abstract class dmMediaTag extends dmHtmlTag
 
   public function getAbsoluteSrc($throwException = true)
   {
-    $src = $this->getSrc($throwException);
-
-    $uriPrefix = $this->context->getRequest()->getUriPrefix();
-
-    if (strpos($src, $uriPrefix) !== 0)
-    {
-      $src = $uriPrefix.$src;
-    }
-
-    return $src;
+  	$this->absolute(true);
+    return $this->getSrc($throwException);
   }
 
   public function getWidth()
@@ -83,7 +93,7 @@ abstract class dmMediaTag extends dmHtmlTag
   {
     $attributes = parent::prepareAttributesForHtml($attributes);
 
-    $attributes['src'] = $this->resource->getWebPath();
+    $attributes['src'] = $this->resource->getWebPath($this->options['absolute']);
 
     return $attributes;
   }

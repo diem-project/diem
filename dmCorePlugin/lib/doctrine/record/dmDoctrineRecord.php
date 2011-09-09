@@ -379,7 +379,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
 	 */
 	public function hasDmPage()
 	{
-		return $this->getDmModule()->hasPage() && dmDb::table('DmPage')->findOneByRecordWithI18n($this);
+		return $this->getDmModule() && $this->getDmModule()->hasPage() && dmDb::table('DmPage')->findOneByRecordWithI18n($this);
 	}
 
 	/**

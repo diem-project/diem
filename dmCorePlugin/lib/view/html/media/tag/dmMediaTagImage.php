@@ -224,7 +224,7 @@ class dmMediaTagImage extends dmMediaTag
       throw new dmException('The image is not readable : '.dmProject::unRootify($mediaFullPath));
     }
 
-    $attributes['src'] = $this->context->getRequest()->getRelativeUrlRoot()
+    $attributes['src'] = !$this->options['absolute'] ? $this->context->getRequest()->getRelativeUrlRoot() : $this->context->getRequest()->getAbsoluteUrlRoot()
     .str_replace(dmOs::normalize(sfConfig::get('sf_web_dir')), '', dmOs::normalize($mediaFullPath));
     
     if(!isset($attributes['alt']) && $media->get('legend'))
