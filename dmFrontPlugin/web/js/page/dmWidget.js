@@ -25,7 +25,7 @@ $.widget('ui.dmWidget', {
       url:          $.dm.ctrl.getHref('+/dmWidget/edit'),
       data:         {widget_id: widget.getId()},
       title:        $('a.dm_widget_edit', widget.element).tipsyTitle(),
-      width:        600,
+      width:        '600', // this should be revised and if possible - made dependant on content's width
       'class':      'dm_widget_edit_dialog_wrap '+dialogClass,
       resizable:    true,
       resize:       function(event, ui)
