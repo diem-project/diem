@@ -21,7 +21,7 @@ class dmInlineAssetConfigHandler extends dmInlineConfigHandler
     // loop through all key/value pairs
     foreach ((array)$keys as $key => $value)
     {
-      if (0 === strncmp($value, 'http://', 7))
+      if (0 === strncmp($value, 'http://', 7) || 0 === strncmp($value, 'https://', 8))
       {
         $values[$prefix.$this->separator.$category.$this->separator.$key] = $value;
       }

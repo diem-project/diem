@@ -149,7 +149,7 @@ class dmWebResponse extends sfWebResponse
 
   public function calculateAssetPath($type, $asset)
   {
-    if ($asset{0} === '/' || strpos($asset, 'http://') === 0)
+    if ($asset{0} === '/' || strpos($asset, 'http://') === 0 || 0 === strncmp($asset, 'https://', 8))
     {
       $path = $asset;
     }
