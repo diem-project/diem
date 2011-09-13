@@ -16,7 +16,7 @@ js:
     
   lib:
     symfony_debug:            symfony/debug
-    jquery:                   jquery/jquery-1.6.2.min
+    jquery:                   jquery/jquery-1.6.4.min
     ui-core:                  jquery-ui/js/minified/jquery.ui.core.min
     ui-widget:                jquery-ui/js/minified/jquery.ui.widget.min
     ui-autocomplete:          jquery-ui/js/minified/jquery.ui.autocomplete.min
