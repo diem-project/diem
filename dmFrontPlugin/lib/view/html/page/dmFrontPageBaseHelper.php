@@ -214,6 +214,8 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
 		//Set id of page we need
 		$this->global_area_id = dmArray::get($options, 'global_area', null);
 
+                unset($options['global_area']);
+
 		$tagName = $this->getAreaTypeTagName($name);
 
 		$area = $this->getArea($name);
