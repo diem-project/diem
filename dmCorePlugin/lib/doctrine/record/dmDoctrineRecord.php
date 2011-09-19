@@ -832,7 +832,8 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
 			$underscoredFieldName = dmString::underscore($fieldName);
 			if (strpos($underscoredFieldName, '_') !== false && $this->contains($underscoredFieldName))
 			{
-				parent::_set($underscoredFieldName, $value, $load);
+				return parent::_set($underscoredFieldName, $value, $load); //why it was not return'ing from here ?
+				//calling parent::_set($fieldName, ...) will always causes throwing an error
 			}
 		}
 
