@@ -55,10 +55,10 @@ class dmConfig
    */
   public static function set($name, $value)
   {
-    if (!self::has($name))
+    /*if (!self::has($name))
     {
       throw new dmException(sprintf('There is no setting called "%s". Available settings are : %s', $name, implode(', ', array_keys(self::$config))));
-    }
+    }*/
     
     /*
      * Convert booleans to 0, 1 not to fail doctrine validation
@@ -69,7 +69,13 @@ class dmConfig
     }
 
     $setting = dmDb::query('DmSetting s')->where('s.name = ?', $name)->withI18n(self::$culture)->fetchOne();
-
+    
+    if(!$setting)
+    {
+    	$setting = new DmSetting();
+    	$setting->set('name', $name);
+    }
+    
     $setting->set('value', $value);
 
     $setting->save();
