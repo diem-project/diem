@@ -16,7 +16,7 @@ abstract class BaseDmTestDomainTranslationFormFilter extends BaseFormFilterDoctr
 
 		if($this->needsWidget('title')){
 			$this->setWidget('title', new sfWidgetFormDmFilterInput());
-			$this->setValidator('title', new sfValidatorString(array('required' => false)));
+			$this->setValidator('title', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('is_active')){
 			$this->setWidget('is_active', new sfWidgetFormChoice(array('choices' => array('' => $this->getI18n()->__('yes or no', array(), 'dm'), 1 => $this->getI18n()->__('yes', array(), 'dm'), 0 => $this->getI18n()->__('no', array(), 'dm')))));

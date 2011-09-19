@@ -20,23 +20,23 @@ abstract class BaseDmSettingFormFilter extends BaseFormFilterDoctrine
 		}
 		if($this->needsWidget('name')){
 			$this->setWidget('name', new sfWidgetFormDmFilterInput());
-			$this->setValidator('name', new sfValidatorString(array('required' => false)));
+			$this->setValidator('name', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('type')){
 			$this->setWidget('type', new sfWidgetFormChoice(array('multiple' => true, 'choices' => array('' => '', 'text' => 'text', 'boolean' => 'boolean', 'select' => 'select', 'textarea' => 'textarea', 'number' => 'number', 'datetime' => 'datetime'))));
-			$this->setValidator('type', new sfValidatorChoice(array('required' => false, 'choices' => array('text' => 'text', 'boolean' => 'boolean', 'select' => 'select', 'textarea' => 'textarea', 'number' => 'number', 'datetime' => 'datetime'))));
+			$this->setValidator('type', new sfValidatorChoice(array('required' => false, 'multiple' => true , 'choices' => array('text' => 'text', 'boolean' => 'boolean', 'select' => 'select', 'textarea' => 'textarea', 'number' => 'number', 'datetime' => 'datetime'))));
 		}
 		if($this->needsWidget('params')){
 			$this->setWidget('params', new sfWidgetFormDmFilterInput());
-			$this->setValidator('params', new sfValidatorString(array('required' => false)));
+			$this->setValidator('params', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('group_name')){
 			$this->setWidget('group_name', new sfWidgetFormDmFilterInput());
-			$this->setValidator('group_name', new sfValidatorString(array('required' => false)));
+			$this->setValidator('group_name', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('credentials')){
 			$this->setWidget('credentials', new sfWidgetFormDmFilterInput());
-			$this->setValidator('credentials', new sfValidatorString(array('required' => false)));
+			$this->setValidator('credentials', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 
 

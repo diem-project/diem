@@ -20,31 +20,31 @@ abstract class BaseDmPageFormFilter extends BaseFormFilterDoctrine
 		}
 		if($this->needsWidget('module')){
 			$this->setWidget('module', new sfWidgetFormDmFilterInput());
-			$this->setValidator('module', new sfValidatorString(array('required' => false)));
+			$this->setValidator('module', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('action')){
 			$this->setWidget('action', new sfWidgetFormDmFilterInput());
-			$this->setValidator('action', new sfValidatorString(array('required' => false)));
+			$this->setValidator('action', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('record_id')){
 			$this->setWidget('record_id', new sfWidgetFormDmFilterInput());
-			$this->setValidator('record_id', new sfValidatorInteger(array('required' => false)));
+			$this->setValidator('record_id', new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))));
 		}
 		if($this->needsWidget('credentials')){
 			$this->setWidget('credentials', new sfWidgetFormDmFilterInput());
-			$this->setValidator('credentials', new sfValidatorString(array('required' => false)));
+			$this->setValidator('credentials', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('lft')){
 			$this->setWidget('lft', new sfWidgetFormDmFilterInput());
-			$this->setValidator('lft', new sfValidatorInteger(array('required' => false)));
+			$this->setValidator('lft', new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))));
 		}
 		if($this->needsWidget('rgt')){
 			$this->setWidget('rgt', new sfWidgetFormDmFilterInput());
-			$this->setValidator('rgt', new sfValidatorInteger(array('required' => false)));
+			$this->setValidator('rgt', new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))));
 		}
 		if($this->needsWidget('level')){
 			$this->setWidget('level', new sfWidgetFormDmFilterInput());
-			$this->setValidator('level', new sfValidatorInteger(array('required' => false)));
+			$this->setValidator('level', new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))));
 		}
 
 

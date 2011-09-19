@@ -105,22 +105,22 @@ abstract class BaseDmRecordPermissionAssociationForm extends BaseFormDoctrine
 
     if (isset($this->widgetSchema['groups_list']))
     {
-      $this->setDefault('groups_list', $this->object->Groups->getPrimaryKeys());
+        $this->setDefault('groups_list', array_merge((array)$this->getDefault('groups_list'),$this->object->Groups->getPrimaryKeys()));
     }
 
     if (isset($this->widgetSchema['users_list']))
     {
-      $this->setDefault('users_list', $this->object->Users->getPrimaryKeys());
+        $this->setDefault('users_list', array_merge((array)$this->getDefault('users_list'),$this->object->Users->getPrimaryKeys()));
     }
 
     if (isset($this->widgetSchema['dm_record_permission_association_group_list']))
     {
-      $this->setDefault('dm_record_permission_association_group_list', $this->object->DmRecordPermissionAssociationGroup->getPrimaryKeys());
+        $this->setDefault('dm_record_permission_association_group_list', array_merge((array)$this->getDefault('dm_record_permission_association_group_list'),$this->object->DmRecordPermissionAssociationGroup->getPrimaryKeys()));
     }
 
     if (isset($this->widgetSchema['dm_record_permission_association_user_list']))
     {
-      $this->setDefault('dm_record_permission_association_user_list', $this->object->DmRecordPermissionAssociationUser->getPrimaryKeys());
+        $this->setDefault('dm_record_permission_association_user_list', array_merge((array)$this->getDefault('dm_record_permission_association_user_list'),$this->object->DmRecordPermissionAssociationUser->getPrimaryKeys()));
     }
 
   }

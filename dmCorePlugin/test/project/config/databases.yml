@@ -8,3 +8,5 @@ test:
   doctrine:
     param:
       dsn: 'sqlite:%SF_DATA_DIR%/db.sqlite'
+
+

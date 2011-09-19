@@ -20,15 +20,15 @@ abstract class BaseDmContactFormFilter extends BaseFormFilterDoctrine
 		}
 		if($this->needsWidget('name')){
 			$this->setWidget('name', new sfWidgetFormDmFilterInput());
-			$this->setValidator('name', new sfValidatorString(array('required' => false)));
+			$this->setValidator('name', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('email')){
 			$this->setWidget('email', new sfWidgetFormDmFilterInput());
-			$this->setValidator('email', new sfValidatorString(array('required' => false)));
+			$this->setValidator('email', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('body')){
 			$this->setWidget('body', new sfWidgetFormDmFilterInput());
-			$this->setValidator('body', new sfValidatorString(array('required' => false)));
+			$this->setValidator('body', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('created_at')){
 			$this->setWidget('created_at', new sfWidgetFormChoice(array('choices' => array(

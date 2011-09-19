@@ -182,32 +182,32 @@ abstract class BaseDmTestPostForm extends BaseFormDoctrine
 
     if (isset($this->widgetSchema['tags_list']))
     {
-      $this->setDefault('tags_list', $this->object->Tags->getPrimaryKeys());
+        $this->setDefault('tags_list', array_merge((array)$this->getDefault('tags_list'),$this->object->Tags->getPrimaryKeys()));
     }
 
     if (isset($this->widgetSchema['medias_list']))
     {
-      $this->setDefault('medias_list', $this->object->Medias->getPrimaryKeys());
+        $this->setDefault('medias_list', array_merge((array)$this->getDefault('medias_list'),$this->object->Medias->getPrimaryKeys()));
     }
 
     if (isset($this->widgetSchema['dm_test_post_tag_list']))
     {
-      $this->setDefault('dm_test_post_tag_list', $this->object->DmTestPostTag->getPrimaryKeys());
+        $this->setDefault('dm_test_post_tag_list', array_merge((array)$this->getDefault('dm_test_post_tag_list'),$this->object->DmTestPostTag->getPrimaryKeys()));
     }
 
     if (isset($this->widgetSchema['comments_list']))
     {
-      $this->setDefault('comments_list', $this->object->Comments->getPrimaryKeys());
+        $this->setDefault('comments_list', array_merge((array)$this->getDefault('comments_list'),$this->object->Comments->getPrimaryKeys()));
     }
 
     if (isset($this->widgetSchema['translation_list']))
     {
-      $this->setDefault('translation_list', $this->object->Translation->getPrimaryKeys());
+        $this->setDefault('translation_list', array_merge((array)$this->getDefault('translation_list'),$this->object->Translation->getPrimaryKeys()));
     }
 
     if (isset($this->widgetSchema['dm_test_post_dm_media_list']))
     {
-      $this->setDefault('dm_test_post_dm_media_list', $this->object->DmTestPostDmMedia->getPrimaryKeys());
+        $this->setDefault('dm_test_post_dm_media_list', array_merge((array)$this->getDefault('dm_test_post_dm_media_list'),$this->object->DmTestPostDmMedia->getPrimaryKeys()));
     }
 
   }

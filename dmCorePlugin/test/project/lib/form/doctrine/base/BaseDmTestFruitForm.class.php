@@ -95,12 +95,12 @@ abstract class BaseDmTestFruitForm extends BaseFormDoctrine
 
     if (isset($this->widgetSchema['tags_list']))
     {
-      $this->setDefault('tags_list', $this->object->Tags->getPrimaryKeys());
+        $this->setDefault('tags_list', array_merge((array)$this->getDefault('tags_list'),$this->object->Tags->getPrimaryKeys()));
     }
 
     if (isset($this->widgetSchema['dm_test_fruit_dm_tag_list']))
     {
-      $this->setDefault('dm_test_fruit_dm_tag_list', $this->object->DmTestFruitDmTag->getPrimaryKeys());
+        $this->setDefault('dm_test_fruit_dm_tag_list', array_merge((array)$this->getDefault('dm_test_fruit_dm_tag_list'),$this->object->DmTestFruitDmTag->getPrimaryKeys()));
     }
 
   }

@@ -16,15 +16,15 @@ abstract class BaseDmTestPostTranslationFormFilter extends BaseFormFilterDoctrin
 
 		if($this->needsWidget('title')){
 			$this->setWidget('title', new sfWidgetFormDmFilterInput());
-			$this->setValidator('title', new sfValidatorString(array('required' => false)));
+			$this->setValidator('title', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('excerpt')){
 			$this->setWidget('excerpt', new sfWidgetFormDmFilterInput());
-			$this->setValidator('excerpt', new sfValidatorString(array('required' => false)));
+			$this->setValidator('excerpt', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('body')){
 			$this->setWidget('body', new sfWidgetFormDmFilterInput());
-			$this->setValidator('body', new sfValidatorString(array('required' => false)));
+			$this->setValidator('body', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('url')){
 			$this->setWidget('url', new sfWidgetFormDmFilterInput());
@@ -40,12 +40,12 @@ abstract class BaseDmTestPostTranslationFormFilter extends BaseFormFilterDoctrin
 		}
 		if($this->needsWidget('version')){
 			$this->setWidget('version', new sfWidgetFormDmFilterInput());
-			$this->setValidator('version', new sfValidatorInteger(array('required' => false)));
+			$this->setValidator('version', new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))));
 		}
 
 
 		if($this->needsWidget('version_list')){
-			$this->setWidget('version_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPostTranslationVersion', 'expanded' => true)));
+			$this->setWidget('version_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPostTranslationVersion', 'expanded' => true)));
 			$this->setValidator('version_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPostTranslationVersion', 'required' => false)));
 		}
 

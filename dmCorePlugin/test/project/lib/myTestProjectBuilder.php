@@ -46,10 +46,12 @@ class myTestProjectBuilder
       'is_active' => true,
       'is_super_admin' => false
     ));
-
+    
     $writer->setPassword('writer');
 
-    $writer->addGroupByName('writer');
+    $groupWriter = dmDb::table('DmGroup')->findOneBy('name', 'writer');
+    
+    $writer->get('Groups')->add($groupWriter)->save();
 
     $writer->save();
   }

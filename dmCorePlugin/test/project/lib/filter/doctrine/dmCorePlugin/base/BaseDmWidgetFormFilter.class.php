@@ -20,19 +20,19 @@ abstract class BaseDmWidgetFormFilter extends BaseFormFilterDoctrine
 		}
 		if($this->needsWidget('module')){
 			$this->setWidget('module', new sfWidgetFormDmFilterInput());
-			$this->setValidator('module', new sfValidatorString(array('required' => false)));
+			$this->setValidator('module', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('action')){
 			$this->setWidget('action', new sfWidgetFormDmFilterInput());
-			$this->setValidator('action', new sfValidatorString(array('required' => false)));
+			$this->setValidator('action', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('css_class')){
 			$this->setWidget('css_class', new sfWidgetFormDmFilterInput());
-			$this->setValidator('css_class', new sfValidatorString(array('required' => false)));
+			$this->setValidator('css_class', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('position')){
 			$this->setWidget('position', new sfWidgetFormDmFilterInput());
-			$this->setValidator('position', new sfValidatorInteger(array('required' => false)));
+			$this->setValidator('position', new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))));
 		}
 		if($this->needsWidget('updated_at')){
 			$this->setWidget('updated_at', new sfWidgetFormChoice(array('choices' => array(

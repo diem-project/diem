@@ -1,10 +1,13 @@
 <?php
+clearstatcache(true);
+
+$isSqlite = Doctrine_Manager::getInstance()->getConnection('doctrine') instanceof Doctrine_Connection_Sqlite;
 
 require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
 $helper = new dmUnitTestHelper();
 $helper->boot('front');
 
-$t = new lime_test(16 + 3*count($helper->get('i18n')->getCultures()));
+$t = new lime_test(16 + ($isSqlite ? 1 : 0) + 3*count($helper->get('i18n')->getCultures()));
 
 $user = $helper->get('user');
 
@@ -82,13 +85,16 @@ $t->is($user->getCulture(), sfConfig::get('sf_default_culture'), 'User\'s cultur
 
 $t->ok(!file_exists(dmProject::rootify('segments.gen')), 'There is no segments.gen in project root dir');
 
-$t->ok(file_exists(dmProject::rootify('cache/testIndex/'.$currentIndex->getName(), 'segments.gen')), 'There is segments.gen in cache index dir');
+$t->ok(file_exists(dmProject::rootify('cache/testIndex/'.$currentIndex->getName(), 'segments.gen')), 'There is segments.gen in cache index dir ' . dmProject::rootify('cache/testIndex/'.$currentIndex->getName(), 'segments.gen'));
 
 $indexDescription = $engine->getCurrentIndex()->describe();
 
 // not pages indexed with sqlite (?)
-// $t->is($indexDescription['Documents'], $engine->getCurrentIndex()->getPagesQuery()->count(), 'All pages have been indexed : '.$indexDescription['Documents']);
+if($isSqlite)
+{
+	$t->is($indexDescription['Documents'], $engine->getCurrentIndex()->getPagesQuery()->count(), 'All pages have been indexed : '.$indexDescription['Documents']);
+	$t->diag('Perform a search');
+	
+	$engine->search('Diem');
+}
 
-$t->diag('Perform a search');
-
-$engine->search('Diem');

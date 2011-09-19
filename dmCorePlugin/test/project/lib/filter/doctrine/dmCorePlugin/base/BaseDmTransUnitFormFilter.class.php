@@ -20,15 +20,15 @@ abstract class BaseDmTransUnitFormFilter extends BaseFormFilterDoctrine
 		}
 		if($this->needsWidget('source')){
 			$this->setWidget('source', new sfWidgetFormDmFilterInput());
-			$this->setValidator('source', new sfValidatorString(array('required' => false)));
+			$this->setValidator('source', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('target')){
 			$this->setWidget('target', new sfWidgetFormDmFilterInput());
-			$this->setValidator('target', new sfValidatorString(array('required' => false)));
+			$this->setValidator('target', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('meta')){
 			$this->setWidget('meta', new sfWidgetFormDmFilterInput());
-			$this->setValidator('meta', new sfValidatorString(array('required' => false)));
+			$this->setValidator('meta', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('created_at')){
 			$this->setWidget('created_at', new sfWidgetFormChoice(array('choices' => array(

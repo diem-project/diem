@@ -20,11 +20,11 @@ abstract class BaseDmRedirectFormFilter extends BaseFormFilterDoctrine
 		}
 		if($this->needsWidget('source')){
 			$this->setWidget('source', new sfWidgetFormDmFilterInput());
-			$this->setValidator('source', new sfValidatorString(array('required' => false)));
+			$this->setValidator('source', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('dest')){
 			$this->setWidget('dest', new sfWidgetFormDmFilterInput());
-			$this->setValidator('dest', new sfValidatorString(array('required' => false)));
+			$this->setValidator('dest', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('created_at')){
 			$this->setWidget('created_at', new sfWidgetFormChoice(array('choices' => array(

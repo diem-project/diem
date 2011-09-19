@@ -16,15 +16,15 @@ abstract class BaseDmTestCommentVersionFormFilter extends BaseFormFilterDoctrine
 
 		if($this->needsWidget('post_id')){
 			$this->setWidget('post_id', new sfWidgetFormDmFilterInput());
-			$this->setValidator('post_id', new sfValidatorInteger(array('required' => false)));
+			$this->setValidator('post_id', new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))));
 		}
 		if($this->needsWidget('author')){
 			$this->setWidget('author', new sfWidgetFormDmFilterInput());
-			$this->setValidator('author', new sfValidatorString(array('required' => false)));
+			$this->setValidator('author', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('body')){
 			$this->setWidget('body', new sfWidgetFormDmFilterInput());
-			$this->setValidator('body', new sfValidatorString(array('required' => false)));
+			$this->setValidator('body', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('is_active')){
 			$this->setWidget('is_active', new sfWidgetFormChoice(array('choices' => array('' => $this->getI18n()->__('yes or no', array(), 'dm'), 1 => $this->getI18n()->__('yes', array(), 'dm'), 0 => $this->getI18n()->__('no', array(), 'dm')))));

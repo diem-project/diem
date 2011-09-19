@@ -16,7 +16,7 @@ abstract class BaseDmWidgetTranslationFormFilter extends BaseFormFilterDoctrine
 
 		if($this->needsWidget('value')){
 			$this->setWidget('value', new sfWidgetFormDmFilterInput());
-			$this->setValidator('value', new sfValidatorString(array('required' => false)));
+			$this->setValidator('value', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('lang')){
 			$this->setWidget('lang', new sfWidgetFormDmFilterInput());

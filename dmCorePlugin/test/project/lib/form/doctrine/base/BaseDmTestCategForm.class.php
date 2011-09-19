@@ -109,22 +109,22 @@ abstract class BaseDmTestCategForm extends BaseFormDoctrine
 
     if (isset($this->widgetSchema['domains_list']))
     {
-      $this->setDefault('domains_list', $this->object->Domains->getPrimaryKeys());
+        $this->setDefault('domains_list', array_merge((array)$this->getDefault('domains_list'),$this->object->Domains->getPrimaryKeys()));
     }
 
     if (isset($this->widgetSchema['dm_test_domain_categ_list']))
     {
-      $this->setDefault('dm_test_domain_categ_list', $this->object->DmTestDomainCateg->getPrimaryKeys());
+        $this->setDefault('dm_test_domain_categ_list', array_merge((array)$this->getDefault('dm_test_domain_categ_list'),$this->object->DmTestDomainCateg->getPrimaryKeys()));
     }
 
     if (isset($this->widgetSchema['posts_list']))
     {
-      $this->setDefault('posts_list', $this->object->Posts->getPrimaryKeys());
+        $this->setDefault('posts_list', array_merge((array)$this->getDefault('posts_list'),$this->object->Posts->getPrimaryKeys()));
     }
 
     if (isset($this->widgetSchema['translation_list']))
     {
-      $this->setDefault('translation_list', $this->object->Translation->getPrimaryKeys());
+        $this->setDefault('translation_list', array_merge((array)$this->getDefault('translation_list'),$this->object->Translation->getPrimaryKeys()));
     }
 
   }

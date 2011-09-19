@@ -20,25 +20,25 @@ abstract class BaseDmTagFormFilter extends BaseFormFilterDoctrine
 		}
 		if($this->needsWidget('name')){
 			$this->setWidget('name', new sfWidgetFormDmFilterInput());
-			$this->setValidator('name', new sfValidatorString(array('required' => false)));
+			$this->setValidator('name', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 
-		if($this->needsWidget('dm_test_domains_list')){
-			$this->setWidget('dm_test_domains_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomain', 'expanded' => true)));
-			$this->setValidator('dm_test_domains_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomain', 'required' => false)));
-		}
 		if($this->needsWidget('dm_test_fruits_list')){
-			$this->setWidget('dm_test_fruits_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmTestFruit', 'expanded' => true)));
+			$this->setWidget('dm_test_fruits_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmTestFruit', 'expanded' => true)));
 			$this->setValidator('dm_test_fruits_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestFruit', 'required' => false)));
 		}
-
-		if($this->needsWidget('dm_test_domain_dm_tag_list')){
-			$this->setWidget('dm_test_domain_dm_tag_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomainDmTag', 'expanded' => true)));
-			$this->setValidator('dm_test_domain_dm_tag_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomainDmTag', 'required' => false)));
+		if($this->needsWidget('dm_test_domains_list')){
+			$this->setWidget('dm_test_domains_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomain', 'expanded' => true)));
+			$this->setValidator('dm_test_domains_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomain', 'required' => false)));
 		}
+
 		if($this->needsWidget('dm_test_fruit_dm_tag_list')){
-			$this->setWidget('dm_test_fruit_dm_tag_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmTestFruitDmTag', 'expanded' => true)));
+			$this->setWidget('dm_test_fruit_dm_tag_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmTestFruitDmTag', 'expanded' => true)));
 			$this->setValidator('dm_test_fruit_dm_tag_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestFruitDmTag', 'required' => false)));
+		}
+		if($this->needsWidget('dm_test_domain_dm_tag_list')){
+			$this->setWidget('dm_test_domain_dm_tag_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomainDmTag', 'expanded' => true)));
+			$this->setValidator('dm_test_domain_dm_tag_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestDomainDmTag', 'required' => false)));
 		}
 
 
@@ -51,22 +51,6 @@ abstract class BaseDmTagFormFilter extends BaseFormFilterDoctrine
     $this->setupInheritance();
 
     parent::setup();
-  }
-
-  public function addDmTestDomainsListColumnQuery(Doctrine_Query $query, $field, $values)
-  {
-    if (!is_array($values))
-    {
-      $values = array($values);
-    }
-
-    if (!count($values))
-    {
-      return;
-    }
-
-    $query->leftJoin('r.DmTestDomainDmTag DmTestDomainDmTag')
-          ->andWhereIn('DmTestDomainDmTag.id', $values);
   }
 
   public function addDmTestFruitsListColumnQuery(Doctrine_Query $query, $field, $values)
@@ -85,6 +69,22 @@ abstract class BaseDmTagFormFilter extends BaseFormFilterDoctrine
           ->andWhereIn('DmTestFruitDmTag.id', $values);
   }
 
+  public function addDmTestDomainsListColumnQuery(Doctrine_Query $query, $field, $values)
+  {
+    if (!is_array($values))
+    {
+      $values = array($values);
+    }
+
+    if (!count($values))
+    {
+      return;
+    }
+
+    $query->leftJoin('r.DmTestDomainDmTag DmTestDomainDmTag')
+          ->andWhereIn('DmTestDomainDmTag.id', $values);
+  }
+
   public function getModelName()
   {
     return 'DmTag';
@@ -95,8 +95,8 @@ abstract class BaseDmTagFormFilter extends BaseFormFilterDoctrine
     return array(
       'id'                   => 'Number',
       'name'                 => 'Text',
-      'dm_test_domains_list' => 'ManyKey',
       'dm_test_fruits_list'  => 'ManyKey',
+      'dm_test_domains_list' => 'ManyKey',
     );
   }
 }

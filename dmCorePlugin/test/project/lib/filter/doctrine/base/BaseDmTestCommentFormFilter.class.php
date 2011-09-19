@@ -20,11 +20,11 @@ abstract class BaseDmTestCommentFormFilter extends BaseFormFilterDoctrine
 		}
 		if($this->needsWidget('author')){
 			$this->setWidget('author', new sfWidgetFormDmFilterInput());
-			$this->setValidator('author', new sfValidatorString(array('required' => false)));
+			$this->setValidator('author', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('body')){
 			$this->setWidget('body', new sfWidgetFormDmFilterInput());
-			$this->setValidator('body', new sfValidatorString(array('required' => false)));
+			$this->setValidator('body', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('is_active')){
 			$this->setWidget('is_active', new sfWidgetFormChoice(array('choices' => array('' => $this->getI18n()->__('yes or no', array(), 'dm'), 1 => $this->getI18n()->__('yes', array(), 'dm'), 0 => $this->getI18n()->__('no', array(), 'dm')))));
@@ -52,12 +52,12 @@ abstract class BaseDmTestCommentFormFilter extends BaseFormFilterDoctrine
 		}
 		if($this->needsWidget('version')){
 			$this->setWidget('version', new sfWidgetFormDmFilterInput());
-			$this->setValidator('version', new sfValidatorInteger(array('required' => false)));
+			$this->setValidator('version', new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))));
 		}
 
 
 		if($this->needsWidget('version_list')){
-			$this->setWidget('version_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmTestCommentVersion', 'expanded' => true)));
+			$this->setWidget('version_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmTestCommentVersion', 'expanded' => true)));
 			$this->setValidator('version_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestCommentVersion', 'required' => false)));
 		}
 

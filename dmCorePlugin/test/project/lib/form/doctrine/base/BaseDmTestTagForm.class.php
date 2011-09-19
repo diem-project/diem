@@ -99,17 +99,17 @@ abstract class BaseDmTestTagForm extends BaseFormDoctrine
 
     if (isset($this->widgetSchema['posts_list']))
     {
-      $this->setDefault('posts_list', $this->object->Posts->getPrimaryKeys());
+        $this->setDefault('posts_list', array_merge((array)$this->getDefault('posts_list'),$this->object->Posts->getPrimaryKeys()));
     }
 
     if (isset($this->widgetSchema['dm_test_post_tag_list']))
     {
-      $this->setDefault('dm_test_post_tag_list', $this->object->DmTestPostTag->getPrimaryKeys());
+        $this->setDefault('dm_test_post_tag_list', array_merge((array)$this->getDefault('dm_test_post_tag_list'),$this->object->DmTestPostTag->getPrimaryKeys()));
     }
 
     if (isset($this->widgetSchema['translation_list']))
     {
-      $this->setDefault('translation_list', $this->object->Translation->getPrimaryKeys());
+        $this->setDefault('translation_list', array_merge((array)$this->getDefault('translation_list'),$this->object->Translation->getPrimaryKeys()));
     }
 
   }

@@ -20,15 +20,15 @@ abstract class BaseDmTestPostTranslationVersionFormFilter extends BaseFormFilter
 		}
 		if($this->needsWidget('title')){
 			$this->setWidget('title', new sfWidgetFormDmFilterInput());
-			$this->setValidator('title', new sfValidatorString(array('required' => false)));
+			$this->setValidator('title', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('excerpt')){
 			$this->setWidget('excerpt', new sfWidgetFormDmFilterInput());
-			$this->setValidator('excerpt', new sfValidatorString(array('required' => false)));
+			$this->setValidator('excerpt', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('body')){
 			$this->setWidget('body', new sfWidgetFormDmFilterInput());
-			$this->setValidator('body', new sfValidatorString(array('required' => false)));
+			$this->setValidator('body', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('url')){
 			$this->setWidget('url', new sfWidgetFormDmFilterInput());

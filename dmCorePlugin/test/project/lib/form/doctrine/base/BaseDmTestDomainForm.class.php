@@ -114,27 +114,27 @@ abstract class BaseDmTestDomainForm extends BaseFormDoctrine
 
     if (isset($this->widgetSchema['categs_list']))
     {
-      $this->setDefault('categs_list', $this->object->Categs->getPrimaryKeys());
+        $this->setDefault('categs_list', array_merge((array)$this->getDefault('categs_list'),$this->object->Categs->getPrimaryKeys()));
     }
 
     if (isset($this->widgetSchema['tags_list']))
     {
-      $this->setDefault('tags_list', $this->object->Tags->getPrimaryKeys());
+        $this->setDefault('tags_list', array_merge((array)$this->getDefault('tags_list'),$this->object->Tags->getPrimaryKeys()));
     }
 
     if (isset($this->widgetSchema['dm_test_domain_categ_list']))
     {
-      $this->setDefault('dm_test_domain_categ_list', $this->object->DmTestDomainCateg->getPrimaryKeys());
+        $this->setDefault('dm_test_domain_categ_list', array_merge((array)$this->getDefault('dm_test_domain_categ_list'),$this->object->DmTestDomainCateg->getPrimaryKeys()));
     }
 
     if (isset($this->widgetSchema['translation_list']))
     {
-      $this->setDefault('translation_list', $this->object->Translation->getPrimaryKeys());
+        $this->setDefault('translation_list', array_merge((array)$this->getDefault('translation_list'),$this->object->Translation->getPrimaryKeys()));
     }
 
     if (isset($this->widgetSchema['dm_test_domain_dm_tag_list']))
     {
-      $this->setDefault('dm_test_domain_dm_tag_list', $this->object->DmTestDomainDmTag->getPrimaryKeys());
+        $this->setDefault('dm_test_domain_dm_tag_list', array_merge((array)$this->getDefault('dm_test_domain_dm_tag_list'),$this->object->DmTestDomainDmTag->getPrimaryKeys()));
     }
 
   }

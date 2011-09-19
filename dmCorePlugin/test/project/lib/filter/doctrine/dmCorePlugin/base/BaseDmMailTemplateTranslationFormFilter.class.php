@@ -16,43 +16,43 @@ abstract class BaseDmMailTemplateTranslationFormFilter extends BaseFormFilterDoc
 
 		if($this->needsWidget('description')){
 			$this->setWidget('description', new sfWidgetFormDmFilterInput());
-			$this->setValidator('description', new sfValidatorString(array('required' => false)));
+			$this->setValidator('description', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('subject')){
 			$this->setWidget('subject', new sfWidgetFormDmFilterInput());
-			$this->setValidator('subject', new sfValidatorString(array('required' => false)));
+			$this->setValidator('subject', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('body')){
 			$this->setWidget('body', new sfWidgetFormDmFilterInput());
-			$this->setValidator('body', new sfValidatorString(array('required' => false)));
+			$this->setValidator('body', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('from_email')){
 			$this->setWidget('from_email', new sfWidgetFormDmFilterInput());
-			$this->setValidator('from_email', new sfValidatorString(array('required' => false)));
+			$this->setValidator('from_email', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('to_email')){
 			$this->setWidget('to_email', new sfWidgetFormDmFilterInput());
-			$this->setValidator('to_email', new sfValidatorString(array('required' => false)));
+			$this->setValidator('to_email', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('cc_email')){
 			$this->setWidget('cc_email', new sfWidgetFormDmFilterInput());
-			$this->setValidator('cc_email', new sfValidatorString(array('required' => false)));
+			$this->setValidator('cc_email', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('bcc_email')){
 			$this->setWidget('bcc_email', new sfWidgetFormDmFilterInput());
-			$this->setValidator('bcc_email', new sfValidatorString(array('required' => false)));
+			$this->setValidator('bcc_email', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('reply_to_email')){
 			$this->setWidget('reply_to_email', new sfWidgetFormDmFilterInput());
-			$this->setValidator('reply_to_email', new sfValidatorString(array('required' => false)));
+			$this->setValidator('reply_to_email', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('sender_email')){
 			$this->setWidget('sender_email', new sfWidgetFormDmFilterInput());
-			$this->setValidator('sender_email', new sfValidatorString(array('required' => false)));
+			$this->setValidator('sender_email', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('list_unsuscribe')){
 			$this->setWidget('list_unsuscribe', new sfWidgetFormDmFilterInput());
-			$this->setValidator('list_unsuscribe', new sfValidatorString(array('required' => false)));
+			$this->setValidator('list_unsuscribe', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('is_html')){
 			$this->setWidget('is_html', new sfWidgetFormChoice(array('choices' => array('' => $this->getI18n()->__('yes or no', array(), 'dm'), 1 => $this->getI18n()->__('yes', array(), 'dm'), 0 => $this->getI18n()->__('no', array(), 'dm')))));

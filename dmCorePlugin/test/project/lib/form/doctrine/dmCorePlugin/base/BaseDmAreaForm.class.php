@@ -90,7 +90,7 @@ abstract class BaseDmAreaForm extends BaseFormDoctrine
 
     if (isset($this->widgetSchema['zones_list']))
     {
-      $this->setDefault('zones_list', $this->object->Zones->getPrimaryKeys());
+        $this->setDefault('zones_list', array_merge((array)$this->getDefault('zones_list'),$this->object->Zones->getPrimaryKeys()));
     }
 
   }

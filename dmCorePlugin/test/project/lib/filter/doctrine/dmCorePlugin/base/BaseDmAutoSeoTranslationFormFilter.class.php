@@ -16,31 +16,31 @@ abstract class BaseDmAutoSeoTranslationFormFilter extends BaseFormFilterDoctrine
 
 		if($this->needsWidget('slug')){
 			$this->setWidget('slug', new sfWidgetFormDmFilterInput());
-			$this->setValidator('slug', new sfValidatorString(array('required' => false)));
+			$this->setValidator('slug', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('name')){
 			$this->setWidget('name', new sfWidgetFormDmFilterInput());
-			$this->setValidator('name', new sfValidatorString(array('required' => false)));
+			$this->setValidator('name', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('title')){
 			$this->setWidget('title', new sfWidgetFormDmFilterInput());
-			$this->setValidator('title', new sfValidatorString(array('required' => false)));
+			$this->setValidator('title', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('h1')){
 			$this->setWidget('h1', new sfWidgetFormDmFilterInput());
-			$this->setValidator('h1', new sfValidatorString(array('required' => false)));
+			$this->setValidator('h1', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('description')){
 			$this->setWidget('description', new sfWidgetFormDmFilterInput());
-			$this->setValidator('description', new sfValidatorString(array('required' => false)));
+			$this->setValidator('description', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('keywords')){
 			$this->setWidget('keywords', new sfWidgetFormDmFilterInput());
-			$this->setValidator('keywords', new sfValidatorString(array('required' => false)));
+			$this->setValidator('keywords', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('strip_words')){
 			$this->setWidget('strip_words', new sfWidgetFormDmFilterInput());
-			$this->setValidator('strip_words', new sfValidatorString(array('required' => false)));
+			$this->setValidator('strip_words', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('lang')){
 			$this->setWidget('lang', new sfWidgetFormDmFilterInput());

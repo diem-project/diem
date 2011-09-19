@@ -16,15 +16,15 @@ abstract class BaseDmSettingTranslationFormFilter extends BaseFormFilterDoctrine
 
 		if($this->needsWidget('description')){
 			$this->setWidget('description', new sfWidgetFormDmFilterInput());
-			$this->setValidator('description', new sfValidatorString(array('required' => false)));
+			$this->setValidator('description', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('value')){
 			$this->setWidget('value', new sfWidgetFormDmFilterInput());
-			$this->setValidator('value', new sfValidatorString(array('required' => false)));
+			$this->setValidator('value', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('default_value')){
 			$this->setWidget('default_value', new sfWidgetFormDmFilterInput());
-			$this->setValidator('default_value', new sfValidatorString(array('required' => false)));
+			$this->setValidator('default_value', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('lang')){
 			$this->setWidget('lang', new sfWidgetFormDmFilterInput());

@@ -16,31 +16,31 @@ abstract class BaseDmPageTranslationFormFilter extends BaseFormFilterDoctrine
 
 		if($this->needsWidget('slug')){
 			$this->setWidget('slug', new sfWidgetFormDmFilterInput());
-			$this->setValidator('slug', new sfValidatorString(array('required' => false)));
+			$this->setValidator('slug', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('name')){
 			$this->setWidget('name', new sfWidgetFormDmFilterInput());
-			$this->setValidator('name', new sfValidatorString(array('required' => false)));
+			$this->setValidator('name', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('title')){
 			$this->setWidget('title', new sfWidgetFormDmFilterInput());
-			$this->setValidator('title', new sfValidatorString(array('required' => false)));
+			$this->setValidator('title', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('h1')){
 			$this->setWidget('h1', new sfWidgetFormDmFilterInput());
-			$this->setValidator('h1', new sfValidatorString(array('required' => false)));
+			$this->setValidator('h1', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('description')){
 			$this->setWidget('description', new sfWidgetFormDmFilterInput());
-			$this->setValidator('description', new sfValidatorString(array('required' => false)));
+			$this->setValidator('description', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('keywords')){
 			$this->setWidget('keywords', new sfWidgetFormDmFilterInput());
-			$this->setValidator('keywords', new sfValidatorString(array('required' => false)));
+			$this->setValidator('keywords', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('auto_mod')){
 			$this->setWidget('auto_mod', new sfWidgetFormDmFilterInput());
-			$this->setValidator('auto_mod', new sfValidatorString(array('required' => false)));
+			$this->setValidator('auto_mod', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('is_active')){
 			$this->setWidget('is_active', new sfWidgetFormChoice(array('choices' => array('' => $this->getI18n()->__('yes or no', array(), 'dm'), 1 => $this->getI18n()->__('yes', array(), 'dm'), 0 => $this->getI18n()->__('no', array(), 'dm')))));

@@ -90,7 +90,7 @@ abstract class BaseDmCatalogueForm extends BaseFormDoctrine
 
     if (isset($this->widgetSchema['units_list']))
     {
-      $this->setDefault('units_list', $this->object->Units->getPrimaryKeys());
+        $this->setDefault('units_list', array_merge((array)$this->getDefault('units_list'),$this->object->Units->getPrimaryKeys()));
     }
 
   }

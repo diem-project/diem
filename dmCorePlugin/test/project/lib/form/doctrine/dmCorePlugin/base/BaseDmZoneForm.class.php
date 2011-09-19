@@ -95,7 +95,7 @@ abstract class BaseDmZoneForm extends BaseFormDoctrine
 
     if (isset($this->widgetSchema['widgets_list']))
     {
-      $this->setDefault('widgets_list', $this->object->Widgets->getPrimaryKeys());
+        $this->setDefault('widgets_list', array_merge((array)$this->getDefault('widgets_list'),$this->object->Widgets->getPrimaryKeys()));
     }
 
   }

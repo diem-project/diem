@@ -20,20 +20,20 @@ abstract class BaseDmZoneFormFilter extends BaseFormFilterDoctrine
 		}
 		if($this->needsWidget('css_class')){
 			$this->setWidget('css_class', new sfWidgetFormDmFilterInput());
-			$this->setValidator('css_class', new sfValidatorString(array('required' => false)));
+			$this->setValidator('css_class', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('width')){
 			$this->setWidget('width', new sfWidgetFormDmFilterInput());
-			$this->setValidator('width', new sfValidatorString(array('required' => false)));
+			$this->setValidator('width', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('position')){
 			$this->setWidget('position', new sfWidgetFormDmFilterInput());
-			$this->setValidator('position', new sfValidatorInteger(array('required' => false)));
+			$this->setValidator('position', new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))));
 		}
 
 
 		if($this->needsWidget('widgets_list')){
-			$this->setWidget('widgets_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmWidget', 'expanded' => true)));
+			$this->setWidget('widgets_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmWidget', 'expanded' => true)));
 			$this->setValidator('widgets_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmWidget', 'required' => false)));
 		}
 
