@@ -6,3 +6,4 @@ rm data/*.sqlite
 ./symfony dm:setup -n --env=test
 ./symfony dm:data --env=test
 ./symfony my:project-builder --env=test
+cp data/db.sqlite data/fresh_db.sqlite
