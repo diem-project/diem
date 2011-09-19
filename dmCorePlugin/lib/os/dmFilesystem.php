@@ -145,48 +145,19 @@ class dmFilesystem extends sfFilesystem
       throw new dmException(sprintf('Try to delete %s, which is outside symfony project', $dir));
     }
 
-    $success = true;
-
-    if(!$dh = @opendir($dir))
+    $files = sfFinder::type('file')->maxdepth(0)->in($dir);
+    foreach($files as $file)
     {
-      if ($throwExceptions)
-      {
-        throw new dmException("Can not open $dir folder");
-      }
-      else
-      {
-        $success = false;
-      }
+    	$success = @unlink($file);
     }
-    while (false !== ($obj = @readdir($dh)))
+    
+    $dirs = sfFinder::type('dir')->maxdepth(0)->in($dir);
+    foreach($dirs as $dir)
     {
-      if($obj == '.' || $obj == '..')
-      {
-        continue;
-      }
-
-      if (is_dir($dir . '/' . $obj))
-      {
-        $success &= $this->deleteDir($dir.'/'.$obj, $throwExceptions);
-      }
-      else
-      {
-        if (!@unlink($dir . '/' . $obj))
-        {
-          if ($throwExceptions)
-          {
-            throw new dmException("Can not delete file $dir/$obj");
-          }
-          else
-          {
-            $success = false;
-          }
-        }
-      }
+    	$this->deleteDir($dir, $throwExceptions);
     }
-    @closedir($dh);
-
-    return $success;
+    
+    return true;
   }
 
   // destroy folder
