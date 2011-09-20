@@ -13,17 +13,18 @@ class dmConfig
 
   /**
    * Retrieves a config parameter.
+   * If config parameter does not exist, will create it, assign given $default value and return its value
    *
    * @param string $name    A config parameter name
    * @param mixed  $default A default config parameter value
    *
    * @return mixed A config parameter value, if the config parameter exists, otherwise null
    */
-  public static function get($name)
+  public static function get($name, $default = null)
   {
     if (!self::has($name))
     {
-      throw new dmException(sprintf('There is no setting called "%s". Available settings are : %s', $name, implode(', ', array_keys(self::$config))));
+    	return self::set($name, $default);
     }
     
     return self::$config[$name];
@@ -49,17 +50,14 @@ class dmConfig
    * Sets a config parameter.
    *
    * If a config parameter with the name already exists the value will be overridden.
+   * If config parameter does not exist, one will be created, name & value will be 
+   * 	assigned and value will be returned
    *
    * @param string $name  A config parameter name
    * @param mixed  $value A config parameter value
    */
   public static function set($name, $value)
   {
-    /*if (!self::has($name))
-    {
-      throw new dmException(sprintf('There is no setting called "%s". Available settings are : %s', $name, implode(', ', array_keys(self::$config))));
-    }*/
-    
     /*
      * Convert booleans to 0, 1 not to fail doctrine validation
      */

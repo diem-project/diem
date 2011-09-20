@@ -49,9 +49,7 @@ class myTestProjectBuilder
     
     $writer->setPassword('writer');
 
-    $groupWriter = dmDb::table('DmGroup')->findOneBy('name', 'writer');
-    
-    $writer->get('Groups')->add($groupWriter)->save();
+    $writer->addGroupByName('writer');
 
     $writer->save();
   }
