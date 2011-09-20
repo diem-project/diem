@@ -24,20 +24,20 @@ $widget = array(
 
 $pageHelper->setOption('widget_css_class_pattern', '');
 
-$expected = array('dm_widget', 'dm_widget_inner custom_class');
+$expected = array('dm_widget custom_class', 'dm_widget_inner');
 $t->is($pageHelper->getWidgetContainerClasses($widget), $expected,'widgetContainerClasses for breadCrumb : '.implode(', ', $expected));
 
 $widget['action'] = 'title';
 
-$expected = array('dm_widget', 'dm_widget_inner');
+$expected = array('dm_widget custom_class', 'dm_widget_inner');
 $t->is($pageHelper->getWidgetContainerClasses($widget), $expected,'widgetContainerClasses for title : '.implode(', ', $expected));
 
 $pageHelper->setOption('widget_css_class_pattern', '%module%_%action%');
 
-$expected = array('dm_widget content_title', 'dm_widget_inner');
+$expected = array('dm_widget content_title custom_class', 'dm_widget_inner');
 $t->is($pageHelper->getWidgetContainerClasses($widget), $expected,'widgetContainerClasses for title : '.implode(', ', $expected));
 
 $pageHelper->setOption('widget_css_class_pattern', 'module_%module% action_%action%');
 
-$expected = array('dm_widget module_content action_title', 'dm_widget_inner');
+$expected = array('dm_widget module_content action_title custom_class', 'dm_widget_inner');
 $t->is($pageHelper->getWidgetContainerClasses($widget), $expected,'widgetContainerClasses for title : '.implode(', ', $expected));
