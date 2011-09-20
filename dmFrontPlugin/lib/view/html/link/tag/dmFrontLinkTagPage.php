@@ -53,7 +53,7 @@ class dmFrontLinkTagPage extends dmFrontLinkTag
   {
 	$reqContext = $this->requestContext;
 	$relativeToRootRequestUri = str_replace($reqContext['uri_prefix'].$reqContext['prefix'], '', $reqContext['request_uri']);
-	return ltrim($relativeToRootRequestUri,'/') == $this->currentPage->getSlug();
+	return ltrim($relativeToRootRequestUri,'/') == $this->currentPage->getSlug() || $relativeToRootRequestUri == 'http://'; //fix CLI tests...
   }
 
   public function isParent()
