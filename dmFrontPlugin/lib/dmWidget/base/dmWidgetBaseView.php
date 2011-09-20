@@ -93,7 +93,7 @@ abstract class dmWidgetBaseView
   protected function compileVars(array $vars = array())
   {
     $this->compiledVars = array_merge(
-      array('cssClass' => isset($this->widget['css_class']) ? $this->widget['css_class'] : null),
+      array(), //array('cssClass' => isset($this->widget['css_class']) ? $this->widget['css_class'] : null),
       (array) json_decode((string) $this->widget['value'], true),
       dmString::toArray($vars)
     );
