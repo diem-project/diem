@@ -244,7 +244,7 @@ class BasedmMediaLibraryActions extends dmAdminBaseActions
     }
     else
     {
-      $this->folder->delete();
+      $this->folder->getNode()->delete();
     }
 
     return $this->redirect($this->getRouting()->getMediaUrl($parent));
