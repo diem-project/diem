@@ -153,6 +153,7 @@ class dmAdminLinkTag extends dmBaseLinkTag
     {
       if($this->resource instanceof DmPage)
       {
+      	//@todo add check in $resource generation for /:sf_culture/:slug in route
         $resource = $this->serviceContainer->getService('script_name_resolver')->get('front').'/'.$this->resource->get('slug');
       }
       elseif (($module = $this->resource->getDmModule()) && $module->hasAdmin() && $module->getSecurityManager()->userHasCredentials('edit', $this->resource))
