@@ -10,11 +10,4 @@
  */
 abstract class PluginDmRedirectForm extends BaseDmRedirectForm
 {
-  public function setup()
-  {
-    parent::setup();
-    /*
-     * Here, the plugin form code
-     */
-  }
 }
