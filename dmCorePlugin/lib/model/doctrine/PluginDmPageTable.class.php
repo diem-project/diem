@@ -29,8 +29,7 @@ class PluginDmPageTable extends myDoctrineTable
       
       if ($layout = dmDb::table('DmLayout')->findOneByName('Home'))
       {
-        $root->PageView->Layout = $layout;
-        $root->PageView->save();
+        $root->get('PageView')->set('Layout', $layout)->save();
       }
     }
 
@@ -48,7 +47,7 @@ class PluginDmPageTable extends myDoctrineTable
       $page404->getNode()->insertAsLastChildOf($root);
 
       dmDb::table('DmWidget')->createInZone(
-        $page404->PageView->Area->Zones[0],
+        $page404->get('PageView')->get('Area')->get('Zones')->getFirst(),
         'dmWidgetContent/title',
         array('text' => 'Page not found', 'tag' => 'h1')
       )->save();
@@ -68,7 +67,7 @@ class PluginDmPageTable extends myDoctrineTable
       $signinPage->getNode()->insertAsLastChildOf($root);
 
       dmDb::table('DmWidget')->createInZone(
-        $signinPage->PageView->Area->Zones[0],
+        $signinPage->get('PageView')->get('Area')->get('Zones')->getFirst(),
         'dmUser/signin'
       )->save();
     }
@@ -103,7 +102,7 @@ class PluginDmPageTable extends myDoctrineTable
       $searchResultsPage->getNode()->insertAsLastChildOf($this->getTree()->fetchRoot());
 
       dmDb::table('DmWidget')->createInZone(
-        $searchResultsPage->PageView->Area->Zones[0],
+        $searchResultsPage->get('PageView')->get('Area')->get('Zones')->getFirst(),
         'dmWidgetSearch/results'
       )->save();
     }

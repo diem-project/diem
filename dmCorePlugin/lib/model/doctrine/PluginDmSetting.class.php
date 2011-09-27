@@ -17,9 +17,9 @@ abstract class PluginDmSetting extends BaseDmSetting
   {
     parent::preInsert($event);
     
-    if(!$this->value && $this->default_value)
+    if(!$this->get('value') && $this->get('default_value'))
     {
-      $this->value = $this->default_value;
+      $this->set('value', $this->get('default_value'));
     }
   }
 

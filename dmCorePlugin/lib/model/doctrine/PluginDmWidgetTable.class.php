@@ -9,7 +9,7 @@ class PluginDmWidgetTable extends myDoctrineTable
     list($module, $action) = explode('/', $moduleAction);
 
     $widget = $this->create(array(
-      'dm_zone_id' => $zone->id,
+      'dm_zone_id' => $zone->get('id'),
       'module' => $module,
       'action' => $action
     ));

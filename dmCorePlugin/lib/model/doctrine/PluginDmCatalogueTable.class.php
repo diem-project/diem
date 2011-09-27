@@ -4,6 +4,13 @@
 class PluginDmCatalogueTable extends myDoctrineTable
 {
 
+	/**
+	 * 
+	 * @param string $source
+	 * @param string $target
+	 * @param string $space
+	 * @return DmCatalogue
+	 */
   public function retrieveBySourceTargetSpace($source, $target, $space)
   {
     return $this->createQuery('c')
