@@ -29,7 +29,7 @@ echo _close('ul');
 
 $model = get_class($record);
 $revisionModel = get_class($revision);
-$fields = array_diff($revisions[0]->getTable()->getFieldNames(), array('id', 'version', 'lang'));
+$fields = array_diff($revisions->getFirst()->getTable()->getFieldNames(), array('id', 'version', 'lang'));
 $recordDiff = $sf_context->get('record_text_diff');
 
 $table = _table();
