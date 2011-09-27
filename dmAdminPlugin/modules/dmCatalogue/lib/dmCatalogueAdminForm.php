@@ -9,8 +9,4 @@
  */
 class dmCatalogueAdminForm extends BasedmCatalogueForm
 {
-  public function configure()
-  {
-    parent::configure();
-  }
 }
