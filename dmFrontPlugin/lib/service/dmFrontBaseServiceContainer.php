@@ -18,7 +18,7 @@ abstract class dmFrontBaseServiceContainer extends dmBaseServiceContainer
   {
     parent::configureServices();
     
-    $this->configurePageHelper();
+    //$this->configurePageHelper();
   }
   
   public function connect()
@@ -32,9 +32,7 @@ abstract class dmFrontBaseServiceContainer extends dmBaseServiceContainer
   {
     parent::connectServices();
     
-    $this->getService('page_helper')->connect();
-
-    $this->getService('helper_extension')->connect();
+    
   }
   
   /**
@@ -64,5 +62,20 @@ abstract class dmFrontBaseServiceContainer extends dmBaseServiceContainer
     {
       $this->setParameter('page_helper.class', $this->getParameter('page_helper.view_class'));
     }
+  }
+  
+  public function configureSessionDependentServices()
+  {
+  	$this->configurePageHelper();
+  	
+  	return $this;
+  }
+  
+  public function connectSessionDependentServices()
+  {
+  	$this->getService('page_helper')->connect();
+    $this->getService('helper_extension')->connect();
+    
+    return $this;
   }
 }

@@ -70,6 +70,12 @@ class dmContext extends sfContext
     dmDoctrineQuery::setModuleManager($this->getModuleManager());
     dmDoctrineTable::setServiceContainer($this->serviceContainer);
     
+    if(($sessionStorage = $this->get('storage')) instanceof dmSessionStorage)
+    {
+    	$sessionStorage->setServiceContainer($this->serviceContainer)->setCookieParams();
+    	$this->serviceContainer->configureSessionDependentServices()->connectSessionDependentServices();
+    }
+    
     $this->helper = $this->serviceContainer->getService('helper');
 
     // notify that context is ready
