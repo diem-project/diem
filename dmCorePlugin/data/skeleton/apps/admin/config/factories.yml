@@ -33,9 +33,7 @@ dev:
       delivery_strategy: none
 
 all:
-  storage: 
-    class: dmSessionStorage
-  routing:
+  routing: 
     class: dmAdminRouting
     param:
       generate_shortest_url:            true
