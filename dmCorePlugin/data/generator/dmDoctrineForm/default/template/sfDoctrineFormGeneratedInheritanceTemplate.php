@@ -10,6 +10,7 @@
  * @author     ##AUTHOR_NAME##
  * @version    SVN: $Id$
  * @generator  <?php echo 'Diem ', constant('DIEM_VERSION'), "\n"?>
+ * @gen-file   <?php echo __FILE__?>
  */
 abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->getFormClassToExtend() . "\n" ?>
 {
@@ -73,7 +74,7 @@ abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->
    */
   protected function createMediaFormFor<?php echo dmString::camelize($mediaRelation['local']); ?>()
   {
-    return DmMediaForRecordForm::factory($this->object, '<?php echo $mediaRelation['local'] ?>', '<?php echo $mediaRelation['alias'] ?>', $this->validatorSchema['<?php echo $mediaRelation['local']; ?>']->getOption('required'));
+    return DmMediaForRecordForm::factory($this->object, '<?php echo $mediaRelation['local'] ?>', '<?php echo $mediaRelation['alias'] ?>', $this->validatorSchema['<?php echo $mediaRelation['local']; ?>']->getOption('required'), $this);
   }
 <?php endforeach; ?>
 

@@ -442,4 +442,14 @@ abstract class dmFormDoctrine extends sfFormDoctrine
 		$this->setEmbeddedFormSavingTime($name, $savingTime);
 		return $this;
 	}
+	
+	/**
+	* Returns the name of the class to use to embed DmMedia
+	*
+	* @return string
+	*/
+	public function getDmMediaFormForRecord($local)
+	{
+		return 'DmMediaForRecordForm';
+	}
 }

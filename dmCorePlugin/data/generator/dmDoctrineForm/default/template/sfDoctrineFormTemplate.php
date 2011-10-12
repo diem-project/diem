@@ -8,6 +8,7 @@
  * @author     ##AUTHOR_NAME##
  * @version    SVN: $Id$
  * @generator  <?php echo 'Diem ', constant('DIEM_VERSION'), "\n"?>
+ * @gen-file   <?php echo __FILE__?>
  */
 class <?php echo $this->table->getOption('name') ?>Form extends Base<?php echo $this->table->getOption('name') ?>Form
 {
