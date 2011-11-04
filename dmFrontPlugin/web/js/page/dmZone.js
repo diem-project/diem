@@ -132,7 +132,7 @@ $.widget('ui.dmZone', {
           .html('<a class="dm dm_widget_edit"></a><div class="dm_widget_inner "><div class="dm dm_new_widget"></div></div>');
         }
         // moving a widget
-        else 
+        else
         {
           ui.placeholder.addClass(ui.item.attr('class')).css('width', ui.item.css('width')).html(ui.item.html());
         }
@@ -144,6 +144,7 @@ $.widget('ui.dmZone', {
       stop: function(e, ui)
       {
         var $this = $(this), invoker = $this.data('sortable').invokerItem;
+        invoker = $.type(invoker) == 'undefined' ? ui.item : invoker;
         if (sortEvents.update && sortEvents.receive && sortEvents.remove)
         {
           sortEvents.receive.dmZone('moveWidget', invoker);
