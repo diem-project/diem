@@ -50,7 +50,7 @@ js:
     metadata:         metadata/jquery.metadata.min
     form:             form/jquery.form
     blockUI:          blockUI/jquery.blockUI-2.39
-    jgrowl:           jgrowl/jquery.jgrowl_minimized
+    jgrowl:           jgrowl/jquery.jgrowl.min
     ajaxqueue:        ajaxqueue/jquery.ajaxQueue
     cookie:           cookie/jquery.cookie.min
     markitup:         markitup/jquery.markitup.min
