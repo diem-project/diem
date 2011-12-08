@@ -1,0 +1,28 @@
+.dm_widget_form_behaviors_droppable {
+    min-height: 100px;
+    border: solid 1px #ccc;
+    padding: 4px;
+    overflow: auto;
+}
+
+.dm_behavior_draggable_droped {
+    display: block;
+    width: 95px;
+    float: left;
+    margin: 3px;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+}
+
+.dm_behavior_draggable_droped .dm_remove_behavior_thick {
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    background-image: url('/dmCorePlugin/images/16/sprite.png');
+    background-position: 0 -224px;
+    position: absolute;
+    left: 75px;
+}

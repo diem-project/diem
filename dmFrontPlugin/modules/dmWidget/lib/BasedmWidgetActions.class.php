@@ -221,14 +221,19 @@ class BasedmWidgetActions extends dmFrontBaseActions
       ->getService('widget_renderer');
       $js  = $widgetRenderer->getJavascripts();
       $css = $widgetRenderer->getStylesheets();
+      $html = $this->getService('page_helper')->renderWidget($widgetArray);
     }
     catch(Exception $e)
     {
       $js = $css = array();
     }
 
+    $behaviors_manager = $this->getService('behaviors_manager');
+    foreach ($behaviorsCss = $behaviors_manager->getStylesheets() as $c) $css[] = $c;
+    foreach ($behaviorsJs = $behaviors_manager->getJavascripts() as $j) $js[] = $j;
+    
     return $this->renderAsync(array(
-      'html'  => $this->getService('page_helper')->renderWidget($widgetArray),
+      'html'  => $html,
       'css'   => $css,
       'js'    => $js
     ), true);

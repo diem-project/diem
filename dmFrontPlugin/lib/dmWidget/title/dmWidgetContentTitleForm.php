@@ -27,4 +27,40 @@ class dmWidgetContentTitleForm extends dmWidgetPluginForm
   {
     return dmArray::valueToKey(array('h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'div'));
   }
+  
+  public function renderContent($attributes) {
+        $formRenderer = new dmFrontFormRenderer(array(                          
+            new dmFrontFormSection(
+                    array(
+                        array("name"=>'text', "is_big"=>true),                       
+                        array("name"=>'tag', "is_big"=>true),
+                        array("name"=>'href', "is_big"=>true),
+                        ),
+                    'Basic'
+                    ),
+            new dmFrontFormSection(
+                    array(
+                        array("name"=>'behaviors', "is_big"=>true),                       
+                        array("name"=>'cssClass', "is_big"=>true),
+                        ),
+                    'Advanced'
+                    )
+            
+            
+        ), $this);
+        return $formRenderer->render();        
+    }
+    
+    public function getStylesheets() {
+        return array_merge(
+            parent::getStylesheets(),
+            dmFrontFormRenderer::getStylesheets()
+        );
+    }
+    public function getJavaScripts() {
+        return array_merge(
+            parent::getJavaScripts(),
+            dmFrontFormRenderer::getJavascripts()
+        );
+    }
 }

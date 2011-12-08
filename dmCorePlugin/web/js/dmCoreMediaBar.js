@@ -66,7 +66,7 @@
         $files.draggable({
           helper: function()
           {
-            return $('<div class="dm_media_helper file"></div>').html($(this).html()).appendTo($('body'));
+            return $($('<div class="dm_media_helper file"></div>').html($(this).html()).appendTo($('body'))).maxZIndex();
           },
           revert: 'invalid'
         });

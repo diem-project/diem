@@ -17,7 +17,9 @@ js:
     pageEditForm:     dmFrontPageEditForm
     pageAddForm:      dmFrontPageAddForm
     ajaxPager:        dmFrontAjaxPager
-
+    
+    behaviorsFormField:        behaviors/dmBehaviorsFormWidget
+    behaviorsToolBar:          behaviors/dmBehaviorFrameworkToolbar
 css:
 
   front:
@@ -32,3 +34,6 @@ css:
     codeEditor:       codeEditor
     pageEditForm:     pageEditForm
     widgetMenuForm:   widgetForm/menu
+    
+    behaviorsFormField:        behaviors/dmBehaviorsFormWidget
+    behaviorsToolBar:          behaviors/dmBehaviorFrameworkToolbar

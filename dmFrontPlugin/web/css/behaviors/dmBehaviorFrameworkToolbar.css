@@ -1,0 +1,101 @@
+#dm_add_behavior {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    float: left;
+    border: solid 1px transparent;
+    border-top: none;
+    display: block;
+    padding-left: 4px;
+    padding-right: 4px;
+    padding-bottom: 2px;
+    padding-top: 0px;
+}
+#dm_add_behavior.active {
+    background: white;
+    border: 1px solid #AAA;
+    border-top: none;   
+}
+div.dm_add_behavior_menu {
+    position: absolute;
+    top: -302px;
+    width: 440px;
+    height: 300px;
+    overflow: auto;
+    background: #FCFCFC;
+    box-shadow: 4px -4px 4px #888;
+    -moz-box-shadow: 4px -4px 4px #888;
+    -webkit-box-shadow: 4px -4px 4px #888;
+    border-bottom: none;
+}
+
+div.dm_add_behavior_menu .dm_add_behavior_title {
+    padding: 10px;
+    background: url(/dmCorePlugin/images/default_bg.png) repeat-x 50% 50%;
+    border-radius: 4px 0 0 0;
+    -moz-border-radius: 4px 0 0 0;
+    -webkit-border-radius: 4px 0 0 0;
+    border-bottom: 1px solid #D4D4D4;
+    height: 24px;
+}
+
+div.dm_add_behavior_menu .dm_add_behavior_title input {
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    padding: 3px 5px;
+    width: 200px;
+    color: #666;
+    height: 16px;
+    font-family: Verdana,Arial,sans-serif;
+    font-size: 12px;
+    position: absolute;
+    top: 11px;
+    left: 10px;
+}
+
+div.dm_add_behavior_menu .dm_behaviors_list {
+    padding: 8px;
+}
+
+div.dm_add_behavior_menu .dm_behaviors_list .dm_behaviors_section_title {
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #046BCA;
+    cursor: default;
+}
+
+.dm_behavior_draggable {
+    display: block;
+    float: left;
+    width: 95px;        
+}
+
+.dm_behavior_draggable_icon {
+    text-align: center;
+    padding: 4px;
+}
+
+.dm_behavior_draggable_title {
+    height: 15px;
+    text-align: center;
+    padding: 4px;
+    font-weight: normal;
+    font-family: arial, helvetica, verdana, sans-serif;
+    font-size: 12px;    
+}
+
+.dm_behavior_draggable_hover {
+    background-image: url('/dmCorePlugin/images/default_bg_blue.png');
+}
+
+.dm_behavior_draggable_helper {
+    display: block;
+    width: 95px;
+    float: left;
+    margin: 3px;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    cursor: move;
+}

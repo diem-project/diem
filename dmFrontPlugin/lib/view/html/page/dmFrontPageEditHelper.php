@@ -44,6 +44,7 @@ class dmFrontPageEditHelper extends dmFrontPageBaseHelper
 
   public function renderWidget(array $widget)
   {
+           // var_dump($widget);
     $this->executeWidgetAction($widget);
     
     //it the widget is called programmatically, it has no id and can not be edited
@@ -132,7 +133,7 @@ class dmFrontPageEditHelper extends dmFrontPageBaseHelper
     /*
      * Open widget inner with user's classes
      */
-    $html .= '<div class="'.$widgetInnerClass.'">';
+    $html .= '<div class="'.$widgetInnerClass.(($this->hasBehaviors($widget)) ? ' behaviorable '.$this->behaviors_manager->renderBehaviorHtmlMetadata($this->behaviors_manager->registerBehaviors($widget['behaviors'])):'').'">';
 
     /*
      * get widget inner content

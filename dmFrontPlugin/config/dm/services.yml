@@ -71,6 +71,8 @@ parameters:
 
   tool_bar_view.class:        dmFrontToolBarView    # Renders the front toolbar
 
+  behaviors_manager.class:    dmBehaviorsManager    # Responsible for managing behaviors
+
 services:
 
   page_routing:
@@ -185,3 +187,8 @@ services:
     class:                    %helper_extension.class%
     shared:                   true
     arguments:                [ @dispatcher, @service_container ]
+    
+  behaviors_manager:
+    class:                    %behaviors_manager.class%
+    shared:                   true
+    arguments:                []

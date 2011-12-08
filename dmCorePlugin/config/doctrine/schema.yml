@@ -89,13 +89,14 @@ DmWidget:
       created:
         disabled: true
     I18n:
-      fields:               [ value ]
+      fields:               [ value, behaviors ]
       length:               7
   columns:
     dm_zone_id:             { type: integer, notnull: true }
     module:                 { type: string(127), notnull: true }
     action:                 { type: string(127), notnull: true }
     value:                  { type: string(60000) }
+    behaviors:              { type: string(60000) }
     css_class:              { type: string(255) }
   relations:
     Zone:

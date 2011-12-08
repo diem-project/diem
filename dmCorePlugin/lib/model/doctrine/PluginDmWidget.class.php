@@ -20,6 +20,7 @@ abstract class PluginDmWidget extends BaseDmWidget
     $array = $this->toArray(false);
     
     $array['value'] = $this->_getI18n('value');
+    $array['behaviors'] = $this->_getI18n('behaviors');
     
     return $array;
   }

@@ -38,10 +38,14 @@ abstract class dmWidgetBaseForm extends dmForm
   {
     parent::configure();
 
+    $this->widgetSchema['behaviors'] = new sfWidgetFormDmBehaviors(array('label' => 'Behaviors'));
+    $this->validatorSchema['behaviors'] = new sfValidatorPass();
+    
     $this->widgetSchema['cssClass']     = new sfWidgetFormInputText(array('label' => 'CSS class'));
     $this->validatorSchema['cssClass']  = new dmValidatorCssClasses(array('required' => false));
     
     $this->setDefault('cssClass', $this->dmWidget->get('css_class'));
+    $this->setDefault('behaviors', $this->dmWidget->get('behaviors'));
 
     /*
      * if the user can not edit widgets (but only fast edit them)
@@ -69,6 +73,7 @@ abstract class dmWidgetBaseForm extends dmForm
     $values = $this->getValues();
 
     unset($values['cssClass']);
+    unset($values['behaviors']);
 
     return $values;
   }
@@ -114,7 +119,7 @@ abstract class dmWidgetBaseForm extends dmForm
   {
     if ($this->dmWidget->get('value'))
     {
-      return array_merge($this->dmWidget->getValues(), array('cssClass' => $this->dmWidget->get('css_class')));
+      return array_merge($this->dmWidget->getValues(), array('cssClass' => $this->dmWidget->get('css_class')), array('cssClass' => $this->dmWidget->get('behaviors')));
     }
 
     $lastWidgetValue = dmDb::query('DmWidget w')
@@ -122,7 +127,7 @@ abstract class dmWidgetBaseForm extends dmForm
     ->where('w.module = ? AND w.action = ?', array($this->dmWidget->get('module'), $this->dmWidget->get('action')))
     ->orderBy('w.updated_at desc')
     ->limit(1)
-    ->select('w.id, wTranslation.value as value')
+    ->select('w.id, wTranslation.value as value, wTranslation.behaviors as behaviors')
     ->fetchOneArray();
     
     $defaults = $this->getFirstDefaults();
@@ -159,6 +164,11 @@ abstract class dmWidgetBaseForm extends dmForm
     if(isset($this['cssClass']))
     {
       $this->dmWidget->set('css_class', $this->getValue('cssClass'));
+    }
+    
+    if(isset($this['behaviors']))
+    {
+      $this->dmWidget->set('behaviors', $this->getValue('behaviors'));
     }
     
     return $this->dmWidget;

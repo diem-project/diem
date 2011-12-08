@@ -13,7 +13,8 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
 	$area_fallBackCulture,
 	$area_culture,
 	$area_lid,
-	$area_vid;
+	$area_vid,
+        $behaviors_manager;
 
 	public function __construct(sfEventDispatcher $dispatcher, sfServiceContainer $serviceContainer, dmHelper $helper, array $options = array())
 	{
@@ -36,13 +37,28 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
 	public function initialize(array $options)
 	{
 		$this->configure($options);
+                $this->behaviors_manager = $this->serviceContainer->getService('behaviors_manager');
 	}
 
 	public function connect()
 	{
 		$this->dispatcher->connect('dm.context.change_page', array($this, 'listenToChangePageEvent'));
+                $this->dispatcher->connect('dm.layout.filter_stylesheets', array($this, 'listenToFilterStylesheet'));
+                $this->dispatcher->connect('dm.layout.filter_javascripts', array($this, 'listenToFilterJavascript'));
 	}
 
+        public function listenToFilterStylesheet(sfEvent $e) {       
+            $response = dmContext::getInstance()->getResponse();              
+            foreach ($css = $this->behaviors_manager->getStylesheets() as $c) $response->addStylesheet($c);
+            return $response->getStylesheets();
+        }
+    
+        public function listenToFilterJavascript(sfEvent $e) {
+            $response = dmContext::getInstance()->getResponse();
+            foreach ($js = $this->behaviors_manager->getJavascripts() as $j) $response->addJavascript($j);
+            return $response->getJavascripts();
+        }
+        
 	/**
 	 * Listens to the user.change_culture event.
 	 *
@@ -107,7 +123,7 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
 		->leftJoin('a.Zones z')
 		->leftJoin('z.Widgets w')
 		->leftJoin('w.Translation wTranslation WITH wTranslation.lang = ? OR wTranslation.lang = ?', array($this->area_culture, $this->area_fallBackCulture))
-		->select('a.dm_layout_id, a.type, z.width, z.css_class, w.module, w.action, wTranslation.value, w.css_class')
+		->select('a.dm_layout_id, a.type, z.width, z.css_class, w.module, w.action, wTranslation.value, wTranslation.behaviors, w.css_class')
 		->where('a.dm_layout_id = ?', $this->area_lid)
 		->orWhere('a.dm_page_view_id = ?', $this->area_vid)
 		->orderBy('z.position asc, w.position asc')
@@ -129,21 +145,24 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
 				foreach($zone['Widgets'] as $widgetIndex => $widget)
 				{
 					$value = null;
+                                        $behaviors = null;
 
 					// there is a translation for $this->area_culture
 					if (isset($widget['Translation'][$this->area_culture]))
 					{
 						$value = $widget['Translation'][$this->area_culture]['value'];
+                                                $behaviors = $widget['Translation'][$this->area_culture]['behaviors'];
 					}
 					// there is a default translation for $this->area_fallBackCulture
 					elseif (isset($widget['Translation'][$this->area_fallBackCulture]))
 					{
 						$value = $widget['Translation'][$this->area_fallBackCulture]['value'];
+                                                $behaviors = $widget['Translation'][$this->area_fallBackCulture]['behaviors'];
 					}
 
 					// assign the value to the widget array
 					$areas[$areaIndex]['Zones'][$zoneIndex]['Widgets'][$widgetIndex]['value'] = $value;
-
+                                        $areas[$areaIndex]['Zones'][$zoneIndex]['Widgets'][$widgetIndex]['behaviors'] = $behaviors;
 					// unset the useless Translation array
 					unset($areas[$areaIndex]['Zones'][$zoneIndex]['Widgets'][$widgetIndex]['Translation']);
 				}
@@ -346,7 +365,7 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
 		/*
 		 * Open widget inner with user's classes
 		 */
-		$html .= '<div class="'.$widgetInnerClass.'">';
+		$html .= '<div class="'.$widgetInnerClass.(($this->hasBehaviors($widget)) ? ' behaviorable '.$this->behaviors_manager->renderBehaviorHtmlMetadata($this->behaviors_manager->registerBehaviors($widget['behaviors'])) :'').'">'; 
 
 		/*
 		 * get widget inner content
@@ -487,4 +506,9 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
 	{
 		return $this->getOption('is_html5');
 	}
+        
+        protected function hasBehaviors($widget) {
+            if (isset ($widget['behaviors']) && !is_null($widget['behaviors']) && $widget['behaviors']!='') return true;
+            else return false;
+        }
 }

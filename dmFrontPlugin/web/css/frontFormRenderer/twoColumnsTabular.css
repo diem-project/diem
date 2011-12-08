@@ -1,0 +1,38 @@
+.front-form-renderer.two-columns-tabular div.ui-tabs-panel {
+    padding: 0.5em;
+}
+.front-form-renderer.two-columns-tabular table tr td {
+    padding: 1px;
+    text-align: left;
+}
+.front-form-renderer.two-columns-tabular table {
+    width: 100%;
+}
+.front-form-renderer.two-columns-tabular table tr td.errors,
+.front-form-renderer.two-columns-tabular table tr td.help {
+    width: 50%
+}
+.front-form-renderer.two-columns-tabular table tr td {
+    padding: 1px;
+    text-align: left;
+}
+.front-form-renderer.two-columns-tabular table tr td.field,
+.front-form-renderer.two-columns-tabular table tr td.label {
+    width: 25%
+}
+.front-form-renderer.two-columns-tabular table tr td.errors.is_big,
+.front-form-renderer.two-columns-tabular table tr td.help.is_big {
+    width: 100%
+}
+.front-form-renderer.two-columns-tabular table tr td.field.is_big {
+    width: 75%;
+}
+.front-form-renderer.two-columns-tabular .dm_section_help {
+    text-align: center;
+    padding-top: 10px;
+    color: #888;
+    font-weight: normal;
+    font-family: arial, helvetica, verdana, sans-serif;
+    font-size: 12px;
+    font-style: normal;
+}
