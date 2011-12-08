@@ -143,33 +143,11 @@ class BasedmFrontActions extends dmFrontBaseActions
 		// Add module action for page
 		if($moduleManager->hasModule($this->page->get('module')))
 		{
-			$this->executeActions(array($this->page->getModuleAction().'Page'), true);
+			$this->executeActions(array($this->page->getModuleAction().'Page'));
 		}
-
-		// Find module/action for page widgets ( including layout )
-		foreach($this->helper->getAreas() as $areaArray)
-		{
-			foreach($areaArray['Zones'] as $zoneArray)
-			{
-				foreach($zoneArray['Widgets'] as $widgetArray)
-				{
-					if($moduleManager->hasModule($widgetArray['module']))
-					{
-						$widgetModuleAction = $widgetArray['module'].'/'.$widgetArray['action'].'Widget';
-
-						if(!in_array($widgetModuleAction, $moduleActions))
-						{
-							$moduleActions[] = $widgetModuleAction;
-						}
-					}
-				}
-			}
-		}
-
-		$this->executeActions($moduleActions, false);
 	}
 
-	protected function executeActions($moduleActions, $mergeVars = false)
+	protected function executeActions($moduleActions)
 	{
 		foreach($moduleActions as $moduleAction)
 		{
@@ -186,11 +164,8 @@ class BasedmFrontActions extends dmFrontBaseActions
 					$action->$actionToRun($this->getRequest());
 					$action->postExecute();
 
-					if($mergeVars)
-					{
-						$vars = $action->getVarHolder();
-						$this->getVarHolder()->add($vars->getAll());
-					}
+					$vars = $action->getVarHolder();
+					$this->getVarHolder()->add($vars->getAll());
 				}
 				catch(sfControllerException $e)
 				{
