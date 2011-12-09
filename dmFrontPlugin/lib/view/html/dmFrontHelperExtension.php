@@ -43,6 +43,6 @@ class dmFrontHelperExtension
       'action'    => $action,
       'value'     => json_encode($params),
       'css_class' => dmArray::get($params, 'css_class')
-    ));
+    ), true);
   }
 }
