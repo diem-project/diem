@@ -215,8 +215,18 @@ class dmFilesystem extends sfFilesystem
     /*
      * $from must end with /
      */
-    $from = '/'.trim($from, '/').'/';
-    return $this->calculateRelativeDir($from, $to);
+    if (strtolower(substr(PHP_OS, 0, 3)) == 'win')
+    {
+      $from = str_replace('/', '\\', trim($from, '/\\')).'\\';
+      $to = str_replace('/', '\\', $to);
+      
+      return str_replace('\\', '/', $this->calculateRelativeDir($from, $to));
+    }
+    else
+    {
+      $from = '/'.trim($from, '/').'/';
+      return $this->calculateRelativeDir($from, $to);
+    }
   }
 
   /**
