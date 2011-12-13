@@ -95,13 +95,12 @@
           containment: 'document',
           distance: 20,
           revert: 'invalid',
-          zIndex: 1000,
           helper: function(e)
           {
-            return $('<div class="dm dm_page_draggable_helper"></div>').html($(this).clone()).appendTo($('body'));
+            return $($('<div class="dm dm_page_draggable_helper"></div>').html($(this).clone()).appendTo($('body'))).maxZIndex();
           },
           start: function(event, ui)
-          {
+          {            
             $('div.markItUp, input.dm_link_droppable').addClass('active');
           },
           stop: function(event, ui)
@@ -149,7 +148,7 @@
         callback: {
           onselect: function(NODE, TREE_OBJ)
           {
-            TREE_OBJ.toggle_branch.call(TREE_OBJ, NODE);
+            TREE_OBJ.toggle_branch.call(TREE_OBJ, NODE);            
           },
           // right click - to prevent use: EV.preventDefault(); EV.stopPropagation(); return false
           onrgtclk: function(NODE, TREE_OBJ, EV)

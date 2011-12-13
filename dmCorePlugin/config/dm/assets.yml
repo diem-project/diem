@@ -65,6 +65,7 @@ js:
     dataTable:        dataTables-1.6/js/jquery.dataTables.min
     jeditable:        jeditable/jquery.jeditable.min
     colorbox:         colorbox/jquery.colorbox.min
+    max-z-index:      maxzindex/jquery.maxzindex
 
 css:
 

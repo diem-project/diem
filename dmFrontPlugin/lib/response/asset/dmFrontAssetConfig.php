@@ -64,6 +64,7 @@ class dmFrontAssetConfig extends dmAssetConfig
         'core.ctrl',
         'core.editCtrl',
         'core.toolBar',
+        'lib.max-z-index',
         'core.pageBar',
         'core.mediaBar',
         'front.ctrl',

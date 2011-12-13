@@ -49,6 +49,7 @@ class dmAdminAssetConfig extends dmAssetConfig
       'core.ctrl',
       'core.editCtrl',
       'core.toolBar',
+      'lib.max-z-index',
       'core.pageBar',
       'core.mediaBar',
       sfConfig::get('dm_locks_enabled') ? 'core.ping' : null,
