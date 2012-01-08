@@ -1,5 +1,5 @@
 /*
- * jQuery UI Sortable 1.8.4
+ * jQuery UI Sortable 1.8.16
  *
  * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -1071,7 +1071,7 @@ $.widget("ui.sortable", $.ui.mouse, {
 });
 
 $.extend($.ui.sortable, {
-	version: "1.8.4"
+	version: "1.8.16"
 });
 
 })(jQuery);

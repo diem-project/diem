@@ -1,5 +1,5 @@
 /*
- * jQuery UI Datepicker 1.8.4
+ * jQuery UI Datepicker 1.8.16
  *
  * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -12,7 +12,7 @@
  */
 (function( $, undefined ) {
 
-$.extend($.ui, { datepicker: { version: "1.8.4" } });
+$.extend($.ui, { datepicker: { version: "1.8.16" } });
 
 var PROP_NAME = 'datepicker';
 var dpuuid = new Date().getTime();
@@ -105,7 +105,8 @@ function Datepicker() {
 		altFormat: '', // The date format to use for the alternate field
 		constrainInput: true, // The input is constrained by the current date format
 		showButtonPanel: false, // True to show button panel, false to not show it
-		autoSize: false // True to size the input for the date format, false to leave as is
+		autoSize: false, // True to size the input for the date format, false to leave as is
+		disabled: false // The initial disabled state
 	};
 	$.extend(this._defaults, this.regional['']);
 	this.dpDiv = bindHover($('<div id="' + this._mainDivId + '" class="ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all"></div>'));
@@ -197,6 +198,10 @@ $.extend(Datepicker.prototype, {
 			});
 		this._autoSize(inst);
 		$.data(target, PROP_NAME, inst);
+		//If disabled option is true, disable the datepicker once it has been attached to the input (see ticket #5665)
+		if( inst.settings.disabled ) {
+			this._disableDatepicker( target );
+		}
 	},
 
 	/* Make attachments based on settings. */
@@ -276,7 +281,13 @@ $.extend(Datepicker.prototype, {
 		this._setDate(inst, this._getDefaultDate(inst), true);
 		this._updateDatepicker(inst);
 		this._updateAlternate(inst);
-		inst.dpDiv.show();
+		//If disabled option is true, disable the datepicker before showing it (see ticket #5665)
+		if( inst.settings.disabled ) {
+			this._disableDatepicker( target );
+		}
+		// Set display:block in place of inst.dpDiv.show() which won't work on disconnected elements
+		// http://bugs.jqueryui.com/ticket/7552 - A Datepicker created on a detached div has zero height
+		inst.dpDiv.css( "display", "block" );
 	},
 
 	/* Pop-up the date picker in a "dialog" box.
@@ -520,6 +531,13 @@ $.extend(Datepicker.prototype, {
 									$.datepicker._currentClass + ')', inst.dpDiv);
 						if (sel[0])
 							$.datepicker._selectDay(event.target, inst.selectedMonth, inst.selectedYear, sel[0]);
+							var onSelect = $.datepicker._get(inst, 'onSelect');
+							if (onSelect) {
+								var dateStr = $.datepicker._formatDate(inst);
+
+								// trigger custom callback
+								onSelect.apply((inst.input ? inst.input[0] : null), [dateStr, inst]);
+							}
 						else
 							$.datepicker._hideDatepicker();
 						return false; // don't submit the form
@@ -607,6 +625,7 @@ $.extend(Datepicker.prototype, {
 	},
 
 	/* Pop-up the date picker for a given input field.
+       If false returned from beforeShow event handler do not show. 
 	   @param  input  element - the input field attached to the date picker or
 	                  event - if triggered by focus */
 	_showDatepicker: function(input) {
@@ -623,7 +642,12 @@ $.extend(Datepicker.prototype, {
 			$.datepicker._curInst.dpDiv.stop(true, true);
 		}
 		var beforeShow = $.datepicker._get(inst, 'beforeShow');
-		extendRemove(inst.settings, (beforeShow ? beforeShow.apply(input, [input, inst]) : {}));
+		var beforeShowSettings = beforeShow ? beforeShow.apply(input, [input, inst]) : {};
+		if(beforeShowSettings === false){
+            //false
+			return;
+		}
+		extendRemove(inst.settings, beforeShowSettings);
 		inst.lastVal = null;
 		$.datepicker._lastInput = input;
 		$.datepicker._setDateFromField(inst);
@@ -860,24 +884,11 @@ $.extend(Datepicker.prototype, {
 	_selectMonthYear: function(id, select, period) {
 		var target = $(id);
 		var inst = this._getInst(target[0]);
-		inst._selectingMonthYear = false;
 		inst['selected' + (period == 'M' ? 'Month' : 'Year')] =
 		inst['draw' + (period == 'M' ? 'Month' : 'Year')] =
 			parseInt(select.options[select.selectedIndex].value,10);
 		this._notifyChange(inst);
 		this._adjustDate(target);
-	},
-
-	/* Restore input focus after not changing month/year. */
-	_clickMonthYear: function(id) {
-		var target = $(id);
-		var inst = this._getInst(target[0]);
-		if (inst.input && inst._selectingMonthYear) {
-			setTimeout(function() {
-				inst.input.focus();
-			}, 0);
-		}
-		inst._selectingMonthYear = !inst._selectingMonthYear;
 	},
 
 	/* Action for selecting a day. */
@@ -1578,7 +1589,6 @@ $.extend(Datepicker.prototype, {
 			var inMaxYear = (maxDate && maxDate.getFullYear() == drawYear);
 			monthHtml += '<select class="ui-datepicker-month" ' +
 				'onchange="DP_jQuery_' + dpuuid + '.datepicker._selectMonthYear(\'#' + inst.id + '\', this, \'M\');" ' +
-				'onclick="DP_jQuery_' + dpuuid + '.datepicker._clickMonthYear(\'#' + inst.id + '\');"' +
 			 	'>';
 			for (var month = 0; month < 12; month++) {
 				if ((!inMinYear || month >= minDate.getMonth()) &&
@@ -1612,7 +1622,6 @@ $.extend(Datepicker.prototype, {
 				endYear = (maxDate ? Math.min(endYear, maxDate.getFullYear()) : endYear);
 				inst.yearshtml += '<select class="ui-datepicker-year" ' +
 					'onchange="DP_jQuery_' + dpuuid + '.datepicker._selectMonthYear(\'#' + inst.id + '\', this, \'Y\');" ' +
-					'onclick="DP_jQuery_' + dpuuid + '.datepicker._clickMonthYear(\'#' + inst.id + '\');"' +
 					'>';
 				for (; year <= endYear; year++) {
 					inst.yearshtml += '<option value="' + year + '"' +
@@ -1805,7 +1814,7 @@ $.fn.datepicker = function(options){
 $.datepicker = new Datepicker(); // singleton instance
 $.datepicker.initialized = false;
 $.datepicker.uuid = new Date().getTime();
-$.datepicker.version = "1.8.4";
+$.datepicker.version = "1.8.16";
 
 // Workaround for #4055
 // Add another global to avoid noConflict issues with inline event handlers

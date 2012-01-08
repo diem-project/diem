@@ -1,5 +1,5 @@
 /*
- * jQuery UI Draggable 1.8.4
+ * jQuery UI Draggable 1.8.16
  *
  * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -80,15 +80,17 @@ $.widget("ui.draggable", $.ui.mouse, {
 		if (!this.handle)
 			return false;
 		
-		$(o.iframeFix === true ? "iframe" : o.iframeFix).each(function() {
-			$('<div class="ui-draggable-iframeFix" style="background: #fff;"></div>')
-			.css({
-				width: this.offsetWidth+"px", height: this.offsetHeight+"px",
-				position: "absolute", opacity: "0.001", zIndex: 1000
-			})
-			.css($(this).offset())
-			.appendTo("body");
-		});
+		if ( o.iframeFix ) {
+			$(o.iframeFix === true ? "iframe" : o.iframeFix).each(function() {
+				$('<div class="ui-draggable-iframeFix" style="background: #fff;"></div>')
+				.css({
+					width: this.offsetWidth+"px", height: this.offsetHeight+"px",
+					position: "absolute", opacity: "0.001", zIndex: 1000
+				})
+				.css($(this).offset())
+				.appendTo("body");
+			});
+		}
 
 		return true;
 
@@ -503,7 +505,7 @@ $.widget("ui.draggable", $.ui.mouse, {
 });
 
 $.extend($.ui.draggable, {
-	version: "1.8.4"
+	version: "1.8.16"
 });
 
 $.ui.plugin.add("draggable", "connectToSortable", {
