@@ -115,6 +115,7 @@ $.fn.extend({
         $items.attr('scrollTop', 999999);
       }
     }).sortable({
+      containment:            'parent',
       opacity:                0.5,
       distance:               5,
       revert:                 false,

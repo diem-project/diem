@@ -254,6 +254,7 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
 
         // add widget
         $menu.find('span.widget_add').draggable({
+          containment: 'document',
           connectToSortable: 'div.dm_widgets',
           helper: function()
           {
@@ -267,6 +268,7 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
 
         // add zone
         $menu.find('span.zone_add').draggable({
+          containment: 'document',
           connectToSortable: 'div.dm_zones',
           helper: function()
           {
@@ -280,6 +282,7 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
 
         // add from clipboard
         $menu.find('span.widget_paste').draggable({
+          containment: 'document',
           connectToSortable: 'div.dm_widgets',
           helper: function()
           {

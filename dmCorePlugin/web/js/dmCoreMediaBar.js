@@ -64,6 +64,7 @@
       if ($.fn.draggable && ($files = $('ul.content > li.file', media.element).orNot())) 
       {
         $files.draggable({
+          containment: 'document',
           zIndex: 16777271, // max z-index for Safari 3
           helper: function()
           {
