@@ -38,7 +38,7 @@ class BasedmMediaActions extends dmAdminBaseActions
       'pk'    => $this->record->getPrimaryKey()
     );
     
-    $this->medias = dmDb::query('DmMedia m, m.Folder f, m.'.$this->record->getGalleryRelClass().' rel')
+    $this->medias = dmDb::query($this->record->getGalleryMediaClass().' m, m.Folder f, m.'.$this->record->getGalleryRelClass().' rel')
     ->where('rel.dm_record_id = ?', $this->record->get('id'))
     ->orderBy('rel.position ASC')
     ->select('m.*, f.*, rel.id as dm_gallery_rel_id')

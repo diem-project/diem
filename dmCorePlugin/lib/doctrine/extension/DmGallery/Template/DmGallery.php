@@ -95,7 +95,7 @@ class Doctrine_Template_DmGallery extends Doctrine_Template
   {
     if ($reload || (!$medias = $this->_invoker->reference($this->_options['mediaAlias'])))
     {
-      $medias = dmDb::query('DmMedia m, m.Folder f, m.'.$this->getGalleryRelClass().' rel')
+      $medias = dmDb::query($this->_options['mediaClass'].' m, m.Folder f, m.'.$this->getGalleryRelClass().' rel')
       ->where('rel.dm_record_id = ?', $this->_invoker->get('id'))
       ->orderBy('rel.position ASC')
       ->select('m.*, f.*')
@@ -114,7 +114,7 @@ class Doctrine_Template_DmGallery extends Doctrine_Template
       return $this->_invoker->reference($this->_options['mediaAlias'])->getFirst();
     }
     
-    return dmDb::query('DmMedia m, m.Folder f, m.'.$this->getGalleryRelClass().' rel')
+    return dmDb::query($this->_options['mediaClass'].' m, m.Folder f, m.'.$this->getGalleryRelClass().' rel')
     ->where('rel.dm_record_id = ?', $this->_invoker->get('id'))
     ->orderBy('rel.position ASC')
     ->select('m.*, f.*')
@@ -129,5 +129,10 @@ class Doctrine_Template_DmGallery extends Doctrine_Template
   public function getGalleryFormClass()
   {
     return $this->getOption('formClass');
+  }
+
+  public function getGalleryMediaClass()
+  {
+    return $this->getOption('mediaClass');
   }
 }
