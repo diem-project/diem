@@ -277,7 +277,10 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
           appendTo: '#dm_page',
           cursorAt: { left: 30, top: 10 },
           cursor: 'move',
-          start: dragStart
+          start: dragStart,
+          stop: function() {
+            $('#dm_page div.dm_zones').removeClass('droppable-active');
+          }
         });
 
         // add from clipboard
