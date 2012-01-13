@@ -10,4 +10,23 @@
  */
 abstract class PluginDmTransUnitFormFilter extends BaseDmTransUnitFormFilter
 {
+  public function setup()
+  {
+    if($this->needsWidget('dm_catalogue_id'))
+    {
+      $this->setWidget('dm_catalogue_id', new sfWidgetFormDoctrineChoice(array('model' => 'DmCatalogue', 'add_empty' => true)));
+      $this->setValidator('dm_catalogue_id', new sfValidatorDoctrineChoice(array('multiple' => false, 'model' => 'DmCatalogue', 'required' => false)));
+    }
+    
+    parent::setup();
+  }
+  
+  public function getFields()
+  {
+    $fields = parent::getFields();
+    
+    $fields['dm_catalogue_id'] = 'Number';
+
+    return $fields;
+  }
 }
