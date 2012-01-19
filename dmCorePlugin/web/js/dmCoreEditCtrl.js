@@ -31,11 +31,11 @@
         zIndex: 1000,
         dragStart: function(e)
         {
-          $(e.target).hide().parent().css('opacity', 0.5);
+          $(e.target).parent().css('opacity', 0.5);
         },
         dragStop: function(e)
         {
-          $(e.target).show().parent().css('opacity', 1);
+          $(e.target).parent().css('opacity', 1);
         },
         resizable: false
     }, options || {});
