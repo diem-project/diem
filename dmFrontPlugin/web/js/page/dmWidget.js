@@ -295,12 +295,12 @@ $.widget('ui.dmWidget', {
           iframe: true,
           speed: 200,
           opacity: 0.5,
+          open: true,
           onClosed: function()
           {
             self.reload();
           }
-        })
-        .trigger('click');
+        });
 
         $button.unblock();
 
