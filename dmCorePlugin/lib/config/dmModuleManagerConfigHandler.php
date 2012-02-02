@@ -467,7 +467,7 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
 					  		$actionConfig['is_secure'] = true;
 					  	}
 					  	if($genericCredentials!==false && isset($actionConfig['credentials'])) {
-					  		$actionConfig['credentials'] = $actionCredentials;
+					  		$actionConfig['credentials'] = $genericCredentials;
 					  	}
 					  	$actionConfig['strategy'] = 'action';
 					  }
