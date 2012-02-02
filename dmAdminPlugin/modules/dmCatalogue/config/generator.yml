@@ -22,6 +22,16 @@ generator:
         table_method: getAdminListQuery
         table_count_method: ~
         sortable: false
+        loremize: false
+        object_actions:
+          _edit: ~
+          _delete: ~
+          exportSentences:
+            label: Export
+            title: 'Export sentences to YAML'
+          importSentences:
+            label: Import
+            title: 'Import sentences from YAML'
       filter:
         display:
           - name
