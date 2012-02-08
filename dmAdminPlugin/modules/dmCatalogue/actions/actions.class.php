@@ -59,6 +59,7 @@ class dmCatalogueActions extends autoDmCatalogueActions
     if($request->isMethod('post') && $form->bindAndValid($request))
     {
       $file = $form->getValue('file');
+      $override = $form->getValue('override');
       
       $dataFile = $file->getTempName();
       
@@ -104,9 +105,7 @@ class dmCatalogueActions extends autoDmCatalogueActions
           {
             if ($existing['target'] !== $target)
             {
-              //$this->log(sprintf('%s -> %s', $existing['target'], $target));
-              // don't overwrite user modified translations
-              if ($existing['created_at'] === $existing['updated_at'])
+              if ($override || $existing['created_at'] === $existing['updated_at'])
               {
                 $table->createQuery()
                 ->update('DmTransUnit')
