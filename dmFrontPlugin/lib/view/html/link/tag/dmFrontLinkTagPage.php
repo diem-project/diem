@@ -132,7 +132,7 @@ class dmFrontLinkTagPage extends dmFrontLinkTag
       {
         $attributes['class'][] = $attributes['current_class'];
           
-        if($attributes['current_span'] && $this->isCurrentStrict())
+        if(empty($attributes['anchor']) && $attributes['current_span'] && $this->isCurrentStrict())
         {
           $attributes['tag'] = 'span';
         }
