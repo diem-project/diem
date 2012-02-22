@@ -6,18 +6,14 @@ class dmCatalogueImportForm extends dmForm
   {
     parent::configure();
 
-    $this->setWidgets(array(
-      'file' => new sfWidgetFormDmInputFile(),
-      //'override' => new sfWidgetFormInputCheckbox(),
-    ));
+    $this->widgetSchema['file'] = new sfWidgetFormDmInputFile();
+    $this->widgetSchema['override'] = new sfWidgetFormInputCheckbox();
     
-    //$this->widgetSchema['override']->setLabel('Override existing sentences?');
+    $this->widgetSchema['override']->setLabel('Override?');
  
-    $this->setValidators(array(
-      'file' => new sfValidatorFile(array(
-        //'mime_types' => array('plain/text')
-      )),
-      //'override' => new sfValidatorBoolean()
+    $this->validatorSchema['file'] = new sfValidatorFile(array(
+      //'mime_types' => array('plain/text')
     ));
+    $this->validatorSchema['override'] = new sfValidatorBoolean();
   }
 }
