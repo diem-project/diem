@@ -262,7 +262,13 @@ class dmServerCheckUnit
   
   protected function getBaseUri()
   {
-    return str_replace('dm_check.php', '', $_SERVER['REQUEST_URI']);
+    $base = dirname(str_replace(isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : '', '', $_SERVER['REQUEST_URI']));
+    
+    if (strtolower(substr(PHP_OS, 0, 3)) == 'win')
+    {
+      $base = str_replace(DIRECTORY_SEPARATOR, '/', $base);
+    }
+    return $base;
   }
   
   public function __toString()

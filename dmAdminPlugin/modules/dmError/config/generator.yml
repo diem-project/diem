@@ -10,8 +10,8 @@ generator:
     config:
       actions: ~
       fields:
-        klass:
-          label:    Class
+        php_class:
+          label: PHP Class
       list:
         display:
           - =name
@@ -40,10 +40,9 @@ generator:
       form:
         display:
           NONE: [name]
-          Description: [_description]
+          Description: [_description_field]
           Others: [php_class, module, action, uri, env]
         class: DmErrorAdminForm
-        fields: {  }
       edit: ~
       new: ~
     sortable: false
