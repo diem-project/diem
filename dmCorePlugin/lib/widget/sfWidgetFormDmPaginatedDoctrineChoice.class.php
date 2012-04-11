@@ -32,6 +32,7 @@ class sfWidgetFormDmPaginatedDoctrineChoice extends sfWidgetFormDoctrineChoice
 				$this->pager->setQuery($query);
 			}
 
+      $this->pager->init();
 			$this->inited = true;
 		}
 
