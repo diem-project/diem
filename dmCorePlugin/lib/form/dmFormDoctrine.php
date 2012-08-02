@@ -115,7 +115,7 @@ abstract class dmFormDoctrine extends sfFormDoctrine
 
 			if (null !== $label)
 			{
-				$this->widgetSchema[$fieldName]->setLabel('$label');
+				$this->widgetSchema[$fieldName]->setLabel($label);
 			}
 
 			// set sorting
