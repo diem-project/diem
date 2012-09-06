@@ -142,8 +142,10 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
   protected function getPageContentForStore()
   {
     $content = $this->getPageContent();
-
-    return $this->context->getServiceContainer()->get('markdown')::brutalToText(
+    
+    $markdown = $this->context->getServiceContainer()->get('markdown');                
+    
+    return $markdown::brutalToText(
       trim(
         preg_replace('|\s{2,}|', ' ',
           strip_tags(
