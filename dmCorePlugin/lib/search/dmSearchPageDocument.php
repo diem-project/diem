@@ -143,7 +143,7 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
   {
     $content = $this->getPageContent();
 
-    return dmMarkdown::brutalToText(
+    return $this->context->getServiceContainer()->get('markdown')::brutalToText(
       trim(
         preg_replace('|\s{2,}|', ' ',
           strip_tags(
