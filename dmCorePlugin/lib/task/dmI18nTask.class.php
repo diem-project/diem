@@ -66,10 +66,10 @@ EOF;
   protected function execute($arguments = array(), $options = array())
   {
     $this->withDatabase();
-
-    print_r($arguments);
     
+    // clear options non applicable for sfI18n extract task
     unset($options['application'], $options['env'], $arguments['task']);
+
     $this->runTask('i18n:extract', $arguments, $options);
   }
   
