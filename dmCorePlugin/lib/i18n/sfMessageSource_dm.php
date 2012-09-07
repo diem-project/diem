@@ -161,7 +161,26 @@ class sfMessageSource_dm extends sfMessageSource
    */
   function save($catalogue = 'messages')
   {
-    throw new dmException('not implemented');
+    $messages = $this->untranslated;
+    $details = $this->getCatalogueList($catalogue);
+    // get DmCatalogue object with units indexedby source
+    $dmCatalogue = dmDb::query('DmCatalogue c')->leftJoin('c.Units u INDEXBY u.source')->where('name = ?', $details[0])->fetchOne();
+    if (!($dmCatalogue instanceof DmCatalogue)) {
+      throw new dmException(sprintf("The catalog \"%s\" for culture \"%s\" could not be found.", $catalogue, $this->culture));
+    }
+    
+    /* @var $units Doctrine_Collection */
+    // get Units as Doctrine_Collection for easy manipulation
+    $units = $dmCatalogue->get('Units');
+    foreach ($messages as $message) {
+      // get unit (creates new one if not exists
+      $dmTransUnit = $units->get($message);
+      $dmTransUnit->set('dm_catalogue_id', $dmCatalogue->get('id'));
+      // set unit to collection
+      $units->set($message, $dmTransUnit);
+    }
+    // save collection
+    $units->save();
   }
 
   /**
@@ -173,7 +192,17 @@ class sfMessageSource_dm extends sfMessageSource
    */
   function delete($message, $catalogue = 'messages')
   {
-    throw new dmException('not implemented');
+    $details = $this->getCatalogueList($catalogue);
+    // get DmCatalogue object
+    $dmCatalogue = dmDb::query('DmCatalogue c')->leftJoin('c.Units u INDEXBY u.source')->where('name = ?', $details[0])->fetchOne();
+    if (!($dmCatalogue instanceof DmCatalogue)) {
+      throw new dmException(sprintf("The catalog \"%s\" could not be found.\n"));
+    }
+    // get DmTransUnit object
+    $dmTransUnit = dmDb::query('DmTransUnit')->where('source = ?', $message)->andWhere('dm_catalogue_id = ?', $dmCatalogue->get('id'))->fetchOne();
+    if ($dmTransUnit instanceof DmTransUnit) {
+      $dmTransUnit->delete();
+    }
   }
 
   /**
@@ -187,6 +216,17 @@ class sfMessageSource_dm extends sfMessageSource
    */
   function update($text, $target, $comments, $catalogue = 'messages')
   {
-    throw new dmException('not implemented');
+    $details = $this->getCatalogueList($catalogue);
+    // get DmCatalogue object
+    $dmCatalogue = dmDb::query('DmCatalogue c')->leftJoin('c.Units u INDEXBY u.source')->where('name = ?', $details[0])->fetchOne();
+    if (!($dmCatalogue instanceof DmCatalogue)) {
+      throw new dmException(sprintf("The catalog \"%s\" could not be found.\n"));
+    }
+    $dmTransUnit = dmDb::query('DmTransUnit')->where('source = ?', $text)->andWhere('dm_catalogue_id = ?', $dmCatalogue->get('id'))->fetchOne();
+    if ($dmTransUnit instanceof DmTransUnit) {
+      $dmTransUnit->set('target', $target);
+      $dmTransUnit->set('meta', $comments);
+      $dmTransUnit->save();
+    }
   }
 }
