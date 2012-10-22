@@ -20,6 +20,7 @@
   });
   
   $list.sortable({
+    containment:            'document',
     tolerance:              'pointer',
     opacity:                0.5,
     placeholder:            'ui-state-highlight',
@@ -36,6 +37,40 @@
         url: $.dm.ctrl.getHref('+/dmMedia/sortGallery?model='+metadata.model+'&pk='+metadata.pk+'&'+$list.sortable('serialize'))
       });
     }
+  });
+  
+  $gallery.find('a.link.edit').bind('click', function()
+  {
+    var $dialog = $.dm.ctrl.ajaxDialog({
+      url:      $(this).attr("href"),
+      'class':  'dm_media_library dm_media_file_dialog',
+      width:    700,
+      height:   420
+    }).bind('dmAjaxResponse', function()
+    {
+      $dialog.prepare();
+      $formWrap = $('div.form', $dialog);
+      $dialog.dialog('option', 'title', $('.title', $dialog).text());
+      $("form", $dialog).dmAjaxForm({
+        beforeSubmit: function()
+        {
+          $formWrap.block();
+        },
+        success:  function(data) {
+          if (!data.match(/</))
+          {
+            $gallery.block();
+            location.href = data;
+          }
+          else
+          {
+            $formWrap.unblock().html(data);
+            $dialog.trigger('dmAjaxResponse');
+          }
+        }
+      });
+    });
+    return false;
   });
 
 })(jQuery);

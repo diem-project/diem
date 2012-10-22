@@ -171,6 +171,7 @@ abstract class BaseDmTestPost extends myDoctrineRecord
               3 => 'url',
               4 => 'is_active',
              ),
+             'length' => 7,
              ));
         $dmversionable1 = new Doctrine_Template_DmVersionable(array(
              'fields' => NULL,

@@ -13,17 +13,18 @@ class dmConfig
 
   /**
    * Retrieves a config parameter.
+   * If config parameter does not exist, will create it, assign given $default value and return its value
    *
    * @param string $name    A config parameter name
    * @param mixed  $default A default config parameter value
    *
    * @return mixed A config parameter value, if the config parameter exists, otherwise null
    */
-  public static function get($name)
+  public static function get($name, $default = null)
   {
     if (!self::has($name))
     {
-      throw new dmException(sprintf('There is no setting called "%s". Available settings are : %s', $name, implode(', ', array_keys(self::$config))));
+    	return self::set($name, $default);
     }
     
     return self::$config[$name];
@@ -49,17 +50,14 @@ class dmConfig
    * Sets a config parameter.
    *
    * If a config parameter with the name already exists the value will be overridden.
+   * If config parameter does not exist, one will be created, name & value will be 
+   * 	assigned and value will be returned
    *
    * @param string $name  A config parameter name
    * @param mixed  $value A config parameter value
    */
   public static function set($name, $value)
   {
-    if (!self::has($name))
-    {
-      throw new dmException(sprintf('There is no setting called "%s". Available settings are : %s', $name, implode(', ', array_keys(self::$config))));
-    }
-    
     /*
      * Convert booleans to 0, 1 not to fail doctrine validation
      */
@@ -69,7 +67,13 @@ class dmConfig
     }
 
     $setting = dmDb::query('DmSetting s')->where('s.name = ?', $name)->withI18n(self::$culture)->fetchOne();
-
+    
+    if(!$setting)
+    {
+    	$setting = new DmSetting();
+    	$setting->set('name', $name);
+    }
+    
     $setting->set('value', $value);
 
     $setting->save();
@@ -144,12 +148,12 @@ class dmConfig
     {
       if(self::$culture == sfConfig::get('sf_default_culture'))
       {
-        $results = dmDb::pdo('SELECT s.name, t.value FROM dm_setting s LEFT JOIN dm_setting_translation t ON t.id=s.id AND t.lang = ?',
+        $results = dmDb::pdo('SELECT s.name, t.value, t.lang FROM dm_setting s LEFT JOIN dm_setting_translation t ON t.id=s.id AND t.lang = ?',
         array(self::$culture))->fetchAll(PDO::FETCH_NUM);
       }
       else
       {
-        $results = dmDb::pdo('SELECT s.name, t.value FROM dm_setting s LEFT JOIN dm_setting_translation t ON t.id=s.id AND t.lang IN (?, ?)',
+        $results = dmDb::pdo('SELECT s.name, t.value, t.lang FROM dm_setting s LEFT JOIN dm_setting_translation t ON t.id=s.id AND t.lang IN (?, ?)',
         array(self::$culture, sfConfig::get('sf_default_culture')))->fetchAll(PDO::FETCH_NUM);
       }
     }
@@ -157,12 +161,21 @@ class dmConfig
     {
       $results = array();
     }
+    catch(Doctrine_Connection_Exception $e)
+    {
+      $results = array();
+    }
 
     self::$config = array();
     foreach($results as $result)
     {
-      self::$config[$result[0]] = $result[1];
+      if (!isset(self::$config[$result[0]]) || isset(self::$config[$result[0]]) && $result[2] == self::$culture)
+      {
+        self::$config[$result[0]] = $result[1];
+      }
+
     }
+
     unset($results);
 
     self::$loaded = true;

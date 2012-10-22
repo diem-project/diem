@@ -365,7 +365,7 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
       'name'            => (string) trim($moduleConfig['name']),
       'plural'          => (string) trim(empty($moduleConfig['plural']) ? ($model ? dmString::pluralize($moduleConfig['name']) : $moduleConfig['name']) : $moduleConfig['plural']),
       'model'           => $model,
-      'credentials'     => isset($moduleConfig['credentials']) ? trim($moduleConfig['credentials']) : null,
+      'credentials'     => isset($moduleConfig['credentials']) ? (is_string($moduleConfig['credentials']) ? trim($moduleConfig['credentials']) : (is_array($moduleConfig['credentials']) ? $moduleConfig['credentials'] : '')) : ((boolean) $isInContent ? 'content': null),
       'underscore'      => (string) dmString::underscore($moduleKey),
       'is_project'      => (boolean) $isInContent || dmArray::get($moduleConfig, 'page', false) || count(dmArray::get($moduleConfig, 'components', array())),
       'plugin'          => $moduleConfig['plugin'],
@@ -410,24 +410,24 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
 	 * @param array $moduleConfig
 	 * @return array securityConfig
 	 */
-	protected function fixSecurityConfig($moduleKey, $moduleConfig, $app)
+	protected function fixSecurityConfig($moduleKey, $moduleConfig, $app = 'admin')
 	{
 		$securityConfig = isset($moduleConfig['security']) ? $moduleConfig['security'] : false;
 
 		if($securityConfig){
 			//check if things are rights, else make them right, at the top-level
-			$securityConfig[$app] = isset($securityConfig[$app]) && is_array($securityConfig[$app]) ? $securityConfig[$app] : array();
+			$securityConfig = isset($securityConfig[$app]) && is_array($securityConfig[$app]) ? $securityConfig[$app] : array();
 			foreach(array('actions', 'components') as $actionKind)
 			{
 				//we cannot get serviceContainer because it isn't initialized yet ! check sfContext & dmContext for this
 				//we might not be able to get serviceContainer here before dmContext->initialize calls its parent::initialize() !
 				//so we can't check for valid strategies uses !
 				//$strategies = dmContext::getInstance($app)->getServiceContainer()->getParameter(sprintf('module_security_%s.strategies', $actionKind));
-				if(!isset($securityConfig[$app][$actionKind]) || !is_array($securityConfig[$app][$actionKind]))
+				if(!isset($securityConfig[$actionKind]) || !is_array($securityConfig[$actionKind]))
 				{
-					$securityConfig[$app][$actionKind] = false;
+					$securityConfig[$actionKind] = false;
 				}else{
-					foreach($securityConfig[$app][$actionKind] as $actionName=>$actionConfig)
+					foreach($securityConfig[$actionKind] as $actionName=>$actionConfig)
 					{
 						if(!isset($actionConfig['is_secure']) || !is_bool($actionConfig['is_secure']))
 						{
@@ -437,30 +437,50 @@ class dmModuleManagerConfigHandler extends sfYamlConfigHandler
 						{
 							throw new dmException(sprintf('Undefined security strategy for module %s, app %s and action %s', $moduleKey, $app, $actionName));
 						}
+						$credentials = false;
+						if (isset($actionConfig['credentials'])) {
+							if (is_string($actionConfig['credentials']) && trim($actionConfig['credentials'])!='') {
+								$credentials = explode(' ', trim($actionConfig['credentials']));
+							} elseif (is_array($actionConfig['credentials']) && count(array_unique(array_filter($actionConfig['credentials']))) > 0) {
+								$credentials = array_unique(array_filter($actionConfig['credentials']));
+							}
+						}
+						if ($credentials===false && isset($actionConfig['credentials'])) {
+							unset($actionConfig['credentials']);
+						}
 					}
 
 					//specific checks for actions
-					if(isset($securityConfig[$app]['actions']) && is_array($securityConfig[$app]['actions']))
+					if(isset($securityConfig['actions']) && is_array($securityConfig['actions']))
 					{
-						//@todo the following code use the credentials: for any app. Is this what we want ?
-					  $hasGenericCredentiel = isset($moduleConfig['credentials']) ? true : false;
-					  $genericCredential = $hasGenericCredentiel ? $moduleConfig['credentials'] : false;
-					  foreach($securityConfig[$app]['actions'] as $actionName => $actionConfig)
-					  {
-					  	if($hasGenericCredentiel){
-					  		$actionConfig['is_secure'] = true;
-					  		$actionConfig['credentials'] = $genericCredential;
-					  		$actionConfig['strategy'] = 'action';
-					  	}
+					  $genericCredentials = false;
+					  if (isset($moduleConfig['credentials'])) {
+					  	if (is_string($moduleConfig['credentials']) && trim($moduleConfig['credentials'])!='') {
+					  		$genericCredentials = explode(' ', trim($moduleConfig['credentials']));
+					  	} elseif ( is_array($moduleConfig['credentials']) && count(array_unique(array_filter($moduleConfig['credentials']))) > 0) {
+					  		$genericCredentials = array_unique(array_filter($moduleConfig['credentials']));
+				  		}
 					  }
-					}
+					  foreach($securityConfig['actions'] as $actionName => $actionConfig)
+					  {
+					  	if($genericCredentials!==false && !isset($actionConfig['is_secure'])){
+					  		$actionConfig['is_secure'] = true;
+					  	}
+					  	if($genericCredentials!==false && isset($actionConfig['credentials'])) {
+					  		$actionConfig['credentials'] = $genericCredentials;
+					  	}
+					  	$actionConfig['strategy'] = 'action';
+					  }
+				  }
 					
 					//@todo add checks for components
 				}
 			}
 		}
+		
+		$moduleConfig['security'][$app] = $securityConfig;
 
-		return $securityConfig;
+		return $moduleConfig['security'];
 	}
 
 	protected function processHierarchy()

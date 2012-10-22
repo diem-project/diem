@@ -48,3 +48,6 @@ default:
  
   view_cache:
     class:                  dmMetaCache
+    
+  storage: 
+    class: dmSessionStorage

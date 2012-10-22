@@ -5,6 +5,7 @@ class DmAdminMediaForm extends DmMediaForm
   public function configure()
   {
     parent::configure();
+    $this->mergeI18nForm();
 
     if($this->object->exists())
     {

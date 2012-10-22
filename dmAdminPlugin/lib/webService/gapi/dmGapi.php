@@ -111,14 +111,19 @@ class dmGapi extends gapi
       throw new dmGapiException('You must configure a ga_key in the configuration panel');
     }
     
-    foreach($this->requestAccountData() as $account)
+    $start_index = 1;
+
+    while($accounts = $this->requestAccountData($start_index++))
     {
-      if ($account->getWebPropertyId() === $gaKey)
+      foreach($accounts as $account)
       {
-        return $this->reportId = $account->getProfileId();
+        if ($account->getWebPropertyId() === $gaKey)
+        {
+          return $this->reportId = $account->getProfileId();
+        }
       }
     }
-    
+
     throw new dmGapiException('Current report not found for ga key : '.$gaKey);
   }
   

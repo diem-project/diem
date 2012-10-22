@@ -65,6 +65,7 @@ class sfWidgetFormDmDate extends sfWidgetFormI18nDate
     return $this->renderTag(
       'input',
       array(
+        'type' => 'text',
         'name' => $name,
         'size' => 10,
         'id' => $this->generateId($name),

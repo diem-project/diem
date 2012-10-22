@@ -38,7 +38,11 @@ foreach($medias as $media)
     _link('+/dmMedia/galleryDelete?model='.get_class($record).'&pk='.$record->getPrimaryKey().'&rel_id='.$media->get('dm_gallery_rel_id'))
     ->text(_tag('span.s16block.s16_delete'))
     ->title(__('Remove this media'))
-    ->set('.delete.dm_js_confirm')
+    ->set('.delete.dm_js_confirm').
+    _link($sf_context->getRouting()->getMediaUrl($media))
+    ->text(_tag('span.s16block.s16_edit'))
+    ->title(__('Edit this media'))
+    ->set('.edit')
   );
 }
 

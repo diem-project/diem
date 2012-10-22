@@ -143,15 +143,16 @@ class dmTableRelationHolder
 
 
   /**
+   * @param boolean $onlyInClass Search for local Medias only in this class or within parent hierarchy too ?
    * @return array LocalKey Relations with class === DmMedia
    */
-  public function getLocalMedias()
+  public function getLocalMedias($onlyInClass = false)
   {
     $relations = array();
 
     foreach($this->getLocals() as $alias => $relation)
     {
-      if ($relation['class'] === 'DmMedia')
+      if ($relation['class'] === 'DmMedia' && (!$onlyInClass || (null === $this->table->getParentModel() || !Doctrine_Core::getTable($this->table->getParentModel())->hasRelation($relation->getAlias()))))
       {
         $relations[$alias] = $relation;
       }

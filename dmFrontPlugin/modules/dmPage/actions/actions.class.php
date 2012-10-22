@@ -31,7 +31,7 @@ class dmPageActions extends dmFrontBaseActions
   {
     $this->forward404Unless($this->page = $this->getPage(), 'no current DmPage');
     
-    $this->form = new DmPageFrontEditForm($this->page);
+    $this->form = new DmPageFrontEditForm($this->page, array('widgets' => array('id', 'slug', 'module', 'action', 'credentials')));
     
     $this->form->removeCsrfProtection();
     

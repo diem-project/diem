@@ -25,64 +25,79 @@
 class dmModuleActionMixedRecordSecurityStrategy extends dmModuleSecurityStrategyAbstract implements dmModuleSecurityStrategyInterface
 {
 
-  /**
-   * @var dmModuleSecurityManager
-   */
-  protected $manager;
+	/**
+	 * @var dmModuleSecurityManager
+	 */
+	protected $manager;
 
-  /**
-   * @var dmModuleActionSecurityStrategy
-   */
-  protected $actionStrategy;
+	/**
+	 * @var dmModuleActionSecurityStrategy
+	 */
+	protected $actionStrategy;
 
 
-  /**
-   * @var dmModuleActionRecordSecurityStrategy
-   */
-  protected $moduleActionRecordStrategy;
+	/**
+	 * @var dmModuleActionRecordSecurityStrategy
+	 */
+	protected $moduleActionRecordStrategy;
 
-  public function __construct($context, $container, $user)
-  {
-    parent::__construct($context, $container, $user);
-    $this->manager = $this->container->getService('module_security_manager');
-  }
+	public function __construct($context, $container, $user)
+	{
+		parent::__construct($context, $container, $user);
+		$this->manager = $this->container->getService('module_security_manager');
+	}
 
-  /**
-   * (non-PHPdoc)
-   * @see dmModuleSecurityStrategyAbstract::secure()
-   */
-  public function secure(dmModule $module, $actionName, $actionConfig)
-  {
-    $this->actionStrategy = $this->manager->getStrategy('action', 'actions', $this->module, $this->action);
-    $this->actionStrategy->secure($module, $actionName, $actionConfig);
-  }
+	/**
+	 * (non-PHPdoc)
+	 * @see dmModuleSecurityStrategyAbstract::secure()
+	 */
+	public function secure(dmModule $module, $actionName, $actionConfig)
+	{
+		$this->actionStrategy = $this->manager->getStrategy('action', 'actions', $this->module, $this->action);
+		$this->actionStrategy->secure($module, $actionName, $actionConfig);
+	}
 
-  public function save()
-  {
-    $this->actionStrategy->save();
-  }
+	public function save()
+	{
+		$this->actionStrategy->save();
+	}
 
-  public function userHasCredentials($actionName = null, $record = null)
-  {
-    if($actionName === null )
-    {
-      $actionName = $this->action->getName();
-    }
-    $strategy = $actionName !== null && $record === null ? 'action' : ($record === null ? 'action' : 'record');
-    if($strategy === 'record' && null === $record)
-    {
-	    $record = $this->action->getObject();
-    }
-    return $this->manager->getStrategy($strategy, 'actions', $this->module, $this->action)->userHasCredentials($actionName, $record);
-  }
+	public function userHasCredentials($actionName = null, $record = null)
+	{
+		if($actionName === null )
+		{
+			$actionName = $this->action->getName();
+		}
+		$strategy = $actionName !== null && $record === null ? 'action' : ($record === null ? 'action' : 'record');
+		if($strategy === 'record' && null === $record)
+		{
+			$record = $this->action->getObject();
+		}
+		return $this->manager->getStrategy($strategy, 'actions', $this->module, $this->action)->userHasCredentials($actionName, $record);
+	}
 
-  public function addPermissionCheckToQuery($query)
-  {
-    return $this->manager->getStrategy('record', 'actions', $this->module, $this->action)->addPermissionCheckToQuery($query);
-  }
+	public function getCredentials($actionName, $record = null)
+	{
+		if($actionName === null )
+		{
+			$actionName = $this->action->getName();
+		}
+		
+		$strategy = $actionName !== null && $record === null ? 'action' : ($record === null ? 'action' : 'record');
+		if($strategy === 'record' && null === $record)
+		{
+			$record = $this->action->getObject();
+		}
+		return $this->manager->getStrategy($strategy, 'actions', $this->module, $this->action)->getCredentials($actionName, $record);
+	}
 
-  public function getIdsForAuthorizedActionWithinIds($ids)
-  {
-    return $this->manager->getStrategy('record', 'actions', $this->module, $this->action)->getIdsForAuthorizedActionWithinIds($ids);
-  }
+	public function addPermissionCheckToQuery($query)
+	{
+		return $this->manager->getStrategy('record', 'actions', $this->module, $this->action)->addPermissionCheckToQuery($query);
+	}
+
+	public function getIdsForAuthorizedActionWithinIds($ids)
+	{
+		return $this->manager->getStrategy('record', 'actions', $this->module, $this->action)->getIdsForAuthorizedActionWithinIds($ids);
+	}
 }

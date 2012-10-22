@@ -100,6 +100,7 @@ abstract class BaseDmSetting extends myDoctrineRecord
               1 => 'value',
               2 => 'default_value',
              ),
+             'length' => 7,
              ));
         $this->actAs($i18n0);
     }

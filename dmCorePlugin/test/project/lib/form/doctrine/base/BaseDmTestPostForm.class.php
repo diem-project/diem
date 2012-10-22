@@ -9,51 +9,104 @@
  * @subpackage form
  * @author     Your name here
  * @version    SVN: $Id$
+ * @generator  Diem 5.4.0-DEV
  */
 abstract class BaseDmTestPostForm extends BaseFormDoctrine
 {
   public function setup()
   {
-    $this->setWidgets(array(
-      'id'          => new sfWidgetFormInputHidden(),
-      'categ_id'    => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Categ'), 'add_empty' => false)),
-      'user_id'     => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Author'), 'add_empty' => false)),
-      'image_id'    => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Image'), 'add_empty' => true)),
-      'file_id'     => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('File'), 'add_empty' => true)),
-      'date'        => new sfWidgetFormDmDate(),
-      'created_by'  => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('CreatedBy'), 'add_empty' => true)),
-      'created_at'  => new sfWidgetFormDateTime(),
-      'updated_at'  => new sfWidgetFormDateTime(),
-      'position'    => new sfWidgetFormInputText(),
+    parent::setup();
 
-        'tags_list'   => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'DmTestTag', 'expanded' => true)),
-      ));
+		//column
+		if($this->needsWidget('id')){
+			$this->setWidget('id', new sfWidgetFormInputHidden());
+			$this->setValidator('id', new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)));
+		}
+		//column
+		if($this->needsWidget('date')){
+			$this->setWidget('date', new sfWidgetFormDmDate());
+			$this->setValidator('date', new dmValidatorDate());
+		}
+		//column
+		if($this->needsWidget('created_at')){
+			$this->setWidget('created_at', new sfWidgetFormDateTime());
+			$this->setValidator('created_at', new sfValidatorDateTime());
+		}
+		//column
+		if($this->needsWidget('updated_at')){
+			$this->setWidget('updated_at', new sfWidgetFormDateTime());
+			$this->setValidator('updated_at', new sfValidatorDateTime());
+		}
+		//column
+		if($this->needsWidget('position')){
+			$this->setWidget('position', new sfWidgetFormInputText());
+			$this->setValidator('position', new sfValidatorInteger(array('required' => false)));
+		}
 
-    $this->setValidators(array(
-      'id'          => new sfValidatorDoctrineChoice(array('model' => $this->getModelName(), 'column' => 'id', 'required' => false)),
-      'categ_id'    => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Categ'))),
-      'user_id'     => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Author'))),
-      'image_id'    => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Image'), 'required' => false)),
-      'file_id'     => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('File'), 'required' => false)),
-      'date'        => new dmValidatorDate(),
-      'created_by'  => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('CreatedBy'), 'required' => false)),
-      'created_at'  => new sfValidatorDateTime(),
-      'updated_at'  => new sfValidatorDateTime(),
-      'position'    => new sfValidatorInteger(array('required' => false)),
-        'tags_list'   => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestTag', 'required' => false)),
-      ));
+		//many to many
+		if($this->needsWidget('tags_list')){
+			$this->setWidget('tags_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmTestTag', 'expanded' => true)));
+			$this->setValidator('tags_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestTag', 'required' => false)));
+		}
+
+		//one to many
+		if($this->needsWidget('dm_test_post_tag_list')){
+			$this->setWidget('dm_test_post_tag_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPostTag', 'expanded' => true)));
+			$this->setValidator('dm_test_post_tag_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPostTag', 'required' => false)));
+		}
+		//one to many
+		if($this->needsWidget('comments_list')){
+			$this->setWidget('comments_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmTestComment', 'expanded' => true)));
+			$this->setValidator('comments_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestComment', 'required' => false)));
+		}
+		//one to many
+		if($this->needsWidget('dm_test_post_dm_media_list')){
+			$this->setWidget('dm_test_post_dm_media_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPostDmMedia', 'expanded' => true)));
+			$this->setValidator('dm_test_post_dm_media_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmTestPostDmMedia', 'required' => false)));
+		}
+
+		//one to one
+		if($this->needsWidget('categ_id')){
+			$this->setWidget('categ_id', new sfWidgetFormDmDoctrineChoice(array('multiple' => false, 'model' => 'DmTestCateg', 'expanded' => false)));
+			$this->setValidator('categ_id', new sfValidatorDoctrineChoice(array('multiple' => false, 'model' => 'DmTestCateg', 'required' => true)));
+		}
+		//one to one
+		if($this->needsWidget('user_id')){
+			$this->setWidget('user_id', new sfWidgetFormDmDoctrineChoice(array('multiple' => false, 'model' => 'DmUser', 'expanded' => false)));
+			$this->setValidator('user_id', new sfValidatorDoctrineChoice(array('multiple' => false, 'model' => 'DmUser', 'required' => true)));
+		}
+		//one to one
+		if($this->needsWidget('image_id')){
+			$this->setWidget('image_id', new sfWidgetFormDmDoctrineChoice(array('multiple' => false, 'model' => 'DmMedia', 'expanded' => false)));
+			$this->setValidator('image_id', new sfValidatorDoctrineChoice(array('multiple' => false, 'model' => 'DmMedia', 'required' => false)));
+		}
+		//one to one
+		if($this->needsWidget('file_id')){
+			$this->setWidget('file_id', new sfWidgetFormDmDoctrineChoice(array('multiple' => false, 'model' => 'DmMedia', 'expanded' => false)));
+			$this->setValidator('file_id', new sfValidatorDoctrineChoice(array('multiple' => false, 'model' => 'DmMedia', 'required' => false)));
+		}
+		//one to one
+		if($this->needsWidget('created_by')){
+			$this->setWidget('created_by', new sfWidgetFormDmDoctrineChoice(array('multiple' => false, 'model' => 'DmUser', 'expanded' => false)));
+			$this->setValidator('created_by', new sfValidatorDoctrineChoice(array('multiple' => false, 'model' => 'DmUser', 'required' => false)));
+		}
+
+
 
     /*
      * Embed Media form for image_id
      */
-    $this->embedForm('image_id_form', $this->createMediaFormForImageId());
-    unset($this['image_id']);
-
+    if($this->needsWidget('image_id')){
+      $this->embedForm('image_id_form', $this->createMediaFormForImageId());
+      unset($this['image_id']);
+    }
     /*
      * Embed Media form for file_id
      */
-    $this->embedForm('file_id_form', $this->createMediaFormForFileId());
-    unset($this['file_id']);
+    if($this->needsWidget('file_id')){
+      $this->embedForm('file_id_form', $this->createMediaFormForFileId());
+      unset($this['file_id']);
+    }
 
     if('embed' == sfConfig::get('dm_i18n_form'))
     {
@@ -129,12 +182,32 @@ abstract class BaseDmTestPostForm extends BaseFormDoctrine
 
     if (isset($this->widgetSchema['tags_list']))
     {
-      $this->setDefault('tags_list', $this->object->Tags->getPrimaryKeys());
+        $this->setDefault('tags_list', array_merge((array)$this->getDefault('tags_list'),$this->object->Tags->getPrimaryKeys()));
     }
 
     if (isset($this->widgetSchema['medias_list']))
     {
-      $this->setDefault('medias_list', $this->object->Medias->getPrimaryKeys());
+        $this->setDefault('medias_list', array_merge((array)$this->getDefault('medias_list'),$this->object->Medias->getPrimaryKeys()));
+    }
+
+    if (isset($this->widgetSchema['dm_test_post_tag_list']))
+    {
+        $this->setDefault('dm_test_post_tag_list', array_merge((array)$this->getDefault('dm_test_post_tag_list'),$this->object->DmTestPostTag->getPrimaryKeys()));
+    }
+
+    if (isset($this->widgetSchema['comments_list']))
+    {
+        $this->setDefault('comments_list', array_merge((array)$this->getDefault('comments_list'),$this->object->Comments->getPrimaryKeys()));
+    }
+
+    if (isset($this->widgetSchema['translation_list']))
+    {
+        $this->setDefault('translation_list', array_merge((array)$this->getDefault('translation_list'),$this->object->Translation->getPrimaryKeys()));
+    }
+
+    if (isset($this->widgetSchema['dm_test_post_dm_media_list']))
+    {
+        $this->setDefault('dm_test_post_dm_media_list', array_merge((array)$this->getDefault('dm_test_post_dm_media_list'),$this->object->DmTestPostDmMedia->getPrimaryKeys()));
     }
 
   }
@@ -143,6 +216,10 @@ abstract class BaseDmTestPostForm extends BaseFormDoctrine
   {
     $this->saveTagsList($con);
     $this->saveMediasList($con);
+    $this->saveDmTestPostTagList($con);
+    $this->saveCommentsList($con);
+    $this->saveTranslationList($con);
+    $this->saveDmTestPostDmMediaList($con);
 
     parent::doSave($con);
   }
@@ -220,6 +297,158 @@ abstract class BaseDmTestPostForm extends BaseFormDoctrine
     if (count($link))
     {
       $this->object->link('Medias', array_values($link));
+    }
+  }
+
+  public function saveDmTestPostTagList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['dm_test_post_tag_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $existing = $this->object->DmTestPostTag->getPrimaryKeys();
+    $values = $this->getValue('dm_test_post_tag_list');
+    if (!is_array($values))
+    {
+      $values = array();
+    }
+
+    $unlink = array_diff($existing, $values);
+    if (count($unlink))
+    {
+      $this->object->unlink('DmTestPostTag', array_values($unlink));
+    }
+
+    $link = array_diff($values, $existing);
+    if (count($link))
+    {
+      $this->object->link('DmTestPostTag', array_values($link));
+    }
+  }
+
+  public function saveCommentsList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['comments_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $existing = $this->object->Comments->getPrimaryKeys();
+    $values = $this->getValue('comments_list');
+    if (!is_array($values))
+    {
+      $values = array();
+    }
+
+    $unlink = array_diff($existing, $values);
+    if (count($unlink))
+    {
+      $this->object->unlink('Comments', array_values($unlink));
+    }
+
+    $link = array_diff($values, $existing);
+    if (count($link))
+    {
+      $this->object->link('Comments', array_values($link));
+    }
+  }
+
+  public function saveTranslationList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['translation_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $existing = $this->object->Translation->getPrimaryKeys();
+    $values = $this->getValue('translation_list');
+    if (!is_array($values))
+    {
+      $values = array();
+    }
+
+    $unlink = array_diff($existing, $values);
+    if (count($unlink))
+    {
+      $this->object->unlink('Translation', array_values($unlink));
+    }
+
+    $link = array_diff($values, $existing);
+    if (count($link))
+    {
+      $this->object->link('Translation', array_values($link));
+    }
+  }
+
+  public function saveDmTestPostDmMediaList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['dm_test_post_dm_media_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $existing = $this->object->DmTestPostDmMedia->getPrimaryKeys();
+    $values = $this->getValue('dm_test_post_dm_media_list');
+    if (!is_array($values))
+    {
+      $values = array();
+    }
+
+    $unlink = array_diff($existing, $values);
+    if (count($unlink))
+    {
+      $this->object->unlink('DmTestPostDmMedia', array_values($unlink));
+    }
+
+    $link = array_diff($values, $existing);
+    if (count($link))
+    {
+      $this->object->link('DmTestPostDmMedia', array_values($link));
     }
   }
 

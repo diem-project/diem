@@ -1,4 +1,5 @@
-<fieldset id="sf_fieldset_[?php echo preg_replace('/[^a-z0-9_]+/', '_', dmString::transliterate(strtolower($fieldset))) ?]">
+[?php $it = 0; $totalFields = count($fields); ?]
+<fieldset id="sf_fieldset_[?php echo preg_replace('/[^a-z0-9_]+/', '_', dmString::transliterate(strtolower($fieldset))) ?]" [?php if ($totalFields==1):?] class="single" [?php endif; ?]>
   [?php if ('NONE' != $fieldset): ?]
     <h2 class="fieldset_title ui-accordion-header ui-helper-reset ui-state-default ui-corner-top">
       <span class="ui-icon ui-icon-triangle-1-e"></span>
@@ -11,10 +12,17 @@
 
   <div class="fieldset_content_inner clearfix">
 
-  [?php $it = 0; foreach ($fields as $name => $field): ?]
+  [?php foreach ($fields as $name => $field): ?]
     [?php if ((isset($form[$name]) && $form[$name]->isHidden()) || (!isset($form[$name]) && $field->isReal())) continue ?]
-    [?php include_partial('<?php echo $this->getModuleName() ?>/form_field', array(
-    	'helper'		 => $helper,
+    [?php
+      $extraClasses=array();
+      $extraClasses[] = $it%2 ? 'even' : 'odd';
+      if ($totalFields!=1) {
+        if ($it==0) {  $extraClasses[]='first'; }
+        if ($it==$totalFields-1) {  $extraClasses[]='last'; }
+      }
+      include_partial('<?php echo $this->getModuleName() ?>/form_field', array(
+      'helper'     => $helper,
       'name'       => $name,
       'attributes' => $field->getConfig('attributes', array()),
       'label'      => $field->getConfig('label'),
@@ -22,7 +30,7 @@
       'form'       => $form,
       'field'      => $field,
       'search' => isset($search) ? $search : null,
-      'class'      => ($it%2 ? 'odd' : 'even').' sf_admin_form_row sf_admin_'.strtolower($field->getType()).' sf_admin_form_field_'.$name.' '.(isset($form[$name]) ? dmString::underscore(get_class($form[$name]->getWidget())) : ''),
+      'class'      => implode($extraClasses,' ').' sf_admin_form_row sf_admin_'.strtolower($field->getType()).' sf_admin_form_field_'.$name.' '.(isset($form[$name]) ? dmString::underscore(get_class($form[$name]->getWidget())) : ''),
     ));if ($it%2) { echo '<div style="clear: both"></div>'; } $it++; ?]
   [?php endforeach; ?]
 

@@ -87,7 +87,7 @@
 "File": "Файл"
 "Thumbnails can not be created in %1%": "Миниатурите не могат да бъдат създадени в %1%"
 "Folder %1% is not writable": "Директорията %1% не е достъпна за редакция"
-"File %1% is not writable": ФайлЗ %1% не е достъпен за редакция"
+"File %1% is not writable": "Файл %1% не е достъпен за редакция"
 "This folder is not writable": "Тази папка не е достъпна за редакция"
 "This file is not writable": "Този файл не е достъпен за редакция"
 "Size": "Размер"
@@ -433,6 +433,7 @@
 "logs": "дневник"
 "Page" : "Страница"
 "This chart is not yet available.": "Тази диаграма все още не е достъпна"
+"It will activated as soon as your site have some data to be analyzed": "Ще бъде активирана щом сайтът събере информация, която да бъде анализирана"
 "task": "команда"
 "Catalogues": "Речници"
 "Source lang": "От"
@@ -597,4 +598,8 @@
 
 #records security
 "Record": "рекорд"
-"Records": "записи" 
+"Records": "записи"
+"See selected": "Виж само маркираните"
+"See unselected": "Виж само немаркираните"
+"See all": "Виж всички"
+"Clear search": "Изчисти търсенето"

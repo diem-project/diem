@@ -26,6 +26,29 @@ abstract class dmFormDoctrine extends sfFormDoctrine
 	 */
 	protected $embeddedFormsSaveTime;
 	
+	
+  /**
+   * Removes a field from the form.
+   *
+   * It removes the widget and the validator for the given field.
+   *
+   * @param string $offset The field name
+   */
+  public function offsetUnset($offset)
+  {
+  	parent::offsetUnset($offset);
+  	
+  	if(isset($this->embeddedFormsSaveTime[self::EMBEDDED_FORM_SAVE_BEFORE][$offset]))
+  	{
+  		unset($this->embeddedFormsSaveTime[self::EMBEDDED_FORM_SAVE_BEFORE][$offset]);
+  	}
+  	else 
+  	{
+  		unset($this->embeddedFormsSaveTime[self::EMBEDDED_FORM_SAVE_AFTER][$offset]);
+  	}
+  }
+  
+	
 	/**
 	 * @var integer
 	 */
@@ -92,7 +115,7 @@ abstract class dmFormDoctrine extends sfFormDoctrine
 
 			if (null !== $label)
 			{
-				$this->widgetSchema[$fieldName]->setLabel('$label');
+				$this->widgetSchema[$fieldName]->setLabel($label);
 			}
 
 			// set sorting
@@ -107,7 +130,15 @@ abstract class dmFormDoctrine extends sfFormDoctrine
 			);
 			if ($fieldName == 'nested_set_parent_id')
 			{
-				$options['add_empty'] = '~';
+			  
+			  if($this->getObject()->getTable()->getTemplate('NestedSet')->getOption('hasManyRoots') 
+			   	|| $this->getObject()->getNode()->isRoot()
+			  )
+			  {
+				  $options['add_empty'] = '~';
+			  }else{
+			    $this->setDefault('nested_set_parent_id', $this->getObject()->getNode()->getRootValue());
+			  }
 				$this->validatorSchema[$fieldName]->setOptions(array_merge(
 				$this->validatorSchema[$fieldName]->getOptions(),
 				array(
@@ -118,21 +149,24 @@ abstract class dmFormDoctrine extends sfFormDoctrine
 			$this->widgetSchema[$fieldName]->getOptions(),
 			$options
 			));
+			
+			if(!$this->isNew() && $this->getObject()->getNode() && !$this->getObject()->getNode()->isRoot())
+			{
+			  $this->setDefault($fieldName, $this->getObject()->getNode()->getParent()->get('id'));
+			}
 		}
 		return $this;
 	}
 
-
 	/**
 	 * (non-PHPdoc)
-	 * @see sfForm::configure()
-	 * @return dmFormDoctrine
+	 * @see sfForm::setup()
 	 */
-	public function configure()
+	public function setup()
 	{
+		parent::setup();
 		$this->embeddedFormsSaveTime = array(self::EMBEDDED_FORM_SAVE_BEFORE => array(), self::EMBEDDED_FORM_SAVE_AFTER => array());
 		$this->setupNestedSet();
-		return parent::configure() || $this;
 	}
 
 	/**
@@ -180,7 +214,7 @@ abstract class dmFormDoctrine extends sfFormDoctrine
 	public function setEmbeddedFormSavingTime($formName, $when)
 	{
 		if(!in_array($when, array(self::EMBEDDED_FORM_SAVE_BEFORE, self::EMBEDDED_FORM_SAVE_AFTER))){ throw new LogicException('Given $when parameter is out of range', 0); }
-		$this->embeddedFormsSaveTime[$when][] = $formName;
+		$this->embeddedFormsSaveTime[$when][$formName] = $formName;
 		return $this;
 	}	
 	
@@ -400,5 +434,22 @@ abstract class dmFormDoctrine extends sfFormDoctrine
 	public function setObject(dmDoctrineRecord $record)
 	{
 		return $this->object = $record;
+	}
+	
+	public function embedForm($name, sfForm $form, $decorator = null, $savingTime = self::EMBEDDED_FORM_SAVE_AFTER)
+	{
+		parent::embedForm($name, $form, $decorator);
+		$this->setEmbeddedFormSavingTime($name, $savingTime);
+		return $this;
+	}
+	
+	/**
+	* Returns the name of the class to use to embed DmMedia
+	*
+	* @return string
+	*/
+	public function getDmMediaFormForRecord($local)
+	{
+		return 'DmMediaForRecordForm';
 	}
 }

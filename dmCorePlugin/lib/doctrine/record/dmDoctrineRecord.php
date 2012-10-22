@@ -153,8 +153,8 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
 		$recordOffset = array_search($this->getPrimaryKey(), $pks);
 
 		$map = array(
-      'prev' => 0 == $recordOffset ? null : $pks[$recordOffset-1],
-      'next' => count($pks) == ($recordOffset+1) ? null :$pks[$recordOffset+1]
+      'prev' => 0 == $recordOffset ? null : (isset($pks[$recordOffset-1]) ? $pks[$recordOffset-1] : null),
+      'next' => count($pks) == ($recordOffset+1) ? null : (isset($pks[$recordOffset+1]) ? $pks[$recordOffset+1] : null)
 		);
 
 		$pks = array_unique(array_filter(array_values($map)));
@@ -379,7 +379,7 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
 	 */
 	public function hasDmPage()
 	{
-		return $this->getDmModule()->hasPage() && dmDb::table('DmPage')->findOneByRecordWithI18n($this);
+		return $this->getDmModule() && $this->getDmModule()->hasPage() && dmDb::table('DmPage')->findOneByRecordWithI18n($this);
 	}
 
 	/**
@@ -750,6 +750,11 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
 		}
 	}
 
+	protected function _getNewI18n()
+	{
+		return $this->get('Translation')->get(sfConfig::get('sf_default_culture'));
+	}
+
 	public function _getI18n($fieldName, $load = true)
 	{
 		$culture = self::getDefaultCulture();
@@ -827,11 +832,14 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
 			$underscoredFieldName = dmString::underscore($fieldName);
 			if (strpos($underscoredFieldName, '_') !== false && $this->contains($underscoredFieldName))
 			{
-				return parent::_set($underscoredFieldName, $value, $load);
+				return parent::_set($underscoredFieldName, $value, $load); //why it was not return'ing from here ?
+				//calling parent::_set($fieldName, ...) will always causes throwing an error
 			}
 		}
 
-		return parent::_set($fieldName, $value, $load);
+		parent::_set($fieldName, $value, $load);
+		
+		return $this;
 	}
 
 	public function getEventDispatcher()
@@ -923,15 +931,20 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
 	 */
 	protected
 	$cache;
+	
+	/**
+	 * dmMicroCache
+	 */
+	protected static $classCache = array();
 
-	protected function getCache($cacheKey)
+	protected function getCache($cacheKey, $default = null)
 	{
 		if(isset($this->cache[$cacheKey]))
 		{
 			return $this->cache[$cacheKey];
 		}
 
-		return null;
+		return $default;
 	}
 
 	protected function hasCache($cacheKey)
@@ -956,5 +969,83 @@ abstract class dmDoctrineRecord extends sfDoctrineRecord
 		}
 
 		return $this;
+	}
+	
+	protected function getClassCache($cacheKey, $default = null)
+	{
+		if(isset(self::$classCache[$cacheKey]))
+		{
+			return self::$classCache[$cacheKey];
+		}
+
+		return $default;
+	}
+
+	protected function hasClassCache($cacheKey)
+	{
+		return isset(self::$classCache[$cacheKey]);
+	}
+
+	protected function setClassCache($cacheKey, $cacheValue)
+	{
+		return self::$classCache[$cacheKey] = $cacheValue;
+	}
+
+	public function clearClassCache($cacheKey = null)
+	{
+		if (null === $cacheKey)
+		{
+			self::$classCache = array();
+		}
+		elseif(isset(self::$classCache[$cacheKey]))
+		{
+			unset(self::$classCache[$cacheKey]);
+		}
+
+		return $this;
+	}
+
+	public function validate()
+	{
+		if(!$this instanceof DmPage) //DmPage does not need this as it is processed by SEO
+		{
+			$this->validateI18n();
+		}
+	}
+
+	/**
+	 * Validates I18n objects associated to $this
+	 *
+	 * @throws Doctrine_Validator_Exception
+	 */
+	public function validateI18n()
+	{
+		if($this->getTable()->hasI18n())
+		{
+			if($this->get('Translation')->count() === 0)
+			{
+				$newI18n = $this->_getNewI18n();
+				if(!$newI18n->isValid())
+				{
+					throw new Doctrine_Validator_Exception(array($newI18n));
+				}
+			}
+			else{
+				$inError = array();
+
+				foreach($this->get('Translation') as $translation)
+				{
+					$state = $translation->isValid();
+					if(true !== $state)
+					{
+						$inError[] = $translation;
+					}
+				}
+				if(!empty($inError))
+				{
+					throw new Doctrine_Validator_Exception($inError);
+				}
+			}
+		}
 	}
 }

@@ -25,7 +25,7 @@ $.widget('ui.dmWidget', {
       url:          $.dm.ctrl.getHref('+/dmWidget/edit'),
       data:         {widget_id: widget.getId()},
       title:        $('a.dm_widget_edit', widget.element).tipsyTitle(),
-      width:        600,
+      width:        '600', // this should be revised and if possible - made dependant on content's width
       'class':      'dm_widget_edit_dialog_wrap '+dialogClass,
       resizable:    true,
       resize:       function(event, ui)
@@ -295,12 +295,12 @@ $.widget('ui.dmWidget', {
           iframe: true,
           speed: 200,
           opacity: 0.5,
+          open: true,
           onClosed: function()
           {
             self.reload();
           }
-        })
-        .trigger('click');
+        });
 
         $button.unblock();
 
@@ -320,7 +320,10 @@ $.widget('ui.dmWidget', {
   {
     var self = this;
     
-    this.id = this.element.attr('id').substring(10);
+    if (this.element.attr('id') != undefined)
+    {
+      this.id = this.element.attr('id').substring(10);
+    }
     
     $('> a.dm_widget_edit, > a.dm_widget_fast_edit', this.element).click(function() {
       if (!self.element.hasClass('dm_dragging')) {

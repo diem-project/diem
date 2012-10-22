@@ -59,10 +59,10 @@ class dmModuleSecurityManager extends dmModuleSecurityAbstract implements dmModu
    *
    * @param dmModule $module
    */
-  public function secure(dmModule $module)
+  public function secure(dmModule $module = null)
   {
     $this->clear();
-    $this->module = $module;
+    $this->module = $this->module ? $this->module : $module;
     $app = $this->getApplication();
     if($security = $module->getOption('security', false))
     {
@@ -74,7 +74,7 @@ class dmModuleSecurityManager extends dmModuleSecurityAbstract implements dmModu
           foreach($actionsConfig as $actionName=>$actionConfig)
           {
             if(!is_array($actionConfig)) continue;
-            if($actionConfig['is_secure'])
+            if(isset($actionConfig['is_secure']) || (!isset($actionConfig['is_secure']) && !empty($actionConfig['is_secure']) && count($actionConfig['is_secure']) > 0))
             {
               $this->getStrategy($actionConfig['strategy'], $actionKind)->secure($module, $actionName, $actionConfig);
             }
@@ -95,9 +95,9 @@ class dmModuleSecurityManager extends dmModuleSecurityAbstract implements dmModu
    * existing strategies, so we can reset the running
    * module.
    */
-  protected function clear()
+  public function clear()
   {
-    $this->clearCache();
+  	parent::clear();
     $this->strategies = array();
   }
 
@@ -204,7 +204,10 @@ class dmModuleSecurityManager extends dmModuleSecurityAbstract implements dmModu
   public function saveSecurityYaml(dmModule $module, $securityYaml)
   {
     $data = sfYaml::dump($securityYaml, 2);
-    file_put_contents($this->getSecurityFilepath($module), $data);
+    $filepath = $this->getSecurityFilepath($module);
+    $dir = dirname($filepath);
+    $this->container->get('filesystem')->mkdirs($dir);
+    file_put_contents($filepath, $data);
   }
 
   /**
@@ -241,7 +244,10 @@ class dmModuleSecurityManager extends dmModuleSecurityAbstract implements dmModu
       $security = $this->module->getOption('security');
       $security = isset($security[$app]) ? $security[$app] : false;
     }
-    if(!$security) return true;
+    if(!$security)
+    {
+    	return true; //this way, usual action strategy gets involved
+    }
      
     if(null === $actionKind){
       return $security;
@@ -253,7 +259,7 @@ class dmModuleSecurityManager extends dmModuleSecurityAbstract implements dmModu
     if(null ===$action){
       return $security;
     }else{
-      return isset($security[$action]) ? $security[$action] : false;
+      return isset($security[$action]) ? $security[$action] : ($this->module->getOption('credentials', false));
     }
     return false;
   }
@@ -301,7 +307,7 @@ class dmModuleSecurityManager extends dmModuleSecurityAbstract implements dmModu
       return false;
     }
     $config = $this->hasSecurityConfiguration($this->getApplication(), 'actions', $actionName);
-    return $config && $config['is_secure'];
+    return $config && isset($config['is_secure']) ? $config['is_secure'] : false;
   }
 
   /**

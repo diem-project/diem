@@ -105,6 +105,8 @@ class dmTableLoremizer extends dmConfigurable
 
         if(!in_array($vals, $createdPairs))
         {
+        	//check if association does not already exists
+        	
           $collection->add($refTable->create($vals));
           
           $createdPairs[] = $vals;
@@ -128,7 +130,12 @@ class dmTableLoremizer extends dmConfigurable
 
     if(2 !== count($columns))
     {
-      return array();
+    	$columns = array_unique($columns);
+    	//fix: whenever association is badly made, same column can appear twice
+    	if(2 !== count($columns))
+    	{
+      	return array();
+    	}
     }
     
     return dmDb::pdo(sprintf(

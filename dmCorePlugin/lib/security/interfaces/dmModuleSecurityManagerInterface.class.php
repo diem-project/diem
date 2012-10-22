@@ -15,7 +15,13 @@ interface dmModuleSecurityManagerInterface
    * Secures a dmModule according to its security options 
    * @param dmModule $module
    */
-  public function secure(dmModule $module);
+  public function secure(dmModule $module = null);
+
+  /**
+  * Sets the module for the instance
+  * @param dmModule $module
+  */
+  public function setModule(dmModule $module);
 
    /**
    * Returns the corresponding strategy for

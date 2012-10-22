@@ -85,7 +85,7 @@ class dmMediaTagImage extends dmMediaTag
   {
     if (!in_array($filterName, $this->getAvailableFilters()))
     {
-      throw new dmMediaImageException(sprintf('%s is not a valid filter. These are : %s',
+      throw new dmException(sprintf('%s is not a valid filter. These are : %s',
       $filterName,
       implode(', ', $this->getAvailableFilters())
       ));
@@ -224,8 +224,8 @@ class dmMediaTagImage extends dmMediaTag
       throw new dmException('The image is not readable : '.dmProject::unRootify($mediaFullPath));
     }
 
-    $attributes['src'] = $this->context->getRequest()->getRelativeUrlRoot()
-    .str_replace(dmOs::normalize(sfConfig::get('sf_web_dir')), '', dmOs::normalize($mediaFullPath));
+    $attributes['src'] = (!$this->options['absolute'] ? $this->context->getRequest()->getRelativeUrlRoot() : $this->context->getRequest()->getAbsoluteUrlRoot()) . 
+    											str_replace(dmOs::normalize(sfConfig::get('sf_web_dir')), '', dmOs::normalize($mediaFullPath));
     
     if(!isset($attributes['alt']) && $media->get('legend'))
     {

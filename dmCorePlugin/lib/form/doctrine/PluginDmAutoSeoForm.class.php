@@ -11,12 +11,13 @@ abstract class PluginDmAutoSeoForm extends BaseDmAutoSeoForm
 {
   protected
   $seoSynchronizer,
-  $testRecord;
+  $testRecord,
+  $attributes;
   
   public function setup()
   {
     parent::setup();
-    
+
     $this->useFields($this->getRules());
     
     $this->widgetSchema['description'] = new sfWidgetFormTextarea(array(), array('rows' =>2));
@@ -27,24 +28,17 @@ abstract class PluginDmAutoSeoForm extends BaseDmAutoSeoForm
       'name' => 'The page name, used by links to this page. Should be unique.',
       'h1' => 'Assign first header here or let it blank to let the designer choose it. Should be unique.',
       'description' => 'The page description meta, frequently displayed in search engines result page.',
-      'keywords' => 'Provides additional meta informations to the page. Also used by Diem internal search engine.'
+      'keywords' => 'Provides additional meta informations to the page. Also used by Diem internal search engine.',
     ));
 
     $this->mergePostValidator(new sfValidatorCallback(array('callback' => array($this, 'checkRules'))));
-  
+    
     $this->testRecord = $this->object->getTargetDmModule()->getTable()->findOne();
   }
   
   public function getRules()
   {
-    $rules = DmPage::getAutoSeoFields();
-    
-    if (!sfConfig::get('dm_seo_use_keywords'))
-    {
-      unset($rules[array_search('keywords', $rules)]);
-    }
-    
-    return $rules;
+    return $this->object->getTargetDmModule()->getTable()->getAutoSeoFields();
   }
   
   public function checkRules($validator, $values)
@@ -79,5 +73,10 @@ abstract class PluginDmAutoSeoForm extends BaseDmAutoSeoForm
   public function setSeoSynchronizer(dmSeoSynchronizer $seoSynchronizer)
   {
     $this->seoSynchronizer = $seoSynchronizer;
+  }
+  
+  public function render($attributes = array())
+  {
+  	return $this->getFormFieldSchema()->render($this->attributes);
   }
 }

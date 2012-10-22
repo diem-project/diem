@@ -36,9 +36,12 @@ class dmAdminPluginConfiguration extends sfPluginConfiguration
     {
       $modules[] = basename($dir);
     }
-    foreach(glob(dmOs::join(sfConfig::get('sf_plugins_dir'), '*/modules/*'), GLOB_ONLYDIR) as $dir)
+    if($dirs = glob(dmOs::join(sfCOnfig::get('sf_plugins_dir'), '*/modules/*'), GLOB_ONLYDIR))
     {
-      $modules[] = basename($dir);
+	foreach($dirs as $dir)
+	{
+    	    $modules[] = basename($dir);
+	}
     }
 
     return array_unique(array_merge($modules, self::$externalModules));

@@ -3,7 +3,9 @@
 class dmDoctrinePager extends sfDoctrinePager
 {
 	protected
-	$resultsCache;
+	$resultsCache,
+	$isInited;
+	
 
 	/**
 	 * @see sfPager
@@ -38,9 +40,13 @@ class dmDoctrinePager extends sfDoctrinePager
 	/**
 	 * @see sfPager
 	 */
-	public function init()
+	public function init($force = false)
 	{
-		parent::init();
+		if(!$this->isInited || $force){
+			parent::init();
+			$this->resultsCache = null;
+		}
+		$this->isInited = true;
 
 		return $this;
 	}
@@ -85,7 +91,7 @@ class dmDoctrinePager extends sfDoctrinePager
 	{
 		$selectQuery = $this->getQuery();
 
-		if (count($selectQuery->getDqlPart('where')))
+		if (count($selectQuery->getDqlPart('where')) || count($selectQuery->getDqlPart('from')) > 1)
 		{
 			$query = clone $selectQuery;
 			return $query->offset(0)->limit(0);
@@ -101,12 +107,21 @@ class dmDoctrinePager extends sfDoctrinePager
 	 *
 	 * @return Doctrine_Query
 	 */
-	public function getQuery()
+	public function getQuery($withI18n = false)
 	{
-		if(dmDb::table($this->class)->hasI18n())
+		if($withI18n && dmDb::table($this->class)->hasI18n())
 		{
 			return parent::getQuery()->withI18n();
 		}
 		return parent::getQuery();
+	}
+
+	/**
+	 *
+	 * @return boolean
+	 */
+	public function hasQuery()
+	{
+		return isset($this->query);
 	}
 }

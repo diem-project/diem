@@ -12,6 +12,13 @@ class PluginDmAutoSeoTable extends myDoctrineTable
     ->fetchRecords();
   }
   
+  /**
+   * 
+   * @param string $module
+   * @param string $action
+   * @param string $culture
+   * @return DmAutoSeo
+   */
   public function findOneByModuleAndAction($module, $action, $culture = null)
   {
     $culture = null === $culture ? myDoctrineRecord::getDefaultCulture() : $culture;

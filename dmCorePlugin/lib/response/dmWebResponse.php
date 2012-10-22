@@ -8,7 +8,8 @@ class dmWebResponse extends sfWebResponse
   $cdnConfig,
   $javascriptConfig,
   $culture,
-  $theme;
+  $theme,
+  $xmlns;
   
   public function initialize(sfEventDispatcher $dispatcher, $options = array())
   {
@@ -23,6 +24,8 @@ class dmWebResponse extends sfWebResponse
     $this->dispatcher->connect('user.remember_me', array($this, 'listenToRememberMeEvent'));
     
     $this->dispatcher->connect('user.sign_out', array($this, 'listenToSignOutEvent'));
+    
+    $this->xmlns = array();
   }
 
   /**
@@ -146,7 +149,7 @@ class dmWebResponse extends sfWebResponse
 
   public function calculateAssetPath($type, $asset)
   {
-    if ($asset{0} === '/' || strpos($asset, 'http://') === 0)
+    if ($asset{0} === '/' || strpos($asset, 'http://') === 0 || 0 === strncmp($asset, 'https://', 8))
     {
       $path = $asset;
     }
@@ -280,5 +283,39 @@ class dmWebResponse extends sfWebResponse
   public function setIsHtmlForHuman($val)
   {
     $this->isHtmlForHuman = (bool) $val;
+  }  
+  
+  public function addXmlNs(dmXmlNamespace $namespace) 
+  {
+      return $this->xmlns[$namespace->getNamespace()] = $namespace;
   }
+  
+  public function setXmlNs(dmXmlNamespace $namespace) 
+  {
+      return $this->xmlns[$namespace->getNamespace()] = $namespace;
+  }
+  
+  public function removeXmlNs($namespace)
+  {
+      if ($namespace instanceof dmXmlNamespace) $namespace = $namespace->getNamespace ();
+      unset ($this->xmlns[$namespace]);
+      return $this;
+  }
+  
+  public function clearXmlNs()
+  {
+      $this->xmlns = array();
+      return $this;
+  }
+  
+  public function getXmlNs($namespace)
+  {
+      if (isset ($this->xmlns[$namespace])) return $this->xmlns[$namespace];
+      return null;
+  }
+  
+  public function getAllXmlNs() {
+      return $this->xmlns;
+  }
+  
 }

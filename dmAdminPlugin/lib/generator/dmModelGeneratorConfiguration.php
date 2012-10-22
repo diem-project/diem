@@ -335,27 +335,55 @@ abstract class dmModelGeneratorConfiguration extends sfModelGeneratorConfigurati
 
 	public function getFormOptions()
 	{
-		$method = 'getFormOptionsFor' . dmContext::getInstance()->getActionName();
+		$method = 'getFormOptionsFor' . dmString::camelize($actionName = $this->action->getActionName());
 		if(method_exists($this, $method))
 		{
 			return $this->$method();
+		}else
+		{
+			foreach(array(array('new', 'create'), array('edit', 'update')) as $fallback)
+			{
+				if($actionName === $fallback[1] && method_exists($this, 'getFormOptionsFor' . $fallback[0]))
+				{
+					return $this->{'getFormOptionsFor' . $fallback[0]}();
+				}
+			}
 		}
-		return $this->getDefaultFormOptions();
+		return $this->getDefaultFormOptions($actionName);
 	}
 
-	protected function getDefaultFormOptions()
+	protected function getDefaultFormOptions($action = 'form')
 	{
-		return array('widgets' => $this->getFieldsFromFieldsets($this->getFormDisplay()));
+		$method = sprintf('get%sDisplay', ucfirst($action));
+		if(!method_exists($this, $method))
+		{
+			foreach(array(array('new', 'create'), array('edit', 'update')) as $fallback)
+			{
+				if($action === $fallback[1] && method_exists($this, 'getFormOptionsFor' . $fallback[0]))
+				{
+					return $this->{'getFormOptionsFor' . $fallback[0]}();
+				}
+			}
+			$method = 'getFormDisplay';
+		}
+		return array('widgets' => $this->getFieldsFromFieldsets($this->$method()));
 	}
 
 	protected function getFormOptionsForEdit()
 	{
-		return array('widgets' => $this->getFieldsFromFieldsets($this->getEditDisplay()));
+		$fieldsets = $this->getEditDisplay();
+		return array('widgets' => array_merge($this->getFieldsFromFieldsets(empty($fieldsets) ? $this->getFormDisplay() : $fieldsets), $this->getPrimaryKeys()));
+	}
+
+	protected function getFormOptionsForNew()
+	{
+		$fieldsets = $this->getNewDisplay();
+		return array('widgets' => $this->getFieldsFromFieldsets(empty($fieldsets) ? $this->getFormDisplay() : $fieldsets));
 	}
 
 	public function getFilterFormOptions()
 	{
-		$method = 'getFilterFormOptionsFor' . dmContext::getInstance()->getActionName();
+		$method = 'getFilterFormOptionsFor' . ucfirst($this->action->getActionName());
 		if(method_exists($this, $method))
 		{
 			return $this->$method();
@@ -368,4 +396,31 @@ abstract class dmModelGeneratorConfiguration extends sfModelGeneratorConfigurati
 		return array('widgets' => $this->getFieldsFromFieldsets($this->getFilterDisplay()));
 	}
 
+	public function setFormDisplay($fieldsets)
+	{
+		$this->overloadedFormDisplay = $fieldsets;
+	}
+	
+	/**
+	 * @var myAdminBaseGeneratedModuleActions
+	 */
+	protected $action;
+
+	/**
+	 * @param myAdminBaseGeneratedModuleActions $action
+	 * @return myModuleGenerationConfiguration
+	 */
+	public function setAction($action)
+	{
+		$this->action = $action;
+		return $this;
+	}
+
+	/**
+	 * @return myAdminBaseGeneratedModuleActions
+	 */
+	public function getAction()
+	{
+		return $this->action;
+	}
 }

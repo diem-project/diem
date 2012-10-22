@@ -38,16 +38,25 @@ class dmModuleActionSecurityStrategy extends dmModuleSecurityStrategyAbstract im
 	public function userHasCredentials($actionName = null)
 	{
 		$actionName = null === $actionName ? $this->action->getActionName() : $actionName;
-		$cacheKey = $actionName;
-		if(!$this->hasCache($cacheKey)){
-			$security = $this->module->getSecurityManager()->getSecurityConfiguration($this->module->getSecurityManager()->getApplication(), 'actions', $actionName);
-			$credentials = false === $security['is_secure'] ? true : (isset($security['credentials']) ? $security['credentials'] : null);
+		$cacheKey = sprintf('%s/%s/%s/%s', $this->getApplication(), $this->container->getService('user')->getUser()->get('id'), $this->module->getUnderscore(), $actionName);
+		if(!$this->has($cacheKey)){
+			$credentials = $this->getCredentials($actionName);
 			if($credentials){
-				$result = $this->user->can($credentials);
+				$result = $this->user->can($credentials) || $this->user->hasCredential($credentials);
 			}else{ $result = false; }
-			return $this->setCache($cacheKey, $result);
+			$this->set($cacheKey, $result);
+			
+			return $result;
 		}
-		return $this->getCache($cacheKey);
+		return $this->get($cacheKey);
+	}
+
+	public function getCredentials($actionName = null)
+	{
+		$security = $this->module->getSecurityManager()->getSecurityConfiguration($this->module->getSecurityManager()->getApplication(), 'actions', $actionName);
+		$credentials = isset($security['is_secure']) && false === $security['is_secure'] ? false : (isset($security['credentials']) ? $security['credentials'] : null);
+		
+		return $credentials;
 	}
 
 	/**
@@ -55,11 +64,11 @@ class dmModuleActionSecurityStrategy extends dmModuleSecurityStrategyAbstract im
 	 */
 	protected function getSecurityYaml()
 	{
-		if(!$this->hasCache('securityYaml'))
+		if(!$this->has('securityYaml'))
 		{
-			return $this->setCache('securityYaml', $this->module->getSecurityManager()->getSecurityYaml($this->module));
+			return $this->set('securityYaml', $this->module->getSecurityManager()->getSecurityYaml($this->module));
 		}
-		return $this->getCache('securityYaml');
+		return $this->get('securityYaml');
 	}
 
 	/**
@@ -82,7 +91,7 @@ class dmModuleActionSecurityStrategy extends dmModuleSecurityStrategyAbstract im
 	 */
 	protected function saveSecurityYaml($securityYaml)
 	{
-		$this->setCache('securityYaml', $securityYaml);
+		$this->set('securityYaml', $securityYaml);
 	}
 
 	public function addPermissionCheckToQuery($query)

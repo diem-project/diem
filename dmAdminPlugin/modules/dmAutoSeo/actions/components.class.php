@@ -38,7 +38,7 @@ class dmAutoSeoComponents extends dmAdminBaseComponents
       {
         $seoSynchronizer = $this->getService('seo_synchronizer');
         
-        $seoSynchronizer->setCulture($this->getUser()->getCulture());
+        $seoSynchronizer->setCulture($this->getUser()->getCulture())->setModule($this->page->getRecord()->getDmModule());
         
         $this->metas = $seoSynchronizer->compilePatterns(
           $this->rules,

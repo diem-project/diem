@@ -25,10 +25,16 @@ generator:
         table_method: getAdminListQuery
         table_count_method: ~
         loremize: false
-
+  
+      filter:
+        display: 
+          - name
+          - users_list
+          - permissions_list
+ 
       form:
         display:
-          NONE: [name]
+          NONE: [id, name]
           Users: [users_list]
           Permissions: [permissions_list]
           Records: [records_list]

@@ -158,7 +158,7 @@
       {
         $(this).click(function()
         {
-          self.$.find('input.sf_admin_batch_checkbox, input.sf_admin_list_batch_checkbox').attr('checked', $(this).attr('checked'));
+          self.$.find('input.sf_admin_batch_checkbox, input.sf_admin_list_batch_checkbox').prop('checked', $(this).prop('checked'));
         });
       });
       
@@ -200,7 +200,7 @@
     {
       if ($.fn.datepicker) 
       {
-        $("input.datepicker_me", this.$).each(function() {
+        $("input.datepicker_me:not(:disabled)", this.$).each(function() {
           $(this).datepicker({dateFormat: dm_configuration.dateFormat})
         });
       }
@@ -222,10 +222,12 @@
     			  $.ajax({
     				  url: link,
     				  success: function(data){
+    					  $.dm.ctrl.$.trigger('dm.list.paginating');
     					  $('#dm_admin_content').children('#sf_admin_container').remove();
     					  $('.tipsy').remove();
     					  $('#dm_admin_content').append(data);
     					  $.dm.ctrl.init();
+    					  $.dm.ctrl.$.trigger('dm.list.paginated');
     					  $('#dm_admin_content').unblock();
     				  }
     			  });

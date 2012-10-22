@@ -62,6 +62,12 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
 						break;
 					}
 				}
+				
+				if(!$useDmForm && dmDb::table($model)->isGenerator())
+				{
+					$useDmForm = true;
+				}
+				
 				/// find concrete inheritance superclass
 				if(!$useDmForm)
 				{
@@ -162,7 +168,7 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
 	 */
 	public function getMediaRelations()
 	{
-		return $this->table->getRelationHolder()->getLocalMedias();
+		return $this->table->getRelationHolder()->getLocalMedias(true);
 	}
 
 	/**
@@ -212,17 +218,23 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
 		{
 		  if($this->table->isPaginatedColumn($column instanceof sfDoctrineColumn ? $column->getName() : $column['local']))
 		  {
-		    $widgetSubclass = 'DmDoctrineChoice';
+		    $widgetSubclass = 'DmPaginatedDoctrineChoice';
 		  }else{
-			  $widgetSubclass = 'DoctrineChoice';
+			  $widgetSubclass = 'DmDoctrineChoice';
 		  }
 		}
 
+		//listeners are expecting an sfDoctrineColumn instance
+		//thanks to Yoann BRIEUX
+		if($column instanceof Doctrine_Relation_LocalKey)
+		{
+			$column = new sfDoctrineColumn($column['local'], $this->table);
+		}
 		$widgetSubclass = $this->getGeneratorManager()->getConfiguration()->getEventDispatcher()->filter(
 		new sfEvent($this, 'dm.form_generator.widget_subclass', array('column' => $column)),
 		$widgetSubclass
 		)->getReturnValue();
-
+		
 		return sprintf('sfWidgetForm%s', $widgetSubclass);
 	}
 
@@ -458,6 +470,8 @@ class dmDoctrineFormGenerator extends sfDoctrineFormGenerator
 			$relation instanceof Doctrine_Relation_ForeignKey
 			&&
 			Doctrine_Relation::MANY == $relation->getType()
+			&&
+        !isset($relation['refTable'])
 			&&
 			(null === $this->getParentModel() || !Doctrine_Core::getTable($this->getParentModel())->hasRelation($relation->getAlias()))
 			&&

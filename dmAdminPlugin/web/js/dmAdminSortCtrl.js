@@ -1,6 +1,7 @@
 (function($) {
   
 $('div.dm_sort ol.objects').sortable({
+  containment:            'document',
   opacity:                0.5,
   placeholder:            'ui-state-highlight',
   revert:                 true,

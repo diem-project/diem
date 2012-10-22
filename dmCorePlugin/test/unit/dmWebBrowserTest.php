@@ -10,9 +10,15 @@ $sc = $helper->getServiceContainer();
 // -- this script is needed for some tests. It is located in plugin's test/unit/utils folder
 $dump_headers_url = 'http://diem-project.org/misc/dmWebBrowserTestDumpHeaders.php';
 
+
+$adapter_list = array('sfFopenAdapter', 'sfSocketsAdapter');
+if(extension_loaded('curl'))
+{
+	$adapter_list[] = 'sfCurlAdapter';
+}
+
 // tests
-$nb_test_orig = 63;
-$adapter_list = array('sfCurlAdapter', 'sfFopenAdapter', 'sfSocketsAdapter');
+$nb_test_orig = 63 * count($adapter_list);
 
 // -- sites used for testing requests
 $example_site_url = 'http://www.google.com';
@@ -45,12 +51,12 @@ class myTestWebBrowser extends dmWebBrowser
 }
 
 $t = new lime_test($nb_test_orig);
-//foreach($adapter_list as $adapter)
-//{
-//  $t->diag('Testing '.$adapter);
-//  $t->diag('');
+foreach($adapter_list as $adapter)
+{
+  $t->diag('Testing '.$adapter);
+  $t->diag('');
 
-//  $sc->mergeParameter('web_browser.options', array('adapter_class' => $adapter));
+  $sc->mergeParameter('web_browser.options', array('adapter_class' => $adapter));
 
   /******************/
   /* Initialization */
@@ -473,6 +479,6 @@ EOT;
   $b = $sc->reload('web_browser');
   $b->post($url, $requestBody, $headers);
   $t->like($b->getResponseText(), '/<Country>Comoros<\/Country>/', 'sfWebBrowser can make a low-level SOAP call with parameter');
-//
-//  $t->diag('');
-//}
+
+  $t->diag('');
+}

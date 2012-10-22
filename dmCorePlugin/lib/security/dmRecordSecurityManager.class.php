@@ -35,7 +35,10 @@ class dmRecordSecurityManager
             if(!is_array($actionConfig)) continue;
             if(isset($actionConfig['strategy']) && in_array($actionConfig['strategy'], array('record', 'mixed')))
             {
-              $this->{'manage'.ucfirst($hookType)}($record, $actionName, $actionConfig, $app);
+              $method = 'manage' . ucfirst($hookType);
+              if(method_exists($this, $method)){
+                $this->$method($record, $actionName, $actionConfig, $app);
+              }
             }
           }
         }
@@ -55,11 +58,6 @@ class dmRecordSecurityManager
     $permission->save();
   }
   
-  protected function manageCreate(dmDoctrineRecord $record, $actionName, $actionConfig, $app)
-  {
-  	$do = "nothing";
-  }
-
   protected function manageDelete(dmDoctrineRecord $record, $actionName, $actionConfig, $app)
   {
     $query = Doctrine_Core::getTable('DmRecordPermission')->createQuery()

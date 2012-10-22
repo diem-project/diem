@@ -93,7 +93,10 @@ abstract class dmFormFilterDoctrine extends sfFormFilterDoctrine
 
     $i18nFormClass = $this->getI18nFormClass();
 
-    $i18nForm = new $i18nFormClass();
+    $options = array();
+    if($widgets = $this->getOption('widgets')) $options['widgets'] = $widgets;
+    
+    $i18nForm = new $i18nFormClass(array(), $options);
 
     unset($i18nForm['id'], $i18nForm['lang']);
 
@@ -129,8 +132,15 @@ abstract class dmFormFilterDoctrine extends sfFormFilterDoctrine
   protected function addEnumQuery(Doctrine_Query $query, $field, $value)
   {
     $fieldName = $this->getFieldName($field);
-
-    $query->addWhere(sprintf('%s.%s = ?', $this->getRootAlias($query, $fieldName), $fieldName), $value);
+	 $counter = 0;
+	 $enumConditions='';
+	 $rootAlias = $this->getRootAlias($query, $fieldName);
+	 foreach ($value as $val) {
+		 $counter++;
+		 $glue = $counter < count($value) ? ' OR ' : '';
+		 $enumConditions .= sprintf('%s.%s = ?'.$glue , $rootAlias, $fieldName);
+	 }
+    $query->addWhere($enumConditions, $value);
   }
 
   protected function addTextQuery(Doctrine_Query $query, $field, $values)

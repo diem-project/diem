@@ -2,6 +2,32 @@
 
 class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 {
+	public function preExecute()
+	{
+		parent::preExecute();
+			
+		$this->configuration = new $this->configurationClass();
+		$this->configuration->setAction($this);
+
+		$this->dispatcher->notify(new sfEvent($this, 'admin.pre_execute', array('configuration' => $this->configuration)));
+
+		$this->helper = new $this->helperClass($this->getDmModule());
+		$this->helper->setAction($this);
+
+		$this->security_manager = $this->getDmModule()->getSecurityManager($this);
+	}
+
+	public function getCredential()
+	{
+		$can = $this->getDmModule()->getSecurityManager()->userHasCredentials($this->actionName);
+
+		if(!$can)
+		{
+			return DmPermission::NEVER_GRANT_ACCESS; //we hope such credentials will never exists
+		}
+		return $can;
+	}
+
 
 	protected function getRouteArrayForAction($action, $object = null)
 	{
@@ -23,19 +49,26 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 	/**
 	 * @return dmDoctrineRecord
 	 */
-	public function getObject($relations = array())
+	public function getObject($relations = array(), $pk = 'pk')
 	{
 		if(!isset($this->object))
 		{
-			$pk = $this->getContext()->getRequest()->getParameter('pk', false);
-			if(!$pk)
-			{
-				$id = $this->getDmModule()->getTable()->getIdentifier();
-				$pk = $this->getContext()->getRequest()->getParameter($id, false);
+			$_pk = $this->getRequest()->getParameter($pk, false);
+			if(!$_pk) {
+				$_pk = $this->getRequest()->getGetParameter($pk, false);
+				if(!$_pk) {
+					$_pk = $this->getRequest()->getPostParameter($pk, false);
+				}
 			}
 
-			if($pk){
-				$this->object = $this->buildObjectQuery($pk)->fetchOne();
+			if(!$_pk)
+			{
+				$id = $this->getDmModule()->getTable()->getIdentifier();
+				$_pk = $this->getRequest()->getParameter($id, false);
+			}
+
+			if($_pk){
+				$this->object = $this->buildObjectQuery($_pk, empty($relations) ? $this->getRelationsAlias() : $relations)->fetchOne();
 			}else{
 				$this->object = false;
 			}
@@ -48,11 +81,12 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 	 */
 	protected function getObjectOrForward404(dmWebRequest $request, $relations = array())
 	{
-		$this->forward404Unless(
-		$this->getObject($relations),
-		sprintf('Unable to find the %s object with the following parameters "%s").', $this->getDmModule()->getModel(), str_replace("\n", '', var_export($request->getParameterHolder()->getAll(), true)))
-		);
-
+		if(!$this->object = $this->getObject($relations))
+		{
+			$this->forward404(
+			sprintf('Unable to find the %s object with the following parameters "%s").', $this->getDmModule()->getModel(), str_replace("\n", '', var_export($request->getParameterHolder()->getAll(), true)))
+			);
+		}
 		return $this->object;
 	}
 
@@ -121,12 +155,18 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 					{
 						if (!$joinAlias = $query->getJoinAliasForRelationAlias($table->getComponentName(), $relation->getAlias()))
 						{
-							$query->leftJoin(sprintf('%s.%s %s', $query->getRootAlias(), $relation->getAlias(), $relation->getAlias()));
-							$joinAlias = $relation->getAlias();
-
 							if($foreignTable->isI18nColumn($foreignColumn))
 							{
-								$query->leftJoin(sprintf('%s.%s %s', $joinAlias, 'Translation', $joinAlias.'Translation'));
+								try{
+									$query->withI18n(); //leftJoin(sprintf('%s.%s %s', $joinAlias, 'Translation', $joinAlias.'Translation'));
+								}catch(Exception $e){}
+								
+								$joinAlias = $query->getRootAlias();
+							}
+							else
+							{
+								$query->leftJoin(sprintf('%s.%s %s', $query->getRootAlias(), $relation->getAlias(), $relation->getAlias()));
+								$joinAlias = $relation->getAlias();
 							}
 						}
 
@@ -268,7 +308,7 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 		$translationAlias = $rootAlias.'Translation';
 		$table = null === $table ? $this->getDmModule()->getTable() : $table;
 
-		$query->withI18n($this->getUser()->getCulture(), $this->getDmModule()->getModel());
+		$query->withI18n($this->getUser()->getCulture(), $table ? $table->getOption('name') : $this->getDmModule()->getModel());
 
 		foreach($searchParts as $searchPart)
 		{
@@ -531,26 +571,13 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 		{
 			// validate ids
 			$ids = $validator->clean($ids);
-
-			//@todo add record security check here ! using dmModuleSecurityManager, create new method in it
-			//if there are some ids for which user can't execute the method, remove them, then execute them
-			//something like
-			$_action = substr($action, 5);
-			$_action = dmString::strtolower($_action);
-			$authorizedIdsForAction = $this->getDmModule()->getSecurityManager()->getIdsForAuthorizedActionWithinIds($_action, $this->getUser()->getUser(), $ids);
-			if(!$authorizedIdsForAction){
-				throw new LogicException('You cannot delete those elements because you are not authorized to do so.', 401);
-			}
-			if(count($ids) != count($authorizedIdsForAction)){
-				$request->setParameter('excluded_ids', array_diff($ids, $authorizedIdsForAction));
-			}
-			$request->setParameter('ids', $authorizedIdsForAction);
+			$request->setParameter('ids', $ids);
 			// execute batch
 			$this->$method($request);
 		}
 		catch (sfValidatorError $e)
 		{
-			$this->getUser()->setFlash('error', 'A problem occurs when deleting the selected items as some items do not exist anymore. ');
+			$this->getUser()->setFlash('error', 'A problem has occured when executing batch action for selected rows.');
 		}
 		catch (LogicException $e)
 		{
@@ -610,19 +637,40 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 		$this->redirect('@'.$this->getDmModule()->getUnderscore());
 	}
 
+	/**
+	 * Search the 'toggle_' . $field credentials in the
+	 * security.yml file of the module
+	 *
+	 * i.e.: (security.yml, securing the toggling of is_active)
+	 * toggleboolean:
+	 *   is_active:
+	 *     is_secure: true
+	 *     credentials: [my_credential, admin]
+	 *
+	 * @see $this->executeToggleBoolean()
+	 * @overloadable
+	 * @param string $field the field to toggle (i.e. is_active)
+	 * @return boolean
+	 */
+	protected function getCredentialForToggle($field)
+	{
+		$security = $this->getSecurityValue($field, array());
+		return isset($security['is_secure']) && $security['is_secure'] && isset($security['credentials']) ? $security['credentials'] : array();
+	}
+
 	public function executeToggleBoolean(dmWebRequest $request)
 	{
-		$this->forward404Unless(
+		$this->httpErrorIf(!(
 		$this->getDmModule()->getTable()->hasField($field = $request->getParameter('field'))
 		&& ($record = $this->getDmModule()->getTable()->find($request->getParameter('pk')))
+		&& $this->getUser()->hasCredential($this->getCredentialForToggle($request->getParameter('field')))),
+		405, 'Forbidden'
 		);
 
 		if('is_active' === $field && $record->getDmModule()->hasPage() && ($page = $record->getDmPage()))
 		{
 			$page->setIsActiveManually(!$record->get($field))->save();
-		}
-		else
-		{
+		} else {
 			$record->set($field, !$record->get($field));
 			$record->save();
 		}
@@ -633,8 +681,8 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 	}
 
 	/**
-	 * @param dmDoctrineQuery $query
-	 * @return dmDoctrineQuery
+	 * @param myDoctrineQuery $query
+	 * @return myDoctrineQuery
 	 */
 	protected function addRecordPermissionQuery($query)
 	{
@@ -656,17 +704,31 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 	 * (i.e. make only one query against db to fetch every needed bits
 	 * for your action & templates).
 	 *
-	 * @return dmDoctrineQuery
+	 * @param int $pk the primary key for query
+	 * @param array $relations the relations to leftJoin, aliases
+	 * @param array $locals the local keys to join
+	 * @param boolean $noBuilder if you want to let code call configuration method if exists
+	 * @return myDoctrineQuery
 	 */
-	protected function buildObjectQuery($pk, $relations = array(), $locals = array())
+	public function buildObjectQuery($pk, $relations = array(), $locals = array(), $noBuilder = false)
 	{
-		$table = $this->getDmModule()->getTable();
-		$id = $table->getIdentifier();
-		if(is_array($id)) { $id = $id[0]; }
-		$query = $table->createQuery('o')->where('o.' . $id . ' = ?', $pk);
-		$table->joinLocals($query, true);
-		$table->joinRelations($query, $this->getRelationsAlias(), true);
-		return $query;
+		//$fieldsets = $this->configuration->getFormFields($this->form, $this->actionName);
+		$method = 'buildObjectQueryFor' . dmString::camelize($this->actionName);
+		if(!$noBuilder && method_exists($this->configuration, $method))
+		{
+			return $this->configuration->$method($pk, $relations, $locals, $this);
+		}
+		else
+		{
+			$table = $this->getDmModule()->getTable();
+			$id = $table->getIdentifier();
+			if(is_array($id)) { $id = $id[0]; }
+			$query = $table->createQuery('o')->where('o.' . $id . ' = ?', $pk);
+
+			$table->joinLocals($query, true, $locals);
+			$table->joinRelations($query, $relations, true);
+			return $query;
+		}
 	}
 
 	/**
@@ -681,17 +743,34 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 			$method = 'getFormDisplay';
 		}
 		$fieldsets = $this->configuration->$method();
-		if($this->actionName !== 'index'){
-			$fieldsets = array_merge($fieldsets, $this->configuration->getFormDisplay());
+		switch($this->actionName)
+		{
+			case 'filter':
+				$fieldsets = $this->configuration->getFilterDisplay();
+				break;
+			case 'index':
+				break;
+			default:
+				$fieldsets = array_merge($fieldsets, $this->configuration->getFormDisplay());
+				break;
 		}
 		$relations = array();
-		foreach($fieldsets as $fieldset=>$fields)
+
+		switch($this->actionName)
 		{
-			if(!is_array($fields)){
+			case 'filter':
 				return $this->doGetRelations($fieldsets);
-			}else{
-				$relations = array_merge($relations, $this->doGetRelations($fields));
-			}
+				break;
+			default:
+				foreach($fieldsets as $fieldset=>$fields)
+				{
+					if(!is_array($fields)){
+						return $this->doGetRelations($fieldsets);
+					}else{
+						$relations = array_merge($relations, $this->doGetRelations($fields));
+					}
+				}
+				break;
 		}
 		return array_unique(array_diff($relations, array_keys($this->getDmModule()->getTable()->getRelationHolder()->getLocals())));
 	}
@@ -708,12 +787,22 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 		$relations = array();
 		foreach($fields as $field)
 		{
-			if(substr($field, strlen($field)-5, strlen($field)) === '_list')
+			$relationName = false;
+			if(substr($field, strlen($field)-5, strlen($field)) === '_list'){
+				$relationName = substr($field, 0, strlen($field)-5);
+			}elseif(substr($field, 0, 1) === '_'){
+				$relationName = substr($field, 1, strlen($field) -1);
+			}
+			if($relationName)
 			{
-				$field = dmString::camelize(substr($field, 0, strlen($field)-5));
+				$field = dmString::camelize($relationName);
 				if( $this->getDmModule()->getTable()->hasRelation($field))
 				{
-					$relations[] = $field;
+					//don't add Doctrine_Relation_LocalKey !
+					if(!$this->getDmModule()->getTable()->getRelation($field) instanceof Doctrine_Relation_LocalKey)
+					{
+						$relations[] = $field;
+					}
 				}
 			}
 		}
@@ -727,40 +816,27 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 	 */
 	public function executePaginateRelation(dmWebRequest $request)
 	{
-		$field = lcfirst($request->getParameter('field'));
-		$relation = dmString::camelize(substr($field, 0, strlen($field) -5)); //remove _list @todo make it given by $request, using .metadata() and writting it within template
-		$table = $this->getDmModule()->getTable();
-		
-		if($table->hasRelation($relation))
-		{
-			$relation = $table->getRelation($relation);
-		}elseif($table->hasRelation($field)){
-			$relation = $table->getRelation($field);
-		}elseif($table->hasRelation($relation = dmString::camelize($field)))
-		{
-			$relation = $table->getRelation($relation);
-		}
-		
+		$field = dmString::lcfirst($request->getParameter('field'));
+
 		$startPage = $request->getParameter('page');
 		$maxPerPage = $request->getParameter('maxPerPage');
 		$this->getUser()->setAttribute($this->getModuleName() . '.' . $field . '.max_per_page', $maxPerPage, 'admin_module');
+
 		$search = $request->getParameter('search', false);
 
 		$model = dmString::tableize($this->getDmModule()->getModel());
 		$this->$model = $this->getObject();
 
 		$this->nearRecords = array();
-		$this->form = $this->configuration->getForm($this->$model);
+		$this->form = $this->configuration->getForm($this->$model, array('widgets' => array($field)));
 		$this->field = $this->form->getWidget($field);
-		/**
-		 * @var dmDoctrinePager
-		 */
+		$this->search = $search;
+
+		$query = $this->paginationCreateRelationQuery($field, $request->getParameter('pk'), $search);
 		$pager = $this->field->getPager();
+		$pager->setQuery($query);
 		$pager->setMaxPerPage($maxPerPage);
 		$pager->setPage($startPage);
-
-		$query = $this->createPaginateRelationQuery($field, $relation, $search);
-		$pager->setQuery($query);
 
 		$this->name = $field;
 		$fields = array_diff(array_keys($this->form->getWidgetSchema()->getFields()), array($field));
@@ -770,14 +846,33 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 		}
 		$this->configuration->setFormDisplay(array($this->name));
 		$this->setTemplate('edit');
-		$this->setLayout(false);
+		//$this->setLayout(false);
 	}
 
-	protected function createPaginateRelationQuery($field, $relation, $search)
+	protected function paginationCreateRelationQuery($field, $pk, $search)
 	{
-		$queryBuilder = 'buildQueryFor' . dmString::camelize($field);
+		$queryBuilder = 'paginateBuildQueryFor' . dmString::camelize($field);
 		if(!method_exists($this, $queryBuilder))
 		{
+			//from here, we guess the relation is bound to the object of the DmModule
+			//check if it is a local key relation
+			$relation = dmString::camelize(substr($field, 0, strlen($field) -5)); //remove _list @todo make it given by $request, using .metadata() and writting it within template
+			$table = $this->getDmModule()->getTable();
+
+			//guessing relation from field name
+			if($table->hasRelation($relation))
+			{
+				$relation = $table->getRelation($relation);
+			}elseif($table->hasRelation($field)){
+				$relation = $table->getRelation($field);
+			}elseif($table->hasRelation($relation = dmString::camelize($field)))
+			{
+				$relation = $table->getRelation($relation);
+			}elseif($relation = $table->getRelationByColumn($field))
+			{
+				
+			}
+
 			$table = dmDb::table($relation['class']);
 			$query = $table->createQuery('r');
 			if(strlen($search)>0){
@@ -785,7 +880,7 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 			}
 			$this->search = $search;
 		}else{
-			$query = $this->$queryBuilder($search);
+			$query = $this->$queryBuilder($pk, $search);
 		}
 		return $query;
 	}

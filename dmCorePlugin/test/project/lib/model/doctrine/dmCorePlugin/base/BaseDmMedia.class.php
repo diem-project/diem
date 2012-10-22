@@ -71,10 +71,10 @@ abstract class BaseDmMedia extends myDoctrineRecord
              'type' => 'string',
              'length' => 255,
              ));
-        $this->hasColumn('mime', 'string', 63, array(
+        $this->hasColumn('mime', 'string', 128, array(
              'type' => 'string',
              'notnull' => true,
-             'length' => 63,
+             'length' => 128,
              ));
         $this->hasColumn('size', 'integer', 4, array(
              'type' => 'integer',
@@ -116,8 +116,17 @@ abstract class BaseDmMedia extends myDoctrineRecord
              'local' => 'id',
              'foreign' => 'image_id'));
 
+        $i18n0 = new Doctrine_Template_I18n(array(
+             'fields' => 
+             array(
+              0 => 'legend',
+              1 => 'author',
+              2 => 'license',
+             ),
+             ));
         $timestampable0 = new Doctrine_Template_Timestampable(array(
              ));
+        $this->actAs($i18n0);
         $this->actAs($timestampable0);
     }
 }

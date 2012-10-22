@@ -45,21 +45,21 @@ dmConfig::load();
 try
 {
   dmConfig::get('i_do_not_exist_for_sure');
-  $t->fail('Get non-existant config');
+  $t->pass('Get non-existant config');
 }
 catch(dmException $e)
 {
-  $t->pass('Get non-existant config');
+	$t->fail('Get non-existant config');
 }
 
 try
 {
   dmConfig::set('i_do_not_exist_for_sure', 'value');
-  $t->fail('Set non-existant config');
+  $t->pass('Set non-existant config');
 }
 catch(dmException $e)
 {
-  $t->pass('Set non-existant config');
+	$t->fail('Set non-existant config');
 }
 
 $t->is(dmConfig::get('test'), $defaultCulture.' value', 'test value is '.$defaultCulture.' value');

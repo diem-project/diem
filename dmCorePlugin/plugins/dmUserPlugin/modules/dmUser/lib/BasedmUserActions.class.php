@@ -54,7 +54,7 @@ class BasedmUserActions extends myFrontModuleActions
    */
   public function executeFormWidget(dmWebRequest $request)
   {
-    $form = new DmUserForm();
+    $form = new DmUserForm(null, array('widgets' => array('username', 'email', 'password', 'password_again')));
 
     if ($request->isMethod('post') && $request->hasParameter($form->getName()))
     {

@@ -44,6 +44,27 @@ EOF;
     // don't use cache:clear task because it changes current app & environment
     @sfToolkit::clearDirectory(sfConfig::get('sf_cache_dir'));
 
+    if(!file_exists(dmOs::join(sfConfig::get('sf_root_dir'), 'lib', 'model', 'doctrine', 'myDoctrineRecord.php'))){
+      $this->getContext()->get('filesystem')->copy(
+        dmOs::join(sfConfig::get('dm_core_dir'), 'data', 'skeleton', 'lib', 'model', 'doctrine', 'myDoctrineRecord.php'), 
+        dmOs::join(sfConfig::get('sf_root_dir'), 'lib', 'model', 'doctrine', 'myDoctrineRecord.php')
+      );
+    }
+
+    if(!file_exists(dmOs::join(sfConfig::get('sf_root_dir'), 'lib', 'model', 'doctrine', 'myDoctrineQuery.php'))){
+      $this->getContext()->get('filesystem')->copy(
+        dmOs::join(sfConfig::get('dm_core_dir'), 'data', 'skeleton', 'lib', 'model', 'doctrine', 'myDoctrineQuery.php'),
+        dmOs::join(sfConfig::get('sf_root_dir'), 'lib', 'model', 'doctrine', 'myDoctrineQuery.php')
+      );
+    }
+
+    if(!file_exists(dmOs::join(sfConfig::get('sf_root_dir'), 'lib', 'model', 'doctrine', 'myDoctrineTable.php'))){
+      $this->getContext()->get('filesystem')->copy(
+        dmOs::join(sfConfig::get('dm_core_dir'), 'data', 'skeleton', 'lib', 'model', 'doctrine', 'myDoctrineTable.php'),
+        dmOs::join(sfConfig::get('sf_root_dir'), 'lib', 'model', 'doctrine', 'myDoctrineTable.php')
+      );
+    }
+
     $this->runTask('doctrine:build', array(), array('model' => true));
 
     if (( $options['clear-db'] || $options['clear-tables']) || $this->isProjectLocked())
@@ -51,30 +72,30 @@ EOF;
       $this->reloadAutoload();
       if($options['clear-db'])
       {
-      	$this->runTask('doctrine:drop-db', array(), array('no-confirmation' => dmArray::get($options, 'no-confirmation', false)));
+      	$this->runTask('doctrine:drop-db', array(), array('env' => $options['env'], 'no-confirmation' => dmArray::get($options, 'no-confirmation', false)));
       }else{
-    		$this->runTask('dm:drop-tables', array(), array());
+    		$this->runTask('dm:drop-tables', array(), array('env' => $options['env']));
       }
 
-      if ($options['clear-db'] && $ret = $this->runTask('doctrine:build-db'))
+      if ($options['clear-db'] && $ret = $this->runTask('doctrine:build-db', array(), array('env' => $options['env'])))
       {
         return $ret;
       }
       
-      $this->runTask('doctrine:build-sql');
+      $this->runTask('doctrine:build-sql', array(), array('env' => $options['env']));
     
-      $this->runTask('doctrine:insert-sql');
+      $this->runTask('doctrine:insert-sql', array(), array('env' => $options['env']));
     }
     else
     {
-      $this->runTask('dm:upgrade');
+      $this->runTask('dm:upgrade', array(), array('env' => $options['env']));
     }
     
     $this->reloadAutoload();
     
     $this->withDatabase();
     
-    $this->runTask('dm:clear-cache');
+    $this->runTask('dm:clear-cache', array(), array('env' => $options['env']));
     
     $this->getContext()->reloadModuleManager();
     
@@ -84,26 +105,26 @@ EOF;
 
     $this->runTask('dm:publish-assets');
 
-    $this->runTask('dm:clear-cache');
+    $this->runTask('dm:clear-cache', array(), array('env' => $options['env']));
     
     $this->reloadAutoload();
     
     $this->getContext()->reloadModuleManager();
 
-    $this->runTask('dmAdmin:generate');
+    $this->runTask('dmAdmin:generate', array(), array('env' => $options['env']));
     
+    if(!$options['dont-load-data'])
+    {
+    	$this->runTask('dm:data', array(), array('load-doctrine-data' => $options['load-doctrine-data'], 'env' => $options['env']));
+    }
+
     $this->logSection('diem', 'generate front modules');
-    
-    if (!$this->context->get('filesystem')->sf('dmFront:generate --env=' . dmArray::get($options, 'env', 'dev')))
+    if (!$return = $this->context->get('filesystem')->sf('dmFront:generate --env=' . dmArray::get($options, 'env', 'dev')))
     {
       $this->logBlock(array(
         'Can\'t run dmFront:generate: '.$this->context->get('filesystem')->getLastExec('output'),
         'Please run "php symfony dmFront:generate" manually to generate front templates'
       ), 'ERROR');
-    }
-    if(!$options['dont-load-data'])
-    {
-    	$this->runTask('dm:data', array(), array('load-doctrine-data' => $options['load-doctrine-data']));
     }
     
     $this->runTask('dm:permissions');
@@ -114,7 +135,7 @@ EOF;
       $this->filesystem->chmod(sfConfig::get('sf_data_dir'), 0777, 000);
     }
     
-    $this->runTask('dm:clear-cache');
+    $this->runTask('dm:clear-cache', array(), array('env' => $options['env']));
     
     $this->dispatcher->notify(new sfEvent($this, 'dm.setup.after', array('clear-db' => $options['clear-db'])));
     

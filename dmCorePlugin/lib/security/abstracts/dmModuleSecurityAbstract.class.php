@@ -9,7 +9,7 @@
  * @author serard
  *
  */
-class dmModuleSecurityAbstract extends dmMicroCache
+class dmModuleSecurityAbstract extends dmMetaCache
 {
 
   /**
@@ -40,6 +40,8 @@ class dmModuleSecurityAbstract extends dmMicroCache
     $this->context = $context;
     $this->container = $container;
     $this->user = $user;
+    
+    $this->initialize(array('cache_dir' => dmOs::join(sfConfig::get('sf_cache_dir'), $this->getApplication(), 'security')));
   }
 
   /**
@@ -50,5 +52,32 @@ class dmModuleSecurityAbstract extends dmMicroCache
   public function getApplication()
   {
     return $this->context->getConfiguration()->getApplication();
+  }
+  
+  public function get($key, $default = null)
+  {
+  	return parent::get($this->getMD5() . $key, $default);
+  }
+  
+  public function set($key, $value, $lifetime = null)
+  {
+  	parent::set($this->getMD5() . $key, $value, $lifetime);
+  	return $this;
+  }
+  
+  public function has($key)
+  {
+  	return parent::has($this->getMD5() . $key);
+  }
+  
+  public function remove($key)
+  {
+  	parent::remove($this->getMD5() . $key);
+  	return $this;
+  }
+  
+  public function getMD5()
+  {
+  	return md5($this->getApplication() . ($this->user->isAuthenticated() ? serialize($this->user->getUser()->toArray(false)) : 0));
   }
 }

@@ -94,7 +94,7 @@ class dmModuleManager
   {
     $modulesWithModel = array();
     
-    foreach($this->projectModules as $key => $module)
+    foreach($this->modules as $key => $module)
     {
       if ($module->hasModel())
       {
@@ -114,8 +114,30 @@ class dmModuleManager
     {
       return $this->getModule($this->modelModules[$model]);
     }
+    else
+    {
+    	return $this->getModuleByParentModel($model);
+    }
 
     return null;
+  }
+  
+  public function getModuleByParentModel($model)
+  {
+  		$refl = new ReflectionClass($model);
+    	$parent = $refl->getParentClass();
+    	if(!in_array($parent->getName(), array('dmDoctrineRecord', 'sfDoctrineRecord', 'Doctrine_Record')))
+    	{
+    		if(isset($this->modelModules[$parent->getName()]))
+    		{
+    			return $this->getModule($this->modelModules[$parent->getName()]);
+    		}
+    		else{
+    			return $this->getModuleByParentModel($parent->getName());
+    		}
+    	}else{
+    		return null;
+    	}
   }
 
   public function getModuleBySfName($sfName)

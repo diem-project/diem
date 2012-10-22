@@ -46,21 +46,23 @@ class dmModuleActionRecordSecurityStrategy extends dmModuleSecurityStrategyAbstr
    * Check if user has credentials to run the module/action (optionnaly for record)
    * within its own records permissions or with its own groups
    *
+   * @todo tests, tests, tests
+   *
    * @param dmUser $user
    */
   public function userHasCredentials($actionName = null, $record = null)
   {
-    $cacheKey = 'userHasCredential';
+  	$cacheKey = sprintf('%s/%s/%s/userHasCredential', $this->user->getUser()->get('id'), $this->module->getUnderscore(), $this->action);
     if(null === $record)
     {
       $record = $this->action->getObject();
     }
-    if($record && $record->state() !== 3 && $this->userHasCredentials('new')) return true;
+    if($record && $actionName != 'new' && $this->userHasCredentials('new') && $record && $record->state() != 3) return true;
     if($record && !$this->action->hasPager())
     {
       $args['record'] = $record->get($record->getTable()->getIdentifier());
     }
-    if(!$this->hasCache($cacheKey))
+    if(!$this->has($cacheKey))
     {
       $args = array('module' => $this->action->getModuleName(),
                     'model'  => $this->module->getOption('model')
@@ -88,13 +90,22 @@ class dmModuleActionRecordSecurityStrategy extends dmModuleSecurityStrategyAbstr
       }
       $permissions = $tmpPerms;
       unset($tmpPerms, $permission, $permissionsQuery, $args);
-      $this->setCache($cacheKey, $permissions);
+      $this->set($cacheKey, $permissions);
     }
     $permissions = $this->getCache($cacheKey);
     if(!$record) return true;
     $recordId = $record->get($record->getTable()->getIdentifier());
     return isset($permissions[$recordId][$actionName]);
 
+  }
+  
+  public function getCredentials($actionName = null)
+  {
+  	if($this->userHasCredentials($actionName, $this->action->getObject()))
+  	{
+  		return true;
+  	}
+  	return DmPermission::NEVER_GRANT_ACCESS;
   }
 
   /**
@@ -105,8 +116,8 @@ class dmModuleActionRecordSecurityStrategy extends dmModuleSecurityStrategyAbstr
    */
   public function addPermissionCheckToQuery($query)
   {
-    $cacheKey = 'permissionsIds';
-    if(!$this->hasCache($cacheKey))
+    $cacheKey = sprintf('%s/%s/%s/permissionsIds', $this->user->getUser()->get('id'), $this->module->getUnderscore(), $this->action);
+    if(!$this->has($cacheKey))
     {
       $result = array();
       $queryResult = dmDb::table('DmUser')->getModelPermissions($this->action, $this->user->getUser());
@@ -119,9 +130,9 @@ class dmModuleActionRecordSecurityStrategy extends dmModuleSecurityStrategyAbstr
           $result[] = $permission['secure_record'];
         }
       }
-      $this->setCache($cacheKey, $result);
+      $this->set($cacheKey, $result);
     }
-    return $query->andWhereIn($query->getRootAlias() . '.id', $this->getCache($cacheKey));
+    return $query->andWhereIn($query->getRootAlias() . '.id', $this->get($cacheKey));
   }
 
   public function getIdsForAuthorizedActionWithinIds($actionName, $ids)

@@ -342,7 +342,7 @@ class dmForm extends sfFormSymfony
         $value = $widget instanceof sfWidgetFormSchema ? $widget->getDefaults() : $widget->getDefault();
       }
 
-      $class = $widget instanceof sfWidgetFormSchema ? 'sfFormFieldSchema' : self::$serviceContainer->getParameter('form_field.class');
+      $class = $widget instanceof sfWidgetFormSchema ? 'dmFormFieldSchema' : self::$serviceContainer->getParameter('form_field.class');
 
       $this->formFields[$name] = new $class($widget, $this->getFormFieldSchema(), $name, $value, $this->errorSchema[$name]);
     
@@ -475,4 +475,9 @@ class dmForm extends sfFormSymfony
   {
     return $form->getOption('embedder', false);
   }
+  
+	public function needsWidget($name)
+	{
+		return !isset($this->options['widgets']) || isset($this->widgetSchema[$name]) ? true : ((in_array($name, $this->options['widgets']) || in_array($name.'_form', $this->options['widgets']) || in_array($name.'_view', $this->options['widgets'])));
+	}
 }

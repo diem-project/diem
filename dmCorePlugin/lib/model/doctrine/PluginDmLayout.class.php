@@ -19,7 +19,7 @@ abstract class PluginDmLayout extends BaseDmLayout
   {
     $nb = 0;
     
-    foreach($this->PageViews as $pageView)
+    foreach($this->get('PageViews') as $pageView)
     {
       $nb += dmDb::query('DmPage p')
       ->where('p.module = ?', $pageView->module)
@@ -54,13 +54,13 @@ abstract class PluginDmLayout extends BaseDmLayout
         foreach($zone->get('Widgets') as $widget)
         {
           $widget->get('Translation');
-          $newZone->Widgets[] = $widget->copy(true);
+          $newZone->get('Widgets')->add($widget->copy(true));
         }
         
-        $newArea->Zones[] = $newZone;
+        $newArea->get('Zones')->add($newZone);
       }
       
-      $newLayout->Areas[] = $newArea;
+      $newLayout->get('Areas')->add($newArea);
     }
     
     return $newLayout;
@@ -90,7 +90,7 @@ abstract class PluginDmLayout extends BaseDmLayout
   {
     parent::postDelete($event);
 
-    $this->Areas->delete();
+    $this->get('Areas')->delete();
   }
 
 }

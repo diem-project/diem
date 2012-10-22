@@ -1,5 +1,7 @@
 .dm_zone {
   float: left;
-  min-height: 5px;
   width: 100%;
+}
+.edit .dm_zone {
+  min-height: 5px;
 }

@@ -46,7 +46,7 @@ class myTestProjectBuilder
       'is_active' => true,
       'is_super_admin' => false
     ));
-
+    
     $writer->setPassword('writer');
 
     $writer->addGroupByName('writer');

@@ -18,7 +18,7 @@ class DmPageFrontEditForm extends DmPageForm
     else
     {
       $this->widgetSchema['keywords'] = new sfWidgetFormTextarea(array(), array('rows' => 2));
-      $this->setDefault('keywords', $this->object->keywords);
+      $this->setDefault('keywords', $this->object->get('keywords'));
     }
     
     $this->widgetSchema['description'] = new sfWidgetFormTextarea(array(), array('rows' => 2));
@@ -67,17 +67,17 @@ class DmPageFrontEditForm extends DmPageForm
     $this->mergePostValidator(new sfValidatorCallback(array('callback' => array($this, 'checkModuleAction'))));
     
     $this->setDefaults(array(
-      'dm_layout_id' => $this->object->PageView->dmLayoutId,
-      'name'      => $this->object->name,
-      'slug'      => $this->object->slug,
-      'title'     => $this->object->title,
-      'h1'        => $this->object->h1,
-      'description' => $this->object->description,
-      'keywords'  => $this->object->keywords,
-      'is_active' => $this->object->is_active,
-      'is_secure' => $this->object->is_secure,
-      'credentials' => $this->object->credentials,
-      'is_indexable' => $this->object->is_indexable,
+      'dm_layout_id' => $this->object->get('PageView')->get('dm_layout_id'),
+      'name'      => $this->object->get('name'),
+      'slug'      => $this->object->get('slug'),
+      'title'     => $this->object->get('title'),
+      'h1'        => $this->object->get('h1'),
+      'description' => $this->object->get('description'),
+      'keywords'  => $this->object->get('keywords'),
+      'is_active' => $this->object->get('is_active'),
+      'is_secure' => $this->object->get('is_secure'),
+      'credentials' => $this->object->get('credentials'),
+      'is_indexable' => $this->object->get('is_indexable'),
       'parent_id' => $this->object->getNodeParentId()
     ));
   }
@@ -115,7 +115,9 @@ class DmPageFrontEditForm extends DmPageForm
       }
     }
     
-    $this->object->PageView->dmLayoutId = $values['dm_layout_id'];
+    $this->object->get('PageView')->set('dm_layout_id', $values['dm_layout_id']);
+    
+    unset($values['dm_layout_id']);
     
     parent::doUpdateObject($values);
   }

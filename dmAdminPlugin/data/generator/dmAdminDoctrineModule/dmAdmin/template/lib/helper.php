@@ -8,7 +8,7 @@
  * @author     ##AUTHOR_NAME##
  * @version    SVN: $Id: helper.php 12482 2008-10-31 11:13:22Z fabien $
  */
-abstract class Base<?php echo ucfirst($this->getModuleName()) ?>GeneratorHelper extends dmAdminModelGeneratorHelper
+abstract class Base<?php echo ucfirst($this->getModuleName()) ?>GeneratorHelper extends myAdminModelGeneratorHelper
 {
 
   protected function getModuleName()
@@ -16,25 +16,25 @@ abstract class Base<?php echo ucfirst($this->getModuleName()) ?>GeneratorHelper 
     return '<?php echo $this->getModuleName() ?>';
   }
 
-  public function getRouteArrayForAction($action, $object = null)
+  public function getRouteArrayForAction($action, $object = null, $module = '<?php echo $this->params['route_prefix'] ?>', $key = 'pk', $value = null)
   {
-    $route = array('sf_route' => '<?php echo $this->params['route_prefix'] ?>');
-    
+    $route = array('sf_route' => $module);
+
     if ('list' !== $action)
     {
       $route['action'] = $action;
     }
-    
-    if (null !== $object)
+
+    if (null !== $object && !$object->isNew())
     {
-      $route['pk'] = $object->getPrimaryKey();
+      $route[$key] = $value === null ? $object->getPrimaryKey() : $object->get($value);
     }
 
     if(sfConfig::get('dm_admin_embedded'))
     {
       $route['dm_embed'] = 1;
     }
-    
+
     return $route;
   }
 

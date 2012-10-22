@@ -15,9 +15,7 @@ abstract class PluginDmPage extends BaseDmPage
   protected
   $nameBackup;
 
-  protected static
-  $autoSeoFields = array('slug', 'name', 'title', 'h1', 'description', 'keywords');
-
+  
   /**
    * Is this page source referring to me ?
    */
@@ -286,7 +284,7 @@ LIMIT 1')->getStatement();
   {
     $fields = array();
     
-    foreach(self::getAutoSeoFields() as $field)
+    foreach($this->getAutoSeoFields() as $field)
     {
       if ($this->isSeoAuto($field))
       {
@@ -297,9 +295,9 @@ LIMIT 1')->getStatement();
     return $fields;
   }
 
-  public static function getAutoSeoFields()
+  public function getAutoSeoFields()
   {
-    return self::$autoSeoFields;
+    return $this->getRecord()->getTable()->getAutoSeoFields();
   }
 
   /**
@@ -329,7 +327,7 @@ LIMIT 1')->getStatement();
     
     $modifiedFields = $this->get('Translation')->get(self::getDefaultCulture())->getModified();
     
-    foreach(self::getAutoSeoFields() as $seoField)
+    foreach($this->getAutoSeoFields() as $seoField)
     {
       if(isset($modifiedFields[$seoField]))
       {

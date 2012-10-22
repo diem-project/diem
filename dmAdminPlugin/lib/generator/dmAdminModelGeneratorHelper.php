@@ -2,20 +2,37 @@
 
 abstract class dmAdminModelGeneratorHelper extends sfModelGeneratorHelper
 {
-  protected
-  $module;
-
+	/**
+	 * @var DmModule
+	 */
+  protected $module;
+  
+  /**
+   * @var dmAdminBaseGeneratedModuleActions
+   */
+  protected $action;
+  
   public function __construct(dmModule $module)
   {
     $this->module = $module;
   }
 
-  protected function getModule()
+  public function getModule()
   {
     return $this->module;
   }
+  
+  public function setAction($action)
+  {
+  	$this->action = $action;
+  }
+  
+  public function getAction()
+  {
+  	return $this->action;
+  }
 
-  protected function getI18nCatalogue()
+  public function getI18nCatalogue()
   {
     return $this->getModule()->getOption('i18n_catalogue', 'dm');
   }
@@ -41,9 +58,11 @@ abstract class dmAdminModelGeneratorHelper extends sfModelGeneratorHelper
       return '';
     }
 
+    sfConfig::get('dm_i18n_prefix_url') === true ? $culturePrefix = $page->getLang().'/' : $culturePrefix = null;
+    
     return
     '<li class="sf_admin_action_view_page">'.
-    _link('app:front/'.$page->get('slug'))
+    _link('app:front/'.$culturePrefix.$page->get('slug'))
     ->title(__($params['title'], array('%1%' => dmString::strtolower(__($this->getModule()->getName()))), $this->getI18nCatalogue()))
     ->text(__($params['label'], array(), 'dm'))
     ->set('.s16.s16_file_html.sf_admin_action')

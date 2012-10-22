@@ -115,6 +115,7 @@ abstract class BaseDmAutoSeo extends myDoctrineRecord
               5 => 'keywords',
               6 => 'strip_words',
              ),
+             'length' => 7,
              ));
         $this->actAs($timestampable0);
         $this->actAs($i18n0);
