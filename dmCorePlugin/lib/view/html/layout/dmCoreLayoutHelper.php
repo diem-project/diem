@@ -288,6 +288,55 @@ class dmCoreLayoutHelper extends dmConfigurable
 
 		return '';
 	}
+  
+  protected function getJQueryDateFormat($format) {
+    $patterns = preg_split('([\\\/.:_;,\s-\ ]{1})', $format);
+    $exits = array();
+
+    // Transform pattern for JQuery ui datepicker
+    foreach ($patterns as $val) {
+        switch ($val) {
+            case 'yy':
+                $exits[$val] = 'y';
+                break;
+            case 'y':
+            case 'yyyy':
+                $exits[$val] = 'yy';
+                break;
+            case 'M':
+                $exits[$val] = 'm';
+                break;
+            case 'MM':
+            case 'L':
+            case 'LL':
+                $exits[$val] = 'mm';
+                break;
+            case 'MMM':
+            case 'LLL':
+                $exits[$val] = 'M';
+                break;
+            case 'MMMM':
+            case 'LLLL':
+                $exits[$val] = 'MM';
+                break;
+            case 'D':
+                $exits[$val] = 'o';
+                break;
+            case 'E':
+            case 'EE':
+            case 'EEE':
+            case 'eee':
+                $exits[$val] = 'D';
+                break;
+            case 'EEEE':
+            case 'eeee':
+                $exits[$val] = 'DD';
+                break;
+        }
+    }
+
+    return str_replace(array_keys($exits), array_values($exits), $format);    
+  }
 
 	protected function getJavascriptConfig()
 	{
@@ -299,7 +348,7 @@ class dmCoreLayoutHelper extends dmConfigurable
       'script_name'        => sfConfig::get('sf_no_script_name') ? trim($requestContext['relative_url_root'], '/').'/' : $requestContext['script_name'].'/',
       'debug'              => sfConfig::get('sf_debug') ? true : false,
       'culture'            => $this->serviceContainer->getParameter('user.culture'),
-      'dateFormat'         => strtolower(sfDateTimeFormatInfo::getInstance($this->serviceContainer->getParameter('user.culture'))->getShortDatePattern()),
+      'dateFormat'         => $this->getJQueryDateFormat(sfDateTimeFormatInfo::getInstance($this->serviceContainer->getParameter('user.culture'))->getShortDatePattern()),
       'module'             => $this->serviceContainer->getParameter('controller.module'),
       'action'             => $this->serviceContainer->getParameter('controller.action'),
       'authenticated'      => $this->getService('user')->isAuthenticated()
