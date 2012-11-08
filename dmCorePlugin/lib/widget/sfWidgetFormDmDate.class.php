@@ -45,13 +45,13 @@ class sfWidgetFormDmDate extends sfWidgetFormI18nDate
       }
       else
       {
-        $value = array('year' => date('Y', $value), 'month' => date('n', $value), 'day' => date('j', $value));
+        $value = array('year' => date('y', $value), 'month' => date('n', $value), 'day' => date('j', $value));
       }
 
       $formattedValue = strtr(
         $this->getOption('format'),
         array(
-          '%year%' => sprintf('%04d', $value['year']),
+          '%year%' => sprintf('%02d', $value['year']),
           '%month%' => sprintf('%02d', $value['month']),
           '%day%' => sprintf('%02d', $value['day']),
         )
