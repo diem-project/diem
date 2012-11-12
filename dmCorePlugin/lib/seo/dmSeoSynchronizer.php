@@ -425,7 +425,8 @@ WHERE p.module = ? AND p.action = ?', array($this->culture, $module->getKey(), '
 
       if($processMarkdown)
       {
-        $usedValue = dmMarkdown::brutalToText($usedValue);
+        $markdown = $this->getContext()->getServiceContainer()->get('markdown');
+        $usedValue = $markdown::brutalToText($usedValue);
       }
 
       $replacements[$this->wrap($placeholder)] = $usedValue;
