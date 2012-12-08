@@ -3,13 +3,16 @@
 class dmModuleComponent extends dmConfigurable
 {
   protected
-  $key;
+  $key,
+  $baseClass;
 
   public function __construct($key, array $options)
   {
     $this->key = $key;
 
     $this->options = $options;
+    
+    $this->baseClass = 'dmWidget'.dmString::camelize($this->getType());
   }
   
   public function isCachable()
@@ -25,6 +28,16 @@ class dmModuleComponent extends dmConfigurable
   public function getType()
   {
     return $this->getOption('type');
+  }
+
+  public function getFormClass() 
+  {
+      return $this->getOption('form_class', $this->baseClass.'Form');      
+  }
+
+  public function getViewClass()
+  {
+      return $this->getOption('view_class', $this->baseClass.'View'); 
   }
 
   public function getKey()

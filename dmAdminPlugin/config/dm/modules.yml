@@ -25,7 +25,7 @@ Tools:
       credentials:  see_log
   Media:
     dmMediaLibrary:
-      name:         Media
+      name:         Media browser
       credentials:  media_library
   "Search engine":
     dmSearchEngine:

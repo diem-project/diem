@@ -55,6 +55,8 @@ parameters:
   zone_form.class:            DmZoneFrontForm       # Form used when displaying a zone edition dialog
 
   front_add_menu.class:       dmFrontAddMenu        # Responsible for building and rendering the front add menu
+  
+  front_behaviors_menu.class: dmFrontBehaviorsAddMenu # Responsible for building and rendering the front add behaviors menu
 
   front_code_editor_file_menu.class: dmFrontCodeEditorFileMenu # Responsible for building and rendering the front code editor file menu
 
@@ -158,6 +160,11 @@ services:
 
   front_add_menu:
     class:                    %front_add_menu.class%
+    shared:                   true
+    arguments:                [ @service_container, %menu.options% ]
+  
+  behaviors_add_menu:
+    class:                    %front_behaviors_menu.class%
     shared:                   true
     arguments:                [ @service_container, %menu.options% ]
 

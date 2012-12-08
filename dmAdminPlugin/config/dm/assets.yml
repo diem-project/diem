@@ -25,6 +25,7 @@ js:
     pageTree:         dmAdminPageTree
     modelTree:        dmAdminModelTree
     catalogue:        dmAdminCatalogue
+    fancyboxLaunch:   dmAdminImageFancyBoxLauncher
 
 css:
 

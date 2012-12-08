@@ -79,7 +79,7 @@ class dmWidgetType extends dmConfigurable
 
   public function __toString()
   {
-    return $this->getKey();
+    return $this->getFullKey();
   }
 
 }

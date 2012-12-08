@@ -30,6 +30,7 @@ class dmWidgetContentTitleView extends dmWidgetPluginView
     else
     {
       $content = $this->getHelper()->link($vars['href'])->text($vars['text']);
+      if (isset($vars['target']) && $vars['target']!='_self') $content->target($vars['target']); 
     }
 
     return $this->getHelper()->tag($vars['tag'], array(), $content);

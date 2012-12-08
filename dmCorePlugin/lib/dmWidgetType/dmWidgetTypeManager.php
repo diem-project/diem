@@ -84,13 +84,13 @@ class dmWidgetTypeManager extends dmConfigurable
               'full_key'   => $moduleKey.ucfirst($componentKey),
               'name'       => $component->getName(),
               'public_name' => $module->getName().' '.dmString::humanize($component->getName()),
-              'form_class' => $baseClass.'Form',
-              'view_class' => $baseClass.'View',
+              'form_class' => $component->getFormClass(),
+              'view_class' => $component->getViewClass(),
               'use_component' => dmArray::get($component, 'use_component', false) || $this->componentExists($moduleKey, $componentKey),
               'cache'      => $component->isCachable(),
               'assets'     => dmArray::get($action, 'assets', array())
             );
-            
+                    
             $this->widgetTypes[$moduleKey][$componentKey] = new dmWidgetType($moduleKey, $componentKey, $widgetTypeConfig);
           }
         }

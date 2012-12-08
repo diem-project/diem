@@ -52,26 +52,26 @@ class dmWidgetContentTextView extends dmWidgetContentImageView
 
     if ($title && $titlePosition == 'outside')
     {
-      $html .= $helper->tag('h2.text_title.outside', $titleLink ? $helper->link($titleLink)->text($title) : $title);
+      $html .= $helper->tag('h2.text_title.outside', $titleLink ? $titleLinkTarget ? $helper->link($titleLink)->text($title)->target($titleLinkTarget) : $helper->link($titleLink)->text($title) : $title);
     }
 
     $html .= $helper->open('div.text_content');
   
       if ($media && $mediaPosition != 'bottom')
       {
-        $html .= $helper->tag('div.text_image'.$mediaClass, $mediaLink ? $helper->link($mediaLink)->text($mediaTag) : $mediaTag);
+        $html .= $helper->tag('div.text_image'.$mediaClass, $mediaLink ? $mediaLinkTarget ? $helper->link($mediaLink)->text($mediaTag)->target($mediaLinkTarget) :  $helper->link($mediaLink)->text($mediaTag) : $mediaTag);
       }
     
       if ($title && $titlePosition == 'inside')
       {
-        $html .= $helper->tag('h2.text_title.inside', $titleLink ? $helper->link($titleLink)->text($title) : $title);
+        $html .= $helper->tag('h2.text_title.inside', $titleLink ? $titleLinkTarget ? $helper->link($titleLink)->text($title)->target($titleLinkTarget) : $helper->link($titleLink)->text($title) : $title);
       }
     
       $html .= $helper->tag('div.markdown.text_markdown', $this->getService('markdown')->toHtml($text));
     
       if ($media && $mediaPosition == 'bottom')
       {
-        $html .= $helper->tag('div.text_image'.$mediaClass, $mediaLink ? $helper->link($mediaLink)->text($mediaTag) : $mediaTag);
+        $html .= $helper->tag('div.text_image'.$mediaClass, $mediaLink ? $mediaLinkTarget ? $helper->link($mediaLink)->text($mediaTag)->target($mediaLinkTarget) :  $helper->link($mediaLink)->text($mediaTag) : $mediaTag);
       }
   
     $html .= $helper->close('div');

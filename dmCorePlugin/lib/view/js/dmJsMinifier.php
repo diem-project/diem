@@ -15,10 +15,4 @@ class dmJsMinifier
     $minifier = new JsMinEnh($script);
     return $minifier->minify();
   }
-//  
-//  protected static function minify2($script)
-//  {
-//    return JSMinPlus::minify($script);
-//  }
-  
 }

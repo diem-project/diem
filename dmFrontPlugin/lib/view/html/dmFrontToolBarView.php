@@ -14,6 +14,7 @@ class dmFrontToolBarView extends dmToolBarView
     $this->renderPageEdit().
     $this->renderShowPageStructure().
     $this->renderWidgetAdd().
+    $this->renderBehaviorAdd().
     $this->renderGoToAdmin().
     $this->renderUserLinks().
     $this->renderSfWebDebug().
@@ -145,4 +146,13 @@ class dmFrontToolBarView extends dmToolBarView
       return '__SF_WEB_DEBUG__';
     }
   }
+  
+  protected function renderBehaviorAdd() {
+
+        if ($this->user->can('behavior_add')) {
+            return $this->helper->tag('div.dm_menu.dm_behaviors_menu', array('json' => array(
+                            'reload_url' => $this->helper->link('+/dmBehaviors/reloadAddMenu')->getHref()
+                            )), $this->helper->tag('a.widget24.s24block.s24_gear.dm_fake_link'));
+        }
+    }
 }

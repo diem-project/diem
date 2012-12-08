@@ -40,6 +40,8 @@ class dmWidgetContentLinkView extends dmWidgetPluginView
       $link->title($vars['title']);
     }
     
+    if (isset($vars['target']) && $vars['target'] != '_self') $link->target($vars['target']);
+    
     $html = $link->render();
     
     if ($this->isCachable())

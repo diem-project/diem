@@ -13,13 +13,20 @@ echo _tag('h3.title.none', $object->getFile());
 
 echo _open('div.clearfix');
 
-  echo _tag('div.view',
-   _link($object->getFullWebPath())->text(
-    $object->isImage()
-    ? _media($object)->size(250, 150)
-    : _media('dmCore/images/media/unknown.png')->size(64, 64)
-    )
-  );
+  if ($object->isImage()) {
+      $sf_response->addJavascript('lib.fancybox');
+      $sf_response->addStylesheet('lib.fancybox');
+      $sf_response->addJavascript('admin.fancyboxLaunch');
+      
+      echo _tag('div.view',
+        _link($object->getFullWebPath())->text(_media($object)->size(250, 150))->set('.fancybox')->target('_blank')
+      );
+      
+  } else {
+      echo _tag('div.view',
+        _link($object->getFullWebPath())->text(_media('dmCore/images/media/unknown.png')->size(64, 64))->target('_blank')
+      );
+  }
 
   echo _tag('div.content',
 

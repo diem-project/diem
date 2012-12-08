@@ -53,4 +53,10 @@ if($.fn.tipsy)
   };
 }
 
+// dm.behaviors Object holder, can contain some default behaviors for the DIEM
+
+$.dm.behaviors = {
+  
+}
+
 })(jQuery);

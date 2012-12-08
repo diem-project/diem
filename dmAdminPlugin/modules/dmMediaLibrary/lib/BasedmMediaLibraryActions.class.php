@@ -18,6 +18,14 @@ class BasedmMediaLibraryActions extends dmAdminBaseActions
     }
 
     $this->form = new DmAdminMediaForm($this->file);
+    return $this->renderAsync(array(
+      'html'  => $this->getHelper()->renderPartial('dmMediaLibrary', 'file', array(
+          'file'=>$this->file,
+          'form'=>$this->form
+      )),
+      'js'    => array('lib.fancybox', 'admin.fancyboxLaunch'),
+      'css'   => array('lib.fancybox')
+    ), true);
   }
 
   public function executeIndex(sfWebRequest $request)

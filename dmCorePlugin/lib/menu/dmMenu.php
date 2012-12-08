@@ -493,8 +493,10 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
   {
     $class  = $this->getOption('ul_class');
     $id     = $this->getOption('show_id') ? dmString::slugify($this->name.'-menu') : null;
-
-    return '<ul'.($id ? ' id="'.$id.'"' : '').($class ? ' class="'.$class.'"' : '').'>';
+    
+    return '<ul'.($id ? ' id="'.$id.'"' : '').($class ? ' class="'.$class.' dm_menu_ul_level_'.($this->getLevel()+1).'"' : ' class="dm_menu_ul_level_'.($this->getLevel()+1).'"').'>';
+    
+    //return '<ul'.($id ? ' id="'.$id.'"' : '').($class ? ' class="'.$class.'"' : '').'>';
   }
 
   public function renderChild()
@@ -544,8 +546,12 @@ class dmMenu extends dmConfigurable implements ArrayAccess, Countable, IteratorA
     {
       $classes[] = $link->getOption('parent_class');
     }
-
-    return '<li'.($id ? ' id="'.$id.'"' : '').(!empty($classes) ? ' class="'.implode(' ', $classes).'"' : '').'>';
+    
+    $classes[] = 'dm_menu_ul_level_'.($this->getLevel()+1).'_li_item_'.$this->num;
+    
+    return '<li'.($id ? ' id="'.$id.'"' : '').' class="'.implode(' ', $classes).'">';
+    
+    //return '<li'.($id ? ' id="'.$id.'"' : '').(!empty($classes) ? ' class="'.implode(' ', $classes).'"' : '').'>';
   }
 
   public function renderChildBody()

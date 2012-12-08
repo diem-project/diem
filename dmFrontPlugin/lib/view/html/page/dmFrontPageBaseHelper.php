@@ -224,7 +224,8 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
 
 		$options['class'] = array_merge(dmArray::get($options, 'class', array()), array(
       'dm_area',
-      'dm_'.$prefix.'_'.$type
+      'dm_'.$prefix.'_'.$type,
+      'dm_area_'.$area['id']
 		));
 
 		$options['id'] = dmArray::get($options, 'id', 'dm_area_'.$area['id']);
@@ -304,7 +305,7 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
 	{
 		$style = (!$zone['width'] || $zone['width'] === '100%') ? '' : ' style="width: '.$zone['width'].';"';
 
-		$html = '<div class="'.dmArray::toHtmlCssClasses(array('dm_zone', $zone['css_class'])).'"'.$style.'>';
+		$html = '<div class="'.dmArray::toHtmlCssClasses(array('dm_zone', 'dm_zone_'.$zone['id'], $zone['css_class'])).'"'.$style.'>';
 
 		$html .= '<div class="dm_widgets">';
 
@@ -344,7 +345,7 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
 		/*
 		 * Open widget wrap with wrapped user's classes
 		 */
-		$html = '<div class="'.$widgetWrapClass.'">';
+		$html = '<div class="dm_widget_'.(isset($widget['id'])?$widget['id']:dmString::random(15)).' '.$widgetWrapClass.'">';
 
 		/*
 		 * Open widget inner with user's classes
@@ -490,4 +491,22 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
 	{
 		return $this->getOption('is_html5');
 	}
+        /**
+         * Renders behaviors metadata, loads required javascripts and stylesheets
+         * @return string
+         */
+        public function renderBehaviors() {            
+            if (is_null($areas = $this->areas)) $areas = $this->getAreas ();       
+            $behaviorsManager = $this->serviceContainer->getService('behaviors_manager');            
+            $output = $behaviorsManager->renderBehaviors($this->page, $areas);                    
+            foreach($behaviorsManager->getJavascripts() as $javascript)
+            {    
+                $this->serviceContainer->getService('response')->addJavascript($javascript);
+            }            
+            foreach($behaviorsManager->getStylesheets() as $stylesheet => $options)
+            {   
+		$this->serviceContainer->getService('response')->addStylesheet($stylesheet, '', $options);
+            }
+            return $output;
+        }
 }

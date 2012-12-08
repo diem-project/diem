@@ -785,7 +785,7 @@ class Markdown_Parser {
 
     # Re-usable patterns to match list item bullets and number markers:
     $marker_ul_re  = '[*+-]';
-    $marker_ol_re  = '\d+[.]';
+    $marker_ol_re  = '\d+[\.]';
     $marker_any_re = "(?:$marker_ul_re|$marker_ol_re)";
 
     $markers_relist = array($marker_ul_re, $marker_ol_re);

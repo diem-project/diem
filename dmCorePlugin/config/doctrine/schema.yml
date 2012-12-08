@@ -296,3 +296,61 @@ DmSentMail:
       local:                dm_mail_template_id
       onDelete:             SET NULL
       foreignAlias:         SentMails
+
+# BEHAVIORS SCHEMA
+
+DmBehavior:
+  actAs:
+    Sortable:               {}
+    Timestampable:
+      created:
+        disabled: true
+    I18n:
+      fields:               [ dm_behavior_value, dm_behavior_enabled ]
+      length:               7
+  columns:
+    # Each behavior should have its unique key
+    dm_behavior_key:                    { type: string(255), notnull: true }
+    
+    # For translation purposes, behaviors can be disabled
+    dm_behavior_enabled:                { type: boolean, notnull: true, default: true }
+    
+    # Behaviors can be attached to page, zone, widget or some content inside page, zone or widget 
+    dm_behavior_attached_to:            { type: enum, values: [page, area, zone, widget], notnull: true }
+        
+    # so the selector should be "dm_container_id content_id", per example: dm_widget_5 some_dom_elem_10 - it will target the content inside the widget
+    dm_behavior_attached_to_selector:   { type: string(255), notnull: true, default: null }
+
+    # This is where we store the settings for the behavior
+    dm_behavior_value:                  { type: string(60000) }
+    
+    # Main DIEM containers for which behavior will be attached
+    dm_page_id:                         { type: integer, notnull: false}
+    dm_area_id:                         { type: integer, notnull: false}
+    dm_zone_id:                         { type: integer, notnull: false}
+    dm_widget_id:                       { type: integer, notnull: false}
+  relations:
+    Page:
+      class:                DmPage
+      local:                dm_page_id
+      foreign:              id
+      foreignAlias:         Behaviors
+      onDelete:             CASCADE 
+    Area:
+      class:                DmArea
+      local:                dm_area_id
+      foreign:              id
+      foreignAlias:         Behaviors
+      onDelete:             CASCADE 
+    Zone:
+      class:                DmZone
+      local:                dm_zone_id
+      foreign:              id
+      foreignAlias:         Behaviors
+      onDelete:             CASCADE 
+    Widget:
+      class:                DmWidget
+      local:                dm_widget_id
+      foreign:              id
+      foreignAlias:         Behaviors
+      onDelete:             CASCADE 

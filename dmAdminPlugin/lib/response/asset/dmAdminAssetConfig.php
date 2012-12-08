@@ -43,6 +43,7 @@ class dmAdminAssetConfig extends dmAssetConfig
       'lib.blockUI',
       'lib.hotkeys',
       'lib.tipsy',
+      'lib.maxzindex',
       'core.config',
       'core.plugins',
       'core.editPlugins',

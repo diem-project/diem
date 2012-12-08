@@ -3,6 +3,11 @@
 class dmWidgetContentTextForm extends dmWidgetContentImageForm
 {
 
+  protected $target = array(
+      '_self' => 'Same window',
+      '_blank' => 'New window'
+  );
+    
   public function configure()
   {
     parent::configure();
@@ -42,6 +47,26 @@ class dmWidgetContentTextForm extends dmWidgetContentImageForm
       $this->widgetSchema['removeMedia']->setLabel('Remove');
     }
 
+    
+    $this->widgetSchema['titleLinkTarget'] = new sfWidgetFormSelect(array(
+        'choices' => $this->getI18n()->translateArray($this->target)        
+    ));    
+    $this->validatorSchema['titleLinkTarget'] = new sfValidatorChoice(array(
+        'choices' => array_keys($this->target),
+        'required' => false
+    ));
+    if (is_null($this->getDefault('titleLinkTarget'))) $this->setDefault ('titleLinkTarget', '_self');
+    
+    $this->widgetSchema['mediaLinkTarget'] = new sfWidgetFormSelect(array(
+        'choices' => $this->getI18n()->translateArray($this->target)        
+    ));    
+    $this->validatorSchema['mediaLinkTarget'] = new sfValidatorChoice(array(
+        'choices' => array_keys($this->target),
+        'required' => false
+    ));
+    if (is_null($this->getDefault('mediaLinkTarget'))) $this->setDefault ('mediaLinkTarget', '_self');
+    
+    
     //unset the media link
     unset($this['link']);
   }

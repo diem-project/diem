@@ -103,13 +103,15 @@
     },
 
     // Detects javascripts and stylesheet inclusions and append them to the document
-    dmExtractEncodedAssets: function()
+    // Added behaviors support - JavaScript files and Stylesheets are loaded via JSON as object
+    dmExtractEncodedAssets: function(data)
     {
-      if($encodedAssetsDiv = this.find('div.dm_encoded_assets').orNot())
+      if($encodedAssetsDiv = this.find('div.dm_encoded_assets').orNot() || data)
       {
-        data = jQuery.parseJSON($encodedAssetsDiv.html());
-
-        $encodedAssetsDiv.remove();
+        if (!data) { // It is loaded via HTML
+            data = jQuery.parseJSON($encodedAssetsDiv.html());
+            $encodedAssetsDiv.remove();
+        }
 
         for (i in data.css)
         {

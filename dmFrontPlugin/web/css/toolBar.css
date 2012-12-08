@@ -88,7 +88,7 @@ body {
   padding: 10px 10px 0 10px;
 }
 
-#dm_tool_bar ul.level1 > li.dm_droppable_widgets > a {
+#dm_tool_bar ul.level1 > li.dm_droppable_widgets > a, #dm_tool_bar ul.level1 > li.dm_droppable_behaviors > a {
   text-transform: uppercase;
   font-weight: bold;
   color: #046BCA;
@@ -110,7 +110,8 @@ body {
 
 #dm_tool_bar span.move,
 div.dm_zone_add_helper,
-div.dm_widget_add_helper {
+div.dm_widget_add_helper,
+div.dm_behavior_add_helper {
   cursor: move;
   display:block;
   padding: 3px 0;
@@ -123,6 +124,11 @@ div.dm_widget_add_helper {
   -webkit-border-radius: 4px;
   text-align: center;
   text-transform: capitalize;
+}
+
+#dm_tool_bar span.move img, div.dm_behavior_add_helper img {
+    vertical-align: text-bottom;
+    margin-right: 0.2em;    
 }
 
 div.dm_zone_add_helper,
@@ -154,7 +160,7 @@ div.dm_widget_add_helper {
 /*
  * actions bar
  */
-#dm_tool_bar ul.level1 > li.dm_add_menu_actions {
+#dm_tool_bar ul.level1 > li.dm_add_menu_actions, #dm_tool_bar ul.level1 > li.dm_behaviors_menu_actions {
   padding: 10px;
   background: url(../../dmCorePlugin/images/default_bg.png) repeat-x 50% 50%;
   border-radius: 4px 0 0 0;
@@ -163,7 +169,7 @@ div.dm_widget_add_helper {
   border-bottom: 1px solid #D4D4D4;
 }
 
-#dm_tool_bar ul.level1 > li.dm_add_menu_actions input {
+#dm_tool_bar ul.level1 > li.dm_add_menu_actions input, #dm_tool_bar ul.level1 > li.dm_behaviors_menu_actions input {
   border-radius: 4px;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;

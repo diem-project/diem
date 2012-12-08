@@ -3,6 +3,10 @@
 class dmWidgetContentTitleForm extends dmWidgetPluginForm
 {
 
+  protected $target = array(
+      '_self' => 'Same window',
+      '_blank' => 'New window'
+  );
   public function configure()
   {
     $this->widgetSchema['text'] = new sfWidgetFormTextarea(array(), array(
@@ -16,6 +20,15 @@ class dmWidgetContentTitleForm extends dmWidgetPluginForm
     ));
     $this->widgetSchema->setHelp('href', 'If you set a href, a link will be inserted into the title');
 
+    $this->widgetSchema['target'] = new sfWidgetFormSelect(array(
+        'choices' => $this->getI18n()->translateArray($this->target)        
+    ));    
+    $this->validatorSchema['target'] = new sfValidatorChoice(array(
+        'choices' => array_keys($this->target),
+        'required' => false
+    ));
+    if (is_null($this->getDefault('target'))) $this->setDefault ('target', '_self');
+    
     $this->validatorSchema['text'] = new sfValidatorString(array('required' => true));
     $this->validatorSchema['tag']  = new sfValidatorChoice(array('choices' => $this->getTagNames(), 'required' => true));
     $this->validatorSchema['href'] = new dmValidatorLinkUrl(array('required' => false));

@@ -225,6 +225,7 @@ $.widget('ui.dmWidget', {
   
   _delete: function()
   {
+    $('body').trigger('widgetDeleted', [this.getId()]);
     var self = this;
     self.deleted = true;
     
@@ -233,7 +234,7 @@ $.widget('ui.dmWidget', {
       data:     {widget_id: self.getId()}
     });
     
-    self.element.slideUp(500, function() {self.destroy();self.element.remove();$.dm.removeTipsy();});
+    self.element.slideUp(500, function() {self.destroy();self.element.remove();$.dm.removeTipsy();});    
   },
 
   reload: function(timeout)

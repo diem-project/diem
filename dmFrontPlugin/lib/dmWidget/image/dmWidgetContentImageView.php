@@ -62,7 +62,9 @@ class dmWidgetContentImageView extends dmWidgetContentBaseMediaView
 
     if($link = dmArray::get($vars, 'link'))
     {
-      $html = $this->getHelper()->link($link)->text($html)->render();
+      $link = $this->getHelper()->link($link)->text($html);
+      if (isset ($vars['target']) && $vars['target'] != '_self') $link->target($vars['target']);
+      $html = $link->render();
     }
 
     if ($this->isCachable())

@@ -3,10 +3,10 @@ all:
   i18n:
     cultures:             [ ##DIEM_CULTURE## ]        # Available cultures
     prefix_url:           false         # Prefix URLs in front with culture
-      
+
   cache:
     apc:                  true          # (RECOMMENDED) Use Apc if available
-    
+
   js:
     compress:             true          # (RECOMMENDED) Performance : Minifies javascripts and put them into a single compressed file
     cdn:
@@ -15,10 +15,10 @@ all:
                                         # declare them here. This degrades performances but is required
                                         # by some symfony plugins that embed jQuery code.
                                         # example: [ lib.jquery ]
-      
+
   css:
     compress:             true          # (RECOMMENDED) Performance : Minifies stylesheets and put them into a single compressed file
-    
+
   orm:                                  # Doctrine configuration
                                         # More configuration : please use ProjectConfiguration::configureDoctrine* methods
     identifier_fields:    [ name, title, subject, author, id ]   # Fields used to represent a record with a string
@@ -32,13 +32,13 @@ all:
       life_time:          86400         # Server-side lifetime of the cache in seconds (86400 seconds equals one day)
 
   web_services:
-    version_check:        true          # verifies regularly if you are using the latest Diem version.
+    version_check:        false          # verifies regularly if you are using the latest Diem version.
     report_anonymous_data: ##SEND_REPORTS##         # reports anonymous data about plugins used.
                                         # http://diem-project.org/plugins will show the best plugins based on these reports.
                                         # the report request is sent only once, when a superadministrator logs in.
-dev: 
+dev:
   js:
     compress: false
   css:
     compress: false
-    
+

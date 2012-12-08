@@ -1,0 +1,145 @@
+#dm_page .dm.dm_edit_behaviors_icon, #dm_page.edit .dm.dm_edit_behaviors_icon {
+    display: none;
+}
+#dm_page.edit .dm.dm_edit_behaviors_icon.edit {
+    display: block;
+    float: right;
+    margin-right: -3px;
+    margin-top: -8px;
+}
+
+.dm_edit_behaviors_context_menu {
+    -webkit-box-shadow: 4px -4px 4px #888888;
+    -moz-box-shadow: 4px -4px 4px #888888;
+    box-shadow: 4px -4px 4px #888888;
+    position: absolute;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    background-color: #FCFCFC;
+    border: 1px solid #AAAAAA;
+    color: #222222;
+    padding: 1px;
+}
+.dm_edit_behaviors_context_menu ul li {
+    padding: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    cursor: pointer;
+    height: 16px;
+}
+.dm_edit_behaviors_context_menu ul li img {
+    margin-right: 0.2em;
+    vertical-align: text-bottom;
+}
+.dm_edit_behaviors_context_menu ul li:hover {
+    background-color: #AAAAAA;
+}
+div.dm.dm_behavior_sort.dm_behavior_sort_form ul.dm_behaviors_sortable {
+    display: block;
+    margin: 10px 5px 20px 5px;
+    border: 1px solid #D3D3D3;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    padding: 5px;
+    max-height: 400px;
+    overflow: auto;
+}
+div.dm.dm_behavior_sort.dm_behavior_sort_form ul.dm_behaviors_sortable li {
+    display: block;
+    margin: 3px;
+}
+div.dm.dm_behavior_sort.dm_behavior_sort_form ul.dm_behaviors_sortable li span.move {
+    background: url("../../dmCorePlugin/images/default_bg.png") repeat-x scroll 50% 50% transparent;
+    border: 1px solid #D3D3D3;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    color: #666666;
+    cursor: move;
+    display: block;
+    padding: 3px 0;
+    text-align: center;
+    text-transform: capitalize;
+    width: 100%;
+}
+div.dm.dm_behavior_sort.dm_behavior_sort_form ul li span.move:hover {
+    background: url("../../dmCorePlugin/images/default_bg_blue.png") repeat-x scroll 50% 50% transparent;
+    box-shadow: 0 0 4px #888888;
+    color: #444444;
+}
+
+div.dm.dm_behavior_sort.dm_behavior_sort_form li span.move img {
+    margin-right: 0.2em;
+    vertical-align: text-bottom;
+}
+
+#dm_tool_bar div.dm_menu.dm_behaviors_menu ul li.dm_behaviors_menu_actions a.dm_sort_all_behaviors, ul li.dm_behaviors_menu_actions a.dm_sort_all_behaviors:hover {
+    display: block;
+    float: right;    
+    margin-top: 4px;       
+    color: #666666;
+}
+.dm_area .dm_area_edit {
+    display: none;
+}
+#dm_page.edit .dm_area .dm_area_edit.dm_behaviors_droppable {
+    background: url("../../dmCorePlugin/images/default_bg.png") repeat-x scroll 50% 50% transparent;
+    border: 1px solid #D3D3D3;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    color: #AAAAAA;
+    display: block;
+    padding: 3px;
+    margin: 3px;
+    font-family: Arial;
+    font-size: 11px;
+}
+#dm_page.edit .dm.dm_edit_behaviors_icon.edit.dm_edit_behaviors_area_icon {
+    margin-top: -30px;
+}
+
+#dm_page .dm_page_edit {
+    display: none;
+}
+#dm_page.edit .dm_page_edit.dm_behaviors_droppable {
+    background: url("../../dmCorePlugin/images/default_bg.png") repeat-x scroll 50% 50% transparent;
+    border: 1px solid #D3D3D3;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    color: #AAAAAA;
+    display: block;
+    padding: 3px;
+    margin: 3px;
+    font-family: Arial;
+    font-size: 11px;    
+}
+#dm_page.edit .dm.dm_edit_behaviors_icon.edit.dm_edit_behaviors_page_icon {
+    margin-top: -30px;
+}
+#dm_page.edit {
+    width: 1000px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 5px;
+}
+.dm_behaviors_droppable_hover {
+    background-image: linear-gradient(bottom, #EAF8EA 2%, #E9F7E9 51%, #EAF8EA 76%);
+    background-image: -o-linear-gradient(bottom, #EAF8EA 2%, #E9F7E9 51%, #EAF8EA 76%);
+    background-image: -moz-linear-gradient(bottom, #EAF8EA 2%, #E9F7E9 51%, #EAF8EA 76%);
+    background-image: -webkit-linear-gradient(bottom, #EAF8EA 2%, #E9F7E9 51%, #EAF8EA 76%);
+    background-image: -ms-linear-gradient(bottom, #EAF8EA 2%, #E9F7E9 51%, #EAF8EA 76%);
+
+    background-image: -webkit-gradient(
+            linear,
+            left bottom,
+            left top,
+            color-stop(0.02, #EAF8EA),
+            color-stop(0.51, #E9F7E9),
+            color-stop(0.76, #EAF8EA)
+    );
+}

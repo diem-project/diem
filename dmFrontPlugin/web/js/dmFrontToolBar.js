@@ -136,13 +136,15 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
       $toggle.addClass('s24_view_on').removeClass('s24_view_off');
       $('#dm_page').addClass('edit');
 
-      setTimeout(function() { $('#dm_page .ui-sortable').sortable('refresh'); }, 200);
+      setTimeout(function() {$('#dm_page .ui-sortable').sortable('refresh');}, 200);
     }
     else
     {
       $toggle.addClass('s24_view_off').removeClass('s24_view_on');
       $('#dm_page').removeClass('edit');
     }
+
+    $('body').trigger('runBehaviors', [$toggle.hasClass('s24_view_off')]);
 
     setTimeout(function()
     {
@@ -261,7 +263,7 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
             return $('<div class="dm"><div class="dm_widget_add_helper ui-corner-all">'+$(this).text()+'</div></div>');
           },
           appendTo: '#dm_page',
-          cursorAt: { left: 30, top: 10 },
+          cursorAt: {left: 30, top: 10},
           cursor: 'move',
           start: dragStart
         });
@@ -275,7 +277,7 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
             return $('<div class="dm"><div class="dm_zone_add_helper ui-corner-all">'+$(this).text()+'</div></div>');
           },
           appendTo: '#dm_page',
-          cursorAt: { left: 30, top: 10 },
+          cursorAt: {left: 30, top: 10},
           cursor: 'move',
           start: dragStart,
           stop: function() {
@@ -292,7 +294,7 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
             return $('<div class="dm"><div class="dm_widget_add_helper ui-corner-all">Paste '+$(this).text()+'</div></div>');
           },
           appendTo: '#dm_page',
-          cursorAt: { left: 30, top: 10 },
+          cursorAt: {left: 30, top: 10},
           cursor: 'move',
           start: dragStart
         });

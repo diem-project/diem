@@ -137,12 +137,12 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 	protected function tryToSortWithForeignColumn(Doctrine_Query $query, array $sort)
 	{
 		$table = $this->getDmModule()->getTable();
-
+                
 		if('integer' === dmArray::get($table->getColumnDefinition($sort[0]), 'type'))
 		{
 			if($table->isI18nColumn($sort[0]))
 			{
-				$query->addOrderBy(sprintf('%s.%s %s', $query->getJoinAliasForRelationAlias($table->getComponentName(), 'Translation'), $sort[0], $sort[1]));
+				$query->orderBy(sprintf('%s.%s %s', $query->getJoinAliasForRelationAlias($table->getComponentName(), 'Translation'), $sort[0], $sort[1]));
 				// Success, skip default sorting by local column
 				return;
 			}
@@ -172,11 +172,11 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 
 						if($foreignTable->isI18nColumn($foreignColumn))
 						{
-							$query->addOrderBy(sprintf('%s.%s %s', $joinAlias.'Translation', $foreignColumn, $sort[1]));
+							$query->orderBy(sprintf('%s.%s %s', $joinAlias.'Translation', $foreignColumn, $sort[1]));
 						}
 						else
 						{
-							$query->addOrderBy(sprintf('%s.%s %s', $joinAlias, $foreignColumn, $sort[1]));
+							$query->orderBy(sprintf('%s.%s %s', $joinAlias, $foreignColumn, $sort[1]));
 						}
 						// Success, skip default sorting by local column
 						return;
@@ -186,14 +186,14 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 		}
 		elseif($table->isI18nColumn($sort[0]))
 		{
-			$query->addOrderBy(sprintf('%s.%s %s', $query->getJoinAliasForRelationAlias($table->getComponentName(), 'Translation'), $sort[0], $sort[1]));
+			$query->orderBy(sprintf('%s.%s %s', $query->getJoinAliasForRelationAlias($table->getComponentName(), 'Translation'), $sort[0], $sort[1]));
 			// Success, skip default sorting by local column
 			return;
 		}
 
 		if($table->hasField($sort[0]))
 		{
-			$query->addOrderBy($sort[0] . ' ' . $sort[1]);
+			$query->orderBy($sort[0] . ' ' . $sort[1]);
 		}
 	}
 
@@ -520,7 +520,7 @@ class dmAdminBaseGeneratedModuleActions extends dmAdminBaseActions
 			$sort[1] = 'asc';
 		}
 
-		$this->getUser()->setAttribute($this->getSfModule().'.sort', $sort, 'admin_module');
+		$this->getUser()->setAttribute($this->getSfModule().'.sort', $sort, 'admin_module');                
 	}
 
 	protected function isValidSortColumn($column)

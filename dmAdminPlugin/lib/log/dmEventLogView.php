@@ -62,7 +62,7 @@ class dmEventLogView extends dmLogView
       case 'sign_in':
       case 'sign_out':  $class = 's24 s24_user'; break;
       case 'send':      $class = 's24 s24_mail'; break;
-      default:          $class = '';
+      default:          $class = 's24 s24_custom_event_log_action_'.$action; break; // Possibility to add its own icon for custom event log
     }
     
     return $class;

@@ -2,8 +2,9 @@
 
   $required = ($validator = $form->getValidatorSchema()->offsetGet($name)) ? $validator->getOption('required') : false;
 
-  // embedded media forms are required if their file field is required
-  $required && $form[$name] instanceof sfFormFieldSchema && ($formValidator = $form->getValidatorSchema()->offsetGet($name)) && $formValidator instanceof sfValidatorSchema && ($fileValidator = $formValidator->offsetGet('file')) && $required = $fileValidator->getOption('required');
+  // embedded media forms are required if their file field is required - WRONG!!! 
+  // embedded media forms are required if they are set in that way
+  $required && $form[$name] instanceof sfFormFieldSchema && ($formValidator = $form->getValidatorSchema()->offsetGet($name)) && $formValidator instanceof sfValidatorSchema && ($fileValidator = $formValidator->offsetGet('file')) && $required = $form->getEmbeddedForm($name)->isFileRequired();
 
   $divClass = dmArray::toHtmlCssClasses(array(
     $class,
@@ -125,7 +126,7 @@
     elseif (substr($name, -5) === '_view')
     {
       $found = true;
-      include_partial('dmMedia/viewBig', array('object' => $form->getObject()->getDmMediaByColumnName(substr($name, 0, strlen($name)-5))));
+      include_partial('dmMedia/viewBig', array('object' => $form->getEmbeddedForm(substr($name, 0, -5) . '_form')->getObject()));
     }
     elseif (substr($name, -5) === '_list')
     {

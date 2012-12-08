@@ -33,6 +33,8 @@ class dmZoneActions extends dmFrontBaseActions
 
   public function executeGetAttributes(sfWebRequest $request)
   {
+    $bm = $this->getService('behaviors_manager');
+    $user = $this->getService('user');
     $this->forward404Unless(
       $zone = dmDb::query('DmZone z')
       ->where('z.id = ?', $request->getParameter('zone_id'))
@@ -40,6 +42,9 @@ class dmZoneActions extends dmFrontBaseActions
       ->limit(1)
       ->fetchPDO()
     );
+    if ($bm->isZoneAttachable() && ($user->can('behavior_add') || $user->can('behavior_edit') || $user->can('behavior_delete') || $user->can('behavior_sort'))) {
+        $zone[0][1] = $zone[0][1] . '.dm_behaviors_attachable';
+    }
     
     return $this->renderJson($zone[0]);
   }

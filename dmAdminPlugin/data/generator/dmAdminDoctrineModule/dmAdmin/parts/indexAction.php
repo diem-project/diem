@@ -12,7 +12,7 @@
     {
       $this->setSort(array($request->getParameter('sort'), $request->getParameter('sort_type')));
     }
-
+    
     // pager
     if ($request->getParameter('page'))
     {

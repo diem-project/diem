@@ -14,10 +14,12 @@ if(!$record->exists())
 $link = _link('+/dmMedia/gallery?model='.get_class($record).'&pk='.$record->getPrimaryKey());
 
 echo _open('div.dm_gallery_medium.clearfix');
-
+  $sf_response->addJavascript('lib.fancybox');
+  $sf_response->addStylesheet('lib.fancybox');
+  $sf_response->addJavascript('admin.fancyboxLaunch');
   foreach($record->getDmGallery() as $media)
   {
-    echo $link->text(_media($media)->size(120, 120)->set('.media'));
+    echo _link($media->getFullWebPath())->text(_media($media)->size(120, 120)->set('.media'))->target('_blank')->set('.fancybox rel=fancyboxGallery');    
   }
   
   echo $link

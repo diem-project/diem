@@ -2,6 +2,12 @@
 
 class dmWidgetContentImageForm extends dmWidgetContentBaseMediaForm
 {
+  
+  protected $target = array(
+      '_self' => 'Same window',
+      '_blank' => 'New window'
+  );
+    
   public function configure()
   {
     parent::configure();
@@ -41,6 +47,15 @@ class dmWidgetContentImageForm extends dmWidgetContentBaseMediaForm
     $this->validatorSchema['link'] = new dmValidatorLinkUrl(array('required' => false));
     $this->widgetSchema->setHelp('link', 'Drag & Drop a page or enter an url');
 
+    $this->widgetSchema['target'] = new sfWidgetFormSelect(array(
+        'choices' => $this->getI18n()->translateArray($this->target)        
+    ));    
+    $this->validatorSchema['target'] = new sfValidatorChoice(array(
+        'choices' => array_keys($this->target),
+        'required' => false
+    ));
+    if (is_null($this->getDefault('target'))) $this->setDefault ('target', '_self');
+    
     $this->mergePostValidator(
       new sfValidatorCallback(array('callback' => array($this, 'checkBackground')))
     );

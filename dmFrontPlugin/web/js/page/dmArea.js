@@ -114,6 +114,7 @@ $.widget('ui.dmArea', {
         $('div.dm_zones', area.zonesContainer).find('span.zone_add').replaceWith(zoneHtml);
         area.initialize();
         area.sortZones();
+        $('body').trigger('zoneAdded');
       }
     });
   },

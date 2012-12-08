@@ -13,6 +13,12 @@ js:
     mediaBar:                 dmCoreMediaBar
     codeArea:                 dmCoreCodeArea
     ping:                     dmCorePing
+    behaviorsManager:         behaviors/dmBehaviorsManager
+    behaviorsManagerAdmin:    behaviors/dmBehaviorsManagerAdmin
+    behaviorsManagerRun:      behaviors/dmBehaviorsManagerRun
+    # Build in behaviors
+    jQueryEffectsFadeBehavior: behaviors/defaults/jQueryEffectsFadeBehavior
+    dmTipsyBehavior:           behaviors/defaults/dmTipsyBehavior 
     
   lib:
     symfony_debug:            symfony/debug
@@ -65,7 +71,10 @@ js:
     dataTable:        dataTables-1.6/js/jquery.dataTables.min
     jeditable:        jeditable/jquery.jeditable.min
     colorbox:         colorbox/jquery.colorbox.min
-
+    maxzindex:        maxzindex/jquery.maxzindex
+    json:             json/jquery.json-2.3.min
+    easing:           easing/jquery.easing.1.3.min
+    fancybox:         fancybox/jquery.fancybox.min
 css:
 
   core:
@@ -79,6 +88,7 @@ css:
     mediaBar:         mediaBar
     form:             form
     browsers:         browsers
+    behaviors:        behaviors
     
   lib:
     symfony_debug:    symfony/debug
@@ -96,3 +106,4 @@ css:
     markitupSet:      dmMarkitup/sets/markdown/style
     tipsy:            tipsy/stylesheets/tipsy
     colorbox:         colorbox/theme3/colorbox
+    fancybox:         fancybox/jquery.fancybox

@@ -210,7 +210,7 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
 
           try
           {
-            $this->pageContentCache .= $serviceContainer
+            $this->pageContentCache .= ' ' . $serviceContainer
             ->addParameters(array(
               'widget_view.class' => $widgetType->getViewClass(),
               'widget_view.type'  => $widgetType,
@@ -260,8 +260,9 @@ class dmSearchPageDocument extends Zend_Search_Lucene_Document
 
     return self::$zonesQueryCache[$culture] = dmDb::query('DmZone z')
     ->leftJoin('z.Widgets w')
-    ->withI18n($culture, null, 'w', 'inner')
-    ->select('z.dm_area_id, w.module, w.action, wTranslation.value');
+    ->innerJoin('w.Translation wt')
+    ->where('wt.lang = ?', $culture)
+    ->select('z.dm_area_id, w.module, w.action, wt.value');
   }
 
 }

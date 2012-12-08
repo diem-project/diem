@@ -218,7 +218,7 @@ div.dm_form_action_bar div.dm_form_pagination > span.disabled {
   opacity: 0.3;
   height: 16px;
   display: block;
-  margin-top: 3px;
+  margin: 0 3px;
 }
 
 div.dm_form_pagination {

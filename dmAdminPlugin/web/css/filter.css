@@ -70,3 +70,15 @@ div.dm_filter_box .dm_filter_empty {
 div.dm_filter_box .dm_filter_empty input {
   vertical-align: middle;
 }
+
+div.dm_filter_box .checkbox_list {
+    display: block;
+    max-height: 150px;
+    overflow: auto;
+}
+
+div.dm_filter_box .checkbox_list li {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+}

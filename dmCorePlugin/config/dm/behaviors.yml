@@ -1,0 +1,13 @@
+## Default behaviors - remove them if you do not want them
+---
+dmBehaviors:
+  jQueryEffectsFadeBehavior:
+    section: jQuery Effects
+    name: Fade
+    form: dmJQueryEffectsFadeForm
+    view: dmJQueryEffectsFadeView
+  dmTipsyBehavior:
+    section: Utility
+    name: Tipsy
+    form: dmTipsyBehaviorForm
+    view: dmTipsyBehaviorView

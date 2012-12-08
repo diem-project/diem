@@ -185,3 +185,15 @@ function dm_include_stylesheets_for_form(sfForm $form)
 {
   echo get_stylesheets_for_form($form);
 }
+
+/**
+ * Renders partial from module
+ * 
+ * @param string $module Module name
+ * @param string $template_name Partial to render
+ * @param array $parameters The array of parameters for partial to render
+ */
+function dm_render_partial($module, $template_name, array $parameters = array()) 
+{
+    echo dmContext::getInstance()->getHelper()->renderPartial($module, $template_name, $parameters);
+}

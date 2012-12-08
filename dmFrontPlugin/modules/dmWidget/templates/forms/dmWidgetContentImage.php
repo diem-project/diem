@@ -38,7 +38,7 @@ if ($hasMedia)
       $form['background']->label()->field()->error()
     ).
     $form['quality']->renderRow().
-    (isset($form['link']) ? $form['link']->renderRow(array('class' => 'dm_link_droppable')) : '')
+    (isset($form['link']) ? $form['link']->renderRow(array('class' => 'dm_link_droppable')).$form['target']->renderRow() : '')
   );
 }
 
