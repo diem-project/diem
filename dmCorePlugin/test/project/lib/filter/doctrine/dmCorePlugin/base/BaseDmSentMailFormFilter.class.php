@@ -20,51 +20,51 @@ abstract class BaseDmSentMailFormFilter extends BaseFormFilterDoctrine
 		}
 		if($this->needsWidget('subject')){
 			$this->setWidget('subject', new sfWidgetFormDmFilterInput());
-			$this->setValidator('subject', new sfValidatorString(array('required' => false)));
+			$this->setValidator('subject', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('body')){
 			$this->setWidget('body', new sfWidgetFormDmFilterInput());
-			$this->setValidator('body', new sfValidatorString(array('required' => false)));
+			$this->setValidator('body', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('from_email')){
 			$this->setWidget('from_email', new sfWidgetFormDmFilterInput());
-			$this->setValidator('from_email', new sfValidatorString(array('required' => false)));
+			$this->setValidator('from_email', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('to_email')){
 			$this->setWidget('to_email', new sfWidgetFormDmFilterInput());
-			$this->setValidator('to_email', new sfValidatorString(array('required' => false)));
+			$this->setValidator('to_email', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('cc_email')){
 			$this->setWidget('cc_email', new sfWidgetFormDmFilterInput());
-			$this->setValidator('cc_email', new sfValidatorString(array('required' => false)));
+			$this->setValidator('cc_email', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('bcc_email')){
 			$this->setWidget('bcc_email', new sfWidgetFormDmFilterInput());
-			$this->setValidator('bcc_email', new sfValidatorString(array('required' => false)));
+			$this->setValidator('bcc_email', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('reply_to_email')){
 			$this->setWidget('reply_to_email', new sfWidgetFormDmFilterInput());
-			$this->setValidator('reply_to_email', new sfValidatorString(array('required' => false)));
+			$this->setValidator('reply_to_email', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('sender_email')){
 			$this->setWidget('sender_email', new sfWidgetFormDmFilterInput());
-			$this->setValidator('sender_email', new sfValidatorString(array('required' => false)));
+			$this->setValidator('sender_email', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('strategy')){
 			$this->setWidget('strategy', new sfWidgetFormDmFilterInput());
-			$this->setValidator('strategy', new sfValidatorString(array('required' => false)));
+			$this->setValidator('strategy', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('transport')){
 			$this->setWidget('transport', new sfWidgetFormDmFilterInput());
-			$this->setValidator('transport', new sfValidatorString(array('required' => false)));
+			$this->setValidator('transport', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('culture')){
 			$this->setWidget('culture', new sfWidgetFormDmFilterInput());
-			$this->setValidator('culture', new sfValidatorString(array('required' => false)));
+			$this->setValidator('culture', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('debug_string')){
 			$this->setWidget('debug_string', new sfWidgetFormDmFilterInput());
-			$this->setValidator('debug_string', new sfValidatorString(array('required' => false)));
+			$this->setValidator('debug_string', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('created_at')){
 			$this->setWidget('created_at', new sfWidgetFormChoice(array('choices' => array(

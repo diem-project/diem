@@ -20,12 +20,12 @@ abstract class BaseDmAreaFormFilter extends BaseFormFilterDoctrine
 		}
 		if($this->needsWidget('type')){
 			$this->setWidget('type', new sfWidgetFormDmFilterInput());
-			$this->setValidator('type', new sfValidatorString(array('required' => false)));
+			$this->setValidator('type', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 
 
 		if($this->needsWidget('zones_list')){
-			$this->setWidget('zones_list', new sfWidgetFormDmPaginatedDoctrineChoice(array('multiple' => true, 'model' => 'DmZone', 'expanded' => true)));
+			$this->setWidget('zones_list', new sfWidgetFormDmDoctrineChoice(array('multiple' => true, 'model' => 'DmZone', 'expanded' => true)));
 			$this->setValidator('zones_list', new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'DmZone', 'required' => false)));
 		}
 

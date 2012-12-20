@@ -22,6 +22,7 @@ _tag('div#'.$baseTabId.'_items.drop_zone',
     'secure_message' => __('Requires authentication'),
     'nofollow_message' => __('No follow'),
     'depth_message' => __('Depth'),
+    'target_message' => __('Target'),
     'click_message' => __('Click to edit, drag to sort')
   )), '').
   _tag('div.dm_help.no_margin',

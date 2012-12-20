@@ -17,7 +17,7 @@ abstract class PluginDmRedirect extends BaseDmRedirect
   {
     parent::preSave($event);
     
-    $this->source = trim($this->source, ' /');
+    $this->source = trim($this->get('source'), ' /');
   }
   
 }

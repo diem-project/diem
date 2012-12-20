@@ -38,6 +38,11 @@ class dmWidgetNavigationMenuView extends dmWidgetPluginView
       {
         $menuItem->getLink()->set('rel', 'nofollow');
       }
+
+      if(!empty($item['target']) && $menuItem->getLink())
+      {
+        $menuItem->getLink()->target($item['target']);
+      }
     }
 
     unset($vars['items'], $vars['ulClass'], $vars['liClass']);

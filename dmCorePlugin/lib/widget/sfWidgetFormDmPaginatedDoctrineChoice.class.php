@@ -32,6 +32,7 @@ class sfWidgetFormDmPaginatedDoctrineChoice extends sfWidgetFormDoctrineChoice
 				$this->pager->setQuery($query);
 			}
 
+      $this->pager->init();
 			$this->inited = true;
 		}
 
@@ -53,7 +54,7 @@ class sfWidgetFormDmPaginatedDoctrineChoice extends sfWidgetFormDoctrineChoice
 			$method = $this->getOption('method');
 			$keyMethod = $this->getOption('key_method');
 
-			if($choices && count($choices) > 0 && is_object($choices[0]))
+			if($choices && count($choices) > 0 && is_object($choices[key($choices)]))
 			{
 				foreach($choices as $choice)
 				{

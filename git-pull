@@ -1,7 +1,5 @@
 #!/bin/sh
 echo Pulling Diem from origin/master
 git pull origin master
-echo Pulling symfony from origin/master
-cd symfony && git pull origin master
-echo Pulling doctrine from origin/master
-cd lib/plugins/sfDoctrinePlugin/lib/vendor/doctrine && git pull origin master
+echo Pulling submodules
+git submodule update --init --recursive

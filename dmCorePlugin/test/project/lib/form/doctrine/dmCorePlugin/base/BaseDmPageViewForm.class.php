@@ -94,7 +94,7 @@ abstract class BaseDmPageViewForm extends BaseFormDoctrine
 
     if (isset($this->widgetSchema['areas_list']))
     {
-      $this->setDefault('areas_list', $this->object->Areas->getPrimaryKeys());
+        $this->setDefault('areas_list', array_merge((array)$this->getDefault('areas_list'),$this->object->Areas->getPrimaryKeys()));
     }
 
   }

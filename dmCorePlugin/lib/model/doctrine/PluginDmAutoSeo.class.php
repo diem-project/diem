@@ -29,13 +29,17 @@ abstract class PluginDmAutoSeo extends BaseDmAutoSeo
      * No translation, no available fallback, let's create a new translation
      */
     $autoSeo = $this->getTable()->createFromModuleAndAction($this->module, $this->action);
-    $translation->fromArray($autoSeo->Translation[self::getDefaultCulture()]->toArray());
+    $translation->fromArray($autoSeo->get('Translation')->get(self::getDefaultCulture())->toArray());
     $translation->id = $this->id;
     $translation->save();
 
     return $translation;
   }
-  
+
+  /**
+   * 
+   * @return DmModule
+   */
   public function getTargetDmModule()
   {
     if ($this->hasCache('target_module'))
@@ -49,11 +53,5 @@ abstract class PluginDmAutoSeo extends BaseDmAutoSeo
   public function __toString()
   {
     return $this->getTargetDmModule()->getPlural();
-    
-//    return sprintf('DmAutoSeo #%d %s.%s',
-//      $this->getId(),
-//      $this->getModule(),
-//      $this->getAction()
-//    );
   }
 }

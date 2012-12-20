@@ -195,11 +195,18 @@ class dmMarkdown extends MarkdownExtra_Parser
       $anchor = null;
     }
     
-    $link = $this->helper->link($url)->text($text);
-    
-    if ($anchor)
+    if (strlen($url) == 0 && $anchor)
     {
-      $link->anchor($anchor);
+      $link = $this->helper->link('#'.$anchor)->text($text);
+    }
+    else
+    {
+      $link = $this->helper->link($url)->text($text);
+    
+      if ($anchor)
+      {
+        $link->anchor($anchor);
+      }
     }
     
     if ($title)

@@ -33,7 +33,7 @@ dev:
       delivery_strategy: none
 
 all:
-  routing:
+  routing: 
     class: dmFrontRouting
     param:
       generate_shortest_url:            true

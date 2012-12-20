@@ -217,7 +217,12 @@ class dmCoreLayoutHelper extends dmConfigurable
 
 	public function renderJavascripts()
 	{
-		return $this->renderJavascriptsIncludes() . PHP_EOL . $this->renderJavascriptsCodes();
+		$output = $this->renderJavascriptsIncludes();
+		$jsCodes = $this->renderJavascriptsCodes();
+		if (!empty($jsCodes)) {
+			$output .=  PHP_EOL . $jsCodes;
+		}
+		return $output;
 	}
 
 	protected function renderJavascriptsCodes()
@@ -235,7 +240,9 @@ class dmCoreLayoutHelper extends dmConfigurable
 
 		$js = '';
 		$scriptTag = '<script type="text/javascript">/* <![CDATA[ */;(function($){$(document).ready(function(){%s});})(jQuery);/* ]]> */</script>';
-		$js = sprintf($scriptTag, implode(PHP_EOL, $codes));
+		if (!empty($codes)) {
+			$js = sprintf($scriptTag, implode(PHP_EOL, $codes));
+		}
 
 		return $js;
 	}

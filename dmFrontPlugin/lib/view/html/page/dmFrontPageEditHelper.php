@@ -42,8 +42,13 @@ class dmFrontPageEditHelper extends dmFrontPageBaseHelper
     return $html;
   }
 
-  public function renderWidget(array $widget)
+  public function renderWidget(array $widget, $executeWidgetAction = false)
   {
+    if ($executeWidgetAction)
+    {
+      $this->executeWidgetAction($widget);
+    }
+    
     //it the widget is called programmatically, it has no id and can not be edited
     if(!isset($widget['id']))
     {

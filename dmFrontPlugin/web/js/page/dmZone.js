@@ -116,7 +116,7 @@ $.widget('ui.dmZone', {
       connectWith:            'div.dm_widgets',
       forceHelperSize:        false,
       forcePlaceholderSize:   false,
-      tolerance:              'intersect',
+      tolerance:              'pointer',
       receive:                function(e, ui) { sortEvents.receive = $(this).parent(); },
       remove:                 function(e, ui) { sortEvents.remove = true; },
       update:                 function(e, ui) { sortEvents.update = true; },
@@ -132,7 +132,7 @@ $.widget('ui.dmZone', {
           .html('<a class="dm dm_widget_edit"></a><div class="dm_widget_inner "><div class="dm dm_new_widget"></div></div>');
         }
         // moving a widget
-        else 
+        else
         {
           ui.placeholder.addClass(ui.item.attr('class')).css('width', ui.item.css('width')).html(ui.item.html());
         }
@@ -141,15 +141,17 @@ $.widget('ui.dmZone', {
 
         sortEvents = [];
       },
-      stop:                   function(e, ui)
+      stop: function(e, ui)
       {
+        var $this = $(this), invoker = $this.data('sortable').invokerItem;
+        invoker = $.type(invoker) == 'undefined' ? ui.item : invoker;
         if (sortEvents.update && sortEvents.receive && sortEvents.remove)
         {
-          sortEvents.receive.dmZone('moveWidget', ui.item);
+          sortEvents.receive.dmZone('moveWidget', invoker);
         }
         else if (sortEvents.update && sortEvents.receive)
         {
-          $(this).parent().dmZone(ui.item.text('').block().hasClass('widget_paste') ? 'pasteWidget' : 'addWidget', ui.item);
+          $(this).parent().dmZone(ui.item.text('').block().hasClass('widget_paste') ? 'pasteWidget' : 'addWidget', invoker);
         }
         else if (sortEvents.update)
         {

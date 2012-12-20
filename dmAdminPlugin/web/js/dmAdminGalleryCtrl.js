@@ -20,6 +20,7 @@
   });
   
   $list.sortable({
+    containment:            'document',
     tolerance:              'pointer',
     opacity:                0.5,
     placeholder:            'ui-state-highlight',

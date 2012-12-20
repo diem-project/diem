@@ -114,22 +114,22 @@ abstract class BaseDmPermissionForm extends BaseFormDoctrine
 
     if (isset($this->widgetSchema['users_list']))
     {
-      $this->setDefault('users_list', $this->object->Users->getPrimaryKeys());
+        $this->setDefault('users_list', array_merge((array)$this->getDefault('users_list'),$this->object->Users->getPrimaryKeys()));
     }
 
     if (isset($this->widgetSchema['groups_list']))
     {
-      $this->setDefault('groups_list', $this->object->Groups->getPrimaryKeys());
+        $this->setDefault('groups_list', array_merge((array)$this->getDefault('groups_list'),$this->object->Groups->getPrimaryKeys()));
     }
 
     if (isset($this->widgetSchema['dm_user_permission_list']))
     {
-      $this->setDefault('dm_user_permission_list', $this->object->DmUserPermission->getPrimaryKeys());
+        $this->setDefault('dm_user_permission_list', array_merge((array)$this->getDefault('dm_user_permission_list'),$this->object->DmUserPermission->getPrimaryKeys()));
     }
 
     if (isset($this->widgetSchema['dm_group_permission_list']))
     {
-      $this->setDefault('dm_group_permission_list', $this->object->DmGroupPermission->getPrimaryKeys());
+        $this->setDefault('dm_group_permission_list', array_merge((array)$this->getDefault('dm_group_permission_list'),$this->object->DmGroupPermission->getPrimaryKeys()));
     }
 
   }

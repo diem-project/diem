@@ -43,6 +43,21 @@ class BasedmUserAdminActions extends autodmUserAdminActions
 
     if ($request->isMethod('post'))
     {
+    	
+      if($request->getReferer() != '')
+      {
+         if(!strpos($request->getReferer(), $request->getHost(), 0) > -1)
+         {
+            $this->getResponse()->setStatusCode(403);
+            return;
+         }
+	  }
+      else 
+      {
+         $this->getResponse()->setStatusCode(403); 
+         return ; 
+	  } 
+			
       $this->form->bindRequest($request);
 
       if ($this->form->isValid())

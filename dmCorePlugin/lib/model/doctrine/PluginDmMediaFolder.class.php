@@ -31,9 +31,9 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
     return dmOs::join(sfConfig::get('sf_upload_dir'), $this->get('rel_path'));
   }
 
-  public function getNbElements()
+  public function getNbElements($refresh = false)
   {
-    if($this->hasCache('nbElements'))
+    if($this->hasCache('nbElements') && !$refresh)
     {
       return $this->getCache('nbElements');
     }
@@ -71,9 +71,9 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
     return $filesName;
   }
 
-  public function getMedias()
+  public function getMedias($refresh = false)
   {
-    if ($this->hasCache('medias'))
+    if ($this->hasCache('medias') && !$refresh)
     {
       return $this->getCache('medias');
     }
@@ -131,7 +131,7 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
   public function hasFile($name)
   {
     return dmDb::query('DmMedia m')
-    ->where('m.dm_media_folder_id = ?', $this->id)
+    ->where('m.dm_media_folder_id = ?', $this->get('id'))
     ->andWhere('m.file = ?', $name)
     ->exists();
   }
@@ -174,7 +174,7 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
    */
   public function rename($name)
   {
-    if ($name === $this->name)
+    if ($name === $this->get('name'))
     {
       return $this;
     }
@@ -186,7 +186,7 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
     
     if(!$this->isWritable())
     {
-      throw new dmException(sprintf('The folder %s is not writable.', dmProject::unRootify($this->fullPath)));
+      throw new dmException(sprintf('The folder %s is not writable.', dmProject::unRootify($this->get('fullPath'))));
     }
     
     if(dmOs::sanitizeDirName($name) !== $name)
@@ -254,26 +254,26 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
     
     if(!$this->isWritable())
     {
-      throw new dmException(sprintf('The folder %s is not writable.', dmProject::unRootify($this->fullPath)));
+      throw new dmException(sprintf('The folder %s is not writable.', dmProject::unRootify($this->get('fullPath'))));
     }
     
     if(!$folder->isWritable())
     {
-      throw new dmException(sprintf('The folder %s is not writable.', dmProject::unRootify($folder->fullPath)));
+      throw new dmException(sprintf('The folder %s is not writable.', dmProject::unRootify($folder->get('fullPath'))));
     }
     
     if($folder->hasSubFolder($this->name))
     {
-      throw new dmException(sprintf('The selected folder already contains a folder named "%s".', $this->name));
+      throw new dmException(sprintf('The selected folder already contains a folder named "%s".', $this->get('name')));
     }
     
     $oldRelPath = $this->get('rel_path');
-    $newRelPath = $folder->get('rel_path').'/'.$this->name;
+    $newRelPath = $folder->get('rel_path').'/'.$this->get('name');
 
     $fs = $this->getService('filesystem');
 
     $oldFullPath = $this->getFullPath();
-    $newFullPath = dmOs::join($folder->getFullPath(), $this->name);
+    $newFullPath = dmOs::join($folder->getFullPath(), $this->get('name'));
     
     if(!rename($oldFullPath, $newFullPath))
     {

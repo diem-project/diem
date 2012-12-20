@@ -115,7 +115,7 @@ abstract class dmFormDoctrine extends sfFormDoctrine
 
 			if (null !== $label)
 			{
-				$this->widgetSchema[$fieldName]->setLabel('$label');
+				$this->widgetSchema[$fieldName]->setLabel($label);
 			}
 
 			// set sorting
@@ -441,5 +441,15 @@ abstract class dmFormDoctrine extends sfFormDoctrine
 		parent::embedForm($name, $form, $decorator);
 		$this->setEmbeddedFormSavingTime($name, $savingTime);
 		return $this;
+	}
+	
+	/**
+	* Returns the name of the class to use to embed DmMedia
+	*
+	* @return string
+	*/
+	public function getDmMediaFormForRecord($local)
+	{
+		return 'DmMediaForRecordForm';
 	}
 }

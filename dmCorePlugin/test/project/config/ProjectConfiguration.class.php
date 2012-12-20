@@ -45,8 +45,10 @@ class ProjectConfiguration extends dmProjectConfiguration
       $event->getSubject()->getContext()->get('filesystem')->sf('my:project-builder');
     }
     
-    copy(dmOs::join(sfConfig::get('sf_data_dir'), 'db.sqlite'), dmOs::join(sfConfig::get('sf_data_dir'), 'fresh_db.sqlite'));
-    
+    if(file_exists(dmOs::join(sfConfig::get('sf_data_dir'), 'db.sqlite')))
+    {
+	    copy(dmOs::join(sfConfig::get('sf_data_dir'), 'db.sqlite'), dmOs::join(sfConfig::get('sf_data_dir'), 'fresh_db.sqlite'));
+    }
     $this->removeWebSymlinks();
     
     sfConfig::set('dm_test_project_built', true);
@@ -70,7 +72,10 @@ class ProjectConfiguration extends dmProjectConfiguration
     sfToolkit::clearDirectory(sfConfig::get('sf_web_dir').'/themeAdmin');
     $filesystem->remove(sfFinder::type('any')->not_name('*.sqlite')->in(sfConfig::get('sf_data_dir')));
     $filesystem->remove(sfFinder::type('file')->name('sitemap*')->in(sfConfig::get('sf_web_dir')));
-    copy(dmOs::join(sfConfig::get('sf_data_dir'), 'fresh_db.sqlite'), dmOs::join(sfConfig::get('sf_data_dir'), 'db.sqlite'));
+    if(file_exists(dmOs::join(sfConfig::get('sf_data_dir'), 'fresh_db.sqlite')))
+    {
+    	copy(dmOs::join(sfConfig::get('sf_data_dir'), 'fresh_db.sqlite'), dmOs::join(sfConfig::get('sf_data_dir'), 'db.sqlite'));
+    }
     $this->cleanupUploads($filesystem);
     $this->removeWebSymlinks();
   }

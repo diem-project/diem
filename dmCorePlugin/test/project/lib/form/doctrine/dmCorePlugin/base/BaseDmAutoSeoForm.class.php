@@ -103,7 +103,7 @@ abstract class BaseDmAutoSeoForm extends BaseFormDoctrine
 
     if (isset($this->widgetSchema['translation_list']))
     {
-      $this->setDefault('translation_list', $this->object->Translation->getPrimaryKeys());
+        $this->setDefault('translation_list', array_merge((array)$this->getDefault('translation_list'),$this->object->Translation->getPrimaryKeys()));
     }
 
   }

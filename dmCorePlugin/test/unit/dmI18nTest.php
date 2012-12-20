@@ -35,6 +35,6 @@ $i18n->addTranslations('c1', array(
   'Username' => 'c1 Username'
 ));
 
-$t->is($i18n->__('Username'), $expected = 'c1 Username', 'c1: '.$expected);
+$t->is($i18n->__('Username', array(), 'messages'), $expected = 'c1 Username', 'c1: '.$expected);
 $t->is((string)$form['username']->renderLabel(), $expected = '<label for="signin_username">c1 Username</label>', 'c1: '.$expected);
 $t->is((string)$form['username']->label(), $expected = '<label class="label" for="signin_username">c1 Username</label>', 'c1: '.$expected);

@@ -16,11 +16,11 @@ abstract class BaseDmTestTagTranslationFormFilter extends BaseFormFilterDoctrine
 
 		if($this->needsWidget('name')){
 			$this->setWidget('name', new sfWidgetFormDmFilterInput());
-			$this->setValidator('name', new sfValidatorString(array('required' => false)));
+			$this->setValidator('name', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('slug')){
 			$this->setWidget('slug', new sfWidgetFormDmFilterInput());
-			$this->setValidator('slug', new sfValidatorString(array('required' => false)));
+			$this->setValidator('slug', new sfValidatorSchemaFilter('text', new sfValidatorString(array('required' => false))));
 		}
 		if($this->needsWidget('lang')){
 			$this->setWidget('lang', new sfWidgetFormDmFilterInput());

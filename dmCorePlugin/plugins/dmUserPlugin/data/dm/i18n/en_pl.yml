@@ -6,3 +6,7 @@
 "Change password": "Zmień hasło"
 "You are authenticated as %username%": "Jesteś zalogowany jako %username%"
 "Forgot password": "Zapomniane hasło"
+"Old password": "Stare hasło"
+"New password": "Nowe hasło"
+"New password (again)": "Nowe hasło (ponownie)"
+"The password is invalid.": "Hasło jest nieprawidłowe"

@@ -239,6 +239,10 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
 
         var dragStart = function()
         {
+          var inst = $(this).data("draggable"), invoker = $(this);
+          $.each(inst.sortables, function(i) {
+            this.instance.invokerItem = invoker;
+          });
           $menu.dmMenu('close');
           self.activateEdit(true);
         };
@@ -250,6 +254,7 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
 
         // add widget
         $menu.find('span.widget_add').draggable({
+          containment: 'document',
           connectToSortable: 'div.dm_widgets',
           helper: function()
           {
@@ -263,6 +268,7 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
 
         // add zone
         $menu.find('span.zone_add').draggable({
+          containment: 'document',
           connectToSortable: 'div.dm_zones',
           helper: function()
           {
@@ -271,11 +277,15 @@ $.widget('ui.dmFrontToolBar', $.extend({}, $.dm.coreToolBar, {
           appendTo: '#dm_page',
           cursorAt: { left: 30, top: 10 },
           cursor: 'move',
-          start: dragStart
+          start: dragStart,
+          stop: function() {
+            $('#dm_page div.dm_zones').removeClass('droppable-active');
+          }
         });
 
         // add from clipboard
         $menu.find('span.widget_paste').draggable({
+          containment: 'document',
           connectToSortable: 'div.dm_widgets',
           helper: function()
           {

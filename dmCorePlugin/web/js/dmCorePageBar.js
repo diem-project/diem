@@ -95,7 +95,7 @@
           containment: 'document',
           distance: 20,
           revert: 'invalid',
-          zIndex: 1000,
+          zIndex: 16777271, // max z-index for Safari 3
           helper: function(e)
           {
             return $('<div class="dm dm_page_draggable_helper"></div>').html($(this).clone()).appendTo($('body'));

@@ -41,7 +41,7 @@ $.widget('ui.dmArea', {
         connectWith:            'div.dm_zones',
         forceHelperSize:        true,
         forcePlaceholderSize:   false,
-        tolerance:              'intersect',
+        tolerance:              'pointer',
         receive:                function(e, ui) { sortEvents.receive = $(this).parent(); },
         remove:                 function(e, ui) { sortEvents.remove = true; },
         update:                 function(e, ui) { sortEvents.update = true; },

@@ -99,12 +99,12 @@ abstract class BaseDmLayoutForm extends BaseFormDoctrine
 
     if (isset($this->widgetSchema['page_views_list']))
     {
-      $this->setDefault('page_views_list', $this->object->PageViews->getPrimaryKeys());
+        $this->setDefault('page_views_list', array_merge((array)$this->getDefault('page_views_list'),$this->object->PageViews->getPrimaryKeys()));
     }
 
     if (isset($this->widgetSchema['areas_list']))
     {
-      $this->setDefault('areas_list', $this->object->Areas->getPrimaryKeys());
+        $this->setDefault('areas_list', array_merge((array)$this->getDefault('areas_list'),$this->object->Areas->getPrimaryKeys()));
     }
 
   }

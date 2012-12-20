@@ -64,11 +64,11 @@ class dmModuleActionSecurityStrategy extends dmModuleSecurityStrategyAbstract im
 	 */
 	protected function getSecurityYaml()
 	{
-		if(!$this->hasCache('securityYaml'))
+		if(!$this->has('securityYaml'))
 		{
-			return $this->setCache('securityYaml', $this->module->getSecurityManager()->getSecurityYaml($this->module));
+			return $this->set('securityYaml', $this->module->getSecurityManager()->getSecurityYaml($this->module));
 		}
-		return $this->getCache('securityYaml');
+		return $this->get('securityYaml');
 	}
 
 	/**
@@ -91,7 +91,7 @@ class dmModuleActionSecurityStrategy extends dmModuleSecurityStrategyAbstract im
 	 */
 	protected function saveSecurityYaml($securityYaml)
 	{
-		$this->setCache('securityYaml', $securityYaml);
+		$this->set('securityYaml', $securityYaml);
 	}
 
 	public function addPermissionCheckToQuery($query)

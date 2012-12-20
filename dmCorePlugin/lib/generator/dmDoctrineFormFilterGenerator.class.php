@@ -87,7 +87,7 @@ class dmDoctrineFormFilterGenerator extends sfDoctrineFormFilterGenerator
       switch ($column->getDoctrineType())
       {
         case 'boolean':
-			 $options = '';
+			 $options = "array('required' => false, 'choices' => array(0, 1))";
           break;
         case 'date':
         case 'datetime':
@@ -391,7 +391,7 @@ class dmDoctrineFormFilterGenerator extends sfDoctrineFormFilterGenerator
 		switch ($column->getDoctrineType())
 		{
 			case 'boolean':
-				$validatorSubclass = 'Boolean';
+				$validatorSubclass = 'Choice';
 				break;
 			case 'string':
 				if ($column->getDefinitionKey('email'))

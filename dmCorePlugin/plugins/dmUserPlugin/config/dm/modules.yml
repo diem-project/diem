@@ -61,7 +61,7 @@ System:
       model: DmRecordPermissionAssociation
       admin: true
       front: false
-      name: Record Permission Assocation|Records Permissions Associations
+      name: Record Permission Association|Records Permissions Associations
       security:
         admin:
           actions:

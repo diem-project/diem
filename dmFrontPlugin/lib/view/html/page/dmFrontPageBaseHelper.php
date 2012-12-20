@@ -214,6 +214,8 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
 		//Set id of page we need
 		$this->global_area_id = dmArray::get($options, 'global_area', null);
 
+                unset($options['global_area']);
+
 		$tagName = $this->getAreaTypeTagName($name);
 
 		$area = $this->getArea($name);
@@ -330,10 +332,13 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
 		return $html;
 	}
 
-	public function renderWidget(array $widget)
+	public function renderWidget(array $widget, $executeWidgetAction = false)
 	{
-		$this->executeWidgetAction($widget);
-		 
+		if ($executeWidgetAction)
+		{
+			$this->executeWidgetAction($widget);
+		}
+		
 		list($widgetWrapClass, $widgetInnerClass) = $this->getWidgetContainerClasses($widget);
 
 		/*

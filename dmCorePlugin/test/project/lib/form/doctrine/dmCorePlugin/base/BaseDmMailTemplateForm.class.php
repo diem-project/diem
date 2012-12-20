@@ -108,12 +108,12 @@ abstract class BaseDmMailTemplateForm extends BaseFormDoctrine
 
     if (isset($this->widgetSchema['sent_mails_list']))
     {
-      $this->setDefault('sent_mails_list', $this->object->SentMails->getPrimaryKeys());
+        $this->setDefault('sent_mails_list', array_merge((array)$this->getDefault('sent_mails_list'),$this->object->SentMails->getPrimaryKeys()));
     }
 
     if (isset($this->widgetSchema['translation_list']))
     {
-      $this->setDefault('translation_list', $this->object->Translation->getPrimaryKeys());
+        $this->setDefault('translation_list', array_merge((array)$this->getDefault('translation_list'),$this->object->Translation->getPrimaryKeys()));
     }
 
   }

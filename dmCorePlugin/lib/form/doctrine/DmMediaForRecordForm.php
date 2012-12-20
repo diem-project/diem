@@ -18,7 +18,7 @@ class DmMediaForRecordForm extends DmMediaForm
     ->setDecoratorFormat("<ul class=\"dm_media_for_record_form dm_form_elements\">\n  %content%</ul>");
   }
 
-  public static function factory(myDoctrineRecord $record, $local, $alias, $required)
+  public static function factory(myDoctrineRecord $record, $local, $alias, $required, $form)
   {
     /*
      * Check first is local column has a value
@@ -33,8 +33,9 @@ class DmMediaForRecordForm extends DmMediaForm
       $media = new DmMedia;
       $media->set('dm_media_folder_id', $record->getDmMediaFolder()->get('id'));
     }
-
-    $form = new self($media);
+    
+    $formClass = $form->getDmMediaFormForRecord($local);
+    $form = new $formClass($media);
     $form->configureRequired($required);
     $form->setRecord($record);
     return $form;

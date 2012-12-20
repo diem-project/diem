@@ -14,7 +14,7 @@ abstract class PluginDmMediaForm extends BaseDmMediaForm
 	{
 		parent::setup();
 		$this->mergeI18nForm();
-		$this->useFields(array('dm_media_folder_id', 'file', 'legend', 'author', 'license'));
+		$this->setUseFields();
 
 		$this->widgetSchema['file'] = new sfWidgetFormDmInputFile();
 		$this->validatorSchema['file'] = new sfValidatorFile(array(
@@ -157,5 +157,15 @@ abstract class PluginDmMediaForm extends BaseDmMediaForm
 		}
 
 		return $values;
+	}
+	
+	protected function setUseFields()
+	{
+		$this->useFields($this->getUseFields());
+	}
+	
+	protected function getUseFields()
+	{
+		return array('dm_media_folder_id', 'file', 'legend', 'author', 'license');
 	}
 }

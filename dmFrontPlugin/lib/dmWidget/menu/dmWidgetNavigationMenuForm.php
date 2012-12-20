@@ -10,6 +10,7 @@ class dmWidgetNavigationMenuForm extends dmWidgetPluginForm
     $this->validatorSchema['secure'] = new sfValidatorPass();
     $this->validatorSchema['nofollow'] = new sfValidatorPass();
     $this->validatorSchema['depth'] = new sfValidatorPass();
+    $this->validatorSchema['target'] = new sfValidatorPass();
 
     if (!$this->getDefault('items'))
     {
@@ -89,7 +90,8 @@ class dmWidgetNavigationMenuForm extends dmWidgetPluginForm
         'text'     => $values['text'][$index],
         'secure'   => (int) !empty($values['secure'][$index]),
         'nofollow' => (int) !empty($values['nofollow'][$index]),
-        'depth'    => $values['depth'][$index]
+        'depth'    => $values['depth'][$index],
+        'target'    => $values['target'][$index]
       );
     }
 
@@ -98,7 +100,8 @@ class dmWidgetNavigationMenuForm extends dmWidgetPluginForm
       $values['text'],
       $values['secure'],
       $values['nofollow'],
-      $values['depth']
+      $values['depth'],
+      $values['target']
     );
 
     return $values;

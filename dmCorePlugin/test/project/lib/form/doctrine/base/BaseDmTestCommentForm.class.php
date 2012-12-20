@@ -110,7 +110,7 @@ abstract class BaseDmTestCommentForm extends BaseFormDoctrine
 
     if (isset($this->widgetSchema['version_list']))
     {
-      $this->setDefault('version_list', $this->object->Version->getPrimaryKeys());
+        $this->setDefault('version_list', array_merge((array)$this->getDefault('version_list'),$this->object->Version->getPrimaryKeys()));
     }
 
   }
