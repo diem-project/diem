@@ -53,7 +53,7 @@
   <div data-field-name="[?php echo $name ?]" class="[?php echo $divClass ?][?php $form[$name]->hasError() and print ' errors' ?]">
     [?php if ($form[$name]->hasError()): ?]
       <div class="error">
-        <div class="s16 s16_error">[?php echo __((string) $form[$name]->getError(), array(), '<?php echo $this->getModule()->getOption('i18n_catalogue')?>') ?]</div>
+        <div class="s16 s16_error">[?php echo $form[$name]->renderError() ?]</div>
       </div>
     [?php endif; ?]
     <div class="sf_admin_form_row_inner clearfix">
