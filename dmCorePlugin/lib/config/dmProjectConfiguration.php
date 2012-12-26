@@ -9,15 +9,28 @@ class dmProjectConfiguration extends sfProjectConfiguration
 
     $this->setDmPluginPaths();
 
-    $this->enablePlugins(array(
+    $plugins_list = array(
       'sfDoctrinePlugin',
       'dmCorePlugin',
       'dmUserPlugin',
       'sfWebBrowserPlugin',
       'sfImageTransformPlugin',
       'sfFeed2Plugin',
-      'sfFormExtraPlugin'
-    ));
+      'sfFormExtraPlugin');
+    
+    if ($handle = opendir(sfConfig::get('sf_plugins_dir'))) 
+    {             
+      while (false !== ($file = readdir($handle))) 
+      {
+        if ($file != "." && $file != ".." && is_dir(sfConfig::get('sf_plugins_dir') . '/' . $file)) 
+        {                     
+          $plugins_list[] =  $file;
+        }  
+      }  
+    }
+    
+    $this->enablePlugins($plugins_list);
+	
   }
   
   protected function setDmPluginPaths()
