@@ -349,6 +349,7 @@ class dmCoreLayoutHelper extends dmConfigurable
       'debug'              => sfConfig::get('sf_debug') ? true : false,
       'culture'            => $this->serviceContainer->getParameter('user.culture'),
       'dateFormat'         => $this->getJQueryDateFormat(sfDateTimeFormatInfo::getInstance($this->serviceContainer->getParameter('user.culture'))->getShortDatePattern()),
+      'decimalSeparator'   => sfCultureInfo::getInstance($this->serviceContainer->getParameter('user.culture'))->getNumberFormat()->getDecimalSeparator(),
       'module'             => $this->serviceContainer->getParameter('controller.module'),
       'action'             => $this->serviceContainer->getParameter('controller.action'),
       'authenticated'      => $this->getService('user')->isAuthenticated()

@@ -144,7 +144,7 @@ class dmXmlSitemapGenerator extends dmConfigurable
     <loc>
       %s
     </loc>
-  </url>', $this->getOption('domain').'/'.$page->get('Translation')->get($culture)->get('slug'));
+  </url>', $this->getOption('domain').'/'.(sfConfig::get('dm_i18n_prefix_url', false) ? $culture.'/' : '').$page->get('Translation')->get($culture)->get('slug'));
   }
 
   protected function write($filePath, $xml)
