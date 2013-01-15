@@ -90,12 +90,12 @@ function definition_list($array, $opt = array())
 function plural($word, $nb, $showNb = true, $pluralSpec = false)
 {
   $pluralizedWord = dmString::pluralizeNb($word, $nb, $pluralSpec);
-  
+
   return $showNb ? $nb.' '.$pluralizedWord : $pluralizedWord;
 }
 
 
-function markdown($markdown, $opt = array())
+function _markdown($markdown, $opt = array())
 {
   return _tag('div.markdown', dmString::toArray($opt), sfContext::getInstance()->get('markdown')->toHtml($markdown));
 }

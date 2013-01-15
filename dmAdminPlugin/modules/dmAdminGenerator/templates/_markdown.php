@@ -6,7 +6,7 @@
   use_javascript('lib.markitup');
   use_javascript('lib.markitupSet');
   use_javascript('core.markdown');
-  
+
   $uniqueCode = dmString::random();
 
   $attributes = array_merge(
@@ -41,7 +41,7 @@
   <div class="sf_admin_form_row_inner">
     <label class="fnone"><?php echo __('Preview'); ?></label>
     <div class="markdown_preview markdown" id="dm_markdown_preview_<?php echo $uniqueCode ?>">
-      <?php echo markdown($form->getObject()->get($name)) ?>
+      <?php echo _markdown($form->getObject()->get($name)) ?>
     </div>
   </div>
 </div>

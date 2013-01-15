@@ -11,27 +11,27 @@ parameters:
 
   link_tag_record.class:      dmFrontLinkTagRecord  # Responsible for rendering a link tag to a record with the £link helper. Configurable from the graphical configuration panel.
   link_tag_record.options:    []
-  
+
   link_tag_page.class:        dmFrontLinkTagPage    # Responsible for rendering a link tag to a DmPage instance with the £link helper. Configurable from the graphical configuration panel.
   link_tag_page.options:      []
-  
+
   link_tag_media.class:       dmFrontLinkTagMedia   # Responsible for rendering a link tag to a DmMedia instance with the £link helper. Configurable from the graphical configuration panel.
   link_tag_media.options:     []
-  
+
   link_tag_action.class:      dmFrontLinkTagAction  # Responsible for rendering a link tag to a symfony action with the £link helper. Configurable from the graphical configuration panel.
   link_tag_action.options:    []
-  
+
   link_tag_uri.class:         dmFrontLinkTagUri     # Responsible for rendering a link tag to an external uri with the £link helper. Configurable from the graphical configuration panel.
   link_tag_uri.options:       []
 
   link_tag_route.class:       dmFrontLinkTagRoute   # Responsible for rendering a link tag to a symfony parametered route with the £link helper. Configurable from the graphical configuration panel.
   link_tag_route.options:     []
-  
+
   link_tag_error.class:       dmFrontLinkTagError   # Responsible for rendering a link tag to an exception with the £link helper. Configurable from the graphical configuration panel.
   link_tag_error.options:     []
 
   link_resource.class:        dmFrontLinkResource   # Ressource for a link_tag_*.
-    
+
   link_tag_factory.class:     dmFrontLinkTagFactory # Builds a link_tag service from a source
 
   asset_config.class:         dmFrontAssetConfig    # Responsible for loading required assets.
@@ -49,9 +49,9 @@ parameters:
     widget_css_class_pattern: %%module%%_%%action%% # Widget css class generation pattern.
                                                     # Available variables : module, action.
                                                     # Can be let empty to disable automatic widget classes
-  
+
   widget_renderer.class:      dmFrontWidgetRenderer # Responsible for rendering widgets
-    
+
   zone_form.class:            DmZoneFrontForm       # Form used when displaying a zone edition dialog
 
   front_add_menu.class:       dmFrontAddMenu        # Responsible for building and rendering the front add menu
@@ -145,12 +145,12 @@ services:
     class:                    %page_helper.class%
     shared:                   true
     arguments:                [ @dispatcher, @service_container, @helper, %page_helper.options% ]
-    
+
   widget_renderer:
     class:                    %widget_renderer.class%
     shared:                   false
     arguments:                [ @dispatcher, @service_container, %widget_renderer.widget% ]
-    
+
   zone_form:
     class:                    %zone_form.class%
     shared:                   false
