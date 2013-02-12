@@ -1,4 +1,4 @@
-[?php 
+[?php
   use_helper('Date');
   use_stylesheet('admin.filter');
   use_stylesheet('admin.form');
@@ -7,9 +7,7 @@
   slot('dm.mini_search_form');
   include_partial('<?php echo $this->getModuleName() ?>/search');
   end_slot();
-?]
-
-<div id="sf_admin_container">
+?]<div id="sf_admin_container">
 
 [?php if ($form->hasErrors()): ?]
   <ul class="dm_error_list">
