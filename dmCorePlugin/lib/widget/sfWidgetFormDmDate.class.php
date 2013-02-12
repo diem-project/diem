@@ -25,9 +25,9 @@ class sfWidgetFormDmDate extends sfWidgetFormI18nDate
   protected function configure($options = array(), $attributes = array())
   {
     $options['culture'] = isset($options['culture']) ? $options['culture'] : sfDoctrineRecord::getDefaultCulture();
-    
+
     parent::configure($options, $attributes);
-    
+
     $this->setOption('culture', $options['culture']);
   }
 
@@ -45,7 +45,7 @@ class sfWidgetFormDmDate extends sfWidgetFormI18nDate
       }
       else
       {
-        $value = array('year' => date('y', $value), 'month' => date('n', $value), 'day' => date('j', $value));
+        $value = array('year' => date('Y', $value), 'month' => date('n', $value), 'day' => date('j', $value));
       }
 
       $formattedValue = strtr(
@@ -83,7 +83,7 @@ class sfWidgetFormDmDate extends sfWidgetFormI18nDate
     {
       $javascripts[] = 'lib.ui-i18n';
     }
-    
+
     return array_merge(parent::getJavascripts(), $javascripts);
   }
 
