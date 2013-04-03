@@ -20,7 +20,7 @@ abstract class BaseDmTestDomainTranslationFormFilter extends BaseFormFilterDoctr
 		}
 		if($this->needsWidget('is_active')){
 			$this->setWidget('is_active', new sfWidgetFormChoice(array('choices' => array('' => $this->getI18n()->__('yes or no', array(), 'dm'), 1 => $this->getI18n()->__('yes', array(), 'dm'), 0 => $this->getI18n()->__('no', array(), 'dm')))));
-			$this->setValidator('is_active', new sfValidatorBoolean());
+			$this->setValidator('is_active', new sfValidatorChoice(array('required' => false, 'choices' => array(0, 1))));
 		}
 		if($this->needsWidget('lang')){
 			$this->setWidget('lang', new sfWidgetFormDmFilterInput());

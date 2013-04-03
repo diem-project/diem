@@ -28,7 +28,7 @@ abstract class BaseDmTestUserFormFilter extends BaseFormFilterDoctrine
 		}
 		if($this->needsWidget('is_visible')){
 			$this->setWidget('is_visible', new sfWidgetFormChoice(array('choices' => array('' => $this->getI18n()->__('yes or no', array(), 'dm'), 1 => $this->getI18n()->__('yes', array(), 'dm'), 0 => $this->getI18n()->__('no', array(), 'dm')))));
-			$this->setValidator('is_visible', new sfValidatorBoolean());
+			$this->setValidator('is_visible', new sfValidatorChoice(array('required' => false, 'choices' => array(0, 1))));
 		}
 
 

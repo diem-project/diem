@@ -107,7 +107,7 @@ abstract class dmHtmlTag extends dmConfigurable
   {
     if($this->hasClass($class))
     {
-      unset($this['class'][$class]);
+      unset($this->options['class'][array_search($class,$this->options['class'])]);
     }
     
     return $this;

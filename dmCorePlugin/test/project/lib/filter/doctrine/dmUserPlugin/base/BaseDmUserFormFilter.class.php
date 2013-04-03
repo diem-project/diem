@@ -40,11 +40,11 @@ abstract class BaseDmUserFormFilter extends BaseFormFilterDoctrine
 		}
 		if($this->needsWidget('is_active')){
 			$this->setWidget('is_active', new sfWidgetFormChoice(array('choices' => array('' => $this->getI18n()->__('yes or no', array(), 'dm'), 1 => $this->getI18n()->__('yes', array(), 'dm'), 0 => $this->getI18n()->__('no', array(), 'dm')))));
-			$this->setValidator('is_active', new sfValidatorBoolean());
+			$this->setValidator('is_active', new sfValidatorChoice(array('required' => false, 'choices' => array(0, 1))));
 		}
 		if($this->needsWidget('is_super_admin')){
 			$this->setWidget('is_super_admin', new sfWidgetFormChoice(array('choices' => array('' => $this->getI18n()->__('yes or no', array(), 'dm'), 1 => $this->getI18n()->__('yes', array(), 'dm'), 0 => $this->getI18n()->__('no', array(), 'dm')))));
-			$this->setValidator('is_super_admin', new sfValidatorBoolean());
+			$this->setValidator('is_super_admin', new sfValidatorChoice(array('required' => false, 'choices' => array(0, 1))));
 		}
 		if($this->needsWidget('last_login')){
 			$this->setWidget('last_login', new sfWidgetFormChoice(array('choices' => array(

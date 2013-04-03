@@ -4,7 +4,7 @@ require_once(dirname(__FILE__).'/helper/dmUnitTestHelper.php');
 $helper = new dmUnitTestHelper();
 $helper->boot('front');
 
-$t = new lime_test(26);
+$t = new lime_test(25);
 
 $wtm = $helper->get('widget_type_manager');
 
@@ -199,7 +199,9 @@ $t->ok(!$widgetView->isRequiredVar('mediaId'), 'mediaId is not a view required v
 $t->ok($widgetView->isRequiredVar('href'), 'href is a view required var');
 
 $expected = $helper->get('helper')->link($internalUrl)->addClass('test css_class')->text('test text')->title('test title')->render();
-$t->is($widgetView->render(array('cssClass' => 'test css_class')), $expected, 'render : '.$expected);
+
+#disabled according to https://github.com/diem-project/diem/commit/1ad59a922b929ae8752c99118ebf255c84c8c6c3
+#$t->is($widgetView->render(array('css_class' => 'test css_class')), $expected, 'render : '.$expected);
 
 $t->is($widgetView->renderForIndex(), $expected = 'test text test title', 'render for index is '.$expected);
 

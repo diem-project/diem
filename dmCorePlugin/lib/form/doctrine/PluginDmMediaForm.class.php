@@ -18,7 +18,7 @@ abstract class PluginDmMediaForm extends BaseDmMediaForm
 
 		$this->widgetSchema['file'] = new sfWidgetFormDmInputFile();
 		$this->validatorSchema['file'] = new sfValidatorFile(array(
-      'required' => false //@todo this is weir bugfix as we don't check if a media has been defined using d&d from  media bar
+            'required' => true // resolved in dmFormDoctrine
 		));
 
 		$this->changeToHidden('dm_media_folder_id');
@@ -168,4 +168,31 @@ abstract class PluginDmMediaForm extends BaseDmMediaForm
 	{
 		return array('dm_media_folder_id', 'file', 'legend', 'author', 'license');
 	}
+
+    protected function doBind(array $values)
+    {
+        $isFileProvided = isset($values['file']) && !empty($values['file']['size']);
+
+        // media id provided with drag&drop or file edit without upload
+        if(!empty($values['id']) && !$isFileProvided)
+        {
+            if($this->getObject()->isNew() || $this->getObject()->id != $values['id'])
+            {
+                if($media = dmDb::table('DmMedia')->findOneByIdWithFolder($values['id']))
+                {
+                    $this->setObject($media);
+                    $values['dm_media_folder_id'] = $media->dm_media_folder_id;
+
+                    $this->validatorSchema['id']->setOption('required', true);
+                    $this->validatorSchema['file']->setOption('required', false);
+                }
+            }
+            elseif ($this->getObject()->id == $values['id'])
+            {
+                $this->validatorSchema['id']->setOption('required', true);
+                $this->validatorSchema['file']->setOption('required', false);
+            }
+        }
+        parent::doBind($values);
+    }
 }

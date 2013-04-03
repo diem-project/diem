@@ -12,11 +12,13 @@ class dmSeoSynchronizer extends dmMicroCache
   $moduleManager,
   $culture,
   $nodeParentIdStmt,
-  $currentModule;
+  $currentModule,
+  $serviceContainer;
 
-  public function __construct(dmModuleManager $moduleManager)
+  public function __construct(dmModuleManager $moduleManager, dmBaseServiceContainer $serviceContainer)
   {
     $this->moduleManager = $moduleManager;
+    $this->serviceContainer = $serviceContainer;
   }
 
   public function setCulture($culture)
@@ -425,7 +427,7 @@ WHERE p.module = ? AND p.action = ?', array($this->culture, $module->getKey(), '
 
       if($processMarkdown)
       {
-        $markdown = $this->getContext()->getServiceContainer()->get('markdown');
+        $markdown = $this->serviceContainer->get('markdown');
         $usedValue = $markdown::brutalToText($usedValue);
       }
 

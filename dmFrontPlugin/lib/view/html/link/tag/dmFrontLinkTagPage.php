@@ -51,9 +51,20 @@ class dmFrontLinkTagPage extends dmFrontLinkTag
 
   public function isCurrentStrict()
   {
-	$reqContext = $this->requestContext;
-	$relativeToRootRequestUri = str_replace($reqContext['uri_prefix'].$reqContext['prefix'], '', $reqContext['request_uri']);
-	return ltrim($relativeToRootRequestUri,'/') == $this->currentPage->getSlug() || $relativeToRootRequestUri == 'http://'; //fix CLI tests...
+    $reqContext = $this->requestContext;
+    $relativeToRootRequestUri = str_replace($reqContext['uri_prefix'].$reqContext['prefix'], '', $reqContext['request_uri']);
+
+    // fixes broken functional test and helps widget ajax requests display current page
+    $request = $this->currentPage->getTable()->getServiceContainer()->getService('request');
+    if ($request->hasParameter('widget_id') && $request->hasParameter('page_id') && $request->hasParameter('module') && $request->hasParameter('action'))
+    {
+      if ($request->getParameter('module') == 'dmWidget' && $request->getParameter('action') == 'render')
+      {
+        $relativeToRootRequestUri = 'http://';
+      }
+    }
+
+    return ltrim($relativeToRootRequestUri,'/') == $this->currentPage->getSlug() || $relativeToRootRequestUri == 'http://'; //fix CLI tests...
   }
 
   public function isParent()

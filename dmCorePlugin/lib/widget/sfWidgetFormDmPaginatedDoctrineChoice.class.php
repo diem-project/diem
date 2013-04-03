@@ -58,7 +58,18 @@ class sfWidgetFormDmPaginatedDoctrineChoice extends sfWidgetFormDoctrineChoice
 			{
 				foreach($choices as $choice)
 				{
-					$this->cache_choices[$choice->$keyMethod()] = $choice->$method();
+					// fix for Doctrine Behaviours like DmVersionable which are not instances of sfDoctrineRecord
+					if ($keyMethod == 'getPrimaryKey' && !$choice instanceof sfDoctrineRecord && $choice instanceof Doctrine_Record)
+					{
+						$identifier = (array) $choice->identifier();
+						$primaryKey = $identifier['id'];
+					}
+					else
+					{
+						$primaryKey = $choice->$keyMethod();
+					}
+
+					$this->cache_choices[$primaryKey] = $choice->$method();
 				}
 			}
 			elseif(isset($this->choices))

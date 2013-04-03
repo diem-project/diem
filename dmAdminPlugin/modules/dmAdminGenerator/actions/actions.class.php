@@ -137,7 +137,7 @@ class dmAdminGeneratorActions extends dmAdminBaseActions
     );
 
     $this->forward404Unless(
-      $module instanceof dmProjectModule && $module->getTable() instanceof dmDoctrineTable && $module->getTable()->isNestedSet()
+      ($module instanceof dmProjectModule || $module instanceof dmModule) && $module->getTable() instanceof dmDoctrineTable && $module->getTable()->isNestedSet()
     );
 
     $this->forward404Unless(

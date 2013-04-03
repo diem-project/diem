@@ -10,7 +10,6 @@
  * @author     ##AUTHOR_NAME##
  * @version    SVN: $Id$
  * @generator  <?php echo 'Diem ', constant('DIEM_VERSION'), "\n"?>
- * @gen-file   <?php echo __FILE__?>
  */
 abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->getFormClassToExtend() . "\n" ?>
 {

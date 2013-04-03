@@ -72,7 +72,7 @@ $b
 ->has('.dm_signin_form ul.error_list', false)
 ->isAuthenticated(false)
 ->info('Try to signin with empty fields')
-->click('Signin', array('signin' => array(), array('_with_csrf' => true)))
+->click('.dm_signin_form input.submit', array('signin' => array(), array('_with_csrf' => true)))
 ->checks(array(
   'moduleAction' => 'dmFront/page',
   'method' => 'post',

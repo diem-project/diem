@@ -319,6 +319,10 @@ abstract class dmFormDoctrine extends sfFormDoctrine
 				{
 					$this->embeddedForms[$formName]->setObject($media);
 					$values[$formName]['dm_media_folder_id'] = $media->dm_media_folder_id;
+
+					// we don't check if a media has been defined using d&d from  media bar
+					$this->validatorSchema[$formName]->offsetSet('id', new sfValidatorInteger(array('required' => true)));
+					$this->validatorSchema[$formName]->offsetSet('file', new sfValidatorFile(array('required' => false)));
 				}
 			}
 		}

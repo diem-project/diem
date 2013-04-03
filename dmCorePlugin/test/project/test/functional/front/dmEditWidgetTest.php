@@ -47,7 +47,7 @@ $b
 ->get('/index.php')
 ->checks()
 ->has('.test_link_class', 'Dm test domains')
-->click('.test_link_class')
+->click('.test_link_class .link')
 ->checks(array('h1' => 'Domains'))
 ->back()
 ->addWidget($b->getPage()->PageView->Area->Zones[1], 'dmWidgetContent/text')
