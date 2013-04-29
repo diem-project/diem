@@ -1,8 +1,7 @@
 [?php
 $alias = dmString::camelize(substr($field, 0, strlen($field)-5));
 ?]
-<div class="dm_form_pagination {field: '[?php echo $field?]', link: '[?php echo $link?]', selection:  [[?php echo $form->getDefault($alias) ?] ], currentPage: [?php echo $pager->getPage()?], lastPage: [?php echo $pager->getLastPage()?]}">
-
+<div class="dm_form_pagination {field: '[?php echo $field?]', link: '[?php echo $link?]', selection:  [[?php echo ($form->getDefault($field)) ? implode(',',$form->getDefault($field)) : ''; ?] ], currentPage: [?php echo $pager->getPage()?], lastPage: [?php echo $pager->getLastPage()?]}">
 [?php // MAX PER PAGE
 
 $maxPerPages = array();

@@ -389,7 +389,7 @@
 				return $ajaxMarkup;
 			}
 			// form submission manipulation
-			var $form = $pagination.closest('.sf_admin_form form');;
+			var $form = $pagination.closest('.sf_admin_form form');
 			$form.unbind('submit.dm.pagination_'+metadata.field+'.consistency').bind('submit.dm.pagination_'+metadata.field+'.consistency', function(e){
 				var
 				idsToBeAdded = selection,
