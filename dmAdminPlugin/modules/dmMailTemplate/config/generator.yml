@@ -20,7 +20,7 @@ generator:
           is_big: true
         show_vars:
           is_big: true
-        list_unsuscribe:
+        list_unsubscribe:
           help:   "http://www.list-unsubscribe.com/"
       list:
         display:
@@ -53,7 +53,7 @@ generator:
           NONE: [name, is_active, description, is_html]
           Email: [_show_vars, subject, body]
           Addresses: [from_email, to_email, cc_email, bcc_email]
-          Advanced: [reply_to_email, sender_email, list_unsuscribe]
+          Advanced: [reply_to_email, sender_email, list_unsubscribe]
         class: DmMailTemplateAdminForm
         fields: {  }
       edit: ~

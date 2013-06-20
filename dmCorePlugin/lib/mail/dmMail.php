@@ -249,9 +249,9 @@ class dmMail
       $headers->remove('List-Unsubscribe');
     }
 
-    if($template->list_unsuscribe)
+    if($template->list_unsubscribe)
     {
-      $headers->addTextHeader('List-Unsubscribe', strtr($template->list_unsuscribe, $replacements));
+      $headers->addTextHeader('List-Unsubscribe', strtr($template->list_unsubscribe, $replacements));
     }
 
     $this->isRendered = true;
