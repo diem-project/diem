@@ -121,7 +121,8 @@ DmMedia:
       filter: false
   actAs:
     I18n:
-      fields:         [ legend, author, license ]
+      fields:               [ legend, author, license ]
+      length:               7
     Timestampable:          {}
   columns:
     dm_media_folder_id:     { type: integer, notnull: true }
