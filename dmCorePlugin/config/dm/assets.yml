@@ -32,7 +32,7 @@ js:
     ui-dialog:                jquery-ui/js/minified/jquery.ui.dialog.min
     ui-accordion:             jquery-ui/js/minified/jquery.ui.accordion.min
     ui-slider:                jquery-ui/js/minified/jquery.ui.slider.min
-    ui-i18n:                  jquery-ui/js/i18n/jquery.ui.datepicker-%culture%
+    ui-i18n:                  jquery-ui/js/i18n/jquery.ui.datepicker-<?php echo str_replace('_', '-', sfContext::getInstance()->getUser()->getCulture()) . "\n"; ?>
     ui-effects-blind:         jquery-ui/js/minified/jquery.effects.blind.min
     ui-effects-bounce:        jquery-ui/js/minified/jquery.effects.bounce.min
     ui-effects-clip:          jquery-ui/js/minified/jquery.effects.clip.min
