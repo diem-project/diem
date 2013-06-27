@@ -27,7 +27,16 @@
 
   if($form->getObject()->getTable()->isI18nColumn($name))
   {
-    $label = _media('dmCore/images/flag-16/'.$sf_user->getCulture().'.png')
+    $flag = $sf_user->getCulture();
+    if(strlen($flag) > 2) {
+      $flagPath = sfConfig::get('dm_core_dir').DIRECTORY_SEPARATOR.'web'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'flag-16';
+      if(file_exists($flagPath.DIRECTORY_SEPARATOR.strtolower(substr($flag, strpos($flag, '_')+1)).'.png')) {
+        $flag = strtolower(substr($flag, strpos($flag, '_')+1));
+      } elseif(file_exists($flagPath.DIRECTORY_SEPARATOR.strtolower(substr($flag, 0, 2)).'.png')) {
+        $flag = substr($flag, 0, 2);
+      }
+    }
+    $label = _media('dmCore/images/flag-16/'.$flag.'.png')
     ->size(16, 11)
     ->set('.dm_label_culture')
     ->alt(format_language($sf_user->getCulture())).
