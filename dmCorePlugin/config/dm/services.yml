@@ -513,6 +513,6 @@ services:
     arguments:                [ @context, @service_container ]
     
   record_permission_association_manager:
-    class:                                          %record_permission_association_manager.class%
-    shared:                                         true
-    arguments:                                     [ @context, @service_container, @user ]
+    class:                    %record_permission_association_manager.class%
+    shared:                   true
+    arguments:                [ @context, @service_container, @user ]
