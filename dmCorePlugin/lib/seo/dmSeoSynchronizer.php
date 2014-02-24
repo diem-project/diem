@@ -425,7 +425,7 @@ WHERE p.module = ? AND p.action = ?', array($this->culture, $module->getKey(), '
 
       if($processMarkdown)
       {
-        $markdown = $this->getContext()->getServiceContainer()->get('markdown');
+        $markdown = sfContext::getInstance()->getServiceContainer()->get('markdown');
         $usedValue = $markdown::brutalToText($usedValue);
       }
 
