@@ -6,7 +6,7 @@ class DmForgotPasswordStep1Form extends dmForm
   {
     $this->widgetSchema['email'] = new sfWidgetFormInputText();
     $this->validatorSchema['email'] = new sfValidatorEmail();
-    
+
     $this->validatorSchema->setPostValidator(new sfValidatorCallback(array(
       'callback' => array($this, 'validateEmail')
     )));

@@ -2,6 +2,19 @@
 
 class dmStylesheetCompressor extends dmAssetCompressor
 {
+  
+  public function getDefaultOptions()
+  {
+    return array_merge(parent::getDefaultOptions(), array(
+      'black_list'          => array()
+    ));
+  }
+
+  public function addToBlackList($fileName)
+  {
+    $this->mergeOption('black_list', (array) $fileName);
+  }
+  
   public function connect()
   {
     $this->dispatcher->connect('dm.layout.filter_stylesheets', array($this, 'listenToFilterAssetsEvent'));
@@ -14,6 +27,12 @@ class dmStylesheetCompressor extends dmAssetCompressor
   
   protected function isCachable($stylesheet, array $options = array())
   {
+    
+    // don't cache stylesheet if in blacklist
+    if (in_array($stylesheet, $this->getOption('black_list'))) {
+      return false;
+    }
+    
     // don't cache user asset if it's protected
     if($this->options['protect_user_assets'] && strncmp($stylesheet, '/dm', 3) !== 0)
     {

@@ -84,7 +84,7 @@ abstract class PluginDmMediaFolder extends BaseDmMediaFolder
     {
       $media->set('Folder', $this, false);
     }
-
+    
     return $this->setCache('medias', $medias);
   }
 
