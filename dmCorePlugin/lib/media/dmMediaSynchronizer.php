@@ -36,9 +36,6 @@ class dmMediaSynchronizer
     $medias   = $folder->getDmMediasByFileName();
     $children = $folder->getSubfoldersByName();
     
-    error_log("\n Medias: " . print_r(array_keys($medias), 1), 3, '/tmp/debug.txt');
-    error_log("\n Children: " . print_r(array_keys($children), 1), 3, '/tmp/debug.txt');
-
     $dirty = false;
 
     /*
@@ -148,14 +145,8 @@ class dmMediaSynchronizer
 
     if($dirty)
     {
-//      try {
         $folder->clearCache()->refresh()->refreshRelated('Medias');
-//      } catch (Exception $e) {
-//        // skip
-//      }
     }
-    $folder->free(true);
-//    unset($medias, $children);
   }
 
   /**
