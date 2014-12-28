@@ -82,7 +82,7 @@ class dmFrontAssetConfig extends dmAssetConfig
     }
     
     return array(
-      'lib.jquery',
+      'front.jquery',
       sfConfig::get('sf_web_debug') ? 'lib.symfony_debug' : null,
       'lib.metadata',
       'core.config',

@@ -214,7 +214,7 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
 		//Set id of page we need
 		$this->global_area_id = dmArray::get($options, 'global_area', null);
 
-                unset($options['global_area']);
+		unset($options['global_area']);
 
 		$tagName = $this->getAreaTypeTagName($name);
 
@@ -284,6 +284,7 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
 		{
 			switch(substr($areaType, strpos($areaType, '.')+1))
 			{
+				case 'nav':     $tagName = 'nav';     break;
 				case 'top':     $tagName = 'header';  break;
 				case 'left':    $tagName = 'aside';   break;
 				case 'content': $tagName = 'section'; break;
