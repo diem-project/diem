@@ -43,7 +43,7 @@ class dmFrontAssetConfig extends dmAssetConfig
     if ($this->userCanEdit())
     {
       return array(
-        'lib.jquery',
+        $this->isEditMode() ? 'lib.jquery' : 'front.jquery',
         sfConfig::get('sf_web_debug') ? 'lib.symfony_debug' : null,
         'lib.metadata',
         'lib.cookie',
@@ -95,5 +95,10 @@ class dmFrontAssetConfig extends dmAssetConfig
   public function userCanEdit()
   {
     return $this->user->can('tool_bar_front, widget_edit_fast');
+  }
+
+  public function isEditMode()
+  {
+    return $this->user->getIsEditMode();
   }
 }
