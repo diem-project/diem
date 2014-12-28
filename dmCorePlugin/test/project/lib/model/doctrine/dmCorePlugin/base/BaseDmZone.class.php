@@ -11,16 +11,18 @@
  * @property DmArea $Area
  * @property Doctrine_Collection $Widgets
  * 
- * @method integer             getDmAreaId()   Returns the current record's "dm_area_id" value
- * @method string              getCssClass()   Returns the current record's "css_class" value
- * @method string              getWidth()      Returns the current record's "width" value
- * @method DmArea              getArea()       Returns the current record's "Area" value
- * @method Doctrine_Collection getWidgets()    Returns the current record's "Widgets" collection
- * @method DmZone              setDmAreaId()   Sets the current record's "dm_area_id" value
- * @method DmZone              setCssClass()   Sets the current record's "css_class" value
- * @method DmZone              setWidth()      Sets the current record's "width" value
- * @method DmZone              setArea()       Sets the current record's "Area" value
- * @method DmZone              setWidgets()    Sets the current record's "Widgets" collection
+ * @method integer             getDmAreaId()        Returns the current record's "dm_area_id" value
+ * @method string              getCssClass()        Returns the current record's "css_class" value
+ * @method string              getCssClassInner()   Returns the current record's "css_class_inner" value
+ * @method string              getWidth()           Returns the current record's "width" value
+ * @method DmArea              getArea()            Returns the current record's "Area" value
+ * @method Doctrine_Collection getWidgets()         Returns the current record's "Widgets" collection
+ * @method DmZone              setDmAreaId()        Sets the current record's "dm_area_id" value
+ * @method DmZone              setCssClass()        Sets the current record's "css_class" value
+ * @method DmZone              setCssClassInner()   Sets the current record's "css_class_inner" value
+ * @method DmZone              setWidth()           Sets the current record's "width" value
+ * @method DmZone              setArea()            Sets the current record's "Area" value
+ * @method DmZone              setWidgets()         Sets the current record's "Widgets" collection
  * 
  * @package    retest
  * @subpackage model
@@ -37,6 +39,10 @@ abstract class BaseDmZone extends myDoctrineRecord
              'notnull' => true,
              ));
         $this->hasColumn('css_class', 'string', 255, array(
+             'type' => 'string',
+             'length' => 255,
+             ));
+        $this->hasColumn('css_class_inner', 'string', 255, array(
              'type' => 'string',
              'length' => 255,
              ));

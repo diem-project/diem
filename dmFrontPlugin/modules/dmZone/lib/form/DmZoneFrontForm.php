@@ -9,12 +9,17 @@ class DmZoneFrontForm extends DmZoneForm
     
     $this->setName($this->name.'_'.$this->object->id);
 
-    $this->useFields(array('id', 'css_class', 'width'));
+    $this->useFields(array('id', 'css_class', 'css_class_inner', 'width'));
     
     $this->widgetSchema['css_class']
       ->setAttribute('class', 'dm_zone_css_class')
       ->setLabel('CSS class');
     $this->validatorSchema['css_class'] = new dmValidatorCssClasses(array('required' => false));
+    
+    $this->widgetSchema['css_class_inner']
+      ->setAttribute('class', 'dm_zone_css_class_inner')
+      ->setLabel('CSS class (inner)');
+    $this->validatorSchema['css_class_inner'] = new dmValidatorCssClasses(array('required' => false));
     
     $this->widgetSchema['width']
       ->setAttribute('class', 'dm_zone_width');

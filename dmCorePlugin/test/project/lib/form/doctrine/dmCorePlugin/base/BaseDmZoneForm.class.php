@@ -28,6 +28,11 @@ abstract class BaseDmZoneForm extends BaseFormDoctrine
 			$this->setValidator('css_class', new sfValidatorString(array('max_length' => 255, 'required' => false)));
 		}
 		//column
+		if($this->needsWidget('css_class_inner')){
+			$this->setWidget('css_class', new sfWidgetFormInputText());
+			$this->setValidator('css_class', new sfValidatorString(array('max_length' => 255, 'required' => false)));
+		}
+		//column
 		if($this->needsWidget('width')){
 			$this->setWidget('width', new sfWidgetFormInputText());
 			$this->setValidator('width', new sfValidatorString(array('max_length' => 15, 'required' => false)));

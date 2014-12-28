@@ -73,6 +73,7 @@ DmZone:
   columns:
     dm_area_id:             { type: integer, notnull: true }
     css_class:              { type: string(255) }
+    css_class_inner:        { type: string(255) }
     width:                  { type: string(15) }
   relations:
     Area:

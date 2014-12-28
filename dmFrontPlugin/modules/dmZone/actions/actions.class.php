@@ -8,7 +8,7 @@ class dmZoneActions extends dmFrontBaseActions
     $this->forward404Unless(
       $this->zone = dmDb::table('DmZone')->find($request->getParameter('zone_id'))
     );
-
+    
     $this->form = $this->getServiceContainer()
     ->setParameter('zone_form.object', $this->zone)
     ->getService('zone_form')
@@ -36,7 +36,7 @@ class dmZoneActions extends dmFrontBaseActions
     $this->forward404Unless(
       $zone = dmDb::query('DmZone z')
       ->where('z.id = ?', $request->getParameter('zone_id'))
-      ->select('z.width as width, z.css_class as css_class')
+      ->select('z.width as width, z.css_class as css_class, z.css_class_inner as css_class_inner')
       ->limit(1)
       ->fetchPDO()
     );

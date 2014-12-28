@@ -107,7 +107,7 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
 		->leftJoin('a.Zones z')
 		->leftJoin('z.Widgets w')
 		->leftJoin('w.Translation wTranslation WITH wTranslation.lang = ? OR wTranslation.lang = ?', array($this->area_culture, $this->area_fallBackCulture))
-		->select('a.dm_layout_id, a.type, z.width, z.css_class, w.module, w.action, wTranslation.value, w.css_class')
+		->select('a.dm_layout_id, a.type, z.width, z.css_class, z.css_class_inner, w.module, w.action, wTranslation.value, w.css_class')
 		->where('a.dm_layout_id = ?', $this->area_lid)
 		->orWhere('a.dm_page_view_id = ?', $this->area_vid)
 		->orderBy('z.position asc, w.position asc')
@@ -214,7 +214,7 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
 		//Set id of page we need
 		$this->global_area_id = dmArray::get($options, 'global_area', null);
 
-                unset($options['global_area']);
+		unset($options['global_area']);
 
 		$tagName = $this->getAreaTypeTagName($name);
 
@@ -307,7 +307,7 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
 		$html = '<div class="'.dmArray::toHtmlCssClasses(array('dm_zone', $zone['css_class'])).'"'.$style.'>';
 
 		$html .= '<div class="dm_widgets">';
-
+		
 		$html .= $this->renderZoneInner($zone);
 
 		$html .= '</div>';
@@ -323,10 +323,20 @@ abstract class dmFrontPageBaseHelper extends dmConfigurable
 
 		if(!empty($zone['Widgets']))
 		{
+
+			if ($zone['css_class_inner']) {
+				$html .= '<div class="' . $zone['css_class_inner'] . '">';
+			}
+
 			foreach($zone['Widgets'] as $widget)
 			{
 				$html .= $this->renderWidget($widget);
 			}
+			
+			if ($zone['css_class_inner']) {
+				$html .= '</div>';
+			}
+
 		}
 
 		return $html;
