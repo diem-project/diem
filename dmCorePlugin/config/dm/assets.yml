@@ -13,7 +13,7 @@ js:
     mediaBar:                 dmCoreMediaBar
     codeArea:                 dmCoreCodeArea
     ping:                     dmCorePing
-    
+
   lib:
     symfony_debug:            symfony/debug
     jquery:                   jquery/jquery-1.7.1.min
@@ -55,6 +55,7 @@ js:
     cookie:           cookie/jquery.cookie.min
     markitup:         markitup/jquery.markitup.min
     markitupSet:      dmMarkitup/sets/markdown/set
+    moment:           moment/moment-with-locales.min
     expose:           expose/jquery.expose-1.0.1.min
     qtip:             qtip/jquery.qtip-1.0.0-rc3.min
     hotkeys:          hotkeys/jquery.hotkeys-0.8.min
@@ -79,7 +80,7 @@ css:
     mediaBar:         mediaBar
     form:             form
     browsers:         browsers
-    
+
   lib:
     symfony_debug:    symfony/debug
     reset:            reset/reset

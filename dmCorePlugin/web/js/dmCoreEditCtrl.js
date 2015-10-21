@@ -2,7 +2,7 @@
 {
 
   $.dm.coreEditCtrl = $.extend($.dm.coreCtrl, {
-  
+
     liveEvents: function()
     {
       setTimeout(function()
@@ -24,7 +24,7 @@
         });
       }, 500);
     },
-    
+
     dialog: function(options)
     {
       var opt = $.extend($.ui.dialog.defaults, {
@@ -39,33 +39,33 @@
         },
         resizable: false
     }, options || {});
-      
+
       opt.dialogClass = opt['class'] ? opt['class'] + " dm" : "dm";
-   
+
       var $dialog = $('<div>').dialog(opt).bind('dialogclose', function()
       {
         setTimeout(function() {
           $dialog.dialog('destroy').remove();
         }, 100);
       });
-      
+
       $dialog.prepare = function()
       {
         $dialog.unblock().find('input[type=text], textarea').filter(':first').focus();
       };
-      
+
       return $dialog;
     },
-    
+
     ajaxDialog: function(opt)
     {
       var self = this;
       opt = $.extend({
         title: 'Loading'
       }, opt);
-      
+
       var $dialog = this.dialog(opt).block();
-      
+
       $.ajax({
         url: opt.url,
         data: opt.data || {},
@@ -79,27 +79,27 @@
           $.dm.ctrl.errorDialog('Error in '+file, xhr.responseText);
         }
       });
-      
+
       return $dialog;
     },
-  
-  errorDialog: function(title, body, opt)
-  {
-    opt = $.extend({
+
+    errorDialog: function(title, body, opt)
+    {
+      opt = $.extend({
         title:    title,
         position: [5, 5],
         buttons: {
           Close: function() { $(this).dialog('close'); }
         }
       }, opt || {});
-   
-   if ($existing = $('#dm_error_dialog div.dm_error'))
-   {
-    $existing.dialog('close');
-   }
-          
+
+      if ($existing = $('#dm_error_dialog div.dm_error'))
+      {
+        $existing.dialog('close');
+      }
+
       $('<div class="dm_error">').html(body).dialog(opt).parent().attr('id', 'dm_error_dialog').addClass('dm');
-  }
+    }
   });
- 
+
 })(jQuery);
