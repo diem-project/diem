@@ -35,6 +35,12 @@ class sfWidgetFormDmDate extends sfWidgetFormI18nDate
   {
     if($value && strtotime($value))
     {
+      // swap day and month in case culture is en_GB as strtotime considers dates with slashes as US format
+      if ($this->getOption('culture') == 'en_GB' && is_string($value) && strpos($value, '/')) {
+        $values = explode('/', $value);
+        $value = $values[1] . '/' . $values[0] . '/' . $values[2];
+        unset($values);
+      }
       // convert value to an array
       $default = array('year' => null, 'month' => null, 'day' => null);
 
