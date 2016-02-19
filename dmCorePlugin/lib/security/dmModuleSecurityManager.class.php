@@ -66,7 +66,7 @@ class dmModuleSecurityManager extends dmModuleSecurityAbstract implements dmModu
     $app = $this->getApplication();
     if($security = $module->getOption('security', false))
     {
-      if(isset($security[$app]))
+      if(isset($security[$app]) && $security[$app])
       {
         foreach($security[$app] as $actionKind=>$actionsConfig)
         {
