@@ -471,7 +471,6 @@
 "Assign first header here or let it blank to let the designer choose it. Should be unique.": "Přiřaďte první titulek, nebo pole ponechte prázdné, aby titulek mohl vybrat návrhář. Mělo by být jedinečné."
 "The page description meta, frequently displayed in search engines result page.": "Metadata popis stránky, často zobrazovaná na stránce výsledků vyhledávačů."
 "Provides additional meta informations to the page. Also used by Diem internal search engine.": "Poskytuje stránce dodatečná metadata. Také používáno vnitřním vyhledávačem systému Diem."
-"Duplicate": "Duplikovat"
 "Requests per minute": "Požadavků za minutu"
 "Errors per minute": "Chyb za minutu"
 "Latency in ms": "Latence v ms"
