@@ -471,7 +471,6 @@
 "Assign first header here or let it blank to let the designer choose it. Should be unique.": "Définissez le premier titre ici, ou laissez vide pour laisser l'intégrateur le choisir. Devrait être unique."
 "The page description meta, frequently displayed in search engines result page.": "Le méta description de la page, fréquemment affiché par les moteurs de recherche sur la page de résultats"
 "Provides additional meta informations to the page. Also used by Diem internal search engine.": "Fournit des méta-informations supplémentaires à la page. Aussi utilisé par le moteur de recherche interne de Diem."
-"Duplicate": "Dupliquer"
 "Requests per minute": "Requêtes par minute"
 "Errors per minute": "Erreurs par minute"
 "Latency in ms": "Latence en ms"
