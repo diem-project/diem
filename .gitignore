@@ -6,3 +6,4 @@ dmCorePlugin/test/project/log/*
 *.orig
 *.swp
 .svn*
+.idea

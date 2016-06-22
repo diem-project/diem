@@ -1,24 +1,24 @@
 [submodule "dmCorePlugin/plugins/sfImageTransformPlugin"]
 	path = dmCorePlugin/plugins/sfImageTransformPlugin
-	url = git://github.com/diem-project/sfImageTransformPlugin.git
+	url = https://github.com/diem-project/sfImageTransformPlugin.git
 [submodule "dmCorePlugin/plugins/sfWebBrowserPlugin"]
 	path = dmCorePlugin/plugins/sfWebBrowserPlugin
-	url = git://github.com/diem-project/sfWebBrowserPlugin.git
+	url = https://github.com/diem-project/sfWebBrowserPlugin.git
 [submodule "dmCorePlugin/plugins/sfFeed2Plugin"]
 	path = dmCorePlugin/plugins/sfFeed2Plugin
-	url = git://github.com/diem-project/sfFeed2Plugin.git
+	url = https://github.com/diem-project/sfFeed2Plugin.git
 [submodule "dmCorePlugin/plugins/sfFormExtraPlugin"]
 	path = dmCorePlugin/plugins/sfFormExtraPlugin
-	url = git://github.com/diem-project/sfFormExtraPlugin.git
+	url = https://github.com/diem-project/sfFormExtraPlugin.git
 [submodule "symfony"]
 	path = symfony
-	url = git://github.com/diem-project/symfony.git
+	url = https://github.com/diem-project/symfony.git
 [submodule "dmCorePlugin/test/project/plugins/dmTagPlugin"]
 	path = dmCorePlugin/test/project/plugins/dmTagPlugin
-	url = git://github.com/diem-project/dmTagPlugin.git
+	url = https://github.com/diem-project/dmTagPlugin.git
 [submodule "dmCorePlugin/lib/vendor/php-html-writer"]
 	path = dmCorePlugin/lib/vendor/php-html-writer
-	url = git://github.com/ornicar/php-html-writer.git
+	url = https://github.com/ornicar/php-html-writer.git
 [submodule "dmCorePlugin/lib/vendor/php-user-agent"]
 	path = dmCorePlugin/lib/vendor/php-user-agent
-	url = git://github.com/diem-project/php-user-agent.git
+	url = https://github.com/diem-project/php-user-agent.git
