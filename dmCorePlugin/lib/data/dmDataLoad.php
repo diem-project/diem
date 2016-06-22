@@ -313,7 +313,7 @@ class dmDataLoad
       /*
        * English to $culture
        */
-      if ($culture != sfConfig::get('sf_default_culture', 'en') && !dmDb::table('DmCatalogue')->retrieveBySourceTargetSpace(sfConfig::get('sf_default_culture', 'en'), $culture, 'messages'))
+      if ($culture != sfConfig::get('sf_default_culture', $culture) && !dmDb::table('DmCatalogue')->retrieveBySourceTargetSpace(sfConfig::get('sf_default_culture', 'en'), $culture, 'messages'))
       {
         dmDb::create('DmCatalogue', array(
           'source_lang' => sfConfig::get('sf_default_culture', 'en'),
@@ -322,10 +322,28 @@ class dmDataLoad
         ))->save();
       }
 
-      if ($culture != sfConfig::get('sf_default_culture', 'en') && !dmDb::table('DmCatalogue')->retrieveBySourceTargetSpace(sfConfig::get('sf_default_culture', 'en'), $culture, 'dm'))
+      if ($culture != sfConfig::get('sf_default_culture', $culture) && !dmDb::table('DmCatalogue')->retrieveBySourceTargetSpace(sfConfig::get('sf_default_culture', 'en'), $culture, 'dm'))
       {
         dmDb::create('DmCatalogue', array(
           'source_lang' => sfConfig::get('sf_default_culture', 'en'),
+          'target_lang' => $culture,
+          'name' => 'dm.'.$culture
+        ))->save();
+      }
+      
+      if ($culture != 'en' && !dmDb::table('DmCatalogue')->retrieveBySourceTargetSpace('en', $culture, 'messages'))
+      {
+        dmDb::create('DmCatalogue', array(
+          'source_lang' => 'en',
+          'target_lang' => $culture,
+          'name' => 'messages.'.$culture
+        ))->save();
+      }
+
+      if ($culture != 'en' && !dmDb::table('DmCatalogue')->retrieveBySourceTargetSpace('en', $culture, 'dm'))
+      {
+        dmDb::create('DmCatalogue', array(
+          'source_lang' => 'en',
           'target_lang' => $culture,
           'name' => 'dm.'.$culture
         ))->save();
@@ -352,14 +370,14 @@ class dmDataLoad
   {
     foreach( $this->i18n->getCultures() as $culture)
     {
-      if ($culture == sfConfig::get('sf_default_culture', 'en'))
+      if ($culture == 'en')
       {
         continue;
       }
       /*
        * English to $culture
        */
-      $catalogue = dmDb::table('DmCatalogue')->retrieveBySourceTargetSpace(sfConfig::get('sf_default_culture', 'en'), $culture, 'dm');
+      $catalogue = dmDb::table('DmCatalogue')->retrieveBySourceTargetSpace('en', $culture, 'dm');
       $dataFiles = $this->configuration->getConfigPaths('data/dm/i18n/en_'.$culture.'.yml');
 
       $table = dmDb::table('DmTransUnit');

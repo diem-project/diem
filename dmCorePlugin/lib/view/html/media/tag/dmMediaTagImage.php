@@ -294,7 +294,7 @@ class dmMediaTagImage extends dmMediaTag
       $attributes['resize_method'] === 'fit' ? 'fit'.$attributes['background'] : $attributes['resize_method'],
       $filter,
       implode(' ', $overlay),
-      $attributes['resize_quality'],
+      isset($attributes['resize_quality']) ? $attributes['resize_quality'] : '',
       $media->getTimeHash()
     ))), -6).'.'.$pathInfo['extension'];
 

@@ -28,7 +28,7 @@ class dmFrontLinkTagPage extends dmFrontLinkTag
     
     $this->setOption('tag', 'a');
     
-    if ($this->options['use_page_title'])
+    if (isset($this->options['use_page_title']))
     {
       $this->title($this->page->_getI18n('title'));
     }

@@ -68,7 +68,7 @@ class dmMessageFormat extends sfMessageFormat
     return $this->postscript[0].$this->replaceArgs($string, $args).$this->postscript[1];
   }
   
-  public function addTranslations($culture, array $translations, $catalogue, $culture)
+  public function addTranslations($culture, array $translations, $catalogue, $_culture)
   {
     $this->loadCatalogue($catalogue);
     

@@ -470,7 +470,7 @@ class dmModule extends dmMicroCache
 			{
 				if($this->isOverridden())
 				{
-					continue;
+					return;
 				}
 
 				$this->setOption('generate_dir', dmOs::join(dmContext::getInstance()->getConfiguration()->getPluginConfiguration($pluginName)->getRootDir(), 'modules', $this->getSfName()));

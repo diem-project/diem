@@ -12,7 +12,7 @@ class dmMarkdown extends MarkdownExtra_Parser
   {
     $this->helper = $helper;
 
-    parent::MarkdownExtra_Parser();
+    parent::__construct();
 
     $this->initialize($options);
   }

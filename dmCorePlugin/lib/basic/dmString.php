@@ -97,9 +97,9 @@ class dmString extends sfInflector
       return self::$camelizeCache[$something];
     }
 
-    return self::$camelizeCache[$something] = preg_replace(
-      '/_(\w)/e',
-      "strtoupper('\\1')",
+    return self::$camelizeCache[$something] = preg_replace_callback(
+      '/_(\w)/',
+      function($m){ return strtoupper($m[1]); },
       ucfirst($something)
     );
   }
