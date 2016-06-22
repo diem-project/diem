@@ -15,6 +15,7 @@ class dmI18nTask extends dmContextTask
     $this->addArguments(array(
       new sfCommandArgument('application', sfCommandArgument::REQUIRED, 'The application name'),
       new sfCommandArgument('culture', sfCommandArgument::REQUIRED, 'The target culture'),
+      new sfCommandArgument('catalog', sfCommandArgument::OPTIONAL, 'The catalog to search in', 'messages'),
     ));
 
     $this->addOptions(array(

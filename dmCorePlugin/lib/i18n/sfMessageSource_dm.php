@@ -101,7 +101,7 @@ class sfMessageSource_dm extends sfMessageSource
    * @return boolean always true
    * @see    read()
    */
-  public function load($catalogue = 'messages')
+  public function load($catalogue = 'dm')
   {
     $variants = $this->getCatalogueList($catalogue);
 

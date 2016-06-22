@@ -18,22 +18,22 @@ class dmMessageFormat extends sfMessageFormat
   public function formatFast($string, array $args, $catalogue)
   {
     $translated = $this->formatFastOrFalse($string, $args, $catalogue);
-    
+
     if(false === $translated)
     {
       $translated = $this->formatFastUntranslated($string, $args);
     }
-    
+
     return $translated;
   }
-  
+
   public function formatFastOrFalse($string, array $args, $catalogue)
   {
     // make sure that objects with __toString() are converted to strings
     $string = (string) $string;
     
     $this->loadCatalogue($catalogue);
-    
+
     foreach($this->messages[$catalogue] as $variant)
     {
       // we found it, so return the target translation
@@ -52,26 +52,26 @@ class dmMessageFormat extends sfMessageFormat
         {
           return false;
         }
-        
+
         return empty($args) ? $target : $this->replaceArgs($target, $args);
       }
     }
 
     // well we did not find the translation string.
     $this->source->append($string);
-    
+
     return false;
   }
-  
+
   public function formatFastUntranslated($string, array $args)
   {
     return $this->postscript[0].$this->replaceArgs($string, $args).$this->postscript[1];
   }
-  
+
   public function addTranslations($culture, array $translations, $catalogue, $culture)
   {
     $this->loadCatalogue($catalogue);
-    
+
     foreach($translations as $source => $target)
     {
       $this->messages[$catalogue][$catalogue.$culture][$source] = $target;

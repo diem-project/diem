@@ -47,7 +47,7 @@ abstract class dmCoreFunctionalCoverageTest
     $this->browser->get('');
 
     $this->execute();
-    
+
     $this->showStats();
   }
 
@@ -56,7 +56,7 @@ abstract class dmCoreFunctionalCoverageTest
     $configuration = ProjectConfiguration::getApplicationConfiguration($this->options['app'], $this->options['env'], $this->options['debug']);
 
     $this->context = dm::createContext($configuration);
-    
+
     sfConfig::set('sf_logging_enabled', false);
 
     // remove all cache
@@ -66,7 +66,7 @@ abstract class dmCoreFunctionalCoverageTest
   protected function initBrowser()
   {
     $this->browser = $this->context->get('test_functional');
-    
+
     if($this->options['debug'])
     {
       $this->browser->info('If allowed memory size is exhausted, try setting debug to off');
@@ -87,7 +87,7 @@ abstract class dmCoreFunctionalCoverageTest
   protected function login()
   {
     $user = dmDb::table('DmUser')->findOneByUsername($this->options['username']);
-    
+
     if(!$user instanceof DmUser)
     {
       throw new dmException(sprintf(
@@ -95,13 +95,13 @@ abstract class dmCoreFunctionalCoverageTest
         $this->options['username']
       ));
     }
-    
+
     $this->browser->getContext()->getUser()->signin($user);
-    
+
     // make the login persistent
     $this->browser->getContext()->getUser()->shutdown();
     $this->browser->getContext()->getStorage()->shutdown();
-    
+
     $this->browser->with('user')->begin()->isAuthenticated()->end();
   }
 
@@ -110,15 +110,15 @@ abstract class dmCoreFunctionalCoverageTest
     $nbRedirects = 0;
 
     $this->startCounter($url);
-    
+
     dm::resetStartTime();
-    
+
     $this->browser->get($url);
 
     while(in_array($this->browser->getResponse()->getStatusCode(), array(301, 302)))
     {
       $this->browser->with('response')->begin()->isRedirected()->end()->followRedirect();
-      
+
       $nbRedirects++;
       if ($nbRedirects > $this->options['maxRedirections'])
       {
@@ -132,7 +132,7 @@ abstract class dmCoreFunctionalCoverageTest
     $this->browser->with('response')->begin()
     ->isStatusCode($expectedStatusCode)
     ->end();
-    
+
     if ($this->options['validate'])
     {
       $this->browser->with('response')->begin()->isValid()->end();
@@ -152,7 +152,7 @@ abstract class dmCoreFunctionalCoverageTest
   {
     $time = sprintf('%01.3f', 1000 * (microtime(true) - $this->counter['time']));
 //    $mem = sprintf('%01.3f', (memory_get_usage() - $this->counter['mem'])/1024);
-     
+
 //    $this->browser->info(round($time).' ms | '.round($mem).' Ko');
     $this->browser->info(round($time).' ms');
 
@@ -169,17 +169,17 @@ abstract class dmCoreFunctionalCoverageTest
 //    $this->stats['totalMem'] += $mem;
     $this->stats['nbUrls'] += 1;
   }
-  
+
   protected function showStats()
   {
     $averageTime  = $this->stats['totalTime'] / $this->stats['nbUrls'];
 //    $averageMem   = $this->stats['totalMem'] / $this->stats['nbUrls'];
-    
+
     $this->browser->info('------------------------------------------------');
-    
+
     $this->browser->info(sprintf('Average time : %01.3f ms', $averageTime));
 //    $this->browser->info(sprintf('Average memory : %01.3f Ko', $averageMem));
-    
+
     $this->browser->info(sprintf('Max time : %01.3f ms on %s', $this->stats['maxTime']['value'], $this->stats['maxTime']['url']));
 //    $this->browser->info(sprintf('Max memory : %01.3f Ko on %s', $this->stats['maxMem']['value'], $this->stats['maxMem']['url']));
   }

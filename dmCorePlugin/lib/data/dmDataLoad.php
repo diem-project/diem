@@ -371,6 +371,7 @@ class dmDataLoad
 
       $nbAdded = 0;
       $nbUpdated = 0;
+      $updated = array();
 
       foreach($dataFiles as $dataFile)
       {
@@ -408,6 +409,7 @@ class dmDataLoad
                   ->execute();
 
                   ++$nbUpdated;
+                  $updated[] = "$source - $target [$catalogueId]";
                 }
               }
             }
@@ -434,6 +436,7 @@ class dmDataLoad
       if ($nbUpdated)
       {
         $this->log(sprintf('%s: updated %d translation(s)', $culture, $nbUpdated));
+        print_r($updated);
       }
     }
 

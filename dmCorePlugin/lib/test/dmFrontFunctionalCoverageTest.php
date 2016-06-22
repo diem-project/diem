@@ -4,17 +4,17 @@ require_once dirname(__FILE__).'/dmCoreFunctionalCoverageTest.php';
 
 class dmFrontFunctionalCoverageTest extends dmCoreFunctionalCoverageTest
 {
-  
+
   protected function configure()
   {
     parent::configure();
-    
+
     if (empty($this->options['app']))
     {
       $this->options['app'] = 'front';
     }
   }
-  
+
   protected function execute()
   {
     foreach($this->getPages() as $page)
@@ -31,7 +31,7 @@ class dmFrontFunctionalCoverageTest extends dmCoreFunctionalCoverageTest
       {
         $expectedStatusCode = 200;
       }
-      
+
       $this->testUrl('/'.$page->slug, $expectedStatusCode);
 
       if($this->willRunOutOfMemory())
@@ -41,7 +41,7 @@ class dmFrontFunctionalCoverageTest extends dmCoreFunctionalCoverageTest
       }
     }
   }
-  
+
   protected function getPages()
   {
     return dmDb::query('DmPage p')

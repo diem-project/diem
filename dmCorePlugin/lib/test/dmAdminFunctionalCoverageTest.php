@@ -4,17 +4,17 @@ require_once dirname(__FILE__).'/dmCoreFunctionalCoverageTest.php';
 
 class dmAdminFunctionalCoverageTest extends dmCoreFunctionalCoverageTest
 {
-  
+
   protected function configure()
   {
     parent::configure();
-    
+
     if (empty($this->options['app']))
     {
       $this->options['app'] = 'admin';
     }
   }
-  
+
   protected function execute()
   {
     foreach($this->getUrls() as $url)
@@ -28,23 +28,23 @@ class dmAdminFunctionalCoverageTest extends dmCoreFunctionalCoverageTest
       }
     }
   }
-  
+
   protected function getUrls()
   {
     $urls = array('/');
     $routing = $this->context->getRouting();
-    
+
     foreach($this->context->getModuleManager()->getModules() as $module)
     {
       if (!$routing->hasRouteName($module->getUnderscore()))
       {
         continue;
       }
-      
+
       $moduleUrl = $routing->generate($module->getUnderscore());
-      
+
       $urls[] = $moduleUrl;
-      
+
       if ($module->hasModel() && $module->getTable()->hasField('id'))
       {
         $records = $module->getTable()->createQuery('t')
@@ -52,7 +52,7 @@ class dmAdminFunctionalCoverageTest extends dmCoreFunctionalCoverageTest
         ->orderBy('rand')
         ->limit(2)
         ->fetchArray();
-        
+
         foreach($records as $record)
         {
           $urls[] = $moduleUrl.'/edit/pk/'.$record['id'];
@@ -71,12 +71,12 @@ class dmAdminFunctionalCoverageTest extends dmCoreFunctionalCoverageTest
     }
 
     $uriPrefixLength = strlen(dmArray::get(dmArray::get($routing->getOptions(), 'context'), 'prefix'));
-    
+
     foreach($urls as $index => $url)
     {
       $urls[$index] = substr($url, $uriPrefixLength);
     }
-    
+
     return $urls;
   }
 }

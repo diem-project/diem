@@ -11,7 +11,7 @@ class dmString extends sfInflector
   {
     return htmlspecialchars($text, $quoteStyle, 'UTF-8');
   }
-  
+
   /**
    * Clean dirty strings
    */
@@ -60,7 +60,7 @@ class dmString extends sfInflector
     {
       $model[0] = strtolower($model[0]);
     }
-    
+
     return $model;
   }
 
@@ -78,7 +78,7 @@ class dmString extends sfInflector
       {
         throw new dmException('dmModule should not be camelized');
       }
-      
+
       return get_class($something);
     }
 
@@ -88,18 +88,18 @@ class dmString extends sfInflector
       {
         return '';
       }
-      
+
       throw new dmException('Can not camelize '.$something);
     }
-    
+
     if (isset(self::$camelizeCache[$something]))
     {
       return self::$camelizeCache[$something];
     }
 
-    return self::$camelizeCache[$something] = preg_replace(
-      '/_(\w)/e',
-      "strtoupper('\\1')",
+    return self::$camelizeCache[$something] = preg_replace_callback(
+      '/_(\w)/',
+      function($m){ return strtoupper($m[1]); },
       ucfirst($something)
     );
   }
@@ -119,7 +119,7 @@ class dmString extends sfInflector
     {
       $text = str_replace('/', '_s_l_a_s_h_', $text);
     }
-    
+
     $text = self::transliterate($text);
 
     // strip all non word chars
@@ -128,7 +128,7 @@ class dmString extends sfInflector
 
     // trim and lowercase
     $text = self::strtolower(trim($text, '-'));
-    
+
     if ($preserveSlashes)
     {
       $text = str_replace('_s_l_a_s_h_', '/', $text);
@@ -147,10 +147,10 @@ class dmString extends sfInflector
     {
       return self::slugify($text, $preserveSlashes);
     }
-    
+
     return preg_replace('|^(.*)-(html?)$|', '$1.$2', self::slugify($text, $preserveSlashes));
   }
-  
+
   /**
    * Transform a slug into a human readable text with blank spaces
    * @return string text
@@ -171,17 +171,17 @@ class dmString extends sfInflector
     {
       sfConfig::set('dm_string_transliteration', include(dmOs::join(sfConfig::get('dm_core_dir'), 'data/dm/transliteration/default.php')));
     }
-    
+
     $text = strtr($text, sfConfig::get('dm_string_transliteration'));
 
 //    if (function_exists('iconv'))
 //    {
 //      $text = iconv('UTF-8', 'ASCII//TRANSLIT', $text);
 //    }
-    
+
     return $text;
   }
-  
+
   /**
    * Transform string options to array options
    * Symfony and jQuery styles are accepted
@@ -237,7 +237,7 @@ class dmString extends sfInflector
     {
       return null;
     }
-    
+
     $string = trim($string);
 
     /*
@@ -249,7 +249,7 @@ class dmString extends sfInflector
     $stopPos = min(false === $spacePos ? PHP_INT_MAX : $spacePos, false === $equalPos ? PHP_INT_MAX : $equalPos);
 
     $firstSharpPos = strpos($string, '#');
-    
+
     // if we have a # before the first space
     if (false !== $firstSharpPos && (false === $stopPos || $firstSharpPos < $stopPos))
     {
@@ -259,14 +259,14 @@ class dmString extends sfInflector
       {
         $opt['id'] = $id[1];
         $string = self::str_replace_once('#'.$id[1], '', $string);
-        
+
         if (false != $stopPos)
         {
           $stopPos = $stopPos - strlen($id[1]) - 1;
         }
       }
     }
-    
+
     // while we find dots in the string
     while(false !== ($firstDotPos = strpos($string, '.')))
     {
@@ -275,10 +275,10 @@ class dmString extends sfInflector
       {
         break;
       }
-      
+
       // fetch class
       preg_match('/\.([\w\-]*)/', $string, $class);
-      
+
       if (isset($class[1]))
       {
         if (isset($opt['class']))
@@ -289,13 +289,13 @@ class dmString extends sfInflector
         {
           $opt['class'] = array($class[1]);
         }
-        
+
         if (false != $stopPos)
         {
           $stopPos = $stopPos - strlen($class[1]) - 1;
         }
       }
-      
+
       $string = self::str_replace_once('.'.$class[1], '', $string);
     }
   }
@@ -308,7 +308,7 @@ class dmString extends sfInflector
     }
 
     $opt = array_merge($opt, sfToolkit::stringToArray($string));
-    
+
     $string = '';
   }
 
@@ -323,7 +323,7 @@ class dmString extends sfInflector
     {
       $val .= $values[rand( 0, 35 )];
     }
-    
+
     return $val;
   }
 
@@ -368,7 +368,7 @@ class dmString extends sfInflector
 
       $text = $text.$truncateString;
     }
-      
+
     return $text;
   }
 
@@ -378,22 +378,22 @@ class dmString extends sfInflector
     {
       $value = implode(self::ENCODING_SEPARATOR, $value);
     }
-    
+
     return base64_encode($value);
   }
-  
+
   public static function decode($coded_value)
   {
     $value = base64_decode($coded_value);
-    
+
     if (strpos($value, self::ENCODING_SEPARATOR) !== false)
     {
       $value = explode(self::ENCODING_SEPARATOR, $value);
     }
-    
+
     return $value;
   }
-  
+
   public static function getBaseFromUrl($url)
   {
     if ($pos = strpos($url, '?'))
@@ -414,7 +414,7 @@ class dmString extends sfInflector
 
     return array();
   }
-  
+
   /**
    * Returns a valid hex color uppercased without first #,
    * or null if not possible
@@ -425,10 +425,10 @@ class dmString extends sfInflector
     {
       return strtoupper(trim($color, '#'));
     }
-    
+
     return null;
   }
-  
+
   public static function lcfirst($string)
   {
     if (!empty($string))
@@ -446,17 +446,17 @@ class dmString extends sfInflector
       $first = $substr($string, 0, 1);
       $string = self::strtolower($first).$substr($string, 1, $strlen($string)-1);
     }
-    
+
     return $string;
   }
-  
+
   /**
    * replace $search by $replace in $subject, only once
    */
   public static function str_replace_once($search, $replace, $subject)
   {
     $firstChar = strpos($subject, $search);
-    
+
     if($firstChar !== false)
     {
       return substr($subject,0,$firstChar).$replace.substr($subject, $firstChar + strlen($search));
@@ -466,7 +466,7 @@ class dmString extends sfInflector
       return $subject;
     }
   }
-  
+
   /**
    * Convert a shorthand byte value from a PHP configuration directive to an integer value
    * @param    string   $value
@@ -477,13 +477,13 @@ class dmString extends sfInflector
     if ( is_numeric( $value ) )
     {
       return $value;
-    } 
+    }
     else
     {
       $valueLength = strlen( $value );
       $qty = substr( $value, 0, $valueLength - 1 );
       $unit = strtolower( substr( $value, $valueLength - 1 ) );
-      
+
       switch ( $unit )
       {
         case 'k':
@@ -496,11 +496,11 @@ class dmString extends sfInflector
           $qty *= 1073741824;
           break;
       }
-      
+
       return $qty;
     }
   }
-  
+
   public static function removeWeakWords($text, $weakWords = array())
   {
   	return str_replace($weakWords, array(), $text);
