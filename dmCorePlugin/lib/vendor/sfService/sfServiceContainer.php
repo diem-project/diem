@@ -349,7 +349,15 @@ class sfServiceContainer implements sfServiceContainerInterface, ArrayAccess, It
 
   static public function camelize($id)
   {
-    return preg_replace(array('/(^|_|-)+(.)/e', '/\.(.)/e'), array("strtoupper('\\2')", "'_'.strtoupper('\\1')"), $id);
+    return preg_replace_callback(
+      '/(^|_|-)+(.)/',
+      function ($matches) { return strtoupper($matches[2]); },
+      preg_replace_callback(
+        '/\.(.)/',
+        function ($matches) { return '_' . strtoupper($matches[1]); },
+        $id
+      )
+    );
   }
 
   static public function underscore($id)
