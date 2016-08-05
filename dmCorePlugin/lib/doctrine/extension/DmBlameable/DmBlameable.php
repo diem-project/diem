@@ -147,6 +147,7 @@ class Doctrine_Template_DmBlameable extends Doctrine_Template
         $this->hasOne($this->_options['relations']['created']['class'] . ' as ' . $this->_options['relations']['created']['name'], 
           array('local' => $this->_options['columns']['created']['name'],
                 'foreign' => $this->_options['relations']['created']['foreign'],
+                'onDelete' => $this->_options['relations']['created']['onDelete'],
           )
         );
 	//This relation adds foreignAlias to this relation - fizyk
@@ -162,6 +163,7 @@ class Doctrine_Template_DmBlameable extends Doctrine_Template
         $this->hasOne($this->_options['relations']['updated']['class'] . ' as ' . $this->_options['relations']['updated']['name'], 
           array('local' => $this->_options['columns']['updated']['name'],
                 'foreign' => $this->_options['relations']['updated']['foreign'],
+                'onDelete' => $this->_options['relations']['updated']['onDelete'],
           )
         );
 	//This relation adds foreignAlias to this relation - fizyk
