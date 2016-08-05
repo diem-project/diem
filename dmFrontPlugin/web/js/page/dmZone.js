@@ -11,7 +11,7 @@ $.widget('ui.dmZone', {
   {
     var self = this;
     
-    self.id = self.element.attr('id').substring(8);
+    self.id = self.element.prop('id').substring(8);
     
     self.initWidgets();
     
@@ -26,7 +26,7 @@ $.widget('ui.dmZone', {
   
   openEditDialog: function()
   {
-    var zone = this, dialog_class = zone.element.attr('id')+'_edit_dialog';
+    var zone = this, dialog_class = zone.element.prop('id')+'_edit_dialog';
     
     if ($('div.'+dialog_class).length)
     {
@@ -50,7 +50,7 @@ $.widget('ui.dmZone', {
             data:     { zone_id: zone.getId() },
             success:  function(datas)
             {
-              zone.element.attr('class', 'dm_zone '+ (datas[1] || "").replace(/\./g, ' ')).css('width', datas[0]);
+              zone.element.prop('class', 'dm_zone '+ (datas[1] || "").replace(/\./g, ' ')).css('width', datas[0]);
             }
           });
         }, 100);
@@ -79,7 +79,7 @@ $.widget('ui.dmZone', {
           }
           $dialog.html(html).trigger('dmAjaxResponse');
           if(!$('ul.error_list', $form).length) {
-            zone.element.attr('class', 'dm_zone '+ $('input.dm_zone_css_class', $form).val().replace(/\./g, ' ')).css('width', $('input.dm_zone_width', $form).val());
+            zone.element.prop('class', 'dm_zone '+ $('input.dm_zone_css_class', $form).val().replace(/\./g, ' ')).css('width', $('input.dm_zone_width', $form).val());
           }
           zone.element.unblock();
         }
@@ -134,7 +134,7 @@ $.widget('ui.dmZone', {
         // moving a widget
         else
         {
-          ui.placeholder.addClass(ui.item.attr('class')).css('width', ui.item.css('width')).html(ui.item.html());
+          ui.placeholder.addClass(ui.item.prop('class')).css('width', ui.item.css('width')).html(ui.item.html());
         }
 
         $('#dm_page div.dm_widgets').addClass('droppable-active');
@@ -176,7 +176,7 @@ $.widget('ui.dmZone', {
 
   addWidget: function($widget)
   {
-    var zone = this, mod_act = $widget.attr('id').replace(/dmwa\_/, '').split(/-/);
+    var zone = this, mod_act = $widget.attr('rel').replace(/dmwa\_/, '').split(/-/);
 
     $.ajax({
       url:      $.dm.ctrl.getHref('+/dmWidget/add')+"?to_dm_zone="+zone.getId(),
@@ -202,7 +202,7 @@ $.widget('ui.dmZone', {
 
   pasteWidget: function($widget)
   {
-    var zone = this, id = $widget.attr('id').replace(/dmwp\_/, '');
+    var zone = this, id = $widget.prop('id').replace(/dmwp\_/, '');
 
     // if widget was cutted then pasted on the same page,
     // remove the cutted widget

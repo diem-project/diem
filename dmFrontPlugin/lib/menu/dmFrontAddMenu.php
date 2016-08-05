@@ -65,12 +65,14 @@ class dmFrontAddMenu extends dmMenu
     
     return $this;
   }
-
+ /* THIS HAS TO BE REVISED - ID TO BE REMOVED, REL ATTR IS NOT VALID FOR SPAN. WHAT TO USE? THIS IS UI 1.8.14 */
   public function renderLabel()
   {
     if($widgetType = $this->getOption('widget_type'))
     {
-      return sprintf('<span class="widget_add move" id="dmwa_%s-%s">%s</span>',
+      return sprintf('<span class="widget_add move" rel="dmwa_%s-%s" id="dmwa_%s-%s">%s</span>',
+        $widgetType->getModule(),
+        $widgetType->getAction(),
         $widgetType->getModule(),
         $widgetType->getAction(),
         dmString::strtolower(parent::renderLabel())
@@ -78,8 +80,9 @@ class dmFrontAddMenu extends dmMenu
     }
     elseif($widget = $this->getOption('clipboard_widget'))
     {
-      return sprintf('<span class="widget_paste move dm_%s" id="dmwp_%d">%s</span>',
+      return sprintf('<span class="widget_paste move dm_%s" rel="dmwp_%d" id="dmwp_%d">%s</span>',
         $this->getOption('clipboard_method'),
+        $widget->get('id'),
         $widget->get('id'),
         dmString::strtolower(parent::renderLabel())
       );

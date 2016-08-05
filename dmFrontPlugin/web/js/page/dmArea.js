@@ -9,7 +9,7 @@ $.widget('ui.dmArea', {
   
   initialize: function()
   {
-    this.id = this.element.attr('id').substring(8);
+    this.id = this.element.prop('id').substring(8);
     
     this.initZones();
   },
@@ -60,7 +60,7 @@ $.widget('ui.dmArea', {
           // moving a zone
           else 
           {
-            ui.placeholder.addClass(ui.item.attr('class'))
+            ui.placeholder.addClass(ui.item.prop('class'))
             .css({
               'width': ui.item.css('width'),
               'margin': '0'

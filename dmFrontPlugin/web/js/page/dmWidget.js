@@ -11,7 +11,7 @@ $.widget('ui.dmWidget', {
 
   openEditDialog: function()
   {
-    var widget = this, restoreState = {}, dialogClass = widget.element.attr('id')+'_edit_dialog';
+    var widget = this, restoreState = {}, dialogClass = widget.element.prop('id')+'_edit_dialog';
 
     $.dm.removeTipsy();
 
@@ -46,7 +46,7 @@ $.widget('ui.dmWidget', {
       var $form = $('div.dm_widget_edit', $dialog);
       
       $form.find('.dm_form_elements :input').focus(function() {
-        restoreState.activeElementName = $(this).attr('name');
+        restoreState.activeElementName = $(this).prop('name');
       });
     }
     
@@ -57,7 +57,7 @@ $.widget('ui.dmWidget', {
       // Save active tab
       if ($tabbedFormActiveTab = $form.find('ul.ui-tabs-nav > li.ui-tabs-selected:first').orNot())
       {
-        restoreState.activeTab = $tabbedFormActiveTab.find('>a').attr('href');
+        restoreState.activeTab = $tabbedFormActiveTab.find('>a').prop('href');
       }
       
       // Save focused element
@@ -145,7 +145,7 @@ $.widget('ui.dmWidget', {
           var $a = $(this).addClass('s16_gear');
           
           $.ajax({
-            url:      $(this).attr('href'),
+            url:      $(this).prop('href'),
             success:  function()
             {
               $('#dm_tool_bar').dmFrontToolBar('reloadAddMenu', function()
@@ -176,7 +176,7 @@ $.widget('ui.dmWidget', {
         var $this = $(this).click(function() {
           $('#dm_tool_bar').dmFrontToolBar('openCodeEditor', function($codeEditor)
           {
-            $codeEditor.find('#dm_code_editor_file_open a[href='+$this.attr('href')+']').trigger('click');
+            $codeEditor.find('#dm_code_editor_file_open a[href='+$this.prop('href')+']').trigger('click');
           });
         });
       });
@@ -263,10 +263,10 @@ $.widget('ui.dmWidget', {
     }
     
     this.element
-    .attr('class', $('>div:first', '<div>'+html+'</div>').attr('class'))
+    .prop('class', $('>div:first', '<div>'+html+'</div>').prop('class'))
     .find('div.dm_widget_inner')
     .html($('>div.dm_widget_inner', html).html())
-    .attr('class', $('>div.dm_widget_inner', html).attr('class'))
+    .prop('class', $('>div.dm_widget_inner', html).prop('class'))
     .end()
     .unblock()
     .trigger('dmWidgetLaunch');
@@ -304,9 +304,9 @@ $.widget('ui.dmWidget', {
 
         $button.unblock();
 
-        var $close = $('#cboxClose').attr('rel', ''), interval = setInterval(function()
+        var $close = $('#cboxClose').prop('rel', ''), interval = setInterval(function()
         {
-          if($close.attr('rel') == 'dm_close')
+          if($close.prop('rel') == 'dm_close')
           {
             clearInterval(interval);
             $close.trigger('click');
@@ -320,9 +320,9 @@ $.widget('ui.dmWidget', {
   {
     var self = this;
     
-    if (this.element.attr('id') != undefined)
+    if (this.element.prop('id') != undefined)
     {
-      this.id = this.element.attr('id').substring(10);
+      this.id = this.element.prop('id').substring(10);
     }
     
     $('> a.dm_widget_edit, > a.dm_widget_fast_edit', this.element).click(function() {
