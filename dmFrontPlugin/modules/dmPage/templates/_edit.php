@@ -53,7 +53,8 @@ echo _tag('div.dm.dm_page_edit_wrap',
         _tag('li.dm_form_element.credentials.clearfix'.($page->isSecure ? '' : '.none'),
           $form['credentials']->label()->field()->error()
         ).
-        $form['is_indexable']->renderRow()
+        $form['is_indexable']->renderRow().
+        $form['is_ssl']->renderRow()
       )
     )
   ).

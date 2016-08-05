@@ -90,6 +90,7 @@ abstract class BaseDmPageFormFilter extends BaseFormFilterDoctrine
       'is_active'    => 'Boolean',
       'is_secure'    => 'Boolean',
       'is_indexable' => 'Boolean',
+      'is_ssl'       => 'Boolean',
       'lang'         => 'Text',
     );
   }

@@ -57,6 +57,21 @@ class BasedmFrontActions extends dmFrontBaseActions
 
 	protected function secure()
 	{
+		$request = $this->getRequest();
+
+		if ($this->page->get('is_ssl') && !$request->isSecure())
+		{
+			// page should be secured via HTTPS -> redirect from HTTP
+			$url = preg_replace('/^http/', 'https', $request->getUri());
+			$this->redirect($url, 301);
+		}
+		else if (!$this->page->get('is_ssl') && $request->isSecure())
+		{
+			// page should only be accessed via HTTP -> redirect from HTTPS
+			$url = preg_replace('/^https/', 'http', $request->getUri());
+			$this->redirect($url, 301);
+		}
+
 		$user = $this->getUser();
 
 		$accessDenied =
@@ -83,7 +98,7 @@ class BasedmFrontActions extends dmFrontBaseActions
 			}
 
 			// use main/signin page
-			$this->getRequest()->setParameter('dm_page', dmDb::table('DmPage')->fetchSignin());
+			$request->setParameter('dm_page', dmDb::table('DmPage')->fetchSignin());
 
 			$this->getResponse()->setStatusCode($user->isAuthenticated() ? 403 : 401);
 

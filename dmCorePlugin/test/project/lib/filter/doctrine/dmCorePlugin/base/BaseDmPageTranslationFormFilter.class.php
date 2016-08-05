@@ -54,6 +54,10 @@ abstract class BaseDmPageTranslationFormFilter extends BaseFormFilterDoctrine
 			$this->setWidget('is_indexable', new sfWidgetFormChoice(array('choices' => array('' => $this->getI18n()->__('yes or no', array(), 'dm'), 1 => $this->getI18n()->__('yes', array(), 'dm'), 0 => $this->getI18n()->__('no', array(), 'dm')))));
 			$this->setValidator('is_indexable', new sfValidatorBoolean());
 		}
+		if($this->needsWidget('is_ssl')){
+			$this->setWidget('is_ssl', new sfWidgetFormChoice(array('choices' => array('' => $this->getI18n()->__('yes or no', array(), 'dm'), 1 => $this->getI18n()->__('yes', array(), 'dm'), 0 => $this->getI18n()->__('no', array(), 'dm')))));
+			$this->setValidator('is_ssl', new sfValidatorBoolean());
+		}
 		if($this->needsWidget('lang')){
 			$this->setWidget('lang', new sfWidgetFormDmFilterInput());
 			$this->setValidator('lang', new sfValidatorDoctrineChoice(array('required' => false, 'model' => 'DmPageTranslation', 'column' => 'lang')));
@@ -96,6 +100,7 @@ abstract class BaseDmPageTranslationFormFilter extends BaseFormFilterDoctrine
       'is_active'    => 'Boolean',
       'is_secure'    => 'Boolean',
       'is_indexable' => 'Boolean',
+      'is_ssl'       => 'Boolean',
       'lang'         => 'Text',
     );
   }

@@ -131,6 +131,11 @@ abstract class BaseDmPage extends myDoctrineRecord
              'notnull' => true,
              'default' => true,
              ));
+        $this->hasColumn('is_ssl', 'boolean', null, array(
+             'type' => 'boolean',
+             'notnull' => true,
+             'default' => false,
+             ));
 
 
         $this->index('recordModuleAction', array(
@@ -161,6 +166,7 @@ abstract class BaseDmPage extends myDoctrineRecord
               7 => 'is_active',
               8 => 'is_secure',
               9 => 'is_indexable',
+              10 => 'is_ssl',
              ),
              'length' => 7,
              ));

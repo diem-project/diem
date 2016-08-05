@@ -9,7 +9,7 @@ class DmPageFrontEditForm extends DmPageForm
   {
     parent::configure();
     
-    $this->useFields(array('id', 'module', 'action', 'slug', 'name', 'title', 'h1', 'description', 'keywords', 'is_active', 'is_secure', 'credentials', 'is_indexable'), false);
+    $this->useFields(array('id', 'module', 'action', 'slug', 'name', 'title', 'h1', 'description', 'keywords', 'is_active', 'is_secure', 'credentials', 'is_indexable', 'is_ssl'), false);
     
     if(!sfConfig::get('dm_seo_use_keywords'))
     {
@@ -53,6 +53,7 @@ class DmPageFrontEditForm extends DmPageForm
     $this->widgetSchema['is_active']->setLabel('Available');
     $this->widgetSchema['is_secure']->setLabel('Requires authentication');
     $this->widgetSchema['is_indexable']->setLabel('Search engine crawlers');
+    $this->widgetSchema['is_ssl']->setLabel('Use HTTPS');
     
     if ($this->object->getNode()->isRoot())
     {
@@ -78,6 +79,7 @@ class DmPageFrontEditForm extends DmPageForm
       'is_secure' => $this->object->get('is_secure'),
       'credentials' => $this->object->get('credentials'),
       'is_indexable' => $this->object->get('is_indexable'),
+      'is_ssl' => $this->object->get('is_ssl'),
       'parent_id' => $this->object->getNodeParentId()
     ));
   }

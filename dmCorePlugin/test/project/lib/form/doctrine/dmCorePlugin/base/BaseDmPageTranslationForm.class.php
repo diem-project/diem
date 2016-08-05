@@ -68,6 +68,11 @@ abstract class BaseDmPageTranslationForm extends BaseFormDoctrine
 			$this->setValidator('is_indexable', new sfValidatorBoolean(array('required' => false)));
 		}
 		//column
+		if($this->needsWidget('is_ssl')){
+			$this->setWidget('is_ssl', new sfWidgetFormInputCheckbox());
+			$this->setValidator('is_ssl', new sfValidatorBoolean(array('required' => false)));
+		}
+		//column
 		if($this->needsWidget('lang')){
 			$this->setWidget('lang', new sfWidgetFormInputHidden());
 			$this->setValidator('lang', new sfValidatorChoice(array('choices' => array($this->getObject()->get('lang')), 'empty_value' => $this->getObject()->get('lang'), 'required' => false)));

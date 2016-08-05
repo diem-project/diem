@@ -16,7 +16,8 @@ class dmAdminPageMetaView
     'keywords' => 'Keywords',
     'is_active' => 'Available',
     'is_secure' => 'Secure',
-    'is_indexable' => 'Indexable'
+    'is_indexable' => 'Indexable',
+    'is_ssl' => 'HTTPS'
   );
 
   public function __construct(dmHelper $helper, dmI18n $i18n)
