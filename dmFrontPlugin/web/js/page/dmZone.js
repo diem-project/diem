@@ -176,7 +176,7 @@ $.widget('ui.dmZone', {
 
   addWidget: function($widget)
   {
-    var zone = this, mod_act = $widget.attr('id').replace(/dmwa\_/, '').split(/-/);
+    var zone = this, mod_act = $widget.attr('data-id').replace(/dmwa\_/, '').split(/-/);
 
     $.ajax({
       url:      $.dm.ctrl.getHref('+/dmWidget/add')+"?to_dm_zone="+zone.getId(),
