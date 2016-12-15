@@ -45,12 +45,20 @@ class dmConfigForm extends dmForm
   {
     $method = 'get'.dmString::camelize($setting->type).'SettingWidget';
 
+    if (!method_exists($this, $method)) {
+        $method = 'getTextSettingWidget';
+    }
+
     return $this->$method($setting);
   }
 
   public function getSettingValidator(DmSetting $setting)
   {
     $method = 'get'.dmString::camelize($setting->type).'SettingValidator';
+
+    if (!method_exists($this, $method)) {
+      $method = 'getTextSettingValidator';
+    }
 
     return $this->$method($setting);
   }
