@@ -123,7 +123,13 @@ class dmTesterResponse extends sfTesterResponse
       if (preg_match('/(xht|x)ml/i', $this->response->getContentType())) {
         $dom->loadXML($content);
       } else {
-        $dom->loadHTML($content);
+        // replace common HTML5 tags with div's
+        $tags = array('header', 'nav', 'section', 'article', 'footer', 'aside', 'canvas', 'noindex');
+        $dom->loadHTML(str_replace(
+            explode(',', array_reduce($tags, function($carry, $value){ return $carry .= ($carry ? ',' : '') . "<$value,</$value>";})),
+            explode(',', array_reduce($tags, function($carry, $value){ return $carry .= ($carry ? ',' : '') . "<div,</div>";})),
+            $content
+        ));
       }
 
       switch (pathinfo($checkDTD, PATHINFO_EXTENSION))
