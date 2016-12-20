@@ -144,14 +144,14 @@ class dmConfigForm extends dmForm
   // Type Time
   protected function getTimeSettingWidget(DmSetting $setting)
   {
-    $widget = new sfWidgetFormDateTime(array('format' => '%time%'), $setting->getParamsArray());
+    $widget = new sfWidgetFormTime(array(), $setting->getParamsArray());
 
     return $widget->setDefault($setting->get('value'));
   }
 
   protected function getTimeSettingValidator(DmSetting $setting)
   {
-    return new sfValidatorDateTime(array('datetime_output' => 'H:i'));
+    return new sfValidatorTime(array('time_output' => 'H:i'));
   }
 
   // Type Select List
