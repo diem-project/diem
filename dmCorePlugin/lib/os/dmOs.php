@@ -70,7 +70,7 @@ class dmOs
 
     $strip_len = $maxLen - strlen($random);
 
-    $strip_name = dmString::truncate(self::sanitizeDirName($file), $strip_len, "");
+    $strip_name = dmString::truncate(self::sanitizeDirName($dir), $strip_len, "");
 
     $final_name = $strip_name."-".$random;
 
