@@ -27,7 +27,7 @@ abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->
 		if($this->needsWidget('<?php echo $column->getFieldName()?>')){
 			$this->setWidget('<?php echo $column->getFieldName() ?>', new <?php echo $this->getWidgetClassForColumn($column) ?>(<?php echo $this->getWidgetOptionsForColumn($column) ?>));
 			$this->setValidator('<?php echo $column->getFieldName() ?>', new <?php echo $this->getValidatorClassForColumn($column) ?>(<?php echo $this->getValidatorOptionsForColumn($column) ?>));
-		}    
+		}
 <?php endforeach; ?>
 <?php foreach ($this->getManyToManyRelations() as $relation): ?>
 		//many to many
@@ -94,7 +94,7 @@ abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->
 <?php endforeach; ?>
     return $values;
   }
-  
+
   protected function doUpdateObject($values)
   {
     parent::doUpdateObject($values);
@@ -108,11 +108,10 @@ abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->
     return '<?php echo $this->modelName ?>';
   }
 
-<?php if ($this->getManyToManyRelations()): ?>
   public function updateDefaultsFromObject()
   {
     parent::updateDefaultsFromObject();
-
+<?php if ($this->getManyToManyRelations()): ?>
 <?php foreach ($this->getManyToManyRelations() as $relation): ?>
     if (isset($this->widgetSchema['<?php echo $this->underscore($relation['alias']) ?>_list']))
     {
@@ -120,7 +119,10 @@ abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->
     }
 
 <?php endforeach; ?>
+<?php endif; ?>
   }
+
+<?php if ($this->getManyToManyRelations()): ?>
 
   protected function doSave($con = null)
   {

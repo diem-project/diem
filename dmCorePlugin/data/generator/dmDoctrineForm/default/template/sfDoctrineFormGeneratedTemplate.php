@@ -101,7 +101,7 @@ abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->
     $this->setupInheritance();
 
     parent::setup();
-    
+
     // Unset automatic fields like 'created_at', 'updated_at', 'position'
     // override this method in your form to keep them
     parent::unsetAutoFields();
@@ -126,7 +126,7 @@ abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->
 <?php endforeach; ?>
     parent::doBind($values);
   }
-  
+
   public function processValues($values)
   {
     $values = parent::processValues($values);
@@ -135,7 +135,7 @@ abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->
 <?php endforeach; ?>
     return $values;
   }
-  
+
   protected function doUpdateObject($values)
   {
     parent::doUpdateObject($values);
@@ -150,11 +150,10 @@ abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->
   }
 
 <?php $manyRelations = array_merge($this->getManyToManyRelations(), $this->getOneToManyRelations()); ?>
-<?php if ($manyRelations): ?>
   public function updateDefaultsFromObject()
   {
     parent::updateDefaultsFromObject();
-
+<?php if ($manyRelations): ?>
 <?php foreach ($manyRelations as $relation): ?>
     if (isset($this->widgetSchema['<?php echo $this->underscore($relation['alias']) ?>_list']))
     {
@@ -162,8 +161,10 @@ abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->
     }
 
 <?php endforeach; ?>
+<?php endif; ?>
   }
 
+<?php if ($manyRelations): ?>
   protected function doSave($con = null)
   {
 <?php foreach ($manyRelations as $relation): ?>
