@@ -36,6 +36,8 @@ class dmBrowserCheck
   {
     switch($browser->getName())
     {
+      case 'android':
+        $isSupported = version_compare($browser->getVersion(), 4) >= 0; break;
       case 'firefox':
         $isSupported = version_compare($browser->getVersion(), 3.5) >= 0; break;
       case 'safari':
