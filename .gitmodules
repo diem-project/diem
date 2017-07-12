@@ -1,6 +1,3 @@
-[submodule "dmCorePlugin/plugins/sfWebBrowserPlugin"]
-	path = dmCorePlugin/plugins/sfWebBrowserPlugin
-	url = https://github.com/diem-project/sfWebBrowserPlugin.git
 [submodule "dmCorePlugin/plugins/sfFeed2Plugin"]
 	path = dmCorePlugin/plugins/sfFeed2Plugin
 	url = https://github.com/diem-project/sfFeed2Plugin.git
