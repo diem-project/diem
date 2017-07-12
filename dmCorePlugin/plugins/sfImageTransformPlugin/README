@@ -1,0 +1,265 @@
+# Image manipulation made easy - sfImageTransformPlugin #
+
+## Introduction ##
+
+
+The aim of sfImageTransformPlugin is take the pain out of image manipulating in PHP/symfony. sfImageTransformPlugin is great for but not limited to common tasks like creating thumbnails, adding text to dynamic images or watermarking.
+
+sfImageTransformPlugin works by applying one or more "transform" to the image.  A transform maybe a simple action like resize or thumnnail, mirror or more complex like an overlay (watermarks) and pixelize.
+
+Multiple tranforms can be easily applied by chaining the transform calls as seen below. It is also very easy to extend and create your own transforms, see "Writing your own transforms" for an example. 
+
+*Example 1. Simple chaining of transforms*
+
+Load an image, resize it to 100 pixels wide (preserving the aspect ratio) and add some text
+
+    $img = new sfImage('image1.jpg', 'image/jpg');
+
+    $img->resize(100,null)->text('Writing text on an image is easy!!', 10, 10, 20,'Arial', '#FF0000');
+    
+    $img->save();
+
+Installation
+------------
+
+To install the plugin for a symfony project, the usual process is to use the symfony command line:
+
+    symfony plugin:install sfImageTransformPlugin
+
+for symfony 1.0
+
+    symfony plugin-install http://plugins.symfony-project.com/sfImageTransformPlugin
+
+Alternatively, if you don't have PEAR installed, you can download the latest package attached to this plugin's wiki page and extract it under your project's plugins/ directory.
+
+Activate the plugin in your ProjectConfiguration.class.php.
+
+    class ProjectConfiguration extends sfProjectConfiguration
+    {
+      public function setup()
+      {
+        $this->enablePlugins(..., 'sfImageTransformPlugin', ...);
+
+
+Clear the cache to enable the autoloading to find the new classes:
+
+    php symfony cc
+
+Note: The plugin requires either GD or ImageMagick graphics libraries to be installed on the server.
+
+## Using sfImageTransformPlugin ##
+
+### Geting started ###
+
+*Example 2. Chaining transforms*
+
+The simplest way to use sfImageTransform is to use method chaining. In an action:
+
+    $img = new sfImage('image1.jpg', 'image/jpg');
+
+    $response = $this->getResponse();
+
+    $response->setContentType($img->getMIMEType());    
+
+    $img->resize(1000,null)->overlay(new sfImage('logo.png'), 'bottom-right')
+
+    $response->setContent($img); 
+
+    return sfView::NONE;
+
+
+### Thumbnailing ###
+
+sfImageTransformPlugin supports several different types of thumbnailing:
+
+  * fit - Creates an image of the specified size and fits the thumbnailed inside. This will produce uniform size thumbnails. (default)
+  * scale - Scales the image to fit inside the specified dimensions.
+  * inflate, deflate - simply resizes the image to the specified dimensions, proportions are not preserved.
+  * left, right, top, bottom, center, bottom-left, bottom-right, top-left, top-right - scales the image to specified size and then crops
+
+*Example 3. Thumbnailing*
+
+Create a 150x150 pixel thumbnail
+
+    $img = new sfImage('image1.jpg', 'image/jpg');
+
+    $img->thumbnail(150,150);
+    $img->setQuality(50);
+    $img->saveAs('image1_150x150.gif');
+        
+*Example 4. Watermarking*
+
+Overlaying another image such as a logo or watermark is easy.
+
+Create a 150x150 pixel thumbnail
+
+    $img = new sfImage('image1.jpg'); // using MIME detection
+
+    $img->overlay(new sfImage('logo.png'), 'top-left'); // or you can use coords array($x,$y)
+    $img->saveAs('image1_watermarked.jpg');
+    
+*Example 5. Standalone, useful for bulk use on many images*
+
+    $img = new sfImage('image1.jpg', 'image/jpg', 'ImageMagick');
+    
+    $scale = new sfImageScaleImageMagick(0.5);
+
+    $img = $scale->execute($img);
+
+    $img->saveAs('image2.gif');
+
+
+Note: If you install one of the supported MIME detection libraries you do not have to pass in the image's MIME type. See the section "Enabling MIME detection" for details.
+
+## Included tranforms ##
+
+sfImageTransform comes bundled with many transforms, which are listed below.  The plugin has full phpdoc style API documentation, including all the available transforms. This can be generated using [phpDocumentor](http://www.phpdoc.org/)
+
+Once phpDocumentor is installed you can generate the docs from inside the plugin's directory as follows, 
+
+    phpdoc -o  HTML:frames:DOM/phphtmllib -d . -t docs
+
+Generic
+
+  * border
+  * callback
+  * resize
+  * thumbnail
+
+GD
+
+  * alphaMask, arc
+  * brightness
+  * colorize, contrast, crop
+  * edgeDetect, ellipse, emboss
+  * fill, flip
+  * gamma, gaussianBlur, greyscale
+  * line
+  * mirror
+  * negate, noise
+  * opacity, overlay
+  * pixelBlur, pixelize
+  * rectangle, rotate, roundedCorners
+  * scale, scatter, selectiveBlur, sketchy, smooth
+  * text, transparency
+
+
+ImageMagick
+
+  * brightness
+  * colorize, crop
+  * fill, flip
+  * greyscale
+  * line
+  * mirror
+  * opacity, overlay
+  * prettyThumbnail
+  * rectangle, rotate
+  * scale
+  * text, trim
+            
+## Writing your own transforms ##
+
+sfImageTransformPlugin is designed to be easily extended. To make a new transform you simple create a class that extends the abstract class (sfImageTransformAbstract) and implements the transform method.
+
+Transforms are written specifically for the image library you want to use or generically if they don't use image library specific calls (see the thumbnail transform).
+
+The naming convention for a transform is important. For generic transforms the class should be named sfImage#transform name#Generic and for graphic library specific transforms, sfImage#transform name##image library#.class.php and class names should be sfImage#transform name##image library#
+
+*Example 6. Creating a new GD transform, "Example"*
+
+sfImageExampleGD.class.php
+
+    class sfImageExampleGD extends sfImageTransformAbstract
+    {
+      // Parameters can be passed in the standard way
+      public funnction __construct($arg1, $arg2)
+      {
+        ...
+      }
+    
+      public function execute(sfImage $image)
+      {
+        
+        // Get the actual image resource  
+        $resource = $image->getAdapter()->getHolder();
+        
+        // Manipulate image using the GD functions
+        ...
+                
+        // To set a new resource for the image object
+        $image->getAdapter()->setHolder($dest_resource);
+      
+      }  
+    
+    }
+
+Note: Don't forget to symfony cc so the new class is found!
+
+action.class.php
+
+    $img = new sfImage('image1.jpg', 'image/jpg');
+    
+    $img->resize(1000,null)->example($arg1, $arg2);
+
+    $response = $this->getResponse();
+
+    // Output the right content type
+    $response->setContentType($img->getMIMEType());    
+
+    $response->setContent($img); 
+
+    return sfView::NONE;
+      
+## Configuration ##
+
+### Overriding default settings ###
+
+You can override the default settings used by redefining the plugin settings in your project
+
+app.yml
+
+    all:
+      sfImageTransformPlugin:
+        default_adapter: GD # GD or ImageMagick
+        default_image:
+          mime_type: image/png
+          filename: Untitled.png
+          width: 100
+          height: 100
+          color: '#FFFFFF'
+        font_dir: /usr/share/fonts/truetype/msttcorefonts
+        mime_type:
+          auto_detect: false
+          library: gd_mime_type #  gd_mime_type (GD), Fileinfo (PECL), MIME_Type (PEAR)
+
+### Enabling MIME detection ###
+
+sfImageTransformPlugin currently supports three MIME type detection methods, GD's getimagesize, PECL's Fileinfo and PEAR's MIME_Type. These can be installed via PECL and PEAR respectively.
+
+To enable support in the plugin set auto_detect to true and select the library you have installed.
+
+app.yml
+      sfImageTransformPlugin:
+        mime_type:
+          auto_detect: true
+          library: gd_mime_type # Fileinfo (PECL), MIME_Type (PEAR), gd_mime_type (GD)
+          
+          
+With MIME detection enabled there is no need to specific the MIME types in the method calls.
+
+*Example. Add a watermark to the uploaded image "file"*
+
+    $filename = $this->getRequest()->getFileName('file');
+    
+    $img = new sfImage($filename);
+
+    $response = $this->getResponse();
+
+    $response->setContentType($img->getMIMEType());    
+
+    $img->resize(150,null)->overlay(new sfImage('watermark.png')); 
+    
+    $img->saveAs(sfConfig::get('sf_upload_dir'). DIRECTORY_SEPARATOR . 'watermarked' . DIRECTORY_SEPARATOR . $filename);
+
+    return sfView::NONE;

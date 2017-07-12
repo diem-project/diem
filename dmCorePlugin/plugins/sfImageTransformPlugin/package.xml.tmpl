@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" packagerversion="1.4.1" version="2.0" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
+  <name>sfImageTransformPlugin</name>
+  <channel>pear.symfony-project.com</channel>
+  <summary>Powerful but simple to use image manipulation plugin</summary>
+  <description>Powerful but simple to use image manipulation plugin</description>
+  <lead>
+    <name>Stuart Lowes</name>
+    <user>stunami</user>
+    <email>stuart.lowes@gmail.com</email>
+    <active>yes</active>
+  </lead>
+  <date>##CURRENT_DATE##</date>
+  <version>
+    <release>##PLUGIN_VERSION##</release>
+    <api>##API_VERSION##</api>
+  </version>
+  <stability>
+    <release>##STABILITY##</release>
+    <api>##STABILITY##</api>
+  </stability>
+  <license uri="http://www.symfony-project.org/license">MIT license</license>
+  <notes>-</notes>
+  <contents>
+    ##CONTENTS##
+  </contents>
+  <dependencies>
+    <required>
+      <php>
+        <min>5.2.4</min>
+      </php>
+      <pearinstaller>
+        <min>1.4.1</min>
+      </pearinstaller>
+      <package>
+        <name>symfony</name>
+        <channel>pear.symfony-project.com</channel>
+        <min>1.0.0</min>
+        <max>1.5.0</max>
+        <exclude>1.5.0</exclude>
+      </package>
+    </required>
+  </dependencies>
+  <phprelease></phprelease>
+  <changelog>
+    <release>
+     <version>
+      <release>1.4.1</release>
+      <api>1.0.1</api>
+     </version>
+     <stability>
+      <release>stable</release>
+      <api>stable</api>
+     </stability>
+     <license uri="http://www.symfony-project.com/license">MIT license</license>
+     <license>MIT</license>
+     <date>2010-08-17</date>
+     <notes>
+      * Improved transparency in GD adapter
+      * Fixed text GD transform
+      * Added new thumbnailing types
+     </notes>
+    </release>
+    <release>
+     <version>
+      <release>1.4.0</release>
+      <api>1.0.1</api>
+     </version>
+     <stability>
+      <release>stable</release>
+      <api>stable</api>
+     </stability>
+     <license uri="http://www.symfony-project.com/license">MIT license</license>
+     <license>MIT</license>
+     <date>2010-02-21</date>
+     <notes>
+      * Adding support for floodFillPaintImage as this has replaced the depricated colorFloodfillImage
+      * Fix to property typo
+      * Improvements to computeTargetSize method
+      * Adding new transforms sfImageAlphaMaskGD, sfImageRoundedCornersGD
+      * Fixed bug with PHP5.3 and Fileinfo
+      * Updated docs
+     </notes>
+    </release>
+    <release>
+     <version>
+      <release>1.3.1</release>
+      <api>1.0.1</api>
+     </version>
+     <stability>
+      <release>stable</release>
+      <api>stable</api>
+     </stability>
+     <license uri="http://www.symfony-project.com/license">MIT license</license>
+     <license>MIT</license>
+     <date>2009-12-24</date>
+     <notes>
+      * Fixing package
+      * Fix to GD resize simple transform
+     </notes>
+    </release>
+    <release>
+     <version>
+      <release>1.3.1</release>
+      <api>1.0.1</api>
+     </version>
+     <stability>
+      <release>stable</release>
+      <api>stable</api>
+     </stability>
+     <license uri="http://www.symfony-project.com/license">MIT license</license>
+     <license>MIT</license>
+     <date>2009-12-24</date>
+     <notes>
+      * Fixing package
+      * Fixing alpha transpareny bug in GD simple resize transform
+     </notes>
+    </release>
+    <release>
+     <version>
+      <release>1.3.0</release>
+      <api>1.0.1</api>
+     </version>
+     <stability>
+      <release>stable</release>
+      <api>stable</api>
+     </stability>
+     <license uri="http://www.symfony-project.com/license">MIT license</license>
+     <license>MIT</license>
+     <date>2009-12-01</date>
+     <notes>
+      * Support for symfony 1.3/1.4
+      * Adding alpha support to colorizing using the GD adapter (thanks to caefer)
+     </notes>
+    </release>
+    <release>
+     <version>
+      <release>1.2.0</release>
+      <api>1.0.1</api>
+     </version>
+     <stability>
+      <release>stable</release>
+      <api>stable</api>
+     </stability>
+     <license uri="http://www.symfony-project.com/license">MIT license</license>
+     <license>MIT</license>
+     <date>2009-09-30</date>
+     <notes>
+      * Improved README and Documentation
+      * Making mime detection from filename case insensitive
+      * Small improvement to validation and error reporting for thumbnailer
+      * Greyscale transform for imagemagick (robadob)
+      * Fixed loadString method for ImageMagick (Tony Dubriel)
+      * Workaround fix for ImageMagick crop bug (Miloslav Kmeť)
+      * Adding width, height and color to the options for new images
+     </notes>
+    </release>
+    <release>
+     <version>
+      <release>1.1.0</release>
+      <api>1.0.1</api>
+     </version>
+     <stability>
+      <release>stable</release>
+      <api>stable</api>
+     </stability>
+     <license uri="http://www.symfony-project.com/license">MIT license</license>
+     <license>MIT</license>
+     <date>2009-01-19</date>
+     <notes>
+      * Added improved resize transform, which can now fix proportions and stop image inflation
+      * Added best fit thumbnailer as default. This creates set size images with the sized to fit
+      * Fixed transparency bug with the GD adapter
+      * Improved phpdocs
+     </notes>
+    </release>
+    <release>
+     <version>
+      <release>1.0.1</release>
+      <api>1.0.0</api>
+     </version>
+     <stability>
+      <release>stable</release>
+      <api>stable</api>
+     </stability>
+     <license uri="http://www.symfony-project.com/license">MIT license</license>
+     <license>MIT</license>
+     <date>2009-01-19</date>
+     <notes>
+      * Fixing argument order bug with ImageMagic? crop class
+      * Updating overlay labels for ImageMagic overlay transform
+      * Completing class getter cropping transforms
+      * Updated and improved documentation
+     </notes>
+    </release>
+    <release>
+     <version>
+      <release>1.0.0</release>
+      <api>1.0.0</api>
+     </version>
+     <stability>
+      <release>stable</release>
+      <api>stable</api>
+     </stability>
+     <license uri="http://www.symfony-project.com/license">MIT license</license>
+     <license>MIT</license>
+     <date>2009-01-08</date>
+     <notes>
+      * Fixed preserving of quality when copying or saving as
+      * Addded support for GD MIME detection using GetImageSize?
+      * Fixed thumbnail transform
+      * Renamed thumbnail transform methods allowed while maintaing backwards compatibility
+      * Renamed overlay position labels and backwards compatibility
+      * Added generic border transform
+      * General code tidying and improved documentation
+     </notes>
+    </release>
+    <release>
+     <version>
+      <release>0.2.3</release>
+      <api>0.1.0</api>
+     </version>
+     <stability>
+      <release>beta</release>
+      <api>beta</api>
+     </stability>
+     <license uri="http://www.symfony-project.com/license">MIT license</license>
+     <license>MIT</license>
+     <date>2009-01-08</date>
+     <notes>
+      * Fixing bug when saving images
+      * Fixing transparency problems with GD adapter
+      * GD rotate tranform now requires GD rotate support
+     </notes>
+    </release>
+    <release>
+     <version>
+      <release>0.2.2</release>
+      <api>0.1.0</api>
+     </version>
+     <stability>
+      <release>beta</release>
+      <api>beta</api>
+     </stability>
+     <license uri="http://www.symfony-project.com/license">MIT license</license>
+     <license>MIT</license>
+     <date>2009-01-08</date>
+     <notes>
+      * Fixing package
+     </notes>
+    </release>
+    <release>
+     <version>
+      <release>0.2.1</release>
+      <api>0.1.0</api>
+     </version>
+     <stability>
+      <release>beta</release>
+      <api>beta</api>
+     </stability>
+     <license uri="http://www.symfony-project.com/license">MIT license</license>
+     <license>MIT</license>
+     <date>2009-01-01</date>
+     <notes>
+      * Updating package info
+     </notes>
+    </release>
+    <release>
+     <version>
+      <release>0.2.0</release>
+      <api>0.1.0</api>
+     </version>
+     <stability>
+      <release>beta</release>
+      <api>beta</api>
+     </stability>
+     <license uri="http://www.symfony-project.com/license">MIT license</license>
+     <license>MIT</license>
+     <date>2009-01-01</date>
+     <notes>
+      * Adding support for symfony 1.1/1.2
+      * Adding support for MIME detection
+      * Adding opacity transform
+      * Adding thumbnail transform
+      * Fixed copy bug
+     </notes>
+    </release>
+    <release>
+     <version>
+      <release>0.1.0</release>
+      <api>0.1.0</api>
+     </version>
+     <stability>
+      <release>beta</release>
+      <api>beta</api>
+     </stability>
+     <license uri="http://www.symfony-project.com/license">MIT license</license>
+     <license>MIT</license>
+     <date>2008-10-13</date>
+     <notes>* stunami: initial release</notes>
+    </release>
+  </changelog>
+</package>
