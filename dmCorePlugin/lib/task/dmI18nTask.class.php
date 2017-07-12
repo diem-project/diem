@@ -11,7 +11,7 @@ class dmI18nTask extends dmContextTask
   protected function configure()
   {
     parent::configure();
-    
+
     $this->addArguments(array(
       new sfCommandArgument('application', sfCommandArgument::REQUIRED, 'The application name'),
       new sfCommandArgument('culture', sfCommandArgument::REQUIRED, 'The target culture'),
@@ -67,11 +67,11 @@ EOF;
   protected function execute($arguments = array(), $options = array())
   {
     $this->withDatabase();
-    
+
     // clear options non applicable for sfI18n extract task
-    unset($options['application'], $options['env'], $arguments['task']);
+    unset($options['application'], $options['env'], $arguments['task'], $arguments['catalog']);
 
     $this->runTask('i18n:extract', $arguments, $options);
   }
-  
+
 }
