@@ -1,6 +1,3 @@
-[submodule "dmCorePlugin/plugins/sfFormExtraPlugin"]
-	path = dmCorePlugin/plugins/sfFormExtraPlugin
-	url = https://github.com/diem-project/sfFormExtraPlugin.git
 [submodule "symfony"]
 	path = symfony
 	url = https://github.com/diem-project/symfony.git
