@@ -1,0 +1,14 @@
+all:
+
+  dmTagPlugin:
+
+    fcbkcomplete:           # options to pass to the jQuery.fcbkcomplete plugin
+                            # see http://www.emposha.com/javascript/fcbkcomplete.html
+
+      newel:          true  # show typed text like a element
+      filter_case:    false # case sensitive filter
+      filter_hide:    false # show/hide filtered items
+      maxshownitems:  30    # maximum numbers that will be shown at dropdown list (less better performance)
+      maxitems:             # maximum item that can be added to the list
+      firstselected:  false # automaticly select first element from dropdown
+      complete_text: "Start to type..."

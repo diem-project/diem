@@ -1,0 +1,31 @@
+generator:
+  class: dmAdminDoctrineGenerator
+  param:
+    model_class: DmTag
+    theme: dmAdmin
+    non_verbose_templates: true
+    with_show: false
+    route_prefix: dm_tag
+    with_doctrine_route: false
+    config:
+      actions: ~
+      fields: {  }
+      list:
+        display:
+          - '=name'
+        sort:
+          - name
+          - asc
+        table_method: getAdminListQuery
+        table_count_method: ~
+        sortable: false
+      filter:
+        display:
+          - name
+      form:
+        display:
+          NONE: [name]
+        class: DmTagAdminForm
+        fields: {  }
+      edit: ~
+      new: ~

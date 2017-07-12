@@ -1,9 +1,6 @@
 [submodule "symfony"]
 	path = symfony
 	url = https://github.com/diem-project/symfony.git
-[submodule "dmCorePlugin/test/project/plugins/dmTagPlugin"]
-	path = dmCorePlugin/test/project/plugins/dmTagPlugin
-	url = https://github.com/diem-project/dmTagPlugin.git
 [submodule "dmCorePlugin/lib/vendor/php-html-writer"]
 	path = dmCorePlugin/lib/vendor/php-html-writer
 	url = https://github.com/ornicar/php-html-writer.git

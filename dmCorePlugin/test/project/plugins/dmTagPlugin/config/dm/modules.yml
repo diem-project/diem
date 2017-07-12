@@ -1,0 +1,12 @@
+Content:
+
+  Tag:
+    
+    dmTag:
+      model:            DmTag
+      name:             Tag
+      page:             true
+      components:
+        list:
+        show:
+        popular:
