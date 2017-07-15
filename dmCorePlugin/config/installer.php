@@ -202,9 +202,18 @@ $this->filesystem->mirror(
   array('override' => true)
 );
 
+// diem relative in project root
+$diemCoreStarter = dmOs::join(sfConfig::get('dm_core_dir'), 'lib/core/dm.php');
+if(stripos(sfConfig::get('dm_core_dir'), sfConfig::get('sf_root_dir')) === 0){
+  $diemCoreStarter = sprintf('dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.%s', var_export(str_ireplace(sfConfig::get('sf_root_dir'), '', $diemCoreStarter), true));  
+}
+else{
+  $diemCoreStarter = var_export($diemCoreStarter, true);
+}
+
 $this->replaceTokens(sfConfig::get('sf_config_dir'), array(
   'SYMFONY_CORE_AUTOLOAD' => $symfonyCoreAutoload,
-  'DIEM_CORE_STARTER'     => var_export(dmOs::join(sfConfig::get('dm_core_dir'), 'lib/core/dm.php'), true),
+  'DIEM_CORE_STARTER'     => $diemCoreStarter,
   'DIEM_WEB_DIR'          => "sfConfig::get('sf_root_dir').'/".$settings['web_dir_name']."'",
   'DIEM_CULTURE'          => var_export($settings['culture'], true),
   'SEND_REPORTS'          => var_export($sendReports, true)
