@@ -1,9 +1,0 @@
-[submodule "symfony"]
-	path = symfony
-	url = https://github.com/diem-project/symfony.git
-[submodule "dmCorePlugin/lib/vendor/php-html-writer"]
-	path = dmCorePlugin/lib/vendor/php-html-writer
-	url = https://github.com/ornicar/php-html-writer.git
-[submodule "dmCorePlugin/lib/vendor/php-user-agent"]
-	path = dmCorePlugin/lib/vendor/php-user-agent
-	url = https://github.com/diem-project/php-user-agent.git
