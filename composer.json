@@ -1,0 +1,37 @@
+{
+    "name": "diem-project/diem",
+    "require": {
+        "diem-project/symfony": "master@dev",
+        "ornicar/php-user-agent": "^1.0",
+        "ornicar/php-html-writer": "master@dev"
+    },
+      "autoload": {
+        "classmap": [
+            "vendor/ornicar/php-html-writer/lib"
+        ]
+    },
+    "scripts": {
+        "diem-patch-and-autoload-fix": [
+            "cd vendor/diem-project/diem/; grep -q '/lib/vendor/php-user-agent/lib/phpUserAgent.php' dmCorePlugin/lib/browser/dmBrowser.php && git apply ../../../composer_scripts/diem-classpath.patch; true",
+            "composer dump-autoload -o"
+        ],
+        "post-update-cmd": [
+            "@diem-patch-and-autoload-fix"
+        ],
+        "post-install-cmd": [
+             "@diem-patch-and-autoload-fix"
+        ],
+        "test": [
+            "@cc",
+            "phpunit"
+        ],
+        "test-with-coverage":[
+            "@cc",
+            "phpunit --configuration phpunit-coverage.xml"
+        ],
+        "cc": [
+            "composer dump-autoload -o",
+            "./symfony dm:clear-cache"
+        ]
+    }
+}
