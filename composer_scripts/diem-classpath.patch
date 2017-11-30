@@ -1,0 +1,34 @@
+diff --git a/dmCorePlugin/lib/browser/dmBrowser.php b/dmCorePlugin/lib/browser/dmBrowser.php
+index 00ad358..a30b30c 100644
+--- a/dmCorePlugin/lib/browser/dmBrowser.php
++++ b/dmCorePlugin/lib/browser/dmBrowser.php
+@@ -1,6 +1,5 @@
+ <?php
+ 
+-require_once(sfConfig::get('dm_core_dir').'/lib/vendor/php-user-agent/lib/phpUserAgent.php');
+ 
+ class dmBrowser extends phpUserAgent
+ {
+diff --git a/dmCorePlugin/lib/browser/dmUserAgentParser.php b/dmCorePlugin/lib/browser/dmUserAgentParser.php
+index 5068257..c6551ba 100644
+--- a/dmCorePlugin/lib/browser/dmUserAgentParser.php
++++ b/dmCorePlugin/lib/browser/dmUserAgentParser.php
+@@ -1,6 +1,5 @@
+ <?php
+ 
+-require_once(sfConfig::get('dm_core_dir').'/lib/vendor/php-user-agent/lib/phpUserAgentStringParser.php');
+ 
+ class dmUserAgentParser extends phpUserAgentStringParser
+ {
+diff --git a/dmCorePlugin/lib/view/dmHelper.php b/dmCorePlugin/lib/view/dmHelper.php
+index fdfe68b..1ca10cd 100644
+--- a/dmCorePlugin/lib/view/dmHelper.php
++++ b/dmCorePlugin/lib/view/dmHelper.php
+@@ -1,7 +1,5 @@
+ <?php
+ 
+-require_once(sfConfig::get('dm_core_dir').'/lib/vendor/php-html-writer/lib/phpHtmlWriter.php');
+-
+ class dmHelper extends dmConfigurable
+ {
+   protected
