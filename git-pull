@@ -1,5 +1,0 @@
-#!/bin/sh
-echo Pulling Diem from origin/master
-git pull origin master
-echo Pulling submodules
-git submodule update --init --recursive
