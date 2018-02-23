@@ -19,6 +19,8 @@ class dmSetupTask extends dmContextTask
       new sfCommandOption('load-doctrine-data', 'd', sfCommandOption::PARAMETER_NONE, 'Run dm:data with -l option'),
       new sfCommandOption('dont-load-data', 'n', sfCommandOption::PARAMETER_NONE, 'Do not load data'),
       new sfCommandOption('no-permissions', 'p', sfCommandOption::PARAMETER_NONE, 'Do not check file permissions'),
+      new sfCommandOption('dont-build', 'b', sfCommandOption::PARAMETER_NONE, 'Do not rebuild models'),
+      new sfCommandOption('dont-generate', 'g', sfCommandOption::PARAMETER_NONE, 'Do not generate modules'),
     ));
 
     $this->namespace = 'dm';
@@ -66,9 +68,12 @@ EOF;
       );
     }
 
-    $this->runTask('doctrine:build', array(), array('model' => true));
+    if(!$options['dont-build'] || $options['clear-db'] || $options['clear-tables'] || $this->isProjectLocked())
+    {
+      $this->runTask('doctrine:build', array(), array('model' => true));
+    }
 
-    if (( $options['clear-db'] || $options['clear-tables']) || $this->isProjectLocked())
+    if ($options['clear-db'] || $options['clear-tables'] || $this->isProjectLocked())
     {
       $this->reloadAutoload();
       if($options['clear-db'])
@@ -100,9 +105,11 @@ EOF;
 
     $this->getContext()->reloadModuleManager();
 
-    $this->runTask('doctrine:build-forms', array(), array('generator-class' => 'dmDoctrineFormGenerator'));
-
-    $this->runTask('doctrine:build-filters', array(), array('generator-class' => 'dmDoctrineFormFilterGenerator'));
+    if(!$options['dont-build'] || $options['clear-db'] || $options['clear-tables'] || $this->isProjectLocked())
+    {
+      $this->runTask('doctrine:build-forms', array(), array('generator-class' => 'dmDoctrineFormGenerator'));
+      $this->runTask('doctrine:build-filters', array(), array('generator-class' => 'dmDoctrineFormFilterGenerator'));
+    }
 
     $this->runTask('dm:publish-assets');
 
@@ -112,20 +119,26 @@ EOF;
 
     $this->getContext()->reloadModuleManager();
 
-    $this->runTask('dmAdmin:generate', array(), array('env' => $options['env']));
-
+    if(!$options['dont-generate'])
+    {
+      $this->runTask('dmAdmin:generate', array(), array('env' => $options['env']));
+    }
+    
     if(!$options['dont-load-data'])
     {
     	$this->runTask('dm:data', array(), array('load-doctrine-data' => $options['load-doctrine-data'], 'env' => $options['env']));
     }
 
-    $this->logSection('diem', 'generate front modules');
-    if (!$return = $this->context->get('filesystem')->sf('dmFront:generate --env=' . dmArray::get($options, 'env', 'dev')))
+    if(!$options['dont-generate'])
     {
-      $this->logBlock(array(
-        'Can\'t run dmFront:generate: '.$this->context->get('filesystem')->getLastExec('output'),
-        'Please run "php symfony dmFront:generate" manually to generate front templates'
-      ), 'ERROR');
+      $this->logSection('diem', 'generate front modules');
+      if (!$return = $this->context->get('filesystem')->sf('dmFront:generate --env=' . dmArray::get($options, 'env', 'dev')))
+      {
+        $this->logBlock(array(
+          'Can\'t run dmFront:generate: '.$this->context->get('filesystem')->getLastExec('output'),
+          'Please run "php symfony dmFront:generate" manually to generate front templates'
+        ), 'ERROR');
+      }
     }
 
     if(!$options['no-permissions'])
