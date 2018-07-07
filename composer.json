@@ -26,7 +26,7 @@
     },
     "scripts": {
         "diem-patch-and-autoload-fix": [
-            "cd vendor/diem-project/diem/; grep -q '/lib/vendor/php-user-agent/lib/phpUserAgent.php' dmCorePlugin/lib/browser/dmBrowser.php && git apply ../../../composer_scripts/diem-classpath.patch; true",
+            "grep -q '/lib/vendor/php-user-agent/lib/phpUserAgent.php' dmCorePlugin/lib/browser/dmBrowser.php && git apply ./composer_scripts/diem-classpath.patch; true",
             "composer dump-autoload -o"
         ],
         "post-update-cmd": [
