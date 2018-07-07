@@ -7,6 +7,10 @@
         },
         {
             "type": "vcs",
+            "url":  "https://github.com/diem-project/php-user-agent.git"
+        },
+        {
+            "type": "vcs",
             "url":  "https://github.com/diem-project/php-html-writer.git"
         }
     ],
@@ -29,7 +33,7 @@
             "@diem-patch-and-autoload-fix"
         ],
         "post-install-cmd": [
-             "@diem-patch-and-autoload-fix"
+            "@diem-patch-and-autoload-fix"
         ],
         "test": [
             "@cc",
