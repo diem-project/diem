@@ -7,7 +7,7 @@
         },
         {
             "type": "vcs",
-            "url":  "https://github.com/ornicar/php-html-writer.git"
+            "url":  "https://github.com/diem-project/php-html-writer.git"
         }
     ],
     "require": {
