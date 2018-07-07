@@ -16,7 +16,7 @@
     ],
     "require": {
         "diem-project/symfony": "master@dev",
-        "diem-project/php-user-agent": "^1.0",
+        "diem-project/php-user-agent": "master@dev",
         "diem-project/php-html-writer": "master@dev"
     },
     "autoload": {
