@@ -1,11 +1,21 @@
 {
     "name": "diem-project/diem",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url":  "https://github.com/diem-project/symfony.git"
+        },
+        {
+            "type": "vcs",
+            "url":  "https://github.com/ornicar/php-html-writer.git"
+        }
+    ],
     "require": {
         "diem-project/symfony": "master@dev",
         "ornicar/php-user-agent": "^1.0",
         "ornicar/php-html-writer": "master@dev"
     },
-      "autoload": {
+    "autoload": {
         "classmap": [
             "vendor/ornicar/php-html-writer/lib"
         ]
