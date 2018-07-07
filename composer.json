@@ -17,7 +17,7 @@
     },
     "autoload": {
         "classmap": [
-            "vendor/ornicar/php-html-writer/lib"
+            "vendor/diem-project/php-html-writer/lib"
         ]
     },
     "scripts": {
