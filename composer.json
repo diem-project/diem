@@ -12,8 +12,8 @@
     ],
     "require": {
         "diem-project/symfony": "master@dev",
-        "ornicar/php-user-agent": "^1.0",
-        "ornicar/php-html-writer": "master@dev"
+        "diem-project/php-user-agent": "^1.0",
+        "diem-project/php-html-writer": "master@dev"
     },
     "autoload": {
         "classmap": [
